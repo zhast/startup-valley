@@ -11,6 +11,7 @@ signal bootstrap_received(
 	daily_spend_warning: float,
 	clock_state: Dictionary,
 	studio_files: Array[StudioFileRecord],
+	pending_promotions: Array,
 	recent_jobs: Array,
 	memories: Dictionary
 )
@@ -20,6 +21,7 @@ signal job_event_received(job_id: String, event: WorkerEventRecord)
 signal artifacts_received(job_id: String, artifacts: Array[ArtifactRecord])
 signal artifact_content_received(job_id: String, name: String, content: String)
 signal studio_files_received(files: Array[StudioFileRecord])
+signal promotion_state_received(files: Array[StudioFileRecord], pending_promotions: Array)
 signal job_submission_received(job_id: String, queued: bool)
 signal job_submission_failed(job_id: String, message: String)
 signal worker_crashed(message: String)
@@ -151,6 +153,8 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 			var project_value: Variant = result.get("project", {})
 			var project: Dictionary = project_value as Dictionary if project_value is Dictionary else {}
 			var studio_files := _studio_files_from_value(result.get("studioFiles", []))
+			var pending_value: Variant = result.get("pendingPromotions", [])
+			var pending_promotions: Array = pending_value as Array if pending_value is Array else []
 			var clock_value: Variant = result.get("clock", {})
 			var clock_state: Dictionary = clock_value as Dictionary if clock_value is Dictionary else {}
 			var recent_value: Variant = result.get("recentJobs", [])
@@ -166,6 +170,7 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 				float(result.get("dailySpendWarning", 5.0)),
 				clock_state,
 				studio_files,
+				pending_promotions,
 				recent_jobs,
 				memories
 			)
@@ -182,7 +187,11 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 			artifacts_received.emit(job_id, artifacts)
 		"job.start":
 			job_submission_received.emit(job_id, bool(result.get("queued", false)))
-		"job.promote", "studio.files":
+		"job.promote":
+			var pending_value: Variant = result.get("pendingPromotions", [])
+			var pending_promotions: Array = pending_value as Array if pending_value is Array else []
+			promotion_state_received.emit(_studio_files_from_value(result.get("studioFiles", [])), pending_promotions)
+		"studio.files":
 			studio_files_received.emit(_studio_files_from_value(result_value))
 		"artifact.read":
 			artifact_content_received.emit(job_id, str(result.get("name", "Artifact")), str(result.get("content", "")))
@@ -220,9 +229,10 @@ func start_job(
 	title: String,
 	assignment: String,
 	acceptance_criteria: PackedStringArray,
-	token_budget: int
+	token_budget: int,
+	attached_studio_path: String = ""
 ) -> void:
-	_send_request("job.start", {"spec": {
+	var spec: Dictionary = {
 		"jobId": job_id,
 		"employeeId": employee_id,
 		"projectId": project_id,
@@ -230,7 +240,10 @@ func start_job(
 		"assignment": assignment,
 		"acceptanceCriteria": Array(acceptance_criteria),
 		"tokenBudget": token_budget,
-	}}, job_id)
+	}
+	if not attached_studio_path.is_empty():
+		spec["attachedStudioPath"] = attached_studio_path
+	_send_request("job.start", {"spec": spec}, job_id)
 
 func request_artifacts(job_id: String) -> void:
 	_send_request("job.artifacts", {"jobId": job_id}, job_id)

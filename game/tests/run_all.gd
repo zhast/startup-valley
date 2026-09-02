@@ -35,6 +35,12 @@ func _run() -> void:
 		5.0,
 		{"day": 4, "minuteOfDay": DayClock.LUNCH_START, "speed": 0.0},
 		restored_studio,
+		[{
+			"jobId": "pending-review",
+			"employeeName": "Theo",
+			"title": "Restored review",
+			"artifacts": [{"name": "review.md"}],
+		}],
 		[{"jobId": "completed-note", "employeeId": "mira", "title": "Restored note", "status": "completed"}],
 		{"mira": [{"kind": "outcome", "fact": "Outcome: restored durable note"}], "theo": []}
 	)
@@ -43,6 +49,8 @@ func _run() -> void:
 		_fail("test_persistent_boot: clock state was not restored")
 	if main.job_panel.studio_file_count() != 1 or not main.job_panel.last_status_text().contains("completed"):
 		_fail("test_persistent_boot: studio listing or last status was not restored")
+	if main.job_panel.pending_promotion_job_id() != "pending-review":
+		_fail("test_persistent_boot: pending promotion was not restored")
 	if main.get_employee("mira").memory_line != "Outcome: restored durable note":
 		_fail("test_persistent_boot: employee memory was not restored")
 	main.day_clock.set_time(4, DayClock.WORK_START)

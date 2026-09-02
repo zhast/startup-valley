@@ -12,9 +12,11 @@ test("protocol and job schemas accept a bounded work order", () => {
     assignment: "Write a design note",
     acceptanceCriteria: ["A Markdown file exists"],
     tokenBudget: 4000,
+    attachedStudioPath: "references/design-note.md",
   });
   const request = parseRequest({ kind: "request", id: "1", method: "job.start", params: { spec } });
   assert.equal(request.method, "job.start");
+  assert.equal(spec.attachedStudioPath, "references/design-note.md");
 });
 
 test("schemas reject unbounded or misshapen input", () => {

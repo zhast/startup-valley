@@ -31,12 +31,14 @@ test("stdio JSONL daemon completes health and bootstrap handshake", async () => 
     employees: unknown[];
     clock: { minuteOfDay: number; phase: string };
     studioFiles: unknown[];
+    pendingPromotions: unknown[];
     recentJobs: unknown[];
     memories: Record<string, unknown[]>;
   };
   assert.equal(state.employees.length, 2);
   assert.deepEqual(state.clock, { day: 1, minuteOfDay: 480, speed: 1, phase: "work" });
   assert.deepEqual(state.studioFiles, []);
+  assert.deepEqual(state.pendingPromotions, []);
   assert.deepEqual(state.recentJobs, []);
   assert.ok(Array.isArray(state.memories.mira));
   child.stdin.end();

@@ -39,6 +39,7 @@ func _connect_signals() -> void:
 	worker_client.job_event_received.connect(_on_job_event)
 	worker_client.artifacts_received.connect(job_panel.show_artifacts)
 	worker_client.studio_files_received.connect(_on_studio_files)
+	worker_client.promotion_state_received.connect(_on_promotion_state)
 	worker_client.job_submission_received.connect(_on_job_submission)
 	worker_client.job_submission_failed.connect(_on_job_submission_failed)
 	worker_client.artifact_content_received.connect(_on_artifact_content)
@@ -67,6 +68,7 @@ func _on_bootstrap(
 	daily_spend_warning: float,
 	clock_state: Dictionary,
 	studio_files: Array[StudioFileRecord],
+	pending_promotions: Array,
 	recent_jobs: Array,
 	memories: Dictionary
 ) -> void:
@@ -78,6 +80,7 @@ func _on_bootstrap(
 	job_panel.configure_employees(records)
 	job_panel.set_spend(daily_spend, daily_spend_warning)
 	job_panel.show_studio_files(studio_files)
+	job_panel.show_pending_promotions(pending_promotions)
 	job_panel.show_recent_jobs(recent_jobs)
 	_restore_recent_jobs(recent_jobs)
 	_state_loaded = true
@@ -133,7 +136,8 @@ func _on_assignment_submitted(
 	employee_id: String,
 	title: String,
 	assignment: String,
-	acceptance_criteria: PackedStringArray
+	acceptance_criteria: PackedStringArray,
+	attached_studio_path: String
 ) -> void:
 	var job_id := "job-%x-%x" % [Time.get_ticks_usec(), randi()]
 	_job_employees[job_id] = employee_id
@@ -145,7 +149,8 @@ func _on_assignment_submitted(
 		title,
 		assignment,
 		acceptance_criteria,
-		_token_budget
+		_token_budget,
+		attached_studio_path
 	)
 
 func _on_job_submission(job_id: String, queued: bool) -> void:
@@ -174,6 +179,10 @@ func _on_artifact_content(_job_id: String, name: String, content: String) -> voi
 func _on_studio_files(files: Array[StudioFileRecord]) -> void:
 	job_panel.show_studio_files(files)
 	job_panel.set_info("Durable studio updated. Files remain after restart.")
+
+func _on_promotion_state(files: Array[StudioFileRecord], pending_promotions: Array) -> void:
+	job_panel.show_studio_files(files)
+	job_panel.show_pending_promotions(pending_promotions)
 
 func _on_clock_changed(day: int, minute_of_day: int, phase: String, speed: float) -> void:
 	clock_panel.show_clock(day, minute_of_day, phase, speed)

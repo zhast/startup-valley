@@ -128,3 +128,86 @@ test("opening a database recovers running work orders as failed", async () => {
   assert.equal(reopened.employee("mira")?.assignment, undefined);
   reopened.close();
 });
+
+test("completed unpromoted artifacts survive reopen", async () => {
+  const root = await mkdtemp(join(tmpdir(), "startup-valley-promotion-resume-"));
+  const path = join(root, "game.sqlite");
+  const projectRoot = join(root, "company-project");
+  const first = new GameDatabase(path, projectRoot);
+  first.createWorkOrder({
+    jobId: "pending-note",
+    employeeId: "mira",
+    projectId: "company",
+    title: "Pending design note",
+    assignment: "Write pending-note.md",
+    acceptanceCriteria: ["pending-note.md exists"],
+    tokenBudget: 4000,
+  });
+  first.createArtifact("pending-note", {
+    artifactId: "pending-artifact",
+    jobId: "pending-note",
+    name: "pending-note.md",
+    relativePath: "pending-note.md",
+    mediaType: "text/markdown",
+    createdAt: new Date().toISOString(),
+  });
+  first.completeWorkOrder("pending-note", "Finished and awaiting the player.");
+  assert.equal(first.pendingPromotions()[0]?.jobId, "pending-note");
+  first.close();
+
+  const reopened = new GameDatabase(path, projectRoot);
+  assert.equal(reopened.bootstrap().pendingPromotions[0]?.artifacts[0]?.relativePath, "pending-note.md");
+  reopened.close();
+});
+
+test("discard clears a pending promotion across reopen", async () => {
+  const root = await mkdtemp(join(tmpdir(), "startup-valley-promotion-discard-"));
+  const path = join(root, "game.sqlite");
+  const projectRoot = join(root, "company-project");
+  const first = new GameDatabase(path, projectRoot);
+  first.createWorkOrder({
+    jobId: "discarded-note",
+    employeeId: "mira",
+    projectId: "company",
+    title: "Discarded design note",
+    assignment: "Write discarded-note.md",
+    acceptanceCriteria: ["discarded-note.md exists"],
+    tokenBudget: 4000,
+  });
+  first.createArtifact("discarded-note", {
+    artifactId: "discarded-artifact",
+    jobId: "discarded-note",
+    name: "discarded-note.md",
+    relativePath: "discarded-note.md",
+    mediaType: "text/markdown",
+    createdAt: new Date().toISOString(),
+  });
+  first.completeWorkOrder("discarded-note", "Finished and awaiting the player.");
+  first.decidePromotion("discarded-note", false);
+  assert.deepEqual(first.pendingPromotions(), []);
+  first.close();
+
+  const afterDiscard = new GameDatabase(path, projectRoot);
+  assert.deepEqual(afterDiscard.bootstrap().pendingPromotions, []);
+  afterDiscard.close();
+});
+
+test("freeform work-order instructions and attached studio path persist in SQLite", async () => {
+  const root = await mkdtemp(join(tmpdir(), "startup-valley-freeform-persistence-"));
+  const database = new GameDatabase(join(root, "game.sqlite"), join(root, "company-project"));
+  database.createWorkOrder({
+    jobId: "freeform-brief",
+    employeeId: "theo",
+    projectId: "company",
+    title: "Critique the onboarding plan",
+    assignment: "Read the attached plan and write an actionable critique into onboarding-review.md.",
+    acceptanceCriteria: ["Create at least one artifact that fulfills the instruction"],
+    tokenBudget: 6000,
+    attachedStudioPath: "plans/onboarding.md",
+  }, "queued");
+  const restored = database.workOrder("freeform-brief");
+  assert.equal(restored?.title, "Critique the onboarding plan");
+  assert.equal(restored?.assignment, "Read the attached plan and write an actionable critique into onboarding-review.md.");
+  assert.equal(restored?.attachedStudioPath, "plans/onboarding.md");
+  database.close();
+});

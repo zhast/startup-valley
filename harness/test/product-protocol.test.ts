@@ -52,12 +52,23 @@ test("game protocol promotes approved artifacts, reads the studio, and writes me
     return response;
   };
 
+  const bootstrap = await request("bootstrap", "bootstrap", {});
+  assert.equal(bootstrap.ok, true);
+  assert.equal(
+    ((bootstrap.result as { pendingPromotions: Array<{ jobId: string }> }).pendingPromotions[0]?.jobId),
+    "completed-note",
+  );
   const opened = await request("read", "artifact.read", { jobId: "completed-note", relativePath: "note.md" });
   assert.equal(opened.ok, true);
   assert.match((opened.result as { content: string }).content, /focus stays visible/u);
   const promoted = await request("promote", "job.promote", { jobId: "completed-note", approved: true });
   assert.equal(promoted.ok, true);
-  assert.equal((promoted.result as Array<{ relativePath: string }>)[0]?.relativePath, "note.md");
+  const promotionResult = promoted.result as {
+    studioFiles: Array<{ relativePath: string }>;
+    pendingPromotions: unknown[];
+  };
+  assert.equal(promotionResult.studioFiles[0]?.relativePath, "note.md");
+  assert.deepEqual(promotionResult.pendingPromotions, []);
   const studioOpened = await request("studio-read", "studio.read", { relativePath: "note.md" });
   assert.equal(studioOpened.ok, true);
   assert.match((studioOpened.result as { content: string }).content, /focus stays visible/u);

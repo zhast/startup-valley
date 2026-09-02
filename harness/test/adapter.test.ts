@@ -88,6 +88,63 @@ test("next employee prompts contain structured memory and SQLite teammate handof
   reopened.close();
 });
 
+test("off-hours freeform work queues with its bounded attached studio context", async () => {
+  const root = await mkdtemp(join(tmpdir(), "startup-valley-freeform-queue-"));
+  const projectRoot = join(root, "company-project");
+  const studioRoot = join(projectRoot, "studio");
+  await mkdir(studioRoot, { recursive: true });
+  await writeFile(join(studioRoot, "brief.md"), "# Product brief\n\nKeep setup under five minutes.", "utf8");
+  const database = new GameDatabase(join(root, "game.sqlite"), projectRoot);
+  database.createWorkOrder({ ...spec("source-job"), title: "Product brief", assignment: "Write brief.md" });
+  database.createArtifact("source-job", {
+    artifactId: "source-artifact",
+    jobId: "source-job",
+    name: "brief.md",
+    relativePath: "brief.md",
+    mediaType: "text/markdown",
+    createdAt: new Date().toISOString(),
+  });
+  database.completeWorkOrder("source-job", "Created the product brief.");
+  database.upsertStudioFile({
+    name: "brief.md",
+    relativePath: "brief.md",
+    mediaType: "text/markdown",
+    sourceJobId: "source-job",
+    sourceArtifactId: "source-artifact",
+    promotedAt: new Date().toISOString(),
+  });
+  database.decidePromotion("source-job", true);
+  database.setClock(1, 18 * 60, 1);
+  const adapter = new PiWorkerAdapter(database, new DeferredCredentialStore(), root);
+  const freeform = {
+    ...spec("freeform-night"),
+    employeeId: "theo",
+    title: "Review the product brief",
+    assignment: "Use the attached brief and write recommendations.md.",
+    attachedStudioPath: "brief.md",
+  };
+  assert.deepEqual(await adapter.submitJob(freeform), { queued: true });
+  assert.equal(database.workOrder("freeform-night")?.assignment, freeform.assignment);
+  assert.equal(database.workOrder("freeform-night")?.attachedStudioPath, "brief.md");
+  const prompt = adapter.systemPromptFor(freeform, "# Product brief\n\nKeep setup under five minutes.");
+  assert.match(prompt, /Path: studio\/brief\.md/u);
+  assert.match(prompt, /Keep setup under five minutes/u);
+  database.close();
+});
+
+test("an attached missing studio path fails closed before a work order is stored", async () => {
+  const root = await mkdtemp(join(tmpdir(), "startup-valley-missing-attachment-"));
+  const database = new GameDatabase(join(root, "game.sqlite"), join(root, "company-project"));
+  database.setClock(1, 18 * 60, 1);
+  const adapter = new PiWorkerAdapter(database, new DeferredCredentialStore(), root);
+  await assert.rejects(
+    adapter.submitJob({ ...spec("missing-attachment"), attachedStudioPath: "missing.md" }),
+    /Attached studio file is unavailable/u,
+  );
+  assert.equal(database.workOrder("missing-attachment"), undefined);
+  database.close();
+});
+
 test("off-hours work queues, starts at the work window, and shutdown blocks fake in-flight work", async () => {
   const root = await mkdtemp(join(tmpdir(), "startup-valley-schedule-"));
   const database = new GameDatabase(join(root, "game.sqlite"), join(root, "company-project"));

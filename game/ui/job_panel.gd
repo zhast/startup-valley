@@ -2,7 +2,7 @@ class_name JobPanel
 extends PanelContainer
 
 signal key_submitted(key: String)
-signal assignment_submitted(employee_id: String, title: String, assignment: String, acceptance_criteria: PackedStringArray)
+signal assignment_submitted(employee_id: String, title: String, assignment: String, acceptance_criteria: PackedStringArray, attached_studio_path: String)
 signal cancel_requested(job_id: String)
 signal approval_decided(job_id: String, approval_id: String, approved: bool)
 signal artifact_open_requested(job_id: String, relative_path: String)
@@ -27,6 +27,9 @@ const CANNED_JOBS := [
 
 var _employee_picker: OptionButton
 var _job_picker: OptionButton
+var _custom_title_input: LineEdit
+var _attachment_label: Label
+var _attachment_picker: OptionButton
 var _key_input: LineEdit
 var _key_status: Label
 var _assignment_preview: TextEdit
@@ -47,6 +50,7 @@ var _promotion_box: VBoxContainer
 var _promotion_label: Label
 var _promotion_job_id: String = ""
 var _clock_phase: String = "work"
+var _custom_mode: bool = false
 
 func _ready() -> void:
 	_build_interface()
@@ -68,9 +72,16 @@ func _build_interface() -> void:
 	margin.add_theme_constant_override("margin_top", 14)
 	margin.add_theme_constant_override("margin_bottom", 14)
 	add_child(margin)
+	var scroll := ScrollContainer.new()
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	margin.add_child(scroll)
 	var content := VBoxContainer.new()
 	content.add_theme_constant_override("separation", 6)
-	margin.add_child(content)
+	content.custom_minimum_size = Vector2(320.0, 0.0)
+	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(content)
 
 	var title := Label.new()
 	title.text = "STARTUP_VALLEY STUDIO"
@@ -111,13 +122,32 @@ func _build_interface() -> void:
 	_job_picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	for job: Dictionary in CANNED_JOBS:
 		_job_picker.add_item(str(job.get("title", "Work order")))
+	_job_picker.add_item("Custom work order…")
 	_job_picker.item_selected.connect(_on_job_selected)
 	content.add_child(_job_picker)
+	_custom_title_input = LineEdit.new()
+	_custom_title_input.placeholder_text = "Work-order title"
+	_custom_title_input.max_length = 200
+	_custom_title_input.visible = false
+	content.add_child(_custom_title_input)
 	_assignment_preview = TextEdit.new()
 	_assignment_preview.editable = false
 	_assignment_preview.custom_minimum_size = Vector2(0.0, 72.0)
 	_assignment_preview.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
 	content.add_child(_assignment_preview)
+	_attachment_label = Label.new()
+	_attachment_label.text = "READ CONTEXT (OPTIONAL)"
+	_attachment_label.add_theme_font_size_override("font_size", 11)
+	_attachment_label.add_theme_color_override("font_color", Color("6db7d8"))
+	_attachment_label.visible = false
+	content.add_child(_attachment_label)
+	_attachment_picker = OptionButton.new()
+	_attachment_picker.fit_to_longest_item = false
+	_attachment_picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_attachment_picker.visible = false
+	_attachment_picker.add_item("No studio file attached")
+	_attachment_picker.set_item_metadata(0, "")
+	content.add_child(_attachment_picker)
 	var action_row := HBoxContainer.new()
 	action_row.add_theme_constant_override("separation", 6)
 	content.add_child(action_row)
@@ -180,13 +210,13 @@ func _build_interface() -> void:
 	_promotion_box.add_child(_promotion_label)
 	var promotion_buttons := HBoxContainer.new()
 	var promote_button := Button.new()
-	promote_button.text = "Approve promotion"
+	promote_button.text = "Approve"
 	promote_button.pressed.connect(_decide_promotion.bind(true))
 	promotion_buttons.add_child(promote_button)
-	var keep_scratch_button := Button.new()
-	keep_scratch_button.text = "Keep in scratch"
-	keep_scratch_button.pressed.connect(_decide_promotion.bind(false))
-	promotion_buttons.add_child(keep_scratch_button)
+	var discard_button := Button.new()
+	discard_button.text = "Discard"
+	discard_button.pressed.connect(_decide_promotion.bind(false))
+	promotion_buttons.add_child(discard_button)
 	_promotion_box.add_child(promotion_buttons)
 	content.add_child(_promotion_box)
 
@@ -234,13 +264,37 @@ func _submit_assignment() -> void:
 	if _employee_picker.item_count == 0:
 		_status_label.text = "No employees are available."
 		return
-	var job: Dictionary = CANNED_JOBS[_job_picker.selected]
 	var employee_id := str(_employee_picker.get_item_metadata(_employee_picker.selected))
+	if _custom_mode:
+		var custom_title := _custom_title_input.text.strip_edges()
+		var custom_assignment := _assignment_preview.text.strip_edges()
+		if custom_title.is_empty():
+			_status_label.text = "Give the freeform work order a title."
+			_custom_title_input.grab_focus()
+			return
+		if custom_assignment.is_empty():
+			_status_label.text = "Write instructions for the employee."
+			_assignment_preview.grab_focus()
+			return
+		var attached_path := str(_attachment_picker.get_item_metadata(_attachment_picker.selected))
+		assignment_submitted.emit(
+			employee_id,
+			custom_title,
+			custom_assignment,
+			PackedStringArray([
+				"Create at least one artifact that fulfills the instruction",
+				"Return a concise delivery summary",
+			]),
+			attached_path
+		)
+		return
+	var job: Dictionary = CANNED_JOBS[_job_picker.selected]
 	assignment_submitted.emit(
 		employee_id,
 		str(job.get("title", "Work order")),
 		str(job.get("assignment", "")),
-		PackedStringArray(job.get("criteria", []))
+		PackedStringArray(job.get("criteria", [])),
+		""
 	)
 
 func _cancel_active_job() -> void:
@@ -251,8 +305,19 @@ func _cancel_active_job() -> void:
 	cancel_requested.emit(_active_job_id)
 
 func _on_job_selected(index: int) -> void:
-	if index < 0 or index >= CANNED_JOBS.size():
+	if index < 0 or index > CANNED_JOBS.size():
 		return
+	_custom_mode = index == CANNED_JOBS.size()
+	_custom_title_input.visible = _custom_mode
+	_assignment_preview.editable = _custom_mode
+	_attachment_label.visible = _custom_mode
+	_attachment_picker.visible = _custom_mode
+	if _custom_mode:
+		_assignment_preview.text = ""
+		_assignment_preview.placeholder_text = "Describe the real deliverable and the file you want back."
+		_custom_title_input.grab_focus()
+		return
+	_assignment_preview.placeholder_text = ""
 	var job: Dictionary = CANNED_JOBS[index]
 	_assignment_preview.text = str(job.get("assignment", ""))
 	var employee_id := str(job.get("employee_id", ""))
@@ -315,7 +380,7 @@ func promotion_controls_fit_viewport() -> bool:
 
 func set_worker_ready() -> void:
 	if _active_job_id.is_empty():
-		_status_label.text = "Worker connected. Pick an employee and canned work order."
+		_status_label.text = "Worker connected. Pick an employee and work order."
 
 func set_clock_phase(phase: String) -> void:
 	_clock_phase = phase
@@ -409,10 +474,43 @@ func offer_promotion(job_id: String) -> void:
 	_event_log.visible = false
 
 func _decide_promotion(approved: bool) -> void:
-	promotion_decided.emit(_promotion_job_id, approved)
+	var job_id := _promotion_job_id
+	_promotion_job_id = ""
+	promotion_decided.emit(job_id, approved)
 	_promotion_box.visible = false
 	_event_log.visible = true
-	_status_label.text = "Promoting approved artifacts into studio/…" if approved else "Artifacts remain in job scratch."
+	_status_label.text = "Promoting approved artifacts into studio/…" if approved else "Discarded from the promotion queue."
+
+func show_pending_promotions(pending_promotions: Array) -> void:
+	if pending_promotions.is_empty():
+		_promotion_job_id = ""
+		_promotion_box.visible = false
+		_event_log.visible = true
+		return
+	var candidate_value: Variant = pending_promotions[0]
+	if not candidate_value is Dictionary:
+		return
+	var candidate := candidate_value as Dictionary
+	var job_id := str(candidate.get("jobId", ""))
+	if job_id.is_empty():
+		return
+	var artifact_names: PackedStringArray = []
+	var artifact_values: Variant = candidate.get("artifacts", [])
+	if artifact_values is Array:
+		for artifact_value: Variant in artifact_values as Array:
+			if artifact_value is Dictionary:
+				artifact_names.append(str((artifact_value as Dictionary).get("name", "artifact")))
+	_promotion_job_id = job_id
+	_promotion_label.text = "%s finished “%s”. Approve or discard: %s" % [
+		str(candidate.get("employeeName", "Employee")),
+		str(candidate.get("title", "Work order")),
+		", ".join(artifact_names) if not artifact_names.is_empty() else "completed artifacts",
+	]
+	_promotion_box.visible = true
+	_event_log.visible = false
+
+func pending_promotion_job_id() -> String:
+	return _promotion_job_id
 
 func show_recent_jobs(jobs: Array) -> void:
 	if jobs.is_empty():
@@ -443,6 +541,7 @@ func _open_artifact(job_id: String, relative_path: String) -> void:
 	artifact_open_requested.emit(job_id, relative_path)
 
 func show_studio_files(files: Array[StudioFileRecord]) -> void:
+	_configure_attachment_picker(files)
 	for child: Node in _artifact_list.get_children():
 		child.queue_free()
 	if files.is_empty():
@@ -458,3 +557,17 @@ func show_studio_files(files: Array[StudioFileRecord]) -> void:
 		button.tooltip_text = "Promoted from %s" % file.source_job_id
 		button.pressed.connect(studio_open_requested.emit.bind(file.relative_path))
 		_artifact_list.add_child(button)
+
+func _configure_attachment_picker(files: Array[StudioFileRecord]) -> void:
+	var selected_path := ""
+	if _attachment_picker.item_count > 0:
+		selected_path = str(_attachment_picker.get_item_metadata(_attachment_picker.selected))
+	_attachment_picker.clear()
+	_attachment_picker.add_item("No studio file attached")
+	_attachment_picker.set_item_metadata(0, "")
+	for file: StudioFileRecord in files:
+		_attachment_picker.add_item("studio/%s" % file.relative_path)
+		var index := _attachment_picker.item_count - 1
+		_attachment_picker.set_item_metadata(index, file.relative_path)
+		if file.relative_path == selected_path:
+			_attachment_picker.select(index)

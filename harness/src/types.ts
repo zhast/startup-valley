@@ -6,6 +6,7 @@ export interface JobSpec {
   assignment: string;
   acceptanceCriteria: string[];
   tokenBudget: number;
+  attachedStudioPath?: string;
 }
 
 export interface ApprovalDecision {
@@ -92,6 +93,20 @@ export interface WorkOrderSummary {
   finishedAt?: string;
 }
 
+export interface PromotionCandidate {
+  jobId: string;
+  employeeId: string;
+  employeeName: string;
+  title: string;
+  artifacts: Artifact[];
+  finishedAt?: string;
+}
+
+export interface PromotionResult {
+  studioFiles: StudioFile[];
+  pendingPromotions: PromotionCandidate[];
+}
+
 export interface Employee {
   id: string;
   name: string;
@@ -112,7 +127,7 @@ export interface WorkerAdapter {
   events(jobId: string): AsyncIterable<WorkerEvent>;
   artifacts(jobId: string): Promise<Artifact[]>;
   readArtifact(jobId: string, relativePath: string): Promise<ArtifactContent>;
-  promoteArtifacts(jobId: string, approved: boolean): Promise<StudioFile[]>;
+  promoteArtifacts(jobId: string, approved: boolean): Promise<PromotionResult>;
   studioFiles(): Promise<StudioFile[]>;
   readStudioFile(relativePath: string): Promise<StudioFileContent>;
 }
@@ -164,6 +179,7 @@ export interface BootstrapState {
   dailySpendWarning: number;
   clock: ClockState;
   studioFiles: StudioFile[];
+  pendingPromotions: PromotionCandidate[];
   recentJobs: WorkOrderSummary[];
   memories: Record<string, EmployeeMemory[]>;
 }

@@ -12,6 +12,7 @@ import type {
   Employee,
   EmployeeMemory,
   JobSpec,
+  PromotionCandidate,
   StudioFile,
   TeammateHandoff,
   WorkOrderSummary,
@@ -50,6 +51,8 @@ interface WorkOrderRow {
   summary: string | null;
   created_at: string;
   finished_at: string | null;
+  attached_studio_path: string | null;
+  promotion_status: "none" | "pending" | "approved" | "discarded";
 }
 
 interface MemoryRow {
@@ -92,7 +95,11 @@ export class GameDatabase {
     const migrationsDirectory = join(moduleDirectory, "..", "migrations");
     this.#database.exec(readFileSync(join(migrationsDirectory, "001_initial.sql"), "utf8"));
     this.#database.exec("CREATE TABLE IF NOT EXISTS schema_migrations (version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL)");
-    for (const [version, name] of [[2, "002_product_layer.sql"], [3, "003_persistent_studio.sql"]] as const) {
+    for (const [version, name] of [
+      [2, "002_product_layer.sql"],
+      [3, "003_persistent_studio.sql"],
+      [4, "004_work_order_handoff.sql"],
+    ] as const) {
       const applied = this.#database.prepare("SELECT version FROM schema_migrations WHERE version = ?").get(version);
       if (applied) continue;
       this.#database.exec("BEGIN IMMEDIATE");
@@ -171,6 +178,7 @@ export class GameDatabase {
       dailySpendWarning: DAILY_SPEND_WARNING,
       clock: this.clockState(),
       studioFiles: this.studioFiles(),
+      pendingPromotions: this.pendingPromotions(),
       recentJobs: this.recentWorkOrders(),
       memories,
     };
@@ -201,8 +209,8 @@ export class GameDatabase {
     this.#database
       .prepare(`
         INSERT INTO work_orders
-          (id, employee_id, project_id, title, assignment, acceptance_criteria_json, status, token_budget, created_at, started_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          (id, employee_id, project_id, title, assignment, acceptance_criteria_json, status, token_budget, created_at, started_at, attached_studio_path)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `)
       .run(
         spec.jobId,
@@ -215,6 +223,7 @@ export class GameDatabase {
         spec.tokenBudget,
         timestamp,
         status === "running" ? timestamp : null,
+        spec.attachedStudioPath ?? null,
       );
     this.#database
       .prepare("UPDATE employees SET assignment = ?, updated_at = ? WHERE id = ?")
@@ -266,6 +275,7 @@ export class GameDatabase {
       assignment: row.assignment,
       acceptanceCriteria: parseObject<string[]>(row.acceptance_criteria_json),
       tokenBudget: row.token_budget,
+      ...(row.attached_studio_path ? { attachedStudioPath: row.attached_studio_path } : {}),
       status: row.status,
     };
   }
@@ -325,6 +335,14 @@ export class GameDatabase {
   completeWorkOrder(jobId: string, summary: string): void {
     this.#database.prepare("UPDATE work_orders SET summary = ? WHERE id = ?").run(summary.replace(/\s+/gu, " ").trim().slice(0, 1000), jobId);
     this.setWorkOrderStatus(jobId, "completed");
+    this.#database.prepare(`
+      UPDATE work_orders
+      SET promotion_status = CASE
+        WHEN EXISTS (SELECT 1 FROM artifacts WHERE artifacts.work_order_id = work_orders.id) THEN 'pending'
+        ELSE 'none'
+      END
+      WHERE id = ?
+    `).run(jobId);
   }
 
   recoverInterruptedJobs(): string[] {
@@ -430,6 +448,35 @@ export class GameDatabase {
 
   studioFile(relativePath: string): StudioFile | undefined {
     return this.studioFiles().find((file) => file.relativePath === relativePath);
+  }
+
+  pendingPromotions(limit = 8): PromotionCandidate[] {
+    const rows = this.#database.prepare(`
+      SELECT w.*, e.name AS employee_name
+      FROM work_orders w
+      JOIN employees e ON e.id = w.employee_id
+      WHERE w.status = 'completed' AND w.promotion_status = 'pending'
+      ORDER BY w.finished_at DESC, w.created_at DESC
+      LIMIT ?
+    `).all(limit) as unknown as Array<WorkOrderRow & { employee_name: string }>;
+    return rows.map((row) => ({
+      jobId: row.id,
+      employeeId: row.employee_id,
+      employeeName: row.employee_name,
+      title: row.title,
+      artifacts: this.artifacts(row.id),
+      ...(row.finished_at ? { finishedAt: row.finished_at } : {}),
+    }));
+  }
+
+  decidePromotion(jobId: string, approved: boolean): void {
+    const row = this.#database.prepare(`
+      SELECT status, promotion_status FROM work_orders WHERE id = ?
+    `).get(jobId) as { status: string; promotion_status: string } | undefined;
+    if (!row || row.status !== "completed") throw new Error("Only completed work can be promoted or discarded");
+    if (row.promotion_status !== "pending") throw new Error("This work order does not have a pending promotion decision");
+    this.#database.prepare("UPDATE work_orders SET promotion_status = ? WHERE id = ?")
+      .run(approved ? "approved" : "discarded", jobId);
   }
 
   writebackMemories(jobId: string): EmployeeMemory[] {
