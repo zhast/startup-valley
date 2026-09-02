@@ -78,6 +78,13 @@ test("next employee prompts contain structured memory and SQLite teammate handof
   const restored = new PiWorkerAdapter(reopened, new DeferredCredentialStore(), root);
   assert.equal((await restored.studioFiles())[0]?.relativePath, "design-note.md");
   assert.match((await restored.readStudioFile("design-note.md")).content, /visible focus/u);
+  const restoredTheoContext = restored.systemPromptFor({
+    ...spec("theo-after-restart"),
+    employeeId: "theo",
+    title: "Review Mina's restored note",
+  });
+  assert.match(restoredTheoContext, /studio\/design-note\.md/u);
+  assert.match(restoredTheoContext, /Mina: Inventory keyboard navigation/u);
   reopened.close();
 });
 
