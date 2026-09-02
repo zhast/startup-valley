@@ -2,10 +2,10 @@ class_name TownRoom
 extends Node2D
 
 const OFFICE_BACKGROUND_TEXTURE: Texture2D = preload("res://assets/runtime/office/main-office-background.png")
-const LOCKED_FILL := Color("172230f2")
-const LOCKED_INSET := Color("223042ed")
-const LOCKED_STRIPE := Color("405a6066")
-const LOCKED_BORDER := Color("d9b15c")
+const LOCKED_FILL := Color("151515f2")
+const LOCKED_INSET := Color("202020ed")
+const LOCKED_STRIPE := Color("354b9855")
+const LOCKED_BORDER := Color("fa4616")
 
 var tile_size: int = 32
 var grid_width: int = 26
@@ -202,7 +202,7 @@ func _draw_locked_section(section: Dictionary) -> void:
 		HORIZONTAL_ALIGNMENT_CENTER,
 		area.size.x - 24.0,
 		15,
-		Color("f2d89b")
+		Color("c1fa81")
 	)
 	draw_string(
 		ThemeDB.fallback_font,
@@ -211,7 +211,7 @@ func _draw_locked_section(section: Dictionary) -> void:
 		HORIZONTAL_ALIGNMENT_CENTER,
 		area.size.x - 24.0,
 		12,
-		Color("dce7df")
+		Color("f1f1f1")
 	)
 	draw_string(
 		ThemeDB.fallback_font,

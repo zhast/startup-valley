@@ -1,6 +1,12 @@
 class_name ArtifactViewer
 extends PanelContainer
 
+const VERMILION := Color("fa4616")
+const OFF_WHITE := Color("f1f1f1")
+const CHARCOAL := Color("151515")
+const CERULEAN := Color("6196c1")
+const DUST := Color("b6b5b0")
+
 var _title_label: Label
 var _content: TextEdit
 
@@ -10,8 +16,8 @@ func _ready() -> void:
 
 func _build_interface() -> void:
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color("0c1422")
-	style.border_color = Color("6db7d8")
+	style.bg_color = CHARCOAL
+	style.border_color = VERMILION
 	style.set_border_width_all(2)
 	style.corner_radius_top_left = 12
 	style.corner_radius_top_right = 12
@@ -31,22 +37,52 @@ func _build_interface() -> void:
 
 	var header := HBoxContainer.new()
 	column.add_child(header)
+	var file_mark := Label.new()
+	file_mark.text = "▤"
+	file_mark.add_theme_font_size_override("font_size", 22)
+	file_mark.add_theme_color_override("font_color", VERMILION)
+	header.add_child(file_mark)
 	_title_label = Label.new()
 	_title_label.text = "Artifact"
 	_title_label.add_theme_font_size_override("font_size", 18)
+	_title_label.add_theme_color_override("font_color", OFF_WHITE)
 	_title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(_title_label)
 	var close_button := Button.new()
 	close_button.text = "Close"
 	close_button.pressed.connect(hide)
+	close_button.add_theme_stylebox_override("normal", _stylebox(Color("252525"), CERULEAN, 1, 5))
+	close_button.add_theme_stylebox_override("hover", _stylebox(Color("303030"), CERULEAN, 2, 5))
+	close_button.add_theme_color_override("font_color", OFF_WHITE)
 	header.add_child(close_button)
+	var caption := Label.new()
+	caption.text = "DELIVERY PREVIEW  ·  READ ONLY"
+	caption.add_theme_font_size_override("font_size", 10)
+	caption.add_theme_color_override("font_color", DUST)
+	column.add_child(caption)
 
 	_content = TextEdit.new()
 	_content.editable = false
 	_content.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
 	_content.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_content.add_theme_font_size_override("font_size", 14)
+	_content.add_theme_color_override("font_color", OFF_WHITE)
+	_content.add_theme_color_override("caret_color", VERMILION)
+	_content.add_theme_stylebox_override("normal", _stylebox(Color("202020"), Color("484848"), 1, 6))
+	_content.add_theme_stylebox_override("read_only", _stylebox(Color("202020"), Color("484848"), 1, 6))
 	column.add_child(_content)
+
+func _stylebox(background: Color, border: Color, width: int, radius: int) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = background
+	style.border_color = border
+	style.set_border_width_all(width)
+	style.set_corner_radius_all(radius)
+	style.content_margin_left = 9.0
+	style.content_margin_right = 9.0
+	style.content_margin_top = 7.0
+	style.content_margin_bottom = 7.0
+	return style
 
 func show_artifact(name: String, content: String) -> void:
 	_title_label.text = name

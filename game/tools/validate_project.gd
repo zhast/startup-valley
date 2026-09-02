@@ -13,6 +13,7 @@ const IMPORTANT_SCENES: PackedStringArray = [
 ]
 const IMPORTANT_TEXTURES: PackedStringArray = [
 	"res://assets/runtime/office/main-office-background.png",
+	"res://assets/concepts/office-town-characters-sheet.png",
 	"res://assets/concepts/ui/team-roster-brand-palette-concept.png",
 	"res://assets/concepts/ui/employee-profile-brand-palette-concept.png",
 ]

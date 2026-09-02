@@ -36,6 +36,7 @@ var _idle_elapsed: float = 0.0
 var _idle_cooldown: float = 0.5
 var _idle_cycle: int = 0
 var _speech_visible: bool = false
+var _character_sprite: Sprite2D
 
 func configure(record: EmployeeRecord, start_position: Vector2, desk: Vector2, research: Vector2) -> void:
 	employee_id = record.id
@@ -46,6 +47,13 @@ func configure(record: EmployeeRecord, start_position: Vector2, desk: Vector2, r
 	home_position = start_position
 	desk_position = desk
 	research_position = research
+	_character_sprite = Sprite2D.new()
+	_character_sprite.name = "CharacterSprite"
+	_character_sprite.texture = CharacterArt.portrait(employee_id)
+	_character_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_character_sprite.scale = Vector2.ONE * CharacterArt.world_scale(employee_id)
+	_character_sprite.position = Vector2(0.0, -10.0)
+	add_child(_character_sprite)
 	queue_redraw()
 
 func set_schedule_phase(phase: String) -> void:
@@ -106,6 +114,8 @@ func apply_worker_event(event: WorkerEventRecord, player_position: Vector2) -> v
 				set_schedule_phase(schedule_phase)
 
 func walk_to(target: Vector2, state: WorkState, arrival_state: WorkState = WorkState.IDLE) -> void:
+	if _character_sprite != null and not is_equal_approx(target.x, position.x):
+		_character_sprite.flip_h = target.x < position.x
 	_target_position = target
 	_arrival_state = arrival_state
 	_has_target = true
@@ -125,9 +135,12 @@ func _physics_process(delta: float) -> void:
 			queue_redraw()
 	if work_state == WorkState.TYPING:
 		_typing_phase += delta
+		_character_sprite.position.y = -11.0 if _typing_phase < 0.1 else -9.0
 		if _typing_phase >= 0.2:
 			_typing_phase = 0.0
 			queue_redraw()
+	elif _character_sprite != null:
+		_character_sprite.position.y = -10.0
 	if not has_live_job and schedule_phase == "work" and not _has_target:
 		_update_idle(delta)
 
@@ -181,19 +194,14 @@ func state_label() -> String:
 	return "available"
 
 func _draw() -> void:
-	var body_color := Color("7dc6a7") if employee_id == "mira" else Color("d9a66f")
-	if work_state == WorkState.TYPING and _typing_phase < 0.1:
-		body_color = body_color.lightened(0.18)
-	elif work_state == WorkState.OFF_SHIFT:
-		body_color = body_color.darkened(0.35)
-	draw_circle(Vector2(0.0, -7.0), 8.5, Color("e9b98f"))
-	draw_rect(Rect2(-9.0, 1.0, 18.0, 21.0), body_color, true)
-	draw_rect(Rect2(-9.0, -15.0, 18.0, 5.0), Color("493b4a"), true)
-	if work_state == WorkState.TYPING:
-		draw_line(Vector2(-12.0, 10.0), Vector2(-18.0, 6.0), Color("f4d6b8"), 3.0)
-		draw_line(Vector2(12.0, 10.0), Vector2(18.0, 6.0), Color("f4d6b8"), 3.0)
+	draw_circle(Vector2(0.0, 18.0), 13.0, Color("15151566"))
 	if _speech_visible:
 		var speech := memory_line.left(46)
-		draw_string(ThemeDB.fallback_font, Vector2(-70.0, -30.0), speech, HORIZONTAL_ALIGNMENT_CENTER, 140.0, 10, Color("e8e0b8"))
-	draw_string(ThemeDB.fallback_font, Vector2(-32.0, 36.0), display_name, HORIZONTAL_ALIGNMENT_CENTER, 64.0, 12, Color("f5f7ff"))
-	draw_string(ThemeDB.fallback_font, Vector2(-45.0, 50.0), state_label(), HORIZONTAL_ALIGNMENT_CENTER, 90.0, 10, Color("aebbd3"))
+		draw_string(ThemeDB.fallback_font, Vector2(-70.0, -46.0), speech, HORIZONTAL_ALIGNMENT_CENTER, 140.0, 10, Color("f1f1f1"))
+	draw_string(ThemeDB.fallback_font, Vector2(-32.0, 38.0), display_name, HORIZONTAL_ALIGNMENT_CENTER, 64.0, 12, Color("f1f1f1"))
+	var state_color := Color("c1fa81")
+	if work_state == WorkState.WAITING_APPROVAL:
+		state_color = Color("fa4616")
+	elif work_state == WorkState.OFF_SHIFT:
+		state_color = Color("b6b5b0")
+	draw_string(ThemeDB.fallback_font, Vector2(-45.0, 51.0), state_label(), HORIZONTAL_ALIGNMENT_CENTER, 90.0, 10, state_color)

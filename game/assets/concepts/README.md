@@ -5,7 +5,7 @@ These original RGBA sheets were generated with the built-in ImageGen tool on 202
 - `office-town-environment-sheet.png`: terrain, interior architecture, office furniture, research props, plants, and town dressing.
 - `office-town-characters-sheet.png`: original founder, Mina, and Theo direction/locomotion/desk pose studies.
 
-Both files are 1536 × 1024 and contain real alpha transparency. They are source sheets, not runtime atlases: generated cell spacing and pose anchors are visually coherent but not mathematically uniform. Before wiring them into scenes, select the strongest assets, clean them to an exact pixel grid, assign deterministic rectangles and anchors, and validate nearest-neighbor import settings. The existing code-rendered game remains unchanged until that cleanup is approved.
+Both files are 1536 × 1024 and contain real alpha transparency. Generated cell spacing and pose anchors are visually coherent but not mathematically uniform. The game now uses deterministic `AtlasTexture` regions from the first front-facing founder, Mina, and Theo poses for office sprites and team portraits, with nearest-neighbor filtering; the rest of each sheet remains concept source until its animation cells receive the same cleanup.
 
 ## Final prompt set
 

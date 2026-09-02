@@ -26,6 +26,13 @@ func _run() -> void:
 	await process_frame
 	if main.job_panel.selected_employee_id() != "mira":
 		_fail("test_native_team_ui: the first employee was not selected")
+	var mina_button: Button = main.job_panel._team_buttons.get("mira") as Button
+	var mina_portrait: TextureRect = mina_button.find_child("Portrait", false, false) as TextureRect if mina_button != null else null
+	if mina_portrait == null or mina_portrait.texture == null:
+		_fail("test_character_art: Mina's team card did not use the character sheet")
+	var founder_sprite := main.player.get_node_or_null("CharacterSprite") as Sprite2D
+	if founder_sprite == null or founder_sprite.texture == null:
+		_fail("test_character_art: the founder did not use the character sheet in the office")
 	main.job_panel.select_employee("theo")
 	if main.job_panel.selected_employee_id() != "theo":
 		_fail("test_native_team_ui: the vertical team rail did not select Theo")
@@ -122,6 +129,9 @@ func _run() -> void:
 	if employee == null:
 		_fail("test_worker_walks_to_desk: Mina was not spawned")
 	else:
+		var employee_sprite := employee.get_node_or_null("CharacterSprite") as Sprite2D
+		if employee_sprite == null or employee_sprite.texture == null:
+			_fail("test_character_art: Mina did not use the character sheet in the office")
 		main.simulate_worker_event("mira", &"job.started")
 		var frames := 0
 		while not employee.is_at_desk() and frames < 360:
