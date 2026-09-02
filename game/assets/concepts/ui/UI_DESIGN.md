@@ -9,7 +9,8 @@ Startup Valley should feel like a cozy office game during movement and like a ca
 | Exploration HUD | Default | Time, company activity, nearby interaction, and four destinations | Nearly all of the office remains visible. |
 | Team roster | The player opens Team | Browse current employees and see future hiring capacity | Full-screen menu; returning to the office is one action. |
 | Employee profile | The player selects a roster card or inspects an employee | Understand role, work style, current state, memory, and collaborators | Full-screen menu with direct paths to dialogue and work. |
-| Employee dialogue | The player talks to an employee | Short conversation, roleplay, memory, and entry into a work assignment | The upper two-thirds of the office remains visible. |
+| Team chat rail | Default when chat navigation is available | See the current cast and live status without opening a dashboard | Roughly 82% of the office remains visible. |
+| Employee dialogue | The player selects a rail portrait or talks to an employee | Short conversation, roleplay, profile, and entry into a work assignment | Roughly 58% of the office remains visible beside a right drawer. |
 | Work journal | A substantial job is assigned or selected | Live state, usage, tool categories, approvals, steering, cancellation, and artifacts | The office remains visible around a centered modal. |
 
 These layers should share the semantic palette in `PALETTE.md`. Cozy character comes from pixel texture, material grain, chunky silhouettes, plants, and personal objects—not from introducing unrelated UI colors.
@@ -23,10 +24,20 @@ These layers should share the semantic palette in `PALETTE.md`. Cozy character c
 
 ## Employee dialogue
 
-- Open near an employee and pause player movement while composing.
+- Use the right-side drawer in `chat-drawer-concept.png` as the preferred layout; the older bottom-panel concept is retained only as exploration history.
+- Open by selecting a portrait in the chat rail or by talking to an employee in the office. Pause player movement while composing.
+- Keep the same narrow portrait rail visible inside the expanded drawer so switching employees is spatially stable.
 - Retain only a few recent conversational turns in the visible panel; durable memory remains worker-owned and bounded.
 - `Chat` supports character conversation. `Assign Work` reveals title, request, acceptance criteria, optional studio attachment, and budget. `Memory` shows short structured facts—not an infinite transcript.
 - After assignment, close back to the office so the employee's physical movement communicates that work began.
+
+## Team chat rail
+
+- A vertical selector is preferable to a horizontal roster because it occupies the space already claimed by the current sidebar and scales without covering the office floor.
+- Show current employees only. Future `OPEN ROLE` cards belong in Team/Hiring, where they communicate growth; in Chat they create dead targets.
+- At three employees, use portrait cards with name and status. At four to six, reduce card height slightly. Beyond six, use a scrollable rail while preserving the selected employee.
+- The compact rail contains no transcript, input field, credentials, work-order form, usage meter, logs, or artifact list.
+- Selection uses Vermilion plus a border shape; online and available state uses Chartreuse plus a dot and text label.
 
 ## Team roster
 

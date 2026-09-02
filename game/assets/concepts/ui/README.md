@@ -3,7 +3,9 @@
 These 1672 × 941 mockups were generated with the built-in ImageGen tool on 2026-09-02. They form one layered UI direction rather than unrelated alternatives.
 
 - `exploration-hud-concept.png`: quiet world-first HUD with time, company activity, a contextual employee prompt, and four quick destinations.
-- `employee-chat-concept.png`: bottom dialogue console that presents an employee as a character while supporting natural-language chat and structured work assignment.
+- `employee-chat-concept.png`: earlier bottom dialogue exploration; superseded by the right-side rail and drawer below.
+- `chat-selector-rail-concept.png`: preferred compact gameplay state, with a vertical selector for the three current employees and no persistent form.
+- `chat-drawer-concept.png`: preferred expanded state, retaining the vertical selector beside Mina's conversation and actions.
 - `team-roster-concept.png`: a collectible team directory with three current employees and restrained `OPEN ROLE` slots for future hires.
 - `employee-profile-concept.png`: Mina's work-focused profile, replacing farming-sim social trivia with role, morale, work style, skills, current work, bounded memory, and collaborators.
 - `team-roster-brand-palette-concept.png`: preferred roster palette treatment using Vermilion, Off-White, Charcoal, Indigo, Cerulean, Chartreuse, Dust, Black, and White.
@@ -45,3 +47,11 @@ Employee profile:
 Brand-palette edit:
 
 > Recolor only the UI chrome, panels, controls, indicators, borders, and interface accents. Use Vermilion `#FA4616` for primary actions and selection, Off-White `#F1F1F1` for surfaces, Charcoal `#151515` for framing and text, Indigo `#354B98` for navigation, Cerulean `#6196C1` for information, Chartreuse `#C1FA81` for positive status, Dust `#B6B5B0` for disabled and neutral areas, and Black/White for deepest shadows and highlights. Preserve layout, wording, portraits, natural character colors, icons, hierarchy, crop, and dimensions exactly. Retain tactile pixel materials by rendering the frame as charcoal-stained wood. Add or remove nothing.
+
+Compact chat selector:
+
+> Design a shippable 16:9 Startup Valley gameplay state with the actual office occupying roughly 82 percent of the screen and a coherent `TEAM CHAT` rail on the right. Stack exactly three generous portrait cards for Founder, Mina, and Theo, each with a short status and speech indicator. Select Mina with Vermilion and use Chartreuse status dots. Show no transcript or composer until an employee is chosen, and no `OPEN ROLE` cards in Chat. Use the exact brand palette and preserve natural office and portrait colors. Avoid forms, credentials, metrics, logs, unrelated characters, copied assets, and filler text.
+
+Expanded chat drawer:
+
+> Design the expanded version of the same right-side `TEAM CHAT` system. Keep roughly 58 percent of the office visible on the left. Retain a narrow far-right rail for Founder, Mina, and Theo while Mina's drawer shows portrait, role, status, two short message bubbles, one-line composer, `SEND`, `ASSIGN WORK`, and `VIEW PROFILE`. Make it feel like speaking with a game character rather than operating a chatbot dashboard. Use the exact brand palette, compact readable text, and no operational logs, credentials, metrics, open roles, or filler.
