@@ -58,16 +58,18 @@ func _run() -> void:
 	main.job_panel.select_employee("mira")
 	if main.room.unlocked_hires != 2 or main.room.locked_section_count() != 2:
 		_fail("test_office_growth: the two-person roster did not reveal exactly two office wings")
-	if main.room.visible_prop_count() != 3:
-		_fail("test_modular_office: the two-person stage did not show two desks and one research bench")
+	if main.room.visible_prop_count() != 6:
+		_fail("test_modular_office: the two-person stage did not show the founder, collaboration, and research props")
 	main.room.set_hire_count(0)
 	if main.room.locked_section_count() != 4:
 		_fail("test_office_growth: the founder stage did not lock all expansion wings")
-	if main.room.visible_prop_count() != 0:
-		_fail("test_modular_office: locked-stage props remained visible")
+	if main.room.visible_prop_count() != 1 or main.room.prop_node("founder-workstation") == null:
+		_fail("test_modular_office: the founder stage did not retain exactly one usable workstation")
 	main.room.set_hire_count(1)
-	if main.room.visible_prop_count() != 1 or main.room.prop_node("mira-workstation") == null:
-		_fail("test_modular_office: the first hire did not reveal exactly Mina's workstation")
+	if main.room.visible_prop_count() != 4 or main.room.prop_node("mira-workstation") == null:
+		_fail("test_modular_office: the first hire did not reveal Mina's workstation and social wing")
+	if main.room.prop_node("collaboration-cluster") == null or main.room.prop_node("coffee-station") == null:
+		_fail("test_modular_office: the first-hire meeting and coffee props were missing")
 	var staged_desk := main.room.prop_node("mira-workstation")
 	var staged_desk_sprite := staged_desk.get_node_or_null("WorkstationSprite") as Sprite2D if staged_desk != null else null
 	if staged_desk == null or not is_zero_approx(staged_desk.rotation) or staged_desk_sprite == null or not is_zero_approx(staged_desk_sprite.rotation):
@@ -77,6 +79,10 @@ func _run() -> void:
 	main.room.set_hire_count(4)
 	if main.room.locked_section_count() != 0:
 		_fail("test_office_growth: four hires did not reveal the mature office")
+	if main.room.visible_prop_count() != 9:
+		_fail("test_modular_office: the mature office did not include every staged prop")
+	if main.room.prop_node("approval-console") == null or main.room.prop_node("artifact-archive") == null or main.room.prop_node("prototype-bench") == null:
+		_fail("test_modular_office: the mature office was missing its operations or artifact prop")
 	var restored_records := main.room.placeholder_records()
 	main.room.set_hire_count(restored_records.size())
 	var restored_studio: Array[StudioFileRecord] = []

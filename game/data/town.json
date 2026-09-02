@@ -9,12 +9,18 @@
   ],
   "desks": [
     { "employee_id": "mira", "grid": [8, 5] },
-    { "employee_id": "theo", "grid": [13, 8] }
+    { "employee_id": "theo", "grid": [14, 8] }
   ],
   "props": [
+    { "id": "founder-workstation", "kind": "desk", "grid": [12, 14], "required_hires": 0, "owner_id": "founder" },
     { "id": "mira-workstation", "kind": "desk", "grid": [8, 5], "required_hires": 1, "owner_id": "mira" },
-    { "id": "theo-workstation", "kind": "desk", "grid": [13, 8], "required_hires": 2, "owner_id": "theo" },
-    { "id": "research-bench", "kind": "research_table", "grid": [21, 4], "required_hires": 2 }
+    { "id": "collaboration-cluster", "kind": "collaboration_cluster", "grid": [3, 10], "required_hires": 1 },
+    { "id": "coffee-station", "kind": "coffee_station", "grid": [3, 4], "required_hires": 1 },
+    { "id": "theo-workstation", "kind": "desk", "grid": [14, 8], "required_hires": 2, "owner_id": "theo" },
+    { "id": "research-bench", "kind": "research_table", "grid": [21, 4], "required_hires": 2 },
+    { "id": "approval-console", "kind": "approval_console", "grid": [21, 9], "required_hires": 3 },
+    { "id": "prototype-bench", "kind": "prototype_bench", "grid": [21, 13], "required_hires": 4 },
+    { "id": "artifact-archive", "kind": "artifact_archive", "grid": [21, 16], "required_hires": 4 }
   ],
   "research_table": [21, 4],
   "plants": [[3, 3], [22, 3], [3, 15], [23, 15]]

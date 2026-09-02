@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://props/static_office_prop.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/runtime/office/prototype-bench.png" id="2"]
+
+[node name="PrototypeBench" type="Node2D"]
+script = ExtResource("1")
+prop_texture = ExtResource("2")
+runtime_scale = 0.112
+sprite_offset = Vector2(0, -46)
+collision_size = Vector2(96, 38)
+collision_offset = Vector2(0, -19)
+chroma_key_enabled = true
+chroma_tolerance = 0.28

@@ -4,6 +4,11 @@ extends Node2D
 const OFFICE_SHELL_TEXTURE: Texture2D = preload("res://assets/runtime/office/office-shell-base.png")
 const DESK_SCENE: PackedScene = preload("res://props/desk.tscn")
 const RESEARCH_TABLE_SCENE: PackedScene = preload("res://props/research_table.tscn")
+const COLLABORATION_CLUSTER_SCENE: PackedScene = preload("res://props/collaboration_cluster.tscn")
+const COFFEE_STATION_SCENE: PackedScene = preload("res://props/coffee_station.tscn")
+const APPROVAL_CONSOLE_SCENE: PackedScene = preload("res://props/approval_console.tscn")
+const ARTIFACT_ARCHIVE_SCENE: PackedScene = preload("res://props/artifact_archive.tscn")
+const PROTOTYPE_BENCH_SCENE: PackedScene = preload("res://props/prototype_bench.tscn")
 const LOCKED_FILL := Color("151515f2")
 const LOCKED_INSET := Color("202020ed")
 const LOCKED_STRIPE := Color("354b9855")
@@ -116,6 +121,16 @@ func _rebuild_props() -> void:
 				prop = desk
 			"research_table":
 				prop = RESEARCH_TABLE_SCENE.instantiate() as ResearchTable
+			"collaboration_cluster":
+				prop = COLLABORATION_CLUSTER_SCENE.instantiate() as StaticOfficeProp
+			"coffee_station":
+				prop = COFFEE_STATION_SCENE.instantiate() as StaticOfficeProp
+			"approval_console":
+				prop = APPROVAL_CONSOLE_SCENE.instantiate() as StaticOfficeProp
+			"artifact_archive":
+				prop = ARTIFACT_ARCHIVE_SCENE.instantiate() as StaticOfficeProp
+			"prototype_bench":
+				prop = PROTOTYPE_BENCH_SCENE.instantiate() as StaticOfficeProp
 			_:
 				push_warning("Unknown office prop kind: %s" % placement.kind)
 				continue
