@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://ui/artifact_viewer.gd" id="1"]
+
+[node name="ArtifactViewer" type="PanelContainer"]
+offset_left = 240.0
+offset_top = 90.0
+offset_right = 1040.0
+offset_bottom = 630.0
+mouse_filter = 0
+script = ExtResource("1")

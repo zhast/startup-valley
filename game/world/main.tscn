@@ -1,0 +1,52 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://world/main.gd" id="1"]
+[ext_resource type="PackedScene" path="res://world/town_room.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://actors/player_avatar.tscn" id="3"]
+[ext_resource type="Script" path="res://worker_client.gd" id="4"]
+[ext_resource type="PackedScene" path="res://ui/job_panel.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://ui/artifact_viewer.tscn" id="6"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+offset_right = 1280.0
+offset_bottom = 720.0
+color = Color(0.035, 0.047, 0.067, 1)
+mouse_filter = 2
+
+[node name="TownRoom" parent="." instance=ExtResource("2")]
+position = Vector2(32, 70)
+
+[node name="Employees" type="Node2D" parent="."]
+
+[node name="PlayerAvatar" parent="." instance=ExtResource("3")]
+
+[node name="WorkerClient" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("4")
+
+[node name="Interface" type="CanvasLayer" parent="."]
+
+[node name="TownTitle" type="Label" parent="Interface"]
+offset_left = 34.0
+offset_top = 20.0
+offset_right = 650.0
+offset_bottom = 52.0
+theme_override_colors/font_color = Color(0.841, 0.902, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "STARTUP_VALLEY  ·  OFFICE TOWN"
+
+[node name="TownHint" type="Label" parent="Interface"]
+offset_left = 620.0
+offset_top = 24.0
+offset_right = 866.0
+offset_bottom = 48.0
+theme_override_colors/font_color = Color(0.51, 0.604, 0.753, 1)
+text = "WASD / arrows to move"
+horizontal_alignment = 2
+
+[node name="JobPanel" parent="Interface" instance=ExtResource("5")]
+
+[node name="ArtifactViewer" parent="Interface" instance=ExtResource("6")]

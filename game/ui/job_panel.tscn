@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://ui/job_panel.gd" id="1"]
+
+[node name="JobPanel" type="PanelContainer"]
+offset_left = 894.0
+offset_top = 18.0
+offset_right = 1262.0
+offset_bottom = 702.0
+script = ExtResource("1")
