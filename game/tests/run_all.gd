@@ -97,6 +97,15 @@ func _run() -> void:
 		else:
 			_compare_baseline(image)
 
+	var long_delivery := WorkerEventRecord.new()
+	long_delivery.type = &"job.completed"
+	long_delivery.summary = "A detailed delivery summary with multiple findings and recommendations. ".repeat(20)
+	main.job_panel.on_job_event("layout-check", long_delivery)
+	main.job_panel.offer_promotion("layout-check")
+	await process_frame
+	if not main.job_panel.promotion_controls_fit_viewport():
+		_fail("test_delivery_layout: long summaries pushed promotion controls below the viewport")
+
 	if _failures == 0:
 		print("test_worker_walks_to_desk: passed")
 	root.remove_child(main)

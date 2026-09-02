@@ -135,6 +135,8 @@ func _build_interface() -> void:
 	_status_label = Label.new()
 	_status_label.text = "Worker starting…"
 	_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_status_label.max_lines_visible = 4
+	_status_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_status_label.add_theme_color_override("font_color", Color("bed0ee"))
 	content.add_child(_status_label)
 	_usage_label = Label.new()
@@ -305,6 +307,11 @@ func studio_file_count() -> int:
 
 func last_status_text() -> String:
 	return _last_status_label.text
+
+func promotion_controls_fit_viewport() -> bool:
+	if not _promotion_box.visible:
+		return false
+	return _promotion_box.get_global_rect().end.y <= get_viewport_rect().end.y
 
 func set_worker_ready() -> void:
 	if _active_job_id.is_empty():
