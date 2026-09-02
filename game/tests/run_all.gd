@@ -7,6 +7,9 @@ const BASELINE_PATH := "res://tests/baselines/test_worker_walks_to_desk.png"
 var _failures: int = 0
 var _steer_job_id: String = ""
 var _steer_message: String = ""
+var _assignment_employee_id: String = ""
+var _assignment_title: String = ""
+var _assignment_text: String = ""
 
 func _initialize() -> void:
 	OS.set_environment("STARTUP_VALLEY_NO_WORKER", "1")
@@ -21,15 +24,31 @@ func _run() -> void:
 	root.add_child(main)
 	await process_frame
 	await process_frame
-	main.concept_preview.open_roster()
-	if main.concept_preview.current_screen() != "roster":
-		_fail("test_concept_preview: team roster did not open")
-	main.concept_preview.open_profile()
-	if main.concept_preview.current_screen() != "profile":
-		_fail("test_concept_preview: employee profile did not open")
-	main.concept_preview.close_preview()
-	if main.concept_preview.current_screen() != "closed":
-		_fail("test_concept_preview: preview did not close")
+	if main.job_panel.selected_employee_id() != "mira":
+		_fail("test_native_team_ui: the first employee was not selected")
+	main.job_panel.select_employee("theo")
+	if main.job_panel.selected_employee_id() != "theo":
+		_fail("test_native_team_ui: the vertical team rail did not select Theo")
+	main.job_panel.show_chat_history("theo", [
+		{"sender": "player", "content": "What should we test first?"},
+		{"sender": "employee", "content": "Start with the smallest useful growth experiment."},
+	])
+	await process_frame
+	if not main.job_panel._chat_log.get_parsed_text().contains("growth experiment"):
+		_fail("test_native_team_ui: persisted chat did not render in the employee drawer")
+	var assignment_handler := Callable(main, "_on_assignment_submitted")
+	main.job_panel.assignment_submitted.disconnect(assignment_handler)
+	main.job_panel.assignment_submitted.connect(_capture_assignment)
+	main.job_panel._job_picker.select(main.job_panel.CANNED_JOBS.size())
+	main.job_panel._on_job_selected(main.job_panel.CANNED_JOBS.size())
+	main.job_panel._custom_title_input.text = "Small growth experiment"
+	main.job_panel._assignment_preview.text = "Create a short experiment brief in experiment.md."
+	main.job_panel._submit_assignment()
+	if _assignment_employee_id != "theo" or _assignment_title != "Small growth experiment" or not _assignment_text.contains("experiment.md"):
+		_fail("test_native_team_ui: the work composer did not emit Theo's custom work order")
+	main.job_panel._job_picker.select(0)
+	main.job_panel._on_job_selected(0)
+	main.job_panel.select_employee("mira")
 	if main.room.unlocked_hires != 2 or main.room.locked_section_count() != 2:
 		_fail("test_office_growth: the two-person roster did not reveal exactly two office wings")
 	main.room.set_hire_count(0)
@@ -166,6 +185,17 @@ func _run() -> void:
 func _capture_steer(job_id: String, message: String) -> void:
 	_steer_job_id = job_id
 	_steer_message = message
+
+func _capture_assignment(
+	employee_id: String,
+	title: String,
+	assignment: String,
+	_acceptance_criteria: PackedStringArray,
+	_attached_studio_path: String
+) -> void:
+	_assignment_employee_id = employee_id
+	_assignment_title = title
+	_assignment_text = assignment
 
 func _software_state_screenshot(main: GameMain) -> Image:
 	# `godot --headless` deliberately uses the dummy renderer, so viewport textures

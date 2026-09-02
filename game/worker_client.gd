@@ -17,6 +17,9 @@ signal bootstrap_received(
 )
 signal credential_status_received(configured: bool)
 signal credential_saved
+signal chat_history_received(employee_id: String, messages: Array)
+signal chat_reply_received(employee_id: String, message: Dictionary, daily_spend: float)
+signal chat_failed(employee_id: String, message: String)
 signal job_event_received(job_id: String, event: WorkerEventRecord)
 signal artifacts_received(job_id: String, artifacts: Array[ArtifactRecord])
 signal artifact_content_received(job_id: String, name: String, content: String)
@@ -136,6 +139,8 @@ func _handle_line(line: String) -> void:
 			job_submission_failed.emit(job_id, error)
 		elif method == "job.steer":
 			job_steer_failed.emit(job_id, error)
+		elif method == "chat.send":
+			chat_failed.emit(job_id, error)
 		request_failed.emit(error)
 		return
 	_handle_response(method, job_id, message.get("result"))
@@ -182,6 +187,13 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 			credential_status_received.emit(bool(result.get("configured", false)))
 		"credential.set":
 			credential_saved.emit()
+		"chat.history":
+			var messages: Array = result_value as Array if result_value is Array else []
+			chat_history_received.emit(job_id, messages)
+		"chat.send":
+			var message_value: Variant = result.get("message", {})
+			var chat_message: Dictionary = message_value as Dictionary if message_value is Dictionary else {}
+			chat_reply_received.emit(job_id, chat_message, float(result.get("dailySpend", 0.0)))
 		"job.artifacts":
 			var artifacts: Array[ArtifactRecord] = []
 			if result_value is Array:
@@ -227,6 +239,12 @@ func _send_request(method: String, parameters: Dictionary, job_id: String = "") 
 
 func save_openrouter_key(key: String) -> void:
 	_send_request("credential.set", {"key": key})
+
+func request_chat_history(employee_id: String) -> void:
+	_send_request("chat.history", {"employeeId": employee_id}, employee_id)
+
+func send_chat(employee_id: String, message: String) -> void:
+	_send_request("chat.send", {"employeeId": employee_id, "message": message}, employee_id)
 
 func start_job(
 	job_id: String,

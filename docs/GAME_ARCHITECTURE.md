@@ -12,6 +12,8 @@ Godot 4.7.2 game  <— stdio JSONL —>  Node/TypeScript worker
 
 Godot owns presentation and short-lived read-only projections. The worker owns durable people and work state. SQLite is authoritative for employees, memories, schedules, relationships, morale, clock state, projects, work orders, studio-file provenance, approvals, event history, usage, and scratch artifacts. A Pi session is in-memory, scoped to one running work order, and disposed at its end.
 
+Employee chat follows the same ownership rule without becoming another work runtime. SQLite stores bounded player/employee messages and their usage. Each reply creates a fresh tool-free Pi session from recent messages and structured memories, then disposes it. Chat can clarify intent and seed a work-order draft; only an explicit work order receives tools.
+
 The worker is a child process connected through `OS.execute_with_pipe`. There is no local HTTP listener. Closing the game closes and terminates the child.
 
 ## Job sequence
