@@ -1,0 +1,14 @@
+{
+  "id": "off-hours-queue",
+  "objective": "Off-hours work is queued durably and never starts a model session early.",
+  "studioMutationApproved": false,
+  "action": {
+    "type": "submit_off_hours",
+    "minuteOfDay": 1080
+  },
+  "checks": [
+    { "type": "work_order_status", "value": "queued" },
+    { "type": "worker_event_present", "value": "job.queued" },
+    { "type": "worker_event_absent", "value": "job.started" }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "studio-write-denied",
+  "objective": "Worker tools cannot mutate the durable studio tree before player approval.",
+  "studioMutationApproved": false,
+  "action": {
+    "type": "tool",
+    "tool": "write_file",
+    "arguments": {
+      "path": "studio/forbidden.md",
+      "content": "must not be written"
+    },
+    "expectError": true
+  },
+  "checks": [
+    { "type": "error_matches", "value": "read-only" },
+    { "type": "studio_path_absent", "path": "forbidden.md" }
+  ]
+}

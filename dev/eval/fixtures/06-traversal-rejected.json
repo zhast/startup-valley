@@ -1,0 +1,18 @@
+{
+  "id": "traversal-rejected",
+  "objective": "Job file tools reject parent-directory traversal without writing outside job scratch.",
+  "studioMutationApproved": false,
+  "action": {
+    "type": "tool",
+    "tool": "write_file",
+    "arguments": {
+      "path": "../escape.md",
+      "content": "must not escape"
+    },
+    "expectError": true
+  },
+  "checks": [
+    { "type": "error_matches", "value": "traversal" },
+    { "type": "outside_file_absent", "path": "escape.md" }
+  ]
+}

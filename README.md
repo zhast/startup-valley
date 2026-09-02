@@ -28,6 +28,8 @@ The credential service is namespaced to Startup Valley, so the key must be saved
 
 New assignments start during 08:00–12:30 and 13:30–17:30. Lunch and off-hours assignments remain visibly queued until the next work window. The clock controls pause, 1×, 4×, and 16× speed. Completed job files remain scratch artifacts until the player approves promotion into the canonical `studio/` tree; unfinished promotion decisions resume after restart.
 
+Once a job has started, **Update active job** sends a bounded correction to that same live Pi session. It does not start another employee or work order.
+
 ## Live provider check
 
 After saving the key through the game, run one real bounded smoke job:
@@ -43,6 +45,7 @@ It writes `hello.md` under `harness/.startup-valley-live/company-project/jobs/<j
 
 ```sh
 cd harness && npm run check && npm test
+cd harness && npm run eval:offline
 godot --headless --path game --import
 godot --headless --path game --script res://tools/validate_project.gd
 godot --headless --path game --script res://tests/run_all.gd
@@ -56,4 +59,4 @@ godot --headless --path game --script res://tests/run_all.gd
 - `dev/`: acceptance and live-provider checklists.
 - `docs/`: architecture and dependency-upgrade guidance.
 
-See [the architecture](docs/GAME_ARCHITECTURE.md) and [vertical-slice acceptance](dev/ACCEPTANCE.md).
+See [the architecture](docs/GAME_ARCHITECTURE.md), [vertical-slice acceptance](dev/ACCEPTANCE.md), and [offline evaluation report](dev/eval/OFFLINE_REPORT.md). `npm run eval:live` is optional and makes a paid provider call, so run it only when explicitly requested.

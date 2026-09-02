@@ -15,12 +15,13 @@ The slice is complete when a developer can perform this flow without Claude Code
 11. Quit and reopen again. Confirm the clock, Mina's memories, completed status, and clickable `studio/design-note.md` listing are restored.
 12. Choose **Custom work order…**, select Theo, enter a title and instruction body, and attach `studio/design-note.md` as read context. Submit it and confirm the SQLite work-order row preserves the exact title, instructions, and attached relative path.
 13. Confirm the custom job receives a fresh bounded Pi session with Theo's persona, bounded memories, and the attached file content. It must use the same guarded tools and produce a scratch artifact for explicit promotion.
-14. Approve Theo's new artifact, then open it from the durable **Studio files** list in the current artifact text viewer.
-15. Pick the canned **Review Mina's inventory note** and confirm it still selects Theo, reads `studio/design-note.md`, and produces `review.md`.
-16. Set the clock to 12:30 or after 17:30, submit a freeform work order, and confirm it remains queued with no walking or typing. Advance to 13:30 or 08:00 and confirm `job.started` then moves the employee to their desk.
-17. Try to submit a protocol work order with a missing attached studio path. Confirm it fails before a work-order row is created.
-18. With no live job, confirm on-shift employees only sit, wander, or show one memory line; at lunch they go to lunch, and after 17:30 they display off shift.
-19. Quit during a work order. Confirm the worker child exits, the last status restores as blocked/cancelled, and no Pi process remains.
+14. While Theo is actively working, send a correction through **Update active job**. Confirm it is delivered to the same job and Pi session without creating a second work order.
+15. Approve Theo's new artifact, then open it from the durable **Studio files** list in the current artifact text viewer.
+16. Pick the canned **Review Mina's inventory note** and confirm it still selects Theo, reads `studio/design-note.md`, and produces `review.md`.
+17. Set the clock to 12:30 or after 17:30, submit a freeform work order, and confirm it remains queued with no walking or typing. Advance to 13:30 or 08:00 and confirm `job.started` then moves the employee to their desk.
+18. Try to submit a protocol work order with a missing attached studio path. Confirm it fails before a work-order row is created.
+19. With no live job, confirm on-shift employees only sit, wander, or show one memory line; at lunch they go to lunch, and after 17:30 they display off shift.
+20. Quit during a work order. Confirm the worker child exits, the last status restores as blocked/cancelled, and no Pi process remains.
 
 Live-provider gate before the UI flow:
 
@@ -36,12 +37,15 @@ Automated gates:
 
 ```sh
 cd harness && npm test
+cd harness && npm run eval:offline
 godot --headless --path game --import
 godot --headless --path game --script res://tools/validate_project.gd
 godot --headless --path game --script res://tests/run_all.gd
 ```
 
-The worker suite includes explicit no-provider tests for promotion resume, discard, exact freeform instruction persistence, off-hours freeform queuing, and fail-closed missing attachments.
+The worker suite includes explicit no-provider tests for promotion resume, discard, exact freeform instruction persistence, off-hours freeform queuing, fail-closed missing attachments, simultaneous assignment submission, malformed JSONL recovery, missing credentials, and SIGKILL during think/read/write/approval/complete/promote. The process tests verify the worker PID is gone, and terminal recovery clears the employee assignment.
+
+The offline evaluator must report 8/8 fixtures. Its objective checkers cover create, exact edit, attached context, off-hours queue, missing attachment, path traversal, direct studio-write denial, and approved promotion with provenance. It hashes the studio file tree and compares SQLite studio records before and after; any unapproved mutation fails the run. See [the checked-in report](eval/OFFLINE_REPORT.md).
 
 Security spot checks:
 

@@ -1,0 +1,23 @@
+{
+  "id": "exact-edit",
+  "objective": "An exact edit changes only the requested unique occurrence and registers the result.",
+  "studioMutationApproved": false,
+  "setup": {
+    "jobFiles": {
+      "plan.md": "# Plan\n\nBudget: 10 tokens.\nScope: navigation.\n"
+    }
+  },
+  "action": {
+    "type": "tool",
+    "tool": "edit_file",
+    "arguments": {
+      "path": "plan.md",
+      "oldText": "Budget: 10 tokens.",
+      "newText": "Budget: 20 tokens."
+    }
+  },
+  "checks": [
+    { "type": "job_file_equals", "path": "plan.md", "value": "# Plan\n\nBudget: 20 tokens.\nScope: navigation.\n" },
+    { "type": "artifact_registered", "path": "plan.md" }
+  ]
+}

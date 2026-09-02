@@ -1,0 +1,13 @@
+{
+  "id": "missing-attachment",
+  "objective": "A missing studio attachment fails closed before a work order is stored.",
+  "studioMutationApproved": false,
+  "action": {
+    "type": "missing_attachment",
+    "path": "does-not-exist.md"
+  },
+  "checks": [
+    { "type": "error_matches", "value": "Attached studio file is unavailable" },
+    { "type": "work_order_absent" }
+  ]
+}

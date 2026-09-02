@@ -15,6 +15,7 @@ The worker is authoritative for employees, memories, relationships, schedules, p
 cd harness && npm ci
 cd harness && npm run build
 cd harness && npm test
+cd harness && npm run eval:offline
 cd harness && npm run live:openrouter # manual; requires the game-saved keychain credential
 godot --headless --path game --import
 godot --headless --path game --script res://tools/validate_project.gd
@@ -33,6 +34,7 @@ godot --path game
 - The game communicates with the worker only over stdio JSONL for v0. Do not add an unauthenticated HTTP listener.
 - OpenRouter is the only provider in v0. Put its key in the OS keychain/Credential Manager and inject it with Pi `setRuntimeApiKey` only.
 - Create a bounded Pi session for each substantial work order and dispose it at job end. Do not create an immortal employee conversation.
+- Active-job steering is bounded to 2,000 characters and must call `steer()` on that work order's existing live Pi session. It must not create a replacement session or a second job.
 - Freeform and canned assignments use the same `JobSpec`, SQLite work-order row, queue, event stream, token cap, and fresh Pi session. A freeform job may attach one studio-relative text file; validate and read it through the studio path guard, persist its path, and bound its context before prompting.
 - Default concurrency is one running-or-queued job. Every job has a token cap and usage audit events.
 - The Godot UI refuses a second assignment while one is active and exposes cancellation. A worker exit fails the active projection, returns the employee to idle, and is recovered durably as failed on worker restart.
@@ -45,6 +47,8 @@ godot --path game
 - The saved clock has three schedule phases: work (08:00–12:30 and 13:30–17:30), lunch (12:30–13:30), and off shift. Lunch/off-hours submissions stay queued and must emit `job.started` only after a work window opens.
 - On-shift idle animation may sit, wander, or surface one bounded memory line. It must never show typing/coding without live tool events. Lunch and off-shift states are presentation-only and do not spawn agents.
 - On graceful game shutdown, the worker blocks an in-flight work order, aborts/disposes Pi, and exits after stdin closes. Unclean worker crashes remain recoverable as failed. There is no `message_employee` tool or recursive agent dispatch.
+- The lifecycle suite must cover unclean exit during think/read/write/approval/complete/promote, missing credentials, malformed JSONL, vanished queued attachments, and simultaneous assignment submission. No case may leave an employee assigned after terminal recovery or leave the tested Node worker alive.
+- `npm run eval:offline` must remain provider-free and enforce exact studio immutability for every fixture without promotion approval. `npm run eval:live` is optional and must run only when a person explicitly requests the paid provider check.
 
 ## Prohibited mutations
 

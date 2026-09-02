@@ -1,0 +1,17 @@
+{
+  "id": "new-note",
+  "objective": "A bounded worker tool creates the requested note and registers it as an artifact.",
+  "studioMutationApproved": false,
+  "action": {
+    "type": "tool",
+    "tool": "write_file",
+    "arguments": {
+      "path": "design-note.md",
+      "content": "# Design note\n\nKeep keyboard focus visible.\n"
+    }
+  },
+  "checks": [
+    { "type": "job_file_equals", "path": "design-note.md", "value": "# Design note\n\nKeep keyboard focus visible.\n" },
+    { "type": "artifact_registered", "path": "design-note.md" }
+  ]
+}

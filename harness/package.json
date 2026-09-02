@@ -12,6 +12,8 @@
     "dev": "tsx src/main.ts",
     "start": "node --enable-source-maps dist/main.js",
     "live:openrouter": "npm run build && node --enable-source-maps dist/live-openrouter.js",
+    "eval:offline": "npm run build && node ../dev/eval/run.mjs",
+    "eval:live": "npm run live:openrouter",
     "test": "npm run build && tsx --test test/*.test.ts"
   },
   "dependencies": {

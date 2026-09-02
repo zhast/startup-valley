@@ -1,0 +1,19 @@
+{
+  "id": "approved-promotion",
+  "objective": "Only explicit player approval promotes a completed artifact with durable provenance.",
+  "studioMutationApproved": true,
+  "setup": {
+    "jobFiles": {
+      "approved.md": "# Approved\n\nThis file may enter the studio.\n"
+    }
+  },
+  "action": {
+    "type": "approve_promotion",
+    "path": "approved.md"
+  },
+  "checks": [
+    { "type": "promotion_cleared" },
+    { "type": "studio_file_equals", "path": "approved.md", "value": "# Approved\n\nThis file may enter the studio.\n" },
+    { "type": "studio_provenance", "path": "approved.md" }
+  ]
+}
