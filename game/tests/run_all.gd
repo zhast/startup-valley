@@ -21,6 +21,15 @@ func _run() -> void:
 	root.add_child(main)
 	await process_frame
 	await process_frame
+	main.concept_preview.open_roster()
+	if main.concept_preview.current_screen() != "roster":
+		_fail("test_concept_preview: team roster did not open")
+	main.concept_preview.open_profile()
+	if main.concept_preview.current_screen() != "profile":
+		_fail("test_concept_preview: employee profile did not open")
+	main.concept_preview.close_preview()
+	if main.concept_preview.current_screen() != "closed":
+		_fail("test_concept_preview: preview did not close")
 	if main.room.unlocked_hires != 2 or main.room.locked_section_count() != 2:
 		_fail("test_office_growth: the two-person roster did not reveal exactly two office wings")
 	main.room.set_hire_count(0)

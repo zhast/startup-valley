@@ -9,10 +9,13 @@ const IMPORTANT_SCENES: PackedStringArray = [
 	"res://ui/job_panel.tscn",
 	"res://ui/artifact_viewer.tscn",
 	"res://ui/clock_panel.tscn",
+	"res://ui/concept_preview.tscn",
 	"res://world/main.tscn",
 ]
 const IMPORTANT_TEXTURES: PackedStringArray = [
 	"res://assets/runtime/office/main-office-background.png",
+	"res://assets/concepts/ui/team-roster-brand-palette-concept.png",
+	"res://assets/concepts/ui/employee-profile-brand-palette-concept.png",
 ]
 
 var _failures: int = 0

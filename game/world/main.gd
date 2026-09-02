@@ -11,6 +11,7 @@ const EMPLOYEE_SCENE: PackedScene = preload("res://actors/employee_avatar.tscn")
 @onready var artifact_viewer: ArtifactViewer = $Interface/ArtifactViewer
 @onready var day_clock: DayClock = $DayClock
 @onready var clock_panel: ClockPanel = $Interface/ClockPanel
+@onready var concept_preview: ConceptPreview = $Interface/ConceptPreview
 
 var _employees: Dictionary[String, EmployeeAvatar] = {}
 var _job_employees: Dictionary[String, String] = {}
@@ -57,6 +58,8 @@ func _connect_signals() -> void:
 	job_panel.promotion_decided.connect(worker_client.promote_job)
 	day_clock.time_changed.connect(_on_clock_changed)
 	clock_panel.speed_selected.connect(day_clock.set_speed)
+	concept_preview.assign_work_requested.connect(_on_concept_assign_work_requested)
+	concept_preview.chat_requested.connect(_on_concept_chat_requested)
 
 func _on_worker_connected() -> void:
 	_worker_ready = true
@@ -203,6 +206,13 @@ func _on_worker_crashed(message: String) -> void:
 		event.error = "%s. The work order was marked failed and can be assigned again." % message
 		_on_job_event(active_job, event)
 	job_panel.set_error("%s. Restarting the worker once…" % message)
+
+func _on_concept_assign_work_requested(employee_id: String) -> void:
+	job_panel.select_employee(employee_id)
+	job_panel.set_info("Mina selected. Choose a work order or write a custom assignment.")
+
+func _on_concept_chat_requested(_employee_id: String) -> void:
+	job_panel.set_info("Employee chat is still a visual concept. Real work assignment is available now.")
 
 func get_employee(employee_id: String) -> EmployeeAvatar:
 	return _employees.get(employee_id) as EmployeeAvatar

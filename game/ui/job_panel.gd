@@ -372,6 +372,13 @@ func configure_employees(records: Array[EmployeeRecord]) -> void:
 	_assign_button.disabled = records.is_empty() or not _active_job_id.is_empty()
 	_on_job_selected(_job_picker.selected)
 
+func select_employee(employee_id: String) -> void:
+	for item: int in range(_employee_picker.item_count):
+		if str(_employee_picker.get_item_metadata(item)) == employee_id:
+			_employee_picker.select(item)
+			_employee_picker.grab_focus()
+			return
+
 func begin_job(job_id: String) -> void:
 	_active_job_id = job_id
 	_assign_button.disabled = true

@@ -14,6 +14,12 @@ The current rendered game and clean office background were reference images. The
 
 The roster and profile also used two user-provided farming-sim screenshots strictly as visual references for warm portrait-card rhythm and approachable scrapbook hierarchy. Their characters, branding, decorations, layouts, and game-specific fields were explicitly excluded.
 
+## Interactive concept preview
+
+The playable development build exposes a `TEAM [T]` button. It opens the brand-palette roster, lets the player select Mina or `VIEW PROFILE`, returns with `BACK`, and closes with Escape. `ASSIGN WORK` returns to the real worker panel with Mina selected; `CHAT` currently reports that conversation UI remains concept-only.
+
+This preview deliberately uses the generated mockups with native Godot interaction targets so the flow can be evaluated before the responsive implementation. It is not the final UI architecture: production screens must rebuild the layout with native controls and live worker data.
+
 ## Final prompt set
 
 Exploration HUD:
