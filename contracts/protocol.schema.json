@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://startup-valley.local/contracts/protocol.schema.json",
+  "title": "JSONL protocol envelope",
+  "oneOf": [
+    { "$ref": "#/$defs/request" },
+    { "$ref": "#/$defs/response" },
+    { "$ref": "#/$defs/event" }
+  ],
+  "$defs": {
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "id", "method", "params"],
+      "properties": {
+        "kind": { "const": "request" },
+        "id": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "method": {
+          "enum": [
+            "health",
+            "bootstrap",
+            "credential.status",
+            "credential.set",
+            "job.start",
+            "job.resume",
+            "job.steer",
+            "job.approve",
+            "job.cancel",
+            "job.artifacts",
+            "job.remember",
+            "artifact.read"
+          ]
+        },
+        "params": { "type": "object" }
+      }
+    },
+    "response": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "id", "ok"],
+      "properties": {
+        "kind": { "const": "response" },
+        "id": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "ok": { "type": "boolean" },
+        "result": {},
+        "error": { "type": "string", "maxLength": 4000 }
+      }
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "jobId", "event"],
+      "properties": {
+        "kind": { "const": "event" },
+        "jobId": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "event": { "$ref": "worker-event.schema.json" }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://startup-valley.local/contracts/job.schema.json",
+  "title": "JobSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["jobId", "employeeId", "projectId", "title", "assignment", "acceptanceCriteria", "tokenBudget"],
+  "properties": {
+    "jobId": { "type": "string", "pattern": "^[a-zA-Z0-9_-]{1,64}$" },
+    "employeeId": { "type": "string", "pattern": "^[a-zA-Z0-9_-]{1,64}$" },
+    "projectId": { "type": "string", "pattern": "^[a-zA-Z0-9_-]{1,64}$" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "assignment": { "type": "string", "minLength": 1, "maxLength": 4000 },
+    "acceptanceCriteria": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "items": { "type": "string", "minLength": 1, "maxLength": 1000 }
+    },
+    "tokenBudget": { "type": "integer", "minimum": 512, "maximum": 100000 }
+  }
+}

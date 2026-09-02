@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://startup-valley.local/contracts/artifact.schema.json",
+  "title": "Artifact",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactId", "jobId", "name", "relativePath", "mediaType", "createdAt"],
+  "properties": {
+    "artifactId": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "jobId": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "name": { "type": "string", "minLength": 1, "maxLength": 255 },
+    "relativePath": { "type": "string", "minLength": 1, "maxLength": 1024 },
+    "mediaType": { "type": "string", "minLength": 1, "maxLength": 255 },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

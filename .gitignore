@@ -1,0 +1,14 @@
+.DS_Store
+
+harness/node_modules/
+harness/dist/
+harness/.startup-valley-live/
+
+game/.godot/
+game/tests/output/*
+!game/tests/output/.gdignore
+
+.startup-valley-data/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal

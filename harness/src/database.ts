@@ -1,0 +1,372 @@
+import { randomUUID } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { DatabaseSync } from "node:sqlite";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import type { Artifact, BootstrapState, Employee, EmployeeMemory, JobSpec, TeammateHandoff, WorkerEvent } from "./types.js";
+
+interface EmployeeRow {
+  id: string;
+  name: string;
+  desk_x: number;
+  desk_y: number;
+  schedule_json: string;
+  relationships_json: string;
+  morale: number;
+  assignment: string | null;
+}
+
+interface ArtifactRow {
+  id: string;
+  work_order_id: string;
+  name: string;
+  relative_path: string;
+  media_type: string;
+  created_at: string;
+}
+
+interface WorkOrderRow {
+  id: string;
+  employee_id: string;
+  project_id: string;
+  title: string;
+  assignment: string;
+  acceptance_criteria_json: string;
+  token_budget: number;
+  status: string;
+  summary: string | null;
+}
+
+interface MemoryRow {
+  kind: "assignment" | "artifacts" | "outcome";
+  fact: string;
+  work_order_id: string;
+  payload_json: string;
+  created_at: string;
+}
+
+const DEFAULT_PROJECT_ID = "company";
+const DEFAULT_TOKEN_BUDGET = 12_000;
+const DAILY_SPEND_WARNING = 5;
+
+function now(): string {
+  return new Date().toISOString();
+}
+
+function parseObject<T>(value: string): T {
+  return JSON.parse(value) as T;
+}
+
+export class GameDatabase {
+  readonly #database: DatabaseSync;
+  readonly #projectRoot: string;
+
+  constructor(databasePath: string, projectRoot: string) {
+    this.#database = new DatabaseSync(databasePath);
+    this.#projectRoot = projectRoot;
+    const moduleDirectory = dirname(fileURLToPath(import.meta.url));
+    const migrationsDirectory = join(moduleDirectory, "..", "migrations");
+    this.#database.exec(readFileSync(join(migrationsDirectory, "001_initial.sql"), "utf8"));
+    this.#database.exec("CREATE TABLE IF NOT EXISTS schema_migrations (version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL)");
+    const productMigration = this.#database.prepare("SELECT version FROM schema_migrations WHERE version = 2").get();
+    if (!productMigration) {
+      this.#database.exec("BEGIN IMMEDIATE");
+      try {
+        this.#database.exec(readFileSync(join(migrationsDirectory, "002_product_layer.sql"), "utf8"));
+        this.#database.prepare("INSERT INTO schema_migrations (version, applied_at) VALUES (2, ?)").run(now());
+        this.#database.exec("COMMIT");
+      } catch (error) {
+        this.#database.exec("ROLLBACK");
+        throw error;
+      }
+    }
+    this.#seed();
+    this.recoverInterruptedJobs();
+  }
+
+  close(): void {
+    this.#database.close();
+  }
+
+  #seed(): void {
+    const timestamp = now();
+    this.#database
+      .prepare("INSERT OR IGNORE INTO projects (id, name, root_path, created_at) VALUES (?, ?, ?, ?)")
+      .run(DEFAULT_PROJECT_ID, "Startup Valley Studio", this.#projectRoot, timestamp);
+
+    const insertEmployee = this.#database.prepare(`
+      INSERT OR IGNORE INTO employees
+        (id, name, desk_x, desk_y, schedule_json, relationships_json, morale, assignment, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, NULL, ?, ?)
+    `);
+    insertEmployee.run(
+      "mira",
+      "Mina",
+      8,
+      5,
+      JSON.stringify({ weekday: "09:00-17:00" }),
+      JSON.stringify({ theo: 12 }),
+      82,
+      timestamp,
+      timestamp,
+    );
+    this.#database.prepare("UPDATE employees SET name = 'Mina', updated_at = ? WHERE id = 'mira' AND name <> 'Mina'").run(timestamp);
+    insertEmployee.run(
+      "theo",
+      "Theo",
+      13,
+      8,
+      JSON.stringify({ weekday: "10:00-18:00" }),
+      JSON.stringify({ mira: 12 }),
+      76,
+      timestamp,
+      timestamp,
+    );
+  }
+
+  bootstrap(): BootstrapState {
+    const rows = this.#database.prepare("SELECT * FROM employees ORDER BY name").all() as unknown as EmployeeRow[];
+    return {
+      employees: rows.map((row) => this.#employeeFromRow(row)),
+      project: { id: DEFAULT_PROJECT_ID, name: "Startup Valley Studio", rootPath: this.#projectRoot },
+      defaultTokenBudget: DEFAULT_TOKEN_BUDGET,
+      dailySpend: this.dailySpend(),
+      dailySpendWarning: DAILY_SPEND_WARNING,
+    };
+  }
+
+  #employeeFromRow(row: EmployeeRow): Employee {
+    const base: Employee = {
+      id: row.id,
+      name: row.name,
+      deskX: row.desk_x,
+      deskY: row.desk_y,
+      schedule: parseObject<Record<string, string>>(row.schedule_json),
+      relationships: parseObject<Record<string, number>>(row.relationships_json),
+      morale: row.morale,
+    };
+    return row.assignment === null ? base : { ...base, assignment: row.assignment };
+  }
+
+  employee(employeeId: string): Employee | undefined {
+    const row = this.#database.prepare("SELECT * FROM employees WHERE id = ?").get(employeeId) as
+      | (EmployeeRow & Record<string, unknown>)
+      | undefined;
+    return row ? this.#employeeFromRow(row) : undefined;
+  }
+
+  createWorkOrder(spec: JobSpec): void {
+    const timestamp = now();
+    this.#database
+      .prepare(`
+        INSERT INTO work_orders
+          (id, employee_id, project_id, title, assignment, acceptance_criteria_json, status, token_budget, created_at, started_at)
+        VALUES (?, ?, ?, ?, ?, ?, 'running', ?, ?, ?)
+      `)
+      .run(
+        spec.jobId,
+        spec.employeeId,
+        spec.projectId,
+        spec.title,
+        spec.assignment,
+        JSON.stringify(spec.acceptanceCriteria),
+        spec.tokenBudget,
+        timestamp,
+        timestamp,
+      );
+    this.#database
+      .prepare("UPDATE employees SET assignment = ?, updated_at = ? WHERE id = ?")
+      .run(spec.assignment, timestamp, spec.employeeId);
+  }
+
+  workOrder(jobId: string): (JobSpec & { status: string }) | undefined {
+    const row = this.#database.prepare("SELECT * FROM work_orders WHERE id = ?").get(jobId) as
+      | (WorkOrderRow & Record<string, unknown>)
+      | undefined;
+    if (!row) return undefined;
+    return {
+      jobId: row.id,
+      employeeId: row.employee_id,
+      projectId: row.project_id,
+      title: row.title,
+      assignment: row.assignment,
+      acceptanceCriteria: parseObject<string[]>(row.acceptance_criteria_json),
+      tokenBudget: row.token_budget,
+      status: row.status,
+    };
+  }
+
+  setWorkOrderStatus(jobId: string, status: "running" | "blocked" | "completed" | "failed" | "cancelled"): void {
+    const terminal = status === "completed" || status === "failed" || status === "cancelled";
+    this.#database
+      .prepare("UPDATE work_orders SET status = ?, finished_at = ? WHERE id = ?")
+      .run(status, terminal ? now() : null, jobId);
+    if (terminal) {
+      this.#database.prepare(`
+        UPDATE employees SET assignment = NULL, updated_at = ?
+        WHERE id = (SELECT employee_id FROM work_orders WHERE id = ?)
+      `).run(now(), jobId);
+    }
+  }
+
+  completeWorkOrder(jobId: string, summary: string): void {
+    this.#database.prepare("UPDATE work_orders SET summary = ? WHERE id = ?").run(summary.replace(/\s+/gu, " ").trim().slice(0, 1000), jobId);
+    this.setWorkOrderStatus(jobId, "completed");
+  }
+
+  recoverInterruptedJobs(): string[] {
+    const rows = this.#database.prepare("SELECT id FROM work_orders WHERE status = 'running'").all() as unknown as { id: string }[];
+    for (const row of rows) {
+      this.setWorkOrderStatus(row.id, "failed");
+      this.recordEvent(row.id, { type: "job.failed", error: "Worker exited before the work order completed" });
+    }
+    return rows.map((row) => row.id);
+  }
+
+  recordEvent(jobId: string, event: WorkerEvent): void {
+    const sequenceRow = this.#database
+      .prepare("SELECT COALESCE(MAX(sequence), 0) + 1 AS next_sequence FROM worker_events WHERE work_order_id = ?")
+      .get(jobId) as { next_sequence: number };
+    this.#database
+      .prepare(`
+        INSERT INTO worker_events (work_order_id, sequence, type, payload_json, created_at)
+        VALUES (?, ?, ?, ?, ?)
+      `)
+      .run(jobId, sequenceRow.next_sequence, event.type, JSON.stringify(event), now());
+  }
+
+  recordUsage(jobId: string, inputTokens: number, outputTokens: number, cost?: number): void {
+    this.#database
+      .prepare("UPDATE work_orders SET input_tokens = ?, output_tokens = ?, cost = ? WHERE id = ?")
+      .run(inputTokens, outputTokens, cost ?? null, jobId);
+  }
+
+  createArtifact(jobId: string, artifact: Artifact): void {
+    this.#database
+      .prepare(`
+        INSERT INTO artifacts (id, work_order_id, name, relative_path, media_type, created_at)
+        VALUES (?, ?, ?, ?, ?, ?)
+        ON CONFLICT(work_order_id, relative_path) DO UPDATE SET
+          id = excluded.id,
+          name = excluded.name,
+          media_type = excluded.media_type,
+          created_at = excluded.created_at
+      `)
+      .run(
+        artifact.artifactId,
+        jobId,
+        artifact.name,
+        artifact.relativePath,
+        artifact.mediaType,
+        artifact.createdAt,
+      );
+  }
+
+  artifacts(jobId: string): Artifact[] {
+    const rows = this.#database
+      .prepare("SELECT * FROM artifacts WHERE work_order_id = ? ORDER BY created_at, name")
+      .all(jobId) as unknown as ArtifactRow[];
+    return rows.map((row) => ({
+      artifactId: row.id,
+      jobId: row.work_order_id,
+      name: row.name,
+      relativePath: row.relative_path,
+      mediaType: row.media_type,
+      createdAt: row.created_at,
+    }));
+  }
+
+  writebackMemories(jobId: string): EmployeeMemory[] {
+    const row = this.#database.prepare("SELECT * FROM work_orders WHERE id = ?").get(jobId) as
+      | (WorkOrderRow & Record<string, unknown>)
+      | undefined;
+    if (!row) throw new Error("Work order does not exist");
+    if (row.status !== "completed") throw new Error("Only completed work orders can be remembered");
+
+    const timestamp = now();
+    const entries: Array<{ kind: EmployeeMemory["kind"]; fact: string; payload: Record<string, unknown> }> = [
+      { kind: "assignment", fact: `Completed assignment: ${row.title}`, payload: { title: row.title } },
+    ];
+    const artifacts = this.artifacts(jobId);
+    if (artifacts.length > 0) {
+      const paths = artifacts.slice(0, 20).map((artifact) => `jobs/${jobId}/${artifact.relativePath}`);
+      entries.push({
+        kind: "artifacts",
+        fact: `Delivered artifacts: ${artifacts.map((artifact) => artifact.name).join(", ")}`.slice(0, 1000),
+        payload: { names: artifacts.map((artifact) => artifact.name), paths },
+      });
+    }
+    const outcome = (row.summary ?? `Completed ${row.title}.`).replace(/\s+/gu, " ").trim().slice(0, 500);
+    entries.push({ kind: "outcome", fact: `Outcome: ${outcome}`, payload: { summary: outcome } });
+
+    const insert = this.#database.prepare(`
+      INSERT OR IGNORE INTO employee_memories
+        (id, employee_id, fact, salience, created_at, kind, work_order_id, payload_json)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+    for (const entry of entries.slice(0, 3)) {
+      insert.run(randomUUID(), row.employee_id, entry.fact, 70, timestamp, entry.kind, jobId, JSON.stringify(entry.payload));
+    }
+    return this.employeeMemories(row.employee_id).filter((memory) => memory.workOrderId === jobId);
+  }
+
+  employeeMemories(employeeId: string, limit = 9): EmployeeMemory[] {
+    const rows = this.#database.prepare(`
+      SELECT kind, fact, work_order_id, payload_json, created_at
+      FROM employee_memories
+      WHERE employee_id = ? AND work_order_id IS NOT NULL
+      ORDER BY created_at DESC, rowid DESC
+      LIMIT ?
+    `).all(employeeId, limit) as unknown as MemoryRow[];
+    return rows.map((row) => ({
+      kind: row.kind,
+      fact: row.fact,
+      workOrderId: row.work_order_id,
+      payload: parseObject<Record<string, unknown>>(row.payload_json),
+      createdAt: row.created_at,
+    }));
+  }
+
+  teammateHandoffs(employeeId: string, limit = 4): TeammateHandoff[] {
+    const rows = this.#database.prepare(`
+      SELECT w.id, w.title, w.summary, e.name AS employee_name
+      FROM work_orders w
+      JOIN employees e ON e.id = w.employee_id
+      WHERE w.status = 'completed' AND w.employee_id <> ?
+      ORDER BY w.finished_at DESC, w.created_at DESC
+      LIMIT ?
+    `).all(employeeId, limit) as unknown as Array<{
+      id: string;
+      title: string;
+      summary: string | null;
+      employee_name: string;
+    }>;
+    return rows.map((row) => ({
+      jobId: row.id,
+      employeeName: row.employee_name,
+      title: row.title,
+      summary: (row.summary ?? "Completed without a summary.").replace(/\s+/gu, " ").trim().slice(0, 500),
+      artifactPaths: this.artifacts(row.id).map((artifact) => `jobs/${row.id}/${artifact.relativePath}`),
+    }));
+  }
+
+  createApproval(jobId: string, approvalId: string, action: string): void {
+    this.#database
+      .prepare("INSERT INTO approvals (id, work_order_id, action, status, created_at) VALUES (?, ?, ?, 'pending', ?)")
+      .run(approvalId, jobId, action, now());
+  }
+
+  decideApproval(approvalId: string, approved: boolean, reason?: string): void {
+    this.#database
+      .prepare("UPDATE approvals SET status = ?, reason = ?, decided_at = ? WHERE id = ?")
+      .run(approved ? "approved" : "denied", reason ?? null, now(), approvalId);
+  }
+
+  dailySpend(): number {
+    const row = this.#database
+      .prepare("SELECT COALESCE(SUM(cost), 0) AS total FROM work_orders WHERE date(created_at) = date('now')")
+      .get() as { total: number };
+    return row.total;
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://startup-valley.local/contracts/worker-event.schema.json",
+  "title": "WorkerEvent",
+  "oneOf": [
+    { "$ref": "#/$defs/jobStarted" },
+    { "$ref": "#/$defs/agentThinking" },
+    { "$ref": "#/$defs/toolStarted" },
+    { "$ref": "#/$defs/toolCompleted" },
+    { "$ref": "#/$defs/approvalRequired" },
+    { "$ref": "#/$defs/artifactCreated" },
+    { "$ref": "#/$defs/usageUpdated" },
+    { "$ref": "#/$defs/jobBlocked" },
+    { "$ref": "#/$defs/jobCompleted" },
+    { "$ref": "#/$defs/jobFailed" }
+  ],
+  "$defs": {
+    "closed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": { "type": { "type": "string" } }
+    },
+    "jobStarted": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": { "type": { "const": "job.started" } }
+    },
+    "agentThinking": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": { "const": "agent.thinking" },
+        "summary": { "type": "string", "maxLength": 1000 }
+      }
+    },
+    "toolStarted": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "tool", "label"],
+      "properties": {
+        "type": { "const": "tool.started" },
+        "tool": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "label": { "type": "string", "minLength": 1, "maxLength": 200 }
+      }
+    },
+    "toolCompleted": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "tool", "ok"],
+      "properties": {
+        "type": { "const": "tool.completed" },
+        "tool": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "ok": { "type": "boolean" }
+      }
+    },
+    "approvalRequired": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "approvalId", "action"],
+      "properties": {
+        "type": { "const": "approval.required" },
+        "approvalId": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "action": { "type": "string", "minLength": 1, "maxLength": 1000 }
+      }
+    },
+    "artifactCreated": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "artifactId", "name"],
+      "properties": {
+        "type": { "const": "artifact.created" },
+        "artifactId": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "name": { "type": "string", "minLength": 1, "maxLength": 255 }
+      }
+    },
+    "usageUpdated": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "inputTokens", "outputTokens"],
+      "properties": {
+        "type": { "const": "usage.updated" },
+        "inputTokens": { "type": "integer", "minimum": 0 },
+        "outputTokens": { "type": "integer", "minimum": 0 },
+        "cost": { "type": "number", "minimum": 0 }
+      }
+    },
+    "jobBlocked": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "reason"],
+      "properties": {
+        "type": { "const": "job.blocked" },
+        "reason": { "type": "string", "minLength": 1, "maxLength": 2000 }
+      }
+    },
+    "jobCompleted": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "summary"],
+      "properties": {
+        "type": { "const": "job.completed" },
+        "summary": { "type": "string", "maxLength": 4000 }
+      }
+    },
+    "jobFailed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "error"],
+      "properties": {
+        "type": { "const": "job.failed" },
+        "error": { "type": "string", "minLength": 1, "maxLength": 4000 }
+      }
+    }
+  }
+}
