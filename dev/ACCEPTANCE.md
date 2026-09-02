@@ -1,4 +1,4 @@
-# v0 vertical-slice acceptance
+# Persistent studio + day-cycle acceptance
 
 The slice is complete when a developer can perform this flow without Claude Code, Codex, Cursor, Grok Bot, Docker, or another subscription:
 
@@ -6,13 +6,16 @@ The slice is complete when a developer can perform this flow without Claude Code
 2. Run `cd harness && npm ci && npm run build`.
 3. Run `godot --path game`.
 4. Paste one OpenRouter key. Confirm the UI reports that it is stored in the OS keychain.
-5. Pick Mina and the canned **Inventory keyboard navigation design note** work order, then assign it.
-6. Observe Mina walk to her desk only after `job.started`, and type only while a real `write_file` or `edit_file` event is active.
-7. While work is active, confirm the assign control says one job at a time and use **Cancel** once to verify `job.failed`, Mina returning to idle, and the control becoming available again. Reassign the work order.
+5. Confirm the restored clock, most recent work-order status, employees, and any existing studio files appear after boot.
+6. During a work window, pick Mina and the canned **Inventory keyboard navigation design note** work order, then assign it.
+7. Observe Mina walk to her desk only after `job.started`, and type only while a real `write_file` or `edit_file` event is active.
 8. Observe real input/output token totals and estimated cost, followed by `artifact.created` and `job.completed`.
-9. Open `design-note.md` with **Read in game** and confirm the plain-text panel contains the requested note. Confirm the file also lives under `company-project/jobs/<job id>/`.
-10. Pick the canned **Review Mina's inventory note** work order. It selects Theo. Assign it and confirm Theo walks to his different desk and produces `review.md` after reading the staged Mina handoff.
-11. Open `review.md` in game. Restart the game, assign Mina another job, and confirm the prior assignment/artifact/outcome memories are present in the bounded worker context without a shared transcript.
+9. Approve artifact promotion. Confirm `studio/design-note.md` appears in **Studio files**, opens in the in-game text panel, and exists under the durable company project `studio/` directory.
+10. Quit Godot and reopen. Confirm the clock, Mina's memories, the completed status, and `studio/design-note.md` are restored.
+11. Pick **Review Mina's inventory note**. It selects Theo and explicitly reads `studio/design-note.md`. Confirm Theo produces `review.md`, then approve it into `studio/review.md`.
+12. Set the clock to 12:30 or after 17:30, submit a work order, and confirm it remains queued with no walking or typing. Advance to 13:30 or 08:00 and confirm `job.started` then moves the employee to their desk.
+13. With no live job, confirm on-shift employees only sit, wander, or show one memory line; at lunch they go to lunch, and after 17:30 they display off shift.
+14. Quit during a work order. Confirm the worker child exits, the last status restores as blocked/cancelled, and no Pi process remains.
 
 Live-provider gate before the UI flow:
 
@@ -40,4 +43,5 @@ Security spot checks:
 - File tool tests reject absolute paths, parent traversal, Windows drive paths, and symlink escapes.
 - The worker opens no localhost listener.
 - Completion memory writeback creates only structured assignment, artifact, and outcome rows. Pi session JSONL is not employee memory.
-- Theo receives Mina's SQLite summary and artifact path plus a rooted `handoffs/` copy. No transcript or recursive employee messaging is shared.
+- Theo receives Mina's SQLite summary and canonical `studio/design-note.md` path. No transcript or recursive employee messaging is shared.
+- Job tools cannot write directly to `studio/`; only player-approved promotion crosses from guarded job scratch into the independently guarded durable tree.

@@ -2,7 +2,7 @@
 
 Startup Valley is a Godot office-town where AI employees perform real, bounded work through a constrained local TypeScript worker. The game renders the town and work activity; the worker owns SQLite state, Pi sessions, OpenRouter access, usage, approvals, and artifacts.
 
-The current vertical slice lets the player assign Mina an inventory-navigation design note, read her artifact in game, then ask Theo to review it using a bounded SQLite handoff and persistent structured memories.
+The current vertical slice is a persistent studio. The player assigns Mina an inventory-navigation design note, approves it into `studio/design-note.md`, quits and reopens, then asks Theo to review that durable file into `studio/review.md`. Employees keep structured memories and follow a saved workday clock.
 
 ## Requirements
 
@@ -25,6 +25,8 @@ godot --path game
 In the game, paste an OpenRouter API key and choose **Save securely**. The local worker stores it under the `dev.startup-valley.game` service in the OS keychain/Credential Manager. The key is never printed, written to SQLite or a job workspace, or saved in Pi session files.
 
 The credential service is namespaced to Startup Valley, so the key must be saved once for this game.
+
+New assignments start during 08:00–12:30 and 13:30–17:30. Lunch and off-hours assignments remain visibly queued until the next work window. The clock controls pause, 1×, 4×, and 16× speed. Completed job files remain scratch artifacts until the player approves promotion into the canonical `studio/` tree.
 
 ## Live provider check
 

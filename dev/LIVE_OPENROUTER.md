@@ -4,6 +4,8 @@ Status: **MANUAL RUN PENDING**
 
 The live path is implemented, but this repository session did not receive an OpenRouter key and did not inspect unrelated credentials. A human who has saved a key through the game must run the checked step below.
 
+Attempt on 2026-09-02: **NOT RUN AGAINST OPENROUTER**. The Startup Valley keychain service had no saved key. The command now exits before creating a work order with a clear missing-credential error; no other credential service was inspected.
+
 ## Checked manual step
 
 - [ ] Save an OpenRouter key from the game, without logging or copying it elsewhere.
