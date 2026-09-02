@@ -12,7 +12,7 @@ Startup Valley should feel like a cozy office game during movement and like a ca
 | Employee dialogue | The player talks to an employee | Short conversation, roleplay, memory, and entry into a work assignment | The upper two-thirds of the office remains visible. |
 | Work journal | A substantial job is assigned or selected | Live state, usage, tool categories, approvals, steering, cancellation, and artifacts | The office remains visible around a centered modal. |
 
-These layers should share the same redwood, cream, moss, slate, warm-gold, and restrained-cyan component language.
+These layers should share the semantic palette in `PALETTE.md`. Cozy character comes from pixel texture, material grain, chunky silhouettes, plants, and personal objects—not from introducing unrelated UI colors.
 
 ## Exploration HUD
 
@@ -46,7 +46,7 @@ These layers should share the same redwood, cream, moss, slate, warm-gold, and r
 ## Work journal
 
 - Show status and observable activity such as thinking, research, writing, and artifact creation; never expose hidden chain-of-thought.
-- Put approval requests at the top of the right page with a clear consequence and paired approve/decline actions.
+- Put approval requests at the top of the right page with a clear consequence and paired approve/decline actions. Use a Vermilion attention accent plus an icon and label rather than relying on color alone.
 - Keep steering available while work is running without replacing the original assignment.
 - Treat cancellation as secondary and visually distinct from decline.
 - Show token usage as a comprehensible budget strip, with exact counts available in a tooltip or detail view.
