@@ -5,6 +5,8 @@ const OUTPUT_PATH := "res://tests/output/test_worker_walks_to_desk.png"
 const BASELINE_PATH := "res://tests/baselines/test_worker_walks_to_desk.png"
 
 var _failures: int = 0
+var _steer_job_id: String = ""
+var _steer_message: String = ""
 
 func _initialize() -> void:
 	OS.set_environment("STARTUP_VALLEY_NO_WORKER", "1")
@@ -55,6 +57,29 @@ func _run() -> void:
 		_fail("test_persistent_boot: employee memory was not restored")
 	main.day_clock.set_time(4, DayClock.WORK_START)
 	await process_frame
+
+	main.job_panel.begin_job("steer-job")
+	main._job_employees["steer-job"] = "mira"
+	var steer_started := WorkerEventRecord.new()
+	steer_started.type = &"job.started"
+	main._on_job_event("steer-job", steer_started)
+	await process_frame
+	if not main.job_panel.steer_controls_visible():
+		_fail("test_active_job_steer: controls did not appear for an in-flight job")
+	main.job_panel.steer_submitted.connect(_capture_steer)
+	main.job_panel._steer_input.text = "Keep the note under 300 words."
+	main.job_panel._submit_steer()
+	if _steer_job_id != "steer-job" or _steer_message != "Keep the note under 300 words.":
+		_fail("test_active_job_steer: update did not retain the active job identity and text")
+	if main.job_panel.active_job_id() != "steer-job":
+		_fail("test_active_job_steer: steering replaced the active work order")
+	main.job_panel.set_steer_sent("steer-job")
+	main._on_worker_crashed("Fake worker exit")
+	await process_frame
+	if not main.job_panel.active_job_id().is_empty():
+		_fail("test_worker_crash: active job remained stuck after the worker exited")
+	if main.get_employee("mira").work_state != EmployeeAvatar.WorkState.IDLE:
+		_fail("test_worker_crash: employee remained busy after the worker exited")
 
 	var employee := main.get_employee("mira")
 	if employee == null:
@@ -119,6 +144,10 @@ func _run() -> void:
 	root.remove_child(main)
 	main.free()
 	quit(_failures)
+
+func _capture_steer(job_id: String, message: String) -> void:
+	_steer_job_id = job_id
+	_steer_message = message
 
 func _software_state_screenshot(main: GameMain) -> Image:
 	# `godot --headless` deliberately uses the dummy renderer, so viewport textures

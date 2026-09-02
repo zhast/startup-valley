@@ -4,6 +4,7 @@ extends PanelContainer
 signal key_submitted(key: String)
 signal assignment_submitted(employee_id: String, title: String, assignment: String, acceptance_criteria: PackedStringArray, attached_studio_path: String)
 signal cancel_requested(job_id: String)
+signal steer_submitted(job_id: String, message: String)
 signal approval_decided(job_id: String, approval_id: String, approved: bool)
 signal artifact_open_requested(job_id: String, relative_path: String)
 signal artifact_refresh_requested(job_id: String)
@@ -35,6 +36,9 @@ var _key_status: Label
 var _assignment_preview: TextEdit
 var _assign_button: Button
 var _cancel_button: Button
+var _steer_box: VBoxContainer
+var _steer_input: LineEdit
+var _steer_button: Button
 var _status_label: Label
 var _usage_label: Label
 var _spend_label: Label
@@ -161,6 +165,24 @@ func _build_interface() -> void:
 	_cancel_button.disabled = true
 	_cancel_button.pressed.connect(_cancel_active_job)
 	action_row.add_child(_cancel_button)
+
+	_steer_box = VBoxContainer.new()
+	_steer_box.visible = false
+	_steer_box.add_child(_section_label("UPDATE ACTIVE JOB"))
+	var steer_row := HBoxContainer.new()
+	steer_row.add_theme_constant_override("separation", 6)
+	_steer_box.add_child(steer_row)
+	_steer_input = LineEdit.new()
+	_steer_input.placeholder_text = "Add a correction or new constraint"
+	_steer_input.max_length = 2000
+	_steer_input.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_steer_input.text_submitted.connect(_submit_steer_text)
+	steer_row.add_child(_steer_input)
+	_steer_button = Button.new()
+	_steer_button.text = "Send"
+	_steer_button.pressed.connect(_submit_steer)
+	steer_row.add_child(_steer_button)
+	content.add_child(_steer_box)
 
 	_status_label = Label.new()
 	_status_label.text = "Worker starting…"
@@ -304,6 +326,22 @@ func _cancel_active_job() -> void:
 	_status_label.text = "Cancelling the active work order…"
 	cancel_requested.emit(_active_job_id)
 
+func _submit_steer_text(_submitted_text: String) -> void:
+	_submit_steer()
+
+func _submit_steer() -> void:
+	if _active_job_id.is_empty() or not _steer_box.visible:
+		return
+	var message := _steer_input.text.strip_edges()
+	if message.is_empty():
+		_status_label.text = "Write an update for the active employee first."
+		_steer_input.grab_focus()
+		return
+	_steer_input.clear()
+	_steer_button.disabled = true
+	_status_label.text = "Sending update to the active work session…"
+	steer_submitted.emit(_active_job_id, message)
+
 func _on_job_selected(index: int) -> void:
 	if index < 0 or index > CANNED_JOBS.size():
 		return
@@ -339,6 +377,9 @@ func begin_job(job_id: String) -> void:
 	_assign_button.disabled = true
 	_assign_button.text = "One job at a time"
 	_cancel_button.disabled = false
+	_steer_box.visible = false
+	_steer_button.disabled = false
+	_steer_input.clear()
 	_status_label.text = "Submitting work order…"
 
 func mark_job_queued(job_id: String) -> void:
@@ -346,6 +387,7 @@ func mark_job_queued(job_id: String) -> void:
 		return
 	_status_label.text = "Queued. Work begins automatically during the next work window."
 	_assign_button.text = "Queued until work hours"
+	_steer_box.visible = false
 
 func restore_job(job_id: String, status: String, title: String) -> void:
 	if status != "queued" and status != "running":
@@ -355,6 +397,7 @@ func restore_job(job_id: String, status: String, title: String) -> void:
 	_cancel_button.disabled = false
 	_assign_button.text = "Queued until work hours" if status == "queued" else "One job at a time"
 	_status_label.text = "%s  ·  restored %s" % [title, status]
+	_steer_box.visible = status == "running"
 
 func finish_job(job_id: String) -> void:
 	if job_id != _active_job_id:
@@ -363,9 +406,27 @@ func finish_job(job_id: String) -> void:
 	_assign_button.disabled = _employee_picker.item_count == 0
 	_update_assign_copy()
 	_cancel_button.disabled = true
+	_steer_box.visible = false
+	_steer_button.disabled = false
+	_steer_input.clear()
 
 func active_job_id() -> String:
 	return _active_job_id
+
+func steer_controls_visible() -> bool:
+	return _steer_box.visible
+
+func set_steer_sent(job_id: String) -> void:
+	if job_id != _active_job_id:
+		return
+	_steer_button.disabled = false
+	_status_label.text = "Update delivered to the same active work session."
+
+func set_steer_failed(job_id: String, message: String) -> void:
+	if job_id != _active_job_id:
+		return
+	_steer_button.disabled = false
+	set_error(message)
 
 func studio_file_count() -> int:
 	return _artifact_list.get_child_count()
@@ -427,6 +488,9 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 			line = "[color=#e9c46a]queued[/color] · %s" % event.reason
 		&"job.started":
 			_status_label.text = "Employee is walking to their desk."
+			if job_id == _active_job_id:
+				_steer_box.visible = true
+				_steer_button.disabled = false
 			line = "[color=#72c9a1]job started[/color]"
 		&"agent.thinking":
 			_status_label.text = event.summary

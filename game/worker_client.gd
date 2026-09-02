@@ -24,6 +24,8 @@ signal studio_files_received(files: Array[StudioFileRecord])
 signal promotion_state_received(files: Array[StudioFileRecord], pending_promotions: Array)
 signal job_submission_received(job_id: String, queued: bool)
 signal job_submission_failed(job_id: String, message: String)
+signal job_steered(job_id: String)
+signal job_steer_failed(job_id: String, message: String)
 signal worker_crashed(message: String)
 signal request_failed(message: String)
 
@@ -132,6 +134,8 @@ func _handle_line(line: String) -> void:
 		var error := str(message.get("error", "Worker request failed"))
 		if method == "job.start":
 			job_submission_failed.emit(job_id, error)
+		elif method == "job.steer":
+			job_steer_failed.emit(job_id, error)
 		request_failed.emit(error)
 		return
 	_handle_response(method, job_id, message.get("result"))
@@ -187,6 +191,8 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 			artifacts_received.emit(job_id, artifacts)
 		"job.start":
 			job_submission_received.emit(job_id, bool(result.get("queued", false)))
+		"job.steer":
+			job_steered.emit(job_id)
 		"job.promote":
 			var pending_value: Variant = result.get("pendingPromotions", [])
 			var pending_promotions: Array = pending_value as Array if pending_value is Array else []
@@ -256,6 +262,9 @@ func remember_job(job_id: String) -> void:
 
 func cancel_job(job_id: String) -> void:
 	_send_request("job.cancel", {"jobId": job_id}, job_id)
+
+func steer_job(job_id: String, message: String) -> void:
+	_send_request("job.steer", {"jobId": job_id, "message": message}, job_id)
 
 func promote_job(job_id: String, approved: bool) -> void:
 	_send_request("job.promote", {"jobId": job_id, "approved": approved}, job_id)
