@@ -18,3 +18,27 @@ Character sheet:
 > Create three distinct original office-town pixel-art characters: a blue-jacket player founder, Mina in a moss-green cardigan with dark hair, and Theo in a rust-orange overshirt with curly hair. Show front, back, left and right idle views, two-frame directional walks, seated-at-desk and typing poses. Use consistent proportions and anchors, crisp hard-edged 16-bit pixel art, a coordinated muted palette, and a genuinely transparent background with isolated poses and clean gutters. No text, labels, logos, watermark, extra characters, overlap, gradients, anti-aliasing, or recognizable character designs or animations from another game.
 
 The final extraction pass requested that only the atmospheric backdrop and glow be removed while preserving all sprites, positions, scale, palette, hard pixel edges, and canvas dimensions.
+
+## Tech-town direction
+
+The 2026-09-02 tech-town pass uses the supplied city image only as a mood reference for optimistic density, drones, and rooftop infrastructure. Its text, company marks, crypto imagery, buildings, and composition were explicitly excluded.
+
+- `startup-valley-tech-town-key-art.png`: the preferred visual target—a walkable garden campus with glass-and-redwood offices, a maker garage, visible servers, drones, solar roofs, parcel lockers, scooters, EV charging, and community plots.
+- `startup-valley-tech-props-concept-sheet.png`: a prop-design reference for desks, networking, fabrication, drone logistics, mobility, coffee, and collaboration spaces.
+- `startup-valley-tech-characters-concept-sheet.png`: updated founder, Mina, and Theo studies with contemporary startup clothing, bags, headphones, laptops, and whiteboard poses.
+
+The key art is an opaque environment painting by design. The two tech sheets are also RGB concept references: ImageGen baked its transparency preview grid into the pixels despite two background-extraction passes. Do not slice them directly into runtime scenes. Redraw or manually extract approved items onto an exact grid before import. The earlier `office-town-*-sheet.png` files remain the clean-alpha source sheets.
+
+### Tech-town prompt set
+
+Town key art:
+
+> Create an original cozy Silicon Valley startup town as a readable 16-bit pixel-art game environment. Use a three-quarter overhead view with a walkable plaza, startup garage, low-rise glass-and-redwood office campus, maker lab, visible server room, solar roofs, antennas, delivery drones, EV charging, scooters, parcel lockers, coffee cart, community gardens, benches, trees, and fiber utility boxes. Balance dense technology detail with abundant greenery and warm gathering spaces in a sunny Bay Area palette of eucalyptus, moss, redwood, warm concrete, cream, teal glass, cyan, and amber. Use the supplied city image only for optimistic tech-city mood and the existing environment sheet for palette and rendering language. Make every design original; include no text, logos, brands, trademarks, crypto symbols, UI, watermark, copied buildings or characters, photorealism, smooth 3D rendering, or diamond-isometric layout.
+
+Tech props:
+
+> Create an original pixel-art concept sheet containing a laptop standing desk, dual-monitor desk, ergonomic chair, server rack, network cabinet, abstract wall display, maker bench, compact fabrication machine, drone charging pad and delivery drones, smart parcel locker, solar modules, rooftop antenna, EV charger, scooter rack, fiber junction box, espresso bar, beanbag nook, glass meeting pod, and succulent. Use crisp hard-edged 16-bit rendering, a three-quarter overhead view, generous gutters, and the established moss, redwood, slate, cream, teal, cyan, and amber palette. Use the supplied city image only for technology mood and the existing environment sheet for visual language. Include no text, readable writing, logos, brands, trademarks, watermark, overlap, or copied designs.
+
+Tech characters:
+
+> Update the three original recurring characters with subtle contemporary Bay Area startup cues while preserving their identities and compact pixel-art proportions: the founder in a navy technical jacket with messenger bag, Mina in a moss cardigan and cream trousers with laptop sleeve and headphones, and Theo in a rust overshirt and olive trousers with cross-body tech bag and smartwatch. Show directional idles, two-frame walks, laptop work, typing, and whiteboard thinking poses in aligned rows with generous gutters. Use the existing character sheet for identity and rendering language and the supplied city image only for technology-culture mood. Include no text, logos, brands, trademarks, watermark, badges with writing, or recognizable copied characters or animations.
