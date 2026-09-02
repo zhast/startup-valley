@@ -1,42 +1,84 @@
 class_name EmployeeAvatar
 extends Node2D
 
-enum WorkState { IDLE, WALKING_TO_DESK, WORKING, TYPING, WALKING_TO_RESEARCH, WAITING_APPROVAL, DELIVERING }
+enum WorkState {
+	IDLE,
+	IDLE_WALKING,
+	SITTING,
+	WANDERING,
+	LUNCH,
+	OFF_SHIFT,
+	WALKING_TO_DESK,
+	WORKING,
+	TYPING,
+	WALKING_TO_RESEARCH,
+	WAITING_APPROVAL,
+	DELIVERING,
+}
 
 @export var walk_speed: float = 110.0
 var employee_id: String = ""
 var display_name: String = "Worker"
 var morale: int = 50
+var home_position: Vector2 = Vector2.ZERO
 var desk_position: Vector2 = Vector2.ZERO
 var research_position: Vector2 = Vector2.ZERO
 var delivery_position: Vector2 = Vector2.ZERO
 var work_state: WorkState = WorkState.IDLE
+var schedule_phase: String = "work"
+var has_live_job: bool = false
+var memory_line: String = ""
 var _target_position: Vector2 = Vector2.ZERO
+var _arrival_state: WorkState = WorkState.IDLE
 var _has_target: bool = false
 var _typing_phase: float = 0.0
+var _idle_elapsed: float = 0.0
+var _idle_cooldown: float = 0.5
+var _idle_cycle: int = 0
+var _speech_visible: bool = false
 
 func configure(record: EmployeeRecord, start_position: Vector2, desk: Vector2, research: Vector2) -> void:
 	employee_id = record.id
 	display_name = record.display_name
 	morale = record.morale
+	memory_line = record.memory_line
 	position = start_position
+	home_position = start_position
 	desk_position = desk
 	research_position = research
 	queue_redraw()
 
+func set_schedule_phase(phase: String) -> void:
+	schedule_phase = phase
+	if has_live_job or work_state == WorkState.DELIVERING:
+		return
+	_idle_elapsed = 0.0
+	_speech_visible = false
+	if phase == "lunch":
+		walk_to(research_position, WorkState.LUNCH, WorkState.LUNCH)
+	elif phase == "off":
+		walk_to(home_position, WorkState.OFF_SHIFT, WorkState.OFF_SHIFT)
+	else:
+		work_state = WorkState.IDLE
+		_has_target = false
+		_idle_cooldown = 0.5
+		queue_redraw()
+
 func apply_worker_event(event: WorkerEventRecord, player_position: Vector2) -> void:
 	match event.type:
 		&"job.started":
-			walk_to(desk_position, WorkState.WALKING_TO_DESK)
+			has_live_job = true
+			_speech_visible = false
+			walk_to(desk_position, WorkState.WALKING_TO_DESK, WorkState.WORKING)
 		&"agent.thinking":
-			if work_state == WorkState.IDLE:
-				walk_to(desk_position, WorkState.WALKING_TO_DESK)
+			if work_state == WorkState.IDLE or work_state == WorkState.SITTING or work_state == WorkState.WANDERING:
+				walk_to(desk_position, WorkState.WALKING_TO_DESK, WorkState.WORKING)
 		&"tool.started":
 			if event.tool == "web_search" or event.tool == "web_fetch":
-				walk_to(research_position, WorkState.WALKING_TO_RESEARCH)
+				walk_to(research_position, WorkState.WALKING_TO_RESEARCH, WorkState.WORKING)
 			elif event.tool == "write_file" or event.tool == "edit_file":
 				if position.distance_to(desk_position) > 4.0:
-					walk_to(desk_position, WorkState.WALKING_TO_DESK)
+					walk_to(desk_position, WorkState.WALKING_TO_DESK, WorkState.WORKING)
 				else:
 					work_state = WorkState.TYPING
 					queue_redraw()
@@ -47,21 +89,25 @@ func apply_worker_event(event: WorkerEventRecord, player_position: Vector2) -> v
 			work_state = WorkState.WORKING
 			queue_redraw()
 		&"approval.required":
-			walk_to(player_position + Vector2(34.0, 0.0), WorkState.WAITING_APPROVAL)
+			walk_to(player_position + Vector2(34.0, 0.0), WorkState.WAITING_APPROVAL, WorkState.WAITING_APPROVAL)
 		&"job.completed":
+			has_live_job = false
 			delivery_position = player_position + Vector2(38.0, 8.0)
-			walk_to(delivery_position, WorkState.DELIVERING)
-		&"job.blocked":
+			walk_to(delivery_position, WorkState.DELIVERING, WorkState.IDLE)
+		&"job.blocked", &"job.failed":
+			has_live_job = false
 			work_state = WorkState.IDLE
 			_has_target = false
+			_idle_elapsed = 0.0
+			_idle_cooldown = 2.0
+			_speech_visible = false
 			queue_redraw()
-		&"job.failed":
-			work_state = WorkState.IDLE
-			_has_target = false
-			queue_redraw()
+			if schedule_phase != "work":
+				set_schedule_phase(schedule_phase)
 
-func walk_to(target: Vector2, state: WorkState) -> void:
+func walk_to(target: Vector2, state: WorkState, arrival_state: WorkState = WorkState.IDLE) -> void:
 	_target_position = target
+	_arrival_state = arrival_state
 	_has_target = true
 	work_state = state
 	queue_redraw()
@@ -72,16 +118,36 @@ func _physics_process(delta: float) -> void:
 		if position.distance_to(_target_position) <= 0.5:
 			position = _target_position
 			_has_target = false
-			if work_state == WorkState.WALKING_TO_DESK or work_state == WorkState.WALKING_TO_RESEARCH:
-				work_state = WorkState.WORKING
-			elif work_state == WorkState.DELIVERING:
-				work_state = WorkState.IDLE
+			work_state = _arrival_state
+			_idle_elapsed = 0.0
+			if work_state == WorkState.IDLE and not has_live_job and schedule_phase != "work":
+				set_schedule_phase(schedule_phase)
 			queue_redraw()
 	if work_state == WorkState.TYPING:
 		_typing_phase += delta
 		if _typing_phase >= 0.2:
 			_typing_phase = 0.0
 			queue_redraw()
+	if not has_live_job and schedule_phase == "work" and not _has_target:
+		_update_idle(delta)
+
+func _update_idle(delta: float) -> void:
+	_idle_elapsed += delta
+	if work_state == WorkState.IDLE and _idle_elapsed >= _idle_cooldown:
+		_idle_elapsed = 0.0
+		walk_to(desk_position, WorkState.IDLE_WALKING, WorkState.SITTING)
+	elif work_state == WorkState.SITTING:
+		var show_memory := not memory_line.is_empty() and _idle_elapsed >= 2.5 and _idle_elapsed < 5.0
+		if show_memory != _speech_visible:
+			_speech_visible = show_memory
+			queue_redraw()
+		if _idle_elapsed >= 7.0:
+			_idle_elapsed = 0.0
+			_idle_cycle += 1
+			_speech_visible = false
+			var direction := -1.0 if (_idle_cycle + employee_id.length()) % 2 == 0 else 1.0
+			var wander_target := desk_position + Vector2(48.0 * direction, 34.0)
+			walk_to(wander_target, WorkState.WANDERING, WorkState.IDLE)
 
 func is_at_desk() -> bool:
 	return position.distance_to(desk_position) <= 0.5
@@ -90,6 +156,16 @@ func state_label() -> String:
 	match work_state:
 		WorkState.IDLE:
 			return "available"
+		WorkState.IDLE_WALKING:
+			return "finding a seat"
+		WorkState.SITTING:
+			return "sitting"
+		WorkState.WANDERING:
+			return "wandering"
+		WorkState.LUNCH:
+			return "at lunch"
+		WorkState.OFF_SHIFT:
+			return "off shift"
 		WorkState.WALKING_TO_DESK:
 			return "heading to desk"
 		WorkState.WORKING:
@@ -108,11 +184,16 @@ func _draw() -> void:
 	var body_color := Color("7dc6a7") if employee_id == "mira" else Color("d9a66f")
 	if work_state == WorkState.TYPING and _typing_phase < 0.1:
 		body_color = body_color.lightened(0.18)
+	elif work_state == WorkState.OFF_SHIFT:
+		body_color = body_color.darkened(0.35)
 	draw_circle(Vector2(0.0, -7.0), 8.5, Color("e9b98f"))
 	draw_rect(Rect2(-9.0, 1.0, 18.0, 21.0), body_color, true)
 	draw_rect(Rect2(-9.0, -15.0, 18.0, 5.0), Color("493b4a"), true)
 	if work_state == WorkState.TYPING:
 		draw_line(Vector2(-12.0, 10.0), Vector2(-18.0, 6.0), Color("f4d6b8"), 3.0)
 		draw_line(Vector2(12.0, 10.0), Vector2(18.0, 6.0), Color("f4d6b8"), 3.0)
+	if _speech_visible:
+		var speech := memory_line.left(46)
+		draw_string(ThemeDB.fallback_font, Vector2(-70.0, -30.0), speech, HORIZONTAL_ALIGNMENT_CENTER, 140.0, 10, Color("e8e0b8"))
 	draw_string(ThemeDB.fallback_font, Vector2(-32.0, 36.0), display_name, HORIZONTAL_ALIGNMENT_CENTER, 64.0, 12, Color("f5f7ff"))
 	draw_string(ThemeDB.fallback_font, Vector2(-45.0, 50.0), state_label(), HORIZONTAL_ALIGNMENT_CENTER, 90.0, 10, Color("aebbd3"))

@@ -7,6 +7,8 @@ signal cancel_requested(job_id: String)
 signal approval_decided(job_id: String, approval_id: String, approved: bool)
 signal artifact_open_requested(job_id: String, relative_path: String)
 signal artifact_refresh_requested(job_id: String)
+signal studio_open_requested(relative_path: String)
+signal promotion_decided(job_id: String, approved: bool)
 
 const CANNED_JOBS := [
 	{
@@ -18,7 +20,7 @@ const CANNED_JOBS := [
 	{
 		"title": "Review Mina's inventory note",
 		"employee_id": "theo",
-		"assignment": "Review Mina's inventory keyboard navigation design note from the recent teammate delivery context. Read the staged handoff artifact, identify strengths and gaps, and write a concise review into review.md.",
+		"assignment": "Read Mina's durable studio file at studio/design-note.md. Review its inventory keyboard navigation choices, identify strengths and gaps, and write a concise review into review.md for promotion back into the studio.",
 		"criteria": ["review.md exists", "The review cites Mina's design choices", "The review identifies concrete strengths and gaps"],
 	},
 ]
@@ -33,6 +35,7 @@ var _cancel_button: Button
 var _status_label: Label
 var _usage_label: Label
 var _spend_label: Label
+var _last_status_label: Label
 var _event_log: RichTextLabel
 var _artifact_list: VBoxContainer
 var _approval_box: VBoxContainer
@@ -40,6 +43,10 @@ var _approval_label: Label
 var _approval_job_id: String = ""
 var _approval_id: String = ""
 var _active_job_id: String = ""
+var _promotion_box: VBoxContainer
+var _promotion_label: Label
+var _promotion_job_id: String = ""
+var _clock_phase: String = "work"
 
 func _ready() -> void:
 	_build_interface()
@@ -139,6 +146,12 @@ func _build_interface() -> void:
 	_spend_label.text = "Today  $0.00"
 	_spend_label.add_theme_font_size_override("font_size", 11)
 	content.add_child(_spend_label)
+	_last_status_label = Label.new()
+	_last_status_label.text = "Last work order  ·  none yet"
+	_last_status_label.add_theme_font_size_override("font_size", 11)
+	_last_status_label.add_theme_color_override("font_color", Color("91a2bc"))
+	_last_status_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	content.add_child(_last_status_label)
 
 	_approval_box = VBoxContainer.new()
 	_approval_box.visible = false
@@ -157,6 +170,24 @@ func _build_interface() -> void:
 	_approval_box.add_child(approval_buttons)
 	content.add_child(_approval_box)
 
+	_promotion_box = VBoxContainer.new()
+	_promotion_box.visible = false
+	_promotion_label = Label.new()
+	_promotion_label.text = "Promote completed artifacts into the durable studio?"
+	_promotion_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_promotion_box.add_child(_promotion_label)
+	var promotion_buttons := HBoxContainer.new()
+	var promote_button := Button.new()
+	promote_button.text = "Approve promotion"
+	promote_button.pressed.connect(_decide_promotion.bind(true))
+	promotion_buttons.add_child(promote_button)
+	var keep_scratch_button := Button.new()
+	keep_scratch_button.text = "Keep in scratch"
+	keep_scratch_button.pressed.connect(_decide_promotion.bind(false))
+	promotion_buttons.add_child(keep_scratch_button)
+	_promotion_box.add_child(promotion_buttons)
+	content.add_child(_promotion_box)
+
 	content.add_child(_section_label("LIVE EVENTS"))
 	_event_log = RichTextLabel.new()
 	_event_log.bbcode_enabled = true
@@ -165,7 +196,7 @@ func _build_interface() -> void:
 	_event_log.custom_minimum_size = Vector2(0.0, 82.0)
 	content.add_child(_event_log)
 
-	content.add_child(_section_label("ARTIFACTS"))
+	content.add_child(_section_label("STUDIO FILES"))
 	var artifact_scroll := ScrollContainer.new()
 	artifact_scroll.custom_minimum_size = Vector2(0.0, 78.0)
 	content.add_child(artifact_scroll)
@@ -173,7 +204,7 @@ func _build_interface() -> void:
 	_artifact_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	artifact_scroll.add_child(_artifact_list)
 	var empty_artifact := Label.new()
-	empty_artifact.text = "Delivered files appear here."
+	empty_artifact.text = "Approved durable files appear here."
 	empty_artifact.add_theme_color_override("font_color", Color("71839f"))
 	_artifact_list.add_child(empty_artifact)
 	_on_job_selected(0)
@@ -241,22 +272,59 @@ func begin_job(job_id: String) -> void:
 	_assign_button.disabled = true
 	_assign_button.text = "One job at a time"
 	_cancel_button.disabled = false
-	_status_label.text = "Work order accepted. Waiting for job.started…"
+	_status_label.text = "Submitting work order…"
+
+func mark_job_queued(job_id: String) -> void:
+	if job_id != _active_job_id:
+		return
+	_status_label.text = "Queued. Work begins automatically during the next work window."
+	_assign_button.text = "Queued until work hours"
+
+func restore_job(job_id: String, status: String, title: String) -> void:
+	if status != "queued" and status != "running":
+		return
+	_active_job_id = job_id
+	_assign_button.disabled = true
+	_cancel_button.disabled = false
+	_assign_button.text = "Queued until work hours" if status == "queued" else "One job at a time"
+	_status_label.text = "%s  ·  restored %s" % [title, status]
 
 func finish_job(job_id: String) -> void:
 	if job_id != _active_job_id:
 		return
 	_active_job_id = ""
 	_assign_button.disabled = _employee_picker.item_count == 0
-	_assign_button.text = "Assign real work"
+	_update_assign_copy()
 	_cancel_button.disabled = true
 
 func active_job_id() -> String:
 	return _active_job_id
 
+func studio_file_count() -> int:
+	return _artifact_list.get_child_count()
+
+func last_status_text() -> String:
+	return _last_status_label.text
+
 func set_worker_ready() -> void:
 	if _active_job_id.is_empty():
 		_status_label.text = "Worker connected. Pick an employee and canned work order."
+
+func set_clock_phase(phase: String) -> void:
+	_clock_phase = phase
+	_update_assign_copy()
+	if _active_job_id.is_empty() and phase != "work":
+		_status_label.text = "Lunch — new work queues until 13:30." if phase == "lunch" else "Off hours — new work queues until 08:00."
+
+func _update_assign_copy() -> void:
+	if not _active_job_id.is_empty():
+		return
+	if _clock_phase == "work":
+		_assign_button.text = "Assign real work"
+	elif _clock_phase == "lunch":
+		_assign_button.text = "Queue until 13:30"
+	else:
+		_assign_button.text = "Queue until 08:00"
 
 func set_credential_status(configured: bool) -> void:
 	_key_status.text = "Stored in OS keychain" if configured else "Not configured — never stored in the game database"
@@ -275,9 +343,16 @@ func set_error(message: String) -> void:
 	_status_label.text = message
 	_status_label.add_theme_color_override("font_color", Color("ef8f91"))
 
+func set_info(message: String) -> void:
+	_status_label.text = message
+	_status_label.add_theme_color_override("font_color", Color("bed0ee"))
+
 func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 	var line := ""
 	match event.type:
+		&"job.queued":
+			mark_job_queued(job_id)
+			line = "[color=#e9c46a]queued[/color] · %s" % event.reason
 		&"job.started":
 			_status_label.text = "Employee is walking to their desk."
 			line = "[color=#72c9a1]job started[/color]"
@@ -297,7 +372,6 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 			line = "[color=#e9a16f]approval required[/color]"
 		&"artifact.created":
 			line = "[color=#b797eb]artifact[/color] · %s" % event.name
-			artifact_refresh_requested.emit(job_id)
 		&"usage.updated":
 			_usage_label.text = "Tokens  %d in / %d out  ·  cost $%.4f" % [event.input_tokens, event.output_tokens, event.cost]
 			line = "usage · %d tokens · $%.4f" % [event.input_tokens + event.output_tokens, event.cost]
@@ -308,7 +382,6 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 		&"job.completed":
 			_status_label.text = event.summary
 			line = "[color=#72c9a1]completed[/color]"
-			artifact_refresh_requested.emit(job_id)
 			finish_job(job_id)
 		&"job.failed":
 			_status_label.text = event.error
@@ -321,6 +394,27 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 func _decide_approval(approved: bool) -> void:
 	approval_decided.emit(_approval_job_id, _approval_id, approved)
 	_approval_box.visible = false
+
+func offer_promotion(job_id: String) -> void:
+	_promotion_job_id = job_id
+	_promotion_label.text = "Approve this job's artifacts for the durable studio?"
+	_promotion_box.visible = true
+	_event_log.visible = false
+
+func _decide_promotion(approved: bool) -> void:
+	promotion_decided.emit(_promotion_job_id, approved)
+	_promotion_box.visible = false
+	_event_log.visible = true
+	_status_label.text = "Promoting approved artifacts into studio/…" if approved else "Artifacts remain in job scratch."
+
+func show_recent_jobs(jobs: Array) -> void:
+	if jobs.is_empty():
+		_last_status_label.text = "Last work order  ·  none yet"
+		return
+	var latest_value: Variant = jobs[0]
+	if latest_value is Dictionary:
+		var latest := latest_value as Dictionary
+		_last_status_label.text = "Last  ·  %s  ·  %s" % [str(latest.get("title", "Work order")), str(latest.get("status", "unknown"))]
 
 func show_artifacts(job_id: String, artifacts: Array[ArtifactRecord]) -> void:
 	for child: Node in _artifact_list.get_children():
@@ -340,3 +434,20 @@ func show_artifacts(job_id: String, artifacts: Array[ArtifactRecord]) -> void:
 
 func _open_artifact(job_id: String, relative_path: String) -> void:
 	artifact_open_requested.emit(job_id, relative_path)
+
+func show_studio_files(files: Array[StudioFileRecord]) -> void:
+	for child: Node in _artifact_list.get_children():
+		child.queue_free()
+	if files.is_empty():
+		var empty := Label.new()
+		empty.text = "Studio is empty. Approve a completed artifact to promote it."
+		empty.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_artifact_list.add_child(empty)
+		return
+	for file: StudioFileRecord in files:
+		var button := Button.new()
+		button.text = "Read studio/  ·  %s" % file.relative_path
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.tooltip_text = "Promoted from %s" % file.source_job_id
+		button.pressed.connect(studio_open_requested.emit.bind(file.relative_path))
+		_artifact_list.add_child(button)

@@ -8,13 +8,20 @@ signal bootstrap_received(
 	project_root: String,
 	default_token_budget: int,
 	daily_spend: float,
-	daily_spend_warning: float
+	daily_spend_warning: float,
+	clock_state: Dictionary,
+	studio_files: Array[StudioFileRecord],
+	recent_jobs: Array,
+	memories: Dictionary
 )
 signal credential_status_received(configured: bool)
 signal credential_saved
 signal job_event_received(job_id: String, event: WorkerEventRecord)
 signal artifacts_received(job_id: String, artifacts: Array[ArtifactRecord])
 signal artifact_content_received(job_id: String, name: String, content: String)
+signal studio_files_received(files: Array[StudioFileRecord])
+signal job_submission_received(job_id: String, queued: bool)
+signal job_submission_failed(job_id: String, message: String)
 signal worker_crashed(message: String)
 signal request_failed(message: String)
 
@@ -120,7 +127,10 @@ func _handle_line(line: String) -> void:
 	_pending_methods.erase(request_id)
 	_pending_jobs.erase(request_id)
 	if not bool(message.get("ok", false)):
-		request_failed.emit(str(message.get("error", "Worker request failed")))
+		var error := str(message.get("error", "Worker request failed"))
+		if method == "job.start":
+			job_submission_failed.emit(job_id, error)
+		request_failed.emit(error)
 		return
 	_handle_response(method, job_id, message.get("result"))
 
@@ -140,13 +150,24 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 						employees.append(EmployeeRecord.from_dictionary(employee_value as Dictionary))
 			var project_value: Variant = result.get("project", {})
 			var project: Dictionary = project_value as Dictionary if project_value is Dictionary else {}
+			var studio_files := _studio_files_from_value(result.get("studioFiles", []))
+			var clock_value: Variant = result.get("clock", {})
+			var clock_state: Dictionary = clock_value as Dictionary if clock_value is Dictionary else {}
+			var recent_value: Variant = result.get("recentJobs", [])
+			var recent_jobs: Array = recent_value as Array if recent_value is Array else []
+			var memories_value: Variant = result.get("memories", {})
+			var memories: Dictionary = memories_value as Dictionary if memories_value is Dictionary else {}
 			bootstrap_received.emit(
 				employees,
 				str(project.get("id", "company")),
 				str(project.get("rootPath", "")),
 				int(result.get("defaultTokenBudget", 12000)),
 				float(result.get("dailySpend", 0.0)),
-				float(result.get("dailySpendWarning", 5.0))
+				float(result.get("dailySpendWarning", 5.0)),
+				clock_state,
+				studio_files,
+				recent_jobs,
+				memories
 			)
 		"credential.status":
 			credential_status_received.emit(bool(result.get("configured", false)))
@@ -159,8 +180,22 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 					if artifact_value is Dictionary:
 						artifacts.append(ArtifactRecord.from_dictionary(artifact_value as Dictionary))
 			artifacts_received.emit(job_id, artifacts)
+		"job.start":
+			job_submission_received.emit(job_id, bool(result.get("queued", false)))
+		"job.promote", "studio.files":
+			studio_files_received.emit(_studio_files_from_value(result_value))
 		"artifact.read":
 			artifact_content_received.emit(job_id, str(result.get("name", "Artifact")), str(result.get("content", "")))
+		"studio.read":
+			artifact_content_received.emit("", str(result.get("name", "Studio file")), str(result.get("content", "")))
+
+func _studio_files_from_value(value: Variant) -> Array[StudioFileRecord]:
+	var files: Array[StudioFileRecord] = []
+	if value is Array:
+		for file_value: Variant in value as Array:
+			if file_value is Dictionary:
+				files.append(StudioFileRecord.from_dictionary(file_value as Dictionary))
+	return files
 
 func _send_request(method: String, parameters: Dictionary, job_id: String = "") -> void:
 	if _stdio == null:
@@ -209,6 +244,18 @@ func remember_job(job_id: String) -> void:
 func cancel_job(job_id: String) -> void:
 	_send_request("job.cancel", {"jobId": job_id}, job_id)
 
+func promote_job(job_id: String, approved: bool) -> void:
+	_send_request("job.promote", {"jobId": job_id, "approved": approved}, job_id)
+
+func request_studio_files() -> void:
+	_send_request("studio.files", {})
+
+func read_studio_file(relative_path: String) -> void:
+	_send_request("studio.read", {"relativePath": relative_path})
+
+func set_clock(day: int, minute_of_day: int, speed: float) -> void:
+	_send_request("clock.set", {"day": day, "minuteOfDay": minute_of_day, "speed": speed})
+
 func approve(job_id: String, approval_id: String, approved: bool, reason: String = "") -> void:
 	_send_request("job.approve", {
 		"jobId": job_id,
@@ -220,6 +267,4 @@ func approve(job_id: String, approval_id: String, approved: bool, reason: String
 func _exit_tree() -> void:
 	if _stdio != null:
 		_stdio.close()
-	if _process_id > 0 and OS.is_process_running(_process_id):
-		OS.kill(_process_id)
 	_process_id = -1

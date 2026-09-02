@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://world/main.gd" id="1"]
 [ext_resource type="PackedScene" path="res://world/town_room.tscn" id="2"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" path="res://worker_client.gd" id="4"]
 [ext_resource type="PackedScene" path="res://ui/job_panel.tscn" id="5"]
 [ext_resource type="PackedScene" path="res://ui/artifact_viewer.tscn" id="6"]
+[ext_resource type="Script" path="res://simulation/day_clock.gd" id="7"]
+[ext_resource type="PackedScene" path="res://ui/clock_panel.tscn" id="8"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1")
@@ -26,6 +28,10 @@ position = Vector2(32, 70)
 [node name="WorkerClient" type="Node" parent="."]
 process_mode = 3
 script = ExtResource("4")
+
+[node name="DayClock" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("7")
 
 [node name="Interface" type="CanvasLayer" parent="."]
 
@@ -50,3 +56,5 @@ horizontal_alignment = 2
 [node name="JobPanel" parent="Interface" instance=ExtResource("5")]
 
 [node name="ArtifactViewer" parent="Interface" instance=ExtResource("6")]
+
+[node name="ClockPanel" parent="Interface" instance=ExtResource("8")]

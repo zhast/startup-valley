@@ -8,6 +8,7 @@ const IMPORTANT_SCENES: PackedStringArray = [
 	"res://world/town_room.tscn",
 	"res://ui/job_panel.tscn",
 	"res://ui/artifact_viewer.tscn",
+	"res://ui/clock_panel.tscn",
 	"res://world/main.tscn",
 ]
 

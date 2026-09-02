@@ -19,6 +19,34 @@ func _run() -> void:
 	root.add_child(main)
 	await process_frame
 	await process_frame
+	var restored_records := main.room.placeholder_records()
+	var restored_studio: Array[StudioFileRecord] = []
+	var restored_file := StudioFileRecord.new()
+	restored_file.name = "design-note.md"
+	restored_file.relative_path = "design-note.md"
+	restored_file.source_job_id = "completed-note"
+	restored_studio.append(restored_file)
+	main._on_bootstrap(
+		restored_records,
+		"company",
+		"/tmp/startup-valley-test",
+		12000,
+		0.0,
+		5.0,
+		{"day": 4, "minuteOfDay": DayClock.LUNCH_START, "speed": 0.0},
+		restored_studio,
+		[{"jobId": "completed-note", "employeeId": "mira", "title": "Restored note", "status": "completed"}],
+		{"mira": [{"kind": "outcome", "fact": "Outcome: restored durable note"}], "theo": []}
+	)
+	await process_frame
+	if main.day_clock.day != 4 or main.day_clock.phase != "lunch":
+		_fail("test_persistent_boot: clock state was not restored")
+	if main.job_panel.studio_file_count() != 1 or not main.job_panel.last_status_text().contains("completed"):
+		_fail("test_persistent_boot: studio listing or last status was not restored")
+	if main.get_employee("mira").memory_line != "Outcome: restored durable note":
+		_fail("test_persistent_boot: employee memory was not restored")
+	main.day_clock.set_time(4, DayClock.WORK_START)
+	await process_frame
 
 	var employee := main.get_employee("mira")
 	if employee == null:
@@ -39,6 +67,19 @@ func _run() -> void:
 		await process_frame
 		if employee.work_state != EmployeeAvatar.WorkState.IDLE:
 			_fail("test_worker_walks_to_desk: failed job did not return Mina to idle")
+		main.day_clock.set_time(1, DayClock.LUNCH_START)
+		await process_frame
+		if main.day_clock.phase != "lunch" or employee.work_state != EmployeeAvatar.WorkState.LUNCH:
+			_fail("test_day_clock: 12:30 did not enter lunch without fake work")
+		main.day_clock.set_time(1, DayClock.WORK_END)
+		await process_frame
+		if main.day_clock.phase != "off" or employee.work_state != EmployeeAvatar.WorkState.OFF_SHIFT:
+			_fail("test_day_clock: 17:30 did not enter off shift")
+		main.day_clock.set_time(2, DayClock.WORK_START - 1)
+		main.day_clock.advance_minutes(1)
+		await process_frame
+		if main.day_clock.phase != "work":
+			_fail("test_day_clock: queued work window did not open at 08:00")
 		main.simulate_worker_event("mira", &"tool.started", "write_file")
 		await process_frame
 

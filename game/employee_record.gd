@@ -6,6 +6,7 @@ var display_name: String = ""
 var desk_grid: Vector2i = Vector2i.ZERO
 var morale: int = 50
 var assignment: String = ""
+var memory_line: String = ""
 
 static func from_dictionary(data: Dictionary) -> EmployeeRecord:
 	var employee := EmployeeRecord.new()
