@@ -7,6 +7,8 @@ Startup Valley should feel like a cozy office game during movement and like a ca
 | Layer | Opens when | Purpose | World visibility |
 | --- | --- | --- | --- |
 | Exploration HUD | Default | Time, company activity, nearby interaction, and four destinations | Nearly all of the office remains visible. |
+| Team roster | The player opens Team | Browse current employees and see future hiring capacity | Full-screen menu; returning to the office is one action. |
+| Employee profile | The player selects a roster card or inspects an employee | Understand role, work style, current state, memory, and collaborators | Full-screen menu with direct paths to dialogue and work. |
 | Employee dialogue | The player talks to an employee | Short conversation, roleplay, memory, and entry into a work assignment | The upper two-thirds of the office remains visible. |
 | Work journal | A substantial job is assigned or selected | Live state, usage, tool categories, approvals, steering, cancellation, and artifacts | The office remains visible around a centered modal. |
 
@@ -25,6 +27,21 @@ These layers should share the same redwood, cream, moss, slate, warm-gold, and r
 - Retain only a few recent conversational turns in the visible panel; durable memory remains worker-owned and bounded.
 - `Chat` supports character conversation. `Assign Work` reveals title, request, acceptance criteria, optional studio attachment, and budget. `Memory` shows short structured facts—not an infinite transcript.
 - After assignment, close back to the office so the employee's physical movement communicates that work began.
+
+## Team roster
+
+- Make current employees feel like a small cast, with large portraits, readable names, concise roles, and live status.
+- Reserve locked `OPEN ROLE` cards for future hires so company growth is visible without inventing unavailable characters.
+- Use profession icons as recognition aids, not as a substitute for accessible text.
+- Selecting a card opens its employee profile. Hiring itself should remain a separate future flow.
+
+## Employee profile
+
+- Replace farming-sim social fields with information that helps the player manage and understand an agent: role, status, morale, work style, skills, current work, recent bounded memory, and collaborators.
+- Keep `Profile`, `Memory`, `Work`, and `Artifacts` as stable tabs. `Chat` opens employee dialogue; `Assign Work` opens its structured assignment state.
+- Memory summaries must come from the worker's bounded structured memories, never an unbounded transcript.
+- Current work and status are live worker projections. Morale already exists in the game model; role, work-style traits, and skills are target fields that need explicit contracts before runtime implementation.
+- Do not add likes/dislikes, gift preferences, birthdays, seasons, dating state, or romance hearts unless a future game system gives them real mechanical meaning.
 
 ## Work journal
 
@@ -46,7 +63,8 @@ These layers should share the same redwood, cream, moss, slate, warm-gold, and r
 ## Migration from the current sidebar
 
 1. Move time controls into the compact exploration plaque.
-2. Replace the always-open assignment form with employee dialogue and an `Assign Work` tab.
-3. Move live events, token usage, approvals, steering, and cancellation into the work journal.
-4. Move durable studio files and promotion review into the journal's artifact section.
-5. Keep keychain setup as a first-run modal rather than a permanent gameplay control.
+2. Route the Team quick-bar destination to the roster, then from each employee card to its profile.
+3. Replace the always-open assignment form with employee dialogue and an `Assign Work` tab.
+4. Move live events, token usage, approvals, steering, and cancellation into the work journal.
+5. Move durable studio files and promotion review into the journal's artifact section.
+6. Keep keychain setup as a first-run modal rather than a permanent gameplay control.
