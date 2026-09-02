@@ -22,6 +22,8 @@ Keep the full 26 × 18 shell stable underneath progression so navigation, saves,
 
 Hire order may vary. Unlock the module associated with the employee's specialty rather than requiring one fixed recruitment sequence.
 
+The first runtime pass uses employee count as a deterministic fallback because employee specialties are not yet represented in the worker contract. It opens the meeting wing, research lab, operations wing, and artifact studio at one, two, three, and four hires respectively. Replace this fallback with specialty-driven unlocks when hiring metadata crosses the process boundary.
+
 ## Floor plan
 
 Keep the existing 26 × 18 logical grid and a single-floor cutaway view. Exact prop footprints can change during tile-map production, but the relationships should remain stable.

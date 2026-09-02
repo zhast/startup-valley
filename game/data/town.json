@@ -2,10 +2,10 @@
   "tile_size": 32,
   "width": 26,
   "height": 18,
-  "player_spawn": [4, 9],
+  "player_spawn": [13, 15],
   "employees": [
-    { "id": "mira", "name": "Mina", "spawn": [6, 14] },
-    { "id": "theo", "name": "Theo", "spawn": [20, 13] }
+    { "id": "mira", "name": "Mina", "spawn": [10, 12] },
+    { "id": "theo", "name": "Theo", "spawn": [15, 12] }
   ],
   "desks": [
     { "employee_id": "mira", "grid": [8, 5] },

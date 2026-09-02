@@ -42,16 +42,16 @@ offset_right = 650.0
 offset_bottom = 52.0
 theme_override_colors/font_color = Color(0.841, 0.902, 1, 1)
 theme_override_font_sizes/font_size = 20
-text = "STARTUP_VALLEY  ·  OFFICE TOWN"
+text = "STARTUP VALLEY  ·  GROWING STUDIO"
 
 [node name="TownHint" type="Label" parent="Interface"]
-offset_left = 620.0
-offset_top = 24.0
+offset_left = 34.0
+offset_top = 660.0
 offset_right = 866.0
-offset_bottom = 48.0
+offset_bottom = 688.0
 theme_override_colors/font_color = Color(0.51, 0.604, 0.753, 1)
 text = "WASD / arrows to move"
-horizontal_alignment = 2
+horizontal_alignment = 1
 
 [node name="JobPanel" parent="Interface" instance=ExtResource("5")]
 

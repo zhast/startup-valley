@@ -11,6 +11,9 @@ const IMPORTANT_SCENES: PackedStringArray = [
 	"res://ui/clock_panel.tscn",
 	"res://world/main.tscn",
 ]
+const IMPORTANT_TEXTURES: PackedStringArray = [
+	"res://assets/runtime/office/main-office-background.png",
+]
 
 var _failures: int = 0
 
@@ -32,10 +35,17 @@ func _validate() -> void:
 		if instance == null:
 			_fail("Could not instantiate important scene: %s" % path)
 			continue
+		if instance.get_script() == null:
+			_fail("Important scene root script did not load: %s" % path)
 		root.add_child(instance)
 		await process_frame
 		root.remove_child(instance)
 		instance.free()
+
+	for path: String in IMPORTANT_TEXTURES:
+		var texture: Resource = load(path)
+		if texture == null or not texture is Texture2D:
+			_fail("Could not load important texture: %s" % path)
 
 	var layout_file := FileAccess.open("res://data/town.json", FileAccess.READ)
 	if layout_file == null:

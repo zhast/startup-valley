@@ -21,7 +21,16 @@ func _run() -> void:
 	root.add_child(main)
 	await process_frame
 	await process_frame
+	if main.room.unlocked_hires != 2 or main.room.locked_section_count() != 2:
+		_fail("test_office_growth: the two-person roster did not reveal exactly two office wings")
+	main.room.set_hire_count(0)
+	if main.room.locked_section_count() != 4:
+		_fail("test_office_growth: the founder stage did not lock all expansion wings")
+	main.room.set_hire_count(4)
+	if main.room.locked_section_count() != 0:
+		_fail("test_office_growth: four hires did not reveal the mature office")
 	var restored_records := main.room.placeholder_records()
+	main.room.set_hire_count(restored_records.size())
 	var restored_studio: Array[StudioFileRecord] = []
 	var restored_file := StudioFileRecord.new()
 	restored_file.name = "design-note.md"
