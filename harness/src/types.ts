@@ -53,6 +53,22 @@ export interface EmployeeMemory {
   createdAt: string;
 }
 
+export interface ChatMessage {
+  messageId: string;
+  employeeId: string;
+  sender: "player" | "employee";
+  content: string;
+  createdAt: string;
+  inputTokens: number;
+  outputTokens: number;
+  cost?: number;
+}
+
+export interface ChatReply {
+  message: ChatMessage;
+  dailySpend: number;
+}
+
 export interface TeammateHandoff {
   jobId: string;
   employeeName: string;
@@ -130,6 +146,8 @@ export interface WorkerAdapter {
   promoteArtifacts(jobId: string, approved: boolean): Promise<PromotionResult>;
   studioFiles(): Promise<StudioFile[]>;
   readStudioFile(relativePath: string): Promise<StudioFileContent>;
+  chatHistory(employeeId: string): Promise<ChatMessage[]>;
+  sendChat(employeeId: string, message: string): Promise<ChatReply>;
 }
 
 export type ProtocolMethod =
@@ -137,6 +155,8 @@ export type ProtocolMethod =
   | "bootstrap"
   | "credential.status"
   | "credential.set"
+  | "chat.history"
+  | "chat.send"
   | "job.start"
   | "job.resume"
   | "job.steer"

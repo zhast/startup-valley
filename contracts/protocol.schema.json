@@ -21,6 +21,8 @@
             "bootstrap",
             "credential.status",
             "credential.set",
+            "chat.history",
+            "chat.send",
             "job.start",
             "job.resume",
             "job.steer",

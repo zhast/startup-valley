@@ -77,6 +77,13 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
     case "credential.set":
       await credentials.setOpenRouterKey(stringParameter(request, "key", 512));
       return { configured: true };
+    case "chat.history":
+      return adapter.chatHistory(stringParameter(request, "employeeId", 64));
+    case "chat.send":
+      return adapter.sendChat(
+        stringParameter(request, "employeeId", 64),
+        stringParameter(request, "message", 2000),
+      );
     case "job.start": {
       const spec = parseJobSpec(request.params.spec);
       const result = await adapter.submitJob(spec);

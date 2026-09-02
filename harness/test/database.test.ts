@@ -37,6 +37,27 @@ test("SQLite is authoritative for employees, work orders, events, and artifacts"
   database.close();
 });
 
+test("employee chat persists in order and contributes to daily spend", async () => {
+  const root = await mkdtemp(join(tmpdir(), "startup-valley-chat-"));
+  const path = join(root, "game.sqlite");
+  const projectRoot = join(root, "company-project");
+  const first = new GameDatabase(path, projectRoot);
+  first.createChatMessage("mira", "player", "What should we build first?");
+  first.createChatMessage("mira", "employee", "Start with a small onboarding experiment.", {
+    inputTokens: 120,
+    outputTokens: 24,
+    cost: 0.0025,
+  });
+  assert.deepEqual(first.chatMessages("mira").map((message) => message.sender), ["player", "employee"]);
+  assert.equal(first.dailySpend(), 0.0025);
+  first.close();
+
+  const reopened = new GameDatabase(path, projectRoot);
+  assert.match(reopened.chatMessages("mira")[1]?.content ?? "", /onboarding experiment/u);
+  assert.deepEqual(reopened.chatMessages("theo"), []);
+  reopened.close();
+});
+
 test("completed work orders write structured memories and teammate handoffs without transcripts", async () => {
   const root = await mkdtemp(join(tmpdir(), "startup-valley-memory-"));
   const database = new GameDatabase(join(root, "game.sqlite"), join(root, "company-project"));

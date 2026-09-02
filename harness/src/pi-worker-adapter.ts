@@ -24,6 +24,8 @@ import type {
   ApprovalDecision,
   Artifact,
   ArtifactContent,
+  ChatMessage,
+  ChatReply,
   JobSpec,
   PromotionResult,
   StudioFile,
@@ -34,6 +36,7 @@ import type {
 
 const DEFAULT_MODEL_ID = "~openai/gpt-mini-latest";
 const MAX_ATTACHED_CONTEXT_CHARACTERS = 16_000;
+const CHAT_RESPONSE_TOKEN_CAP = 700;
 
 class EmptyPiCredentialStore implements PiCredentialStore {
   async read(_providerId: string): Promise<Credential | undefined> {
@@ -77,6 +80,7 @@ export class PiWorkerAdapter implements WorkerAdapter {
   readonly #cancelledJobs = new Set<string>();
   #activeJobId: string | undefined;
   #acceptingJob = false;
+  #chatting = false;
 
   constructor(database: GameDatabase, credentials: CredentialStore, dataRoot: string) {
     this.#database = database;
@@ -95,7 +99,7 @@ export class PiWorkerAdapter implements WorkerAdapter {
   }
 
   async #acceptJob(spec: JobSpec, respectSchedule: boolean): Promise<{ queued: boolean }> {
-    if (this.#acceptingJob || this.#activeJobId || this.#database.hasOpenWorkOrder()) {
+    if (this.#chatting || this.#acceptingJob || this.#activeJobId || this.#database.hasOpenWorkOrder()) {
       throw new Error("One work order is already running or queued");
     }
     this.#acceptingJob = true;
@@ -203,6 +207,107 @@ export class PiWorkerAdapter implements WorkerAdapter {
     const metadata = await stat(target);
     if (!metadata.isFile() || metadata.size > 200_000) throw new Error("Studio file is not readable text");
     return { ...file, content: await readFile(target, "utf8") };
+  }
+
+  async chatHistory(employeeId: string): Promise<ChatMessage[]> {
+    if (!this.#database.employee(employeeId)) throw new Error("Employee does not exist");
+    return this.#database.chatMessages(employeeId);
+  }
+
+  async sendChat(employeeId: string, message: string): Promise<ChatReply> {
+    const employee = this.#database.employee(employeeId);
+    if (!employee) throw new Error("Employee does not exist");
+    const cleanMessage = bounded(message.trim(), 2000);
+    if (!cleanMessage) throw new Error("Chat message cannot be empty");
+    if (this.#chatting) throw new Error("An employee is already replying");
+    if (this.#acceptingJob || this.#activeJobId || this.#database.hasOpenWorkOrder()) {
+      throw new Error("Finish or cancel the active work order before starting a new conversation");
+    }
+
+    this.#chatting = true;
+    let session: AgentSession | undefined;
+    try {
+      const apiKey = await this.#credentials.getOpenRouterKey();
+      if (!apiKey) throw new Error("Add an OpenRouter key before chatting with an employee");
+      const previousMessages = this.#database.chatMessages(employeeId, 10);
+      this.#database.createChatMessage(employeeId, "player", cleanMessage);
+
+      const chatRoot = join(this.#runtimeRoot, "chat", employeeId);
+      const agentDirectory = join(this.#runtimeRoot, "pi-chat");
+      await Promise.all([mkdir(chatRoot, { recursive: true }), mkdir(agentDirectory, { recursive: true })]);
+      const modelRuntime = await ModelRuntime.create({
+        credentials: new EmptyPiCredentialStore(),
+        modelsPath: null,
+        refreshOnCreate: false,
+      });
+      await modelRuntime.setRuntimeApiKey("openrouter", apiKey);
+      const model = modelRuntime.getModel("openrouter", DEFAULT_MODEL_ID);
+      if (!model) throw new Error(`Pi does not provide the configured OpenRouter model: ${DEFAULT_MODEL_ID}`);
+      const cappedModel: Model<any> = { ...model, maxTokens: Math.min(model.maxTokens, CHAT_RESPONSE_TOKEN_CAP) };
+      const transcript = previousMessages.length > 0
+        ? previousMessages.map((entry) => `${entry.sender === "player" ? "Founder" : employee.name}: ${bounded(entry.content, 700)}`).join("\n")
+        : "No earlier conversation.";
+      const memories = this.#database.employeeMemories(employeeId, 6);
+      const memoryContext = memories.length > 0
+        ? memories.map((memory) => `- ${bounded(memory.fact, 500)}`).join("\n")
+        : "- No completed assignments yet.";
+      const specialty = employeeId === "mira"
+        ? "You are a warm, practical product designer and researcher. You make fuzzy ideas concrete."
+        : "You are a direct, energetic growth and operations specialist. You look for the fastest useful experiment.";
+      const systemPrompt = `You are ${employee.name}, an AI employee in Startup Valley Studio. ${specialty}
+
+This is a short workplace conversation with the founder, not a work session. You have no tools and must not claim to have created files, contacted services, spent money, or completed work. Help clarify ideas, ask at most one useful question at a time, and keep replies concise. When the request is actionable, suggest that the founder turn it into a work order. Never pretend a work order has started.
+
+Structured memories:
+${memoryContext}
+
+Recent bounded conversation:
+${transcript}`;
+      const settingsManager = SettingsManager.inMemory();
+      const resourceLoader = new DefaultResourceLoader({
+        cwd: chatRoot,
+        agentDir: agentDirectory,
+        settingsManager,
+        noExtensions: true,
+        noSkills: true,
+        noPromptTemplates: true,
+        noThemes: true,
+        noContextFiles: true,
+        systemPrompt,
+      });
+      await resourceLoader.reload();
+      const created = await createAgentSession({
+        cwd: chatRoot,
+        agentDir: agentDirectory,
+        model: cappedModel,
+        modelRuntime,
+        thinkingLevel: "low",
+        noTools: "all",
+        tools: [],
+        customTools: [],
+        resourceLoader,
+        settingsManager,
+        sessionManager: SessionManager.inMemory(chatRoot),
+      });
+      session = created.session;
+      await session.prompt(cleanMessage);
+      const lastMessage = session.state.messages.at(-1);
+      if (lastMessage?.role === "assistant" && lastMessage.stopReason === "error") {
+        throw new Error(lastMessage.errorMessage ?? "OpenRouter chat request failed");
+      }
+      const reply = bounded(session.getLastAssistantText()?.trim() ?? "", 4000);
+      if (!reply) throw new Error("The employee did not return a chat reply");
+      const stats = session.getSessionStats();
+      const saved = this.#database.createChatMessage(employeeId, "employee", reply, {
+        inputTokens: stats.tokens.input,
+        outputTokens: stats.tokens.output,
+        cost: Math.max(0, stats.cost),
+      });
+      return { message: saved, dailySpend: this.#database.dailySpend() };
+    } finally {
+      session?.dispose();
+      this.#chatting = false;
+    }
   }
 
   async promoteArtifacts(jobId: string, approved: boolean): Promise<PromotionResult> {

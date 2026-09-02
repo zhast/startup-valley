@@ -8,6 +8,7 @@ import { normalizeClock, phaseForMinute } from "./day-clock.js";
 import type {
   Artifact,
   BootstrapState,
+  ChatMessage,
   ClockState,
   Employee,
   EmployeeMemory,
@@ -72,6 +73,17 @@ interface StudioFileRow {
   promoted_at: string;
 }
 
+interface ChatMessageRow {
+  id: string;
+  employee_id: string;
+  sender: "player" | "employee";
+  content: string;
+  input_tokens: number;
+  output_tokens: number;
+  cost: number | null;
+  created_at: string;
+}
+
 const DEFAULT_PROJECT_ID = "company";
 const DEFAULT_TOKEN_BUDGET = 12_000;
 const DAILY_SPEND_WARNING = 5;
@@ -99,6 +111,7 @@ export class GameDatabase {
       [2, "002_product_layer.sql"],
       [3, "003_persistent_studio.sql"],
       [4, "004_work_order_handoff.sql"],
+      [5, "005_employee_chat.sql"],
     ] as const) {
       const applied = this.#database.prepare("SELECT version FROM schema_migrations WHERE version = ?").get(version);
       if (applied) continue;
@@ -202,6 +215,61 @@ export class GameDatabase {
       | (EmployeeRow & Record<string, unknown>)
       | undefined;
     return row ? this.#employeeFromRow(row) : undefined;
+  }
+
+  chatMessages(employeeId: string, limit = 24): ChatMessage[] {
+    const rows = this.#database.prepare(`
+      SELECT * FROM (
+        SELECT *, rowid AS insertion_order FROM employee_chat_messages
+        WHERE employee_id = ?
+        ORDER BY created_at DESC, rowid DESC
+        LIMIT ?
+      ) ORDER BY created_at, insertion_order
+    `).all(employeeId, limit) as unknown as ChatMessageRow[];
+    return rows.map((row) => ({
+      messageId: row.id,
+      employeeId: row.employee_id,
+      sender: row.sender,
+      content: row.content,
+      createdAt: row.created_at,
+      inputTokens: row.input_tokens,
+      outputTokens: row.output_tokens,
+      ...(row.cost === null ? {} : { cost: row.cost }),
+    }));
+  }
+
+  createChatMessage(
+    employeeId: string,
+    sender: ChatMessage["sender"],
+    content: string,
+    usage: { inputTokens?: number; outputTokens?: number; cost?: number } = {},
+  ): ChatMessage {
+    if (!this.employee(employeeId)) throw new Error("Employee does not exist");
+    const message: ChatMessage = {
+      messageId: randomUUID(),
+      employeeId,
+      sender,
+      content: content.trim().slice(0, 4000),
+      createdAt: now(),
+      inputTokens: usage.inputTokens ?? 0,
+      outputTokens: usage.outputTokens ?? 0,
+      ...(usage.cost === undefined ? {} : { cost: Math.max(0, usage.cost) }),
+    };
+    this.#database.prepare(`
+      INSERT INTO employee_chat_messages
+        (id, employee_id, sender, content, input_tokens, output_tokens, cost, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      message.messageId,
+      message.employeeId,
+      message.sender,
+      message.content,
+      message.inputTokens,
+      message.outputTokens,
+      message.cost ?? null,
+      message.createdAt,
+    );
+    return message;
   }
 
   createWorkOrder(spec: JobSpec, status: "queued" | "running" = "running"): void {
@@ -574,7 +642,12 @@ export class GameDatabase {
 
   dailySpend(): number {
     const row = this.#database
-      .prepare("SELECT COALESCE(SUM(cost), 0) AS total FROM work_orders WHERE date(created_at) = date('now')")
+      .prepare(`
+        SELECT
+          COALESCE((SELECT SUM(cost) FROM work_orders WHERE date(created_at) = date('now')), 0) +
+          COALESCE((SELECT SUM(cost) FROM employee_chat_messages WHERE date(created_at) = date('now')), 0)
+          AS total
+      `)
       .get() as { total: number };
     return row.total;
   }

@@ -34,6 +34,12 @@ test("game protocol promotes approved artifacts, reads the studio, and writes me
     createdAt: new Date().toISOString(),
   });
   database.completeWorkOrder("completed-note", "Documented visible keyboard focus.");
+  database.createChatMessage("mira", "player", "Can we keep this concise?");
+  database.createChatMessage("mira", "employee", "Yes. I will suggest a focused work order.", {
+    inputTokens: 80,
+    outputTokens: 14,
+    cost: 0.001,
+  });
   database.close();
 
   const child = spawn(process.execPath, ["dist/main.js", "--data-dir", dataRoot], {
@@ -57,6 +63,12 @@ test("game protocol promotes approved artifacts, reads the studio, and writes me
   assert.equal(
     ((bootstrap.result as { pendingPromotions: Array<{ jobId: string }> }).pendingPromotions[0]?.jobId),
     "completed-note",
+  );
+  const chatHistory = await request("chat-history", "chat.history", { employeeId: "mira" });
+  assert.equal(chatHistory.ok, true);
+  assert.deepEqual(
+    (chatHistory.result as Array<{ sender: string }>).map((message) => message.sender),
+    ["player", "employee"],
   );
   const opened = await request("read", "artifact.read", { jobId: "completed-note", relativePath: "note.md" });
   assert.equal(opened.ok, true);
