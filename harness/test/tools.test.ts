@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile } from "node:fs/promises";
+import { mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -10,10 +10,13 @@ import type { Artifact } from "../src/types.js";
 
 test("Pi receives only the constrained tool allowlist and writes a real artifact", async () => {
   const jobRoot = await mkdtemp(join(tmpdir(), "startup-valley-tools-"));
+  const studioRoot = await mkdtemp(join(tmpdir(), "startup-valley-studio-tools-"));
+  await writeFile(join(studioRoot, "brief.md"), "# Durable brief", "utf8");
   const artifacts: Artifact[] = [];
   const tools = await createJobTools({
     jobId: "job-1",
     jobRoot,
+    studioRoot,
     approvalBroker: new ApprovalBroker(),
     onArtifact: (artifact) => artifacts.push(artifact),
     onApproval: () => {},
@@ -44,4 +47,12 @@ test("Pi receives only the constrained tool allowlist and writes a real artifact
   );
   assert.equal(await readFile(join(jobRoot, "design-note.md"), "utf8"), "# Design note\n\nA real file.");
   assert.equal(artifacts[0]?.relativePath, "design-note.md");
+  const readTool = tools.find((tool) => tool.name === "read_file");
+  assert.ok(readTool);
+  const studioRead = await readTool.execute("call-2", { path: "studio/brief.md" }, undefined, undefined, {} as never);
+  assert.match(JSON.stringify(studioRead), /Durable brief/u);
+  await assert.rejects(
+    writeTool.execute("call-3", { path: "studio/forbidden.md", content: "no" }, undefined, undefined, {} as never),
+    /read-only/u,
+  );
 });

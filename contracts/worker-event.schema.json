@@ -3,6 +3,7 @@
   "$id": "https://startup-valley.local/contracts/worker-event.schema.json",
   "title": "WorkerEvent",
   "oneOf": [
+    { "$ref": "#/$defs/jobQueued" },
     { "$ref": "#/$defs/jobStarted" },
     { "$ref": "#/$defs/agentThinking" },
     { "$ref": "#/$defs/toolStarted" },
@@ -20,6 +21,15 @@
       "additionalProperties": false,
       "required": ["type"],
       "properties": { "type": { "type": "string" } }
+    },
+    "jobQueued": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "reason"],
+      "properties": {
+        "type": { "const": "job.queued" },
+        "reason": { "type": "string", "minLength": 1, "maxLength": 1000 }
+      }
     },
     "jobStarted": {
       "type": "object",

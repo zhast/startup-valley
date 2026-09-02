@@ -28,7 +28,11 @@
             "job.cancel",
             "job.artifacts",
             "job.remember",
-            "artifact.read"
+            "job.promote",
+            "artifact.read",
+            "studio.files",
+            "studio.read",
+            "clock.set"
           ]
         },
         "params": { "type": "object" }

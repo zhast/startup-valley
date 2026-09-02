@@ -27,7 +27,18 @@ test("stdio JSONL daemon completes health and bootstrap handshake", async () => 
   const bootstrap = await request("bootstrap", "bootstrap");
   assert.equal(health.ok, true);
   assert.equal((health.result as { maxConcurrentJobs: number }).maxConcurrentJobs, 1);
-  assert.equal((bootstrap.result as { employees: unknown[] }).employees.length, 2);
+  const state = bootstrap.result as {
+    employees: unknown[];
+    clock: { minuteOfDay: number; phase: string };
+    studioFiles: unknown[];
+    recentJobs: unknown[];
+    memories: Record<string, unknown[]>;
+  };
+  assert.equal(state.employees.length, 2);
+  assert.deepEqual(state.clock, { day: 1, minuteOfDay: 480, speed: 1, phase: "work" });
+  assert.deepEqual(state.studioFiles, []);
+  assert.deepEqual(state.recentJobs, []);
+  assert.ok(Array.isArray(state.memories.mira));
   child.stdin.end();
   await new Promise<void>((resolve, reject) => {
     child.once("exit", (code) => (code === 0 ? resolve() : reject(new Error(`worker exited ${code}`))));

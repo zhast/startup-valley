@@ -17,6 +17,7 @@ const MAX_SEARCH_FILES = 500;
 export interface ToolFactoryOptions {
   jobId: string;
   jobRoot: string;
+  studioRoot: string;
   approvalBroker: ApprovalBroker;
   onArtifact: (artifact: Artifact) => void;
   onApproval: (approvalId: string, action: string) => void;
@@ -80,8 +81,16 @@ async function collectFiles(root: string, limit: number): Promise<string[]> {
 
 export async function createJobTools(options: ToolFactoryOptions): Promise<ToolDefinition[]> {
   const guard = new JobPathGuard(options.jobRoot);
-  await guard.initialize();
+  const studioGuard = new JobPathGuard(options.studioRoot);
+  await Promise.all([guard.initialize(), studioGuard.initialize()]);
   const jobRoot = guard.canonicalRoot;
+  const studioRoot = studioGuard.canonicalRoot;
+
+  const isStudioPath = (path: string): boolean => path === "studio" || path.startsWith("studio/");
+  const studioRelative = (path: string): string => path.slice("studio/".length);
+  const rejectStudioWrite = (path: string): void => {
+    if (isStudioPath(path)) throw new Error("Studio files are read-only during a job; write to job scratch for player-approved promotion");
+  };
 
   const registerArtifact = (path: string): Artifact => {
     const artifact: Artifact = {
@@ -99,11 +108,12 @@ export async function createJobTools(options: ToolFactoryOptions): Promise<ToolD
   const readTool = defineTool({
     name: "read_file",
     label: "Read file",
-    description: "Read a UTF-8 text file inside this job's workspace.",
-    promptSnippet: "Read a text file from the job workspace.",
+    description: "Read a UTF-8 text file from job scratch or the durable read-only studio/ tree.",
+    promptSnippet: "Read a text file from job scratch or from studio/.",
     parameters: Type.Object({ path: Type.String({ minLength: 1, maxLength: 1024 }) }),
     execute: async (_id, { path }) => {
-      const target = await guard.resolve(path);
+      if (path === "studio") throw new Error("Choose a file below studio/");
+      const target = isStudioPath(path) ? await studioGuard.resolve(studioRelative(path)) : await guard.resolve(path);
       const metadata = await stat(target);
       if (!metadata.isFile()) throw new Error("The requested path is not a file");
       if (metadata.size > MAX_TEXT_BYTES) throw new Error("File is too large to read");
@@ -114,7 +124,7 @@ export async function createJobTools(options: ToolFactoryOptions): Promise<ToolD
   const writeTool = defineTool({
     name: "write_file",
     label: "Write file",
-    description: "Create or replace a UTF-8 text file inside this job's workspace. Parent directories may be created.",
+    description: "Create or replace a UTF-8 text file in job scratch. Completed artifacts can be promoted into studio/ after player approval.",
     promptSnippet: "Write a text file inside the job workspace.",
     promptGuidelines: ["Use relative paths only. Write requested deliverables into the job workspace."],
     parameters: Type.Object({
@@ -123,6 +133,7 @@ export async function createJobTools(options: ToolFactoryOptions): Promise<ToolD
     }),
     executionMode: "sequential",
     execute: async (_id, { path, content }) => {
+      rejectStudioWrite(path);
       const target = await guard.resolve(path, true);
       await writeFile(target, content, { encoding: "utf8", flag: "w" });
       const artifact = registerArtifact(target);
@@ -142,6 +153,7 @@ export async function createJobTools(options: ToolFactoryOptions): Promise<ToolD
     }),
     executionMode: "sequential",
     execute: async (_id, { path, oldText, newText }) => {
+      rejectStudioWrite(path);
       const target = await guard.resolve(path);
       const original = await readFile(target, "utf8");
       const first = original.indexOf(oldText);
@@ -158,16 +170,26 @@ export async function createJobTools(options: ToolFactoryOptions): Promise<ToolD
   const listTool = defineTool({
     name: "list_files",
     label: "List files",
-    description: "List files recursively under a directory in this job's workspace.",
-    promptSnippet: "List files in the job workspace.",
+    description: "List files recursively under job scratch or the durable read-only studio/ tree.",
+    promptSnippet: "List files in job scratch or studio/.",
     parameters: Type.Object({ path: Type.Optional(Type.String({ minLength: 1, maxLength: 1024 })) }),
     execute: async (_id, { path }) => {
       const requestedPath = path ?? ".";
-      const root = requestedPath === "." ? jobRoot : await guard.resolve(requestedPath);
+      const inStudio = isStudioPath(requestedPath);
+      const root = requestedPath === "."
+        ? jobRoot
+        : requestedPath === "studio"
+          ? studioRoot
+          : inStudio
+            ? await studioGuard.resolve(studioRelative(requestedPath))
+            : await guard.resolve(requestedPath);
       const metadata = await stat(root);
       if (!metadata.isDirectory()) throw new Error("The requested path is not a directory");
       const files = await collectFiles(root, MAX_LIST_ENTRIES);
-      const names = files.map((file) => relative(jobRoot, file).replaceAll("\\", "/"));
+      const names = files.map((file) => {
+        const name = relative(inStudio ? studioRoot : jobRoot, file).replaceAll("\\", "/");
+        return inStudio ? `studio/${name}` : name;
+      });
       return textResult(names.length > 0 ? names.join("\n") : "(no files)", { count: names.length });
     },
   });
@@ -175,15 +197,22 @@ export async function createJobTools(options: ToolFactoryOptions): Promise<ToolD
   const searchTool = defineTool({
     name: "search_files",
     label: "Search files",
-    description: "Find fixed text in UTF-8 files under this job's workspace. This does not execute a shell command.",
-    promptSnippet: "Search text files in the job workspace.",
+    description: "Find fixed text in UTF-8 files under job scratch or the durable read-only studio/ tree. This does not execute a shell command.",
+    promptSnippet: "Search text files in job scratch or studio/.",
     parameters: Type.Object({
       query: Type.String({ minLength: 1, maxLength: 500 }),
       path: Type.Optional(Type.String({ minLength: 1, maxLength: 1024 })),
     }),
     execute: async (_id, { query, path }) => {
       const requestedPath = path ?? ".";
-      const root = requestedPath === "." ? jobRoot : await guard.resolve(requestedPath);
+      const inStudio = isStudioPath(requestedPath);
+      const root = requestedPath === "."
+        ? jobRoot
+        : requestedPath === "studio"
+          ? studioRoot
+          : inStudio
+            ? await studioGuard.resolve(studioRelative(requestedPath))
+            : await guard.resolve(requestedPath);
       const files = await collectFiles(root, MAX_SEARCH_FILES);
       const needle = query.toLocaleLowerCase();
       const matches: string[] = [];
@@ -194,7 +223,8 @@ export async function createJobTools(options: ToolFactoryOptions): Promise<ToolD
         for (let index = 0; index < lines.length; index += 1) {
           const line = lines[index] ?? "";
           if (line.toLocaleLowerCase().includes(needle)) {
-            matches.push(`${relative(jobRoot, file).replaceAll("\\", "/")}:${index + 1}:${line.slice(0, 300)}`);
+            const name = relative(inStudio ? studioRoot : jobRoot, file).replaceAll("\\", "/");
+            matches.push(`${inStudio ? `studio/${name}` : name}:${index + 1}:${line.slice(0, 300)}`);
           }
           if (matches.length >= 200) break;
         }
@@ -236,6 +266,7 @@ export async function createJobTools(options: ToolFactoryOptions): Promise<ToolD
     promptSnippet: "Register a completed file as a deliverable.",
     parameters: Type.Object({ path: Type.String({ minLength: 1, maxLength: 1024 }) }),
     execute: async (_id, { path }) => {
+      rejectStudioWrite(path);
       const target = await guard.resolve(path);
       const metadata = await stat(target);
       if (!metadata.isFile()) throw new Error("Only files can be artifacts");

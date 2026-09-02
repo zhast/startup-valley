@@ -21,6 +21,12 @@ function stringParameter(request: ProtocolRequest, name: string, maxLength = 400
   return value;
 }
 
+function numberParameter(request: ProtocolRequest, name: string): number {
+  const value = request.params[name];
+  if (typeof value !== "number" || !Number.isFinite(value)) throw new Error(`Parameter ${name} must be a finite number`);
+  return value;
+}
+
 function write(message: ProtocolResponse | ProtocolEvent): void {
   process.stdout.write(`${JSON.stringify(message)}\n`);
 }
@@ -41,6 +47,7 @@ const database = new GameDatabase(join(dataRoot, "startup-valley.sqlite"), proje
 const credentials = new KeychainCredentialStore();
 const adapter = new PiWorkerAdapter(database, credentials, dataRoot);
 let shuttingDown = false;
+const pumpingJobs = new Set<string>();
 
 async function pumpEvents(jobId: string): Promise<void> {
   try {
@@ -48,7 +55,15 @@ async function pumpEvents(jobId: string): Promise<void> {
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     process.stderr.write(`Event stream failed for ${jobId}: ${message.slice(0, 1000)}\n`);
+  } finally {
+    pumpingJobs.delete(jobId);
   }
+}
+
+function ensureEventPump(jobId: string): void {
+  if (pumpingJobs.has(jobId)) return;
+  pumpingJobs.add(jobId);
+  void pumpEvents(jobId);
 }
 
 async function dispatch(request: ProtocolRequest): Promise<unknown> {
@@ -64,14 +79,14 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
       return { configured: true };
     case "job.start": {
       const spec = parseJobSpec(request.params.spec);
-      await adapter.startJob(spec);
-      void pumpEvents(spec.jobId);
-      return { jobId: spec.jobId, accepted: true };
+      const result = await adapter.submitJob(spec);
+      ensureEventPump(spec.jobId);
+      return { jobId: spec.jobId, accepted: true, queued: result.queued };
     }
     case "job.resume": {
       const jobId = stringParameter(request, "jobId", 64);
       await adapter.resumeJob(jobId);
-      void pumpEvents(jobId);
+      ensureEventPump(jobId);
       return { jobId, accepted: true };
     }
     case "job.steer":
@@ -89,18 +104,40 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
       await adapter.approve(jobId, decision);
       return { accepted: true };
     }
-    case "job.cancel":
-      await adapter.cancel(stringParameter(request, "jobId", 64));
+    case "job.cancel": {
+      const jobId = stringParameter(request, "jobId", 64);
+      await adapter.cancel(jobId);
+      ensureEventPump(jobId);
       return { accepted: true };
+    }
     case "job.artifacts":
       return adapter.artifacts(stringParameter(request, "jobId", 64));
     case "job.remember":
       return database.writebackMemories(stringParameter(request, "jobId", 64));
+    case "job.promote": {
+      const approved = request.params.approved;
+      if (typeof approved !== "boolean") throw new Error("Parameter approved must be a boolean");
+      return adapter.promoteArtifacts(stringParameter(request, "jobId", 64), approved);
+    }
     case "artifact.read":
       return adapter.readArtifact(
         stringParameter(request, "jobId", 64),
         stringParameter(request, "relativePath", 1024),
       );
+    case "studio.files":
+      return adapter.studioFiles();
+    case "studio.read":
+      return adapter.readStudioFile(stringParameter(request, "relativePath", 1024));
+    case "clock.set": {
+      const clock = database.setClock(
+        numberParameter(request, "day"),
+        numberParameter(request, "minuteOfDay"),
+        numberParameter(request, "speed"),
+      );
+      const startedJobId = await adapter.startNextQueuedJob();
+      if (startedJobId) ensureEventPump(startedJobId);
+      return { clock, startedJobId };
+    }
   }
 }
 
@@ -121,13 +158,17 @@ lines.on("line", (line) => {
   })();
 });
 
-function shutdown(): void {
-	if (shuttingDown) return;
-	shuttingDown = true;
+async function shutdown(): Promise<void> {
+  if (shuttingDown) return;
+  shuttingDown = true;
   lines.close();
-  database.close();
+  try {
+    await adapter.shutdown();
+  } finally {
+    database.close();
+  }
 }
 
-process.once("SIGINT", shutdown);
-process.once("SIGTERM", shutdown);
-process.stdin.once("end", shutdown);
+process.once("SIGINT", () => { void shutdown().finally(() => process.exit(0)); });
+process.once("SIGTERM", () => { void shutdown().finally(() => process.exit(0)); });
+process.stdin.once("end", () => { void shutdown(); });

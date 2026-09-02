@@ -19,7 +19,16 @@ import type { GameDatabase } from "./database.js";
 import { EventStream } from "./event-stream.js";
 import { JobPathGuard } from "./path-guard.js";
 import { createJobTools } from "./tools.js";
-import type { ApprovalDecision, Artifact, ArtifactContent, JobSpec, WorkerAdapter, WorkerEvent } from "./types.js";
+import type {
+  ApprovalDecision,
+  Artifact,
+  ArtifactContent,
+  JobSpec,
+  StudioFile,
+  StudioFileContent,
+  WorkerAdapter,
+  WorkerEvent,
+} from "./types.js";
 
 const DEFAULT_MODEL_ID = "~openai/gpt-mini-latest";
 
@@ -57,6 +66,7 @@ export class PiWorkerAdapter implements WorkerAdapter {
   readonly #database: GameDatabase;
   readonly #credentials: CredentialStore;
   readonly #jobsRoot: string;
+  readonly #studioRoot: string;
   readonly #runtimeRoot: string;
   readonly #streams = new Map<string, EventStream<WorkerEvent>>();
   readonly #sessions = new Map<string, AgentSession>();
@@ -68,30 +78,50 @@ export class PiWorkerAdapter implements WorkerAdapter {
     this.#database = database;
     this.#credentials = credentials;
     this.#jobsRoot = join(dataRoot, "company-project", "jobs");
+    this.#studioRoot = join(dataRoot, "company-project", "studio");
     this.#runtimeRoot = join(dataRoot, "runtime");
   }
 
   async startJob(spec: JobSpec): Promise<void> {
-    if (this.#activeJobId) throw new Error(`Job ${this.#activeJobId} is already running; v0 permits one concurrent job`);
+    if (this.#activeJobId || this.#database.hasOpenWorkOrder()) throw new Error("One work order is already running or queued");
     if (!this.#database.employee(spec.employeeId)) throw new Error("Employee does not exist");
     this.#database.createWorkOrder(spec);
-    const stream = new EventStream<WorkerEvent>();
-    this.#streams.set(spec.jobId, stream);
+    this.#ensureStream(spec.jobId);
     this.#activeJobId = spec.jobId;
     this.#emit(spec.jobId, { type: "job.started" });
     void this.#runJob(spec);
   }
 
+  async submitJob(spec: JobSpec): Promise<{ queued: boolean }> {
+    if (this.#activeJobId || this.#database.hasOpenWorkOrder()) throw new Error("One work order is already running or queued");
+    if (!this.#database.employee(spec.employeeId)) throw new Error("Employee does not exist");
+    if (this.#database.isWorkWindow()) {
+      await this.startJob(spec);
+      return { queued: false };
+    }
+    this.#database.createWorkOrder(spec, "queued");
+    this.#ensureStream(spec.jobId);
+    this.#emit(spec.jobId, { type: "job.queued", reason: "Queued until the studio returns to work hours" });
+    return { queued: true };
+  }
+
   async resumeJob(jobId: string): Promise<void> {
-    if (this.#activeJobId) throw new Error(`Job ${this.#activeJobId} is already running; v0 permits one concurrent job`);
+    if (this.#activeJobId) throw new Error(`Job ${this.#activeJobId} is already running; only one work order may run`);
     const stored = this.#database.workOrder(jobId);
     if (!stored) throw new Error("Work order does not exist");
-    const stream = new EventStream<WorkerEvent>();
-    this.#streams.set(jobId, stream);
+    this.#ensureStream(jobId);
     this.#activeJobId = jobId;
     this.#database.setWorkOrderStatus(jobId, "running");
     this.#emit(jobId, { type: "job.started" });
     void this.#runJob(stored);
+  }
+
+  async startNextQueuedJob(): Promise<string | undefined> {
+    if (this.#activeJobId || !this.#database.isWorkWindow()) return undefined;
+    const queued = this.#database.nextQueuedWorkOrder();
+    if (!queued) return undefined;
+    await this.resumeJob(queued.jobId);
+    return queued.jobId;
   }
 
   async steer(jobId: string, message: string): Promise<void> {
@@ -108,12 +138,17 @@ export class PiWorkerAdapter implements WorkerAdapter {
 
   async cancel(jobId: string): Promise<void> {
     const session = this.#sessions.get(jobId);
-    if (this.#activeJobId !== jobId) throw new Error("Job is not active");
+    const stored = this.#database.workOrder(jobId);
+    if (this.#activeJobId !== jobId && stored?.status !== "queued" && stored?.status !== "blocked") {
+      throw new Error("Job is not active or queued");
+    }
+    this.#ensureStream(jobId);
     this.#cancelledJobs.add(jobId);
     this.#approvals.cancelJob(jobId);
     this.#database.setWorkOrderStatus(jobId, "cancelled");
     this.#emit(jobId, { type: "job.failed", error: "Cancelled by player" });
     if (session) await session.abort();
+    if (!session) this.#finish(jobId);
   }
 
   events(jobId: string): AsyncIterable<WorkerEvent> {
@@ -140,6 +175,68 @@ export class PiWorkerAdapter implements WorkerAdapter {
     return { ...artifact, content: await readFile(target, "utf8") };
   }
 
+  async studioFiles(): Promise<StudioFile[]> {
+    return this.#database.studioFiles();
+  }
+
+  async readStudioFile(relativePath: string): Promise<StudioFileContent> {
+    const file = this.#database.studioFile(relativePath);
+    if (!file) throw new Error("Studio file does not exist");
+    if (!file.mediaType.startsWith("text/") && file.mediaType !== "application/json") {
+      throw new Error("The in-game viewer only opens text studio files");
+    }
+    const guard = new JobPathGuard(this.#studioRoot);
+    await guard.initialize();
+    const target = await guard.resolve(relativePath);
+    const metadata = await stat(target);
+    if (!metadata.isFile() || metadata.size > 200_000) throw new Error("Studio file is not readable text");
+    return { ...file, content: await readFile(target, "utf8") };
+  }
+
+  async promoteArtifacts(jobId: string, approved: boolean): Promise<StudioFile[]> {
+    if (!approved) return this.#database.studioFiles();
+    const workOrder = this.#database.workOrder(jobId);
+    if (!workOrder || workOrder.status !== "completed") throw new Error("Only completed work can be promoted");
+    const sourceGuard = new JobPathGuard(join(this.#jobsRoot, jobId));
+    const studioGuard = new JobPathGuard(this.#studioRoot);
+    await Promise.all([sourceGuard.initialize(), studioGuard.initialize()]);
+    for (const artifact of this.#database.artifacts(jobId)) {
+      const source = await sourceGuard.resolve(artifact.relativePath);
+      const destination = await studioGuard.resolve(artifact.relativePath, true);
+      await mkdir(dirname(destination), { recursive: true });
+      await copyFile(source, destination);
+      this.#database.upsertStudioFile({
+        name: artifact.name,
+        relativePath: artifact.relativePath,
+        mediaType: artifact.mediaType,
+        sourceJobId: jobId,
+        sourceArtifactId: artifact.artifactId,
+        promotedAt: new Date().toISOString(),
+      });
+    }
+    this.#database.writebackMemories(jobId);
+    return this.#database.studioFiles();
+  }
+
+  async shutdown(): Promise<void> {
+    const jobId = this.#activeJobId;
+    if (!jobId) return;
+    this.#cancelledJobs.add(jobId);
+    this.#approvals.cancelJob(jobId);
+    this.#database.setWorkOrderStatus(jobId, "blocked");
+    this.#emit(jobId, { type: "job.blocked", reason: "Game closed before the work order completed" });
+    const session = this.#sessions.get(jobId);
+    if (session) await session.abort();
+  }
+
+  #ensureStream(jobId: string): EventStream<WorkerEvent> {
+    const existing = this.#streams.get(jobId);
+    if (existing) return existing;
+    const stream = new EventStream<WorkerEvent>();
+    this.#streams.set(jobId, stream);
+    return stream;
+  }
+
   #emit(jobId: string, event: WorkerEvent): void {
     this.#database.recordEvent(jobId, event);
     this.#streams.get(jobId)?.push(event);
@@ -158,20 +255,24 @@ export class PiWorkerAdapter implements WorkerAdapter {
     const criteria = spec.acceptanceCriteria.map((criterion, index) => `${index + 1}. ${bounded(criterion, 500)}`).join("\n");
     const memories = this.#database.employeeMemories(spec.employeeId, 9);
     const handoffs = this.#database.teammateHandoffs(spec.employeeId, 4);
+    const studioFiles = this.#database.studioFiles();
     const memoryContext = memories.length > 0
       ? memories.map((memory) => `- [${memory.kind}] ${bounded(memory.fact, 700)}`).join("\n")
       : "- No persistent memories yet.";
     const handoffContext = handoffs.length > 0
       ? handoffs.map((handoff) => {
           const paths = handoff.artifactPaths.length > 0
-            ? handoff.artifactPaths.map((path) => `${path} (readable copy: handoffs/${handoff.jobId}/${path.split(`/`).slice(2).join(`/`)})`).join(", ")
+            ? handoff.artifactPaths.map((path) => `${path} (read directly with read_file)`).join(", ")
             : "none";
           return `- ${handoff.employeeName}: ${bounded(handoff.title, 200)}\n  Summary: ${bounded(handoff.summary, 500)}\n  Artifacts: ${paths}`;
         }).join("\n")
       : "- No teammate deliveries yet.";
+    const studioContext = studioFiles.length > 0
+      ? studioFiles.map((file) => `- studio/${file.relativePath} (${file.mediaType})`).join("\n")
+      : "- The studio is empty.";
     return `You are ${employee.name}, an AI employee in Startup Valley Studio. Morale: ${employee.morale}/100.
 
-You are completing one bounded work order. Use only the supplied tools. You have no shell, package installer, browser automation, hidden credentials, or access outside this job workspace. Never claim that a file exists unless a tool successfully created or read it. Prefer the smallest complete deliverable.
+You are completing one bounded work order. Use only the supplied tools. You have no shell, package installer, browser automation, or hidden credentials. Job scratch is writable. The durable studio/ tree is readable but cannot be changed until the player approves promotion. Never claim that a file exists unless a tool successfully created or read it. Prefer the smallest complete deliverable.
 
 Work order title:
 ${bounded(spec.title, 200)}
@@ -188,30 +289,10 @@ ${memoryContext}
 Recent teammate deliveries from SQLite (not a shared transcript):
 ${handoffContext}
 
-When the requested work is complete, give a concise delivery summary. The game records files written by tools as artifacts.`;
-  }
+Durable studio files available through read_file/list_files/search_files:
+${studioContext}
 
-  async #stageHandoffs(spec: JobSpec, jobRoot: string): Promise<void> {
-    const destinationGuard = new JobPathGuard(jobRoot);
-    await destinationGuard.initialize();
-    for (const handoff of this.#database.teammateHandoffs(spec.employeeId, 4)) {
-      const sourceGuard = new JobPathGuard(join(this.#jobsRoot, handoff.jobId));
-      try {
-        await sourceGuard.initialize();
-      } catch {
-        continue;
-      }
-      for (const artifact of this.#database.artifacts(handoff.jobId)) {
-        try {
-          const source = await sourceGuard.resolve(artifact.relativePath);
-          const destination = await destinationGuard.resolve(`handoffs/${handoff.jobId}/${artifact.relativePath}`, true);
-          await mkdir(dirname(destination), { recursive: true });
-          await copyFile(source, destination);
-        } catch {
-          // A missing historical artifact should not prevent a new bounded work order.
-        }
-      }
-    }
+When the requested work is complete, give a concise delivery summary. The game records files written by tools as artifacts.`;
   }
 
   async #runJob(spec: JobSpec): Promise<void> {
@@ -229,8 +310,7 @@ When the requested work is complete, give a concise delivery summary. The game r
 
       const jobRoot = join(this.#jobsRoot, spec.jobId);
       const agentDirectory = join(this.#runtimeRoot, "pi");
-      await Promise.all([mkdir(jobRoot, { recursive: true }), mkdir(agentDirectory, { recursive: true })]);
-      await this.#stageHandoffs(spec, jobRoot);
+      await Promise.all([mkdir(jobRoot, { recursive: true }), mkdir(agentDirectory, { recursive: true }), mkdir(this.#studioRoot, { recursive: true })]);
 
       const modelRuntime = await ModelRuntime.create({
         credentials: new EmptyPiCredentialStore(),
@@ -245,6 +325,7 @@ When the requested work is complete, give a concise delivery summary. The game r
       const tools = await createJobTools({
         jobId: spec.jobId,
         jobRoot,
+        studioRoot: this.#studioRoot,
         approvalBroker: this.#approvals,
         onArtifact: (artifact) => {
           this.#database.createArtifact(spec.jobId, artifact);

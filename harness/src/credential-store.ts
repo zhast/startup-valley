@@ -9,15 +9,19 @@ export interface CredentialStore {
   setOpenRouterKey(key: string): Promise<void>;
 }
 
+export function normalizeKeychainValue(value: unknown): string | undefined {
+  return typeof value === "string" && value.length > 0 ? value : undefined;
+}
+
 export class KeychainCredentialStore implements CredentialStore {
   readonly #entry = new AsyncEntry(SERVICE, ACCOUNT);
 
   async hasOpenRouterKey(): Promise<boolean> {
-    return (await this.#entry.getPassword()) !== undefined;
+    return (await this.getOpenRouterKey()) !== undefined;
   }
 
   async getOpenRouterKey(): Promise<string | undefined> {
-    return this.#entry.getPassword();
+    return normalizeKeychainValue(await this.#entry.getPassword());
   }
 
   async setOpenRouterKey(key: string): Promise<void> {

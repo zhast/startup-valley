@@ -4,7 +4,19 @@ import { DatabaseSync } from "node:sqlite";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import type { Artifact, BootstrapState, Employee, EmployeeMemory, JobSpec, TeammateHandoff, WorkerEvent } from "./types.js";
+import { normalizeClock, phaseForMinute } from "./day-clock.js";
+import type {
+  Artifact,
+  BootstrapState,
+  ClockState,
+  Employee,
+  EmployeeMemory,
+  JobSpec,
+  StudioFile,
+  TeammateHandoff,
+  WorkOrderSummary,
+  WorkerEvent,
+} from "./types.js";
 
 interface EmployeeRow {
   id: string;
@@ -36,6 +48,8 @@ interface WorkOrderRow {
   token_budget: number;
   status: string;
   summary: string | null;
+  created_at: string;
+  finished_at: string | null;
 }
 
 interface MemoryRow {
@@ -44,6 +58,15 @@ interface MemoryRow {
   work_order_id: string;
   payload_json: string;
   created_at: string;
+}
+
+interface StudioFileRow {
+  relative_path: string;
+  name: string;
+  media_type: string;
+  source_work_order_id: string;
+  source_artifact_id: string;
+  promoted_at: string;
 }
 
 const DEFAULT_PROJECT_ID = "company";
@@ -69,12 +92,13 @@ export class GameDatabase {
     const migrationsDirectory = join(moduleDirectory, "..", "migrations");
     this.#database.exec(readFileSync(join(migrationsDirectory, "001_initial.sql"), "utf8"));
     this.#database.exec("CREATE TABLE IF NOT EXISTS schema_migrations (version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL)");
-    const productMigration = this.#database.prepare("SELECT version FROM schema_migrations WHERE version = 2").get();
-    if (!productMigration) {
+    for (const [version, name] of [[2, "002_product_layer.sql"], [3, "003_persistent_studio.sql"]] as const) {
+      const applied = this.#database.prepare("SELECT version FROM schema_migrations WHERE version = ?").get(version);
+      if (applied) continue;
       this.#database.exec("BEGIN IMMEDIATE");
       try {
-        this.#database.exec(readFileSync(join(migrationsDirectory, "002_product_layer.sql"), "utf8"));
-        this.#database.prepare("INSERT INTO schema_migrations (version, applied_at) VALUES (2, ?)").run(now());
+        this.#database.exec(readFileSync(join(migrationsDirectory, name), "utf8"));
+        this.#database.prepare("INSERT INTO schema_migrations (version, applied_at) VALUES (?, ?)").run(version, now());
         this.#database.exec("COMMIT");
       } catch (error) {
         this.#database.exec("ROLLBACK");
@@ -105,7 +129,7 @@ export class GameDatabase {
       "Mina",
       8,
       5,
-      JSON.stringify({ weekday: "09:00-17:00" }),
+      JSON.stringify({ weekday: "08:00-17:30", lunch: "12:30-13:30" }),
       JSON.stringify({ theo: 12 }),
       82,
       timestamp,
@@ -117,22 +141,38 @@ export class GameDatabase {
       "Theo",
       13,
       8,
-      JSON.stringify({ weekday: "10:00-18:00" }),
+      JSON.stringify({ weekday: "08:00-17:30", lunch: "12:30-13:30" }),
       JSON.stringify({ mira: 12 }),
       76,
       timestamp,
       timestamp,
     );
+    this.#database.prepare(`
+      UPDATE employees
+      SET schedule_json = ?, updated_at = ?
+      WHERE schedule_json IN (?, ?)
+    `).run(
+      JSON.stringify({ weekday: "08:00-17:30", lunch: "12:30-13:30" }),
+      timestamp,
+      JSON.stringify({ weekday: "09:00-17:00" }),
+      JSON.stringify({ weekday: "10:00-18:00" }),
+    );
   }
 
   bootstrap(): BootstrapState {
     const rows = this.#database.prepare("SELECT * FROM employees ORDER BY name").all() as unknown as EmployeeRow[];
+    const memories: Record<string, EmployeeMemory[]> = {};
+    for (const row of rows) memories[row.id] = this.employeeMemories(row.id);
     return {
       employees: rows.map((row) => this.#employeeFromRow(row)),
       project: { id: DEFAULT_PROJECT_ID, name: "Startup Valley Studio", rootPath: this.#projectRoot },
       defaultTokenBudget: DEFAULT_TOKEN_BUDGET,
       dailySpend: this.dailySpend(),
       dailySpendWarning: DAILY_SPEND_WARNING,
+      clock: this.clockState(),
+      studioFiles: this.studioFiles(),
+      recentJobs: this.recentWorkOrders(),
+      memories,
     };
   }
 
@@ -156,13 +196,13 @@ export class GameDatabase {
     return row ? this.#employeeFromRow(row) : undefined;
   }
 
-  createWorkOrder(spec: JobSpec): void {
+  createWorkOrder(spec: JobSpec, status: "queued" | "running" = "running"): void {
     const timestamp = now();
     this.#database
       .prepare(`
         INSERT INTO work_orders
           (id, employee_id, project_id, title, assignment, acceptance_criteria_json, status, token_budget, created_at, started_at)
-        VALUES (?, ?, ?, ?, ?, ?, 'running', ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `)
       .run(
         spec.jobId,
@@ -171,13 +211,46 @@ export class GameDatabase {
         spec.title,
         spec.assignment,
         JSON.stringify(spec.acceptanceCriteria),
+        status,
         spec.tokenBudget,
         timestamp,
-        timestamp,
+        status === "running" ? timestamp : null,
       );
     this.#database
       .prepare("UPDATE employees SET assignment = ?, updated_at = ? WHERE id = ?")
       .run(spec.assignment, timestamp, spec.employeeId);
+  }
+
+  hasOpenWorkOrder(): boolean {
+    const row = this.#database.prepare(`
+      SELECT 1 AS found FROM work_orders
+      WHERE status IN ('queued', 'running')
+      LIMIT 1
+    `).get() as { found: number } | undefined;
+    return row !== undefined;
+  }
+
+  nextQueuedWorkOrder(): (JobSpec & { status: string }) | undefined {
+    const row = this.#database.prepare(`
+      SELECT id FROM work_orders WHERE status = 'queued'
+      ORDER BY created_at, id LIMIT 1
+    `).get() as { id: string } | undefined;
+    return row ? this.workOrder(row.id) : undefined;
+  }
+
+  recentWorkOrders(limit = 8): WorkOrderSummary[] {
+    const rows = this.#database.prepare(`
+      SELECT * FROM work_orders ORDER BY created_at DESC, id DESC LIMIT ?
+    `).all(limit) as unknown as WorkOrderRow[];
+    return rows.map((row) => ({
+      jobId: row.id,
+      employeeId: row.employee_id,
+      title: row.title,
+      status: row.status,
+      ...(row.summary ? { summary: row.summary } : {}),
+      createdAt: row.created_at,
+      ...(row.finished_at ? { finishedAt: row.finished_at } : {}),
+    }));
   }
 
   workOrder(jobId: string): (JobSpec & { status: string }) | undefined {
@@ -198,16 +271,55 @@ export class GameDatabase {
   }
 
   setWorkOrderStatus(jobId: string, status: "running" | "blocked" | "completed" | "failed" | "cancelled"): void {
-    const terminal = status === "completed" || status === "failed" || status === "cancelled";
+    const terminal = status === "blocked" || status === "completed" || status === "failed" || status === "cancelled";
     this.#database
-      .prepare("UPDATE work_orders SET status = ?, finished_at = ? WHERE id = ?")
-      .run(status, terminal ? now() : null, jobId);
+      .prepare(`
+        UPDATE work_orders
+        SET status = ?,
+            started_at = CASE WHEN ? = 'running' THEN COALESCE(started_at, ?) ELSE started_at END,
+            finished_at = ?
+        WHERE id = ?
+      `)
+      .run(status, status, now(), terminal ? now() : null, jobId);
+    if (status === "running") {
+      this.#database.prepare(`
+        UPDATE employees
+        SET assignment = (SELECT assignment FROM work_orders WHERE id = ?), updated_at = ?
+        WHERE id = (SELECT employee_id FROM work_orders WHERE id = ?)
+      `).run(jobId, now(), jobId);
+    }
     if (terminal) {
       this.#database.prepare(`
         UPDATE employees SET assignment = NULL, updated_at = ?
         WHERE id = (SELECT employee_id FROM work_orders WHERE id = ?)
       `).run(now(), jobId);
     }
+  }
+
+  clockState(): ClockState {
+    const row = this.#database.prepare("SELECT value_json FROM game_state WHERE key = 'clock'").get() as
+      | { value_json: string }
+      | undefined;
+    if (!row) return normalizeClock({});
+    try {
+      return normalizeClock(parseObject<Partial<ClockState>>(row.value_json));
+    } catch {
+      return normalizeClock({});
+    }
+  }
+
+  setClock(day: number, minuteOfDay: number, speed: number): ClockState {
+    const clock = normalizeClock({ day, minuteOfDay, speed });
+    this.#database.prepare(`
+      INSERT INTO game_state (key, value_json, updated_at)
+      VALUES ('clock', ?, ?)
+      ON CONFLICT(key) DO UPDATE SET value_json = excluded.value_json, updated_at = excluded.updated_at
+    `).run(JSON.stringify(clock), now());
+    return clock;
+  }
+
+  isWorkWindow(): boolean {
+    return phaseForMinute(this.clockState().minuteOfDay) === "work";
   }
 
   completeWorkOrder(jobId: string, summary: string): void {
@@ -277,6 +389,49 @@ export class GameDatabase {
     }));
   }
 
+  upsertStudioFile(file: StudioFile): void {
+    this.#database.prepare(`
+      INSERT INTO studio_files
+        (relative_path, name, media_type, source_work_order_id, source_artifact_id, promoted_at)
+      VALUES (?, ?, ?, ?, ?, ?)
+      ON CONFLICT(relative_path) DO UPDATE SET
+        name = excluded.name,
+        media_type = excluded.media_type,
+        source_work_order_id = excluded.source_work_order_id,
+        source_artifact_id = excluded.source_artifact_id,
+        promoted_at = excluded.promoted_at
+    `).run(
+      file.relativePath,
+      file.name,
+      file.mediaType,
+      file.sourceJobId,
+      file.sourceArtifactId,
+      file.promotedAt,
+    );
+  }
+
+  studioFiles(): StudioFile[] {
+    const rows = this.#database.prepare(`
+      SELECT * FROM studio_files ORDER BY promoted_at DESC, relative_path
+    `).all() as unknown as StudioFileRow[];
+    return rows.map((row) => ({
+      name: row.name,
+      relativePath: row.relative_path,
+      mediaType: row.media_type,
+      sourceJobId: row.source_work_order_id,
+      sourceArtifactId: row.source_artifact_id,
+      promotedAt: row.promoted_at,
+    }));
+  }
+
+  studioFilesForJob(jobId: string): StudioFile[] {
+    return this.studioFiles().filter((file) => file.sourceJobId === jobId);
+  }
+
+  studioFile(relativePath: string): StudioFile | undefined {
+    return this.studioFiles().find((file) => file.relativePath === relativePath);
+  }
+
   writebackMemories(jobId: string): EmployeeMemory[] {
     const row = this.#database.prepare("SELECT * FROM work_orders WHERE id = ?").get(jobId) as
       | (WorkOrderRow & Record<string, unknown>)
@@ -289,11 +444,14 @@ export class GameDatabase {
       { kind: "assignment", fact: `Completed assignment: ${row.title}`, payload: { title: row.title } },
     ];
     const artifacts = this.artifacts(jobId);
+    const promoted = this.studioFilesForJob(jobId);
     if (artifacts.length > 0) {
-      const paths = artifacts.slice(0, 20).map((artifact) => `jobs/${jobId}/${artifact.relativePath}`);
+      const paths = promoted.length > 0
+        ? promoted.slice(0, 20).map((file) => `studio/${file.relativePath}`)
+        : artifacts.slice(0, 20).map((artifact) => `jobs/${jobId}/${artifact.relativePath}`);
       entries.push({
         kind: "artifacts",
-        fact: `Delivered artifacts: ${artifacts.map((artifact) => artifact.name).join(", ")}`.slice(0, 1000),
+        fact: `${promoted.length > 0 ? "Delivered studio artifacts" : "Delivered scratch artifacts"}: ${paths.join(", ")}`.slice(0, 1000),
         payload: { names: artifacts.map((artifact) => artifact.name), paths },
       });
     }
@@ -301,9 +459,13 @@ export class GameDatabase {
     entries.push({ kind: "outcome", fact: `Outcome: ${outcome}`, payload: { summary: outcome } });
 
     const insert = this.#database.prepare(`
-      INSERT OR IGNORE INTO employee_memories
+      INSERT INTO employee_memories
         (id, employee_id, fact, salience, created_at, kind, work_order_id, payload_json)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      ON CONFLICT(employee_id, work_order_id, kind) DO UPDATE SET
+        fact = excluded.fact,
+        payload_json = excluded.payload_json,
+        created_at = excluded.created_at
     `);
     for (const entry of entries.slice(0, 3)) {
       insert.run(randomUUID(), row.employee_id, entry.fact, 70, timestamp, entry.kind, jobId, JSON.stringify(entry.payload));
@@ -347,7 +509,7 @@ export class GameDatabase {
       employeeName: row.employee_name,
       title: row.title,
       summary: (row.summary ?? "Completed without a summary.").replace(/\s+/gu, " ").trim().slice(0, 500),
-      artifactPaths: this.artifacts(row.id).map((artifact) => `jobs/${row.id}/${artifact.relativePath}`),
+      artifactPaths: this.studioFilesForJob(row.id).map((file) => `studio/${file.relativePath}`),
     }));
   }
 

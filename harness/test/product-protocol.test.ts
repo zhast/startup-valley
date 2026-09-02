@@ -8,7 +8,7 @@ import test from "node:test";
 
 import { GameDatabase } from "../src/database.js";
 
-test("game protocol reads text artifacts and triggers completed-job memory writeback", async () => {
+test("game protocol promotes approved artifacts, reads the studio, and writes memories", async () => {
   const dataRoot = await mkdtemp(join(tmpdir(), "startup-valley-product-protocol-"));
   const projectRoot = join(dataRoot, "company-project");
   const jobRoot = join(projectRoot, "jobs", "completed-note");
@@ -55,6 +55,12 @@ test("game protocol reads text artifacts and triggers completed-job memory write
   const opened = await request("read", "artifact.read", { jobId: "completed-note", relativePath: "note.md" });
   assert.equal(opened.ok, true);
   assert.match((opened.result as { content: string }).content, /focus stays visible/u);
+  const promoted = await request("promote", "job.promote", { jobId: "completed-note", approved: true });
+  assert.equal(promoted.ok, true);
+  assert.equal((promoted.result as Array<{ relativePath: string }>)[0]?.relativePath, "note.md");
+  const studioOpened = await request("studio-read", "studio.read", { relativePath: "note.md" });
+  assert.equal(studioOpened.ok, true);
+  assert.match((studioOpened.result as { content: string }).content, /focus stays visible/u);
   const remembered = await request("remember", "job.remember", { jobId: "completed-note" });
   assert.equal(remembered.ok, true);
   assert.equal((remembered.result as unknown[]).length, 3);
@@ -66,5 +72,6 @@ test("game protocol reads text artifacts and triggers completed-job memory write
 
   const verified = new GameDatabase(join(dataRoot, "startup-valley.sqlite"), projectRoot);
   assert.equal(verified.employeeMemories("mira").filter((memory) => memory.workOrderId === "completed-note").length, 3);
+  assert.equal(verified.studioFiles()[0]?.relativePath, "note.md");
   verified.close();
 });

@@ -15,6 +15,7 @@ export interface ApprovalDecision {
 }
 
 export type WorkerEvent =
+  | { type: "job.queued"; reason: string }
   | { type: "job.started" }
   | { type: "agent.thinking"; summary?: string }
   | { type: "tool.started"; tool: string; label: string }
@@ -59,6 +60,38 @@ export interface TeammateHandoff {
   artifactPaths: string[];
 }
 
+export type SchedulePhase = "work" | "lunch" | "off";
+
+export interface ClockState {
+  day: number;
+  minuteOfDay: number;
+  speed: number;
+  phase: SchedulePhase;
+}
+
+export interface StudioFile {
+  name: string;
+  relativePath: string;
+  mediaType: string;
+  sourceJobId: string;
+  sourceArtifactId: string;
+  promotedAt: string;
+}
+
+export interface StudioFileContent extends StudioFile {
+  content: string;
+}
+
+export interface WorkOrderSummary {
+  jobId: string;
+  employeeId: string;
+  title: string;
+  status: string;
+  summary?: string;
+  createdAt: string;
+  finishedAt?: string;
+}
+
 export interface Employee {
   id: string;
   name: string;
@@ -79,6 +112,9 @@ export interface WorkerAdapter {
   events(jobId: string): AsyncIterable<WorkerEvent>;
   artifacts(jobId: string): Promise<Artifact[]>;
   readArtifact(jobId: string, relativePath: string): Promise<ArtifactContent>;
+  promoteArtifacts(jobId: string, approved: boolean): Promise<StudioFile[]>;
+  studioFiles(): Promise<StudioFile[]>;
+  readStudioFile(relativePath: string): Promise<StudioFileContent>;
 }
 
 export type ProtocolMethod =
@@ -93,7 +129,11 @@ export type ProtocolMethod =
   | "job.cancel"
   | "job.artifacts"
   | "job.remember"
-  | "artifact.read";
+  | "job.promote"
+  | "artifact.read"
+  | "studio.files"
+  | "studio.read"
+  | "clock.set";
 
 export interface ProtocolRequest {
   kind: "request";
@@ -122,4 +162,8 @@ export interface BootstrapState {
   defaultTokenBudget: number;
   dailySpend: number;
   dailySpendWarning: number;
+  clock: ClockState;
+  studioFiles: StudioFile[];
+  recentJobs: WorkOrderSummary[];
+  memories: Record<string, EmployeeMemory[]>;
 }

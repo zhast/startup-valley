@@ -33,7 +33,7 @@ test("adapter refuses a second concurrent work order", async () => {
   const credentials = new DeferredCredentialStore();
   const adapter = new PiWorkerAdapter(database, credentials, root);
   await adapter.startJob(spec("first"));
-  await assert.rejects(adapter.startJob(spec("second")), /one concurrent job/u);
+  await assert.rejects(adapter.startJob(spec("second")), /one work order/iu);
   await adapter.cancel("first");
   credentials.key.resolve(undefined);
   for await (const _event of adapter.events("first")) {}
@@ -59,16 +59,46 @@ test("next employee prompts contain structured memory and SQLite teammate handof
 
   const minaContext = adapter.systemPromptFor({ ...spec("mina-next"), title: "Follow-up" });
   assert.match(minaContext, /Persistent memories[\s\S]*Inventory keyboard navigation/u);
-  const theoContext = adapter.systemPromptFor({ ...spec("theo-review"), employeeId: "theo", title: "Review Mina's note" });
-  assert.match(theoContext, /Mina: Inventory keyboard navigation/u);
-  assert.match(theoContext, /jobs\/mina-note\/design-note\.md/u);
-  assert.match(theoContext, /Specified tab order/u);
-  assert.doesNotMatch(theoContext, /shared transcript content/u);
-
   const noteDirectory = join(root, "company-project", "jobs", "mina-note");
   await mkdir(noteDirectory, { recursive: true });
   await writeFile(join(noteDirectory, "design-note.md"), "# Keyboard navigation\n\nUse visible focus.", "utf8");
+  await adapter.promoteArtifacts("mina-note", true);
+  const theoContext = adapter.systemPromptFor({ ...spec("theo-review"), employeeId: "theo", title: "Review Mina's note" });
+  assert.match(theoContext, /Mina: Inventory keyboard navigation/u);
+  assert.match(theoContext, /studio\/design-note\.md/u);
+  assert.match(theoContext, /Specified tab order/u);
+  assert.doesNotMatch(theoContext, /shared transcript content/u);
+
   const opened = await adapter.readArtifact("mina-note", "design-note.md");
   assert.match(opened.content, /visible focus/u);
+  const studioOpened = await adapter.readStudioFile("design-note.md");
+  assert.match(studioOpened.content, /visible focus/u);
+  database.close();
+  const reopened = new GameDatabase(join(root, "game.sqlite"), join(root, "company-project"));
+  const restored = new PiWorkerAdapter(reopened, new DeferredCredentialStore(), root);
+  assert.equal((await restored.studioFiles())[0]?.relativePath, "design-note.md");
+  assert.match((await restored.readStudioFile("design-note.md")).content, /visible focus/u);
+  reopened.close();
+});
+
+test("off-hours work queues, starts at the work window, and shutdown blocks fake in-flight work", async () => {
+  const root = await mkdtemp(join(tmpdir(), "startup-valley-schedule-"));
+  const database = new GameDatabase(join(root, "game.sqlite"), join(root, "company-project"));
+  database.setClock(1, 18 * 60, 1);
+  const credentials = new DeferredCredentialStore();
+  const adapter = new PiWorkerAdapter(database, credentials, root);
+  assert.deepEqual(await adapter.submitJob(spec("morning-job")), { queued: true });
+  const iterator = adapter.events("morning-job")[Symbol.asyncIterator]();
+  assert.equal((await iterator.next()).value?.type, "job.queued");
+  assert.equal(database.workOrder("morning-job")?.status, "queued");
+
+  database.setClock(2, 8 * 60, 1);
+  assert.equal(await adapter.startNextQueuedJob(), "morning-job");
+  assert.equal((await iterator.next()).value?.type, "job.started");
+  assert.equal(database.workOrder("morning-job")?.status, "running");
+  await adapter.shutdown();
+  assert.equal(database.workOrder("morning-job")?.status, "blocked");
+  credentials.key.resolve(undefined);
+  while (!(await iterator.next()).done) {}
   database.close();
 });
