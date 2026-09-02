@@ -39,6 +39,7 @@ var _speech_visible: bool = false
 var _character_sprite: Sprite2D
 
 func configure(record: EmployeeRecord, start_position: Vector2, desk: Vector2, research: Vector2) -> void:
+	z_as_relative = false
 	employee_id = record.id
 	display_name = record.display_name
 	morale = record.morale
@@ -57,9 +58,17 @@ func configure(record: EmployeeRecord, start_position: Vector2, desk: Vector2, r
 	queue_redraw()
 
 func set_schedule_phase(phase: String) -> void:
+	var phase_changed := phase != schedule_phase
 	schedule_phase = phase
 	if has_live_job or work_state == WorkState.DELIVERING:
 		return
+	if not phase_changed:
+		if phase == "work":
+			return
+		if phase == "lunch" and work_state == WorkState.LUNCH:
+			return
+		if phase == "off" and work_state == WorkState.OFF_SHIFT:
+			return
 	_idle_elapsed = 0.0
 	_speech_visible = false
 	if phase == "lunch":
@@ -143,6 +152,7 @@ func _physics_process(delta: float) -> void:
 		_character_sprite.position.y = -10.0
 	if not has_live_job and schedule_phase == "work" and not _has_target:
 		_update_idle(delta)
+	z_index = int(position.y)
 
 func _update_idle(delta: float) -> void:
 	_idle_elapsed += delta

@@ -58,9 +58,22 @@ func _run() -> void:
 	main.job_panel.select_employee("mira")
 	if main.room.unlocked_hires != 2 or main.room.locked_section_count() != 2:
 		_fail("test_office_growth: the two-person roster did not reveal exactly two office wings")
+	if main.room.visible_prop_count() != 3:
+		_fail("test_modular_office: the two-person stage did not show two desks and one research bench")
 	main.room.set_hire_count(0)
 	if main.room.locked_section_count() != 4:
 		_fail("test_office_growth: the founder stage did not lock all expansion wings")
+	if main.room.visible_prop_count() != 0:
+		_fail("test_modular_office: locked-stage props remained visible")
+	main.room.set_hire_count(1)
+	if main.room.visible_prop_count() != 1 or main.room.prop_node("mira-workstation") == null:
+		_fail("test_modular_office: the first hire did not reveal exactly Mina's workstation")
+	var staged_desk := main.room.prop_node("mira-workstation")
+	var staged_desk_sprite := staged_desk.get_node_or_null("WorkstationSprite") as Sprite2D if staged_desk != null else null
+	if staged_desk == null or not is_zero_approx(staged_desk.rotation) or staged_desk_sprite == null or not is_zero_approx(staged_desk_sprite.rotation):
+		_fail("test_modular_office: the workstation was rotated instead of using an authored cardinal sprite")
+	elif not is_equal_approx(staged_desk_sprite.scale.x, staged_desk_sprite.scale.y):
+		_fail("test_modular_office: the workstation projection was distorted by non-uniform scaling")
 	main.room.set_hire_count(4)
 	if main.room.locked_section_count() != 0:
 		_fail("test_office_growth: four hires did not reveal the mature office")
@@ -101,6 +114,11 @@ func _run() -> void:
 		_fail("test_persistent_boot: employee memory was not restored")
 	main.day_clock.set_time(4, DayClock.WORK_START)
 	await process_frame
+	var scheduled_employee := main.get_employee("mira")
+	scheduled_employee._idle_elapsed = 0.4
+	scheduled_employee.set_schedule_phase("work")
+	if scheduled_employee._idle_elapsed < 0.4:
+		_fail("test_day_clock: repeated work ticks reset the employee idle schedule")
 
 	main.job_panel.begin_job("steer-job")
 	main._job_employees["steer-job"] = "mira"
@@ -139,6 +157,9 @@ func _run() -> void:
 			frames += 1
 		if not employee.is_at_desk():
 			_fail("test_worker_walks_to_desk: employee did not reach the desk")
+		var mina_desk := main.room.prop_node("mira-workstation")
+		if mina_desk == null or employee.z_index >= mina_desk.z_index:
+			_fail("test_modular_office: Mina was not depth-sorted behind her workstation")
 		main.simulate_worker_event("mira", &"tool.started", "write_file")
 		await process_frame
 		if employee.work_state != EmployeeAvatar.WorkState.TYPING:
@@ -228,7 +249,9 @@ func _software_state_screenshot(main: GameMain) -> Image:
 		var worker := main.get_employee(employee_id)
 		if worker == null:
 			continue
-		var desk_center := Vector2i(int(worker.desk_position.x * 0.5), int((worker.desk_position.y - 42.0) * 0.5))
+		var desk_prop := main.room.prop_node("%s-workstation" % employee_id)
+		var desk_global := desk_prop.global_position if desk_prop != null else worker.desk_position
+		var desk_center := Vector2i(int(desk_global.x * 0.5), int(desk_global.y * 0.5))
 		_fill_rect(image, Rect2i(desk_center - Vector2i(15, 9), Vector2i(30, 18)), Color("8c6748"))
 		var worker_center := Vector2i(int(worker.position.x * 0.5), int(worker.position.y * 0.5))
 		var worker_color := Color("7dc6a7") if employee_id == "mira" else Color("d9a66f")

@@ -6,6 +6,7 @@ var movement_bounds: Rect2 = Rect2(32.0, 56.0, 832.0, 576.0)
 var _character_sprite: Sprite2D
 
 func _ready() -> void:
+	z_as_relative = false
 	_character_sprite = Sprite2D.new()
 	_character_sprite.name = "CharacterSprite"
 	_character_sprite.texture = CharacterArt.portrait("founder")
@@ -21,6 +22,7 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 	position.x = clampf(position.x, movement_bounds.position.x + 14.0, movement_bounds.end.x - 14.0)
 	position.y = clampf(position.y, movement_bounds.position.y + 18.0, movement_bounds.end.y - 14.0)
+	z_index = int(position.y)
 	if direction.x != 0.0:
 		_character_sprite.flip_h = direction.x < 0.0
 

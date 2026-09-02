@@ -11,6 +11,11 @@
     { "employee_id": "mira", "grid": [8, 5] },
     { "employee_id": "theo", "grid": [13, 8] }
   ],
-  "research_table": [18, 4],
+  "props": [
+    { "id": "mira-workstation", "kind": "desk", "grid": [8, 5], "required_hires": 1, "owner_id": "mira" },
+    { "id": "theo-workstation", "kind": "desk", "grid": [13, 8], "required_hires": 2, "owner_id": "theo" },
+    { "id": "research-bench", "kind": "research_table", "grid": [21, 4], "required_hires": 2 }
+  ],
+  "research_table": [21, 4],
   "plants": [[3, 3], [22, 3], [3, 15], [23, 15]]
 }

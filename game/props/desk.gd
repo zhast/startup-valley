@@ -1,20 +1,32 @@
 class_name OfficeDesk
 extends Node2D
 
+const WORKSTATION_TEXTURE: Texture2D = preload("res://assets/runtime/office/employee-workstation.png")
+const RUNTIME_SCALE := 0.085
+const SPRITE_OFFSET := Vector2(0.0, -31.5)
+
 var owner_name: String = "Desk"
 
 func configure(label: String) -> void:
 	owner_name = label
-	queue_redraw()
 
 func _ready() -> void:
-	queue_redraw()
-
-func _draw() -> void:
-	draw_rect(Rect2(-30.0, -18.0, 60.0, 36.0), Color("8c6748"), true)
-	draw_rect(Rect2(-27.0, -15.0, 54.0, 5.0), Color("b78b5e"), true)
-	draw_rect(Rect2(-14.0, -30.0, 28.0, 20.0), Color("1f293d"), true)
-	draw_rect(Rect2(-11.0, -27.0, 22.0, 14.0), Color("6ca6c9"), true)
-	draw_rect(Rect2(-24.0, 16.0, 8.0, 14.0), Color("604735"), true)
-	draw_rect(Rect2(16.0, 16.0, 8.0, 14.0), Color("604735"), true)
-	draw_string(ThemeDB.fallback_font, Vector2(-30.0, 35.0), owner_name, HORIZONTAL_ALIGNMENT_CENTER, 60.0, 10, Color("c6d2e8"))
+	z_as_relative = false
+	var sprite := Sprite2D.new()
+	sprite.name = "WorkstationSprite"
+	sprite.texture = WORKSTATION_TEXTURE
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	sprite.scale = Vector2.ONE * RUNTIME_SCALE
+	sprite.position = SPRITE_OFFSET
+	add_child(sprite)
+	var body := StaticBody2D.new()
+	body.name = "DeskCollision"
+	body.collision_layer = 1
+	body.collision_mask = 0
+	var collision := CollisionShape2D.new()
+	var shape := RectangleShape2D.new()
+	shape.size = Vector2(94.0, 34.0)
+	collision.position = Vector2(0.0, -19.0)
+	collision.shape = shape
+	body.add_child(collision)
+	add_child(body)
