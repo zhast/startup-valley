@@ -18,6 +18,7 @@ import type { CredentialStore } from "./credential-store.js";
 import type { GameDatabase } from "./database.js";
 import { EventStream } from "./event-stream.js";
 import { JobPathGuard } from "./path-guard.js";
+import { LiveSessionRegistry } from "./live-session-registry.js";
 import { createJobTools } from "./tools.js";
 import type {
   ApprovalDecision,
@@ -71,10 +72,11 @@ export class PiWorkerAdapter implements WorkerAdapter {
   readonly #studioRoot: string;
   readonly #runtimeRoot: string;
   readonly #streams = new Map<string, EventStream<WorkerEvent>>();
-  readonly #sessions = new Map<string, AgentSession>();
+  readonly #sessions = new LiveSessionRegistry<AgentSession>();
   readonly #approvals = new ApprovalBroker();
   readonly #cancelledJobs = new Set<string>();
   #activeJobId: string | undefined;
+  #acceptingJob = false;
 
   constructor(database: GameDatabase, credentials: CredentialStore, dataRoot: string) {
     this.#database = database;
@@ -85,28 +87,36 @@ export class PiWorkerAdapter implements WorkerAdapter {
   }
 
   async startJob(spec: JobSpec): Promise<void> {
-    if (this.#activeJobId || this.#database.hasOpenWorkOrder()) throw new Error("One work order is already running or queued");
-    if (!this.#database.employee(spec.employeeId)) throw new Error("Employee does not exist");
-    await this.#assertAttachedStudioFile(spec);
-    this.#database.createWorkOrder(spec);
-    this.#ensureStream(spec.jobId);
-    this.#activeJobId = spec.jobId;
-    this.#emit(spec.jobId, { type: "job.started" });
-    void this.#runJob(spec);
+    await this.#acceptJob(spec, false);
   }
 
   async submitJob(spec: JobSpec): Promise<{ queued: boolean }> {
-    if (this.#activeJobId || this.#database.hasOpenWorkOrder()) throw new Error("One work order is already running or queued");
-    if (!this.#database.employee(spec.employeeId)) throw new Error("Employee does not exist");
-    await this.#assertAttachedStudioFile(spec);
-    if (this.#database.isWorkWindow()) {
-      await this.startJob(spec);
-      return { queued: false };
+    return this.#acceptJob(spec, true);
+  }
+
+  async #acceptJob(spec: JobSpec, respectSchedule: boolean): Promise<{ queued: boolean }> {
+    if (this.#acceptingJob || this.#activeJobId || this.#database.hasOpenWorkOrder()) {
+      throw new Error("One work order is already running or queued");
     }
-    this.#database.createWorkOrder(spec, "queued");
-    this.#ensureStream(spec.jobId);
-    this.#emit(spec.jobId, { type: "job.queued", reason: "Queued until the studio returns to work hours" });
-    return { queued: true };
+    this.#acceptingJob = true;
+    try {
+      if (!this.#database.employee(spec.employeeId)) throw new Error("Employee does not exist");
+      await this.#assertAttachedStudioFile(spec);
+      if (respectSchedule && !this.#database.isWorkWindow()) {
+        this.#database.createWorkOrder(spec, "queued");
+        this.#ensureStream(spec.jobId);
+        this.#emit(spec.jobId, { type: "job.queued", reason: "Queued until the studio returns to work hours" });
+        return { queued: true };
+      }
+      this.#database.createWorkOrder(spec);
+      this.#ensureStream(spec.jobId);
+      this.#activeJobId = spec.jobId;
+      this.#emit(spec.jobId, { type: "job.started" });
+      void this.#runJob(spec);
+      return { queued: false };
+    } finally {
+      this.#acceptingJob = false;
+    }
   }
 
   async resumeJob(jobId: string): Promise<void> {
@@ -129,9 +139,7 @@ export class PiWorkerAdapter implements WorkerAdapter {
   }
 
   async steer(jobId: string, message: string): Promise<void> {
-    const session = this.#sessions.get(jobId);
-    if (!session) throw new Error("Job does not have a live Pi session");
-    await session.steer(bounded(message.trim(), 2000));
+    await this.#sessions.steer(jobId, bounded(message.trim(), 2000));
   }
 
   async approve(jobId: string, decision: ApprovalDecision): Promise<void> {
