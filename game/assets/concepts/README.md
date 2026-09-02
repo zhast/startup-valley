@@ -24,7 +24,7 @@ The final extraction pass requested that only the atmospheric backdrop and glow 
 The 2026-09-02 tech-town pass uses the supplied city image only as a mood reference for optimistic density, drones, and rooftop infrastructure. Its text, company marks, crypto imagery, buildings, and composition were explicitly excluded.
 
 - `startup-valley-tech-town-key-art.png`: the preferred visual target—a walkable garden campus with glass-and-redwood offices, a maker garage, visible servers, drones, solar roofs, parcel lockers, scooters, EV charging, and community plots.
-- `startup-valley-main-office-key-art.png`: the primary game-space target—a compact cutaway office organized around assignment, employee work, research, approvals, artifact review, and social downtime.
+- `startup-valley-main-office-key-art.png`: the mature primary game-space target—a fully developed cutaway office organized around assignment, employee work, research, approvals, artifact review, and social downtime. The player begins with only a small founder studio; sections arrive with new hires.
 - `startup-valley-tech-props-concept-sheet.png`: a prop-design reference for desks, networking, fabrication, drone logistics, mobility, coffee, and collaboration spaces.
 - `startup-valley-tech-characters-concept-sheet.png`: updated founder, Mina, and Theo studies with contemporary startup clothing, bags, headphones, laptops, and whiteboard poses.
 

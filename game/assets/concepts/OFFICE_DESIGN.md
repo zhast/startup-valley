@@ -2,7 +2,25 @@
 
 The office is Startup Valley's primary play space: the equivalent of the homestead in a cozy farming game. The town supports exploration and future expansion, but the office is where the player reads the company at a glance and performs the core management loop.
 
-The key art is `startup-valley-main-office-key-art.png`. It is a visual target rather than a runtime tile map.
+The key art is `startup-valley-main-office-key-art.png`. It shows the mature, fully built office—not the starting state—and is a visual target rather than a runtime tile map.
+
+## Progression principle
+
+The player should never receive the whole office at once. Begin with a scrappy founder studio containing one useful desk, dispatch, a kettle, a plant, and a few moving boxes. Each new hire renovates one small adjoining section and introduces at most one major new interaction.
+
+Keep the full 26 × 18 shell stable underneath progression so navigation, saves, and camera framing remain simple. Unavailable wings should read as leased-but-unfinished space behind closed renovation doors or frosted glass—not as a giant empty room. When a hire arrives, reveal the matching section with a short overnight renovation beat, new furniture, and a clear path opening from the existing office.
+
+| Milestone | Space revealed | Player learns |
+| --- | --- | --- |
+| Founder | Compact entry and central studio | Movement, dispatch, and one active work order. |
+| First hire | Second desk and tiny coffee corner | Delegation and employee work states. |
+| Second hire | Third desk and meeting nook | Choosing between employees and team routines. |
+| Specialist hire | Research lab or maker bench | Specialized tools and research activity. |
+| Operations hire | Server and approval nook | Usage, infrastructure, and approval requests. |
+| Production hire | Artifact workshop and archive | Reviewing, preserving, and promoting completed work. |
+| Later hires | Lounge, drone dock, planters, and upgraded modules | Efficiency, morale, automation, and customization. |
+
+Hire order may vary. Unlock the module associated with the employee's specialty rather than requiring one fixed recruitment sequence.
 
 ## Floor plan
 
@@ -40,4 +58,4 @@ Keep the existing 26 × 18 logical grid and a single-floor cutaway view. Exact p
 
 ## Upgrade hooks
 
-Keep the building shell and circulation fixed while allowing individual modules to improve: desks, lab equipment, server capacity, meeting room, artifact archive, coffee area, planters, and drone dock. This makes progression visible without forcing the player to relearn the floor plan.
+Keep the building shell and circulation fixed while revealing and improving individual modules: desks, lab equipment, server capacity, meeting room, artifact archive, coffee area, planters, and drone dock. The mature key art is the upper bound, not a checklist for the first hour. This makes company growth visible without forcing the player to relearn the floor plan or parse too many stations at once.
