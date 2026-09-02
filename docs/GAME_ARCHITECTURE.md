@@ -16,14 +16,14 @@ The worker is a child process connected through `OS.execute_with_pipe`. There is
 
 ## Job sequence
 
-1. Godot submits a validated `JobSpec` containing an employee, assignment, acceptance criteria, and token cap.
+1. Godot submits a validated `JobSpec` containing an employee, title, assignment, acceptance criteria, token cap, and optionally one studio-relative attachment path. Canned and freeform work orders share this path.
 2. During lunch or off shift the worker creates a queued work order. It emits `job.started` only when the persisted clock enters a work window.
 3. The employee walks to their desk because that event arrived—not because a timer guessed that work began.
 4. The worker reads the OpenRouter key from the OS credential vault and injects it only through Pi `ModelRuntime.setRuntimeApiKey`.
-5. A new Pi session receives a bounded employee/assignment context and only the custom allowlisted tools.
+5. A new Pi session receives a bounded employee/assignment context and only the custom allowlisted tools. If the player attached a studio file, the worker validates it through the independent studio path guard, persists the relative path in SQLite, and includes bounded read-only content in the context pack.
 6. Pi tool events become `tool.started` and `tool.completed`. Godot maps file edits to typing and web tools to the research table.
 7. Writes create durable artifact rows and `artifact.created` events. Usage totals and cost estimates create `usage.updated` events.
-8. The session is disposed. After the player approves promotion, guarded copies move from `company-project/jobs/<job id>/` scratch into canonical `company-project/studio/` paths.
+8. The session is disposed. The completed job remains pending for an Approve or Discard promotion decision across restart. Approval moves guarded copies from `company-project/jobs/<job id>/` scratch into canonical `company-project/studio/` paths and records provenance; discard resolves the pending decision without copying.
 9. Later jobs can read the studio through an independently guarded, read-only `studio/` tool namespace. They cannot mutate it without another completed-artifact promotion.
 
 ## Security levels

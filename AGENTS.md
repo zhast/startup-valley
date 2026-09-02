@@ -33,12 +33,14 @@ godot --path game
 - The game communicates with the worker only over stdio JSONL for v0. Do not add an unauthenticated HTTP listener.
 - OpenRouter is the only provider in v0. Put its key in the OS keychain/Credential Manager and inject it with Pi `setRuntimeApiKey` only.
 - Create a bounded Pi session for each substantial work order and dispose it at job end. Do not create an immortal employee conversation.
+- Freeform and canned assignments use the same `JobSpec`, SQLite work-order row, queue, event stream, token cap, and fresh Pi session. A freeform job may attach one studio-relative text file; validate and read it through the studio path guard, persist its path, and bound its context before prompting.
 - Default concurrency is one running-or-queued job. Every job has a token cap and usage audit events.
 - The Godot UI refuses a second assignment while one is active and exposes cancellation. A worker exit fails the active projection, returns the employee to idle, and is recovered durably as failed on worker restart.
 - Pi built-in tools, including bash, must stay disabled. Only the explicitly constrained custom tools may be enabled.
 - File tools write only inside current job scratch. They may read the durable `studio/` tree through an independently guarded root. Both roots reject absolute paths, `..`, NUL bytes, Windows drive/UNC paths, and symlink escapes.
 - Web tools must reject localhost, link-local, private, multicast, and otherwise non-public destinations before every request and redirect.
 - Completed artifacts enter `studio/` only after an explicit player promotion decision. Promotion uses guarded source and destination paths, and studio files are read through `studio.read`; Godot never opens arbitrary filesystem paths.
+- A completed job with scratch artifacts stays `pending` for promotion across quit/reopen. Bootstrap must return pending decisions. Approve copies through both guards and records provenance; Discard clears the pending decision without promoting it.
 - On `job.completed`, Godot must request `job.remember`. SQLite writes at most three structured assignment/artifact/outcome memories. The next employee context uses bounded memories and recent teammate artifact paths/summaries, never an infinite shared transcript.
 - The saved clock has three schedule phases: work (08:00–12:30 and 13:30–17:30), lunch (12:30–13:30), and off shift. Lunch/off-hours submissions stay queued and must emit `job.started` only after a work window opens.
 - On-shift idle animation may sit, wander, or surface one bounded memory line. It must never show typing/coding without live tool events. Lunch and off-shift states are presentation-only and do not spawn agents.

@@ -7,15 +7,20 @@ The slice is complete when a developer can perform this flow without Claude Code
 3. Run `godot --path game`.
 4. Paste one OpenRouter key. Confirm the UI reports that it is stored in the OS keychain.
 5. Confirm the restored clock, most recent work-order status, employees, and any existing studio files appear after boot.
-6. During a work window, pick Mina and the canned **Inventory keyboard navigation design note** work order, then assign it.
+6. During a work window, pick Mina and the canned **Inventory keyboard navigation design note** work order, then assign it. Confirm the canned Theo review remains available too.
 7. Observe Mina walk to her desk only after `job.started`, and type only while a real `write_file` or `edit_file` event is active.
 8. Observe real input/output token totals and estimated cost, followed by `artifact.created` and `job.completed`.
-9. Approve artifact promotion. Confirm `studio/design-note.md` appears in **Studio files**, opens in the in-game text panel, and exists under the durable company project `studio/` directory.
-10. Quit Godot and reopen. Confirm the clock, Mina's memories, the completed status, and `studio/design-note.md` are restored.
-11. Pick **Review Mina's inventory note**. It selects Theo and explicitly reads `studio/design-note.md`. Confirm Theo produces `review.md`, then approve it into `studio/review.md`.
-12. Set the clock to 12:30 or after 17:30, submit a work order, and confirm it remains queued with no walking or typing. Advance to 13:30 or 08:00 and confirm `job.started` then moves the employee to their desk.
-13. With no live job, confirm on-shift employees only sit, wander, or show one memory line; at lunch they go to lunch, and after 17:30 they display off shift.
-14. Quit during a work order. Confirm the worker child exits, the last status restores as blocked/cancelled, and no Pi process remains.
+9. Leave the finished artifact unpromoted, quit Godot, and reopen. Confirm the finished work returns with **Approve** and **Discard** choices. Exercise Discard with a test artifact and confirm it does not return on another reopen.
+10. Approve Mina's artifact promotion. Confirm `studio/design-note.md` appears in **Studio files**, opens in the in-game text panel, and exists under the durable company project `studio/` directory.
+11. Quit and reopen again. Confirm the clock, Mina's memories, completed status, and clickable `studio/design-note.md` listing are restored.
+12. Choose **Custom work order…**, select Theo, enter a title and instruction body, and attach `studio/design-note.md` as read context. Submit it and confirm the SQLite work-order row preserves the exact title, instructions, and attached relative path.
+13. Confirm the custom job receives a fresh bounded Pi session with Theo's persona, bounded memories, and the attached file content. It must use the same guarded tools and produce a scratch artifact for explicit promotion.
+14. Approve Theo's new artifact, then open it from the durable **Studio files** list in the current artifact text viewer.
+15. Pick the canned **Review Mina's inventory note** and confirm it still selects Theo, reads `studio/design-note.md`, and produces `review.md`.
+16. Set the clock to 12:30 or after 17:30, submit a freeform work order, and confirm it remains queued with no walking or typing. Advance to 13:30 or 08:00 and confirm `job.started` then moves the employee to their desk.
+17. Try to submit a protocol work order with a missing attached studio path. Confirm it fails before a work-order row is created.
+18. With no live job, confirm on-shift employees only sit, wander, or show one memory line; at lunch they go to lunch, and after 17:30 they display off shift.
+19. Quit during a work order. Confirm the worker child exits, the last status restores as blocked/cancelled, and no Pi process remains.
 
 Live-provider gate before the UI flow:
 
@@ -35,6 +40,8 @@ godot --headless --path game --import
 godot --headless --path game --script res://tools/validate_project.gd
 godot --headless --path game --script res://tests/run_all.gd
 ```
+
+The worker suite includes explicit no-provider tests for promotion resume, discard, exact freeform instruction persistence, off-hours freeform queuing, and fail-closed missing attachments.
 
 Security spot checks:
 
