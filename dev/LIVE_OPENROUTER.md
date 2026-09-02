@@ -10,6 +10,8 @@ Passing rerun on 2026-09-02: `job.started` → `tool.started` → `artifact.crea
 
 The in-game persistence flow also passed on 2026-09-02. Mina completed and promoted `studio/design-note.md` using 844 input tokens, 923 output tokens, and estimated cost `$0.004786`. After quitting and reopening Godot, the saved clock, completed status, memory, and design note restored. Theo's review was submitted off-hours, remained queued with Theo visibly off shift, started after the clock crossed 08:00, read the studio note, and completed `review.md` using 2,897 input tokens, 487 output tokens, and estimated cost `$0.004518`. After approved promotion and another restart, both studio files and Theo's completed status restored.
 
+Staged Theo freeform follow-up on 2026-09-02: 2,201 input tokens, 443 output tokens, estimated cost `$0.00379785`.
+
 ## Checked manual step
 
 - [x] Save an OpenRouter key from the game, without logging or copying it elsewhere.
