@@ -22,12 +22,17 @@ var _employee_names: Dictionary[String, String] = {}
 var _plants: Array[Vector2i] = []
 var _prop_placements: Array[OfficePropPlacement] = []
 var _prop_root: Node2D
+var _effect_root: Node2D
+var _last_built_hires: int = -1
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_prop_root = Node2D.new()
 	_prop_root.name = "Props"
 	add_child(_prop_root)
+	_effect_root = Node2D.new()
+	_effect_root.name = "UnlockEffects"
+	add_child(_effect_root)
 
 func load_layout(path: String = "res://data/town.json") -> void:
 	var file := FileAccess.open(path, FileAccess.READ)
@@ -91,11 +96,14 @@ func configure_employee_desks(records: Array[EmployeeRecord]) -> void:
 	set_hire_count(records.size())
 
 func set_hire_count(count: int) -> void:
+	var previous_hires := unlocked_hires
 	unlocked_hires = maxi(0, count)
-	_rebuild_props()
+	var animate_from := previous_hires if _last_built_hires >= 0 and unlocked_hires > previous_hires else -1
+	_rebuild_props(animate_from)
+	_last_built_hires = unlocked_hires
 	queue_redraw()
 
-func _rebuild_props() -> void:
+func _rebuild_props(animate_from: int = -1) -> void:
 	if _prop_root == null:
 		return
 	for child: Node in _prop_root.get_children():
@@ -130,6 +138,12 @@ func _rebuild_props() -> void:
 		prop.z_as_relative = false
 		prop.z_index = int(position.y + prop.position.y)
 		_prop_root.add_child(prop)
+		if animate_from >= 0 and placement.required_hires > animate_from:
+			var unlock_effect := OfficeUnlockEffect.new()
+			unlock_effect.position = prop.position + Vector2(0.0, -18.0)
+			unlock_effect.z_as_relative = false
+			unlock_effect.z_index = prop.z_index + 4
+			_effect_root.add_child(unlock_effect)
 
 func visible_prop_count() -> int:
 	return _prop_root.get_child_count() if _prop_root != null else 0
@@ -161,7 +175,7 @@ func employee_spawn_position(employee_id: String) -> Vector2:
 func employee_desk_position(employee_id: String) -> Vector2:
 	# The work point is behind the desk anchor so Y sorting places the employee's
 	# lower body behind the workstation while keeping their head visible.
-	return grid_to_world_position(_desk_grids.get(employee_id, Vector2i.ZERO)) + Vector2(0.0, -26.0)
+	return grid_to_world_position(_desk_grids.get(employee_id, Vector2i.ZERO)) + Vector2(0.0, -52.0)
 
 func research_position() -> Vector2:
 	return grid_to_world_position(research_grid) + Vector2(0.0, 40.0)

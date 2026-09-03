@@ -6,6 +6,8 @@ extends Node2D
 @export var sprite_offset: Vector2 = Vector2.ZERO
 @export var collision_size: Vector2 = Vector2(64.0, 24.0)
 @export var collision_offset: Vector2 = Vector2(0.0, -12.0)
+@export var ambient_row: int = -1
+@export var ambient_offset: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	z_as_relative = false
@@ -16,6 +18,11 @@ func _ready() -> void:
 	sprite.scale = Vector2.ONE * runtime_scale
 	sprite.position = sprite_offset
 	add_child(sprite)
+	if ambient_row >= 0:
+		var ambient := OfficeAmbientOverlay.new()
+		ambient.name = "AmbientOverlay"
+		ambient.configure(ambient_row, ambient_offset)
+		add_child(ambient)
 
 	var body := StaticBody2D.new()
 	body.name = "PropCollision"

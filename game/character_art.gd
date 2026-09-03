@@ -2,6 +2,12 @@ class_name CharacterArt
 extends RefCounted
 
 const CHARACTER_SHEET: Texture2D = preload("res://assets/concepts/office-town-characters-sheet.png")
+const FOUNDER_LOCOMOTION: Texture2D = preload("res://assets/runtime/characters/founder-locomotion.png")
+const MIRA_LOCOMOTION: Texture2D = preload("res://assets/runtime/characters/mira-locomotion.png")
+const THEO_LOCOMOTION: Texture2D = preload("res://assets/runtime/characters/theo-locomotion.png")
+const MIRA_WORK: Texture2D = preload("res://assets/runtime/characters/mira-work.png")
+const THEO_WORK: Texture2D = preload("res://assets/runtime/characters/theo-work.png")
+const FRAME_SIZE := Vector2(48.0, 80.0)
 
 # The source artwork is intentionally kept as one lossless sheet. Atlas regions let
 # the office and UI share the exact same character art without derivative PNGs.
@@ -36,3 +42,31 @@ static func bust_portrait(character_id: String) -> AtlasTexture:
 static func world_scale(character_id: String) -> float:
 	var region: Rect2 = PORTRAIT_REGIONS.get(character_id, PORTRAIT_REGIONS["founder"])
 	return float(WORLD_HEIGHTS.get(character_id, 64.0)) / region.size.y
+
+static func locomotion_sheet(character_id: String) -> Texture2D:
+	match character_id:
+		"mira":
+			return MIRA_LOCOMOTION
+		"theo":
+			return THEO_LOCOMOTION
+	return FOUNDER_LOCOMOTION
+
+static func work_sheet(character_id: String) -> Texture2D:
+	return THEO_WORK if character_id == "theo" else MIRA_WORK
+
+static func locomotion_region(direction: StringName, column: int) -> Rect2:
+	var row := 0
+	match direction:
+		&"back":
+			row = 1
+		&"left":
+			row = 2
+		&"right":
+			row = 3
+	return Rect2(Vector2(float(clampi(column, 0, 5)) * FRAME_SIZE.x, float(row) * FRAME_SIZE.y), FRAME_SIZE)
+
+static func work_region(row: int, column: int) -> Rect2:
+	return Rect2(
+		Vector2(float(clampi(column, 0, 7)) * FRAME_SIZE.x, float(clampi(row, 0, 3)) * FRAME_SIZE.y),
+		FRAME_SIZE
+	)

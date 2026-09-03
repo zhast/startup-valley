@@ -1,19 +1,24 @@
 class_name ResearchTable
 extends Node2D
 
-const RESEARCH_TEXTURE: Texture2D = preload("res://assets/runtime/office/research-bench.png")
-const RUNTIME_SCALE := 0.09
-const SPRITE_OFFSET := Vector2(0.0, -37.0)
+const SPRITE_OFFSET := Vector2(0.0, -40.0)
 
 func _ready() -> void:
 	z_as_relative = false
-	var sprite := Sprite2D.new()
-	sprite.name = "ResearchBenchSprite"
-	sprite.texture = RESEARCH_TEXTURE
-	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	sprite.scale = Vector2.ONE * RUNTIME_SCALE
-	sprite.position = SPRITE_OFFSET
-	add_child(sprite)
+	var rear := _furniture_layer("ResearchBenchRear", 0)
+	rear.z_as_relative = false
+	rear.z_index = z_index - 40
+	add_child(rear)
+	var front := _furniture_layer("ResearchBenchFront", 1)
+	front.z_as_relative = false
+	front.z_index = z_index + 1
+	add_child(front)
+	var ambient := OfficeAmbientOverlay.new()
+	ambient.name = "ResearchScan"
+	ambient.configure(2, Vector2(0.0, -62.0))
+	ambient.z_as_relative = false
+	ambient.z_index = z_index + 2
+	add_child(ambient)
 	var body := StaticBody2D.new()
 	body.name = "ResearchCollision"
 	body.collision_layer = 1
@@ -25,3 +30,13 @@ func _ready() -> void:
 	collision.shape = shape
 	body.add_child(collision)
 	add_child(body)
+
+func _furniture_layer(node_name: String, column: int) -> Sprite2D:
+	var sprite := Sprite2D.new()
+	sprite.name = node_name
+	sprite.texture = PolishArt.LAYERED_FURNITURE
+	sprite.region_enabled = true
+	sprite.region_rect = PolishArt.furniture_region(1, column)
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	sprite.position = SPRITE_OFFSET
+	return sprite
