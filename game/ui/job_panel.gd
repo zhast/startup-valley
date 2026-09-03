@@ -47,6 +47,7 @@ var _chat_pending: bool = false
 var _employee_name: Label
 var _employee_meta: Label
 var _employee_portrait: TextureRect
+var _team_count_label: Label
 var _tabs: TabContainer
 var _chat_log: RichTextLabel
 var _chat_input: LineEdit
@@ -89,13 +90,13 @@ func _ready() -> void:
 func _build_interface() -> void:
 	add_theme_stylebox_override("panel", _stylebox(CHARCOAL, VERMILION, 2, 10))
 	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 10)
-	margin.add_theme_constant_override("margin_right", 10)
+	margin.add_theme_constant_override("margin_left", 8)
+	margin.add_theme_constant_override("margin_right", 8)
 	margin.add_theme_constant_override("margin_top", 10)
 	margin.add_theme_constant_override("margin_bottom", 10)
 	add_child(margin)
 	var shell := HBoxContainer.new()
-	shell.add_theme_constant_override("separation", 10)
+	shell.add_theme_constant_override("separation", 8)
 	margin.add_child(shell)
 	shell.add_child(_build_team_rail())
 	var divider := VSeparator.new()
@@ -107,7 +108,7 @@ func _build_interface() -> void:
 
 func _build_team_rail() -> VBoxContainer:
 	var rail := VBoxContainer.new()
-	rail.custom_minimum_size = Vector2(82.0, 0.0)
+	rail.custom_minimum_size = Vector2(72.0, 0.0)
 	rail.add_theme_constant_override("separation", 8)
 	var brand := Label.new()
 	brand.text = "SV"
@@ -130,12 +131,12 @@ func _build_team_rail() -> VBoxContainer:
 	team_list.add_theme_constant_override("separation", 8)
 	team_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	team_scroll.add_child(team_list)
-	var hint := Label.new()
-	hint.text = "YOUR\nTEAM"
-	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	hint.add_theme_font_size_override("font_size", 9)
-	hint.add_theme_color_override("font_color", DUST)
-	rail.add_child(hint)
+	_team_count_label = Label.new()
+	_team_count_label.text = "NO\nHIRES"
+	_team_count_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_team_count_label.add_theme_font_size_override("font_size", 9)
+	_team_count_label.add_theme_color_override("font_color", DUST)
+	rail.add_child(_team_count_label)
 	return rail
 
 func _build_employee_drawer() -> VBoxContainer:
@@ -198,7 +199,7 @@ func _tab_scroll(name_value: String) -> ScrollContainer:
 
 func _tab_content(scroll: ScrollContainer) -> VBoxContainer:
 	var content := VBoxContainer.new()
-	content.custom_minimum_size = Vector2(334.0, 0.0)
+	content.custom_minimum_size = Vector2(304.0, 0.0)
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	content.add_theme_constant_override("separation", 8)
 	scroll.add_child(content)
@@ -342,10 +343,15 @@ func _build_journal_tab() -> ScrollContainer:
 	content.add_child(_last_status_label)
 	_approval_box = VBoxContainer.new()
 	_approval_box.visible = false
+	_approval_box.add_theme_constant_override("separation", 5)
+	var approval_heading := _section_label("ACTION REQUIRED")
+	approval_heading.add_theme_color_override("font_color", VERMILION)
+	_approval_box.add_child(approval_heading)
 	_approval_label = Label.new()
 	_approval_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_approval_box.add_child(_approval_label)
 	var approval_buttons := HBoxContainer.new()
+	approval_buttons.add_theme_constant_override("separation", 6)
 	var approve_button := Button.new()
 	approve_button.text = "Approve"
 	approve_button.pressed.connect(_decide_approval.bind(true))
@@ -360,10 +366,15 @@ func _build_journal_tab() -> ScrollContainer:
 	content.add_child(_approval_box)
 	_promotion_box = VBoxContainer.new()
 	_promotion_box.visible = false
+	_promotion_box.add_theme_constant_override("separation", 5)
+	var promotion_heading := _section_label("DELIVERY READY")
+	promotion_heading.add_theme_color_override("font_color", CHARTREUSE)
+	_promotion_box.add_child(promotion_heading)
 	_promotion_label = Label.new()
 	_promotion_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_promotion_box.add_child(_promotion_label)
 	var promotion_buttons := HBoxContainer.new()
+	promotion_buttons.add_theme_constant_override("separation", 6)
 	var promote_button := Button.new()
 	promote_button.text = "Add to studio"
 	promote_button.pressed.connect(_decide_promotion.bind(true))
@@ -455,6 +466,7 @@ func _style_action_button(button: Button, accent: Color, filled: bool) -> void:
 
 func _style_text_input(control: Control) -> void:
 	control.add_theme_color_override("font_color", OFF_WHITE)
+	control.add_theme_color_override("font_readonly_color", DUST)
 	control.add_theme_color_override("font_placeholder_color", Color("777777"))
 	control.add_theme_color_override("caret_color", VERMILION)
 	control.add_theme_stylebox_override("normal", _stylebox(Color("202020"), Color("484848"), 1, 5))
@@ -466,6 +478,7 @@ func _team_list() -> VBoxContainer:
 
 func configure_employees(records: Array[EmployeeRecord]) -> void:
 	_employees = records
+	_team_count_label.text = "%d\n%s" % [records.size(), "HIRE" if records.size() == 1 else "HIRES"]
 	var list := _team_list()
 	for child: Node in list.get_children():
 		child.queue_free()
@@ -517,10 +530,13 @@ func configure_employees(records: Array[EmployeeRecord]) -> void:
 		button.add_child(status_dot)
 		list.add_child(button)
 		_team_buttons[record.id] = button
+	_refresh_team_statuses()
 	_assign_button.disabled = records.is_empty() or not _active_job_id.is_empty()
 	if records.is_empty():
 		_selected_employee_id = ""
 		_refresh_employee_header()
+		_refresh_chat_mode()
+		_show_empty_chat()
 		return
 	var wanted := _selected_employee_id
 	if wanted.is_empty() or not _team_buttons.has(wanted):
@@ -565,8 +581,28 @@ func _refresh_employee_header() -> void:
 		return
 	_employee_name.text = employee.display_name
 	_employee_portrait.texture = CharacterArt.portrait(employee.id)
-	var activity := "working" if _active_employee_id == employee.id else "available"
+	var activity := "working" if _active_employee_id == employee.id else "at lunch" if _clock_phase == "lunch" else "off shift" if _clock_phase == "off" else "available"
 	_employee_meta.text = "%s\nMorale %d  ·  %s" % [_employee_specialty(employee.id), employee.morale, activity]
+
+func _refresh_team_statuses() -> void:
+	for employee_id: String in _team_buttons:
+		var button: Button = _team_buttons[employee_id]
+		var status_dot := button.get_node_or_null("StatusDot") as Label
+		if status_dot == null:
+			continue
+		var color := CHARTREUSE
+		var state := "available"
+		if employee_id == _active_employee_id and not _active_job_id.is_empty():
+			color = VERMILION if _active_job_running else CERULEAN
+			state = "working" if _active_job_running else "queued"
+		elif _clock_phase == "lunch":
+			color = VERMILION
+			state = "at lunch"
+		elif _clock_phase == "off":
+			color = DUST
+			state = "off shift"
+		status_dot.add_theme_color_override("font_color", color)
+		button.tooltip_text = "%s · %s" % [button.get_node("Name").text.capitalize(), state]
 
 func _employee_specialty(employee_id: String) -> String:
 	return "Product + research" if employee_id == "mira" else "Growth + operations"
@@ -611,7 +647,7 @@ func show_chat_reply(employee_id: String, message: Dictionary, daily_spend: floa
 		return
 	var employee := _selected_employee()
 	_append_chat_line("employee", employee.display_name, str(message.get("content", "")))
-	_status_label.text = "%s replied. Turn the idea into a work order when it is ready." % employee.display_name
+	_set_status("%s replied. Turn the idea into a work order when it is ready." % employee.display_name)
 
 func set_chat_failed(employee_id: String, message: String) -> void:
 	_chat_pending = false
@@ -726,7 +762,7 @@ func _cancel_active_job() -> void:
 	if _active_job_id.is_empty():
 		return
 	_cancel_button.disabled = true
-	_status_label.text = "Cancelling the active work order…"
+	_set_status("Cancelling the active work order…", VERMILION)
 	cancel_requested.emit(_active_job_id)
 
 func _submit_steer_text(_text: String) -> void:
@@ -742,7 +778,7 @@ func _submit_steer() -> void:
 		return
 	_steer_input.clear()
 	_steer_button.disabled = true
-	_status_label.text = "Sending update to the active work session…"
+	_set_status("Sending update to the active work session…", CERULEAN)
 	steer_submitted.emit(_active_job_id, message)
 
 func _on_job_selected(index: int) -> void:
@@ -768,24 +804,31 @@ func begin_job(job_id: String, employee_id: String = "") -> void:
 	_active_job_id = job_id
 	_active_employee_id = employee_id if not employee_id.is_empty() else _selected_employee_id
 	_active_job_running = false
+	_usage_label.text = "Tokens  0 in / 0 out  ·  cost $0.0000"
+	_event_log.clear()
+	_approval_job_id = ""
+	_approval_id = ""
+	_approval_box.visible = false
 	_assign_button.disabled = true
 	_assign_button.text = "One job at a time"
 	_cancel_button.disabled = false
 	_steer_box.visible = false
 	_steer_button.disabled = false
 	_steer_input.clear()
-	_status_label.text = "Submitting work order…"
+	_set_status("Submitting work order…", CERULEAN)
 	_tabs.current_tab = 2
 	_refresh_employee_header()
+	_refresh_team_statuses()
 	_refresh_chat_mode()
 
 func mark_job_queued(job_id: String) -> void:
 	if job_id != _active_job_id:
 		return
-	_status_label.text = "Queued. Work begins automatically during the next work window."
+	_set_status("Queued. Work begins automatically during the next work window.", CERULEAN)
 	_active_job_running = false
 	_assign_button.text = "Queued until work hours"
 	_steer_box.visible = false
+	_refresh_team_statuses()
 
 func restore_job(job_id: String, status: String, title: String, employee_id: String = "") -> void:
 	if status != "queued" and status != "running":
@@ -796,10 +839,11 @@ func restore_job(job_id: String, status: String, title: String, employee_id: Str
 	_assign_button.disabled = true
 	_cancel_button.disabled = false
 	_assign_button.text = "Queued until work hours" if status == "queued" else "One job at a time"
-	_status_label.text = "%s  ·  restored %s" % [title, status]
+	_set_status("%s  ·  restored %s" % [title, status], CERULEAN)
 	_steer_box.visible = status == "running"
 	_refresh_employee_header()
 	_refresh_chat_mode()
+	_refresh_team_statuses()
 
 func finish_job(job_id: String) -> void:
 	if job_id != _active_job_id:
@@ -807,6 +851,10 @@ func finish_job(job_id: String) -> void:
 	_active_job_id = ""
 	_active_employee_id = ""
 	_active_job_running = false
+	if _approval_job_id == job_id:
+		_approval_job_id = ""
+		_approval_id = ""
+		_approval_box.visible = false
 	_assign_button.disabled = _employees.is_empty()
 	_update_assign_copy()
 	_cancel_button.disabled = true
@@ -815,6 +863,7 @@ func finish_job(job_id: String) -> void:
 	_steer_input.clear()
 	_refresh_employee_header()
 	_refresh_chat_mode()
+	_refresh_team_statuses()
 
 func active_job_id() -> String:
 	return _active_job_id
@@ -831,7 +880,7 @@ func set_steer_sent(job_id: String) -> void:
 	_chat_pending = false
 	_steer_button.disabled = false
 	_refresh_chat_mode()
-	_status_label.text = "Update delivered to the same active work session."
+	_set_status("Update delivered to the same active work session.", CERULEAN)
 
 func set_steer_failed(job_id: String, message: String) -> void:
 	if job_id != _active_job_id:
@@ -852,15 +901,25 @@ func promotion_controls_fit_viewport() -> bool:
 		return false
 	return _promotion_box.get_global_rect().end.y <= get_viewport_rect().end.y
 
+func work_controls_fit_panel() -> bool:
+	return _key_input.get_global_rect().end.x <= get_global_rect().end.x \
+		and _assign_button.get_global_rect().end.x <= get_global_rect().end.x \
+		and _cancel_button.get_global_rect().end.x <= get_global_rect().end.x
+
+func status_color() -> Color:
+	return _status_label.get_theme_color("font_color")
+
 func set_worker_ready() -> void:
 	if _active_job_id.is_empty():
-		_status_label.text = "Worker connected. Chat with a teammate or assign work."
+		_set_status("Worker connected. Chat with a teammate or assign work.")
 
 func set_clock_phase(phase: String) -> void:
 	_clock_phase = phase
 	_update_assign_copy()
+	_refresh_employee_header()
+	_refresh_team_statuses()
 	if _active_job_id.is_empty() and phase != "work":
-		_status_label.text = "Lunch — new work queues until 13:30." if phase == "lunch" else "Off hours — new work queues until 08:00."
+		_set_status("Lunch — new work queues until 13:30." if phase == "lunch" else "Off hours — new work queues until 08:00.", VERMILION if phase == "lunch" else DUST)
 
 func _update_assign_copy() -> void:
 	if not _active_job_id.is_empty():
@@ -878,7 +937,7 @@ func set_credential_status(configured: bool) -> void:
 
 func set_credential_saved() -> void:
 	set_credential_status(true)
-	_status_label.text = "OpenRouter key saved."
+	_set_status("OpenRouter key saved.", CHARTREUSE)
 
 func set_spend(daily_spend: float, warning: float) -> void:
 	_spend_warning = warning
@@ -886,12 +945,14 @@ func set_spend(daily_spend: float, warning: float) -> void:
 	_spend_label.add_theme_color_override("font_color", VERMILION if daily_spend >= warning else DUST)
 
 func set_error(message: String) -> void:
-	_status_label.text = message
-	_status_label.add_theme_color_override("font_color", VERMILION)
+	_set_status(message, VERMILION)
 
 func set_info(message: String) -> void:
+	_set_status(message)
+
+func _set_status(message: String, color: Color = OFF_WHITE) -> void:
 	_status_label.text = message
-	_status_label.add_theme_color_override("font_color", OFF_WHITE)
+	_status_label.add_theme_color_override("font_color", color)
 
 func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 	var line := ""
@@ -900,18 +961,20 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 			mark_job_queued(job_id)
 			line = "[color=#fa4616]queued[/color] · %s" % _safe_bbcode(event.reason)
 		&"job.started":
-			_status_label.text = "Employee is walking to their desk."
+			_set_status("Employee is walking to their desk.", CHARTREUSE)
 			if job_id == _active_job_id:
 				_active_job_running = true
 				_steer_box.visible = true
 				_steer_button.disabled = false
 				_refresh_chat_mode()
+				_refresh_employee_header()
+				_refresh_team_statuses()
 			line = "[color=#c1fa81]job started[/color]"
 		&"agent.thinking":
-			_status_label.text = event.summary
+			_set_status(event.summary)
 			line = "thinking · %s" % _safe_bbcode(event.summary)
 		&"tool.started":
-			_status_label.text = event.label
+			_set_status(event.label, CERULEAN)
 			line = "[color=#6196c1]tool[/color] · %s" % _safe_bbcode(event.tool)
 		&"tool.completed":
 			line = "%s · %s" % [_safe_bbcode(event.tool), "done" if event.ok else "failed"]
@@ -921,6 +984,7 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 			_approval_label.text = event.action
 			_approval_box.visible = true
 			_tabs.current_tab = 2
+			_set_status("A decision is needed before work can continue.", VERMILION)
 			line = "[color=#fa4616]approval required[/color]"
 		&"artifact.created":
 			line = "[color=#c1fa81]delivery[/color] · %s" % _safe_bbcode(event.name)
@@ -928,15 +992,15 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 			_usage_label.text = "Tokens  %d in / %d out  ·  cost $%.4f" % [event.input_tokens, event.output_tokens, event.cost]
 			line = "usage · %d tokens · $%.4f" % [event.input_tokens + event.output_tokens, event.cost]
 		&"job.blocked":
-			_status_label.text = event.reason
+			_set_status(event.reason, VERMILION)
 			line = "[color=#fa4616]blocked[/color] · %s" % _safe_bbcode(event.reason)
 			finish_job(job_id)
 		&"job.completed":
-			_status_label.text = event.summary
+			_set_status(event.summary, CHARTREUSE)
 			line = "[color=#c1fa81]completed[/color]"
 			finish_job(job_id)
 		&"job.failed":
-			_status_label.text = event.error
+			_set_status(event.error, VERMILION)
 			line = "[color=#fa4616]failed[/color] · %s" % _safe_bbcode(event.error)
 			finish_job(job_id)
 	if not line.is_empty():
@@ -958,7 +1022,7 @@ func _decide_promotion(approved: bool) -> void:
 	_promotion_job_id = ""
 	promotion_decided.emit(job_id, approved)
 	_promotion_box.visible = false
-	_status_label.text = "Adding approved delivery to studio/…" if approved else "Delivery discarded."
+	_set_status("Adding approved delivery to studio/…" if approved else "Delivery discarded.", CHARTREUSE if approved else DUST)
 
 func show_pending_promotions(pending_promotions: Array) -> void:
 	if pending_promotions.is_empty():

@@ -42,7 +42,7 @@ offset_right = 650.0
 offset_bottom = 52.0
 theme_override_colors/font_color = Color(0.980, 0.275, 0.086, 1)
 theme_override_font_sizes/font_size = 20
-text = "STARTUP VALLEY  ·  GROWING STUDIO"
+text = "STARTUP VALLEY"
 
 [node name="TownHint" type="Label" parent="Interface"]
 offset_left = 34.0

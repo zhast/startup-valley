@@ -1,17 +1,22 @@
 class_name ArtifactViewer
-extends PanelContainer
+extends Control
 
 const VERMILION := Color("fa4616")
 const OFF_WHITE := Color("f1f1f1")
 const CHARCOAL := Color("151515")
 const CERULEAN := Color("6196c1")
+const CHARTREUSE := Color("c1fa81")
 const DUST := Color("b6b5b0")
 
 var _title_label: Label
 var _content: TextEdit
+var _close_button: Button
+var _modal: PanelContainer
 
 func _ready() -> void:
 	visible = false
+	_modal = $Modal
+	$Scrim.gui_input.connect(_on_scrim_input)
 	_build_interface()
 
 func _build_interface() -> void:
@@ -23,14 +28,14 @@ func _build_interface() -> void:
 	style.corner_radius_top_right = 12
 	style.corner_radius_bottom_left = 12
 	style.corner_radius_bottom_right = 12
-	add_theme_stylebox_override("panel", style)
+	_modal.add_theme_stylebox_override("panel", style)
 
 	var margin := MarginContainer.new()
 	margin.add_theme_constant_override("margin_left", 18)
 	margin.add_theme_constant_override("margin_right", 18)
 	margin.add_theme_constant_override("margin_top", 16)
 	margin.add_theme_constant_override("margin_bottom", 16)
-	add_child(margin)
+	_modal.add_child(margin)
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 10)
 	margin.add_child(column)
@@ -48,13 +53,14 @@ func _build_interface() -> void:
 	_title_label.add_theme_color_override("font_color", OFF_WHITE)
 	_title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(_title_label)
-	var close_button := Button.new()
-	close_button.text = "Close"
-	close_button.pressed.connect(hide)
-	close_button.add_theme_stylebox_override("normal", _stylebox(Color("252525"), CERULEAN, 1, 5))
-	close_button.add_theme_stylebox_override("hover", _stylebox(Color("303030"), CERULEAN, 2, 5))
-	close_button.add_theme_color_override("font_color", OFF_WHITE)
-	header.add_child(close_button)
+	_close_button = Button.new()
+	_close_button.text = "Close"
+	_close_button.pressed.connect(hide)
+	_close_button.add_theme_stylebox_override("normal", _stylebox(Color("252525"), CERULEAN, 1, 5))
+	_close_button.add_theme_stylebox_override("hover", _stylebox(Color("303030"), CERULEAN, 2, 5))
+	_close_button.add_theme_stylebox_override("focus", _stylebox(Color("202020"), CHARTREUSE, 2, 5))
+	_close_button.add_theme_color_override("font_color", OFF_WHITE)
+	header.add_child(_close_button)
 	var caption := Label.new()
 	caption.text = "DELIVERY PREVIEW  ·  READ ONLY"
 	caption.add_theme_font_size_override("font_size", 10)
@@ -67,6 +73,7 @@ func _build_interface() -> void:
 	_content.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_content.add_theme_font_size_override("font_size", 14)
 	_content.add_theme_color_override("font_color", OFF_WHITE)
+	_content.add_theme_color_override("font_readonly_color", OFF_WHITE)
 	_content.add_theme_color_override("caret_color", VERMILION)
 	_content.add_theme_stylebox_override("normal", _stylebox(Color("202020"), Color("484848"), 1, 6))
 	_content.add_theme_stylebox_override("read_only", _stylebox(Color("202020"), Color("484848"), 1, 6))
@@ -90,3 +97,21 @@ func show_artifact(name: String, content: String) -> void:
 	_content.scroll_vertical = 0
 	visible = true
 	move_to_front()
+	_close_button.grab_focus()
+
+func _on_scrim_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		hide()
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if visible and event.is_action_pressed("ui_cancel"):
+		hide()
+		get_viewport().set_input_as_handled()
+
+func modal_fits_viewport() -> bool:
+	var viewport_rect := get_viewport_rect()
+	var modal_rect := _modal.get_global_rect()
+	return viewport_rect.encloses(modal_rect)
+
+func scrim_covers_viewport() -> bool:
+	return $Scrim.get_global_rect().is_equal_approx(get_viewport_rect())

@@ -32,6 +32,7 @@ var _target_position: Vector2 = Vector2.ZERO
 var _arrival_state: WorkState = WorkState.IDLE
 var _has_target: bool = false
 var _typing_phase: float = 0.0
+var _motion_phase: float = 0.0
 var _idle_elapsed: float = 0.0
 var _idle_cooldown: float = 0.5
 var _idle_cycle: int = 0
@@ -133,6 +134,7 @@ func walk_to(target: Vector2, state: WorkState, arrival_state: WorkState = WorkS
 
 func _physics_process(delta: float) -> void:
 	if _has_target:
+		_motion_phase += delta * 10.0
 		position = position.move_toward(_target_position, walk_speed * delta)
 		if position.distance_to(_target_position) <= 0.5:
 			position = _target_position
@@ -148,8 +150,11 @@ func _physics_process(delta: float) -> void:
 		if _typing_phase >= 0.2:
 			_typing_phase = 0.0
 			queue_redraw()
+	elif _character_sprite != null and _has_target:
+		_character_sprite.position.y = -11.0 if int(_motion_phase) % 2 == 0 else -9.0
 	elif _character_sprite != null:
-		_character_sprite.position.y = -10.0
+		_motion_phase += delta
+		_character_sprite.position.y = -11.0 if fmod(_motion_phase, 2.4) > 2.15 else -10.0
 	if not has_live_job and schedule_phase == "work" and not _has_target:
 		_update_idle(delta)
 	z_index = int(position.y)
@@ -206,8 +211,12 @@ func state_label() -> String:
 func _draw() -> void:
 	draw_circle(Vector2(0.0, 18.0), 13.0, Color("15151566"))
 	if _speech_visible:
-		var speech := memory_line.left(46)
-		draw_string(ThemeDB.fallback_font, Vector2(-70.0, -46.0), speech, HORIZONTAL_ALIGNMENT_CENTER, 140.0, 10, Color("f1f1f1"))
+		var speech := memory_line.left(38)
+		var bubble := Rect2(-76.0, -72.0, 152.0, 25.0)
+		draw_rect(bubble, Color("151515f2"), true)
+		draw_rect(bubble, Color("fa4616"), false, 2.0)
+		draw_colored_polygon(PackedVector2Array([Vector2(-6.0, -47.0), Vector2(6.0, -47.0), Vector2(0.0, -40.0)]), Color("fa4616"))
+		draw_string(ThemeDB.fallback_font, Vector2(-70.0, -55.0), speech, HORIZONTAL_ALIGNMENT_CENTER, 140.0, 9, Color("f1f1f1"))
 	draw_string(ThemeDB.fallback_font, Vector2(-32.0, 38.0), display_name, HORIZONTAL_ALIGNMENT_CENTER, 64.0, 12, Color("f1f1f1"))
 	var state_color := Color("c1fa81")
 	if work_state == WorkState.WAITING_APPROVAL:

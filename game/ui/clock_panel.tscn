@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://ui/clock_panel.gd" id="1"]
 
 [node name="ClockPanel" type="PanelContainer"]
-offset_left = 474.0
+offset_left = 400.0
 offset_top = 10.0
-offset_right = 866.0
+offset_right = 792.0
 offset_bottom = 56.0
 script = ExtResource("1")

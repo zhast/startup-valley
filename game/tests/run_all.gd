@@ -33,6 +33,13 @@ func _run() -> void:
 	var founder_sprite := main.player.get_node_or_null("CharacterSprite") as Sprite2D
 	if founder_sprite == null or founder_sprite.texture == null:
 		_fail("test_character_art: the founder did not use the character sheet in the office")
+	if main.clock_panel.get_global_rect().end.x >= main.job_panel.get_global_rect().position.x:
+		_fail("test_ui_layout: the clock overlaps the employee drawer")
+	main.job_panel._tabs.current_tab = 1
+	await process_frame
+	if not main.job_panel.work_controls_fit_panel():
+		_fail("test_ui_layout: the work controls overflow the employee drawer")
+	main.job_panel._tabs.current_tab = 0
 	main.job_panel.select_employee("theo")
 	if main.job_panel.selected_employee_id() != "theo":
 		_fail("test_native_team_ui: the vertical team rail did not select Theo")
@@ -118,6 +125,11 @@ func _run() -> void:
 		_fail("test_persistent_boot: pending promotion was not restored")
 	if main.get_employee("mira").memory_line != "Outcome: restored durable note":
 		_fail("test_persistent_boot: employee memory was not restored")
+	main.artifact_viewer.show_artifact("design-note.md", "# Design note\n\nReadable delivery text.")
+	await process_frame
+	if not main.artifact_viewer.modal_fits_viewport() or not main.artifact_viewer.scrim_covers_viewport():
+		_fail("test_artifact_viewer: the modal or its scrim escaped the viewport")
+	main.artifact_viewer.hide()
 	main.day_clock.set_time(4, DayClock.WORK_START)
 	await process_frame
 	var scheduled_employee := main.get_employee("mira")
@@ -127,6 +139,10 @@ func _run() -> void:
 		_fail("test_day_clock: repeated work ticks reset the employee idle schedule")
 
 	main.job_panel.begin_job("steer-job")
+	if not main.job_panel.status_color().is_equal_approx(main.job_panel.CERULEAN):
+		_fail("test_ui_status: submitting work retained a stale error color")
+	if main.job_panel._event_log.get_parsed_text() != "" or not main.job_panel._usage_label.text.contains("0 in / 0 out"):
+		_fail("test_ui_status: a new work order retained stale activity or usage")
 	main._job_employees["steer-job"] = "mira"
 	var steer_started := WorkerEventRecord.new()
 	steer_started.type = &"job.started"
