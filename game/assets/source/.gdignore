@@ -1,0 +1,2 @@
+# ImageGen and pre-normalization masters live here for reproducible asset builds.
+# They are development inputs, not Godot runtime resources.
