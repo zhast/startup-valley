@@ -6,11 +6,6 @@ extends Node2D
 @export var sprite_offset: Vector2 = Vector2.ZERO
 @export var collision_size: Vector2 = Vector2(64.0, 24.0)
 @export var collision_offset: Vector2 = Vector2(0.0, -12.0)
-@export var chroma_key_enabled: bool = false
-@export var chroma_key_color: Color = Color(1.0, 0.0, 1.0, 1.0)
-@export_range(0.0, 1.0, 0.01) var chroma_tolerance: float = 0.24
-
-const CHROMA_SHADER: Shader = preload("res://props/chroma_key.gdshader")
 
 func _ready() -> void:
 	z_as_relative = false
@@ -20,12 +15,6 @@ func _ready() -> void:
 	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	sprite.scale = Vector2.ONE * runtime_scale
 	sprite.position = sprite_offset
-	if chroma_key_enabled:
-		var material := ShaderMaterial.new()
-		material.shader = CHROMA_SHADER
-		material.set_shader_parameter("key_color", Vector3(chroma_key_color.r, chroma_key_color.g, chroma_key_color.b))
-		material.set_shader_parameter("tolerance", chroma_tolerance)
-		sprite.material = material
 	add_child(sprite)
 
 	var body := StaticBody2D.new()

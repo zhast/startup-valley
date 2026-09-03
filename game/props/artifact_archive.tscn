@@ -10,5 +10,3 @@ runtime_scale = 0.088
 sprite_offset = Vector2(0, -29)
 collision_size = Vector2(100, 24)
 collision_offset = Vector2(0, -12)
-chroma_key_enabled = true
-chroma_tolerance = 0.28

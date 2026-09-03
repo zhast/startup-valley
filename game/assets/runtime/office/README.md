@@ -12,7 +12,7 @@ The runtime office is assembled in layers so moving characters can sort correctl
 - `prototype-bench.png` is the fourth-hire maker station.
 - `main-office-background.png` is retained only as the mature-office composition reference; it is no longer rendered by the game.
 
-The coffee, approval, archive, and prototype source plates use a uniform magenta production key because the image generator would not preserve a clean alpha channel. Their typed prop scenes apply `chroma_key.gdshader` at render time; the keyed color is never visible in game.
+The coffee, approval, archive, and prototype source plates were generated on uniform magenta production fields because the image generator would not preserve clean alpha. The checked-in runtime images were deterministically matte-converted to genuine transparency, so every prop scene now renders a normal alpha PNG without a special material.
 
 `TownRoom` scales the shell to the existing 26 × 18 logical grid, instantiates typed prop scenes from `res://data/town.json`, and covers unavailable wings with collidable renovation panels. Props and live characters receive absolute Z order from their world Y coordinate. A desk's work point is behind its anchor so the employee is visibly occluded by the desk while working.
 
