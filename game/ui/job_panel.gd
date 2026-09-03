@@ -67,6 +67,9 @@ var _rail_panel: Panel
 var _drawer_close_button: Button
 var _drawer_open: bool = false
 var _drawer_tween: Tween
+var _tab_tween: Tween
+var _status_tween: Tween
+var _waiting_elapsed: float = 0.0
 var _tabs: TabContainer
 var _chat_scroll: ScrollContainer
 var _chat_log: VBoxContainer
@@ -108,8 +111,17 @@ var _spend_warning: float = 5.0
 var _active_job_running: bool = false
 
 func _ready() -> void:
+	theme = GameFonts.interface_theme(14)
 	_build_interface()
 	_set_drawer_open(false, false)
+
+func _process(delta: float) -> void:
+	if not _chat_pending or _chat_send_button == null:
+		_waiting_elapsed = 0.0
+		return
+	_waiting_elapsed += delta
+	var dots := int(_waiting_elapsed * 4.0) % 3 + 1
+	_chat_send_button.text = ".".repeat(dots)
 
 func _build_interface() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -217,6 +229,7 @@ func _build_employee_drawer() -> VBoxContainer:
 	_employee_name = Label.new()
 	_employee_name.text = "Your team"
 	_employee_name.add_theme_font_size_override("font_size", 27)
+	GameFonts.use_display(_employee_name)
 	_employee_name.add_theme_color_override("font_color", CHARCOAL)
 	employee_copy.add_child(_employee_name)
 	_employee_meta = Label.new()
@@ -246,6 +259,7 @@ func _build_employee_drawer() -> VBoxContainer:
 	_tabs = TabContainer.new()
 	_tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_tabs.add_theme_font_size_override("font_size", 15)
+	GameFonts.use_display(_tabs)
 	_tabs.add_theme_color_override("font_selected_color", OFF_WHITE)
 	_tabs.add_theme_color_override("font_unselected_color", CHARCOAL)
 	_tabs.add_theme_stylebox_override("panel", NotebookSkin.wood_surface(Vector4(5.0, 5.0, 5.0, 5.0)))
@@ -580,6 +594,9 @@ func _section_label(text_value: String) -> Label:
 	return label
 
 func _style_action_button(button: Button, accent: Color, filled: bool) -> void:
+	GameFonts.use_display(button)
+	button.button_down.connect(_animate_button_press.bind(button, true))
+	button.button_up.connect(_animate_button_press.bind(button, false))
 	if filled and accent == VERMILION:
 		button.add_theme_stylebox_override("normal", NotebookSkin.selected_tab())
 		button.add_theme_stylebox_override("hover", NotebookSkin.texture_style(NotebookSkin.TAB_VERMILION, Vector4(10.0, 9.0, 10.0, 9.0), Vector4(19.0, 7.0, 19.0, 7.0), true, Color("fff0e8")))
@@ -613,6 +630,7 @@ func _style_action_button(button: Button, accent: Color, filled: bool) -> void:
 	button.add_theme_color_override("font_disabled_color", MUTED_INK)
 
 func _style_dropdown(option: OptionButton) -> void:
+	GameFonts.use_display(option)
 	option.add_theme_stylebox_override("normal", OperationsSkin.dropdown())
 	option.add_theme_stylebox_override("hover", OperationsSkin.dropdown())
 	option.add_theme_stylebox_override("pressed", OperationsSkin.dropdown_selected_row())
@@ -629,6 +647,7 @@ func _style_dropdown(option: OptionButton) -> void:
 	popup.add_theme_color_override("font_hover_color", CHARCOAL)
 
 func _style_close_button(button: Button) -> void:
+	GameFonts.use_display(button)
 	var empty := StyleBoxEmpty.new()
 	button.add_theme_stylebox_override("normal", empty)
 	button.add_theme_stylebox_override("hover", empty)
@@ -695,6 +714,15 @@ func _on_team_button_pressed(employee_id: String) -> void:
 
 func _on_tab_changed(_tab: int) -> void:
 	_refresh_employee_header()
+	if _tab_tween != null and _tab_tween.is_valid():
+		_tab_tween.kill()
+	var page := _tabs.get_current_tab_control()
+	if page == null:
+		return
+	page.modulate.a = 0.55
+	_tab_tween = create_tween()
+	_tab_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_tab_tween.tween_property(page, "modulate:a", 1.0, 0.14)
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if _drawer_open and event.is_action_pressed("ui_cancel"):
@@ -923,6 +951,7 @@ func _append_chat_line(sender: String, name_value: String, content: String) -> v
 	message_label.add_theme_color_override("font_color", CHARCOAL)
 	bubble_margin.add_child(message_label)
 	_chat_log.add_child(row)
+	_animate_entry(row, -7.0 if sender == "employee" else 7.0)
 	call_deferred("_scroll_chat_to_bottom")
 
 func _clear_chat() -> void:
@@ -943,6 +972,7 @@ func _show_chat_hint(message: String) -> void:
 	hint.add_theme_color_override("font_color", MUTED_INK)
 	hint_panel.add_child(hint)
 	_chat_log.add_child(hint_panel)
+	_animate_entry(hint_panel)
 
 func _scroll_chat_to_bottom() -> void:
 	if _chat_scroll != null:
@@ -1021,7 +1051,7 @@ func _refresh_chat_mode() -> void:
 	_chat_input.editable = has_employee and not _chat_pending and not chat_blocked
 	_chat_send_button.disabled = not has_employee or _chat_pending or chat_blocked
 	if _chat_pending:
-		_chat_send_button.text = "…"
+		_chat_send_button.text = "."
 		_chat_input.placeholder_text = "Waiting for a reply…"
 	elif selected_job_running:
 		_chat_send_button.text = "UPDATE"
@@ -1279,6 +1309,7 @@ func set_spend(daily_spend: float, warning: float) -> void:
 	_token_meter.value = clampf(daily_spend, 0.0, _token_meter.max_value)
 	_spend_label.text = "Today  $%.4f  · warning at $%.2f" % [daily_spend, warning]
 	_spend_label.add_theme_color_override("font_color", VERMILION if daily_spend >= warning else MUTED_INK)
+	_pulse_control(_token_meter, VERMILION if daily_spend >= warning else CERULEAN)
 
 func set_error(message: String) -> void:
 	_set_status(message, VERMILION)
@@ -1289,6 +1320,12 @@ func set_info(message: String) -> void:
 func _set_status(message: String, color: Color = CHARCOAL) -> void:
 	_status_label.text = message
 	_status_label.add_theme_color_override("font_color", color)
+	if _status_tween != null and _status_tween.is_valid():
+		_status_tween.kill()
+	_status_label.modulate.a = 0.45
+	_status_tween = create_tween()
+	_status_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_status_tween.tween_property(_status_label, "modulate:a", 1.0, 0.12)
 
 func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 	var line := ""
@@ -1319,6 +1356,7 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 			_approval_id = event.approval_id
 			_approval_label.text = event.action
 			_approval_box.visible = true
+			_reveal_control(_approval_box)
 			_tabs.current_tab = 2
 			_set_status("A decision is needed before work can continue.", VERMILION)
 			_refresh_team_statuses()
@@ -1357,6 +1395,7 @@ func offer_promotion(job_id: String, employee_id: String = "") -> void:
 	_attention_employee_id = employee_id
 	_promotion_label.text = "Add this delivery to the durable studio?"
 	_promotion_box.visible = true
+	_reveal_control(_promotion_box)
 	_tabs.current_tab = 2
 	_refresh_team_statuses()
 
@@ -1433,6 +1472,7 @@ func show_artifacts(job_id: String, artifacts: Array[ArtifactRecord]) -> void:
 		button.pressed.connect(_open_artifact.bind(job_id, artifact.relative_path))
 		_style_file_button(button)
 		_artifact_list.add_child(button)
+		_animate_entry(button)
 	_tabs.current_tab = 3
 
 func _open_artifact(job_id: String, relative_path: String) -> void:
@@ -1455,6 +1495,7 @@ func show_studio_files(files: Array[StudioFileRecord]) -> void:
 		button.pressed.connect(studio_open_requested.emit.bind(file.relative_path))
 		_style_file_button(button)
 		_artifact_list.add_child(button)
+		_animate_entry(button)
 
 func _clear_artifact_list() -> void:
 	for child: Node in _artifact_list.get_children():
@@ -1480,8 +1521,10 @@ func _add_empty_artifact(message: String) -> void:
 	empty.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	empty_row.add_child(empty)
 	_artifact_list.add_child(empty_panel)
+	_animate_entry(empty_panel)
 
 func _style_file_button(button: Button) -> void:
+	GameFonts.use_display(button)
 	button.custom_minimum_size.y = 50.0
 	button.add_theme_stylebox_override("normal", OperationsSkin.file_card())
 	button.add_theme_stylebox_override("hover", OperationsSkin.file_card(true))
@@ -1490,6 +1533,36 @@ func _style_file_button(button: Button) -> void:
 	button.add_theme_color_override("font_color", CHARCOAL)
 	button.add_theme_color_override("font_hover_color", CHARCOAL)
 	button.add_theme_color_override("font_pressed_color", CHARCOAL)
+	button.button_down.connect(_animate_button_press.bind(button, true))
+	button.button_up.connect(_animate_button_press.bind(button, false))
+
+func _animate_entry(control: Control, horizontal_offset: float = 0.0) -> void:
+	control.modulate.a = 0.0
+	control.position.x += horizontal_offset
+	var final_x := control.position.x - horizontal_offset
+	var tween := create_tween()
+	tween.set_parallel(true)
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(control, "modulate:a", 1.0, 0.14)
+	tween.tween_property(control, "position:x", final_x, 0.14)
+
+func _reveal_control(control: Control) -> void:
+	control.modulate.a = 0.0
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(control, "modulate:a", 1.0, 0.16)
+
+func _pulse_control(control: Control, color: Color) -> void:
+	control.self_modulate = color.lightened(0.35)
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(control, "self_modulate", Color.WHITE, 0.18)
+
+func _animate_button_press(button: Button, pressed: bool) -> void:
+	button.pivot_offset = button.size * 0.5
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(button, "scale", Vector2.ONE * (0.98 if pressed else 1.0), 0.07)
 
 func _configure_attachment_picker(files: Array[StudioFileRecord]) -> void:
 	var selected_path := ""

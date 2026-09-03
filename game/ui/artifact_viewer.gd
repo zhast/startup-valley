@@ -9,8 +9,10 @@ var _title_label: Label
 var _content: TextEdit
 var _close_button: Button
 var _modal: PanelContainer
+var _transition: Tween
 
 func _ready() -> void:
+	theme = GameFonts.interface_theme(14)
 	visible = false
 	_modal = $Modal
 	$Scrim.gui_input.connect(_on_scrim_input)
@@ -42,6 +44,7 @@ func _build_interface() -> void:
 	plate_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	plate_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	plate_label.add_theme_font_size_override("font_size", 12)
+	GameFonts.use_display(plate_label)
 	plate_label.add_theme_color_override("font_color", Color("f1f1f1"))
 	column.add_child(plate_label)
 
@@ -58,6 +61,7 @@ func _build_interface() -> void:
 	_title_label = Label.new()
 	_title_label.text = "Artifact"
 	_title_label.add_theme_font_size_override("font_size", 18)
+	GameFonts.use_display(_title_label)
 	_title_label.add_theme_color_override("font_color", CHARCOAL)
 	_title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_title_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -69,7 +73,7 @@ func _build_interface() -> void:
 	_close_button.expand_icon = true
 	_close_button.custom_minimum_size = Vector2(34.0, 34.0)
 	_close_button.tooltip_text = "Close delivery"
-	_close_button.pressed.connect(hide)
+	_close_button.pressed.connect(close_viewer)
 	var close_empty := StyleBoxEmpty.new()
 	_close_button.add_theme_stylebox_override("normal", close_empty)
 	_close_button.add_theme_stylebox_override("hover", close_empty)
@@ -79,6 +83,7 @@ func _build_interface() -> void:
 	var caption := Label.new()
 	caption.text = "DELIVERY PREVIEW  ·  READ ONLY"
 	caption.add_theme_font_size_override("font_size", 10)
+	GameFonts.use_display(caption)
 	caption.add_theme_color_override("font_color", MUTED_INK)
 	column.add_child(caption)
 
@@ -101,15 +106,45 @@ func show_artifact(name: String, content: String) -> void:
 	_content.scroll_vertical = 0
 	visible = true
 	move_to_front()
+	if _transition != null and _transition.is_valid():
+		_transition.kill()
+	$Scrim.modulate.a = 0.0
+	_modal.modulate.a = 0.0
+	_modal.pivot_offset = _modal.size * 0.5
+	_modal.scale = Vector2.ONE * 0.98
+	_transition = create_tween()
+	_transition.set_parallel(true)
+	_transition.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_transition.tween_property($Scrim, "modulate:a", 1.0, 0.16)
+	_transition.tween_property(_modal, "modulate:a", 1.0, 0.16)
+	_transition.tween_property(_modal, "scale", Vector2.ONE, 0.16)
 	_close_button.grab_focus()
+
+func close_viewer() -> void:
+	if not visible:
+		return
+	if _transition != null and _transition.is_valid():
+		_transition.kill()
+	_transition = create_tween()
+	_transition.set_parallel(true)
+	_transition.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	_transition.tween_property($Scrim, "modulate:a", 0.0, 0.12)
+	_transition.tween_property(_modal, "modulate:a", 0.0, 0.12)
+	_transition.tween_property(_modal, "scale", Vector2.ONE * 0.98, 0.12)
+	_transition.chain().tween_callback(func() -> void:
+		hide()
+		$Scrim.modulate.a = 1.0
+		_modal.modulate.a = 1.0
+		_modal.scale = Vector2.ONE
+	)
 
 func _on_scrim_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		hide()
+		close_viewer()
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if visible and event.is_action_pressed("ui_cancel"):
-		hide()
+		close_viewer()
 		get_viewport().set_input_as_handled()
 
 func modal_fits_viewport() -> bool:

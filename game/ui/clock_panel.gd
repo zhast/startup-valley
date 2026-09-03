@@ -14,6 +14,7 @@ var _earned_label: Label
 var _money_earned: float = 0.0
 
 func _ready() -> void:
+	theme = GameFonts.interface_theme(12)
 	var ledger := TextureRect.new()
 	ledger.name = "LedgerTexture"
 	ledger.texture = LEDGER_TEXTURE
@@ -36,6 +37,7 @@ func _ledger_label(text_value: String, rect: Rect2, color: Color, font_size: int
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.add_theme_font_size_override("font_size", font_size)
+	GameFonts.use_display(label)
 	label.add_theme_color_override("font_color", color)
 	label.add_theme_color_override("font_outline_color", PARCHMENT_LIGHT)
 	label.add_theme_constant_override("outline_size", 1)

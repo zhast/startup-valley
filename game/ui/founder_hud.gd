@@ -23,11 +23,15 @@ var _interaction_prompt: Control
 var _interaction_target_id: String = ""
 var _delivery_job_id: String = ""
 var _delivery_employee_id: String = ""
+var _notification_tween: Tween
+var _notification_rest_position: Vector2
 
 func _ready() -> void:
+	theme = GameFonts.interface_theme(12)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_build_title()
 	_build_notification()
+	_notification_rest_position = _notification.position
 	_build_interaction_prompt()
 	_build_movement_hint()
 
@@ -108,6 +112,7 @@ func _label(text_value: String, font_size: int, color: Color) -> Label:
 	label.text = text_value
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.add_theme_font_size_override("font_size", font_size)
+	GameFonts.use_display(label)
 	label.add_theme_color_override("font_color", color)
 	label.add_theme_color_override("font_outline_color", PARCHMENT_LIGHT)
 	label.add_theme_constant_override("outline_size", 1)
@@ -121,6 +126,7 @@ func _style_ink_button(button: Button, font_color: Color) -> void:
 	button.add_theme_stylebox_override("pressed", empty)
 	button.add_theme_stylebox_override("focus", empty)
 	button.add_theme_font_size_override("font_size", 11)
+	GameFonts.use_display(button)
 	button.add_theme_color_override("font_color", font_color)
 	button.add_theme_color_override("font_hover_color", INDIGO)
 	button.add_theme_color_override("font_pressed_color", CHARCOAL)
@@ -159,11 +165,22 @@ func show_delivery(job_id: String, employee_id: String, employee_name: String, d
 	_notification_heading.text = "%s FINISHED" % employee_name.to_upper()
 	_notification_detail.text = detail
 	_notification.visible = true
+	if _notification_tween != null and _notification_tween.is_valid():
+		_notification_tween.kill()
+	_notification.position = _notification_rest_position + Vector2(-12.0, 0.0)
+	_notification.modulate.a = 0.0
+	_notification_tween = create_tween()
+	_notification_tween.set_parallel(true)
+	_notification_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_notification_tween.tween_property(_notification, "position", _notification_rest_position, 0.16)
+	_notification_tween.tween_property(_notification, "modulate:a", 1.0, 0.16)
 
 func hide_delivery() -> void:
 	_delivery_job_id = ""
 	_delivery_employee_id = ""
 	_notification.visible = false
+	_notification.position = _notification_rest_position
+	_notification.modulate.a = 1.0
 
 func delivery_visible() -> bool:
 	return _notification.visible
