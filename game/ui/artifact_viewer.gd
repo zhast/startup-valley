@@ -6,13 +6,13 @@ const INDIGO := Color("354b98")
 const MUTED_INK := Color("725b46")
 
 var _title_label: Label
-var _content: TextEdit
+var _content: RichTextLabel
 var _close_button: Button
 var _modal: PanelContainer
 var _transition: Tween
 
 func _ready() -> void:
-	theme = GameFonts.interface_theme(14)
+	theme = GameFonts.interface_theme()
 	visible = false
 	_modal = $Modal
 	$Scrim.gui_input.connect(_on_scrim_input)
@@ -43,7 +43,7 @@ func _build_interface() -> void:
 	plate_label.custom_minimum_size.y = 25.0
 	plate_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	plate_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	plate_label.add_theme_font_size_override("font_size", 12)
+	plate_label.add_theme_font_size_override("font_size", GameFonts.DISPLAY_SMALL)
 	GameFonts.use_display(plate_label)
 	plate_label.add_theme_color_override("font_color", Color("f1f1f1"))
 	column.add_child(plate_label)
@@ -60,7 +60,7 @@ func _build_interface() -> void:
 	header.add_child(file_mark)
 	_title_label = Label.new()
 	_title_label.text = "Artifact"
-	_title_label.add_theme_font_size_override("font_size", 18)
+	_title_label.add_theme_font_size_override("font_size", GameFonts.DISPLAY_MEDIUM)
 	GameFonts.use_display(_title_label)
 	_title_label.add_theme_color_override("font_color", CHARCOAL)
 	_title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -71,7 +71,7 @@ func _build_interface() -> void:
 	_close_button.icon = OperationsSkin.CLOSE_BUTTON
 	_close_button.add_theme_constant_override("icon_max_width", 30)
 	_close_button.expand_icon = true
-	_close_button.custom_minimum_size = Vector2(34.0, 34.0)
+	_close_button.custom_minimum_size = Vector2(44.0, 44.0)
 	_close_button.tooltip_text = "Close delivery"
 	_close_button.pressed.connect(close_viewer)
 	var close_empty := StyleBoxEmpty.new()
@@ -82,28 +82,29 @@ func _build_interface() -> void:
 	header.add_child(_close_button)
 	var caption := Label.new()
 	caption.text = "DELIVERY PREVIEW  ·  READ ONLY"
-	caption.add_theme_font_size_override("font_size", 10)
-	GameFonts.use_display(caption)
-	caption.add_theme_color_override("font_color", MUTED_INK)
+	caption.add_theme_font_size_override("font_size", GameFonts.BODY_META)
+	GameFonts.use_body(caption)
+	caption.add_theme_color_override("font_color", CHARCOAL)
 	column.add_child(caption)
 
-	_content = TextEdit.new()
-	_content.editable = false
-	_content.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+	_content = RichTextLabel.new()
+	_content.bbcode_enabled = true
+	_content.fit_content = false
+	_content.scroll_active = true
+	_content.selection_enabled = true
 	_content.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_content.add_theme_font_size_override("font_size", 14)
-	_content.add_theme_color_override("font_color", CHARCOAL)
-	_content.add_theme_color_override("font_readonly_color", CHARCOAL)
-	_content.add_theme_color_override("caret_color", INDIGO)
+	_content.add_theme_font_size_override("normal_font_size", GameFonts.BODY_DEFAULT)
+	_content.add_theme_font_size_override("bold_font_size", GameFonts.BODY_DEFAULT)
+	_content.add_theme_font_size_override("italics_font_size", GameFonts.BODY_DEFAULT)
+	_content.add_theme_color_override("default_color", CHARCOAL)
 	_content.add_theme_stylebox_override("normal", OperationsSkin.artifact_paper())
-	_content.add_theme_stylebox_override("read_only", OperationsSkin.artifact_paper())
-	OperationsSkin.style_text_edit_scrollbar(_content)
+	OperationsSkin.style_rich_text_scrollbar(_content)
 	column.add_child(_content)
 
 func show_artifact(name: String, content: String) -> void:
 	_title_label.text = name
-	_content.text = content
-	_content.scroll_vertical = 0
+	_content.text = _markdown_to_bbcode(content)
+	_content.scroll_to_line(0)
 	visible = true
 	move_to_front()
 	if _transition != null and _transition.is_valid():
@@ -154,3 +155,28 @@ func modal_fits_viewport() -> bool:
 
 func scrim_covers_viewport() -> bool:
 	return $Scrim.get_global_rect().is_equal_approx(get_viewport_rect())
+
+func _markdown_to_bbcode(markdown: String) -> String:
+	var output: PackedStringArray = []
+	var in_code := false
+	for raw_line: String in markdown.replace("\r\n", "\n").split("\n"):
+		var line := raw_line.replace("[", "﹇").replace("]", "﹈")
+		if line.strip_edges().begins_with("```"):
+			output.append("[/bgcolor]" if in_code else "[bgcolor=#ead6aa]")
+			in_code = not in_code
+			continue
+		if in_code:
+			output.append("  %s" % line)
+		elif line.begins_with("### "):
+			output.append("[font_size=18][b]%s[/b][/font_size]" % line.trim_prefix("### "))
+		elif line.begins_with("## "):
+			output.append("[font_size=20][b]%s[/b][/font_size]" % line.trim_prefix("## "))
+		elif line.begins_with("# "):
+			output.append("[font_size=24][b]%s[/b][/font_size]" % line.trim_prefix("# "))
+		elif line.begins_with("- ") or line.begins_with("* "):
+			output.append("• %s" % line.substr(2))
+		else:
+			output.append(line.replace("**", ""))
+	if in_code:
+		output.append("[/bgcolor]")
+	return "\n".join(output)

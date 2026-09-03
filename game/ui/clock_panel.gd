@@ -3,6 +3,7 @@ extends Control
 
 const LEDGER_TEXTURE: Texture2D = preload("res://assets/runtime/ui/founders-ledger/ledger-hud-frame.png")
 const VERMILION := Color("fa4616")
+const ALERT_INK := Color("963014")
 const CHARCOAL := Color("151515")
 const INDIGO := Color("354b98")
 const CHARTREUSE := Color("c1fa81")
@@ -14,7 +15,7 @@ var _earned_label: Label
 var _money_earned: float = 0.0
 
 func _ready() -> void:
-	theme = GameFonts.interface_theme(12)
+	theme = GameFonts.interface_theme()
 	var ledger := TextureRect.new()
 	ledger.name = "LedgerTexture"
 	ledger.texture = LEDGER_TEXTURE
@@ -25,11 +26,11 @@ func _ready() -> void:
 	ledger.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(ledger)
 
-	_day_label = _ledger_label("DAY 1", Rect2(16.0, 11.0, 124.0, 46.0), VERMILION, 13)
-	_time_label = _ledger_label("08:00", Rect2(180.0, 11.0, 100.0, 46.0), INDIGO, 13)
-	_earned_label = _ledger_label("$0  EARNED", Rect2(294.0, 11.0, 98.0, 46.0), CHARCOAL, 11)
+	_day_label = _ledger_label("DAY 1", Rect2(16.0, 11.0, 124.0, 46.0), ALERT_INK, GameFonts.DISPLAY_SMALL)
+	_time_label = _ledger_label("08:00", Rect2(180.0, 11.0, 100.0, 46.0), INDIGO, GameFonts.DISPLAY_SMALL)
+	_earned_label = _ledger_label("$0  EARNED", Rect2(294.0, 11.0, 98.0, 46.0), CHARCOAL, GameFonts.BODY_META, false)
 
-func _ledger_label(text_value: String, rect: Rect2, color: Color, font_size: int) -> Label:
+func _ledger_label(text_value: String, rect: Rect2, color: Color, font_size: int, display: bool = true) -> Label:
 	var label := Label.new()
 	label.text = text_value
 	label.position = rect.position
@@ -37,7 +38,10 @@ func _ledger_label(text_value: String, rect: Rect2, color: Color, font_size: int
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.add_theme_font_size_override("font_size", font_size)
-	GameFonts.use_display(label)
+	if display:
+		GameFonts.use_display(label)
+	else:
+		GameFonts.use_body(label)
 	label.add_theme_color_override("font_color", color)
 	label.add_theme_color_override("font_outline_color", PARCHMENT_LIGHT)
 	label.add_theme_constant_override("outline_size", 1)

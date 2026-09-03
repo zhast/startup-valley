@@ -12,10 +12,6 @@ const INPUT_FRAME: Texture2D = preload("res://assets/runtime/ui/notebook/input-f
 const PORTRAIT_FRAME: Texture2D = preload("res://assets/runtime/ui/notebook/portrait-frame.png")
 const CONTENT_FRAME: Texture2D = preload("res://assets/runtime/ui/notebook/content-frame.png")
 const NAME_PLAQUE: Texture2D = preload("res://assets/runtime/ui/notebook/name-plaque.png")
-const TEAM_RAIL_EMPTY: Texture2D = preload("res://assets/runtime/ui/notebook/team-rail-empty.png")
-const TEAM_RAIL_MIRA: Texture2D = preload("res://assets/runtime/ui/notebook/team-rail-mira.png")
-const TEAM_RAIL_NONE: Texture2D = preload("res://assets/runtime/ui/notebook/team-rail-none.png")
-const TEAM_RAIL_THEO: Texture2D = preload("res://assets/runtime/ui/notebook/team-rail-theo.png")
 
 static func wood_surface(content: Vector4 = Vector4(10.0, 10.0, 10.0, 10.0)) -> StyleBoxTexture:
 	return texture_style(WOOD_FILL, Vector4(5.0, 5.0, 5.0, 5.0), content)
@@ -27,10 +23,10 @@ static func notebook(content: Vector4 = Vector4(18.0, 12.0, 10.0, 12.0)) -> Styl
 	return texture_style(NOTEBOOK_PAGE, Vector4(17.0, 10.0, 9.0, 10.0), content)
 
 static func wood_tab() -> StyleBoxTexture:
-	return texture_style(TAB_WOOD, Vector4(10.0, 9.0, 10.0, 9.0), Vector4(19.0, 7.0, 19.0, 7.0))
+	return texture_style(TAB_WOOD, Vector4(10.0, 9.0, 10.0, 9.0), Vector4(7.0, 7.0, 7.0, 7.0))
 
 static func selected_tab() -> StyleBoxTexture:
-	return texture_style(TAB_VERMILION, Vector4(10.0, 9.0, 10.0, 9.0), Vector4(19.0, 7.0, 19.0, 7.0))
+	return texture_style(TAB_VERMILION, Vector4(10.0, 9.0, 10.0, 9.0), Vector4(7.0, 7.0, 7.0, 7.0))
 
 static func indigo_button() -> StyleBoxTexture:
 	return texture_style(BUTTON_INDIGO, Vector4(13.0, 10.0, 13.0, 10.0), Vector4(14.0, 8.0, 14.0, 8.0))
@@ -46,12 +42,6 @@ static func content_frame() -> StyleBoxTexture:
 
 static func name_plaque() -> StyleBoxTexture:
 	return texture_style(NAME_PLAQUE, Vector4(8.0, 7.0, 8.0, 7.0), Vector4(8.0, 5.0, 8.0, 5.0))
-
-static func team_rail(employee_id: String, selected: bool, empty: bool = false) -> StyleBoxTexture:
-	var texture_value := TEAM_RAIL_EMPTY if empty else TEAM_RAIL_NONE
-	if selected:
-		texture_value = TEAM_RAIL_THEO if employee_id == "theo" else TEAM_RAIL_MIRA
-	return texture_style(texture_value, Vector4.ZERO, Vector4.ZERO)
 
 static func texture_style(
 	texture_value: Texture2D,

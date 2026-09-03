@@ -31,7 +31,7 @@ func _ready() -> void:
 	if OS.get_environment("STARTUP_VALLEY_NO_WORKER") != "1":
 		worker_client.start()
 	else:
-		job_panel.set_error("Deterministic test mode — worker disabled")
+		job_panel.set_worker_connection_error("Deterministic test mode — worker disabled")
 
 func _process(_delta: float) -> void:
 	founder_hud.update_interaction(
@@ -74,7 +74,7 @@ func _connect_signals() -> void:
 	job_panel.artifact_refresh_requested.connect(worker_client.request_artifacts)
 	job_panel.artifact_open_requested.connect(worker_client.read_artifact)
 	job_panel.studio_open_requested.connect(worker_client.read_studio_file)
-	job_panel.promotion_decided.connect(worker_client.promote_job)
+	job_panel.promotion_decided.connect(_on_promotion_decided)
 	founder_hud.chat_requested.connect(_on_hud_chat_requested)
 	founder_hud.delivery_requested.connect(_on_hud_delivery_requested)
 	day_clock.time_changed.connect(_on_clock_changed)
@@ -156,6 +156,8 @@ func _spawn_employees(records: Array[EmployeeRecord]) -> void:
 		employee_container.add_child(employee)
 		_employees[record.id] = employee
 	job_panel.configure_employees(records)
+	if records.is_empty():
+		founder_hud.hide_delivery()
 
 func _on_assignment_submitted(
 	employee_id: String,
@@ -248,6 +250,10 @@ func _on_hud_delivery_requested(_job_id: String, employee_id: String) -> void:
 	job_panel.open_journal_for_employee(employee_id)
 	founder_hud.hide_delivery()
 
+func _on_promotion_decided(job_id: String, approved: bool) -> void:
+	founder_hud.hide_delivery()
+	worker_client.promote_job(job_id, approved)
+
 func _on_clock_changed(day: int, minute_of_day: int, phase: String, speed: float) -> void:
 	clock_panel.show_clock(day, minute_of_day)
 	job_panel.set_clock_phase(phase)
@@ -263,7 +269,7 @@ func _on_worker_crashed(message: String) -> void:
 		event.type = &"job.failed"
 		event.error = "%s. The work order was marked failed and can be assigned again." % message
 		_on_job_event(active_job, event)
-	job_panel.set_error("%s. Restarting the worker once…" % message)
+	job_panel.set_worker_connection_error("%s. Restarting the worker once…" % message)
 
 func get_employee(employee_id: String) -> EmployeeAvatar:
 	return _employees.get(employee_id) as EmployeeAvatar

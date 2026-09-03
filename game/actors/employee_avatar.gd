@@ -283,25 +283,25 @@ func state_label() -> String:
 func _draw() -> void:
 	if _speech_visible:
 		var speech := memory_line if memory_line.length() <= 38 else "%s..." % memory_line.left(35)
-		draw_texture_rect(OperationsSkin.WORLD_SPEECH_BUBBLE, Rect2(-74.0, -105.0, 148.0, 73.0), false)
-		var speech_lines := _wrap_speech(speech, 23)
+		draw_texture_rect(OperationsSkin.WORLD_SPEECH_BUBBLE, Rect2(-86.0, -122.0, 172.0, 90.0), false)
+		var speech_lines := _wrap_speech(speech, 21)
 		for line_index: int in range(speech_lines.size()):
-			draw_string(GameFonts.BODY, Vector2(-62.0, -76.0 + line_index * 13.0), speech_lines[line_index], HORIZONTAL_ALIGNMENT_CENTER, 124.0, 9, Color("151515"))
+			draw_string(GameFonts.BODY, Vector2(-72.0, -86.0 + line_index * 18.0), speech_lines[line_index], HORIZONTAL_ALIGNMENT_CENTER, 144.0, GameFonts.BODY_META, Color("151515"))
 	if not _labels_visible():
 		return
-	draw_texture_rect(OperationsSkin.WORLD_NAMEPLATE, Rect2(-48.0, 9.0, 96.0, 30.0), false)
-	draw_string(GameFonts.DISPLAY, Vector2(-40.0, 29.0), display_name, HORIZONTAL_ALIGNMENT_CENTER, 80.0, 11, Color("151515"))
-	draw_texture_rect(OperationsSkin.WORLD_STATUS_PLAQUE, Rect2(-45.0, 35.0, 90.0, 25.0), false)
+	draw_texture_rect(OperationsSkin.WORLD_NAMEPLATE, Rect2(-58.0, 9.0, 116.0, 36.0), false)
+	draw_string(GameFonts.DISPLAY, Vector2(-50.0, 35.0), display_name, HORIZONTAL_ALIGNMENT_CENTER, 100.0, GameFonts.DISPLAY_SMALL, Color("151515"))
+	draw_texture_rect(OperationsSkin.WORLD_STATUS_PLAQUE, Rect2(-64.0, 42.0, 128.0, 31.0), false)
 	var state_color := Color("354b98")
 	if work_state == WorkState.WAITING_APPROVAL:
-		state_color = Color("fa4616")
+		state_color = Color("963014")
 	elif work_state == WorkState.OFF_SHIFT:
-		state_color = Color("b6b5b0")
+		state_color = Color("151515")
 	if work_state == WorkState.IDLE:
-		draw_texture_rect(OperationsSkin.WORLD_AVAILABLE, Rect2(-39.0, 41.0, 13.0, 13.0), false)
+		draw_texture_rect(OperationsSkin.WORLD_AVAILABLE, Rect2(-55.0, 49.0, 15.0, 15.0), false)
 	if work_state == WorkState.WAITING_APPROVAL:
 		draw_texture_rect(OperationsSkin.WORLD_ATTENTION, Rect2(34.0, 4.0, 20.0, 23.0), false)
-	draw_string(GameFonts.DISPLAY, Vector2(-28.0, 52.0), state_label(), HORIZONTAL_ALIGNMENT_CENTER, 60.0, 9, state_color)
+	draw_string(GameFonts.BODY, Vector2(-40.0, 64.0), state_label(), HORIZONTAL_ALIGNMENT_CENTER, 96.0, GameFonts.BODY_META, state_color)
 
 func _labels_visible() -> bool:
 	# Active work is already communicated by the authored pose and event VFX.
