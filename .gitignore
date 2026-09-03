@@ -7,6 +7,9 @@ harness/.startup-valley-live/
 game/.godot/
 game/tests/output/*
 !game/tests/output/.gdignore
+!game/tests/output/polish-audit/
+game/tests/output/polish-audit/*
+!game/tests/output/polish-audit/.gdignore
 
 .startup-valley-data/
 *.sqlite
