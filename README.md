@@ -2,17 +2,25 @@
 
 Startup Valley is a Godot office-town where AI employees perform real, bounded work through a constrained local TypeScript worker. The game renders the town and work activity; the worker owns SQLite state, Pi sessions, OpenRouter access, usage, approvals, and artifacts.
 
-The current vertical slice is a conversational, persistent studio. A compact
-Founder's Ledger HUD shows day, time, and money without covering the office. The
-native team rail opens a live employee drawer with Chat, Work, Journal, and
-Studio tabs; walking close to a teammate also reveals an `E · CHAT` prompt.
-Short chats with Mina or Theo are tool-free and persist across restart; the
-player's latest message can become a bounded work order. The player can also use
-canned assignments or write a freeform work order, optionally attaching one
-studio file as bounded read-only context. Finished scratch artifacts surface as
-a pinned memo and wait for an explicit Approve or Discard decision even after
-quit/reopen. Approved files appear in the durable studio browser, where they can
-be opened in-game and attached to later work.
+The current chapter starts with the founder alone. Hire Mina, build and evaluate
+a website, hire Theo, prepare an advertising experiment, and plan incorporation
+across three office days. Company cash, reputation, milestone reviews, and
+one-time rewards live in SQLite. Existing companies keep their hired employees.
+
+Click the floor to walk, click a person or desk to approach and interact, or use
+WASD/arrows. The founder desk (or **J**) opens Company Journey; **Escape** closes
+the top screen or opens pause/settings. The archive opens Studio, the approval
+console opens Activity, and employee desks open Assign. The right-hand rail is
+a shortcut to Chat, Assign, Activity, and Studio. Menus pause the office clock
+and movement, but real AI work can keep finishing.
+
+Chat is tool-free. **Create work order** drafts an editable assignment; **Start
+work order** authorizes tools/files and AI usage. Activity owns steering,
+approval and cancellation. Delivered files can be added to Studio or kept with
+their job. Milestone evaluation is a separate bounded, no-tools AI review;
+passing results require explicit completion, while weak results offer revision
+or a reduced-reward founder override. All revenue and filing fees are fictional
+game currency. Ads and incorporation are planning artifacts, not live actions.
 
 ## Requirements
 
@@ -66,6 +74,8 @@ cd harness && npm run eval:offline
 godot --headless --path game --import
 godot --headless --path game --script res://tools/validate_project.gd
 godot --headless --path game --script res://tests/run_all.gd
+godot --headless --fixed-fps 60 --path game --script res://tests/test_complete_game.gd
+godot --headless --path game --script res://tests/test_ui_flow_regressions.gd
 ```
 
 ## Repository map
@@ -77,3 +87,11 @@ godot --headless --path game --script res://tests/run_all.gd
 - `docs/`: architecture and dependency-upgrade guidance.
 
 See [the architecture](docs/GAME_ARCHITECTURE.md), [vertical-slice acceptance](dev/ACCEPTANCE.md), and [offline evaluation report](dev/eval/OFFLINE_REPORT.md). `npm run eval:live` is optional and makes a paid provider call, so run it only when explicitly requested.
+
+The [complete-game framework audit](dev/COMPLETE_GAME_FRAMEWORK.md) records the
+Journey protocol, backup behavior, test coverage, and visual evidence. The
+[paid playtest fixes and acceptance report](dev/LIVE_PLAYTEST_FIXES.md) records
+the latest live validation and remaining product-research questions.
+New Company requires confirmation and moves
+the previous database and project into a timestamped `backups/` directory inside
+the game's user-data folder; it never deletes the old company.
