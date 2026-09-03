@@ -18,9 +18,11 @@ and quest panels. These are concept references, not runtime assets.
 | B | Founder's Ledger | Softest, calmest, and most game-world space | Least distinctly technical |
 | C | Cozy Terminal | Strongest startup/technology identity | Darker and slightly less pastoral |
 
-Recommendation: use Option C as the system direction, while keeping Option B's
-restrained notification size. It best communicates that this is a technology
-company simulation without abandoning the cozy walnut-and-parchment language.
+Selected direction: **Option B — Founder's Ledger**. Its compact paper surfaces
+leave the office readable while matching the approved notebook team drawer.
+The production-ready, text-free component kit lives in
+`assets/runtime/ui/founders-ledger/`; its source masters and proof sheet live in
+`assets/concepts/ui/hud-options/option-b-components/`.
 
 ## Generation
 
