@@ -181,7 +181,7 @@ func _on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 	if event.type == &"job.completed":
 		worker_client.remember_job(job_id)
 		worker_client.request_artifacts(job_id)
-		job_panel.offer_promotion(job_id)
+		job_panel.offer_promotion(job_id, employee_id)
 
 func _on_artifact_content(_job_id: String, name: String, content: String) -> void:
 	artifact_viewer.show_artifact(name, content)

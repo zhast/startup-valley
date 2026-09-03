@@ -1,5 +1,5 @@
 class_name JobPanel
-extends PanelContainer
+extends Control
 
 signal key_submitted(key: String)
 signal chat_history_requested(employee_id: String)
@@ -21,6 +21,16 @@ const CERULEAN := Color("6196c1")
 const CHARTREUSE := Color("c1fa81")
 const DUST := Color("b6b5b0")
 const WHITE := Color("ffffff")
+const PARCHMENT := Color("f4ddb0")
+const PARCHMENT_LIGHT := Color("fff7e2")
+const PARCHMENT_DARK := Color("d8b879")
+const WOOD := Color("9b542d")
+const WOOD_DARK := Color("552c22")
+const WOOD_LIGHT := Color("de9550")
+const MUTED_INK := Color("725b46")
+const RAIL_WIDTH := 92.0
+const DRAWER_WIDTH := 390.0
+const DRAWER_GAP := 4.0
 
 const CANNED_JOBS := [
 	{
@@ -47,7 +57,14 @@ var _chat_pending: bool = false
 var _employee_name: Label
 var _employee_meta: Label
 var _employee_portrait: TextureRect
+var _header_icon: Label
 var _team_count_label: Label
+var _drawer_panel: PanelContainer
+var _rail_panel: PanelContainer
+var _drawer_close_button: Button
+var _studio_button: Button
+var _drawer_open: bool = false
+var _drawer_tween: Tween
 var _tabs: TabContainer
 var _chat_log: RichTextLabel
 var _chat_input: LineEdit
@@ -79,6 +96,7 @@ var _active_job_id: String = ""
 var _promotion_box: VBoxContainer
 var _promotion_label: Label
 var _promotion_job_id: String = ""
+var _attention_employee_id: String = ""
 var _clock_phase: String = "work"
 var _custom_mode: bool = false
 var _spend_warning: float = 5.0
@@ -86,41 +104,59 @@ var _active_job_running: bool = false
 
 func _ready() -> void:
 	_build_interface()
+	_set_drawer_open(false, false)
 
 func _build_interface() -> void:
-	add_theme_stylebox_override("panel", _stylebox(CHARCOAL, VERMILION, 2, 10))
-	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 8)
-	margin.add_theme_constant_override("margin_right", 8)
-	margin.add_theme_constant_override("margin_top", 10)
-	margin.add_theme_constant_override("margin_bottom", 10)
-	add_child(margin)
-	var shell := HBoxContainer.new()
-	shell.add_theme_constant_override("separation", 8)
-	margin.add_child(shell)
-	shell.add_child(_build_team_rail())
-	var divider := VSeparator.new()
-	divider.add_theme_color_override("separator", Color("383838"))
-	shell.add_child(divider)
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	clip_contents = false
+
+	_drawer_panel = PanelContainer.new()
+	_drawer_panel.name = "EmployeeDrawer"
+	_drawer_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	_drawer_panel.set_anchors_preset(Control.PRESET_LEFT_WIDE)
+	_drawer_panel.offset_right = DRAWER_WIDTH
+	_drawer_panel.add_theme_stylebox_override("panel", _stylebox(PARCHMENT, WOOD_DARK, 4, 3))
+	add_child(_drawer_panel)
+	var drawer_margin := MarginContainer.new()
+	drawer_margin.add_theme_constant_override("margin_left", 12)
+	drawer_margin.add_theme_constant_override("margin_right", 12)
+	drawer_margin.add_theme_constant_override("margin_top", 10)
+	drawer_margin.add_theme_constant_override("margin_bottom", 12)
+	_drawer_panel.add_child(drawer_margin)
 	var drawer := _build_employee_drawer()
 	drawer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	shell.add_child(drawer)
+	drawer_margin.add_child(drawer)
+
+	_rail_panel = PanelContainer.new()
+	_rail_panel.name = "TeamRail"
+	_rail_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	_rail_panel.set_anchors_preset(Control.PRESET_RIGHT_WIDE)
+	_rail_panel.offset_left = -RAIL_WIDTH
+	_rail_panel.add_theme_stylebox_override("panel", _stylebox(WOOD_DARK, WOOD_LIGHT, 4, 3))
+	add_child(_rail_panel)
+	var rail_margin := MarginContainer.new()
+	rail_margin.add_theme_constant_override("margin_left", 8)
+	rail_margin.add_theme_constant_override("margin_right", 8)
+	rail_margin.add_theme_constant_override("margin_top", 10)
+	rail_margin.add_theme_constant_override("margin_bottom", 10)
+	_rail_panel.add_child(rail_margin)
+	rail_margin.add_child(_build_team_rail())
 
 func _build_team_rail() -> VBoxContainer:
 	var rail := VBoxContainer.new()
-	rail.custom_minimum_size = Vector2(72.0, 0.0)
+	rail.custom_minimum_size = Vector2(68.0, 0.0)
 	rail.add_theme_constant_override("separation", 8)
 	var brand := Label.new()
 	brand.text = "SV"
 	brand.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	brand.add_theme_font_size_override("font_size", 22)
-	brand.add_theme_color_override("font_color", VERMILION)
+	brand.add_theme_color_override("font_color", OFF_WHITE)
 	rail.add_child(brand)
 	var caption := Label.new()
 	caption.text = "TEAM"
 	caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	caption.add_theme_font_size_override("font_size", 10)
-	caption.add_theme_color_override("font_color", DUST)
+	caption.add_theme_color_override("font_color", PARCHMENT_DARK)
 	rail.add_child(caption)
 	var team_scroll := ScrollContainer.new()
 	team_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -135,31 +171,59 @@ func _build_team_rail() -> VBoxContainer:
 	_team_count_label.text = "NO\nHIRES"
 	_team_count_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_team_count_label.add_theme_font_size_override("font_size", 9)
-	_team_count_label.add_theme_color_override("font_color", DUST)
+	_team_count_label.add_theme_color_override("font_color", PARCHMENT_DARK)
 	rail.add_child(_team_count_label)
+	_studio_button = Button.new()
+	_studio_button.name = "StudioButton"
+	_studio_button.text = "FILES"
+	_studio_button.tooltip_text = "Open the shared studio"
+	_studio_button.custom_minimum_size = Vector2(68.0, 42.0)
+	_studio_button.pressed.connect(_on_studio_pressed)
+	_style_rail_action(_studio_button)
+	rail.add_child(_studio_button)
 	return rail
 
 func _build_employee_drawer() -> VBoxContainer:
 	var drawer := VBoxContainer.new()
 	drawer.add_theme_constant_override("separation", 7)
+	var title_row := HBoxContainer.new()
+	drawer.add_child(title_row)
 	var eyebrow := Label.new()
-	eyebrow.text = "STARTUP VALLEY  /  TEAM DESK"
+	eyebrow.text = "TEAM DESK"
 	eyebrow.add_theme_font_size_override("font_size", 10)
-	eyebrow.add_theme_color_override("font_color", VERMILION)
-	drawer.add_child(eyebrow)
+	eyebrow.add_theme_color_override("font_color", WOOD_DARK)
+	eyebrow.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title_row.add_child(eyebrow)
+	_drawer_close_button = Button.new()
+	_drawer_close_button.text = "×"
+	_drawer_close_button.tooltip_text = "Close team drawer"
+	_drawer_close_button.custom_minimum_size = Vector2(30.0, 28.0)
+	_drawer_close_button.pressed.connect(close_drawer)
+	_style_action_button(_drawer_close_button, WOOD_DARK, false)
+	title_row.add_child(_drawer_close_button)
 	var employee_header := HBoxContainer.new()
 	employee_header.custom_minimum_size = Vector2(0.0, 72.0)
 	employee_header.add_theme_constant_override("separation", 10)
 	drawer.add_child(employee_header)
 	var portrait_frame := PanelContainer.new()
 	portrait_frame.custom_minimum_size = Vector2(66.0, 70.0)
-	portrait_frame.add_theme_stylebox_override("panel", _stylebox(Color("202020"), Color("484848"), 1, 7))
+	portrait_frame.add_theme_stylebox_override("panel", _stylebox(PARCHMENT_LIGHT, WOOD, 3, 2))
 	employee_header.add_child(portrait_frame)
 	_employee_portrait = TextureRect.new()
 	_employee_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_employee_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_employee_portrait.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	portrait_frame.add_child(_employee_portrait)
+	_header_icon = Label.new()
+	_header_icon.text = "▤"
+	_header_icon.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_header_icon.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_header_icon.add_theme_font_size_override("font_size", 28)
+	_header_icon.add_theme_color_override("font_color", INDIGO)
+	_header_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_header_icon.visible = false
+	_header_icon.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	portrait_frame.add_child(_header_icon)
 	var employee_copy := VBoxContainer.new()
 	employee_copy.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	employee_copy.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -167,26 +231,27 @@ func _build_employee_drawer() -> VBoxContainer:
 	_employee_name = Label.new()
 	_employee_name.text = "Your team"
 	_employee_name.add_theme_font_size_override("font_size", 21)
-	_employee_name.add_theme_color_override("font_color", OFF_WHITE)
+	_employee_name.add_theme_color_override("font_color", CHARCOAL)
 	employee_copy.add_child(_employee_name)
 	_employee_meta = Label.new()
 	_employee_meta.text = "Select an employee to start"
 	_employee_meta.add_theme_font_size_override("font_size", 11)
-	_employee_meta.add_theme_color_override("font_color", CHARTREUSE)
+	_employee_meta.add_theme_color_override("font_color", INDIGO)
 	_employee_meta.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	employee_copy.add_child(_employee_meta)
 	_tabs = TabContainer.new()
 	_tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_tabs.add_theme_color_override("font_selected_color", VERMILION)
-	_tabs.add_theme_color_override("font_unselected_color", DUST)
-	_tabs.add_theme_stylebox_override("panel", _stylebox(Color("1c1c1c"), Color("383838"), 1, 6))
-	_tabs.add_theme_stylebox_override("tab_selected", _stylebox(Color("2a211e"), VERMILION, 1, 5))
-	_tabs.add_theme_stylebox_override("tab_unselected", _stylebox(Color("202020"), Color("383838"), 1, 5))
+	_tabs.add_theme_color_override("font_selected_color", OFF_WHITE)
+	_tabs.add_theme_color_override("font_unselected_color", CHARCOAL)
+	_tabs.add_theme_stylebox_override("panel", _stylebox(PARCHMENT_LIGHT, WOOD, 2, 2))
+	_tabs.add_theme_stylebox_override("tab_selected", _stylebox(VERMILION, WOOD_DARK, 2, 2))
+	_tabs.add_theme_stylebox_override("tab_unselected", _stylebox(PARCHMENT_DARK, WOOD, 1, 2))
 	drawer.add_child(_tabs)
 	_tabs.add_child(_build_chat_tab())
 	_tabs.add_child(_build_work_tab())
 	_tabs.add_child(_build_journal_tab())
 	_tabs.add_child(_build_studio_tab())
+	_tabs.tab_changed.connect(_on_tab_changed)
 	return drawer
 
 func _tab_scroll(name_value: String) -> ScrollContainer:
@@ -199,7 +264,7 @@ func _tab_scroll(name_value: String) -> ScrollContainer:
 
 func _tab_content(scroll: ScrollContainer) -> VBoxContainer:
 	var content := VBoxContainer.new()
-	content.custom_minimum_size = Vector2(304.0, 0.0)
+	content.custom_minimum_size = Vector2(280.0, 0.0)
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	content.add_theme_constant_override("separation", 8)
 	scroll.add_child(content)
@@ -215,8 +280,9 @@ func _build_chat_tab() -> VBoxContainer:
 	_chat_log.scroll_active = true
 	_chat_log.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_chat_log.add_theme_font_size_override("normal_font_size", 13)
-	_chat_log.add_theme_stylebox_override("normal", _stylebox(Color("202020"), Color("383838"), 1, 6))
-	_chat_log.append_text("[color=#b6b5b0]Choose a teammate from the rail.[/color]")
+	_chat_log.add_theme_color_override("default_color", CHARCOAL)
+	_chat_log.add_theme_stylebox_override("normal", _stylebox(PARCHMENT_LIGHT, WOOD, 2, 2))
+	_chat_log.append_text("[color=#725b46]Choose a teammate from the rail.[/color]")
 	tab.add_child(_chat_log)
 	_make_job_button = Button.new()
 	_make_job_button.text = "Turn my last message into a work order →"
@@ -262,7 +328,7 @@ func _build_work_tab() -> ScrollContainer:
 	_key_status = Label.new()
 	_key_status.text = "Checking OS keychain…"
 	_key_status.add_theme_font_size_override("font_size", 10)
-	_key_status.add_theme_color_override("font_color", DUST)
+	_key_status.add_theme_color_override("font_color", MUTED_INK)
 	content.add_child(_key_status)
 	content.add_child(_section_label("WORK ORDER"))
 	_job_picker = OptionButton.new()
@@ -323,22 +389,22 @@ func _build_journal_tab() -> ScrollContainer:
 	_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_status_label.max_lines_visible = 5
 	_status_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	_status_label.add_theme_color_override("font_color", OFF_WHITE)
+	_status_label.add_theme_color_override("font_color", CHARCOAL)
 	content.add_child(_status_label)
 	_usage_label = Label.new()
 	_usage_label.text = "Tokens  0 in / 0 out  ·  cost $0.0000"
 	_usage_label.add_theme_font_size_override("font_size", 10)
-	_usage_label.add_theme_color_override("font_color", DUST)
+	_usage_label.add_theme_color_override("font_color", MUTED_INK)
 	content.add_child(_usage_label)
 	_spend_label = Label.new()
 	_spend_label.text = "Today  $0.0000"
 	_spend_label.add_theme_font_size_override("font_size", 10)
-	_spend_label.add_theme_color_override("font_color", DUST)
+	_spend_label.add_theme_color_override("font_color", MUTED_INK)
 	content.add_child(_spend_label)
 	_last_status_label = Label.new()
 	_last_status_label.text = "Last work order  ·  none yet"
 	_last_status_label.add_theme_font_size_override("font_size", 10)
-	_last_status_label.add_theme_color_override("font_color", DUST)
+	_last_status_label.add_theme_color_override("font_color", MUTED_INK)
 	_last_status_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	content.add_child(_last_status_label)
 	_approval_box = VBoxContainer.new()
@@ -349,6 +415,7 @@ func _build_journal_tab() -> ScrollContainer:
 	_approval_box.add_child(approval_heading)
 	_approval_label = Label.new()
 	_approval_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_approval_label.add_theme_color_override("font_color", CHARCOAL)
 	_approval_box.add_child(_approval_label)
 	var approval_buttons := HBoxContainer.new()
 	approval_buttons.add_theme_constant_override("separation", 6)
@@ -368,10 +435,11 @@ func _build_journal_tab() -> ScrollContainer:
 	_promotion_box.visible = false
 	_promotion_box.add_theme_constant_override("separation", 5)
 	var promotion_heading := _section_label("DELIVERY READY")
-	promotion_heading.add_theme_color_override("font_color", CHARTREUSE)
+	promotion_heading.add_theme_color_override("font_color", INDIGO)
 	_promotion_box.add_child(promotion_heading)
 	_promotion_label = Label.new()
 	_promotion_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_promotion_label.add_theme_color_override("font_color", CHARCOAL)
 	_promotion_box.add_child(_promotion_label)
 	var promotion_buttons := HBoxContainer.new()
 	promotion_buttons.add_theme_constant_override("separation", 6)
@@ -411,24 +479,25 @@ func _build_journal_tab() -> ScrollContainer:
 	_event_log.fit_content = false
 	_event_log.scroll_active = true
 	_event_log.custom_minimum_size = Vector2(0.0, 220.0)
-	_event_log.add_theme_stylebox_override("normal", _stylebox(Color("202020"), Color("383838"), 1, 6))
+	_event_log.add_theme_color_override("default_color", CHARCOAL)
+	_event_log.add_theme_stylebox_override("normal", _stylebox(PARCHMENT_LIGHT, WOOD, 2, 2))
 	content.add_child(_event_log)
 	return scroll
 
 func _build_studio_tab() -> ScrollContainer:
-	var scroll := _tab_scroll("Studio")
+	var scroll := _tab_scroll("Files")
 	var content := _tab_content(scroll)
 	var intro := Label.new()
 	intro.text = "Deliveries become durable only after you add them to the studio. Future employees can use approved files."
 	intro.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	intro.add_theme_color_override("font_color", DUST)
+	intro.add_theme_color_override("font_color", MUTED_INK)
 	content.add_child(intro)
 	_artifact_list = VBoxContainer.new()
 	_artifact_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	content.add_child(_artifact_list)
 	var empty := Label.new()
 	empty.text = "Approved files will appear here."
-	empty.add_theme_color_override("font_color", Color("777777"))
+	empty.add_theme_color_override("font_color", MUTED_INK)
 	_artifact_list.add_child(empty)
 	return scroll
 
@@ -452,26 +521,109 @@ func _stylebox(background: Color, border: Color, width: int, radius: int) -> Sty
 	return style
 
 func _style_action_button(button: Button, accent: Color, filled: bool) -> void:
-	var normal_background := accent if filled else Color("252525")
-	var normal_foreground := CHARCOAL if filled and accent == CHARTREUSE else WHITE if filled else OFF_WHITE
+	var normal_background := accent if filled else PARCHMENT_LIGHT
+	var normal_foreground := CHARCOAL if filled and accent == CHARTREUSE else WHITE if filled else CHARCOAL
 	button.add_theme_stylebox_override("normal", _stylebox(normal_background, accent, 1, 5))
 	button.add_theme_stylebox_override("hover", _stylebox(normal_background.lightened(0.09), accent.lightened(0.1), 1, 5))
 	button.add_theme_stylebox_override("pressed", _stylebox(normal_background.darkened(0.09), accent, 2, 5))
-	button.add_theme_stylebox_override("focus", _stylebox(Color("00000000"), CHARTREUSE, 2, 5))
-	button.add_theme_stylebox_override("disabled", _stylebox(Color("202020"), Color("484848"), 1, 5))
+	button.add_theme_stylebox_override("focus", _stylebox(PARCHMENT_LIGHT, VERMILION, 3, 4))
+	button.add_theme_stylebox_override("disabled", _stylebox(PARCHMENT_DARK, MUTED_INK, 1, 4))
 	button.add_theme_color_override("font_color", normal_foreground)
 	button.add_theme_color_override("font_hover_color", normal_foreground)
 	button.add_theme_color_override("font_pressed_color", normal_foreground)
-	button.add_theme_color_override("font_disabled_color", Color("777777"))
+	button.add_theme_color_override("font_disabled_color", MUTED_INK)
+
+func _style_rail_action(button: Button) -> void:
+	button.add_theme_stylebox_override("normal", _stylebox(PARCHMENT, WOOD_LIGHT, 2, 2))
+	button.add_theme_stylebox_override("hover", _stylebox(PARCHMENT_LIGHT, VERMILION, 3, 2))
+	button.add_theme_stylebox_override("pressed", _stylebox(PARCHMENT_DARK, VERMILION, 3, 2))
+	button.add_theme_stylebox_override("focus", _stylebox(PARCHMENT_LIGHT, CHARTREUSE, 3, 2))
+	button.add_theme_color_override("font_color", CHARCOAL)
+	button.add_theme_color_override("font_hover_color", CHARCOAL)
+	button.add_theme_color_override("font_pressed_color", CHARCOAL)
 
 func _style_text_input(control: Control) -> void:
-	control.add_theme_color_override("font_color", OFF_WHITE)
-	control.add_theme_color_override("font_readonly_color", DUST)
-	control.add_theme_color_override("font_placeholder_color", Color("777777"))
+	control.add_theme_color_override("font_color", CHARCOAL)
+	control.add_theme_color_override("font_readonly_color", MUTED_INK)
+	control.add_theme_color_override("font_placeholder_color", MUTED_INK)
 	control.add_theme_color_override("caret_color", VERMILION)
-	control.add_theme_stylebox_override("normal", _stylebox(Color("202020"), Color("484848"), 1, 5))
-	control.add_theme_stylebox_override("focus", _stylebox(Color("202020"), VERMILION, 2, 5))
-	control.add_theme_stylebox_override("read_only", _stylebox(Color("1b1b1b"), Color("383838"), 1, 5))
+	control.add_theme_stylebox_override("normal", _stylebox(PARCHMENT_LIGHT, WOOD, 2, 2))
+	control.add_theme_stylebox_override("focus", _stylebox(PARCHMENT_LIGHT, VERMILION, 3, 2))
+	control.add_theme_stylebox_override("read_only", _stylebox(PARCHMENT, PARCHMENT_DARK, 1, 2))
+
+func _set_drawer_open(open: bool, animated: bool = true) -> void:
+	_drawer_open = open
+	if _drawer_tween != null and _drawer_tween.is_valid():
+		_drawer_tween.kill()
+	var target_x := 0.0 if open else DRAWER_WIDTH + DRAWER_GAP
+	if open:
+		_drawer_panel.visible = true
+		_rail_panel.move_to_front()
+	if not animated:
+		_drawer_panel.position.x = target_x
+		_drawer_panel.visible = open
+		_refresh_team_card_styles()
+		_refresh_studio_button_style()
+		return
+	_drawer_tween = create_tween()
+	_drawer_tween.set_trans(Tween.TRANS_QUAD)
+	_drawer_tween.set_ease(Tween.EASE_OUT if open else Tween.EASE_IN)
+	_drawer_tween.tween_property(_drawer_panel, "position:x", target_x, 0.16)
+	if not open:
+		_drawer_tween.finished.connect(func() -> void:
+			if not _drawer_open:
+				_drawer_panel.visible = false
+		)
+	_refresh_team_card_styles()
+	_refresh_studio_button_style()
+
+func close_drawer(animated: bool = true) -> void:
+	_set_drawer_open(false, animated)
+
+func open_drawer(animated: bool = true) -> void:
+	_set_drawer_open(true, animated)
+
+func drawer_is_open() -> bool:
+	return _drawer_open
+
+func rail_global_rect() -> Rect2:
+	return _rail_panel.get_global_rect()
+
+func drawer_global_rect() -> Rect2:
+	return _drawer_panel.get_global_rect()
+
+func _on_team_button_pressed(employee_id: String) -> void:
+	var has_attention := employee_id == _attention_employee_id or (employee_id == _active_employee_id and not _approval_id.is_empty())
+	var target_tab := 2 if has_attention else 0
+	if _drawer_open and _selected_employee_id == employee_id and _tabs.current_tab == target_tab:
+		close_drawer()
+		return
+	_select_employee(employee_id)
+	_tabs.current_tab = target_tab
+	open_drawer()
+
+func _on_studio_pressed() -> void:
+	if _drawer_open and _tabs.current_tab == 3:
+		close_drawer()
+		return
+	_tabs.current_tab = 3
+	open_drawer()
+	_refresh_studio_button_style()
+
+func _on_tab_changed(_tab: int) -> void:
+	_refresh_studio_button_style()
+	_refresh_employee_header()
+
+func _refresh_studio_button_style() -> void:
+	if _studio_button == null:
+		return
+	var selected := _drawer_open and _tabs.current_tab == 3
+	_studio_button.add_theme_stylebox_override("normal", _stylebox(PARCHMENT_LIGHT if selected else PARCHMENT, VERMILION if selected else WOOD_LIGHT, 3 if selected else 2, 2))
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if _drawer_open and event.is_action_pressed("ui_cancel"):
+		close_drawer()
+		get_viewport().set_input_as_handled()
 
 func _team_list() -> VBoxContainer:
 	return find_child("TeamList", true, false) as VBoxContainer
@@ -487,9 +639,9 @@ func configure_employees(records: Array[EmployeeRecord]) -> void:
 		var button := Button.new()
 		button.text = ""
 		button.tooltip_text = "Talk with %s" % record.display_name
-		button.custom_minimum_size = Vector2(72.0, 88.0)
+		button.custom_minimum_size = Vector2(68.0, 92.0)
 		button.clip_contents = true
-		button.pressed.connect(select_employee.bind(record.id))
+		button.pressed.connect(_on_team_button_pressed.bind(record.id))
 		var portrait := TextureRect.new()
 		portrait.name = "Portrait"
 		portrait.texture = CharacterArt.portrait(record.id)
@@ -509,7 +661,7 @@ func configure_employees(records: Array[EmployeeRecord]) -> void:
 		name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		name_label.add_theme_font_size_override("font_size", 10)
-		name_label.add_theme_color_override("font_color", OFF_WHITE)
+		name_label.add_theme_color_override("font_color", CHARCOAL)
 		name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		name_label.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 		name_label.offset_top = -21.0
@@ -528,6 +680,22 @@ func configure_employees(records: Array[EmployeeRecord]) -> void:
 		status_dot.offset_right = -3.0
 		status_dot.offset_bottom = 17.0
 		button.add_child(status_dot)
+		var attention_badge := Label.new()
+		attention_badge.name = "AttentionBadge"
+		attention_badge.text = "!"
+		attention_badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		attention_badge.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		attention_badge.add_theme_font_size_override("font_size", 11)
+		attention_badge.add_theme_color_override("font_color", OFF_WHITE)
+		attention_badge.add_theme_stylebox_override("normal", _stylebox(VERMILION, WOOD_DARK, 2, 8))
+		attention_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		attention_badge.visible = false
+		attention_badge.set_anchors_preset(Control.PRESET_TOP_LEFT)
+		attention_badge.offset_left = 2.0
+		attention_badge.offset_top = 2.0
+		attention_badge.offset_right = 20.0
+		attention_badge.offset_bottom = 20.0
+		button.add_child(attention_badge)
 		list.add_child(button)
 		_team_buttons[record.id] = button
 	_refresh_team_statuses()
@@ -537,23 +705,24 @@ func configure_employees(records: Array[EmployeeRecord]) -> void:
 		_refresh_employee_header()
 		_refresh_chat_mode()
 		_show_empty_chat()
+		close_drawer(false)
 		return
 	var wanted := _selected_employee_id
 	if wanted.is_empty() or not _team_buttons.has(wanted):
 		wanted = records[0].id
-	select_employee(wanted)
+	_select_employee(wanted)
+	close_drawer(false)
 
 func select_employee(employee_id: String) -> void:
+	_select_employee(employee_id)
+	open_drawer(false)
+
+func _select_employee(employee_id: String) -> void:
 	if not _team_buttons.has(employee_id):
 		return
 	_selected_employee_id = employee_id
-	for id: String in _team_buttons:
-		var button: Button = _team_buttons[id]
-		var selected := id == employee_id
-		button.add_theme_stylebox_override("normal", _stylebox(Color("2a211e") if selected else Color("252525"), VERMILION if selected else Color("484848"), 2 if selected else 1, 6))
-		button.add_theme_stylebox_override("hover", _stylebox(Color("342723") if selected else Color("303030"), VERMILION if selected else CERULEAN, 2 if selected else 1, 6))
-		button.add_theme_stylebox_override("pressed", _stylebox(Color("211a18"), VERMILION, 2, 6))
-		button.add_theme_stylebox_override("focus", _stylebox(Color("00000000"), CHARTREUSE, 2, 6))
+	_refresh_team_card_styles()
+	_refresh_studio_button_style()
 	if not _custom_mode and _job_picker != null:
 		for index: int in range(CANNED_JOBS.size()):
 			var job: Dictionary = CANNED_JOBS[index]
@@ -566,6 +735,15 @@ func select_employee(employee_id: String) -> void:
 	_show_empty_chat()
 	chat_history_requested.emit(employee_id)
 
+func _refresh_team_card_styles() -> void:
+	for id: String in _team_buttons:
+		var button: Button = _team_buttons[id]
+		var selected := id == _selected_employee_id and _drawer_open
+		button.add_theme_stylebox_override("normal", _stylebox(PARCHMENT_LIGHT if selected else PARCHMENT, VERMILION if selected else WOOD_LIGHT, 3 if selected else 2, 2))
+		button.add_theme_stylebox_override("hover", _stylebox(PARCHMENT_LIGHT, VERMILION, 3, 2))
+		button.add_theme_stylebox_override("pressed", _stylebox(PARCHMENT_DARK, VERMILION, 3, 2))
+		button.add_theme_stylebox_override("focus", _stylebox(PARCHMENT_LIGHT, CHARTREUSE, 3, 2))
+
 func _selected_employee() -> EmployeeRecord:
 	for record: EmployeeRecord in _employees:
 		if record.id == _selected_employee_id:
@@ -573,14 +751,22 @@ func _selected_employee() -> EmployeeRecord:
 	return null
 
 func _refresh_employee_header() -> void:
+	if _tabs != null and _tabs.current_tab == 3:
+		_employee_name.text = "Studio"
+		_employee_meta.text = "Approved deliveries\nShared across your team"
+		_employee_portrait.texture = null
+		_header_icon.visible = true
+		return
 	var employee := _selected_employee()
 	if employee == null:
 		_employee_name.text = "Your team"
 		_employee_meta.text = "No employee selected"
 		_employee_portrait.texture = null
+		_header_icon.visible = false
 		return
 	_employee_name.text = employee.display_name
 	_employee_portrait.texture = CharacterArt.portrait(employee.id)
+	_header_icon.visible = false
 	var activity := "working" if _active_employee_id == employee.id else "at lunch" if _clock_phase == "lunch" else "off shift" if _clock_phase == "off" else "available"
 	_employee_meta.text = "%s\nMorale %d  ·  %s" % [_employee_specialty(employee.id), employee.morale, activity]
 
@@ -588,6 +774,7 @@ func _refresh_team_statuses() -> void:
 	for employee_id: String in _team_buttons:
 		var button: Button = _team_buttons[employee_id]
 		var status_dot := button.get_node_or_null("StatusDot") as Label
+		var attention_badge := button.get_node_or_null("AttentionBadge") as Label
 		if status_dot == null:
 			continue
 		var color := CHARTREUSE
@@ -603,6 +790,8 @@ func _refresh_team_statuses() -> void:
 			state = "off shift"
 		status_dot.add_theme_color_override("font_color", color)
 		button.tooltip_text = "%s · %s" % [button.get_node("Name").text.capitalize(), state]
+		if attention_badge != null:
+			attention_badge.visible = (employee_id == _active_employee_id and not _approval_id.is_empty()) or employee_id == _attention_employee_id
 
 func _employee_specialty(employee_id: String) -> String:
 	return "Product + research" if employee_id == "mira" else "Growth + operations"
@@ -614,13 +803,13 @@ func _show_empty_chat() -> void:
 	_chat_log.clear()
 	var employee := _selected_employee()
 	if employee == null:
-		_chat_log.append_text("[color=#b6b5b0]Choose a teammate from the rail.[/color]")
+		_chat_log.append_text("[color=#725b46]Choose a teammate from the rail.[/color]")
 		return
 	var greeting := "What are we building? Talk it through with me, then turn it into a work order." if employee.id == "mira" else "What should we test or grow? We can sharpen the idea before assigning it."
 	_append_chat_line("employee", employee.display_name, greeting)
 
 func _append_chat_line(sender: String, name_value: String, content: String) -> void:
-	var color := "#c1fa81" if sender == "employee" else "#fa4616"
+	var color := "#354b98" if sender == "employee" else "#fa4616"
 	_chat_log.append_text("[color=%s][b]%s[/b][/color]\n%s\n\n" % [color, _safe_bbcode(name_value), _safe_bbcode(content)])
 	_chat_log.scroll_to_line(maxi(0, _chat_log.get_line_count() - 1))
 
@@ -820,6 +1009,7 @@ func begin_job(job_id: String, employee_id: String = "") -> void:
 	_refresh_employee_header()
 	_refresh_team_statuses()
 	_refresh_chat_mode()
+	close_drawer()
 
 func mark_job_queued(job_id: String) -> void:
 	if job_id != _active_job_id:
@@ -902,9 +1092,10 @@ func promotion_controls_fit_viewport() -> bool:
 	return _promotion_box.get_global_rect().end.y <= get_viewport_rect().end.y
 
 func work_controls_fit_panel() -> bool:
-	return _key_input.get_global_rect().end.x <= get_global_rect().end.x \
-		and _assign_button.get_global_rect().end.x <= get_global_rect().end.x \
-		and _cancel_button.get_global_rect().end.x <= get_global_rect().end.x
+	var drawer_rect := _drawer_panel.get_global_rect()
+	return _key_input.get_global_rect().end.x <= drawer_rect.end.x \
+		and _assign_button.get_global_rect().end.x <= drawer_rect.end.x \
+		and _cancel_button.get_global_rect().end.x <= drawer_rect.end.x
 
 func status_color() -> Color:
 	return _status_label.get_theme_color("font_color")
@@ -919,7 +1110,7 @@ func set_clock_phase(phase: String) -> void:
 	_refresh_employee_header()
 	_refresh_team_statuses()
 	if _active_job_id.is_empty() and phase != "work":
-		_set_status("Lunch — new work queues until 13:30." if phase == "lunch" else "Off hours — new work queues until 08:00.", VERMILION if phase == "lunch" else DUST)
+		_set_status("Lunch — new work queues until 13:30." if phase == "lunch" else "Off hours — new work queues until 08:00.", VERMILION if phase == "lunch" else MUTED_INK)
 
 func _update_assign_copy() -> void:
 	if not _active_job_id.is_empty():
@@ -933,16 +1124,16 @@ func _update_assign_copy() -> void:
 
 func set_credential_status(configured: bool) -> void:
 	_key_status.text = "Ready — key stored in OS keychain" if configured else "Add a key to chat or run work"
-	_key_status.add_theme_color_override("font_color", CHARTREUSE if configured else VERMILION)
+	_key_status.add_theme_color_override("font_color", INDIGO if configured else VERMILION)
 
 func set_credential_saved() -> void:
 	set_credential_status(true)
-	_set_status("OpenRouter key saved.", CHARTREUSE)
+	_set_status("OpenRouter key saved.", INDIGO)
 
 func set_spend(daily_spend: float, warning: float) -> void:
 	_spend_warning = warning
 	_spend_label.text = "Today  $%.4f  · warning at $%.2f" % [daily_spend, warning]
-	_spend_label.add_theme_color_override("font_color", VERMILION if daily_spend >= warning else DUST)
+	_spend_label.add_theme_color_override("font_color", VERMILION if daily_spend >= warning else MUTED_INK)
 
 func set_error(message: String) -> void:
 	_set_status(message, VERMILION)
@@ -950,7 +1141,7 @@ func set_error(message: String) -> void:
 func set_info(message: String) -> void:
 	_set_status(message)
 
-func _set_status(message: String, color: Color = OFF_WHITE) -> void:
+func _set_status(message: String, color: Color = CHARCOAL) -> void:
 	_status_label.text = message
 	_status_label.add_theme_color_override("font_color", color)
 
@@ -961,7 +1152,7 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 			mark_job_queued(job_id)
 			line = "[color=#fa4616]queued[/color] · %s" % _safe_bbcode(event.reason)
 		&"job.started":
-			_set_status("Employee is walking to their desk.", CHARTREUSE)
+			_set_status("Employee is walking to their desk.", INDIGO)
 			if job_id == _active_job_id:
 				_active_job_running = true
 				_steer_box.visible = true
@@ -969,7 +1160,7 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 				_refresh_chat_mode()
 				_refresh_employee_header()
 				_refresh_team_statuses()
-			line = "[color=#c1fa81]job started[/color]"
+			line = "[color=#354b98]job started[/color]"
 		&"agent.thinking":
 			_set_status(event.summary)
 			line = "thinking · %s" % _safe_bbcode(event.summary)
@@ -985,9 +1176,10 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 			_approval_box.visible = true
 			_tabs.current_tab = 2
 			_set_status("A decision is needed before work can continue.", VERMILION)
+			_refresh_team_statuses()
 			line = "[color=#fa4616]approval required[/color]"
 		&"artifact.created":
-			line = "[color=#c1fa81]delivery[/color] · %s" % _safe_bbcode(event.name)
+			line = "[color=#354b98]delivery[/color] · %s" % _safe_bbcode(event.name)
 		&"usage.updated":
 			_usage_label.text = "Tokens  %d in / %d out  ·  cost $%.4f" % [event.input_tokens, event.output_tokens, event.cost]
 			line = "usage · %d tokens · $%.4f" % [event.input_tokens + event.output_tokens, event.cost]
@@ -996,8 +1188,8 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 			line = "[color=#fa4616]blocked[/color] · %s" % _safe_bbcode(event.reason)
 			finish_job(job_id)
 		&"job.completed":
-			_set_status(event.summary, CHARTREUSE)
-			line = "[color=#c1fa81]completed[/color]"
+			_set_status(event.summary, INDIGO)
+			line = "[color=#354b98]completed[/color]"
 			finish_job(job_id)
 		&"job.failed":
 			_set_status(event.error, VERMILION)
@@ -1010,24 +1202,33 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 func _decide_approval(approved: bool) -> void:
 	approval_decided.emit(_approval_job_id, _approval_id, approved)
 	_approval_box.visible = false
+	_approval_job_id = ""
+	_approval_id = ""
+	_refresh_team_statuses()
 
-func offer_promotion(job_id: String) -> void:
+func offer_promotion(job_id: String, employee_id: String = "") -> void:
 	_promotion_job_id = job_id
+	_attention_employee_id = employee_id
 	_promotion_label.text = "Add this delivery to the durable studio?"
 	_promotion_box.visible = true
 	_tabs.current_tab = 2
+	_refresh_team_statuses()
 
 func _decide_promotion(approved: bool) -> void:
 	var job_id := _promotion_job_id
 	_promotion_job_id = ""
+	_attention_employee_id = ""
 	promotion_decided.emit(job_id, approved)
 	_promotion_box.visible = false
+	_refresh_team_statuses()
 	_set_status("Adding approved delivery to studio/…" if approved else "Delivery discarded.", CHARTREUSE if approved else DUST)
 
 func show_pending_promotions(pending_promotions: Array) -> void:
 	if pending_promotions.is_empty():
 		_promotion_job_id = ""
+		_attention_employee_id = ""
 		_promotion_box.visible = false
+		_refresh_team_statuses()
 		return
 	var candidate_value: Variant = pending_promotions[0]
 	if not candidate_value is Dictionary:
@@ -1043,12 +1244,20 @@ func show_pending_promotions(pending_promotions: Array) -> void:
 			if artifact_value is Dictionary:
 				artifact_names.append(str((artifact_value as Dictionary).get("name", "artifact")))
 	_promotion_job_id = job_id
+	_attention_employee_id = _employee_id_for_name(str(candidate.get("employeeName", "")))
 	_promotion_label.text = "%s finished “%s”. Add to studio or discard: %s" % [
 		str(candidate.get("employeeName", "Employee")),
 		str(candidate.get("title", "Work order")),
 		", ".join(artifact_names) if not artifact_names.is_empty() else "completed artifacts",
 	]
 	_promotion_box.visible = true
+	_refresh_team_statuses()
+
+func _employee_id_for_name(display_name: String) -> String:
+	for employee: EmployeeRecord in _employees:
+		if employee.display_name == display_name:
+			return employee.id
+	return ""
 
 func pending_promotion_job_id() -> String:
 	return _promotion_job_id
@@ -1103,7 +1312,7 @@ func _add_empty_artifact(message: String) -> void:
 	var empty := Label.new()
 	empty.text = message
 	empty.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	empty.add_theme_color_override("font_color", DUST)
+	empty.add_theme_color_override("font_color", MUTED_INK)
 	_artifact_list.add_child(empty)
 
 func _configure_attachment_picker(files: Array[StudioFileRecord]) -> void:

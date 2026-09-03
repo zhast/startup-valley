@@ -35,6 +35,10 @@ func _capture_office_stages() -> void:
 	main.job_panel.visible = true
 	main.clock_panel.visible = true
 	main.job_panel.set_credential_status(true)
+	main.job_panel.close_drawer(false)
+	await _settle()
+	if not await _capture("ui-team-rail"):
+		return
 	main.job_panel.select_employee("mira")
 	main.job_panel.show_chat_history("mira", [
 		{"sender": "player", "content": "Can you turn customer interviews into the smallest useful launch plan?"},
@@ -74,6 +78,8 @@ func _capture_office_stages() -> void:
 	usage.output_tokens = 614
 	usage.cost = 0.0198
 	main.job_panel.on_job_event("review-job", usage)
+	main.job_panel.select_employee("mira")
+	main.job_panel._tabs.current_tab = 2
 	await _settle()
 	if not await _capture("ui-journal-active"):
 		return
@@ -129,6 +135,7 @@ func _capture_office_stages() -> void:
 	main._spawn_employees(employees)
 	main.room.set_hire_count(2)
 	main.day_clock.set_time(1, DayClock.WORK_END)
+	main.job_panel.select_employee("mira")
 	main.job_panel._tabs.current_tab = 1
 	await _settle()
 	if not await _capture("ui-off-hours"):
@@ -136,6 +143,8 @@ func _capture_office_stages() -> void:
 
 	main.job_panel.begin_job("queued-review", "theo")
 	main.job_panel.mark_job_queued("queued-review")
+	main.job_panel.select_employee("theo")
+	main.job_panel._tabs.current_tab = 2
 	await _settle()
 	if not await _capture("ui-journal-queued"):
 		return

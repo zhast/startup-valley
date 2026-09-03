@@ -2,9 +2,10 @@
 
 [ext_resource type="Script" path="res://ui/job_panel.gd" id="1"]
 
-[node name="JobPanel" type="PanelContainer"]
-offset_left = 802.0
+[node name="JobPanel" type="Control"]
+offset_left = 792.0
 offset_top = 14.0
 offset_right = 1278.0
 offset_bottom = 706.0
+mouse_filter = 2
 script = ExtResource("1")

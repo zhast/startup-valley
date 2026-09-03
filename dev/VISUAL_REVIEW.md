@@ -13,6 +13,7 @@ The capture set is intentionally broader than the happy path.
 | Capture | Acceptance focus |
 | --- | --- |
 | `office-hires-0.png` through `office-hires-4.png` | Each hire reveals a purposeful area; projection, scale, anchors, and depth sorting stay coherent. |
+| `ui-team-rail.png` | Exploration keeps only one portrait column visible; no chat, credentials, metrics, or logs occupy the office. |
 | `ui-chat.png` | Vertical teammate selection, readable conversation, and a clear transition from chat to work. |
 | `ui-work.png` | Credential state, work-order controls, and actions all fit inside the drawer. |
 | `ui-journal-active.png` | Running state, usage, steering, and event stream have an obvious hierarchy. |

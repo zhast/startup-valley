@@ -26,6 +26,8 @@ func _run() -> void:
 	await process_frame
 	if main.job_panel.selected_employee_id() != "mira":
 		_fail("test_native_team_ui: the first employee was not selected")
+	if main.job_panel.drawer_is_open():
+		_fail("test_native_team_ui: the employee drawer was open during exploration")
 	var mina_button: Button = main.job_panel._team_buttons.get("mira") as Button
 	var mina_portrait: TextureRect = mina_button.find_child("Portrait", false, false) as TextureRect if mina_button != null else null
 	if mina_portrait == null or mina_portrait.texture == null:
@@ -33,8 +35,15 @@ func _run() -> void:
 	var founder_sprite := main.player.get_node_or_null("CharacterSprite") as Sprite2D
 	if founder_sprite == null or founder_sprite.texture == null:
 		_fail("test_character_art: the founder did not use the character sheet in the office")
-	if main.clock_panel.get_global_rect().end.x >= main.job_panel.get_global_rect().position.x:
-		_fail("test_ui_layout: the clock overlaps the employee drawer")
+	if main.clock_panel.get_global_rect().end.x >= main.job_panel.rail_global_rect().position.x:
+		_fail("test_ui_layout: the clock overlaps the compact team rail")
+	main.job_panel._on_team_button_pressed("mira")
+	if not main.job_panel.drawer_is_open():
+		_fail("test_native_team_ui: clicking a portrait did not open the employee drawer")
+	main.job_panel._on_team_button_pressed("mira")
+	if main.job_panel.drawer_is_open():
+		_fail("test_native_team_ui: clicking the selected portrait did not close the employee drawer")
+	main.job_panel.select_employee("mira")
 	main.job_panel._tabs.current_tab = 1
 	await process_frame
 	if not main.job_panel.work_controls_fit_panel():
@@ -225,6 +234,7 @@ func _run() -> void:
 	long_delivery.summary = "A detailed delivery summary with multiple findings and recommendations. ".repeat(20)
 	main.job_panel.on_job_event("layout-check", long_delivery)
 	main.job_panel.offer_promotion("layout-check")
+	main.job_panel.select_employee("mira")
 	await process_frame
 	if not main.job_panel.promotion_controls_fit_viewport():
 		_fail("test_delivery_layout: long summaries pushed promotion controls below the viewport")
