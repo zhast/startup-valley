@@ -12,6 +12,7 @@ const IMPORTANT_SCENES: PackedStringArray = [
 	"res://world/main.tscn",
 ]
 const IMPORTANT_TEXTURES: PackedStringArray = [
+	"res://assets/runtime/office/campus-surround.png",
 	"res://assets/runtime/office/office-shell-base.png",
 	"res://assets/runtime/office/employee-workstation.png",
 	"res://assets/runtime/office/research-bench.png",
@@ -46,6 +47,8 @@ const IMPORTANT_SCRIPTS: PackedStringArray = [
 	"res://ui/game_fonts.gd",
 ]
 const EXACT_TEXTURE_SIZES: Dictionary = {
+	"res://assets/runtime/office/campus-surround.png": Vector2i(1280, 720),
+	"res://assets/runtime/office/office-shell-base.png": Vector2i(832, 576),
 	"res://assets/runtime/characters/founder-locomotion.png": Vector2i(288, 320),
 	"res://assets/runtime/characters/mira-locomotion.png": Vector2i(288, 320),
 	"res://assets/runtime/characters/theo-locomotion.png": Vector2i(288, 320),

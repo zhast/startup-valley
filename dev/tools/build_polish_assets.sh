@@ -5,6 +5,7 @@ set -euo pipefail
 project_root="$(cd "$(dirname "$0")/../.." && pwd)"
 polish_source="$project_root/game/assets/source/polish"
 office_source="$project_root/game/assets/source/office-masters"
+world_source="$project_root/game/assets/source/world"
 character_output="$project_root/game/assets/runtime/characters"
 effect_output="$project_root/game/assets/runtime/effects"
 office_output="$project_root/game/assets/runtime/office"
@@ -14,7 +15,7 @@ if ! command -v magick >/dev/null 2>&1; then
 	exit 1
 fi
 
-mkdir -p "$character_output" "$effect_output"
+mkdir -p "$character_output" "$effect_output" "$office_output"
 
 build_grid() {
 	local source_path="$1"
@@ -141,5 +142,10 @@ normalize_prop "$office_source/coffee-station-master.png" "$office_output/coffee
 normalize_prop "$office_source/approval-console-master.png" "$office_output/approval-console.png" 132 88 128 84
 normalize_prop "$office_source/prototype-bench-master.png" "$office_output/prototype-bench.png" 140 140 136 136
 normalize_prop "$office_source/artifact-archive-master.png" "$office_output/artifact-archive.png" 136 90 132 86
+
+# The architectural shell is normalized once so Godot never rescales it every
+# frame. The generated campus surround is authored as full-viewport scenery.
+magick "$office_source/office-shell-master.png" -filter Lanczos -resize 832x576\! -strip "$office_output/office-shell-base.png"
+magick "$world_source/campus-surround-master.png" -filter Lanczos -resize 1280x720^ -gravity center -extent 1280x720 -strip "$office_output/campus-surround.png"
 
 printf '%s\n' "Built audited native pixel assets."

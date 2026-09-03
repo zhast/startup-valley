@@ -26,7 +26,7 @@ var _effect_root: Node2D
 var _last_built_hires: int = -1
 
 func _ready() -> void:
-	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_prop_root = Node2D.new()
 	_prop_root.name = "Props"
 	add_child(_prop_root)
@@ -186,4 +186,3 @@ func playable_bounds() -> Rect2:
 func _draw() -> void:
 	var size := Vector2(float(grid_width * tile_size), float(grid_height * tile_size))
 	draw_texture_rect(OFFICE_SHELL_TEXTURE, Rect2(Vector2.ZERO, size), false)
-	draw_rect(Rect2(Vector2.ZERO, size), Color("9bb3a0"), false, 3.0)

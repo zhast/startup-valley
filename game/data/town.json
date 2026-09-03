@@ -20,7 +20,7 @@
     { "id": "research-bench", "kind": "research_table", "grid": [21, 4], "required_hires": 2 },
     { "id": "approval-console", "kind": "approval_console", "grid": [21, 9], "required_hires": 3 },
     { "id": "prototype-bench", "kind": "prototype_bench", "grid": [21, 13], "required_hires": 4 },
-    { "id": "artifact-archive", "kind": "artifact_archive", "grid": [21, 15], "required_hires": 4 }
+    { "id": "artifact-archive", "kind": "artifact_archive", "grid": [4, 15], "required_hires": 4 }
   ],
   "research_table": [21, 4],
   "plants": [[3, 3], [22, 3], [3, 15], [23, 15]]
