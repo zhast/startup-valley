@@ -104,6 +104,7 @@ func _run() -> void:
 	usage.output_tokens = 614
 	usage.cost = 0.0198
 	_main.job_panel.on_job_event("review-job", usage)
+	_main.job_panel.set_spend(usage.cost, 5.0)
 	_main.job_panel.select_employee("mira")
 	_main.job_panel._tabs.current_tab = 2
 	await _settle()
@@ -193,7 +194,13 @@ func _run() -> void:
 		return
 
 	await _fresh_main(2)
+	_main.day_clock.set_time(1, DayClock.WORK_END)
+	_main.job_panel._custom_title_input.text = "Tomorrow's launch brief"
 	_main.job_panel.begin_job("queued-review", "theo")
+	_main.job_panel.accept_submission("queued-review")
+	var queued := WorkerEventRecord.new()
+	queued.type = &"job.queued"
+	_main.job_panel.on_job_event("queued-review", queued)
 	_main.job_panel.mark_job_queued("queued-review")
 	_main.job_panel.select_employee("theo")
 	_main.job_panel._tabs.current_tab = 2
@@ -215,6 +222,8 @@ func _run() -> void:
 		return
 
 	if is_instance_valid(_main):
+		_main.game_audio.shutdown()
+		await create_timer(0.05).timeout
 		root.remove_child(_main)
 		_main.free()
 	print("visual review captured with isolated fixtures")
@@ -222,6 +231,8 @@ func _run() -> void:
 
 func _fresh_main(hire_count: int, keep_movement_hint: bool = false) -> void:
 	if is_instance_valid(_main):
+		_main.game_audio.shutdown()
+		await create_timer(0.05).timeout
 		root.remove_child(_main)
 		_main.free()
 		await _settle(2)
@@ -282,14 +293,18 @@ func _show_sample_chat(long_history: bool) -> void:
 
 func _setup_active_job(job_id: String, employee_id: String) -> void:
 	_main._job_employees[job_id] = employee_id
+	_main.job_panel._custom_title_input.text = "Launch brief"
 	_main.job_panel.begin_job(job_id, employee_id)
+	_main.job_panel.accept_submission(job_id)
 	var started := WorkerEventRecord.new()
 	started.type = &"job.started"
 	_main._on_job_event(job_id, started)
 
 func _show_completion(job_id: String) -> void:
 	_main._job_employees[job_id] = "mira"
+	_main.job_panel._custom_title_input.text = "Launch brief"
 	_main.job_panel.begin_job(job_id, "mira")
+	_main.job_panel.accept_submission(job_id)
 	var completed := WorkerEventRecord.new()
 	completed.type = &"job.completed"
 	completed.summary = "Launch brief complete with a focused promise, interview evidence, and a one-week validation plan."
@@ -309,7 +324,7 @@ func _sample_artifact() -> String:
 	return "# Launch brief\n\n## Promise\nHelp first-time creators validate one paid offer in seven days.\n\n## Evidence\n- Five of eight interviews struggled to choose a narrow customer.\n- Buyers wanted a concrete launch checklist.\n\n## Next experiment\nPublish one landing page and book five follow-up calls.\n\n```text\nOwner: Mina\nWindow: 7 days\n```"
 
 func _capture(name_value: String) -> bool:
-	await RenderingServer.frame_post_draw
+	RenderingServer.force_draw(false)
 	var image := root.get_texture().get_image()
 	var path := "%s/%s.png" % [REVIEW_DIRECTORY, name_value]
 	var save_error := image.save_png(path)

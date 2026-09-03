@@ -48,6 +48,8 @@ func _parse_suite() -> String:
 	return ""
 
 func _run() -> void:
+	root.always_on_top = true
+	root.grab_focus()
 	if not _prepare_output_directories():
 		quit(1)
 		return
@@ -60,6 +62,8 @@ func _run() -> void:
 	_write_manifest()
 	_validate_capture()
 	if is_instance_valid(_main):
+		_main.game_audio.shutdown()
+		await create_timer(0.05).timeout
 		root.remove_child(_main)
 		_main.free()
 	if _failures.is_empty():
@@ -80,6 +84,8 @@ func _prepare_output_directories() -> bool:
 
 func _fresh_main(hire_count: int) -> void:
 	if is_instance_valid(_main):
+		_main.game_audio.shutdown()
+		await create_timer(0.05).timeout
 		root.remove_child(_main)
 		_main.free()
 		await _frames(2)
@@ -96,6 +102,7 @@ func _fresh_main(hire_count: int) -> void:
 	_main.clock_panel.visible = true
 	_main.job_panel.set_credential_status(true)
 	_main.job_panel.set_worker_ready()
+	_main.job_panel._custom_title_input.text = "Launch brief"
 	_main.job_panel.close_drawer(false)
 	_main.artifact_viewer.hide()
 	_main.founder_hud.hide_delivery()
@@ -339,6 +346,7 @@ func _capture_journal_and_approval() -> void:
 	_main._job_employees[job_id] = "mira"
 	_main.job_panel.select_employee("mira")
 	_main.job_panel.begin_job(job_id, "mira")
+	_main.job_panel.accept_submission(job_id)
 	_main.job_panel.open_drawer(false)
 	_main.job_panel._tabs.current_tab = 2
 	var started := _event(&"job.started")
@@ -410,6 +418,8 @@ func _capture_queued_errors_and_overflow() -> void:
 		"Off-hours, queued work, long copy, keyboard focus, error, and recovery remain bounded and unmistakable."
 	)
 	_main.job_panel.begin_job("queued-polish", "theo")
+	_main.job_panel.accept_submission("queued-polish")
+	_main.job_panel.on_job_event("queued-polish", _event(&"job.queued"))
 	_main.job_panel.mark_job_queued("queued-polish")
 	_main.job_panel.open_drawer(false)
 	_main.job_panel._tabs.current_tab = 2
@@ -460,7 +470,7 @@ func _capture_keyframe(phase: String) -> void:
 	if _active_scenario_index < 0:
 		_failures.append("Tried to capture %s without an active scenario" % phase)
 		return
-	await RenderingServer.frame_post_draw
+	RenderingServer.force_draw(false)
 	var image := root.get_texture().get_image()
 	var scenario := _scenarios[_active_scenario_index]
 	var name_value := str(scenario["name"])
@@ -764,8 +774,16 @@ func _frames(frame_count: int) -> void:
 		await process_frame
 
 func _wait_for_employee_state(employee: EmployeeAvatar, expected_state: int, max_frames: int, label: String) -> void:
-	for frame: int in range(max_frames):
-		if employee.work_state == expected_state:
+	var path_length := 0.0
+	var previous := employee.position
+	for point: Vector2 in employee._route:
+		path_length += previous.distance_to(point)
+		previous = point
+	# Wall-aware routes can be longer than the old straight-line animations.
+	var navigation_deadline := maxi(max_frames, ceili(path_length / employee.walk_speed * AUDIT_FPS) + 120)
+	for frame: int in range(navigation_deadline):
+		if employee.work_state == expected_state and not employee._has_target:
 			return
 		await process_frame
 	_failures.append("Timed out waiting for %s" % label)
+	print("Navigation timeout: ", employee.employee_id, " at ", employee.position, " route ", employee._route, " actors ", employee.navigation.actors)

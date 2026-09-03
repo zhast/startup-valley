@@ -1,0 +1,109 @@
+extends SceneTree
+
+var failures: Array[String] = []
+
+func check(ok: bool, message: String) -> void:
+	if not ok:
+		failures.append(message)
+		push_error(message)
+
+func frames(count: int = 6) -> void:
+	for frame: int in range(count): await process_frame
+
+func _initialize() -> void:
+	OS.set_environment("STARTUP_VALLEY_NO_WORKER", "1")
+	call_deferred("_run")
+
+func _run() -> void:
+	root.content_scale_size = Vector2i(1280, 720)
+	root.size = Vector2i(1280, 720)
+	var main: GameMain = load("res://world/main.tscn").instantiate()
+	root.add_child(main)
+	main.job_panel.open_chat_for_employee("mira")
+	await frames(20)
+	var panel := main.job_panel
+	main.artifact_viewer.show_artifact("format.md", "# **Heading**\n- **Strong** item\n* **Another** item\n```\n**literal**\n```")
+	var formatted := main.artifact_viewer._content.get_parsed_text()
+	check(formatted.contains("Heading") and formatted.contains("• Strong item") and formatted.contains("• Another item"), "Markdown emphasis must work inside headings and list items")
+	check(formatted.contains("**literal**"), "Fenced code must preserve Markdown characters")
+	main.artifact_viewer.hide()
+	check(panel._tabs.size.x >= 330 and panel._tabs.size.y >= 500, "Chat must fill the authored drawer; content cannot collapse to its minimum")
+	check(panel._chat_scroll.size.y >= 250, "Empty Chat must retain a useful reading viewport")
+	panel.show_chat_history("mira", [{"sender": "player", "content": "What should we build?"}, {"sender": "employee", "content": "**Build a prototype** with one clear offer.\n\n".repeat(18)}])
+	await frames(20)
+	check(panel._chat_scroll.scroll_vertical >= panel._chat_scroll.get_v_scroll_bar().max_value - panel._chat_scroll.get_v_scroll_bar().page - 10, "Long chat must scroll after text shaping")
+	for node: Node in panel._chat_log.find_children("*", "RichTextLabel", true, false):
+		check(not (node as RichTextLabel).get_parsed_text().contains("**"), "Chat must render emphasis, not literal Markdown")
+	var file := StudioFileRecord.new()
+	file.name = "A long company direction brief"
+	file.relative_path = "briefs/a-really-long-company-direction-and-validation-brief-for-the-founder.md"
+	panel.show_studio_files([file])
+	panel._job_picker.select(panel.CANNED_JOBS.size())
+	panel._on_job_selected(panel.CANNED_JOBS.size())
+	panel._tabs.current_tab = 1
+	panel._attachment_picker.select(1)
+	await frames(20)
+	check(panel._attachment_picker.get_global_rect().end.x <= panel.drawer_global_rect().end.x, "Long attachment cannot widen Assign")
+	var definition := {"id": "website", "employeeId": "mira", "title": "Build a website", "assignment": "Create the site files.", "criteria": ["Complete site"], "files": ["site/index.html", "site/styles.css"], "state": "available"}
+	panel.set_journey_state({"milestones": [definition]})
+	panel.prepare_milestone(definition)
+	panel.begin_job("accepted", "mira")
+	panel.accept_submission("accepted")
+	check(panel.milestone_id.is_empty() and panel.revision_of_job_id.is_empty(), "Accepted work cannot leak milestone metadata into the next draft")
+	panel.open_journal_for_employee("mira")
+	var started := WorkerEventRecord.new()
+	started.type = &"job.started"
+	panel.on_job_event("accepted", started)
+	check(panel._activity_cancel.visible and not panel._activity_cancel.disabled, "Cancellation belongs in Activity")
+	var artifact := ArtifactRecord.new()
+	artifact.artifact_id = "a"
+	artifact.name = "index.html"
+	artifact.relative_path = "site/index.html"
+	panel._tabs.current_tab = 0
+	panel.show_artifacts("accepted", [artifact])
+	check(panel._tabs.current_tab == 0, "File arrival must not hijack the active tab")
+	check(panel.studio_file_count() == 1 and (panel._artifact_list.get_child(0) as Button).text.contains(file.relative_path), "Deliveries must not replace approved Studio files")
+	var done := WorkerEventRecord.new()
+	done.type = &"job.completed"
+	done.summary = "A complete prototype."
+	panel.on_job_event("accepted", done)
+	panel.offer_promotion("accepted", "mira")
+	panel._tabs.current_tab = 2
+	panel.open_drawer()
+	panel.set_spend(17.252, 5.0)
+	panel._usage_label.text = "Usage details · 24000 tokens · $17.2520"
+	await frames(20)
+	check(panel._drawer_close_button.get_global_rect().end.x <= panel.drawer_global_rect().end.x, "Usage and delivery cards cannot push the drawer close control behind the rail")
+	for child: Node in panel._drawer_panel.get_children():
+		if child is MarginContainer: check((child as Control).size.x <= panel.DRAWER_WIDTH + 1, "Delivery actions must fit the authored drawer without widening its contents")
+	panel.begin_job("blocked", "mira")
+	var stopped := WorkerEventRecord.new()
+	stopped.type = &"job.blocked"
+	stopped.reason = "Files retained after budget cap."
+	panel.on_job_event("blocked", stopped)
+	check(panel._employee_ui_state("mira") == "needs retry", "Old delivery cannot mask a new failure")
+	check(not panel._promotion_box.visible, "Old delivery promotion cannot appear on a different current job")
+	panel.select_employee("theo")
+	check(not panel._status_label.text.contains("budget cap"), "Mina's failure cannot become Theo's Activity")
+	panel.select_employee("mira")
+	panel._on_job_selected(panel.CANNED_JOBS.size())
+	panel._custom_title_input.text = "Keep this draft"
+	panel._assignment_preview.text = "Write an ordinary memo."
+	panel.begin_job("rejected", "mira")
+	panel.reject_submission("rejected", "Simulated recoverable rejection")
+	check(panel.drawer_is_open() and panel._tabs.current_tab == 1 and panel._assignment_error.visible, "Rejected work must remain in the editable form with an error")
+	check(panel._custom_title_input.text == "Keep this draft", "Rejection must preserve user draft")
+	main.artifact_viewer.show_artifact("styles.css", "* { box-sizing: border-box; }\n[x] { color: red; }")
+	check(main.artifact_viewer._content.get_parsed_text().begins_with("* {"), "CSS universal selector is source, not a Markdown bullet")
+	check(main.artifact_viewer._content.get_parsed_text().contains("[x]"), "Source brackets must be preserved exactly")
+	check(main.artifact_viewer.z_index > panel.z_index + 1 and main.company_panel.z_index > panel.z_index + 1, "Modal layers must cover drawer ornamentation")
+	main.company_panel.update_state({"company": {}, "milestones": [{"id": "website", "title": "Build a website", "state": "revision_required", "jobId": "accepted", "evaluation": {"verdict": "revise", "summary": "Long review. ".repeat(100), "criteria": [{"name": "Completeness", "score": 1, "evidence": "Specific review evidence. ".repeat(80)}]}}]})
+	main.company_panel.present("journey")
+	await frames(20)
+	var review_scroll := main.company_panel._scroll
+	check(main.company_panel._content.size.x <= review_scroll.size.x - review_scroll.get_v_scroll_bar().size.x + 1, "Journey prose must wrap before its scrollbar, never beneath it")
+	await frames()
+	root.remove_child(main)
+	main.free()
+	if failures.is_empty(): print("UI flow regressions: passed")
+	quit(failures.size())
