@@ -29,7 +29,7 @@ func _run() -> void:
 	if main.job_panel.drawer_is_open():
 		_fail("test_native_team_ui: the employee drawer was open during exploration")
 	var mina_button: Button = main.job_panel._team_buttons.get("mira") as Button
-	var mina_portrait: TextureRect = mina_button.find_child("Portrait", false, false) as TextureRect if mina_button != null else null
+	var mina_portrait: TextureRect = mina_button.find_child("Portrait", true, false) as TextureRect if mina_button != null else null
 	if mina_portrait == null or mina_portrait.texture == null:
 		_fail("test_character_art: Mina's team card did not use the character sheet")
 	var founder_sprite := main.player.get_node_or_null("CharacterSprite") as Sprite2D
@@ -37,6 +37,11 @@ func _run() -> void:
 		_fail("test_character_art: the founder did not use the character sheet in the office")
 	if main.clock_panel.get_global_rect().end.x >= main.job_panel.rail_global_rect().position.x:
 		_fail("test_ui_layout: the clock overlaps the compact team rail")
+	if not main.clock_panel.find_children("*", "Button", true, false).is_empty():
+		_fail("test_ui_layout: the clock still exposes speed controls")
+	main.clock_panel.show_money_earned(125.5)
+	if main.clock_panel._earned_label.text != "$125.50  EARNED":
+		_fail("test_ui_layout: earned money did not render in the HUD")
 	main.job_panel._on_team_button_pressed("mira")
 	if not main.job_panel.drawer_is_open():
 		_fail("test_native_team_ui: clicking a portrait did not open the employee drawer")
@@ -57,8 +62,10 @@ func _run() -> void:
 		{"sender": "employee", "content": "Start with the smallest useful growth experiment."},
 	])
 	await process_frame
-	if not main.job_panel._chat_log.get_parsed_text().contains("growth experiment"):
+	if not main.job_panel.chat_text().contains("growth experiment"):
 		_fail("test_native_team_ui: persisted chat did not render in the employee drawer")
+	if main.job_panel._make_job_button.disabled:
+		_fail("test_native_team_ui: a persisted founder message did not enable Assign Work")
 	var assignment_handler := Callable(main, "_on_assignment_submitted")
 	main.job_panel.assignment_submitted.disconnect(assignment_handler)
 	main.job_panel.assignment_submitted.connect(_capture_assignment)
@@ -72,15 +79,15 @@ func _run() -> void:
 	main.job_panel._job_picker.select(0)
 	main.job_panel._on_job_selected(0)
 	main.job_panel.select_employee("mira")
-	if main.room.unlocked_hires != 2 or main.room.locked_section_count() != 2:
-		_fail("test_office_growth: the two-person roster did not reveal exactly two office wings")
+	if main.room.unlocked_hires != 2:
+		_fail("test_office_growth: the two-person roster did not restore its furniture stage")
 	if main.room.visible_prop_count() != 6:
 		_fail("test_modular_office: the two-person stage did not show the founder, collaboration, and research props")
 	main.room.set_hire_count(0)
-	if main.room.locked_section_count() != 4:
-		_fail("test_office_growth: the founder stage did not lock all expansion wings")
+	if main.room.find_child("LockedSections", true, false) != null:
+		_fail("test_office_growth: an empty office stage still created blocked expansion areas")
 	if main.room.visible_prop_count() != 1 or main.room.prop_node("founder-workstation") == null:
-		_fail("test_modular_office: the founder stage did not retain exactly one usable workstation")
+		_fail("test_modular_office: the empty founder stage did not retain exactly one usable workstation")
 	main.room.set_hire_count(1)
 	if main.room.visible_prop_count() != 4 or main.room.prop_node("mira-workstation") == null:
 		_fail("test_modular_office: the first hire did not reveal Mina's workstation and social wing")
@@ -93,8 +100,6 @@ func _run() -> void:
 	elif not is_equal_approx(staged_desk_sprite.scale.x, staged_desk_sprite.scale.y):
 		_fail("test_modular_office: the workstation projection was distorted by non-uniform scaling")
 	main.room.set_hire_count(4)
-	if main.room.locked_section_count() != 0:
-		_fail("test_office_growth: four hires did not reveal the mature office")
 	if main.room.visible_prop_count() != 9:
 		_fail("test_modular_office: the mature office did not include every staged prop")
 	if main.room.prop_node("approval-console") == null or main.room.prop_node("artifact-archive") == null or main.room.prop_node("prototype-bench") == null:

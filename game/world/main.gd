@@ -62,7 +62,6 @@ func _connect_signals() -> void:
 	job_panel.studio_open_requested.connect(worker_client.read_studio_file)
 	job_panel.promotion_decided.connect(worker_client.promote_job)
 	day_clock.time_changed.connect(_on_clock_changed)
-	clock_panel.speed_selected.connect(day_clock.set_speed)
 
 func _on_worker_connected() -> void:
 	_worker_ready = true
@@ -96,7 +95,7 @@ func _on_bootstrap(
 	day_clock.restore(
 		int(clock_state.get("day", 1)),
 		int(clock_state.get("minuteOfDay", DayClock.WORK_START)),
-		float(clock_state.get("speed", 1.0))
+		1.0
 	)
 
 func _apply_memories(records: Array[EmployeeRecord], memories: Dictionary) -> void:
@@ -195,7 +194,7 @@ func _on_promotion_state(files: Array[StudioFileRecord], pending_promotions: Arr
 	job_panel.show_pending_promotions(pending_promotions)
 
 func _on_clock_changed(day: int, minute_of_day: int, phase: String, speed: float) -> void:
-	clock_panel.show_clock(day, minute_of_day, phase, speed)
+	clock_panel.show_clock(day, minute_of_day)
 	job_panel.set_clock_phase(phase)
 	for employee_value: EmployeeAvatar in _employees.values():
 		employee_value.set_schedule_phase(phase)
