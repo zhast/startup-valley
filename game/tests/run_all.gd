@@ -28,10 +28,9 @@ func _run() -> void:
 		_fail("test_native_team_ui: the first employee was not selected")
 	if main.job_panel.drawer_is_open():
 		_fail("test_native_team_ui: the employee drawer was open during exploration")
-	var mina_button: Button = main.job_panel._team_buttons.get("mira") as Button
-	var mina_portrait: TextureRect = mina_button.find_child("Portrait", true, false) as TextureRect if mina_button != null else null
-	if mina_portrait == null or mina_portrait.texture == null:
-		_fail("test_character_art: Mina's team card did not use the character sheet")
+	var rail_style := main.job_panel._rail_panel.get_theme_stylebox("panel") as StyleBoxTexture
+	if rail_style == null or rail_style.texture != NotebookSkin.TEAM_RAIL_NONE:
+		_fail("test_character_art: the collapsed team rail did not use the approved notebook artwork")
 	var founder_sprite := main.player.get_node_or_null("CharacterSprite") as Sprite2D
 	if founder_sprite == null or founder_sprite.texture == null:
 		_fail("test_character_art: the founder did not use the character sheet in the office")
@@ -57,6 +56,9 @@ func _run() -> void:
 	main.job_panel.select_employee("theo")
 	if main.job_panel.selected_employee_id() != "theo":
 		_fail("test_native_team_ui: the vertical team rail did not select Theo")
+	rail_style = main.job_panel._rail_panel.get_theme_stylebox("panel") as StyleBoxTexture
+	if rail_style == null or rail_style.texture != NotebookSkin.TEAM_RAIL_THEO:
+		_fail("test_native_team_ui: the team rail did not move its selection treatment to Theo")
 	main.job_panel.show_chat_history("theo", [
 		{"sender": "player", "content": "What should we test first?"},
 		{"sender": "employee", "content": "Start with the smallest useful growth experiment."},

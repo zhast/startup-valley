@@ -28,8 +28,11 @@ const WOOD := Color("9b542d")
 const WOOD_DARK := Color("552c22")
 const WOOD_LIGHT := Color("de9550")
 const MUTED_INK := Color("725b46")
-const RAIL_WIDTH := 128.0
-const DRAWER_WIDTH := 490.0
+## Authored against the approved 1078 x 1560 notebook mockup at a 720 px viewport.
+## Keeping these measurements literal prevents the rail and drawer from slowly
+## drifting apart as individual controls are refined.
+const RAIL_WIDTH := 130.0
+const DRAWER_WIDTH := 368.0
 const DRAWER_GAP := 0.0
 
 const CANNED_JOBS := [
@@ -59,8 +62,8 @@ var _employee_meta: Label
 var _employee_status: Label
 var _employee_portrait: TextureRect
 var _header_icon: Label
-var _drawer_panel: PanelContainer
-var _rail_panel: PanelContainer
+var _drawer_panel: Panel
+var _rail_panel: Panel
 var _drawer_close_button: Button
 var _drawer_open: bool = false
 var _drawer_tween: Tween
@@ -111,87 +114,85 @@ func _build_interface() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	clip_contents = false
 
-	_drawer_panel = PanelContainer.new()
+	_drawer_panel = Panel.new()
 	_drawer_panel.name = "EmployeeDrawer"
 	_drawer_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	_drawer_panel.set_anchors_preset(Control.PRESET_LEFT_WIDE)
 	_drawer_panel.offset_right = DRAWER_WIDTH
-	_drawer_panel.add_theme_stylebox_override("panel", _stylebox(WOOD, WOOD_DARK, 7, 2))
+	_drawer_panel.add_theme_stylebox_override("panel", NotebookSkin.wood_surface(Vector4(12.0, 12.0, 12.0, 12.0)))
 	add_child(_drawer_panel)
+	_add_outer_frame(_drawer_panel)
 	var drawer_margin := MarginContainer.new()
-	drawer_margin.add_theme_constant_override("margin_left", 9)
-	drawer_margin.add_theme_constant_override("margin_right", 9)
-	drawer_margin.add_theme_constant_override("margin_top", 9)
-	drawer_margin.add_theme_constant_override("margin_bottom", 9)
+	drawer_margin.add_theme_constant_override("margin_left", 12)
+	drawer_margin.add_theme_constant_override("margin_right", 12)
+	drawer_margin.add_theme_constant_override("margin_top", 28)
+	drawer_margin.add_theme_constant_override("margin_bottom", 12)
+	drawer_margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_drawer_panel.add_child(drawer_margin)
 	var drawer := _build_employee_drawer()
 	drawer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	drawer_margin.add_child(drawer)
 
-	_rail_panel = PanelContainer.new()
+	_rail_panel = Panel.new()
 	_rail_panel.name = "TeamRail"
 	_rail_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	_rail_panel.set_anchors_preset(Control.PRESET_RIGHT_WIDE)
 	_rail_panel.offset_left = -RAIL_WIDTH
-	_rail_panel.add_theme_stylebox_override("panel", _stylebox(WOOD, WOOD_DARK, 7, 2))
+	_rail_panel.add_theme_stylebox_override("panel", NotebookSkin.team_rail("", false))
 	add_child(_rail_panel)
-	var rail_margin := MarginContainer.new()
-	rail_margin.add_theme_constant_override("margin_left", 9)
-	rail_margin.add_theme_constant_override("margin_right", 9)
-	rail_margin.add_theme_constant_override("margin_top", 9)
-	rail_margin.add_theme_constant_override("margin_bottom", 9)
-	_rail_panel.add_child(rail_margin)
-	rail_margin.add_child(_build_team_rail())
+	var team_rail := _build_team_rail()
+	team_rail.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_rail_panel.add_child(team_rail)
 
-func _build_team_rail() -> VBoxContainer:
-	var rail := VBoxContainer.new()
-	rail.custom_minimum_size = Vector2(102.0, 0.0)
-	rail.add_theme_constant_override("separation", 10)
-	var team_sign := PanelContainer.new()
-	team_sign.custom_minimum_size = Vector2(0.0, 58.0)
-	team_sign.add_theme_stylebox_override("panel", _stylebox(WOOD_DARK, WOOD_LIGHT, 4, 2))
-	rail.add_child(team_sign)
-	var caption := Label.new()
-	caption.text = "TEAM"
-	caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	caption.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	caption.add_theme_font_size_override("font_size", 18)
-	caption.add_theme_color_override("font_color", PARCHMENT_LIGHT)
-	team_sign.add_child(caption)
-	var team_scroll := ScrollContainer.new()
-	team_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	team_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	team_scroll.add_theme_stylebox_override("panel", _stylebox(WOOD_DARK, WOOD_DARK, 2, 1))
-	rail.add_child(team_scroll)
+func _add_outer_frame(panel: Control) -> void:
+	var frame := NinePatchRect.new()
+	frame.texture = NotebookSkin.OUTER_FRAME
+	frame.draw_center = false
+	frame.patch_margin_left = 14
+	frame.patch_margin_top = 14
+	frame.patch_margin_right = 14
+	frame.patch_margin_bottom = 14
+	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	frame.z_index = 100
+	panel.add_child(frame)
+
+func _build_team_rail() -> Control:
+	var rail := Control.new()
+	rail.custom_minimum_size = Vector2(RAIL_WIDTH, 0.0)
 	var team_list := VBoxContainer.new()
 	team_list.name = "TeamList"
-	team_list.add_theme_constant_override("separation", 10)
-	team_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	team_scroll.add_child(team_list)
+	team_list.add_theme_constant_override("separation", 4)
+	team_list.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	team_list.offset_left = 15.0
+	team_list.offset_top = 78.0
+	team_list.offset_right = -15.0
+	team_list.offset_bottom = 366.0
+	rail.add_child(team_list)
 	return rail
 
 func _build_employee_drawer() -> VBoxContainer:
 	var drawer := VBoxContainer.new()
 	drawer.add_theme_constant_override("separation", 7)
 	var header_shell := Control.new()
-	header_shell.custom_minimum_size = Vector2(0.0, 132.0)
+	header_shell.custom_minimum_size = Vector2(0.0, 150.0)
 	drawer.add_child(header_shell)
 	var header_card := PanelContainer.new()
 	header_card.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	header_card.add_theme_stylebox_override("panel", _stylebox(PARCHMENT, WOOD_DARK, 5, 3))
+	header_card.add_theme_stylebox_override("panel", NotebookSkin.parchment(Vector4(12.0, 11.0, 38.0, 11.0)))
 	header_shell.add_child(header_card)
 	var header_margin := MarginContainer.new()
 	header_margin.add_theme_constant_override("margin_left", 12)
-	header_margin.add_theme_constant_override("margin_right", 44)
-	header_margin.add_theme_constant_override("margin_top", 10)
-	header_margin.add_theme_constant_override("margin_bottom", 10)
+	header_margin.add_theme_constant_override("margin_right", 38)
+	header_margin.add_theme_constant_override("margin_top", 12)
+	header_margin.add_theme_constant_override("margin_bottom", 12)
 	header_card.add_child(header_margin)
 	var employee_header := HBoxContainer.new()
 	employee_header.add_theme_constant_override("separation", 16)
 	header_margin.add_child(employee_header)
 	var portrait_frame := PanelContainer.new()
-	portrait_frame.custom_minimum_size = Vector2(108.0, 108.0)
-	portrait_frame.add_theme_stylebox_override("panel", _stylebox(PARCHMENT_LIGHT, WOOD, 5, 2))
+	portrait_frame.custom_minimum_size = Vector2(104.0, 112.0)
+	portrait_frame.add_theme_stylebox_override("panel", NotebookSkin.portrait_frame())
 	employee_header.add_child(portrait_frame)
 	_employee_portrait = TextureRect.new()
 	_employee_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -215,18 +216,18 @@ func _build_employee_drawer() -> VBoxContainer:
 	employee_header.add_child(employee_copy)
 	_employee_name = Label.new()
 	_employee_name.text = "Your team"
-	_employee_name.add_theme_font_size_override("font_size", 29)
+	_employee_name.add_theme_font_size_override("font_size", 27)
 	_employee_name.add_theme_color_override("font_color", CHARCOAL)
 	employee_copy.add_child(_employee_name)
 	_employee_meta = Label.new()
 	_employee_meta.text = "Select an employee"
-	_employee_meta.add_theme_font_size_override("font_size", 16)
+	_employee_meta.add_theme_font_size_override("font_size", 14)
 	_employee_meta.add_theme_color_override("font_color", INDIGO)
 	_employee_meta.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	employee_copy.add_child(_employee_meta)
 	_employee_status = Label.new()
 	_employee_status.text = "● available"
-	_employee_status.add_theme_font_size_override("font_size", 15)
+	_employee_status.add_theme_font_size_override("font_size", 14)
 	_employee_status.add_theme_color_override("font_color", Color("77b83f"))
 	employee_copy.add_child(_employee_status)
 	_drawer_close_button = Button.new()
@@ -235,20 +236,20 @@ func _build_employee_drawer() -> VBoxContainer:
 	_drawer_close_button.pressed.connect(close_drawer)
 	_style_action_button(_drawer_close_button, WOOD_DARK, false)
 	_drawer_close_button.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	_drawer_close_button.offset_left = -38.0
+	_drawer_close_button.offset_left = -50.0
 	_drawer_close_button.offset_top = 8.0
-	_drawer_close_button.offset_right = -8.0
+	_drawer_close_button.offset_right = -20.0
 	_drawer_close_button.offset_bottom = 38.0
 	header_shell.add_child(_drawer_close_button)
 	_tabs = TabContainer.new()
 	_tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_tabs.add_theme_font_size_override("font_size", 16)
+	_tabs.add_theme_font_size_override("font_size", 15)
 	_tabs.add_theme_color_override("font_selected_color", OFF_WHITE)
 	_tabs.add_theme_color_override("font_unselected_color", CHARCOAL)
-	_tabs.add_theme_stylebox_override("panel", _stylebox(PARCHMENT, WOOD_DARK, 4, 2))
-	_tabs.add_theme_stylebox_override("tab_selected", _tab_style(VERMILION, WOOD_DARK, 3))
-	_tabs.add_theme_stylebox_override("tab_unselected", _tab_style(WOOD_LIGHT, WOOD_DARK, 3))
-	_tabs.add_theme_stylebox_override("tab_hovered", _tab_style(PARCHMENT_DARK, VERMILION, 3))
+	_tabs.add_theme_stylebox_override("panel", NotebookSkin.wood_surface(Vector4(5.0, 5.0, 5.0, 5.0)))
+	_tabs.add_theme_stylebox_override("tab_selected", NotebookSkin.selected_tab())
+	_tabs.add_theme_stylebox_override("tab_unselected", NotebookSkin.wood_tab())
+	_tabs.add_theme_stylebox_override("tab_hovered", NotebookSkin.wood_tab())
 	drawer.add_child(_tabs)
 	_tabs.add_child(_build_chat_tab())
 	_tabs.add_child(_build_work_tab())
@@ -279,7 +280,7 @@ func _build_chat_tab() -> VBoxContainer:
 	tab.add_theme_constant_override("separation", 7)
 	var notebook := NotebookPanel.new()
 	notebook.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	notebook.add_theme_stylebox_override("panel", _stylebox(PARCHMENT_LIGHT, WOOD_DARK, 3, 2))
+	notebook.add_theme_stylebox_override("panel", NotebookSkin.notebook())
 	tab.add_child(notebook)
 	_chat_scroll = ScrollContainer.new()
 	_chat_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -294,13 +295,13 @@ func _build_chat_tab() -> VBoxContainer:
 	chat_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_chat_scroll.add_child(chat_margin)
 	_chat_log = VBoxContainer.new()
-	_chat_log.custom_minimum_size = Vector2(410.0, 0.0)
+	_chat_log.custom_minimum_size = Vector2(296.0, 0.0)
 	_chat_log.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_chat_log.add_theme_constant_override("separation", 12)
 	chat_margin.add_child(_chat_log)
 	_show_chat_hint("Choose a teammate from the rail.")
 	var composer_frame := PanelContainer.new()
-	composer_frame.add_theme_stylebox_override("panel", _stylebox(PARCHMENT, WOOD_DARK, 3, 2))
+	composer_frame.add_theme_stylebox_override("panel", NotebookSkin.content_frame())
 	tab.add_child(composer_frame)
 	var composer_margin := MarginContainer.new()
 	composer_margin.add_theme_constant_override("margin_left", 8)
@@ -351,6 +352,7 @@ func _build_work_tab() -> ScrollContainer:
 	key_row.add_child(_key_input)
 	var save_key_button := Button.new()
 	save_key_button.text = "Save"
+	save_key_button.custom_minimum_size = Vector2(54.0, 0.0)
 	save_key_button.pressed.connect(_submit_key)
 	_style_action_button(save_key_button, INDIGO, false)
 	key_row.add_child(save_key_button)
@@ -362,6 +364,8 @@ func _build_work_tab() -> ScrollContainer:
 	content.add_child(_section_label("WORK ORDER"))
 	_job_picker = OptionButton.new()
 	_job_picker.fit_to_longest_item = false
+	_job_picker.clip_text = true
+	_job_picker.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_job_picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_style_action_button(_job_picker, INDIGO, false)
 	for job: Dictionary in CANNED_JOBS:
@@ -403,6 +407,7 @@ func _build_work_tab() -> ScrollContainer:
 	action_row.add_child(_assign_button)
 	_cancel_button = Button.new()
 	_cancel_button.text = "Cancel"
+	_cancel_button.custom_minimum_size = Vector2(72.0, 0.0)
 	_cancel_button.disabled = true
 	_cancel_button.pressed.connect(_cancel_active_job)
 	_style_action_button(_cancel_button, VERMILION, false)
@@ -549,15 +554,29 @@ func _stylebox(background: Color, border: Color, width: int, radius: int) -> Sty
 	style.content_margin_bottom = 6.0
 	return style
 
-func _tab_style(background: Color, border: Color, width: int) -> StyleBoxFlat:
-	var style := _stylebox(background, border, width, 2)
-	style.content_margin_left = 34.0
-	style.content_margin_right = 34.0
-	style.content_margin_top = 8.0
-	style.content_margin_bottom = 8.0
-	return style
-
 func _style_action_button(button: Button, accent: Color, filled: bool) -> void:
+	if filled and accent == VERMILION:
+		button.add_theme_stylebox_override("normal", NotebookSkin.selected_tab())
+		button.add_theme_stylebox_override("hover", NotebookSkin.selected_tab())
+		button.add_theme_stylebox_override("pressed", NotebookSkin.selected_tab())
+		button.add_theme_stylebox_override("focus", NotebookSkin.selected_tab())
+		button.add_theme_stylebox_override("disabled", _stylebox(PARCHMENT_DARK, MUTED_INK, 1, 2))
+		button.add_theme_color_override("font_color", WHITE)
+		button.add_theme_color_override("font_hover_color", WHITE)
+		button.add_theme_color_override("font_pressed_color", WHITE)
+		button.add_theme_color_override("font_disabled_color", MUTED_INK)
+		return
+	if filled and accent == INDIGO:
+		button.add_theme_stylebox_override("normal", NotebookSkin.indigo_button())
+		button.add_theme_stylebox_override("hover", NotebookSkin.indigo_button())
+		button.add_theme_stylebox_override("pressed", NotebookSkin.indigo_button())
+		button.add_theme_stylebox_override("focus", NotebookSkin.indigo_button())
+		button.add_theme_stylebox_override("disabled", _stylebox(PARCHMENT_DARK, MUTED_INK, 1, 2))
+		button.add_theme_color_override("font_color", PARCHMENT_LIGHT)
+		button.add_theme_color_override("font_hover_color", PARCHMENT_LIGHT)
+		button.add_theme_color_override("font_pressed_color", PARCHMENT_LIGHT)
+		button.add_theme_color_override("font_disabled_color", MUTED_INK)
+		return
 	var normal_background := accent if filled else PARCHMENT_LIGHT
 	var normal_foreground := CHARCOAL if filled and accent == CHARTREUSE else WHITE if filled else CHARCOAL
 	button.add_theme_stylebox_override("normal", _stylebox(normal_background, accent, 1, 5))
@@ -575,9 +594,9 @@ func _style_text_input(control: Control) -> void:
 	control.add_theme_color_override("font_readonly_color", MUTED_INK)
 	control.add_theme_color_override("font_placeholder_color", MUTED_INK)
 	control.add_theme_color_override("caret_color", VERMILION)
-	control.add_theme_stylebox_override("normal", _stylebox(PARCHMENT_LIGHT, WOOD, 2, 2))
-	control.add_theme_stylebox_override("focus", _stylebox(PARCHMENT_LIGHT, VERMILION, 3, 2))
-	control.add_theme_stylebox_override("read_only", _stylebox(PARCHMENT, PARCHMENT_DARK, 1, 2))
+	control.add_theme_stylebox_override("normal", NotebookSkin.input_field())
+	control.add_theme_stylebox_override("focus", NotebookSkin.input_field())
+	control.add_theme_stylebox_override("read_only", NotebookSkin.input_field())
 
 func _set_drawer_open(open: bool, animated: bool = true) -> void:
 	_drawer_open = open
@@ -649,43 +668,15 @@ func configure_employees(records: Array[EmployeeRecord]) -> void:
 		var button := Button.new()
 		button.text = ""
 		button.tooltip_text = "Talk with %s" % record.display_name
-		button.custom_minimum_size = Vector2(102.0, 138.0)
+		button.set_meta("display_name", record.display_name)
+		button.custom_minimum_size = Vector2(100.0, 143.0)
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.clip_contents = true
 		button.pressed.connect(_on_team_button_pressed.bind(record.id))
-		var portrait_frame := PanelContainer.new()
-		portrait_frame.name = "PortraitFrame"
-		portrait_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		portrait_frame.add_theme_stylebox_override("panel", _stylebox(PARCHMENT_LIGHT, WOOD_DARK, 3, 1))
-		portrait_frame.set_anchors_preset(Control.PRESET_TOP_WIDE)
-		portrait_frame.offset_left = 6.0
-		portrait_frame.offset_top = 6.0
-		portrait_frame.offset_right = -6.0
-		portrait_frame.offset_bottom = 105.0
-		button.add_child(portrait_frame)
-		var portrait := TextureRect.new()
-		portrait.name = "Portrait"
-		portrait.texture = CharacterArt.bust_portrait(record.id)
-		portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-		portrait.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		portrait.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		portrait_frame.add_child(portrait)
 		var name_label := Label.new()
 		name_label.name = "Name"
 		name_label.text = record.display_name.to_upper()
-		name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		name_label.add_theme_font_size_override("font_size", 14)
-		name_label.add_theme_color_override("font_color", CHARCOAL)
-		name_label.add_theme_stylebox_override("normal", _stylebox(PARCHMENT, WOOD_DARK, 3, 1))
-		name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		name_label.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
-		name_label.offset_left = 6.0
-		name_label.offset_top = -31.0
-		name_label.offset_right = -6.0
-		name_label.offset_bottom = -5.0
+		name_label.visible = false
 		button.add_child(name_label)
 		var status_dot := Label.new()
 		status_dot.name = "StatusDot"
@@ -695,10 +686,10 @@ func configure_employees(records: Array[EmployeeRecord]) -> void:
 		status_dot.add_theme_color_override("font_color", Color("46b93f"))
 		status_dot.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		status_dot.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-		status_dot.offset_left = -30.0
-		status_dot.offset_top = 8.0
-		status_dot.offset_right = -9.0
-		status_dot.offset_bottom = 30.0
+		status_dot.offset_left = -29.0
+		status_dot.offset_top = 23.0
+		status_dot.offset_right = -8.0
+		status_dot.offset_bottom = 46.0
 		button.add_child(status_dot)
 		var attention_badge := Label.new()
 		attention_badge.name = "AttentionBadge"
@@ -755,13 +746,18 @@ func _select_employee(employee_id: String) -> void:
 	chat_history_requested.emit(employee_id)
 
 func _refresh_team_card_styles() -> void:
+	var selected := _drawer_open and not _selected_employee_id.is_empty()
+	_rail_panel.add_theme_stylebox_override(
+		"panel",
+		NotebookSkin.team_rail(_selected_employee_id, selected, _employees.is_empty())
+	)
 	for id: String in _team_buttons:
 		var button: Button = _team_buttons[id]
-		var selected := id == _selected_employee_id and _drawer_open
-		button.add_theme_stylebox_override("normal", _stylebox(WOOD, VERMILION if selected else WOOD_DARK, 5 if selected else 4, 2))
-		button.add_theme_stylebox_override("hover", _stylebox(WOOD_LIGHT, VERMILION, 5, 2))
-		button.add_theme_stylebox_override("pressed", _stylebox(WOOD_DARK, VERMILION, 5, 2))
-		button.add_theme_stylebox_override("focus", _stylebox(WOOD, CHARTREUSE, 5, 2))
+		var empty_style := StyleBoxEmpty.new()
+		button.add_theme_stylebox_override("normal", empty_style)
+		button.add_theme_stylebox_override("hover", empty_style)
+		button.add_theme_stylebox_override("pressed", empty_style)
+		button.add_theme_stylebox_override("focus", empty_style)
 
 func _selected_employee() -> EmployeeRecord:
 	for record: EmployeeRecord in _employees:
@@ -813,6 +809,7 @@ func _refresh_team_statuses() -> void:
 			color = DUST
 			state = "off shift"
 		status_dot.add_theme_color_override("font_color", color)
+		status_dot.visible = state != "available"
 		button.tooltip_text = "%s · %s" % [button.get_node("Name").text.capitalize(), state]
 		if attention_badge != null:
 			attention_badge.visible = (employee_id == _active_employee_id and not _approval_id.is_empty()) or employee_id == _attention_employee_id
@@ -840,6 +837,7 @@ func _append_chat_line(sender: String, name_value: String, content: String) -> v
 	if sender == "employee":
 		var avatar_frame := PanelContainer.new()
 		avatar_frame.custom_minimum_size = Vector2(54.0, 58.0)
+		avatar_frame.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		avatar_frame.add_theme_stylebox_override("panel", _stylebox(PARCHMENT, WOOD, 2, 2))
 		row.add_child(avatar_frame)
 		var avatar := TextureRect.new()
