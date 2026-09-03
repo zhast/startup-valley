@@ -29,3 +29,7 @@ The capture set is intentionally broader than the happy path.
 | `ui-error.png` | Failure copy is visible, bounded, and does not corrupt the next state color. |
 
 Do not accept an asset from its isolated generation preview. Every runtime prop must pass this capture loop at its actual authored scale and placement. The source-of-truth projection rules remain in `game/assets/runtime/office/ASSET_SPEC.md`.
+
+For movement, temporal feedback, depth, pixel sampling, and the prioritized next
+asset batch, run the complementary audit in `dev/POLISH_AUDIT.md`. Its world and
+UI movie suites do not replace these 21 static layout states.
