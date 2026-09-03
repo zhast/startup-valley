@@ -11,6 +11,7 @@ const EMPLOYEE_SCENE: PackedScene = preload("res://actors/employee_avatar.tscn")
 @onready var artifact_viewer: ArtifactViewer = $Interface/ArtifactViewer
 @onready var day_clock: DayClock = $DayClock
 @onready var clock_panel: ClockPanel = $Interface/ClockPanel
+@onready var founder_hud: FounderHud = $Interface/FounderHud
 
 var _employees: Dictionary[String, EmployeeAvatar] = {}
 var _job_employees: Dictionary[String, String] = {}
@@ -18,6 +19,7 @@ var _project_id: String = "company"
 var _token_budget: int = 12000
 var _worker_ready: bool = false
 var _state_loaded: bool = false
+var _job_artifact_names: Dictionary[String, String] = {}
 
 func _ready() -> void:
 	room.load_layout()
@@ -30,6 +32,13 @@ func _ready() -> void:
 		worker_client.start()
 	else:
 		job_panel.set_error("Deterministic test mode — worker disabled")
+
+func _process(_delta: float) -> void:
+	founder_hud.update_interaction(
+		player.position,
+		_employees,
+		not job_panel.drawer_is_open() and not artifact_viewer.visible
+	)
 
 func _connect_signals() -> void:
 	worker_client.connected.connect(_on_worker_connected)
@@ -61,6 +70,8 @@ func _connect_signals() -> void:
 	job_panel.artifact_open_requested.connect(worker_client.read_artifact)
 	job_panel.studio_open_requested.connect(worker_client.read_studio_file)
 	job_panel.promotion_decided.connect(worker_client.promote_job)
+	founder_hud.chat_requested.connect(_on_hud_chat_requested)
+	founder_hud.delivery_requested.connect(_on_hud_delivery_requested)
 	day_clock.time_changed.connect(_on_clock_changed)
 
 func _on_worker_connected() -> void:
@@ -89,6 +100,7 @@ func _on_bootstrap(
 	job_panel.set_spend(daily_spend, daily_spend_warning)
 	job_panel.show_studio_files(studio_files)
 	job_panel.show_pending_promotions(pending_promotions)
+	_show_pending_delivery(pending_promotions)
 	job_panel.show_recent_jobs(recent_jobs)
 	_restore_recent_jobs(recent_jobs)
 	_state_loaded = true
@@ -176,8 +188,14 @@ func _on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 	var employee: EmployeeAvatar = _employees.get(employee_id) as EmployeeAvatar
 	if employee != null:
 		employee.apply_worker_event(event, player.position)
+	if event.type == &"artifact.created" and not event.name.is_empty():
+		_job_artifact_names[job_id] = event.name
 	job_panel.on_job_event(job_id, event)
 	if event.type == &"job.completed":
+		var employee_name := employee.display_name if employee != null else employee_id.capitalize()
+		var artifact_name: String = _job_artifact_names.get(job_id, "")
+		var detail := "%s ready" % artifact_name if not artifact_name.is_empty() else "Work order ready"
+		founder_hud.show_delivery(job_id, employee_id, employee_name, detail)
 		worker_client.remember_job(job_id)
 		worker_client.request_artifacts(job_id)
 		job_panel.offer_promotion(job_id, employee_id)
@@ -192,6 +210,38 @@ func _on_studio_files(files: Array[StudioFileRecord]) -> void:
 func _on_promotion_state(files: Array[StudioFileRecord], pending_promotions: Array) -> void:
 	job_panel.show_studio_files(files)
 	job_panel.show_pending_promotions(pending_promotions)
+	_show_pending_delivery(pending_promotions)
+
+func _show_pending_delivery(pending_promotions: Array) -> void:
+	if pending_promotions.is_empty():
+		founder_hud.hide_delivery()
+		return
+	var candidate_value: Variant = pending_promotions[0]
+	if not candidate_value is Dictionary:
+		return
+	var candidate := candidate_value as Dictionary
+	var employee_id := str(candidate.get("employeeId", ""))
+	var employee_name := str(candidate.get("employeeName", "Team member"))
+	if employee_id.is_empty():
+		for known_id: String in _employees:
+			var known_employee := _employees[known_id] as EmployeeAvatar
+			if known_employee != null and known_employee.display_name == employee_name:
+				employee_id = known_id
+				break
+	var detail := str(candidate.get("title", "Work order ready"))
+	var artifacts_value: Variant = candidate.get("artifacts", [])
+	if artifacts_value is Array and not (artifacts_value as Array).is_empty():
+		var artifact_value: Variant = (artifacts_value as Array)[0]
+		if artifact_value is Dictionary:
+			detail = "%s ready" % str((artifact_value as Dictionary).get("name", "Delivery"))
+	founder_hud.show_delivery(str(candidate.get("jobId", "")), employee_id, employee_name, detail)
+
+func _on_hud_chat_requested(employee_id: String) -> void:
+	job_panel.open_chat_for_employee(employee_id)
+
+func _on_hud_delivery_requested(_job_id: String, employee_id: String) -> void:
+	job_panel.open_journal_for_employee(employee_id)
+	founder_hud.hide_delivery()
 
 func _on_clock_changed(day: int, minute_of_day: int, phase: String, speed: float) -> void:
 	clock_panel.show_clock(day, minute_of_day)

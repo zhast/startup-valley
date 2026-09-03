@@ -39,6 +39,12 @@ func _capture_office_stages() -> void:
 	await _settle()
 	if not await _capture("ui-team-rail"):
 		return
+	var mina := main.get_employee("mira")
+	main.player.position = mina.position + Vector2(68.0, 0.0)
+	await _settle()
+	if not await _capture("ui-founder-hud"):
+		return
+	main.player.position = main.room.grid_to_world_position(main.room.player_spawn)
 	main.job_panel.select_employee("mira")
 	main.job_panel.show_chat_history("mira", [
 		{"sender": "player", "content": "Can you turn customer interviews into the smallest useful launch plan?"},
@@ -100,6 +106,13 @@ func _capture_office_stages() -> void:
 	main.get_employee("mira").apply_worker_event(completed, main.player.position)
 	main.job_panel.on_job_event("review-job", completed)
 	main.job_panel.offer_promotion("review-job")
+	main.job_panel.close_drawer(false)
+	main.founder_hud.show_delivery("review-job", "mira", "Mina", "launch-brief.md ready")
+	await _settle()
+	if not await _capture("ui-completion-memo"):
+		return
+	main.job_panel.select_employee("mira")
+	main.job_panel._tabs.current_tab = 2
 	await _settle()
 	if not await _capture("ui-journal-promotion"):
 		return

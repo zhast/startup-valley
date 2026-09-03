@@ -728,6 +728,17 @@ func select_employee(employee_id: String) -> void:
 	_select_employee(employee_id)
 	open_drawer(false)
 
+func open_chat_for_employee(employee_id: String) -> void:
+	_select_employee(employee_id)
+	_tabs.current_tab = 0
+	open_drawer()
+
+func open_journal_for_employee(employee_id: String) -> void:
+	if not employee_id.is_empty():
+		_select_employee(employee_id)
+	_tabs.current_tab = 2
+	open_drawer()
+
 func _select_employee(employee_id: String) -> void:
 	if not _team_buttons.has(employee_id):
 		return

@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" path="res://ui/artifact_viewer.tscn" id="6"]
 [ext_resource type="Script" path="res://simulation/day_clock.gd" id="7"]
 [ext_resource type="PackedScene" path="res://ui/clock_panel.tscn" id="8"]
+[ext_resource type="PackedScene" path="res://ui/founder_hud.tscn" id="9"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1")
@@ -35,23 +36,7 @@ script = ExtResource("7")
 
 [node name="Interface" type="CanvasLayer" parent="."]
 
-[node name="TownTitle" type="Label" parent="Interface"]
-offset_left = 34.0
-offset_top = 20.0
-offset_right = 650.0
-offset_bottom = 52.0
-theme_override_colors/font_color = Color(0.980, 0.275, 0.086, 1)
-theme_override_font_sizes/font_size = 20
-text = "STARTUP VALLEY"
-
-[node name="TownHint" type="Label" parent="Interface"]
-offset_left = 34.0
-offset_top = 660.0
-offset_right = 866.0
-offset_bottom = 688.0
-theme_override_colors/font_color = Color(0.714, 0.710, 0.690, 1)
-text = "WASD / arrows to move"
-horizontal_alignment = 1
+[node name="FounderHud" parent="Interface" instance=ExtResource("9")]
 
 [node name="JobPanel" parent="Interface" instance=ExtResource("5")]
 

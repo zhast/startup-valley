@@ -38,9 +38,30 @@ func _run() -> void:
 		_fail("test_ui_layout: the clock overlaps the compact team rail")
 	if not main.clock_panel.find_children("*", "Button", true, false).is_empty():
 		_fail("test_ui_layout: the clock still exposes speed controls")
+	var ledger_texture := main.clock_panel.get_node_or_null("LedgerTexture") as TextureRect
+	if ledger_texture == null or ledger_texture.texture != ClockPanel.LEDGER_TEXTURE:
+		_fail("test_founders_ledger_ui: the live clock did not use the selected ledger artwork")
+	if main.founder_hud.get_node_or_null("TitlePlaque") == null or main.founder_hud.get_node_or_null("MovementPlaque") == null:
+		_fail("test_founders_ledger_ui: the title or movement plaque was missing")
 	main.clock_panel.show_money_earned(125.5)
 	if main.clock_panel._earned_label.text != "$125.50  EARNED":
 		_fail("test_ui_layout: earned money did not render in the HUD")
+	var mina := main.get_employee("mira")
+	main.player.position = mina.position + Vector2(48.0, 0.0)
+	main.founder_hud.update_interaction(main.player.position, main._employees, true)
+	if not main.founder_hud.interaction_visible() or main.founder_hud.interaction_target_id() != "mira":
+		_fail("test_founders_ledger_ui: approaching Mina did not show her chat prompt")
+	main.founder_hud._request_chat()
+	if not main.job_panel.drawer_is_open() or main.job_panel.selected_employee_id() != "mira" or main.job_panel._tabs.current_tab != 0:
+		_fail("test_founders_ledger_ui: the proximity prompt did not open Mina's Chat tab")
+	main.job_panel.close_drawer(false)
+	main.founder_hud.show_delivery("delivery-test", "mira", "Mina", "design-note.md ready")
+	if not main.founder_hud.delivery_visible():
+		_fail("test_founders_ledger_ui: a completed delivery did not show the pinned memo")
+	main.founder_hud._request_delivery()
+	if main.founder_hud.delivery_visible() or not main.job_panel.drawer_is_open() or main.job_panel._tabs.current_tab != 2:
+		_fail("test_founders_ledger_ui: the memo did not open the delivery journal")
+	main.job_panel.close_drawer(false)
 	main.job_panel._on_team_button_pressed("mira")
 	if not main.job_panel.drawer_is_open():
 		_fail("test_native_team_ui: clicking a portrait did not open the employee drawer")
@@ -139,6 +160,8 @@ func _run() -> void:
 		_fail("test_persistent_boot: studio listing or last status was not restored")
 	if main.job_panel.pending_promotion_job_id() != "pending-review":
 		_fail("test_persistent_boot: pending promotion was not restored")
+	if not main.founder_hud.delivery_visible():
+		_fail("test_persistent_boot: pending promotion did not restore the completion memo")
 	if main.get_employee("mira").memory_line != "Outcome: restored durable note":
 		_fail("test_persistent_boot: employee memory was not restored")
 	main.artifact_viewer.show_artifact("design-note.md", "# Design note\n\nReadable delivery text.")

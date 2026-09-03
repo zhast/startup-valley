@@ -2,9 +2,10 @@
 
 [ext_resource type="Script" path="res://ui/clock_panel.gd" id="1"]
 
-[node name="ClockPanel" type="PanelContainer"]
-offset_left = 342.0
+[node name="ClockPanel" type="Control"]
+offset_left = 371.0
 offset_top = 8.0
-offset_right = 650.0
-offset_bottom = 60.0
+offset_right = 779.0
+offset_bottom = 76.0
+mouse_filter = 2
 script = ExtResource("1")
