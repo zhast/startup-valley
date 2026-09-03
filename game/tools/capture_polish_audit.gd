@@ -135,7 +135,7 @@ func _capture_employee_idle_cycle() -> void:
 		"employee-idle-cycle",
 		"Mina moves from her spawn to her desk, sits, surfaces a memory, and begins a short wander."
 	)
-	await _frames(86)
+	await _wait_for_employee_state(mina, EmployeeAvatar.WorkState.SITTING, 180, "Mina seated idle")
 	mina.memory_line = "The smallest useful launch can teach us the most."
 	mina._idle_elapsed = 2.6
 	await _frames(5)
@@ -157,7 +157,7 @@ func _capture_job_state_cycle() -> void:
 	)
 	var started := _event(&"job.started")
 	_main._on_job_event(job_id, started)
-	await _frames(82)
+	await _wait_for_employee_state(mina, EmployeeAvatar.WorkState.WORKING, 180, "Mina reached her desk")
 	var thinking := _event(&"agent.thinking")
 	thinking.summary = "Choosing the narrowest useful promise…"
 	_main._on_job_event(job_id, thinking)
@@ -172,19 +172,22 @@ func _capture_job_state_cycle() -> void:
 	research.tool = "web_search"
 	research.label = "Researching customer evidence"
 	_main._on_job_event(job_id, research)
-	await _frames(105)
+	await _wait_for_employee_state(mina, EmployeeAvatar.WorkState.WORKING, 210, "Mina reached research")
+	await _frames(36)
 	var approval := _event(&"approval.required")
 	approval.approval_id = "polish-approval"
 	approval.action = "Publish the launch brief to the shared studio."
 	_main._on_job_event(job_id, approval)
-	await _frames(105)
+	await _wait_for_employee_state(mina, EmployeeAvatar.WorkState.WAITING_APPROVAL, 240, "Mina reached approval")
+	await _frames(30)
 	var completed := _event(&"job.completed")
 	completed.summary = "Launch brief ready."
 	mina.apply_worker_event(completed, _main.player.position)
 	_main.job_panel.on_job_event(job_id, completed)
 	_main.founder_hud.show_delivery(job_id, "mira", "Mina", "launch-brief.md ready")
 	_main.job_panel.offer_promotion(job_id, "mira")
-	await _frames(58)
+	await _wait_for_employee_state(mina, EmployeeAvatar.WorkState.IDLE, 180, "Mina delivered the result")
+	await _frames(18)
 	_main.job_panel.begin_job("polish-failure", "mira")
 	var failed := _event(&"job.failed")
 	failed.error = "The audit intentionally stopped this work order."
@@ -195,17 +198,25 @@ func _capture_job_state_cycle() -> void:
 
 func _capture_schedule_cycle() -> void:
 	await _fresh_main(2)
+	var mina := _main.get_employee("mira")
+	var theo := _main.get_employee("theo")
 	await _begin_scenario(
 		"schedule-cycle",
 		"Both employees transition from work to lunch, off shift, and back to the work window."
 	)
 	_main.day_clock.set_time(1, DayClock.LUNCH_START)
-	await _frames(120)
+	await _wait_for_employee_state(mina, EmployeeAvatar.WorkState.LUNCH, 240, "Mina reached lunch")
+	await _wait_for_employee_state(theo, EmployeeAvatar.WorkState.LUNCH, 120, "Theo reached lunch")
+	await _frames(20)
 	await _capture_keyframe("middle")
 	_main.day_clock.set_time(1, DayClock.WORK_END)
-	await _frames(165)
+	await _wait_for_employee_state(mina, EmployeeAvatar.WorkState.OFF_SHIFT, 240, "Mina went off shift")
+	await _wait_for_employee_state(theo, EmployeeAvatar.WorkState.OFF_SHIFT, 180, "Theo went off shift")
+	await _frames(20)
 	_main.day_clock.set_time(2, DayClock.WORK_START)
-	await _frames(105)
+	await _wait_for_employee_state(mina, EmployeeAvatar.WorkState.SITTING, 240, "Mina returned to work")
+	await _wait_for_employee_state(theo, EmployeeAvatar.WorkState.SITTING, 180, "Theo returned to work")
+	await _frames(20)
 	await _end_scenario()
 
 func _capture_depth_and_occlusion() -> void:
@@ -529,8 +540,8 @@ func _write_asset_inventory() -> void:
 	var texture_paths: PackedStringArray = []
 	_collect_png_paths("res://assets/runtime/office", texture_paths)
 	_collect_png_paths("res://assets/runtime/ui", texture_paths)
-	texture_paths.append("res://assets/concepts/office-town-characters-sheet.png")
-	texture_paths.append("res://assets/concepts/startup-valley-tech-characters-concept-sheet.png")
+	_collect_png_paths("res://assets/runtime/characters", texture_paths)
+	_collect_png_paths("res://assets/runtime/effects", texture_paths)
 	texture_paths.sort()
 	var textures: Array[Dictionary] = []
 	for path: String in texture_paths:
@@ -550,28 +561,29 @@ func _write_asset_inventory() -> void:
 	var founder_sprite := _main.player.get_node_or_null("CharacterSprite") as Sprite2D
 	if founder_sprite != null:
 		live_nodes.append(_inspect_live_sprite("character", "founder", founder_sprite))
-	var atlas_regions: Array[Dictionary] = []
-	for character_id: String in CharacterArt.PORTRAIT_REGIONS:
-		var region: Rect2 = CharacterArt.PORTRAIT_REGIONS[character_id]
-		atlas_regions.append({
-			"characterId": character_id,
-			"x": region.position.x,
-			"y": region.position.y,
-			"width": region.size.x,
-			"height": region.size.y,
-		})
+	var atlas_specs: Array[Dictionary] = [
+		{"characterId": "founder", "path": CharacterArt.FOUNDER_LOCOMOTION.resource_path, "width": 288, "height": 320, "columns": 6, "rows": 4, "cellWidth": 48, "cellHeight": 80},
+		{"characterId": "mira", "path": CharacterArt.MIRA_LOCOMOTION.resource_path, "width": 288, "height": 320, "columns": 6, "rows": 4, "cellWidth": 48, "cellHeight": 80},
+		{"characterId": "theo", "path": CharacterArt.THEO_LOCOMOTION.resource_path, "width": 288, "height": 320, "columns": 6, "rows": 4, "cellWidth": 48, "cellHeight": 80},
+	]
+	var known_flags: PackedStringArray = []
+	for texture_info: Dictionary in textures:
+		for issue: Variant in texture_info.get("flags", []):
+			known_flags.append("%s: %s" % [str(texture_info.get("path", "texture")), str(issue)])
+	for live_info: Dictionary in live_nodes:
+		for issue: Variant in live_info.get("flags", []):
+			known_flags.append("%s: %s" % [str(live_info.get("id", "sprite")), str(issue)])
 	var inventory := {
-		"schemaVersion": 1,
+		"schemaVersion": 2,
 		"generatedBy": "capture_polish_audit.gd",
 		"textures": textures,
 		"liveSprites": live_nodes,
-		"characterAtlasRegions": atlas_regions,
-		"knownFlags": [
-			"Runtime characters share irregular concept-sheet regions rather than aligned animation cells.",
-			"The newer tech character concept sheet is opaque RGB and contains a baked checkerboard.",
-			"Office props are large generation canvases rendered through arbitrary fractional scale factors.",
-			"World and interface labels use ThemeDB fallback fonts; no font assets are bundled.",
+		"characterAtlases": atlas_specs,
+		"fonts": [
+			{"role": "display", "path": GameFonts.DISPLAY.resource_path, "license": "res://assets/fonts/tiny5/OFL.txt"},
+			{"role": "body", "path": GameFonts.BODY.resource_path, "license": "res://assets/fonts/nunito-sans/OFL.txt"},
 		],
+		"knownFlags": Array(known_flags),
 	}
 	_write_json("%s/asset-inventory.json" % OUTPUT_ROOT, inventory)
 
@@ -605,13 +617,19 @@ func _inspect_texture(path: String) -> Dictionary:
 	var used_rect := image.get_used_rect()
 	var full_rect := Rect2i(Vector2i.ZERO, image.get_size())
 	var has_transparency := used_rect != full_rect
-	if path.contains("startup-valley-tech-characters") and not has_transparency:
-		flags.append("opaque-character-source")
-	if path.begins_with("res://assets/runtime/office/") \
+	var modular_office_asset := path.begins_with("res://assets/runtime/office/") \
 		and not path.ends_with("office-shell-base.png") \
-		and not path.ends_with("main-office-background.png") \
+		and not path.ends_with("main-office-background.png")
+	var alpha_required := path.begins_with("res://assets/runtime/characters/") \
+		or path.begins_with("res://assets/runtime/effects/") \
+		or modular_office_asset
+	if alpha_required and not has_transparency:
+		flags.append("opaque-runtime-cutout")
+	if modular_office_asset \
 		and maxi(image.get_width(), image.get_height()) > 512:
 		flags.append("oversized-runtime-prop-source")
+	if alpha_required and not import_text.contains("compress/mode=0"):
+		flags.append("runtime-cutout-not-lossless")
 	if not import_text.is_empty() and not import_text.contains("mipmaps/generate=false"):
 		flags.append("mipmaps-not-explicitly-disabled")
 	return {
@@ -626,7 +644,7 @@ func _inspect_texture(path: String) -> Dictionary:
 	}
 
 func _prop_sprite(prop: Node) -> Sprite2D:
-	for node_name: String in ["WorkstationSprite", "ResearchBenchSprite", "PropSprite"]:
+	for node_name: String in ["WorkstationFront", "ResearchBenchFront", "PropSprite"]:
 		var sprite := prop.get_node_or_null(node_name) as Sprite2D
 		if sprite != null:
 			return sprite
@@ -640,7 +658,7 @@ func _inspect_live_sprite(kind: String, id_value: String, sprite: Sprite2D) -> D
 		source_size = atlas.region.size
 		source_path = atlas.atlas.resource_path
 	elif sprite.texture != null:
-		source_size = sprite.texture.get_size()
+		source_size = sprite.region_rect.size if sprite.region_enabled else sprite.texture.get_size()
 		source_path = sprite.texture.resource_path
 	var displayed_size := source_size * sprite.scale.abs()
 	var flags: PackedStringArray = []
@@ -742,3 +760,10 @@ func _long_chat_history() -> Array[Dictionary]:
 func _frames(frame_count: int) -> void:
 	for frame: int in range(frame_count):
 		await process_frame
+
+func _wait_for_employee_state(employee: EmployeeAvatar, expected_state: int, max_frames: int, label: String) -> void:
+	for frame: int in range(max_frames):
+		if employee.work_state == expected_state:
+			return
+		await process_frame
+	_failures.append("Timed out waiting for %s" % label)

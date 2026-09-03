@@ -32,7 +32,10 @@ Each suite writes a movie, six contact sheets, eighteen full-size keyframes,
 and a manifest. The root `asset-inventory.json` records source dimensions,
 alpha/import facts, live scale, displayed dimensions, and known systemic flags.
 The validator rejects missing movies, scenarios, keyframes, contact sheets,
-unexpected dimensions, invalid frame ranges, and identical sampled frames.
+unexpected dimensions, invalid frame ranges, identical sampled frames, runtime
+scaling, opaque cutouts, lossy imports, missing font licenses, empty atlas cells,
+and static animation groups. Rebuild the normalized runtime art before a capture
+with `dev/tools/build_polish_assets.sh`.
 
 ## Rubric
 
@@ -75,6 +78,39 @@ polished threshold.
 
 World mean: **1.42**. UI mean: **2.08**. Combined mean: **1.75**.
 
+## Remediation result
+
+The 2026-09-02 rerun passes all twelve scenarios. Every individual category is
+at least 2, every scenario mean is at least 2.5, and the combined mean is
+**2.76**. The world suite is **2.61** and the UI suite is **2.92**. The final
+recordings contain 1,129 world frames (37.63 seconds) and 488 UI frames (16.27
+seconds), both at fixed 30 FPS.
+
+| Scenario | Pixel | Motion | Continuity | Layering | Text | Feedback | Mean | Result |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| World · founder locomotion | 3 | 3 | 3 | 2 | 2 | 3 | 2.67 | Pass |
+| World · employee idle cycle | 3 | 3 | 3 | 3 | 2 | 2 | 2.67 | Pass |
+| World · job state cycle | 3 | 3 | 3 | 3 | 2 | 3 | 2.83 | Pass |
+| World · schedule cycle | 3 | 3 | 2 | 3 | 2 | 2 | 2.50 | Pass |
+| World · depth and occlusion | 3 | 3 | 2 | 3 | 2 | 2 | 2.50 | Pass |
+| World · office growth | 3 | 2 | 2 | 3 | 2 | 3 | 2.50 | Pass |
+| UI · team drawer controls | 3 | 3 | 3 | 3 | 3 | 3 | 3.00 | Pass |
+| UI · chat and work order | 3 | 3 | 3 | 3 | 3 | 3 | 3.00 | Pass |
+| UI · work controls | 3 | 2 | 3 | 3 | 3 | 3 | 2.83 | Pass |
+| UI · Journal and approval | 3 | 3 | 3 | 3 | 3 | 3 | 3.00 | Pass |
+| UI · delivery, Studio, reader | 3 | 3 | 3 | 3 | 3 | 3 | 3.00 | Pass |
+| UI · queued, errors, overflow | 3 | 2 | 2 | 3 | 3 | 3 | 2.67 | Pass |
+
+Across all scenarios, the category means are: Pixel **3.00**, Motion **2.75**,
+Continuity **2.67**, Layering **2.92**, Text **2.50**, and Feedback **2.75**.
+The lower 2s are deliberate restraint rather than missing behavior: schedule
+and growth transitions reuse the established locomotion language, short world
+labels prioritize brevity, and error/control motion avoids distracting loops.
+
+Evidence is written to `game/tests/output/polish-audit/`. The final inventory
+reports zero known flags, all three live characters as 48 × 80 cells at scale
+1, every inspected modular prop at scale 1, and both bundled font licenses.
+
 ## Findings
 
 | ID | Priority | Finding and evidence | Remediation | Disposition |
@@ -90,6 +126,22 @@ World mean: **1.42**. UI mean: **2.08**. Combined mean: **1.75**.
 | POL-09 | P1 | The drawer has a good 160 ms transition, but tab pages, new chat messages, waiting state, approval cards, spend changes, delivery memo, Studio changes, and artifact modal appear instantly. Evidence: UI movie. | Add short restrained tweens, an animated waiting ellipsis, and one-pixel button depression using existing assets. | Code-only animation/layout fix |
 | POL-10 | P1 | Name and status plaques are always visible and are wider than the characters. Around desks they obscure furniture and make the office feel like a debug view. | Keep nameplates on proximity/focus and statuses on change, attention, or active work; fade after a short hold. | Code-only animation/layout fix |
 | POL-11 | P2 | Furniture appears instantly when hire count changes. This is acceptable before hiring exists but reads as a pop once office growth becomes playable. | Add a short arrival effect when a newly unlocked prop is instantiated. | Generate new art |
+
+## Remediation status
+
+| Finding | Resolution | Final evidence |
+| --- | --- | --- |
+| POL-01 | Resolved with separate native Founder, Mina, and Theo four-direction locomotion atlases. | `world/founder-locomotion-contact-sheet.png`; atlas validation |
+| POL-02 | Resolved with Mina and Theo seated, typing, research, approval, and delivery poses selected by `WorkState`. | `world/employee-idle-cycle-contact-sheet.png`; `world/job-state-cycle-contact-sheet.png` |
+| POL-03 | Resolved by reproducibly normalizing every modular prop to a native RGBA runtime canvas. | `asset-inventory.json`; zero scale/import flags |
+| POL-04 | Resolved with separate rear/front workstation and research layers and an actor work point between their Z values. | `world/depth-and-occlusion-contact-sheet.png`; gameplay test |
+| POL-05 | Resolved with six four-frame effects selected only by real worker events. | `world/job-state-cycle-contact-sheet.png`; world movie |
+| POL-06 | Resolved with restrained independent monitor, coffee, research, prototype, and archive overlays. | `world/office-growth-contact-sheet.png`; world movie |
+| POL-07 | Resolved with native standing, walking, and seated pixel shadows. | founder and employee motion scenarios |
+| POL-08 | Resolved with bundled Tiny5 display and Nunito Sans body fonts plus OFL licenses. | static UI captures; `asset-inventory.json` |
+| POL-09 | Resolved with 70–180 ms button, tab, message, waiting, spend, card, notification, and modal motion. | all six UI scenarios |
+| POL-10 | Resolved with labels limited to proximity, state-change holds, and approval; speech suppresses the redundant plaque. | employee idle and job-state movies |
+| POL-11 | Resolved with a six-frame dust/spark arrival effect for newly unlocked furniture. | `world/office-growth-contact-sheet.png`; world movie |
 
 The current notebook/sidebar textures do **not** justify another broad UI asset
 batch. Their pixel coherence is the strongest part of the build. The next UI

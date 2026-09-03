@@ -144,11 +144,14 @@ func _run() -> void:
 	if main.room.prop_node("collaboration-cluster") == null or main.room.prop_node("coffee-station") == null:
 		_fail("test_modular_office: the first-hire meeting and coffee props were missing")
 	var staged_desk := main.room.prop_node("mira-workstation")
-	var staged_desk_sprite := staged_desk.get_node_or_null("WorkstationSprite") as Sprite2D if staged_desk != null else null
-	if staged_desk == null or not is_zero_approx(staged_desk.rotation) or staged_desk_sprite == null or not is_zero_approx(staged_desk_sprite.rotation):
-		_fail("test_modular_office: the workstation was rotated instead of using an authored cardinal sprite")
-	elif not is_equal_approx(staged_desk_sprite.scale.x, staged_desk_sprite.scale.y):
-		_fail("test_modular_office: the workstation projection was distorted by non-uniform scaling")
+	var staged_desk_rear := staged_desk.get_node_or_null("WorkstationRear") as Sprite2D if staged_desk != null else null
+	var staged_desk_front := staged_desk.get_node_or_null("WorkstationFront") as Sprite2D if staged_desk != null else null
+	if staged_desk == null or not is_zero_approx(staged_desk.rotation) or staged_desk_rear == null or staged_desk_front == null:
+		_fail("test_modular_office: the workstation did not use authored rear/front layers")
+	elif not staged_desk_rear.scale.is_equal_approx(Vector2.ONE) or not staged_desk_front.scale.is_equal_approx(Vector2.ONE):
+		_fail("test_modular_office: the workstation did not render at native scale")
+	elif staged_desk_rear.z_index >= staged_desk_front.z_index:
+		_fail("test_modular_office: the workstation occlusion layers were reversed")
 	main.room.set_hire_count(4)
 	if main.room.visible_prop_count() != 9:
 		_fail("test_modular_office: the mature office did not include every staged prop")
@@ -270,7 +273,7 @@ func _run() -> void:
 		main.simulate_worker_event("mira", &"job.started")
 		var frames := 0
 		while not employee.is_at_desk() and frames < 360:
-			await process_frame
+			employee._physics_process(1.0 / 60.0)
 			frames += 1
 		if not employee.is_at_desk():
 			_fail("test_worker_walks_to_desk: employee did not reach the desk")

@@ -42,16 +42,38 @@ func _validate_inventory() -> void:
 		return
 	var textures_value: Variant = inventory.get("textures", [])
 	var live_value: Variant = inventory.get("liveSprites", [])
-	var regions_value: Variant = inventory.get("characterAtlasRegions", [])
+	var regions_value: Variant = inventory.get("characterAtlases", [])
+	var fonts_value: Variant = inventory.get("fonts", [])
 	var flags_value: Variant = inventory.get("knownFlags", [])
 	if not textures_value is Array or (textures_value as Array).is_empty():
 		_failures.append("Asset inventory did not contain texture metadata")
 	if not live_value is Array or (live_value as Array).size() < 12:
 		_failures.append("Asset inventory did not inspect the live characters and office props")
 	if not regions_value is Array or (regions_value as Array).size() != 3:
-		_failures.append("Asset inventory did not record all three character atlas regions")
-	if not flags_value is Array or (flags_value as Array).size() < 4:
-		_failures.append("Asset inventory did not preserve the known baseline flags")
+		_failures.append("Asset inventory did not record all three native character atlases")
+	if not fonts_value is Array or (fonts_value as Array).size() != 2:
+		_failures.append("Asset inventory did not record display/body fonts and licenses")
+	if not flags_value is Array:
+		_failures.append("Asset inventory flags are malformed")
+	elif not (flags_value as Array).is_empty():
+		_failures.append("Runtime asset inventory still contains polish flags: %s" % str(flags_value))
+	if live_value is Array:
+		for live_value_item: Variant in live_value as Array:
+			if not live_value_item is Dictionary:
+				continue
+			var live := live_value_item as Dictionary
+			if not is_equal_approx(float(live.get("scaleX", 0.0)), 1.0) or not is_equal_approx(float(live.get("scaleY", 0.0)), 1.0):
+				_failures.append("%s does not render at native scale" % str(live.get("id", "sprite")))
+			if str(live.get("kind", "")) == "character" and (int(live.get("sourceWidth", 0)) != 48 or int(live.get("sourceHeight", 0)) != 80):
+				_failures.append("%s does not use a 48x80 runtime cell" % str(live.get("id", "character")))
+	if fonts_value is Array:
+		for font_value: Variant in fonts_value as Array:
+			if not font_value is Dictionary:
+				continue
+			var font := font_value as Dictionary
+			for path_key: String in ["path", "license"]:
+				if not FileAccess.file_exists(str(font.get(path_key, ""))):
+					_failures.append("Missing bundled font %s: %s" % [path_key, str(font.get(path_key, ""))])
 
 func _validate_suite(suite: String) -> void:
 	var movie_path := "%s/%s.avi" % [OUTPUT_ROOT, suite]

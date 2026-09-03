@@ -26,7 +26,7 @@ func _capture_office_stages() -> void:
 		main.room.set_hire_count(hire_count)
 		main.job_panel.visible = false
 		main.clock_panel.visible = false
-		await _settle()
+		await _settle(135)
 		if not await _capture("office-hires-%d" % hire_count):
 			return
 
@@ -36,7 +36,7 @@ func _capture_office_stages() -> void:
 	main.clock_panel.visible = true
 	main.job_panel.set_credential_status(true)
 	main.job_panel.close_drawer(false)
-	await _settle()
+	await _settle(135)
 	if not await _capture("ui-team-rail"):
 		return
 	var mina := main.get_employee("mira")
@@ -195,7 +195,7 @@ func _capture(name_value: String) -> bool:
 	print("visual review captured: %s" % name_value)
 	return true
 
-func _settle(frame_count: int = 5) -> void:
+func _settle(frame_count: int = 15) -> void:
 	for frame: int in range(frame_count):
 		await process_frame
 
