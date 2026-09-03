@@ -72,7 +72,7 @@ polished threshold.
 | UI · team drawer controls | 3 | 2 | 2 | 3 | 3 | 2 | 2.50 | Pass |
 | UI · chat and work order | 3 | 1 | 1 | 3 | 2 | 2 | 2.00 | Fail |
 | UI · work controls | 3 | 1 | 1 | 3 | 2 | 2 | 2.00 | Fail |
-| UI · Journal and approval | 3 | 1 | 1 | 3 | 2 | 3 | 2.17 | Fail |
+| UI · Activity and approval | 3 | 1 | 1 | 3 | 2 | 3 | 2.17 | Fail |
 | UI · delivery, Studio, reader | 3 | 0 | 1 | 3 | 2 | 3 | 2.00 | Fail |
 | UI · queued, errors, overflow | 3 | 0 | 1 | 3 | 2 | 2 | 1.83 | Fail |
 
@@ -97,7 +97,7 @@ seconds), both at fixed 30 FPS.
 | UI · team drawer controls | 3 | 3 | 3 | 3 | 3 | 3 | 3.00 | Pass |
 | UI · chat and work order | 3 | 3 | 3 | 3 | 3 | 3 | 3.00 | Pass |
 | UI · work controls | 3 | 2 | 3 | 3 | 3 | 3 | 2.83 | Pass |
-| UI · Journal and approval | 3 | 3 | 3 | 3 | 3 | 3 | 3.00 | Pass |
+| UI · Activity and approval | 3 | 3 | 3 | 3 | 3 | 3 | 3.00 | Pass |
 | UI · delivery, Studio, reader | 3 | 3 | 3 | 3 | 3 | 3 | 3.00 | Pass |
 | UI · queued, errors, overflow | 3 | 2 | 2 | 3 | 3 | 3 | 2.67 | Pass |
 

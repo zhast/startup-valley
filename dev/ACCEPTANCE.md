@@ -10,7 +10,7 @@ The slice is complete when a developer can perform this flow without Claude Code
 6. During a work window, pick Mina and the canned **Inventory keyboard navigation design note** work order, then assign it. Confirm the canned Theo review remains available too.
 7. Observe Mina walk to her desk only after `job.started`, and type only while a real `write_file` or `edit_file` event is active.
 8. Observe real input/output token totals and estimated cost, followed by `artifact.created` and `job.completed`.
-9. Leave the finished artifact unpromoted, quit Godot, and reopen. Confirm the finished work returns with **Approve** and **Discard** choices. Exercise Discard with a test artifact and confirm it does not return on another reopen.
+9. Leave the finished artifact unpromoted, quit Godot, and reopen. Confirm the finished work returns with **Add to Studio** and **Keep with job** choices. Exercise **Keep with job** with a test artifact and confirm the promotion prompt does not return on another reopen while the artifact remains attached to its job.
 10. Approve Mina's artifact promotion. Confirm `studio/design-note.md` appears in **Studio files**, opens in the in-game text panel, and exists under the durable company project `studio/` directory.
 11. Quit and reopen again. Confirm the clock, Mina's memories, completed status, and clickable `studio/design-note.md` listing are restored.
 12. Choose **Custom work order…**, select Theo, enter a title and instruction body, and attach `studio/design-note.md` as read context. Submit it and confirm the SQLite work-order row preserves the exact title, instructions, and attached relative path.

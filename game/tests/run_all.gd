@@ -10,6 +10,8 @@ var _steer_message: String = ""
 var _assignment_employee_id: String = ""
 var _assignment_title: String = ""
 var _assignment_text: String = ""
+var _chat_employee_id: String = ""
+var _chat_message: String = ""
 
 func _initialize() -> void:
 	OS.set_environment("STARTUP_VALLEY_NO_WORKER", "1")
@@ -24,13 +26,47 @@ func _run() -> void:
 	root.add_child(main)
 	await process_frame
 	await process_frame
+	var chat_history_handler := Callable(main.worker_client, "request_chat_history")
+	if main.job_panel.chat_history_requested.is_connected(chat_history_handler):
+		main.job_panel.chat_history_requested.disconnect(chat_history_handler)
+	var chat_submit_handler := Callable(main.worker_client, "send_chat")
+	if main.job_panel.chat_submitted.is_connected(chat_submit_handler):
+		main.job_panel.chat_submitted.disconnect(chat_submit_handler)
+	main.job_panel.set_credential_status(true)
+	main.job_panel.set_worker_ready()
+	_assert_ui_typography(main)
+	var tab_titles: PackedStringArray = []
+	for tab_index: int in range(main.job_panel._tabs.get_tab_count()):
+		tab_titles.append(main.job_panel._tabs.get_tab_title(tab_index))
+	if tab_titles != PackedStringArray(["Chat", "Assign", "Activity", "Studio"]):
+		_fail("test_ui_language: employee drawer tabs do not use the approved product terms")
+	if main.job_panel._tabs.get_tab_bar().custom_minimum_size.y < 40.0:
+		_fail("test_ui_layout: tab targets are below the 40-pixel interaction floor")
+	var delivery_button := main.founder_hud.find_child("ViewDelivery", true, false) as Button
+	if delivery_button == null or delivery_button.size.y < 40.0:
+		_fail("test_ui_layout: delivery review target is below the 40-pixel interaction floor")
+	if _contrast_ratio(JobPanel.CHARCOAL, JobPanel.VERMILION) < 4.5 \
+		or _contrast_ratio(JobPanel.ALERT_INK, JobPanel.PARCHMENT) < 4.5 \
+		or _contrast_ratio(JobPanel.SUCCESS_INK, JobPanel.PARCHMENT) < 4.5 \
+		or _contrast_ratio(JobPanel.INDIGO, JobPanel.PARCHMENT) < 4.5:
+		_fail("test_ui_contrast: an essential text and surface pair is below 4.5:1")
+	main.job_panel.set_credential_status(false)
+	await process_frame
+	if not main.job_panel._connection_panel.visible or not main.job_panel._assign_button.disabled:
+		_fail("test_connection_ui: first run did not separate Connect AI from employee Assign")
+	main.job_panel.set_credential_status(true)
+	main.job_panel._close_connection_settings()
+	main.job_panel.close_drawer(false)
 	if main.job_panel.selected_employee_id() != "mira":
 		_fail("test_native_team_ui: the first employee was not selected")
 	if main.job_panel.drawer_is_open():
 		_fail("test_native_team_ui: the employee drawer was open during exploration")
 	var rail_style := main.job_panel._rail_panel.get_theme_stylebox("panel") as StyleBoxTexture
-	if rail_style == null or rail_style.texture != NotebookSkin.TEAM_RAIL_NONE:
-		_fail("test_character_art: the collapsed team rail did not use the approved notebook artwork")
+	if rail_style == null or rail_style.texture != NotebookSkin.WOOD_FILL:
+		_fail("test_character_art: the modular team rail did not use the approved notebook wood")
+	var backdrop := main.get_node_or_null("Backdrop") as TextureRect
+	if backdrop == null or backdrop.texture == null or backdrop.get_global_rect().size != Vector2(1280.0, 720.0):
+		_fail("test_ui_layout: the world surround did not cover the full viewport")
 	var founder_sprite := main.player.get_node_or_null("CharacterSprite") as Sprite2D
 	if founder_sprite == null or founder_sprite.texture == null:
 		_fail("test_character_art: the founder did not use the character sheet in the office")
@@ -41,8 +77,8 @@ func _run() -> void:
 	var ledger_texture := main.clock_panel.get_node_or_null("LedgerTexture") as TextureRect
 	if ledger_texture == null or ledger_texture.texture != ClockPanel.LEDGER_TEXTURE:
 		_fail("test_founders_ledger_ui: the live clock did not use the selected ledger artwork")
-	if main.founder_hud.get_node_or_null("TitlePlaque") == null or main.founder_hud.get_node_or_null("MovementPlaque") == null:
-		_fail("test_founders_ledger_ui: the title or movement plaque was missing")
+	if main.founder_hud.get_node_or_null("TitlePlaque") != null or main.founder_hud.get_node_or_null("MovementPlaque") == null:
+		_fail("test_founders_ledger_ui: gameplay retained the title plaque or lost the onboarding hint")
 	main.clock_panel.show_money_earned(125.5)
 	if main.clock_panel._earned_label.text != "$125.50  EARNED":
 		_fail("test_ui_layout: earned money did not render in the HUD")
@@ -86,7 +122,7 @@ func _run() -> void:
 	var primary_hover_style := main.job_panel._make_job_button.get_theme_stylebox("hover") as StyleBoxTexture
 	var team_focus_style := (main.job_panel._team_buttons["mira"] as Button).get_theme_stylebox("focus") as StyleBoxTexture
 	var attention_texture := (main.job_panel._team_buttons["mira"] as Button).get_node_or_null("AttentionBadge") as TextureRect
-	if secondary_style == null or secondary_style.texture != OperationsSkin.BUTTON_SECONDARY_NORMAL or primary_hover_style == null or primary_hover_style.texture != OperationsSkin.BUTTON_PRIMARY_HOVER:
+	if secondary_style == null or secondary_style.texture != OperationsSkin.BUTTON_SECONDARY_NORMAL or primary_hover_style == null or primary_hover_style.texture != NotebookSkin.TAB_VERMILION:
 		_fail("test_operations_ui: primary or secondary interaction states retained generic styling")
 	if team_focus_style == null or team_focus_style.texture != OperationsSkin.FOCUS_RING or attention_texture == null or attention_texture.texture != OperationsSkin.ATTENTION_BADGE:
 		_fail("test_operations_ui: team rail focus or attention state did not use custom art")
@@ -94,9 +130,9 @@ func _run() -> void:
 	main.job_panel.select_employee("theo")
 	if main.job_panel.selected_employee_id() != "theo":
 		_fail("test_native_team_ui: the vertical team rail did not select Theo")
-	rail_style = main.job_panel._rail_panel.get_theme_stylebox("panel") as StyleBoxTexture
-	if rail_style == null or rail_style.texture != NotebookSkin.TEAM_RAIL_THEO:
-		_fail("test_native_team_ui: the team rail did not move its selection treatment to Theo")
+	var theo_selection := (main.job_panel._team_buttons["theo"] as Button).get_node_or_null("SelectionFrame") as NinePatchRect
+	if theo_selection == null or not theo_selection.visible:
+		_fail("test_native_team_ui: the modular team rail did not move its selection treatment to Theo")
 	main.job_panel.show_chat_history("theo", [
 		{"sender": "player", "content": "What should we test first?"},
 		{"sender": "employee", "content": "Start with the smallest useful growth experiment."},
@@ -114,8 +150,17 @@ func _run() -> void:
 		_fail("test_operations_ui: founder chat did not use its directional custom bubble")
 	if employee_bubble_style == null or employee_bubble_style.texture != OperationsSkin.CHAT_EMPLOYEE_BUBBLE:
 		_fail("test_operations_ui: employee chat did not use its directional custom bubble")
-	if main.job_panel._make_job_button.disabled:
-		_fail("test_native_team_ui: a persisted founder message did not enable Assign Work")
+	main.job_panel.chat_submitted.connect(_capture_chat)
+	main.job_panel._chat_input.text = "Keep this conversational for now."
+	main.job_panel._submit_chat()
+	if _chat_employee_id != "theo" or _chat_message != "Keep this conversational for now.":
+		_fail("test_chat_to_work: Chat did not dispatch the bounded conversation request")
+	main.job_panel.show_chat_reply("theo", {"content": "Understood. No work order has started."}, 0.0)
+	if main.job_panel._make_job_button.disabled or not main.job_panel._make_job_button.visible:
+		_fail("test_native_team_ui: a complete conversation did not expose Create Work Order")
+	main.job_panel._make_last_chat_a_job()
+	if main.job_panel._tabs.current_tab != 1 or not main.job_panel._assignment_preview.text.contains("Founder: What should we test first?") or not main.job_panel._assignment_preview.text.contains("Theo: Start with the smallest useful growth experiment."):
+		_fail("test_chat_to_work: the local draft did not preserve both sides of the bounded discussion")
 	var assignment_handler := Callable(main, "_on_assignment_submitted")
 	main.job_panel.assignment_submitted.disconnect(assignment_handler)
 	main.job_panel.assignment_submitted.connect(_capture_assignment)
@@ -198,6 +243,10 @@ func _run() -> void:
 		_fail("test_persistent_boot: pending promotion did not restore the completion memo")
 	if main.get_employee("mira").memory_line != "Outcome: restored durable note":
 		_fail("test_persistent_boot: employee memory was not restored")
+	main._spawn_employees([])
+	if main.founder_hud.delivery_visible():
+		_fail("test_notification_lifecycle: removing the roster retained a stale delivery memo")
+	main._spawn_employees(restored_records)
 	main.artifact_viewer.show_artifact("design-note.md", "# Design note\n\nReadable delivery text.")
 	await process_frame
 	if not main.artifact_viewer.modal_fits_viewport() or not main.artifact_viewer.scrim_covers_viewport():
@@ -206,9 +255,11 @@ func _run() -> void:
 	for child: Node in main.artifact_viewer._modal.get_children():
 		if child is TextureRect and (child as TextureRect).texture == OperationsSkin.ARTIFACT_READER_FRAME:
 			reader_frame_found = true
-	var reader_paper_style := main.artifact_viewer._content.get_theme_stylebox("read_only") as StyleBoxTexture
+	var reader_paper_style := main.artifact_viewer._content.get_theme_stylebox("normal") as StyleBoxTexture
 	if not reader_frame_found or reader_paper_style == null or reader_paper_style.texture != OperationsSkin.ARTIFACT_PAPER:
 		_fail("test_operations_ui: artifact reader did not use its custom frame and paper")
+	if main.artifact_viewer._content.get_parsed_text().contains("# Design note"):
+		_fail("test_artifact_viewer: common Markdown headings were shown as raw markers")
 	main.artifact_viewer.hide()
 	main.day_clock.set_time(4, DayClock.WORK_START)
 	await process_frame
@@ -218,6 +269,14 @@ func _run() -> void:
 	if scheduled_employee._idle_elapsed < 0.4:
 		_fail("test_day_clock: repeated work ticks reset the employee idle schedule")
 
+	main.job_panel.show_pending_promotions([])
+	main.job_panel.begin_job("queued-state", "theo")
+	main.job_panel.mark_job_queued("queued-state")
+	main.job_panel.select_employee("theo")
+	if main.job_panel._employee_status.text != "QUEUED" or main.job_panel._employee_ui_state("theo") == "working":
+		_fail("test_ui_status: queued work was simultaneously presented as working")
+	main.job_panel.finish_job("queued-state")
+
 	main.job_panel.begin_job("steer-job")
 	var journal_style := main.job_panel._event_log.get_theme_stylebox("normal") as StyleBoxTexture
 	var journal_scroll_style := main.job_panel._event_log.get_v_scroll_bar().get_theme_stylebox("grabber") as StyleBoxTexture
@@ -225,7 +284,7 @@ func _run() -> void:
 	var delivery_style := main.job_panel._promotion_box.get_theme_stylebox("panel") as StyleBoxTexture
 	var meter_style := main.job_panel._token_meter.get_theme_stylebox("background") as StyleBoxTexture
 	if journal_style == null or journal_style.texture != OperationsSkin.ACTIVITY_ROW or journal_scroll_style == null or journal_scroll_style.texture != OperationsSkin.SCROLL_V_THUMB:
-		_fail("test_operations_ui: Journal activity or scrollbar retained a generic style")
+		_fail("test_operations_ui: Activity feed or scrollbar retained a generic style")
 	if approval_style == null or approval_style.texture != OperationsSkin.JOURNAL_APPROVAL_CARD or delivery_style == null or delivery_style.texture != OperationsSkin.JOURNAL_DELIVERY_CARD:
 		_fail("test_operations_ui: approval or delivery state did not use its custom card")
 	if meter_style == null or meter_style.texture != OperationsSkin.TOKEN_METER_FRAME:
@@ -237,9 +296,9 @@ func _run() -> void:
 		_fail("test_operations_ui: one or more real-event activity icons failed to load")
 	if OperationsSkin.WORLD_SPEECH_BUBBLE == null or OperationsSkin.WORLD_NAMEPLATE == null or OperationsSkin.WORLD_STATUS_PLAQUE == null or OperationsSkin.WORLD_ATTENTION == null:
 		_fail("test_operations_ui: one or more in-world label assets failed to load")
-	if not main.job_panel.status_color().is_equal_approx(main.job_panel.CERULEAN):
+	if not main.job_panel.status_color().is_equal_approx(main.job_panel.INDIGO):
 		_fail("test_ui_status: submitting work retained a stale error color")
-	if main.job_panel._event_log.get_parsed_text() != "" or not main.job_panel._usage_label.text.contains("0 in / 0 out"):
+	if main.job_panel._event_log.get_parsed_text() != "" or not main.job_panel._usage_label.text.contains("0 tokens"):
 		_fail("test_ui_status: a new work order retained stale activity or usage")
 	main._job_employees["steer-job"] = "mira"
 	var steer_started := WorkerEventRecord.new()
@@ -248,7 +307,17 @@ func _run() -> void:
 	await process_frame
 	if not main.job_panel.steer_controls_visible():
 		_fail("test_active_job_steer: controls did not appear for an in-flight job")
+	var active_status_before_disconnect := main.job_panel._status_label.text
+	main.job_panel.set_worker_connection_error("Worker is not connected")
+	if main.job_panel._status_label.text != active_status_before_disconnect or not main.job_panel._connection_badge.visible:
+		_fail("test_connection_ui: connectivity replaced active work meaning instead of using the global rail state")
+	main.job_panel.set_worker_ready()
 	main.job_panel.steer_submitted.connect(_capture_steer)
+	main.job_panel._tabs.current_tab = 0
+	main.job_panel._chat_input.text = "This must not steer from Chat."
+	main.job_panel._submit_chat()
+	if main.job_panel._tabs.current_tab != 2 or not _steer_job_id.is_empty():
+		_fail("test_chat_to_work: Chat did not remain read-only while a work order was active")
 	main.job_panel._steer_input.text = "Keep the note under 300 words."
 	main.job_panel._submit_steer()
 	if _steer_job_id != "steer-job" or _steer_message != "Keep the note under 300 words.":
@@ -348,6 +417,53 @@ func _capture_assignment(
 	_assignment_employee_id = employee_id
 	_assignment_title = title
 	_assignment_text = assignment
+
+func _capture_chat(employee_id: String, message: String) -> void:
+	_chat_employee_id = employee_id
+	_chat_message = message
+
+func _assert_ui_typography(main: GameMain) -> void:
+	var controls: Array[Node] = [main.job_panel, main.clock_panel, main.founder_hud, main.artifact_viewer]
+	controls.append_array(main.find_children("*", "Control", true, false))
+	var seen: Dictionary = {}
+	for node: Node in controls:
+		if not node is Control or seen.has(node.get_instance_id()):
+			continue
+		seen[node.get_instance_id()] = true
+		var control := node as Control
+		if not _control_has_readable_text(control):
+			continue
+		if control is RichTextLabel:
+			var rich_size := control.get_theme_font_size("normal_font_size")
+			if rich_size > 0 and rich_size < GameFonts.BODY_META:
+				_fail("test_ui_typography: %s rich text is below 14 px" % control.name)
+			continue
+		var font_size := control.get_theme_font_size("font_size")
+		var font := control.get_theme_font("font")
+		if font == GameFonts.DISPLAY and font_size < GameFonts.DISPLAY_SMALL:
+			_fail("test_ui_typography: %s uses Tiny5 below 18 px" % control.name)
+		elif font == GameFonts.BODY and font_size < GameFonts.BODY_META:
+			_fail("test_ui_typography: %s body copy is below 14 px" % control.name)
+
+func _control_has_readable_text(control: Control) -> bool:
+	if control is Label:
+		return not (control as Label).text.is_empty()
+	if control is Button:
+		return not (control as Button).text.is_empty()
+	return control is LineEdit or control is TextEdit or control is RichTextLabel or control is OptionButton or control is TabContainer
+
+func _contrast_ratio(first: Color, second: Color) -> float:
+	var first_luminance := _relative_luminance(first)
+	var second_luminance := _relative_luminance(second)
+	var lighter := maxf(first_luminance, second_luminance)
+	var darker := minf(first_luminance, second_luminance)
+	return (lighter + 0.05) / (darker + 0.05)
+
+func _relative_luminance(color: Color) -> float:
+	return 0.2126 * _linear_channel(color.r) + 0.7152 * _linear_channel(color.g) + 0.0722 * _linear_channel(color.b)
+
+func _linear_channel(value: float) -> float:
+	return value / 12.92 if value <= 0.04045 else pow((value + 0.055) / 1.055, 2.4)
 
 func _software_state_screenshot(main: GameMain) -> Image:
 	# `godot --headless` deliberately uses the dummy renderer, so viewport textures

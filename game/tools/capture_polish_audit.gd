@@ -95,10 +95,11 @@ func _fresh_main(hire_count: int) -> void:
 	_main.job_panel.visible = true
 	_main.clock_panel.visible = true
 	_main.job_panel.set_credential_status(true)
-	_main.job_panel.set_info("Deterministic polish audit — live worker disabled.")
+	_main.job_panel.set_worker_ready()
 	_main.job_panel.close_drawer(false)
 	_main.artifact_viewer.hide()
 	_main.founder_hud.hide_delivery()
+	_main.founder_hud.dismiss_movement_hint()
 	await _frames(4)
 
 func _run_world_suite() -> void:
@@ -295,7 +296,7 @@ func _capture_chat_and_work_order() -> void:
 	_main.job_panel.show_chat_history("mira", _long_chat_history())
 	await _begin_scenario(
 		"chat-and-work-order",
-		"Long chat scrolls cleanly, send/wait/reply states are legible, and Assign Work carries the prompt forward."
+		"Long chat scrolls cleanly, send/wait/reply states are legible, and Create work order carries the bounded discussion forward."
 	)
 	_main.job_panel._chat_input.text = "Turn these notes into a one-week launch plan."
 	_main.job_panel._submit_chat()
@@ -619,6 +620,7 @@ func _inspect_texture(path: String) -> Dictionary:
 	var has_transparency := used_rect != full_rect
 	var modular_office_asset := path.begins_with("res://assets/runtime/office/") \
 		and not path.ends_with("office-shell-base.png") \
+		and not path.ends_with("campus-surround.png") \
 		and not path.ends_with("main-office-background.png")
 	var alpha_required := path.begins_with("res://assets/runtime/characters/") \
 		or path.begins_with("res://assets/runtime/effects/") \
