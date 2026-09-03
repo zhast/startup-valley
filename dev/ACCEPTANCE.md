@@ -18,7 +18,7 @@ The slice is complete when a developer can perform this flow without Claude Code
 14. While Theo is actively working, send a correction through **Update active job**. Confirm it is delivered to the same job and Pi session without creating a second work order.
 15. Approve Theo's new artifact, then open it from the durable **Studio files** list in the current artifact text viewer.
 16. Pick the canned **Review Mina's inventory note** and confirm it still selects Theo, reads `studio/design-note.md`, and produces `review.md`.
-17. Set the clock to 12:30 or after 17:30, submit a freeform work order, and confirm it remains queued with no walking or typing. Advance to 13:30 or 08:00 and confirm `job.started` then moves the employee to their desk.
+17. Wait for or restore the saved clock to 12:30 or after 17:30, submit a freeform work order, and confirm it remains queued with no walking or typing. Let the clock cross 13:30 or 08:00 and confirm `job.started` then moves the employee to their desk. The player HUD must not expose speed controls.
 18. Try to submit a protocol work order with a missing attached studio path. Confirm it fails before a work-order row is created.
 19. With no live job, confirm on-shift employees only sit, wander, or show one memory line; at lunch they go to lunch, and after 17:30 they display off shift.
 20. Quit during a work order. Confirm the worker child exits, the last status restores as blocked/cancelled, and no Pi process remains.

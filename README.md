@@ -2,7 +2,17 @@
 
 Startup Valley is a Godot office-town where AI employees perform real, bounded work through a constrained local TypeScript worker. The game renders the town and work activity; the worker owns SQLite state, Pi sessions, OpenRouter access, usage, approvals, and artifacts.
 
-The current vertical slice is a conversational, persistent studio. The native team rail opens a live employee drawer with Chat, Work, Journal, and Studio tabs. Short chats with Mina or Theo are tool-free and persist across restart; the player's latest message can become a bounded work order. The player can also use canned assignments or write a freeform work order, optionally attaching one studio file as bounded read-only context. Finished scratch artifacts wait for an explicit Approve or Discard decision even after quit/reopen. Approved files appear in the durable studio browser, where they can be opened in-game and attached to later work.
+The current vertical slice is a conversational, persistent studio. A compact
+Founder's Ledger HUD shows day, time, and money without covering the office. The
+native team rail opens a live employee drawer with Chat, Work, Journal, and
+Studio tabs; walking close to a teammate also reveals an `E · CHAT` prompt.
+Short chats with Mina or Theo are tool-free and persist across restart; the
+player's latest message can become a bounded work order. The player can also use
+canned assignments or write a freeform work order, optionally attaching one
+studio file as bounded read-only context. Finished scratch artifacts surface as
+a pinned memo and wait for an explicit Approve or Discard decision even after
+quit/reopen. Approved files appear in the durable studio browser, where they can
+be opened in-game and attached to later work.
 
 ## Requirements
 
@@ -26,7 +36,12 @@ In the game, paste an OpenRouter API key and choose **Save securely**. The local
 
 The credential service is namespaced to Startup Valley, so the key must be saved once for this game.
 
-New assignments start during 08:00–12:30 and 13:30–17:30. Lunch and off-hours assignments remain visibly queued until the next work window. The clock controls pause, 1×, 4×, and 16× speed. Completed job files remain scratch artifacts until the player approves promotion into the canonical `studio/` tree; unfinished promotion decisions resume after restart.
+New assignments start during 08:00–12:30 and 13:30–17:30. Lunch and off-hours
+assignments remain visibly queued until the next work window. The HUD clock is
+read-only: it shows the worker-owned saved day and time without exposing speed
+controls. Completed job files remain scratch artifacts until the player approves
+promotion into the canonical `studio/` tree; unfinished promotion decisions and
+their completion memo resume after restart.
 
 Once a job has started, **Update active job** sends a bounded correction to that same live Pi session. It does not start another employee or work order.
 
