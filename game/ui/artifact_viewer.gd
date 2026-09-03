@@ -2,11 +2,16 @@ class_name ArtifactViewer
 extends Control
 
 const VERMILION := Color("fa4616")
-const OFF_WHITE := Color("f1f1f1")
 const CHARCOAL := Color("151515")
-const CERULEAN := Color("6196c1")
+const INDIGO := Color("354b98")
 const CHARTREUSE := Color("c1fa81")
-const DUST := Color("b6b5b0")
+const PARCHMENT := Color("f4ddb0")
+const PARCHMENT_LIGHT := Color("fff7e2")
+const PARCHMENT_DARK := Color("d8b879")
+const WOOD := Color("9b542d")
+const WOOD_DARK := Color("552c22")
+const WOOD_LIGHT := Color("de9550")
+const MUTED_INK := Color("725b46")
 
 var _title_label: Label
 var _content: TextEdit
@@ -20,15 +25,7 @@ func _ready() -> void:
 	_build_interface()
 
 func _build_interface() -> void:
-	var style := StyleBoxFlat.new()
-	style.bg_color = CHARCOAL
-	style.border_color = VERMILION
-	style.set_border_width_all(2)
-	style.corner_radius_top_left = 12
-	style.corner_radius_top_right = 12
-	style.corner_radius_bottom_left = 12
-	style.corner_radius_bottom_right = 12
-	_modal.add_theme_stylebox_override("panel", style)
+	_modal.add_theme_stylebox_override("panel", _stylebox(PARCHMENT, WOOD_DARK, 5, 3))
 
 	var margin := MarginContainer.new()
 	margin.add_theme_constant_override("margin_left", 18)
@@ -45,38 +42,44 @@ func _build_interface() -> void:
 	var file_mark := Label.new()
 	file_mark.text = "▤"
 	file_mark.add_theme_font_size_override("font_size", 22)
-	file_mark.add_theme_color_override("font_color", VERMILION)
+	file_mark.add_theme_color_override("font_color", INDIGO)
 	header.add_child(file_mark)
 	_title_label = Label.new()
 	_title_label.text = "Artifact"
 	_title_label.add_theme_font_size_override("font_size", 18)
-	_title_label.add_theme_color_override("font_color", OFF_WHITE)
+	_title_label.add_theme_color_override("font_color", CHARCOAL)
 	_title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(_title_label)
 	_close_button = Button.new()
 	_close_button.text = "Close"
 	_close_button.pressed.connect(hide)
-	_close_button.add_theme_stylebox_override("normal", _stylebox(Color("252525"), CERULEAN, 1, 5))
-	_close_button.add_theme_stylebox_override("hover", _stylebox(Color("303030"), CERULEAN, 2, 5))
-	_close_button.add_theme_stylebox_override("focus", _stylebox(Color("202020"), CHARTREUSE, 2, 5))
-	_close_button.add_theme_color_override("font_color", OFF_WHITE)
+	_close_button.add_theme_stylebox_override("normal", _stylebox(WOOD, WOOD_DARK, 2, 2))
+	_close_button.add_theme_stylebox_override("hover", _stylebox(WOOD_LIGHT, VERMILION, 2, 2))
+	_close_button.add_theme_stylebox_override("pressed", _stylebox(VERMILION, WOOD_DARK, 2, 2))
+	_close_button.add_theme_stylebox_override("focus", _stylebox(WOOD, CHARTREUSE, 2, 2))
+	_close_button.add_theme_color_override("font_color", PARCHMENT_LIGHT)
+	_close_button.add_theme_color_override("font_hover_color", CHARCOAL)
+	_close_button.add_theme_color_override("font_pressed_color", PARCHMENT_LIGHT)
 	header.add_child(_close_button)
 	var caption := Label.new()
 	caption.text = "DELIVERY PREVIEW  ·  READ ONLY"
 	caption.add_theme_font_size_override("font_size", 10)
-	caption.add_theme_color_override("font_color", DUST)
+	caption.add_theme_color_override("font_color", MUTED_INK)
 	column.add_child(caption)
+	var rule := HSeparator.new()
+	rule.add_theme_stylebox_override("separator", _stylebox(PARCHMENT_DARK, PARCHMENT_DARK, 1, 0))
+	column.add_child(rule)
 
 	_content = TextEdit.new()
 	_content.editable = false
 	_content.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
 	_content.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_content.add_theme_font_size_override("font_size", 14)
-	_content.add_theme_color_override("font_color", OFF_WHITE)
-	_content.add_theme_color_override("font_readonly_color", OFF_WHITE)
+	_content.add_theme_color_override("font_color", CHARCOAL)
+	_content.add_theme_color_override("font_readonly_color", CHARCOAL)
 	_content.add_theme_color_override("caret_color", VERMILION)
-	_content.add_theme_stylebox_override("normal", _stylebox(Color("202020"), Color("484848"), 1, 6))
-	_content.add_theme_stylebox_override("read_only", _stylebox(Color("202020"), Color("484848"), 1, 6))
+	_content.add_theme_stylebox_override("normal", _stylebox(PARCHMENT_LIGHT, WOOD, 2, 2))
+	_content.add_theme_stylebox_override("read_only", _stylebox(PARCHMENT_LIGHT, WOOD, 2, 2))
 	column.add_child(_content)
 
 func _stylebox(background: Color, border: Color, width: int, radius: int) -> StyleBoxFlat:

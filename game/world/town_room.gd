@@ -9,10 +9,16 @@ const COFFEE_STATION_SCENE: PackedScene = preload("res://props/coffee_station.ts
 const APPROVAL_CONSOLE_SCENE: PackedScene = preload("res://props/approval_console.tscn")
 const ARTIFACT_ARCHIVE_SCENE: PackedScene = preload("res://props/artifact_archive.tscn")
 const PROTOTYPE_BENCH_SCENE: PackedScene = preload("res://props/prototype_bench.tscn")
-const LOCKED_FILL := Color("151515f2")
-const LOCKED_INSET := Color("202020ed")
-const LOCKED_STRIPE := Color("354b9855")
-const LOCKED_BORDER := Color("fa4616")
+const LOCKED_FILL := Color("552c22f5")
+const LOCKED_INSET := Color("6e3b28f2")
+const LOCKED_PLANK_A := Color("9b542ded")
+const LOCKED_PLANK_B := Color("814327ed")
+const LOCKED_BORDER := Color("de9550")
+const LOCKED_PARCHMENT := Color("f4ddb0")
+const LOCKED_PARCHMENT_LIGHT := Color("fff7e2")
+const LOCKED_INK := Color("151515")
+const LOCKED_MUTED_INK := Color("725b46")
+const LOCKED_ACCENT := Color("fa4616")
 
 var tile_size: int = 32
 var grid_width: int = 26
@@ -244,39 +250,71 @@ func _draw() -> void:
 func _draw_locked_section(section: Dictionary) -> void:
 	var area := _section_rect(section)
 	draw_rect(area, LOCKED_FILL, true)
-	var inset := area.grow(-7.0)
+	var inset := area.grow(-8.0)
 	draw_rect(inset, LOCKED_INSET, true)
-	var stripe_y := inset.position.y
-	while stripe_y < inset.end.y:
-		draw_rect(Rect2(inset.position.x, stripe_y, inset.size.x, 7.0), LOCKED_STRIPE, true)
-		stripe_y += 24.0
+	var plank_y := inset.position.y
+	var plank_index := 0
+	while plank_y < inset.end.y:
+		var plank_height := minf(27.0, inset.end.y - plank_y)
+		var plank_color := LOCKED_PLANK_A if plank_index % 2 == 0 else LOCKED_PLANK_B
+		draw_rect(Rect2(inset.position.x, plank_y, inset.size.x, plank_height), plank_color, true)
+		draw_line(
+			Vector2(inset.position.x, plank_y + plank_height),
+			Vector2(inset.end.x, plank_y + plank_height),
+			LOCKED_FILL,
+			2.0
+		)
+		plank_y += plank_height
+		plank_index += 1
+	var left_brace := Rect2(inset.position.x + 7.0, inset.position.y, 7.0, inset.size.y)
+	var right_brace := Rect2(inset.end.x - 14.0, inset.position.y, 7.0, inset.size.y)
+	draw_rect(left_brace, LOCKED_FILL, true)
+	draw_rect(right_brace, LOCKED_FILL, true)
 	draw_rect(area, LOCKED_BORDER, false, 3.0)
+	draw_rect(inset, LOCKED_FILL, false, 2.0)
+	for bolt_position: Vector2 in [
+		inset.position + Vector2(10.5, 10.5),
+		Vector2(inset.end.x - 10.5, inset.position.y + 10.5),
+		Vector2(inset.position.x + 10.5, inset.end.y - 10.5),
+		inset.end - Vector2(10.5, 10.5),
+	]:
+		draw_circle(bolt_position, 2.5, LOCKED_PARCHMENT)
+
 	var label := str(section.get("label", "NEW WING"))
-	var label_y := area.position.y + area.size.y * 0.5
+	var sign_width := minf(196.0, area.size.x - 30.0)
+	var sign_size := Vector2(sign_width, 82.0)
+	var sign_position := area.get_center() - sign_size * 0.5
+	var sign_rect := Rect2(sign_position, sign_size)
+	draw_rect(Rect2(sign_position + Vector2(3.0, 3.0), sign_size), LOCKED_FILL, true)
+	draw_rect(sign_rect, LOCKED_PARCHMENT, true)
+	draw_rect(sign_rect.grow(-4.0), LOCKED_PARCHMENT_LIGHT, false, 1.0)
+	draw_rect(sign_rect, LOCKED_FILL, false, 3.0)
+	var text_x := sign_rect.position.x + 8.0
+	var text_width := sign_rect.size.x - 16.0
 	draw_string(
 		ThemeDB.fallback_font,
-		Vector2(area.position.x + 12.0, label_y - 8.0),
+		Vector2(text_x, sign_rect.position.y + 23.0),
 		"RENOVATION",
 		HORIZONTAL_ALIGNMENT_CENTER,
-		area.size.x - 24.0,
-		15,
-		Color("c1fa81")
+		text_width,
+		14,
+		LOCKED_ACCENT
 	)
 	draw_string(
 		ThemeDB.fallback_font,
-		Vector2(area.position.x + 12.0, label_y + 14.0),
+		Vector2(text_x, sign_rect.position.y + 47.0),
 		label,
 		HORIZONTAL_ALIGNMENT_CENTER,
-		area.size.x - 24.0,
+		text_width,
 		12,
-		Color("f1f1f1")
+		LOCKED_INK
 	)
 	draw_string(
 		ThemeDB.fallback_font,
-		Vector2(area.position.x + 12.0, label_y + 34.0),
+		Vector2(text_x, sign_rect.position.y + 68.0),
 		"UNLOCKS WITH A NEW HIRE",
 		HORIZONTAL_ALIGNMENT_CENTER,
-		area.size.x - 24.0,
+		text_width,
 		9,
-		Color("9eb3aa")
+		LOCKED_MUTED_INK
 	)
