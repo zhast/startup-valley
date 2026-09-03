@@ -1,6 +1,11 @@
 class_name EmployeeAvatar
 extends Node2D
 
+class LabelLayer extends Node2D:
+	var avatar: EmployeeAvatar
+	func _draw() -> void:
+		if is_instance_valid(avatar): avatar.draw_labels(self)
+
 enum WorkState {
 	IDLE,
 	IDLE_WALKING,
@@ -23,6 +28,7 @@ var morale: int = 50
 var home_position: Vector2 = Vector2.ZERO
 var desk_position: Vector2 = Vector2.ZERO
 var research_position: Vector2 = Vector2.ZERO
+var lunch_position: Vector2 = Vector2.ZERO
 var delivery_position: Vector2 = Vector2.ZERO
 var work_state: WorkState = WorkState.IDLE
 var schedule_phase: String = "work"
@@ -47,6 +53,16 @@ var _effect_duration: float = -1.0
 var _label_hold: float = 1.2
 var _interaction_highlighted: bool = false
 var _status_override: String = ""
+var navigation: OfficeNavigation
+var world_paused := false
+var labels_suppressed := false
+var _route := PackedVector2Array()
+var _route_revision := -1
+var _requested_target := Vector2.ZERO
+var _stuck_elapsed := 0.0
+var _progress_waypoint := Vector2(INF, INF)
+var _progress_distance := INF
+var _label_layer: LabelLayer
 
 func configure(record: EmployeeRecord, start_position: Vector2, desk: Vector2, research: Vector2) -> void:
 	z_as_relative = false
@@ -58,6 +74,16 @@ func configure(record: EmployeeRecord, start_position: Vector2, desk: Vector2, r
 	home_position = start_position
 	desk_position = desk
 	research_position = research
+	lunch_position = research
+	var body := StaticBody2D.new()
+	body.collision_layer = 2
+	body.collision_mask = 0
+	var collider := CollisionShape2D.new()
+	var footprint := CircleShape2D.new()
+	footprint.radius = 9.0
+	collider.shape = footprint
+	body.add_child(collider)
+	add_child(body)
 	_shadow_sprite = Sprite2D.new()
 	_shadow_sprite.name = "PixelShadow"
 	_shadow_sprite.texture = PolishArt.CHARACTER_SHADOWS
@@ -83,6 +109,11 @@ func configure(record: EmployeeRecord, start_position: Vector2, desk: Vector2, r
 	_effect_sprite.position = Vector2(0.0, -78.0)
 	_effect_sprite.visible = false
 	add_child(_effect_sprite)
+	_label_layer = LabelLayer.new()
+	_label_layer.avatar = self
+	_label_layer.z_as_relative = false
+	_label_layer.z_index = 3000
+	add_child(_label_layer)
 	queue_redraw()
 
 func set_schedule_phase(phase: String) -> void:
@@ -102,7 +133,7 @@ func set_schedule_phase(phase: String) -> void:
 	_activity = &""
 	_hold_label()
 	if phase == "lunch":
-		walk_to(research_position, WorkState.LUNCH, WorkState.LUNCH)
+		walk_to(lunch_position, WorkState.LUNCH, WorkState.LUNCH)
 	elif phase == "off":
 		walk_to(home_position, WorkState.OFF_SHIFT, WorkState.OFF_SHIFT)
 	else:
@@ -112,6 +143,8 @@ func set_schedule_phase(phase: String) -> void:
 		queue_redraw()
 
 func apply_worker_event(event: WorkerEventRecord, player_position: Vector2) -> void:
+	if not has_live_job and event.type in [&"agent.thinking", &"tool.started", &"tool.completed", &"approval.required"]:
+		return
 	match event.type:
 		&"job.started":
 			has_live_job = true
@@ -140,7 +173,8 @@ func apply_worker_event(event: WorkerEventRecord, player_position: Vector2) -> v
 				queue_redraw()
 		&"tool.completed":
 			_set_activity(&"thinking")
-			work_state = WorkState.WORKING
+			if _has_target: _arrival_state = WorkState.WORKING
+			else: work_state = WorkState.WORKING
 			queue_redraw()
 		&"approval.required":
 			_set_activity(&"approval")
@@ -151,6 +185,7 @@ func apply_worker_event(event: WorkerEventRecord, player_position: Vector2) -> v
 			delivery_position = player_position + Vector2(38.0, 8.0)
 			walk_to(delivery_position, WorkState.DELIVERING, WorkState.IDLE)
 		&"job.blocked", &"job.failed":
+			if navigation != null: navigation.release(employee_id)
 			has_live_job = false
 			_set_activity(&"failure", 1.2)
 			_status_override = "work stopped"
@@ -165,6 +200,20 @@ func apply_worker_event(event: WorkerEventRecord, player_position: Vector2) -> v
 				set_schedule_phase(schedule_phase)
 
 func walk_to(target: Vector2, state: WorkState, arrival_state: WorkState = WorkState.IDLE) -> void:
+	_requested_target = target
+	_stuck_elapsed = 0.0
+	_progress_waypoint = Vector2(INF, INF)
+	_progress_distance = INF
+	if navigation != null:
+		_route = navigation.path(position, target, employee_id)
+		_route_revision = navigation.revision
+		if _route.is_empty():
+			_has_target = false
+			navigation.release(employee_id)
+			return
+		target = _route[-1]
+		if state == WorkState.WALKING_TO_DESK or state == WorkState.IDLE_WALKING:
+			desk_position = target
 	var travel := target - position
 	if not travel.is_zero_approx():
 		_facing = _direction_name(travel)
@@ -193,11 +242,36 @@ func _physics_process(delta: float) -> void:
 			_activity = &""
 			_status_override = ""
 			queue_redraw()
-	if _has_target:
-		var travel := _target_position - position
+	if _has_target and not world_paused:
+		if navigation != null and navigation.revision != _route_revision:
+			_route = navigation.path(position, _requested_target, employee_id)
+			_route_revision = navigation.revision
+			if _route.is_empty():
+				_has_target = false
+				return
+			_target_position = _route[-1]
+		var waypoint := _route[0] if not _route.is_empty() else _target_position
+		var travel := waypoint - position
+		if waypoint != _progress_waypoint:
+			_progress_waypoint = waypoint
+			_progress_distance = travel.length()
+			_stuck_elapsed = 0.0
 		if not travel.is_zero_approx():
 			_facing = _direction_name(travel)
-		position = position.move_toward(_target_position, walk_speed * delta)
+		var next := position.move_toward(waypoint, walk_speed * delta)
+		position = navigation.separated_step(employee_id, position, next) if navigation != null else next
+		# Measure net progress over time, not one frame's sideways shuffle.
+		if _progress_distance - position.distance_to(waypoint) < 2.0:
+			_stuck_elapsed += delta
+			if _stuck_elapsed > 0.8:
+				if navigation != null: navigation.request_passage(employee_id, position, waypoint)
+				walk_to(_requested_target, work_state, _arrival_state)
+				return
+		else:
+			_stuck_elapsed = 0.0
+			_progress_distance = position.distance_to(waypoint)
+		if position.distance_to(waypoint) <= 0.5 and not _route.is_empty():
+			_route.remove_at(0)
 		if position.distance_to(_target_position) <= 0.5:
 			position = _target_position
 			_has_target = false
@@ -209,7 +283,10 @@ func _physics_process(delta: float) -> void:
 				set_schedule_phase(schedule_phase)
 			queue_redraw()
 	_update_character_frame()
-	if not has_live_job and schedule_phase == "work" and not _has_target:
+	_character_sprite.position = Vector2(0, -32) + position.round() - position
+	_shadow_sprite.position = Vector2(0, -2) + position.round() - position
+	if navigation != null: navigation.actors[employee_id] = position
+	if not world_paused and not has_live_job and schedule_phase == "work" and not _has_target:
 		_update_idle(delta)
 	z_index = int(position.y)
 
@@ -257,17 +334,17 @@ func state_label() -> String:
 		WorkState.IDLE:
 			return "available"
 		WorkState.IDLE_WALKING:
-			return "finding a seat"
+			return "to seat"
 		WorkState.SITTING:
 			return "sitting"
 		WorkState.WANDERING:
 			return "wandering"
 		WorkState.LUNCH:
-			return "at lunch"
+			return "to lunch" if _has_target else "at lunch"
 		WorkState.OFF_SHIFT:
 			return "off shift"
 		WorkState.WALKING_TO_DESK:
-			return "heading to desk"
+			return "to desk"
 		WorkState.WORKING:
 			return "working"
 		WorkState.TYPING:
@@ -275,38 +352,42 @@ func state_label() -> String:
 		WorkState.WALKING_TO_RESEARCH:
 			return "researching"
 		WorkState.WAITING_APPROVAL:
-			return "needs approval"
+			return "approve?"
 		WorkState.DELIVERING:
 			return "delivering"
 	return "available"
 
 func _draw() -> void:
+	if _label_layer != null: _label_layer.queue_redraw()
+
+func draw_labels(canvas: Node2D) -> void:
+	if labels_suppressed: return
 	if _speech_visible:
 		var speech := memory_line if memory_line.length() <= 38 else "%s..." % memory_line.left(35)
-		draw_texture_rect(OperationsSkin.WORLD_SPEECH_BUBBLE, Rect2(-86.0, -122.0, 172.0, 90.0), false)
+		canvas.draw_texture_rect(OperationsSkin.WORLD_SPEECH_BUBBLE, Rect2(-86.0, -122.0, 172.0, 90.0), false)
 		var speech_lines := _wrap_speech(speech, 21)
 		for line_index: int in range(speech_lines.size()):
-			draw_string(GameFonts.BODY, Vector2(-72.0, -86.0 + line_index * 18.0), speech_lines[line_index], HORIZONTAL_ALIGNMENT_CENTER, 144.0, GameFonts.BODY_META, Color("151515"))
+			canvas.draw_string(GameFonts.BODY, Vector2(-72.0, -86.0 + line_index * 18.0), speech_lines[line_index], HORIZONTAL_ALIGNMENT_CENTER, 144.0, GameFonts.BODY_META, Color("151515"))
 	if not _labels_visible():
 		return
-	draw_texture_rect(OperationsSkin.WORLD_NAMEPLATE, Rect2(-58.0, 9.0, 116.0, 36.0), false)
-	draw_string(GameFonts.DISPLAY, Vector2(-50.0, 35.0), display_name, HORIZONTAL_ALIGNMENT_CENTER, 100.0, GameFonts.DISPLAY_SMALL, Color("151515"))
-	draw_texture_rect(OperationsSkin.WORLD_STATUS_PLAQUE, Rect2(-64.0, 42.0, 128.0, 31.0), false)
+	canvas.draw_texture_rect(OperationsSkin.WORLD_NAMEPLATE, Rect2(-58.0, 9.0, 116.0, 36.0), false)
+	canvas.draw_string(GameFonts.DISPLAY, Vector2(-50.0, 35.0), display_name, HORIZONTAL_ALIGNMENT_CENTER, 100.0, GameFonts.DISPLAY_SMALL, Color("151515"))
+	canvas.draw_texture_rect(OperationsSkin.WORLD_STATUS_PLAQUE, Rect2(-64.0, 42.0, 128.0, 31.0), false)
 	var state_color := Color("354b98")
 	if work_state == WorkState.WAITING_APPROVAL:
 		state_color = Color("963014")
 	elif work_state == WorkState.OFF_SHIFT:
 		state_color = Color("151515")
 	if work_state == WorkState.IDLE:
-		draw_texture_rect(OperationsSkin.WORLD_AVAILABLE, Rect2(-55.0, 49.0, 15.0, 15.0), false)
+		canvas.draw_texture_rect(OperationsSkin.WORLD_AVAILABLE, Rect2(-55.0, 49.0, 15.0, 15.0), false)
 	if work_state == WorkState.WAITING_APPROVAL:
-		draw_texture_rect(OperationsSkin.WORLD_ATTENTION, Rect2(34.0, 4.0, 20.0, 23.0), false)
-	draw_string(GameFonts.BODY, Vector2(-40.0, 64.0), state_label(), HORIZONTAL_ALIGNMENT_CENTER, 96.0, GameFonts.BODY_META, state_color)
+		canvas.draw_texture_rect(OperationsSkin.WORLD_ATTENTION, Rect2(34.0, 4.0, 20.0, 23.0), false)
+	canvas.draw_string(GameFonts.BODY, Vector2(-40.0, 64.0), state_label(), HORIZONTAL_ALIGNMENT_CENTER, 96.0, GameFonts.BODY_META, state_color)
 
 func _labels_visible() -> bool:
 	# Active work is already communicated by the authored pose and event VFX.
 	# Keep plaques contextual so a busy office does not become a wall of labels.
-	return not _speech_visible and (_interaction_highlighted or _label_hold > 0.0 or work_state == WorkState.WAITING_APPROVAL)
+	return not labels_suppressed and not _speech_visible and (_interaction_highlighted or _label_hold > 0.0 or work_state == WorkState.WAITING_APPROVAL)
 
 func _hold_label(duration: float = 1.2) -> void:
 	_label_hold = maxf(_label_hold, duration)

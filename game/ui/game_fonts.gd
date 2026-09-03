@@ -2,7 +2,7 @@ class_name GameFonts
 extends RefCounted
 
 const DISPLAY: FontFile = preload("res://assets/fonts/tiny5/Tiny5-Regular.ttf")
-const BODY: FontFile = preload("res://assets/fonts/nunito-sans/NunitoSans-Variable.ttf")
+const BODY: FontVariation = preload("res://assets/fonts/nunito-sans/NunitoSans-Body.tres")
 
 # The 720p interface is the authored baseline. Tiny5 becomes difficult to scan
 # below 18 px, while Nunito Sans remains comfortable for prose at 16 px.

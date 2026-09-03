@@ -12,6 +12,7 @@ var _modal: PanelContainer
 var _transition: Tween
 
 func _ready() -> void:
+	z_index = 30
 	theme = GameFonts.interface_theme()
 	visible = false
 	_modal = $Modal
@@ -19,15 +20,7 @@ func _ready() -> void:
 	_build_interface()
 
 func _build_interface() -> void:
-	_modal.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
-	var frame := TextureRect.new()
-	frame.texture = OperationsSkin.ARTIFACT_READER_FRAME
-	frame.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	frame.stretch_mode = TextureRect.STRETCH_SCALE
-	frame.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_modal.add_child(frame)
+	_modal.add_theme_stylebox_override("panel", NotebookSkin.parchment())
 
 	var margin := MarginContainer.new()
 	margin.add_theme_constant_override("margin_left", 38)
@@ -45,7 +38,7 @@ func _build_interface() -> void:
 	plate_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	plate_label.add_theme_font_size_override("font_size", GameFonts.DISPLAY_SMALL)
 	GameFonts.use_display(plate_label)
-	plate_label.add_theme_color_override("font_color", Color("f1f1f1"))
+	plate_label.add_theme_color_override("font_color", CHARCOAL)
 	column.add_child(plate_label)
 
 	var header := HBoxContainer.new()
@@ -92,6 +85,7 @@ func _build_interface() -> void:
 	_content.fit_content = false
 	_content.scroll_active = true
 	_content.selection_enabled = true
+	_content.focus_mode = Control.FOCUS_ALL
 	_content.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_content.add_theme_font_size_override("normal_font_size", GameFonts.BODY_DEFAULT)
 	_content.add_theme_font_size_override("bold_font_size", GameFonts.BODY_DEFAULT)
@@ -100,10 +94,23 @@ func _build_interface() -> void:
 	_content.add_theme_stylebox_override("normal", OperationsSkin.artifact_paper())
 	OperationsSkin.style_rich_text_scrollbar(_content)
 	column.add_child(_content)
+	_close_button.focus_next = _close_button.get_path_to(_content)
+	_close_button.focus_previous = _close_button.get_path_to(_content)
+	_content.focus_next = _content.get_path_to(_close_button)
+	_content.focus_previous = _content.get_path_to(_close_button)
 
 func show_artifact(name: String, content: String) -> void:
 	_title_label.text = name
-	_content.text = _markdown_to_bbcode(content)
+	_content.clear()
+	if name.to_lower().ends_with(".md"):
+		_content.add_theme_font_override("normal_font", GameFonts.BODY)
+		_content.text = format_markdown(content)
+	else:
+		var code_font := SystemFont.new()
+		code_font.font_names = PackedStringArray(["Menlo", "Consolas", "monospace"])
+		_content.add_theme_font_override("normal_font", code_font)
+		# Never interpret source syntax (CSS '*', HTML tags, brackets) as Markdown.
+		_content.add_text(content)
 	_content.scroll_to_line(0)
 	visible = true
 	move_to_front()
@@ -157,17 +164,25 @@ func scrim_covers_viewport() -> bool:
 	return $Scrim.get_global_rect().is_equal_approx(get_viewport_rect())
 
 func _markdown_to_bbcode(markdown: String) -> String:
+	return format_markdown(markdown)
+
+static func format_markdown(markdown: String) -> String:
 	var output: PackedStringArray = []
 	var in_code := false
+	var bold := RegEx.new()
+	bold.compile("\\*\\*(.+?)\\*\\*")
 	for raw_line: String in markdown.replace("\r\n", "\n").split("\n"):
-		var line := raw_line.replace("[", "﹇").replace("]", "﹈")
+		var line := raw_line.replace("[", "[lb]")
 		if line.strip_edges().begins_with("```"):
 			output.append("[/bgcolor]" if in_code else "[bgcolor=#ead6aa]")
 			in_code = not in_code
 			continue
 		if in_code:
 			output.append("  %s" % line)
-		elif line.begins_with("### "):
+			continue
+		# Inline formatting applies inside headings and list items too. Code stays literal.
+		line = bold.sub(line, "[b]$1[/b]", true)
+		if line.begins_with("### "):
 			output.append("[font_size=18][b]%s[/b][/font_size]" % line.trim_prefix("### "))
 		elif line.begins_with("## "):
 			output.append("[font_size=20][b]%s[/b][/font_size]" % line.trim_prefix("## "))
@@ -176,7 +191,7 @@ func _markdown_to_bbcode(markdown: String) -> String:
 		elif line.begins_with("- ") or line.begins_with("* "):
 			output.append("• %s" % line.substr(2))
 		else:
-			output.append(line.replace("**", ""))
+			output.append(line)
 	if in_code:
 		output.append("[/bgcolor]")
 	return "\n".join(output)

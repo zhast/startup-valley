@@ -56,7 +56,7 @@ func show_clock(day: int, minute_of_day: int) -> void:
 func show_money_earned(amount: float) -> void:
 	_money_earned = maxf(0.0, amount)
 	_earned_label.text = "$%s  EARNED" % _format_money(_money_earned)
-	_earned_label.add_theme_color_override("font_color", CHARTREUSE if _money_earned > 0.0 else CHARCOAL)
+	_earned_label.add_theme_color_override("font_color", Color("36551d") if _money_earned > 0.0 else CHARCOAL)
 
 func _format_money(amount: float) -> String:
 	if is_equal_approx(amount, roundf(amount)):

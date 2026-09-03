@@ -30,8 +30,9 @@ func _ready() -> void:
 	body.collision_mask = 0
 	var collision := CollisionShape2D.new()
 	var shape := RectangleShape2D.new()
-	shape.size = Vector2(94.0, 34.0)
-	collision.position = Vector2(0.0, -19.0)
+	# The rear chair lane is walkable; only the tabletop/front blocks feet.
+	shape.size = Vector2(94.0, 16.0)
+	collision.position = Vector2(0.0, -8.0)
 	collision.shape = shape
 	body.add_child(collision)
 	add_child(body)

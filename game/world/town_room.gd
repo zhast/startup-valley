@@ -24,6 +24,7 @@ var _prop_placements: Array[OfficePropPlacement] = []
 var _prop_root: Node2D
 var _effect_root: Node2D
 var _last_built_hires: int = -1
+var navigation: OfficeNavigation
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -44,6 +45,10 @@ func load_layout(path: String = "res://data/town.json") -> void:
 		push_error("Town layout is not a JSON object")
 		return
 	var data := parsed as Dictionary
+	if navigation == null:
+		navigation = OfficeNavigation.new()
+		get_parent().add_child(navigation)
+	navigation.configure(data, position)
 	tile_size = int(data.get("tile_size", 32))
 	grid_width = int(data.get("width", 26))
 	grid_height = int(data.get("height", 18))
@@ -134,7 +139,8 @@ func _rebuild_props(animate_from: int = -1) -> void:
 				push_warning("Unknown office prop kind: %s" % placement.kind)
 				continue
 		prop.name = placement.id
-		prop.position = grid_to_local_position(placement.grid)
+		var prop_grid: Vector2i = _desk_grids.get(placement.owner_id, placement.grid) if placement.kind == "desk" else placement.grid
+		prop.position = grid_to_local_position(prop_grid)
 		prop.z_as_relative = false
 		prop.z_index = int(position.y + prop.position.y)
 		_prop_root.add_child(prop)
@@ -144,6 +150,15 @@ func _rebuild_props(animate_from: int = -1) -> void:
 			unlock_effect.z_as_relative = false
 			unlock_effect.z_index = prop.z_index + 4
 			_effect_root.add_child(unlock_effect)
+	if navigation != null:
+		var obstacles: Array[Rect2] = []
+		for prop: Node in _prop_root.get_children():
+			for shape_node: Node in prop.find_children("*", "CollisionShape2D", true, false):
+				var shape := shape_node as CollisionShape2D
+				if shape.shape is RectangleShape2D:
+					var shape_size := (shape.shape as RectangleShape2D).size
+					obstacles.append(Rect2(shape.global_position - shape_size * 0.5, shape_size))
+		navigation.rebuild(obstacles)
 
 func visible_prop_count() -> int:
 	return _prop_root.get_child_count() if _prop_root != null else 0
@@ -175,7 +190,7 @@ func employee_spawn_position(employee_id: String) -> Vector2:
 func employee_desk_position(employee_id: String) -> Vector2:
 	# The work point is behind the desk anchor so Y sorting places the employee's
 	# lower body behind the workstation while keeping their head visible.
-	return grid_to_world_position(_desk_grids.get(employee_id, Vector2i.ZERO)) + Vector2(0.0, -52.0)
+	return grid_to_world_position(_desk_grids.get(employee_id, Vector2i.ZERO)) + Vector2(0.0, -32.0)
 
 func research_position() -> Vector2:
 	return grid_to_world_position(research_grid) + Vector2(0.0, 40.0)

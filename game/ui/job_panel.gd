@@ -1,7 +1,37 @@
 class_name JobPanel
 extends Control
 
+var milestone_id := ""
+var revision_of_job_id := ""
+var _milestone_criteria := PackedStringArray()
+var requested_token_budget := 12000
+var _chat_follow_tail := true
+
+func prepare_milestone(definition: Dictionary) -> void:
+	select_employee(str(definition.get("employeeId", "mira")))
+	_job_picker.select(CANNED_JOBS.size())
+	_on_job_selected(CANNED_JOBS.size())
+	_custom_title_input.text = str(definition.get("title", "Company milestone"))
+	_assignment_preview.text = str(definition.get("assignment", ""))
+	milestone_id = str(definition.get("id", ""))
+	_milestone_criteria = PackedStringArray(definition.get("criteria", []))
+	for path: String in definition.get("files", []): _milestone_criteria.append("Deliver " + path)
+	var evaluation: Dictionary = definition.get("evaluation", {}) if definition.get("evaluation") is Dictionary else {}
+	if evaluation.get("verdict", "") == "revise":
+		revision_of_job_id = str(definition.get("jobId", ""))
+		_assignment_preview.text += "\n\nRevision feedback:\n" + str(evaluation.get("revisionBrief", ""))
+	elif str(definition.get("jobStatus", "")) in ["blocked", "failed", "cancelled"]:
+		revision_of_job_id = str(definition.get("jobId", ""))
+		_assignment_preview.text += "\n\nResume the retained files. Check existing work first; complete only what is missing or incorrect."
+	if not revision_of_job_id.is_empty():
+		requested_token_budget = 24000
+		_budget_picker.select(1)
+	_draft_label.text = "JOURNEY · " + str(definition.get("title", ""))
+	_refresh_work_purposes()
+	_tabs.current_tab = 1
+
 signal key_submitted(key: String)
+signal settings_requested
 signal chat_history_requested(employee_id: String)
 signal chat_submitted(employee_id: String, message: String)
 signal assignment_submitted(employee_id: String, title: String, assignment: String, acceptance_criteria: PackedStringArray, attached_studio_path: String)
@@ -39,16 +69,16 @@ const DRAWER_GAP := 0.0
 
 const CANNED_JOBS := [
 	{
-		"title": "Inventory keyboard navigation design note",
+		"title": "Shape a startup brief",
 		"employee_id": "mira",
-		"assignment": "Write a one-page design note for inventory keyboard navigation into design-note.md. Cover focus entry, Tab and Shift+Tab order, arrow-key movement, selection, Escape behavior, visible focus, and acceptance checks.",
-		"criteria": ["design-note.md exists", "The note is approximately one page", "Keyboard behavior and acceptance checks are explicit"],
+		"assignment": "Write startup-brief.md: a one-page proposal for the company's audience, problem, offer and next validation experiment. Use known company context; label assumptions and open questions. This is ordinary planning work, not a Journey milestone.",
+		"criteria": ["startup-brief.md exists", "The audience and offer are concrete", "Assumptions and a testable next step are explicit"],
 	},
 	{
-		"title": "Review Mina's inventory note",
+		"title": "Review the launch plan",
 		"employee_id": "theo",
-		"assignment": "Read Mina's durable studio file at studio/design-note.md. Review its inventory keyboard navigation choices, identify strengths and gaps, and write a concise review into review.md for promotion back into the studio.",
-		"criteria": ["review.md exists", "The review cites Mina's design choices", "The review identifies concrete strengths and gaps"],
+		"assignment": "Review available company context and relevant Studio files. Write launch-review.md with the clearest growth opportunity, missing evidence, and a small next experiment. If no company files exist, clearly label a provisional plan and its open questions. Do not launch ads or claim real results.",
+		"criteria": ["launch-review.md exists", "The review distinguishes evidence from assumptions", "The review identifies a concrete next experiment"],
 	},
 ]
 
@@ -90,6 +120,8 @@ var _key_status: Label
 var _assignment_preview: TextEdit
 var _assign_button: Button
 var _cancel_button: Button
+var _budget_picker: OptionButton
+var _draft_label: Label
 var _steer_box: VBoxContainer
 var _steer_input: LineEdit
 var _steer_button: Button
@@ -118,6 +150,20 @@ var _worker_connected: bool = false
 var _connection_panel: Panel
 var _settings_button: Button
 var _connection_badge: Label
+var _job_views: Dictionary = {}
+var _job_order: Array[String] = []
+var _activity_job_id := ""
+var _pending_deliveries: Array = []
+var _delivery_list: VBoxContainer
+var _history_picker: OptionButton
+var _activity_cancel: Button
+var _assignment_error: Label
+var _draft_reset_button: Button
+var _submission_pending := false
+var _submitted_job_id := ""
+var _journey_state: Dictionary = {}
+var _purpose_picker: OptionButton
+var _draft_discussion := ""
 
 func _ready() -> void:
 	theme = GameFonts.interface_theme()
@@ -145,15 +191,25 @@ func _build_interface() -> void:
 	add_child(_drawer_panel)
 	_add_outer_frame(_drawer_panel)
 	var drawer_margin := MarginContainer.new()
+	drawer_margin.custom_minimum_size = Vector2(DRAWER_WIDTH, 720.0)
 	drawer_margin.add_theme_constant_override("margin_left", 12)
 	drawer_margin.add_theme_constant_override("margin_right", 12)
 	drawer_margin.add_theme_constant_override("margin_top", 28)
 	drawer_margin.add_theme_constant_override("margin_bottom", 12)
-	drawer_margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_drawer_panel.add_child(drawer_margin)
+	drawer_margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var drawer := _build_employee_drawer()
 	drawer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	drawer.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	drawer_margin.add_child(drawer)
+	# The preset's default resize mode is minimum-size. Explicit zero offsets
+	# bind the completed content tree to the authored drawer, not its text minima.
+	drawer_margin.offset_left = 0
+	drawer_margin.offset_top = 0
+	drawer_margin.offset_right = 0
+	drawer_margin.offset_bottom = 0
+	drawer_margin.minimum_size_changed.connect(_fit_drawer_contents.bind(drawer_margin))
+	_fit_drawer_contents(drawer_margin)
 
 	_rail_panel = Panel.new()
 	_rail_panel.name = "TeamRail"
@@ -168,6 +224,11 @@ func _build_interface() -> void:
 	_rail_panel.add_child(team_rail)
 	_build_connection_panel()
 
+func _fit_drawer_contents(content: Control) -> void:
+	# Wrapped labels can report a tall provisional minimum before their first
+	# container sort. Refit after it settles instead of retaining that old size.
+	content.set_deferred("size", Vector2(DRAWER_WIDTH, 720.0))
+
 func _add_outer_frame(panel: Control) -> void:
 	var frame := NinePatchRect.new()
 	frame.texture = NotebookSkin.OUTER_FRAME
@@ -178,7 +239,7 @@ func _add_outer_frame(panel: Control) -> void:
 	frame.patch_margin_bottom = 14
 	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	frame.z_index = 100
+	frame.z_index = 1
 	panel.add_child(frame)
 
 func _build_team_rail() -> Control:
@@ -210,8 +271,14 @@ func _build_team_rail() -> Control:
 	_settings_button.text = "SETTINGS"
 	_settings_button.position = Vector2(15.0, 662.0)
 	_settings_button.size = Vector2(100.0, 42.0)
-	_settings_button.tooltip_text = "Open connection settings"
-	_settings_button.pressed.connect(_open_connection_settings)
+	_settings_button.tooltip_text = "Open settings or connect AI"
+	_settings_button.pressed.connect(func() -> void:
+		if _credential_configured:
+			close_drawer(false)
+			settings_requested.emit()
+		else:
+			_open_connection_settings()
+	)
 	_style_action_button(_settings_button, INDIGO, false)
 	rail.add_child(_settings_button)
 	_connection_badge = Label.new()
@@ -303,9 +370,9 @@ func _build_employee_drawer() -> VBoxContainer:
 	header_shell.custom_minimum_size = Vector2(0.0, 150.0)
 	drawer.add_child(header_shell)
 	var header_card := PanelContainer.new()
-	header_card.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	header_card.add_theme_stylebox_override("panel", NotebookSkin.parchment(Vector4(12.0, 11.0, 38.0, 11.0)))
 	header_shell.add_child(header_card)
+	header_card.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var header_margin := MarginContainer.new()
 	header_margin.add_theme_constant_override("margin_left", 12)
 	header_margin.add_theme_constant_override("margin_right", 38)
@@ -422,16 +489,23 @@ func _build_chat_tab() -> VBoxContainer:
 	_chat_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_chat_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	OperationsSkin.style_scroll_container(_chat_scroll)
+	_chat_scroll.get_v_scroll_bar().changed.connect(_scroll_chat_to_bottom)
+	_chat_scroll.gui_input.connect(_on_chat_scroll_input)
+	_chat_scroll.get_v_scroll_bar().gui_input.connect(_on_chat_scroll_input)
+	_chat_scroll.get_v_scroll_bar().value_changed.connect(func(value: float) -> void:
+		var bar := _chat_scroll.get_v_scroll_bar()
+		if value >= bar.max_value - bar.page - 8: _chat_follow_tail = true
+	)
 	notebook.add_child(_chat_scroll)
 	var chat_margin := MarginContainer.new()
-	chat_margin.add_theme_constant_override("margin_left", 14)
-	chat_margin.add_theme_constant_override("margin_right", 14)
+	chat_margin.add_theme_constant_override("margin_left", 4)
+	chat_margin.add_theme_constant_override("margin_right", 4)
 	chat_margin.add_theme_constant_override("margin_top", 18)
 	chat_margin.add_theme_constant_override("margin_bottom", 18)
 	chat_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_chat_scroll.add_child(chat_margin)
 	_chat_log = VBoxContainer.new()
-	_chat_log.custom_minimum_size = Vector2(296.0, 0.0)
+	_chat_log.custom_minimum_size = Vector2.ZERO
 	_chat_log.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_chat_log.add_theme_constant_override("separation", 12)
 	chat_margin.add_child(_chat_log)
@@ -471,6 +545,7 @@ func _build_chat_tab() -> VBoxContainer:
 	_chat_helper.add_theme_font_size_override("font_size", GameFonts.BODY_META)
 	_chat_helper.add_theme_color_override("font_color", CHARCOAL)
 	_chat_helper.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_chat_helper.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	composer_column.add_child(_chat_helper)
 	_make_job_button = Button.new()
 	_make_job_button.text = "CREATE WORK ORDER"
@@ -483,10 +558,34 @@ func _build_chat_tab() -> VBoxContainer:
 	tab.add_child(_make_job_button)
 	return tab
 
-func _build_work_tab() -> ScrollContainer:
-	var scroll := _tab_scroll("Assign")
+func _build_work_tab() -> VBoxContainer:
+	var tab := VBoxContainer.new()
+	tab.name = "Assign"
+	var scroll := _tab_scroll("AssignmentFields")
+	tab.add_child(scroll)
 	var content := _tab_content(scroll)
 	content.add_child(_section_label("WORK ORDER"))
+	_draft_label = Label.new()
+	_draft_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_draft_label.add_theme_color_override("font_color", CHARCOAL)
+	_draft_label.add_theme_font_size_override("font_size", GameFonts.BODY_META)
+	content.add_child(_draft_label)
+	_draft_reset_button = Button.new()
+	_draft_reset_button.text = "NEW ORDINARY WORK ORDER"
+	_style_action_button(_draft_reset_button, INDIGO, false)
+	_draft_reset_button.pressed.connect(func() -> void:
+		_job_picker.select(CANNED_JOBS.size())
+		_on_job_selected(CANNED_JOBS.size())
+	)
+	content.add_child(_draft_reset_button)
+	_draft_reset_button.hide()
+	_purpose_picker = OptionButton.new()
+	_purpose_picker.fit_to_longest_item = false
+	_purpose_picker.clip_text = true
+	_purpose_picker.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_style_dropdown(_purpose_picker)
+	_purpose_picker.item_selected.connect(_choose_work_purpose)
+	content.add_child(_purpose_picker)
 	_job_picker = OptionButton.new()
 	_job_picker.fit_to_longest_item = false
 	_job_picker.clip_text = true
@@ -498,6 +597,9 @@ func _build_work_tab() -> ScrollContainer:
 	_job_picker.add_item("Custom work order…")
 	_job_picker.item_selected.connect(_on_job_selected)
 	content.add_child(_job_picker)
+	# One visible purpose picker covers ordinary templates and Journey. The old
+	# index picker remains an internal template selector, not a second user choice.
+	_job_picker.hide()
 	_custom_title_input = LineEdit.new()
 	_custom_title_input.placeholder_text = "Work-order title"
 	_custom_title_input.max_length = 200
@@ -516,21 +618,41 @@ func _build_work_tab() -> ScrollContainer:
 	content.add_child(_attachment_label)
 	_attachment_picker = OptionButton.new()
 	_attachment_picker.fit_to_longest_item = false
+	_attachment_picker.clip_text = true
+	_attachment_picker.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_attachment_picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_attachment_picker.visible = false
 	_style_dropdown(_attachment_picker)
 	_attachment_picker.add_item("No studio file attached")
 	_attachment_picker.set_item_metadata(0, "")
 	content.add_child(_attachment_picker)
+	_budget_picker = OptionButton.new()
+	_budget_picker.fit_to_longest_item = false
+	_budget_picker.clip_text = true
+	_style_dropdown(_budget_picker)
+	_budget_picker.add_item("AI cap · 12,000 tokens", 12000)
+	_budget_picker.add_item("AI cap · 24,000 tokens", 24000)
+	_budget_picker.item_selected.connect(func(index: int) -> void: requested_token_budget = _budget_picker.get_item_id(index))
+	content.add_child(_budget_picker)
 	var confirmation := Label.new()
 	confirmation.text = "Starts an AI work session that can use approved tools, create files, and spend from your configured budget."
 	confirmation.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	confirmation.add_theme_font_size_override("font_size", GameFonts.BODY_META)
 	confirmation.add_theme_color_override("font_color", CHARCOAL)
-	content.add_child(confirmation)
+	var footer := PanelContainer.new()
+	footer.add_theme_stylebox_override("panel", NotebookSkin.parchment(Vector4(12, 8, 12, 8)))
+	tab.add_child(footer)
+	var footer_content := VBoxContainer.new()
+	footer.add_child(footer_content)
+	footer_content.add_child(confirmation)
+	_assignment_error = Label.new()
+	_assignment_error.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_assignment_error.add_theme_color_override("font_color", ALERT_INK)
+	_assignment_error.hide()
+	content.add_child(_assignment_error)
 	var action_row := HBoxContainer.new()
 	action_row.add_theme_constant_override("separation", 6)
-	content.add_child(action_row)
+	footer_content.add_child(action_row)
 	_assign_button = Button.new()
 	_assign_button.text = "START WORK ORDER"
 	_assign_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -543,22 +665,32 @@ func _build_work_tab() -> ScrollContainer:
 	_cancel_button.disabled = true
 	_cancel_button.pressed.connect(_cancel_active_job)
 	_style_action_button(_cancel_button, VERMILION, false)
-	action_row.add_child(_cancel_button)
-	_on_job_selected(0)
-	return scroll
+	_on_job_selected(CANNED_JOBS.size())
+	return tab
 
 func _build_journal_tab() -> ScrollContainer:
 	var scroll := _tab_scroll("Activity")
 	var content := _tab_content(scroll)
+	_history_picker = OptionButton.new()
+	_history_picker.fit_to_longest_item = false
+	_history_picker.clip_text = true
+	_history_picker.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_style_dropdown(_history_picker)
+	_history_picker.item_selected.connect(func(index: int) -> void:
+		_activity_job_id = str(_history_picker.get_item_metadata(index))
+		_refresh_selected_activity()
+		artifact_refresh_requested.emit(_activity_job_id)
+	)
+	content.add_child(_history_picker)
 	var status_card := PanelContainer.new()
-	status_card.add_theme_stylebox_override("panel", OperationsSkin.journal_work_card())
+	status_card.add_theme_stylebox_override("panel", NotebookSkin.parchment(Vector4(12, 12, 12, 12)))
 	content.add_child(status_card)
 	var status_content := VBoxContainer.new()
 	status_content.add_theme_constant_override("separation", 3)
 	status_card.add_child(status_content)
 	var status_heading := _section_label("CURRENT WORK")
 	status_heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	status_heading.add_theme_color_override("font_color", OFF_WHITE)
+	status_heading.add_theme_color_override("font_color", CHARCOAL)
 	status_content.add_child(status_heading)
 	_status_label = Label.new()
 	_status_label.text = "No active work order."
@@ -568,11 +700,13 @@ func _build_journal_tab() -> ScrollContainer:
 	_status_label.add_theme_color_override("font_color", CHARCOAL)
 	status_content.add_child(_status_label)
 	_usage_label = Label.new()
+	_usage_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_usage_label.text = "Usage details  ·  0 tokens"
 	_usage_label.add_theme_font_size_override("font_size", GameFonts.BODY_META)
 	_usage_label.add_theme_color_override("font_color", CHARCOAL)
 	status_content.add_child(_usage_label)
 	_spend_label = Label.new()
+	_spend_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_spend_label.text = "AI spend today  ·  $0.0000"
 	_spend_label.add_theme_font_size_override("font_size", GameFonts.BODY_META)
 	_spend_label.add_theme_color_override("font_color", CHARCOAL)
@@ -599,6 +733,10 @@ func _build_journal_tab() -> ScrollContainer:
 	_last_status_label.add_theme_color_override("font_color", CHARCOAL)
 	_last_status_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	status_content.add_child(_last_status_label)
+	_activity_cancel = _cancel_button
+	_activity_cancel.text = "CANCEL WORK ORDER"
+	content.add_child(_activity_cancel)
+	_activity_cancel.hide()
 	_approval_box = PanelContainer.new()
 	_approval_box.visible = false
 	_approval_box.add_theme_stylebox_override("panel", OperationsSkin.journal_approval_card())
@@ -628,7 +766,7 @@ func _build_journal_tab() -> ScrollContainer:
 	content.add_child(_approval_box)
 	_promotion_box = PanelContainer.new()
 	_promotion_box.visible = false
-	_promotion_box.add_theme_stylebox_override("panel", OperationsSkin.journal_delivery_card())
+	_promotion_box.add_theme_stylebox_override("panel", NotebookSkin.parchment(Vector4(12, 12, 12, 12)))
 	var promotion_content := VBoxContainer.new()
 	promotion_content.add_theme_constant_override("separation", 5)
 	_promotion_box.add_child(promotion_content)
@@ -639,7 +777,7 @@ func _build_journal_tab() -> ScrollContainer:
 	_promotion_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_promotion_label.add_theme_color_override("font_color", CHARCOAL)
 	promotion_content.add_child(_promotion_label)
-	var promotion_buttons := HBoxContainer.new()
+	var promotion_buttons := VBoxContainer.new()
 	promotion_buttons.add_theme_constant_override("separation", 6)
 	var promote_button := Button.new()
 	promote_button.text = "ADD TO STUDIO"
@@ -653,6 +791,9 @@ func _build_journal_tab() -> ScrollContainer:
 	promotion_buttons.add_child(discard_button)
 	promotion_content.add_child(promotion_buttons)
 	content.add_child(_promotion_box)
+	_delivery_list = VBoxContainer.new()
+	_delivery_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content.add_child(_delivery_list)
 	_steer_box = VBoxContainer.new()
 	_steer_box.visible = false
 	_steer_box.add_child(_section_label("UPDATE ACTIVE JOB"))
@@ -681,6 +822,12 @@ func _build_journal_tab() -> ScrollContainer:
 	_event_log.add_theme_stylebox_override("normal", OperationsSkin.activity_log())
 	OperationsSkin.style_rich_text_scrollbar(_event_log)
 	content.add_child(_event_log)
+	# Decisions and steering precede long summaries; no result can push its own
+	# primary controls out of the first screenful.
+	content.move_child(_approval_box, 1)
+	content.move_child(_promotion_box, 2)
+	content.move_child(_steer_box, 3)
+	content.move_child(_activity_cancel, 4)
 	return scroll
 
 func _build_studio_tab() -> ScrollContainer:
@@ -838,6 +985,8 @@ func _on_team_button_pressed(employee_id: String) -> void:
 
 func _on_tab_changed(_tab: int) -> void:
 	_refresh_employee_header()
+	if _tab == 2 and not _activity_job_id.is_empty() and _worker_connected:
+		artifact_refresh_requested.emit(_activity_job_id)
 	if _tab_tween != null and _tab_tween.is_valid():
 		_tab_tween.kill()
 	var page := _tabs.get_current_tab_control()
@@ -988,7 +1137,13 @@ func open_journal_for_employee(employee_id: String) -> void:
 func _select_employee(employee_id: String) -> void:
 	if not _team_buttons.has(employee_id):
 		return
+	if _selected_employee_id != employee_id and not milestone_id.is_empty():
+		_on_job_selected(CANNED_JOBS.size())
+		_job_picker.select(CANNED_JOBS.size())
+		_custom_title_input.clear()
 	_selected_employee_id = employee_id
+	_activity_job_id = ""
+	_refresh_work_purposes()
 	_refresh_team_card_styles()
 	if not _custom_mode and _job_picker != null:
 		for index: int in range(CANNED_JOBS.size()):
@@ -1000,6 +1155,7 @@ func _select_employee(employee_id: String) -> void:
 	_refresh_employee_header()
 	_refresh_chat_mode()
 	_show_empty_chat()
+	_refresh_selected_activity()
 	if _worker_connected:
 		chat_history_requested.emit(employee_id)
 
@@ -1043,6 +1199,7 @@ func _refresh_employee_header() -> void:
 	_employee_status.add_theme_color_override("font_color", _state_text_color(activity))
 
 func _refresh_team_statuses() -> void:
+	_refresh_employee_header()
 	for employee_id: String in _team_buttons:
 		var button: Button = _team_buttons[employee_id]
 		var status_dot := button.get_node_or_null("StatusDot") as TextureRect
@@ -1055,15 +1212,21 @@ func _refresh_team_statuses() -> void:
 		status_dot.visible = true
 		button.tooltip_text = "%s · %s" % [str(button.get_meta("display_name", employee_id)), state]
 		if attention_badge != null:
-			attention_badge.visible = (employee_id == _active_employee_id and not _approval_id.is_empty()) or employee_id == _attention_employee_id
+			# The status icon already conveys approval/delivery/failure. An extra
+			# badge is only needed for older deliveries alongside a running job.
+			attention_badge.visible = state in ["working", "queued"] and _has_pending_delivery(employee_id)
 
 func _employee_ui_state(employee_id: String) -> String:
 	if employee_id == _active_employee_id and not _approval_id.is_empty():
 		return "needs approval"
-	if employee_id == _attention_employee_id:
-		return "delivery ready"
 	if employee_id == _active_employee_id and not _active_job_id.is_empty():
 		return "working" if _active_job_running else "queued"
+	var latest := _latest_job_for(employee_id)
+	var status := str((_job_views.get(latest, {}) as Dictionary).get("status", ""))
+	if status in ["blocked", "failed", "cancelled"]:
+		return "cancelled" if status == "cancelled" else "needs retry"
+	if employee_id == _attention_employee_id or _has_pending_delivery(employee_id):
+		return "delivery ready"
 	if _clock_phase == "lunch":
 		return "at lunch"
 	if _clock_phase == "off":
@@ -1072,7 +1235,7 @@ func _employee_ui_state(employee_id: String) -> String:
 
 func _state_color(state: String) -> Color:
 	match state:
-		"needs approval", "delivery ready":
+		"needs approval", "delivery ready", "needs retry", "cancelled":
 			return VERMILION
 		"working":
 			return INDIGO
@@ -1086,7 +1249,7 @@ func _state_color(state: String) -> Color:
 
 func _state_text_color(state: String) -> Color:
 	match state:
-		"needs approval", "delivery ready", "at lunch":
+		"needs approval", "delivery ready", "at lunch", "needs retry", "cancelled":
 			return ALERT_INK
 		"working", "queued":
 			return INDIGO
@@ -1096,7 +1259,7 @@ func _state_text_color(state: String) -> Color:
 
 func _state_icon(state: String) -> Texture2D:
 	match state:
-		"needs approval", "delivery ready":
+		"needs approval", "delivery ready", "needs retry", "cancelled":
 			return OperationsSkin.ATTENTION_BADGE
 		"working":
 			return OperationsSkin.ACTIVITY_WRITING
@@ -1122,14 +1285,15 @@ func _show_empty_chat() -> void:
 	_append_chat_line("employee", employee.display_name, greeting)
 
 func _append_chat_line(sender: String, name_value: String, content: String) -> void:
+	if sender == "player": _chat_follow_tail = true
 	_chat_transcript += "%s\n%s\n\n" % [name_value, content]
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 8)
 	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	if sender == "employee":
 		var avatar_frame := PanelContainer.new()
-		avatar_frame.custom_minimum_size = Vector2(54.0, 58.0)
-		avatar_frame.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		avatar_frame.custom_minimum_size = Vector2(32.0, 38.0)
+		avatar_frame.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 		avatar_frame.add_theme_stylebox_override("panel", NotebookSkin.portrait_frame())
 		row.add_child(avatar_frame)
 		var avatar := TextureRect.new()
@@ -1141,29 +1305,35 @@ func _append_chat_line(sender: String, name_value: String, content: String) -> v
 		avatar_frame.add_child(avatar)
 	else:
 		var player_spacer := Control.new()
-		player_spacer.custom_minimum_size = Vector2(42.0, 0.0)
+		player_spacer.custom_minimum_size = Vector2(12.0, 0.0)
 		row.add_child(player_spacer)
 	var bubble := PanelContainer.new()
 	bubble.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	bubble.add_theme_stylebox_override("panel", OperationsSkin.chat_bubble(sender))
 	row.add_child(bubble)
 	var bubble_margin := MarginContainer.new()
-	bubble_margin.add_theme_constant_override("margin_left", 10)
-	bubble_margin.add_theme_constant_override("margin_right", 10)
-	bubble_margin.add_theme_constant_override("margin_top", 8)
-	bubble_margin.add_theme_constant_override("margin_bottom", 8)
+	bubble_margin.add_theme_constant_override("margin_left", 0)
+	bubble_margin.add_theme_constant_override("margin_right", 0)
+	bubble_margin.add_theme_constant_override("margin_top", 2)
+	bubble_margin.add_theme_constant_override("margin_bottom", 2)
 	bubble.add_child(bubble_margin)
-	var message_label := Label.new()
-	message_label.text = content
+	var message_label := RichTextLabel.new()
+	message_label.bbcode_enabled = true
+	message_label.fit_content = true
+	message_label.scroll_active = false
+	message_label.selection_enabled = true
+	message_label.text = ArtifactViewer.format_markdown(content)
 	message_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	message_label.add_theme_font_size_override("font_size", GameFonts.BODY_DEFAULT)
-	message_label.add_theme_color_override("font_color", CHARCOAL)
+	message_label.add_theme_font_size_override("normal_font_size", GameFonts.BODY_DEFAULT)
+	message_label.add_theme_font_size_override("bold_font_size", GameFonts.BODY_DEFAULT)
+	message_label.add_theme_color_override("default_color", CHARCOAL)
 	bubble_margin.add_child(message_label)
 	_chat_log.add_child(row)
 	_animate_entry(row, -7.0 if sender == "employee" else 7.0)
 	call_deferred("_scroll_chat_to_bottom")
 
 func _clear_chat() -> void:
+	_chat_follow_tail = true
 	_chat_transcript = ""
 	_last_chat_prompt = ""
 	_chat_messages.clear()
@@ -1179,6 +1349,7 @@ func _show_chat_hint(message: String) -> void:
 	hint_panel.add_theme_stylebox_override("panel", OperationsSkin.chat_system_strip())
 	var hint := Label.new()
 	hint.text = message
+	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	hint.add_theme_color_override("font_color", MUTED_INK)
 	hint_panel.add_child(hint)
@@ -1186,8 +1357,14 @@ func _show_chat_hint(message: String) -> void:
 	_animate_entry(hint_panel)
 
 func _scroll_chat_to_bottom() -> void:
-	if _chat_scroll != null:
-		_chat_scroll.scroll_vertical = int(_chat_scroll.get_v_scroll_bar().max_value)
+	# Range changes fire again after text shaping/layout. No suspended coroutine
+	# can outlive a replaced fixture or steal an older-history reader's position.
+	if _chat_scroll != null and _chat_follow_tail:
+		_chat_scroll.set_deferred("scroll_vertical", int(_chat_scroll.get_v_scroll_bar().max_value))
+
+func _on_chat_scroll_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_LEFT]:
+		_chat_follow_tail = false
 
 func chat_text() -> String:
 	return _chat_transcript
@@ -1275,7 +1452,7 @@ func _refresh_chat_mode() -> void:
 		_chat_helper.text = "Waiting for a conversational reply — no work has started."
 	elif has_active_job:
 		_chat_send_button.text = "ACTIVITY"
-		_chat_input.placeholder_text = "Use Activity to update the current work order"
+		_chat_input.placeholder_text = "Work is in Activity"
 		_chat_helper.text = "%s is busy. Send work instructions from Activity." % _active_employee_name()
 	elif not _credential_configured or not _worker_connected:
 		_chat_send_button.text = "CONNECT"
@@ -1292,9 +1469,10 @@ func _make_last_chat_a_job() -> void:
 		return
 	_job_picker.select(CANNED_JOBS.size())
 	_on_job_selected(CANNED_JOBS.size())
-	var concise_title := _last_chat_prompt.replace("\n", " ").strip_edges()
-	_custom_title_input.text = concise_title.left(72)
+	_custom_title_input.text = "Company direction brief"
 	_assignment_preview.text = _chat_work_order_draft()
+	_draft_discussion = _discussion_context()
+	_refresh_work_purposes()
 	_tabs.current_tab = 1
 	_custom_title_input.grab_focus()
 
@@ -1304,13 +1482,56 @@ func _remember_chat_message(sender: String, content: String) -> void:
 		_chat_messages.pop_front()
 
 func _chat_work_order_draft() -> String:
-	var lines: PackedStringArray = ["Work request:", _last_chat_prompt, "", "Discussion context:"]
+	return ("Write next-steps.md: a concise company direction brief based on this discussion. Recommend one specific deliverable, its audience and offer, and a small validation step. Label assumptions. This ordinary work order does not complete a Journey milestone. To build a Journey deliverable instead, choose it in the purpose selector.\n\nDiscussion context:\n" + _discussion_context()).left(3800)
+
+func _discussion_context() -> String:
+	var lines: PackedStringArray = []
 	var first := maxi(0, _chat_messages.size() - 6)
 	for index: int in range(first, _chat_messages.size()):
 		var message: Dictionary = _chat_messages[index]
 		var speaker := "Founder" if str(message.get("sender", "")) == "player" else _selected_employee().display_name
 		lines.append("%s: %s" % [speaker, str(message.get("content", "")).strip_edges()])
 	return "\n".join(lines).left(3800)
+
+func set_journey_state(value: Dictionary) -> void:
+	_journey_state = value
+	_refresh_work_purposes()
+
+func _refresh_work_purposes() -> void:
+	if _purpose_picker == null: return
+	_purpose_picker.clear()
+	_purpose_picker.add_item("New custom work order")
+	_purpose_picker.set_item_metadata(0, {})
+	for index: int in range(CANNED_JOBS.size()):
+		_purpose_picker.add_item(str(CANNED_JOBS[index].get("title", "Work order")))
+		_purpose_picker.set_item_metadata(index + 1, {"cannedIndex": index})
+		if not _custom_mode and _job_picker != null and _job_picker.selected == index: _purpose_picker.select(index + 1)
+	for definition: Dictionary in _journey_state.get("milestones", []):
+		if str(definition.get("employeeId", "")) != _selected_employee_id: continue
+		if str(definition.get("state", "")) not in ["available", "revision_required"]: continue
+		_purpose_picker.add_item("Journey · " + str(definition.get("title", "")))
+		var index := _purpose_picker.item_count - 1
+		_purpose_picker.set_item_metadata(index, definition)
+		if str(definition.get("id", "")) == milestone_id: _purpose_picker.select(index)
+
+func _choose_work_purpose(index: int) -> void:
+	var definition: Dictionary = _purpose_picker.get_item_metadata(index)
+	var discussion := _draft_discussion
+	if definition.has("cannedIndex"):
+		var template := int(definition.cannedIndex)
+		_job_picker.select(template)
+		_on_job_selected(template)
+	elif definition.is_empty():
+		_job_picker.select(CANNED_JOBS.size())
+		_on_job_selected(CANNED_JOBS.size())
+		if not discussion.is_empty():
+			_custom_title_input.text = "Company direction brief"
+			_assignment_preview.text = "Write next-steps.md with a concrete recommendation and next test.\n\nDiscussion:\n" + discussion
+	else:
+		prepare_milestone(definition)
+		if not discussion.is_empty(): _assignment_preview.text = (_assignment_preview.text + "\n\nCompany discussion (reference context):\n" + discussion).left(4000)
+	_draft_discussion = discussion
+	_refresh_work_purposes()
 
 func _active_employee_name() -> String:
 	for employee: EmployeeRecord in _employees:
@@ -1356,7 +1577,7 @@ func _submit_assignment() -> void:
 			_selected_employee_id,
 			custom_title,
 			custom_assignment,
-			PackedStringArray(["Create at least one artifact that fulfills the instruction", "Return a concise delivery summary"]),
+			_milestone_criteria if not milestone_id.is_empty() else PackedStringArray(["Create at least one artifact that fulfills the instruction", "Return a concise delivery summary"]),
 			attached_path
 		)
 		return
@@ -1370,7 +1591,7 @@ func _submit_assignment() -> void:
 	)
 
 func _cancel_active_job() -> void:
-	if _active_job_id.is_empty():
+	if _active_job_id.is_empty() or _cancel_button.disabled:
 		return
 	_cancel_button.disabled = true
 	_set_status("Cancelling the active work order…", ALERT_INK)
@@ -1393,9 +1614,21 @@ func _submit_steer() -> void:
 	steer_submitted.emit(_active_job_id, message)
 
 func _on_job_selected(index: int) -> void:
+	milestone_id = ""
+	revision_of_job_id = ""
+	_milestone_criteria.clear()
+	_draft_discussion = ""
+	requested_token_budget = 12000
+	_budget_picker.select(0)
+	_attachment_picker.select(0)
+	_custom_title_input.clear()
+	_draft_label.text = "Ordinary work · does not advance Journey"
+	if _assignment_error != null: _assignment_error.hide()
 	if index < 0 or index > CANNED_JOBS.size():
 		return
+	_job_picker.select(index)
 	_custom_mode = index == CANNED_JOBS.size()
+	_refresh_work_purposes()
 	_custom_title_input.visible = _custom_mode
 	_assignment_preview.editable = _custom_mode
 	_attachment_label.visible = _custom_mode
@@ -1415,8 +1648,12 @@ func begin_job(job_id: String, employee_id: String = "") -> void:
 	_active_job_id = job_id
 	_active_employee_id = employee_id if not employee_id.is_empty() else _selected_employee_id
 	_active_job_running = false
+	_submission_pending = true
+	_submitted_job_id = job_id
+	_activity_job_id = job_id
+	_job_order.push_front(job_id)
+	_job_views[job_id] = {"employeeId": _active_employee_id, "title": _custom_title_input.text if _custom_mode else _job_picker.text, "status": "submitting", "statusText": "Submitting work order…", "usage": "Usage details · 0 tokens", "events": ""}
 	_usage_label.text = "Usage details  ·  0 tokens"
-	_token_meter.value = 0.0
 	_event_log.clear()
 	_approval_job_id = ""
 	_approval_id = ""
@@ -1428,11 +1665,59 @@ func begin_job(job_id: String, employee_id: String = "") -> void:
 	_steer_button.disabled = false
 	_steer_input.clear()
 	_set_status("Submitting work order…", INDIGO)
-	_tabs.current_tab = 2
 	_refresh_employee_header()
 	_refresh_team_statuses()
 	_refresh_chat_mode()
-	close_drawer()
+	_refresh_selected_activity()
+
+func accept_submission(job_id: String) -> void:
+	if job_id != _submitted_job_id: return
+	_submission_pending = false
+	_submitted_job_id = ""
+	# Clear only after acceptance; a rejected form remains editable with its error.
+	_job_picker.select(CANNED_JOBS.size())
+	_on_job_selected(CANNED_JOBS.size())
+	_tabs.current_tab = 2
+	if job_id == _active_job_id: close_drawer()
+
+func reject_submission(job_id: String, message: String) -> void:
+	_submission_pending = false
+	_submitted_job_id = ""
+	finish_job(job_id)
+	_job_order.erase(job_id)
+	_job_views.erase(job_id)
+	_activity_job_id = ""
+	_assignment_error.text = message
+	_assignment_error.show()
+	_tabs.current_tab = 1
+	open_drawer()
+
+func reset_company() -> void:
+	close_drawer(false)
+	_active_job_id = ""
+	_active_employee_id = ""
+	_active_job_running = false
+	_approval_id = ""
+	_approval_job_id = ""
+	_approval_box.hide()
+	_promotion_job_id = ""
+	_attention_employee_id = ""
+	_promotion_box.hide()
+	_event_log.clear()
+	_job_views.clear()
+	_job_order.clear()
+	_activity_job_id = ""
+	_pending_deliveries.clear()
+	_submission_pending = false
+	_submitted_job_id = ""
+	_clear_artifact_list()
+	_chat_messages.clear()
+	_chat_pending = false
+	_last_chat_prompt = ""
+	_custom_title_input.clear()
+	_on_job_selected(CANNED_JOBS.size())
+	_refresh_operation_availability()
+	_set_status("Hire Mina from Company Journey to get started.", CHARCOAL)
 
 func mark_job_queued(job_id: String) -> void:
 	if job_id != _active_job_id:
@@ -1583,7 +1868,9 @@ func set_spend(daily_spend: float, warning: float) -> void:
 	_spend_warning = warning
 	_token_meter.max_value = maxf(warning, 0.01)
 	_token_meter.value = clampf(daily_spend, 0.0, _token_meter.max_value)
-	_spend_label.text = "AI spend today  ·  $%.4f of $%.2f warning" % [daily_spend, warning]
+	_spend_label.text = "AI spend today  ·  $%.4f" % daily_spend
+	_spend_label.tooltip_text = "Warning threshold: $%.2f. This meter is cost, not job progress." % warning
+	_token_meter.tooltip_text = _spend_label.tooltip_text
 	_spend_label.add_theme_color_override("font_color", ALERT_INK if daily_spend >= warning else CHARCOAL)
 	_pulse_control(_token_meter, VERMILION if daily_spend >= warning else CERULEAN)
 
@@ -1598,7 +1885,7 @@ func set_info(message: String) -> void:
 
 func _set_status(message: String, color: Color = CHARCOAL) -> void:
 	_status_label.text = message
-	_status_label.add_theme_color_override("font_color", color)
+	_status_label.add_theme_color_override("font_color", ALERT_INK if color == VERMILION or color == ALERT_INK else CHARCOAL)
 	if _status_tween != null and _status_tween.is_valid():
 		_status_tween.kill()
 	_status_label.modulate.a = 0.45
@@ -1612,12 +1899,18 @@ func _refresh_operation_availability() -> void:
 	_refresh_chat_mode()
 
 func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
+	if not _job_views.has(job_id):
+		_job_order.push_front(job_id)
+		_job_views[job_id] = {"employeeId": _active_employee_id if not _active_employee_id.is_empty() else _selected_employee_id, "title": "Work order", "events": ""}
+	var view: Dictionary = _job_views[job_id]
 	var line := ""
 	match event.type:
 		&"job.queued":
+			view.status = "queued"
 			mark_job_queued(job_id)
 			line = "[color=#963014]queued[/color] · %s" % _safe_bbcode(event.reason)
 		&"job.started":
+			view.status = "running"
 			_set_status("Employee is walking to their desk.", INDIGO)
 			if job_id == _active_job_id:
 				_active_job_running = true
@@ -1641,7 +1934,6 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 			_approval_label.text = event.action
 			_approval_box.visible = true
 			_reveal_control(_approval_box)
-			_tabs.current_tab = 2
 			_set_status("A decision is needed before work can continue.", ALERT_INK)
 			_refresh_team_statuses()
 			line = "[color=#963014]approval required[/color]"
@@ -1649,77 +1941,65 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 			line = "[color=#354b98]delivery[/color] · %s" % _safe_bbcode(event.name)
 		&"usage.updated":
 			_usage_label.text = "Usage details  ·  %d tokens  ·  $%.4f" % [event.input_tokens + event.output_tokens, event.cost]
+			view.usage = _usage_label.text
 			line = "usage · %d tokens · $%.4f" % [event.input_tokens + event.output_tokens, event.cost]
 		&"job.blocked":
+			view.status = "blocked"
 			_set_status(event.reason, ALERT_INK)
 			line = "[color=#963014]blocked[/color] · %s" % _safe_bbcode(event.reason)
 			finish_job(job_id)
 		&"job.completed":
+			view.status = "completed"
 			_set_status(event.summary, INDIGO)
 			line = "[color=#354b98]completed[/color]"
 			finish_job(job_id)
 		&"job.failed":
+			view.status = "cancelled" if event.error == "Cancelled by player" else "failed"
 			_set_status(event.error, ALERT_INK)
 			line = "[color=#963014]failed[/color] · %s" % _safe_bbcode(event.error)
 			finish_job(job_id)
 	if not line.is_empty():
 		var icon_path := OperationsSkin.activity_icon_path(event.type, event.tool, event.ok)
-		_event_log.append_text("[img=18x18]%s[/img]  %s\n" % [icon_path, line])
-		_event_log.scroll_to_line(maxi(0, _event_log.get_line_count() - 1))
+		view.events = str(view.get("events", "")) + "[img=18x18]%s[/img]  %s\n" % [icon_path, line]
+	if event.type not in [&"usage.updated", &"artifact.created", &"tool.completed"]:
+		view.statusText = _status_label.text
+	_refresh_selected_activity()
+	_refresh_employee_header()
+	_refresh_team_statuses()
 
 func _decide_approval(approved: bool) -> void:
+	if _approval_id.is_empty(): return
 	approval_decided.emit(_approval_job_id, _approval_id, approved)
+	if _job_views.has(_approval_job_id):
+		(_job_views[_approval_job_id] as Dictionary).statusText = "Approved — work is continuing." if approved else "Declined — employee is wrapping up."
 	_approval_box.visible = false
 	_approval_job_id = ""
 	_approval_id = ""
+	_refresh_selected_activity()
 	_refresh_team_statuses()
 
 func offer_promotion(job_id: String, employee_id: String = "") -> void:
-	_promotion_job_id = job_id
-	_attention_employee_id = employee_id
-	_promotion_label.text = "Make this delivery available to future teammates?"
-	_promotion_box.visible = true
-	_reveal_control(_promotion_box)
-	_tabs.current_tab = 2
+	var found := false
+	for candidate: Dictionary in _pending_deliveries:
+		found = found or str(candidate.get("jobId", "")) == job_id
+	if not found: _pending_deliveries.push_front({"jobId": job_id, "employeeId": employee_id, "title": str((_job_views.get(job_id, {}) as Dictionary).get("title", "Work order"))})
+	_refresh_selected_activity()
 	_refresh_team_statuses()
 
 func _decide_promotion(approved: bool) -> void:
 	var job_id := _promotion_job_id
+	if job_id.is_empty(): return
+	_pending_deliveries = _pending_deliveries.filter(func(candidate: Dictionary) -> bool: return str(candidate.get("jobId", "")) != job_id)
 	_promotion_job_id = ""
 	_attention_employee_id = ""
 	promotion_decided.emit(job_id, approved)
 	_promotion_box.visible = false
 	_refresh_team_statuses()
-	_set_status("Adding approved delivery to Studio…" if approved else "Delivery kept with its work order.", CHARTREUSE if approved else CHARCOAL)
+	_set_status("Adding approved delivery to Studio…" if approved else "Delivery kept with its work order.", CHARCOAL)
 
 func show_pending_promotions(pending_promotions: Array) -> void:
-	if pending_promotions.is_empty():
-		_promotion_job_id = ""
-		_attention_employee_id = ""
-		_promotion_box.visible = false
-		_refresh_team_statuses()
-		return
-	var candidate_value: Variant = pending_promotions[0]
-	if not candidate_value is Dictionary:
-		return
-	var candidate := candidate_value as Dictionary
-	var job_id := str(candidate.get("jobId", ""))
-	if job_id.is_empty():
-		return
-	var artifact_names: PackedStringArray = []
-	var artifact_values: Variant = candidate.get("artifacts", [])
-	if artifact_values is Array:
-		for artifact_value: Variant in artifact_values as Array:
-			if artifact_value is Dictionary:
-				artifact_names.append(str((artifact_value as Dictionary).get("name", "artifact")))
-	_promotion_job_id = job_id
-	_attention_employee_id = _employee_id_for_name(str(candidate.get("employeeName", "")))
-	_promotion_label.text = "%s finished “%s”. Add these files to Studio or keep them with the work order: %s" % [
-		str(candidate.get("employeeName", "Employee")),
-		str(candidate.get("title", "Work order")),
-		", ".join(artifact_names) if not artifact_names.is_empty() else "completed artifacts",
-	]
-	_promotion_box.visible = true
+	_pending_deliveries = pending_promotions.duplicate(true)
+	_refresh_selected_activity()
 	_refresh_team_statuses()
 
 func _employee_id_for_name(display_name: String) -> String:
@@ -1731,33 +2011,119 @@ func _employee_id_for_name(display_name: String) -> String:
 func pending_promotion_job_id() -> String:
 	return _promotion_job_id
 
-func show_recent_jobs(jobs: Array) -> void:
-	if jobs.is_empty():
-		_last_status_label.text = "Last work order  ·  none yet"
-		return
-	var latest_value: Variant = jobs[0]
-	if latest_value is Dictionary:
-		var latest := latest_value as Dictionary
-		_last_status_label.text = "Last  ·  %s  ·  %s" % [str(latest.get("title", "Work order")), str(latest.get("status", "unknown"))]
+func pending_decision_employee_id() -> String:
+	if not _approval_id.is_empty() and not _active_employee_id.is_empty(): return _active_employee_id
+	if not _attention_employee_id.is_empty(): return _attention_employee_id
+	return _selected_employee_id
 
-func show_artifacts(job_id: String, artifacts: Array[ArtifactRecord]) -> void:
-	_clear_artifact_list()
-	if artifacts.is_empty():
-		_add_empty_artifact("No delivery files were created.")
-		return
+func _latest_job_for(employee_id: String) -> String:
+	for id: String in _job_order:
+		if str((_job_views.get(id, {}) as Dictionary).get("employeeId", "")) == employee_id: return id
+	return ""
+
+func _delivery_employee(candidate: Dictionary) -> String:
+	return str(candidate.get("employeeId", _employee_id_for_name(str(candidate.get("employeeName", "")))))
+
+func _has_pending_delivery(employee_id: String) -> bool:
+	for candidate: Dictionary in _pending_deliveries:
+		if _delivery_employee(candidate) == employee_id: return true
+	return false
+
+func _refresh_selected_activity() -> void:
+	if _history_picker == null or _delivery_list == null: return
+	# Pending older deliveries stay reachable through the history picker, but do
+	# not overwrite the current job's status or the shared Studio file list.
+	for candidate: Dictionary in _pending_deliveries:
+		var id := str(candidate.get("jobId", ""))
+		if not id.is_empty() and not _job_views.has(id):
+			_job_views[id] = {"employeeId": _delivery_employee(candidate), "title": str(candidate.get("title", "Delivery")), "status": "completed", "statusText": str(candidate.get("summary", "Delivery ready for review."))}
+			_job_order.append(id)
+	if str((_job_views.get(_activity_job_id, {}) as Dictionary).get("employeeId", "")) != _selected_employee_id or _activity_job_id.is_empty():
+		_activity_job_id = _latest_job_for(_selected_employee_id)
+	var history: Array[String] = []
+	for id: String in _job_order:
+		var item: Dictionary = _job_views.get(id, {})
+		if str(item.get("employeeId", "")) != _selected_employee_id: continue
+		history.append(id)
+	if history != _history_picker.get_meta("job_ids", []):
+		_history_picker.clear()
+		for id: String in history:
+			var title := str((_job_views[id] as Dictionary).get("title", "Work order"))
+			var duplicate_titles := 0
+			for candidate: String in history:
+				if str((_job_views[candidate] as Dictionary).get("title", "")) == title: duplicate_titles += 1
+			var number := history.size() - history.find(id)
+			_history_picker.add_item(("#%d · " % number if duplicate_titles > 1 else "") + title)
+			_history_picker.set_item_metadata(_history_picker.item_count - 1, id)
+		_history_picker.set_meta("job_ids", history)
+	if history.has(_activity_job_id): _history_picker.select(history.find(_activity_job_id))
+	_history_picker.visible = _history_picker.item_count > 0
+	var view: Dictionary = _job_views.get(_activity_job_id, {})
+	var status := str(view.get("status", ""))
+	_status_label.text = str(view.get("statusText", "No work order yet. Create one from Assign or Company Journey.")).replace("**", "").replace("`", "")
+	_status_label.add_theme_color_override("font_color", ALERT_INK if status in ["blocked", "failed", "cancelled"] else CHARCOAL)
+	_last_status_label.text = "%s · %s" % [view.get("title", "Work order"), status] if not view.is_empty() else "No work orders yet"
+	_usage_label.text = str(view.get("usage", "Usage details · select a work order"))
+	var log_text := str(view.get("events", ""))
+	if _event_log.text != log_text: _event_log.text = log_text
+	var is_active := not _active_job_id.is_empty() and _activity_job_id == _active_job_id and _selected_employee_id == _active_employee_id
+	_activity_cancel.visible = is_active and not _submission_pending
+	_activity_cancel.disabled = _cancel_button.disabled
+	_steer_box.visible = is_active and _active_job_running
+	_approval_box.visible = is_active and not _approval_id.is_empty()
+	_promotion_job_id = ""
+	_attention_employee_id = ""
+	for candidate: Dictionary in _pending_deliveries:
+		if _attention_employee_id.is_empty(): _attention_employee_id = _delivery_employee(candidate)
+		if str(candidate.get("jobId", "")) == _activity_job_id and not is_active:
+			_promotion_job_id = _activity_job_id
+			_promotion_label.text = "Add this work order's files to the shared Studio, or keep them in its history."
+	_promotion_box.visible = not _promotion_job_id.is_empty()
+	var artifacts: Array = view.get("artifacts", [])
+	var file_key: Array[String] = [_activity_job_id]
+	for artifact: ArtifactRecord in artifacts: file_key.append(artifact.artifact_id)
+	if file_key == _delivery_list.get_meta("file_key", []): return
+	_delivery_list.set_meta("file_key", file_key)
+	for child: Node in _delivery_list.get_children():
+		_delivery_list.remove_child(child)
+		child.queue_free()
+	if not artifacts.is_empty():
+		_delivery_list.add_child(_section_label("THIS WORK ORDER'S FILES"))
 	for artifact: ArtifactRecord in artifacts:
 		var button := Button.new()
-		button.text = "Open delivery  ·  %s" % artifact.name
+		button.text = artifact.name
 		button.icon = OperationsSkin.ICON_DELIVERY
-		button.add_theme_constant_override("icon_max_width", 28)
+		button.add_theme_constant_override("icon_max_width", 24)
 		button.expand_icon = true
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.tooltip_text = artifact.relative_path
-		button.pressed.connect(_open_artifact.bind(job_id, artifact.relative_path))
+		button.pressed.connect(_open_artifact.bind(_activity_job_id, artifact.relative_path))
 		_style_file_button(button)
-		_artifact_list.add_child(button)
-		_animate_entry(button)
-	_tabs.current_tab = 3
+		_delivery_list.add_child(button)
+
+func show_recent_jobs(jobs: Array) -> void:
+	var order: Array[String] = []
+	for job: Dictionary in jobs:
+		var id := str(job.get("jobId", ""))
+		if id.is_empty(): continue
+		order.append(id)
+		if not _job_order.has(id): _job_order.append(id)
+		var view: Dictionary = _job_views.get(id, {})
+		view.merge(job, true)
+		if job.has("inputTokens"):
+			view.usage = "Usage details · %d tokens · $%.4f" % [int(job.get("inputTokens", 0)) + int(job.get("outputTokens", 0)), float(job.get("cost", 0.0))]
+		if not view.has("statusText"): view.statusText = str(job.get("summary", "%s · %s" % [job.get("title", "Work order"), job.get("status", "")]))
+		_job_views[id] = view
+	for id: String in _job_order:
+		if not order.has(id): order.append(id)
+	_job_order = order
+	_refresh_selected_activity()
+
+func show_artifacts(job_id: String, artifacts: Array[ArtifactRecord]) -> void:
+	var view: Dictionary = _job_views.get(job_id, {"employeeId": _selected_employee_id, "title": "Delivery"})
+	view.artifacts = artifacts
+	_job_views[job_id] = view
+	_refresh_selected_activity()
 
 func _open_artifact(job_id: String, relative_path: String) -> void:
 	artifact_open_requested.emit(job_id, relative_path)
@@ -1783,6 +2149,7 @@ func show_studio_files(files: Array[StudioFileRecord]) -> void:
 
 func _clear_artifact_list() -> void:
 	for child: Node in _artifact_list.get_children():
+		_artifact_list.remove_child(child)
 		child.queue_free()
 
 func _add_empty_artifact(message: String) -> void:
@@ -1809,6 +2176,9 @@ func _add_empty_artifact(message: String) -> void:
 	_animate_entry(empty_panel)
 
 func _style_file_button(button: Button) -> void:
+	button.clip_text = true
+	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	GameFonts.use_body(button)
 	button.add_theme_font_size_override("font_size", GameFonts.BODY_DEFAULT)
 	button.custom_minimum_size.y = 50.0
@@ -1845,10 +2215,14 @@ func _pulse_control(control: Control, color: Color) -> void:
 	tween.tween_property(control, "self_modulate", Color.WHITE, 0.18)
 
 func _animate_button_press(button: Button, pressed: bool) -> void:
+	var previous: Tween = button.get_meta("press_tween") as Tween if button.has_meta("press_tween") else null
+	if previous != null and previous.is_valid():
+		previous.kill()
 	button.pivot_offset = button.size * 0.5
 	var tween := create_tween()
+	button.set_meta("press_tween", tween)
 	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(button, "scale", Vector2.ONE * (0.98 if pressed else 1.0), 0.07)
+	tween.tween_property(button, "scale", Vector2.ONE * (0.98 if pressed else 1.0), 0.09)
 
 func _configure_attachment_picker(files: Array[StudioFileRecord]) -> void:
 	var selected_path := ""

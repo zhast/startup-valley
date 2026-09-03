@@ -14,19 +14,21 @@ var minute_of_day: int = WORK_START
 var speed: float = 1.0
 var phase: String = "work"
 var _minute_fraction: float = 0.0
+var ui_paused := false
+var stop_at_close := true
 
 func _ready() -> void:
 	phase = phase_for_minute(minute_of_day)
 
 func _process(delta: float) -> void:
-	if speed <= 0.0:
+	if speed <= 0.0 or ui_paused or (stop_at_close and minute_of_day >= WORK_END):
 		return
 	_minute_fraction += delta * speed
 	var whole_minutes := int(floor(_minute_fraction))
 	if whole_minutes <= 0:
 		return
 	_minute_fraction -= float(whole_minutes)
-	advance_minutes(whole_minutes)
+	advance_minutes(mini(whole_minutes, WORK_END - minute_of_day) if stop_at_close else whole_minutes)
 
 func restore(restored_day: int, restored_minute: int, restored_speed: float) -> void:
 	day = maxi(1, restored_day)

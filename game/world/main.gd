@@ -20,32 +20,105 @@ var _token_budget: int = 12000
 var _worker_ready: bool = false
 var _state_loaded: bool = false
 var _job_artifact_names: Dictionary[String, String] = {}
+var company_panel: CompanyPanel
+var game_audio: GameAudio
+var click_feedback: ClickFeedback
+var _journey: Dictionary = {}
+var _pending_interaction := ""
+var _pending_kind := ""
+var _save_elapsed := 0.0
+var _footstep_elapsed := 0.0
+var _closing_shown_day := -1
+var _restored_player := false
+var _quitting := false
+var _save_acknowledged := false
+var _was_drawer_open := false
 
 func _ready() -> void:
 	room.load_layout()
 	player.position = room.grid_to_world_position(room.player_spawn)
 	player.movement_bounds = room.playable_bounds()
-	_spawn_employees(room.placeholder_records())
+	player.navigation = room.navigation
+	room.navigation.passage_requested.connect(_yield_employee_passage)
+	var initial_employees: Array[EmployeeRecord] = []
+	if OS.get_environment("STARTUP_VALLEY_NO_WORKER") == "1":
+		initial_employees = room.placeholder_records()
+	_spawn_employees(initial_employees)
+	company_panel = CompanyPanel.new()
+	$Interface.add_child(company_panel)
+	company_panel.action_requested.connect(worker_client.company_request)
+	company_panel.milestone_requested.connect(job_panel.prepare_milestone)
+	company_panel.connection_requested.connect(job_panel._open_connection_settings)
+	job_panel.settings_requested.connect(func() -> void: company_panel.present("settings"))
+	game_audio = GameAudio.new()
+	add_child(game_audio)
+	company_panel.volume_changed.connect(game_audio.set_volumes)
+	click_feedback = ClickFeedback.new()
+	click_feedback.z_index = 2000
+	add_child(click_feedback)
+	player.destination_reached.connect(_on_destination_reached)
 	_connect_signals()
 	_on_clock_changed(day_clock.day, day_clock.minute_of_day, day_clock.phase, day_clock.speed)
 	if OS.get_environment("STARTUP_VALLEY_NO_WORKER") != "1":
+		get_tree().auto_accept_quit = false
+		company_panel.present("title")
 		worker_client.start()
 	else:
 		job_panel.set_worker_connection_error("Deterministic test mode — worker disabled")
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	var paused := _world_paused()
+	day_clock.ui_paused = paused
+	player.input_blocked = paused
+	if job_panel.drawer_is_open() != _was_drawer_open:
+		_was_drawer_open = job_panel.drawer_is_open()
+		game_audio.play("drawer")
+	if paused:
+		player.cancel_route()
+		_pending_interaction = ""
+	for employee: EmployeeAvatar in _employees.values():
+		employee.world_paused = paused
+	_save_elapsed += delta
+	if _save_elapsed > 5.0 and _state_loaded:
+		_save_elapsed = 0.0
+		_save_game()
+	if player.velocity.length() > 10 and not paused:
+		founder_hud.notice_movement()
+		_footstep_elapsed += delta
+		if _footstep_elapsed > 0.28:
+			_footstep_elapsed = 0.0
+			game_audio.play("step")
+	if not _pending_interaction.is_empty() and _pending_kind == "employee" and _employees.has(_pending_interaction) and not player.route.is_empty():
+		var target := _employees[_pending_interaction].position
+		if player.route[-1].distance_to(target) > 80:
+			player.move_to(target + Vector2(0, 40))
 	founder_hud.update_interaction(
 		player.position,
 		_employees,
-		not job_panel.drawer_is_open() and not artifact_viewer.visible
+		not paused
 	)
 	var interaction_target := founder_hud.interaction_target_id() if founder_hud.interaction_visible() else ""
 	for employee_id: String in _employees:
 		var employee := _employees[employee_id]
 		employee.set_speech_suppressed(employee_id == interaction_target)
 		employee.set_interaction_highlighted(employee_id == interaction_target)
+	_update_label_visibility(interaction_target)
+	var hover := _interaction_at(get_viewport().get_mouse_position()) if not paused else {}
+	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND if not hover.is_empty() else Input.CURSOR_ARROW)
+
+func _world_paused() -> bool:
+	return job_panel.drawer_is_open() or job_panel._connection_panel.visible or artifact_viewer.visible or (company_panel != null and company_panel.visible)
 
 func _connect_signals() -> void:
+	worker_client.daily_spend_received.connect(job_panel.set_spend)
+	worker_client.game_saved.connect(func() -> void:
+		_save_acknowledged = true
+		if company_panel.visible and company_panel.screen == "settings" and not company_panel.busy and company_panel._notice != null and company_panel._notice.text.is_empty():
+			company_panel._notice.text = "Company saved. Safe to close the window."
+	)
+	worker_client.journey_received.connect(_on_journey)
+	worker_client.company_action_completed.connect(_on_company_action)
+	worker_client.company_action_failed.connect(_on_company_action_failed)
 	worker_client.connected.connect(_on_worker_connected)
 	worker_client.bootstrap_received.connect(_on_bootstrap)
 	worker_client.credential_status_received.connect(job_panel.set_credential_status)
@@ -99,14 +172,12 @@ func _on_bootstrap(
 	_project_id = project_id
 	_token_budget = default_token_budget
 	_apply_memories(records, memories)
-	room.configure_employee_desks(records)
 	_spawn_employees(records)
-	job_panel.configure_employees(records)
 	job_panel.set_spend(daily_spend, daily_spend_warning)
 	job_panel.show_studio_files(studio_files)
-	job_panel.show_pending_promotions(pending_promotions)
-	_show_pending_delivery(pending_promotions)
+	# Hydration restores durable rail attention, never announces an old delivery.
 	job_panel.show_recent_jobs(recent_jobs)
+	job_panel.show_pending_promotions(pending_promotions)
 	_restore_recent_jobs(recent_jobs)
 	_state_loaded = true
 	day_clock.restore(
@@ -114,6 +185,8 @@ func _on_bootstrap(
 		int(clock_state.get("minuteOfDay", DayClock.WORK_START)),
 		1.0
 	)
+	if not _restored_player:
+		_restore_player()
 
 func _apply_memories(records: Array[EmployeeRecord], memories: Dictionary) -> void:
 	for record: EmployeeRecord in records:
@@ -141,19 +214,35 @@ func _restore_recent_jobs(jobs: Array) -> void:
 			job_panel.restore_job(job_id, status, str(job.get("title", "Work order")), employee_id)
 
 func _spawn_employees(records: Array[EmployeeRecord]) -> void:
-	for child: Node in employee_container.get_children():
-		child.queue_free()
-	_employees.clear()
+	var roster: Array[String] = []
+	for record: EmployeeRecord in records: roster.append(record.id)
+	for id: String in _employees.keys():
+		if id not in roster:
+			var removed := _employees[id]
+			employee_container.remove_child(removed)
+			removed.queue_free()
+			_employees.erase(id)
+	if room.navigation != null:
+		room.navigation.actors.clear()
+		room.navigation.actors["founder"] = player.position
 	room.configure_employee_desks(records)
+	if not room.navigation.walkable(room.navigation.cell_at(player.position)):
+		player.position = room.navigation.world(room.navigation.nearest(player.position, "founder"))
+	room.navigation.actors["founder"] = player.position
 	for record: EmployeeRecord in records:
-		var employee := EMPLOYEE_SCENE.instantiate() as EmployeeAvatar
-		employee.configure(
-			record,
-			room.employee_spawn_position(record.id),
-			room.employee_desk_position(record.id),
-			room.research_position()
-		)
-		employee_container.add_child(employee)
+		var employee: EmployeeAvatar = _employees.get(record.id)
+		if employee == null:
+			employee = EMPLOYEE_SCENE.instantiate() as EmployeeAvatar
+			employee.configure(record, room.employee_spawn_position(record.id), room.employee_desk_position(record.id), room.research_position())
+			employee_container.add_child(employee)
+			employee.navigation = room.navigation
+			employee.position = room.navigation.world(room.navigation.nearest(employee.position, record.id))
+		elif not room.navigation.walkable(room.navigation.cell_at(employee.position)):
+			employee.position = room.navigation.world(room.navigation.nearest(employee.position, record.id))
+		employee.memory_line = record.memory_line
+		employee.lunch_position = room.grid_to_world_position(Vector2i(3, 11))
+		room.navigation.reservations[record.id] = room.navigation.cell_at(employee.position)
+		room.navigation.actors[record.id] = employee.position
 		_employees[record.id] = employee
 	job_panel.configure_employees(records)
 	if records.is_empty():
@@ -176,29 +265,35 @@ func _on_assignment_submitted(
 		title,
 		assignment,
 		acceptance_criteria,
-		_token_budget,
-		attached_studio_path
+		job_panel.requested_token_budget,
+		attached_studio_path,
+		job_panel.milestone_id,
+		job_panel.revision_of_job_id
 	)
 
 func _on_job_submission(job_id: String, queued: bool) -> void:
+	job_panel.accept_submission(job_id)
 	if queued:
 		job_panel.mark_job_queued(job_id)
 
 func _on_job_submission_failed(job_id: String, message: String) -> void:
-	var event := WorkerEventRecord.new()
-	event.type = &"job.failed"
-	event.error = message
-	_on_job_event(job_id, event)
+	_job_employees.erase(job_id)
+	job_panel.reject_submission(job_id, message)
 
 func _on_job_event(job_id: String, event: WorkerEventRecord) -> void:
+	if event.type == &"usage.updated" and _worker_ready: worker_client.refresh_spend()
+	if _worker_ready and event.type in [&"job.started", &"job.queued", &"job.completed", &"job.blocked", &"job.failed", &"approval.required"]:
+		worker_client.refresh_journey()
 	var employee_id: String = _job_employees.get(job_id, "")
 	var employee: EmployeeAvatar = _employees.get(employee_id) as EmployeeAvatar
 	if employee != null:
 		employee.apply_worker_event(event, player.position)
 	if event.type == &"artifact.created" and not event.name.is_empty():
 		_job_artifact_names[job_id] = event.name
+		if _worker_ready: worker_client.request_artifacts(job_id)
 	job_panel.on_job_event(job_id, event)
 	if event.type == &"job.completed":
+		game_audio.play("notice")
 		var employee_name := employee.display_name if employee != null else employee_id.capitalize()
 		var artifact_name: String = _job_artifact_names.get(job_id, "")
 		var detail := "%s ready" % artifact_name if not artifact_name.is_empty() else "Work order ready"
@@ -217,7 +312,7 @@ func _on_studio_files(files: Array[StudioFileRecord]) -> void:
 func _on_promotion_state(files: Array[StudioFileRecord], pending_promotions: Array) -> void:
 	job_panel.show_studio_files(files)
 	job_panel.show_pending_promotions(pending_promotions)
-	_show_pending_delivery(pending_promotions)
+	founder_hud.hide_delivery()
 
 func _show_pending_delivery(pending_promotions: Array) -> void:
 	if pending_promotions.is_empty():
@@ -255,14 +350,225 @@ func _on_promotion_decided(job_id: String, approved: bool) -> void:
 	worker_client.promote_job(job_id, approved)
 
 func _on_clock_changed(day: int, minute_of_day: int, phase: String, speed: float) -> void:
+	if company_panel != null:
+		company_panel.day = day
 	clock_panel.show_clock(day, minute_of_day)
 	job_panel.set_clock_phase(phase)
 	for employee_value: EmployeeAvatar in _employees.values():
 		employee_value.set_schedule_phase(phase)
 	if _worker_ready and _state_loaded:
 		worker_client.set_clock(day, minute_of_day, speed)
+	if minute_of_day >= DayClock.WORK_END and _closing_shown_day != day and OS.get_environment("STARTUP_VALLEY_NO_WORKER") != "1":
+		_closing_shown_day = day
+		company_panel.present("closing")
+		if _worker_ready: worker_client.refresh_journey()
+
+func _on_journey(value: Dictionary) -> void:
+	_journey = value
+	company_panel.update_state(value)
+	job_panel.set_journey_state(value)
+	var company: Dictionary = value.get("company", {})
+	clock_panel.show_money_earned(float(company.get("earnedCents", 0)) / 100.0)
+
+func _restore_player() -> void:
+	_restored_player = true
+	var saved: Dictionary = _journey.get("player", {})
+	if saved.has("x") and saved.has("y"):
+		var point := Vector2(float(saved.x), float(saved.y))
+		player.position = point if room.navigation.walkable(room.navigation.cell_at(point)) else room.navigation.world(room.navigation.nearest(point, "founder"))
+	room.navigation.actors["founder"] = player.position
+	for employee: EmployeeAvatar in _employees.values():
+		if employee.position.distance_to(player.position) < 22:
+			employee.position = room.navigation.world(room.navigation.nearest(employee.position, employee.employee_id))
+			room.navigation.actors[employee.employee_id] = employee.position
+	if bool(saved.get("movementSeen", false)):
+		founder_hud.dismiss_movement_hint()
+	company_panel.effects_volume = float(saved.get("effectsVolume", 0.5))
+	company_panel.ambience_volume = float(saved.get("ambienceVolume", 0.2))
+	game_audio.set_volumes(company_panel.effects_volume, company_panel.ambience_volume)
+	var attention := str(saved.get("attentionEmployeeId", ""))
+	if _employees.has(attention):
+		job_panel._attention_employee_id = attention
+		job_panel._refresh_team_card_styles()
+
+func _on_company_action(method: String, result: Dictionary) -> void:
+	company_panel.busy = false
+	if result.has("dailySpend"):
+		job_panel.set_spend(float(result.dailySpend), 5.0)
+	match method:
+		"game.new":
+			_restored_player = true
+			_closing_shown_day = -1
+			_job_employees.clear()
+			_job_artifact_names.clear()
+			founder_hud.hide_delivery()
+			artifact_viewer.hide()
+			job_panel.reset_company()
+			player.position = room.grid_to_world_position(room.player_spawn)
+			job_panel._attention_employee_id = ""
+			founder_hud._movement_seen = false
+			if founder_hud._movement_hint_tween != null and founder_hud._movement_hint_tween.is_valid(): founder_hud._movement_hint_tween.kill()
+			founder_hud._movement_hint.modulate.a = 1.0
+			founder_hud._movement_hint.show()
+			company_panel.present("journey")
+			company_panel._notice.text = "Previous company backed up to: " + str(result.get("backupPath", ""))
+		"hiring.complete":
+			game_audio.play("reward")
+			company_panel.present("hired")
+		"milestone.complete", "milestone.override":
+			game_audio.play("reward")
+			company_panel.present("journey")
+		"day.end":
+			job_panel.close_drawer(false)
+			artifact_viewer.hide()
+			founder_hud.hide_delivery()
+			var clock: Dictionary = result.get("clock", {})
+			day_clock.restore(int(clock.get("day", day_clock.day + 1)), int(clock.get("minuteOfDay", 480)), 1)
+			company_panel.show_summary(result.get("summary", {}))
+	_save_game()
+
+func _on_company_action_failed(method: String, message: String) -> void:
+	company_panel.show_error(message)
+	if method == "milestone.evaluate" and _worker_ready: worker_client.refresh_journey()
+
+func _save_game() -> void:
+	if not _worker_ready: return
+	worker_client.company_request("game.save", {
+		"x": player.position.x, "y": player.position.y,
+		"movementSeen": founder_hud._movement_seen,
+		"effectsVolume": game_audio.effects_volume, "ambienceVolume": game_audio.ambience_volume,
+		"attentionEmployeeId": job_panel._attention_employee_id,
+	})
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.is_pressed() and not event.is_echo():
+		var key := event as InputEventKey
+		if not _world_paused():
+			for action: StringName in [&"move_left", &"move_right", &"move_up", &"move_down"]:
+				if event.is_action_pressed(action):
+					# Even a key tap shorter than one physics tick cancels the route.
+					player.cancel_route()
+					_pending_interaction = ""
+					_pending_kind = ""
+					return
+		if key.physical_keycode == KEY_J:
+			company_panel.present("journey")
+			get_viewport().set_input_as_handled()
+			return
+		if event.is_action_pressed("ui_cancel"):
+			if artifact_viewer.visible:
+				artifact_viewer.close_viewer()
+			elif job_panel._connection_panel.visible:
+				job_panel._close_connection_settings()
+			elif job_panel.drawer_is_open():
+				job_panel.close_drawer()
+			else:
+				company_panel.present("settings")
+			get_viewport().set_input_as_handled()
+			return
+	if not event is InputEventMouseButton or _world_paused(): return
+	var click := event as InputEventMouseButton
+	if not click.pressed or click.button_index != MOUSE_BUTTON_LEFT: return
+	player.cancel_route()
+	_pending_interaction = ""
+	_pending_kind = ""
+	var point := click.position
+	var interaction := _interaction_at(point)
+	if not interaction.is_empty():
+		_pending_interaction = interaction.id
+		_pending_kind = interaction.kind
+		point = interaction.point
+	if _pending_interaction.is_empty() and not room.navigation.walkable(room.navigation.cell_at(point)):
+		click_feedback.show_at(point, false)
+		get_viewport().set_input_as_handled()
+		return
+	var accepted := player.move_to(point)
+	click_feedback.show_at(player.route[-1] if accepted else point, accepted)
+	if not accepted: _pending_interaction = ""
+	get_viewport().set_input_as_handled()
+
+func _interaction_at(point: Vector2) -> Dictionary:
+	for id: String in _employees:
+		var employee := _employees[id]
+		if Rect2(employee.position + Vector2(-24, -72), Vector2(48, 84)).has_point(point):
+			return {"id": id, "kind": "employee", "point": employee.position + Vector2(0, 40)}
+	for placement: OfficePropPlacement in room._prop_placements:
+		var prop := room.prop_node(placement.id)
+		if prop != null and Rect2(prop.global_position + Vector2(-60, -86), Vector2(120, 98)).has_point(point):
+			if placement.kind in ["desk", "artifact_archive", "approval_console"]:
+				return {"id": placement.id, "kind": "prop", "point": prop.global_position + Vector2(0, 32)}
+	return {}
+
+func _on_destination_reached() -> void:
+	var target := _pending_interaction
+	_pending_interaction = ""
+	if target.is_empty(): return
+	if _pending_kind == "employee":
+		var employee := get_employee(target)
+		if employee != null and player.position.distance_to(employee.position) < 110:
+			job_panel.open_chat_for_employee(target)
+	elif target == "founder-workstation":
+		company_panel.present("journey")
+	elif target == "artifact-archive":
+		job_panel.open_drawer()
+		job_panel._tabs.current_tab = 3
+	elif target == "approval-console":
+		job_panel.open_journal_for_employee(job_panel.pending_decision_employee_id())
+	else:
+		for placement: OfficePropPlacement in room._prop_placements:
+			if placement.id == target and _employees.has(placement.owner_id):
+				job_panel.select_employee(placement.owner_id)
+				job_panel._tabs.current_tab = 2 if not job_panel.active_job_id().is_empty() else 1
+
+func _yield_employee_passage(employee_id: String, destination: Vector2) -> void:
+	var employee := get_employee(employee_id)
+	if employee == null or employee._has_target: return
+	# Retain approval/work state after a small step aside; no job lifecycle change.
+	employee.walk_to(destination, EmployeeAvatar.WorkState.WANDERING, employee.work_state)
+
+func _update_label_visibility(priority_id: String) -> void:
+	var placed: Array[Rect2] = []
+	# A contextual plaque must never hide the founder while approaching a desk.
+	placed.append(Rect2(player.position + Vector2(-24, -72), Vector2(48, 76)))
+	if founder_hud.interaction_visible(): placed.append(founder_hud._interaction_prompt.get_global_rect())
+	var ordered: Array[EmployeeAvatar] = []
+	for employee: EmployeeAvatar in _employees.values(): ordered.append(employee)
+	ordered.sort_custom(func(a: EmployeeAvatar, b: EmployeeAvatar) -> bool:
+		var a_priority := 2 if a.employee_id == priority_id else 1 if a.work_state == EmployeeAvatar.WorkState.WAITING_APPROVAL else 0
+		var b_priority := 2 if b.employee_id == priority_id else 1 if b.work_state == EmployeeAvatar.WorkState.WAITING_APPROVAL else 0
+		return a_priority > b_priority
+	)
+	for employee: EmployeeAvatar in ordered:
+		var rect := Rect2(employee.position + Vector2(-86, -122), Vector2(172, 90)) if employee._speech_visible else Rect2(employee.position + Vector2(-68, 8), Vector2(136, 68))
+		var suppressed := false
+		for other_employee: EmployeeAvatar in ordered:
+			if other_employee != employee and rect.intersects(Rect2(other_employee.position + Vector2(-24, -72), Vector2(48, 76))):
+				suppressed = true
+		for other: Rect2 in placed:
+			if rect.intersects(other): suppressed = true
+		if employee.labels_suppressed != suppressed:
+			employee.labels_suppressed = suppressed
+			employee.queue_redraw()
+		if not suppressed and (employee._labels_visible() or employee._speech_visible): placed.append(rect)
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST and not _quitting:
+		_quitting = true
+		game_audio.shutdown()
+		_save_acknowledged = false
+		_save_game()
+		var deadline := Time.get_ticks_msec() + 2000
+		while _worker_ready and not _save_acknowledged and Time.get_ticks_msec() < deadline:
+			await get_tree().process_frame
+		# Let the audio mixer retire stopped playback before tearing down the tree.
+		await get_tree().create_timer(0.05).timeout
+		get_tree().quit()
 
 func _on_worker_crashed(message: String) -> void:
+	_worker_ready = false
+	company_panel.busy = false
+	if company_panel.visible:
+		company_panel.show_error("Connection interrupted. Your completed work is saved. Reconnecting…")
 	var active_job := job_panel.active_job_id()
 	if not active_job.is_empty():
 		var event := WorkerEventRecord.new()

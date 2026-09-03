@@ -42,6 +42,10 @@ func _process(_delta: float) -> void:
 		return
 	if Input.get_vector("move_left", "move_right", "move_up", "move_down").is_zero_approx():
 		return
+	notice_movement()
+
+func notice_movement() -> void:
+	if _movement_seen: return
 	_movement_seen = true
 	if _movement_hint_tween != null and _movement_hint_tween.is_valid():
 		_movement_hint_tween.kill()
@@ -95,7 +99,7 @@ func _build_interaction_prompt() -> void:
 
 func _build_movement_hint() -> void:
 	_movement_hint = _texture_control("MovementPlaque", MOVEMENT_TEXTURE, Rect2(455.0, 660.0, 240.0, 48.0))
-	var label := _label("WASD / ARROWS TO MOVE", GameFonts.DISPLAY_SMALL, CHARCOAL)
+	var label := _label("CLICK / WASD TO MOVE", GameFonts.DISPLAY_SMALL, CHARCOAL)
 	label.position = Vector2(18.0, 9.0)
 	label.size = Vector2(204.0, 30.0)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -160,11 +164,24 @@ func update_interaction(
 		_interaction_prompt.visible = false
 		return
 	_interaction_target_id = closest.employee_id
-	var prompt_position := closest.position + Vector2(-136.0, -70.0)
-	prompt_position.x = clampf(prompt_position.x, 18.0, PLAYFIELD_RIGHT - _interaction_prompt.size.x - 18.0)
-	prompt_position.y = clampf(prompt_position.y, 82.0, 636.0)
-	_interaction_prompt.position = prompt_position.round()
-	_interaction_prompt.visible = true
+	# Test the prompt itself against every actor, not just the lower-priority
+	# nameplates. Two people standing side by side can occupy its usual left slot.
+	var silhouettes: Array[Rect2] = [Rect2(player_position + Vector2(-24, -72), Vector2(48, 76))]
+	for employee: EmployeeAvatar in employees.values():
+		silhouettes.append(Rect2(employee.position + Vector2(-24, -72), Vector2(48, 76)))
+	for offset: Vector2 in [Vector2(-136, -70), Vector2(32, -70), Vector2(-65, -132), Vector2(-65, 12), Vector2(-136, -132), Vector2(32, -132)]:
+		var prompt_position := closest.position + offset
+		prompt_position.x = clampf(prompt_position.x, 18.0, PLAYFIELD_RIGHT - _interaction_prompt.size.x - 18.0)
+		prompt_position.y = clampf(prompt_position.y, 82.0, 636.0)
+		var candidate := Rect2(prompt_position.round(), _interaction_prompt.size)
+		var overlaps := false
+		for silhouette: Rect2 in silhouettes:
+			if candidate.intersects(silhouette): overlaps = true
+		if overlaps: continue
+		_interaction_prompt.position = candidate.position
+		_interaction_prompt.visible = true
+		return
+	_interaction_prompt.hide()
 
 func show_delivery(job_id: String, employee_id: String, employee_name: String, detail: String) -> void:
 	_delivery_job_id = job_id
@@ -216,6 +233,6 @@ func _request_delivery() -> void:
 		delivery_requested.emit(_delivery_job_id, _delivery_employee_id)
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	if _interaction_prompt.visible and event.is_action_pressed("interact"):
+	if not _interaction_target_id.is_empty() and event.is_action_pressed("interact"):
 		_request_chat()
 		get_viewport().set_input_as_handled()

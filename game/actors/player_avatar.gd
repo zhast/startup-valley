@@ -7,8 +7,30 @@ var _character_sprite: Sprite2D
 var _shadow_sprite: Sprite2D
 var _animation_elapsed: float = 0.0
 var _facing: StringName = &"front"
+signal destination_reached
+var navigation: OfficeNavigation
+var input_blocked := false
+var route := PackedVector2Array()
+var _route_revision := -1
+var _route_target := Vector2.ZERO
+var _stuck_elapsed := 0.0
+
+func move_to(point: Vector2) -> bool:
+	if navigation == null or input_blocked:
+		return false
+	route = navigation.path(position, point, "founder")
+	_route_target = point
+	_route_revision = navigation.revision
+	_stuck_elapsed = 0.0
+	return not route.is_empty()
+
+func cancel_route() -> void:
+	route.clear()
+	if navigation != null:
+		navigation.release("founder")
 
 func _ready() -> void:
+	collision_mask = 3
 	z_as_relative = false
 	_shadow_sprite = Sprite2D.new()
 	_shadow_sprite.name = "PixelShadow"
@@ -29,17 +51,47 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	if input_blocked:
+		velocity = Vector2.ZERO
+		return
+	if not direction.is_zero_approx():
+		cancel_route()
+	elif not route.is_empty():
+		if navigation != null and navigation.revision != _route_revision:
+			move_to(_route_target)
+		if not route.is_empty():
+			var distance := position.distance_to(route[0])
+			if distance <= maxf(2.0, speed * delta):
+				position = route[0]
+				route.remove_at(0)
+				if route.is_empty():
+					destination_reached.emit()
+			if not route.is_empty():
+				direction = position.direction_to(route[0])
+	var before := position
 	velocity = direction * speed
 	move_and_slide()
+	var moved := position.distance_to(before) > 0.05
+	if not route.is_empty() and not moved:
+		_stuck_elapsed += delta
+		if _stuck_elapsed > 0.25 and navigation != null and navigation.request_passage("founder", position, route[0]):
+			_stuck_elapsed = 0.0
+		if _stuck_elapsed > 1.0: cancel_route()
+	else:
+		_stuck_elapsed = 0.0
+	if navigation != null:
+		navigation.actors["founder"] = position
 	position.x = clampf(position.x, movement_bounds.position.x + 14.0, movement_bounds.end.x - 14.0)
 	position.y = clampf(position.y, movement_bounds.position.y + 18.0, movement_bounds.end.y - 14.0)
 	z_index = int(position.y)
 	_animation_elapsed += delta
 	if not direction.is_zero_approx():
 		_facing = _direction_name(direction)
-	var frame := int(_animation_elapsed * 8.0) % 4 + 2 if not direction.is_zero_approx() else int(_animation_elapsed * 1.5) % 2
+	var frame := int(_animation_elapsed * 8.0) % 4 + 2 if moved else int(_animation_elapsed * 1.5) % 2
 	_character_sprite.region_rect = CharacterArt.locomotion_region(_facing, frame)
-	_shadow_sprite.region_rect = PolishArt.shadow_region(1 if not direction.is_zero_approx() else 0)
+	_character_sprite.position = Vector2(0, -32) + position.round() - position
+	_shadow_sprite.position = Vector2(0, -2) + position.round() - position
+	_shadow_sprite.region_rect = PolishArt.shadow_region(1 if moved else 0)
 
 func _direction_name(direction: Vector2) -> StringName:
 	if absf(direction.x) > absf(direction.y):

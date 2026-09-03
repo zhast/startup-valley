@@ -2,6 +2,7 @@ class_name WorkerClient
 extends Node
 
 signal connected
+signal daily_spend_received(value: float, warning: float)
 signal bootstrap_received(
 	employees: Array[EmployeeRecord],
 	project_id: String,
@@ -31,6 +32,10 @@ signal job_steered(job_id: String)
 signal job_steer_failed(job_id: String, message: String)
 signal worker_crashed(message: String)
 signal request_failed(message: String)
+signal journey_received(state: Dictionary)
+signal company_action_completed(method: String, result: Dictionary)
+signal company_action_failed(method: String, message: String)
+signal game_saved
 
 var _stdio: FileAccess
 var _stderr: FileAccess
@@ -135,6 +140,9 @@ func _handle_line(line: String) -> void:
 	_pending_jobs.erase(request_id)
 	if not bool(message.get("ok", false)):
 		var error := str(message.get("error", "Worker request failed"))
+		if method.begins_with("milestone.") or method.begins_with("hiring.") or method.begins_with("game.") or method == "day.end":
+			company_action_failed.emit(method, error)
+			return
 		if method == "job.start":
 			job_submission_failed.emit(job_id, error)
 		elif method == "job.steer":
@@ -147,12 +155,25 @@ func _handle_line(line: String) -> void:
 
 func _handle_response(method: String, job_id: String, result_value: Variant) -> void:
 	var result: Dictionary = result_value as Dictionary if result_value is Dictionary else {}
+	if method == "bootstrap" and job_id in ["journey", "spend"]:
+		daily_spend_received.emit(float(result.get("dailySpend", 0.0)), float(result.get("dailySpendWarning", 5.0)))
+		if job_id == "journey": journey_received.emit(result.get("journey", {}))
+		return
 	match method:
+		"hiring.complete", "game.new":
+			_handle_response("bootstrap", "", result)
+			company_action_completed.emit(method, result)
+		"milestone.evaluate", "milestone.complete", "milestone.override", "day.end":
+			journey_received.emit(result.get("journey", {}))
+			company_action_completed.emit(method, result)
+		"game.save":
+			game_saved.emit()
 		"health":
 			connected.emit()
 			_send_request("bootstrap", {})
 			_send_request("credential.status", {})
 		"bootstrap":
+			journey_received.emit(result.get("journey", {}))
 			var employees: Array[EmployeeRecord] = []
 			var employee_values: Variant = result.get("employees", [])
 			if employee_values is Array:
@@ -255,6 +276,7 @@ func start_job(
 	acceptance_criteria: PackedStringArray,
 	token_budget: int,
 	attached_studio_path: String = ""
+	, milestone_id: String = "", revision_of_job_id: String = ""
 ) -> void:
 	var spec: Dictionary = {
 		"jobId": job_id,
@@ -267,7 +289,20 @@ func start_job(
 	}
 	if not attached_studio_path.is_empty():
 		spec["attachedStudioPath"] = attached_studio_path
+	if not milestone_id.is_empty():
+		spec["milestoneId"] = milestone_id
+	if not revision_of_job_id.is_empty():
+		spec["revisionOfJobId"] = revision_of_job_id
 	_send_request("job.start", {"spec": spec}, job_id)
+
+func refresh_journey() -> void:
+	_send_request("bootstrap", {}, "journey")
+
+func refresh_spend() -> void:
+	_send_request("bootstrap", {}, "spend")
+
+func company_request(method: String, params: Dictionary) -> void:
+	_send_request(method, params)
 
 func request_artifacts(job_id: String) -> void:
 	_send_request("job.artifacts", {"jobId": job_id}, job_id)

@@ -124,16 +124,18 @@ static func chat_system_strip() -> StyleBoxTexture:
 	return _style(CHAT_SYSTEM_STRIP, Vector4(13.0, 10.0, 13.0, 10.0), Vector4(14.0, 7.0, 14.0, 7.0))
 
 static func vertical_scroll_track() -> StyleBoxTexture:
-	return _style(SCROLL_V_TRACK, Vector4(6.0, 14.0, 6.0, 14.0), Vector4.ZERO)
+	# ScrollContainer reserves the theme minimum, not custom_minimum_size.
+	# Keep the authored 15 px track in layout so it cannot cover wrapped prose.
+	return _style(SCROLL_V_TRACK, Vector4(6.0, 14.0, 6.0, 14.0), Vector4(7, 0, 8, 0))
 
 static func vertical_scroll_thumb() -> StyleBoxTexture:
-	return _style(SCROLL_V_THUMB, Vector4(5.0, 10.0, 5.0, 10.0), Vector4.ZERO)
+	return _style(SCROLL_V_THUMB, Vector4(5.0, 10.0, 5.0, 10.0), Vector4(7, 0, 8, 0))
 
 static func horizontal_scroll_track() -> StyleBoxTexture:
-	return _style(SCROLL_H_TRACK, Vector4(14.0, 6.0, 14.0, 6.0), Vector4.ZERO)
+	return _style(SCROLL_H_TRACK, Vector4(14.0, 6.0, 14.0, 6.0), Vector4(0, 7, 0, 7))
 
 static func horizontal_scroll_thumb() -> StyleBoxTexture:
-	return _style(SCROLL_H_THUMB, Vector4(10.0, 5.0, 10.0, 5.0), Vector4.ZERO)
+	return _style(SCROLL_H_THUMB, Vector4(10.0, 5.0, 10.0, 5.0), Vector4(0, 7, 0, 7))
 
 static func activity_icon_path(event_type: StringName, tool: String = "", ok: bool = true) -> String:
 	match event_type:

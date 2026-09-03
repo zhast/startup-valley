@@ -176,7 +176,7 @@ func _run() -> void:
 	main.job_panel.select_employee("mira")
 	if main.room.unlocked_hires != 2:
 		_fail("test_office_growth: the two-person roster did not restore its furniture stage")
-	if main.room.visible_prop_count() != 6:
+	if main.room.visible_prop_count() != 8:
 		_fail("test_modular_office: the two-person stage did not show the founder, collaboration, and research props")
 	main.room.set_hire_count(0)
 	if main.room.find_child("LockedSections", true, false) != null:
@@ -184,7 +184,7 @@ func _run() -> void:
 	if main.room.visible_prop_count() != 1 or main.room.prop_node("founder-workstation") == null:
 		_fail("test_modular_office: the empty founder stage did not retain exactly one usable workstation")
 	main.room.set_hire_count(1)
-	if main.room.visible_prop_count() != 4 or main.room.prop_node("mira-workstation") == null:
+	if main.room.visible_prop_count() != 5 or main.room.prop_node("mira-workstation") == null:
 		_fail("test_modular_office: the first hire did not reveal Mina's workstation and social wing")
 	if main.room.prop_node("collaboration-cluster") == null or main.room.prop_node("coffee-station") == null:
 		_fail("test_modular_office: the first-hire meeting and coffee props were missing")
@@ -237,10 +237,10 @@ func _run() -> void:
 	var studio_file_style := studio_file_button.get_theme_stylebox("normal") as StyleBoxTexture if studio_file_button != null else null
 	if studio_file_button == null or studio_file_button.icon != OperationsSkin.ACTIVITY_ARTIFACT or studio_file_style == null or studio_file_style.texture != OperationsSkin.FILE_CARD:
 		_fail("test_operations_ui: Studio file did not use the custom document card and icon")
-	if main.job_panel.pending_promotion_job_id() != "pending-review":
+	if not main.job_panel._has_pending_delivery("theo"):
 		_fail("test_persistent_boot: pending promotion was not restored")
-	if not main.founder_hud.delivery_visible():
-		_fail("test_persistent_boot: pending promotion did not restore the completion memo")
+	if main.founder_hud.delivery_visible():
+		_fail("test_persistent_boot: hydration replayed an old completion toast")
 	if main.get_employee("mira").memory_line != "Outcome: restored durable note":
 		_fail("test_persistent_boot: employee memory was not restored")
 	main._spawn_employees([])
@@ -251,10 +251,8 @@ func _run() -> void:
 	await process_frame
 	if not main.artifact_viewer.modal_fits_viewport() or not main.artifact_viewer.scrim_covers_viewport():
 		_fail("test_artifact_viewer: the modal or its scrim escaped the viewport")
-	var reader_frame_found := false
-	for child: Node in main.artifact_viewer._modal.get_children():
-		if child is TextureRect and (child as TextureRect).texture == OperationsSkin.ARTIFACT_READER_FRAME:
-			reader_frame_found = true
+	var reader_frame := main.artifact_viewer._modal.get_theme_stylebox("panel") as StyleBoxTexture
+	var reader_frame_found := reader_frame != null and reader_frame.texture == NotebookSkin.PARCHMENT_PANEL
 	var reader_paper_style := main.artifact_viewer._content.get_theme_stylebox("normal") as StyleBoxTexture
 	if not reader_frame_found or reader_paper_style == null or reader_paper_style.texture != OperationsSkin.ARTIFACT_PAPER:
 		_fail("test_operations_ui: artifact reader did not use its custom frame and paper")
@@ -277,7 +275,8 @@ func _run() -> void:
 		_fail("test_ui_status: queued work was simultaneously presented as working")
 	main.job_panel.finish_job("queued-state")
 
-	main.job_panel.begin_job("steer-job")
+	main.job_panel.select_employee("mira")
+	main.job_panel.begin_job("steer-job", "mira")
 	var journal_style := main.job_panel._event_log.get_theme_stylebox("normal") as StyleBoxTexture
 	var journal_scroll_style := main.job_panel._event_log.get_v_scroll_bar().get_theme_stylebox("grabber") as StyleBoxTexture
 	var approval_style := main.job_panel._approval_box.get_theme_stylebox("panel") as StyleBoxTexture
@@ -285,7 +284,7 @@ func _run() -> void:
 	var meter_style := main.job_panel._token_meter.get_theme_stylebox("background") as StyleBoxTexture
 	if journal_style == null or journal_style.texture != OperationsSkin.ACTIVITY_ROW or journal_scroll_style == null or journal_scroll_style.texture != OperationsSkin.SCROLL_V_THUMB:
 		_fail("test_operations_ui: Activity feed or scrollbar retained a generic style")
-	if approval_style == null or approval_style.texture != OperationsSkin.JOURNAL_APPROVAL_CARD or delivery_style == null or delivery_style.texture != OperationsSkin.JOURNAL_DELIVERY_CARD:
+	if approval_style == null or approval_style.texture != OperationsSkin.JOURNAL_APPROVAL_CARD or delivery_style == null or delivery_style.texture != NotebookSkin.PARCHMENT_PANEL:
 		_fail("test_operations_ui: approval or delivery state did not use its custom card")
 	if meter_style == null or meter_style.texture != OperationsSkin.TOKEN_METER_FRAME:
 		_fail("test_operations_ui: token budget meter did not use its custom frame")
@@ -296,11 +295,12 @@ func _run() -> void:
 		_fail("test_operations_ui: one or more real-event activity icons failed to load")
 	if OperationsSkin.WORLD_SPEECH_BUBBLE == null or OperationsSkin.WORLD_NAMEPLATE == null or OperationsSkin.WORLD_STATUS_PLAQUE == null or OperationsSkin.WORLD_ATTENTION == null:
 		_fail("test_operations_ui: one or more in-world label assets failed to load")
-	if not main.job_panel.status_color().is_equal_approx(main.job_panel.INDIGO):
+	if not main.job_panel.status_color().is_equal_approx(main.job_panel.CHARCOAL):
 		_fail("test_ui_status: submitting work retained a stale error color")
 	if main.job_panel._event_log.get_parsed_text() != "" or not main.job_panel._usage_label.text.contains("0 tokens"):
 		_fail("test_ui_status: a new work order retained stale activity or usage")
 	main._job_employees["steer-job"] = "mira"
+	main.job_panel.accept_submission("steer-job")
 	var steer_started := WorkerEventRecord.new()
 	steer_started.type = &"job.started"
 	main._on_job_event("steer-job", steer_started)
@@ -333,6 +333,8 @@ func _run() -> void:
 		_fail("test_worker_crash: employee remained busy after the worker exited")
 
 	var employee := main.get_employee("mira")
+	main.job_panel.close_drawer(false)
+	await process_frame
 	if employee == null:
 		_fail("test_worker_walks_to_desk: Mina was not spawned")
 	else:
@@ -390,9 +392,11 @@ func _run() -> void:
 	var long_delivery := WorkerEventRecord.new()
 	long_delivery.type = &"job.completed"
 	long_delivery.summary = "A detailed delivery summary with multiple findings and recommendations. ".repeat(20)
-	main.job_panel.on_job_event("layout-check", long_delivery)
-	main.job_panel.offer_promotion("layout-check")
 	main.job_panel.select_employee("mira")
+	main.job_panel.begin_job("layout-check", "mira")
+	main.job_panel.on_job_event("layout-check", long_delivery)
+	main.job_panel.offer_promotion("layout-check", "mira")
+	main.job_panel.open_journal_for_employee("mira")
 	await process_frame
 	if not main.job_panel.promotion_controls_fit_viewport():
 		_fail("test_delivery_layout: long summaries pushed promotion controls below the viewport")
