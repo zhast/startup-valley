@@ -1,3 +1,5 @@
+import type { JourneyStore } from "./journey.js";
+
 export interface JobSpec {
   jobId: string;
   employeeId: string;
@@ -7,6 +9,8 @@ export interface JobSpec {
   acceptanceCriteria: string[];
   tokenBudget: number;
   attachedStudioPath?: string;
+  milestoneId?: string;
+  revisionOfJobId?: string;
 }
 
 export interface ApprovalDecision {
@@ -107,6 +111,9 @@ export interface WorkOrderSummary {
   summary?: string;
   createdAt: string;
   finishedAt?: string;
+  inputTokens?: number;
+  outputTokens?: number;
+  cost?: number;
 }
 
 export interface PromotionCandidate {
@@ -168,7 +175,9 @@ export type ProtocolMethod =
   | "artifact.read"
   | "studio.files"
   | "studio.read"
-  | "clock.set";
+  | "clock.set"
+  | "hiring.complete" | "milestone.evaluate" | "milestone.complete" | "milestone.override"
+  | "day.end" | "game.save" | "game.new";
 
 export interface ProtocolRequest {
   kind: "request";
@@ -192,6 +201,7 @@ export interface ProtocolEvent {
 }
 
 export interface BootstrapState {
+  journey: ReturnType<JourneyStore["state"]> & { daySummary?: ReturnType<JourneyStore["daySummary"]> };
   employees: Employee[];
   project: { id: string; name: string; rootPath: string };
   defaultTokenBudget: number;

@@ -23,6 +23,7 @@ const projectRoot = join(dataRoot, "company-project");
 const jobId = `live_${Date.now()}`;
 await mkdir(projectRoot, { recursive: true });
 const database = new GameDatabase(join(dataRoot, "startup-valley.sqlite"), projectRoot);
+database.journey.hire("mira", database.clockState().day);
 const credentials = new KeychainCredentialStore();
 const adapter = new PiWorkerAdapter(database, credentials, dataRoot);
 

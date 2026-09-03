@@ -5,7 +5,7 @@ import { join } from "node:path";
 import test from "node:test";
 
 import type { CredentialStore } from "../src/credential-store.js";
-import { GameDatabase } from "../src/database.js";
+import { LegacyDatabase as GameDatabase } from "./legacy-database.js";
 import { PiWorkerAdapter } from "../src/pi-worker-adapter.js";
 
 class DeferredCredentialStore implements CredentialStore {

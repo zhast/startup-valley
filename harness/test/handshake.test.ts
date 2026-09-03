@@ -35,12 +35,12 @@ test("stdio JSONL daemon completes health and bootstrap handshake", async () => 
     recentJobs: unknown[];
     memories: Record<string, unknown[]>;
   };
-  assert.equal(state.employees.length, 2);
+  assert.equal(state.employees.length, 0);
   assert.deepEqual(state.clock, { day: 1, minuteOfDay: 480, speed: 1, phase: "work" });
   assert.deepEqual(state.studioFiles, []);
   assert.deepEqual(state.pendingPromotions, []);
   assert.deepEqual(state.recentJobs, []);
-  assert.ok(Array.isArray(state.memories.mira));
+  assert.deepEqual(state.memories, {});
   child.stdin.end();
   await new Promise<void>((resolve, reject) => {
     child.once("exit", (code) => (code === 0 ? resolve() : reject(new Error(`worker exited ${code}`))));

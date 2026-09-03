@@ -7,7 +7,7 @@ import { createInterface } from "node:readline";
 import test from "node:test";
 
 import type { CredentialStore } from "../src/credential-store.js";
-import { GameDatabase } from "../src/database.js";
+import { LegacyDatabase as GameDatabase } from "./legacy-database.js";
 import { PiWorkerAdapter } from "../src/pi-worker-adapter.js";
 
 const stages = ["think", "read", "write", "approval", "complete", "promote"] as const;

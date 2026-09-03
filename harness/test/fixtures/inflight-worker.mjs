@@ -13,6 +13,7 @@ const credentials = {
   async setOpenRouterKey() {},
 };
 const database = new GameDatabase(join(dataRoot, "game.sqlite"), join(dataRoot, "company-project"));
+database.journey.hire("mira", 1);
 const adapter = new PiWorkerAdapter(database, credentials, dataRoot);
 
 await adapter.startJob({

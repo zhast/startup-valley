@@ -1,0 +1,333 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://startup-valley.local/contracts/journey.schema.json",
+  "title": "Worker-owned company Journey projection",
+  "type": "object",
+  "required": [
+    "company",
+    "player",
+    "milestones",
+    "candidates"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "company": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cashCents",
+        "earnedCents",
+        "reputation",
+        "chapter"
+      ],
+      "properties": {
+        "cashCents": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "earnedCents": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reputation": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "chapter": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "player": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1280
+        },
+        "y": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 720
+        },
+        "movementSeen": {
+          "type": "boolean"
+        },
+        "effectsVolume": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "ambienceVolume": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "attentionEmployeeId": {
+          "enum": [
+            "",
+            "mira",
+            "theo"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "milestones": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "employeeId",
+          "state",
+          "files",
+          "criteria",
+          "assignment",
+          "rewardCents",
+          "feeCents",
+          "reputation",
+          "availableFromDay",
+          "jobId",
+          "jobStatus",
+          "overridden",
+          "evaluation",
+          "evaluationError"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "enum": [
+              "website",
+              "ads",
+              "incorporate"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "employeeId": {
+            "enum": [
+              "mira",
+              "theo"
+            ]
+          },
+          "prerequisite": {
+            "enum": [
+              "website",
+              "ads"
+            ]
+          },
+          "state": {
+            "enum": [
+              "locked",
+              "available",
+              "active",
+              "evaluating",
+              "revision_required",
+              "completed"
+            ]
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "criteria": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "assignment": {
+            "type": "string"
+          },
+          "rewardCents": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "feeCents": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "reputation": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "availableFromDay": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "jobId": {
+            "type": "string"
+          },
+          "jobStatus": {
+            "type": "string"
+          },
+          "overridden": {
+            "type": "boolean"
+          },
+          "evaluationError": {
+            "type": "string"
+          },
+          "evaluation": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/$defs/evaluation"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "candidates": {
+      "type": "array",
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "role",
+          "costCents",
+          "available",
+          "hired"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "enum": [
+              "mira",
+              "theo"
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "costCents": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "available": {
+            "type": "boolean"
+          },
+          "hired": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "daySummary": {
+      "type": "object",
+      "required": [
+        "day",
+        "entries",
+        "completedWork",
+        "earnedCents",
+        "reputation",
+        "aiSpend",
+        "nextMilestone"
+      ],
+      "properties": {
+        "day": {
+          "type": "integer"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "completedWork": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "earnedCents": {
+          "type": "integer"
+        },
+        "reputation": {
+          "type": "integer"
+        },
+        "aiSpend": {
+          "type": "number",
+          "minimum": 0
+        },
+        "nextMilestone": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verdict",
+        "score",
+        "criteria",
+        "summary",
+        "revisionBrief"
+      ],
+      "properties": {
+        "verdict": {
+          "enum": [
+            "ready",
+            "revise"
+          ]
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "criteria": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "score",
+              "evidence"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "score": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "evidence": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "summary": {
+          "type": "string"
+        },
+        "revisionBrief": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

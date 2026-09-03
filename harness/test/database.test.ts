@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import test from "node:test";
 
-import { GameDatabase } from "../src/database.js";
+import { LegacyDatabase as GameDatabase } from "./legacy-database.js";
 
 test("SQLite is authoritative for employees, work orders, events, and artifacts", async () => {
   const root = await mkdtemp(join(tmpdir(), "startup-valley-db-"));

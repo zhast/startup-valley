@@ -5,6 +5,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { normalizeClock, phaseForMinute } from "./day-clock.js";
+import { JourneyStore } from "./journey.js";
 import type {
   Artifact,
   BootstrapState,
@@ -48,12 +49,17 @@ interface WorkOrderRow {
   assignment: string;
   acceptance_criteria_json: string;
   token_budget: number;
+  input_tokens: number;
+  output_tokens: number;
+  cost: number | null;
   status: string;
   summary: string | null;
   created_at: string;
   finished_at: string | null;
   attached_studio_path: string | null;
   promotion_status: "none" | "pending" | "approved" | "discarded";
+  milestone_id: string | null;
+  revision_of_job_id: string | null;
 }
 
 interface MemoryRow {
@@ -97,6 +103,7 @@ function parseObject<T>(value: string): T {
 }
 
 export class GameDatabase {
+  readonly journey: JourneyStore;
   readonly #database: DatabaseSync;
   readonly #projectRoot: string;
 
@@ -112,6 +119,7 @@ export class GameDatabase {
       [3, "003_persistent_studio.sql"],
       [4, "004_work_order_handoff.sql"],
       [5, "005_employee_chat.sql"],
+      [6, "006_company_journey.sql"],
     ] as const) {
       const applied = this.#database.prepare("SELECT version FROM schema_migrations WHERE version = ?").get(version);
       if (applied) continue;
@@ -126,10 +134,12 @@ export class GameDatabase {
       }
     }
     this.#seed();
+    this.journey = new JourneyStore(this.#database);
     this.recoverInterruptedJobs();
   }
 
   close(): void {
+    this.#database.exec("PRAGMA wal_checkpoint(TRUNCATE)");
     this.#database.close();
   }
 
@@ -141,8 +151,8 @@ export class GameDatabase {
 
     const insertEmployee = this.#database.prepare(`
       INSERT OR IGNORE INTO employees
-        (id, name, desk_x, desk_y, schedule_json, relationships_json, morale, assignment, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, NULL, ?, ?)
+        (id, name, desk_x, desk_y, schedule_json, relationships_json, morale, assignment, created_at, updated_at, employment_status)
+      VALUES (?, ?, ?, ?, ?, ?, ?, NULL, ?, ?, 'candidate')
     `);
     insertEmployee.run(
       "mira",
@@ -159,7 +169,7 @@ export class GameDatabase {
     insertEmployee.run(
       "theo",
       "Theo",
-      13,
+      14,
       8,
       JSON.stringify({ weekday: "08:00-17:30", lunch: "12:30-13:30" }),
       JSON.stringify({ mira: 12 }),
@@ -180,7 +190,7 @@ export class GameDatabase {
   }
 
   bootstrap(): BootstrapState {
-    const rows = this.#database.prepare("SELECT * FROM employees ORDER BY name").all() as unknown as EmployeeRow[];
+    const rows = this.#database.prepare("SELECT * FROM employees WHERE employment_status='hired' ORDER BY name").all() as unknown as EmployeeRow[];
     const memories: Record<string, EmployeeMemory[]> = {};
     for (const row of rows) memories[row.id] = this.employeeMemories(row.id);
     return {
@@ -194,6 +204,7 @@ export class GameDatabase {
       pendingPromotions: this.pendingPromotions(),
       recentJobs: this.recentWorkOrders(),
       memories,
+      journey: { ...this.journey.state(), daySummary: this.journey.daySummary(this.clockState().day, this.dailySpend()) },
     };
   }
 
@@ -257,8 +268,8 @@ export class GameDatabase {
     };
     this.#database.prepare(`
       INSERT INTO employee_chat_messages
-        (id, employee_id, sender, content, input_tokens, output_tokens, cost, created_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        (id, employee_id, sender, content, input_tokens, output_tokens, cost, created_at, game_day)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       message.messageId,
       message.employeeId,
@@ -268,17 +279,19 @@ export class GameDatabase {
       message.outputTokens,
       message.cost ?? null,
       message.createdAt,
+      this.clockState().day,
     );
     return message;
   }
 
   createWorkOrder(spec: JobSpec, status: "queued" | "running" = "running"): void {
     const timestamp = now();
+    this.journey.transaction(() => {
     this.#database
       .prepare(`
         INSERT INTO work_orders
-          (id, employee_id, project_id, title, assignment, acceptance_criteria_json, status, token_budget, created_at, started_at, attached_studio_path)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          (id, employee_id, project_id, title, assignment, acceptance_criteria_json, status, token_budget, created_at, started_at, attached_studio_path, milestone_id, revision_of_job_id, game_day)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `)
       .run(
         spec.jobId,
@@ -292,10 +305,29 @@ export class GameDatabase {
         timestamp,
         status === "running" ? timestamp : null,
         spec.attachedStudioPath ?? null,
+        spec.milestoneId ?? null,
+        spec.revisionOfJobId ?? null,
+        this.clockState().day,
       );
     this.#database
       .prepare("UPDATE employees SET assignment = ?, updated_at = ? WHERE id = ?")
       .run(spec.assignment, timestamp, spec.employeeId);
+    this.journey.attachJob(spec);
+    });
+  }
+
+  endDay(expectedDay: number) {
+    return this.journey.transaction(() => {
+      const current = this.clockState();
+      const previous = this.#database.prepare("SELECT summary_json FROM day_summaries WHERE day=?").get(expectedDay);
+      if (previous) return { clock: current, summary: JSON.parse(String(previous.summary_json)) };
+      if (current.day !== expectedDay) throw new Error("Day changed; refresh before ending it");
+      const active = this.#database.prepare("SELECT id FROM work_orders WHERE status='running' OR id IN (SELECT work_order_id FROM approvals WHERE status='pending')").get();
+      if (active) throw new Error("Finish or cancel active work and approvals before ending the day");
+      const summary = this.journey.daySummary(current.day, this.dailySpend());
+      this.#database.prepare("INSERT INTO day_summaries VALUES (?,?)").run(current.day, JSON.stringify(summary));
+      return { summary, clock: this.setClock(current.day + 1, 480, 1) };
+    });
   }
 
   hasOpenWorkOrder(): boolean {
@@ -327,6 +359,9 @@ export class GameDatabase {
       ...(row.summary ? { summary: row.summary } : {}),
       createdAt: row.created_at,
       ...(row.finished_at ? { finishedAt: row.finished_at } : {}),
+      inputTokens: row.input_tokens,
+      outputTokens: row.output_tokens,
+      ...(row.cost === null ? {} : { cost: row.cost }),
     }));
   }
 
@@ -344,6 +379,8 @@ export class GameDatabase {
       acceptanceCriteria: parseObject<string[]>(row.acceptance_criteria_json),
       tokenBudget: row.token_budget,
       ...(row.attached_studio_path ? { attachedStudioPath: row.attached_studio_path } : {}),
+      ...(row.milestone_id ? { milestoneId: row.milestone_id } : {}),
+      ...(row.revision_of_job_id ? { revisionOfJobId: row.revision_of_job_id } : {}),
       status: row.status,
     };
   }
@@ -367,6 +404,7 @@ export class GameDatabase {
       `).run(jobId, now(), jobId);
     }
     if (terminal) {
+      this.#database.prepare("UPDATE approvals SET status='denied',reason='Work order ended before a decision',decided_at=? WHERE work_order_id=? AND status='pending'").run(now(), jobId);
       this.#database.prepare(`
         UPDATE employees SET assignment = NULL, updated_at = ?
         WHERE id = (SELECT employee_id FROM work_orders WHERE id = ?)
@@ -419,6 +457,7 @@ export class GameDatabase {
       this.setWorkOrderStatus(row.id, "failed");
       this.recordEvent(row.id, { type: "job.failed", error: "Worker exited before the work order completed" });
     }
+    this.#database.prepare("UPDATE approvals SET status='denied',reason='Recovered ended work order',decided_at=? WHERE status='pending' AND work_order_id IN (SELECT id FROM work_orders WHERE status NOT IN ('running','queued'))").run(now());
     return rows.map((row) => row.id);
   }
 
@@ -436,8 +475,8 @@ export class GameDatabase {
 
   recordUsage(jobId: string, inputTokens: number, outputTokens: number, cost?: number): void {
     this.#database
-      .prepare("UPDATE work_orders SET input_tokens = ?, output_tokens = ?, cost = ? WHERE id = ?")
-      .run(inputTokens, outputTokens, cost ?? null, jobId);
+      .prepare("UPDATE work_orders SET input_tokens = ?, output_tokens = ?, cost = ?, game_day = ? WHERE id = ?")
+      .run(inputTokens, outputTokens, cost ?? null, this.clockState().day, jobId);
   }
 
   createArtifact(jobId: string, artifact: Artifact): void {
@@ -629,6 +668,7 @@ export class GameDatabase {
   }
 
   createApproval(jobId: string, approvalId: string, action: string): void {
+    if (this.workOrder(jobId)?.status !== "running") throw new Error("Approval requires a running work order");
     this.#database
       .prepare("INSERT INTO approvals (id, work_order_id, action, status, created_at) VALUES (?, ?, ?, 'pending', ?)")
       .run(approvalId, jobId, action, now());
@@ -636,7 +676,7 @@ export class GameDatabase {
 
   decideApproval(approvalId: string, approved: boolean, reason?: string): void {
     this.#database
-      .prepare("UPDATE approvals SET status = ?, reason = ?, decided_at = ? WHERE id = ?")
+      .prepare("UPDATE approvals SET status = ?, reason = ?, decided_at = ? WHERE id = ? AND status = 'pending'")
       .run(approved ? "approved" : "denied", reason ?? null, now(), approvalId);
   }
 
@@ -644,11 +684,12 @@ export class GameDatabase {
     const row = this.#database
       .prepare(`
         SELECT
-          COALESCE((SELECT SUM(cost) FROM work_orders WHERE date(created_at) = date('now')), 0) +
-          COALESCE((SELECT SUM(cost) FROM employee_chat_messages WHERE date(created_at) = date('now')), 0)
+          COALESCE((SELECT SUM(cost) FROM work_orders WHERE game_day = ?), 0) +
+          COALESCE((SELECT SUM(cost) FROM employee_chat_messages WHERE game_day = ?), 0) +
+          COALESCE((SELECT SUM(cost) FROM evaluation_usage WHERE game_day = ?), 0)
           AS total
       `)
-      .get() as { total: number };
+      .get(this.clockState().day, this.clockState().day, this.clockState().day) as { total: number };
     return row.total;
   }
 }

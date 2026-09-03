@@ -89,7 +89,9 @@ export async function createJobTools(options: ToolFactoryOptions): Promise<ToolD
   const isStudioPath = (path: string): boolean => path === "studio" || path.startsWith("studio/");
   const studioRelative = (path: string): string => path.slice("studio/".length);
   const rejectStudioWrite = (path: string): void => {
-    if (isStudioPath(path)) throw new Error("Studio files are read-only during a job; write to job scratch for player-approved promotion");
+    const normalized = path.replaceAll("\\", "/").split("/").filter((part) => part !== "." && part !== "").join("/");
+    if (isStudioPath(normalized)) throw new Error("Studio files are read-only during a job; write to job scratch for player-approved promotion");
+    if (normalized === "handoffs" || normalized.startsWith("handoffs/")) throw new Error("Handoffs are read-only");
   };
 
   const registerArtifact = (path: string): Artifact => {

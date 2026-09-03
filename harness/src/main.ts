@@ -1,4 +1,4 @@
-import { mkdir } from "node:fs/promises";
+import { mkdir, mkdtemp, rename } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { createInterface } from "node:readline";
 
@@ -43,9 +43,10 @@ function failure(id: string, error: unknown): void {
 const dataRoot = resolve(argument("--data-dir") ?? join(process.cwd(), ".startup-valley-data"));
 const projectRoot = join(dataRoot, "company-project");
 await mkdir(projectRoot, { recursive: true });
-const database = new GameDatabase(join(dataRoot, "startup-valley.sqlite"), projectRoot);
+let database = new GameDatabase(join(dataRoot, "startup-valley.sqlite"), projectRoot);
 const credentials = new KeychainCredentialStore();
-const adapter = new PiWorkerAdapter(database, credentials, dataRoot);
+let adapter = new PiWorkerAdapter(database, credentials, dataRoot);
+let resetting = false;
 let shuttingDown = false;
 const pumpingJobs = new Set<string>();
 
@@ -67,7 +68,64 @@ function ensureEventPump(jobId: string): void {
 }
 
 async function dispatch(request: ProtocolRequest): Promise<unknown> {
+  if (resetting) throw new Error("New company is being prepared");
   switch (request.method) {
+    case "hiring.complete":
+      database.journey.hire(stringParameter(request, "employeeId", 64), database.clockState().day);
+      return database.bootstrap();
+    case "milestone.evaluate":
+      return adapter.evaluateMilestone(stringParameter(request, "jobId", 64));
+    case "milestone.complete":
+    case "milestone.override":
+      return { journey: database.journey.complete(stringParameter(request, "jobId", 64), request.method === "milestone.override", database.clockState().day), dailySpend: database.dailySpend() };
+    case "game.save":
+      database.journey.savePlayer(request.params);
+      return { saved: true };
+    case "day.end": {
+      if (adapter.isBusy()) throw new Error("Wait for active AI work to finish before ending the day");
+      const result = database.endDay(numberParameter(request, "day"));
+      const startedJobId = await adapter.startNextQueuedJob();
+      if (startedJobId) ensureEventPump(startedJobId);
+      return { ...result, journey: database.journey.state(), dailySpend: database.dailySpend() };
+    }
+    case "game.new": {
+      if (request.params.confirmed !== true) throw new Error("Confirm New Company first");
+      if (adapter.isBusy() || database.hasOpenWorkOrder()) throw new Error("Finish or cancel open work before starting a new company");
+      resetting = true;
+      const dbPath = join(dataRoot, "startup-valley.sqlite");
+      await mkdir(join(dataRoot, "backups"), { recursive: true }).catch((error: unknown) => { resetting = false; throw error; });
+      const safeBackup = await mkdtemp(join(dataRoot, "backups", new Date().toISOString().replace(/[:.]/gu, "-") + "-")).catch((error: unknown) => { resetting = false; throw error; });
+      const stagedPath = join(safeBackup, "prepared.sqlite");
+      let movedDb = false, movedProject = false, installedDb = false, installedProject = false, closed = false;
+      let replacement: GameDatabase | undefined;
+      try {
+        // Validate and checkpoint the new database before touching the old company.
+        const prepared = new GameDatabase(stagedPath, projectRoot);
+        prepared.close();
+        await mkdir(join(safeBackup, "prepared-project"));
+        database.close(); closed = true;
+        await rename(dbPath, join(safeBackup, "startup-valley.sqlite")); movedDb = true;
+        await rename(projectRoot, join(safeBackup, "company-project")); movedProject = true;
+        await rename(stagedPath, dbPath); installedDb = true;
+        await rename(join(safeBackup, "prepared-project"), projectRoot); installedProject = true;
+        replacement = new GameDatabase(dbPath, projectRoot);
+        database = replacement;
+        adapter = new PiWorkerAdapter(database, credentials, dataRoot);
+        return { ...database.bootstrap(), backupPath: safeBackup };
+      } catch (error) {
+        replacement?.close();
+        // Keep even the failed replacement recoverable; never overwrite the backup.
+        if (installedProject) await rename(projectRoot, join(safeBackup, "failed-new-project"));
+        if (installedDb) await rename(dbPath, join(safeBackup, "failed-new.sqlite"));
+        if (movedProject) await rename(join(safeBackup, "company-project"), projectRoot);
+        if (movedDb) await rename(join(safeBackup, "startup-valley.sqlite"), dbPath);
+        if (closed) {
+          database = new GameDatabase(dbPath, projectRoot);
+          adapter = new PiWorkerAdapter(database, credentials, dataRoot);
+        }
+        throw error;
+      } finally { resetting = false; }
+    }
     case "health":
       return { status: "ok", protocolVersion: 1, workerVersion: "0.0.1", provider: "openrouter", maxConcurrentJobs: 1 };
     case "bootstrap":
@@ -149,6 +207,9 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
 }
 
 const lines = createInterface({ input: process.stdin, crlfDelay: Infinity, terminal: false });
+// Protocol retries share the same in-flight operation and response. Domain writes
+// also have durable unique keys, so replay after a process restart stays safe.
+const requests = new Map<string, { fingerprint: string; result: Promise<unknown> }>();
 lines.on("line", (line) => {
   void (async () => {
     let id = "invalid";
@@ -157,7 +218,15 @@ lines.on("line", (line) => {
       const raw = JSON.parse(line) as unknown;
       if (typeof raw === "object" && raw !== null && typeof (raw as { id?: unknown }).id === "string") id = (raw as { id: string }).id;
       const request = parseRequest(raw);
-      const result = await dispatch(request);
+      const fingerprint = JSON.stringify([request.method, request.params]);
+      let entry = requests.get(request.id);
+      if (entry && entry.fingerprint !== fingerprint) throw new Error("Request id was already used for a different action");
+      if (!entry) {
+        entry = { fingerprint, result: dispatch(request) };
+        requests.set(request.id, entry);
+        if (requests.size > 512) requests.delete(requests.keys().next().value!);
+      }
+      const result = await entry.result;
       success(request.id, result);
     } catch (error) {
       failure(id, error);

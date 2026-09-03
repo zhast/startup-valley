@@ -34,11 +34,20 @@
             "artifact.read",
             "studio.files",
             "studio.read",
-            "clock.set"
+            "clock.set",
+            "hiring.complete", "milestone.evaluate", "milestone.complete", "milestone.override",
+            "day.end", "game.save", "game.new"
           ]
         },
         "params": { "type": "object" }
-      }
+      },
+      "allOf": [
+        { "if": { "properties": { "method": { "const": "hiring.complete" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["employeeId"], "properties": { "employeeId": { "enum": ["mira", "theo"] } } } } } },
+        { "if": { "properties": { "method": { "enum": ["milestone.evaluate", "milestone.complete", "milestone.override"] } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["jobId"], "properties": { "jobId": { "type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[A-Za-z0-9_-]+$" } } } } } },
+        { "if": { "properties": { "method": { "const": "day.end" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["day"], "properties": { "day": { "type": "integer", "minimum": 1 } } } } } },
+        { "if": { "properties": { "method": { "const": "game.new" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["confirmed"], "properties": { "confirmed": { "type": "boolean" } } } } } },
+        { "if": { "properties": { "method": { "const": "game.save" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["x", "y"], "properties": { "x": { "type": "number", "minimum": 0, "maximum": 1280 }, "y": { "type": "number", "minimum": 0, "maximum": 720 }, "movementSeen": { "type": "boolean" }, "effectsVolume": { "type": "number", "minimum": 0, "maximum": 1 }, "ambienceVolume": { "type": "number", "minimum": 0, "maximum": 1 }, "attentionEmployeeId": { "enum": ["", "mira", "theo"] } } } } } }
+      ]
     },
     "response": {
       "type": "object",

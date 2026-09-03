@@ -219,6 +219,7 @@ async function runFixture(fixture) {
   const projectRoot = join(dataRoot, "company-project");
   const databasePath = join(dataRoot, "game.sqlite");
   const database = new GameDatabase(databasePath, projectRoot);
+  database.journey.db.prepare("UPDATE employees SET employment_status='hired'").run();
   try {
     const studioRoot = await seedStudio(database, projectRoot);
     const jobId = `eval-${fixture.id}`;

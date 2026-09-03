@@ -55,4 +55,9 @@ test("Pi receives only the constrained tool allowlist and writes a real artifact
     writeTool.execute("call-3", { path: "studio/forbidden.md", content: "no" }, undefined, undefined, {} as never),
     /read-only/u,
   );
+  for (const path of ["handoffs/brief.md", "./handoffs/brief.md", "handoffs//brief.md", "./studio/brief.md"]) {
+    await assert.rejects(writeTool.execute("readonly", { path, content: "overwrite" }, undefined, undefined, {} as never), /read-only/u);
+    const edit = tools.find((tool) => tool.name === "edit_file")!;
+    await assert.rejects(edit.execute("readonly-edit", { path, oldText: "brief", newText: "changed" }, undefined, undefined, {} as never), /read-only/u);
+  }
 });

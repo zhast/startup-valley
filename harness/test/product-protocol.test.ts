@@ -6,7 +6,7 @@ import { join } from "node:path";
 import { createInterface } from "node:readline";
 import test from "node:test";
 
-import { GameDatabase } from "../src/database.js";
+import { LegacyDatabase as GameDatabase } from "./legacy-database.js";
 
 test("game protocol promotes approved artifacts, reads the studio, and writes memories", async () => {
   const dataRoot = await mkdtemp(join(tmpdir(), "startup-valley-product-protocol-"));

@@ -1,5 +1,9 @@
 import { copyFile, mkdir, readFile, stat } from "node:fs/promises";
 import { dirname, join } from "node:path";
+import { randomUUID } from "node:crypto";
+import { ArtifactMilestoneAdapter, prepareRevisionFiles } from "./milestone-adapter.js";
+import { prepareEvaluationInput, EVALUATION_OUTPUT_TOKENS, type EvaluationInput } from "./evaluation-evidence.js";
+import { milestone, parseEvaluation, type MilestoneDefinition } from "./journey.js";
 
 import type { Credential, CredentialInfo, CredentialStore as PiCredentialStore } from "@earendil-works/pi-ai";
 import type { Model } from "@earendil-works/pi-ai/compat";
@@ -37,6 +41,7 @@ import type {
 const DEFAULT_MODEL_ID = "~openai/gpt-mini-latest";
 const MAX_ATTACHED_CONTEXT_CHARACTERS = 16_000;
 const CHAT_RESPONSE_TOKEN_CAP = 700;
+export type EvaluationRunner = (definition: MilestoneDefinition, artifacts: readonly string[], input: EvaluationInput) => Promise<{ text: string; inputTokens: number; outputTokens: number; cost: number }>;
 
 class EmptyPiCredentialStore implements PiCredentialStore {
   async read(_providerId: string): Promise<Credential | undefined> {
@@ -74,6 +79,7 @@ export class PiWorkerAdapter implements WorkerAdapter {
   readonly #jobsRoot: string;
   readonly #studioRoot: string;
   readonly #runtimeRoot: string;
+  readonly #evaluationRunner: EvaluationRunner | undefined;
   readonly #streams = new Map<string, EventStream<WorkerEvent>>();
   readonly #sessions = new LiveSessionRegistry<AgentSession>();
   readonly #approvals = new ApprovalBroker();
@@ -81,13 +87,22 @@ export class PiWorkerAdapter implements WorkerAdapter {
   #activeJobId: string | undefined;
   #acceptingJob = false;
   #chatting = false;
+  #evaluating = false;
+  #evaluationSession: AgentSession | undefined;
+  #chatSession: AgentSession | undefined;
+  #shuttingDown = false;
+  #auxiliaryIdle: Promise<void> = Promise.resolve();
+  #resolveAuxiliaryIdle: (() => void) | undefined;
 
-  constructor(database: GameDatabase, credentials: CredentialStore, dataRoot: string) {
+  isBusy(): boolean { return this.#chatting || this.#evaluating || this.#acceptingJob || Boolean(this.#activeJobId); }
+
+  constructor(database: GameDatabase, credentials: CredentialStore, dataRoot: string, evaluationRunner?: EvaluationRunner) {
     this.#database = database;
     this.#credentials = credentials;
     this.#jobsRoot = join(dataRoot, "company-project", "jobs");
     this.#studioRoot = join(dataRoot, "company-project", "studio");
     this.#runtimeRoot = join(dataRoot, "runtime");
+    this.#evaluationRunner = evaluationRunner;
   }
 
   async startJob(spec: JobSpec): Promise<void> {
@@ -99,12 +114,14 @@ export class PiWorkerAdapter implements WorkerAdapter {
   }
 
   async #acceptJob(spec: JobSpec, respectSchedule: boolean): Promise<{ queued: boolean }> {
-    if (this.#chatting || this.#acceptingJob || this.#activeJobId || this.#database.hasOpenWorkOrder()) {
+    if (this.#shuttingDown) throw new Error("Worker is shutting down");
+    if (this.isBusy() || this.#database.hasOpenWorkOrder()) {
       throw new Error("One work order is already running or queued");
     }
     this.#acceptingJob = true;
     try {
       if (!this.#database.employee(spec.employeeId)) throw new Error("Employee does not exist");
+      this.#database.journey.validateAssignment(spec);
       await this.#assertAttachedStudioFile(spec);
       if (respectSchedule && !this.#database.isWorkWindow()) {
         this.#database.createWorkOrder(spec, "queued");
@@ -124,9 +141,11 @@ export class PiWorkerAdapter implements WorkerAdapter {
   }
 
   async resumeJob(jobId: string): Promise<void> {
-    if (this.#activeJobId) throw new Error(`Job ${this.#activeJobId} is already running; only one work order may run`);
+    if (this.#shuttingDown) throw new Error("Worker is shutting down");
+    if (this.isBusy()) throw new Error("Another AI operation is already running; only one may run");
     const stored = this.#database.workOrder(jobId);
     if (!stored) throw new Error("Work order does not exist");
+    if (stored.status !== "queued") throw new Error("Only queued work can be resumed");
     this.#ensureStream(jobId);
     this.#activeJobId = jobId;
     this.#database.setWorkOrderStatus(jobId, "running");
@@ -135,7 +154,7 @@ export class PiWorkerAdapter implements WorkerAdapter {
   }
 
   async startNextQueuedJob(): Promise<string | undefined> {
-    if (this.#activeJobId || !this.#database.isWorkWindow()) return undefined;
+    if (this.isBusy() || !this.#database.isWorkWindow()) return undefined;
     const queued = this.#database.nextQueuedWorkOrder();
     if (!queued) return undefined;
     await this.resumeJob(queued.jobId);
@@ -215,19 +234,23 @@ export class PiWorkerAdapter implements WorkerAdapter {
   }
 
   async sendChat(employeeId: string, message: string): Promise<ChatReply> {
+    if (this.#shuttingDown) throw new Error("Worker is shutting down");
     const employee = this.#database.employee(employeeId);
     if (!employee) throw new Error("Employee does not exist");
+    if (!this.#database.journey.hired(employeeId)) throw new Error("Hire this employee before chatting");
     const cleanMessage = bounded(message.trim(), 2000);
     if (!cleanMessage) throw new Error("Chat message cannot be empty");
-    if (this.#chatting) throw new Error("An employee is already replying");
+    if (this.#chatting || this.#evaluating) throw new Error("An employee or evaluator is already replying");
     if (this.#acceptingJob || this.#activeJobId || this.#database.hasOpenWorkOrder()) {
       throw new Error("Finish or cancel the active work order before starting a new conversation");
     }
 
     this.#chatting = true;
+    this.#auxiliaryIdle = new Promise((resolve) => { this.#resolveAuxiliaryIdle = resolve; });
     let session: AgentSession | undefined;
     try {
       const apiKey = await this.#credentials.getOpenRouterKey();
+      if (this.#shuttingDown) throw new Error("Worker is shutting down");
       if (!apiKey) throw new Error("Add an OpenRouter key before chatting with an employee");
       const previousMessages = this.#database.chatMessages(employeeId, 10);
       this.#database.createChatMessage(employeeId, "player", cleanMessage);
@@ -290,6 +313,8 @@ ${transcript}`;
         sessionManager: SessionManager.inMemory(chatRoot),
       });
       session = created.session;
+      this.#chatSession = session;
+      if (this.#shuttingDown) throw new Error("Worker is shutting down");
       await session.prompt(cleanMessage);
       const lastMessage = session.state.messages.at(-1);
       if (lastMessage?.role === "assistant" && lastMessage.stopReason === "error") {
@@ -307,6 +332,8 @@ ${transcript}`;
     } finally {
       session?.dispose();
       this.#chatting = false;
+      this.#chatSession = undefined;
+      this.#resolveAuxiliaryIdle?.();
     }
   }
 
@@ -339,6 +366,70 @@ ${transcript}`;
     return { studioFiles: this.#database.studioFiles(), pendingPromotions: this.#database.pendingPromotions() };
   }
 
+  async evaluateMilestone(jobId: string) {
+    if (this.#shuttingDown) throw new Error("Worker is shutting down");
+    const cached = this.#database.journey.evaluationFor(jobId);
+    if (cached) return { journey: this.#database.journey.state(), dailySpend: this.#database.dailySpend() };
+    if (this.isBusy() || this.#database.hasOpenWorkOrder()) throw new Error("Finish active work before evaluation");
+    this.#evaluating = true;
+    this.#auxiliaryIdle = new Promise((resolve) => { this.#resolveAuxiliaryIdle = resolve; });
+    let session: AgentSession | undefined;
+    let usageRecorded = false;
+    const attemptId = randomUUID();
+    const recordUsage = () => {
+      if (!session || usageRecorded) return;
+      const stats = session.getSessionStats();
+      this.#database.journey.db.prepare("INSERT INTO evaluation_usage VALUES (?,?,?,?,?,?,?)").run(attemptId, jobId, stats.tokens.input, stats.tokens.output, Math.max(0, stats.cost), new Date().toISOString(), this.#database.clockState().day);
+      usageRecorded = true;
+    };
+    try {
+      const definition = this.#database.journey.beginEvaluation(jobId);
+      const evidence = await new ArtifactMilestoneAdapter().collect(definition, (path) => this.readArtifact(jobId, path));
+      const contents = evidence.documents.map((document) => `${document.path}\n${document.content}`);
+      const input = prepareEvaluationInput(definition, evidence);
+      if (this.#evaluationRunner) {
+        const result = await this.#evaluationRunner(definition, contents, input);
+        this.#database.journey.db.prepare("INSERT INTO evaluation_usage VALUES (?,?,?,?,?,?,?)").run(attemptId, jobId, result.inputTokens, result.outputTokens, result.cost, new Date().toISOString(), this.#database.clockState().day);
+        usageRecorded = true;
+        if (result.inputTokens + result.outputTokens > 3000) throw new Error("Evaluation exceeded its 3,000-token budget");
+        this.#database.journey.finishEvaluation(jobId, parseEvaluation(result.text, definition));
+        return { journey: this.#database.journey.state(), dailySpend: this.#database.dailySpend() };
+      }
+      const key = await this.#credentials.getOpenRouterKey();
+      if (!key) throw new Error("Connect AI before evaluating this result");
+      const root = join(this.#runtimeRoot, "evaluation");
+      await mkdir(root, { recursive: true });
+      const runtime = await ModelRuntime.create({ credentials: new EmptyPiCredentialStore(), modelsPath: null, refreshOnCreate: false });
+      await runtime.setRuntimeApiKey("openrouter", key);
+      const model = runtime.getModel("openrouter", DEFAULT_MODEL_ID);
+      if (!model) throw new Error("Configured evaluation model is unavailable");
+      const systemPrompt = input.systemPrompt;
+      const settings = SettingsManager.inMemory();
+      const loader = new DefaultResourceLoader({ cwd: root, agentDir: root, settingsManager: settings, noExtensions: true, noSkills: true, noPromptTemplates: true, noThemes: true, noContextFiles: true, systemPrompt });
+      await loader.reload();
+      session = (await createAgentSession({ cwd: root, agentDir: root, model: { ...model, maxTokens: Math.min(EVALUATION_OUTPUT_TOKENS, model.maxTokens) }, modelRuntime: runtime, thinkingLevel: "off", noTools: "all", tools: [], customTools: [], resourceLoader: loader, settingsManager: settings, sessionManager: SessionManager.inMemory(root) })).session;
+      this.#evaluationSession = session;
+      if (this.#shuttingDown) throw new Error("Worker is shutting down");
+      await session.prompt(input.prompt);
+      recordUsage();
+      const stats = session.getSessionStats();
+      if (stats.tokens.input + stats.tokens.output > 3000) throw new Error("Evaluation exceeded its 3,000-token budget");
+      const last = session.state.messages.at(-1);
+      if (last?.role === "assistant" && last.stopReason === "error") throw new Error(last.errorMessage ?? "Evaluation provider failed");
+      this.#database.journey.finishEvaluation(jobId, parseEvaluation(session.getLastAssistantText() ?? "", definition));
+      return { journey: this.#database.journey.state(), dailySpend: this.#database.dailySpend() };
+    } catch (error) {
+      recordUsage();
+      this.#database.journey.failEvaluation(jobId, error instanceof Error ? error.message : String(error));
+      throw error;
+    } finally {
+      session?.dispose();
+      this.#evaluationSession = undefined;
+      this.#evaluating = false;
+      this.#resolveAuxiliaryIdle?.();
+    }
+  }
+
   async #assertAttachedStudioFile(spec: JobSpec): Promise<void> {
     if (!spec.attachedStudioPath) return;
     try {
@@ -350,6 +441,10 @@ ${transcript}`;
   }
 
   async shutdown(): Promise<void> {
+    this.#shuttingDown = true;
+    if (this.#chatSession) await this.#chatSession.abort();
+    if (this.#evaluationSession) await this.#evaluationSession.abort();
+    await this.#auxiliaryIdle;
     const jobId = this.#activeJobId;
     if (!jobId) return;
     this.#cancelledJobs.add(jobId);
@@ -384,8 +479,8 @@ ${transcript}`;
     const employee = this.#database.employee(spec.employeeId);
     if (!employee) throw new Error("Employee was removed before the job started");
     const criteria = spec.acceptanceCriteria.map((criterion, index) => `${index + 1}. ${bounded(criterion, 500)}`).join("\n");
-    const memories = this.#database.employeeMemories(spec.employeeId, 9);
-    const handoffs = this.#database.teammateHandoffs(spec.employeeId, 4);
+    const memories = this.#database.employeeMemories(spec.employeeId, spec.revisionOfJobId ? 3 : 9);
+    const handoffs = this.#database.teammateHandoffs(spec.employeeId, spec.revisionOfJobId ? 1 : 4);
     const studioFiles = this.#database.studioFiles();
     const memoryContext = memories.length > 0
       ? memories.map((memory) => `- [${memory.kind}] ${bounded(memory.fact, 700)}`).join("\n")
@@ -452,6 +547,13 @@ When the requested work is complete, give a concise delivery summary. The game r
       const jobRoot = join(this.#jobsRoot, spec.jobId);
       const agentDirectory = join(this.#runtimeRoot, "pi");
       await Promise.all([mkdir(jobRoot, { recursive: true }), mkdir(agentDirectory, { recursive: true }), mkdir(this.#studioRoot, { recursive: true })]);
+      if (spec.revisionOfJobId) {
+        await prepareRevisionFiles(join(this.#jobsRoot, spec.revisionOfJobId), jobRoot, this.#database.artifacts(spec.revisionOfJobId), milestone(spec.milestoneId!).files, (original) => {
+          const artifact = { ...original, jobId: spec.jobId, artifactId: randomUUID(), createdAt: new Date().toISOString() };
+          this.#database.createArtifact(spec.jobId, artifact);
+          this.#emit(spec.jobId, { type: "artifact.created", artifactId: artifact.artifactId, name: artifact.name });
+        });
+      }
 
       const modelRuntime = await ModelRuntime.create({
         credentials: new EmptyPiCredentialStore(),
@@ -474,7 +576,8 @@ When the requested work is complete, give a concise delivery summary. The game r
         },
         onApproval: (approvalId, action) => {
           this.#database.createApproval(spec.jobId, approvalId, action);
-          this.#database.setWorkOrderStatus(spec.jobId, "blocked");
+          // A live approval wait is still a running session, not a terminal
+          // budget/shutdown block. Keep its assignment and pending decision.
           this.#emit(spec.jobId, { type: "approval.required", approvalId, action });
         },
       });
@@ -489,7 +592,7 @@ When the requested work is complete, give a concise delivery summary. The game r
         noPromptTemplates: true,
         noThemes: true,
         noContextFiles: true,
-        systemPrompt: this.systemPromptFor(spec, attachedStudioContent),
+        systemPrompt: this.systemPromptFor(spec, attachedStudioContent) + (spec.revisionOfJobId ? "\nRevision: available previous files were copied to your writable requested paths AND immutable handoffs/. Read only the working files you need, then use edit_file for targeted corrections. Do not rewrite unchanged files, reread identical handoffs, or produce a second copy of the same document. Create any missing required file. Check the rubric and finish with a short change summary." : ""),
       });
       await resourceLoader.reload();
       const created = await createAgentSession({
@@ -515,7 +618,7 @@ When the requested work is complete, give a concise delivery summary. The game r
       if (this.#cancelledJobs.has(spec.jobId)) return;
       if (exceededBudget) {
         this.#database.setWorkOrderStatus(spec.jobId, "blocked");
-        this.#emit(spec.jobId, { type: "job.blocked", reason: `Token budget of ${spec.tokenBudget} was reached` });
+        this.#emit(spec.jobId, { type: "job.blocked", reason: `Token budget of ${spec.tokenBudget} was reached. Files were kept.${spec.milestoneId ? " Open Journey to resume from these files in a new bounded work order." : " Review the delivery files before creating another work order."}` });
         return;
       }
       const lastMessage = session.state.messages.at(-1);
@@ -541,6 +644,9 @@ When the requested work is complete, give a concise delivery summary. The game r
   }
 
   #handlePiEvent(spec: JobSpec, session: AgentSession, event: AgentSessionEvent): boolean {
+    // Aborted tools can settle after cancellation. Audit their final usage but
+    // never revive a cancelled employee's animations or approval state.
+    if (this.#cancelledJobs.has(spec.jobId) && event.type !== "message_end") return false;
     switch (event.type) {
       case "agent_start":
         this.#emit(spec.jobId, { type: "agent.thinking", summary: "Planning the work order." });
