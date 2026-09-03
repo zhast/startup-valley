@@ -1,16 +1,8 @@
 class_name ArtifactViewer
 extends Control
 
-const VERMILION := Color("fa4616")
 const CHARCOAL := Color("151515")
 const INDIGO := Color("354b98")
-const CHARTREUSE := Color("c1fa81")
-const PARCHMENT := Color("f4ddb0")
-const PARCHMENT_LIGHT := Color("fff7e2")
-const PARCHMENT_DARK := Color("d8b879")
-const WOOD := Color("9b542d")
-const WOOD_DARK := Color("552c22")
-const WOOD_LIGHT := Color("de9550")
 const MUTED_INK := Color("725b46")
 
 var _title_label: Label
@@ -25,50 +17,70 @@ func _ready() -> void:
 	_build_interface()
 
 func _build_interface() -> void:
-	_modal.add_theme_stylebox_override("panel", _stylebox(PARCHMENT, WOOD_DARK, 5, 3))
+	_modal.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+	var frame := TextureRect.new()
+	frame.texture = OperationsSkin.ARTIFACT_READER_FRAME
+	frame.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	frame.stretch_mode = TextureRect.STRETCH_SCALE
+	frame.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_modal.add_child(frame)
 
 	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 18)
-	margin.add_theme_constant_override("margin_right", 18)
+	margin.add_theme_constant_override("margin_left", 38)
+	margin.add_theme_constant_override("margin_right", 38)
 	margin.add_theme_constant_override("margin_top", 16)
-	margin.add_theme_constant_override("margin_bottom", 16)
+	margin.add_theme_constant_override("margin_bottom", 34)
 	_modal.add_child(margin)
 	var column := VBoxContainer.new()
-	column.add_theme_constant_override("separation", 10)
+	column.add_theme_constant_override("separation", 7)
 	margin.add_child(column)
+	var plate_label := Label.new()
+	plate_label.text = "DELIVERY"
+	plate_label.custom_minimum_size.y = 25.0
+	plate_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	plate_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	plate_label.add_theme_font_size_override("font_size", 12)
+	plate_label.add_theme_color_override("font_color", Color("f1f1f1"))
+	column.add_child(plate_label)
 
 	var header := HBoxContainer.new()
+	header.add_theme_constant_override("separation", 10)
 	column.add_child(header)
-	var file_mark := Label.new()
-	file_mark.text = "▤"
-	file_mark.add_theme_font_size_override("font_size", 22)
-	file_mark.add_theme_color_override("font_color", INDIGO)
+	var file_mark := TextureRect.new()
+	file_mark.texture = OperationsSkin.ICON_DOCUMENT
+	file_mark.custom_minimum_size = Vector2(32.0, 38.0)
+	file_mark.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	file_mark.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	file_mark.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	header.add_child(file_mark)
 	_title_label = Label.new()
 	_title_label.text = "Artifact"
 	_title_label.add_theme_font_size_override("font_size", 18)
 	_title_label.add_theme_color_override("font_color", CHARCOAL)
 	_title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_title_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	header.add_child(_title_label)
 	_close_button = Button.new()
-	_close_button.text = "Close"
+	_close_button.text = ""
+	_close_button.icon = OperationsSkin.CLOSE_BUTTON
+	_close_button.add_theme_constant_override("icon_max_width", 30)
+	_close_button.expand_icon = true
+	_close_button.custom_minimum_size = Vector2(34.0, 34.0)
+	_close_button.tooltip_text = "Close delivery"
 	_close_button.pressed.connect(hide)
-	_close_button.add_theme_stylebox_override("normal", _stylebox(WOOD, WOOD_DARK, 2, 2))
-	_close_button.add_theme_stylebox_override("hover", _stylebox(WOOD_LIGHT, VERMILION, 2, 2))
-	_close_button.add_theme_stylebox_override("pressed", _stylebox(VERMILION, WOOD_DARK, 2, 2))
-	_close_button.add_theme_stylebox_override("focus", _stylebox(WOOD, CHARTREUSE, 2, 2))
-	_close_button.add_theme_color_override("font_color", PARCHMENT_LIGHT)
-	_close_button.add_theme_color_override("font_hover_color", CHARCOAL)
-	_close_button.add_theme_color_override("font_pressed_color", PARCHMENT_LIGHT)
+	var close_empty := StyleBoxEmpty.new()
+	_close_button.add_theme_stylebox_override("normal", close_empty)
+	_close_button.add_theme_stylebox_override("hover", close_empty)
+	_close_button.add_theme_stylebox_override("pressed", close_empty)
+	_close_button.add_theme_stylebox_override("focus", OperationsSkin.focus_ring())
 	header.add_child(_close_button)
 	var caption := Label.new()
 	caption.text = "DELIVERY PREVIEW  ·  READ ONLY"
 	caption.add_theme_font_size_override("font_size", 10)
 	caption.add_theme_color_override("font_color", MUTED_INK)
 	column.add_child(caption)
-	var rule := HSeparator.new()
-	rule.add_theme_stylebox_override("separator", _stylebox(PARCHMENT_DARK, PARCHMENT_DARK, 1, 0))
-	column.add_child(rule)
 
 	_content = TextEdit.new()
 	_content.editable = false
@@ -77,22 +89,11 @@ func _build_interface() -> void:
 	_content.add_theme_font_size_override("font_size", 14)
 	_content.add_theme_color_override("font_color", CHARCOAL)
 	_content.add_theme_color_override("font_readonly_color", CHARCOAL)
-	_content.add_theme_color_override("caret_color", VERMILION)
-	_content.add_theme_stylebox_override("normal", _stylebox(PARCHMENT_LIGHT, WOOD, 2, 2))
-	_content.add_theme_stylebox_override("read_only", _stylebox(PARCHMENT_LIGHT, WOOD, 2, 2))
+	_content.add_theme_color_override("caret_color", INDIGO)
+	_content.add_theme_stylebox_override("normal", OperationsSkin.artifact_paper())
+	_content.add_theme_stylebox_override("read_only", OperationsSkin.artifact_paper())
+	OperationsSkin.style_text_edit_scrollbar(_content)
 	column.add_child(_content)
-
-func _stylebox(background: Color, border: Color, width: int, radius: int) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = background
-	style.border_color = border
-	style.set_border_width_all(width)
-	style.set_corner_radius_all(radius)
-	style.content_margin_left = 9.0
-	style.content_margin_right = 9.0
-	style.content_margin_top = 7.0
-	style.content_margin_bottom = 7.0
-	return style
 
 func show_artifact(name: String, content: String) -> void:
 	_title_label.text = name

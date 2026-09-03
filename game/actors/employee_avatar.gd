@@ -37,6 +37,7 @@ var _idle_elapsed: float = 0.0
 var _idle_cooldown: float = 0.5
 var _idle_cycle: int = 0
 var _speech_visible: bool = false
+var _speech_suppressed: bool = false
 var _character_sprite: Sprite2D
 
 func configure(record: EmployeeRecord, start_position: Vector2, desk: Vector2, research: Vector2) -> void:
@@ -165,7 +166,7 @@ func _update_idle(delta: float) -> void:
 		_idle_elapsed = 0.0
 		walk_to(desk_position, WorkState.IDLE_WALKING, WorkState.SITTING)
 	elif work_state == WorkState.SITTING:
-		var show_memory := not memory_line.is_empty() and _idle_elapsed >= 2.5 and _idle_elapsed < 5.0
+		var show_memory := not _speech_suppressed and not memory_line.is_empty() and _idle_elapsed >= 2.5 and _idle_elapsed < 5.0
 		if show_memory != _speech_visible:
 			_speech_visible = show_memory
 			queue_redraw()
@@ -176,6 +177,14 @@ func _update_idle(delta: float) -> void:
 			var direction := -1.0 if (_idle_cycle + employee_id.length()) % 2 == 0 else 1.0
 			var wander_target := desk_position + Vector2(48.0 * direction, 34.0)
 			walk_to(wander_target, WorkState.WANDERING, WorkState.IDLE)
+
+func set_speech_suppressed(suppressed: bool) -> void:
+	if _speech_suppressed == suppressed:
+		return
+	_speech_suppressed = suppressed
+	if suppressed:
+		_speech_visible = false
+	queue_redraw()
 
 func is_at_desk() -> bool:
 	return position.distance_to(desk_position) <= 0.5
@@ -211,16 +220,37 @@ func state_label() -> String:
 func _draw() -> void:
 	draw_circle(Vector2(0.0, 18.0), 13.0, Color("15151566"))
 	if _speech_visible:
-		var speech := memory_line.left(38)
-		var bubble := Rect2(-76.0, -72.0, 152.0, 25.0)
-		draw_rect(bubble, Color("151515f2"), true)
-		draw_rect(bubble, Color("fa4616"), false, 2.0)
-		draw_colored_polygon(PackedVector2Array([Vector2(-6.0, -47.0), Vector2(6.0, -47.0), Vector2(0.0, -40.0)]), Color("fa4616"))
-		draw_string(ThemeDB.fallback_font, Vector2(-70.0, -55.0), speech, HORIZONTAL_ALIGNMENT_CENTER, 140.0, 9, Color("f1f1f1"))
-	draw_string(ThemeDB.fallback_font, Vector2(-32.0, 38.0), display_name, HORIZONTAL_ALIGNMENT_CENTER, 64.0, 12, Color("f1f1f1"))
-	var state_color := Color("c1fa81")
+		var speech := memory_line if memory_line.length() <= 38 else "%s..." % memory_line.left(35)
+		draw_texture_rect(OperationsSkin.WORLD_SPEECH_BUBBLE, Rect2(-74.0, -105.0, 148.0, 73.0), false)
+		var speech_lines := _wrap_speech(speech, 23)
+		for line_index: int in range(speech_lines.size()):
+			draw_string(ThemeDB.fallback_font, Vector2(-62.0, -76.0 + line_index * 13.0), speech_lines[line_index], HORIZONTAL_ALIGNMENT_CENTER, 124.0, 9, Color("151515"))
+	draw_texture_rect(OperationsSkin.WORLD_NAMEPLATE, Rect2(-48.0, 25.0, 96.0, 30.0), false)
+	draw_string(ThemeDB.fallback_font, Vector2(-40.0, 45.0), display_name, HORIZONTAL_ALIGNMENT_CENTER, 80.0, 11, Color("151515"))
+	draw_texture_rect(OperationsSkin.WORLD_STATUS_PLAQUE, Rect2(-45.0, 51.0, 90.0, 25.0), false)
+	var state_color := Color("354b98")
 	if work_state == WorkState.WAITING_APPROVAL:
 		state_color = Color("fa4616")
 	elif work_state == WorkState.OFF_SHIFT:
 		state_color = Color("b6b5b0")
-	draw_string(ThemeDB.fallback_font, Vector2(-45.0, 51.0), state_label(), HORIZONTAL_ALIGNMENT_CENTER, 90.0, 10, state_color)
+	if work_state == WorkState.IDLE:
+		draw_texture_rect(OperationsSkin.WORLD_AVAILABLE, Rect2(-39.0, 57.0, 13.0, 13.0), false)
+	if work_state == WorkState.WAITING_APPROVAL:
+		draw_texture_rect(OperationsSkin.WORLD_ATTENTION, Rect2(34.0, 20.0, 20.0, 23.0), false)
+	draw_string(ThemeDB.fallback_font, Vector2(-28.0, 68.0), state_label(), HORIZONTAL_ALIGNMENT_CENTER, 60.0, 9, state_color)
+
+func _wrap_speech(value: String, max_characters: int) -> PackedStringArray:
+	var lines := PackedStringArray()
+	var current := ""
+	for word: String in value.split(" ", false):
+		var candidate := word if current.is_empty() else "%s %s" % [current, word]
+		if candidate.length() > max_characters and not current.is_empty():
+			lines.append(current)
+			current = word
+			if lines.size() >= 2:
+				break
+		else:
+			current = candidate
+	if not current.is_empty() and lines.size() < 2:
+		lines.append(current)
+	return lines

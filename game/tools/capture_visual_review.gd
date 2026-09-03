@@ -45,6 +45,15 @@ func _capture_office_stages() -> void:
 	if not await _capture("ui-founder-hud"):
 		return
 	main.player.position = main.room.grid_to_world_position(main.room.player_spawn)
+	await _settle()
+	mina.memory_line = "Yesterday's customer notes point to one clear promise."
+	mina._speech_visible = true
+	mina.queue_redraw()
+	await _settle()
+	if not await _capture("ui-world-speech"):
+		return
+	mina._speech_visible = false
+	mina.queue_redraw()
 	main.job_panel.select_employee("mira")
 	main.job_panel.show_chat_history("mira", [
 		{"sender": "player", "content": "Can you turn customer interviews into the smallest useful launch plan?"},
@@ -126,6 +135,12 @@ func _capture_office_stages() -> void:
 	await _settle()
 	if not await _capture("ui-studio"):
 		return
+	main.job_panel.show_studio_files([])
+	await _settle()
+	if not await _capture("ui-studio-empty"):
+		return
+	main.job_panel.show_studio_files([studio_file])
+	await _settle()
 
 	main.artifact_viewer.show_artifact(
 		"launch-brief.md",

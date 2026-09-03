@@ -51,6 +51,11 @@ func _run() -> void:
 	main.founder_hud.update_interaction(main.player.position, main._employees, true)
 	if not main.founder_hud.interaction_visible() or main.founder_hud.interaction_target_id() != "mira":
 		_fail("test_founders_ledger_ui: approaching Mina did not show her chat prompt")
+	mina.memory_line = "A memory bubble should yield to the interaction prompt."
+	mina._speech_visible = true
+	main._process(0.0)
+	if mina._speech_visible:
+		_fail("test_world_ui: the memory bubble overlapped the nearby interaction prompt")
 	main.founder_hud._request_chat()
 	if not main.job_panel.drawer_is_open() or main.job_panel.selected_employee_id() != "mira" or main.job_panel._tabs.current_tab != 0:
 		_fail("test_founders_ledger_ui: the proximity prompt did not open Mina's Chat tab")
@@ -73,6 +78,18 @@ func _run() -> void:
 	await process_frame
 	if not main.job_panel.work_controls_fit_panel():
 		_fail("test_ui_layout: the work controls overflow the employee drawer")
+	var dropdown_style := main.job_panel._job_picker.get_theme_stylebox("normal") as StyleBoxTexture
+	var dropdown_popup_style := main.job_panel._job_picker.get_popup().get_theme_stylebox("hover") as StyleBoxTexture
+	if dropdown_style == null or dropdown_style.texture != OperationsSkin.DROPDOWN_FIELD or dropdown_popup_style == null or dropdown_popup_style.texture != OperationsSkin.DROPDOWN_SELECTED_ROW:
+		_fail("test_operations_ui: work-order dropdown or popup selection retained a generic style")
+	var secondary_style := main.job_panel._cancel_button.get_theme_stylebox("normal") as StyleBoxTexture
+	var primary_hover_style := main.job_panel._make_job_button.get_theme_stylebox("hover") as StyleBoxTexture
+	var team_focus_style := (main.job_panel._team_buttons["mira"] as Button).get_theme_stylebox("focus") as StyleBoxTexture
+	var attention_texture := (main.job_panel._team_buttons["mira"] as Button).get_node_or_null("AttentionBadge") as TextureRect
+	if secondary_style == null or secondary_style.texture != OperationsSkin.BUTTON_SECONDARY_NORMAL or primary_hover_style == null or primary_hover_style.texture != OperationsSkin.BUTTON_PRIMARY_HOVER:
+		_fail("test_operations_ui: primary or secondary interaction states retained generic styling")
+	if team_focus_style == null or team_focus_style.texture != OperationsSkin.FOCUS_RING or attention_texture == null or attention_texture.texture != OperationsSkin.ATTENTION_BADGE:
+		_fail("test_operations_ui: team rail focus or attention state did not use custom art")
 	main.job_panel._tabs.current_tab = 0
 	main.job_panel.select_employee("theo")
 	if main.job_panel.selected_employee_id() != "theo":
@@ -87,6 +104,16 @@ func _run() -> void:
 	await process_frame
 	if not main.job_panel.chat_text().contains("growth experiment"):
 		_fail("test_native_team_ui: persisted chat did not render in the employee drawer")
+	var founder_row := main.job_panel._chat_log.get_child(0) as HBoxContainer
+	var employee_row := main.job_panel._chat_log.get_child(1) as HBoxContainer
+	var founder_bubble := founder_row.get_child(1) as PanelContainer if founder_row != null and founder_row.get_child_count() > 1 else null
+	var employee_bubble := employee_row.get_child(1) as PanelContainer if employee_row != null and employee_row.get_child_count() > 1 else null
+	var founder_bubble_style := founder_bubble.get_theme_stylebox("panel") as StyleBoxTexture if founder_bubble != null else null
+	var employee_bubble_style := employee_bubble.get_theme_stylebox("panel") as StyleBoxTexture if employee_bubble != null else null
+	if founder_bubble_style == null or founder_bubble_style.texture != OperationsSkin.CHAT_FOUNDER_BUBBLE:
+		_fail("test_operations_ui: founder chat did not use its directional custom bubble")
+	if employee_bubble_style == null or employee_bubble_style.texture != OperationsSkin.CHAT_EMPLOYEE_BUBBLE:
+		_fail("test_operations_ui: employee chat did not use its directional custom bubble")
 	if main.job_panel._make_job_button.disabled:
 		_fail("test_native_team_ui: a persisted founder message did not enable Assign Work")
 	var assignment_handler := Callable(main, "_on_assignment_submitted")
@@ -158,6 +185,10 @@ func _run() -> void:
 		_fail("test_persistent_boot: clock state was not restored")
 	if main.job_panel.studio_file_count() != 1 or not main.job_panel.last_status_text().contains("completed"):
 		_fail("test_persistent_boot: studio listing or last status was not restored")
+	var studio_file_button := main.job_panel._artifact_list.get_child(0) as Button
+	var studio_file_style := studio_file_button.get_theme_stylebox("normal") as StyleBoxTexture if studio_file_button != null else null
+	if studio_file_button == null or studio_file_button.icon != OperationsSkin.ACTIVITY_ARTIFACT or studio_file_style == null or studio_file_style.texture != OperationsSkin.FILE_CARD:
+		_fail("test_operations_ui: Studio file did not use the custom document card and icon")
 	if main.job_panel.pending_promotion_job_id() != "pending-review":
 		_fail("test_persistent_boot: pending promotion was not restored")
 	if not main.founder_hud.delivery_visible():
@@ -168,6 +199,13 @@ func _run() -> void:
 	await process_frame
 	if not main.artifact_viewer.modal_fits_viewport() or not main.artifact_viewer.scrim_covers_viewport():
 		_fail("test_artifact_viewer: the modal or its scrim escaped the viewport")
+	var reader_frame_found := false
+	for child: Node in main.artifact_viewer._modal.get_children():
+		if child is TextureRect and (child as TextureRect).texture == OperationsSkin.ARTIFACT_READER_FRAME:
+			reader_frame_found = true
+	var reader_paper_style := main.artifact_viewer._content.get_theme_stylebox("read_only") as StyleBoxTexture
+	if not reader_frame_found or reader_paper_style == null or reader_paper_style.texture != OperationsSkin.ARTIFACT_PAPER:
+		_fail("test_operations_ui: artifact reader did not use its custom frame and paper")
 	main.artifact_viewer.hide()
 	main.day_clock.set_time(4, DayClock.WORK_START)
 	await process_frame
@@ -178,6 +216,24 @@ func _run() -> void:
 		_fail("test_day_clock: repeated work ticks reset the employee idle schedule")
 
 	main.job_panel.begin_job("steer-job")
+	var journal_style := main.job_panel._event_log.get_theme_stylebox("normal") as StyleBoxTexture
+	var journal_scroll_style := main.job_panel._event_log.get_v_scroll_bar().get_theme_stylebox("grabber") as StyleBoxTexture
+	var approval_style := main.job_panel._approval_box.get_theme_stylebox("panel") as StyleBoxTexture
+	var delivery_style := main.job_panel._promotion_box.get_theme_stylebox("panel") as StyleBoxTexture
+	var meter_style := main.job_panel._token_meter.get_theme_stylebox("background") as StyleBoxTexture
+	if journal_style == null or journal_style.texture != OperationsSkin.ACTIVITY_ROW or journal_scroll_style == null or journal_scroll_style.texture != OperationsSkin.SCROLL_V_THUMB:
+		_fail("test_operations_ui: Journal activity or scrollbar retained a generic style")
+	if approval_style == null or approval_style.texture != OperationsSkin.JOURNAL_APPROVAL_CARD or delivery_style == null or delivery_style.texture != OperationsSkin.JOURNAL_DELIVERY_CARD:
+		_fail("test_operations_ui: approval or delivery state did not use its custom card")
+	if meter_style == null or meter_style.texture != OperationsSkin.TOKEN_METER_FRAME:
+		_fail("test_operations_ui: token budget meter did not use its custom frame")
+	main.job_panel.set_spend(2.5, 5.0)
+	if not is_equal_approx(main.job_panel._token_meter.value, 2.5) or not is_equal_approx(main.job_panel._token_meter.max_value, 5.0):
+		_fail("test_operations_ui: daily spend did not drive the real token-budget meter")
+	if OperationsSkin.ACTIVITY_THINKING == null or OperationsSkin.ACTIVITY_RESEARCH == null or OperationsSkin.ACTIVITY_WRITING == null or OperationsSkin.ACTIVITY_TOOL == null or OperationsSkin.ACTIVITY_APPROVAL == null or OperationsSkin.ACTIVITY_ARTIFACT == null or OperationsSkin.ACTIVITY_COMPLETE == null or OperationsSkin.ACTIVITY_FAILED == null:
+		_fail("test_operations_ui: one or more real-event activity icons failed to load")
+	if OperationsSkin.WORLD_SPEECH_BUBBLE == null or OperationsSkin.WORLD_NAMEPLATE == null or OperationsSkin.WORLD_STATUS_PLAQUE == null or OperationsSkin.WORLD_ATTENTION == null:
+		_fail("test_operations_ui: one or more in-world label assets failed to load")
 	if not main.job_panel.status_color().is_equal_approx(main.job_panel.CERULEAN):
 		_fail("test_ui_status: submitting work retained a stale error color")
 	if main.job_panel._event_log.get_parsed_text() != "" or not main.job_panel._usage_label.text.contains("0 in / 0 out"):

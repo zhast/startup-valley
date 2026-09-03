@@ -39,6 +39,9 @@ func _process(_delta: float) -> void:
 		_employees,
 		not job_panel.drawer_is_open() and not artifact_viewer.visible
 	)
+	var interaction_target := founder_hud.interaction_target_id() if founder_hud.interaction_visible() else ""
+	for employee_id: String in _employees:
+		_employees[employee_id].set_speech_suppressed(employee_id == interaction_target)
 
 func _connect_signals() -> void:
 	worker_client.connected.connect(_on_worker_connected)

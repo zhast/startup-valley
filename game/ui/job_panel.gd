@@ -61,7 +61,7 @@ var _employee_name: Label
 var _employee_meta: Label
 var _employee_status: Label
 var _employee_portrait: TextureRect
-var _header_icon: Label
+var _header_icon: TextureRect
 var _drawer_panel: Panel
 var _rail_panel: Panel
 var _drawer_close_button: Button
@@ -89,15 +89,16 @@ var _steer_button: Button
 var _status_label: Label
 var _usage_label: Label
 var _spend_label: Label
+var _token_meter: ProgressBar
 var _last_status_label: Label
 var _event_log: RichTextLabel
 var _artifact_list: VBoxContainer
-var _approval_box: VBoxContainer
+var _approval_box: PanelContainer
 var _approval_label: Label
 var _approval_job_id: String = ""
 var _approval_id: String = ""
 var _active_job_id: String = ""
-var _promotion_box: VBoxContainer
+var _promotion_box: PanelContainer
 var _promotion_label: Label
 var _promotion_job_id: String = ""
 var _attention_employee_id: String = ""
@@ -199,12 +200,11 @@ func _build_employee_drawer() -> VBoxContainer:
 	_employee_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	_employee_portrait.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	portrait_frame.add_child(_employee_portrait)
-	_header_icon = Label.new()
-	_header_icon.text = "▤"
-	_header_icon.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_header_icon.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_header_icon.add_theme_font_size_override("font_size", 38)
-	_header_icon.add_theme_color_override("font_color", INDIGO)
+	_header_icon = TextureRect.new()
+	_header_icon.texture = OperationsSkin.ICON_FOLDER
+	_header_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_header_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_header_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_header_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_header_icon.visible = false
 	_header_icon.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -231,10 +231,12 @@ func _build_employee_drawer() -> VBoxContainer:
 	_employee_status.add_theme_color_override("font_color", Color("77b83f"))
 	employee_copy.add_child(_employee_status)
 	_drawer_close_button = Button.new()
-	_drawer_close_button.text = "×"
+	_drawer_close_button.text = ""
+	_drawer_close_button.icon = OperationsSkin.CLOSE_BUTTON
+	_drawer_close_button.expand_icon = true
 	_drawer_close_button.tooltip_text = "Close team drawer"
 	_drawer_close_button.pressed.connect(close_drawer)
-	_style_action_button(_drawer_close_button, WOOD_DARK, false)
+	_style_close_button(_drawer_close_button)
 	_drawer_close_button.set_anchors_preset(Control.PRESET_TOP_RIGHT)
 	_drawer_close_button.offset_left = -50.0
 	_drawer_close_button.offset_top = 8.0
@@ -264,6 +266,7 @@ func _tab_scroll(name_value: String) -> ScrollContainer:
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	OperationsSkin.style_scroll_container(scroll)
 	return scroll
 
 func _tab_content(scroll: ScrollContainer) -> VBoxContainer:
@@ -286,6 +289,7 @@ func _build_chat_tab() -> VBoxContainer:
 	_chat_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_chat_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_chat_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	OperationsSkin.style_scroll_container(_chat_scroll)
 	notebook.add_child(_chat_scroll)
 	var chat_margin := MarginContainer.new()
 	chat_margin.add_theme_constant_override("margin_left", 14)
@@ -367,7 +371,7 @@ func _build_work_tab() -> ScrollContainer:
 	_job_picker.clip_text = true
 	_job_picker.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_job_picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_style_action_button(_job_picker, INDIGO, false)
+	_style_dropdown(_job_picker)
 	for job: Dictionary in CANNED_JOBS:
 		_job_picker.add_item(str(job.get("title", "Work order")))
 	_job_picker.add_item("Custom work order…")
@@ -392,7 +396,7 @@ func _build_work_tab() -> ScrollContainer:
 	_attachment_picker.fit_to_longest_item = false
 	_attachment_picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_attachment_picker.visible = false
-	_style_action_button(_attachment_picker, INDIGO, false)
+	_style_dropdown(_attachment_picker)
 	_attachment_picker.add_item("No studio file attached")
 	_attachment_picker.set_item_metadata(0, "")
 	content.add_child(_attachment_picker)
@@ -418,76 +422,108 @@ func _build_work_tab() -> ScrollContainer:
 func _build_journal_tab() -> ScrollContainer:
 	var scroll := _tab_scroll("Journal")
 	var content := _tab_content(scroll)
+	var status_card := PanelContainer.new()
+	status_card.add_theme_stylebox_override("panel", OperationsSkin.journal_work_card())
+	content.add_child(status_card)
+	var status_content := VBoxContainer.new()
+	status_content.add_theme_constant_override("separation", 3)
+	status_card.add_child(status_content)
+	var status_heading := _section_label("CURRENT WORK")
+	status_heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	status_heading.add_theme_color_override("font_color", OFF_WHITE)
+	status_content.add_child(status_heading)
 	_status_label = Label.new()
 	_status_label.text = "Worker starting…"
 	_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_status_label.max_lines_visible = 5
 	_status_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_status_label.add_theme_color_override("font_color", CHARCOAL)
-	content.add_child(_status_label)
+	status_content.add_child(_status_label)
 	_usage_label = Label.new()
 	_usage_label.text = "Tokens  0 in / 0 out  ·  cost $0.0000"
 	_usage_label.add_theme_font_size_override("font_size", 10)
 	_usage_label.add_theme_color_override("font_color", MUTED_INK)
-	content.add_child(_usage_label)
+	status_content.add_child(_usage_label)
 	_spend_label = Label.new()
 	_spend_label.text = "Today  $0.0000"
 	_spend_label.add_theme_font_size_override("font_size", 10)
 	_spend_label.add_theme_color_override("font_color", MUTED_INK)
-	content.add_child(_spend_label)
+	status_content.add_child(_spend_label)
+	_token_meter = ProgressBar.new()
+	_token_meter.custom_minimum_size = Vector2(0.0, 24.0)
+	_token_meter.min_value = 0.0
+	_token_meter.max_value = _spend_warning
+	_token_meter.value = 0.0
+	_token_meter.show_percentage = false
+	_token_meter.add_theme_stylebox_override("background", OperationsSkin.token_meter())
+	var meter_fill := StyleBoxFlat.new()
+	meter_fill.bg_color = INDIGO
+	meter_fill.border_color = WOOD_DARK
+	meter_fill.set_border_width_all(1)
+	meter_fill.set_corner_radius_all(2)
+	meter_fill.content_margin_left = 4.0
+	meter_fill.content_margin_right = 4.0
+	_token_meter.add_theme_stylebox_override("fill", meter_fill)
+	status_content.add_child(_token_meter)
 	_last_status_label = Label.new()
 	_last_status_label.text = "Last work order  ·  none yet"
 	_last_status_label.add_theme_font_size_override("font_size", 10)
 	_last_status_label.add_theme_color_override("font_color", MUTED_INK)
 	_last_status_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	content.add_child(_last_status_label)
-	_approval_box = VBoxContainer.new()
+	status_content.add_child(_last_status_label)
+	_approval_box = PanelContainer.new()
 	_approval_box.visible = false
-	_approval_box.add_theme_constant_override("separation", 5)
+	_approval_box.add_theme_stylebox_override("panel", OperationsSkin.journal_approval_card())
+	var approval_content := VBoxContainer.new()
+	approval_content.add_theme_constant_override("separation", 5)
+	_approval_box.add_child(approval_content)
 	var approval_heading := _section_label("ACTION REQUIRED")
 	approval_heading.add_theme_color_override("font_color", VERMILION)
-	_approval_box.add_child(approval_heading)
+	approval_content.add_child(approval_heading)
 	_approval_label = Label.new()
 	_approval_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_approval_label.add_theme_color_override("font_color", CHARCOAL)
-	_approval_box.add_child(_approval_label)
+	approval_content.add_child(_approval_label)
 	var approval_buttons := HBoxContainer.new()
 	approval_buttons.add_theme_constant_override("separation", 6)
 	var approve_button := Button.new()
 	approve_button.text = "Approve"
 	approve_button.pressed.connect(_decide_approval.bind(true))
-	_style_action_button(approve_button, CHARTREUSE, true)
+	_style_action_button(approve_button, INDIGO, true)
 	approval_buttons.add_child(approve_button)
 	var deny_button := Button.new()
 	deny_button.text = "Deny"
 	deny_button.pressed.connect(_decide_approval.bind(false))
 	_style_action_button(deny_button, VERMILION, false)
 	approval_buttons.add_child(deny_button)
-	_approval_box.add_child(approval_buttons)
+	approval_content.add_child(approval_buttons)
 	content.add_child(_approval_box)
-	_promotion_box = VBoxContainer.new()
+	_promotion_box = PanelContainer.new()
 	_promotion_box.visible = false
-	_promotion_box.add_theme_constant_override("separation", 5)
+	_promotion_box.add_theme_stylebox_override("panel", OperationsSkin.journal_delivery_card())
+	var promotion_content := VBoxContainer.new()
+	promotion_content.add_theme_constant_override("separation", 5)
+	_promotion_box.add_child(promotion_content)
 	var promotion_heading := _section_label("DELIVERY READY")
 	promotion_heading.add_theme_color_override("font_color", INDIGO)
-	_promotion_box.add_child(promotion_heading)
+	promotion_content.add_child(promotion_heading)
 	_promotion_label = Label.new()
 	_promotion_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_promotion_label.add_theme_color_override("font_color", CHARCOAL)
-	_promotion_box.add_child(_promotion_label)
+	promotion_content.add_child(_promotion_label)
 	var promotion_buttons := HBoxContainer.new()
 	promotion_buttons.add_theme_constant_override("separation", 6)
 	var promote_button := Button.new()
 	promote_button.text = "Add to studio"
 	promote_button.pressed.connect(_decide_promotion.bind(true))
-	_style_action_button(promote_button, CHARTREUSE, true)
+	_style_action_button(promote_button, INDIGO, true)
 	promotion_buttons.add_child(promote_button)
 	var discard_button := Button.new()
 	discard_button.text = "Discard"
 	discard_button.pressed.connect(_decide_promotion.bind(false))
 	_style_action_button(discard_button, VERMILION, false)
 	promotion_buttons.add_child(discard_button)
-	_promotion_box.add_child(promotion_buttons)
+	promotion_content.add_child(promotion_buttons)
 	content.add_child(_promotion_box)
 	_steer_box = VBoxContainer.new()
 	_steer_box.visible = false
@@ -514,7 +550,8 @@ func _build_journal_tab() -> ScrollContainer:
 	_event_log.scroll_active = true
 	_event_log.custom_minimum_size = Vector2(0.0, 220.0)
 	_event_log.add_theme_color_override("default_color", CHARCOAL)
-	_event_log.add_theme_stylebox_override("normal", _stylebox(PARCHMENT_LIGHT, WOOD, 2, 2))
+	_event_log.add_theme_stylebox_override("normal", OperationsSkin.activity_log())
+	OperationsSkin.style_rich_text_scrollbar(_event_log)
 	content.add_child(_event_log)
 	return scroll
 
@@ -525,14 +562,14 @@ func _build_studio_tab() -> ScrollContainer:
 	intro.text = "Deliveries become durable only after you add them to the studio. Future employees can use approved files."
 	intro.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	intro.add_theme_color_override("font_color", MUTED_INK)
-	content.add_child(intro)
+	var intro_card := PanelContainer.new()
+	intro_card.add_theme_stylebox_override("panel", OperationsSkin.file_card())
+	intro_card.add_child(intro)
+	content.add_child(intro_card)
 	_artifact_list = VBoxContainer.new()
 	_artifact_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	content.add_child(_artifact_list)
-	var empty := Label.new()
-	empty.text = "Approved files will appear here."
-	empty.add_theme_color_override("font_color", MUTED_INK)
-	_artifact_list.add_child(empty)
+	_add_empty_artifact("Approved files will appear here.")
 	return scroll
 
 func _section_label(text_value: String) -> Label:
@@ -542,52 +579,61 @@ func _section_label(text_value: String) -> Label:
 	label.add_theme_color_override("font_color", CERULEAN)
 	return label
 
-func _stylebox(background: Color, border: Color, width: int, radius: int) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = background
-	style.border_color = border
-	style.set_border_width_all(width)
-	style.set_corner_radius_all(radius)
-	style.content_margin_left = 8.0
-	style.content_margin_right = 8.0
-	style.content_margin_top = 6.0
-	style.content_margin_bottom = 6.0
-	return style
-
 func _style_action_button(button: Button, accent: Color, filled: bool) -> void:
 	if filled and accent == VERMILION:
 		button.add_theme_stylebox_override("normal", NotebookSkin.selected_tab())
-		button.add_theme_stylebox_override("hover", NotebookSkin.selected_tab())
-		button.add_theme_stylebox_override("pressed", NotebookSkin.selected_tab())
-		button.add_theme_stylebox_override("focus", NotebookSkin.selected_tab())
-		button.add_theme_stylebox_override("disabled", _stylebox(PARCHMENT_DARK, MUTED_INK, 1, 2))
+		button.add_theme_stylebox_override("hover", NotebookSkin.texture_style(NotebookSkin.TAB_VERMILION, Vector4(10.0, 9.0, 10.0, 9.0), Vector4(19.0, 7.0, 19.0, 7.0), true, Color("fff0e8")))
+		button.add_theme_stylebox_override("pressed", NotebookSkin.texture_style(NotebookSkin.TAB_VERMILION, Vector4(10.0, 9.0, 10.0, 9.0), Vector4(19.0, 8.0, 19.0, 6.0), true, Color("c67a68")))
+		button.add_theme_stylebox_override("focus", OperationsSkin.focus_ring())
+		button.add_theme_stylebox_override("disabled", OperationsSkin.secondary_button("disabled"))
 		button.add_theme_color_override("font_color", WHITE)
 		button.add_theme_color_override("font_hover_color", WHITE)
 		button.add_theme_color_override("font_pressed_color", WHITE)
 		button.add_theme_color_override("font_disabled_color", MUTED_INK)
 		return
-	if filled and accent == INDIGO:
-		button.add_theme_stylebox_override("normal", NotebookSkin.indigo_button())
-		button.add_theme_stylebox_override("hover", NotebookSkin.indigo_button())
-		button.add_theme_stylebox_override("pressed", NotebookSkin.indigo_button())
-		button.add_theme_stylebox_override("focus", NotebookSkin.indigo_button())
-		button.add_theme_stylebox_override("disabled", _stylebox(PARCHMENT_DARK, MUTED_INK, 1, 2))
+	if filled:
+		button.add_theme_stylebox_override("normal", OperationsSkin.primary_button())
+		button.add_theme_stylebox_override("hover", OperationsSkin.primary_button("hover"))
+		button.add_theme_stylebox_override("pressed", OperationsSkin.primary_button("pressed"))
+		button.add_theme_stylebox_override("focus", OperationsSkin.focus_ring())
+		button.add_theme_stylebox_override("disabled", OperationsSkin.secondary_button("disabled"))
 		button.add_theme_color_override("font_color", PARCHMENT_LIGHT)
 		button.add_theme_color_override("font_hover_color", PARCHMENT_LIGHT)
 		button.add_theme_color_override("font_pressed_color", PARCHMENT_LIGHT)
 		button.add_theme_color_override("font_disabled_color", MUTED_INK)
 		return
-	var normal_background := accent if filled else PARCHMENT_LIGHT
-	var normal_foreground := CHARCOAL if filled and accent == CHARTREUSE else WHITE if filled else CHARCOAL
-	button.add_theme_stylebox_override("normal", _stylebox(normal_background, accent, 1, 5))
-	button.add_theme_stylebox_override("hover", _stylebox(normal_background.lightened(0.09), accent.lightened(0.1), 1, 5))
-	button.add_theme_stylebox_override("pressed", _stylebox(normal_background.darkened(0.09), accent, 2, 5))
-	button.add_theme_stylebox_override("focus", _stylebox(PARCHMENT_LIGHT, VERMILION, 3, 4))
-	button.add_theme_stylebox_override("disabled", _stylebox(PARCHMENT_DARK, MUTED_INK, 1, 4))
-	button.add_theme_color_override("font_color", normal_foreground)
-	button.add_theme_color_override("font_hover_color", normal_foreground)
-	button.add_theme_color_override("font_pressed_color", normal_foreground)
+	button.add_theme_stylebox_override("normal", OperationsSkin.secondary_button())
+	button.add_theme_stylebox_override("hover", OperationsSkin.secondary_button("hover"))
+	button.add_theme_stylebox_override("pressed", OperationsSkin.secondary_button("pressed"))
+	button.add_theme_stylebox_override("focus", OperationsSkin.focus_ring())
+	button.add_theme_stylebox_override("disabled", OperationsSkin.secondary_button("disabled"))
+	button.add_theme_color_override("font_color", CHARCOAL)
+	button.add_theme_color_override("font_hover_color", CHARCOAL)
+	button.add_theme_color_override("font_pressed_color", CHARCOAL)
 	button.add_theme_color_override("font_disabled_color", MUTED_INK)
+
+func _style_dropdown(option: OptionButton) -> void:
+	option.add_theme_stylebox_override("normal", OperationsSkin.dropdown())
+	option.add_theme_stylebox_override("hover", OperationsSkin.dropdown())
+	option.add_theme_stylebox_override("pressed", OperationsSkin.dropdown_selected_row())
+	option.add_theme_stylebox_override("focus", OperationsSkin.focus_ring())
+	option.add_theme_stylebox_override("disabled", OperationsSkin.secondary_button("disabled"))
+	option.add_theme_icon_override("arrow", OperationsSkin.TRANSPARENT)
+	option.add_theme_color_override("font_color", CHARCOAL)
+	option.add_theme_color_override("font_hover_color", CHARCOAL)
+	option.add_theme_color_override("font_pressed_color", CHARCOAL)
+	var popup := option.get_popup()
+	popup.add_theme_stylebox_override("panel", NotebookSkin.parchment())
+	popup.add_theme_stylebox_override("hover", OperationsSkin.dropdown_selected_row())
+	popup.add_theme_color_override("font_color", CHARCOAL)
+	popup.add_theme_color_override("font_hover_color", CHARCOAL)
+
+func _style_close_button(button: Button) -> void:
+	var empty := StyleBoxEmpty.new()
+	button.add_theme_stylebox_override("normal", empty)
+	button.add_theme_stylebox_override("hover", empty)
+	button.add_theme_stylebox_override("pressed", empty)
+	button.add_theme_stylebox_override("focus", OperationsSkin.focus_ring())
 
 func _style_text_input(control: Control) -> void:
 	control.add_theme_color_override("font_color", CHARCOAL)
@@ -678,12 +724,12 @@ func configure_employees(records: Array[EmployeeRecord]) -> void:
 		name_label.text = record.display_name.to_upper()
 		name_label.visible = false
 		button.add_child(name_label)
-		var status_dot := Label.new()
+		var status_dot := TextureRect.new()
 		status_dot.name = "StatusDot"
-		status_dot.text = "●"
-		status_dot.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		status_dot.add_theme_font_size_override("font_size", 18)
-		status_dot.add_theme_color_override("font_color", Color("46b93f"))
+		status_dot.texture = OperationsSkin.WORLD_AVAILABLE
+		status_dot.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		status_dot.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		status_dot.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		status_dot.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		status_dot.set_anchors_preset(Control.PRESET_TOP_RIGHT)
 		status_dot.offset_left = -29.0
@@ -691,21 +737,19 @@ func configure_employees(records: Array[EmployeeRecord]) -> void:
 		status_dot.offset_right = -8.0
 		status_dot.offset_bottom = 46.0
 		button.add_child(status_dot)
-		var attention_badge := Label.new()
+		var attention_badge := TextureRect.new()
 		attention_badge.name = "AttentionBadge"
-		attention_badge.text = "!"
-		attention_badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		attention_badge.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		attention_badge.add_theme_font_size_override("font_size", 11)
-		attention_badge.add_theme_color_override("font_color", OFF_WHITE)
-		attention_badge.add_theme_stylebox_override("normal", _stylebox(VERMILION, WOOD_DARK, 2, 8))
+		attention_badge.texture = OperationsSkin.ATTENTION_BADGE
+		attention_badge.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		attention_badge.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		attention_badge.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		attention_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		attention_badge.visible = false
 		attention_badge.set_anchors_preset(Control.PRESET_TOP_LEFT)
 		attention_badge.offset_left = 2.0
 		attention_badge.offset_top = 2.0
-		attention_badge.offset_right = 20.0
-		attention_badge.offset_bottom = 20.0
+		attention_badge.offset_right = 25.0
+		attention_badge.offset_bottom = 29.0
 		button.add_child(attention_badge)
 		list.add_child(button)
 		_team_buttons[record.id] = button
@@ -768,7 +812,7 @@ func _refresh_team_card_styles() -> void:
 		button.add_theme_stylebox_override("normal", empty_style)
 		button.add_theme_stylebox_override("hover", empty_style)
 		button.add_theme_stylebox_override("pressed", empty_style)
-		button.add_theme_stylebox_override("focus", empty_style)
+		button.add_theme_stylebox_override("focus", OperationsSkin.focus_ring())
 
 func _selected_employee() -> EmployeeRecord:
 	for record: EmployeeRecord in _employees:
@@ -804,8 +848,8 @@ func _refresh_employee_header() -> void:
 func _refresh_team_statuses() -> void:
 	for employee_id: String in _team_buttons:
 		var button: Button = _team_buttons[employee_id]
-		var status_dot := button.get_node_or_null("StatusDot") as Label
-		var attention_badge := button.get_node_or_null("AttentionBadge") as Label
+		var status_dot := button.get_node_or_null("StatusDot") as TextureRect
+		var attention_badge := button.get_node_or_null("AttentionBadge") as TextureRect
 		if status_dot == null:
 			continue
 		var color := CHARTREUSE
@@ -819,7 +863,7 @@ func _refresh_team_statuses() -> void:
 		elif _clock_phase == "off":
 			color = DUST
 			state = "off shift"
-		status_dot.add_theme_color_override("font_color", color)
+		status_dot.self_modulate = color
 		status_dot.visible = state != "available"
 		button.tooltip_text = "%s · %s" % [button.get_node("Name").text.capitalize(), state]
 		if attention_badge != null:
@@ -849,7 +893,7 @@ func _append_chat_line(sender: String, name_value: String, content: String) -> v
 		var avatar_frame := PanelContainer.new()
 		avatar_frame.custom_minimum_size = Vector2(54.0, 58.0)
 		avatar_frame.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-		avatar_frame.add_theme_stylebox_override("panel", _stylebox(PARCHMENT, WOOD, 2, 2))
+		avatar_frame.add_theme_stylebox_override("panel", NotebookSkin.portrait_frame())
 		row.add_child(avatar_frame)
 		var avatar := TextureRect.new()
 		var employee := _selected_employee()
@@ -864,7 +908,7 @@ func _append_chat_line(sender: String, name_value: String, content: String) -> v
 		row.add_child(player_spacer)
 	var bubble := PanelContainer.new()
 	bubble.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	bubble.add_theme_stylebox_override("panel", _stylebox(PARCHMENT_LIGHT, WOOD if sender == "employee" else CERULEAN, 2, 3))
+	bubble.add_theme_stylebox_override("panel", OperationsSkin.chat_bubble(sender))
 	row.add_child(bubble)
 	var bubble_margin := MarginContainer.new()
 	bubble_margin.add_theme_constant_override("margin_left", 10)
@@ -891,11 +935,14 @@ func _clear_chat() -> void:
 		child.queue_free()
 
 func _show_chat_hint(message: String) -> void:
+	var hint_panel := PanelContainer.new()
+	hint_panel.add_theme_stylebox_override("panel", OperationsSkin.chat_system_strip())
 	var hint := Label.new()
 	hint.text = message
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	hint.add_theme_color_override("font_color", MUTED_INK)
-	_chat_log.add_child(hint)
+	hint_panel.add_child(hint)
+	_chat_log.add_child(hint_panel)
 
 func _scroll_chat_to_bottom() -> void:
 	if _chat_scroll != null:
@@ -1089,6 +1136,7 @@ func begin_job(job_id: String, employee_id: String = "") -> void:
 	_active_employee_id = employee_id if not employee_id.is_empty() else _selected_employee_id
 	_active_job_running = false
 	_usage_label.text = "Tokens  0 in / 0 out  ·  cost $0.0000"
+	_token_meter.value = 0.0
 	_event_log.clear()
 	_approval_job_id = ""
 	_approval_id = ""
@@ -1227,6 +1275,8 @@ func set_credential_saved() -> void:
 
 func set_spend(daily_spend: float, warning: float) -> void:
 	_spend_warning = warning
+	_token_meter.max_value = maxf(warning, 0.01)
+	_token_meter.value = clampf(daily_spend, 0.0, _token_meter.max_value)
 	_spend_label.text = "Today  $%.4f  · warning at $%.2f" % [daily_spend, warning]
 	_spend_label.add_theme_color_override("font_color", VERMILION if daily_spend >= warning else MUTED_INK)
 
@@ -1291,7 +1341,8 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 			line = "[color=#fa4616]failed[/color] · %s" % _safe_bbcode(event.error)
 			finish_job(job_id)
 	if not line.is_empty():
-		_event_log.append_text("• %s\n" % line)
+		var icon_path := OperationsSkin.activity_icon_path(event.type, event.tool, event.ok)
+		_event_log.append_text("[img=18x18]%s[/img]  %s\n" % [icon_path, line])
 		_event_log.scroll_to_line(maxi(0, _event_log.get_line_count() - 1))
 
 func _decide_approval(approved: bool) -> void:
@@ -1374,10 +1425,13 @@ func show_artifacts(job_id: String, artifacts: Array[ArtifactRecord]) -> void:
 	for artifact: ArtifactRecord in artifacts:
 		var button := Button.new()
 		button.text = "Open delivery  ·  %s" % artifact.name
+		button.icon = OperationsSkin.ICON_DELIVERY
+		button.add_theme_constant_override("icon_max_width", 28)
+		button.expand_icon = true
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.tooltip_text = artifact.relative_path
 		button.pressed.connect(_open_artifact.bind(job_id, artifact.relative_path))
-		_style_action_button(button, CERULEAN, false)
+		_style_file_button(button)
 		_artifact_list.add_child(button)
 	_tabs.current_tab = 3
 
@@ -1393,10 +1447,13 @@ func show_studio_files(files: Array[StudioFileRecord]) -> void:
 	for file: StudioFileRecord in files:
 		var button := Button.new()
 		button.text = "studio/%s" % file.relative_path
+		button.icon = OperationsSkin.ACTIVITY_ARTIFACT
+		button.add_theme_constant_override("icon_max_width", 28)
+		button.expand_icon = true
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.tooltip_text = "Promoted from %s" % file.source_job_id
 		button.pressed.connect(studio_open_requested.emit.bind(file.relative_path))
-		_style_action_button(button, CERULEAN, false)
+		_style_file_button(button)
 		_artifact_list.add_child(button)
 
 func _clear_artifact_list() -> void:
@@ -1404,11 +1461,35 @@ func _clear_artifact_list() -> void:
 		child.queue_free()
 
 func _add_empty_artifact(message: String) -> void:
+	var empty_panel := PanelContainer.new()
+	empty_panel.add_theme_stylebox_override("panel", OperationsSkin.file_card())
+	var empty_row := HBoxContainer.new()
+	empty_row.add_theme_constant_override("separation", 8)
+	empty_panel.add_child(empty_row)
+	var empty_icon := TextureRect.new()
+	empty_icon.texture = OperationsSkin.ICON_EMPTY_TRAY
+	empty_icon.custom_minimum_size = Vector2(42.0, 34.0)
+	empty_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	empty_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	empty_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	empty_row.add_child(empty_icon)
 	var empty := Label.new()
 	empty.text = message
 	empty.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	empty.add_theme_color_override("font_color", MUTED_INK)
-	_artifact_list.add_child(empty)
+	empty.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	empty_row.add_child(empty)
+	_artifact_list.add_child(empty_panel)
+
+func _style_file_button(button: Button) -> void:
+	button.custom_minimum_size.y = 50.0
+	button.add_theme_stylebox_override("normal", OperationsSkin.file_card())
+	button.add_theme_stylebox_override("hover", OperationsSkin.file_card(true))
+	button.add_theme_stylebox_override("pressed", OperationsSkin.file_card(true))
+	button.add_theme_stylebox_override("focus", OperationsSkin.focus_ring())
+	button.add_theme_color_override("font_color", CHARCOAL)
+	button.add_theme_color_override("font_hover_color", CHARCOAL)
+	button.add_theme_color_override("font_pressed_color", CHARCOAL)
 
 func _configure_attachment_picker(files: Array[StudioFileRecord]) -> void:
 	var selected_path := ""

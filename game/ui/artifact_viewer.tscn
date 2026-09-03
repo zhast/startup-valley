@@ -24,8 +24,8 @@ color = Color(0.0823529, 0.0823529, 0.0823529, 0.76)
 
 [node name="Modal" type="PanelContainer" parent="."]
 layout_mode = 0
-offset_left = 240.0
-offset_top = 90.0
-offset_right = 1040.0
-offset_bottom = 630.0
+offset_left = 316.0
+offset_top = 60.0
+offset_right = 964.0
+offset_bottom = 660.0
 mouse_filter = 0

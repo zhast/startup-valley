@@ -35,4 +35,5 @@ func _physics_process(delta: float) -> void:
 
 func _draw() -> void:
 	draw_circle(Vector2(0.0, 18.0), 13.0, Color("15151566"))
-	draw_string(ThemeDB.fallback_font, Vector2(-30.0, 40.0), "Founder", HORIZONTAL_ALIGNMENT_CENTER, 60.0, 11, Color("f1f1f1"))
+	draw_texture_rect(OperationsSkin.WORLD_NAMEPLATE, Rect2(-43.0, 25.0, 86.0, 28.0), false)
+	draw_string(ThemeDB.fallback_font, Vector2(-34.0, 44.0), "Founder", HORIZONTAL_ALIGNMENT_CENTER, 68.0, 10, Color("151515"))
