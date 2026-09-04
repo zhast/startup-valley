@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "source_directory": "res://assets/source/architecture",
+  "build_script": "dev/tools/build_architecture_assets.sh",
+  "tile_size": 32,
+  "runtime_scale": 1,
+  "sampling": "nearest",
+  "anchor": "top_left",
+  "assets": [
+    {"file": "floor.png", "source": "floor-master.png", "size": [128, 128], "cell": [32, 32], "grid": [4, 4], "repeat_axes": ["x", "y"], "alpha": "opaque"},
+    {"file": "wall.png", "source": "wall-master.png", "size": [128, 96], "cell": [32, 32], "grid": [4, 3], "repeat_axes": ["x"], "alpha": "opaque"},
+    {"file": "window.png", "source": "window-master.png", "size": [160, 96], "grid": [1, 1], "padding": [2, 4], "alpha": "binary"},
+    {"file": "trim.png", "source": "trim-master.png", "size": [128, 64], "cell": [32, 32], "grid": [4, 2], "cells": ["west", "east", "south", "mass", "northwest", "northeast", "southwest", "southeast"], "alpha": "opaque"},
+    {"file": "door.png", "source": "door-master.png", "size": [64, 32], "grid": [1, 1], "source_crop": [488, 554, 800, 282], "alpha": "opaque"}
+  ],
+  "verified": {
+    "opposite_repeat_edges": "exact pixel equality",
+    "window_padding": "fully transparent",
+    "window_alpha_levels": 2,
+    "successive_builds": "identical SHA-256 for all five PNGs",
+    "production_dependencies_added": false
+  }
+}

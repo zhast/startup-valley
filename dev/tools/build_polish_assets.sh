@@ -149,3 +149,6 @@ magick "$office_source/office-shell-master.png" -filter Lanczos -resize 832x576\
 magick "$world_source/campus-surround-master.png" -filter Lanczos -resize 1280x720^ -gravity center -extent 1280x720 -strip "$office_output/campus-surround.png"
 
 printf '%s\n' "Built audited native pixel assets."
+bash "$project_root/dev/tools/build_workstation_assets.sh"
+bash "$project_root/dev/tools/build_architecture_assets.sh"
+bash "$project_root/dev/tools/build_ui_redesign_assets.sh"

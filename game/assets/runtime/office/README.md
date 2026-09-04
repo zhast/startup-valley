@@ -2,29 +2,50 @@
 
 The runtime office is assembled in layers so moving characters can sort correctly around furniture:
 
-- `office-shell-base.png` contains only permanent architecture and flooring.
-- `employee-workstation.png` is one reusable transparent prop instantiated per employee.
-- `research-bench.png` is one transparent research prop.
+- `architecture/` is the active native tile kit: floor, wall elevation, trim and
+  corners, window scenery, and open doorway threshold. Its README/manifest
+  document source crops, dimensions, alpha and seam tests.
+- `office-shell-base.png` and `campus-surround.png` are retired composition
+  references. Neither is rendered in the current game.
+- `south-workstation.png` is the active founder/employee workstation: two
+  registered 128×112 cells, chair/far tabletop then desk/monitor front. We see the
+  monitor's back; the seated employee faces it from the north side.
+- `layered-furniture.png` row 1 provides the active research bench layers.
+  Its old workstation row 0 is superseded.
+- `employee-workstation.png` and `research-bench.png` are retained older
+  standalone plates, not rendered by the current prop scenes.
 - `collaboration-cluster.png` is the first-hire informal meeting area.
 - `coffee-station.png` is the first-hire shared coffee counter.
-- `approval-console.png` is the third-hire operations review desk.
-- `artifact-archive.png` is the fourth-hire completed-work display.
+- `approval-console.png` is the second-hire operations review desk.
+- `artifact-archive.png` is the first-hire completed-work display.
 - `prototype-bench.png` is the fourth-hire maker station.
 - `main-office-background.png` is retained only as the mature-office composition reference; it is no longer rendered by the game.
 
 The coffee, approval, archive, and prototype source plates were generated on uniform magenta production fields because the image generator would not preserve clean alpha. The checked-in runtime images were deterministically matte-converted to genuine transparency, so every prop scene now renders a normal alpha PNG without a special material.
 
-`TownRoom` scales the shell to the existing 26 × 18 logical grid, instantiates typed prop scenes from `res://data/town.json`, and covers unavailable wings with collidable renovation panels. Props and live characters receive absolute Z order from their world Y coordinate. A desk's work point is behind its anchor so the employee is visibly occluded by the desk while working.
+`TownRoom` resolves `res://data/office_layout.json` and
+`res://data/furniture_catalog.json` through `OfficeLayout`. The 40 × 23 logical
+grid fills the 1280 × 720 composition (the solid final row is partially cropped).
+`OfficeArchitecture` renders the same floor/wall definition used by navigation
+and collision. Locked areas remain empty. Props and characters use ground-Y
+depth. A desk's work point is 32 px north of its anchor; the founder approaches
+from a separate south interaction point.
 
 The current unlock thresholds are deliberately simple and derive from the authoritative employee records returned by the worker:
 
 | Hires | Newly available space |
 | --- | --- |
 | 0 | Founder studio only |
-| 1 | Meeting and coffee wing |
-| 2 | Research lab |
-| 3 | Operations and approvals |
-| 4 | Artifact studio |
+| 1 | Mina, meeting/coffee wing, artifact archive |
+| 2 | Theo, research lab, operations/approvals |
+| 3 | No additional prop in the two-employee slice |
+| 4 | Prototype bench (developer growth preview) |
+
+Rebuild the corrected workstation and seated poses with
+`dev/tools/build_workstation_assets.sh`. The desk is normalized once before
+splitting at row 45, just above the monitor. The far tabletop stays behind the
+typing hands; never trim the layers independently.
+Generation prompts and verification: `dev/GRAPHICS_REPAIR.md`.
 
 The legacy composition reference was produced with the built-in ImageGen tool from the approved office key art. Its final edit prompt was:
 
@@ -50,4 +71,7 @@ The staged social, operations, and artifact props were also produced with the bu
 
 > Create one compact prototype workbench with a small off-white desktop 3D printer, charcoal tool tray, two tiny finished prototypes, an indigo cutting mat, one vermilion accent, and a chartreuse status lamp. Match the approved cozy startup pixel art and exact room elevation. Keep front and back edges horizontal with zero yaw. Place exactly one workbench on a uniform RGB #FF00FF chroma-key field with a hard silhouette and no atmosphere, room, people, text, logos, or watermark.
 
-Logical coordinates in `res://data/town.json` remain authoritative for movement, prop placement, unlock thresholds, and work destinations. Add future office features as one transparent prop plus one data placement at a time; do not paint them back into the shell. The precise projection, scale, anchor, layering, and acceptance rules live in `ASSET_SPEC.md`.
+The old `town.json` is retained as a legacy reference, not a runtime authority.
+Use the developer placement tool and validate every growth stage before editing
+the active office layout. Do not paint furniture or another room background into
+the architecture. See `ASSET_SPEC.md` and `dev/MODULAR_OFFICE_IMPLEMENTATION.md`.

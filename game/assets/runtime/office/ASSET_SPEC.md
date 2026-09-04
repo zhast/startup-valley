@@ -1,6 +1,7 @@
 # Modular office asset contract
 
-Every runtime office prop must follow this contract before it is added to `town.json`.
+Every runtime office prop must follow this contract before it is added to
+`office_layout.json` with a profile in `furniture_catalog.json`.
 
 ## Projection
 
@@ -12,17 +13,25 @@ Every runtime office prop must follow this contract before it is added to `town.
 ## Runtime scale and anchor
 
 - One logical tile is 32 × 32 game pixels.
-- A standard workstation occupies a 3 × 2 tile collision footprint and renders approximately 96 × 72 opaque pixels.
+- A standard workstation occupies three floor cells in one row. Its separate
+  north chair lane and south interaction point stay walkable. Its art uses two
+  registered 128 × 112 atlas cells; no runtime downscaling.
 - The Node2D origin is the bottom-center ground-contact point, not the center of the source canvas.
 - Transparent padding is allowed, but scenes must offset the sprite so the bottom of its opaque footprint lands at local Y = 0.
 
 ## Layers
 
-- `office-shell-base.png` contains permanent architecture and flooring only.
+- `architecture/` contains native 32px floor/wall/corner materials and window/
+  doorway modules. Architecture and wall collision derive from `OfficeLayout`.
+- Old shell/campus images are retained references, never layered into the game.
 - Movable furniture and equipment are independent transparent assets and reusable scenes.
 - Props and characters use absolute Z order derived from their world-space ground-contact Y.
 - Tall objects may split into base and canopy layers when one Y-sorted sprite cannot occlude a character correctly.
-- Collision shapes describe the floor footprint independently of the visual bounds.
+- Collision shapes are generated from catalog occupied floor cells. Clearance,
+  interaction/work cells, native image bounds, sprite offsets, and layer depth
+  offsets are explicit catalog fields consumed by the renderer and navigation.
+- Furniture image bounds must not intersect walls or other furniture. Employee
+  occlusion by the desk's front layer is intentional, not a placement conflict.
 
 ## Acceptance
 
@@ -30,4 +39,7 @@ Every runtime office prop must follow this contract before it is added to `town.
 - Crisp nearest-neighbor rendering at runtime.
 - Correct footprint and bottom-center anchor.
 - Reads correctly in front of and behind a live character in the running game.
-- Placement and hire threshold live in `res://data/town.json`; never bake placement into the shell art.
+- Placement and hire threshold live in `res://data/office_layout.json`; never
+  bake placement into architecture art. Validate stages 0–4 and reachability.
+- Only authored south facings currently ship. Add a new authored atlas/profile
+  before enabling another facing; never rotate or mirror a workstation.

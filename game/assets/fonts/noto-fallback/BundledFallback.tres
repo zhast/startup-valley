@@ -1,0 +1,11 @@
+[gd_resource type="FontVariation" load_steps=5 format=3]
+
+[ext_resource type="FontFile" path="res://assets/fonts/noto-fallback/NotoSansCJKsc-Regular.otf" id="1"]
+[ext_resource type="FontFile" path="res://assets/fonts/noto-fallback/NotoSansSymbols2-Regular.ttf" id="2"]
+[ext_resource type="FontFile" path="res://assets/fonts/noto-fallback/NotoEmoji.ttf" id="3"]
+[ext_resource type="FontFile" path="res://assets/fonts/noto-fallback/NotoSans.ttf" id="4"]
+
+[resource]
+base_font = ExtResource("4")
+variation_opentype = { "weight": 550.0 }
+fallbacks = Array[Font]([ExtResource("1"), ExtResource("2"), ExtResource("3")])
