@@ -150,9 +150,20 @@ func _assert_ledger(panel: JobPanel, original_footer: Rect2) -> void:
 func _assert_first_activity_entry(panel: JobPanel) -> void:
 	var viewport := panel._activity_scroll.get_global_rect()
 	_check(viewport.encloses(panel._activity_details_toggle.get_global_rect()), "Opening work details reveals its complete control")
+	_check(absf(panel._activity_details_toggle.global_position.y - viewport.position.y) <= 1.0, "Work details deliberately aligns to the top reading edge even with a short timeline")
+	_assert_visible_activity_actions(panel)
 	_check(viewport.encloses(panel._activity_heading.get_global_rect()), "Opening work details reveals its complete timeline heading")
 	var first_baseline_end := panel._event_log.global_position.y + panel._event_log.get_theme_stylebox("normal").get_content_margin(SIDE_TOP) + GameFonts.BODY.get_height(16)
 	_check(first_baseline_end <= viewport.end.y - 8, "Opening work details reveals a complete first event, not an orphaned sliver")
+
+func _assert_visible_activity_actions(panel: JobPanel) -> void:
+	var viewport := panel._activity_scroll.get_global_rect()
+	for node: Node in panel._activity_scroll.find_children("*", "Control", true, false):
+		var control := node as Control
+		if not control.is_visible_in_tree() or not (control is BaseButton or control is LineEdit or control is TextEdit): continue
+		var bounds := control.get_global_rect()
+		if viewport.intersects(bounds):
+			_check(viewport.encloses(bounds), "Resting Activity never leaves an interactive-control sliver across the reading edge: " + control.name)
 
 func _assert_collapsed_assign_fit(panel: JobPanel) -> void:
 	var scroll := panel._tabs.get_tab_control(1).get_child(0) as ScrollContainer
@@ -312,10 +323,23 @@ func _run() -> void:
 	_assert_disclosure(panel._attachment_toggle, false)
 	await _click(panel._attachment_toggle)
 	_check(panel._attachment_picker.is_visible_in_tree(), "Real attachment disclosure click reveals optional context")
+	var assignment_scroll := panel._tabs.get_tab_control(1).get_child(0) as ScrollContainer
+	_check(assignment_scroll.get_global_rect().encloses(panel._attachment_label.get_global_rect()), "Opening attachments reveals the full reference heading, not a clipped first line")
+	_check(assignment_scroll.get_global_rect().encloses(panel._attachment_picker.get_global_rect()), "Opening attachments brings the entire actionable picker into the form viewport")
+	_check(assignment_scroll.get_global_rect().encloses(panel._attachment_toggle.get_global_rect()), "Expanded attachment disclosure remains fully reachable for collapse")
+	_check(absf(panel._custom_title_input.global_position.y - assignment_scroll.global_position.y) <= 1.0, "Attachment reveal begins at the complete work title while preserving description context")
+	for node: Node in assignment_scroll.find_children("*", "Control", true, false):
+		var control := node as Control
+		if not control.is_visible_in_tree() or not (control is BaseButton or control is LineEdit or control is TextEdit): continue
+		var bounds := control.get_global_rect()
+		if assignment_scroll.get_global_rect().intersects(bounds):
+			_check(assignment_scroll.get_global_rect().encloses(bounds), "Resting expanded Assign never leaves an interactive-control sliver: " + control.name)
 	_assert_disclosure(panel._attachment_toggle, true)
+	_capture("attachment-revealed")
 	await _click(panel._attachment_toggle)
 	_check(not panel._attachment_picker.visible, "Second disclosure click collapses optional context")
 	_assert_disclosure(panel._attachment_toggle, false)
+	_assert_collapsed_assign_fit(panel)
 	panel.begin_job("drawer-proof", "mira")
 	panel.accept_submission("drawer-proof")
 	var event := WorkerEventRecord.new()
@@ -382,6 +406,9 @@ func _run() -> void:
 	event.type = &"approval.required"
 	event.approval_id = "drawer-approval"
 	event.action = "Publish the launch brief to the shared Studio for Theo to review."
+	# Exercise the minimal approval history too: a long history alone masks the
+	# maximum-scroll clamp that previously exposed half an Approve/Deny button.
+	panel._job_views["drawer-proof"]["events"] = ""
 	panel.on_job_event("drawer-proof", event)
 	await _frames()
 	_check(panel._approval_box.is_visible_in_tree() and not panel._status_card.visible, "Approval gets one clear decision card, not a repeated status banner")
@@ -418,12 +445,17 @@ func _run() -> void:
 	_check(panel._activity_details.visible and panel._activity_scroll.scroll_vertical == expanded_scroll, "Back restores expanded work details at exactly the previous scroll position")
 	_assert_first_activity_entry(panel)
 	_capture("approval-details-restored")
-	await _click(panel._activity_details_toggle)
-	panel._activity_scroll.scroll_vertical = 0
-	await _frames()
 	var approve := panel._approval_box.find_children("*", "Button", true, false)[0] as Button
+	panel._activity_scroll.ensure_control_visible(approve)
+	await _frames()
+	_check(panel._activity_scroll.scroll_vertical > 0, "Approval decision fixture begins from scrolled Activity")
 	await _click(approve)
 	_check(not panel._approval_box.visible and panel._status_card.visible, "Decision click restores current-work summary")
+	_check(panel._activity_scroll.scroll_vertical == 0 and panel._activity_scroll.get_global_rect().encloses(panel._status_card.get_global_rect()), "Explicit approval returns the complete outcome status to the visible top of Activity")
+	_check(panel._activity_details_expanded, "Approval preserves the player's expanded work-details state")
+	_assert_visible_activity_actions(panel)
+	_capture("approval-resolved")
+	await _click(panel._activity_details_toggle)
 	var artifact := ArtifactRecord.new()
 	artifact.artifact_id = "website-index"
 	artifact.name = "index.html"
@@ -461,6 +493,15 @@ func _run() -> void:
 	_check(panel._header_icon.size == Vector2(32, 24) and not (panel._employee_portrait.get_parent() as Control).visible, "Studio uses a small library glyph, not a folder treated as an employee portrait")
 	var file_metadata := panel._artifact_list.find_child("FileMetadata", true, false) as Label
 	_check(file_metadata.text == "MD · Mina" and file_metadata.tooltip_text.contains(file.relative_path), "Studio leads with type and owner, keeping the exact path on demand")
+	panel.show_studio_files([])
+	await _frames()
+	var empty_tray := panel._artifact_list.find_child("EmptyStudioTray", true, false) as TextureRect
+	_check(empty_tray != null and empty_tray.texture.get_size() == Vector2(62, 47), "Empty Studio reuses the original 62×47 tray artwork")
+	_check(empty_tray != null and empty_tray.size == empty_tray.texture.get_size() and empty_tray.stretch_mode == TextureRect.STRETCH_KEEP_CENTERED, "Empty Studio tray renders at its native footprint without arbitrary downscaling")
+	_check(empty_tray != null and empty_tray.texture_filter == CanvasItem.TEXTURE_FILTER_NEAREST, "Native empty Studio tray preserves pixel sampling")
+	_capture("studio-empty-native")
+	panel.show_studio_files([file])
+	await _frames()
 	await _click(panel._tab_buttons[2])
 	await _click(panel._usage_toggle)
 	await _click(panel._team_buttons["theo"])

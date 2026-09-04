@@ -183,6 +183,8 @@ var _connection_back_button: Button
 var _connection_focus_return: Control
 var _attachment_toggle: Button
 var _attachment_expanded := false
+var _attachment_reveal_revision := 0
+var _attachment_reveal_spacer: Control
 var _usage_toggle: Button
 var _usage_page: ScrollContainer
 var _usage_today_label: Label
@@ -802,7 +804,7 @@ func _build_work_tab() -> VBoxContainer:
 	_attachment_toggle.text = "Attach a Studio file"
 	CozyUI.disclosure(_attachment_toggle, false)
 	_attachment_toggle.pressed.connect(func() -> void:
-		_set_attachment_expanded(not _attachment_expanded)
+		_set_attachment_expanded(not _attachment_expanded, true)
 	)
 	content.add_child(_attachment_toggle)
 	_attachment_label = _section_label("Reference file (optional)")
@@ -818,6 +820,10 @@ func _build_work_tab() -> VBoxContainer:
 	_attachment_picker.add_item("No studio file attached")
 	_attachment_picker.set_item_metadata(0, "")
 	content.add_child(_attachment_picker)
+	_attachment_reveal_spacer = Control.new()
+	_attachment_reveal_spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_attachment_reveal_spacer.hide()
+	content.add_child(_attachment_reveal_spacer)
 	_budget_picker = OptionButton.new()
 	_budget_picker.fit_to_longest_item = false
 	_budget_picker.clip_text = true
@@ -1100,9 +1106,19 @@ func _set_usage_expanded(expanded: bool, restore_focus: bool = true, restore_scr
 func _reveal_activity_details() -> void:
 	# Wait for the expanded text to shape, then land on its heading and first
 	# complete entry instead of exposing an orphaned line below the fold.
+	var requested_job := _activity_job_id
 	await get_tree().process_frame
 	await get_tree().process_frame
-	if not _activity_details_expanded or _usage_expanded: return
+	if not _activity_details_expanded or _usage_expanded or requested_job != _activity_job_id: return
+	if not _drawer_open or _tabs.current_tab != 2: return
+	# A short timeline still needs enough trailing paper to align its disclosure
+	# with the viewport. Otherwise maximum-scroll clamping leaves fragments of
+	# earlier approval buttons stranded across the top reading edge.
+	_activity_details.custom_minimum_size.y = maxf(0.0, _activity_scroll.size.y - _activity_details_toggle.size.y - _activity_content.get_theme_constant("separation"))
+	await get_tree().process_frame
+	await get_tree().process_frame
+	if not _activity_details_expanded or _usage_expanded or requested_job != _activity_job_id: return
+	if not _drawer_open or _tabs.current_tab != 2: return
 	_activity_scroll.scroll_vertical += int(roundf(_activity_details_toggle.global_position.y - _activity_scroll.global_position.y))
 
 func _refresh_usage(view: Dictionary) -> void:
@@ -1202,6 +1218,8 @@ func _on_tab_changed(_tab: int) -> void:
 	for index: int in range(_tab_buttons.size()):
 		CozyUI.tab_button(_tab_buttons[index], index == _tab)
 	if _tab != 2 and _usage_expanded: _set_usage_expanded(false, false)
+	if _tab == 1 and _attachment_expanded:
+		call_deferred("_reveal_attachment_fields", _attachment_reveal_revision)
 	_refresh_employee_header()
 	if _tab == 2 and not _activity_job_id.is_empty() and _worker_connected:
 		artifact_refresh_requested.emit(_activity_job_id)
@@ -1892,12 +1910,35 @@ func _submit_steer() -> void:
 	_set_status("Sending your change to %s…" % _active_employee_name(), INDIGO)
 	steer_submitted.emit(_active_job_id, message)
 
-func _set_attachment_expanded(expanded: bool) -> void:
+func _set_attachment_expanded(expanded: bool, reveal: bool = false) -> void:
+	_attachment_reveal_revision += 1
 	_attachment_expanded = expanded and _custom_mode
 	if _attachment_picker == null or _attachment_label == null: return
 	_attachment_picker.visible = _attachment_expanded
 	_attachment_label.visible = _attachment_expanded
+	_attachment_reveal_spacer.visible = _attachment_expanded
 	CozyUI.disclosure(_attachment_toggle, _attachment_expanded)
+	if reveal and _attachment_expanded:
+		call_deferred("_reveal_attachment_fields", _attachment_reveal_revision)
+
+func _reveal_attachment_fields(revision: int) -> void:
+	# Keep the title, description and reference picker together. A little trailing
+	# paper lets the complete title align with the reading edge, without leaving
+	# half of the preceding purpose dropdown visible. Collapsed forms hide this
+	# space; stale requests cannot scroll a replacement template or hidden tab.
+	await get_tree().process_frame
+	await get_tree().process_frame
+	if revision != _attachment_reveal_revision or not _attachment_expanded or not _custom_mode: return
+	if not _drawer_open or _tabs.current_tab != 1 or not _attachment_picker.is_visible_in_tree(): return
+	var scroll := _tabs.get_tab_control(1).get_child(0) as ScrollContainer
+	var content := _attachment_picker.get_parent() as VBoxContainer
+	var revealed_height := _attachment_picker.global_position.y + _attachment_picker.size.y - _custom_title_input.global_position.y
+	_attachment_reveal_spacer.custom_minimum_size.y = maxf(0.0, scroll.size.y - revealed_height - content.get_theme_constant("separation"))
+	await get_tree().process_frame
+	await get_tree().process_frame
+	if revision != _attachment_reveal_revision or not _attachment_expanded or not _custom_mode: return
+	if not _drawer_open or _tabs.current_tab != 1 or not _attachment_picker.is_visible_in_tree(): return
+	scroll.scroll_vertical += int(roundf(_custom_title_input.global_position.y - scroll.global_position.y))
 
 func _on_job_selected(index: int) -> void:
 	milestone_id = ""
@@ -2286,6 +2327,9 @@ func _decide_approval(approved: bool) -> void:
 	_approval_job_id = ""
 	_approval_id = ""
 	_refresh_selected_activity()
+	# This explicit decision replaces the card the player was reading. Return
+	# to its complete outcome; ordinary incoming events never reset the scroll.
+	_activity_scroll.set_deferred("scroll_vertical", 0)
 	_refresh_team_statuses()
 
 func offer_promotion(job_id: String, employee_id: String = "") -> void:
@@ -2491,11 +2535,12 @@ func _add_empty_artifact(message: String) -> void:
 	empty_row.add_theme_constant_override("separation", 12)
 	empty_panel.add_child(empty_row)
 	var empty_icon := TextureRect.new()
+	empty_icon.name = "EmptyStudioTray"
 	empty_icon.texture = OperationsSkin.ICON_EMPTY_TRAY
-	empty_icon.custom_minimum_size = Vector2(48, 40)
+	empty_icon.custom_minimum_size = empty_icon.texture.get_size()
 	empty_icon.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	empty_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	empty_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	empty_icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 	empty_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	empty_row.add_child(empty_icon)
 	var title := _section_label("Your shared Studio")

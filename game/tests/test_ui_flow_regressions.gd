@@ -25,6 +25,21 @@ func click_control(control: Control) -> void:
 		await process_frame
 	await frames()
 
+func click_without_settling(control: Control) -> void:
+	# Deliberately dispatch two user clicks in one frame to exercise deferred
+	# reveal cancellation rather than only its already-settled end state.
+	check(control.is_visible_in_tree(), "Rapid input target must be visible: " + control.name)
+	var point := control.get_global_rect().get_center()
+	var motion := InputEventMouseMotion.new()
+	motion.position = point
+	root.push_input(motion, true)
+	for pressed: bool in [true, false]:
+		var event := InputEventMouseButton.new()
+		event.position = point
+		event.button_index = MOUSE_BUTTON_LEFT
+		event.pressed = pressed
+		root.push_input(event, true)
+
 func key(code: Key) -> void:
 	for pressed: bool in [true, false]:
 		var event := InputEventKey.new()
@@ -39,6 +54,12 @@ func check_attachment_state(panel: JobPanel, expected: bool, context: String) ->
 	check(panel._attachment_picker.visible == expected, context + ": attachment content has expected state")
 	check(panel._attachment_label.visible == expected, context + ": attachment heading follows content")
 	check(bool(panel._attachment_toggle.get_meta("cozy_disclosure_expanded", false)) == expected, context + ": chevron agrees with content")
+	if expected:
+		var scroll := panel._tabs.get_tab_control(1).get_child(0) as ScrollContainer
+		check(scroll.get_global_rect().encloses(panel._attachment_label.get_global_rect()), context + ": complete reference heading is inside the visible form")
+		check(scroll.get_global_rect().encloses(panel._attachment_picker.get_global_rect()), context + ": complete reference picker is inside the visible form")
+		check(scroll.get_global_rect().encloses(panel._custom_title_input.get_global_rect()), context + ": the complete title remains visible above the reference fields")
+		check(not scroll.get_global_rect().intersects(panel._purpose_picker.get_global_rect()) or scroll.get_global_rect().encloses(panel._purpose_picker.get_global_rect()), context + ": no half purpose dropdown crosses the reading edge")
 
 func choose_option(option: OptionButton, index: int) -> void:
 	await click_control(option)
@@ -88,6 +109,7 @@ func _run() -> void:
 	panel._attachment_picker.select(1)
 	await frames(20)
 	check(panel._attachment_picker.is_visible_in_tree(), "Optional context disclosure reveals the actual attachment picker")
+	check_attachment_state(panel, true, "Initial real-input expansion")
 	check(panel._attachment_picker.get_global_rect().end.x <= panel.drawer_global_rect().end.x, "Long attachment cannot widen Assign")
 	# The original audit used a handler probe. Reproduce its actual user path:
 	# open the purpose popup, select a preset with the keyboard, then return.
@@ -100,6 +122,19 @@ func _run() -> void:
 	await choose_option(panel._purpose_picker, 0)
 	check(panel._custom_mode, "Real popup keyboard selection returns to a custom purpose")
 	check_attachment_state(panel, false, "Purpose round-trip")
+	var before_interrupted_reveal := assignment_scroll.scroll_vertical
+	click_without_settling(panel._attachment_toggle)
+	click_without_settling(panel._drawer_close_button)
+	await frames(20)
+	check(not panel.drawer_is_open(), "Rapid close wins over a pending attachment reveal")
+	check(assignment_scroll.scroll_vertical == before_interrupted_reveal, "Pending attachment reveal cannot scroll a closed drawer")
+	await click_control(panel._team_buttons["mira"])
+	await click_control(panel._tab_buttons[1])
+	# Reopening the same employee preserves the disclosure, but only returning
+	# to Assign may reveal its fields; closing never moves the hidden form.
+	check_attachment_state(panel, true, "Rapid-close reopening")
+	await click_control(panel._attachment_toggle)
+	check_attachment_state(panel, false, "Collapsed after reopening")
 	await click_control(panel._attachment_toggle)
 	check_attachment_state(panel, true, "Reopened attachment")
 	await click_control(panel._team_buttons["theo"])
