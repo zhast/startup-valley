@@ -4,6 +4,9 @@ extends SceneTree
 var checks := 0
 var failures: Array[String] = []
 var main: GameMain
+var captures: Array[String] = []
+var capture_states: Array[Dictionary] = []
+const OUTPUT := "res://tests/output/ui-material-world"
 
 func _initialize() -> void:
 	OS.set_environment("STARTUP_VALLEY_NO_WORKER", "1")
@@ -38,6 +41,7 @@ func event(kind: StringName) -> void:
 	var record := WorkerEventRecord.new()
 	record.type = kind
 	record.approval_id = "fixture-approval" if kind == &"approval.required" else ""
+	if kind == &"approval.required": record.action = "Publish the launch brief to the shared Studio for Theo to review."
 	main._on_job_event("fixture-job", record)
 
 func begin() -> void:
@@ -53,9 +57,15 @@ func project(expected: String) -> void:
 	main._process(0)
 	check(employee.presentation_label() == expected, "World label uses business presentation: %s (actual %s)" % [expected, employee.presentation_label()])
 	check([employee.position, employee.work_state, employee._has_target, employee._route, employee._arrival_state, employee.has_live_job] == before, "UI projection does not change route, position or work animation")
-	check(employee._ui_highlighted and employee._label_detail_visible(), "Selected actor exposes the projected detail")
+	check(employee._drawer_selected and not employee._labels_visible() and not employee._label_detail_visible(), "Open drawer suppresses redundant world identity and status")
+	if employee.has_attention():
+		check(employee.attention_cue_visible() or employee._effect_sprite.visible, "Selected employee retains one non-text world attention cue")
+	employee.set_drawer_selected(false)
+	employee.set_ui_highlighted(true)
 	check(EmployeeAvatar.STATUS_FONT.get_string_size(expected, HORIZONTAL_ALIGNMENT_LEFT, -1, EmployeeAvatar.STATUS_FONT_SIZE).x <= employee._name_width() - 16, "Projected wording fits native world-label width: " + expected)
 	check_name_geometry(employee)
+	employee.set_drawer_selected(true)
+	employee.set_ui_highlighted(false)
 
 func line_box(font: Font, size: int, value: String, baseline: Vector2, width: float) -> Rect2:
 	var measured := font.get_string_size(value, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
@@ -92,7 +102,7 @@ func check_world_typography() -> void:
 			check(employee.display_name == identity, "World elision does not alter the original employee identity")
 	for position: Vector2 in [Vector2(300, 340), Vector2(300.49, 340.72), Vector2(300.5, 340.5)]:
 		employee.position = position
-		var expected := employee._nameplate_rect()
+		var expected := WorldCalloutSkin.bounds(employee._nameplate_rect(), WorldCalloutSkin.ACTOR_BOUNDS.get_center())
 		expected.position += position.round()
 		check(employee.world_label_rect() == expected, "World UI occlusion uses the same snapped card as painting")
 	for speech: String in ["One clear offer.", "A very long memory sentence must remain readable without covering the whole office", "https://example.com/a-very-long-unbroken-memory-reference followed by more context", "Zoë reviews résumé–validation…\n顾客研究 🚀 → next steps"]:
@@ -102,6 +112,10 @@ func check_world_typography() -> void:
 		var safe := Rect2(rect.position + EmployeeAvatar.SPEECH_INSET, rect.size - EmployeeAvatar.SPEECH_INSET * 2)
 		var lines := employee._wrap_speech(speech, 21)
 		check(lines.size() > 0 and lines.size() <= 2, "Speech remains a bounded two-line contextual card")
+		check(not " ".join(lines).ends_with("…"), "Ambient speech never clips a memory midway through a thought")
+		var line_height := ceilf(EmployeeAvatar.SPEECH_FONT.get_height(EmployeeAvatar.SPEECH_FONT_SIZE))
+		var expected_height := line_height * lines.size() + EmployeeAvatar.TEXT_LINE_GAP * (lines.size() - 1) + EmployeeAvatar.SPEECH_INSET.y * 2
+		check(rect.size.y == ceilf(expected_height * 0.5) * 2, "Speech paper hugs its actual one/two-line metrics")
 		var previous := Rect2()
 		for index: int in range(lines.size()):
 			var baseline := employee._speech_baseline(index)
@@ -112,11 +126,157 @@ func check_world_typography() -> void:
 			if index > 0: check(previous.end.y + EmployeeAvatar.TEXT_LINE_GAP <= bounds.position.y + 0.01, "Speech lines do not overlap")
 			previous = bounds
 		check(employee.memory_line == speech, "Speech wrapping preserves the original memory text")
-		check(employee.world_label_rect() == Rect2(employee.position.round() + rect.position, rect.size), "Speech occlusion matches its metric-derived paper")
+		var painted := WorldCalloutSkin.bounds(rect, WorldCalloutSkin.ACTOR_BOUNDS.get_center())
+		check(employee.world_label_rect() == Rect2(employee.position.round() + painted.position, painted.size), "Speech occlusion includes its fixed native pointer")
 	employee.free()
 
+func frames(count: int = 3) -> void:
+	for index: int in range(count): await process_frame
+
+func capture(name_value: String) -> void:
+	if DisplayServer.get_name() == "headless": return
+	await frames(3)
+	RenderingServer.force_draw(false)
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUTPUT))
+	var path := OUTPUT.path_join(name_value + ".png")
+	check(root.get_texture().get_image().save_png(path) == OK, "Native callout capture saved: " + name_value)
+	captures.append(path)
+	var callouts: Array[Dictionary] = []
+	for actor: EmployeeAvatar in main._employees.values():
+		callouts.append({"employee": actor.employee_id, "drawerSelected": actor._drawer_selected, "identityVisible": actor._labels_visible(), "speechVisible": actor._speech_visible and not actor.labels_suppressed, "attentionCue": actor.attention_cue_visible() and not actor.labels_suppressed, "eventEffectVisible": actor._effect_sprite.visible, "eventEffectPainted": actor._effect_sprite.visible and actor._effect_sprite.self_modulate.a > 0, "body": str(actor.world_label_body_rect()), "paintedWorldBounds": str(actor.world_label_rect()), "suppressed": actor.labels_suppressed})
+	capture_states.append({"name": name_value, "path": path, "callouts": callouts, "promptVisible": main.founder_hud.interaction_visible(), "promptBounds": str(main.founder_hud.interaction_rect())})
+
+func click(point: Vector2, capture_prefix: String = "") -> void:
+	var move := InputEventMouseMotion.new()
+	move.position = point
+	root.push_input(move, true)
+	await frames(1)
+	if not capture_prefix.is_empty(): await capture(capture_prefix + "-hover")
+	for down: bool in [true, false]:
+		var event_value := InputEventMouseButton.new()
+		event_value.position = point
+		event_value.button_index = MOUSE_BUTTON_LEFT
+		event_value.pressed = down
+		root.push_input(event_value, true)
+		await frames(1)
+		if down and not capture_prefix.is_empty(): await capture(capture_prefix + "-pressed")
+
+func safe_callout(rect: Rect2, message: String) -> void:
+	for obstacle: Rect2 in main._world_ui_obstacles():
+		check(not rect.intersects(obstacle), message + " clears furniture and UI")
+	check(not rect.intersects(WorldCalloutSkin.actor_rect(main.player.position)), message + " clears founder")
+	for actor: EmployeeAvatar in main._employees.values():
+		check(not rect.intersects(WorldCalloutSkin.actor_rect(actor.position)), message + " clears " + actor.display_name)
+
+func check_callout_integration() -> void:
+	fixture()
+	main.job_panel.close_drawer(false)
+	var employee := main.get_employee("mira")
+	var other := main.get_employee("theo")
+	employee.position = Vector2(368, 528)
+	other.position = Vector2(752, 528)
+	main.player.position = Vector2(436, 592)
+	main._process(0)
+	check(main.founder_hud.interaction_visible(), "Audited founder-desk approach still offers a visible Chat prompt")
+	safe_callout(main.founder_hud.interaction_rect(), "Prompt including pointer")
+	var prompt := main.founder_hud._interaction_prompt.get_node("ChatAction") as Button
+	check(prompt.size.x >= 44 and prompt.size.y >= 44 and prompt.focus_mode == Control.FOCUS_ALL, "Prompt keeps44px input target and keyboard focus")
+	check(prompt.tooltip_text == "Chat with Mina (E)", "Prompt exposes both target name and E shortcut")
+	await capture("prompt-desk-clear")
+	prompt.grab_focus()
+	check(prompt.has_focus(), "World prompt has an explicit keyboard-focus target")
+	await capture("prompt-focused")
+	prompt.release_focus()
+	var before := main.player.position
+	var requests: Array[String] = []
+	main.founder_hud.chat_requested.connect(func(id: String) -> void: requests.append(id))
+	await click(prompt.get_global_rect().get_center(), "prompt")
+	await frames(15)
+	check(main.job_panel.drawer_is_open() and main.job_panel.selected_employee_id() == "mira", "Real prompt click opens the intended employee once")
+	check(requests == ["mira"], "One actual mouse release emits exactly one employee interaction")
+	check(main.player.position == before and main.player.route.is_empty(), "Prompt click does not leak into world movement")
+	main._process(0)
+	check(not employee._labels_visible() and not employee._speech_visible, "Chat drawer removes redundant employee callouts")
+	await capture("drawer-no-duplicate")
+	main.job_panel.show_pending_promotions([{"jobId": "world-delivery", "employeeId": "mira", "title": "Website", "summary": "Ready"}])
+	main._process(0)
+	check(employee.attention_cue_visible() and not employee.labels_suppressed, "Restored delivery keeps a compact visible cue while drawer is selected")
+	safe_callout(employee.world_label_rect(), "Selected delivery cue")
+	await capture("drawer-delivery-cue")
+	main.job_panel.show_pending_promotions([])
+	main.job_panel.close_drawer(false)
+	main.player.position = Vector2(560, 620)
+	main._process(0)
+	employee.memory_line = "Yesterday's customer notes point to one clear promise for the website."
+	employee._speech_visible = true
+	main._update_label_visibility("")
+	check(not employee.labels_suppressed, "Audited speech fixture has a furniture-clear placement")
+	safe_callout(employee.world_label_rect(), "Complete speech including pointer")
+	check(" ".join(employee._wrap_speech(employee.memory_line, 21)) == "One clear idea at a time.", "Overlong ambient memory uses a deliberate complete thought")
+	await capture("speech-complete-desk-clear")
+	employee.memory_line = "One clear offer."
+	main._update_label_visibility("")
+	check(employee._wrap_speech(employee.memory_line, 21) == PackedStringArray(["One clear offer."]), "Short original thought is shown whole")
+	await capture("speech-one-line")
+	var blocked: Array[Rect2] = [Rect2(0, 0, 1280, 720)]
+	check(not WorldCalloutSkin.place(employee.position, Vector2(188, 64), blocked, Rect2(18, 82, 1114, 620), true).has_area(), "No safe placement suppresses rather than covering a face")
+	main.founder_hud.update_interaction(employee.position + Vector2(48, 0), main._employees, true, blocked)
+	check(not main.founder_hud.interaction_visible() and main.founder_hud.interaction_target_id() == "mira", "Crowded prompt keeps the E target and rail alternative without painting over furniture")
+	employee.set_speech_suppressed(true)
+	employee._speech_visible = true
+	employee.set_speech_suppressed(true)
+	check(not employee._speech_visible, "Repeated suppression refresh enforces its invariant after a stale fixture/event")
+	for down: bool in [true, false]:
+		var key_event := InputEventKey.new()
+		key_event.keycode = KEY_E
+		key_event.physical_keycode = KEY_E
+		key_event.pressed = down
+		root.push_input(key_event, true)
+		await frames(1)
+	await frames(15)
+	check(main.job_panel.drawer_is_open() and main.job_panel.selected_employee_id() == "mira", "Actual E input still opens Chat when the visual prompt has no safe slot")
+	check(requests == ["mira", "mira"], "The hidden-prompt E press emits exactly one interaction")
+	main.job_panel.close_drawer(false)
+	for position_value: Vector2 in [Vector2(80, 176), Vector2(1072, 624), Vector2(496, 384)]:
+		employee.position = position_value
+		main.player.position = position_value + Vector2(32, 0)
+		main._process(0)
+		if main.founder_hud.interaction_visible(): safe_callout(main.founder_hud.interaction_rect(), "Edge/crowded prompt")
+		if not employee.labels_suppressed: safe_callout(employee.world_label_rect(), "Edge/crowded employee callout")
+
+func check_live_attention() -> void:
+	for kind: StringName in [&"approval.required", &"job.completed"]:
+		fixture()
+		var employee := main.get_employee("mira")
+		employee.position = Vector2(448, 592)
+		main.get_employee("theo").position = Vector2(752, 592)
+		main.player.position = Vector2(560, 624)
+		begin()
+		event(&"job.started")
+		event(kind)
+		main.job_panel.open_drawer(false)
+		main.job_panel._tabs.current_tab = 2
+		check(employee._effect_sprite.visible and employee._effect_elapsed == 0, "Live event starts a real first-frame burst: " + kind)
+		var unchanged := [employee.position, employee.work_state, employee._route.duplicate(), employee._has_target, employee._activity, employee._effect_duration, employee._effect_elapsed, employee._effect_sprite.region_rect, main.day_clock.minute_of_day]
+		main._process(0)
+		check(employee._drawer_selected and employee.world_paused, "Actual event fixture selects employee with world clock paused")
+		check(employee.attention_cue_visible() and not employee.labels_suppressed, "Live selected attention uses the readable anchored cue")
+		check(employee._effect_sprite.visible and employee._effect_sprite.self_modulate.a == 0, "Burst stays active for timing but does not paint a duplicate speck")
+		check(not employee._labels_visible(), "Live selected attention does not restore a duplicate name/status card")
+		check([employee.position, employee.work_state, employee._route, employee._has_target, employee._activity, employee._effect_duration, employee._effect_elapsed, employee._effect_sprite.region_rect, main.day_clock.minute_of_day] == unchanged, "Cue ownership changes no event, movement, timer or clock state")
+		safe_callout(employee.world_label_rect(), "Live selected attention")
+		await capture("drawer-live-approval-cue" if kind == &"approval.required" else "drawer-live-delivery-cue")
+		main.job_panel.close_drawer(false)
+		main._process(0)
+		check(employee._effect_sprite.visible and employee._effect_sprite.self_modulate.a == 1, "Closing the drawer restores existing burst paint without restarting it")
+		check(not employee.attention_cue_visible(), "Returning to the world still paints only one attention cue")
+		check(employee._effect_elapsed == unchanged[6], "Returning to the world does not reset or advance event timing")
+
 func run() -> void:
+	root.size = Vector2i(1280, 720)
 	check_world_typography()
+	await check_callout_integration()
+	await check_live_attention()
 	fixture()
 	begin()
 	event(&"job.started")
@@ -165,5 +325,10 @@ func run() -> void:
 	main.game_audio.shutdown()
 	main.free()
 	await process_frame
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUTPUT))
+	var result_name := "results-headless.json" if DisplayServer.get_name() == "headless" else "results.json"
+	var file := FileAccess.open(OUTPUT.path_join(result_name), FileAccess.WRITE)
+	file.store_string(JSON.stringify({"checks": checks, "failures": failures, "workerDisabled": true, "renderer": DisplayServer.get_name(), "viewport": [1280, 720], "captures": capture_states, "limitations": ["Godot input events, not physical OS hardware.", "Crowded callouts suppress if none of eight nearby placements avoids actors, furniture and UI; E and rail remain available."]}, "\t"))
+	file.close()
 	print("World UI presentation: %d checks; %d failures" % [checks, failures.size()])
 	quit(0 if failures.is_empty() else 1)

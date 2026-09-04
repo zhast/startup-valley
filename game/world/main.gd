@@ -119,16 +119,20 @@ func _process(delta: float) -> void:
 	founder_hud.update_interaction(
 		player.position,
 		_employees,
-		not paused
+		not paused,
+		_world_ui_obstacles()
 	)
-	var interaction_target := founder_hud.interaction_target_id() if founder_hud.interaction_visible() else ""
+	# Proximity/E remains valid even when crowded scenery hides the visual prompt.
+	var interaction_target := founder_hud.interaction_target_id()
 	var hover := _interaction_at(get_viewport().get_mouse_position()) if not paused else {}
 	for employee_id: String in _employees:
 		var employee := _employees[employee_id]
 		employee.set_ui_presentation_state(job_panel._employee_ui_state(employee_id))
-		employee.set_speech_suppressed(employee_id == interaction_target)
+		var drawer_selected := job_panel.drawer_is_open() and job_panel.selected_employee_id() == employee_id
+		employee.set_drawer_selected(drawer_selected)
+		employee.set_speech_suppressed(employee_id == interaction_target or drawer_selected or employee.has_attention())
 		employee.set_interaction_highlighted(employee_id == interaction_target)
-		employee.set_ui_highlighted((job_panel.drawer_is_open() and job_panel.selected_employee_id() == employee_id) or (str(hover.get("kind", "")) == "employee" and str(hover.get("id", "")) == employee_id))
+		employee.set_ui_highlighted(str(hover.get("kind", "")) == "employee" and str(hover.get("id", "")) == employee_id)
 	_update_label_visibility(interaction_target)
 	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND if not hover.is_empty() else Input.CURSOR_ARROW)
 
@@ -613,38 +617,45 @@ func _yield_employee_passage(employee_id: String, destination: Vector2) -> void:
 	# Retain approval/work state after a small step aside; no job lifecycle change.
 	employee.walk_to(destination, EmployeeAvatar.WorkState.WANDERING, employee.work_state)
 
-func _update_label_visibility(priority_id: String) -> void:
+func _world_ui_obstacles() -> Array[Rect2]:
+	# Rendering metadata only: never alter furniture, navigation or collision.
 	var placed: Array[Rect2] = []
-	# World-space labels are indivisible: do not leave half a name or speech
-	# bubble visible beside an overlaid notebook. Use animated live bounds.
+	for placement: Dictionary in room.resolved_placements:
+		var rect: Rect2 = placement.world_visual_bounds
+		rect.position += room.global_position
+		placed.append(rect)
+	placed.append(clock_panel.get_global_rect())
 	placed.append(job_panel.rail_global_rect())
 	if job_panel._drawer_panel.is_visible_in_tree(): placed.append(job_panel.drawer_global_rect())
 	if job_panel._connection_panel.is_visible_in_tree(): placed.append(job_panel._connection_panel.get_global_rect())
 	if artifact_viewer.visible or (company_panel != null and company_panel.visible):
 		placed.append(get_viewport().get_visible_rect())
 	if founder_hud.delivery_visible(): placed.append(founder_hud._notification.get_global_rect())
-	# A contextual plaque must never hide the founder while approaching a desk.
-	placed.append(Rect2(player.position + Vector2(-24, -72), Vector2(48, 76)))
-	if founder_hud.interaction_visible(): placed.append(founder_hud._interaction_prompt.get_global_rect())
+	if founder_hud._movement_hint.visible: placed.append(founder_hud._movement_hint.get_global_rect())
+	return placed
+
+func _update_label_visibility(priority_id: String) -> void:
+	var placed := _world_ui_obstacles()
+	placed.append(WorldCalloutSkin.actor_rect(player.position))
+	for employee: EmployeeAvatar in _employees.values(): placed.append(WorldCalloutSkin.actor_rect(employee.position))
+	if founder_hud.interaction_visible(): placed.append(founder_hud.interaction_rect())
 	var ordered: Array[EmployeeAvatar] = []
 	for employee: EmployeeAvatar in _employees.values(): ordered.append(employee)
 	ordered.sort_custom(func(a: EmployeeAvatar, b: EmployeeAvatar) -> bool:
-		var a_priority := 2 if a.employee_id == priority_id else 1 if a.work_state == EmployeeAvatar.WorkState.WAITING_APPROVAL else 0
-		var b_priority := 2 if b.employee_id == priority_id else 1 if b.work_state == EmployeeAvatar.WorkState.WAITING_APPROVAL else 0
+		var a_priority := 2 if a.employee_id == priority_id else 1 if a.has_attention() else 0
+		var b_priority := 2 if b.employee_id == priority_id else 1 if b.has_attention() else 0
 		return a_priority > b_priority
 	)
 	for employee: EmployeeAvatar in ordered:
-		var rect := employee.world_label_rect()
-		var suppressed := false
-		for other_employee: EmployeeAvatar in ordered:
-			if other_employee != employee and rect.intersects(Rect2(other_employee.position + Vector2(-24, -72), Vector2(48, 76))):
-				suppressed = true
-		for other: Rect2 in placed:
-			if rect.intersects(other): suppressed = true
-		if employee.labels_suppressed != suppressed:
-			employee.labels_suppressed = suppressed
-			employee.queue_redraw()
-		if not suppressed and (employee._labels_visible() or employee._speech_visible): placed.append(rect)
+		var was_suppressed := employee.labels_suppressed
+		employee.labels_suppressed = false
+		var viewport := Rect2(18, 82, 1114, get_viewport().get_visible_rect().size.y - 100)
+		var body := employee.world_label_body_rect()
+		var candidate := WorldCalloutSkin.place(employee.position, body.size, placed, viewport, employee._speech_visible or employee.attention_cue_visible())
+		employee.labels_suppressed = not candidate.has_area()
+		if candidate.has_area(): employee.set_callout_position(candidate.position)
+		if was_suppressed != employee.labels_suppressed: employee.queue_redraw()
+		if not employee.labels_suppressed and (employee._labels_visible() or employee._speech_visible or employee.attention_cue_visible()): placed.append(employee.world_label_rect())
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST and not _quitting:

@@ -69,6 +69,8 @@ var _effect_duration: float = -1.0
 var _label_hold: float = 1.2
 var _interaction_highlighted: bool = false
 var _ui_highlighted: bool = false
+var _drawer_selected: bool = false
+var _callout_offset := Vector2(INF, INF)
 var _ui_presentation_state: String = ""
 var _status_override: String = ""
 var navigation: OfficeNavigation
@@ -133,6 +135,7 @@ func configure(record: EmployeeRecord, start_position: Vector2, desk: Vector2, r
 	add_child(_effect_sprite)
 	_label_layer = LabelLayer.new()
 	_label_layer.avatar = self
+	_label_layer.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_label_layer.z_as_relative = false
 	_label_layer.z_index = 3000
 	add_child(_label_layer)
@@ -376,7 +379,7 @@ func _update_idle(delta: float) -> void:
 			walk_to(wander_target, WorkState.WANDERING, WorkState.IDLE)
 
 func set_speech_suppressed(suppressed: bool) -> void:
-	if _speech_suppressed == suppressed:
+	if _speech_suppressed == suppressed and not (suppressed and _speech_visible):
 		return
 	_speech_suppressed = suppressed
 	if suppressed:
@@ -396,9 +399,37 @@ func set_ui_highlighted(highlighted: bool) -> void:
 	_ui_highlighted = highlighted
 	queue_redraw()
 
+func set_drawer_selected(selected: bool) -> void:
+	if _drawer_selected == selected: return
+	_drawer_selected = selected
+	if selected: _speech_visible = false
+	_sync_attention_presentation()
+	queue_redraw()
+
+func set_callout_position(world_position: Vector2) -> void:
+	var offset := world_position.round() - position.round()
+	if _callout_offset == offset: return
+	_callout_offset = offset
+	queue_redraw()
+
+func has_attention() -> bool:
+	return _ui_presentation_state in ["needs approval", "delivery ready", "needs retry", "cancelled"] or work_state == WorkState.WAITING_APPROVAL
+
+func attention_cue_visible() -> bool:
+	# A selected decision/delivery needs a legible cue even when the event burst
+	# is held on its nearly-empty first frame. Its animation remains untouched.
+	return has_attention() and (_drawer_selected or _effect_sprite == null or not _effect_sprite.visible) and not _labels_visible()
+
+func _sync_attention_presentation() -> void:
+	if _effect_sprite == null: return
+	# Only paint ownership changes. Do not toggle visible: it controls the
+	# event animation timer/expiry in _physics_process, even during a UI pause.
+	_effect_sprite.self_modulate.a = 0.0 if _drawer_selected and has_attention() else 1.0
+
 func set_ui_presentation_state(value: String) -> void:
 	if _ui_presentation_state == value: return
 	_ui_presentation_state = value
+	_sync_attention_presentation()
 	queue_redraw()
 
 func presentation_label() -> String:
@@ -458,9 +489,16 @@ func _draw() -> void:
 
 func draw_labels(canvas: Node2D) -> void:
 	if labels_suppressed: return
-	if _speech_visible:
+	if attention_cue_visible():
+		var cue := _attention_rect()
+		WorldCalloutSkin.draw(canvas, cue, WorldCalloutSkin.ACTOR_BOUNDS.get_center())
+		# Native miniature artwork, not the nearly empty first frame of a burst.
+		var icon := CozyUI.icon("document") if _ui_presentation_state == "delivery ready" else OperationsSkin.WORLD_ATTENTION
+		canvas.draw_texture(icon, cue.position + Vector2(4, 4))
+		return
+	if _speech_visible and not _drawer_selected:
 		var speech_lines := _wrap_speech(memory_line, 21)
-		canvas.draw_style_box(CozyUI.paper(), _speech_rect())
+		WorldCalloutSkin.draw(canvas, _speech_rect(), WorldCalloutSkin.ACTOR_BOUNDS.get_center())
 		for line_index: int in range(speech_lines.size()):
 			canvas.draw_string(SPEECH_FONT, _speech_baseline(line_index), speech_lines[line_index], HORIZONTAL_ALIGNMENT_CENTER, SPEECH_WIDTH - SPEECH_INSET.x * 2, SPEECH_FONT_SIZE, Color("151515"))
 	if not _labels_visible():
@@ -468,11 +506,11 @@ func draw_labels(canvas: Node2D) -> void:
 	var detail := _label_detail_visible()
 	var width := _name_width()
 	var rect := _nameplate_rect()
-	canvas.draw_style_box(CozyUI.card(Vector4(NAME_INSET.x, NAME_INSET.y, NAME_INSET.x, NAME_INSET.y)), rect)
+	WorldCalloutSkin.draw(canvas, rect, WorldCalloutSkin.ACTOR_BOUNDS.get_center())
 	var name_text := _fit_label(display_name, width - NAME_INSET.x * 2, NAME_FONT, NAME_FONT_SIZE)
 	canvas.draw_string(NAME_FONT, _name_baseline(), name_text, HORIZONTAL_ALIGNMENT_CENTER, width - NAME_INSET.x * 2, NAME_FONT_SIZE, Color("151515"))
 	if detail:
-		var attention := _ui_presentation_state in ["needs approval", "delivery ready", "needs retry", "cancelled"] or work_state == WorkState.WAITING_APPROVAL
+		var attention := has_attention()
 		var status := presentation_label()
 		var state_color := Color("963014") if attention else Color("51463a")
 		canvas.draw_string(STATUS_FONT, _status_baseline(), status, HORIZONTAL_ALIGNMENT_CENTER, width - NAME_INSET.x * 2, STATUS_FONT_SIZE, state_color)
@@ -486,7 +524,8 @@ func _name_width() -> float:
 func _nameplate_rect() -> Rect2:
 	var height := ceilf(NAME_FONT.get_height(NAME_FONT_SIZE)) + NAME_INSET.y * 2
 	if _label_detail_visible(): height += TEXT_LINE_GAP + ceilf(STATUS_FONT.get_height(STATUS_FONT_SIZE))
-	return Rect2(-_name_width() * 0.5, 8, _name_width(), ceilf(height * 0.5) * 2)
+	var offset := _callout_offset if _callout_offset.is_finite() else Vector2(-_name_width() * 0.5, 15)
+	return Rect2(offset, Vector2(_name_width(), ceilf(height * 0.5) * 2))
 
 func _name_baseline() -> Vector2:
 	return _nameplate_rect().position + NAME_INSET + Vector2(0, ceilf(NAME_FONT.get_ascent(NAME_FONT_SIZE)))
@@ -495,24 +534,34 @@ func _status_baseline() -> Vector2:
 	return _nameplate_rect().position + NAME_INSET + Vector2(0, ceilf(NAME_FONT.get_height(NAME_FONT_SIZE)) + TEXT_LINE_GAP + ceilf(STATUS_FONT.get_ascent(STATUS_FONT_SIZE)))
 
 func _speech_rect() -> Rect2:
-	var height := ceilf(SPEECH_FONT.get_height(SPEECH_FONT_SIZE)) * 2 + TEXT_LINE_GAP + SPEECH_INSET.y * 2
-	return Rect2(-SPEECH_WIDTH * 0.5, -142, SPEECH_WIDTH, maxf(62, ceilf(height * 0.5) * 2))
+	var line_count := maxi(1, _wrap_speech(memory_line, 21).size())
+	var height := ceilf(SPEECH_FONT.get_height(SPEECH_FONT_SIZE)) * line_count + TEXT_LINE_GAP * (line_count - 1) + SPEECH_INSET.y * 2
+	height = ceilf(height * 0.5) * 2
+	var offset := _callout_offset if _callout_offset.is_finite() else Vector2(-SPEECH_WIDTH * 0.5, -72 - height - 11)
+	return Rect2(offset, Vector2(SPEECH_WIDTH, height))
+
+func _attention_rect() -> Rect2:
+	return Rect2(_callout_offset if _callout_offset.is_finite() else Vector2(-16, -119), Vector2(32, 36))
 
 func _speech_baseline(line: int) -> Vector2:
 	return _speech_rect().position + SPEECH_INSET + Vector2(0, ceilf(SPEECH_FONT.get_ascent(SPEECH_FONT_SIZE)) + line * (ceilf(SPEECH_FONT.get_height(SPEECH_FONT_SIZE)) + TEXT_LINE_GAP))
 
 func _label_detail_visible() -> bool:
-	return _interaction_highlighted or _ui_highlighted or work_state == WorkState.WAITING_APPROVAL or (not _status_override.is_empty() and _label_hold > 0)
+	return not _drawer_selected and (_interaction_highlighted or _ui_highlighted or work_state == WorkState.WAITING_APPROVAL or (not _status_override.is_empty() and _label_hold > 0))
+
+func world_label_body_rect() -> Rect2:
+	return _attention_rect() if attention_cue_visible() else _speech_rect() if _speech_visible and not _drawer_selected else _nameplate_rect()
 
 func world_label_rect() -> Rect2:
-	var local := _speech_rect() if _speech_visible else _nameplate_rect()
+	var local := world_label_body_rect()
+	local = WorldCalloutSkin.bounds(local, WorldCalloutSkin.ACTOR_BOUNDS.get_center())
 	# Occlusion/hit-testing must use the same snapped geometry as LabelLayer.
 	return Rect2(position.round() + local.position, local.size)
 
 func _labels_visible() -> bool:
 	# Keep the existing contextual lifetime so even a small name cannot sit over
 	# a workstation forever. Hover/selection/attention reveal its second line.
-	return not labels_suppressed and not _speech_visible and (_interaction_highlighted or _ui_highlighted or _label_hold > 0 or work_state == WorkState.WAITING_APPROVAL)
+	return not labels_suppressed and not _drawer_selected and not _speech_visible and (_interaction_highlighted or _ui_highlighted or _label_hold > 0 or work_state == WorkState.WAITING_APPROVAL)
 
 func _fit_label(value: String, width: float, font: Font, font_size: int) -> String:
 	if font.get_string_size(value, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x <= width: return value
@@ -590,6 +639,18 @@ func _direction_name(direction: Vector2) -> StringName:
 	return &"front" if direction.y > 0.0 else &"back"
 
 func _wrap_speech(value: String, _max_characters: int) -> PackedStringArray:
+	var lines := _speech_words(value)
+	var safe_width := SPEECH_WIDTH - SPEECH_INSET.x * 2
+	var fits := lines.size() <= 2
+	for line: String in lines:
+		if SPEECH_FONT.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, SPEECH_FONT_SIZE).x > safe_width: fits = false
+	if fits and not lines.is_empty(): return lines
+	# Ambient speech is a complete intentional thought, not a chopped memory.
+	# The worker-owned memory remains untouched and is never rewritten here.
+	var ambient := "Let's test what works." if employee_id == "theo" else "One clear idea at a time."
+	return _speech_words(ambient)
+
+func _speech_words(value: String) -> PackedStringArray:
 	var lines := PackedStringArray()
 	var current := ""
 	var words := value.replace("\r", " ").replace("\n", " ").split(" ", false)
@@ -598,15 +659,9 @@ func _wrap_speech(value: String, _max_characters: int) -> PackedStringArray:
 		var word := words[index]
 		var candidate := word if current.is_empty() else "%s %s" % [current, word]
 		if SPEECH_FONT.get_string_size(candidate, HORIZONTAL_ALIGNMENT_LEFT, -1, SPEECH_FONT_SIZE).x > safe_width and not current.is_empty():
-			# A single long token (URL/path/Unicode word) must be fitted too;
-			# word wrapping alone previously let it paint outside the paper.
-			lines.append(_fit_label(current, safe_width, SPEECH_FONT, SPEECH_FONT_SIZE))
+			lines.append(current)
 			current = word
-			if lines.size() == 1:
-				lines.append(_fit_label(" ".join(words.slice(index)), safe_width, SPEECH_FONT, SPEECH_FONT_SIZE))
-				return lines
 		else:
 			current = candidate
-	if not current.is_empty() and lines.size() < 2:
-		lines.append(_fit_label(current, safe_width, SPEECH_FONT, SPEECH_FONT_SIZE))
+	if not current.is_empty(): lines.append(current)
 	return lines

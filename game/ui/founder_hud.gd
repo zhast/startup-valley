@@ -4,6 +4,15 @@ extends Control
 signal chat_requested(employee_id: String)
 signal delivery_requested(job_id: String, employee_id: String)
 
+class InteractionButton extends Button:
+	var callout_target := Vector2.ZERO
+	func _draw() -> void:
+		WorldCalloutSkin.draw(self, Rect2(Vector2.ZERO, size), callout_target, "focused" if has_focus() else "hover" if is_hovered() else "normal")
+		WorldCalloutSkin.draw_keycap(self, Rect2(Vector2(10, 8), WorldCalloutSkin.KEYCAP_SIZE), "E", is_pressed())
+		var font := GameFonts.BOLD
+		var baseline := floorf((size.y - font.get_height(16)) * 0.5) + ceilf(font.get_ascent(16))
+		draw_string(font, Vector2(44, baseline), "Chat", HORIZONTAL_ALIGNMENT_CENTER, size.x - 54, 16, CozyUI.INK)
+
 const MOVEMENT_TEXTURE: Texture2D = preload("res://assets/runtime/ui/founders-ledger/movement-plaque.png")
 
 const CHARCOAL := Color("151515")
@@ -85,22 +94,26 @@ func _build_notification() -> void:
 	_notification.add_child(view_button)
 
 func _build_interaction_prompt() -> void:
-	var prompt := Panel.new()
+	var prompt := Control.new()
 	prompt.name = "InteractionPrompt"
 	prompt.size = Vector2(112, 44)
-	prompt.add_theme_stylebox_override("panel", CozyUI.paper())
 	prompt.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(prompt)
 	_interaction_prompt = prompt
 	_interaction_prompt.visible = false
-	var button := Button.new()
+	var button := InteractionButton.new()
 	button.name = "ChatAction"
-	button.text = "E · Chat"
+	button.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	button.tooltip_text = "Chat with employee (E)"
 	button.position = Vector2.ZERO
 	button.size = Vector2(112.0, 44.0)
-	button.focus_mode = Control.FOCUS_NONE
+	button.focus_mode = Control.FOCUS_ALL
 	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	CozyUI.button(button, "quiet")
+	# One authored surface, not an opaque button covering a second paper panel.
+	for state: String in ["normal", "hover", "pressed", "disabled", "hover_pressed", "focus"]:
+		button.add_theme_stylebox_override(state, StyleBoxEmpty.new())
+	button.set_meta("cozy_material", "world-callout")
 	button.pressed.connect(_request_chat)
 	_interaction_prompt.add_child(button)
 
@@ -140,7 +153,8 @@ func _label(text_value: String, font_size: int, color: Color) -> Label:
 func update_interaction(
 	player_position: Vector2,
 	employees: Dictionary[String, EmployeeAvatar],
-	enabled: bool
+	enabled: bool,
+	obstacles: Array[Rect2] = []
 ) -> void:
 	var closest: EmployeeAvatar = null
 	var closest_distance := INTERACTION_DISTANCE
@@ -158,41 +172,24 @@ func update_interaction(
 		_interaction_prompt.visible = false
 		return
 	_interaction_target_id = closest.employee_id
-	# Test the prompt itself against every actor, not just the lower-priority
-	# nameplates. Two people standing side by side can occupy its usual left slot.
-	var silhouettes: Array[Rect2] = [Rect2(player_position + Vector2(-24, -72), Vector2(48, 76))]
+	var silhouettes: Array[Rect2] = obstacles.duplicate()
+	silhouettes.append(WorldCalloutSkin.actor_rect(player_position))
 	for employee: EmployeeAvatar in employees.values():
-		silhouettes.append(Rect2(employee.position + Vector2(-24, -72), Vector2(48, 76)))
-	# Derive slots from the real prompt and actor silhouette. Fixed offsets
-	# narrower than this plaque made every candidate overlap at the room edge.
+		silhouettes.append(WorldCalloutSkin.actor_rect(employee.position))
 	var prompt_size := _interaction_prompt.size
-	var actor_bounds := Rect2(-24, -72, 48, 76)
-	var gap := 8.0
-	var left := actor_bounds.position.x - prompt_size.x - gap
-	var right := actor_bounds.end.x + gap
-	var above := actor_bounds.position.y - prompt_size.y - gap
-	var below := actor_bounds.end.y + gap
-	var centered_x := -prompt_size.x * 0.5
-	var centered_y := actor_bounds.get_center().y - prompt_size.y * 0.5
-	var offsets: Array[Vector2] = [
-		Vector2(left, centered_y), Vector2(right, centered_y),
-		Vector2(centered_x, above), Vector2(centered_x, below),
-		Vector2(left, above), Vector2(right, above),
-		Vector2(left, below), Vector2(right, below),
-	]
-	for offset: Vector2 in offsets:
-		var prompt_position := closest.position + offset
-		prompt_position.x = clampf(prompt_position.x, 18.0, PLAYFIELD_RIGHT - prompt_size.x - 18.0)
-		prompt_position.y = clampf(prompt_position.y, 82.0, get_viewport_rect().size.y - prompt_size.y - 18.0)
-		var candidate := Rect2(prompt_position.round(), prompt_size)
-		var overlaps := false
-		for silhouette: Rect2 in silhouettes:
-			if candidate.intersects(silhouette): overlaps = true
-		if overlaps: continue
-		_interaction_prompt.position = candidate.position
-		_interaction_prompt.visible = true
-		return
-	_interaction_prompt.hide()
+	var viewport := Rect2(18, 82, PLAYFIELD_RIGHT - 36, get_viewport_rect().size.y - 100)
+	var candidate := WorldCalloutSkin.place(closest.position, prompt_size, silhouettes, viewport, true)
+	_interaction_prompt.visible = candidate.has_area()
+	if not candidate.has_area(): return
+	_interaction_prompt.position = candidate.position
+	var button := _interaction_prompt.get_node("ChatAction") as InteractionButton
+	button.callout_target = WorldCalloutSkin.actor_rect(closest.position).get_center() - candidate.position
+	button.tooltip_text = "Chat with %s (E)" % closest.display_name
+	button.queue_redraw()
+
+func interaction_rect() -> Rect2:
+	var button := _interaction_prompt.get_node("ChatAction") as InteractionButton
+	return WorldCalloutSkin.bounds(_interaction_prompt.get_global_rect(), _interaction_prompt.global_position + button.callout_target)
 
 func show_delivery(job_id: String, employee_id: String, employee_name: String, detail: String) -> void:
 	_delivery_job_id = job_id
