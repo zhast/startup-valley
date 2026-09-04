@@ -25,6 +25,31 @@ func click_control(control: Control) -> void:
 		await process_frame
 	await frames()
 
+func key(code: Key) -> void:
+	for pressed: bool in [true, false]:
+		var event := InputEventKey.new()
+		event.keycode = code
+		event.physical_keycode = code
+		event.pressed = pressed
+		root.push_input(event, true)
+		await process_frame
+	await frames()
+
+func check_attachment_state(panel: JobPanel, expected: bool, context: String) -> void:
+	check(panel._attachment_picker.visible == expected, context + ": attachment content has expected state")
+	check(panel._attachment_label.visible == expected, context + ": attachment heading follows content")
+	check(bool(panel._attachment_toggle.get_meta("cozy_disclosure_expanded", false)) == expected, context + ": chevron agrees with content")
+
+func choose_option(option: OptionButton, index: int) -> void:
+	await click_control(option)
+	var popup := option.get_popup()
+	check(popup.visible, "Purpose selector opens through real pointer input")
+	for attempt: int in range(option.item_count + 1):
+		if popup.get_focused_item() == index: break
+		await key(KEY_DOWN)
+	check(popup.get_focused_item() == index, "Keyboard navigation reaches the intended purpose")
+	await key(KEY_ENTER)
+
 func _initialize() -> void:
 	OS.set_environment("STARTUP_VALLEY_NO_WORKER", "1")
 	call_deferred("_run")
@@ -61,6 +86,28 @@ func _run() -> void:
 	await frames(20)
 	check(panel._attachment_picker.is_visible_in_tree(), "Optional context disclosure reveals the actual attachment picker")
 	check(panel._attachment_picker.get_global_rect().end.x <= panel.drawer_global_rect().end.x, "Long attachment cannot widen Assign")
+	# The original audit used a handler probe. Reproduce its actual user path:
+	# open the purpose popup, select a preset with the keyboard, then return.
+	var assignment_scroll := panel._tabs.get_tab_control(1).get_child(0) as ScrollContainer
+	assignment_scroll.ensure_control_visible(panel._purpose_picker)
+	await frames()
+	await choose_option(panel._purpose_picker, 1)
+	check(not panel._custom_mode, "Real popup keyboard selection chooses a preset purpose")
+	check_attachment_state(panel, false, "Preset selection")
+	await choose_option(panel._purpose_picker, 0)
+	check(panel._custom_mode, "Real popup keyboard selection returns to a custom purpose")
+	check_attachment_state(panel, false, "Purpose round-trip")
+	await click_control(panel._attachment_toggle)
+	check_attachment_state(panel, true, "Reopened attachment")
+	await click_control(panel._team_buttons["theo"])
+	await click_control(panel._tab_buttons[1])
+	check_attachment_state(panel, false, "Employee switch")
+	await click_control(panel._attachment_toggle)
+	await click_control(panel._drawer_close_button)
+	await click_control(panel._team_buttons["theo"])
+	await click_control(panel._tab_buttons[1])
+	check_attachment_state(panel, panel._attachment_picker.visible, "Drawer reopening")
+	await click_control(panel._team_buttons["mira"])
 	var definition := {"id": "website", "employeeId": "mira", "title": "Build a website", "assignment": "Create the site files.", "criteria": ["Complete site"], "files": ["site/index.html", "site/styles.css"], "state": "available"}
 	panel.set_journey_state({"milestones": [definition]})
 	panel.prepare_milestone(definition)
