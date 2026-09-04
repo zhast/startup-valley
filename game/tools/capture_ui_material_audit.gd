@@ -60,7 +60,23 @@ func _save_material_capture(name_value: String) -> void:
 	var controls: Array[Dictionary] = []
 	_material_inventory(_main, controls)
 	var panel := _main.job_panel
-	var state := {"attachmentContentVisible": panel._attachment_picker.visible, "attachmentArrowExpanded": panel._attachment_toggle.get_meta("cozy_disclosure_expanded", false), "usageVisible": panel._usage_page.visible, "workDetailsVisible": panel._activity_details.visible, "activityScrollRect": str(panel._activity_scroll.get_global_rect()), "spendFooterRect": str(panel._activity_footer.get_global_rect())}
+	# Hidden tabs retain local visibility and stale layout rectangles. Record
+	# those logical states separately; never present them as painted evidence.
+	var activity_visible := panel._activity_scroll.is_visible_in_tree()
+	var footer_visible := panel._activity_footer.is_visible_in_tree()
+	var state := {
+		"attachmentExpanded": panel._attachment_expanded,
+		"attachmentControlVisible": panel._attachment_toggle.is_visible_in_tree(),
+		"attachmentContentVisible": panel._attachment_picker.is_visible_in_tree(),
+		"attachmentArrowExpanded": panel._attachment_toggle.get_meta("cozy_disclosure_expanded", false),
+		"usageExpanded": panel._usage_expanded,
+		"usageVisible": panel._usage_page.is_visible_in_tree(),
+		"workDetailsExpanded": panel._activity_details_expanded,
+		"workDetailsVisible": panel._activity_details.is_visible_in_tree(),
+		"activityScrollVisible": activity_visible,
+		"activityScrollRect": str(panel._activity_scroll.get_global_rect()) if activity_visible else null,
+		"spendFooterRect": str(panel._activity_footer.get_global_rect()) if footer_visible else null,
+	}
 	_material_captures.append({"name": name_value, "path": path, "controls": controls, "state": state})
 	var file := FileAccess.open(_material_output().path_join("manifest.json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify({"workerDisabled": true, "productionSkins": true, "productionTypography": true, "viewport": [1280, 720], "captures": _material_captures, "limitations": ["Audit evidence, not a visual pass/fail verdict.", "Pointer events are injected through Godot, not OS hardware.", "Only disclosure and dropdown actions are clicked; no job/provider requests."]}, "\t"))

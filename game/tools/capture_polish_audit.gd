@@ -453,11 +453,22 @@ func _capture_journal_and_approval() -> void:
 	await _press_control(panel._usage_toggle)
 	await _press_control(panel._usage_back_button)
 	_check(panel._activity_details.is_visible_in_tree() and panel._activity_scroll.scroll_vertical == details_scroll and panel._activity_footer.get_global_rect() == footer_rect, "combined-disclosures-restore-work-context")
+	var visible_actions_fit := true
+	var activity_viewport := panel._activity_scroll.get_global_rect()
+	for control: Control in [approve, _button_named(panel._approval_box, "Deny"), panel._steer_input, panel._steer_button, panel._activity_cancel, panel._activity_details_toggle]:
+		var rect := control.get_global_rect()
+		if control.is_visible_in_tree() and rect.intersects(activity_viewport) and not activity_viewport.encloses(rect): visible_actions_fit = false
+	_check(visible_actions_fit, "combined-disclosures-no-partial-action-controls")
 	await _checkpoint("work-details-restored")
 	await _ensure_visible(approve)
 	_main.job_panel.approval_decided.connect(func(id: String, approval_id: String, approved: bool) -> void: _ui_dispatches.append({"method": "approval", "jobId": id, "approvalId": approval_id, "approved": approved}))
 	await _press_control(approve)
 	_check(_ui_dispatches.size() == 2 and _ui_dispatches[1].approved, "approval-click-dispatch")
+	await _frames(2)
+	var employee := _main.get_employee("mira")
+	_check(not employee.has_attention() and not employee.attention_cue_visible() and employee._effect_sprite.self_modulate.a == 0.0, "answered-approval-clears-stale-world-cue")
+	_check(panel._activity_scroll.scroll_vertical == 0 and panel._activity_scroll.get_global_rect().encloses(panel._status_card.get_global_rect()), "answered-approval-reveals-result")
+	await _checkpoint("approval-answered")
 	await _end_scenario()
 
 func _capture_delivery_studio_reader() -> void:

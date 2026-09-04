@@ -19,7 +19,7 @@ func _run() -> void:
 		{"name": "day-closing", "mode": "closing", "hires": 2},
 		{"name": "day-summary", "mode": "summary", "hires": 2},
 		{"name": "day-summary-large-values", "mode": "summary", "hires": 2, "largeValues": true},
-		{"name": "journey-evaluating", "mode": "journey", "hires": 1, "status": "active", "evaluating": true},
+		{"name": "journey-evaluating", "mode": "journey", "hires": 1, "evaluating": true},
 		{"name": "journey-long-error", "mode": "journey", "hires": 1, "status": "revision_required", "error": true},
 		{"name": "journey-evaluation-retry", "mode": "journey", "hires": 1, "retry": true},
 		{"name": "reset-confirmation", "mode": "confirm", "hires": 2},
@@ -36,6 +36,15 @@ func _run() -> void:
 			summary["aiSpend"] = 1234.5678
 			_main.company_panel.show_summary(summary)
 		if bool(fixture.get("evaluating", false)):
+			# Evaluation starts after delivery, not on a running work order. The
+			# inherited active fixture accepts a submission and changes Activity,
+			# which requests files from the intentionally absent worker. Hydrate
+			# this completed projection directly instead of masking that error.
+			var evaluation_state := _state(1, "available")
+			var completed_work: Dictionary = evaluation_state["milestones"][0]
+			completed_work.merge({"state": "active", "jobId": "website-audit", "jobStatus": "completed", "evaluation": null}, true)
+			_main._on_journey(evaluation_state)
+			_main.job_panel.show_recent_jobs([{"id": "website-audit", "employeeId": "mira", "title": "Build a website", "status": "completed", "summary": "The requested website files are saved.", "inputTokens": 800, "outputTokens": 200, "cost": 0.02}])
 			_main.company_panel.busy = true
 			_main.company_panel._pending_method = "milestone.evaluate"
 			_main.company_panel._pending_job_id = "website-audit"
@@ -53,6 +62,13 @@ func _run() -> void:
 		await process_frame
 		_main.company_panel._scroll.scroll_vertical = int(fixture.get("scroll", 0))
 		await _settle(2)
+		if bool(fixture.get("evaluating", false)):
+			var completed_work: Dictionary = _main.company_panel.state["milestones"][0]
+			if completed_work.get("jobStatus") != "completed" or not _main.company_panel._evaluation_pending() or not _main.job_panel.active_job_id().is_empty() or not _main.job_panel._worker_connected or not _main.job_panel._worker_error.is_empty():
+				push_error("Evaluation capture must show completed work and one pending evaluation without an active job or a leaked worker error.")
+				await _cleanup()
+				quit(1)
+				return
 		RenderingServer.force_draw(false)
 		var path := output.path_join(str(fixture.name) + ".png")
 		if root.get_texture().get_image().save_png(path) != OK:
