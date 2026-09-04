@@ -37,9 +37,10 @@ func fixture() -> void:
 	for employee: EmployeeAvatar in main._employees.values(): employee.set_physics_process(false)
 	check(main.worker_client._stdio == null and main.worker_client._process_id == -1, "Fixture never starts a worker or opens saved company state")
 
-func event(kind: StringName) -> void:
+func event(kind: StringName, tool_name: String = "") -> void:
 	var record := WorkerEventRecord.new()
 	record.type = kind
+	record.tool = tool_name
 	record.approval_id = "fixture-approval" if kind == &"approval.required" else ""
 	if kind == &"approval.required": record.action = "Publish the launch brief to the shared Studio for Theo to review."
 	main._on_job_event("fixture-job", record)
@@ -149,10 +150,15 @@ func capture(name_value: String) -> void:
 func click(point: Vector2, capture_prefix: String = "") -> void:
 	var move := InputEventMouseMotion.new()
 	move.position = point
+	if DisplayServer.get_name() != "headless": root.warp_mouse(point)
 	root.push_input(move, true)
 	await frames(1)
 	if not capture_prefix.is_empty(): await capture(capture_prefix + "-hover")
 	for down: bool in [true, false]:
+		# Capturing a held button yields rendered frames; keep the test pointer
+		# at the intended hit target rather than inheriting an OS mouse position.
+		root.push_input(move, true)
+		await frames(1)
 		var event_value := InputEventMouseButton.new()
 		event_value.position = point
 		event_value.button_index = MOUSE_BUTTON_LEFT
@@ -265,6 +271,9 @@ func check_live_attention() -> void:
 		check(not employee._labels_visible(), "Live selected attention does not restore a duplicate name/status card")
 		check([employee.position, employee.work_state, employee._route, employee._has_target, employee._activity, employee._effect_duration, employee._effect_elapsed, employee._effect_sprite.region_rect, main.day_clock.minute_of_day] == unchanged, "Cue ownership changes no event, movement, timer or clock state")
 		safe_callout(employee.world_label_rect(), "Live selected attention")
+		# Observe the settled production drawer/toast, not a frame mid-entrance.
+		# This waits only in the fixture; event timing and actor pose stay intact.
+		await create_timer(0.22).timeout
 		await capture("drawer-live-approval-cue" if kind == &"approval.required" else "drawer-live-delivery-cue")
 		main.job_panel.close_drawer(false)
 		main._process(0)
@@ -272,11 +281,62 @@ func check_live_attention() -> void:
 		check(not employee.attention_cue_visible(), "Returning to the world still paints only one attention cue")
 		check(employee._effect_elapsed == unchanged[6], "Returning to the world does not reset or advance event timing")
 
+func check_answered_approval() -> void:
+	fixture()
+	var employee := main.get_employee("mira")
+	employee.position = Vector2(448, 592)
+	main.get_employee("theo").position = Vector2(752, 592)
+	main.player.position = Vector2(560, 624)
+	begin()
+	event(&"job.started")
+	event(&"approval.required")
+	main.job_panel.open_drawer(false)
+	main.job_panel._tabs.current_tab = 2
+	main._process(0)
+	await create_timer(0.22).timeout
+	check(employee.has_attention() and employee.attention_cue_visible() and not employee.labels_suppressed, "An unanswered live approval retains its selected world cue")
+	var decisions: Array[bool] = []
+	main.job_panel.approval_decided.connect(func(_job: String, _approval: String, approved: bool) -> void: decisions.append(approved))
+	var approve: Button
+	for candidate: Node in main.job_panel._approval_box.find_children("*", "Button", true, false):
+		if (candidate as Button).text == "Approve": approve = candidate as Button
+	check(approve != null, "Live approval exposes a real Approve button")
+	if approve == null: return
+	main.job_panel._activity_scroll.ensure_control_visible(approve)
+	await frames(3)
+	check(approve.is_visible_in_tree() and not approve.disabled and main.job_panel._activity_scroll.get_global_rect().encloses(approve.get_global_rect()), "Approve has a visible, enabled, unclipped hit target")
+	var unchanged := [employee.position, employee.work_state, employee._route.duplicate(), employee._has_target, employee._activity, employee._effect_duration, employee._effect_elapsed, employee._effect_sprite.region_rect, main.day_clock.minute_of_day]
+	await click(approve.get_global_rect().get_center())
+	main._process(0)
+	check(decisions == [true], "Actual Approve mouse release dispatches one decision")
+	check(main.job_panel._employee_ui_state("mira") == "working" and employee.presentation_label() == "Working", "Answered approval agrees with the Activity and rail business state")
+	check(not employee.has_attention() and not employee.attention_cue_visible(), "Answered approval immediately clears the anchored world attention cue")
+	check(employee._effect_sprite.visible and employee._effect_sprite.self_modulate.a == 0, "Stale physical approval burst stops painting without changing its timer ownership")
+	check([employee.position, employee.work_state, employee._route, employee._has_target, employee._activity, employee._effect_duration, employee._effect_elapsed, employee._effect_sprite.region_rect, main.day_clock.minute_of_day] == unchanged, "Answering approval changes no pose, route, activity, effect timing or clock state")
+	await create_timer(0.22).timeout
+	await capture("drawer-approval-answered")
+	main.job_panel.close_drawer(false)
+	main._process(0)
+	check(not employee.attention_cue_visible() and employee._effect_sprite.self_modulate.a == 0, "Closing the drawer cannot resurrect an answered approval cue")
+	main.job_panel.open_drawer(false)
+	main.job_panel._tabs.current_tab = 2
+	main._process(0)
+	event(&"tool.started", "write_file")
+	check(employee._activity == &"typing" and employee._effect_sprite.visible and employee._effect_sprite.self_modulate.a == 1, "The next real tool event immediately restores its own working effect")
+	main._process(0)
+	check(not employee.has_attention() and not employee.attention_cue_visible(), "Resumed tool activity does not revive a decision cue")
+	await create_timer(0.22).timeout
+	await capture("drawer-approval-tool-resumed")
+	event(&"approval.required")
+	main._process(0)
+	check(employee.has_attention() and employee.attention_cue_visible() and employee._effect_sprite.self_modulate.a == 0, "A later genuine pending approval is not hidden by the earlier answer")
+
 func run() -> void:
 	root.size = Vector2i(1280, 720)
 	check_world_typography()
 	await check_callout_integration()
 	await check_live_attention()
+	await check_answered_approval()
 	fixture()
 	begin()
 	event(&"job.started")

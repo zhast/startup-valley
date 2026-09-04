@@ -413,7 +413,11 @@ func set_callout_position(world_position: Vector2) -> void:
 	queue_redraw()
 
 func has_attention() -> bool:
-	return _ui_presentation_state in ["needs approval", "delivery ready", "needs retry", "cancelled"] or work_state == WorkState.WAITING_APPROVAL
+	# Once projected, business state owns attention. An answered approval can
+	# leave its physical pose pending until the next worker event arrives.
+	if not _ui_presentation_state.is_empty():
+		return _ui_presentation_state in ["needs approval", "delivery ready", "needs retry", "cancelled"]
+	return work_state == WorkState.WAITING_APPROVAL
 
 func attention_cue_visible() -> bool:
 	# A selected decision/delivery needs a legible cue even when the event burst
@@ -424,7 +428,8 @@ func _sync_attention_presentation() -> void:
 	if _effect_sprite == null: return
 	# Only paint ownership changes. Do not toggle visible: it controls the
 	# event animation timer/expiry in _physics_process, even during a UI pause.
-	_effect_sprite.self_modulate.a = 0.0 if _drawer_selected and has_attention() else 1.0
+	var stale_approval := _activity == &"approval" and not _ui_presentation_state.is_empty() and _ui_presentation_state != "needs approval"
+	_effect_sprite.self_modulate.a = 0.0 if stale_approval or (_drawer_selected and has_attention()) else 1.0
 
 func set_ui_presentation_state(value: String) -> void:
 	if _ui_presentation_state == value: return
@@ -581,6 +586,8 @@ func _set_activity(kind: StringName, duration: float = -1.0) -> void:
 	_effect_sprite.visible = not kind.is_empty()
 	if _effect_sprite.visible:
 		_effect_sprite.region_rect = PolishArt.effect_region(kind, 0)
+	# A new real event takes paint ownership back from a superseded decision.
+	_sync_attention_presentation()
 	_hold_label()
 
 func _update_character_frame() -> void:
