@@ -438,6 +438,23 @@ func _capture_journal_and_approval() -> void:
 	var approve := _button_named(_main.job_panel._approval_box, "Approve")
 	await _ensure_visible(approve)
 	await _checkpoint("approval-visible")
+	var panel := _main.job_panel
+	var footer_rect := panel._activity_footer.get_global_rect()
+	var approval_scroll := panel._activity_scroll.scroll_vertical
+	await _press_control(panel._usage_toggle)
+	_check(panel._usage_page.is_visible_in_tree() and not panel._activity_scroll.visible and panel._activity_footer.get_global_rect() == footer_rect, "approval-ledger-keeps-footer-footprint")
+	await _checkpoint("approval-ledger")
+	await _press_control(panel._usage_back_button)
+	_check(panel._activity_scroll.is_visible_in_tree() and panel._activity_scroll.scroll_vertical == approval_scroll, "ledger-back-restores-approval")
+	await _ensure_visible(panel._activity_details_toggle)
+	await _press_control(panel._activity_details_toggle)
+	var details_scroll := panel._activity_scroll.scroll_vertical
+	await _checkpoint("work-details-revealed")
+	await _press_control(panel._usage_toggle)
+	await _press_control(panel._usage_back_button)
+	_check(panel._activity_details.is_visible_in_tree() and panel._activity_scroll.scroll_vertical == details_scroll and panel._activity_footer.get_global_rect() == footer_rect, "combined-disclosures-restore-work-context")
+	await _checkpoint("work-details-restored")
+	await _ensure_visible(approve)
 	_main.job_panel.approval_decided.connect(func(id: String, approval_id: String, approved: bool) -> void: _ui_dispatches.append({"method": "approval", "jobId": id, "approvalId": approval_id, "approved": approved}))
 	await _press_control(approve)
 	_check(_ui_dispatches.size() == 2 and _ui_dispatches[1].approved, "approval-click-dispatch")

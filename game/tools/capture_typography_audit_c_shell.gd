@@ -1,10 +1,11 @@
 extends "res://tools/capture_ui_shell_audit.gd"
 const C_OVERLAY = preload("res://tools/typography-options/audit_c_overlay.gd")
 const C_OUTPUT := "res://tests/output/typography-audit-c-shell"
-var _production := "--production" in OS.get_cmdline_user_args()
+var _production := "--production" in OS.get_cmdline_user_args() or "--material-after" in OS.get_cmdline_user_args()
 
 func _run() -> void:
 	var output := C_OUTPUT + ("-production" if _production else "")
+	if "--material-after" in OS.get_cmdline_user_args(): output = "res://tests/output/ui-material-audit-after-shell"
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
 	root.size = Vector2i(1280, 720)
 	var cases: Array[Dictionary] = [

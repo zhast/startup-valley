@@ -1,6 +1,54 @@
 # UI immersion and component consistency audit
 
-Date: 2026-09-03. Audit only; findings below are **not implemented**.
+Date: 2026-09-03. Original audit plus an implementation checkpoint.
+
+## Checkpoint status — implementation saved, final acceptance pending
+
+The findings below preserve the original before-evidence, not the current
+implementation state. A user-requested Git checkpoint now includes the shared
+notebook material family, native small glyphs/portrait crops, screen integration,
+anchored world callouts, and regression/capture tooling. The approved C font
+roles, office, worker contracts, persistence and provider behavior are unchanged.
+
+Implemented changes include the separate Activity ledger with a stable spend
+footer and Back/Escape restoration, synchronized attachment disclosures, full
+collapsed Assign controls, full-height founder-only onboarding paper, clearer
+connection/usage copy, and single approval/delivery cues during drawer pause.
+Shared styling covers tabs, quiet actions, input/card/dialogue surfaces, focus,
+close controls, dropdown marks, scrollbars and slider tracks.
+
+Focused rendered verification passes: foundation 200, drawer 2,223, company 3,702,
+reader/HUD 222, and world 419 checks, all with zero failures. The latest drawer
+run has 17 native captures and all four spend-ink cases contain zero pixels
+outside the safe paper; the latest world run has 10 captures including actual
+approval and completion events. Headless runs cover the same components plus
+gameplay/UI flow and project validation. These counts establish specific
+technical properties, not final human aesthetic approval.
+
+Current focused evidence (generated locally, excluded from Git):
+
+- [Drawer results](../game/tests/output/ui-redesign/drawer/results.json)
+- [World-callout results](../game/tests/output/ui-material-world/results.json)
+- [Native material specimen](../game/tests/output/ui-material-specimen/manifest.json)
+
+The broader 37-state main capture, 14-state shell capture, motion audit and
+five-mode scaling run passed before the last Assign/onboarding/copy and live
+attention-cue fixes. They must be refreshed and reviewed before final acceptance.
+The latest live-event world images also catch part of the drawer entrance fade;
+they prove the world cue, not a settled whole-screen composition. All 12 audit
+findings still require final evidence-backed dispositions. No paid calls or
+real-save changes were made. This checkpoint is not completion of the goal.
+
+Reproduce production evidence without overwriting the original audit captures:
+
+```sh
+godot --path game --resolution 1280x720 --script res://tools/capture_ui_material_specimen.gd
+godot --path game --resolution 1280x720 --fixed-fps 30 --script res://tools/capture_ui_material_audit.gd -- --after
+godot --path game --resolution 1280x720 --fixed-fps 30 --script res://tools/capture_typography_audit_c_shell.gd -- --material-after
+sh dev/tools/build_ui_immersion_contact_sheets.sh
+```
+
+## Original audit
 
 ## Verdict
 

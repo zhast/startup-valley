@@ -25,7 +25,7 @@ const REQUIRED_UI_CHECKS := {
 	"team-drawer-controls": ["mina-rail-selection", "theo-rail-selection"],
 	"chat-and-work-order": ["visible-editable-text-focus", "real-keyboard-text-entry", "chat-only-dispatch", "chat-waiting-disabled", "chat-to-editable-work-draft"],
 	"work-controls": ["dropdown-selection-changed", "visible-editable-text-focus", "real-keyboard-text-entry", "confirmed-assignment-dispatch", "assignment-pending-disabled", "disabled-assignment-no-double-dispatch"],
-	"journal-and-approval": ["activity-only-steering-dispatch", "steering-pending-disabled", "approval-click-dispatch"],
+	"journal-and-approval": ["activity-only-steering-dispatch", "steering-pending-disabled", "approval-ledger-keeps-footer-footprint", "ledger-back-restores-approval", "combined-disclosures-restore-work-context", "approval-click-dispatch"],
 	"delivery-studio-reader": ["delivery-preview-in-first-view", "preview-opens-reader-before-decision", "reader-wheel-scroll", "reader-close-button-pressed", "reader-click-close", "reader-reopen-reset", "reader-reopen-retains-document", "reader-escape-close", "preview-before-promotion-dispatch-order", "studio-file-selection", "studio-reader-retains-document"],
 	"queued-errors-and-overflow": ["worker-error-retry-visible", "worker-recovery-distinct"],
 }

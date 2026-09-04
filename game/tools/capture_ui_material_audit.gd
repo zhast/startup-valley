@@ -4,6 +4,9 @@ extends "res://tools/capture_visual_review.gd"
 const MATERIAL_OUTPUT := "res://tests/output/ui-material-audit"
 var _material_captures: Array[Dictionary] = []
 
+func _material_output() -> String:
+	return MATERIAL_OUTPUT + ("-after" if OS.get_cmdline_user_args().has("--after") else "")
+
 func _capture(name_value: String) -> bool:
 	await _save_material_capture(name_value)
 	if name_value == "ui-journal-active":
@@ -20,6 +23,8 @@ func _capture(name_value: String) -> bool:
 		await _save_material_capture("work-details-expanded")
 		await _material_click(panel._usage_toggle)
 		await _save_material_capture("work-and-usage-expanded")
+		await _material_click(panel._usage_back_button)
+		await _save_material_capture("work-restored-after-usage")
 	if name_value == "ui-journal-approval":
 		await _material_click(_main.job_panel._usage_toggle)
 		await _save_material_capture("approval-usage-expanded")
@@ -32,10 +37,13 @@ func _capture(name_value: String) -> bool:
 		await _material_click(panel._attachment_toggle)
 		assert(panel._attachment_picker.visible)
 		await _save_material_capture("attachment-expanded")
-		# Invoke the same purpose-change path as the selector without submitting
-		# a work order. This is a fixture transition, not a hardware-input claim.
-		panel._choose_work_purpose(1)
-		panel._choose_work_purpose(0)
+		# Exercise the actual selector with pointer + keyboard, never a handler
+		# probe. This does not submit work or start a provider session.
+		var form_scroll := panel._tabs.get_tab_control(1).get_child(0) as ScrollContainer
+		form_scroll.ensure_control_visible(panel._purpose_picker)
+		await _settle(3)
+		await _material_option(panel._purpose_picker, 1)
+		await _material_option(panel._purpose_picker, 0)
 		await _settle(3)
 		await _save_material_capture("attachment-after-template-roundtrip")
 	return true
@@ -44,17 +52,17 @@ func _save_material_capture(name_value: String) -> void:
 	await create_timer(0.25).timeout
 	await process_frame
 	RenderingServer.force_draw(false)
-	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(MATERIAL_OUTPUT))
-	var path := MATERIAL_OUTPUT.path_join(name_value + ".png")
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(_material_output()))
+	var path := _material_output().path_join(name_value + ".png")
 	var rendered := root.get_texture().get_image()
 	assert(rendered.get_size() == Vector2i(1280, 720))
 	assert(rendered.save_png(path) == OK)
 	var controls: Array[Dictionary] = []
 	_material_inventory(_main, controls)
 	var panel := _main.job_panel
-	var state := {"attachmentContentVisible": panel._attachment_picker.visible, "attachmentArrowExpanded": panel._attachment_toggle.get_meta("cozy_disclosure_expanded", false), "usageVisible": panel._usage_label.visible, "workDetailsVisible": panel._activity_details.visible, "activityScrollRect": str(panel._activity_scroll.get_global_rect())}
+	var state := {"attachmentContentVisible": panel._attachment_picker.visible, "attachmentArrowExpanded": panel._attachment_toggle.get_meta("cozy_disclosure_expanded", false), "usageVisible": panel._usage_page.visible, "workDetailsVisible": panel._activity_details.visible, "activityScrollRect": str(panel._activity_scroll.get_global_rect()), "spendFooterRect": str(panel._activity_footer.get_global_rect())}
 	_material_captures.append({"name": name_value, "path": path, "controls": controls, "state": state})
-	var file := FileAccess.open(MATERIAL_OUTPUT.path_join("manifest.json"), FileAccess.WRITE)
+	var file := FileAccess.open(_material_output().path_join("manifest.json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify({"workerDisabled": true, "productionSkins": true, "productionTypography": true, "viewport": [1280, 720], "captures": _material_captures, "limitations": ["Audit evidence, not a visual pass/fail verdict.", "Pointer events are injected through Godot, not OS hardware.", "Only disclosure and dropdown actions are clicked; no job/provider requests."]}, "\t"))
 	file.close()
 	print("UI material audit: " + name_value)
@@ -72,7 +80,7 @@ func _material_inventory(node: Node, output: Array[Dictionary]) -> void:
 			entry["styles"] = {}
 			for state: String in ["normal", "hover", "pressed", "disabled", "focus"]:
 				var style := button.get_theme_stylebox(state)
-				var details := {"class": style.get_class()}
+				var details := {"class": style.get_class(), "family": style.get_meta("cozy_family", "outer-structure"), "material": style.get_meta("cozy_material", "outer-structure")}
 				if style is StyleBoxTexture: details["texture"] = (style as StyleBoxTexture).texture.resource_path
 				entry["styles"][state] = details
 			output.append(entry)
@@ -106,4 +114,24 @@ func _material_release(control: Control) -> void:
 func _material_click(control: Control) -> void:
 	await _material_pointer(control, true)
 	_material_release(control)
+	await _settle(3)
+
+func _material_option(option: OptionButton, index: int) -> void:
+	await _material_click(option)
+	var popup := option.get_popup()
+	assert(popup.visible)
+	for attempt: int in range(option.item_count + 1):
+		if popup.get_focused_item() == index: break
+		await _material_key(KEY_DOWN)
+	assert(popup.get_focused_item() == index)
+	await _material_key(KEY_ENTER)
+
+func _material_key(code: Key) -> void:
+	for pressed: bool in [true, false]:
+		var event := InputEventKey.new()
+		event.keycode = code
+		event.physical_keycode = code
+		event.pressed = pressed
+		root.push_input(event, true)
+		await process_frame
 	await _settle(3)
