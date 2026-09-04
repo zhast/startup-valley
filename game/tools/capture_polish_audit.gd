@@ -5,6 +5,14 @@ const OUTPUT_ROOT := "res://tests/output/polish-audit"
 const AUDIT_FPS := 30
 const VIEWPORT_SIZE := Vector2i(1280, 720)
 const THUMBNAIL_SIZE := Vector2i(640, 360)
+const ARCHITECTURE_ROOT := "res://assets/runtime/office/architecture/"
+const ARCHITECTURE_ALPHA: Dictionary = {
+	"floor.png": "opaque",
+	"wall.png": "opaque",
+	"trim.png": "opaque",
+	"window.png": "binary",
+	"door.png": "opaque",
+}
 
 const EXPECTED_SCENARIOS: Dictionary = {
 	"world": [
@@ -31,6 +39,9 @@ var _scenarios: Array[Dictionary] = []
 var _active_scenario_index := -1
 var _active_images: Array[Image] = []
 var _failures: PackedStringArray = []
+var _actor_cell_failures: Dictionary[String, bool] = {}
+var _architecture_specs: Dictionary[String, Dictionary] = {}
+var _ui_dispatches: Array[Dictionary] = []
 
 func _initialize() -> void:
 	_suite = _parse_suite()
@@ -49,6 +60,7 @@ func _parse_suite() -> String:
 
 func _run() -> void:
 	root.always_on_top = true
+	root.gui_embed_subwindows = true
 	root.grab_focus()
 	if not _prepare_output_directories():
 		quit(1)
@@ -59,8 +71,8 @@ func _run() -> void:
 		await _run_world_suite()
 	else:
 		await _run_ui_suite()
-	_write_manifest()
 	_validate_capture()
+	_write_manifest()
 	if is_instance_valid(_main):
 		_main.game_audio.shutdown()
 		await create_timer(0.05).timeout
@@ -83,6 +95,7 @@ func _prepare_output_directories() -> bool:
 	return true
 
 func _fresh_main(hire_count: int) -> void:
+	_ui_dispatches.clear()
 	if is_instance_valid(_main):
 		_main.game_audio.shutdown()
 		await create_timer(0.05).timeout
@@ -93,6 +106,11 @@ func _fresh_main(hire_count: int) -> void:
 	root.add_child(_main)
 	await _frames(5)
 	_disconnect_worker_actions()
+	# Observe every work-dispatch channel, including unintended cross-channel
+	# emissions. Watching only the expected signal cannot prove "chat only".
+	_main.job_panel.chat_submitted.connect(func(id: String, message: String) -> void: _ui_dispatches.append({"method": "chat.send", "employeeId": id, "message": message}))
+	_main.job_panel.assignment_submitted.connect(func(id: String, title: String, _assignment: String, _criteria: PackedStringArray, _attachment: String) -> void: _ui_dispatches.append({"method": "job.start", "employeeId": id, "title": title}))
+	_main.job_panel.steer_submitted.connect(func(id: String, message: String) -> void: _ui_dispatches.append({"method": "job.steer", "jobId": id, "message": message}))
 	_main.day_clock.set_speed(0.0)
 	_main.day_clock.set_time(1, DayClock.WORK_START)
 	_main.room.set_hire_count(hire_count)
@@ -121,8 +139,8 @@ func _capture_founder_locomotion() -> void:
 	await _fresh_main(2)
 	_main._spawn_employees([])
 	_main.room.set_hire_count(2)
-	_main.player.position = _main.room.grid_to_world_position(Vector2i(13, 8))
-	_main.player._physics_process(0.0)
+	var origin := _open_locomotion_origin()
+	_place_player(origin)
 	await _begin_scenario(
 		"founder-locomotion",
 		"Founder starts and stops cleanly while walking in all four directions and returns near the origin."
@@ -133,6 +151,8 @@ func _capture_founder_locomotion() -> void:
 	await _walk_player(&"move_up", 14)
 	await _walk_player(&"move_down", 14)
 	await _frames(12)
+	if _main.player.position.distance_to(origin) > 6.0:
+		_failures.append("Founder locomotion did not return to its clear origin: %s -> %s" % [origin, _main.player.position])
 	await _end_scenario()
 
 func _capture_employee_idle_cycle() -> void:
@@ -231,24 +251,27 @@ func _capture_depth_and_occlusion() -> void:
 	await _fresh_main(4)
 	_main._spawn_employees([])
 	_main.room.set_hire_count(4)
-	var desk := _main.room.prop_node("mira-workstation")
-	_place_player(desk.global_position + Vector2(-42.0, -52.0))
+	var desk := _main.room.placement_by_id("mira-workstation")
+	_place_player(_depth_anchor(desk, true))
 	await _begin_scenario(
 		"depth-and-occlusion",
 		"The founder reads behind and in front of furniture using ground-contact Y sorting without sprite rotation."
 	)
-	await _frames(24)
-	_place_player(desk.global_position + Vector2(42.0, 24.0))
-	await _frames(24)
+	await _frames(12)
+	await _walk_player_to(_depth_anchor(desk, false), "desk front")
+	await _frames(12)
+	var research := _main.room.placement_by_id("research-bench")
+	await _walk_player_to(_depth_anchor(research, true), "research bench rear")
+	await _frames(12)
+	await _walk_player_to(_depth_anchor(research, false), "research bench front")
+	await _frames(12)
 	await _capture_keyframe("middle")
-	var research := _main.room.prop_node("research-bench")
-	_place_player(research.global_position + Vector2(-34.0, -52.0))
-	await _frames(24)
-	_place_player(research.global_position + Vector2(34.0, 30.0))
-	await _frames(24)
-	var prototype := _main.room.prop_node("prototype-bench")
-	_place_player(prototype.global_position + Vector2(0.0, 32.0))
-	await _frames(24)
+	for prop_id: String in ["collaboration-cluster", "prototype-bench"]:
+		var placement := _main.room.placement_by_id(prop_id)
+		await _walk_player_to(_depth_anchor(placement, true), prop_id + " rear")
+		await _frames(12)
+		await _walk_player_to(_depth_anchor(placement, false), prop_id + " front")
+		await _frames(12)
 	await _end_scenario()
 
 func _capture_office_growth() -> void:
@@ -259,12 +282,17 @@ func _capture_office_growth() -> void:
 		"office-growth",
 		"The office progresses from founder-only to two hires and then the mature four-hire prop layout."
 	)
+	_record_marker("office-stage-0")
 	await _frames(30)
-	_main.room.set_hire_count(2)
-	await _frames(30)
-	await _capture_keyframe("middle")
-	_main.room.set_hire_count(4)
-	await _frames(30)
+	for stage: int in range(1, 5):
+		_main.room.set_hire_count(stage)
+		await _frames(30)
+		var expected_count := _main.room.layout_model.resolve_placements(stage).size()
+		if _main.room.visible_prop_count() != expected_count:
+			_failures.append("Office growth stage %d has %d props, expected %d" % [stage, _main.room.visible_prop_count(), expected_count])
+		_record_marker("office-stage-%d" % stage)
+		if stage == 2:
+			await _capture_keyframe("middle")
 	await _end_scenario()
 
 func _run_ui_suite() -> void:
@@ -285,12 +313,14 @@ func _capture_team_drawer_controls() -> void:
 	)
 	_move_mouse_to(mina_button)
 	await _frames(8)
-	_main.job_panel._on_team_button_pressed("mira")
+	await _press_control(mina_button)
+	_check(_main.job_panel.selected_employee_id() == "mira" and _main.job_panel.drawer_is_open(), "mina-rail-selection")
 	await _frames(3)
 	await _capture_keyframe("middle")
 	await _frames(10)
 	var theo_button := _main.job_panel._team_buttons["theo"] as Button
 	await _press_control(theo_button)
+	_check(_main.job_panel.selected_employee_id() == "theo", "theo-rail-selection")
 	await _frames(10)
 	_main.job_panel.close_drawer()
 	await _frames(10)
@@ -305,13 +335,18 @@ func _capture_chat_and_work_order() -> void:
 		"chat-and-work-order",
 		"Long chat scrolls cleanly, send/wait/reply states are legible, and Create work order carries the bounded discussion forward."
 	)
-	_main.job_panel._chat_input.text = "Turn these notes into a one-week launch plan."
-	_main.job_panel._submit_chat()
+	await _type_into(_main.job_panel._chat_input, "Make a one-week launch plan.")
+	await _press_control(_main.job_panel._chat_send_button)
+	_check(_ui_dispatches.size() == 1 and _ui_dispatches[0].method == "chat.send", "chat-only-dispatch")
+	_check(_main.job_panel._chat_pending and _main.job_panel._chat_send_button.disabled, "chat-waiting-disabled")
+	await _checkpoint("chat-waiting")
 	await _frames(16)
 	await _capture_keyframe("middle")
 	_main.job_panel.show_chat_reply("mira", {"content": "I’ll turn the themes into a focused promise, evidence summary, and one-week experiment."}, 0.018)
 	await _frames(20)
-	_main.job_panel._make_last_chat_a_job()
+	await _ensure_visible(_main.job_panel._make_job_button)
+	await _press_control(_main.job_panel._make_job_button)
+	_check(_main.job_panel._tabs.current_tab == 1 and _main.job_panel._assignment_preview.text.contains("Discussion context"), "chat-to-editable-work-draft")
 	await _frames(12)
 	await _end_scenario()
 
@@ -327,16 +362,37 @@ func _capture_work_controls() -> void:
 		"work-controls",
 		"Dropdown, popup selection, focus, hover, press, disabled, and text-entry states use the same custom control language."
 	)
-	_main.job_panel._job_picker.show_popup()
+	await _press_control(_main.job_panel._purpose_picker)
 	await _frames(18)
+	if not _main.job_panel._purpose_picker.get_popup().visible:
+		_failures.append("Visible work-purpose dropdown did not open from real pointer input")
 	await _capture_keyframe("middle")
-	_main.job_panel._job_picker.get_popup().hide()
-	_main.job_panel._custom_title_input.grab_focus()
-	await _frames(10)
+	await _press_key(KEY_DOWN)
+	await _press_key(KEY_DOWN)
+	await _press_key(KEY_ENTER)
+	if _main.job_panel._purpose_picker.get_popup().visible:
+		_failures.append("Work-purpose dropdown did not accept keyboard selection")
+	_check(_main.job_panel._purpose_picker.selected == 1, "dropdown-selection-changed")
+	await _checkpoint("dropdown-selected")
+	# Return through the same real picker to make its custom title editable.
+	await _press_control(_main.job_panel._purpose_picker)
+	await _press_key(KEY_DOWN)
+	await _press_key(KEY_ENTER)
+	await _type_into(_main.job_panel._custom_title_input, "A focused launch plan")
+	_main.job_panel._assignment_preview.text = "Write launch-plan.md with a clear offer and one measurable experiment."
+	await _checkpoint("visible-title-focus")
 	var handler := Callable(_main, "_on_assignment_submitted")
 	if _main.job_panel.assignment_submitted.is_connected(handler):
 		_main.job_panel.assignment_submitted.disconnect(handler)
+	_main.job_panel.assignment_submitted.connect(func(id: String, _title: String, _assignment: String, _criteria: PackedStringArray, _attachment: String) -> void:
+		_main.job_panel.begin_job("submitted-polish", id)
+	)
 	await _press_control(_main.job_panel._assign_button)
+	_check(_ui_dispatches.size() == 1 and _ui_dispatches[0].method == "job.start", "confirmed-assignment-dispatch")
+	_check(_main.job_panel._assign_button.disabled, "assignment-pending-disabled")
+	await _press_control(_main.job_panel._assign_button, true)
+	_check(_ui_dispatches.size() == 1, "disabled-assignment-no-double-dispatch")
+	await _checkpoint("assignment-disabled")
 	await _frames(8)
 	await _end_scenario()
 
@@ -367,11 +423,24 @@ func _capture_journal_and_approval() -> void:
 	await _frames(20)
 	await _capture_keyframe("middle")
 	_main.job_panel.set_spend(5.0, 5.0)
+	await _ensure_visible(_main.job_panel._steer_input)
+	await _type_into(_main.job_panel._steer_input, "Keep the offer specific.")
+	await _ensure_visible(_main.job_panel._steer_button)
+	await _press_control(_main.job_panel._steer_button)
+	_check(_ui_dispatches.size() == 1 and _ui_dispatches[0].method == "job.steer", "activity-only-steering-dispatch")
+	_check(_main.job_panel._steer_button.disabled, "steering-pending-disabled")
+	_main.job_panel.set_steer_sent(job_id)
 	var approval := _event(&"approval.required")
 	approval.approval_id = "journal-approval"
 	approval.action = "Publish the launch brief to the shared studio for Theo."
 	_main._on_job_event(job_id, approval)
 	await _frames(24)
+	var approve := _button_named(_main.job_panel._approval_box, "Approve")
+	await _ensure_visible(approve)
+	await _checkpoint("approval-visible")
+	_main.job_panel.approval_decided.connect(func(id: String, approval_id: String, approved: bool) -> void: _ui_dispatches.append({"method": "approval", "jobId": id, "approvalId": approval_id, "approved": approved}))
+	await _press_control(approve)
+	_check(_ui_dispatches.size() == 2 and _ui_dispatches[1].approved, "approval-click-dispatch")
 	await _end_scenario()
 
 func _capture_delivery_studio_reader() -> void:
@@ -382,30 +451,72 @@ func _capture_delivery_studio_reader() -> void:
 	var completed := _event(&"job.completed")
 	completed.summary = "Launch brief complete with a focused promise and experiment."
 	_main.job_panel.on_job_event(job_id, completed)
+	var artifact := ArtifactRecord.new()
+	artifact.artifact_id = "delivery-polish-brief"
+	artifact.name = "Launch brief"
+	artifact.relative_path = "launch-brief.md"
+	_main.job_panel.show_artifacts(job_id, [artifact])
 	_main.job_panel.offer_promotion(job_id, "mira")
 	_main.job_panel.close_drawer(false)
 	_main.founder_hud.show_delivery(job_id, "mira", "Mina", "launch-brief.md ready")
 	await _begin_scenario(
 		"delivery-studio-reader",
-		"Delivery memo leads through promotion, Studio empty/file states, and a readable artifact modal with clear close feedback."
+		"Delivery View opens inspectable files; Preview is exercised before promotion, followed by Studio selection and actual reader scroll/close/reopen input."
 	)
-	_main.job_panel.open_journal_for_employee("mira")
+	await _press_control(_main.founder_hud._notification.get_node("ViewDelivery"))
 	await _frames(18)
+	var preview := _button_named(_main.job_panel._delivery_list, "Preview")
+	_check(_control_visible(preview), "delivery-preview-in-first-view")
+	_main.job_panel.artifact_open_requested.connect(func(id: String, path: String) -> void:
+		_ui_dispatches.append({"method": "artifact.read", "jobId": id, "path": path})
+		_main.artifact_viewer.show_artifact(path, _reader_document())
+	)
+	await _press_control(preview)
+	_check(_main.artifact_viewer.visible and _ui_dispatches.size() == 1, "preview-opens-reader-before-decision")
+	await _frames(12)
 	await _capture_keyframe("middle")
+	var document := _main.artifact_viewer._content
+	var previous_scroll := document.get_v_scroll_bar().value
+	for index: int in range(8): await _wheel(document, MOUSE_BUTTON_WHEEL_DOWN)
+	_check(document.get_v_scroll_bar().value > previous_scroll, "reader-wheel-scroll")
+	await _checkpoint("reader-scrolled")
+	var close_events: Array[String] = []
+	_main.artifact_viewer._close_button.pressed.connect(func() -> void: close_events.append("pressed"))
+	await _press_control(_main.artifact_viewer._close_button)
+	await _frames(8)
+	_check(close_events == ["pressed"], "reader-close-button-pressed")
+	_check(not _main.artifact_viewer.visible, "reader-click-close")
+	await _press_control(preview)
+	await _frames(10)
+	_check(_main.artifact_viewer.visible and is_zero_approx(document.get_v_scroll_bar().value), "reader-reopen-reset")
+	_check(document.get_parsed_text().contains("Help a first-time creator") and document.get_content_height() > document.size.y, "reader-reopen-retains-document")
+	await _press_key(KEY_ESCAPE)
+	await _frames(8)
+	_check(not _main.artifact_viewer.visible, "reader-escape-close")
+	_main.job_panel.promotion_decided.connect(func(id: String, approved: bool) -> void: _ui_dispatches.append({"method": "promotion", "jobId": id, "approved": approved}))
+	var promote := _button_named(_main.job_panel._promotion_box, "Add to Studio")
+	await _ensure_visible(promote)
+	await _press_control(promote)
+	_check(_ui_dispatches.size() == 3 and _ui_dispatches[0].method == "artifact.read" and _ui_dispatches[2].method == "promotion", "preview-before-promotion-dispatch-order")
+	await _checkpoint("delivery-promoted")
 	var studio_file := StudioFileRecord.new()
 	studio_file.name = "launch-brief.md"
 	studio_file.relative_path = "launch-brief.md"
 	studio_file.source_job_id = job_id
 	_main.job_panel.show_studio_files([])
-	_main.job_panel._tabs.current_tab = 3
+	await _press_control(_main.job_panel._tab_buttons[3])
 	await _frames(16)
+	await _checkpoint("studio-empty")
 	_main.job_panel.show_studio_files([studio_file])
 	await _frames(16)
-	_main.artifact_viewer.show_artifact(
-		"launch-brief.md",
-		"# Launch brief\n\n## Promise\nHelp a first-time creator validate one paid offer in seven days.\n\n## Evidence\nFive interviews asked for a concrete checklist.\n\n## Next experiment\nPublish one landing page and book five follow-up calls."
+	_main.job_panel.studio_open_requested.connect(func(path: String) -> void:
+		_ui_dispatches.append({"method": "studio.read", "path": path})
+		_main.artifact_viewer.show_artifact(path, _reader_document(), "Shared Studio")
 	)
+	await _press_control(_button_named(_main.job_panel._artifact_list, "Open"))
+	_check(_ui_dispatches.back().method == "studio.read", "studio-file-selection")
 	await _frames(18)
+	_check(document.get_parsed_text().contains("Help a first-time creator") and document.get_content_height() > document.size.y, "studio-reader-retains-document")
 	await _end_scenario()
 
 func _capture_queued_errors_and_overflow() -> void:
@@ -425,13 +536,18 @@ func _capture_queued_errors_and_overflow() -> void:
 	_main.job_panel._tabs.current_tab = 2
 	await _frames(20)
 	await _capture_keyframe("middle")
-	_main.job_panel.set_error(
-		"The worker disconnected while preparing an unusually long customer-research delivery. The queued work remains recoverable and can be assigned again after reconnecting."
-	)
-	_main.job_panel._steer_input.grab_focus()
+	_main.job_panel.set_worker_connection_error("The worker disconnected while preparing a long customer-research delivery. Your work remains saved. Reconnect to continue.")
+	_main.job_panel._open_connection_settings()
 	await _frames(24)
-	_main.job_panel.set_info("Worker recovered. The next work order can be assigned safely.")
+	_check(_main.job_panel._connection_panel.visible and _main.job_panel._connection_retry_button.visible, "worker-error-retry-visible")
+	await _checkpoint("worker-error")
+	await _press_control(_main.job_panel._connection_retry_button)
+	# A deterministic successful bootstrap response, never a provider request.
+	_main.job_panel.set_worker_ready()
+	_main.job_panel.set_info("Worker recovered. Queued work remains in Activity.")
 	await _frames(18)
+	_check(_main.job_panel._worker_connected and not _main.job_panel._connection_panel.visible, "worker-recovery-distinct")
+	await _checkpoint("worker-recovered")
 	await _end_scenario()
 
 func _begin_scenario(name_value: String, expected_state: String) -> void:
@@ -445,6 +561,12 @@ func _begin_scenario(name_value: String, expected_state: String) -> void:
 		"frameHashes": [],
 		"sampledFramesDistinct": false,
 		"contactSheet": "",
+		"markers": [],
+		"actorCellsChecked": 0,
+		"keyframeState": {},
+		"uiKeyframeState": {},
+		"checks": [],
+		"checkpoints": {},
 	}
 	_scenarios.append(scenario)
 	_active_scenario_index = _scenarios.size() - 1
@@ -455,6 +577,7 @@ func _end_scenario() -> void:
 	await _capture_keyframe("end")
 	var scenario := _scenarios[_active_scenario_index]
 	scenario["endFrame"] = Engine.get_process_frames()
+	scenario["dispatches"] = _ui_dispatches.duplicate(true)
 	var hashes := scenario["frameHashes"] as Array
 	var unique_hashes := {}
 	for hash_value: Variant in hashes:
@@ -480,6 +603,9 @@ func _capture_keyframe(phase: String) -> void:
 		_failures.append("Could not save keyframe: %s" % relative_path)
 	var keyframes := scenario["keyframes"] as Dictionary
 	keyframes[phase] = relative_path
+	var state: Dictionary = scenario["keyframeState"]
+	state[phase] = _actor_snapshot()
+	(scenario["uiKeyframeState"] as Dictionary)[phase] = _ui_snapshot()
 	var hashes := scenario["frameHashes"] as Array
 	hashes.append(str(hash(image.get_data())))
 	_scenarios[_active_scenario_index] = scenario
@@ -521,6 +647,7 @@ func _write_manifest() -> void:
 			"reviewer": "Human or visual-review agent; capture validation does not assign aesthetic scores",
 		},
 		"scenarios": _scenarios,
+		"failures": Array(_failures),
 	}
 	_write_json("%s/%s/manifest.json" % [OUTPUT_ROOT, _suite], manifest)
 
@@ -535,6 +662,8 @@ func _validate_capture() -> void:
 				continue
 			found = true
 			var keyframes := scenario["keyframes"] as Dictionary
+			if int(scenario.get("actorCellsChecked", 0)) < 1:
+				_failures.append("%s did not verify actor walkability during motion" % expected_name)
 			for phase: String in ["start", "middle", "end"]:
 				var path := str(keyframes.get(phase, ""))
 				if path.is_empty() or not FileAccess.file_exists(path):
@@ -544,10 +673,20 @@ func _validate_capture() -> void:
 			var contact_sheet := str(scenario["contactSheet"])
 			if contact_sheet.is_empty() or not FileAccess.file_exists(contact_sheet):
 				_failures.append("%s is missing its contact sheet" % expected_name)
+			if str(expected_name) == "office-growth":
+				var markers: Array = scenario.get("markers", [])
+				for stage: int in range(5):
+					var matched := false
+					for marker: Dictionary in markers:
+						if str(marker.get("label", "")) == "office-stage-%d" % stage:
+							matched = true
+					if not matched:
+						_failures.append("Office growth is missing stage %d evidence" % stage)
 		if not found:
 			_failures.append("Missing required scenario: %s" % expected_name)
 
 func _write_asset_inventory() -> void:
+	_load_architecture_specs()
 	var texture_paths: PackedStringArray = []
 	_collect_png_paths("res://assets/runtime/office", texture_paths)
 	_collect_png_paths("res://assets/runtime/ui", texture_paths)
@@ -584,19 +723,60 @@ func _write_asset_inventory() -> void:
 	for live_info: Dictionary in live_nodes:
 		for issue: Variant in live_info.get("flags", []):
 			known_flags.append("%s: %s" % [str(live_info.get("id", "sprite")), str(issue)])
+	var stages: Array[Dictionary] = []
+	for stage: int in range(5):
+		var placements := _main.room.layout_model.resolve_placements(stage)
+		var validation := _main.room.layout_model.validate_placements(placements)
+		stages.append({"hires": stage, "propCount": placements.size(), "valid": bool(validation.get("valid", false)), "errors": validation.get("errors", [])})
 	var inventory := {
-		"schemaVersion": 2,
+		"schemaVersion": 3,
 		"generatedBy": "capture_polish_audit.gd",
 		"textures": textures,
 		"liveSprites": live_nodes,
 		"characterAtlases": atlas_specs,
+		"roomModel": {
+			"definition": OfficeLayout.DEFAULT_PATH,
+			"catalog": OfficeLayout.DEFAULT_CATALOG_PATH,
+			"tileSize": _main.room.layout_model.tile_size,
+			"gridWidth": _main.room.layout_model.width,
+			"gridHeight": _main.room.layout_model.height,
+			"floorCellCount": _main.room.layout_model.floor_cells().size(),
+			"architectureMode": "blockout" if _main.room.architecture.blockout else "modular-kit",
+			"stages": stages,
+			"architectureManifest": ARCHITECTURE_ROOT + "manifest.json",
+		},
 		"fonts": [
-			{"role": "display", "path": GameFonts.DISPLAY.resource_path, "license": "res://assets/fonts/tiny5/OFL.txt"},
+			{"role": "display", "path": GameFonts.DISPLAY.resource_path, "license": "res://assets/fonts/not-jam-slab/LICENSE-CC0.txt", "nativePixels": 22},
 			{"role": "body", "path": GameFonts.BODY.resource_path, "license": "res://assets/fonts/nunito-sans/OFL.txt"},
+			{"role": "emphasis", "path": GameFonts.EMPHASIS.resource_path, "license": "res://assets/fonts/nunito-sans/OFL.txt"},
+			{"role": "bold", "path": GameFonts.BOLD.resource_path, "license": "res://assets/fonts/nunito-sans/OFL.txt"},
+			{"role": "italic", "path": GameFonts.ITALIC.resource_path, "license": "res://assets/fonts/nunito-sans/OFL.txt"},
+			{"role": "bold_italic", "path": GameFonts.BOLD_ITALIC.resource_path, "license": "res://assets/fonts/nunito-sans/OFL.txt"},
+			{"role": "code", "path": GameFonts.MONO.resource_path, "license": "res://assets/fonts/jetbrains-mono/OFL.txt"},
 		],
 		"knownFlags": Array(known_flags),
 	}
 	_write_json("%s/asset-inventory.json" % OUTPUT_ROOT, inventory)
+
+func _load_architecture_specs() -> void:
+	_architecture_specs.clear()
+	var file := FileAccess.open(ARCHITECTURE_ROOT + "manifest.json", FileAccess.READ)
+	if file == null:
+		_failures.append("Architecture asset manifest is missing")
+		return
+	var parsed: Variant = JSON.parse_string(file.get_as_text())
+	if not parsed is Dictionary:
+		_failures.append("Architecture asset manifest must be a JSON object")
+		return
+	var manifest := parsed as Dictionary
+	for spec: Dictionary in manifest.get("assets", []):
+		var filename := str(spec.get("file", ""))
+		_architecture_specs[filename] = spec
+	for filename: String in ARCHITECTURE_ALPHA:
+		if not _architecture_specs.has(filename):
+			_failures.append("Architecture manifest is missing " + filename)
+		elif str(_architecture_specs[filename].get("alpha", "")) != str(ARCHITECTURE_ALPHA[filename]):
+			_failures.append("Architecture alpha declaration differs from authored asset: " + filename)
 
 func _collect_png_paths(directory_path: String, output: PackedStringArray) -> void:
 	var directory := DirAccess.open(directory_path)
@@ -627,8 +807,13 @@ func _inspect_texture(path: String) -> Dictionary:
 	var flags: PackedStringArray = []
 	var used_rect := image.get_used_rect()
 	var full_rect := Rect2i(Vector2i.ZERO, image.get_size())
-	var has_transparency := used_rect != full_rect
+	var has_transparent_border := used_rect != full_rect
+	var has_transparency := image.detect_alpha() != Image.ALPHA_NONE
+	var architecture_asset := path.begins_with(ARCHITECTURE_ROOT)
+	var architecture_spec: Dictionary = _architecture_specs.get(path.get_file(), {}) if architecture_asset else {}
+	var alpha_expectation := str(architecture_spec.get("alpha", ""))
 	var modular_office_asset := path.begins_with("res://assets/runtime/office/") \
+		and not architecture_asset \
 		and not path.ends_with("office-shell-base.png") \
 		and not path.ends_with("campus-surround.png") \
 		and not path.ends_with("main-office-background.png")
@@ -637,10 +822,21 @@ func _inspect_texture(path: String) -> Dictionary:
 		or modular_office_asset
 	if alpha_required and not has_transparency:
 		flags.append("opaque-runtime-cutout")
+	if architecture_asset:
+		if architecture_spec.is_empty():
+			flags.append("architecture-metadata-missing")
+		else:
+			var expected_size: Array = architecture_spec.get("size", [])
+			if expected_size.size() != 2 or image.get_size() != Vector2i(int(expected_size[0]), int(expected_size[1])):
+				flags.append("architecture-size-mismatch")
+			if alpha_expectation == "opaque" and has_transparency:
+				flags.append("architecture-opaque-tile-has-alpha-gaps")
+			elif alpha_expectation == "binary" and image.detect_alpha() != Image.ALPHA_BIT:
+				flags.append("architecture-cutout-needs-binary-alpha")
 	if modular_office_asset \
 		and maxi(image.get_width(), image.get_height()) > 512:
 		flags.append("oversized-runtime-prop-source")
-	if alpha_required and not import_text.contains("compress/mode=0"):
+	if (alpha_required or architecture_asset) and not import_text.contains("compress/mode=0"):
 		flags.append("runtime-cutout-not-lossless")
 	if not import_text.is_empty() and not import_text.contains("mipmaps/generate=false"):
 		flags.append("mipmaps-not-explicitly-disabled")
@@ -648,7 +844,10 @@ func _inspect_texture(path: String) -> Dictionary:
 		"path": path,
 		"width": image.get_width(),
 		"height": image.get_height(),
-		"hasTransparentBorder": has_transparency,
+		"hasTransparentBorder": has_transparent_border,
+		"hasTransparency": has_transparency,
+		"assetRole": "architecture" if architecture_asset else ("office-cutout" if modular_office_asset else "other"),
+		"alphaExpectation": alpha_expectation if architecture_asset else ("transparent-cutout" if alpha_required else "unrestricted"),
 		"usedRect": {"x": used_rect.position.x, "y": used_rect.position.y, "width": used_rect.size.x, "height": used_rect.size.y},
 		"losslessImport": import_text.contains("compress/mode=0"),
 		"mipmapsDisabled": import_text.contains("mipmaps/generate=false"),
@@ -710,6 +909,7 @@ func _disconnect_worker_actions() -> void:
 	_disconnect_if_connected(_main.job_panel.artifact_open_requested, Callable(_main.worker_client, "read_artifact"))
 	_disconnect_if_connected(_main.job_panel.studio_open_requested, Callable(_main.worker_client, "read_studio_file"))
 	_disconnect_if_connected(_main.job_panel.promotion_decided, Callable(_main.worker_client, "promote_job"))
+	_disconnect_if_connected(_main.job_panel.promotion_decided, Callable(_main, "_on_promotion_decided"))
 
 func _disconnect_if_connected(signal_value: Signal, callable: Callable) -> void:
 	if signal_value.is_connected(callable):
@@ -722,18 +922,114 @@ func _walk_player(action: StringName, frame_count: int) -> void:
 	await _frames(6)
 
 func _place_player(world_position: Vector2) -> void:
+	var cell := _main.room.navigation.cell_at(world_position)
+	if not _main.room.navigation.walkable(cell):
+		_failures.append("Audit attempted an invalid founder placement at %s" % cell)
+		return
+	_main.player.cancel_route()
 	_main.player.position = world_position
 	_main.player._physics_process(0.0)
 
+func _open_locomotion_origin() -> Vector2:
+	# A complete four-direction demonstration needs three clear cells around its
+	# origin. Derive this from occupancy instead of the former room's coordinates.
+	var navigation := _main.room.navigation
+	var desired := _main.room.player_spawn + Vector2i(0, -4)
+	var best := Vector2i(-1, -1)
+	var best_distance := INF
+	for cell: Vector2i in _main.room.layout_model.floor_cells():
+		var clear := true
+		for y: int in range(-3, 4):
+			for x: int in range(-3, 4):
+				if not navigation.walkable(cell + Vector2i(x, y)):
+					clear = false
+		if clear and Vector2(cell).distance_squared_to(Vector2(desired)) < best_distance:
+			best = cell
+			best_distance = Vector2(cell).distance_squared_to(Vector2(desired))
+	if best.x < 0:
+		_failures.append("No clear seven-cell locomotion patch exists in the current office")
+		return _main.room.grid_to_world_position(_main.room.player_spawn)
+	return _main.room.grid_to_world_position(best)
+
+func _depth_anchor(placement: Dictionary, rear: bool) -> Vector2:
+	var grid: Vector2i = placement.get("grid", Vector2i.ZERO)
+	var row := grid.y
+	for cell: Vector2i in placement.get("occupied", []):
+		row = mini(row, cell.y) if rear else maxi(row, cell.y)
+	var target := Vector2i(grid.x, row + (-1 if rear else 1))
+	if not _main.room.navigation.walkable(target):
+		_failures.append("%s has no valid %s audit anchor at %s" % [placement.get("id", "prop"), "rear" if rear else "front", target])
+	return _main.room.grid_to_world_position(target)
+
+func _walk_player_to(target: Vector2, label: String) -> void:
+	if not _main.player.move_to(target):
+		_failures.append("No founder route to " + label)
+		return
+	var path_length := 0.0
+	var previous := _main.player.position
+	for point: Vector2 in _main.player.route:
+		path_length += previous.distance_to(point)
+		previous = point
+	var deadline := ceili(path_length / _main.player.speed * AUDIT_FPS) + 90
+	for frame: int in range(deadline):
+		if _main.player.route.is_empty():
+			break
+		await _frames(1)
+	if _main.player.position.distance_to(target) > 4.0:
+		_failures.append("Founder did not reach %s: %s != %s" % [label, _main.player.position, target])
+	_record_marker(label)
+
+func _record_marker(label: String) -> void:
+	if _active_scenario_index < 0:
+		return
+	var markers: Array = _scenarios[_active_scenario_index]["markers"]
+	markers.append({"label": label, "frame": Engine.get_process_frames(), "state": _actor_snapshot()})
+
+func _actor_snapshot() -> Dictionary:
+	var snapshot := {"founder": _actor_position(_main.player.position)}
+	for employee_id: String in _main._employees:
+		var employee := _main._employees[employee_id] as EmployeeAvatar
+		var state := _actor_position(employee.position)
+		state["workState"] = EmployeeAvatar.WorkState.keys()[employee.work_state]
+		state["hasTarget"] = employee._has_target
+		snapshot[employee_id] = state
+	return snapshot
+
+func _actor_position(point: Vector2) -> Dictionary:
+	var cell := _main.room.navigation.cell_at(point)
+	return {"position": [point.x, point.y], "cell": [cell.x, cell.y], "walkable": _main.room.navigation.walkable(cell)}
+
+func _check_actor_cells() -> void:
+	if _active_scenario_index < 0 or not is_instance_valid(_main):
+		return
+	var snapshot := _actor_snapshot()
+	var current: Dictionary = _scenarios[_active_scenario_index]
+	current["actorCellsChecked"] = int(current.get("actorCellsChecked", 0)) + snapshot.size()
+	for id: String in snapshot:
+		var state: Dictionary = snapshot[id]
+		if bool(state["walkable"]):
+			continue
+		var message := "%s: %s occupied blocked cell %s" % [_scenarios[_active_scenario_index]["name"], id, state["cell"]]
+		if not _actor_cell_failures.has(message):
+			_actor_cell_failures[message] = true
+			_failures.append(message)
+
 func _move_mouse_to(control: Control) -> void:
 	var point := control.get_global_rect().get_center()
-	Input.warp_mouse(point)
+	# Inject one deterministic pointer stream. Warping the native macOS cursor
+	# races Retina/window-coordinate mouse events against these viewport events.
 	var motion := InputEventMouseMotion.new()
 	motion.position = point
 	motion.global_position = point
-	Input.parse_input_event(motion)
+	root.push_input(motion, true)
 
-func _press_control(control: Control) -> void:
+func _press_control(control: Control, allow_disabled: bool = false) -> void:
+	if not _control_visible(control):
+		_check(false, "input-target-visible: %s" % (str(control.name) if control != null else "missing"))
+		return
+	if control is BaseButton and (control as BaseButton).disabled and not allow_disabled:
+		_check(false, "input-target-enabled: %s" % control.name)
+		return
 	_move_mouse_to(control)
 	await _frames(8)
 	var point := control.get_global_rect().get_center()
@@ -742,15 +1038,113 @@ func _press_control(control: Control) -> void:
 	press.global_position = point
 	press.button_index = MOUSE_BUTTON_LEFT
 	press.pressed = true
-	Input.parse_input_event(press)
+	root.push_input(press, true)
 	await _frames(5)
 	var release := InputEventMouseButton.new()
 	release.position = point
 	release.global_position = point
 	release.button_index = MOUSE_BUTTON_LEFT
 	release.pressed = false
-	Input.parse_input_event(release)
+	root.push_input(release, true)
 	await _frames(5)
+
+func _control_visible(control: Control) -> bool:
+	if control == null or not control.is_visible_in_tree(): return false
+	var point := control.get_global_rect().get_center()
+	if not root.get_visible_rect().has_point(point): return false
+	var parent := control.get_parent()
+	while parent != null:
+		if parent is Control and (parent as Control).clip_contents and not (parent as Control).get_global_rect().has_point(point): return false
+		parent = parent.get_parent()
+	return true
+
+func _ensure_visible(control: Control) -> void:
+	if control == null:
+		_check(false, "required-control-exists")
+		return
+	var parent := control.get_parent()
+	while parent != null:
+		if parent is ScrollContainer: (parent as ScrollContainer).ensure_control_visible(control)
+		parent = parent.get_parent()
+	await _frames(4)
+
+func _type_into(control: LineEdit, text: String) -> void:
+	await _ensure_visible(control)
+	control.text = ""
+	await _press_control(control)
+	_check(control.has_focus() and control.editable and _control_visible(control), "visible-editable-text-focus")
+	for character: String in text:
+		var key_event := InputEventKey.new()
+		key_event.unicode = character.unicode_at(0)
+		key_event.pressed = true
+		root.push_input(key_event, true)
+		await _frames(1)
+	_check(control.text == text, "real-keyboard-text-entry")
+
+func _wheel(control: Control, direction: MouseButton) -> void:
+	if not _control_visible(control):
+		_check(false, "scroll-target-visible")
+		return
+	_move_mouse_to(control)
+	var event := InputEventMouseButton.new()
+	event.button_index = direction
+	event.position = control.get_global_rect().get_center()
+	event.global_position = event.position
+	event.pressed = true
+	root.push_input(event, true)
+	var release := event.duplicate() as InputEventMouseButton
+	release.pressed = false
+	root.push_input(release, true)
+	await _frames(2)
+
+func _button_named(parent: Node, text: String) -> Button:
+	for child: Node in parent.find_children("*", "Button", true, false):
+		if (child as Button).text == text: return child as Button
+	return null
+
+func _check(condition: bool, label: String) -> void:
+	if _active_scenario_index >= 0:
+		var checks: Array = _scenarios[_active_scenario_index]["checks"]
+		checks.append({"label": label, "passed": condition, "frame": Engine.get_process_frames()})
+	if not condition: _failures.append(label)
+
+func _checkpoint(label: String) -> void:
+	await _frames(2)
+	RenderingServer.force_draw(false)
+	var path := "%s/%s/%s-%s.png" % [OUTPUT_ROOT, _suite, _scenarios[_active_scenario_index].name, label]
+	var error := root.get_texture().get_image().save_png(path)
+	_check(error == OK, "checkpoint-saved: " + label)
+	(_scenarios[_active_scenario_index]["checkpoints"] as Dictionary)[label] = {"path": path, "frame": Engine.get_process_frames(), "uiState": _ui_snapshot()}
+	_record_marker(label)
+
+func _ui_snapshot() -> Dictionary:
+	return {
+		"employeeId": _main.job_panel.selected_employee_id(),
+		"drawerOpen": _main.job_panel.drawer_is_open(),
+		"tab": _main.job_panel._tabs.current_tab,
+		"activeJobId": _main.job_panel.active_job_id(),
+		"chatPending": _main.job_panel._chat_pending,
+		"assignmentDisabled": _main.job_panel._assign_button.disabled,
+		"approvalVisible": _main.job_panel._approval_box.is_visible_in_tree(),
+		"workerConnected": _main.job_panel._worker_connected,
+		"connectionVisible": _main.job_panel._connection_panel.is_visible_in_tree(),
+		"readerVisible": _main.artifact_viewer.visible,
+		"readerScroll": _main.artifact_viewer._content.get_v_scroll_bar().value,
+		"readerTextLength": _main.artifact_viewer._content.get_parsed_text().length(),
+		"notificationVisible": _main.founder_hud.delivery_visible(),
+	}
+
+func _reader_document() -> String:
+	return "# Launch brief\n\n## Promise\nHelp a first-time creator validate one paid offer in seven days. Keep **evidence** separate from *assumptions*.\n\n- Publish one landing page.\n- Book five follow-up calls.\n\n```text\nOwner: Mina\nWindow: 7 days\n```\n\n".repeat(10)
+
+func _press_key(code: Key) -> void:
+	for pressed: bool in [true, false]:
+		var key := InputEventKey.new()
+		key.keycode = code
+		key.physical_keycode = code
+		key.pressed = pressed
+		root.push_input(key, true)
+		await _frames(1)
 
 func _event(type_value: StringName) -> WorkerEventRecord:
 	var event := WorkerEventRecord.new()
@@ -772,6 +1166,7 @@ func _long_chat_history() -> Array[Dictionary]:
 func _frames(frame_count: int) -> void:
 	for frame: int in range(frame_count):
 		await process_frame
+		_check_actor_cells()
 
 func _wait_for_employee_state(employee: EmployeeAvatar, expected_state: int, max_frames: int, label: String) -> void:
 	var path_length := 0.0
@@ -784,6 +1179,6 @@ func _wait_for_employee_state(employee: EmployeeAvatar, expected_state: int, max
 	for frame: int in range(navigation_deadline):
 		if employee.work_state == expected_state and not employee._has_target:
 			return
-		await process_frame
+		await _frames(1)
 	_failures.append("Timed out waiting for %s" % label)
 	print("Navigation timeout: ", employee.employee_id, " at ", employee.position, " route ", employee._route, " actors ", employee.navigation.actors)

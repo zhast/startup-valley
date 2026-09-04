@@ -73,6 +73,28 @@ func rebuild(obstacles: Array[Rect2]) -> void:
 func cell_at(point: Vector2) -> Vector2i:
 	return Vector2i(floori((point.x - origin.x) / tile_size), floori((point.y - origin.y) / tile_size))
 
+func rebuild_placements(placements: Array[Dictionary]) -> void:
+	# Use resolved occupied cells directly, not inferred image/collider bounds.
+	for y: int in range(grid.region.size.y):
+		for x: int in range(grid.region.size.x):
+			var cell := Vector2i(x, y)
+			grid.set_point_solid(cell, not _floor.get(cell, false))
+	for placement: Dictionary in placements:
+		for cell: Vector2i in placement.occupied:
+			if grid.region.has_point(cell): grid.set_point_solid(cell, true)
+	reservations.clear()
+	revision += 1
+	changed.emit()
+
+func position_is_safe(point: Vector2, owner: String = "") -> bool:
+	return is_finite(point.x) and is_finite(point.y) and _footprint_clear(point) and _clear_of_actors(owner, point)
+
+func safe_position(point: Vector2, owner: String = "") -> Vector2:
+	if position_is_safe(point, owner): return point
+	if not is_finite(point.x) or not is_finite(point.y): point = world(Vector2i(grid.region.size.x / 2, grid.region.size.y / 2))
+	var cell := nearest(point, owner)
+	return world(cell) if cell.x >= 0 else point
+
 func world(cell: Vector2i) -> Vector2:
 	return origin + Vector2(cell) * tile_size + Vector2.ONE * tile_size * 0.5
 
@@ -163,7 +185,7 @@ func _clear_of_actors(owner: String, point: Vector2) -> bool:
 	return true
 
 func _footprint_clear(point: Vector2) -> bool:
-	for offset: Vector2 in [Vector2(-9, -9), Vector2(9, -9), Vector2(-9, 9), Vector2(9, 9)]:
+	for offset: Vector2 in [Vector2(-10, -10), Vector2(10, -10), Vector2(-10, 10), Vector2(10, 10)]:
 		if not walkable(cell_at(point + offset)): return false
 	return true
 

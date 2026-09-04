@@ -215,7 +215,7 @@ func _run() -> void:
 		return
 
 	await _fresh_main(2)
-	_main.job_panel.set_worker_connection_error("Worker disconnected — retry from Settings.")
+	_main.job_panel.set_worker_connection_error("The local worker stopped responding. Reconnect to resume your saved work.")
 	_main.job_panel._open_connection_settings()
 	await _settle()
 	if not await _capture("ui-error"):
@@ -310,6 +310,11 @@ func _show_completion(job_id: String) -> void:
 	completed.summary = "Launch brief complete with a focused promise, interview evidence, and a one-week validation plan."
 	_main.get_employee("mira").apply_worker_event(completed, _main.player.position)
 	_main.job_panel.on_job_event(job_id, completed)
+	var brief := ArtifactRecord.new()
+	brief.artifact_id = job_id + "-brief"
+	brief.name = "Launch brief"
+	brief.relative_path = "launch-brief.md"
+	_main.job_panel.show_artifacts(job_id, [brief])
 	_main.job_panel.offer_promotion(job_id, "mira")
 	_main.founder_hud.show_delivery(job_id, "mira", "Mina", "launch-brief.md ready")
 
@@ -324,6 +329,10 @@ func _sample_artifact() -> String:
 	return "# Launch brief\n\n## Promise\nHelp first-time creators validate one paid offer in seven days.\n\n## Evidence\n- Five of eight interviews struggled to choose a narrow customer.\n- Buyers wanted a concrete launch checklist.\n\n## Next experiment\nPublish one landing page and book five follow-up calls.\n\n```text\nOwner: Mina\nWindow: 7 days\n```"
 
 func _capture(name_value: String) -> bool:
+	# A frame count is not elapsed time on fast/uncapped renderers. Let the
+	# longest UI entrance (180ms) finish before judging static text contrast.
+	await create_timer(0.22).timeout
+	await process_frame
 	RenderingServer.force_draw(false)
 	var image := root.get_texture().get_image()
 	var path := "%s/%s.png" % [REVIEW_DIRECTORY, name_value]

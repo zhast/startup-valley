@@ -17,7 +17,12 @@ static func wood_surface(content: Vector4 = Vector4(10.0, 10.0, 10.0, 10.0)) -> 
 	return texture_style(WOOD_FILL, Vector4(5.0, 5.0, 5.0, 5.0), content)
 
 static func parchment(content: Vector4 = Vector4(12.0, 10.0, 12.0, 10.0)) -> StyleBoxTexture:
-	return texture_style(PARCHMENT_PANEL, Vector4(10.0, 10.0, 10.0, 10.0), content)
+	# The rivets extend beyond 10 px. A cut through a rivet stretches its
+	# remaining pixels into a triangular smear on large menus.
+	return texture_style(PARCHMENT_PANEL, Vector4(14.0, 14.0, 14.0, 14.0), content)
+
+static func outer_frame() -> StyleBoxTexture:
+	return texture_style(OUTER_FRAME, Vector4(18, 18, 18, 18), Vector4.ZERO, false)
 
 static func notebook(content: Vector4 = Vector4(18.0, 12.0, 10.0, 12.0)) -> StyleBoxTexture:
 	return texture_style(NOTEBOOK_PAGE, Vector4(17.0, 10.0, 9.0, 10.0), content)
@@ -41,7 +46,9 @@ static func content_frame() -> StyleBoxTexture:
 	return texture_style(CONTENT_FRAME, Vector4(13.0, 11.0, 13.0, 11.0), Vector4(14.0, 10.0, 14.0, 10.0))
 
 static func name_plaque() -> StyleBoxTexture:
-	return texture_style(NAME_PLAQUE, Vector4(8.0, 7.0, 8.0, 7.0), Vector4(8.0, 5.0, 8.0, 5.0))
+	# The old 25 px plaque has mid-edge rivets that cannot be nine-sliced
+	# vertically. Use the approved corner-riveted parchment for variable heights.
+	return parchment(Vector4(8.0, 5.0, 8.0, 5.0))
 
 static func texture_style(
 	texture_value: Texture2D,

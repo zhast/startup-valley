@@ -7,6 +7,8 @@ const MIRA_LOCOMOTION: Texture2D = preload("res://assets/runtime/characters/mira
 const THEO_LOCOMOTION: Texture2D = preload("res://assets/runtime/characters/theo-locomotion.png")
 const MIRA_WORK: Texture2D = preload("res://assets/runtime/characters/mira-work.png")
 const THEO_WORK: Texture2D = preload("res://assets/runtime/characters/theo-work.png")
+const MIRA_SEATED: Texture2D = preload("res://assets/runtime/characters/mira-seated.png")
+const THEO_SEATED: Texture2D = preload("res://assets/runtime/characters/theo-seated.png")
 const FRAME_SIZE := Vector2(48.0, 80.0)
 
 # The source artwork is intentionally kept as one lossless sheet. Atlas regions let
@@ -53,6 +55,9 @@ static func locomotion_sheet(character_id: String) -> Texture2D:
 
 static func work_sheet(character_id: String) -> Texture2D:
 	return THEO_WORK if character_id == "theo" else MIRA_WORK
+
+static func seated_sheet(character_id: String) -> Texture2D:
+	return THEO_SEATED if character_id == "theo" else MIRA_SEATED
 
 static func locomotion_region(direction: StringName, column: int) -> Rect2:
 	var row := 0

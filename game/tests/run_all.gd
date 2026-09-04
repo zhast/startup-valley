@@ -40,8 +40,9 @@ func _run() -> void:
 		tab_titles.append(main.job_panel._tabs.get_tab_title(tab_index))
 	if tab_titles != PackedStringArray(["Chat", "Assign", "Activity", "Studio"]):
 		_fail("test_ui_language: employee drawer tabs do not use the approved product terms")
-	if main.job_panel._tabs.get_tab_bar().custom_minimum_size.y < 40.0:
-		_fail("test_ui_layout: tab targets are below the 40-pixel interaction floor")
+	for tab: Button in main.job_panel._tab_buttons:
+		if tab.custom_minimum_size.y < 44.0 or not is_equal_approx(tab.size.x, 86.0):
+			_fail("test_ui_layout: real drawer tabs must have equal widths and 44-pixel targets")
 	var delivery_button := main.founder_hud.find_child("ViewDelivery", true, false) as Button
 	if delivery_button == null or delivery_button.size.y < 40.0:
 		_fail("test_ui_layout: delivery review target is below the 40-pixel interaction floor")
@@ -64,9 +65,7 @@ func _run() -> void:
 	var rail_style := main.job_panel._rail_panel.get_theme_stylebox("panel") as StyleBoxTexture
 	if rail_style == null or rail_style.texture != NotebookSkin.WOOD_FILL:
 		_fail("test_character_art: the modular team rail did not use the approved notebook wood")
-	var backdrop := main.get_node_or_null("Backdrop") as TextureRect
-	if backdrop == null or backdrop.texture == null or backdrop.get_global_rect().size != Vector2(1280.0, 720.0):
-		_fail("test_ui_layout: the world surround did not cover the full viewport")
+	_assert_modular_room(main)
 	var founder_sprite := main.player.get_node_or_null("CharacterSprite") as Sprite2D
 	if founder_sprite == null or founder_sprite.texture == null:
 		_fail("test_character_art: the founder did not use the character sheet in the office")
@@ -80,7 +79,7 @@ func _run() -> void:
 	if main.founder_hud.get_node_or_null("TitlePlaque") != null or main.founder_hud.get_node_or_null("MovementPlaque") == null:
 		_fail("test_founders_ledger_ui: gameplay retained the title plaque or lost the onboarding hint")
 	main.clock_panel.show_money_earned(125.5)
-	if main.clock_panel._earned_label.text != "$125.50  EARNED":
+	if main.clock_panel._earned_label.text != "$125.50" or main.clock_panel._earned_caption.text != "Earned" or not main.clock_panel._earned_label.tooltip_text.contains("Gross in-game revenue"):
 		_fail("test_ui_layout: earned money did not render in the HUD")
 	var mina := main.get_employee("mira")
 	main.player.position = mina.position + Vector2(48.0, 0.0)
@@ -114,23 +113,20 @@ func _run() -> void:
 	await process_frame
 	if not main.job_panel.work_controls_fit_panel():
 		_fail("test_ui_layout: the work controls overflow the employee drawer")
-	var dropdown_style := main.job_panel._job_picker.get_theme_stylebox("normal") as StyleBoxTexture
-	var dropdown_popup_style := main.job_panel._job_picker.get_popup().get_theme_stylebox("hover") as StyleBoxTexture
-	if dropdown_style == null or dropdown_style.texture != OperationsSkin.DROPDOWN_FIELD or dropdown_popup_style == null or dropdown_popup_style.texture != OperationsSkin.DROPDOWN_SELECTED_ROW:
-		_fail("test_operations_ui: work-order dropdown or popup selection retained a generic style")
-	var secondary_style := main.job_panel._cancel_button.get_theme_stylebox("normal") as StyleBoxTexture
-	var primary_hover_style := main.job_panel._make_job_button.get_theme_stylebox("hover") as StyleBoxTexture
-	var team_focus_style := (main.job_panel._team_buttons["mira"] as Button).get_theme_stylebox("focus") as StyleBoxTexture
+	_assert_shared_button(main.job_panel._purpose_picker, "secondary")
+	if main.job_panel._purpose_picker.get_popup().get_theme_font("font") != GameFonts.EMPHASIS:
+		_fail("test_operations_ui: dropdown popup did not use the shared readable font")
+	_assert_shared_button(main.job_panel._cancel_button, "danger")
+	_assert_shared_button(main.job_panel._make_job_button, "quiet")
+	var team_focus_style := (main.job_panel._team_buttons["mira"] as Button).get_theme_stylebox("focus")
 	var attention_texture := (main.job_panel._team_buttons["mira"] as Button).get_node_or_null("AttentionBadge") as TextureRect
-	if secondary_style == null or secondary_style.texture != OperationsSkin.BUTTON_SECONDARY_NORMAL or primary_hover_style == null or primary_hover_style.texture != NotebookSkin.TAB_VERMILION:
-		_fail("test_operations_ui: primary or secondary interaction states retained generic styling")
-	if team_focus_style == null or team_focus_style.texture != OperationsSkin.FOCUS_RING or attention_texture == null or attention_texture.texture != OperationsSkin.ATTENTION_BADGE:
-		_fail("test_operations_ui: team rail focus or attention state did not use custom art")
+	if team_focus_style == null or attention_texture == null or attention_texture.texture != OperationsSkin.ATTENTION_BADGE:
+		_fail("test_operations_ui: team rail lost keyboard focus or authored attention state")
 	main.job_panel._tabs.current_tab = 0
 	main.job_panel.select_employee("theo")
 	if main.job_panel.selected_employee_id() != "theo":
 		_fail("test_native_team_ui: the vertical team rail did not select Theo")
-	var theo_selection := (main.job_panel._team_buttons["theo"] as Button).get_node_or_null("SelectionFrame") as NinePatchRect
+	var theo_selection := (main.job_panel._team_buttons["theo"] as Button).get_node_or_null("SelectionFrame") as Panel
 	if theo_selection == null or not theo_selection.visible:
 		_fail("test_native_team_ui: the modular team rail did not move its selection treatment to Theo")
 	main.job_panel.show_chat_history("theo", [
@@ -144,12 +140,14 @@ func _run() -> void:
 	var employee_row := main.job_panel._chat_log.get_child(1) as HBoxContainer
 	var founder_bubble := founder_row.get_child(1) as PanelContainer if founder_row != null and founder_row.get_child_count() > 1 else null
 	var employee_bubble := employee_row.get_child(1) as PanelContainer if employee_row != null and employee_row.get_child_count() > 1 else null
-	var founder_bubble_style := founder_bubble.get_theme_stylebox("panel") as StyleBoxTexture if founder_bubble != null else null
-	var employee_bubble_style := employee_bubble.get_theme_stylebox("panel") as StyleBoxTexture if employee_bubble != null else null
-	if founder_bubble_style == null or founder_bubble_style.texture != OperationsSkin.CHAT_FOUNDER_BUBBLE:
-		_fail("test_operations_ui: founder chat did not use its directional custom bubble")
-	if employee_bubble_style == null or employee_bubble_style.texture != OperationsSkin.CHAT_EMPLOYEE_BUBBLE:
-		_fail("test_operations_ui: employee chat did not use its directional custom bubble")
+	if founder_bubble == null or employee_bubble == null:
+		_fail("test_operations_ui: founder and employee chat lost distinct message surfaces")
+	else:
+		for bubble: PanelContainer in [founder_bubble, employee_bubble]:
+			if bubble.get_theme_stylebox("panel").get_content_margin(SIDE_LEFT) < 10:
+				_fail("test_operations_ui: chat text lost its safe content inset")
+	if main.job_panel._make_job_button.get_parent() != main.job_panel._latest_reply_content:
+		_fail("test_operations_ui: work-order conversion is detached from the latest employee reply")
 	main.job_panel.chat_submitted.connect(_capture_chat)
 	main.job_panel._chat_input.text = "Keep this conversational for now."
 	main.job_panel._submit_chat()
@@ -202,6 +200,9 @@ func _run() -> void:
 		_fail("test_modular_office: the mature office did not include every staged prop")
 	if main.room.prop_node("approval-console") == null or main.room.prop_node("artifact-archive") == null or main.room.prop_node("prototype-bench") == null:
 		_fail("test_modular_office: the mature office was missing its operations or artifact prop")
+	for stage: int in range(5):
+		main.room.set_hire_count(stage)
+		_assert_modular_room(main)
 	var restored_records := main.room.placeholder_records()
 	main.room.set_hire_count(restored_records.size())
 	var restored_studio: Array[StudioFileRecord] = []
@@ -231,12 +232,14 @@ func _run() -> void:
 	await process_frame
 	if main.day_clock.day != 4 or main.day_clock.phase != "lunch":
 		_fail("test_persistent_boot: clock state was not restored")
-	if main.job_panel.studio_file_count() != 1 or not main.job_panel.last_status_text().contains("completed"):
+	if main.job_panel.studio_file_count() != 1 or not main.job_panel.last_status_text().contains("Completed"):
 		_fail("test_persistent_boot: studio listing or last status was not restored")
-	var studio_file_button := main.job_panel._artifact_list.get_child(0) as Button
-	var studio_file_style := studio_file_button.get_theme_stylebox("normal") as StyleBoxTexture if studio_file_button != null else null
-	if studio_file_button == null or studio_file_button.icon != OperationsSkin.ACTIVITY_ARTIFACT or studio_file_style == null or studio_file_style.texture != OperationsSkin.FILE_CARD:
-		_fail("test_operations_ui: Studio file did not use the custom document card and icon")
+	var studio_file_card := main.job_panel._artifact_list.get_child(0) as PanelContainer
+	var studio_file_button := studio_file_card.find_child("Preview", true, false) as Button if studio_file_card != null else null
+	if studio_file_button == null or studio_file_button.text != "Open" or not studio_file_button.tooltip_text.contains("design-note.md"):
+		_fail("test_operations_ui: Studio file lost its named file and explicit Open action")
+	else:
+		_assert_shared_button(studio_file_button, "secondary")
 	if not main.job_panel._has_pending_delivery("theo"):
 		_fail("test_persistent_boot: pending promotion was not restored")
 	if main.founder_hud.delivery_visible():
@@ -251,11 +254,12 @@ func _run() -> void:
 	await process_frame
 	if not main.artifact_viewer.modal_fits_viewport() or not main.artifact_viewer.scrim_covers_viewport():
 		_fail("test_artifact_viewer: the modal or its scrim escaped the viewport")
-	var reader_frame := main.artifact_viewer._modal.get_theme_stylebox("panel") as StyleBoxTexture
-	var reader_frame_found := reader_frame != null and reader_frame.texture == NotebookSkin.PARCHMENT_PANEL
-	var reader_paper_style := main.artifact_viewer._content.get_theme_stylebox("normal") as StyleBoxTexture
-	if not reader_frame_found or reader_paper_style == null or reader_paper_style.texture != OperationsSkin.ARTIFACT_PAPER:
-		_fail("test_operations_ui: artifact reader did not use its custom frame and paper")
+	var reader_frame := main.artifact_viewer._modal.get_theme_stylebox("panel")
+	var reader_paper_style := main.artifact_viewer._content.get_theme_stylebox("normal")
+	if reader_frame == null or not reader_paper_style is StyleBoxEmpty:
+		_fail("test_operations_ui: artifact reader lost its single quiet reading surface")
+	if main.artifact_viewer._content.get_theme_font("normal_font") != GameFonts.BODY or main.artifact_viewer._content.get_theme_font("mono_font") != GameFonts.MONO:
+		_fail("test_operations_ui: reader body/code font roles are not explicit")
 	if main.artifact_viewer._content.get_parsed_text().contains("# Design note"):
 		_fail("test_artifact_viewer: common Markdown headings were shown as raw markers")
 	main.artifact_viewer.hide()
@@ -271,26 +275,21 @@ func _run() -> void:
 	main.job_panel.begin_job("queued-state", "theo")
 	main.job_panel.mark_job_queued("queued-state")
 	main.job_panel.select_employee("theo")
-	if main.job_panel._employee_status.text != "QUEUED" or main.job_panel._employee_ui_state("theo") == "working":
+	if main.job_panel._employee_status.text != "Queued" or main.job_panel._employee_ui_state("theo") == "working":
 		_fail("test_ui_status: queued work was simultaneously presented as working")
 	main.job_panel.finish_job("queued-state")
 
 	main.job_panel.select_employee("mira")
 	main.job_panel.begin_job("steer-job", "mira")
-	var journal_style := main.job_panel._event_log.get_theme_stylebox("normal") as StyleBoxTexture
-	var journal_scroll_style := main.job_panel._event_log.get_v_scroll_bar().get_theme_stylebox("grabber") as StyleBoxTexture
-	var approval_style := main.job_panel._approval_box.get_theme_stylebox("panel") as StyleBoxTexture
-	var delivery_style := main.job_panel._promotion_box.get_theme_stylebox("panel") as StyleBoxTexture
-	var meter_style := main.job_panel._token_meter.get_theme_stylebox("background") as StyleBoxTexture
-	if journal_style == null or journal_style.texture != OperationsSkin.ACTIVITY_ROW or journal_scroll_style == null or journal_scroll_style.texture != OperationsSkin.SCROLL_V_THUMB:
-		_fail("test_operations_ui: Activity feed or scrollbar retained a generic style")
-	if approval_style == null or approval_style.texture != OperationsSkin.JOURNAL_APPROVAL_CARD or delivery_style == null or delivery_style.texture != NotebookSkin.PARCHMENT_PANEL:
-		_fail("test_operations_ui: approval or delivery state did not use its custom card")
-	if meter_style == null or meter_style.texture != OperationsSkin.TOKEN_METER_FRAME:
-		_fail("test_operations_ui: token budget meter did not use its custom frame")
+	if main.job_panel._event_log.get_theme_font("normal_font") != GameFonts.BODY or main.job_panel._event_log.get_theme_font("bold_font") != GameFonts.BOLD:
+		_fail("test_operations_ui: Activity does not use explicit body and emphasis roles")
+	if main.job_panel._approval_box.get_theme_stylebox("panel").get_content_margin(SIDE_LEFT) < 8 or main.job_panel._promotion_box.get_theme_stylebox("panel").get_content_margin(SIDE_LEFT) < 8:
+		_fail("test_operations_ui: decisions lost safe content insets")
+	if main.job_panel._token_meter.visible:
+		_fail("test_operations_ui: a daily cost meter is incorrectly presented as work progress")
 	main.job_panel.set_spend(2.5, 5.0)
-	if not is_equal_approx(main.job_panel._token_meter.value, 2.5) or not is_equal_approx(main.job_panel._token_meter.max_value, 5.0):
-		_fail("test_operations_ui: daily spend did not drive the real token-budget meter")
+	if not main.job_panel._spend_label.text.contains("$2.5000 USD") or not main.job_panel._spend_label.tooltip_text.contains("$5.00 USD"):
+		_fail("test_operations_ui: real spend and warning threshold must be accurately disclosed")
 	if OperationsSkin.ACTIVITY_THINKING == null or OperationsSkin.ACTIVITY_RESEARCH == null or OperationsSkin.ACTIVITY_WRITING == null or OperationsSkin.ACTIVITY_TOOL == null or OperationsSkin.ACTIVITY_APPROVAL == null or OperationsSkin.ACTIVITY_ARTIFACT == null or OperationsSkin.ACTIVITY_COMPLETE == null or OperationsSkin.ACTIVITY_FAILED == null:
 		_fail("test_operations_ui: one or more real-event activity icons failed to load")
 	if OperationsSkin.WORLD_SPEECH_BUBBLE == null or OperationsSkin.WORLD_NAMEPLATE == null or OperationsSkin.WORLD_STATUS_PLAQUE == null or OperationsSkin.WORLD_ATTENTION == null:
@@ -395,11 +394,20 @@ func _run() -> void:
 	main.job_panel.select_employee("mira")
 	main.job_panel.begin_job("layout-check", "mira")
 	main.job_panel.on_job_event("layout-check", long_delivery)
+	var preview_artifact := ArtifactRecord.new()
+	preview_artifact.artifact_id = "layout-preview"
+	preview_artifact.job_id = "layout-check"
+	preview_artifact.name = "delivery.md"
+	preview_artifact.relative_path = "delivery.md"
+	main.job_panel.show_artifacts("layout-check", [preview_artifact])
 	main.job_panel.offer_promotion("layout-check", "mira")
 	main.job_panel.open_journal_for_employee("mira")
-	await process_frame
+	for frame: int in range(20): await process_frame
 	if not main.job_panel.promotion_controls_fit_viewport():
 		_fail("test_delivery_layout: long summaries pushed promotion controls below the viewport")
+	var preview_button := main.job_panel._delivery_list.find_child("Preview", true, false) as Button
+	if preview_button == null or preview_button.get_global_rect().end.y >= main.job_panel._promotion_box.get_global_rect().position.y:
+		_fail("test_delivery_layout: inspectable files must precede the promotion decision")
 
 	if _failures == 0:
 		print("test_worker_walks_to_desk: passed")
@@ -426,6 +434,44 @@ func _capture_chat(employee_id: String, message: String) -> void:
 	_chat_employee_id = employee_id
 	_chat_message = message
 
+func _assert_shared_button(button: Button, variant: String) -> void:
+	if button.get_meta("cozy_variant", "") != variant or button.get_theme_font("font") != GameFonts.BOLD:
+		_fail("test_shared_controls: %s does not use the intended %s action and bold font" % [button.name, variant])
+	if button.custom_minimum_size.y < 44:
+		_fail("test_shared_controls: %s is below the target floor" % button.name)
+	var minimum := button.get_theme_stylebox("normal").get_minimum_size()
+	for state: String in ["hover", "pressed", "disabled", "hover_pressed"]:
+		if not button.get_theme_stylebox(state).get_minimum_size().is_equal_approx(minimum):
+			_fail("test_shared_controls: %s geometry jumps in %s" % [button.name, state])
+	if not button.has_theme_stylebox_override("focus"):
+		_fail("test_shared_controls: %s has no explicit keyboard focus" % button.name)
+
+func _assert_modular_room(main: GameMain) -> void:
+	var room := main.room
+	if main.get_node_or_null("Backdrop") != null:
+		_fail("test_modular_office: obsolete campus overlay still exists")
+	if room.layout_model == null or room.architecture == null or room.architecture.layout != room.layout_model:
+		_fail("test_modular_office: rendered architecture does not share the authoritative layout")
+		return
+	if room.global_position != Vector2.ZERO or not room.playable_bounds().encloses(Rect2(0, 0, 1280, 720)):
+		_fail("test_modular_office: architecture does not cover the logical viewport")
+	var validation := room.layout_model.validate_placements(room.resolved_placements)
+	if not validation.valid:
+		_fail("test_modular_office: live hire stage is invalid: %s" % validation.errors)
+	var occupied := room.layout_model.occupied_cells(room.resolved_placements)
+	for y: int in range(room.grid_height):
+		for x: int in range(room.grid_width):
+			var cell := Vector2i(x, y)
+			var expected := room.layout_model.is_floor(cell) and not occupied.has(cell)
+			if room.navigation.walkable(cell) != expected:
+				_fail("test_modular_office: navigation diverges from architecture/placement at %s" % cell)
+	for placement: Dictionary in room.resolved_placements:
+		var prop := room.prop_node(str(placement.id))
+		if prop == null or prop.position != placement.anchor:
+			_fail("test_modular_office: prop does not use resolved anchor: %s" % placement.id)
+		if room.interaction_world_position(str(placement.id)) != room.grid_to_world_position(placement.interaction):
+			_fail("test_modular_office: station interaction does not use resolved cell: %s" % placement.id)
+
 func _assert_ui_typography(main: GameMain) -> void:
 	var controls: Array[Node] = [main.job_panel, main.clock_panel, main.founder_hud, main.artifact_viewer]
 	controls.append_array(main.find_children("*", "Control", true, false))
@@ -439,15 +485,21 @@ func _assert_ui_typography(main: GameMain) -> void:
 			continue
 		if control is RichTextLabel:
 			var rich_size := control.get_theme_font_size("normal_font_size")
-			if rich_size > 0 and rich_size < GameFonts.BODY_META:
-				_fail("test_ui_typography: %s rich text is below 14 px" % control.name)
+			if rich_size > 0 and rich_size < GameFonts.BODY_DEFAULT:
+				_fail("test_ui_typography: %s rich body text is below 16 px" % control.name)
+			if control.get_theme_font("bold_font") == control.get_theme_font("normal_font") or control.get_theme_font("mono_font") != GameFonts.MONO:
+				_fail("test_ui_typography: %s lost distinct bold or bundled code font" % control.name)
 			continue
 		var font_size := control.get_theme_font_size("font_size")
 		var font := control.get_theme_font("font")
-		if font == GameFonts.DISPLAY and font_size < GameFonts.DISPLAY_SMALL:
-			_fail("test_ui_typography: %s uses Tiny5 below 18 px" % control.name)
-		elif font == GameFonts.BODY and font_size < GameFonts.BODY_META:
-			_fail("test_ui_typography: %s body copy is below 14 px" % control.name)
+		if font not in [GameFonts.DISPLAY, GameFonts.BODY, GameFonts.EMPHASIS, GameFonts.BOLD]:
+			_fail("test_ui_typography: %s uses an unapproved functional font" % control.name)
+		if font == GameFonts.DISPLAY and font_size != 22:
+			_fail("test_ui_typography: %s must use Slab at native22" % control.name)
+		elif font_size < GameFonts.BODY_META:
+			_fail("test_ui_typography: %s secondary copy is below 14 px" % control.name)
+		if control is BaseButton and font != GameFonts.BOLD:
+			_fail("test_ui_typography: %s action text must use Nunito Bold" % control.name)
 
 func _control_has_readable_text(control: Control) -> bool:
 	if control is Label:
@@ -471,21 +523,23 @@ func _linear_channel(value: float) -> float:
 
 func _software_state_screenshot(main: GameMain) -> Image:
 	# `godot --headless` deliberately uses the dummy renderer, so viewport textures
-	# do not exist. This small software renderer snapshots the same logical positions
-	# and worker visual states deterministically on macOS and Windows CI.
+	# do not exist. This is a LOGICAL STATE DIAGRAM, not evidence that the game art
+	# looks correct. Actual rendered captures are covered by the graphics suites.
 	var image := Image.create(640, 360, false, Image.FORMAT_RGBA8)
-	image.fill(Color("09111f"))
-	var room_origin := Vector2i(16, 35)
-	var tile := 16
-	for y in range(main.room.grid_height):
-		for x in range(main.room.grid_width):
-			var floor_color := Color("34445f") if (x + y) % 2 == 0 else Color("314059")
-			_fill_rect(image, Rect2i(room_origin + Vector2i(x * tile, y * tile), Vector2i(tile, tile)), floor_color)
-	_fill_rect(image, Rect2i(447, 9, 184, 342), Color("11192a"))
-	_fill_rect(image, Rect2i(457, 24, 112, 7), Color("dce8ff"))
-	_fill_rect(image, Rect2i(457, 40, 76, 3), Color("8fa3c2"))
-	for row in [64, 91, 144, 174, 238, 282]:
-		_fill_rect(image, Rect2i(457, int(row), 154, 4), Color("34445e"))
+	image.fill(Color("484b52"))
+	var model := main.room.layout_model
+	var room_origin := Vector2i(main.room.global_position * 0.5)
+	var tile := model.tile_size / 2
+	for cell: Vector2i in model.floor_cells():
+		var floor_color := Color("ad9774") if (cell.x + cell.y) % 2 == 0 else Color("aa9471")
+		_fill_rect(image, Rect2i(room_origin + cell * tile, Vector2i(tile, tile)), floor_color)
+	for placement: Dictionary in main.room.resolved_placements:
+		for cell: Vector2i in placement.occupied:
+			_fill_rect(image, Rect2i(room_origin + cell * tile, Vector2i(tile, tile)), Color("8c6748"))
+		var target := Vector2i((main.room.global_position + model.world(placement.interaction)) * 0.5)
+		_fill_rect(image, Rect2i(target - Vector2i(2, 2), Vector2i(4, 4)), Color("c1fa81"))
+	var rail := main.job_panel.rail_global_rect()
+	_fill_rect(image, Rect2i(Vector2i(rail.position * 0.5), Vector2i(rail.size * 0.5)), Color("68442b"))
 	for employee_id in ["mira", "theo"]:
 		var worker := main.get_employee(employee_id)
 		if worker == null:

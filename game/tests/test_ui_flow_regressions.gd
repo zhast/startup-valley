@@ -10,6 +10,21 @@ func check(ok: bool, message: String) -> void:
 func frames(count: int = 6) -> void:
 	for frame: int in range(count): await process_frame
 
+func click_control(control: Control) -> void:
+	check(control.is_visible_in_tree(), "Input target must be visible: " + control.name)
+	var point := control.get_global_rect().get_center()
+	var motion := InputEventMouseMotion.new()
+	motion.position = point
+	root.push_input(motion, true)
+	for pressed: bool in [true, false]:
+		var event := InputEventMouseButton.new()
+		event.position = point
+		event.button_index = MOUSE_BUTTON_LEFT
+		event.pressed = pressed
+		root.push_input(event, true)
+		await process_frame
+	await frames()
+
 func _initialize() -> void:
 	OS.set_environment("STARTUP_VALLEY_NO_WORKER", "1")
 	call_deferred("_run")
@@ -27,7 +42,7 @@ func _run() -> void:
 	check(formatted.contains("Heading") and formatted.contains("• Strong item") and formatted.contains("• Another item"), "Markdown emphasis must work inside headings and list items")
 	check(formatted.contains("**literal**"), "Fenced code must preserve Markdown characters")
 	main.artifact_viewer.hide()
-	check(panel._tabs.size.x >= 330 and panel._tabs.size.y >= 500, "Chat must fill the authored drawer; content cannot collapse to its minimum")
+	check(panel._tabs.size.x >= 330 and panel._tabs.size.y >= 480 and panel._tab_strip.size.y >= 44, "Chat content and separate real tab strip must fill the authored drawer")
 	check(panel._chat_scroll.size.y >= 250, "Empty Chat must retain a useful reading viewport")
 	panel.show_chat_history("mira", [{"sender": "player", "content": "What should we build?"}, {"sender": "employee", "content": "**Build a prototype** with one clear offer.\n\n".repeat(18)}])
 	await frames(20)
@@ -40,9 +55,11 @@ func _run() -> void:
 	panel.show_studio_files([file])
 	panel._job_picker.select(panel.CANNED_JOBS.size())
 	panel._on_job_selected(panel.CANNED_JOBS.size())
-	panel._tabs.current_tab = 1
+	await click_control(panel._tab_buttons[1])
+	await click_control(panel._attachment_toggle)
 	panel._attachment_picker.select(1)
 	await frames(20)
+	check(panel._attachment_picker.is_visible_in_tree(), "Optional context disclosure reveals the actual attachment picker")
 	check(panel._attachment_picker.get_global_rect().end.x <= panel.drawer_global_rect().end.x, "Long attachment cannot widen Assign")
 	var definition := {"id": "website", "employeeId": "mira", "title": "Build a website", "assignment": "Create the site files.", "criteria": ["Complete site"], "files": ["site/index.html", "site/styles.css"], "state": "available"}
 	panel.set_journey_state({"milestones": [definition]})
@@ -62,7 +79,9 @@ func _run() -> void:
 	panel._tabs.current_tab = 0
 	panel.show_artifacts("accepted", [artifact])
 	check(panel._tabs.current_tab == 0, "File arrival must not hijack the active tab")
-	check(panel.studio_file_count() == 1 and (panel._artifact_list.get_child(0) as Button).text.contains(file.relative_path), "Deliveries must not replace approved Studio files")
+	var studio_row := panel._artifact_list.get_child(0) as PanelContainer
+	var studio_open := studio_row.find_child("Preview", true, false) as Button
+	check(panel.studio_file_count() == 1 and studio_open != null and studio_open.tooltip_text.contains(file.relative_path), "Deliveries must not replace approved Studio files")
 	var done := WorkerEventRecord.new()
 	done.type = &"job.completed"
 	done.summary = "A complete prototype."

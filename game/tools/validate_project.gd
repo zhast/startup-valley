@@ -12,11 +12,15 @@ const IMPORTANT_SCENES: PackedStringArray = [
 	"res://world/main.tscn",
 ]
 const IMPORTANT_TEXTURES: PackedStringArray = [
-	"res://assets/runtime/office/campus-surround.png",
-	"res://assets/runtime/office/office-shell-base.png",
-	"res://assets/runtime/office/employee-workstation.png",
-	"res://assets/runtime/office/research-bench.png",
+	"res://assets/runtime/office/architecture/floor.png",
+	"res://assets/runtime/office/architecture/wall.png",
+	"res://assets/runtime/office/architecture/trim.png",
+	"res://assets/runtime/office/architecture/window.png",
+	"res://assets/runtime/office/architecture/door.png",
 	"res://assets/runtime/office/layered-furniture.png",
+	"res://assets/runtime/office/south-workstation.png",
+	"res://assets/runtime/characters/mira-seated.png",
+	"res://assets/runtime/characters/theo-seated.png",
 	"res://assets/runtime/office/collaboration-cluster.png",
 	"res://assets/runtime/office/coffee-station.png",
 	"res://assets/runtime/office/approval-console.png",
@@ -31,13 +35,16 @@ const IMPORTANT_TEXTURES: PackedStringArray = [
 	"res://assets/runtime/effects/ambient-office.png",
 	"res://assets/runtime/effects/character-shadows.png",
 	"res://assets/runtime/effects/office-unlock.png",
-	"res://assets/concepts/office-town-characters-sheet.png",
-	"res://assets/concepts/ui/team-roster-brand-palette-concept.png",
-	"res://assets/concepts/ui/employee-profile-brand-palette-concept.png",
 ]
 const IMPORTANT_FONTS: PackedStringArray = [
-	"res://assets/fonts/tiny5/Tiny5-Regular.ttf",
-	"res://assets/fonts/nunito-sans/NunitoSans-Variable.ttf",
+	"res://assets/fonts/not-jam-slab/NotJamSlabSerif11.ttf",
+	"res://assets/fonts/nunito-sans/NunitoSans-Body.tres",
+	"res://assets/fonts/nunito-sans/NunitoSans-Emphasis.tres",
+	"res://assets/fonts/nunito-sans/NunitoSans-Bold.tres",
+	"res://assets/fonts/nunito-sans/NunitoSans-BodyItalic.tres",
+	"res://assets/fonts/nunito-sans/NunitoSans-BoldItalic.tres",
+	"res://assets/fonts/jetbrains-mono/JetBrainsMono-Body.tres",
+	"res://assets/fonts/noto-fallback/BundledFallback.tres",
 ]
 const IMPORTANT_SCRIPTS: PackedStringArray = [
 	"res://character_art.gd",
@@ -45,17 +52,24 @@ const IMPORTANT_SCRIPTS: PackedStringArray = [
 	"res://props/office_ambient_overlay.gd",
 	"res://props/office_unlock_effect.gd",
 	"res://ui/game_fonts.gd",
+	"res://world/office_layout.gd",
+	"res://world/office_architecture.gd",
+	"res://world/office_navigation.gd",
 ]
 const EXACT_TEXTURE_SIZES: Dictionary = {
-	"res://assets/runtime/office/campus-surround.png": Vector2i(1280, 720),
-	"res://assets/runtime/office/office-shell-base.png": Vector2i(832, 576),
+	"res://assets/runtime/office/architecture/floor.png": Vector2i(128, 128),
+	"res://assets/runtime/office/architecture/wall.png": Vector2i(128, 96),
+	"res://assets/runtime/office/architecture/trim.png": Vector2i(128, 64),
+	"res://assets/runtime/office/architecture/window.png": Vector2i(160, 96),
+	"res://assets/runtime/office/architecture/door.png": Vector2i(64, 32),
 	"res://assets/runtime/characters/founder-locomotion.png": Vector2i(288, 320),
 	"res://assets/runtime/characters/mira-locomotion.png": Vector2i(288, 320),
 	"res://assets/runtime/characters/theo-locomotion.png": Vector2i(288, 320),
 	"res://assets/runtime/characters/mira-work.png": Vector2i(384, 320),
+	"res://assets/runtime/characters/mira-seated.png": Vector2i(288, 80),
+	"res://assets/runtime/characters/theo-seated.png": Vector2i(288, 80),
+	"res://assets/runtime/office/south-workstation.png": Vector2i(256, 112),
 	"res://assets/runtime/characters/theo-work.png": Vector2i(384, 320),
-	"res://assets/runtime/office/employee-workstation.png": Vector2i(132, 88),
-	"res://assets/runtime/office/research-bench.png": Vector2i(138, 92),
 	"res://assets/runtime/office/layered-furniture.png": Vector2i(256, 192),
 	"res://assets/runtime/office/collaboration-cluster.png": Vector2i(138, 92),
 	"res://assets/runtime/office/coffee-station.png": Vector2i(142, 94),
@@ -167,25 +181,51 @@ func _validate() -> void:
 		_fail("Tiny5 license is missing")
 	if not FileAccess.file_exists("res://assets/fonts/nunito-sans/OFL.txt"):
 		_fail("Nunito Sans license is missing")
+	if not FileAccess.file_exists("res://assets/fonts/inter/OFL.txt"):
+		_fail("Inter license is missing")
+	if not FileAccess.file_exists("res://assets/fonts/acid-grotesk/PERMISSION.md"):
+		_fail("Acid Grotesk permission provenance is missing")
+	for license_path: String in ["not-jam-slab/LICENSE-CC0.txt", "jetbrains-mono/OFL.txt", "noto-fallback/OFL-NotoSans.txt", "noto-fallback/OFL-NotoSansCJK.txt", "noto-fallback/OFL-NotoEmoji.txt", "noto-fallback/OFL-NotoSansSymbols2.txt"]:
+		if not FileAccess.file_exists("res://assets/fonts/" + license_path):
+			_fail("Selected runtime font license is missing: " + license_path)
 
 	for atlas: Dictionary in RUNTIME_ATLASES:
 		_validate_runtime_atlas(atlas)
 
-	var layout_file := FileAccess.open("res://data/town.json", FileAccess.READ)
-	if layout_file == null:
-		_fail("Logical town grid is missing")
-	else:
-		var layout_value: Variant = JSON.parse_string(layout_file.get_as_text())
-		if not layout_value is Dictionary:
-			_fail("Logical town grid is not valid JSON")
-		else:
-			var layout := layout_value as Dictionary
-			if int(layout.get("width", 0)) <= 0 or int(layout.get("height", 0)) <= 0:
-				_fail("Logical town grid dimensions are invalid")
+	_validate_modular_office()
 
 	if _failures == 0:
-		print("validate_project: all important scenes and the logical grid are valid")
+		print("validate_project: runtime scenes, art, and all modular office stages are valid")
 	quit(_failures)
+
+func _validate_modular_office() -> void:
+	var layout := OfficeLayout.new()
+	if not layout.load_files():
+		_fail("Modular office definition or furniture catalog is invalid")
+		return
+	for stage: int in range(5):
+		var placements := layout.resolve_placements(stage)
+		var result := layout.validate_placements(placements)
+		if not result.valid: _fail("Office hire stage %d is invalid: %s" % [stage, result.errors])
+	for kind: String in layout.catalog:
+		var profile: Dictionary = layout.catalog[kind]
+		var path := str(profile.get("art", ""))
+		var texture := load(path) as Texture2D
+		if texture == null:
+			_fail("Furniture catalog art is missing: %s" % kind)
+			continue
+		var bounds := OfficeLayout.rectangle(profile.get("visual_bounds", []))
+		var sprite_offset := Vector2(OfficeLayout.vector(profile.get("sprite_offset", [])))
+		var native_size := Vector2(OfficeLayout.vector(profile.atlas_cell)) if profile.has("atlas_cell") else texture.get_size()
+		if bounds != Rect2(sprite_offset - native_size * 0.5, native_size):
+			_fail("Furniture native art bounds disagree with placement profile: %s" % kind)
+		if profile.has("atlas_cell"):
+			var cell := OfficeLayout.vector(profile.atlas_cell)
+			var atlas_row := int(profile.get("atlas_row", 0))
+			if texture.get_width() < cell.x * 2 or texture.get_height() < cell.y * (atlas_row + 1):
+				_fail("Furniture layer cells exceed their shared atlas: %s" % kind)
+		if profile.get("facings", []) != ["south"]:
+			_fail("Furniture exposes an orientation without authored art: %s" % kind)
 
 func _validate_runtime_atlas(spec: Dictionary) -> void:
 	var path := str(spec.get("path", ""))

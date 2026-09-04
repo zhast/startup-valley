@@ -26,12 +26,14 @@ func prepare_milestone(definition: Dictionary) -> void:
 	if not revision_of_job_id.is_empty():
 		requested_token_budget = 24000
 		_budget_picker.select(1)
-	_draft_label.text = "JOURNEY · " + str(definition.get("title", ""))
+	_draft_label.text = "Journey · " + str(definition.get("title", ""))
 	_refresh_work_purposes()
 	_tabs.current_tab = 1
 
 signal key_submitted(key: String)
 signal settings_requested
+signal journey_requested
+signal worker_retry_requested
 signal chat_history_requested(employee_id: String)
 signal chat_submitted(employee_id: String, message: String)
 signal assignment_submitted(employee_id: String, title: String, assignment: String, acceptance_criteria: PackedStringArray, attached_studio_path: String)
@@ -66,6 +68,7 @@ const SUCCESS_INK := Color("365d1f")
 const RAIL_WIDTH := 130.0
 const DRAWER_WIDTH := 368.0
 const DRAWER_GAP := 0.0
+const ACTIVITY_FOOTER_INSET := Vector2(18, 10)
 
 const CANNED_JOBS := [
 	{
@@ -164,8 +167,37 @@ var _submitted_job_id := ""
 var _journey_state: Dictionary = {}
 var _purpose_picker: OptionButton
 var _draft_discussion := ""
+var _header_shell: Control
+var _empty_team_panel: PanelContainer
+var _chat_composer: PanelContainer
+var _chat_active_banner: PanelContainer
+var _chat_active_copy: Label
+var _chat_activity_button: Button
+var _latest_reply_content: VBoxContainer
+var _connection_title: Label
+var _connection_description: Label
+var _connection_save_button: Button
+var _connection_retry_button: Button
+var _connection_back_button: Button
+var _connection_focus_return: Control
+var _attachment_toggle: Button
+var _usage_toggle: Button
+var _activity_content: VBoxContainer
+var _activity_scroll: ScrollContainer
+var _activity_footer: PanelContainer
+var _activity_details: VBoxContainer
+var _activity_details_toggle: Button
+var _activity_details_expanded := false
+var _activity_details_job_id := ""
+var _status_card: PanelContainer
+var _activity_heading: Label
+var _worker_error := ""
+var _tab_strip: HBoxContainer
+var _tab_buttons: Array[Button] = []
+var _promotion_actions: Array[Button] = []
 
 func _ready() -> void:
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	theme = GameFonts.interface_theme()
 	_build_interface()
 	_set_drawer_open(false, false)
@@ -230,13 +262,8 @@ func _fit_drawer_contents(content: Control) -> void:
 	content.set_deferred("size", Vector2(DRAWER_WIDTH, 720.0))
 
 func _add_outer_frame(panel: Control) -> void:
-	var frame := NinePatchRect.new()
-	frame.texture = NotebookSkin.OUTER_FRAME
-	frame.draw_center = false
-	frame.patch_margin_left = 14
-	frame.patch_margin_top = 14
-	frame.patch_margin_right = 14
-	frame.patch_margin_bottom = 14
+	var frame := Panel.new()
+	frame.add_theme_stylebox_override("panel", NotebookSkin.outer_frame())
 	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	frame.z_index = 1
@@ -251,12 +278,11 @@ func _build_team_rail() -> Control:
 	heading.add_theme_stylebox_override("panel", NotebookSkin.name_plaque())
 	rail.add_child(heading)
 	var heading_label := Label.new()
+	heading_label.name = "TeamHeading"
 	heading_label.text = "TEAM"
 	heading_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	heading_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	heading_label.add_theme_font_size_override("font_size", GameFonts.DISPLAY_SMALL)
-	GameFonts.use_display(heading_label)
-	heading_label.add_theme_color_override("font_color", CHARCOAL)
+	CozyUI.label(heading_label, "display")
 	heading.add_child(heading_label)
 	var team_list := VBoxContainer.new()
 	team_list.name = "TeamList"
@@ -268,12 +294,12 @@ func _build_team_rail() -> Control:
 	team_list.offset_bottom = 366.0
 	rail.add_child(team_list)
 	_settings_button = Button.new()
-	_settings_button.text = "SETTINGS"
+	_settings_button.text = "Settings"
 	_settings_button.position = Vector2(15.0, 662.0)
 	_settings_button.size = Vector2(100.0, 42.0)
 	_settings_button.tooltip_text = "Open settings or connect AI"
 	_settings_button.pressed.connect(func() -> void:
-		if _credential_configured:
+		if _credential_configured and _worker_connected:
 			close_drawer(false)
 			settings_requested.emit()
 		else:
@@ -288,8 +314,8 @@ func _build_team_rail() -> Control:
 	_connection_badge.size = Vector2(24.0, 24.0)
 	_connection_badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_connection_badge.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_connection_badge.add_theme_font_size_override("font_size", GameFonts.DISPLAY_SMALL)
-	GameFonts.use_display(_connection_badge)
+	CozyUI.label(_connection_badge, "action")
+	_connection_badge.add_theme_font_size_override("font_size", 18)
 	_connection_badge.add_theme_color_override("font_color", VERMILION)
 	rail.add_child(_connection_badge)
 	return rail
@@ -306,84 +332,170 @@ func _build_connection_panel() -> void:
 	_add_outer_frame(_connection_panel)
 	var page := PanelContainer.new()
 	page.position = Vector2(14.0, 28.0)
-	page.size = Vector2(DRAWER_WIDTH - 28.0, 430.0)
-	page.add_theme_stylebox_override("panel", NotebookSkin.parchment(Vector4(18.0, 18.0, 18.0, 18.0)))
+	page.size = Vector2(DRAWER_WIDTH - 28.0, 678.0)
+	page.add_theme_stylebox_override("panel", CozyUI.paper(Vector4(18, 20, 18, 20)))
 	_connection_panel.add_child(page)
 	var content := VBoxContainer.new()
 	content.add_theme_constant_override("separation", 14)
 	page.add_child(content)
-	var title := Label.new()
-	title.text = "CONNECT AI"
-	title.add_theme_font_size_override("font_size", GameFonts.DISPLAY_LARGE)
-	GameFonts.use_display(title)
-	title.add_theme_color_override("font_color", CHARCOAL)
-	content.add_child(title)
-	var description := Label.new()
-	description.text = "Add one OpenRouter key to chat with teammates and run work orders. The key is stored in your OS keychain."
-	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	description.add_theme_font_size_override("font_size", GameFonts.BODY_DEFAULT)
-	description.add_theme_color_override("font_color", CHARCOAL)
-	content.add_child(description)
+	_connection_title = Label.new()
+	_connection_title.text = "Connect AI"
+	CozyUI.label(_connection_title, "display")
+	content.add_child(_connection_title)
+	_connection_description = Label.new()
+	_connection_description.text = "Add one OpenRouter key for conversations and work orders. Your key stays in the OS keychain."
+	_connection_description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	CozyUI.label(_connection_description)
+	content.add_child(_connection_description)
 	_key_input = LineEdit.new()
 	_key_input.secret = true
 	_key_input.placeholder_text = "Paste OpenRouter key"
 	_key_input.custom_minimum_size.y = 48.0
 	_key_input.text_submitted.connect(func(_value: String) -> void: _submit_key())
+	_key_input.text_changed.connect(func(_value: String) -> void: _refresh_connection_save_state())
 	_style_text_input(_key_input)
 	content.add_child(_key_input)
-	var save_button := Button.new()
-	save_button.text = "SAVE CONNECTION"
-	save_button.custom_minimum_size.y = 48.0
-	save_button.pressed.connect(_submit_key)
-	_style_action_button(save_button, VERMILION, true)
-	content.add_child(save_button)
+	_connection_save_button = Button.new()
+	_connection_save_button.text = "Save connection"
+	_connection_save_button.disabled = true
+	_connection_save_button.custom_minimum_size.y = 44.0
+	_connection_save_button.pressed.connect(_submit_key)
+	_style_action_button(_connection_save_button, VERMILION, true)
+	content.add_child(_connection_save_button)
+	_connection_retry_button = Button.new()
+	_connection_retry_button.text = "Reconnect worker"
+	_connection_retry_button.pressed.connect(func() -> void:
+		_connection_retry_button.disabled = true
+		_key_status.text = "Reconnecting the local worker…"
+		_configure_connection_focus()
+		worker_retry_requested.emit()
+	)
+	CozyUI.button(_connection_retry_button, "primary")
+	content.add_child(_connection_retry_button)
+	_connection_retry_button.hide()
 	_key_status = Label.new()
 	_key_status.text = "Checking OS keychain…"
 	_key_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_key_status.add_theme_font_size_override("font_size", GameFonts.BODY_META)
-	_key_status.add_theme_color_override("font_color", CHARCOAL)
+	CozyUI.label(_key_status)
 	content.add_child(_key_status)
 	var close_button := Button.new()
-	close_button.text = "BACK TO GAME"
+	_connection_back_button = close_button
+	close_button.text = "Back to game"
 	close_button.custom_minimum_size.y = 44.0
 	close_button.pressed.connect(_close_connection_settings)
 	_style_action_button(close_button, INDIGO, false)
 	content.add_child(close_button)
 
 func _open_connection_settings() -> void:
+	if not _connection_panel.visible:
+		_connection_focus_return = get_viewport().gui_get_focus_owner()
 	open_drawer(false)
 	_connection_panel.visible = true
 	_connection_panel.move_to_front()
 	_rail_panel.move_to_front()
-	_key_input.grab_focus()
+	_refresh_connection_surface()
+	_configure_connection_focus()
 
 func _close_connection_settings() -> void:
 	_connection_panel.visible = false
 	if _drawer_open:
 		_drawer_panel.move_to_front()
 		_rail_panel.move_to_front()
+	if is_instance_valid(_connection_focus_return) and _connection_focus_return.is_visible_in_tree() and not (_connection_focus_return is BaseButton and (_connection_focus_return as BaseButton).disabled):
+		_connection_focus_return.grab_focus()
+	elif _settings_button.is_visible_in_tree():
+		_settings_button.grab_focus()
+	_connection_focus_return = null
+
+func _refresh_connection_surface() -> void:
+	if _connection_title == null: return
+	var unavailable := not _worker_connected and not _worker_error.is_empty()
+	_connection_title.text = "Worker offline" if unavailable else "AI connection" if _credential_configured else "Connect AI"
+	_connection_description.text = ("Reconnect to resume chat and work. Your saved key does not need to change." if _credential_configured else "Reconnect first, then add your OpenRouter key.") if unavailable else "A key is already saved in your OS keychain. Paste a new key only if you want to replace it." if _credential_configured else "Add one OpenRouter key for conversations and work orders. Your key stays in the OS keychain."
+	_connection_save_button.text = "Replace saved key" if _credential_configured else "Save connection"
+	_key_input.placeholder_text = "Paste replacement key (optional)" if _credential_configured else "Paste OpenRouter key"
+	_key_input.visible = not unavailable
+	_connection_save_button.visible = not unavailable
+	_connection_retry_button.visible = unavailable
+	_connection_retry_button.disabled = false
+	if unavailable:
+		# The page heading and recovery action already explain a disconnection.
+		# Preserve diagnostic detail in a tooltip without repeating that prose.
+		_key_status.text = ""
+		_key_status.tooltip_text = _worker_error
+		_connection_retry_button.tooltip_text = _worker_error
+		_key_status.add_theme_color_override("font_color", ALERT_INK)
+	elif _credential_configured:
+		_key_status.text = "Your saved key stays active until you save a replacement."
+		_key_status.add_theme_color_override("font_color", CHARCOAL)
+	_refresh_connection_save_state()
+	_configure_connection_focus()
+
+func _refresh_connection_save_state() -> void:
+	if _connection_save_button == null: return
+	_connection_save_button.disabled = _key_input.text.strip_edges().is_empty()
+	_configure_connection_focus()
+
+func _connection_focus_controls() -> Array[Control]:
+	var controls: Array[Control] = []
+	for control: Control in [_key_input, _connection_save_button, _connection_retry_button, _connection_back_button]:
+		if control == null or not control.is_visible_in_tree(): continue
+		if control is BaseButton and (control as BaseButton).disabled: continue
+		if control is LineEdit and not (control as LineEdit).editable: continue
+		controls.append(control)
+	return controls
+
+func _configure_connection_focus() -> void:
+	if _connection_panel == null or not _connection_panel.is_visible_in_tree(): return
+	var controls := _connection_focus_controls()
+	if controls.is_empty(): return
+	for index: int in range(controls.size()):
+		var control := controls[index]
+		control.focus_next = control.get_path_to(controls[(index + 1) % controls.size()])
+		control.focus_previous = control.get_path_to(controls[(index - 1 + controls.size()) % controls.size()])
+	if not controls.has(get_viewport().gui_get_focus_owner()): controls[0].grab_focus()
+
+func _input(event: InputEvent) -> void:
+	# Connection overlays the drawer, so underlying visible controls must never
+	# receive keyboard traversal while it is open. Explicit cycling also repairs
+	# focus after a retry becomes disabled or connectivity changes the fields.
+	if _connection_panel == null or not _connection_panel.is_visible_in_tree(): return
+	if event.is_action_pressed("ui_cancel"):
+		_close_connection_settings()
+		get_viewport().set_input_as_handled()
+		return
+	if not event is InputEventKey or not event.pressed or event.keycode != KEY_TAB: return
+	if event.ctrl_pressed or event.alt_pressed or event.meta_pressed: return
+	var controls := _connection_focus_controls()
+	if controls.is_empty(): return
+	_configure_connection_focus()
+	var index := controls.find(get_viewport().gui_get_focus_owner())
+	controls[(index + (-1 if event.shift_pressed else 1) + controls.size()) % controls.size()].grab_focus()
+	get_viewport().set_input_as_handled()
 
 func _build_employee_drawer() -> VBoxContainer:
 	var drawer := VBoxContainer.new()
 	drawer.add_theme_constant_override("separation", 7)
 	var header_shell := Control.new()
-	header_shell.custom_minimum_size = Vector2(0.0, 150.0)
+	_header_shell = header_shell
+	header_shell.custom_minimum_size = Vector2(0.0, 112.0)
 	drawer.add_child(header_shell)
 	var header_card := PanelContainer.new()
-	header_card.add_theme_stylebox_override("panel", NotebookSkin.parchment(Vector4(12.0, 11.0, 38.0, 11.0)))
+	header_card.add_theme_stylebox_override("panel", CozyUI.paper(Vector4(8, 8, 8, 8)))
 	header_shell.add_child(header_card)
 	header_card.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var header_margin := MarginContainer.new()
-	header_margin.add_theme_constant_override("margin_left", 12)
-	header_margin.add_theme_constant_override("margin_right", 38)
-	header_margin.add_theme_constant_override("margin_top", 12)
-	header_margin.add_theme_constant_override("margin_bottom", 12)
+	header_margin.add_theme_constant_override("margin_left", 0)
+	# Reserve the close target's full width, including for a long employee name.
+	header_margin.add_theme_constant_override("margin_right", 44)
+	header_margin.add_theme_constant_override("margin_top", 0)
+	header_margin.add_theme_constant_override("margin_bottom", 0)
 	header_card.add_child(header_margin)
 	var employee_header := HBoxContainer.new()
-	employee_header.add_theme_constant_override("separation", 16)
+	employee_header.add_theme_constant_override("separation", 12)
 	header_margin.add_child(employee_header)
 	var portrait_frame := PanelContainer.new()
-	portrait_frame.custom_minimum_size = Vector2(104.0, 112.0)
+	portrait_frame.custom_minimum_size = Vector2(76.0, 88.0)
 	portrait_frame.add_theme_stylebox_override("panel", NotebookSkin.portrait_frame())
 	employee_header.add_child(portrait_frame)
 	_employee_portrait = TextureRect.new()
@@ -407,19 +519,22 @@ func _build_employee_drawer() -> VBoxContainer:
 	employee_header.add_child(employee_copy)
 	_employee_name = Label.new()
 	_employee_name.text = "Your team"
-	_employee_name.add_theme_font_size_override("font_size", GameFonts.DISPLAY_LARGE)
-	GameFonts.use_display(_employee_name)
-	_employee_name.add_theme_color_override("font_color", CHARCOAL)
+	_employee_name.clip_text = true
+	_employee_name.text_overrun_behavior = TextServer.OVERRUN_TRIM_CHAR
+	_employee_name.mouse_filter = Control.MOUSE_FILTER_PASS
+	CozyUI.label(_employee_name, "display")
+	_employee_name.resized.connect(_fit_employee_heading)
 	employee_copy.add_child(_employee_name)
 	_employee_meta = Label.new()
 	_employee_meta.text = "Select an employee"
-	_employee_meta.add_theme_font_size_override("font_size", GameFonts.BODY_META)
+	_employee_meta.mouse_filter = Control.MOUSE_FILTER_PASS
+	CozyUI.label(_employee_meta, "meta")
 	_employee_meta.add_theme_color_override("font_color", INDIGO)
 	_employee_meta.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	employee_copy.add_child(_employee_meta)
 	_employee_status = Label.new()
-	_employee_status.text = "AVAILABLE"
-	_employee_status.add_theme_font_size_override("font_size", GameFonts.BODY_META)
+	_employee_status.text = "Available"
+	CozyUI.label(_employee_status, "meta")
 	_employee_status.add_theme_color_override("font_color", SUCCESS_INK)
 	employee_copy.add_child(_employee_status)
 	_drawer_close_button = Button.new()
@@ -430,29 +545,62 @@ func _build_employee_drawer() -> VBoxContainer:
 	_drawer_close_button.pressed.connect(close_drawer)
 	_style_close_button(_drawer_close_button)
 	_drawer_close_button.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	_drawer_close_button.offset_left = -50.0
-	_drawer_close_button.offset_top = 8.0
-	_drawer_close_button.offset_right = -20.0
-	_drawer_close_button.offset_bottom = 38.0
+	_drawer_close_button.offset_left = -46.0
+	_drawer_close_button.offset_top = 4.0
+	_drawer_close_button.offset_right = -2.0
+	_drawer_close_button.offset_bottom = 48.0
 	header_shell.add_child(_drawer_close_button)
 	_tabs = TabContainer.new()
 	_tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_tabs.add_theme_font_size_override("font_size", GameFonts.DISPLAY_SMALL)
-	GameFonts.use_display(_tabs)
-	_tabs.add_theme_color_override("font_selected_color", CHARCOAL)
-	_tabs.add_theme_color_override("font_unselected_color", CHARCOAL)
-	_tabs.add_theme_stylebox_override("panel", NotebookSkin.wood_surface(Vector4(5.0, 5.0, 5.0, 5.0)))
-	_tabs.add_theme_stylebox_override("tab_selected", NotebookSkin.selected_tab())
-	_tabs.add_theme_stylebox_override("tab_unselected", NotebookSkin.wood_tab())
-	_tabs.add_theme_stylebox_override("tab_hovered", NotebookSkin.wood_tab())
-	_tabs.get_tab_bar().custom_minimum_size.y = 40.0
+	CozyUI.tabs(_tabs)
+	_tabs.tabs_visible = false
+	_tab_strip = HBoxContainer.new()
+	_tab_strip.add_theme_constant_override("separation", 0)
+	drawer.add_child(_tab_strip)
+	for title: String in ["Chat", "Assign", "Activity", "Studio"]:
+		var button := Button.new()
+		button.text = title
+		button.custom_minimum_size = Vector2(86, 44)
+		button.clip_text = true
+		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		button.size_flags_stretch_ratio = 1.0
+		CozyUI.button(button, "primary" if _tab_buttons.is_empty() else "secondary")
+		button.pressed.connect(_select_drawer_tab.bind(_tab_buttons.size()))
+		_tab_strip.add_child(button)
+		_tab_buttons.append(button)
 	drawer.add_child(_tabs)
 	_tabs.add_child(_build_chat_tab())
 	_tabs.add_child(_build_work_tab())
 	_tabs.add_child(_build_journal_tab())
 	_tabs.add_child(_build_studio_tab())
+	_empty_team_panel = PanelContainer.new()
+	_empty_team_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_empty_team_panel.add_theme_stylebox_override("panel", CozyUI.paper(Vector4(24, 24, 24, 24)))
+	drawer.add_child(_empty_team_panel)
+	var empty := VBoxContainer.new()
+	empty.alignment = BoxContainer.ALIGNMENT_CENTER
+	empty.add_theme_constant_override("separation", 16)
+	_empty_team_panel.add_child(empty)
+	var title := _section_label("Your first teammate")
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	empty.add_child(title)
+	var hint := Label.new()
+	hint.text = "Hire Mina to turn your first idea into something real."
+	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	CozyUI.label(hint)
+	empty.add_child(hint)
+	var hire := Button.new()
+	hire.text = "Open Company Journey"
+	CozyUI.button(hire, "primary")
+	hire.pressed.connect(journey_requested.emit)
+	empty.add_child(hire)
+	_empty_team_panel.hide()
 	_tabs.tab_changed.connect(_on_tab_changed)
 	return drawer
+
+func _select_drawer_tab(index: int) -> void:
+	_tabs.current_tab = index
 
 func _tab_scroll(name_value: String) -> ScrollContainer:
 	var scroll := ScrollContainer.new()
@@ -460,17 +608,17 @@ func _tab_scroll(name_value: String) -> ScrollContainer:
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	OperationsSkin.style_scroll_container(scroll)
+	CozyUI.scroll(scroll)
 	return scroll
 
 func _tab_content(scroll: ScrollContainer) -> VBoxContainer:
 	var page := PanelContainer.new()
 	page.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	page.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	page.add_theme_stylebox_override("panel", NotebookSkin.parchment(Vector4(14.0, 12.0, 14.0, 12.0)))
+	page.add_theme_stylebox_override("panel", CozyUI.paper(Vector4(12, 12, 12, 12)))
 	scroll.add_child(page)
 	var content := VBoxContainer.new()
-	content.custom_minimum_size = Vector2(288.0, 0.0)
+	content.custom_minimum_size = Vector2(280.0, 0.0)
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	content.add_theme_constant_override("separation", 10)
 	page.add_child(content)
@@ -482,13 +630,13 @@ func _build_chat_tab() -> VBoxContainer:
 	tab.add_theme_constant_override("separation", 7)
 	var notebook := NotebookPanel.new()
 	notebook.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	notebook.add_theme_stylebox_override("panel", NotebookSkin.notebook())
+	notebook.add_theme_stylebox_override("panel", CozyUI.paper(Vector4(12, 12, 12, 12)))
 	tab.add_child(notebook)
 	_chat_scroll = ScrollContainer.new()
 	_chat_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_chat_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_chat_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	OperationsSkin.style_scroll_container(_chat_scroll)
+	CozyUI.scroll(_chat_scroll)
 	_chat_scroll.get_v_scroll_bar().changed.connect(_scroll_chat_to_bottom)
 	_chat_scroll.gui_input.connect(_on_chat_scroll_input)
 	_chat_scroll.get_v_scroll_bar().gui_input.connect(_on_chat_scroll_input)
@@ -500,8 +648,8 @@ func _build_chat_tab() -> VBoxContainer:
 	var chat_margin := MarginContainer.new()
 	chat_margin.add_theme_constant_override("margin_left", 4)
 	chat_margin.add_theme_constant_override("margin_right", 4)
-	chat_margin.add_theme_constant_override("margin_top", 18)
-	chat_margin.add_theme_constant_override("margin_bottom", 18)
+	chat_margin.add_theme_constant_override("margin_top", 4)
+	chat_margin.add_theme_constant_override("margin_bottom", 4)
 	chat_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_chat_scroll.add_child(chat_margin)
 	_chat_log = VBoxContainer.new()
@@ -509,21 +657,22 @@ func _build_chat_tab() -> VBoxContainer:
 	_chat_log.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_chat_log.add_theme_constant_override("separation", 12)
 	chat_margin.add_child(_chat_log)
-	_show_chat_hint("Choose a teammate from the rail.")
+	_show_chat_hint("Hire your first teammate from Company Journey.")
 	var composer_frame := PanelContainer.new()
-	composer_frame.add_theme_stylebox_override("panel", NotebookSkin.content_frame())
+	_chat_composer = composer_frame
+	composer_frame.add_theme_stylebox_override("panel", CozyUI.paper(Vector4(8, 8, 8, 8)))
 	tab.add_child(composer_frame)
 	var composer_margin := MarginContainer.new()
-	composer_margin.add_theme_constant_override("margin_left", 8)
-	composer_margin.add_theme_constant_override("margin_right", 8)
-	composer_margin.add_theme_constant_override("margin_top", 8)
-	composer_margin.add_theme_constant_override("margin_bottom", 8)
+	composer_margin.add_theme_constant_override("margin_left", 0)
+	composer_margin.add_theme_constant_override("margin_right", 0)
+	composer_margin.add_theme_constant_override("margin_top", 0)
+	composer_margin.add_theme_constant_override("margin_bottom", 0)
 	composer_frame.add_child(composer_margin)
 	var composer_column := VBoxContainer.new()
 	composer_column.add_theme_constant_override("separation", 5)
 	composer_margin.add_child(composer_column)
 	var input_row := HBoxContainer.new()
-	input_row.add_theme_constant_override("separation", 8)
+	input_row.add_theme_constant_override("separation", 4)
 	composer_column.add_child(input_row)
 	_chat_input = LineEdit.new()
 	_chat_input.placeholder_text = "Talk through an idea…"
@@ -534,28 +683,48 @@ func _build_chat_tab() -> VBoxContainer:
 	_style_text_input(_chat_input)
 	input_row.add_child(_chat_input)
 	_chat_send_button = Button.new()
-	_chat_send_button.text = "ASK"
-	_chat_send_button.custom_minimum_size = Vector2(88.0, 48.0)
-	_chat_send_button.add_theme_font_size_override("font_size", GameFonts.DISPLAY_SMALL)
+	_chat_send_button.text = "Ask"
+	_chat_send_button.custom_minimum_size = Vector2(100.0, 48.0)
+	_chat_send_button.clip_text = true
+	_chat_send_button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_chat_send_button.pressed.connect(_submit_chat)
 	_style_action_button(_chat_send_button, VERMILION, true)
 	input_row.add_child(_chat_send_button)
 	_chat_helper = Label.new()
 	_chat_helper.text = "Conversation only — no tools or files."
-	_chat_helper.add_theme_font_size_override("font_size", GameFonts.BODY_META)
+	CozyUI.label(_chat_helper)
 	_chat_helper.add_theme_color_override("font_color", CHARCOAL)
 	_chat_helper.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_chat_helper.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	composer_column.add_child(_chat_helper)
 	_make_job_button = Button.new()
-	_make_job_button.text = "CREATE WORK ORDER"
-	_make_job_button.custom_minimum_size = Vector2(0.0, 48.0)
-	_make_job_button.add_theme_font_size_override("font_size", GameFonts.DISPLAY_SMALL)
+	_make_job_button.text = "Create work order"
+	_make_job_button.custom_minimum_size = Vector2(0.0, 40.0)
+	_make_job_button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	_make_job_button.disabled = true
 	_make_job_button.visible = false
 	_make_job_button.pressed.connect(_make_last_chat_a_job)
-	_style_action_button(_make_job_button, VERMILION, true)
+	CozyUI.button(_make_job_button, "quiet")
 	tab.add_child(_make_job_button)
+	_chat_active_banner = PanelContainer.new()
+	_chat_active_banner.add_theme_stylebox_override("panel", CozyUI.paper())
+	var active_content := VBoxContainer.new()
+	active_content.add_theme_constant_override("separation", 8)
+	_chat_active_banner.add_child(active_content)
+	_chat_active_copy = Label.new()
+	_chat_active_copy.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	CozyUI.label(_chat_active_copy)
+	active_content.add_child(_chat_active_copy)
+	_chat_activity_button = Button.new()
+	_chat_activity_button.text = "Open Activity"
+	CozyUI.button(_chat_activity_button, "secondary")
+	_chat_activity_button.pressed.connect(func() -> void:
+		if not _active_employee_id.is_empty(): _select_employee(_active_employee_id)
+		_tabs.current_tab = 2
+	)
+	active_content.add_child(_chat_activity_button)
+	tab.add_child(_chat_active_banner)
+	_chat_active_banner.hide()
 	return tab
 
 func _build_work_tab() -> VBoxContainer:
@@ -564,14 +733,13 @@ func _build_work_tab() -> VBoxContainer:
 	var scroll := _tab_scroll("AssignmentFields")
 	tab.add_child(scroll)
 	var content := _tab_content(scroll)
-	content.add_child(_section_label("WORK ORDER"))
 	_draft_label = Label.new()
 	_draft_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	CozyUI.label(_draft_label)
 	_draft_label.add_theme_color_override("font_color", CHARCOAL)
-	_draft_label.add_theme_font_size_override("font_size", GameFonts.BODY_META)
 	content.add_child(_draft_label)
 	_draft_reset_button = Button.new()
-	_draft_reset_button.text = "NEW ORDINARY WORK ORDER"
+	_draft_reset_button.text = "New ordinary work order"
 	_style_action_button(_draft_reset_button, INDIGO, false)
 	_draft_reset_button.pressed.connect(func() -> void:
 		_job_picker.select(CANNED_JOBS.size())
@@ -611,9 +779,17 @@ func _build_work_tab() -> VBoxContainer:
 	_assignment_preview.custom_minimum_size = Vector2(0.0, 122.0)
 	_assignment_preview.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
 	_style_text_input(_assignment_preview)
-	OperationsSkin.style_text_edit_scrollbar(_assignment_preview)
 	content.add_child(_assignment_preview)
-	_attachment_label = _section_label("READ CONTEXT (OPTIONAL)")
+	_attachment_toggle = Button.new()
+	_attachment_toggle.text = "Attach Studio context (optional)"
+	CozyUI.disclosure(_attachment_toggle, false)
+	_attachment_toggle.pressed.connect(func() -> void:
+		_attachment_picker.visible = not _attachment_picker.visible
+		_attachment_label.visible = _attachment_picker.visible
+		CozyUI.disclosure(_attachment_toggle, _attachment_picker.visible)
+	)
+	content.add_child(_attachment_toggle)
+	_attachment_label = _section_label("Studio context")
 	_attachment_label.visible = false
 	content.add_child(_attachment_label)
 	_attachment_picker = OptionButton.new()
@@ -633,20 +809,21 @@ func _build_work_tab() -> VBoxContainer:
 	_budget_picker.add_item("AI cap · 12,000 tokens", 12000)
 	_budget_picker.add_item("AI cap · 24,000 tokens", 24000)
 	_budget_picker.item_selected.connect(func(index: int) -> void: requested_token_budget = _budget_picker.get_item_id(index))
-	content.add_child(_budget_picker)
 	var confirmation := Label.new()
-	confirmation.text = "Starts an AI work session that can use approved tools, create files, and spend from your configured budget."
+	confirmation.text = "Uses tools and creates files. Real AI charges apply up to the token cap."
 	confirmation.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	confirmation.add_theme_font_size_override("font_size", GameFonts.BODY_META)
-	confirmation.add_theme_color_override("font_color", CHARCOAL)
+	CozyUI.label(confirmation)
 	var footer := PanelContainer.new()
-	footer.add_theme_stylebox_override("panel", NotebookSkin.parchment(Vector4(12, 8, 12, 8)))
+	footer.add_theme_stylebox_override("panel", CozyUI.paper(Vector4(12, 8, 12, 8)))
 	tab.add_child(footer)
 	var footer_content := VBoxContainer.new()
+	footer_content.add_theme_constant_override("separation", 6)
 	footer.add_child(footer_content)
+	footer_content.add_child(_budget_picker)
 	footer_content.add_child(confirmation)
 	_assignment_error = Label.new()
 	_assignment_error.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	CozyUI.label(_assignment_error)
 	_assignment_error.add_theme_color_override("font_color", ALERT_INK)
 	_assignment_error.hide()
 	content.add_child(_assignment_error)
@@ -654,7 +831,7 @@ func _build_work_tab() -> VBoxContainer:
 	action_row.add_theme_constant_override("separation", 6)
 	footer_content.add_child(action_row)
 	_assign_button = Button.new()
-	_assign_button.text = "START WORK ORDER"
+	_assign_button.text = "Start work order"
 	_assign_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_assign_button.pressed.connect(_submit_assignment)
 	_style_action_button(_assign_button, VERMILION, true)
@@ -664,13 +841,21 @@ func _build_work_tab() -> VBoxContainer:
 	_cancel_button.custom_minimum_size = Vector2(72.0, 0.0)
 	_cancel_button.disabled = true
 	_cancel_button.pressed.connect(_cancel_active_job)
-	_style_action_button(_cancel_button, VERMILION, false)
+	CozyUI.button(_cancel_button, "danger")
 	_on_job_selected(CANNED_JOBS.size())
 	return tab
 
-func _build_journal_tab() -> ScrollContainer:
-	var scroll := _tab_scroll("Activity")
+func _build_journal_tab() -> VBoxContainer:
+	var tab := VBoxContainer.new()
+	tab.name = "Activity"
+	tab.add_theme_constant_override("separation", 4)
+	var scroll := _tab_scroll("ActivityContent")
+	_activity_scroll = scroll
+	scroll.follow_focus = true
+	tab.add_child(scroll)
 	var content := _tab_content(scroll)
+	content.add_theme_constant_override("separation", 4)
+	_activity_content = content
 	_history_picker = OptionButton.new()
 	_history_picker.fit_to_longest_item = false
 	_history_picker.clip_text = true
@@ -682,255 +867,179 @@ func _build_journal_tab() -> ScrollContainer:
 		artifact_refresh_requested.emit(_activity_job_id)
 	)
 	content.add_child(_history_picker)
-	var status_card := PanelContainer.new()
-	status_card.add_theme_stylebox_override("panel", NotebookSkin.parchment(Vector4(12, 12, 12, 12)))
-	content.add_child(status_card)
+	_status_card = PanelContainer.new()
+	_status_card.add_theme_stylebox_override("panel", CozyUI.card(Vector4(8, 8, 8, 8)))
+	content.add_child(_status_card)
 	var status_content := VBoxContainer.new()
-	status_content.add_theme_constant_override("separation", 3)
-	status_card.add_child(status_content)
-	var status_heading := _section_label("CURRENT WORK")
-	status_heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	status_heading.add_theme_color_override("font_color", CHARCOAL)
-	status_content.add_child(status_heading)
+	status_content.add_theme_constant_override("separation", 4)
+	_status_card.add_child(status_content)
+	_last_status_label = Label.new()
+	_last_status_label.text = "Current work"
+	CozyUI.label(_last_status_label, "action")
+	_last_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	status_content.add_child(_last_status_label)
 	_status_label = Label.new()
 	_status_label.text = "No active work order."
 	_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_status_label.max_lines_visible = 5
+	_status_label.max_lines_visible = 3
 	_status_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	_status_label.add_theme_color_override("font_color", CHARCOAL)
+	CozyUI.label(_status_label)
 	status_content.add_child(_status_label)
-	_usage_label = Label.new()
-	_usage_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_usage_label.text = "Usage details  ·  0 tokens"
-	_usage_label.add_theme_font_size_override("font_size", GameFonts.BODY_META)
-	_usage_label.add_theme_color_override("font_color", CHARCOAL)
-	status_content.add_child(_usage_label)
-	_spend_label = Label.new()
-	_spend_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_spend_label.text = "AI spend today  ·  $0.0000"
-	_spend_label.add_theme_font_size_override("font_size", GameFonts.BODY_META)
-	_spend_label.add_theme_color_override("font_color", CHARCOAL)
-	status_content.add_child(_spend_label)
-	_token_meter = ProgressBar.new()
-	_token_meter.custom_minimum_size = Vector2(0.0, 24.0)
-	_token_meter.min_value = 0.0
-	_token_meter.max_value = _spend_warning
-	_token_meter.value = 0.0
-	_token_meter.show_percentage = false
-	_token_meter.add_theme_stylebox_override("background", OperationsSkin.token_meter())
-	var meter_fill := StyleBoxFlat.new()
-	meter_fill.bg_color = INDIGO
-	meter_fill.border_color = WOOD_DARK
-	meter_fill.set_border_width_all(1)
-	meter_fill.set_corner_radius_all(2)
-	meter_fill.content_margin_left = 4.0
-	meter_fill.content_margin_right = 4.0
-	_token_meter.add_theme_stylebox_override("fill", meter_fill)
-	status_content.add_child(_token_meter)
-	_last_status_label = Label.new()
-	_last_status_label.text = "Last work order  ·  none yet"
-	_last_status_label.add_theme_font_size_override("font_size", GameFonts.BODY_META)
-	_last_status_label.add_theme_color_override("font_color", CHARCOAL)
-	_last_status_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	status_content.add_child(_last_status_label)
-	_activity_cancel = _cancel_button
-	_activity_cancel.text = "CANCEL WORK ORDER"
-	content.add_child(_activity_cancel)
-	_activity_cancel.hide()
+	_delivery_list = VBoxContainer.new()
+	_delivery_list.add_theme_constant_override("separation", 8)
+	_delivery_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content.add_child(_delivery_list)
 	_approval_box = PanelContainer.new()
 	_approval_box.visible = false
-	_approval_box.add_theme_stylebox_override("panel", OperationsSkin.journal_approval_card())
+	_approval_box.add_theme_stylebox_override("panel", CozyUI.card(Vector4(8, 8, 8, 8)))
 	var approval_content := VBoxContainer.new()
-	approval_content.add_theme_constant_override("separation", 5)
+	approval_content.add_theme_constant_override("separation", 4)
 	_approval_box.add_child(approval_content)
-	var approval_heading := _section_label("ACTION REQUIRED")
-	approval_heading.add_theme_color_override("font_color", ALERT_INK)
-	approval_content.add_child(approval_heading)
+	approval_content.add_child(_section_label("Decision needed"))
 	_approval_label = Label.new()
 	_approval_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_approval_label.add_theme_color_override("font_color", CHARCOAL)
+	CozyUI.label(_approval_label)
 	approval_content.add_child(_approval_label)
 	var approval_buttons := HBoxContainer.new()
-	approval_buttons.add_theme_constant_override("separation", 6)
-	var approve_button := Button.new()
-	approve_button.text = "Approve"
-	approve_button.pressed.connect(_decide_approval.bind(true))
-	_style_action_button(approve_button, VERMILION, true)
-	approval_buttons.add_child(approve_button)
-	var deny_button := Button.new()
-	deny_button.text = "Deny"
-	deny_button.pressed.connect(_decide_approval.bind(false))
-	_style_action_button(deny_button, INDIGO, false)
-	approval_buttons.add_child(deny_button)
+	approval_buttons.add_theme_constant_override("separation", 8)
+	for approved: bool in [true, false]:
+		var button := Button.new()
+		button.text = "Approve" if approved else "Deny"
+		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		button.pressed.connect(_decide_approval.bind(approved))
+		CozyUI.button(button, "primary" if approved else "secondary")
+		approval_buttons.add_child(button)
 	approval_content.add_child(approval_buttons)
 	content.add_child(_approval_box)
 	_promotion_box = PanelContainer.new()
 	_promotion_box.visible = false
-	_promotion_box.add_theme_stylebox_override("panel", NotebookSkin.parchment(Vector4(12, 12, 12, 12)))
+	_promotion_box.add_theme_stylebox_override("panel", CozyUI.card(Vector4(8, 8, 8, 8)))
 	var promotion_content := VBoxContainer.new()
-	promotion_content.add_theme_constant_override("separation", 5)
+	promotion_content.add_theme_constant_override("separation", 8)
 	_promotion_box.add_child(promotion_content)
-	var promotion_heading := _section_label("DELIVERY READY")
-	promotion_heading.add_theme_color_override("font_color", INDIGO)
-	promotion_content.add_child(promotion_heading)
 	_promotion_label = Label.new()
 	_promotion_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_promotion_label.add_theme_color_override("font_color", CHARCOAL)
+	CozyUI.label(_promotion_label)
 	promotion_content.add_child(_promotion_label)
-	var promotion_buttons := VBoxContainer.new()
-	promotion_buttons.add_theme_constant_override("separation", 6)
-	var promote_button := Button.new()
-	promote_button.text = "ADD TO STUDIO"
-	promote_button.pressed.connect(_decide_promotion.bind(true))
-	_style_action_button(promote_button, VERMILION, true)
-	promotion_buttons.add_child(promote_button)
-	var discard_button := Button.new()
-	discard_button.text = "KEEP WITH JOB"
-	discard_button.pressed.connect(_decide_promotion.bind(false))
-	_style_action_button(discard_button, INDIGO, false)
-	promotion_buttons.add_child(discard_button)
-	promotion_content.add_child(promotion_buttons)
+	for approved: bool in [true, false]:
+		var button := Button.new()
+		button.text = "Add to Studio" if approved else "Keep with job"
+		button.pressed.connect(_decide_promotion.bind(approved))
+		CozyUI.button(button, "primary" if approved else "quiet")
+		promotion_content.add_child(button)
+		_promotion_actions.append(button)
 	content.add_child(_promotion_box)
-	_delivery_list = VBoxContainer.new()
-	_delivery_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	content.add_child(_delivery_list)
 	_steer_box = VBoxContainer.new()
 	_steer_box.visible = false
-	_steer_box.add_child(_section_label("UPDATE ACTIVE JOB"))
-	var steer_row := HBoxContainer.new()
-	_steer_box.add_child(steer_row)
+	_steer_box.add_theme_constant_override("separation", 4)
+	_steer_box.add_child(_section_label("Update active work"))
 	_steer_input = LineEdit.new()
 	_steer_input.placeholder_text = "Add a correction or constraint"
 	_steer_input.max_length = 2000
 	_steer_input.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_steer_input.text_submitted.connect(_submit_steer_text)
 	_style_text_input(_steer_input)
-	steer_row.add_child(_steer_input)
+	_steer_box.add_child(_steer_input)
 	_steer_button = Button.new()
-	_steer_button.text = "SEND"
+	_steer_button.text = "Send update"
 	_steer_button.pressed.connect(_submit_steer)
-	_style_action_button(_steer_button, VERMILION, true)
-	steer_row.add_child(_steer_button)
+	CozyUI.button(_steer_button, "secondary")
+	_steer_box.add_child(_steer_button)
 	content.add_child(_steer_box)
-	content.add_child(_section_label("LIVE ACTIVITY"))
+	_activity_cancel = _cancel_button
+	_activity_cancel.text = "Cancel work order"
+	_activity_cancel.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	content.add_child(_activity_cancel)
+	_activity_cancel.hide()
+	_activity_details_toggle = Button.new()
+	_activity_details_toggle.text = "Work details"
+	CozyUI.disclosure(_activity_details_toggle, false)
+	_activity_details_toggle.pressed.connect(func() -> void:
+		_activity_details_expanded = not _activity_details_expanded
+		_refresh_selected_activity()
+	)
+	content.add_child(_activity_details_toggle)
+	_activity_details = VBoxContainer.new()
+	_activity_details.add_theme_constant_override("separation", 8)
+	_activity_details.hide()
+	content.add_child(_activity_details)
+	_activity_heading = _section_label("Latest activity")
+	_activity_details.add_child(_activity_heading)
 	_event_log = RichTextLabel.new()
 	_event_log.bbcode_enabled = true
-	_event_log.fit_content = false
-	_event_log.scroll_active = true
-	_event_log.custom_minimum_size = Vector2(0.0, 220.0)
-	_event_log.add_theme_color_override("default_color", CHARCOAL)
-	_event_log.add_theme_stylebox_override("normal", OperationsSkin.activity_log())
-	OperationsSkin.style_rich_text_scrollbar(_event_log)
-	content.add_child(_event_log)
-	# Decisions and steering precede long summaries; no result can push its own
-	# primary controls out of the first screenful.
-	content.move_child(_approval_box, 1)
-	content.move_child(_promotion_box, 2)
-	content.move_child(_steer_box, 3)
-	content.move_child(_activity_cancel, 4)
-	return scroll
+	_event_log.fit_content = true
+	_event_log.scroll_active = false
+	_event_log.add_theme_stylebox_override("normal", CozyUI.card(Vector4(8, 8, 8, 8)))
+	CozyUI.rich_text(_event_log)
+	_activity_details.add_child(_event_log)
+	_activity_footer = PanelContainer.new()
+	_activity_footer.name = "ActivitySpendFooter"
+	_activity_footer.add_theme_stylebox_override("panel", CozyUI.paper(Vector4(ACTIVITY_FOOTER_INSET.x, ACTIVITY_FOOTER_INSET.y, ACTIVITY_FOOTER_INSET.x, ACTIVITY_FOOTER_INSET.y)))
+	tab.add_child(_activity_footer)
+	var footer_content := VBoxContainer.new()
+	footer_content.add_theme_constant_override("separation", 4)
+	_activity_footer.add_child(footer_content)
+	var footer_row := HBoxContainer.new()
+	footer_row.add_theme_constant_override("separation", 8)
+	footer_content.add_child(footer_row)
+	_spend_label = Label.new()
+	_spend_label.text = "AI spend today\n$0.0000 USD"
+	_spend_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_spend_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_spend_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	CozyUI.label(_spend_label)
+	footer_row.add_child(_spend_label)
+	_usage_toggle = Button.new()
+	_usage_toggle.text = "Usage details"
+	_usage_toggle.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	CozyUI.disclosure(_usage_toggle, false)
+	_usage_toggle.pressed.connect(func() -> void:
+		_usage_label.visible = not _usage_label.visible
+		CozyUI.disclosure(_usage_toggle, _usage_label.visible)
+	)
+	footer_row.add_child(_usage_toggle)
+	_usage_label = Label.new()
+	_usage_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_usage_label.text = "This work order · 0 tokens"
+	CozyUI.label(_usage_label, "meta")
+	footer_content.add_child(_usage_label)
+	_usage_label.hide()
+	# Keep the public meter projection for existing usage consumers, but do not
+	# render an unbounded daily cost as invented job progress.
+	_token_meter = ProgressBar.new()
+	_token_meter.max_value = _spend_warning
+	_token_meter.show_percentage = false
+	content.add_child(_token_meter)
+	_token_meter.hide()
+	return tab
 
 func _build_studio_tab() -> ScrollContainer:
 	var scroll := _tab_scroll("Studio")
 	var content := _tab_content(scroll)
-	var intro := Label.new()
-	intro.text = "Files added to Studio remain available to future teammates."
-	intro.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	intro.add_theme_color_override("font_color", CHARCOAL)
-	var intro_card := PanelContainer.new()
-	intro_card.add_theme_stylebox_override("panel", OperationsSkin.file_card())
-	intro_card.add_child(intro)
-	content.add_child(intro_card)
 	_artifact_list = VBoxContainer.new()
+	_artifact_list.add_theme_constant_override("separation", 12)
 	_artifact_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	content.add_child(_artifact_list)
-	_add_empty_artifact("Approved files will appear here.")
+	_add_empty_artifact("Keep a delivery to share it with your team.")
 	return scroll
 
 func _section_label(text_value: String) -> Label:
 	var label := Label.new()
 	label.text = text_value
-	label.add_theme_font_size_override("font_size", GameFonts.DISPLAY_SMALL)
-	GameFonts.use_display(label)
-	label.add_theme_color_override("font_color", INDIGO)
+	CozyUI.label(label, "title")
 	return label
 
 func _style_action_button(button: Button, accent: Color, filled: bool) -> void:
-	GameFonts.use_display(button)
-	button.add_theme_font_size_override("font_size", GameFonts.DISPLAY_SMALL)
-	button.custom_minimum_size.y = maxf(button.custom_minimum_size.y, 40.0)
-	button.button_down.connect(_animate_button_press.bind(button, true))
-	button.button_up.connect(_animate_button_press.bind(button, false))
-	if filled and accent == VERMILION:
-		button.add_theme_stylebox_override("normal", NotebookSkin.selected_tab())
-		button.add_theme_stylebox_override("hover", NotebookSkin.texture_style(NotebookSkin.TAB_VERMILION, Vector4(10.0, 9.0, 10.0, 9.0), Vector4(19.0, 7.0, 19.0, 7.0), true, Color("fff0e8")))
-		button.add_theme_stylebox_override("pressed", NotebookSkin.texture_style(NotebookSkin.TAB_VERMILION, Vector4(10.0, 9.0, 10.0, 9.0), Vector4(19.0, 8.0, 19.0, 6.0), true, Color("c67a68")))
-		button.add_theme_stylebox_override("focus", OperationsSkin.focus_ring())
-		button.add_theme_stylebox_override("disabled", OperationsSkin.secondary_button("disabled"))
-		button.add_theme_color_override("font_color", CHARCOAL)
-		button.add_theme_color_override("font_hover_color", CHARCOAL)
-		button.add_theme_color_override("font_pressed_color", CHARCOAL)
-		button.add_theme_color_override("font_disabled_color", MUTED_INK)
-		return
-	if filled:
-		button.add_theme_stylebox_override("normal", OperationsSkin.primary_button())
-		button.add_theme_stylebox_override("hover", OperationsSkin.primary_button("hover"))
-		button.add_theme_stylebox_override("pressed", OperationsSkin.primary_button("pressed"))
-		button.add_theme_stylebox_override("focus", OperationsSkin.focus_ring())
-		button.add_theme_stylebox_override("disabled", OperationsSkin.secondary_button("disabled"))
-		button.add_theme_color_override("font_color", PARCHMENT_LIGHT)
-		button.add_theme_color_override("font_hover_color", PARCHMENT_LIGHT)
-		button.add_theme_color_override("font_pressed_color", PARCHMENT_LIGHT)
-		button.add_theme_color_override("font_disabled_color", MUTED_INK)
-		return
-	button.add_theme_stylebox_override("normal", OperationsSkin.secondary_button())
-	button.add_theme_stylebox_override("hover", OperationsSkin.secondary_button("hover"))
-	button.add_theme_stylebox_override("pressed", OperationsSkin.secondary_button("pressed"))
-	button.add_theme_stylebox_override("focus", OperationsSkin.focus_ring())
-	button.add_theme_stylebox_override("disabled", OperationsSkin.secondary_button("disabled"))
-	button.add_theme_color_override("font_color", CHARCOAL)
-	button.add_theme_color_override("font_hover_color", CHARCOAL)
-	button.add_theme_color_override("font_pressed_color", CHARCOAL)
-	button.add_theme_color_override("font_disabled_color", MUTED_INK)
+	CozyUI.button(button, "primary" if filled and accent == VERMILION else "secondary")
 
 func _style_dropdown(option: OptionButton) -> void:
-	GameFonts.use_display(option)
-	option.add_theme_font_size_override("font_size", GameFonts.DISPLAY_SMALL)
-	option.custom_minimum_size.y = 44.0
-	option.add_theme_stylebox_override("normal", OperationsSkin.dropdown())
-	option.add_theme_stylebox_override("hover", OperationsSkin.dropdown())
-	option.add_theme_stylebox_override("pressed", OperationsSkin.dropdown_selected_row())
-	option.add_theme_stylebox_override("focus", OperationsSkin.focus_ring())
-	option.add_theme_stylebox_override("disabled", OperationsSkin.secondary_button("disabled"))
-	option.add_theme_icon_override("arrow", OperationsSkin.TRANSPARENT)
-	option.add_theme_color_override("font_color", CHARCOAL)
-	option.add_theme_color_override("font_hover_color", CHARCOAL)
-	option.add_theme_color_override("font_pressed_color", CHARCOAL)
-	var popup := option.get_popup()
-	popup.add_theme_stylebox_override("panel", NotebookSkin.parchment())
-	popup.add_theme_stylebox_override("hover", OperationsSkin.dropdown_selected_row())
-	popup.add_theme_color_override("font_color", CHARCOAL)
-	popup.add_theme_color_override("font_hover_color", CHARCOAL)
+	CozyUI.dropdown(option)
 
 func _style_close_button(button: Button) -> void:
-	GameFonts.use_display(button)
-	var empty := StyleBoxEmpty.new()
-	button.add_theme_stylebox_override("normal", empty)
-	button.add_theme_stylebox_override("hover", empty)
-	button.add_theme_stylebox_override("pressed", empty)
-	button.add_theme_stylebox_override("focus", OperationsSkin.focus_ring())
-	button.custom_minimum_size = Vector2(44.0, 44.0)
+	CozyUI.close(button)
 
 func _style_text_input(control: Control) -> void:
-	control.add_theme_font_size_override("font_size", GameFonts.BODY_DEFAULT)
-	control.custom_minimum_size.y = maxf(control.custom_minimum_size.y, 44.0)
-	control.add_theme_color_override("font_color", CHARCOAL)
-	control.add_theme_color_override("font_readonly_color", MUTED_INK)
-	control.add_theme_color_override("font_placeholder_color", MUTED_INK)
-	control.add_theme_color_override("caret_color", VERMILION)
-	control.add_theme_stylebox_override("normal", NotebookSkin.input_field())
-	control.add_theme_stylebox_override("focus", NotebookSkin.input_field())
-	control.add_theme_stylebox_override("read_only", NotebookSkin.input_field())
+	CozyUI.input(control)
 
 func _set_drawer_open(open: bool, animated: bool = true) -> void:
 	_drawer_open = open
@@ -948,7 +1057,7 @@ func _set_drawer_open(open: bool, animated: bool = true) -> void:
 	_drawer_tween = create_tween()
 	_drawer_tween.set_trans(Tween.TRANS_QUAD)
 	_drawer_tween.set_ease(Tween.EASE_OUT if open else Tween.EASE_IN)
-	_drawer_tween.tween_property(_drawer_panel, "position:x", target_x, 0.16)
+	_drawer_tween.tween_method(func(x: float) -> void: _drawer_panel.position.x = roundf(x), _drawer_panel.position.x, target_x, 0.16)
 	if not open:
 		_drawer_tween.finished.connect(func() -> void:
 			if not _drawer_open:
@@ -957,9 +1066,13 @@ func _set_drawer_open(open: bool, animated: bool = true) -> void:
 	_refresh_team_card_styles()
 
 func close_drawer(animated: bool = true) -> void:
+	var connection_was_open := _connection_panel != null and _connection_panel.visible
 	if _connection_panel != null:
 		_connection_panel.visible = false
 	_set_drawer_open(false, animated)
+	if connection_was_open:
+		_connection_focus_return = null
+		_settings_button.grab_focus()
 
 func open_drawer(animated: bool = true) -> void:
 	_set_drawer_open(true, animated)
@@ -984,6 +1097,8 @@ func _on_team_button_pressed(employee_id: String) -> void:
 	open_drawer()
 
 func _on_tab_changed(_tab: int) -> void:
+	for index: int in range(_tab_buttons.size()):
+		CozyUI.button(_tab_buttons[index], "primary" if index == _tab else "secondary")
 	_refresh_employee_header()
 	if _tab == 2 and not _activity_job_id.is_empty() and _worker_connected:
 		artifact_refresh_requested.emit(_activity_job_id)
@@ -1010,20 +1125,29 @@ func _team_list() -> VBoxContainer:
 
 func configure_employees(records: Array[EmployeeRecord]) -> void:
 	_employees = records
+	_empty_team_panel.visible = records.is_empty()
+	_header_shell.visible = not records.is_empty()
+	_tabs.visible = not records.is_empty()
+	_tab_strip.visible = not records.is_empty()
 	var list := _team_list()
 	for child: Node in list.get_children():
 		child.queue_free()
 	_team_buttons.clear()
 	if records.is_empty():
 		var empty_label := Label.new()
-		empty_label.text = "YOUR FIRST HIRE\nWILL APPEAR HERE"
+		empty_label.text = "Your team starts here"
 		empty_label.custom_minimum_size = Vector2(100.0, 100.0)
 		empty_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		empty_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		empty_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		empty_label.add_theme_font_size_override("font_size", GameFonts.BODY_META)
+		CozyUI.label(empty_label)
 		empty_label.add_theme_color_override("font_color", OFF_WHITE)
 		list.add_child(empty_label)
+		var hire_button := Button.new()
+		hire_button.text = "Hire Mina"
+		CozyUI.button(hire_button, "primary")
+		hire_button.pressed.connect(journey_requested.emit)
+		list.add_child(hire_button)
 	for record: EmployeeRecord in records:
 		var button := Button.new()
 		button.text = ""
@@ -1036,13 +1160,9 @@ func configure_employees(records: Array[EmployeeRecord]) -> void:
 		button.add_theme_stylebox_override("normal", NotebookSkin.wood_surface(Vector4(7.0, 7.0, 7.0, 7.0)))
 		button.add_theme_stylebox_override("hover", NotebookSkin.texture_style(NotebookSkin.WOOD_FILL, Vector4(5.0, 5.0, 5.0, 5.0), Vector4(7.0, 7.0, 7.0, 7.0), true, Color("fff0e8")))
 		button.add_theme_stylebox_override("pressed", NotebookSkin.wood_surface(Vector4(8.0, 8.0, 8.0, 8.0)))
-		var selection_frame := NinePatchRect.new()
+		var selection_frame := Panel.new()
 		selection_frame.name = "SelectionFrame"
-		selection_frame.texture = NotebookSkin.OUTER_FRAME
-		selection_frame.patch_margin_left = 14
-		selection_frame.patch_margin_top = 14
-		selection_frame.patch_margin_right = 14
-		selection_frame.patch_margin_bottom = 14
+		selection_frame.add_theme_stylebox_override("panel", NotebookSkin.outer_frame())
 		selection_frame.self_modulate = VERMILION
 		selection_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		selection_frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -1067,12 +1187,14 @@ func configure_employees(records: Array[EmployeeRecord]) -> void:
 		name_plate.add_theme_stylebox_override("panel", NotebookSkin.name_plaque())
 		button.add_child(name_plate)
 		var name_label := Label.new()
+		name_label.name = "EmployeeName"
 		name_label.text = record.display_name.to_upper()
+		name_label.clip_text = true
+		name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		name_label.tooltip_text = record.display_name
 		name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		name_label.add_theme_font_size_override("font_size", GameFonts.DISPLAY_SMALL)
-		GameFonts.use_display(name_label)
-		name_label.add_theme_color_override("font_color", CHARCOAL)
+		CozyUI.label(name_label, "identity")
 		name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		name_plate.add_child(name_label)
 		var status_dot := TextureRect.new()
@@ -1162,8 +1284,8 @@ func _select_employee(employee_id: String) -> void:
 func _refresh_team_card_styles() -> void:
 	for id: String in _team_buttons:
 		var button: Button = _team_buttons[id]
-		button.add_theme_stylebox_override("focus", OperationsSkin.focus_ring())
-		var selection_frame := button.get_node_or_null("SelectionFrame") as NinePatchRect
+		button.add_theme_stylebox_override("focus", CozyUI.focus())
+		var selection_frame := button.get_node_or_null("SelectionFrame") as Panel
 		if selection_frame != null:
 			selection_frame.visible = _drawer_open and id == _selected_employee_id
 
@@ -1173,29 +1295,55 @@ func _selected_employee() -> EmployeeRecord:
 			return record
 	return null
 
+func _set_employee_heading(value: String) -> void:
+	var face := GameFonts.display_font_for(value)
+	_employee_name.add_theme_font_override("font", face)
+	_employee_name.set_meta("full_heading", value)
+	_employee_name.set_meta("original_heading", value)
+	_employee_name.tooltip_text = value
+	_fit_employee_heading()
+
+func _fit_employee_heading() -> void:
+	if _employee_name == null or not _employee_name.has_meta("full_heading"): return
+	var full := str(_employee_name.get_meta("full_heading"))
+	var face := _employee_name.get_theme_font("font")
+	var size := _employee_name.get_theme_font_size("font_size")
+	var width := _employee_name.size.x
+	_employee_name.text = full
+	if width <= 0 or face.get_string_size(full, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x <= width: return
+	# Slab does not contain an ellipsis glyph. Fit with covered ASCII dots while
+	# keeping the same font and the complete identity in the tooltip/record.
+	var shortened := full
+	while not shortened.is_empty() and face.get_string_size(shortened + "...", HORIZONTAL_ALIGNMENT_LEFT, -1, size).x > width:
+		shortened = shortened.left(-1)
+	_employee_name.text = shortened + "..."
+
 func _refresh_employee_header() -> void:
 	if _tabs != null and _tabs.current_tab == 3:
-		_employee_name.text = "Studio"
+		_set_employee_heading("Studio")
 		_employee_meta.text = "Approved deliveries"
-		_employee_status.text = "SHARED TEAM FILES"
+		_employee_meta.tooltip_text = _employee_meta.text
+		_employee_status.text = "Shared team files"
 		_employee_status.add_theme_color_override("font_color", INDIGO)
 		_employee_portrait.texture = null
 		_header_icon.visible = true
 		return
 	var employee := _selected_employee()
 	if employee == null:
-		_employee_name.text = "Your team"
+		_set_employee_heading("Your team")
 		_employee_meta.text = "No employee selected"
+		_employee_meta.tooltip_text = _employee_meta.text
 		_employee_status.text = ""
 		_employee_portrait.texture = null
 		_header_icon.visible = false
 		return
-	_employee_name.text = employee.display_name
+	_set_employee_heading(employee.display_name)
 	_employee_portrait.texture = CharacterArt.bust_portrait(employee.id)
 	_header_icon.visible = false
 	var activity := _employee_ui_state(employee.id)
 	_employee_meta.text = _employee_specialty(employee.id)
-	_employee_status.text = activity.to_upper()
+	_employee_meta.tooltip_text = _employee_meta.text
+	_employee_status.text = activity.left(1).to_upper() + activity.substr(1)
 	_employee_status.add_theme_color_override("font_color", _state_text_color(activity))
 
 func _refresh_team_statuses() -> void:
@@ -1279,7 +1427,7 @@ func _show_empty_chat() -> void:
 	_clear_chat()
 	var employee := _selected_employee()
 	if employee == null:
-		_show_chat_hint("Choose a teammate from the rail.")
+		_show_chat_hint("Hire your first teammate from Company Journey.")
 		return
 	var greeting := "What are we building? We can shape the idea before creating a work order." if employee.id == "mira" else "What should we test or grow? We can sharpen it before creating a work order."
 	_append_chat_line("employee", employee.display_name, greeting)
@@ -1309,13 +1457,10 @@ func _append_chat_line(sender: String, name_value: String, content: String) -> v
 		row.add_child(player_spacer)
 	var bubble := PanelContainer.new()
 	bubble.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	bubble.add_theme_stylebox_override("panel", OperationsSkin.chat_bubble(sender))
+	bubble.add_theme_stylebox_override("panel", CozyUI.card(Vector4(10, 10, 10, 10)))
 	row.add_child(bubble)
-	var bubble_margin := MarginContainer.new()
-	bubble_margin.add_theme_constant_override("margin_left", 0)
-	bubble_margin.add_theme_constant_override("margin_right", 0)
-	bubble_margin.add_theme_constant_override("margin_top", 2)
-	bubble_margin.add_theme_constant_override("margin_bottom", 2)
+	var bubble_margin := VBoxContainer.new()
+	bubble_margin.add_theme_constant_override("separation", 6)
 	bubble.add_child(bubble_margin)
 	var message_label := RichTextLabel.new()
 	message_label.bbcode_enabled = true
@@ -1327,7 +1472,12 @@ func _append_chat_line(sender: String, name_value: String, content: String) -> v
 	message_label.add_theme_font_size_override("normal_font_size", GameFonts.BODY_DEFAULT)
 	message_label.add_theme_font_size_override("bold_font_size", GameFonts.BODY_DEFAULT)
 	message_label.add_theme_color_override("default_color", CHARCOAL)
+	CozyUI.rich_text(message_label)
 	bubble_margin.add_child(message_label)
+	if sender == "employee":
+		_latest_reply_content = bubble_margin
+		if _make_job_button != null:
+			_make_job_button.reparent(bubble_margin)
 	_chat_log.add_child(row)
 	_animate_entry(row, -7.0 if sender == "employee" else 7.0)
 	call_deferred("_scroll_chat_to_bottom")
@@ -1340,17 +1490,22 @@ func _clear_chat() -> void:
 	if _make_job_button != null:
 		_make_job_button.disabled = true
 		_make_job_button.visible = false
+		# The contextual control is reused across replies and must survive the
+		# message subtree it currently belongs to being removed.
+		_make_job_button.reparent(_tabs.get_tab_control(0))
+	_latest_reply_content = null
 	for child: Node in _chat_log.get_children():
 		_chat_log.remove_child(child)
 		child.queue_free()
 
 func _show_chat_hint(message: String) -> void:
 	var hint_panel := PanelContainer.new()
-	hint_panel.add_theme_stylebox_override("panel", OperationsSkin.chat_system_strip())
+	hint_panel.add_theme_stylebox_override("panel", CozyUI.card())
 	var hint := Label.new()
 	hint.text = message
 	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	CozyUI.label(hint)
 	hint.add_theme_color_override("font_color", MUTED_INK)
 	hint_panel.add_child(hint)
 	_chat_log.add_child(hint_panel)
@@ -1415,6 +1570,7 @@ func _submit_chat_text(_text: String) -> void:
 	_submit_chat()
 
 func _submit_chat() -> void:
+	if _chat_pending: return
 	if not _active_job_id.is_empty():
 		_tabs.current_tab = 2
 		return
@@ -1423,6 +1579,7 @@ func _submit_chat() -> void:
 		return
 	if not _worker_connected:
 		set_worker_connection_error("Worker is not connected")
+		_open_connection_settings()
 		return
 	var message := _chat_input.text.strip_edges()
 	if message.is_empty() or _selected_employee_id.is_empty():
@@ -1444,24 +1601,28 @@ func _refresh_chat_mode() -> void:
 	var has_employee := selected_employee != null
 	var has_active_job := not _active_job_id.is_empty()
 	var can_chat := has_employee and _credential_configured and _worker_connected
+	_chat_composer.visible = not has_active_job
+	_chat_active_banner.visible = has_active_job
+	_chat_active_copy.text = "%s has an open work order. This conversation is read-only; follow or update the work in Activity." % _active_employee_name()
 	_chat_input.editable = can_chat and not _chat_pending and not has_active_job
-	_chat_send_button.disabled = not can_chat or _chat_pending
+	_chat_send_button.disabled = not has_employee or _chat_pending
 	if _chat_pending:
 		_chat_send_button.text = "."
 		_chat_input.placeholder_text = "Waiting for a reply…"
 		_chat_helper.text = "Waiting for a conversational reply — no work has started."
 	elif has_active_job:
-		_chat_send_button.text = "ACTIVITY"
+		_chat_send_button.text = "Open Activity"
 		_chat_input.placeholder_text = "Work is in Activity"
 		_chat_helper.text = "%s is busy. Send work instructions from Activity." % _active_employee_name()
 	elif not _credential_configured or not _worker_connected:
-		_chat_send_button.text = "CONNECT"
-		_chat_input.placeholder_text = "Connect AI from Settings"
-		_chat_helper.text = "Connection required before a conversation can start."
+		_chat_send_button.text = "Connect"
+		_chat_input.placeholder_text = "Connect AI to begin"
+		_chat_helper.text = "Connect AI for conversations and work orders."
 	else:
-		_chat_send_button.text = "ASK %s" % selected_employee.display_name.to_upper() if has_employee else "ASK"
+		_chat_send_button.text = "Ask %s" % selected_employee.display_name if has_employee else "Ask"
 		_chat_input.placeholder_text = "Talk through an idea…"
 		_chat_helper.text = "Conversation only — no tools or files."
+	_chat_send_button.tooltip_text = _chat_send_button.text
 	_make_job_button.visible = not _make_job_button.disabled and not has_active_job and not _chat_pending
 
 func _make_last_chat_a_job() -> void:
@@ -1543,7 +1704,8 @@ func _submit_key() -> void:
 	var key := _key_input.text.strip_edges()
 	_key_input.clear()
 	if key.is_empty():
-		set_error("Paste an OpenRouter key first.")
+		_key_status.text = "Paste a replacement key first." if _credential_configured else "Paste an OpenRouter key first."
+		_key_status.add_theme_color_override("font_color", ALERT_INK)
 		return
 	key_submitted.emit(key)
 	key = ""
@@ -1557,6 +1719,7 @@ func _submit_assignment() -> void:
 		return
 	if not _worker_connected:
 		set_worker_connection_error("Worker is not connected")
+		_open_connection_settings()
 		return
 	if _selected_employee_id.is_empty():
 		set_error("Choose an employee first.")
@@ -1632,7 +1795,9 @@ func _on_job_selected(index: int) -> void:
 	_custom_title_input.visible = _custom_mode
 	_assignment_preview.editable = _custom_mode
 	_attachment_label.visible = _custom_mode
-	_attachment_picker.visible = _custom_mode
+	_attachment_toggle.visible = _custom_mode
+	_attachment_label.hide()
+	_attachment_picker.hide()
 	if _custom_mode:
 		_assignment_preview.text = ""
 		_assignment_preview.placeholder_text = "Describe the deliverable and the file you want back."
@@ -1810,27 +1975,33 @@ func status_color() -> Color:
 
 func set_worker_ready() -> void:
 	_worker_connected = true
+	_worker_error = ""
 	if _connection_badge != null:
 		_connection_badge.visible = false
 	if _settings_button != null:
-		_settings_button.text = "SETTINGS" if _credential_configured else "CONNECT"
+		_settings_button.text = "Settings" if _credential_configured else "Connect"
 	if _key_status != null:
 		_key_status.text = "Connected. Key stored in the OS keychain." if _credential_configured else "Connection required before chat or work can start."
 		_key_status.add_theme_color_override("font_color", CHARCOAL if _credential_configured else ALERT_INK)
 	_refresh_operation_availability()
+	_refresh_connection_surface()
+	if _credential_configured and _connection_panel.visible:
+		_close_connection_settings()
 
 func set_worker_connection_error(message: String) -> void:
 	_worker_connected = false
+	_worker_error = message
 	if _connection_badge != null:
 		_connection_badge.visible = true
 		_connection_badge.tooltip_text = message
 	if _settings_button != null:
-		_settings_button.text = "CONNECT"
+		_settings_button.text = "Reconnect"
 		_settings_button.tooltip_text = message
 	if _key_status != null:
 		_key_status.text = message
 		_key_status.add_theme_color_override("font_color", ALERT_INK)
 	_refresh_operation_availability()
+	_refresh_connection_surface()
 
 func set_clock_phase(phase: String) -> void:
 	_clock_phase = phase
@@ -1844,18 +2015,19 @@ func _update_assign_copy() -> void:
 	if not _active_job_id.is_empty():
 		return
 	if _clock_phase == "work":
-		_assign_button.text = "START WORK ORDER"
+		_assign_button.text = "Start work order"
 	elif _clock_phase == "lunch":
-		_assign_button.text = "QUEUE FOR 13:30"
+		_assign_button.text = "Queue for 13:30"
 	else:
-		_assign_button.text = "QUEUE FOR 08:00"
+		_assign_button.text = "Queue for 08:00"
 
 func set_credential_status(configured: bool) -> void:
 	_credential_configured = configured
 	_key_status.text = "Connected. Key stored in the OS keychain." if configured else "Connection required before chat or work can start."
 	_key_status.add_theme_color_override("font_color", CHARCOAL if configured else ALERT_INK)
-	_settings_button.text = "SETTINGS" if configured else "CONNECT"
+	_settings_button.text = "Settings" if configured else "Connect"
 	_refresh_operation_availability()
+	_refresh_connection_surface()
 	if not configured:
 		call_deferred("_open_connection_settings")
 
@@ -1868,11 +2040,10 @@ func set_spend(daily_spend: float, warning: float) -> void:
 	_spend_warning = warning
 	_token_meter.max_value = maxf(warning, 0.01)
 	_token_meter.value = clampf(daily_spend, 0.0, _token_meter.max_value)
-	_spend_label.text = "AI spend today  ·  $%.4f" % daily_spend
-	_spend_label.tooltip_text = "Warning threshold: $%.2f. This meter is cost, not job progress." % warning
+	_spend_label.text = "AI spend today\n$%.4f USD" % daily_spend
+	_spend_label.tooltip_text = "Real AI spend. Daily warning: $%.2f USD; this is not a work-order dollar cap." % warning
 	_token_meter.tooltip_text = _spend_label.tooltip_text
 	_spend_label.add_theme_color_override("font_color", ALERT_INK if daily_spend >= warning else CHARCOAL)
-	_pulse_control(_token_meter, VERMILION if daily_spend >= warning else CERULEAN)
 
 func set_error(message: String) -> void:
 	if message.to_lower().contains("worker is not connected"):
@@ -1908,7 +2079,8 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 		&"job.queued":
 			view.status = "queued"
 			mark_job_queued(job_id)
-			line = "[color=#963014]queued[/color] · %s" % _safe_bbcode(event.reason)
+			line = "[color=#354b98]Queued[/color]"
+			if not event.reason.strip_edges().is_empty(): line += " · " + _safe_bbcode(event.reason)
 		&"job.started":
 			view.status = "running"
 			_set_status("Employee is walking to their desk.", INDIGO)
@@ -1925,7 +2097,7 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 			line = "thinking · %s" % _safe_bbcode(event.summary)
 		&"tool.started":
 			_set_status(event.label, INDIGO)
-			line = "[color=#6196c1]tool[/color] · %s" % _safe_bbcode(event.tool)
+			line = "[color=#354b98]tool[/color] · %s" % _safe_bbcode(event.tool)
 		&"tool.completed":
 			line = "%s · %s" % [_safe_bbcode(event.tool), "done" if event.ok else "failed"]
 		&"approval.required":
@@ -1940,9 +2112,9 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 		&"artifact.created":
 			line = "[color=#354b98]delivery[/color] · %s" % _safe_bbcode(event.name)
 		&"usage.updated":
-			_usage_label.text = "Usage details  ·  %d tokens  ·  $%.4f" % [event.input_tokens + event.output_tokens, event.cost]
+			_usage_label.text = "This work order · %d tokens · $%.4f USD" % [event.input_tokens + event.output_tokens, event.cost]
 			view.usage = _usage_label.text
-			line = "usage · %d tokens · $%.4f" % [event.input_tokens + event.output_tokens, event.cost]
+			line = "" # Usage has a dedicated disclosure; keep the timeline meaningful.
 		&"job.blocked":
 			view.status = "blocked"
 			_set_status(event.reason, ALERT_INK)
@@ -1989,6 +2161,7 @@ func offer_promotion(job_id: String, employee_id: String = "") -> void:
 func _decide_promotion(approved: bool) -> void:
 	var job_id := _promotion_job_id
 	if job_id.is_empty(): return
+	if ((_job_views.get(job_id, {}) as Dictionary).get("artifacts", []) as Array).is_empty(): return
 	_pending_deliveries = _pending_deliveries.filter(func(candidate: Dictionary) -> bool: return str(candidate.get("jobId", "")) != job_id)
 	_promotion_job_id = ""
 	_attention_employee_id = ""
@@ -2040,6 +2213,10 @@ func _refresh_selected_activity() -> void:
 			_job_order.append(id)
 	if str((_job_views.get(_activity_job_id, {}) as Dictionary).get("employeeId", "")) != _selected_employee_id or _activity_job_id.is_empty():
 		_activity_job_id = _latest_job_for(_selected_employee_id)
+	if _activity_details_job_id != _activity_job_id:
+		_activity_details_job_id = _activity_job_id
+		_activity_details_expanded = false
+		_activity_scroll.scroll_vertical = 0
 	var history: Array[String] = []
 	for id: String in _job_order:
 		var item: Dictionary = _job_views.get(id, {})
@@ -2062,10 +2239,13 @@ func _refresh_selected_activity() -> void:
 	var status := str(view.get("status", ""))
 	_status_label.text = str(view.get("statusText", "No work order yet. Create one from Assign or Company Journey.")).replace("**", "").replace("`", "")
 	_status_label.add_theme_color_override("font_color", ALERT_INK if status in ["blocked", "failed", "cancelled"] else CHARCOAL)
-	_last_status_label.text = "%s · %s" % [view.get("title", "Work order"), status] if not view.is_empty() else "No work orders yet"
+	var state_copy := status.left(1).to_upper() + status.substr(1).replace("_", " ")
+	_last_status_label.text = "%s · %s" % [view.get("title", "Work order"), state_copy] if not view.is_empty() else "No work orders yet"
 	_usage_label.text = str(view.get("usage", "Usage details · select a work order"))
 	var log_text := str(view.get("events", ""))
 	if _event_log.text != log_text: _event_log.text = log_text
+	_event_log.visible = not log_text.is_empty()
+	_activity_heading.visible = _event_log.visible
 	var is_active := not _active_job_id.is_empty() and _activity_job_id == _active_job_id and _selected_employee_id == _active_employee_id
 	_activity_cancel.visible = is_active and not _submission_pending
 	_activity_cancel.disabled = _cancel_button.disabled
@@ -2077,10 +2257,23 @@ func _refresh_selected_activity() -> void:
 		if _attention_employee_id.is_empty(): _attention_employee_id = _delivery_employee(candidate)
 		if str(candidate.get("jobId", "")) == _activity_job_id and not is_active:
 			_promotion_job_id = _activity_job_id
-			_promotion_label.text = "Add this work order's files to the shared Studio, or keep them in its history."
+			_promotion_label.text = "Preview the files above, then choose where to keep them."
 	_promotion_box.visible = not _promotion_job_id.is_empty()
+	# A decision already carries its current state and explanation. The longer
+	# work summary stays available through details without pushing actions down.
+	_status_card.visible = not (_approval_box.visible or _promotion_box.visible) or _activity_details_expanded
+	_activity_details.visible = _activity_details_expanded
+	_activity_details_toggle.visible = not view.is_empty()
+	CozyUI.disclosure(_activity_details_toggle, _activity_details_expanded)
 	var artifacts: Array = view.get("artifacts", [])
-	var file_key: Array[String] = [_activity_job_id]
+	_delivery_list.visible = not artifacts.is_empty() or _promotion_box.visible
+	# A delivered file is the decision's evidence: its Preview always precedes
+	# the summary and promotion controls, including restored older deliveries.
+	_activity_content.move_child(_delivery_list, 1 if not artifacts.is_empty() or _promotion_box.visible else 2)
+	_activity_content.move_child(_status_card, 2 if not artifacts.is_empty() or _promotion_box.visible else 1)
+	for action: Button in _promotion_actions:
+		action.disabled = artifacts.is_empty()
+	var file_key: Array[String] = [_activity_job_id, str(_promotion_box.visible)]
 	for artifact: ArtifactRecord in artifacts: file_key.append(artifact.artifact_id)
 	if file_key == _delivery_list.get_meta("file_key", []): return
 	_delivery_list.set_meta("file_key", file_key)
@@ -2088,18 +2281,21 @@ func _refresh_selected_activity() -> void:
 		_delivery_list.remove_child(child)
 		child.queue_free()
 	if not artifacts.is_empty():
-		_delivery_list.add_child(_section_label("THIS WORK ORDER'S FILES"))
+		_delivery_list.add_child(_section_label("Delivered files"))
+	elif _promotion_box.visible:
+		var loading := Label.new()
+		loading.text = "Load the delivery to review its files."
+		loading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		CozyUI.label(loading)
+		_delivery_list.add_child(loading)
+		var refresh := Button.new()
+		refresh.text = "Load files"
+		CozyUI.button(refresh, "secondary")
+		refresh.pressed.connect(func() -> void: artifact_refresh_requested.emit(_activity_job_id))
+		_delivery_list.add_child(refresh)
 	for artifact: ArtifactRecord in artifacts:
-		var button := Button.new()
-		button.text = artifact.name
-		button.icon = OperationsSkin.ICON_DELIVERY
-		button.add_theme_constant_override("icon_max_width", 24)
-		button.expand_icon = true
-		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.tooltip_text = artifact.relative_path
-		button.pressed.connect(_open_artifact.bind(_activity_job_id, artifact.relative_path))
-		_style_file_button(button)
-		_delivery_list.add_child(button)
+		var row := _file_row(artifact.name, artifact.relative_path, artifact.relative_path.get_extension().to_upper(), "Preview", _open_artifact.bind(_activity_job_id, artifact.relative_path))
+		_delivery_list.add_child(row)
 
 func show_recent_jobs(jobs: Array) -> void:
 	var order: Array[String] = []
@@ -2132,20 +2328,14 @@ func show_studio_files(files: Array[StudioFileRecord]) -> void:
 	_configure_attachment_picker(files)
 	_clear_artifact_list()
 	if files.is_empty():
-		_add_empty_artifact("Studio is empty. Approve a completed delivery to add it.")
+		_add_empty_artifact("Keep a completed delivery here so future work can use it.")
 		return
 	for file: StudioFileRecord in files:
-		var button := Button.new()
-		button.text = "studio/%s" % file.relative_path
-		button.icon = OperationsSkin.ACTIVITY_ARTIFACT
-		button.add_theme_constant_override("icon_max_width", 28)
-		button.expand_icon = true
-		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.tooltip_text = "Promoted from %s" % file.source_job_id
-		button.pressed.connect(studio_open_requested.emit.bind(file.relative_path))
-		_style_file_button(button)
-		_artifact_list.add_child(button)
-		_animate_entry(button)
+		var source: Dictionary = _job_views.get(file.source_job_id, {})
+		var context := file.relative_path.get_extension().to_upper() + " · " + str(source.get("title", "Shared team file"))
+		var row := _file_row(file.name, "studio/" + file.relative_path, context, "Open", studio_open_requested.emit.bind(file.relative_path))
+		_artifact_list.add_child(row)
+		_animate_entry(row)
 
 func _clear_artifact_list() -> void:
 	for child: Node in _artifact_list.get_children():
@@ -2154,43 +2344,84 @@ func _clear_artifact_list() -> void:
 
 func _add_empty_artifact(message: String) -> void:
 	var empty_panel := PanelContainer.new()
-	empty_panel.add_theme_stylebox_override("panel", OperationsSkin.file_card())
-	var empty_row := HBoxContainer.new()
-	empty_row.add_theme_constant_override("separation", 8)
+	empty_panel.custom_minimum_size.y = 240
+	empty_panel.add_theme_stylebox_override("panel", CozyUI.card(Vector4(12, 24, 12, 24)))
+	var empty_row := VBoxContainer.new()
+	empty_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	empty_row.add_theme_constant_override("separation", 12)
 	empty_panel.add_child(empty_row)
 	var empty_icon := TextureRect.new()
 	empty_icon.texture = OperationsSkin.ICON_EMPTY_TRAY
-	empty_icon.custom_minimum_size = Vector2(42.0, 34.0)
+	empty_icon.custom_minimum_size = Vector2(48, 40)
+	empty_icon.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	empty_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	empty_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	empty_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	empty_row.add_child(empty_icon)
+	var title := _section_label("Your shared Studio")
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	empty_row.add_child(title)
 	var empty := Label.new()
 	empty.text = message
 	empty.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	empty.add_theme_font_size_override("font_size", GameFonts.BODY_DEFAULT)
-	empty.add_theme_color_override("font_color", CHARCOAL)
-	empty.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	empty.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	CozyUI.label(empty)
 	empty_row.add_child(empty)
+	var next := Button.new()
+	next.text = "Review deliveries" if not _pending_deliveries.is_empty() else "Create a work order"
+	CozyUI.button(next, "secondary")
+	next.pressed.connect(func() -> void:
+		if _employees.is_empty():
+			journey_requested.emit()
+		else:
+			_tabs.current_tab = 2 if not _pending_deliveries.is_empty() else 1
+	)
+	empty_row.add_child(next)
 	_artifact_list.add_child(empty_panel)
 	_animate_entry(empty_panel)
+
+func _file_row(title: String, path: String, context: String, action: String, callback: Callable) -> PanelContainer:
+	var card := PanelContainer.new()
+	card.add_theme_stylebox_override("panel", CozyUI.card(Vector4(8, 8, 8, 8)))
+	var content := VBoxContainer.new()
+	content.add_theme_constant_override("separation", 4)
+	card.add_child(content)
+	var top := HBoxContainer.new()
+	top.add_theme_constant_override("separation", 8)
+	content.add_child(top)
+	var name_label := Label.new()
+	name_label.text = title if not title.is_empty() else path.get_file()
+	name_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	name_label.max_lines_visible = 2
+	name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	name_label.tooltip_text = name_label.text
+	name_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	CozyUI.label(name_label, "action")
+	top.add_child(name_label)
+	var button := Button.new()
+	button.name = "Preview"
+	button.text = action
+	button.tooltip_text = path
+	button.pressed.connect(callback)
+	CozyUI.button(button, "secondary")
+	top.add_child(button)
+	var metadata := Label.new()
+	metadata.text = context + " · " + path
+	metadata.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	metadata.max_lines_visible = 2
+	metadata.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	metadata.tooltip_text = metadata.text
+	metadata.mouse_filter = Control.MOUSE_FILTER_PASS
+	CozyUI.label(metadata, "meta")
+	content.add_child(metadata)
+	return card
 
 func _style_file_button(button: Button) -> void:
 	button.clip_text = true
 	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	GameFonts.use_body(button)
-	button.add_theme_font_size_override("font_size", GameFonts.BODY_DEFAULT)
-	button.custom_minimum_size.y = 50.0
-	button.add_theme_stylebox_override("normal", OperationsSkin.file_card())
-	button.add_theme_stylebox_override("hover", OperationsSkin.file_card(true))
-	button.add_theme_stylebox_override("pressed", OperationsSkin.file_card(true))
-	button.add_theme_stylebox_override("focus", OperationsSkin.focus_ring())
-	button.add_theme_color_override("font_color", CHARCOAL)
-	button.add_theme_color_override("font_hover_color", CHARCOAL)
-	button.add_theme_color_override("font_pressed_color", CHARCOAL)
-	button.button_down.connect(_animate_button_press.bind(button, true))
-	button.button_up.connect(_animate_button_press.bind(button, false))
+	CozyUI.button(button, "secondary")
 
 func _animate_entry(control: Control, horizontal_offset: float = 0.0) -> void:
 	control.modulate.a = 0.0
@@ -2218,11 +2449,14 @@ func _animate_button_press(button: Button, pressed: bool) -> void:
 	var previous: Tween = button.get_meta("press_tween") as Tween if button.has_meta("press_tween") else null
 	if previous != null and previous.is_valid():
 		previous.kill()
-	button.pivot_offset = button.size * 0.5
+	button.scale = Vector2.ONE
+	if pressed:
+		button.self_modulate = Color(0.85, 0.85, 0.85)
+		return
 	var tween := create_tween()
 	button.set_meta("press_tween", tween)
 	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(button, "scale", Vector2.ONE * (0.98 if pressed else 1.0), 0.09)
+	tween.tween_property(button, "self_modulate", Color.WHITE, 0.09)
 
 func _configure_attachment_picker(files: Array[StudioFileRecord]) -> void:
 	var selected_path := ""

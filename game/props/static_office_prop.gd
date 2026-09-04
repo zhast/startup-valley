@@ -24,6 +24,7 @@ func _ready() -> void:
 		ambient.configure(ambient_row, ambient_offset)
 		add_child(ambient)
 
+	if bool(get_meta("catalog_collision", false)): return
 	var body := StaticBody2D.new()
 	body.name = "PropCollision"
 	body.collision_layer = 1

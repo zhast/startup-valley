@@ -19,6 +19,7 @@ func _ready() -> void:
 	ambient.z_as_relative = false
 	ambient.z_index = z_index + 2
 	add_child(ambient)
+	if bool(get_meta("catalog_collision", false)): return
 	var body := StaticBody2D.new()
 	body.name = "ResearchCollision"
 	body.collision_layer = 1

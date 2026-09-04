@@ -33,13 +33,16 @@ var _restored_player := false
 var _quitting := false
 var _save_acknowledged := false
 var _was_drawer_open := false
+var _updating_roster := false
 
 func _ready() -> void:
+	_apply_initial_window_presentation.call_deferred()
 	room.load_layout()
 	player.position = room.grid_to_world_position(room.player_spawn)
 	player.movement_bounds = room.playable_bounds()
 	player.navigation = room.navigation
 	room.navigation.passage_requested.connect(_yield_employee_passage)
+	room.placements_changed.connect(_on_room_placements_changed)
 	var initial_employees: Array[EmployeeRecord] = []
 	if OS.get_environment("STARTUP_VALLEY_NO_WORKER") == "1":
 		initial_employees = room.placeholder_records()
@@ -50,6 +53,11 @@ func _ready() -> void:
 	company_panel.milestone_requested.connect(job_panel.prepare_milestone)
 	company_panel.connection_requested.connect(job_panel._open_connection_settings)
 	job_panel.settings_requested.connect(func() -> void: company_panel.present("settings"))
+	job_panel.journey_requested.connect(func() -> void:
+		job_panel.close_drawer()
+		company_panel.present("journey")
+	)
+	job_panel.worker_retry_requested.connect(_retry_worker_connection)
 	game_audio = GameAudio.new()
 	add_child(game_audio)
 	company_panel.volume_changed.connect(game_audio.set_volumes)
@@ -65,6 +73,22 @@ func _ready() -> void:
 		worker_client.start()
 	else:
 		job_panel.set_worker_connection_error("Deterministic test mode — worker disabled")
+
+func _apply_initial_window_presentation() -> void:
+	# Only the actual entry scene opts in; isolated visual/gameplay fixtures do not.
+	if get_tree().current_scene != self or Engine.is_editor_hint(): return
+	var policy: Script = preload("res://ui/window_presentation.gd")
+	var window := get_window()
+	if not policy.should_adapt(OS.get_name(), DisplayServer.get_name(), window.mode, OS.get_cmdline_args()): return
+	var usable := DisplayServer.screen_get_usable_rect(window.current_screen)
+	var display_scale := DisplayServer.screen_get_max_scale()
+	var decorations := DisplayServer.window_get_size_with_decorations() - DisplayServer.window_get_size()
+	var rectangle: Rect2i = policy.initial_rect(usable, display_scale, decorations)
+	if not rectangle.has_area(): return
+	window.size = rectangle.size
+	window.position = rectangle.position
+	await get_tree().process_frame
+	print("Window presentation: internal=1280x720 native=%dx%d display_scale=%.2f usable=%s" % [window.size.x, window.size.y, display_scale, usable])
 
 func _process(delta: float) -> void:
 	var paused := _world_paused()
@@ -98,13 +122,24 @@ func _process(delta: float) -> void:
 		not paused
 	)
 	var interaction_target := founder_hud.interaction_target_id() if founder_hud.interaction_visible() else ""
+	var hover := _interaction_at(get_viewport().get_mouse_position()) if not paused else {}
 	for employee_id: String in _employees:
 		var employee := _employees[employee_id]
+		employee.set_ui_presentation_state(job_panel._employee_ui_state(employee_id))
 		employee.set_speech_suppressed(employee_id == interaction_target)
 		employee.set_interaction_highlighted(employee_id == interaction_target)
+		employee.set_ui_highlighted((job_panel.drawer_is_open() and job_panel.selected_employee_id() == employee_id) or (str(hover.get("kind", "")) == "employee" and str(hover.get("id", "")) == employee_id))
 	_update_label_visibility(interaction_target)
-	var hover := _interaction_at(get_viewport().get_mouse_position()) if not paused else {}
 	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND if not hover.is_empty() else Input.CURSOR_ARROW)
+
+func _retry_worker_connection() -> void:
+	if OS.get_environment("STARTUP_VALLEY_NO_WORKER") == "1":
+		job_panel.set_worker_connection_error("Worker is disabled in this deterministic preview.")
+		return
+	job_panel.set_info("Reconnecting to your saved company…")
+	# start() is already idempotent. A retry uses the same stdio/bootstrap path.
+	worker_client.start()
+	worker_client.refresh_journey()
 
 func _world_paused() -> bool:
 	return job_panel.drawer_is_open() or job_panel._connection_panel.visible or artifact_viewer.visible or (company_panel != null and company_panel.visible)
@@ -214,6 +249,9 @@ func _restore_recent_jobs(jobs: Array) -> void:
 			job_panel.restore_job(job_id, status, str(job.get("title", "Work order")), employee_id)
 
 func _spawn_employees(records: Array[EmployeeRecord]) -> void:
+	# Geometry may change before new employees exist. Delay its actor callback
+	# until the complete roster is present, so routes see all positions at once.
+	_updating_roster = true
 	var roster: Array[String] = []
 	for record: EmployeeRecord in records: roster.append(record.id)
 	for id: String in _employees.keys():
@@ -226,8 +264,7 @@ func _spawn_employees(records: Array[EmployeeRecord]) -> void:
 		room.navigation.actors.clear()
 		room.navigation.actors["founder"] = player.position
 	room.configure_employee_desks(records)
-	if not room.navigation.walkable(room.navigation.cell_at(player.position)):
-		player.position = room.navigation.world(room.navigation.nearest(player.position, "founder"))
+	player.position = room.navigation.safe_position(player.position, "founder")
 	room.navigation.actors["founder"] = player.position
 	for record: EmployeeRecord in records:
 		var employee: EmployeeAvatar = _employees.get(record.id)
@@ -236,17 +273,53 @@ func _spawn_employees(records: Array[EmployeeRecord]) -> void:
 			employee.configure(record, room.employee_spawn_position(record.id), room.employee_desk_position(record.id), room.research_position())
 			employee_container.add_child(employee)
 			employee.navigation = room.navigation
-			employee.position = room.navigation.world(room.navigation.nearest(employee.position, record.id))
-		elif not room.navigation.walkable(room.navigation.cell_at(employee.position)):
-			employee.position = room.navigation.world(room.navigation.nearest(employee.position, record.id))
+		employee.position = room.navigation.safe_position(employee.position, record.id)
 		employee.memory_line = record.memory_line
-		employee.lunch_position = room.grid_to_world_position(Vector2i(3, 11))
-		room.navigation.reservations[record.id] = room.navigation.cell_at(employee.position)
 		room.navigation.actors[record.id] = employee.position
 		_employees[record.id] = employee
+	_updating_roster = false
+	_on_room_placements_changed()
 	job_panel.configure_employees(records)
 	if records.is_empty():
 		founder_hud.hide_delivery()
+
+func _on_room_placements_changed() -> void:
+	if _updating_roster: return
+	player.cancel_route()
+	_pending_interaction = ""
+	room.navigation.actors.clear()
+	room.navigation.reservations.clear()
+	player.position = room.navigation.safe_position(player.position, "founder")
+	room.navigation.actors["founder"] = player.position
+	var replans: Array[Dictionary] = []
+	for employee: EmployeeAvatar in _employees.values():
+		var previous_desk := employee.desk_position
+		var previous_research := employee.research_position
+		var previous_lunch := employee.lunch_position
+		var previous_home := employee.home_position
+		var target := employee._requested_target
+		var was_moving := employee._has_target or employee._waiting_for_desk
+		var travel_state := employee._desk_travel_state if employee._route_requires_desk else employee.work_state
+		employee.position = room.navigation.safe_position(employee.position, employee.employee_id)
+		employee.home_position = room.employee_spawn_position(employee.employee_id)
+		employee.desk_position = room.employee_desk_position(employee.employee_id)
+		employee.research_position = room.research_position()
+		employee.lunch_position = room.lunch_position()
+		room.navigation.actors[employee.employee_id] = employee.position
+		room.navigation.reservations[employee.employee_id] = room.navigation.cell_at(employee.position)
+		if was_moving:
+			if target.distance_to(previous_desk) < 1: target = employee.desk_position
+			elif target.distance_to(previous_research) < 1: target = employee.research_position
+			elif target.distance_to(previous_lunch) < 1: target = employee.lunch_position
+			elif target.distance_to(previous_home) < 1: target = employee.home_position
+			replans.append({"employee": employee, "target": target, "state": travel_state, "arrival": employee._arrival_state})
+		elif employee.work_state in [EmployeeAvatar.WorkState.SITTING, EmployeeAvatar.WorkState.TYPING] and employee.position.distance_to(employee.desk_position) > 1:
+			replans.append({"employee": employee, "target": employee.desk_position, "state": EmployeeAvatar.WorkState.WALKING_TO_DESK, "arrival": employee.work_state})
+	# Plan only after every actor's relocated feet are registered. Otherwise the
+	# first employee can reserve a later employee's current cell as a destination.
+	for replan: Dictionary in replans:
+		var employee := replan.employee as EmployeeAvatar
+		employee.walk_to(replan.target, replan.state, replan.arrival)
 
 func _on_assignment_submitted(
 	employee_id: String,
@@ -302,8 +375,8 @@ func _on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 		worker_client.request_artifacts(job_id)
 		job_panel.offer_promotion(job_id, employee_id)
 
-func _on_artifact_content(_job_id: String, name: String, content: String) -> void:
-	artifact_viewer.show_artifact(name, content)
+func _on_artifact_content(job_id: String, name: String, content: String) -> void:
+	artifact_viewer.show_artifact(name, content, "Shared Studio" if job_id.is_empty() else "Job delivery")
 
 func _on_studio_files(files: Array[StudioFileRecord]) -> void:
 	job_panel.show_studio_files(files)
@@ -373,14 +446,33 @@ func _on_journey(value: Dictionary) -> void:
 func _restore_player() -> void:
 	_restored_player = true
 	var saved: Dictionary = _journey.get("player", {})
+	# Fresh NPC spawn positions are temporary. Restore the founder against the
+	# actual room first, then relocate NPCs; otherwise a valid saved location
+	# shared with a default spawn is needlessly changed at every restart.
+	room.navigation.actors.clear()
+	room.navigation.reservations.clear()
 	if saved.has("x") and saved.has("y"):
 		var point := Vector2(float(saved.x), float(saved.y))
-		player.position = point if room.navigation.walkable(room.navigation.cell_at(point)) else room.navigation.world(room.navigation.nearest(point, "founder"))
+		# Preserve exact safe coordinates, including fractional legacy positions.
+		player.position = room.navigation.safe_position(point, "founder")
 	room.navigation.actors["founder"] = player.position
+	var relocate_routes: Array[EmployeeAvatar] = []
 	for employee: EmployeeAvatar in _employees.values():
-		if employee.position.distance_to(player.position) < 22:
-			employee.position = room.navigation.world(room.navigation.nearest(employee.position, employee.employee_id))
-			room.navigation.actors[employee.employee_id] = employee.position
+		employee.position = room.navigation.safe_position(employee.position, employee.employee_id)
+		room.navigation.actors[employee.employee_id] = employee.position
+		room.navigation.reservations[employee.employee_id] = room.navigation.cell_at(employee.position)
+		if employee._has_target or employee._waiting_for_desk:
+			relocate_routes.append(employee)
+		elif employee.work_state in [EmployeeAvatar.WorkState.SITTING, EmployeeAvatar.WorkState.TYPING] and employee.position.distance_to(employee.desk_position) > 0.5:
+			employee._requested_target = employee.desk_position
+			employee._arrival_state = employee.work_state
+			employee._desk_travel_state = EmployeeAvatar.WorkState.WALKING_TO_DESK
+			employee._route_requires_desk = true
+			relocate_routes.append(employee)
+	# All actor positions must be registered before any route claims a target.
+	for employee: EmployeeAvatar in relocate_routes:
+		var travel_state := employee._desk_travel_state if employee._route_requires_desk else employee.work_state
+		employee.walk_to(employee._requested_target, travel_state, employee._arrival_state)
 	if bool(saved.get("movementSeen", false)):
 		founder_hud.dismiss_movement_hint()
 	company_panel.effects_volume = float(saved.get("effectsVolume", 0.5))
@@ -451,7 +543,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					_pending_interaction = ""
 					_pending_kind = ""
 					return
-		if key.physical_keycode == KEY_J:
+		if key.physical_keycode == KEY_J and not _world_paused():
 			company_panel.present("journey")
 			get_viewport().set_input_as_handled()
 			return
@@ -492,12 +584,7 @@ func _interaction_at(point: Vector2) -> Dictionary:
 		var employee := _employees[id]
 		if Rect2(employee.position + Vector2(-24, -72), Vector2(48, 84)).has_point(point):
 			return {"id": id, "kind": "employee", "point": employee.position + Vector2(0, 40)}
-	for placement: OfficePropPlacement in room._prop_placements:
-		var prop := room.prop_node(placement.id)
-		if prop != null and Rect2(prop.global_position + Vector2(-60, -86), Vector2(120, 98)).has_point(point):
-			if placement.kind in ["desk", "artifact_archive", "approval_console"]:
-				return {"id": placement.id, "kind": "prop", "point": prop.global_position + Vector2(0, 32)}
-	return {}
+	return room.interaction_at(point)
 
 func _on_destination_reached() -> void:
 	var target := _pending_interaction
@@ -515,7 +602,7 @@ func _on_destination_reached() -> void:
 	elif target == "approval-console":
 		job_panel.open_journal_for_employee(job_panel.pending_decision_employee_id())
 	else:
-		for placement: OfficePropPlacement in room._prop_placements:
+		for placement: Dictionary in room.resolved_placements:
 			if placement.id == target and _employees.has(placement.owner_id):
 				job_panel.select_employee(placement.owner_id)
 				job_panel._tabs.current_tab = 2 if not job_panel.active_job_id().is_empty() else 1
@@ -528,6 +615,14 @@ func _yield_employee_passage(employee_id: String, destination: Vector2) -> void:
 
 func _update_label_visibility(priority_id: String) -> void:
 	var placed: Array[Rect2] = []
+	# World-space labels are indivisible: do not leave half a name or speech
+	# bubble visible beside an overlaid notebook. Use animated live bounds.
+	placed.append(job_panel.rail_global_rect())
+	if job_panel._drawer_panel.is_visible_in_tree(): placed.append(job_panel.drawer_global_rect())
+	if job_panel._connection_panel.is_visible_in_tree(): placed.append(job_panel._connection_panel.get_global_rect())
+	if artifact_viewer.visible or (company_panel != null and company_panel.visible):
+		placed.append(get_viewport().get_visible_rect())
+	if founder_hud.delivery_visible(): placed.append(founder_hud._notification.get_global_rect())
 	# A contextual plaque must never hide the founder while approaching a desk.
 	placed.append(Rect2(player.position + Vector2(-24, -72), Vector2(48, 76)))
 	if founder_hud.interaction_visible(): placed.append(founder_hud._interaction_prompt.get_global_rect())
@@ -539,7 +634,7 @@ func _update_label_visibility(priority_id: String) -> void:
 		return a_priority > b_priority
 	)
 	for employee: EmployeeAvatar in ordered:
-		var rect := Rect2(employee.position + Vector2(-86, -122), Vector2(172, 90)) if employee._speech_visible else Rect2(employee.position + Vector2(-68, 8), Vector2(136, 68))
+		var rect := employee.world_label_rect()
 		var suppressed := false
 		for other_employee: EmployeeAvatar in ordered:
 			if other_employee != employee and rect.intersects(Rect2(other_employee.position + Vector2(-24, -72), Vector2(48, 76))):

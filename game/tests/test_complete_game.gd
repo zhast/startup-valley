@@ -56,8 +56,76 @@ func screenshot(name: String) -> void:
 
 func button_named(prefix: String) -> Button:
 	for node: Node in main.company_panel.find_children("*", "Button", true, false):
-		if (node as Button).text.begins_with(prefix): return node as Button
+		if (node as Button).is_visible_in_tree() and (node as Button).text.to_lower().begins_with(prefix.to_lower()): return node as Button
 	return null
+
+func check_world_label_ui_occlusion() -> void:
+	var employee := main.get_employee("mira")
+	var other := main.get_employee("theo")
+	var original_position := employee.position
+	var original_other := other.position
+	other.position = Vector2(400, 480)
+	employee.position = Vector2(760, 360)
+	employee._label_hold = 5
+	main.job_panel.close_drawer(false)
+	main._update_label_visibility("")
+	check(not employee.labels_suppressed, "Uncovered world label remains visible")
+	main.job_panel.open_drawer(false)
+	check(employee.world_label_rect().intersects(main.job_panel.drawer_global_rect()), "Fixture label crosses drawer boundary")
+	main._update_label_visibility("")
+	check(employee.labels_suppressed, "Partly occluded drawer label is suppressed entirely")
+	main.job_panel._open_connection_settings()
+	main.job_panel._drawer_panel.hide()
+	main._update_label_visibility("")
+	check(employee.labels_suppressed, "Connection alone occludes intersecting world label")
+	main.job_panel._close_connection_settings()
+	main.job_panel.close_drawer(false)
+	main._update_label_visibility("")
+	check(not employee.labels_suppressed, "World label restores after overlays close")
+	employee.position = Vector2(1140, 360)
+	check(employee.world_label_rect().intersects(main.job_panel.rail_global_rect()), "Fixture label crosses rail boundary")
+	main._update_label_visibility("")
+	check(employee.labels_suppressed, "Docked rail suppresses whole intersecting world label")
+	employee.position = Vector2(520, 360)
+	main.artifact_viewer.show_artifact("label-test.md", "# Safe modal\n\nNo world labels belong above this.")
+	main._update_label_visibility("")
+	check(employee.labels_suppressed and other.labels_suppressed, "Artifact modal suppresses every world label")
+	main.artifact_viewer.hide()
+	main.company_panel.present("settings")
+	main._update_label_visibility("")
+	check(employee.labels_suppressed and other.labels_suppressed, "Company modal suppresses every world label")
+	main.company_panel.hide()
+	main._update_label_visibility("")
+	check(not employee.labels_suppressed and not other.labels_suppressed, "World labels restore when modal closes")
+	employee.position = original_position
+	other.position = original_other
+	employee._label_hold = 0
+	main._update_label_visibility("")
+
+func check_journey_shortcut_scope() -> void:
+	main.company_panel.hide()
+	main.artifact_viewer.hide()
+	main.job_panel.close_drawer(false)
+	main.job_panel._open_connection_settings()
+	main.job_panel._connection_back_button.grab_focus()
+	check(main.job_panel._connection_back_button.has_focus() and main.job_panel._connection_back_button.is_visible_in_tree(), "Connection shortcut fixture focuses an actual visible button")
+	await key(KEY_J)
+	await key(KEY_J, false)
+	check(main.job_panel._connection_panel.visible and not main.company_panel.visible, "J cannot open Journey behind the connection overlay")
+	main.job_panel._close_connection_settings()
+	main.job_panel.close_drawer(false)
+	main.artifact_viewer.show_artifact("shortcuts.md", "# Read this first\n\nJourney must not open behind this reader.")
+	check(main.artifact_viewer._close_button.has_focus(), "Reader shortcut fixture owns keyboard focus")
+	await key(KEY_J)
+	await key(KEY_J, false)
+	check(main.artifact_viewer.visible and not main.company_panel.visible, "J cannot open Journey behind an artifact")
+	main.artifact_viewer.hide()
+	await key(KEY_J)
+	await key(KEY_J, false)
+	check(main.company_panel.visible and main.company_panel.screen == "journey", "J opens Journey during office exploration")
+	await key(KEY_ESCAPE)
+	await key(KEY_ESCAPE, false)
+	check(not main.company_panel.visible, "Escape returns from shortcut Journey to office")
 
 func _run() -> void:
 	root.content_scale_size = Vector2i(1280, 720)
@@ -87,27 +155,36 @@ func _run() -> void:
 	main.company_panel.hide()
 	main.job_panel.close_drawer(false)
 	for employee: EmployeeAvatar in main._employees.values(): employee.set_physics_process(false)
+	check_world_label_ui_occlusion()
+	await check_journey_shortcut_scope()
 	var original_mina := main.get_employee("mira").position
 	var original_theo := main.get_employee("theo").position
-	main.get_employee("theo").position = Vector2(400, 200)
-	for founder_point: Vector2 in [Vector2(720, 472), Vector2(64, 160), Vector2(1080, 600)]:
+	main.get_employee("theo").position = main.room.employee_desk_position("theo")
+	var architecture := main.room.layout_model
+	var floor_rect := OfficeLayout.rectangle(architecture.data.floor_rects[0])
+	var prompt_cells: Array[Vector2i] = [main.room.player_spawn, Vector2i(floor_rect.position) + Vector2i(1, 2), Vector2i(floor_rect.end) - Vector2i(2, 2)]
+	for founder_cell: Vector2i in prompt_cells:
+		var founder_point := main.room.grid_to_world_position(founder_cell)
 		for nearby_offset: Vector2 in [Vector2(32, 0), Vector2(-32, 0), Vector2(0, 32), Vector2(0, -32)]:
 			main.get_employee("mira").position = founder_point + nearby_offset
 			main.founder_hud.update_interaction(founder_point, main._employees, true)
-			check(main.founder_hud.interaction_visible(), "Nearby teammates retain an unobstructed interaction prompt")
+			check(main.founder_hud.interaction_visible(), "Nearby teammates retain an unobstructed interaction prompt at founder=%s employee=%s" % [founder_point, founder_point + nearby_offset])
 			var prompt_rect := main.founder_hud._interaction_prompt.get_global_rect()
 			for actor_point: Vector2 in [founder_point, founder_point + nearby_offset, main.get_employee("theo").position]:
 				check(not prompt_rect.intersects(Rect2(actor_point + Vector2(-24, -72), Vector2(48, 76))), "Chat prompt must never cover an actor silhouette")
 	main.get_employee("mira").position = original_mina
 	main.get_employee("theo").position = original_theo
-	main.player.position = main.room.navigation.world(Vector2i(7, 8))
+	var movement_start := main.room.player_spawn
+	var movement_end := movement_start + Vector2i.UP * 2
+	check(main.room.navigation.walkable(movement_start) and main.room.navigation.walkable(movement_end), "Authored entrance spine provides open movement fixture")
+	main.player.position = main.room.grid_to_world_position(movement_start)
 	await frames(12)
 	var start := main.player.position
-	await click(main.room.navigation.world(Vector2i(9, 8)))
+	await click(main.room.grid_to_world_position(movement_end))
 	check(not main.player.route.is_empty(), "Ground click must start an actual route")
 	await frames(90)
-	check(main.player.position.distance_to(main.room.navigation.world(Vector2i(9, 8))) < 3, "Click movement arrives at destination")
-	await click(main.room.navigation.world(Vector2i(7, 8)))
+	check(main.player.position.distance_to(main.room.grid_to_world_position(movement_end)) < 3, "Click movement arrives at destination")
+	await click(main.room.grid_to_world_position(movement_start))
 	var tap := InputEventKey.new()
 	tap.keycode = KEY_A
 	tap.physical_keycode = KEY_A
@@ -117,30 +194,47 @@ func _run() -> void:
 	tap.pressed = false
 	viewport.push_input(tap, true)
 	check(main.player.route.is_empty(), "A tap between physics frames immediately cancels click movement")
-	await click(main.room.navigation.world(Vector2i(7, 8)))
+	await click(main.room.grid_to_world_position(movement_start))
 	await key(KEY_A)
 	check(main.player.route.is_empty(), "Keyboard input immediately cancels click route")
 	await key(KEY_A, false)
-	main.player.position = main.room.navigation.world(Vector2i(1, 10))
+	var west_wall_cell := Vector2i(floor_rect.position.x, main.room.player_spawn.y)
+	main.player.position = main.room.grid_to_world_position(west_wall_cell)
 	await key(KEY_A)
 	await frames(80)
 	await key(KEY_A, false)
-	check(main.room.navigation.cell_at(main.player.position).x >= 1, "Founder cannot cross outer wall")
-	await click(Vector2(12, 88))
+	check(main.room.navigation.cell_at(main.player.position).x >= west_wall_cell.x, "Founder cannot cross outer wall")
+	await click(main.room.grid_to_world_position(west_wall_cell + Vector2i.LEFT))
 	check(main.player.route.is_empty(), "Blocked ground must not start a route")
 	# Every generated route uses only walkable cells, including all desk detours.
-	for y: int in range(2, 15):
-		for x: int in range(1, 25):
-			var cell := Vector2i(x, y)
-			if not main.room.navigation.walkable(cell): continue
-			for point: Vector2 in main.room.navigation.path(start, main.room.navigation.world(cell), "test"):
-				check(main.room.navigation.walkable(main.room.navigation.cell_at(point)), "AStar crossed blocked cell")
+	for cell: Vector2i in architecture.floor_cells():
+		if not main.room.navigation.walkable(cell): continue
+		var route := main.room.navigation.path(start, main.room.grid_to_world_position(cell), "test")
+		check(not route.is_empty(), "Every free office floor cell remains reachable")
+		for point: Vector2 in route:
+			check(main.room.navigation.walkable(main.room.navigation.cell_at(point)), "AStar crossed blocked cell")
 	main.room.navigation.release("test")
+	# A destination is not valid merely because AStar returns it. Each entrance
+	# must lie inside player bounds and be physically reachable by real input.
+	for entrance: Vector2i in architecture.entrance_cells():
+		var destination := main.room.grid_to_world_position(entrance)
+		check(main.room.playable_bounds().grow(-14).has_point(destination), "Entrance center fits the playable movement boundary")
+		main.player.cancel_route()
+		main.player.position = start
+		await click(destination)
+		await frames(120)
+		check(main.player.position.distance_to(destination) < 3, "Real click reaches every authored entrance cell: %s" % entrance)
 	main.player.position = start
 	await click(main.job_panel._team_buttons["mira"].get_global_rect().get_center())
 	check(main.job_panel.drawer_is_open(), "Real rail click opens drawer")
 	check(main.player.route.is_empty(), "Rail click must not leak into world")
 	await frames(14)
+	for index: int in [1, 2, 3, 0]:
+		var tab_button := main.job_panel._tab_buttons[index]
+		check(tab_button.is_visible_in_tree() and not tab_button.disabled, "Drawer tab must be visible before real input")
+		await click(tab_button.get_global_rect().get_center())
+		check(main.job_panel._tabs.current_tab == index, "Real tab click selects " + tab_button.text)
+		check(main.player.route.is_empty(), "Tab click cannot leak into world movement")
 	var minute := main.day_clock.minute_of_day
 	var before := main.player.position
 	await key(KEY_D)
@@ -190,7 +284,7 @@ func _run() -> void:
 		var prop := main.room.prop_node(station)
 		check(prop != null, "Two-person chapter unlocks " + station)
 		if prop == null: continue
-		main.player.position = main.room.navigation.world(main.room.navigation.nearest(prop.global_position + Vector2(0, 100), "founder"))
+		main.player.position = main.room.navigation.world(main.room.navigation.nearest(main.room.interaction_world_position(station) + Vector2(0, architecture.tile_size * 2), "founder"))
 		await frames(4)
 		await click(prop.global_position + Vector2(0, -32))
 		await frames(240)
@@ -198,10 +292,11 @@ func _run() -> void:
 		check(main.job_panel.drawer_is_open() and main.job_panel._tabs.current_tab == tab, "Station real-click opens correct screen: " + station)
 		main.job_panel.close_drawer(false)
 		await frames(4)
-	# A stationary approval requester must yield in the research exit. This was
-	# caught natively: the static-route fallback otherwise waits forever.
-	main.player.position = Vector2(688, 248)
-	mina.position = Vector2(720, 248)
+	# A stationary approval requester may stand at a station approach. The
+	# redesigned room must route around them or yield without a deadlock.
+	var approval_approach := main.room.interaction_world_position("approval-console")
+	main.player.position = approval_approach + Vector2(0, architecture.tile_size * 2)
+	mina.position = approval_approach + Vector2(0, architecture.tile_size)
 	mina.has_live_job = true
 	mina._has_target = false
 	mina.work_state = EmployeeAvatar.WorkState.WAITING_APPROVAL
@@ -304,8 +399,9 @@ func _run() -> void:
 	main.company_panel.update_state({"company": {"cashCents": 0}, "milestones": [website]})
 	await screenshot("journey-ready")
 	var complete := button_named("COMPLETE MILESTONE")
-	main.company_panel._scroll.ensure_control_visible(complete)
+	check(complete != null and not main.company_panel._scroll.is_ancestor_of(complete), "Milestone completion stays in the stable footer, outside scrolling evidence")
 	await frames(4)
+	check(complete.get_global_rect().end.y <= 720, "Milestone completion remains visible")
 	await click(complete.get_global_rect().get_center())
 	check(actions.count("milestone.complete") == 1, "Passing review still requires explicit completion")
 	website.state = "completed"

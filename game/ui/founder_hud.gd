@@ -4,8 +4,6 @@ extends Control
 signal chat_requested(employee_id: String)
 signal delivery_requested(job_id: String, employee_id: String)
 
-const NOTIFICATION_TEXTURE: Texture2D = preload("res://assets/runtime/ui/founders-ledger/notification-memo.png")
-const INTERACTION_TEXTURE: Texture2D = preload("res://assets/runtime/ui/founders-ledger/interaction-prompt.png")
 const MOVEMENT_TEXTURE: Texture2D = preload("res://assets/runtime/ui/founders-ledger/movement-plaque.png")
 
 const CHARCOAL := Color("151515")
@@ -54,52 +52,63 @@ func notice_movement() -> void:
 	_movement_hint_tween.tween_callback(_movement_hint.hide)
 
 func _build_notification() -> void:
-	_notification = _texture_control("DeliveryMemo", NOTIFICATION_TEXTURE, Rect2(24.0, 18.0, 250.0, 120.0))
+	var toast := Panel.new()
+	toast.name = "DeliveryMemo"
+	toast.position = Vector2(24, 18)
+	toast.size = Vector2(310, 84)
+	toast.add_theme_stylebox_override("panel", CozyUI.paper())
+	toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(toast)
+	_notification = toast
 	_notification.visible = false
-	_notification_heading = _label("DELIVERY READY", GameFonts.DISPLAY_SMALL, CHARCOAL)
-	_notification_heading.position = Vector2(18.0, 22.0)
-	_notification_heading.size = Vector2(194.0, 22.0)
+	_notification_heading = _label("Delivery ready", GameFonts.BODY_DEFAULT, CHARCOAL)
+	CozyUI.label(_notification_heading, "action")
+	_notification_heading.position = Vector2(14.0, 14.0)
+	_notification_heading.size = Vector2(202.0, 24.0)
 	_notification_heading.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_notification.add_child(_notification_heading)
 	_notification_detail = _label("Work order ready", GameFonts.BODY_META, CHARCOAL)
 	GameFonts.use_body(_notification_detail)
-	_notification_detail.position = Vector2(18.0, 44.0)
-	_notification_detail.size = Vector2(194.0, 20.0)
+	_notification_detail.position = Vector2(14.0, 42.0)
+	_notification_detail.size = Vector2(202.0, 22.0)
 	_notification_detail.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_notification.add_child(_notification_detail)
 	var view_button := Button.new()
 	view_button.name = "ViewDelivery"
-	view_button.text = "VIEW"
-	view_button.position = Vector2(142.0, 67.0)
-	view_button.size = Vector2(70.0, 40.0)
+	view_button.text = "View"
+	view_button.position = Vector2(226.0, 20.0)
+	view_button.size = Vector2(70.0, 44.0)
 	view_button.focus_mode = Control.FOCUS_ALL
 	view_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	_style_ink_button(view_button, ALERT_INK)
+	CozyUI.button(view_button, "secondary")
 	view_button.pressed.connect(_request_delivery)
 	_notification.add_child(view_button)
 
 func _build_interaction_prompt() -> void:
-	_interaction_prompt = _texture_control("InteractionPrompt", INTERACTION_TEXTURE, Rect2(0.0, 0.0, 130.0, 52.0))
+	var prompt := Panel.new()
+	prompt.name = "InteractionPrompt"
+	prompt.size = Vector2(112, 44)
+	prompt.add_theme_stylebox_override("panel", CozyUI.paper())
+	prompt.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(prompt)
+	_interaction_prompt = prompt
 	_interaction_prompt.visible = false
-	var label := _label("E  ·  CHAT", GameFonts.DISPLAY_SMALL, CHARCOAL)
-	label.position = Vector2(12.0, 9.0)
-	label.size = Vector2(94.0, 34.0)
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_interaction_prompt.add_child(label)
 	var button := Button.new()
 	button.name = "ChatAction"
-	button.text = ""
+	button.text = "E · Chat"
 	button.position = Vector2.ZERO
-	button.size = Vector2(112.0, 52.0)
+	button.size = Vector2(112.0, 44.0)
 	button.focus_mode = Control.FOCUS_NONE
 	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	_style_ink_button(button, Color.TRANSPARENT)
+	CozyUI.button(button, "quiet")
 	button.pressed.connect(_request_chat)
 	_interaction_prompt.add_child(button)
 
 func _build_movement_hint() -> void:
 	_movement_hint = _texture_control("MovementPlaque", MOVEMENT_TEXTURE, Rect2(455.0, 660.0, 240.0, 48.0))
-	var label := _label("CLICK / WASD TO MOVE", GameFonts.DISPLAY_SMALL, CHARCOAL)
+	var label := _label("Click / WASD to move", GameFonts.BODY_DEFAULT, CHARCOAL)
+	CozyUI.label(label, "action")
+	label.text = "Click / WASD to move"
 	label.position = Vector2(18.0, 9.0)
 	label.size = Vector2(204.0, 30.0)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -123,25 +132,10 @@ func _label(text_value: String, font_size: int, color: Color) -> Label:
 	label.text = text_value
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.add_theme_font_size_override("font_size", font_size)
-	GameFonts.use_display(label)
+	GameFonts.use_body(label)
 	label.add_theme_color_override("font_color", color)
-	label.add_theme_color_override("font_outline_color", PARCHMENT_LIGHT)
-	label.add_theme_constant_override("outline_size", 1)
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	return label
-
-func _style_ink_button(button: Button, font_color: Color) -> void:
-	var empty := StyleBoxEmpty.new()
-	button.add_theme_stylebox_override("normal", empty)
-	button.add_theme_stylebox_override("hover", empty)
-	button.add_theme_stylebox_override("pressed", empty)
-	button.add_theme_stylebox_override("focus", empty)
-	button.add_theme_font_size_override("font_size", GameFonts.DISPLAY_SMALL)
-	GameFonts.use_display(button)
-	button.add_theme_color_override("font_color", font_color)
-	button.add_theme_color_override("font_hover_color", INDIGO)
-	button.add_theme_color_override("font_pressed_color", CHARCOAL)
-	button.add_theme_color_override("font_focus_color", VERMILION)
 
 func update_interaction(
 	player_position: Vector2,
@@ -169,11 +163,28 @@ func update_interaction(
 	var silhouettes: Array[Rect2] = [Rect2(player_position + Vector2(-24, -72), Vector2(48, 76))]
 	for employee: EmployeeAvatar in employees.values():
 		silhouettes.append(Rect2(employee.position + Vector2(-24, -72), Vector2(48, 76)))
-	for offset: Vector2 in [Vector2(-136, -70), Vector2(32, -70), Vector2(-65, -132), Vector2(-65, 12), Vector2(-136, -132), Vector2(32, -132)]:
+	# Derive slots from the real prompt and actor silhouette. Fixed offsets
+	# narrower than this plaque made every candidate overlap at the room edge.
+	var prompt_size := _interaction_prompt.size
+	var actor_bounds := Rect2(-24, -72, 48, 76)
+	var gap := 8.0
+	var left := actor_bounds.position.x - prompt_size.x - gap
+	var right := actor_bounds.end.x + gap
+	var above := actor_bounds.position.y - prompt_size.y - gap
+	var below := actor_bounds.end.y + gap
+	var centered_x := -prompt_size.x * 0.5
+	var centered_y := actor_bounds.get_center().y - prompt_size.y * 0.5
+	var offsets: Array[Vector2] = [
+		Vector2(left, centered_y), Vector2(right, centered_y),
+		Vector2(centered_x, above), Vector2(centered_x, below),
+		Vector2(left, above), Vector2(right, above),
+		Vector2(left, below), Vector2(right, below),
+	]
+	for offset: Vector2 in offsets:
 		var prompt_position := closest.position + offset
-		prompt_position.x = clampf(prompt_position.x, 18.0, PLAYFIELD_RIGHT - _interaction_prompt.size.x - 18.0)
-		prompt_position.y = clampf(prompt_position.y, 82.0, 636.0)
-		var candidate := Rect2(prompt_position.round(), _interaction_prompt.size)
+		prompt_position.x = clampf(prompt_position.x, 18.0, PLAYFIELD_RIGHT - prompt_size.x - 18.0)
+		prompt_position.y = clampf(prompt_position.y, 82.0, get_viewport_rect().size.y - prompt_size.y - 18.0)
+		var candidate := Rect2(prompt_position.round(), prompt_size)
 		var overlaps := false
 		for silhouette: Rect2 in silhouettes:
 			if candidate.intersects(silhouette): overlaps = true
@@ -186,19 +197,21 @@ func update_interaction(
 func show_delivery(job_id: String, employee_id: String, employee_name: String, detail: String) -> void:
 	_delivery_job_id = job_id
 	_delivery_employee_id = employee_id
-	_notification_heading.text = "%s FINISHED" % employee_name.to_upper()
+	_notification_heading.text = "%s finished" % employee_name
 	_notification_detail.text = detail
+	_notification_detail.tooltip_text = detail
 	_notification.visible = true
 	if _notification_tween != null and _notification_tween.is_valid():
 		_notification_tween.kill()
-	_notification.position = _notification_rest_position + Vector2(-12.0, 0.0)
+	var entrance := _notification_rest_position + Vector2(-12.0, 0.0)
+	_notification.position = entrance
 	_notification.modulate.a = 0.0
 	_notification_tween = create_tween()
 	_notification_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	_notification_tween.tween_property(_notification, "position", _notification_rest_position, 0.16)
+	_notification_tween.tween_method(func(value: Vector2) -> void: _notification.position = value.round(), entrance, _notification_rest_position, 0.16)
 	_notification_tween.parallel().tween_property(_notification, "modulate:a", 1.0, 0.16)
 	_notification_tween.tween_interval(6.0)
-	_notification_tween.tween_property(_notification, "modulate:a", 0.0, 0.2)
+	_notification_tween.tween_property(_notification, "modulate:a", 0.0, 0.16)
 	_notification_tween.tween_callback(_notification.hide)
 
 func hide_delivery() -> void:

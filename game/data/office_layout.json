@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "id": "startup-office",
+  "tile_size": 32,
+  "width": 40,
+  "height": 23,
+  "floor_rects": [[1, 3, 34, 18]],
+  "wall_rects": [],
+  "wall_height_tiles": 3,
+  "doors": [
+    {"id": "entrance", "grid": [17, 21], "width": 2, "depth": 1, "facing": "south", "entrance": true}
+  ],
+  "windows": [
+    {"id": "west-window", "grid": [4, 0], "width": 5, "height": 3, "facing": "north"},
+    {"id": "east-window", "grid": [26, 0], "width": 5, "height": 3, "facing": "north"}
+  ],
+  "circulation_rects": [[16, 3, 3, 18], [2, 10, 32, 2]],
+  "player_spawn": [17, 19],
+  "employees": [
+    {"id": "mira", "name": "Mina", "spawn": [11, 18]},
+    {"id": "theo", "name": "Theo", "spawn": [23, 18]}
+  ],
+  "props": [
+    {"id": "founder-workstation", "kind": "desk", "grid": [8, 17], "facing": "south", "required_hires": 0, "owner_id": "founder"},
+    {"id": "mira-workstation", "kind": "desk", "grid": [10, 8], "facing": "south", "required_hires": 1, "owner_id": "mira"},
+    {"id": "coffee-station", "kind": "coffee_station", "grid": [4, 6], "facing": "south", "required_hires": 1},
+    {"id": "collaboration-cluster", "kind": "collaboration_cluster", "grid": [10, 13], "facing": "south", "required_hires": 1},
+    {"id": "artifact-archive", "kind": "artifact_archive", "grid": [4, 13], "facing": "south", "required_hires": 1},
+    {"id": "theo-workstation", "kind": "desk", "grid": [20, 8], "facing": "south", "required_hires": 2, "owner_id": "theo"},
+    {"id": "research-bench", "kind": "research_table", "grid": [29, 6], "facing": "south", "required_hires": 2},
+    {"id": "approval-console", "kind": "approval_console", "grid": [29, 13], "facing": "south", "required_hires": 2},
+    {"id": "prototype-bench", "kind": "prototype_bench", "grid": [29, 18], "facing": "south", "required_hires": 4}
+  ]
+}

@@ -21,6 +21,20 @@ const EXPECTED_SCENARIOS: Dictionary = {
 		"queued-errors-and-overflow",
 	],
 }
+const REQUIRED_UI_CHECKS := {
+	"team-drawer-controls": ["mina-rail-selection", "theo-rail-selection"],
+	"chat-and-work-order": ["visible-editable-text-focus", "real-keyboard-text-entry", "chat-only-dispatch", "chat-waiting-disabled", "chat-to-editable-work-draft"],
+	"work-controls": ["dropdown-selection-changed", "visible-editable-text-focus", "real-keyboard-text-entry", "confirmed-assignment-dispatch", "assignment-pending-disabled", "disabled-assignment-no-double-dispatch"],
+	"journal-and-approval": ["activity-only-steering-dispatch", "steering-pending-disabled", "approval-click-dispatch"],
+	"delivery-studio-reader": ["delivery-preview-in-first-view", "preview-opens-reader-before-decision", "reader-wheel-scroll", "reader-close-button-pressed", "reader-click-close", "reader-reopen-reset", "reader-reopen-retains-document", "reader-escape-close", "preview-before-promotion-dispatch-order", "studio-file-selection", "studio-reader-retains-document"],
+	"queued-errors-and-overflow": ["worker-error-retry-visible", "worker-recovery-distinct"],
+}
+const REQUIRED_DISPATCH_ORDER := {
+	"chat-and-work-order": ["chat.send"],
+	"work-controls": ["job.start"],
+	"journal-and-approval": ["job.steer", "approval"],
+	"delivery-studio-reader": ["artifact.read", "artifact.read", "promotion", "studio.read"],
+}
 
 var _failures: PackedStringArray = []
 
@@ -51,8 +65,8 @@ func _validate_inventory() -> void:
 		_failures.append("Asset inventory did not inspect the live characters and office props")
 	if not regions_value is Array or (regions_value as Array).size() != 3:
 		_failures.append("Asset inventory did not record all three native character atlases")
-	if not fonts_value is Array or (fonts_value as Array).size() != 2:
-		_failures.append("Asset inventory did not record display/body fonts and licenses")
+	if not fonts_value is Array or (fonts_value as Array).size() < 5:
+		_failures.append("Asset inventory did not record display/body/bold/italic/code fonts and licenses")
 	if not flags_value is Array:
 		_failures.append("Asset inventory flags are malformed")
 	elif not (flags_value as Array).is_empty():
@@ -86,6 +100,8 @@ func _validate_suite(suite: String) -> void:
 	var manifest := _read_json("%s/%s/manifest.json" % [OUTPUT_ROOT, suite])
 	if manifest.is_empty():
 		return
+	if not (manifest.get("failures", []) as Array).is_empty():
+		_failures.append("%s capture reported failures: %s" % [suite, manifest.get("failures", [])])
 	if int(manifest.get("fps", 0)) != 30:
 		_failures.append("%s manifest did not use fixed 30 FPS" % suite)
 	var viewport_value: Variant = manifest.get("viewport", {})
@@ -116,6 +132,31 @@ func _validate_suite(suite: String) -> void:
 		for phase: String in ["start", "middle", "end"]:
 			_validate_image(str(keyframes.get(phase, "")), VIEWPORT_SIZE, "%s %s" % [expected_name, phase])
 		_validate_image(str(scenario.get("contactSheet", "")), CONTACT_SIZE, "%s contact sheet" % expected_name)
+		if suite == "ui": _validate_ui_actions(scenario)
+
+func _validate_ui_actions(scenario: Dictionary) -> void:
+	var passed: Array[String] = []
+	for check: Dictionary in scenario.get("checks", []):
+		if bool(check.get("passed", false)): passed.append(str(check.get("label", "")))
+		else: _failures.append("%s failed input check: %s" % [scenario.name, check.get("label", "")])
+	for required: String in REQUIRED_UI_CHECKS.get(str(scenario.name), []):
+		if not passed.has(required): _failures.append("%s lacks exercised input evidence: %s" % [scenario.name, required])
+	if REQUIRED_DISPATCH_ORDER.has(str(scenario.name)):
+		var methods: Array[String] = []
+		for dispatch: Dictionary in scenario.get("dispatches", []): methods.append(str(dispatch.get("method", "")))
+		if methods != REQUIRED_DISPATCH_ORDER[str(scenario.name)]: _failures.append("%s has incorrect actual dispatch order: %s" % [scenario.name, methods])
+	var checkpoints: Dictionary = scenario.get("checkpoints", {})
+	for label: String in checkpoints:
+		_validate_image(str(checkpoints[label].get("path", "")), VIEWPORT_SIZE, str(scenario.name) + " " + label)
+	if str(scenario.name) == "queued-errors-and-overflow":
+		for required: String in ["worker-error", "worker-recovered"]:
+			if not checkpoints.has(required): _failures.append("Separate %s checkpoint missing" % required)
+		if checkpoints.has("worker-error") and checkpoints.has("worker-recovered"):
+			if int(checkpoints["worker-error"].frame) >= int(checkpoints["worker-recovered"].frame): _failures.append("Error/recovery checkpoints are not temporally distinct")
+			var error_state: Dictionary = checkpoints["worker-error"].get("uiState", {})
+			var recovered_state: Dictionary = checkpoints["worker-recovered"].get("uiState", {})
+			if not bool(error_state.get("connectionVisible", false)) or bool(error_state.get("workerConnected", true)): _failures.append("Error checkpoint does not prove visible offline state")
+			if bool(recovered_state.get("connectionVisible", true)) or not bool(recovered_state.get("workerConnected", false)): _failures.append("Recovery checkpoint does not prove connected state")
 
 func _scenario_named(scenarios: Array, wanted_name: String) -> Dictionary:
 	for scenario_value: Variant in scenarios:
