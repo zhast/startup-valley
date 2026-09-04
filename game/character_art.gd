@@ -10,6 +10,7 @@ const THEO_WORK: Texture2D = preload("res://assets/runtime/characters/theo-work.
 const MIRA_SEATED: Texture2D = preload("res://assets/runtime/characters/mira-seated.png")
 const THEO_SEATED: Texture2D = preload("res://assets/runtime/characters/theo-seated.png")
 const FRAME_SIZE := Vector2(48.0, 80.0)
+const CHAT_FACE_REGION := Rect2(8.0, 4.0, 32.0, 32.0)
 
 # The source artwork is intentionally kept as one lossless sheet. Atlas regions let
 # the office and UI share the exact same character art without derivative PNGs.
@@ -38,6 +39,15 @@ static func bust_portrait(character_id: String) -> AtlasTexture:
 	var texture := AtlasTexture.new()
 	texture.atlas = CHARACTER_SHEET
 	texture.region = Rect2(region.position, Vector2(region.size.x, region.size.y * 0.68))
+	texture.filter_clip = true
+	return texture
+
+static func chat_face(character_id: String) -> AtlasTexture:
+	# Reuse the front-idle art at its authored pixel size. A native head crop
+	# keeps facial features legible without shrinking a large framed bust.
+	var texture := AtlasTexture.new()
+	texture.atlas = locomotion_sheet(character_id)
+	texture.region = CHAT_FACE_REGION
 	texture.filter_clip = true
 	return texture
 

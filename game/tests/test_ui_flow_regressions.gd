@@ -81,6 +81,9 @@ func _run() -> void:
 	panel._job_picker.select(panel.CANNED_JOBS.size())
 	panel._on_job_selected(panel.CANNED_JOBS.size())
 	await click_control(panel._tab_buttons[1])
+	var collapsed_scroll := panel._tabs.get_tab_control(1).get_child(0) as ScrollContainer
+	check(collapsed_scroll.get_global_rect().encloses(panel._attachment_toggle.get_global_rect()), "Empty custom assignment contains the complete collapsed attachment control")
+	check(panel._attachment_toggle.get_global_rect().end.y <= collapsed_scroll.get_global_rect().end.y - 8, "Empty custom attachment clears the form/footer seam by8px")
 	await click_control(panel._attachment_toggle)
 	panel._attachment_picker.select(1)
 	await frames(20)

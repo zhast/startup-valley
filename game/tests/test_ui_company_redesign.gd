@@ -158,8 +158,14 @@ func _contrast(ink: Color, paper: Color) -> float:
 
 func _bounds() -> void:
 	_check(Rect2(0, 0, 1280, 720).encloses(_panel._frame.get_global_rect()), "Purpose-sized modal stays within native viewport")
+	_material(_panel._frame.get_theme_stylebox("panel"), "notebook", "Company outer paper")
 	_check(_panel._header.get_global_rect().end.y <= _panel._scroll.get_global_rect().position.y, "Header stays outside scrolled content")
 	_check(_panel._scroll.get_global_rect().end.y <= _panel._footer.get_global_rect().position.y, "Footer stays outside scrolled content")
+	for node: Node in _panel._content.find_children("*", "PanelContainer", true, false):
+		_material((node as PanelContainer).get_theme_stylebox("panel"), "card", "Company reading card")
+	var bar := _panel._scroll.get_v_scroll_bar()
+	_material(bar.get_theme_stylebox("scroll"), "track", "Company scroll well")
+	_material(bar.get_theme_stylebox("grabber"), "thumb", "Company scroll grip")
 	for node: Node in _panel._frame.find_children("*", "Label", true, false):
 		var label := node as Label
 		var role := str(label.get_meta("cozy_text_role", "body"))
@@ -181,18 +187,37 @@ func _bounds() -> void:
 			_check(label.get_minimum_size().y <= label.size.y + 1, "Wrapped company text is not vertically clipped: " + label.text.left(42))
 		if role == "display":
 			_check(_panel._header.get_global_rect().encloses(label.get_global_rect()), "Screen title remains inside the fixed header")
-		for essential: String in ["Real AI work", "real AI budget", "This starts a new journey", "Move:", "Required files", "AI usage is real"]:
+		for essential: String in ["Real AI work", "real AI budget", "This starts a new journey", "Move:", "Required files", "AI spend is real money"]:
 			if label.text.contains(essential):
 				_check(role != "meta" and font_size >= 16, "Instructions and consequences use body-sized text: " + essential)
 	for node: Node in _panel._frame.find_children("*", "Button", true, false):
 		var button := node as Button
 		_check(button.get_theme_font("font").get_rids() == GameFonts.BOLD.get_rids(), "Dynamic company buttons resolve explicit Nunito Bold")
+		var normal := button.get_theme_stylebox("normal")
+		for state: String in ["normal", "hover", "pressed", "disabled", "hover_pressed"]:
+			var style := button.get_theme_stylebox(state)
+			_material(style, "control-" + str(button.get_meta("cozy_variant")), "Company %s state" % state)
+			_check(style.get_minimum_size() == normal.get_minimum_size(), "Button states keep stable content insets")
+		var focus := button.get_theme_stylebox("focus")
+		_material(focus, "focus", "Company keyboard focus")
+		_check(_has_no_expansion(focus), "Keyboard focus follows the control without a detached expanded rectangle")
 		if not button.is_visible_in_tree() or button.text.is_empty(): continue
+		_check(button.size.y >= 44, "Visible company action retains a 44px target")
 		var insets := button.get_theme_stylebox("normal").get_minimum_size().x
 		var copy_width := button.get_theme_font("font").get_string_size(button.text, HORIZONTAL_ALIGNMENT_LEFT, -1, button.get_theme_font_size("font_size")).x
 		var icon_width := button.icon.get_width() + button.get_theme_constant("h_separation") if button.icon != null else 0
 		_check(copy_width + insets + icon_width <= button.size.x + 1, "Button lettering and disclosure icon stay inside protected insets: " + button.text)
 	_check(_panel._notice.get_theme_font_size("font_size") >= 16, "Company errors and progress notices are body-sized")
+
+func _material(style: StyleBox, kind: String, context: String) -> void:
+	_check(style.get_meta("cozy_family", "") == CozyUI.MATERIAL_FAMILY, context + " belongs to the shared notebook material family")
+	_check(style.get_meta("cozy_material", "") == kind, context + " retains its semantic material role")
+
+func _has_no_expansion(style: StyleBox) -> bool:
+	for property: Dictionary in style.get_property_list():
+		var property_name := str(property["name"])
+		if property_name.begins_with("expand_margin_") and not is_zero_approx(float(style.get(property_name))): return false
+	return true
 
 func _capture(name_value: String) -> void:
 	await _frames(4)
@@ -333,6 +358,8 @@ func _settings_input() -> void:
 	var slider := _panel.find_child("EffectsSlider", true, false) as HSlider
 	var percent := _panel.find_child("EffectsPercent", true, false) as Label
 	_check(_visible(slider), "Volume slider is visible before input")
+	_material(slider.get_theme_stylebox("slider"), "track-horizontal", "Volume track")
+	_material(slider.get_theme_stylebox("grabber_area"), "track-filled", "Volume fill")
 	slider.grab_focus()
 	await _key(KEY_RIGHT)
 	_check(is_equal_approx(_panel.effects_volume, 0.55) and percent.text == "55%", "Keyboard volume change updates live percentage")
@@ -348,7 +375,7 @@ func _summary_layout() -> void:
 	await _frames(15)
 	_bounds()
 	_check(_text().contains("$9,876,543.21"), "Large in-game revenue is grouped and retains cents")
-	_check(_text().contains("Game revenue") and _text().contains("Real AI spend") and _text().contains("provider usage (USD)"), "Day results distinguish in-game money from real provider costs")
+	_check(_text().contains("Game revenue") and _text().contains("virtual company funds") and _text().contains("Real AI spend") and _text().contains("real money (USD)"), "Day results distinguish virtual company funds from real AI costs in USD")
 	var numeric_count := 0
 	for node: Node in _panel.find_children("*", "Label", true, false):
 		var label := node as Label
@@ -395,10 +422,9 @@ func _collapsed_review_fit() -> void:
 	await _present("journey", value)
 	_check(_panel._content.size.y <= _panel._scroll.size.y, "Ordinary collapsed revision fits without a tiny scroll")
 	_check(not _panel._scroll.get_v_scroll_bar().visible, "Collapsed revision needs no scrollbar")
-	for node: Node in _panel.find_children("*", "Label", true, false):
-		var label := node as Label
-		if label.text.begins_with("Game money"):
-			_check(_visible(label), "The entire planning-files explanation is visible at rest")
+	var money_note := _panel.find_child("MoneyExplanation", true, false) as Label
+	_check(money_note != null and _visible(money_note), "The entire money and planning-files explanation is visible at rest")
+	_check(money_note != null and money_note.text.contains("Game cash is virtual") and money_note.text.contains("AI spend is real money (USD)") and money_note.text.contains("planning files only"), "Journey keeps both currencies and planning-only consequences explicit")
 	_check(not _panel._notice.visible, "An empty notice never reserves a footer line")
 	await _capture("collapsed-revision-fit")
 	_panel.show_error("Evaluation could not finish because the provider returned an incomplete response. Your files are saved. Retry when your connection is restored; no milestone reward has been claimed.")

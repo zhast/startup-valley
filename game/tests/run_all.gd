@@ -256,7 +256,7 @@ func _run() -> void:
 		_fail("test_artifact_viewer: the modal or its scrim escaped the viewport")
 	var reader_frame := main.artifact_viewer._modal.get_theme_stylebox("panel")
 	var reader_paper_style := main.artifact_viewer._content.get_theme_stylebox("normal")
-	if reader_frame == null or not reader_paper_style is StyleBoxEmpty:
+	if reader_frame == null or reader_frame.get_meta("cozy_material", "") != "notebook" or not reader_paper_style.get_meta("cozy_unframed", false) or reader_paper_style.get_content_margin(SIDE_RIGHT) < 12:
 		_fail("test_operations_ui: artifact reader lost its single quiet reading surface")
 	if main.artifact_viewer._content.get_theme_font("normal_font") != GameFonts.BODY or main.artifact_viewer._content.get_theme_font("mono_font") != GameFonts.MONO:
 		_fail("test_operations_ui: reader body/code font roles are not explicit")

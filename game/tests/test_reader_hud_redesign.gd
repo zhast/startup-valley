@@ -54,6 +54,12 @@ func key(code: Key) -> void:
 func text_size(label: Label) -> Vector2:
 	return label.get_theme_font("font").get_string_size(label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, label.get_theme_font_size("font_size"))
 
+func has_no_expansion(style: StyleBox) -> bool:
+	for property: Dictionary in style.get_property_list():
+		var property_name := str(property["name"])
+		if property_name.begins_with("expand_margin_") and not is_zero_approx(float(style.get(property_name))): return false
+	return true
+
 func centered_baseline(label: Label) -> float:
 	var font := label.get_theme_font("font")
 	var size := label.get_theme_font_size("font_size")
@@ -156,7 +162,27 @@ func run() -> void:
 	check_nunito_weight(GameFonts.ITALIC, 550.0, "Reader italic", true)
 	check_nunito_weight(GameFonts.BOLD_ITALIC, 700.0, "Reader bold italic", true)
 	check(reader._caption_label.text == "Job delivery · Read only", "Reader identifies provenance separately from title")
-	check(reader._content.get_theme_stylebox("normal") is StyleBoxEmpty, "Document center has no decorative rules or nested frame")
+	var document_mark := reader.find_child("DocumentIcon", true, false) as TextureRect
+	check(document_mark != null, "Reader has a named native document glyph")
+	if document_mark != null:
+		check(document_mark.texture == CozyUI.icon("document") and document_mark.texture.get_size() == Vector2(24, 28), "Reader uses the authored native24×28 document glyph")
+		check(document_mark.size == Vector2(24, 28) and document_mark.scale == Vector2.ONE and document_mark.stretch_mode == TextureRect.STRETCH_KEEP_CENTERED, "Document glyph is centered at1× instead of shrinking a large framed asset")
+		check(document_mark.texture_filter == CanvasItem.TEXTURE_FILTER_NEAREST and document_mark.mouse_filter == Control.MOUSE_FILTER_IGNORE, "Native glyph stays crisp without intercepting header input")
+	var document_surface := reader._content.get_theme_stylebox("normal")
+	check(document_surface.get_meta("cozy_family", "") == CozyUI.MATERIAL_FAMILY and document_surface.get_meta("cozy_material", "") == "document-content" and document_surface.get_meta("cozy_unframed", false), "Document keeps an intentional unframed reading surface in the shared notebook family")
+	check(document_surface.get_content_margin(SIDE_LEFT) >= 10 and document_surface.get_content_margin(SIDE_RIGHT) >= 12 and document_surface.get_content_margin(SIDE_BOTTOM) >= 12, "Quiet document surface reserves focus-rim, glyph and scrollbar clearance")
+	var document_focus := reader._content.get_theme_stylebox("focus")
+	check(document_focus.get_meta("cozy_family", "") == CozyUI.MATERIAL_FAMILY and document_focus.get_meta("cozy_material", "") == "focus" and has_no_expansion(document_focus), "Keyboard document focus uses the authored in-bounds cue while resting content remains unframed")
+	check(reader._modal.get_theme_stylebox("panel").get_meta("cozy_material", "") == "notebook", "Reader retains one outer notebook paper surface")
+	for state: String in ["normal", "hover", "pressed", "disabled"]:
+		var style := reader._close_button.get_theme_stylebox(state)
+		check(style.get_meta("cozy_family", "") == CozyUI.MATERIAL_FAMILY and style.get_meta("cozy_material", "") == "control-quiet", "Reader close shares authored quiet-control material across " + state)
+		check(style.get_minimum_size() == reader._close_button.get_theme_stylebox("normal").get_minimum_size(), "Reader close state refresh retains fixed geometry")
+	var focus := reader._close_button.get_theme_stylebox("focus")
+	check(focus.get_meta("cozy_material", "") == "focus" and has_no_expansion(focus), "Reader close focus follows the authored control instead of an expanded box")
+	check(reader._close_button.icon == CozyUI.icon("close"), "Reader close uses the shared native cross glyph")
+	var reader_bar := reader._content.get_v_scroll_bar()
+	check(reader_bar.get_theme_stylebox("scroll").get_meta("cozy_material", "") == "track" and reader_bar.get_theme_stylebox("grabber").get_meta("cozy_material", "") == "thumb", "Reader scrollbar uses the same material track and grip family")
 	check(reader._content.get_theme_font("normal_font") == GameFonts.BODY, "Markdown prose uses corrected deterministic body face")
 	check(reader._content.get_theme_font("bold_font") == GameFonts.BOLD, "Markdown bold resolves to its explicit weight")
 	check(reader._content.get_theme_font("italics_font") == GameFonts.ITALIC, "Markdown italic resolves explicitly")
@@ -192,6 +218,7 @@ func run() -> void:
 	root.push_input(away, true)
 	await key(KEY_TAB)
 	check(reader._content.has_focus(), "Tab enters the actual visible document")
+	await capture("reader-keyboard-focus")
 	var scroll_before := reader._content.get_v_scroll_bar().value
 	for index: int in range(8): await click(reader._content.get_global_rect().get_center(), MOUSE_BUTTON_WHEEL_DOWN)
 	check(reader._content.get_v_scroll_bar().value > scroll_before, "Actual wheel input scrolls the long document")
@@ -343,15 +370,24 @@ func run() -> void:
 	employee.position = Vector2(300, 340)
 	var name_line := ceilf(EmployeeAvatar.NAME_FONT.get_height(EmployeeAvatar.NAME_FONT_SIZE)) + EmployeeAvatar.NAME_INSET.y * 2
 	var detail_lines := name_line + EmployeeAvatar.TEXT_LINE_GAP + ceilf(EmployeeAvatar.STATUS_FONT.get_height(EmployeeAvatar.STATUS_FONT_SIZE))
-	check(employee.world_label_rect().size.y == ceilf(name_line / 2) * 2, "Idle nameplate reserves actual identity metrics and paper insets")
+	check(employee.world_label_body_rect().size.y == ceilf(name_line / 2) * 2, "Idle callout body reserves actual identity metrics and paper insets")
+	var world_paper := employee.world_label_body_rect()
+	world_paper.position += employee.position.round()
+	check(employee.world_label_rect().encloses(world_paper), "Callout collision bounds include its readable paper and target pointer")
 	employee._label_hold = 0
 	check(not employee._labels_visible(), "Idle label expires so it cannot cover the desk permanently")
 	employee.set_ui_highlighted(true)
-	check(employee._labels_visible(), "Hover or selection reveals contextual identity")
-	check(employee.world_label_rect().size.y == ceilf(detail_lines / 2) * 2, "Selection reserves two readable lines in one card")
+	check(employee._labels_visible(), "Hover reveals contextual identity")
+	check(employee.world_label_body_rect().size.y == ceilf(detail_lines / 2) * 2, "Hover callout reserves two readable lines in one paper body")
+	employee.set_drawer_selected(true)
+	check(not employee._labels_visible() and not employee._label_detail_visible(), "Open employee drawer suppresses redundant floating name and status")
+	employee.set_drawer_selected(false)
 	employee.set_ui_highlighted(false)
 	employee.work_state = EmployeeAvatar.WorkState.WAITING_APPROVAL
-	check(employee.world_label_rect().size.y == ceilf(detail_lines / 2) * 2, "Approval attention preserves the same two-line geometry")
+	check(employee.world_label_body_rect().size.y == ceilf(detail_lines / 2) * 2, "Approval callout preserves the same readable two-line geometry")
+	employee.set_drawer_selected(true)
+	check(not employee._labels_visible() and employee.attention_cue_visible(), "Selected employee retains approval attention without restoring a duplicate name card")
+	employee.set_drawer_selected(false)
 	for line: String in employee._wrap_speech("A very long memory sentence must remain readable without covering the whole office", 21):
 		check(GameFonts.BODY.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, 16).x <= 164, "Speech line fits its 16px text-safe width")
 	employee.free()

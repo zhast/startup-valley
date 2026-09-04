@@ -39,14 +39,17 @@ func _build_interface() -> void:
 	header.add_theme_constant_override("separation", 10)
 	column.add_child(header)
 	var file_mark := TextureRect.new()
-	file_mark.texture = OperationsSkin.ICON_DOCUMENT
+	file_mark.name = "DocumentIcon"
+	file_mark.texture = CozyUI.icon("document")
 	file_mark.custom_minimum_size = Vector2(24.0, 28.0)
-	file_mark.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	file_mark.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	file_mark.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	file_mark.expand_mode = TextureRect.EXPAND_KEEP_SIZE
+	file_mark.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 	file_mark.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	file_mark.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	header.add_child(file_mark)
 	_title_label = Label.new()
-	_title_label.text = "Artifact"
+	_title_label.text = "Document"
 	# Filenames are dynamic identity, not controlled pixel-display copy. The
 	# proportional section face preserves accents, punctuation and clear elision.
 	CozyUI.label(_title_label, "title")
@@ -89,11 +92,17 @@ func _build_interface() -> void:
 	_content.add_theme_constant_override("line_separation", 6)
 	# The document is the paper surface, not another decorated notebook inside it.
 	var reading_inset := StyleBoxEmpty.new()
-	reading_inset.content_margin_left = 2
+	# Reserve the shared six-pixel rim plus breathing room even when keyboard
+	# focus appears; focus must never sit directly against the first glyph.
+	reading_inset.content_margin_left = 10
 	reading_inset.content_margin_right = 12
 	reading_inset.content_margin_top = 4
 	reading_inset.content_margin_bottom = 12
+	reading_inset.set_meta("cozy_family", CozyUI.MATERIAL_FAMILY)
+	reading_inset.set_meta("cozy_material", "document-content")
+	reading_inset.set_meta("cozy_unframed", true)
 	_content.add_theme_stylebox_override("normal", reading_inset)
+	_content.add_theme_stylebox_override("focus", CozyUI.focus())
 	column.add_child(_content)
 	_close_button.focus_next = _close_button.get_path_to(_content)
 	_close_button.focus_previous = _close_button.get_path_to(_content)

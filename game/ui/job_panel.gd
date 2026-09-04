@@ -147,6 +147,7 @@ var _attention_employee_id: String = ""
 var _clock_phase: String = "work"
 var _custom_mode: bool = false
 var _spend_warning: float = 5.0
+var _daily_ai_spend := 0.0
 var _active_job_running: bool = false
 var _credential_configured: bool = false
 var _worker_connected: bool = false
@@ -181,7 +182,14 @@ var _connection_retry_button: Button
 var _connection_back_button: Button
 var _connection_focus_return: Control
 var _attachment_toggle: Button
+var _attachment_expanded := false
 var _usage_toggle: Button
+var _usage_page: ScrollContainer
+var _usage_today_label: Label
+var _usage_work_title: Label
+var _usage_back_button: Button
+var _usage_expanded := false
+var _usage_return_scroll := 0
 var _activity_content: VBoxContainer
 var _activity_scroll: ScrollContainer
 var _activity_footer: PanelContainer
@@ -363,7 +371,7 @@ func _build_connection_panel() -> void:
 	_style_action_button(_connection_save_button, VERMILION, true)
 	content.add_child(_connection_save_button)
 	_connection_retry_button = Button.new()
-	_connection_retry_button.text = "Reconnect worker"
+	_connection_retry_button.text = "Reconnect"
 	_connection_retry_button.pressed.connect(func() -> void:
 		_connection_retry_button.disabled = true
 		_key_status.text = "Reconnecting the local worker…"
@@ -410,7 +418,7 @@ func _close_connection_settings() -> void:
 func _refresh_connection_surface() -> void:
 	if _connection_title == null: return
 	var unavailable := not _worker_connected and not _worker_error.is_empty()
-	_connection_title.text = "Worker offline" if unavailable else "AI connection" if _credential_configured else "Connect AI"
+	_connection_title.text = "Connection lost" if unavailable else "AI connection" if _credential_configured else "Connect AI"
 	_connection_description.text = ("Reconnect to resume chat and work. Your saved key does not need to change." if _credential_configured else "Reconnect first, then add your OpenRouter key.") if unavailable else "A key is already saved in your OS keychain. Paste a new key only if you want to replace it." if _credential_configured else "Add one OpenRouter key for conversations and work orders. Your key stays in the OS keychain."
 	_connection_save_button.text = "Replace saved key" if _credential_configured else "Save connection"
 	_key_input.placeholder_text = "Paste replacement key (optional)" if _credential_configured else "Paste OpenRouter key"
@@ -504,14 +512,15 @@ func _build_employee_drawer() -> VBoxContainer:
 	_employee_portrait.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	portrait_frame.add_child(_employee_portrait)
 	_header_icon = TextureRect.new()
-	_header_icon.texture = OperationsSkin.ICON_FOLDER
+	_header_icon.texture = CozyUI.icon("folder")
 	_header_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_header_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_header_icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 	_header_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_header_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_header_icon.custom_minimum_size = Vector2(32, 24)
+	_header_icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_header_icon.visible = false
-	_header_icon.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	portrait_frame.add_child(_header_icon)
+	employee_header.add_child(_header_icon)
 	var employee_copy := VBoxContainer.new()
 	employee_copy.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	employee_copy.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -556,7 +565,13 @@ func _build_employee_drawer() -> VBoxContainer:
 	_tabs.tabs_visible = false
 	_tab_strip = HBoxContainer.new()
 	_tab_strip.add_theme_constant_override("separation", 0)
-	drawer.add_child(_tab_strip)
+	# Tabs and the page form one notebook edge. Keep the header's air above,
+	# without a strip of background between the selected tab and its paper.
+	var notebook_stack := VBoxContainer.new()
+	notebook_stack.add_theme_constant_override("separation", 0)
+	notebook_stack.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	drawer.add_child(notebook_stack)
+	notebook_stack.add_child(_tab_strip)
 	for title: String in ["Chat", "Assign", "Activity", "Studio"]:
 		var button := Button.new()
 		button.text = title
@@ -564,11 +579,11 @@ func _build_employee_drawer() -> VBoxContainer:
 		button.clip_text = true
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.size_flags_stretch_ratio = 1.0
-		CozyUI.button(button, "primary" if _tab_buttons.is_empty() else "secondary")
+		CozyUI.tab_button(button, _tab_buttons.is_empty())
 		button.pressed.connect(_select_drawer_tab.bind(_tab_buttons.size()))
 		_tab_strip.add_child(button)
 		_tab_buttons.append(button)
-	drawer.add_child(_tabs)
+	notebook_stack.add_child(_tabs)
 	_tabs.add_child(_build_chat_tab())
 	_tabs.add_child(_build_work_tab())
 	_tabs.add_child(_build_journal_tab())
@@ -733,13 +748,16 @@ func _build_work_tab() -> VBoxContainer:
 	var scroll := _tab_scroll("AssignmentFields")
 	tab.add_child(scroll)
 	var content := _tab_content(scroll)
+	# Keep the complete collapsed attachment frame above the pinned budget
+	# sheet. Opening optional reference fields remains intentionally scrollable.
+	content.add_theme_constant_override("separation", 4)
 	_draft_label = Label.new()
 	_draft_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	CozyUI.label(_draft_label)
 	_draft_label.add_theme_color_override("font_color", CHARCOAL)
 	content.add_child(_draft_label)
 	_draft_reset_button = Button.new()
-	_draft_reset_button.text = "New ordinary work order"
+	_draft_reset_button.text = "New side project"
 	_style_action_button(_draft_reset_button, INDIGO, false)
 	_draft_reset_button.pressed.connect(func() -> void:
 		_job_picker.select(CANNED_JOBS.size())
@@ -781,15 +799,13 @@ func _build_work_tab() -> VBoxContainer:
 	_style_text_input(_assignment_preview)
 	content.add_child(_assignment_preview)
 	_attachment_toggle = Button.new()
-	_attachment_toggle.text = "Attach Studio context (optional)"
+	_attachment_toggle.text = "Attach a Studio file"
 	CozyUI.disclosure(_attachment_toggle, false)
 	_attachment_toggle.pressed.connect(func() -> void:
-		_attachment_picker.visible = not _attachment_picker.visible
-		_attachment_label.visible = _attachment_picker.visible
-		CozyUI.disclosure(_attachment_toggle, _attachment_picker.visible)
+		_set_attachment_expanded(not _attachment_expanded)
 	)
 	content.add_child(_attachment_toggle)
-	_attachment_label = _section_label("Studio context")
+	_attachment_label = _section_label("Reference file (optional)")
 	_attachment_label.visible = false
 	content.add_child(_attachment_label)
 	_attachment_picker = OptionButton.new()
@@ -810,7 +826,7 @@ func _build_work_tab() -> VBoxContainer:
 	_budget_picker.add_item("AI cap · 24,000 tokens", 24000)
 	_budget_picker.item_selected.connect(func(index: int) -> void: requested_token_budget = _budget_picker.get_item_id(index))
 	var confirmation := Label.new()
-	confirmation.text = "Uses tools and creates files. Real AI charges apply up to the token cap."
+	confirmation.text = "Your teammate can use tools and make files. Real AI charges apply, up to this token limit."
 	confirmation.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	CozyUI.label(confirmation)
 	var footer := PanelContainer.new()
@@ -957,6 +973,7 @@ func _build_journal_tab() -> VBoxContainer:
 	_activity_details_toggle.pressed.connect(func() -> void:
 		_activity_details_expanded = not _activity_details_expanded
 		_refresh_selected_activity()
+		if _activity_details_expanded: call_deferred("_reveal_activity_details")
 	)
 	content.add_child(_activity_details_toggle)
 	_activity_details = VBoxContainer.new()
@@ -972,6 +989,63 @@ func _build_journal_tab() -> VBoxContainer:
 	_event_log.add_theme_stylebox_override("normal", CozyUI.card(Vector4(8, 8, 8, 8)))
 	CozyUI.rich_text(_event_log)
 	_activity_details.add_child(_event_log)
+	_usage_page = _tab_scroll("ActivityLedger")
+	_usage_page.hide()
+	tab.add_child(_usage_page)
+	var ledger := _tab_content(_usage_page)
+	ledger.add_child(_section_label("AI ledger"))
+	var currency_note := Label.new()
+	currency_note.text = "Real money, not company cash."
+	currency_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	CozyUI.label(currency_note)
+	ledger.add_child(currency_note)
+	var today_card := PanelContainer.new()
+	today_card.add_theme_stylebox_override("panel", CozyUI.card())
+	ledger.add_child(today_card)
+	var today_content := VBoxContainer.new()
+	today_content.add_theme_constant_override("separation", 4)
+	today_card.add_child(today_content)
+	today_content.add_child(_section_label("Today"))
+	_usage_today_label = Label.new()
+	_usage_today_label.text = "$0.0000 USD"
+	CozyUI.label(_usage_today_label, "numeric")
+	today_content.add_child(_usage_today_label)
+	var today_note := Label.new()
+	today_note.text = "Chat, work, and evaluations"
+	today_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	CozyUI.label(today_note, "meta")
+	today_content.add_child(today_note)
+	var work_card := PanelContainer.new()
+	work_card.add_theme_stylebox_override("panel", CozyUI.card())
+	ledger.add_child(work_card)
+	var work_content := VBoxContainer.new()
+	work_content.add_theme_constant_override("separation", 4)
+	work_card.add_child(work_content)
+	_usage_work_title = Label.new()
+	_usage_work_title.text = "Selected work"
+	_usage_work_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_usage_work_title.max_lines_visible = 2
+	_usage_work_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_usage_work_title.mouse_filter = Control.MOUSE_FILTER_PASS
+	CozyUI.label(_usage_work_title, "action")
+	work_content.add_child(_usage_work_title)
+	_usage_label = Label.new()
+	_usage_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_usage_label.text = "$0.0000 USD · 0 tokens"
+	CozyUI.label(_usage_label)
+	work_content.add_child(_usage_label)
+	_usage_label.tooltip_text = "A token limit bounds each work order. Its dollar cost depends on the model."
+	_usage_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	_usage_back_button = Button.new()
+	_usage_back_button.text = "Back to Activity"
+	_usage_back_button.custom_minimum_size.x = 320
+	_usage_back_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	CozyUI.button(_usage_back_button, "quiet")
+	_usage_back_button.pressed.connect(_set_usage_expanded.bind(false))
+	# The return action is pinned, just like spend, even for an unusually long
+	# work title. Only the ledger's reading area scrolls.
+	_usage_back_button.hide()
+	tab.add_child(_usage_back_button)
 	_activity_footer = PanelContainer.new()
 	_activity_footer.name = "ActivitySpendFooter"
 	_activity_footer.add_theme_stylebox_override("panel", CozyUI.paper(Vector4(ACTIVITY_FOOTER_INSET.x, ACTIVITY_FOOTER_INSET.y, ACTIVITY_FOOTER_INSET.x, ACTIVITY_FOOTER_INSET.y)))
@@ -994,16 +1068,9 @@ func _build_journal_tab() -> VBoxContainer:
 	_usage_toggle.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	CozyUI.disclosure(_usage_toggle, false)
 	_usage_toggle.pressed.connect(func() -> void:
-		_usage_label.visible = not _usage_label.visible
-		CozyUI.disclosure(_usage_toggle, _usage_label.visible)
+		_set_usage_expanded(not _usage_expanded)
 	)
 	footer_row.add_child(_usage_toggle)
-	_usage_label = Label.new()
-	_usage_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_usage_label.text = "This work order · 0 tokens"
-	CozyUI.label(_usage_label, "meta")
-	footer_content.add_child(_usage_label)
-	_usage_label.hide()
 	# Keep the public meter projection for existing usage consumers, but do not
 	# render an unbounded daily cost as invented job progress.
 	_token_meter = ProgressBar.new()
@@ -1012,6 +1079,41 @@ func _build_journal_tab() -> VBoxContainer:
 	content.add_child(_token_meter)
 	_token_meter.hide()
 	return tab
+
+func _set_usage_expanded(expanded: bool, restore_focus: bool = true, restore_scroll: bool = true) -> void:
+	if _usage_page == null: return
+	var was_expanded := _usage_expanded
+	if expanded and not _usage_expanded:
+		_usage_return_scroll = _activity_scroll.scroll_vertical
+	_usage_expanded = expanded
+	_usage_page.visible = expanded
+	_usage_back_button.visible = expanded
+	_activity_scroll.visible = not expanded
+	CozyUI.disclosure(_usage_toggle, expanded)
+	if expanded:
+		_usage_page.scroll_vertical = 0
+		if restore_focus: _usage_back_button.grab_focus()
+	else:
+		if was_expanded and restore_scroll: _activity_scroll.set_deferred("scroll_vertical", _usage_return_scroll)
+		if restore_focus and _usage_toggle.is_visible_in_tree(): _usage_toggle.grab_focus()
+
+func _reveal_activity_details() -> void:
+	# Wait for the expanded text to shape, then land on its heading and first
+	# complete entry instead of exposing an orphaned line below the fold.
+	await get_tree().process_frame
+	await get_tree().process_frame
+	if not _activity_details_expanded or _usage_expanded: return
+	_activity_scroll.scroll_vertical += int(roundf(_activity_details_toggle.global_position.y - _activity_scroll.global_position.y))
+
+func _refresh_usage(view: Dictionary) -> void:
+	if _usage_label == null: return
+	_usage_work_title.text = "Selected work · " + str(view.get("title", "Work order")) if not view.is_empty() else "No work selected"
+	_usage_work_title.tooltip_text = _usage_work_title.text
+	if view.has("inputTokens") or view.has("outputTokens") or view.has("cost"):
+		_usage_label.text = "$%.4f USD · %d tokens" % [float(view.get("cost", 0.0)), int(view.get("inputTokens", 0)) + int(view.get("outputTokens", 0))]
+	else:
+		_usage_label.text = str(view.get("usage", "$0.0000 USD · 0 tokens")).replace("This work order · ", "").replace("Usage details · ", "")
+	_usage_today_label.text = "$%.4f USD" % _daily_ai_spend
 
 func _build_studio_tab() -> ScrollContainer:
 	var scroll := _tab_scroll("Studio")
@@ -1098,7 +1200,8 @@ func _on_team_button_pressed(employee_id: String) -> void:
 
 func _on_tab_changed(_tab: int) -> void:
 	for index: int in range(_tab_buttons.size()):
-		CozyUI.button(_tab_buttons[index], "primary" if index == _tab else "secondary")
+		CozyUI.tab_button(_tab_buttons[index], index == _tab)
+	if _tab != 2 and _usage_expanded: _set_usage_expanded(false, false)
 	_refresh_employee_header()
 	if _tab == 2 and not _activity_job_id.is_empty() and _worker_connected:
 		artifact_refresh_requested.emit(_activity_job_id)
@@ -1116,6 +1219,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if _drawer_open and event.is_action_pressed("ui_cancel"):
 		if _connection_panel != null and _connection_panel.visible:
 			_close_connection_settings()
+		elif _usage_expanded:
+			_set_usage_expanded(false)
 		else:
 			close_drawer()
 		get_viewport().set_input_as_handled()
@@ -1129,6 +1234,9 @@ func configure_employees(records: Array[EmployeeRecord]) -> void:
 	_header_shell.visible = not records.is_empty()
 	_tabs.visible = not records.is_empty()
 	_tab_strip.visible = not records.is_empty()
+	# Hiding only its children leaves this expanding stack claiming half the
+	# empty drawer. Onboarding owns the complete paper surface instead.
+	(_tabs.get_parent() as Control).visible = not records.is_empty()
 	var list := _team_list()
 	for child: Node in list.get_children():
 		child.queue_free()
@@ -1259,6 +1367,9 @@ func open_journal_for_employee(employee_id: String) -> void:
 func _select_employee(employee_id: String) -> void:
 	if not _team_buttons.has(employee_id):
 		return
+	if _selected_employee_id != employee_id:
+		_set_attachment_expanded(false)
+		_set_usage_expanded(false, false, false)
 	if _selected_employee_id != employee_id and not milestone_id.is_empty():
 		_on_job_selected(CANNED_JOBS.size())
 		_job_picker.select(CANNED_JOBS.size())
@@ -1319,6 +1430,7 @@ func _fit_employee_heading() -> void:
 	_employee_name.text = shortened + "..."
 
 func _refresh_employee_header() -> void:
+	var portrait_frame := _employee_portrait.get_parent() as PanelContainer
 	if _tabs != null and _tabs.current_tab == 3:
 		_set_employee_heading("Studio")
 		_employee_meta.text = "Approved deliveries"
@@ -1326,8 +1438,10 @@ func _refresh_employee_header() -> void:
 		_employee_status.text = "Shared team files"
 		_employee_status.add_theme_color_override("font_color", INDIGO)
 		_employee_portrait.texture = null
+		portrait_frame.hide()
 		_header_icon.visible = true
 		return
+	portrait_frame.show()
 	var employee := _selected_employee()
 	if employee == null:
 		_set_employee_heading("Your team")
@@ -1440,15 +1554,17 @@ func _append_chat_line(sender: String, name_value: String, content: String) -> v
 	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	if sender == "employee":
 		var avatar_frame := PanelContainer.new()
-		avatar_frame.custom_minimum_size = Vector2(32.0, 38.0)
+		avatar_frame.name = "ChatFaceFrame"
+		avatar_frame.custom_minimum_size = Vector2(40.0, 40.0)
 		avatar_frame.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-		avatar_frame.add_theme_stylebox_override("panel", NotebookSkin.portrait_frame())
+		avatar_frame.add_theme_stylebox_override("panel", CozyUI.card(Vector4(4, 4, 4, 4)))
 		row.add_child(avatar_frame)
 		var avatar := TextureRect.new()
+		avatar.name = "ChatFace"
 		var employee := _selected_employee()
-		avatar.texture = CharacterArt.bust_portrait(employee.id) if employee != null else null
-		avatar.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		avatar.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		avatar.texture = CharacterArt.chat_face(employee.id) if employee != null else null
+		avatar.custom_minimum_size = Vector2(32, 32)
+		avatar.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 		avatar.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		avatar_frame.add_child(avatar)
 	else:
@@ -1457,7 +1573,7 @@ func _append_chat_line(sender: String, name_value: String, content: String) -> v
 		row.add_child(player_spacer)
 	var bubble := PanelContainer.new()
 	bubble.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	bubble.add_theme_stylebox_override("panel", CozyUI.card(Vector4(10, 10, 10, 10)))
+	bubble.add_theme_stylebox_override("panel", CozyUI.bubble(sender, Vector4(10, 10, 10, 10)))
 	row.add_child(bubble)
 	var bubble_margin := VBoxContainer.new()
 	bubble_margin.add_theme_constant_override("separation", 6)
@@ -1603,7 +1719,7 @@ func _refresh_chat_mode() -> void:
 	var can_chat := has_employee and _credential_configured and _worker_connected
 	_chat_composer.visible = not has_active_job
 	_chat_active_banner.visible = has_active_job
-	_chat_active_copy.text = "%s has an open work order. This conversation is read-only; follow or update the work in Activity." % _active_employee_name()
+	_chat_active_copy.text = "%s is working. Send changes or follow progress in Activity." % _active_employee_name()
 	_chat_input.editable = can_chat and not _chat_pending and not has_active_job
 	_chat_send_button.disabled = not has_employee or _chat_pending
 	if _chat_pending:
@@ -1773,8 +1889,15 @@ func _submit_steer() -> void:
 		return
 	_steer_input.clear()
 	_steer_button.disabled = true
-	_set_status("Sending update to the active work session…", INDIGO)
+	_set_status("Sending your change to %s…" % _active_employee_name(), INDIGO)
 	steer_submitted.emit(_active_job_id, message)
+
+func _set_attachment_expanded(expanded: bool) -> void:
+	_attachment_expanded = expanded and _custom_mode
+	if _attachment_picker == null or _attachment_label == null: return
+	_attachment_picker.visible = _attachment_expanded
+	_attachment_label.visible = _attachment_expanded
+	CozyUI.disclosure(_attachment_toggle, _attachment_expanded)
 
 func _on_job_selected(index: int) -> void:
 	milestone_id = ""
@@ -1785,7 +1908,7 @@ func _on_job_selected(index: int) -> void:
 	_budget_picker.select(0)
 	_attachment_picker.select(0)
 	_custom_title_input.clear()
-	_draft_label.text = "Ordinary work · does not advance Journey"
+	_draft_label.text = "Side project · outside your Journey"
 	if _assignment_error != null: _assignment_error.hide()
 	if index < 0 or index > CANNED_JOBS.size():
 		return
@@ -1794,10 +1917,8 @@ func _on_job_selected(index: int) -> void:
 	_refresh_work_purposes()
 	_custom_title_input.visible = _custom_mode
 	_assignment_preview.editable = _custom_mode
-	_attachment_label.visible = _custom_mode
 	_attachment_toggle.visible = _custom_mode
-	_attachment_label.hide()
-	_attachment_picker.hide()
+	_set_attachment_expanded(false)
 	if _custom_mode:
 		_assignment_preview.text = ""
 		_assignment_preview.placeholder_text = "Describe the deliverable and the file you want back."
@@ -1817,8 +1938,8 @@ func begin_job(job_id: String, employee_id: String = "") -> void:
 	_submitted_job_id = job_id
 	_activity_job_id = job_id
 	_job_order.push_front(job_id)
-	_job_views[job_id] = {"employeeId": _active_employee_id, "title": _custom_title_input.text if _custom_mode else _job_picker.text, "status": "submitting", "statusText": "Submitting work order…", "usage": "Usage details · 0 tokens", "events": ""}
-	_usage_label.text = "Usage details  ·  0 tokens"
+	_job_views[job_id] = {"employeeId": _active_employee_id, "title": _custom_title_input.text if _custom_mode else _job_picker.text, "status": "submitting", "statusText": "Sending work order…", "inputTokens": 0, "outputTokens": 0, "cost": 0.0, "events": ""}
+	_usage_label.text = "$0.0000 USD · 0 tokens"
 	_event_log.clear()
 	_approval_job_id = ""
 	_approval_id = ""
@@ -1944,7 +2065,7 @@ func set_steer_sent(job_id: String) -> void:
 	_chat_pending = false
 	_steer_button.disabled = false
 	_refresh_chat_mode()
-	_set_status("Update delivered to the same active work session.", INDIGO)
+	_set_status("%s has your update." % _active_employee_name(), INDIGO)
 
 func set_steer_failed(job_id: String, message: String) -> void:
 	if job_id != _active_job_id:
@@ -2037,6 +2158,7 @@ func set_credential_saved() -> void:
 	_set_status("OpenRouter key saved.", INDIGO)
 
 func set_spend(daily_spend: float, warning: float) -> void:
+	_daily_ai_spend = daily_spend
 	_spend_warning = warning
 	_token_meter.max_value = maxf(warning, 0.01)
 	_token_meter.value = clampf(daily_spend, 0.0, _token_meter.max_value)
@@ -2044,6 +2166,7 @@ func set_spend(daily_spend: float, warning: float) -> void:
 	_spend_label.tooltip_text = "Real AI spend. Daily warning: $%.2f USD; this is not a work-order dollar cap." % warning
 	_token_meter.tooltip_text = _spend_label.tooltip_text
 	_spend_label.add_theme_color_override("font_color", ALERT_INK if daily_spend >= warning else CHARCOAL)
+	_refresh_usage(_job_views.get(_activity_job_id, {}) as Dictionary)
 
 func set_error(message: String) -> void:
 	if message.to_lower().contains("worker is not connected"):
@@ -2091,15 +2214,15 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 				_refresh_chat_mode()
 				_refresh_employee_header()
 				_refresh_team_statuses()
-			line = "[color=#354b98]job started[/color]"
+			line = "[color=#354b98]Started work[/color]"
 		&"agent.thinking":
 			_set_status(event.summary)
-			line = "thinking · %s" % _safe_bbcode(event.summary)
+			line = "Thinking · %s" % _safe_bbcode(event.summary)
 		&"tool.started":
 			_set_status(event.label, INDIGO)
-			line = "[color=#354b98]tool[/color] · %s" % _safe_bbcode(event.tool)
+			line = _safe_bbcode(event.label) if not event.label.is_empty() else _tool_activity_label(event.tool)
 		&"tool.completed":
-			line = "%s · %s" % [_safe_bbcode(event.tool), "done" if event.ok else "failed"]
+			line = "%s · %s" % [_tool_activity_label(event.tool), "done" if event.ok else "needs another try"]
 		&"approval.required":
 			_approval_job_id = job_id
 			_approval_id = event.approval_id
@@ -2108,36 +2231,51 @@ func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 			_reveal_control(_approval_box)
 			_set_status("A decision is needed before work can continue.", ALERT_INK)
 			_refresh_team_statuses()
-			line = "[color=#963014]approval required[/color]"
+			line = "[color=#963014]Waiting for your approval[/color]"
 		&"artifact.created":
-			line = "[color=#354b98]delivery[/color] · %s" % _safe_bbcode(event.name)
+			line = "[color=#354b98]File ready[/color] · %s" % _safe_bbcode(event.name)
 		&"usage.updated":
-			_usage_label.text = "This work order · %d tokens · $%.4f USD" % [event.input_tokens + event.output_tokens, event.cost]
-			view.usage = _usage_label.text
+			view.inputTokens = event.input_tokens
+			view.outputTokens = event.output_tokens
+			view.cost = event.cost
 			line = "" # Usage has a dedicated disclosure; keep the timeline meaningful.
 		&"job.blocked":
 			view.status = "blocked"
 			_set_status(event.reason, ALERT_INK)
-			line = "[color=#963014]blocked[/color] · %s" % _safe_bbcode(event.reason)
+			line = "[color=#963014]Needs attention[/color] · %s" % _safe_bbcode(event.reason)
 			finish_job(job_id)
 		&"job.completed":
 			view.status = "completed"
 			_set_status(event.summary, INDIGO)
-			line = "[color=#354b98]completed[/color]"
+			line = "[color=#354b98]Work complete[/color]"
 			finish_job(job_id)
 		&"job.failed":
 			view.status = "cancelled" if event.error == "Cancelled by player" else "failed"
 			_set_status(event.error, ALERT_INK)
-			line = "[color=#963014]failed[/color] · %s" % _safe_bbcode(event.error)
+			line = "[color=#963014]Work stopped[/color] · %s" % _safe_bbcode(event.error)
 			finish_job(job_id)
 	if not line.is_empty():
 		var icon_path := OperationsSkin.activity_icon_path(event.type, event.tool, event.ok)
 		view.events = str(view.get("events", "")) + "[img=18x18]%s[/img]  %s\n" % [icon_path, line]
+		var diagnostics: Array = view.get("eventIdentifiers", [])
+		var identifier := str(event.type) + (" · " + event.tool if not event.tool.is_empty() else "")
+		if not diagnostics.has(identifier): diagnostics.append(identifier)
+		view.eventIdentifiers = diagnostics
 	if event.type not in [&"usage.updated", &"artifact.created", &"tool.completed"]:
 		view.statusText = _status_label.text
 	_refresh_selected_activity()
 	_refresh_employee_header()
 	_refresh_team_statuses()
+
+func _tool_activity_label(tool: String) -> String:
+	match tool:
+		"web_search": return "Research"
+		"web_fetch": return "Reading a source"
+		"write_file": return "Writing a file"
+		"edit_file": return "Updating a file"
+		"read_file": return "Reading a file"
+		"list_files": return "Checking project files"
+	return "Working on the task"
 
 func _decide_approval(approved: bool) -> void:
 	if _approval_id.is_empty(): return
@@ -2214,6 +2352,7 @@ func _refresh_selected_activity() -> void:
 	if str((_job_views.get(_activity_job_id, {}) as Dictionary).get("employeeId", "")) != _selected_employee_id or _activity_job_id.is_empty():
 		_activity_job_id = _latest_job_for(_selected_employee_id)
 	if _activity_details_job_id != _activity_job_id:
+		_set_usage_expanded(false, false, false)
 		_activity_details_job_id = _activity_job_id
 		_activity_details_expanded = false
 		_activity_scroll.scroll_vertical = 0
@@ -2241,9 +2380,11 @@ func _refresh_selected_activity() -> void:
 	_status_label.add_theme_color_override("font_color", ALERT_INK if status in ["blocked", "failed", "cancelled"] else CHARCOAL)
 	var state_copy := status.left(1).to_upper() + status.substr(1).replace("_", " ")
 	_last_status_label.text = "%s · %s" % [view.get("title", "Work order"), state_copy] if not view.is_empty() else "No work orders yet"
-	_usage_label.text = str(view.get("usage", "Usage details · select a work order"))
+	_refresh_usage(view)
 	var log_text := str(view.get("events", ""))
+	if log_text.is_empty() and not view.is_empty() and _activity_details_expanded: log_text = "Detailed activity will appear here as work progresses."
 	if _event_log.text != log_text: _event_log.text = log_text
+	_event_log.tooltip_text = "Event identifiers: " + ", ".join(view.get("eventIdentifiers", [])) if view.has("eventIdentifiers") else ""
 	_event_log.visible = not log_text.is_empty()
 	_activity_heading.visible = _event_log.visible
 	var is_active := not _active_job_id.is_empty() and _activity_job_id == _active_job_id and _selected_employee_id == _active_employee_id
@@ -2306,8 +2447,6 @@ func show_recent_jobs(jobs: Array) -> void:
 		if not _job_order.has(id): _job_order.append(id)
 		var view: Dictionary = _job_views.get(id, {})
 		view.merge(job, true)
-		if job.has("inputTokens"):
-			view.usage = "Usage details · %d tokens · $%.4f" % [int(job.get("inputTokens", 0)) + int(job.get("outputTokens", 0)), float(job.get("cost", 0.0))]
 		if not view.has("statusText"): view.statusText = str(job.get("summary", "%s · %s" % [job.get("title", "Work order"), job.get("status", "")]))
 		_job_views[id] = view
 	for id: String in _job_order:
@@ -2332,7 +2471,8 @@ func show_studio_files(files: Array[StudioFileRecord]) -> void:
 		return
 	for file: StudioFileRecord in files:
 		var source: Dictionary = _job_views.get(file.source_job_id, {})
-		var context := file.relative_path.get_extension().to_upper() + " · " + str(source.get("title", "Shared team file"))
+		var owner := _employee_name_for(str(source.get("employeeId", "")))
+		var context := file.relative_path.get_extension().to_upper() + " · " + (owner if not owner.is_empty() else "Shared with the team")
 		var row := _file_row(file.name, "studio/" + file.relative_path, context, "Open", studio_open_requested.emit.bind(file.relative_path))
 		_artifact_list.add_child(row)
 		_animate_entry(row)
@@ -2389,7 +2529,16 @@ func _file_row(title: String, path: String, context: String, action: String, cal
 	var top := HBoxContainer.new()
 	top.add_theme_constant_override("separation", 8)
 	content.add_child(top)
+	var icon := TextureRect.new()
+	icon.name = "DocumentIcon"
+	icon.texture = CozyUI.icon("document")
+	icon.custom_minimum_size = Vector2(24, 28)
+	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	top.add_child(icon)
 	var name_label := Label.new()
+	name_label.name = "FileTitle"
 	name_label.text = title if not title.is_empty() else path.get_file()
 	name_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	name_label.max_lines_visible = 2
@@ -2407,15 +2556,21 @@ func _file_row(title: String, path: String, context: String, action: String, cal
 	CozyUI.button(button, "secondary")
 	top.add_child(button)
 	var metadata := Label.new()
-	metadata.text = context + " · " + path
+	metadata.name = "FileMetadata"
+	metadata.text = context
 	metadata.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	metadata.max_lines_visible = 2
 	metadata.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	metadata.tooltip_text = metadata.text
+	metadata.tooltip_text = path
 	metadata.mouse_filter = Control.MOUSE_FILTER_PASS
 	CozyUI.label(metadata, "meta")
 	content.add_child(metadata)
 	return card
+
+func _employee_name_for(employee_id: String) -> String:
+	for employee: EmployeeRecord in _employees:
+		if employee.id == employee_id: return employee.display_name
+	return ""
 
 func _style_file_button(button: Button) -> void:
 	button.clip_text = true

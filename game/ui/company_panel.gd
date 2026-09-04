@@ -40,7 +40,7 @@ func _ready() -> void:
 	scrim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(scrim)
 	_frame = PanelContainer.new()
-	_frame.add_theme_stylebox_override("panel", NotebookSkin.parchment(Vector4(24, 20, 24, 20)))
+	_frame.add_theme_stylebox_override("panel", CozyUI.paper(Vector4(24, 20, 24, 20)))
 	add_child(_frame)
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 12)
@@ -323,9 +323,9 @@ func _day_screen() -> void:
 	var metrics := HBoxContainer.new()
 	metrics.add_theme_constant_override("separation", 12)
 	_content.add_child(metrics)
-	_metric(metrics, "Game revenue", "$%s" % _money(int(summary.get("earnedCents", 0))), "earned in-game")
+	_metric(metrics, "Game revenue", "$%s" % _money(int(summary.get("earnedCents", 0))), "virtual company funds")
 	_metric(metrics, "Reputation", "+%d" % int(summary.get("reputation", 0)), "company progress")
-	_metric(metrics, "Real AI spend", "$%.4f" % float(summary.get("aiSpend", 0)), "provider usage (USD)")
+	_metric(metrics, "Real AI spend", "$%.4f" % float(summary.get("aiSpend", 0)), "real money (USD)")
 	var activity := _card()
 	_label("Today’s work", true, activity)
 	var seen := PackedStringArray()
@@ -397,7 +397,8 @@ func _journey_screen() -> void:
 		if _future_open: _roadmap(definition, candidate)
 	if not definition.is_empty() or not candidate.is_empty():
 		_button("End day + save", func() -> void: _request("day.end", {"day": day}), false, true, utilities, "secondary")
-	_label("Game money stays in your company. AI usage is real. Ads and incorporation create planning files only.")
+	var money_note := _label("Game cash is virtual; AI spend is real money (USD). Ads and incorporation create planning files only.")
+	money_note.name = "MoneyExplanation"
 
 func _person(candidate: Dictionary, hiring: bool) -> void:
 	var card := _card()
