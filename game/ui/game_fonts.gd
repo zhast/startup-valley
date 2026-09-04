@@ -71,12 +71,10 @@ static func interface_theme(default_size: int = BODY_DEFAULT) -> Theme:
 	value.set_font_size("font_size", "TooltipLabel", 14)
 	value.set_color("font_color", "TooltipLabel", Color("151515"))
 	value.set_constant("outline_size", "TooltipLabel", 0)
-	var tooltip := StyleBoxFlat.new()
-	tooltip.bg_color = Color("fff4df")
-	tooltip.border_color = Color("8b6745")
-	tooltip.set_border_width_all(1)
-	tooltip.set_content_margin_all(8)
-	tooltip.anti_aliasing = false
+	# Keep this skin font-independent: CozyUI depends on these font roles.
+	var tooltip := NotebookSkin.texture_style(load("res://assets/runtime/ui/materials/popup.png") as Texture2D, Vector4(6, 6, 6, 6), Vector4(8, 8, 8, 8))
+	tooltip.set_meta("cozy_family", "startup-notebook")
+	tooltip.set_meta("cozy_material", "popup")
 	value.set_stylebox("panel", "TooltipPanel", tooltip)
 	return value
 

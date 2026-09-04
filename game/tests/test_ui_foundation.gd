@@ -203,11 +203,12 @@ func run() -> void:
 		await frames(1)
 	check(input.get_menu().visible, "Actual right-click opens the visible text input menu")
 	check(input.get_menu().get_theme_font("font") == GameFonts.EMPHASIS, "Text context menu uses the shared font")
-	check(input.get_menu().get_theme_stylebox("panel") is StyleBoxFlat, "Text context menu uses the quiet shared surface")
+	check(input.get_menu().get_theme_stylebox("panel").get_meta("cozy_material", "") == "popup", "Text context menu uses the shared paper popup material")
 	await capture("input-context-menu")
 	input.get_menu().hide()
 	check(canvas.theme.get_font("font", "TooltipLabel") == GameFonts.EMPHASIS, "Tooltip text uses bundled Nunito Emphasis")
 	check(canvas.theme.get_font_size("font_size", "TooltipLabel") >= 14, "Tooltip metadata stays14px")
+	_check_material_family()
 	var normal: Image = (load(CozyUI.ART_ROOT + "secondary-normal.png") as Texture2D).get_image()
 	for variant: String in ["secondary", "primary", "danger"]:
 		for state: String in ["normal", "hover", "pressed", "disabled"]:
@@ -254,6 +255,53 @@ func run() -> void:
 	canvas.queue_free()
 	await frames()
 	quit(0 if failures.is_empty() else 1)
+
+func _check_material_family() -> void:
+	for variant: String in ["primary", "secondary", "quiet", "danger"]:
+		var resting := CozyUI.control_style(variant)
+		for state: String in ["normal", "hover", "pressed", "disabled"]:
+			var style := CozyUI.control_style(variant, state)
+			check(style.get_meta("cozy_family", "") == CozyUI.MATERIAL_FAMILY and style.get_meta("cozy_material", "") == "control-" + variant, "Every action role belongs to the same authored family: " + variant + "/" + state)
+			check(style.get_minimum_size() == resting.get_minimum_size(), "Action-state transitions cannot resize content: " + variant + "/" + state)
+	var quiet_image := CozyUI.icon("quiet-normal").get_image()
+	for state: String in ["hover", "pressed", "disabled"]:
+		var pixels := CozyUI.icon("quiet-" + state).get_image()
+		var mismatched := 0
+		for y: int in range(pixels.get_height()):
+			for x: int in range(pixels.get_width()):
+				if pixels.get_pixel(x, y).a != quiet_image.get_pixel(x, y).a: mismatched += 1
+		check(mismatched == 0, "Quiet state uses the identical protected silhouette: " + state)
+		check(contrast(CozyUI.MUTED if state == "disabled" else CozyUI.INK, pixels.get_pixel(48, 24)) >= 4.5, "Quiet state center has accessible live-ink contrast: " + state)
+	for kind: String in ["card", "field", "readonly", "bubble-employee", "bubble-player", "popup", "selection"]:
+		var style := CozyUI.surface(kind)
+		var pixels := CozyUI.icon(kind).get_image()
+		check(style.get_meta("cozy_material") == kind and pixels.get_size() == Vector2i(48, 48), "Paper role keeps its native part and explicit hierarchy: " + kind)
+		check(contrast(CozyUI.MUTED, pixels.get_pixel(24, 24)) >= 4.5, "Paper role protects metadata contrast: " + kind)
+		var fractional_alpha := 0
+		for y: int in range(48):
+			for x: int in range(48):
+				var alpha := pixels.get_pixel(x, y).a
+				if alpha != 0 and alpha != 1: fractional_alpha += 1
+		check(fractional_alpha == 0, "Native paper edges are hard pixels, not antialiased halos: " + kind)
+	var focused := CozyUI.icon("focus").get_image()
+	check(focused.get_pixel(24, 24).a == 0 and focused.get_pixel(0, 0).a == 0, "Focus is hollow and follows stepped corners")
+	check(focused.get_pixel(24, 2).a == 1 and contrast(CozyUI.INDIGO, CozyUI.PAPER_LIGHT) >= 4.5, "Inset focus retains a conspicuous indigo edge")
+	for selected: bool in [false, true]:
+		var resting := CozyUI.tab_style(selected)
+		for state: String in ["normal", "hover", "pressed", "disabled"]:
+			var style := CozyUI.tab_style(selected, state)
+			check(style.get_minimum_size() == resting.get_minimum_size(), "Tabs have state-invariant geometry")
+	var tab := Button.new()
+	CozyUI.tab_button(tab, false)
+	for index: int in range(12): CozyUI.tab_button(tab, index % 2 == 0)
+	check(tab.get_meta("cozy_variant") == "navigation" and tab.button_down.get_connections().size() == 1 and tab.button_up.get_connections().size() == 1, "Repeated navigation refreshes retain role and bind press feedback only once")
+	tab.free()
+	for spec: Array in [["document", Vector2(24, 28)], ["folder", Vector2(32, 24)], ["close", Vector2(16, 16)], ["checked", Vector2(16, 16)], ["unchecked", Vector2(16, 16)]]:
+		check(CozyUI.icon(spec[0]).get_size() == spec[1], "Miniature glyph is authored at native resolution: " + spec[0])
+	var field := CozyUI.icon("field").get_image()
+	var card := CozyUI.icon("card").get_image()
+	check(luminance(field.get_pixel(24, 1)) < luminance(field.get_pixel(24, 45)), "Editable paper uses a recessed upper edge")
+	check(luminance(card.get_pixel(24, 1)) > luminance(card.get_pixel(24, 45)), "Read-only cards use a raised upper edge")
 
 func luminance(value: Color) -> float:
 	var linear := value.srgb_to_linear()

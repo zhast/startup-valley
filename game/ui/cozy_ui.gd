@@ -17,6 +17,8 @@ const CONTROL_HEIGHT := 44
 const GAP := 8
 const INSET := 12
 const ART_ROOT := "res://assets/runtime/ui/cozy-controls/"
+const MATERIAL_ROOT := "res://assets/runtime/ui/materials/"
+const MATERIAL_FAMILY := "startup-notebook"
 
 static func flat(fill: Color, border: Color = Color.TRANSPARENT, width: int = 0, insets: Vector4 = Vector4(12, 8, 12, 8)) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
@@ -35,44 +37,43 @@ static func _margins(style: StyleBox, insets: Vector4) -> void:
 	style.set_content_margin(SIDE_BOTTOM, insets.w)
 
 static func paper(insets: Vector4 = Vector4(12, 12, 12, 12)) -> StyleBox:
-	return NotebookSkin.parchment(insets)
+	return _material(NotebookSkin.parchment(insets), "notebook")
 
 static func card(insets: Vector4 = Vector4(12, 12, 12, 12)) -> StyleBox:
-	return flat(PAPER_LIGHT, LINE, 1, insets)
+	return surface("card", insets)
 
-static func focus() -> StyleBox:
-	var style := flat(Color.TRANSPARENT, INDIGO, 2, Vector4.ZERO)
-	style.expand_margin_left = 2
-	style.expand_margin_top = 2
-	style.expand_margin_right = 2
-	style.expand_margin_bottom = 2
+static func _material(style: StyleBox, kind: String) -> StyleBox:
+	style.set_meta("cozy_family", MATERIAL_FAMILY)
+	style.set_meta("cozy_material", kind)
 	return style
 
+static func icon(kind: String) -> Texture2D:
+	return load(MATERIAL_ROOT + kind + ".png") as Texture2D
+
+static func surface(kind: String, insets: Vector4 = Vector4(12, 8, 12, 8)) -> StyleBox:
+	return _material(NotebookSkin.texture_style(icon(kind), Vector4(6, 6, 6, 6), insets), kind)
+
+static func bubble(sender: String, insets: Vector4 = Vector4(12, 8, 12, 8)) -> StyleBox:
+	return surface("bubble-player" if sender == "player" else "bubble-employee", insets)
+
+static func focus() -> StyleBox:
+	# A hollow inset ring: same stepped corners, no expanding outer rectangle.
+	return surface("focus", Vector4.ZERO)
+
 static func control_style(variant: String, state: String = "normal") -> StyleBox:
-	if variant != "quiet":
-		return NotebookSkin.texture_style(load(ART_ROOT + variant + "-" + state + ".png") as Texture2D, Vector4(6, 6, 6, 6), Vector4(12, 8, 12, 8))
-	var fill := PAPER_LIGHT
-	var border := Color("8b6745")
-	if variant == "primary":
-		fill = VERMILION
-		border = ALERT
-	elif variant == "danger":
-		fill = Color("fce5d7")
-		border = ALERT
-	elif variant == "quiet":
-		# Quiet actions still have a visible resting-state affordance. Static
-		# subsection labels use the same bold face, so weight alone is not enough.
-		fill = Color("f8ecd5")
-		border = Color("a98a61")
-	if state == "hover":
-		fill = Color("fff9ee") if variant != "primary" else Color("ff663b")
-		border = INDIGO if variant != "danger" else ALERT
-	elif state == "pressed":
-		fill = Color("e6cfaa") if variant != "primary" else Color("e84012")
-	elif state == "disabled":
-		fill = DISABLED
-		border = Color("a99e8c")
-	return flat(fill, border, 1 if variant == "quiet" else 2)
+	var texture_root := MATERIAL_ROOT if variant == "quiet" else ART_ROOT
+	var texture := load(texture_root + variant + "-" + state + ".png") as Texture2D
+	return _material(NotebookSkin.texture_style(texture, Vector4(6, 6, 6, 6), Vector4(12, 8, 12, 8)), "control-" + variant)
+
+static func tab_style(selected: bool, state: String = "normal") -> StyleBox:
+	return surface("tab-" + ("active-" if selected else "inactive-") + state, Vector4(8, 8, 8, 8))
+
+static func tab_button(control: Button, selected: bool) -> void:
+	button(control, "quiet")
+	control.set_meta("cozy_variant", "navigation")
+	control.set_meta("cozy_tab_selected", selected)
+	for state: String in ["normal", "hover", "pressed", "disabled", "hover_pressed"]:
+		control.add_theme_stylebox_override(state, tab_style(selected, "pressed" if state == "hover_pressed" else state))
 
 static func button(control: Button, variant: String = "secondary") -> void:
 	control.set_meta("cozy_variant", variant)
@@ -128,8 +129,8 @@ static func input(control: Control) -> void:
 	control.add_theme_color_override("caret_color", INDIGO)
 	control.add_theme_color_override("selection_color", Color("b7c6e5"))
 	control.add_theme_color_override("font_selected_color", INK)
-	control.add_theme_stylebox_override("normal", flat(PAPER_LIGHT, LINE, 1))
-	control.add_theme_stylebox_override("read_only", flat(PAPER, LINE, 1))
+	control.add_theme_stylebox_override("normal", surface("field"))
+	control.add_theme_stylebox_override("read_only", surface("readonly"))
 	control.add_theme_stylebox_override("focus", focus())
 	if control is LineEdit:
 		control.custom_minimum_size.y = maxf(control.custom_minimum_size.y, CONTROL_HEIGHT)
@@ -156,15 +157,21 @@ static func popup(menu: PopupMenu) -> void:
 	menu.add_theme_color_override("font_disabled_color", MUTED)
 	menu.add_theme_color_override("font_accelerator_color", MUTED)
 	menu.add_theme_color_override("font_separator_color", MUTED)
-	menu.add_theme_stylebox_override("panel", card(Vector4(8, 8, 8, 8)))
-	menu.add_theme_stylebox_override("hover", flat(Color("dfe7f4"), INDIGO, 1))
+	menu.add_theme_stylebox_override("panel", surface("popup", Vector4(8, 8, 8, 8)))
+	menu.add_theme_stylebox_override("hover", surface("selection", Vector4(8, 8, 8, 8)))
+	for prefix: String in ["", "radio_"]:
+		menu.add_theme_icon_override(prefix + "checked", icon("checked"))
+		menu.add_theme_icon_override(prefix + "unchecked", icon("unchecked"))
+		menu.add_theme_icon_override(prefix + "checked_disabled", icon("checked-disabled"))
+		menu.add_theme_icon_override(prefix + "unchecked_disabled", icon("unchecked"))
 	menu.add_theme_constant_override("v_separation", 18)
 
 static func close(control: Button) -> void:
 	button(control, "quiet")
 	control.custom_minimum_size = Vector2(44, 44)
 	control.text = ""
-	control.icon = load(ART_ROOT + "close.png") as Texture2D
+	control.icon = icon("close")
+	control.expand_icon = false
 	control.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	control.add_theme_font_override("font", GameFonts.BOLD)
 	control.add_theme_font_size_override("font_size", 24)
@@ -210,10 +217,10 @@ static func tabs(control: TabContainer) -> void:
 		control.add_theme_color_override(role, INK)
 	control.add_theme_color_override("font_disabled_color", MUTED)
 	control.add_theme_stylebox_override("panel", flat(PAPER, Color.TRANSPARENT, 0, Vector4.ZERO))
-	control.add_theme_stylebox_override("tab_selected", control_style("primary"))
-	control.add_theme_stylebox_override("tab_unselected", control_style("secondary"))
-	control.add_theme_stylebox_override("tab_hovered", control_style("secondary", "hover"))
-	control.add_theme_stylebox_override("tab_disabled", control_style("secondary", "disabled"))
+	control.add_theme_stylebox_override("tab_selected", tab_style(true))
+	control.add_theme_stylebox_override("tab_unselected", tab_style(false))
+	control.add_theme_stylebox_override("tab_hovered", tab_style(false, "hover"))
+	control.add_theme_stylebox_override("tab_disabled", tab_style(false, "disabled"))
 	control.add_theme_stylebox_override("tab_focus", focus())
 	var bar := control.get_tab_bar()
 	bar.custom_minimum_size.y = 44
@@ -228,18 +235,18 @@ static func scroll(control: ScrollContainer) -> void:
 static func _scrollbar(control: ScrollBar) -> void:
 	var vertical := control is VScrollBar
 	var margins := Vector4(6, 0, 6, 0) if vertical else Vector4(0, 6, 0, 6)
-	control.add_theme_stylebox_override("scroll", flat(Color("e4d2b4"), Color.TRANSPARENT, 0, margins))
-	control.add_theme_stylebox_override("grabber", flat(Color("aa8960"), Color("806344"), 1, margins))
-	control.add_theme_stylebox_override("grabber_highlight", flat(Color("8b704f"), INDIGO, 1, margins))
-	control.add_theme_stylebox_override("grabber_pressed", flat(Color("806344"), INDIGO, 1, margins))
+	for spec: Array in [["scroll", "track"], ["grabber", "thumb"], ["grabber_highlight", "thumb-hover"], ["grabber_pressed", "thumb-pressed"]]:
+		var kind: String = spec[1] + ("" if vertical else "-horizontal")
+		var style := NotebookSkin.texture_style(icon(kind), Vector4(3, 3, 3, 3), margins)
+		control.add_theme_stylebox_override(spec[0], _material(style, kind))
 	for icon_name: String in ["decrement", "decrement_highlight", "decrement_pressed", "increment", "increment_highlight", "increment_pressed"]:
 		control.add_theme_icon_override(icon_name, OperationsSkin.TRANSPARENT)
 
 static func slider(control: HSlider) -> void:
 	control.custom_minimum_size.y = 44
-	control.add_theme_stylebox_override("slider", flat(Color("dac39e"), Color("aa8960"), 1, Vector4(0, 3, 0, 3)))
-	control.add_theme_stylebox_override("grabber_area", flat(INDIGO, Color.TRANSPARENT, 0, Vector4(0, 3, 0, 3)))
-	control.add_theme_stylebox_override("grabber_area_highlight", flat(INDIGO, Color.TRANSPARENT, 0, Vector4(0, 3, 0, 3)))
+	for spec: Array in [["slider", "track-horizontal"], ["grabber_area", "track-filled"], ["grabber_area_highlight", "track-filled"]]:
+		var style := NotebookSkin.texture_style(icon(spec[1]), Vector4(3, 3, 3, 3), Vector4(0, 6, 0, 6))
+		control.add_theme_stylebox_override(spec[0], _material(style, spec[1]))
 	control.add_theme_stylebox_override("focus", focus())
 	control.add_theme_icon_override("grabber", load(ART_ROOT + "slider-normal.png") as Texture2D)
 	control.add_theme_icon_override("grabber_highlight", load(ART_ROOT + "slider-hover.png") as Texture2D)

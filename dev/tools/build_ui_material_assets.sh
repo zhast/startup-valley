@@ -35,7 +35,7 @@ done
 
 # Native 48px nine-patches: shared stepped corners, readable calm centers.
 # Raised sheets get a light upper edge and shallow bottom shadow; fields invert it.
-for kind in card field readonly bubble-employee bubble-player popup; do
+for kind in card field readonly bubble-employee bubble-player popup selection; do
   fill='#fff4df'; edge='#b3976f'; top='#fffbed'; bottom='#ac895c'
   case "$kind" in
     field) fill='#fff9ec'; edge='#9b7951'; top='#b99b74'; bottom='#f7e8cb' ;;
@@ -43,6 +43,7 @@ for kind in card field readonly bubble-employee bubble-player popup; do
     bubble-employee) fill='#faeacb' ;;
     bubble-player) fill='#fff7e8' ;;
     popup) edge='#805c37'; bottom='#805c37' ;;
+    selection) fill='#dfe7f4'; edge='#354b98'; top='#f5f7fc'; bottom='#6196c1' ;;
   esac
   magick -size 48x48 xc:none +antialias -fill "$edge" \
     -draw 'polygon 3,0 44,0 47,3 47,44 44,47 3,47 0,44 0,3' \
@@ -74,6 +75,7 @@ for kind in track thumb thumb-hover thumb-pressed; do
   fi
   magick "$target_dir/$kind.png" -rotate 90 -strip "PNG32:$target_dir/$kind-horizontal.png"
 done
+magick "$target_dir/track-horizontal.png" -fill '#354b98' -opaque '#dbc39e' -strip "PNG32:$target_dir/track-filled.png"
 
 # Deliberately authored small glyphs, with no runtime downscaling.
 magick -size 24x28 xc:none +antialias -fill '#805c37' \
@@ -81,10 +83,16 @@ magick -size 24x28 xc:none +antialias -fill '#805c37' \
   -draw 'polygon 5,3 14,3 19,8 19,24 5,24' -fill '#b3976f' \
   -draw 'polygon 14,2 14,8 20,8' -fill '#805c37' \
   -draw 'rectangle 7,12 16,13 rectangle 7,16 16,17 rectangle 7,20 13,21' -strip "PNG32:$target_dir/document.png"
+magick -size 32x24 xc:none +antialias -fill '#805c37' \
+  -draw 'polygon 2,2 12,2 15,5 29,5 30,7 30,21 28,23 3,23 1,21 1,4' \
+  -fill '#fff4df' -draw 'polygon 3,4 11,4 14,7 28,7 28,9 3,9' \
+  -fill '#ead1aa' -draw 'rectangle 3,11 28,20' \
+  -fill '#fffbed' -draw 'rectangle 3,10 28,11' \
+  -fill '#ac895c' -draw 'rectangle 3,21 28,21' -strip "PNG32:$target_dir/folder.png"
 magick -size 16x16 xc:none +antialias -fill '#805c37' \
   -draw 'polygon 3,2 12,2 14,4 14,11 12,13 3,13 1,11 1,4' \
   -fill '#fff4df' -draw 'rectangle 3,4 12,11' -strip "PNG32:$target_dir/unchecked.png"
-magick "$target_dir/unchecked.png" +antialias -stroke '#354b98' -strokewidth 2 \
+magick "$target_dir/unchecked.png" +antialias -fill none -stroke '#354b98' -strokewidth 2 \
   -draw 'path "M 4,7 L 7,10 L 12,4"' -strip "PNG32:$target_dir/checked.png"
 magick "$target_dir/checked.png" -colorspace Gray -strip "PNG32:$target_dir/checked-disabled.png"
 magick -size 16x16 xc:none +antialias -stroke '#151515' -strokewidth 2 \
