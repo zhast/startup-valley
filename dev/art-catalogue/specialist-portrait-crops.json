@@ -1,0 +1,30 @@
+{
+  "status": "framing_study_not_registered",
+  "target": [64, 80],
+  "palette": "each unchanged v3 native portrait's32-color palette",
+  "target_hair_top_range": [4, 6],
+  "target_eye_line_range": [32, 40],
+  "landmarks_are_approximate_observed_source_coordinates": true,
+  "characters": {
+    "lawyer": {
+      "source": "game/assets/source/overnight-20260904/characters/lawyer-portrait-v3.png",
+      "palette": "game/tests/fixtures/character-concepts/overnight-v1/lawyer-portrait-v3.png",
+      "hair_bounds": [252, 110, 600, 410],
+      "eye_line_y": 540,
+      "variants": {
+        "a": {"label": "Shoulders", "crop": [112, 32, 896, 1120]},
+        "b": {"label": "Closer", "crop": [160, 48, 800, 1000]}
+      }
+    },
+    "creative": {
+      "source": "game/assets/source/overnight-20260904/characters/creative-portrait-v3.png",
+      "palette": "game/tests/fixtures/character-concepts/overnight-v1/creative-portrait-v3.png",
+      "hair_bounds": [136, 72, 832, 698],
+      "eye_line_y": 520,
+      "variants": {
+        "a": {"label": "Shoulders", "crop": [48, 8, 1024, 1280]},
+        "b": {"label": "Closer", "crop": [80, 0, 960, 1200]}
+      }
+    }
+  }
+}

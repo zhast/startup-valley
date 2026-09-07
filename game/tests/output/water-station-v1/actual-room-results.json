@@ -1,0 +1,478 @@
+{
+	"actor_probe_limit": "Founder standing locomotion is only a scale, route, contact, and occlusion/depth probe; no service animation, transaction, backend, role, or interaction is claimed.",
+	"captures": [
+		"res://tests/output/water-station-v1/detail-north-base-native.png",
+		"res://tests/output/water-station-v1/room-north.png",
+		"res://tests/output/water-station-v1/detail-north-approach-native.png",
+		"res://tests/output/water-station-v1/detail-east-base-native.png",
+		"res://tests/output/water-station-v1/room-east.png",
+		"res://tests/output/water-station-v1/detail-east-approach-native.png",
+		"res://tests/output/water-station-v1/detail-south-base-native.png",
+		"res://tests/output/water-station-v1/room-south.png",
+		"res://tests/output/water-station-v1/detail-south-approach-native.png",
+		"res://tests/output/water-station-v1/detail-west-base-native.png",
+		"res://tests/output/water-station-v1/room-west.png",
+		"res://tests/output/water-station-v1/detail-west-approach-native.png",
+		"res://tests/output/water-station-v1/actual-room-base-contact-sheet-native.png",
+		"res://tests/output/water-station-v1/actual-room-approach-contact-sheet-native.png",
+		"res://tests/output/water-station-v1/actual-room-approach-contact-sheet-4x.png"
+	],
+	"checks": 190,
+	"common_safe_pivot": [
+		12,
+		13
+	],
+	"default_layout_mutated": false,
+	"dev_catalogue_registration": "Not asserted. This capture only verifies that the shared catalogue stays byte-exact during its own run.",
+	"failures": [],
+	"family": "water_station",
+	"observations": {
+		"east": {
+			"actor_pixel_delta": 1293,
+			"actor_prop_overlap_measured_not_acceptance_threshold": {
+				"actor_in_front_pixels": 0,
+				"pixels": 0,
+				"prop_in_front_pixels": 0
+			},
+			"clearance": [
+				[
+					13,
+					13
+				]
+			],
+			"collision_shapes": 2,
+			"founder_approach": {
+				"actor_z": 432,
+				"depth_class": "actor_between_rear_and_front_layers",
+				"destination_cell": [
+					13,
+					13
+				],
+				"destination_px": [
+					432.0,
+					432.0
+				],
+				"employee_look_vector": [
+					-1,
+					0
+				],
+				"front_z": 433,
+				"initial_route_points": 9,
+				"rear_z": 431,
+				"traveled_px": 280.72346830368
+			},
+			"grid": [
+				12,
+				13
+			],
+			"occupied": [
+				[
+					12,
+					14
+				],
+				[
+					12,
+					13
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/water-station-v1/east-floor_shadow.png",
+					"name": "WaterStationEastFloorShadow",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						160,
+						240
+					],
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/water-station-v1/east-rear_structure.png",
+					"name": "WaterStationEastRearStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						160,
+						240
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/water-station-v1/east-front_structure.png",
+					"name": "WaterStationEastFrontStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						160,
+						240
+					],
+					"z_offset": 1
+				}
+			]
+		},
+		"north": {
+			"actor_pixel_delta": 296,
+			"actor_prop_overlap_measured_not_acceptance_threshold": {
+				"actor_in_front_pixels": 0,
+				"pixels": 1246,
+				"prop_in_front_pixels": 1246
+			},
+			"clearance": [
+				[
+					12,
+					12
+				]
+			],
+			"collision_shapes": 2,
+			"founder_approach": {
+				"actor_z": 400,
+				"depth_class": "actor_behind_structure",
+				"destination_cell": [
+					12,
+					12
+				],
+				"destination_px": [
+					400.0,
+					400.0
+				],
+				"employee_look_vector": [
+					0,
+					1
+				],
+				"front_z": 433,
+				"initial_route_points": 11,
+				"rear_z": 431,
+				"traveled_px": 347.6725025177
+			},
+			"grid": [
+				12,
+				13
+			],
+			"occupied": [
+				[
+					13,
+					13
+				],
+				[
+					12,
+					13
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/water-station-v1/north-floor_shadow.png",
+					"name": "WaterStationNorthFloorShadow",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						160,
+						240
+					],
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/water-station-v1/north-rear_structure.png",
+					"name": "WaterStationNorthRearStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						160,
+						240
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/water-station-v1/north-front_structure.png",
+					"name": "WaterStationNorthFrontStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						160,
+						240
+					],
+					"z_offset": 1
+				}
+			]
+		},
+		"south": {
+			"actor_pixel_delta": 1547,
+			"actor_prop_overlap_measured_not_acceptance_threshold": {
+				"actor_in_front_pixels": 1242,
+				"pixels": 1242,
+				"prop_in_front_pixels": 0
+			},
+			"clearance": [
+				[
+					12,
+					14
+				]
+			],
+			"collision_shapes": 2,
+			"founder_approach": {
+				"actor_z": 464,
+				"depth_class": "actor_in_front_of_structure",
+				"destination_cell": [
+					12,
+					14
+				],
+				"destination_px": [
+					400.0,
+					464.0
+				],
+				"employee_look_vector": [
+					0,
+					-1
+				],
+				"front_z": 433,
+				"initial_route_points": 9,
+				"rear_z": 431,
+				"traveled_px": 276.694275856018
+			},
+			"grid": [
+				12,
+				13
+			],
+			"occupied": [
+				[
+					11,
+					13
+				],
+				[
+					12,
+					13
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/water-station-v1/south-floor_shadow.png",
+					"name": "WaterStationSouthFloorShadow",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						160,
+						240
+					],
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/water-station-v1/south-rear_structure.png",
+					"name": "WaterStationSouthRearStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						160,
+						240
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/water-station-v1/south-front_structure.png",
+					"name": "WaterStationSouthFrontStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						160,
+						240
+					],
+					"z_offset": 1
+				}
+			]
+		},
+		"west": {
+			"actor_pixel_delta": 1305,
+			"actor_prop_overlap_measured_not_acceptance_threshold": {
+				"actor_in_front_pixels": 0,
+				"pixels": 0,
+				"prop_in_front_pixels": 0
+			},
+			"clearance": [
+				[
+					11,
+					13
+				]
+			],
+			"collision_shapes": 2,
+			"founder_approach": {
+				"actor_z": 432,
+				"depth_class": "actor_between_rear_and_front_layers",
+				"destination_cell": [
+					11,
+					13
+				],
+				"destination_px": [
+					368.0,
+					432.0
+				],
+				"employee_look_vector": [
+					1,
+					0
+				],
+				"front_z": 433,
+				"initial_route_points": 11,
+				"rear_z": 431,
+				"traveled_px": 342.28346824646
+			},
+			"grid": [
+				12,
+				13
+			],
+			"occupied": [
+				[
+					12,
+					12
+				],
+				[
+					12,
+					13
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/water-station-v1/west-floor_shadow.png",
+					"name": "WaterStationWestFloorShadow",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						160,
+						240
+					],
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/water-station-v1/west-rear_structure.png",
+					"name": "WaterStationWestRearStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						160,
+						240
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/water-station-v1/west-front_structure.png",
+					"name": "WaterStationWestFrontStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						160,
+						240
+					],
+					"z_offset": 1
+				}
+			]
+		}
+	},
+	"production_catalogue_mutated": false,
+	"renderer": "macOS",
+	"runtime_registered": false,
+	"save_access": false,
+	"scene": "actual GameMain and production TownRoom architecture/navigation with one owner-scoped passive candidate definition",
+	"service_backend_or_interaction_created": false,
+	"shared_art_catalogue_mutated": false,
+	"status": "native_review_candidate_without_runtime_binding",
+	"viewport": [
+		1280,
+		720
+	],
+	"wall_corner_rejections": {
+		"east": {
+			"grid": [
+				1,
+				3
+			],
+			"issue_codes": [
+				"visual_wall_intersection",
+				"decorative_headroom"
+			],
+			"wall_neighbors": 2
+		},
+		"north": {
+			"grid": [
+				1,
+				3
+			],
+			"issue_codes": [
+				"visual_wall_intersection",
+				"decorative_headroom",
+				"wall_clearance"
+			],
+			"wall_neighbors": 2
+		},
+		"south": {
+			"grid": [
+				1,
+				3
+			],
+			"issue_codes": [
+				"wall_intersection",
+				"visual_wall_intersection",
+				"decorative_headroom"
+			],
+			"wall_neighbors": 2
+		},
+		"west": {
+			"grid": [
+				1,
+				3
+			],
+			"issue_codes": [
+				"wall_intersection",
+				"visual_wall_intersection",
+				"decorative_headroom",
+				"wall_clearance"
+			],
+			"wall_neighbors": 2
+		}
+	},
+	"worker_disabled": true
+}

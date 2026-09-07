@@ -1,0 +1,10 @@
+# Chair south v3 — final true-alpha generation attempt
+
+Mode: built-in ImageGen, new generation from the established visual brief. North v1 and south v1/v2 were inspected. The first two south outputs embedded an opaque backdrop, so this final allowed attempt omits their image attachments to avoid echoing that backdrop. It is not an approved substitute for the north identity; final matching must be checked visually.
+
+## Exact prompt
+
+Create one small original pixel-art sprite of a SOUTH-facing low-back office task chair on a transparent background. Export as a genuine transparent PNG asset, with no background pixels outside the object.
+It is for Startup Valley, a cozy top-down office game: fixed raised screen-aligned orthographic view, no diagonal rotation. The person who would sit here would face down toward the viewer. Show the FRONT of the indigo back cushion, seat top and front edge; do not show a rear lumbar adjustment bracket on the cushion. Charcoal outline and frame, restrained blue-indigo upholstery with sparse woven pixel texture, gray metal highlights, matching charcoal armrests, short central gas-lift stem, five-star caster base. A small height lever is on screen left under the seat. Upper-left screen-space light.
+Keep the same scale as a low-back 32-pixel-wide and 55-pixel-tall chair, full caster-base width 32px, low seat and backrest rather than a tall executive shape. Backrest roughly 20px wide, seat roughly 24px wide, maximum arm/base width 32px. Coherent crisp pixel clusters and simple shapes that read at that tiny native size. Render larger if needed but preserve those proportions. The final export will use a padded 96×160 canvas, pivot (48,112) and caster contact at y=128; leave clear margins for mechanical registration.
+Only one complete chair. No floor, shadow, person, desk, scenery, text, logo, panel, border, watermark or extra views. All spaces between chair pieces are transparent; all outer canvas is transparent. Deliver real alpha transparency.

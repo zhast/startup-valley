@@ -1,0 +1,21 @@
+{
+	"canvas": [
+		192,
+		224
+	],
+	"checks_at_batch_write": 411,
+	"failures_at_batch_write": [],
+	"family": "desk_lamp_kit",
+	"image_generation_used": false,
+	"layers": [
+		"surface_decor_rear",
+		"surface_decor_front"
+	],
+	"pivot": [
+		96,
+		160
+	],
+	"runtime_status_not_assumed": true,
+	"service_created": false,
+	"status": "native_review_candidate_not_runtime_registered"
+}

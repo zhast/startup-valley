@@ -1,0 +1,1782 @@
+{
+  "id": "phone_booth",
+  "direction_semantics": "service_side",
+  "display_name": "Quiet call booth",
+  "asset_kind": "furniture_base",
+  "base_vs_decor": "base",
+  "category": "customer_success",
+  "priority": "P2",
+  "production_status": "cleanup_required",
+  "role_tags": [
+    "customer_success",
+    "shared"
+  ],
+  "role_tools": [
+    "small standing shelf",
+    "glazed door",
+    "acoustic panels"
+  ],
+  "design_brief": "Larger late-office object; doorway, interior and glass front must remain independently occludable.",
+  "gameplay_scope": "Art and future layout proposal only; no new hiring, role behavior, tool authority, transaction or interaction is implemented.",
+  "primary_host": null,
+  "current_availability": {
+    "status": "no_catalogue_runtime_binding",
+    "runtime_family_id": null,
+    "runtime_registered_facings": [],
+    "art_path": null,
+    "direction_art_review": "No finished art or runtime family is claimed for this proposal; unrelated concept/source art may exist."
+  },
+  "native_geometry": {
+    "status": "geometry_validated_visual_failure",
+    "canvas_size_px": [
+      256,
+      416
+    ],
+    "floor_anchor_px": [
+      128,
+      304
+    ],
+    "grid_size_px": 32,
+    "estimated_max_rise_above_occupied_floor_px": 192,
+    "minimum_transparent_padding_px": 16,
+    "anchor_rule": "One unchanged canvas coordinate represents local floor pivot [0,0] in every direction and every layer. Transparent padding is not sprite scaling.",
+    "vertical_elevation_px": 112,
+    "roof_plane_depth_px": 96
+  },
+  "layers": [
+    {
+      "id": "floor_shadow",
+      "required": true,
+      "same_canvas_and_floor_anchor": true,
+      "status": "cleanup_required"
+    },
+    {
+      "id": "interior",
+      "required": true,
+      "same_canvas_and_floor_anchor": true,
+      "status": "cleanup_required"
+    },
+    {
+      "id": "door_glazing",
+      "required": true,
+      "same_canvas_and_floor_anchor": true,
+      "status": "cleanup_required"
+    },
+    {
+      "id": "rear_structure",
+      "required": true,
+      "same_canvas_and_floor_anchor": true,
+      "status": "cleanup_required"
+    },
+    {
+      "id": "front_structure",
+      "required": true,
+      "same_canvas_and_floor_anchor": true,
+      "status": "cleanup_required"
+    }
+  ],
+  "variants": [
+    {
+      "facing": "north",
+      "status": "cleanup_required",
+      "deliverable_availability": "native_export",
+      "approved_art_path": null,
+      "evidence_path": "game/tests/output/phone-booth/actual-room-contact-sheet-native.png",
+      "source_reference_path": "game/tools/phone_booth_v1_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        3,
+        3
+      ],
+      "proposed_occupied_cell_offsets": [
+        [
+          1,
+          2
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          -1,
+          2
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          -1,
+          0
+        ]
+      ],
+      "employee_look_vector": [
+        0,
+        1
+      ],
+      "proposed_interaction_cell": [
+        0,
+        -1
+      ],
+      "seated_pose_needed": false,
+      "redraw_requirement": "Draw the actual north service front; operator approaches that side looking south. Fixed screen floor axes and upper-left light; do not rotate or mirror finished raster art. No implemented interaction is implied.",
+      "service_side": "north",
+      "approach_gaze": "south",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/north-whole.png",
+      "preview_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/north-whole.png",
+      "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "reason": "Independent native v1 visual review fails: roof framed as an upright panel produces a stacked-cabinet silhouette. Scores3/1/2/3/2/3, mean2.33. Corrected fixture functional total231/0 is not visual approval. Separatev2 cap/elevation correction in progress, no runtime binding.",
+      "native_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/north-floor_shadow.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            87,
+            381,
+            84,
+            4
+          ],
+          "opaque_pixels": 336,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 1,
+          "decoded_rgba_sha256": "6d772baac54d5f28e3699954b8da0bb7cce97b7434b95dd95cc15f014a411805",
+          "sha256": "5579c29530f136799ad99fbc00de9080c9d156b371ee803e429a393fdaac0e36",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "floor_shadow",
+          "source_layer": "BoothFloorShadow",
+          "z_offset": -200,
+          "render_descriptor": {
+            "name": "BoothFloorShadow",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/north-floor_shadow.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": -200
+          }
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/north-interior.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            89,
+            235,
+            78,
+            141
+          ],
+          "opaque_pixels": 8052,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 7,
+          "decoded_rgba_sha256": "133057e2acd389c999125bf76092b0f256099167c7ae0a8884bb456ceaefac80",
+          "sha256": "52d970ca14881a46e7c510c0658699ae1b4e55bed79f38f7259a6f3698ab0789",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "interior",
+          "source_layer": "BoothInterior",
+          "z_offset": 76,
+          "render_descriptor": {
+            "name": "BoothInterior",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/north-interior.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": 76
+          }
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/north-door_glazing.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            93,
+            182,
+            70,
+            100
+          ],
+          "opaque_pixels": 736,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 5,
+          "decoded_rgba_sha256": "6350e3619c6ef8c135e33d644d8fa6046ca10f6815caaf4db0127677d85be14a",
+          "sha256": "1d23074fd44c681c0306e299875f529cad681d64e8eb758ed2de7dcc13210e0e",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "door_glazing",
+          "source_layer": "BoothDoorGlazing",
+          "z_offset": 78,
+          "render_descriptor": {
+            "name": "BoothDoorGlazing",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/north-door_glazing.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": 78
+          }
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/north-rear_structure.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            84,
+            176,
+            88,
+            204
+          ],
+          "opaque_pixels": 9896,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 8,
+          "decoded_rgba_sha256": "bd995627d221e569ca2fd07cb94b486e02008c93edd255358a06d9ce73a80352",
+          "sha256": "5d92da57b6c3e67c885cad45af26f363f0f7ad267b0a04188ff3d41269b4d0bc",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "rear_structure",
+          "source_layer": "BoothRearStructure",
+          "z_offset": 79,
+          "render_descriptor": {
+            "name": "BoothRearStructure",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/north-rear_structure.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": 79
+          }
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/north-front_structure.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            84,
+            272,
+            88,
+            110
+          ],
+          "opaque_pixels": 8700,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 6,
+          "decoded_rgba_sha256": "9862ea2c50cd4d53d7ca52d545bc4c499c0987aef660b207344918556fcc43cc",
+          "sha256": "e04460d1975a088710b9307d412578ca6f91bbb2a2339d40109eb7b9bfb5f63d",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "front_structure",
+          "source_layer": "BoothFrontStructure",
+          "z_offset": 80,
+          "render_descriptor": {
+            "name": "BoothFrontStructure",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/north-front_structure.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": 80
+          }
+        }
+      ],
+      "composite_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/north-whole.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            84,
+            176,
+            88,
+            209
+          ],
+          "opaque_pixels": 18380,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 10,
+          "decoded_rgba_sha256": "b86a4660533ea30577a18e7ea9053309c05e260420785eb8b527ec5950cecdc4",
+          "sha256": "6305bf15ac22f384233b811012854d656970c7ad7aa121b88c1c8c4b7b78e7f5",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md"
+        }
+      ],
+      "evidence_paths": [
+        "game/tests/output/phone-booth/results.json",
+        "game/tests/output/phone-booth/actual-room-results.json",
+        "game/tests/output/phone-booth/actual-room-contact-sheet-4x.png",
+        "game/tests/output/phone-booth/actual-room-north.png"
+      ],
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "acceptance_scope": "native_candidate_external_approach_only",
+        "note": "V1 visual failure despite passing collision and native registration. Roof/elevation visual hierarchy must be corrected; no score threshold weakened.",
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 1,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 2,
+          "placement": 3
+        }
+      }
+    },
+    {
+      "facing": "east",
+      "status": "cleanup_required",
+      "deliverable_availability": "native_export",
+      "approved_art_path": null,
+      "evidence_path": "game/tests/output/phone-booth/actual-room-contact-sheet-native.png",
+      "source_reference_path": "game/tools/phone_booth_v1_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        3,
+        3
+      ],
+      "proposed_occupied_cell_offsets": [
+        [
+          -2,
+          1
+        ],
+        [
+          -2,
+          0
+        ],
+        [
+          -2,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          -1
+        ]
+      ],
+      "employee_look_vector": [
+        -1,
+        0
+      ],
+      "proposed_interaction_cell": [
+        1,
+        0
+      ],
+      "seated_pose_needed": false,
+      "redraw_requirement": "Draw the actual east service front; operator approaches that side looking west. Fixed screen floor axes and upper-left light; do not rotate or mirror finished raster art. No implemented interaction is implied.",
+      "service_side": "east",
+      "approach_gaze": "west",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/east-whole.png",
+      "preview_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/east-whole.png",
+      "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "reason": "Independent native v1 visual review fails: roof framed as an upright panel produces a stacked-cabinet silhouette. Scores3/1/2/3/2/3, mean2.33. Corrected fixture functional total231/0 is not visual approval. Separatev2 cap/elevation correction in progress, no runtime binding.",
+      "native_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/east-floor_shadow.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            55,
+            349,
+            84,
+            4
+          ],
+          "opaque_pixels": 336,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 1,
+          "decoded_rgba_sha256": "ed549651a54985a7fa500faeb38b8dfd2d14e0c26649df1649c057284ac079b1",
+          "sha256": "cd37a840316343b58dc4916957f15788b10162a02d7e7a4e3592aa2093486eb4",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "floor_shadow",
+          "source_layer": "BoothFloorShadow",
+          "z_offset": -200,
+          "render_descriptor": {
+            "name": "BoothFloorShadow",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/east-floor_shadow.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": -200
+          }
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/east-interior.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            57,
+            192,
+            78,
+            152
+          ],
+          "opaque_pixels": 8379,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 7,
+          "decoded_rgba_sha256": "7fda2b78ee948de0ed5492926a33ca9b83dd8e66535d9fd85a05ecb8654fa989",
+          "sha256": "6d6312698bbd9245c294ea5937f6d73a7c0c14779e21be8d0ef1349be32d7731",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "interior",
+          "source_layer": "BoothInterior",
+          "z_offset": 44,
+          "render_descriptor": {
+            "name": "BoothInterior",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/east-interior.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": 44
+          }
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/east-door_glazing.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            126,
+            156,
+            6,
+            185
+          ],
+          "opaque_pixels": 766,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 4,
+          "decoded_rgba_sha256": "55648ec07c20991b9395bb3ad03ab0f94946b54cdf4cd355300818053852b663",
+          "sha256": "4f6daea6e5f953098cd94a777c3a16109ac1cfa056c2433249066fd524d10fec",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "door_glazing",
+          "source_layer": "BoothDoorGlazing",
+          "z_offset": 46,
+          "render_descriptor": {
+            "name": "BoothDoorGlazing",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/east-door_glazing.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": 46
+          }
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/east-rear_structure.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            52,
+            144,
+            88,
+            204
+          ],
+          "opaque_pixels": 9896,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 8,
+          "decoded_rgba_sha256": "86ce6c523105c42297dc9188f9d3fcb749856a510755d3f5381e517dafa4d887",
+          "sha256": "34ed66b439223eb3ab4b0986c0cf7518b9bc14287f597abf01fe3838d48f3bb0",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "rear_structure",
+          "source_layer": "BoothRearStructure",
+          "z_offset": 47,
+          "render_descriptor": {
+            "name": "BoothRearStructure",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/east-rear_structure.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": 47
+          }
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/east-front_structure.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            52,
+            240,
+            88,
+            110
+          ],
+          "opaque_pixels": 8308,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 7,
+          "decoded_rgba_sha256": "c5888f0686fe7344bce059aba7ccf0ebc5d79361dbdbcca7d85dc515dcbf0783",
+          "sha256": "046e1fb136b2e41cb37ccc7b08ca951e56ff80fa2f7950e5fd3a35bfd4092423",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "front_structure",
+          "source_layer": "BoothFrontStructure",
+          "z_offset": 48,
+          "render_descriptor": {
+            "name": "BoothFrontStructure",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/east-front_structure.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": 48
+          }
+        }
+      ],
+      "composite_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/east-whole.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            52,
+            144,
+            88,
+            209
+          ],
+          "opaque_pixels": 18378,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 11,
+          "decoded_rgba_sha256": "31d593125687a4dcfc0a1163b5c7aa90ffa934bd2afe92ffbc782af574bdf9b3",
+          "sha256": "c78fbe8e39e452e009a09418e84967f8ab83c9b55b3c0cefd015794a3886b8bf",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md"
+        }
+      ],
+      "evidence_paths": [
+        "game/tests/output/phone-booth/results.json",
+        "game/tests/output/phone-booth/actual-room-results.json",
+        "game/tests/output/phone-booth/actual-room-contact-sheet-4x.png",
+        "game/tests/output/phone-booth/actual-room-east.png"
+      ],
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "acceptance_scope": "native_candidate_external_approach_only",
+        "note": "V1 visual failure despite passing collision and native registration. Roof/elevation visual hierarchy must be corrected; no score threshold weakened.",
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 1,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 2,
+          "placement": 3
+        }
+      }
+    },
+    {
+      "facing": "south",
+      "status": "cleanup_required",
+      "deliverable_availability": "native_export",
+      "approved_art_path": null,
+      "evidence_path": "game/tests/output/phone-booth/actual-room-contact-sheet-native.png",
+      "source_reference_path": "game/tools/phone_booth_v1_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        3,
+        3
+      ],
+      "proposed_occupied_cell_offsets": [
+        [
+          -1,
+          -2
+        ],
+        [
+          0,
+          -2
+        ],
+        [
+          1,
+          -2
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          0,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "employee_look_vector": [
+        0,
+        -1
+      ],
+      "proposed_interaction_cell": [
+        0,
+        1
+      ],
+      "seated_pose_needed": false,
+      "redraw_requirement": "Draw the actual south service front; operator approaches that side looking north. Fixed screen floor axes and upper-left light; do not rotate or mirror finished raster art. No implemented interaction is implied.",
+      "service_side": "south",
+      "approach_gaze": "north",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/south-whole.png",
+      "preview_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/south-whole.png",
+      "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "reason": "Independent native v1 visual review fails: roof framed as an upright panel produces a stacked-cabinet silhouette. Scores3/1/2/3/2/3, mean2.33. Corrected fixture functional total231/0 is not visual approval. Separatev2 cap/elevation correction in progress, no runtime binding.",
+      "native_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/south-floor_shadow.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            87,
+            317,
+            84,
+            4
+          ],
+          "opaque_pixels": 336,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 1,
+          "decoded_rgba_sha256": "ad2fa9e791edd72a1a452bae476a45c003ebeee280fb28bea6d132ec6923d354",
+          "sha256": "f09e68d61d52f6a977cf22bf44055c82836f5aebadb58de01c75dbd13e41ae83",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "floor_shadow",
+          "source_layer": "BoothFloorShadow",
+          "z_offset": -200,
+          "render_descriptor": {
+            "name": "BoothFloorShadow",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/south-floor_shadow.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": -200
+          }
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/south-interior.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            89,
+            215,
+            78,
+            97
+          ],
+          "opaque_pixels": 7566,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 8,
+          "decoded_rgba_sha256": "bdeb302bd7dc1216b21f6a0c9f65fe63a7291ade86adf9a955a746e9c049184c",
+          "sha256": "23732cdbdeb1d891d47b54941c816cb006e68006c0dc759493931dd3134104aa",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "interior",
+          "source_layer": "BoothInterior",
+          "z_offset": 12,
+          "render_descriptor": {
+            "name": "BoothInterior",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/south-interior.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": 12
+          }
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/south-door_glazing.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            93,
+            213,
+            70,
+            100
+          ],
+          "opaque_pixels": 736,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 5,
+          "decoded_rgba_sha256": "6e0cf95a31559f2c94782cff684004e5c2ef9af8fbd8096f45e6f3fd03857a53",
+          "sha256": "3cd3eee2e891c4b760beb1247066d489558eccc74320d2c726f1fb196f443681",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "door_glazing",
+          "source_layer": "BoothDoorGlazing",
+          "z_offset": 14,
+          "render_descriptor": {
+            "name": "BoothDoorGlazing",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/south-door_glazing.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": 14
+          }
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/south-rear_structure.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            84,
+            112,
+            88,
+            204
+          ],
+          "opaque_pixels": 9896,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 8,
+          "decoded_rgba_sha256": "a747a2147b89b73a6d73cd6f533c8258615eb63e246887220d327f2e01948c72",
+          "sha256": "652044a6eac943ff34b1733d5b3971f6b2a7f57b795aa0fec1fe40a24deacc2e",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "rear_structure",
+          "source_layer": "BoothRearStructure",
+          "z_offset": 15,
+          "render_descriptor": {
+            "name": "BoothRearStructure",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/south-rear_structure.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": 15
+          }
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/south-front_structure.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            84,
+            208,
+            88,
+            110
+          ],
+          "opaque_pixels": 2624,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 4,
+          "decoded_rgba_sha256": "d6a357d3b8e81e1171c3ab8e148b431d880a45d39a029ffcc665a60978b8ada4",
+          "sha256": "8420bb918c2ff24e7584d5cecfe48f7cc3ca3ebf27d2fc54cdbe79088f6113b9",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "front_structure",
+          "source_layer": "BoothFrontStructure",
+          "z_offset": 16,
+          "render_descriptor": {
+            "name": "BoothFrontStructure",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/south-front_structure.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": 16
+          }
+        }
+      ],
+      "composite_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/south-whole.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            84,
+            112,
+            88,
+            209
+          ],
+          "opaque_pixels": 18374,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 15,
+          "decoded_rgba_sha256": "851b77fa70512b31b095f56931c9648fdc3f0ca96bfb86434fb901c8ff73a54a",
+          "sha256": "a3eeefc5199feb12caffb66b232338f61af0420756b7ae0a85bac277803369df",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md"
+        }
+      ],
+      "evidence_paths": [
+        "game/tests/output/phone-booth/results.json",
+        "game/tests/output/phone-booth/actual-room-results.json",
+        "game/tests/output/phone-booth/actual-room-contact-sheet-4x.png",
+        "game/tests/output/phone-booth/actual-room-south.png"
+      ],
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "acceptance_scope": "native_candidate_external_approach_only",
+        "note": "V1 visual failure despite passing collision and native registration. Roof/elevation visual hierarchy must be corrected; no score threshold weakened.",
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 1,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 2,
+          "placement": 3
+        }
+      }
+    },
+    {
+      "facing": "west",
+      "status": "cleanup_required",
+      "deliverable_availability": "native_export",
+      "approved_art_path": null,
+      "evidence_path": "game/tests/output/phone-booth/actual-room-contact-sheet-native.png",
+      "source_reference_path": "game/tools/phone_booth_v1_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        3,
+        3
+      ],
+      "proposed_occupied_cell_offsets": [
+        [
+          2,
+          -1
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "employee_look_vector": [
+        1,
+        0
+      ],
+      "proposed_interaction_cell": [
+        -1,
+        0
+      ],
+      "seated_pose_needed": false,
+      "redraw_requirement": "Draw the actual west service front; operator approaches that side looking east. Fixed screen floor axes and upper-left light; do not rotate or mirror finished raster art. No implemented interaction is implied.",
+      "service_side": "west",
+      "approach_gaze": "east",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/west-whole.png",
+      "preview_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/west-whole.png",
+      "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "reason": "Independent native v1 visual review fails: roof framed as an upright panel produces a stacked-cabinet silhouette. Scores3/1/2/3/2/3, mean2.33. Corrected fixture functional total231/0 is not visual approval. Separatev2 cap/elevation correction in progress, no runtime binding.",
+      "native_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/west-floor_shadow.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            119,
+            349,
+            84,
+            4
+          ],
+          "opaque_pixels": 336,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 1,
+          "decoded_rgba_sha256": "04f05e510322c95ce76913a8739e4f3b850229acbb174ebd415ab1eed934282d",
+          "sha256": "ef8d362c802c43c21d1d64cb7cb8ff297dc149e45a824786525d56bee31894e5",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "floor_shadow",
+          "source_layer": "BoothFloorShadow",
+          "z_offset": -200,
+          "render_descriptor": {
+            "name": "BoothFloorShadow",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/west-floor_shadow.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": -200
+          }
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/west-interior.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            121,
+            195,
+            78,
+            149
+          ],
+          "opaque_pixels": 8334,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 7,
+          "decoded_rgba_sha256": "4c5c2f3d712e163eb3ccf0e2ac7ff32bd3a2cc30db1d6dbe5c525652877c5632",
+          "sha256": "b5bd58f92d00c8852347026f8931d117be08ed0dfad64316936bf187a35cee4b",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "interior",
+          "source_layer": "BoothInterior",
+          "z_offset": 44,
+          "render_descriptor": {
+            "name": "BoothInterior",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/west-interior.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": 44
+          }
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/west-door_glazing.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            124,
+            156,
+            6,
+            185
+          ],
+          "opaque_pixels": 766,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 4,
+          "decoded_rgba_sha256": "a8a055980d271559426cbd4c2594ddb04e7893dc1a4c9f6575872072675a587e",
+          "sha256": "964a2256f99583ac00d507ee640237fa3c0b0ce6ee75fe293107c4e72ee00168",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "door_glazing",
+          "source_layer": "BoothDoorGlazing",
+          "z_offset": 46,
+          "render_descriptor": {
+            "name": "BoothDoorGlazing",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/west-door_glazing.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": 46
+          }
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/west-rear_structure.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            116,
+            144,
+            88,
+            204
+          ],
+          "opaque_pixels": 9896,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 8,
+          "decoded_rgba_sha256": "f1b77f51d098b931598c40a7fed6f35bb92ff86319f025fbe554107113b3c052",
+          "sha256": "22daf3547ed1d7b68755d096544159ad0cbe5630ce24e62532edb4899a8f30a1",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "rear_structure",
+          "source_layer": "BoothRearStructure",
+          "z_offset": 47,
+          "render_descriptor": {
+            "name": "BoothRearStructure",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/west-rear_structure.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": 47
+          }
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/west-front_structure.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            116,
+            240,
+            88,
+            110
+          ],
+          "opaque_pixels": 8308,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 7,
+          "decoded_rgba_sha256": "10bf0a7ec4aeef792701afe9ac111d54a5c2af01c2396d532b5dd47e30045261",
+          "sha256": "45a4d90314472057726e32e5d855b80eb29b9cf92333d3e40ce605e46766c88b",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md",
+          "layer": "front_structure",
+          "source_layer": "BoothFrontStructure",
+          "z_offset": 48,
+          "render_descriptor": {
+            "name": "BoothFrontStructure",
+            "art": "res://tests/fixtures/furniture-calibration/phone-booth-v1/west-front_structure.png",
+            "region": [
+              0,
+              0,
+              256,
+              416
+            ],
+            "offset": [
+              0,
+              -96
+            ],
+            "z_offset": 48
+          }
+        }
+      ],
+      "composite_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/west-whole.png",
+          "canvas_size_px": [
+            256,
+            416
+          ],
+          "floor_anchor_px": [
+            128,
+            304
+          ],
+          "opaque_bounds_px": [
+            116,
+            144,
+            88,
+            209
+          ],
+          "opaque_pixels": 18378,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 11,
+          "decoded_rgba_sha256": "232154f249ffb57c14a574edef97b9178155654ef6f1b027b870571ef68fe7f7",
+          "sha256": "2091861c12ee3d67e29ac3f044d5bbbf7dbeff7356a0a0a9b7c1da06f86d1a04",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/phone_booth_v1_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/phone-booth-v1/manifest.json",
+          "review_path": "dev/art-catalogue/PHONE_BOOTH_NATIVE_REVIEW.md"
+        }
+      ],
+      "evidence_paths": [
+        "game/tests/output/phone-booth/results.json",
+        "game/tests/output/phone-booth/actual-room-results.json",
+        "game/tests/output/phone-booth/actual-room-contact-sheet-4x.png",
+        "game/tests/output/phone-booth/actual-room-west.png"
+      ],
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "acceptance_scope": "native_candidate_external_approach_only",
+        "note": "V1 visual failure despite passing collision and native registration. Roof/elevation visual hierarchy must be corrected; no score threshold weakened.",
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 1,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 2,
+          "placement": 3
+        }
+      }
+    }
+  ],
+  "planned_contract_history": {
+    "id": "phone_booth",
+    "direction_semantics": "service_side",
+    "display_name": "Quiet call booth",
+    "asset_kind": "furniture_base",
+    "base_vs_decor": "base",
+    "category": "customer_success",
+    "priority": "P2",
+    "production_status": "planned",
+    "role_tags": [
+      "customer_success",
+      "shared"
+    ],
+    "role_tools": [
+      "small standing shelf",
+      "glazed door",
+      "acoustic panels"
+    ],
+    "design_brief": "Larger late-office object; doorway, interior and glass front must remain independently occludable.",
+    "gameplay_scope": "Art and future layout proposal only; no new hiring, role behavior, tool authority, transaction or interaction is implemented.",
+    "primary_host": null,
+    "current_availability": {
+      "status": "no_catalogue_runtime_binding",
+      "runtime_family_id": null,
+      "runtime_registered_facings": [],
+      "art_path": null,
+      "direction_art_review": "No finished art or runtime family is claimed for this proposal; unrelated concept/source art may exist."
+    },
+    "native_geometry": {
+      "status": "proposal_requires_native_review",
+      "canvas_size_px": [
+        256,
+        416
+      ],
+      "floor_anchor_px": [
+        128,
+        304
+      ],
+      "grid_size_px": 32,
+      "estimated_max_rise_above_occupied_floor_px": 192,
+      "minimum_transparent_padding_px": 16,
+      "anchor_rule": "One unchanged canvas coordinate represents local floor pivot [0,0] in every direction and every layer. Transparent padding is not sprite scaling."
+    },
+    "layers": [
+      {
+        "id": "floor_shadow",
+        "required": true,
+        "same_canvas_and_floor_anchor": true,
+        "status": "planned"
+      },
+      {
+        "id": "rear_structure",
+        "required": true,
+        "same_canvas_and_floor_anchor": true,
+        "status": "planned"
+      },
+      {
+        "id": "front_structure",
+        "required": true,
+        "same_canvas_and_floor_anchor": true,
+        "status": "planned"
+      }
+    ],
+    "variants": [
+      {
+        "facing": "north",
+        "status": "planned",
+        "deliverable_availability": "missing",
+        "approved_art_path": null,
+        "evidence_path": null,
+        "source_reference_path": null,
+        "legacy_runtime_art_for_this_facing": false,
+        "footprint_cells": [
+          3,
+          3
+        ],
+        "proposed_occupied_cell_offsets": [
+          [
+            1,
+            2
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            -1,
+            2
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            -1,
+            1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            -1,
+            0
+          ]
+        ],
+        "employee_look_vector": [
+          0,
+          1
+        ],
+        "proposed_interaction_cell": [
+          0,
+          -1
+        ],
+        "seated_pose_needed": false,
+        "redraw_requirement": "Draw the actual north service front; operator approaches that side looking south. Fixed screen floor axes and upper-left light; do not rotate or mirror finished raster art. No implemented interaction is implied.",
+        "service_side": "north",
+        "approach_gaze": "south"
+      },
+      {
+        "facing": "east",
+        "status": "planned",
+        "deliverable_availability": "missing",
+        "approved_art_path": null,
+        "evidence_path": null,
+        "source_reference_path": null,
+        "legacy_runtime_art_for_this_facing": false,
+        "footprint_cells": [
+          3,
+          3
+        ],
+        "proposed_occupied_cell_offsets": [
+          [
+            -2,
+            1
+          ],
+          [
+            -2,
+            0
+          ],
+          [
+            -2,
+            -1
+          ],
+          [
+            -1,
+            1
+          ],
+          [
+            -1,
+            0
+          ],
+          [
+            -1,
+            -1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            -1
+          ]
+        ],
+        "employee_look_vector": [
+          -1,
+          0
+        ],
+        "proposed_interaction_cell": [
+          1,
+          0
+        ],
+        "seated_pose_needed": false,
+        "redraw_requirement": "Draw the actual east service front; operator approaches that side looking west. Fixed screen floor axes and upper-left light; do not rotate or mirror finished raster art. No implemented interaction is implied.",
+        "service_side": "east",
+        "approach_gaze": "west"
+      },
+      {
+        "facing": "south",
+        "status": "planned",
+        "deliverable_availability": "missing",
+        "approved_art_path": null,
+        "evidence_path": null,
+        "source_reference_path": null,
+        "legacy_runtime_art_for_this_facing": false,
+        "footprint_cells": [
+          3,
+          3
+        ],
+        "proposed_occupied_cell_offsets": [
+          [
+            -1,
+            -2
+          ],
+          [
+            0,
+            -2
+          ],
+          [
+            1,
+            -2
+          ],
+          [
+            -1,
+            -1
+          ],
+          [
+            0,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            -1,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "employee_look_vector": [
+          0,
+          -1
+        ],
+        "proposed_interaction_cell": [
+          0,
+          1
+        ],
+        "seated_pose_needed": false,
+        "redraw_requirement": "Draw the actual south service front; operator approaches that side looking north. Fixed screen floor axes and upper-left light; do not rotate or mirror finished raster art. No implemented interaction is implied.",
+        "service_side": "south",
+        "approach_gaze": "north"
+      },
+      {
+        "facing": "west",
+        "status": "planned",
+        "deliverable_availability": "missing",
+        "approved_art_path": null,
+        "evidence_path": null,
+        "source_reference_path": null,
+        "legacy_runtime_art_for_this_facing": false,
+        "footprint_cells": [
+          3,
+          3
+        ],
+        "proposed_occupied_cell_offsets": [
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            -1
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "employee_look_vector": [
+          1,
+          0
+        ],
+        "proposed_interaction_cell": [
+          -1,
+          0
+        ],
+        "seated_pose_needed": false,
+        "redraw_requirement": "Draw the actual west service front; operator approaches that side looking east. Fixed screen floor axes and upper-left light; do not rotate or mirror finished raster art. No implemented interaction is implied.",
+        "service_side": "west",
+        "approach_gaze": "east"
+      }
+    ]
+  }
+}

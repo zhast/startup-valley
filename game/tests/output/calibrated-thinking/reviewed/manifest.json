@@ -1,0 +1,3570 @@
+{
+	"captures": [
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						304.0
+					],
+					"render_position": [
+						336.0,
+						304.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						304.0
+					],
+					"render_position": [
+						784.0,
+						304.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "before-north-standing-thinking.png",
+			"tick": 0
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						304.0
+					],
+					"render_position": [
+						336.0,
+						304.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						304.0
+					],
+					"render_position": [
+						784.0,
+						304.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "before-north-standing-loop-00.png",
+			"tick": 1
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						304.0
+					],
+					"render_position": [
+						336.0,
+						304.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						304.0
+					],
+					"render_position": [
+						784.0,
+						304.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "before-north-standing-loop-06.png",
+			"tick": 7
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						304.0
+					],
+					"render_position": [
+						336.0,
+						304.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						304.0
+					],
+					"render_position": [
+						784.0,
+						304.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "before-north-standing-loop-11.png",
+			"tick": 12
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						304.0,
+						272.0
+					],
+					"render_position": [
+						304.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						240.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						752.0,
+						272.0
+					],
+					"render_position": [
+						752.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						240.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "before-east-standing-thinking.png",
+			"tick": 12
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						304.0,
+						272.0
+					],
+					"render_position": [
+						304.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						240.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						752.0,
+						272.0
+					],
+					"render_position": [
+						752.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						240.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "before-east-standing-loop-00.png",
+			"tick": 13
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						304.0,
+						272.0
+					],
+					"render_position": [
+						304.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						240.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						752.0,
+						272.0
+					],
+					"render_position": [
+						752.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						240.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "before-east-standing-loop-06.png",
+			"tick": 19
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						304.0,
+						272.0
+					],
+					"render_position": [
+						304.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						240.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						752.0,
+						272.0
+					],
+					"render_position": [
+						752.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						240.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "before-east-standing-loop-11.png",
+			"tick": 24
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						240.0
+					],
+					"render_position": [
+						336.0,
+						240.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						240.0
+					],
+					"render_position": [
+						784.0,
+						240.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "before-south-standing-thinking.png",
+			"tick": 24
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						240.0
+					],
+					"render_position": [
+						336.0,
+						240.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						240.0
+					],
+					"render_position": [
+						784.0,
+						240.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "before-south-standing-loop-00.png",
+			"tick": 25
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						240.0
+					],
+					"render_position": [
+						336.0,
+						240.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						240.0
+					],
+					"render_position": [
+						784.0,
+						240.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "before-south-standing-loop-06.png",
+			"tick": 31
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						240.0
+					],
+					"render_position": [
+						336.0,
+						240.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						240.0
+					],
+					"render_position": [
+						784.0,
+						240.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "before-south-standing-loop-11.png",
+			"tick": 36
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						368.0,
+						272.0
+					],
+					"render_position": [
+						368.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						816.0,
+						272.0
+					],
+					"render_position": [
+						816.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "before-west-standing-thinking.png",
+			"tick": 36
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						368.0,
+						272.0
+					],
+					"render_position": [
+						368.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						816.0,
+						272.0
+					],
+					"render_position": [
+						816.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "before-west-standing-loop-00.png",
+			"tick": 37
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						368.0,
+						272.0
+					],
+					"render_position": [
+						368.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						816.0,
+						272.0
+					],
+					"render_position": [
+						816.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "before-west-standing-loop-06.png",
+			"tick": 43
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						368.0,
+						272.0
+					],
+					"render_position": [
+						368.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						816.0,
+						272.0
+					],
+					"render_position": [
+						816.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "before-west-standing-loop-11.png",
+			"tick": 48
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						304.0
+					],
+					"render_position": [
+						336.0,
+						284.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						304.0
+					],
+					"render_position": [
+						784.0,
+						288.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-north-idle-0.png",
+			"tick": 48
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						304.0
+					],
+					"render_position": [
+						336.0,
+						284.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						48.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						304.0
+					],
+					"render_position": [
+						784.0,
+						288.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						48.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-north-idle-1.png",
+			"tick": 48
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						304.0
+					],
+					"render_position": [
+						336.0,
+						284.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						96.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						304.0
+					],
+					"render_position": [
+						784.0,
+						288.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						96.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				}
+			],
+			"path": "after-north-paused-incoming-typing.png",
+			"tick": 48
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						304.0
+					],
+					"render_position": [
+						336.0,
+						284.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						304.0
+					],
+					"render_position": [
+						784.0,
+						288.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-north-paused-return-thinking.png",
+			"tick": 48
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						304.0
+					],
+					"render_position": [
+						336.0,
+						284.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						304.0
+					],
+					"render_position": [
+						784.0,
+						288.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-north-quiet-loop-00.png",
+			"tick": 49
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						304.0
+					],
+					"render_position": [
+						336.0,
+						284.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						48.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						304.0
+					],
+					"render_position": [
+						784.0,
+						288.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						48.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-north-quiet-loop-21.png",
+			"tick": 70
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						304.0
+					],
+					"render_position": [
+						336.0,
+						284.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						304.0
+					],
+					"render_position": [
+						784.0,
+						288.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-north-quiet-loop-41.png",
+			"tick": 90
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						304.0
+					],
+					"render_position": [
+						336.0,
+						284.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						240.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						304.0
+					],
+					"render_position": [
+						784.0,
+						288.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						240.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				}
+			],
+			"path": "after-north-typing-loop-00.png",
+			"tick": 91
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						304.0
+					],
+					"render_position": [
+						336.0,
+						284.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						144.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						304.0
+					],
+					"render_position": [
+						784.0,
+						288.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						144.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				}
+			],
+			"path": "after-north-typing-loop-06.png",
+			"tick": 97
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						304.0
+					],
+					"render_position": [
+						336.0,
+						284.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						192.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						304.0
+					],
+					"render_position": [
+						784.0,
+						288.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						192.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				}
+			],
+			"path": "after-north-typing-loop-11.png",
+			"tick": 102
+		},
+		{
+			"actors": [
+				{
+					"activity": "completion",
+					"employee": "mira",
+					"live_job": false,
+					"physical_position": [
+						336.0,
+						307.666656494141
+					],
+					"render_position": [
+						336.0,
+						291.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						48.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 11
+				},
+				{
+					"activity": "failure",
+					"employee": "theo",
+					"live_job": false,
+					"physical_position": [
+						784.0,
+						304.0
+					],
+					"render_position": [
+						784.0,
+						290.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 0
+				}
+			],
+			"path": "after-north-leave-recovery-00.png",
+			"tick": 103
+		},
+		{
+			"actors": [
+				{
+					"activity": "completion",
+					"employee": "mira",
+					"live_job": false,
+					"physical_position": [
+						336.0,
+						329.666595458984
+					],
+					"render_position": [
+						336.0,
+						330.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						96.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 11
+				},
+				{
+					"activity": "failure",
+					"employee": "theo",
+					"live_job": false,
+					"physical_position": [
+						784.0,
+						304.0
+					],
+					"render_position": [
+						784.0,
+						304.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						48.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 0
+				}
+			],
+			"path": "after-north-leave-recovery-06.png",
+			"tick": 109
+		},
+		{
+			"actors": [
+				{
+					"activity": "completion",
+					"employee": "mira",
+					"live_job": false,
+					"physical_position": [
+						336.0,
+						346.999969482422
+					],
+					"render_position": [
+						336.0,
+						347.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						144.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 11
+				},
+				{
+					"activity": "failure",
+					"employee": "theo",
+					"live_job": false,
+					"physical_position": [
+						784.0,
+						304.0
+					],
+					"render_position": [
+						784.0,
+						304.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						48.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 0
+				}
+			],
+			"path": "after-north-leave-recovery-11.png",
+			"tick": 114
+		},
+		{
+			"actors": [
+				{
+					"activity": "completion",
+					"employee": "mira",
+					"live_job": false,
+					"physical_position": [
+						336.0,
+						346.999969482422
+					],
+					"render_position": [
+						336.0,
+						347.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						144.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 11
+				},
+				{
+					"activity": "failure",
+					"employee": "theo",
+					"live_job": false,
+					"physical_position": [
+						784.0,
+						304.0
+					],
+					"render_position": [
+						784.0,
+						304.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						48.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 0
+				}
+			],
+			"path": "after-north-left-and-failed.png",
+			"tick": 114
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						304.0,
+						272.0
+					],
+					"render_position": [
+						316.0,
+						275.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						752.0,
+						272.0
+					],
+					"render_position": [
+						764.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-east-idle-0.png",
+			"tick": 114
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						304.0,
+						272.0
+					],
+					"render_position": [
+						316.0,
+						275.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						48.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						752.0,
+						272.0
+					],
+					"render_position": [
+						764.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						48.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-east-idle-1.png",
+			"tick": 114
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						304.0,
+						272.0
+					],
+					"render_position": [
+						316.0,
+						275.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						96.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						752.0,
+						272.0
+					],
+					"render_position": [
+						764.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						96.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				}
+			],
+			"path": "after-east-paused-incoming-typing.png",
+			"tick": 114
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						304.0,
+						272.0
+					],
+					"render_position": [
+						316.0,
+						275.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						752.0,
+						272.0
+					],
+					"render_position": [
+						764.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-east-paused-return-thinking.png",
+			"tick": 114
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						304.0,
+						272.0
+					],
+					"render_position": [
+						316.0,
+						275.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						752.0,
+						272.0
+					],
+					"render_position": [
+						764.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-east-quiet-loop-00.png",
+			"tick": 115
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						304.0,
+						272.0
+					],
+					"render_position": [
+						316.0,
+						275.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						48.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						752.0,
+						272.0
+					],
+					"render_position": [
+						764.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						48.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-east-quiet-loop-21.png",
+			"tick": 136
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						304.0,
+						272.0
+					],
+					"render_position": [
+						316.0,
+						275.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						752.0,
+						272.0
+					],
+					"render_position": [
+						764.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-east-quiet-loop-41.png",
+			"tick": 156
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						304.0,
+						272.0
+					],
+					"render_position": [
+						316.0,
+						275.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						240.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						752.0,
+						272.0
+					],
+					"render_position": [
+						764.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						240.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				}
+			],
+			"path": "after-east-typing-loop-00.png",
+			"tick": 157
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						304.0,
+						272.0
+					],
+					"render_position": [
+						316.0,
+						275.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						144.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						752.0,
+						272.0
+					],
+					"render_position": [
+						764.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						144.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				}
+			],
+			"path": "after-east-typing-loop-06.png",
+			"tick": 163
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						304.0,
+						272.0
+					],
+					"render_position": [
+						316.0,
+						275.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						192.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						752.0,
+						272.0
+					],
+					"render_position": [
+						764.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						192.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				}
+			],
+			"path": "after-east-typing-loop-11.png",
+			"tick": 168
+		},
+		{
+			"actors": [
+				{
+					"activity": "completion",
+					"employee": "mira",
+					"live_job": false,
+					"physical_position": [
+						304.0,
+						275.666656494141
+					],
+					"render_position": [
+						314.0,
+						279.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						48.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 11
+				},
+				{
+					"activity": "failure",
+					"employee": "theo",
+					"live_job": false,
+					"physical_position": [
+						752.0,
+						272.0
+					],
+					"render_position": [
+						762.0,
+						275.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 0
+				}
+			],
+			"path": "after-east-leave-recovery-00.png",
+			"tick": 169
+		},
+		{
+			"actors": [
+				{
+					"activity": "completion",
+					"employee": "mira",
+					"live_job": false,
+					"physical_position": [
+						304.0,
+						297.666595458984
+					],
+					"render_position": [
+						304.0,
+						298.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						96.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 11
+				},
+				{
+					"activity": "failure",
+					"employee": "theo",
+					"live_job": false,
+					"physical_position": [
+						752.0,
+						272.0
+					],
+					"render_position": [
+						752.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						48.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 0
+				}
+			],
+			"path": "after-east-leave-recovery-06.png",
+			"tick": 175
+		},
+		{
+			"actors": [
+				{
+					"activity": "completion",
+					"employee": "mira",
+					"live_job": false,
+					"physical_position": [
+						304.0,
+						314.999969482422
+					],
+					"render_position": [
+						304.0,
+						315.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						144.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 11
+				},
+				{
+					"activity": "failure",
+					"employee": "theo",
+					"live_job": false,
+					"physical_position": [
+						752.0,
+						272.0
+					],
+					"render_position": [
+						752.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						48.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 0
+				}
+			],
+			"path": "after-east-leave-recovery-11.png",
+			"tick": 180
+		},
+		{
+			"actors": [
+				{
+					"activity": "completion",
+					"employee": "mira",
+					"live_job": false,
+					"physical_position": [
+						304.0,
+						314.999969482422
+					],
+					"render_position": [
+						304.0,
+						315.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						144.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 11
+				},
+				{
+					"activity": "failure",
+					"employee": "theo",
+					"live_job": false,
+					"physical_position": [
+						752.0,
+						272.0
+					],
+					"render_position": [
+						752.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						48.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 0
+				}
+			],
+			"path": "after-east-left-and-failed.png",
+			"tick": 180
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						240.0
+					],
+					"render_position": [
+						336.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						240.0
+					],
+					"render_position": [
+						784.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-south-idle-0.png",
+			"tick": 180
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						240.0
+					],
+					"render_position": [
+						336.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						48.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						240.0
+					],
+					"render_position": [
+						784.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						48.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-south-idle-1.png",
+			"tick": 180
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						240.0
+					],
+					"render_position": [
+						336.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						96.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						240.0
+					],
+					"render_position": [
+						784.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						96.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				}
+			],
+			"path": "after-south-paused-incoming-typing.png",
+			"tick": 180
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						240.0
+					],
+					"render_position": [
+						336.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						240.0
+					],
+					"render_position": [
+						784.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-south-paused-return-thinking.png",
+			"tick": 180
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						240.0
+					],
+					"render_position": [
+						336.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						240.0
+					],
+					"render_position": [
+						784.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-south-quiet-loop-00.png",
+			"tick": 181
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						240.0
+					],
+					"render_position": [
+						336.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						48.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						240.0
+					],
+					"render_position": [
+						784.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						48.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-south-quiet-loop-21.png",
+			"tick": 202
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						240.0
+					],
+					"render_position": [
+						336.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						240.0
+					],
+					"render_position": [
+						784.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-south-quiet-loop-41.png",
+			"tick": 222
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						240.0
+					],
+					"render_position": [
+						336.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						240.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						240.0
+					],
+					"render_position": [
+						784.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						240.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				}
+			],
+			"path": "after-south-typing-loop-00.png",
+			"tick": 223
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						240.0
+					],
+					"render_position": [
+						336.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						144.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						240.0
+					],
+					"render_position": [
+						784.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						144.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				}
+			],
+			"path": "after-south-typing-loop-06.png",
+			"tick": 229
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						336.0,
+						240.0
+					],
+					"render_position": [
+						336.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						192.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						784.0,
+						240.0
+					],
+					"render_position": [
+						784.0,
+						252.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						192.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				}
+			],
+			"path": "after-south-typing-loop-11.png",
+			"tick": 234
+		},
+		{
+			"actors": [
+				{
+					"activity": "completion",
+					"employee": "mira",
+					"live_job": false,
+					"physical_position": [
+						339.666656494141,
+						240.0
+					],
+					"render_position": [
+						340.0,
+						250.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						240.0,
+						240.0,
+						48,
+						80
+					],
+					"state": 11
+				},
+				{
+					"activity": "failure",
+					"employee": "theo",
+					"live_job": false,
+					"physical_position": [
+						784.0,
+						240.0
+					],
+					"render_position": [
+						784.0,
+						250.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						240.0,
+						48,
+						80
+					],
+					"state": 0
+				}
+			],
+			"path": "after-south-leave-recovery-00.png",
+			"tick": 235
+		},
+		{
+			"actors": [
+				{
+					"activity": "completion",
+					"employee": "mira",
+					"live_job": false,
+					"physical_position": [
+						361.666595458984,
+						240.0
+					],
+					"render_position": [
+						362.0,
+						240.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						288.0,
+						240.0,
+						48,
+						80
+					],
+					"state": 11
+				},
+				{
+					"activity": "failure",
+					"employee": "theo",
+					"live_job": false,
+					"physical_position": [
+						784.0,
+						240.0
+					],
+					"render_position": [
+						784.0,
+						240.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						48.0,
+						240.0,
+						48,
+						80
+					],
+					"state": 0
+				}
+			],
+			"path": "after-south-leave-recovery-06.png",
+			"tick": 241
+		},
+		{
+			"actors": [
+				{
+					"activity": "completion",
+					"employee": "mira",
+					"live_job": false,
+					"physical_position": [
+						378.999969482422,
+						240.0
+					],
+					"render_position": [
+						379.0,
+						240.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						336.0,
+						240.0,
+						48,
+						80
+					],
+					"state": 11
+				},
+				{
+					"activity": "failure",
+					"employee": "theo",
+					"live_job": false,
+					"physical_position": [
+						784.0,
+						240.0
+					],
+					"render_position": [
+						784.0,
+						240.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						48.0,
+						240.0,
+						48,
+						80
+					],
+					"state": 0
+				}
+			],
+			"path": "after-south-leave-recovery-11.png",
+			"tick": 246
+		},
+		{
+			"actors": [
+				{
+					"activity": "completion",
+					"employee": "mira",
+					"live_job": false,
+					"physical_position": [
+						378.999969482422,
+						240.0
+					],
+					"render_position": [
+						379.0,
+						240.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						336.0,
+						240.0,
+						48,
+						80
+					],
+					"state": 11
+				},
+				{
+					"activity": "failure",
+					"employee": "theo",
+					"live_job": false,
+					"physical_position": [
+						784.0,
+						240.0
+					],
+					"render_position": [
+						784.0,
+						240.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						48.0,
+						240.0,
+						48,
+						80
+					],
+					"state": 0
+				}
+			],
+			"path": "after-south-left-and-failed.png",
+			"tick": 246
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						368.0,
+						272.0
+					],
+					"render_position": [
+						356.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						816.0,
+						272.0
+					],
+					"render_position": [
+						804.0,
+						280.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-west-idle-0.png",
+			"tick": 246
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						368.0,
+						272.0
+					],
+					"render_position": [
+						356.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						48.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						816.0,
+						272.0
+					],
+					"render_position": [
+						804.0,
+						280.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						48.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-west-idle-1.png",
+			"tick": 246
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						368.0,
+						272.0
+					],
+					"render_position": [
+						356.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						96.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						816.0,
+						272.0
+					],
+					"render_position": [
+						804.0,
+						280.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						96.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				}
+			],
+			"path": "after-west-paused-incoming-typing.png",
+			"tick": 246
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						368.0,
+						272.0
+					],
+					"render_position": [
+						356.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						816.0,
+						272.0
+					],
+					"render_position": [
+						804.0,
+						280.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-west-paused-return-thinking.png",
+			"tick": 246
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						368.0,
+						272.0
+					],
+					"render_position": [
+						356.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						816.0,
+						272.0
+					],
+					"render_position": [
+						804.0,
+						280.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-west-quiet-loop-00.png",
+			"tick": 247
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						368.0,
+						272.0
+					],
+					"render_position": [
+						356.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						48.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						816.0,
+						272.0
+					],
+					"render_position": [
+						804.0,
+						280.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						48.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-west-quiet-loop-21.png",
+			"tick": 268
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						368.0,
+						272.0
+					],
+					"render_position": [
+						356.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						816.0,
+						272.0
+					],
+					"render_position": [
+						804.0,
+						280.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						0.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 7
+				}
+			],
+			"path": "after-west-quiet-loop-41.png",
+			"tick": 288
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						368.0,
+						272.0
+					],
+					"render_position": [
+						356.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						240.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						816.0,
+						272.0
+					],
+					"render_position": [
+						804.0,
+						280.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						240.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				}
+			],
+			"path": "after-west-typing-loop-00.png",
+			"tick": 289
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						368.0,
+						272.0
+					],
+					"render_position": [
+						356.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						144.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						816.0,
+						272.0
+					],
+					"render_position": [
+						804.0,
+						280.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						144.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				}
+			],
+			"path": "after-west-typing-loop-06.png",
+			"tick": 295
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"employee": "mira",
+					"live_job": true,
+					"physical_position": [
+						368.0,
+						272.0
+					],
+					"render_position": [
+						356.0,
+						276.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						192.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"employee": "theo",
+					"live_job": true,
+					"physical_position": [
+						816.0,
+						272.0
+					],
+					"render_position": [
+						804.0,
+						280.0
+					],
+					"source_layers": 2,
+					"source_region": [
+						192.0,
+						0.0,
+						48,
+						80
+					],
+					"state": 8
+				}
+			],
+			"path": "after-west-typing-loop-11.png",
+			"tick": 300
+		},
+		{
+			"actors": [
+				{
+					"activity": "completion",
+					"employee": "mira",
+					"live_job": false,
+					"physical_position": [
+						368.0,
+						275.666656494141
+					],
+					"render_position": [
+						358.0,
+						279.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						48.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 11
+				},
+				{
+					"activity": "failure",
+					"employee": "theo",
+					"live_job": false,
+					"physical_position": [
+						816.0,
+						272.0
+					],
+					"render_position": [
+						806.0,
+						279.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						0.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 0
+				}
+			],
+			"path": "after-west-leave-recovery-00.png",
+			"tick": 301
+		},
+		{
+			"actors": [
+				{
+					"activity": "completion",
+					"employee": "mira",
+					"live_job": false,
+					"physical_position": [
+						368.0,
+						297.666595458984
+					],
+					"render_position": [
+						368.0,
+						298.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						96.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 11
+				},
+				{
+					"activity": "failure",
+					"employee": "theo",
+					"live_job": false,
+					"physical_position": [
+						816.0,
+						272.0
+					],
+					"render_position": [
+						816.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						48.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 0
+				}
+			],
+			"path": "after-west-leave-recovery-06.png",
+			"tick": 307
+		},
+		{
+			"actors": [
+				{
+					"activity": "completion",
+					"employee": "mira",
+					"live_job": false,
+					"physical_position": [
+						368.0,
+						314.999969482422
+					],
+					"render_position": [
+						368.0,
+						315.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						144.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 11
+				},
+				{
+					"activity": "failure",
+					"employee": "theo",
+					"live_job": false,
+					"physical_position": [
+						816.0,
+						272.0
+					],
+					"render_position": [
+						816.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						48.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 0
+				}
+			],
+			"path": "after-west-leave-recovery-11.png",
+			"tick": 312
+		},
+		{
+			"actors": [
+				{
+					"activity": "completion",
+					"employee": "mira",
+					"live_job": false,
+					"physical_position": [
+						368.0,
+						314.999969482422
+					],
+					"render_position": [
+						368.0,
+						315.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						144.0,
+						160.0,
+						48,
+						80
+					],
+					"state": 11
+				},
+				{
+					"activity": "failure",
+					"employee": "theo",
+					"live_job": false,
+					"physical_position": [
+						816.0,
+						272.0
+					],
+					"render_position": [
+						816.0,
+						272.0
+					],
+					"source_layers": 0,
+					"source_region": [
+						48.0,
+						80.0,
+						48,
+						80
+					],
+					"state": 0
+				}
+			],
+			"path": "after-west-left-and-failed.png",
+			"tick": 312
+		}
+	],
+	"checks": 8735,
+	"failures": [],
+	"limitations": [
+		"No new drawn art.",
+		"No research, approval or delivery capability added.",
+		"Existing seat/hand contact and mount-pose limitations remain.",
+		"Pause freezes navigation/seat interpolation; live event visuals and gentle animation keep updating as before."
+	],
+	"motion": [
+		{
+			"end_tick": 12,
+			"fps": 30,
+			"scenario": "before-north-standing-loop",
+			"start_tick": 0
+		},
+		{
+			"end_tick": 24,
+			"fps": 30,
+			"scenario": "before-east-standing-loop",
+			"start_tick": 12
+		},
+		{
+			"end_tick": 36,
+			"fps": 30,
+			"scenario": "before-south-standing-loop",
+			"start_tick": 24
+		},
+		{
+			"end_tick": 48,
+			"fps": 30,
+			"scenario": "before-west-standing-loop",
+			"start_tick": 36
+		},
+		{
+			"end_tick": 90,
+			"fps": 30,
+			"scenario": "after-north-quiet-loop",
+			"start_tick": 48
+		},
+		{
+			"end_tick": 102,
+			"fps": 30,
+			"scenario": "after-north-typing-loop",
+			"start_tick": 90
+		},
+		{
+			"end_tick": 114,
+			"fps": 30,
+			"scenario": "after-north-leave-recovery",
+			"start_tick": 102
+		},
+		{
+			"end_tick": 156,
+			"fps": 30,
+			"scenario": "after-east-quiet-loop",
+			"start_tick": 114
+		},
+		{
+			"end_tick": 168,
+			"fps": 30,
+			"scenario": "after-east-typing-loop",
+			"start_tick": 156
+		},
+		{
+			"end_tick": 180,
+			"fps": 30,
+			"scenario": "after-east-leave-recovery",
+			"start_tick": 168
+		},
+		{
+			"end_tick": 222,
+			"fps": 30,
+			"scenario": "after-south-quiet-loop",
+			"start_tick": 180
+		},
+		{
+			"end_tick": 234,
+			"fps": 30,
+			"scenario": "after-south-typing-loop",
+			"start_tick": 222
+		},
+		{
+			"end_tick": 246,
+			"fps": 30,
+			"scenario": "after-south-leave-recovery",
+			"start_tick": 234
+		},
+		{
+			"end_tick": 288,
+			"fps": 30,
+			"scenario": "after-west-quiet-loop",
+			"start_tick": 246
+		},
+		{
+			"end_tick": 300,
+			"fps": 30,
+			"scenario": "after-west-typing-loop",
+			"start_tick": 288
+		},
+		{
+			"end_tick": 312,
+			"fps": 30,
+			"scenario": "after-west-leave-recovery",
+			"start_tick": 300
+		}
+	],
+	"motion_ticks": 312,
+	"production_activation": false,
+	"reuse": "Owner-scoped WORKING + thinking reuses seated-idle source columns0–1 at1.5FPS; typing remains columns2–5 only on actual tool state.",
+	"worker_disabled": true
+}

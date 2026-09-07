@@ -1,0 +1,453 @@
+{
+	"captures": [
+		"res://tests/output/passive-tables-v2/all-tables-north-room.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-north-base-native.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-north-base-4x.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-north-founder-behind-room.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-north-founder-behind-native.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-north-founder-behind-4x.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-north-founder-front-room.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-north-founder-front-native.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-north-founder-front-4x.png",
+		"res://tests/output/passive-tables-v2/cafe_table-north-base-native.png",
+		"res://tests/output/passive-tables-v2/cafe_table-north-base-4x.png",
+		"res://tests/output/passive-tables-v2/cafe_table-north-mira-behind-room.png",
+		"res://tests/output/passive-tables-v2/cafe_table-north-mira-behind-native.png",
+		"res://tests/output/passive-tables-v2/cafe_table-north-mira-behind-4x.png",
+		"res://tests/output/passive-tables-v2/cafe_table-north-mira-front-room.png",
+		"res://tests/output/passive-tables-v2/cafe_table-north-mira-front-native.png",
+		"res://tests/output/passive-tables-v2/cafe_table-north-mira-front-4x.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-north-base-native.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-north-base-4x.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-north-theo-behind-room.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-north-theo-behind-native.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-north-theo-behind-4x.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-north-theo-front-room.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-north-theo-front-native.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-north-theo-front-4x.png",
+		"res://tests/output/passive-tables-v2/all-tables-east-room.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-east-base-native.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-east-base-4x.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-east-founder-behind-room.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-east-founder-behind-native.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-east-founder-behind-4x.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-east-founder-front-room.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-east-founder-front-native.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-east-founder-front-4x.png",
+		"res://tests/output/passive-tables-v2/cafe_table-east-base-native.png",
+		"res://tests/output/passive-tables-v2/cafe_table-east-base-4x.png",
+		"res://tests/output/passive-tables-v2/cafe_table-east-mira-behind-room.png",
+		"res://tests/output/passive-tables-v2/cafe_table-east-mira-behind-native.png",
+		"res://tests/output/passive-tables-v2/cafe_table-east-mira-behind-4x.png",
+		"res://tests/output/passive-tables-v2/cafe_table-east-mira-front-room.png",
+		"res://tests/output/passive-tables-v2/cafe_table-east-mira-front-native.png",
+		"res://tests/output/passive-tables-v2/cafe_table-east-mira-front-4x.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-east-base-native.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-east-base-4x.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-east-theo-behind-room.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-east-theo-behind-native.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-east-theo-behind-4x.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-east-theo-front-room.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-east-theo-front-native.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-east-theo-front-4x.png",
+		"res://tests/output/passive-tables-v2/all-tables-south-room.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-south-base-native.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-south-base-4x.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-south-founder-behind-room.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-south-founder-behind-native.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-south-founder-behind-4x.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-south-founder-front-room.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-south-founder-front-native.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-south-founder-front-4x.png",
+		"res://tests/output/passive-tables-v2/cafe_table-south-base-native.png",
+		"res://tests/output/passive-tables-v2/cafe_table-south-base-4x.png",
+		"res://tests/output/passive-tables-v2/cafe_table-south-mira-behind-room.png",
+		"res://tests/output/passive-tables-v2/cafe_table-south-mira-behind-native.png",
+		"res://tests/output/passive-tables-v2/cafe_table-south-mira-behind-4x.png",
+		"res://tests/output/passive-tables-v2/cafe_table-south-mira-front-room.png",
+		"res://tests/output/passive-tables-v2/cafe_table-south-mira-front-native.png",
+		"res://tests/output/passive-tables-v2/cafe_table-south-mira-front-4x.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-south-base-native.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-south-base-4x.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-south-theo-behind-room.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-south-theo-behind-native.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-south-theo-behind-4x.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-south-theo-front-room.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-south-theo-front-native.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-south-theo-front-4x.png",
+		"res://tests/output/passive-tables-v2/all-tables-west-room.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-west-base-native.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-west-base-4x.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-west-founder-behind-room.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-west-founder-behind-native.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-west-founder-behind-4x.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-west-founder-front-room.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-west-founder-front-native.png",
+		"res://tests/output/passive-tables-v2/low_coffee_table-west-founder-front-4x.png",
+		"res://tests/output/passive-tables-v2/cafe_table-west-base-native.png",
+		"res://tests/output/passive-tables-v2/cafe_table-west-base-4x.png",
+		"res://tests/output/passive-tables-v2/cafe_table-west-mira-behind-room.png",
+		"res://tests/output/passive-tables-v2/cafe_table-west-mira-behind-native.png",
+		"res://tests/output/passive-tables-v2/cafe_table-west-mira-behind-4x.png",
+		"res://tests/output/passive-tables-v2/cafe_table-west-mira-front-room.png",
+		"res://tests/output/passive-tables-v2/cafe_table-west-mira-front-native.png",
+		"res://tests/output/passive-tables-v2/cafe_table-west-mira-front-4x.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-west-base-native.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-west-base-4x.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-west-theo-behind-room.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-west-theo-behind-native.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-west-theo-behind-4x.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-west-theo-front-room.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-west-theo-front-native.png",
+		"res://tests/output/passive-tables-v2/round_meeting_table-west-theo-front-4x.png"
+	],
+	"checks": 371,
+	"date": "2026-09-06",
+	"failures": [],
+	"limitations": [
+		"Bare art only: no chairs, tools, interaction, seating, work pose, service, worker behavior, save data or production registration.",
+		"Cafe and round-table actor probes establish scale/depth, not future multi-seat behavior.",
+		"Visual approval requires inspecting these native and nearest-neighbor 4x images; check counts are geometry evidence only."
+	],
+	"observations": {
+		"east": {
+			"cafe_table": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							22,
+							11
+						],
+						"opaque_overlap": 336,
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							22,
+							14
+						],
+						"opaque_overlap": 87,
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-cafe-table: Footprint intersects a wall or room boundary",
+					"dev-cafe-table: Artwork extends into a wall; move furniture farther inward"
+				]
+			},
+			"low_coffee_table": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							8,
+							11
+						],
+						"opaque_overlap": 60,
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							8,
+							14
+						],
+						"opaque_overlap": 814,
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-low-table: Footprint intersects a wall or room boundary",
+					"dev-low-table: Artwork extends into a wall; move furniture farther inward"
+				]
+			},
+			"round_meeting_table": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							29,
+							11
+						],
+						"opaque_overlap": 319,
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							29,
+							15
+						],
+						"opaque_overlap": 704,
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-round-table: Footprint intersects a wall or room boundary",
+					"dev-round-table: Artwork extends into a wall; move furniture farther inward"
+				]
+			}
+		},
+		"north": {
+			"cafe_table": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							22,
+							11
+						],
+						"opaque_overlap": 333,
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							22,
+							14
+						],
+						"opaque_overlap": 79,
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-cafe-table: Footprint intersects a wall or room boundary",
+					"dev-cafe-table: Artwork extends into a wall; move furniture farther inward"
+				]
+			},
+			"low_coffee_table": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							8,
+							12
+						],
+						"opaque_overlap": 61,
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							8,
+							14
+						],
+						"opaque_overlap": 688,
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-low-table: Footprint intersects a wall or room boundary",
+					"dev-low-table: Artwork extends into a wall; move furniture farther inward"
+				]
+			},
+			"round_meeting_table": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							29,
+							11
+						],
+						"opaque_overlap": 319,
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							29,
+							15
+						],
+						"opaque_overlap": 704,
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-round-table: Footprint intersects a wall or room boundary",
+					"dev-round-table: Artwork extends into a wall; move furniture farther inward"
+				]
+			}
+		},
+		"south": {
+			"cafe_table": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							22,
+							12
+						],
+						"opaque_overlap": 336,
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							22,
+							15
+						],
+						"opaque_overlap": 87,
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-cafe-table: Artwork extends into a wall; move furniture farther inward"
+				]
+			},
+			"low_coffee_table": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							8,
+							12
+						],
+						"opaque_overlap": 62,
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							8,
+							14
+						],
+						"opaque_overlap": 696,
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-low-table: Artwork extends into a wall; move furniture farther inward"
+				]
+			},
+			"round_meeting_table": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							29,
+							11
+						],
+						"opaque_overlap": 319,
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							29,
+							15
+						],
+						"opaque_overlap": 704,
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-round-table: Footprint intersects a wall or room boundary",
+					"dev-round-table: Artwork extends into a wall; move furniture farther inward"
+				]
+			}
+		},
+		"west": {
+			"cafe_table": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							22,
+							12
+						],
+						"opaque_overlap": 333,
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							22,
+							15
+						],
+						"opaque_overlap": 79,
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-cafe-table: Footprint intersects a wall or room boundary",
+					"dev-cafe-table: Artwork extends into a wall; move furniture farther inward"
+				]
+			},
+			"low_coffee_table": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							8,
+							12
+						],
+						"opaque_overlap": 60,
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							8,
+							15
+						],
+						"opaque_overlap": 814,
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-low-table: Artwork extends into a wall; move furniture farther inward"
+				]
+			},
+			"round_meeting_table": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							29,
+							11
+						],
+						"opaque_overlap": 319,
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							29,
+							15
+						],
+						"opaque_overlap": 704,
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-round-table: Footprint intersects a wall or room boundary",
+					"dev-round-table: Artwork extends into a wall; move furniture farther inward"
+				]
+			}
+		}
+	},
+	"renderer": "macOS",
+	"routes": {
+		"cafe_table": {
+			"actor": "mira",
+			"start": [
+				17,
+				16
+			],
+			"target": [
+				27,
+				16
+			],
+			"waypoints": 10
+		},
+		"low_coffee_table": {
+			"actor": "founder",
+			"start": [
+				3,
+				16
+			],
+			"target": [
+				13,
+				16
+			],
+			"waypoints": 10
+		},
+		"round_meeting_table": {
+			"actor": "theo",
+			"start": [
+				24,
+				16
+			],
+			"target": [
+				34,
+				16
+			],
+			"waypoints": 12
+		}
+	},
+	"save_access": false,
+	"status": "three_passive_table_native_candidates_not_runtime_registered",
+	"viewport": [
+		1280,
+		720
+	],
+	"worker_disabled": true
+}

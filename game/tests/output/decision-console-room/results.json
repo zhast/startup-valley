@@ -1,0 +1,19 @@
+{
+	"captures": [
+		"res://tests/output/decision-console-room/room-north.png",
+		"res://tests/output/decision-console-room/detail-north-native.png",
+		"res://tests/output/decision-console-room/room-east.png",
+		"res://tests/output/decision-console-room/detail-east-native.png",
+		"res://tests/output/decision-console-room/room-south.png",
+		"res://tests/output/decision-console-room/detail-south-native.png",
+		"res://tests/output/decision-console-room/room-west.png",
+		"res://tests/output/decision-console-room/detail-west-native.png",
+		"res://tests/output/decision-console-room/actual-room-contact-sheet-native.png"
+	],
+	"checks": 72,
+	"failures": [],
+	"runtime_registered": false,
+	"save_access": false,
+	"status": "actual_room_review_required",
+	"worker_disabled": true
+}

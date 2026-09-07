@@ -1,0 +1,58 @@
+{
+	"captures": [
+		"four-specialists-native.png",
+		"legal-card-native.png",
+		"creative-card-native.png",
+		"engineer-card-native.png",
+		"finance-card-native.png"
+	],
+	"checks": 57,
+	"employee_registered": false,
+	"failures": [],
+	"native_review_only": true,
+	"records": [
+		{
+			"colors": 32,
+			"native_size": [
+				64,
+				80
+			],
+			"path": "res://tests/fixtures/character-concepts/overnight-crops-v1/lawyer-b.png",
+			"role": "Legal",
+			"sha256": "79883ec9388f20343be46033741aabc25c239e594c19df3657b3a8e369615cb0"
+		},
+		{
+			"colors": 32,
+			"native_size": [
+				64,
+				80
+			],
+			"path": "res://tests/fixtures/character-concepts/overnight-crops-v1/creative-b.png",
+			"role": "Creative",
+			"sha256": "1dbf6040ebe60c8dfbb558142e8781d51d025c127905db5fe82cf4033f49416b"
+		},
+		{
+			"colors": 31,
+			"native_size": [
+				64,
+				80
+			],
+			"path": "res://tests/fixtures/character-concepts/additional-v1/engineer-portrait-v1.png",
+			"role": "Engineer",
+			"sha256": "02c27d4eea1ce8252d468acd7732a1ee0841e1cbcf939e83f1418657d0c82748"
+		},
+		{
+			"colors": 30,
+			"native_size": [
+				64,
+				80
+			],
+			"path": "res://tests/fixtures/character-concepts/additional-v1/finance-portrait-v1.png",
+			"role": "Finance",
+			"sha256": "5a843b9c9fdf22ec74ac27a1e735ef8072e874e0309ebe5a8a07f810ed589eb0"
+		}
+	],
+	"runtime_approved": false,
+	"save_access": false,
+	"worker_started": false
+}

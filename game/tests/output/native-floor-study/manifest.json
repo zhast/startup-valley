@@ -1,0 +1,636 @@
+{
+	"captures": [
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.57790460060602,
+					"outline_samples_below_1_5": 19
+				}
+			},
+			"floor_filter": "nearest",
+			"floor_origin": "(0.0, 0.0)",
+			"material": "baseline",
+			"name": "baseline-hires-0-office",
+			"path": "res://tests/output/native-floor-study/baseline-hires-0-office.png",
+			"scale": [
+				1,
+				1
+			],
+			"sha256": "9e1c26485c8bf31d9a6fb7fd1b5c89ff9ac84f76cabb658317d69c451282aa1f",
+			"stage": 0,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 14.2566337116338,
+					"outline_samples_below_1_5": 9
+				}
+			},
+			"floor_filter": "nearest",
+			"floor_origin": "(0.0, 0.0)",
+			"material": "cream-terrazzo-floor",
+			"name": "cream-terrazzo-floor-hires-0-office",
+			"path": "res://tests/output/native-floor-study/cream-terrazzo-floor-hires-0-office.png",
+			"scale": [
+				1,
+				1
+			],
+			"sha256": "0f4b94fb9998f6786c67d345321c655a7cfb40231da99ee7571b650ab016ac06",
+			"stage": 0,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 2.72582439296792,
+					"outline_samples_below_1_5": 31
+				}
+			},
+			"floor_filter": "nearest",
+			"floor_origin": "(0.0, 0.0)",
+			"material": "walnut-floor",
+			"name": "walnut-floor-hires-0-office",
+			"path": "res://tests/output/native-floor-study/walnut-floor-hires-0-office.png",
+			"scale": [
+				1,
+				1
+			],
+			"sha256": "085e1899dbf3bed7cb35ff163a2c80ce2cd1082da81391d55b53aa792556fcd6",
+			"stage": 0,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.74571511218258,
+					"outline_samples_below_1_5": 22
+				}
+			},
+			"floor_filter": "nearest",
+			"floor_origin": "(0.0, 0.0)",
+			"material": "warm-cork-floor",
+			"name": "warm-cork-floor-hires-0-office",
+			"path": "res://tests/output/native-floor-study/warm-cork-floor-hires-0-office.png",
+			"scale": [
+				1,
+				1
+			],
+			"sha256": "f8538a4dd6647439a38316f48cb49cbc41a34241f2a5260285220a3991d798de",
+			"stage": 0,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.57790460060602,
+					"outline_samples_below_1_5": 19
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.04137619360854,
+					"outline_samples_below_1_5": 10
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.13900710004838,
+					"outline_samples_below_1_5": 16
+				}
+			},
+			"floor_filter": "nearest",
+			"floor_origin": "(0.0, 0.0)",
+			"material": "baseline",
+			"name": "baseline-hires-2-office",
+			"path": "res://tests/output/native-floor-study/baseline-hires-2-office.png",
+			"scale": [
+				1,
+				1
+			],
+			"sha256": "ce6e06ea699931449ead76ab483463761a49e5af5d5686979d7452a2e2890733",
+			"stage": 2,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 14.2566337116338,
+					"outline_samples_below_1_5": 9
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.5023012764607,
+					"outline_samples_below_1_5": 17
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 11.8129802175906,
+					"outline_samples_below_1_5": 2
+				}
+			},
+			"floor_filter": "nearest",
+			"floor_origin": "(0.0, 0.0)",
+			"material": "cream-terrazzo-floor",
+			"name": "cream-terrazzo-floor-hires-2-office",
+			"path": "res://tests/output/native-floor-study/cream-terrazzo-floor-hires-2-office.png",
+			"scale": [
+				1,
+				1
+			],
+			"sha256": "00fa1d6e81ec773ff1d6dae1384bfcfc3bb0bab0272e74c1d81d5fc5c1718f00",
+			"stage": 2,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 2.72582439296792,
+					"outline_samples_below_1_5": 31
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 2.53826633221243,
+					"outline_samples_below_1_5": 24
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 2.12161295781793,
+					"outline_samples_below_1_5": 57
+				}
+			},
+			"floor_filter": "nearest",
+			"floor_origin": "(0.0, 0.0)",
+			"material": "walnut-floor",
+			"name": "walnut-floor-hires-2-office",
+			"path": "res://tests/output/native-floor-study/walnut-floor-hires-2-office.png",
+			"scale": [
+				1,
+				1
+			],
+			"sha256": "3a3ed3785949e7b456c1167fc96e5a1086edc1c370fd514a10d902894f083451",
+			"stage": 2,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.74571511218258,
+					"outline_samples_below_1_5": 22
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.38705566172464,
+					"outline_samples_below_1_5": 14
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.13831305102898,
+					"outline_samples_below_1_5": 14
+				}
+			},
+			"floor_filter": "nearest",
+			"floor_origin": "(0.0, 0.0)",
+			"material": "warm-cork-floor",
+			"name": "warm-cork-floor-hires-2-office",
+			"path": "res://tests/output/native-floor-study/warm-cork-floor-hires-2-office.png",
+			"scale": [
+				1,
+				1
+			],
+			"sha256": "065aaf74efc93ffc1f8604d8a3b451ccafe2645be50f564164fb8c931c0e009c",
+			"stage": 2,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.57790460060602,
+					"outline_samples_below_1_5": 19
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.04137619360854,
+					"outline_samples_below_1_5": 10
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.13900710004838,
+					"outline_samples_below_1_5": 16
+				}
+			},
+			"floor_filter": "nearest",
+			"floor_origin": "(0.0, 0.0)",
+			"material": "baseline",
+			"name": "baseline-hires-2-chat",
+			"path": "res://tests/output/native-floor-study/baseline-hires-2-chat.png",
+			"scale": [
+				1,
+				1
+			],
+			"sha256": "4f72cf099aab108d65b3643125bd147298c26cfcfc1f9fdb0b9bf35a7f8bbc98",
+			"stage": 2,
+			"view": "chat"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 14.2566337116338,
+					"outline_samples_below_1_5": 9
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.5023012764607,
+					"outline_samples_below_1_5": 17
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 11.8129802175906,
+					"outline_samples_below_1_5": 2
+				}
+			},
+			"floor_filter": "nearest",
+			"floor_origin": "(0.0, 0.0)",
+			"material": "cream-terrazzo-floor",
+			"name": "cream-terrazzo-floor-hires-2-chat",
+			"path": "res://tests/output/native-floor-study/cream-terrazzo-floor-hires-2-chat.png",
+			"scale": [
+				1,
+				1
+			],
+			"sha256": "8cb0f3ba81ba4f6f452a023d2b7ad94a69a5569e29cdf73822bba9ef42b90e51",
+			"stage": 2,
+			"view": "chat"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 2.72582439296792,
+					"outline_samples_below_1_5": 31
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 2.53826633221243,
+					"outline_samples_below_1_5": 24
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 2.12161295781793,
+					"outline_samples_below_1_5": 57
+				}
+			},
+			"floor_filter": "nearest",
+			"floor_origin": "(0.0, 0.0)",
+			"material": "walnut-floor",
+			"name": "walnut-floor-hires-2-chat",
+			"path": "res://tests/output/native-floor-study/walnut-floor-hires-2-chat.png",
+			"scale": [
+				1,
+				1
+			],
+			"sha256": "63ad32b919003f00cba5718b6deae938dad893faa4ccb9032457a838259c30fa",
+			"stage": 2,
+			"view": "chat"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.74571511218258,
+					"outline_samples_below_1_5": 22
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.38705566172464,
+					"outline_samples_below_1_5": 14
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.13831305102898,
+					"outline_samples_below_1_5": 14
+				}
+			},
+			"floor_filter": "nearest",
+			"floor_origin": "(0.0, 0.0)",
+			"material": "warm-cork-floor",
+			"name": "warm-cork-floor-hires-2-chat",
+			"path": "res://tests/output/native-floor-study/warm-cork-floor-hires-2-chat.png",
+			"scale": [
+				1,
+				1
+			],
+			"sha256": "2b0517a6743802b2e7a3596c01825eedb4f691d9a9bc5044d77a1796d2d6a8d6",
+			"stage": 2,
+			"view": "chat"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.57790460060602,
+					"outline_samples_below_1_5": 19
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.04137619360854,
+					"outline_samples_below_1_5": 10
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.13900710004838,
+					"outline_samples_below_1_5": 16
+				}
+			},
+			"floor_filter": "nearest",
+			"floor_origin": "(0.0, 0.0)",
+			"material": "baseline",
+			"name": "baseline-hires-4-office",
+			"path": "res://tests/output/native-floor-study/baseline-hires-4-office.png",
+			"scale": [
+				1,
+				1
+			],
+			"sha256": "b72022e579643148a0a67a1a6ef6e8a2ce39d522db84f1bab5c9a5a7ac2d1419",
+			"stage": 4,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 14.2566337116338,
+					"outline_samples_below_1_5": 9
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.5023012764607,
+					"outline_samples_below_1_5": 17
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 11.8129802175906,
+					"outline_samples_below_1_5": 2
+				}
+			},
+			"floor_filter": "nearest",
+			"floor_origin": "(0.0, 0.0)",
+			"material": "cream-terrazzo-floor",
+			"name": "cream-terrazzo-floor-hires-4-office",
+			"path": "res://tests/output/native-floor-study/cream-terrazzo-floor-hires-4-office.png",
+			"scale": [
+				1,
+				1
+			],
+			"sha256": "1b2a4813d0a89bf53957c375086a927556df6b8a46aa36514637ee637a9aac97",
+			"stage": 4,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 2.72582439296792,
+					"outline_samples_below_1_5": 31
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 2.53826633221243,
+					"outline_samples_below_1_5": 24
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 2.12161295781793,
+					"outline_samples_below_1_5": 57
+				}
+			},
+			"floor_filter": "nearest",
+			"floor_origin": "(0.0, 0.0)",
+			"material": "walnut-floor",
+			"name": "walnut-floor-hires-4-office",
+			"path": "res://tests/output/native-floor-study/walnut-floor-hires-4-office.png",
+			"scale": [
+				1,
+				1
+			],
+			"sha256": "41f61e97e983c028958ae8e6d8d824c08ca3eb6fe67c96966e644e2faa06896a",
+			"stage": 4,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.74571511218258,
+					"outline_samples_below_1_5": 22
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.38705566172464,
+					"outline_samples_below_1_5": 14
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.13831305102898,
+					"outline_samples_below_1_5": 14
+				}
+			},
+			"floor_filter": "nearest",
+			"floor_origin": "(0.0, 0.0)",
+			"material": "warm-cork-floor",
+			"name": "warm-cork-floor-hires-4-office",
+			"path": "res://tests/output/native-floor-study/warm-cork-floor-hires-4-office.png",
+			"scale": [
+				1,
+				1
+			],
+			"sha256": "0cd5cd63ffb4bf9d5aff5fef73b615fc92e0d22eab74eadd687ee6eab083fe2e",
+			"stage": 4,
+			"view": "office"
+		}
+	],
+	"checks": 167,
+	"failures": [],
+	"limitations": [
+		"Only floor_art is overridden on disposable actual GameMain instances.",
+		"Seam/color/outline metrics are measurements, not automatic art approval.",
+		"Actors are frozen at identical native front-idle poses; this is not a movement audit.",
+		"Stage4 is the mature prop layout with the supported two-employee roster.",
+		"Half-size contacts are comparisons; individual captures are native1280x720."
+	],
+	"materials": {
+		"baseline": {
+			"colors": 20,
+			"dimensions": [
+				128,
+				128
+			],
+			"exact_wrap_contract_pass": true,
+			"internal_x_mean_rgb_delta": 0.0140334713881408,
+			"internal_y_mean_rgb_delta": 0.0511494210268557,
+			"luminance_range": [
+				0.158404272168875,
+				0.548206224966049
+			],
+			"mean_luminance": 0.378567259657963,
+			"native_path": "res://assets/runtime/office/architecture/floor.png",
+			"native_sha256": "6202478639de33fe7f8b548b49a20dddff6b69b59300300bcc89cfa064f2d0bd",
+			"opaque": true,
+			"wrap_x_max_rgb_delta": 0.0,
+			"wrap_x_mean_rgb_delta": 0.0,
+			"wrap_x_mismatched_rows": 0,
+			"wrap_x_to_internal_ratio": 0.0,
+			"wrap_y_max_rgb_delta": 0.0,
+			"wrap_y_mean_rgb_delta": 0.0,
+			"wrap_y_mismatched_columns": 0,
+			"wrap_y_to_internal_ratio": 0.0
+		},
+		"cream-terrazzo-floor": {
+			"colors": 12,
+			"dimensions": [
+				128,
+				128
+			],
+			"exact_wrap_contract_pass": false,
+			"internal_x_mean_rgb_delta": 0.0143690325192657,
+			"internal_y_mean_rgb_delta": 0.0142570175756053,
+			"luminance_range": [
+				0.361723086044192,
+				0.873492577159405
+			],
+			"mean_luminance": 0.791609723533669,
+			"native_path": "res://tests/fixtures/material-concepts/overnight-v1/cream-terrazzo-floor-v1.png",
+			"native_sha256": "562c41a4be9613eb981428a466c745527afe5e1aba763ea6ef9e9db766092588",
+			"opaque": true,
+			"prompt_path": "res://assets/source/overnight-20260904/materials/cream-terrazzo-floor-v1.md",
+			"source_path": "res://assets/source/overnight-20260904/materials/cream-terrazzo-floor-v1.png",
+			"source_sha256": "90c52bd3b5a33973bf6b32119f95203f446f8bf7e3b242fbc2a0d386cefba3ab",
+			"wrap_x_max_rgb_delta": 0.141176462173462,
+			"wrap_x_mean_rgb_delta": 0.0128165842033923,
+			"wrap_x_mismatched_rows": 33,
+			"wrap_x_to_internal_ratio": 0.891958744348864,
+			"wrap_y_max_rgb_delta": 0.176470577716827,
+			"wrap_y_mean_rgb_delta": 0.0140931364148855,
+			"wrap_y_mismatched_columns": 23,
+			"wrap_y_to_internal_ratio": 0.988505228400634
+		},
+		"walnut-floor": {
+			"colors": 8,
+			"dimensions": [
+				128,
+				128
+			],
+			"exact_wrap_contract_pass": false,
+			"internal_x_mean_rgb_delta": 0.0042550404564651,
+			"internal_y_mean_rgb_delta": 0.0160241696358415,
+			"luminance_range": [
+				0.0509618559483439,
+				0.146472932259738
+			],
+			"mean_luminance": 0.101095445158108,
+			"native_path": "res://tests/fixtures/material-concepts/overnight-v1/walnut-floor-v1.png",
+			"native_sha256": "e00448d9e4c0dd17996a84449a99dc5f97ca130253f774e24f5b042702cd3aad",
+			"opaque": true,
+			"prompt_path": "res://assets/source/overnight-20260904/materials/walnut-floor-v1.md",
+			"source_path": "res://assets/source/overnight-20260904/materials/walnut-floor-v1.png",
+			"source_sha256": "1a9cc877d69b062d5b53d32318812fff39c13fdfac2a90ff3182c98926131504",
+			"wrap_x_max_rgb_delta": 0.0692810416221619,
+			"wrap_x_mean_rgb_delta": 0.0020118464405338,
+			"wrap_x_mismatched_rows": 7,
+			"wrap_x_to_internal_ratio": 0.472814879463014,
+			"wrap_y_max_rgb_delta": 0.0261437942584356,
+			"wrap_y_mean_rgb_delta": 0.0153186294483021,
+			"wrap_y_mismatched_columns": 75,
+			"wrap_y_to_internal_ratio": 0.955970249718193
+		},
+		"warm-cork-floor": {
+			"colors": 7,
+			"dimensions": [
+				128,
+				128
+			],
+			"exact_wrap_contract_pass": false,
+			"internal_x_mean_rgb_delta": 0.0192706715382802,
+			"internal_y_mean_rgb_delta": 0.0195772048908474,
+			"luminance_range": [
+				0.245871380528808,
+				0.426203638955951
+			],
+			"mean_luminance": 0.398256044721585,
+			"native_path": "res://tests/fixtures/material-concepts/overnight-v1/warm-cork-floor-v1.png",
+			"native_sha256": "801cf37fd25279833b367247ccbba6b058180af25d61c9861b48d52495ab34ae",
+			"opaque": true,
+			"prompt_path": "res://assets/source/overnight-20260904/materials/warm-cork-floor-v1.md",
+			"source_path": "res://assets/source/overnight-20260904/materials/warm-cork-floor-v1.png",
+			"source_sha256": "3abcc28fe94c35e6f0ec8c406d18f4194aae254042c35c22a81baa2df944515a",
+			"wrap_x_max_rgb_delta": 0.135947714249293,
+			"wrap_x_mean_rgb_delta": 0.0222732830637445,
+			"wrap_x_mismatched_rows": 78,
+			"wrap_x_to_internal_ratio": 1.15581250085135,
+			"wrap_y_max_rgb_delta": 0.111111104488373,
+			"wrap_y_mean_rgb_delta": 0.019720178640758,
+			"wrap_y_mismatched_columns": 88,
+			"wrap_y_to_internal_ratio": 1.00730307266577
+		}
+	},
+	"personal_save_access": false,
+	"pixel_checks": 3544640,
+	"production_changed": false,
+	"renderer": "macOS",
+	"runtime_approved": false,
+	"simulated_ui_credentials": true,
+	"source_hashes": {
+		"res://assets/runtime/office/architecture/floor.png": "6202478639de33fe7f8b548b49a20dddff6b69b59300300bcc89cfa064f2d0bd",
+		"res://data/furniture_catalog.json": "962d47f9fd3867328f3f293351fbb3124e6053f2d156fc20e97ee856cce09319",
+		"res://data/office_layout.json": "484bc653b3ff4ae4dcc4aaf613396d9d18b70d27ed59971e4b0460be4187632d"
+	},
+	"worker_started": false
+}

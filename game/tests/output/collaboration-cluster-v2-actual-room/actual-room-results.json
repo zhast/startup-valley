@@ -1,0 +1,588 @@
+{
+	"candidate_canvas": [
+		256,
+		272
+	],
+	"candidate_pivot": [
+		128,
+		176
+	],
+	"candidate_revision": "collaboration-cluster-v2",
+	"captures": [
+		"res://tests/output/collaboration-cluster-v2-actual-room/room-north.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/detail-north-native.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/detail-north-mina-native.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/detail-north-theo-native.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/detail-north-empty-native.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/room-east.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/detail-east-native.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/detail-east-mina-native.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/detail-east-theo-native.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/detail-east-empty-native.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/room-south.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/detail-south-native.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/detail-south-mina-native.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/detail-south-theo-native.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/detail-south-empty-native.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/room-west.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/detail-west-native.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/detail-west-mina-native.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/detail-west-theo-native.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/detail-west-empty-native.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/actual-room-contact-sheet-native.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/actual-room-empty-contact-sheet-native.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/actual-room-contact-sheet-2x.png",
+		"res://tests/output/collaboration-cluster-v2-actual-room/full-room-contact-sheet-native-panels.png"
+	],
+	"checks": 586,
+	"common_pivot": [
+		12,
+		14
+	],
+	"default_layout_mutated": false,
+	"facings": [
+		"north",
+		"east",
+		"south",
+		"west"
+	],
+	"failures": [],
+	"native_viewport": [
+		1280,
+		720
+	],
+	"observations": {
+		"east": {
+			"actors": {
+				"mira": {
+					"body_rect": [
+						356.0,
+						363.0,
+						48.0,
+						80.0
+					],
+					"capability_revision": "collaboration-cluster-v2:east",
+					"depths": {
+						"lower": -7,
+						"shadow": -11,
+						"upper": 2
+					},
+					"logical_position": [
+						368.0,
+						432.0
+					],
+					"render_position": [
+						380.0,
+						435.0
+					],
+					"seat_anchor": [
+						12.0,
+						3.0
+					],
+					"slot_cell": [
+						11,
+						13
+					],
+					"work_facing": "east"
+				},
+				"theo": {
+					"body_rect": [
+						428.0,
+						432.0,
+						48.0,
+						80.0
+					],
+					"capability_revision": "collaboration-cluster-v2:west",
+					"depths": {
+						"lower": 7,
+						"shadow": 3,
+						"upper": 10
+					},
+					"logical_position": [
+						464.0,
+						496.0
+					],
+					"render_position": [
+						452.0,
+						504.0
+					],
+					"seat_anchor": [
+						-12.0,
+						8.0
+					],
+					"slot_cell": [
+						14,
+						15
+					],
+					"work_facing": "west"
+				}
+			},
+			"anchor": [
+				400.0,
+				464.0
+			],
+			"collision_signature": [
+				"400.0,400.0:32.0,32.0",
+				"400.0,432.0:32.0,32.0",
+				"400.0,464.0:32.0,32.0",
+				"400.0,496.0:32.0,32.0",
+				"400.0,528.0:32.0,32.0",
+				"432.0,400.0:32.0,32.0",
+				"432.0,432.0:32.0,32.0",
+				"432.0,464.0:32.0,32.0",
+				"432.0,496.0:32.0,32.0",
+				"432.0,528.0:32.0,32.0"
+			],
+			"concurrent_route": {
+				"initial_destination_reservations": {
+					"mira": [
+						11,
+						13
+					],
+					"theo": [
+						14,
+						15
+					]
+				},
+				"minimum_actor_distance": 115.377639770508,
+				"physics_frames": 217,
+				"reservation_conflicts": 0,
+				"unsafe_samples": 0
+			},
+			"occupied_cells": 10,
+			"pivot_cell": [
+				12,
+				14
+			],
+			"pixel_evidence": {
+				"actor_pixel_overlap": 0,
+				"crop": [
+					272,
+					288,
+					256,
+					272
+				],
+				"mina_furniture_contact_pixels": 833,
+				"pair_pixel_delta": 1927,
+				"theo_furniture_contact_pixels": 304
+			},
+			"preflight_routes": {
+				"mira": {
+					"target_cell": [
+						11,
+						13
+					],
+					"waypoints": 5
+				},
+				"theo": {
+					"target_cell": [
+						14,
+						15
+					],
+					"waypoints": 12
+				}
+			}
+		},
+		"north": {
+			"actors": {
+				"mira": {
+					"body_rect": [
+						344.0,
+						404.0,
+						48.0,
+						80.0
+					],
+					"capability_revision": "collaboration-cluster-v2:north",
+					"depths": {
+						"lower": 7,
+						"shadow": 3,
+						"upper": 10
+					},
+					"logical_position": [
+						368.0,
+						496.0
+					],
+					"render_position": [
+						368.0,
+						476.0
+					],
+					"seat_anchor": [
+						0.0,
+						-20.0
+					],
+					"slot_cell": [
+						11,
+						15
+					],
+					"work_facing": "north"
+				},
+				"theo": {
+					"body_rect": [
+						408.0,
+						340.0,
+						48.0,
+						80.0
+					],
+					"capability_revision": "collaboration-cluster-v2:south",
+					"depths": {
+						"lower": -7,
+						"shadow": -11,
+						"upper": -2
+					},
+					"logical_position": [
+						432.0,
+						400.0
+					],
+					"render_position": [
+						432.0,
+						412.0
+					],
+					"seat_anchor": [
+						0.0,
+						12.0
+					],
+					"slot_cell": [
+						13,
+						12
+					],
+					"work_facing": "south"
+				}
+			},
+			"anchor": [
+				400.0,
+				464.0
+			],
+			"collision_signature": [
+				"336.0,432.0:32.0,32.0",
+				"336.0,464.0:32.0,32.0",
+				"368.0,432.0:32.0,32.0",
+				"368.0,464.0:32.0,32.0",
+				"400.0,432.0:32.0,32.0",
+				"400.0,464.0:32.0,32.0",
+				"432.0,432.0:32.0,32.0",
+				"432.0,464.0:32.0,32.0",
+				"464.0,432.0:32.0,32.0",
+				"464.0,464.0:32.0,32.0"
+			],
+			"concurrent_route": {
+				"initial_destination_reservations": {
+					"mira": [
+						11,
+						15
+					],
+					"theo": [
+						13,
+						12
+					]
+				},
+				"minimum_actor_distance": 115.377639770508,
+				"physics_frames": 289,
+				"reservation_conflicts": 0,
+				"unsafe_samples": 0
+			},
+			"occupied_cells": 10,
+			"pivot_cell": [
+				12,
+				14
+			],
+			"pixel_evidence": {
+				"actor_pixel_overlap": 0,
+				"crop": [
+					272,
+					288,
+					256,
+					272
+				],
+				"mina_furniture_contact_pixels": 1463,
+				"pair_pixel_delta": 2732,
+				"theo_furniture_contact_pixels": 584
+			},
+			"preflight_routes": {
+				"mira": {
+					"target_cell": [
+						11,
+						15
+					],
+					"waypoints": 3
+				},
+				"theo": {
+					"target_cell": [
+						13,
+						12
+					],
+					"waypoints": 16
+				}
+			}
+		},
+		"south": {
+			"actors": {
+				"mira": {
+					"body_rect": [
+						344.0,
+						372.0,
+						48.0,
+						80.0
+					],
+					"capability_revision": "collaboration-cluster-v2:south",
+					"depths": {
+						"lower": -7,
+						"shadow": -11,
+						"upper": -2
+					},
+					"logical_position": [
+						368.0,
+						432.0
+					],
+					"render_position": [
+						368.0,
+						444.0
+					],
+					"seat_anchor": [
+						0.0,
+						12.0
+					],
+					"slot_cell": [
+						11,
+						13
+					],
+					"work_facing": "south"
+				},
+				"theo": {
+					"body_rect": [
+						408.0,
+						440.0,
+						48.0,
+						80.0
+					],
+					"capability_revision": "collaboration-cluster-v2:north",
+					"depths": {
+						"lower": 7,
+						"shadow": 3,
+						"upper": 10
+					},
+					"logical_position": [
+						432.0,
+						528.0
+					],
+					"render_position": [
+						432.0,
+						512.0
+					],
+					"seat_anchor": [
+						0.0,
+						-16.0
+					],
+					"slot_cell": [
+						13,
+						16
+					],
+					"work_facing": "north"
+				}
+			},
+			"anchor": [
+				400.0,
+				464.0
+			],
+			"collision_signature": [
+				"336.0,464.0:32.0,32.0",
+				"336.0,496.0:32.0,32.0",
+				"368.0,464.0:32.0,32.0",
+				"368.0,496.0:32.0,32.0",
+				"400.0,464.0:32.0,32.0",
+				"400.0,496.0:32.0,32.0",
+				"432.0,464.0:32.0,32.0",
+				"432.0,496.0:32.0,32.0",
+				"464.0,464.0:32.0,32.0",
+				"464.0,496.0:32.0,32.0"
+			],
+			"concurrent_route": {
+				"initial_destination_reservations": {
+					"mira": [
+						11,
+						13
+					],
+					"theo": [
+						13,
+						16
+					]
+				},
+				"minimum_actor_distance": 115.377639770508,
+				"physics_frames": 217,
+				"reservation_conflicts": 0,
+				"unsafe_samples": 0
+			},
+			"occupied_cells": 10,
+			"pivot_cell": [
+				12,
+				14
+			],
+			"pixel_evidence": {
+				"actor_pixel_overlap": 0,
+				"crop": [
+					272,
+					288,
+					256,
+					272
+				],
+				"mina_furniture_contact_pixels": 534,
+				"pair_pixel_delta": 2838,
+				"theo_furniture_contact_pixels": 1615
+			},
+			"preflight_routes": {
+				"mira": {
+					"target_cell": [
+						11,
+						13
+					],
+					"waypoints": 9
+				},
+				"theo": {
+					"target_cell": [
+						13,
+						16
+					],
+					"waypoints": 12
+				}
+			}
+		},
+		"west": {
+			"actors": {
+				"mira": {
+					"body_rect": [
+						396.0,
+						364.0,
+						48.0,
+						80.0
+					],
+					"capability_revision": "collaboration-cluster-v2:west",
+					"depths": {
+						"lower": -7,
+						"shadow": -11,
+						"upper": 2
+					},
+					"logical_position": [
+						432.0,
+						432.0
+					],
+					"render_position": [
+						420.0,
+						436.0
+					],
+					"seat_anchor": [
+						-12.0,
+						4.0
+					],
+					"slot_cell": [
+						13,
+						13
+					],
+					"work_facing": "west"
+				},
+				"theo": {
+					"body_rect": [
+						324.0,
+						428.0,
+						48.0,
+						80.0
+					],
+					"capability_revision": "collaboration-cluster-v2:east",
+					"depths": {
+						"lower": 7,
+						"shadow": 3,
+						"upper": 10
+					},
+					"logical_position": [
+						336.0,
+						496.0
+					],
+					"render_position": [
+						348.0,
+						500.0
+					],
+					"seat_anchor": [
+						12.0,
+						4.0
+					],
+					"slot_cell": [
+						10,
+						15
+					],
+					"work_facing": "east"
+				}
+			},
+			"anchor": [
+				400.0,
+				464.0
+			],
+			"collision_signature": [
+				"368.0,400.0:32.0,32.0",
+				"368.0,432.0:32.0,32.0",
+				"368.0,464.0:32.0,32.0",
+				"368.0,496.0:32.0,32.0",
+				"368.0,528.0:32.0,32.0",
+				"400.0,400.0:32.0,32.0",
+				"400.0,432.0:32.0,32.0",
+				"400.0,464.0:32.0,32.0",
+				"400.0,496.0:32.0,32.0",
+				"400.0,528.0:32.0,32.0"
+			],
+			"concurrent_route": {
+				"initial_destination_reservations": {
+					"mira": [
+						13,
+						13
+					],
+					"theo": [
+						10,
+						15
+					]
+				},
+				"minimum_actor_distance": 115.377639770508,
+				"physics_frames": 289,
+				"reservation_conflicts": 0,
+				"unsafe_samples": 0
+			},
+			"occupied_cells": 10,
+			"pivot_cell": [
+				12,
+				14
+			],
+			"pixel_evidence": {
+				"actor_pixel_overlap": 0,
+				"crop": [
+					272,
+					288,
+					256,
+					272
+				],
+				"mina_furniture_contact_pixels": 240,
+				"pair_pixel_delta": 2240,
+				"theo_furniture_contact_pixels": 1112
+			},
+			"preflight_routes": {
+				"mira": {
+					"target_cell": [
+						13,
+						13
+					],
+					"waypoints": 7
+				},
+				"theo": {
+					"target_cell": [
+						10,
+						15
+					],
+					"waypoints": 16
+				}
+			}
+		}
+	},
+	"production_catalog_mutated": false,
+	"production_collaboration_revision": "collaboration-table-v1",
+	"renderer": "macOS",
+	"runtime_registered": false,
+	"save_access": false,
+	"scene": "actual GameMain and production TownRoom with collaboration-cluster-v2 injected only into a disposable in-memory OfficeLayout",
+	"status": "native_review_candidate_not_runtime_registered",
+	"worker_disabled": true
+}

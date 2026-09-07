@@ -1,0 +1,1348 @@
+{
+  "id": "creative_design_kit",
+  "direction_semantics": "host_gaze",
+  "display_name": "Creative design kit",
+  "asset_kind": "decor_kit",
+  "base_vs_decor": "decor",
+  "category": "creative",
+  "priority": "P1",
+  "production_status": "native_review_required",
+  "role_tags": [
+    "creative"
+  ],
+  "role_tools": [
+    "drawing tablet",
+    "color swatches",
+    "sketch sheet"
+  ],
+  "design_brief": "Readable creative tools at game scale; swatches stay within the shared palette.",
+  "gameplay_scope": "Art and future layout proposal only; no new hiring, role behavior, tool authority, transaction or interaction is implemented.",
+  "primary_host": "desk",
+  "current_availability": {
+    "status": "no_catalogue_runtime_binding",
+    "runtime_family_id": null,
+    "runtime_registered_facings": [],
+    "art_path": null,
+    "direction_art_review": "A deterministic code-native creative-design-kit-v1 candidate now supplies N/E/S/W passive pen-display, swatch-fan and stylus/tool-tray identity on the accepted desk. It passes 16 exporter, 227 structural and corrected 168 native actual-GameMain checks at 1280x720 with a 2.83/3 native score. Mina and Theo are existing contact/gaze/host-depth proxies only. Direct actor/overlay intersection remains honestly zero because valid edge tools clear both actors; the preserved initial 154/2 run documents removal of that inappropriate requirement. No runtime binding, default placement, creative role, backend or new raster generation is claimed.",
+    "previous_direction_art_review": "No finished art or runtime family is claimed for this proposal; unrelated concept/source art may exist.",
+    "candidate_status": "native_review_required",
+    "candidate_revision": "creative-design-kit-v1",
+    "candidate_fixture_manifest_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/manifest.json",
+    "candidate_structural_results_path": "game/tests/output/creative-design-kit/structural-results.json",
+    "candidate_actual_room_results_path": "game/tests/output/creative-design-kit/actual-room-results.json",
+    "candidate_actual_room_evidence_path": "game/tests/output/creative-design-kit/actual-room-contact-sheet-native.png",
+    "candidate_review_path": "dev/CREATIVE_DESIGN_KIT_NATIVE_REVIEW.md",
+    "candidate_actor_probes": [
+      "mira",
+      "theo"
+    ],
+    "candidate_image_generation_used": false,
+    "candidate_runtime_registration": null,
+    "candidate_default_layout_binding": null,
+    "approved_candidate_art_path": null
+  },
+  "native_geometry": {
+    "status": "measured_code_native_candidate_not_runtime_admission",
+    "canvas_size_px": [
+      192,
+      224
+    ],
+    "floor_anchor_px": [
+      96,
+      160
+    ],
+    "grid_size_px": 32,
+    "estimated_max_rise_above_occupied_floor_px": 48,
+    "minimum_transparent_padding_px": 16,
+    "anchor_rule": "One unchanged 192x224 canvas coordinate represents floor pivot [96,160] in every direction and every rear/front layer. Transparent padding is registration space, not sprite scaling.",
+    "host_rule": "Primary-host export shares the host canvas and floor anchor; zero new floor collision. A second host requires an explicitly reviewed socket adaptation, not runtime downscaling.",
+    "candidate_revision": "creative-design-kit-v1",
+    "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/manifest.json",
+    "structural_results_path": "game/tests/output/creative-design-kit/structural-results.json",
+    "actual_room_results_path": "game/tests/output/creative-design-kit/actual-room-results.json",
+    "initial_failed_results_path": "game/tests/output/creative-design-kit/actual-room-results-initial-failure.json",
+    "actual_room_evidence_path": "game/tests/output/creative-design-kit/actual-room-contact-sheet-native.png",
+    "full_room_evidence_path": "game/tests/output/creative-design-kit/actual-room-full-panels-native.png",
+    "review_path": "dev/CREATIVE_DESIGN_KIT_NATIVE_REVIEW.md",
+    "source_paths": [
+      "game/tools/creative_design_kit_geometry.gd",
+      "game/tools/export_creative_design_kit.gd",
+      "game/tests/test_creative_design_kit.gd",
+      "game/tools/capture_creative_design_kit.gd"
+    ],
+    "objects_per_direction": [
+      "pen_display",
+      "swatch_fan",
+      "stylus_tool_tray"
+    ],
+    "layers_per_direction": [
+      "surface_decor_rear",
+      "surface_decor_front"
+    ],
+    "collision_cells": [],
+    "actor_contact_contract": {
+      "actors": [
+        "mira",
+        "theo"
+      ],
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "accepted_workstation_capabilities": true,
+      "exact_authored_work_points": true,
+      "visible_rear_front_contribution": true,
+      "direct_actor_overlay_intersection_px": {
+        "mira": 0,
+        "theo": 0
+      },
+      "intersection_required": false
+    },
+    "historical_north_source": {
+      "path": "game/assets/source/overnight-20260904/roles/creative-north-v1.png",
+      "sha256": "93d3295cf53f652397ea664cf457600852ca9cefbc1f36c88c0f9e619f28ffc0",
+      "prompt_path": "dev/art-catalogue/prompts/creative-north-v1.md",
+      "review_path": "dev/art-catalogue/CREATIVE_NORTH_REVIEW.md",
+      "composition_review_path": "dev/art-catalogue/CREATIVE_NORTH_COMPOSITION_REVIEW.md",
+      "disposition": "Preserved unchanged as generated one-facing history; not transformed into, extracted for, or claimed as the source of the new code-native four-facing candidate."
+    },
+    "image_generation_used": false,
+    "candidate_runtime_registration": null,
+    "default_layout_activation": null
+  },
+  "layers": [
+    {
+      "id": "surface_decor_rear",
+      "required": true,
+      "same_canvas_and_floor_anchor": true,
+      "status": "native_review_required"
+    },
+    {
+      "id": "surface_decor_front",
+      "required": true,
+      "same_canvas_and_floor_anchor": true,
+      "status": "native_review_required"
+    }
+  ],
+  "variants": [
+    {
+      "facing": "north",
+      "status": "native_review_required",
+      "deliverable_availability": "native_export",
+      "approved_art_path": null,
+      "evidence_path": "game/tests/output/creative-design-kit/actual-room-contact-sheet-native.png",
+      "source_reference_path": "game/tools/creative_design_kit_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        0,
+        0
+      ],
+      "proposed_occupied_cell_offsets": [],
+      "employee_look_vector": [
+        0,
+        -1
+      ],
+      "proposed_interaction_cell": null,
+      "seated_pose_needed": false,
+      "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+      "generated_source_path": "game/assets/source/overnight-20260904/roles/creative-north-v1.png",
+      "prompt_path": "dev/art-catalogue/prompts/creative-north-v1.md",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/north-whole.png",
+      "review_path": "dev/CREATIVE_DESIGN_KIT_NATIVE_REVIEW.md",
+      "review_paths": [
+        "dev/art-catalogue/CREATIVE_NORTH_COMPOSITION_REVIEW.md"
+      ],
+      "evidence_paths": [
+        "game/tests/output/creative-north-composition/manifest.json",
+        "game/tests/output/creative-north-kit/results.json",
+        "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/manifest.json",
+        "game/tests/output/creative-design-kit/structural-results.json",
+        "game/tests/output/creative-design-kit/actual-room-results.json",
+        "game/tests/output/creative-design-kit/actual-room-results-initial-failure.json",
+        "game/tests/output/creative-design-kit/candidate-contact-sheet-native.png",
+        "game/tests/output/creative-design-kit/candidate-contact-sheet-4x.png",
+        "game/tests/output/creative-design-kit/candidate-layers-native.png",
+        "game/tests/output/creative-design-kit/actual-room-contact-sheet-native.png",
+        "game/tests/output/creative-design-kit/actual-room-contact-sheet-4x.png",
+        "game/tests/output/creative-design-kit/actual-room-unoccupied-contact-sheet-native.png",
+        "game/tests/output/creative-design-kit/actual-room-full-panels-native.png"
+      ],
+      "reason": "Deterministic code-native creative-design-kit-v1 native-review candidate only: north independently authors one low pen display, physical swatch fan and stylus/tool tray on the accepted desk plane. Export 16/0, structural 227/0 and corrected native GameMain 168/0 checks pass. Mina and Theo prove exact accepted seat/contact/gaze and ordered visible host layers; zero direct tool/actor intersection is retained as correct clearance. No approval, runtime binding, new creative role/backend, active pen pose or default placement.",
+      "source_attempts": [
+        {
+          "source_path": "game/assets/source/overnight-20260904/roles/creative-north-v1.png",
+          "size_px": [
+            1672,
+            940
+          ],
+          "channels": "RGBA",
+          "alpha": "nonopaque alpha present; see native review",
+          "prompt_path": "dev/art-catalogue/prompts/creative-north-v1.md",
+          "sha256": "93d3295cf53f652397ea664cf457600852ca9cefbc1f36c88c0f9e619f28ffc0",
+          "disposition": "One initial request, genuine alpha, no retries; native and actual-room resting composition candidate."
+        }
+      ],
+      "component_exports": [
+        {
+          "component": "tablet",
+          "path": "game/tests/fixtures/furniture-calibration/roles/creative-north-v1-tablet.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "opaque_bounds_px": [
+            83,
+            127,
+            24,
+            15
+          ],
+          "opaque_pixels": 338,
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "source_path": "game/assets/source/overnight-20260904/roles/creative-north-v1.png",
+          "palette_path": "dev/art-catalogue/role-material-palette.svg",
+          "review_path": "dev/art-catalogue/CREATIVE_NORTH_REVIEW.md",
+          "sha256": "26612cd9fdff33c5791074c46594a08e7b73e9eefde3286dd8f01ad42f607a40",
+          "method": "Complete object uniformly point-normalized and alpha-preserving role-palette export; staged, not approved."
+        },
+        {
+          "component": "swatches",
+          "path": "game/tests/fixtures/furniture-calibration/roles/creative-north-v1-swatches.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "opaque_bounds_px": [
+            58,
+            128,
+            12,
+            12
+          ],
+          "opaque_pixels": 95,
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "source_path": "game/assets/source/overnight-20260904/roles/creative-north-v1.png",
+          "palette_path": "dev/art-catalogue/role-material-palette.svg",
+          "review_path": "dev/art-catalogue/CREATIVE_NORTH_REVIEW.md",
+          "sha256": "4a93821803a8d17cb6e2ae774c5664473f52d61dbe6a4b695256a405848b539a",
+          "method": "Complete object uniformly point-normalized and alpha-preserving role-palette export; staged, not approved."
+        },
+        {
+          "component": "camera",
+          "path": "game/tests/fixtures/furniture-calibration/roles/creative-north-v1-camera.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "opaque_bounds_px": [
+            124,
+            119,
+            12,
+            12
+          ],
+          "opaque_pixels": 130,
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "source_path": "game/assets/source/overnight-20260904/roles/creative-north-v1.png",
+          "palette_path": "dev/art-catalogue/role-material-palette.svg",
+          "review_path": "dev/art-catalogue/CREATIVE_NORTH_REVIEW.md",
+          "sha256": "f98ae829d6950891700a9832ba533bf9ec6fc35c7d85a7b02c89352fd617d737",
+          "method": "Complete object uniformly point-normalized and alpha-preserving role-palette export; staged, not approved."
+        }
+      ],
+      "composition": {
+        "status": "staged_resting_not_active_drawing",
+        "review_path": "dev/art-catalogue/CREATIVE_NORTH_COMPOSITION_REVIEW.md",
+        "tablet_opaque_bounds_from_host": [
+          -43,
+          -40,
+          24,
+          15
+        ],
+        "swatches_opaque_bounds_from_host": [
+          28,
+          -30,
+          12,
+          12
+        ],
+        "camera_opaque_bounds_from_host": [
+          28,
+          -43,
+          12,
+          12
+        ],
+        "monitor_opaque_bounds_from_host": [
+          -16,
+          -73,
+          33,
+          30
+        ],
+        "replaces": [
+          "keyboard",
+          "mouse"
+        ],
+        "headless_checks": 352,
+        "rendered_checks": 857,
+        "failures": 0,
+        "native_captures": 7,
+        "detail_crops": 36
+      },
+      "historical_north_registration": {
+        "evidence_path": "game/tests/output/creative-north-composition/parked_left-idle-frame0.png",
+        "native_export_path": "game/tests/fixtures/furniture-calibration/roles/creative-north-v1.png",
+        "review_path": "dev/art-catalogue/CREATIVE_NORTH_REVIEW.md",
+        "review_paths": [
+          "dev/art-catalogue/CREATIVE_NORTH_COMPOSITION_REVIEW.md"
+        ],
+        "reason": "North-only resting tablet+monitor composition; tablet replaces keyboard/mouse. Centered control fails actor visibility. Stylus readability, active drawing pose and other directions remain missing; no runtime approval.",
+        "status": "native_review_required",
+        "deliverable_availability": "native_export",
+        "approved_art_path": null
+      },
+      "historical_north_source_preserved": true,
+      "production_status": null,
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "preview_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/north-whole.png",
+      "export_method": "Original editable code-native RGBA construction on the common 192x224 canvas and [96,160] floor pivot; screen-axis coordinates and fixed upper-left light are authored per facing without loading, rotating, mirroring, flipping, resampling, cropping or masking a finished bitmap.",
+      "native_exports": [
+        {
+          "layer": "surface_decor_rear",
+          "source_layer": "CreativeDesignSurfaceDecorRear",
+          "path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/north-surface_decor_rear.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "opaque_bounds_px": [
+            122,
+            115,
+            15,
+            12
+          ],
+          "opaque_pixels": 144,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 7,
+          "decoded_rgba_sha256": "1992c8065de7d4964e8691901d79a82fb79604927da05c3d8384a3312e7391cf",
+          "sha256": "c189934e0685082a78df4bad26eb9aa77a95e87b773310171b9dc599c197c74c",
+          "verify_decoded_facts": true,
+          "z_offset": 0,
+          "render_descriptor": {
+            "name": "CreativeDesignSurfaceDecorRear",
+            "art": "res://tests/fixtures/furniture-calibration/creative-design-kit-v1/north-surface_decor_rear.png",
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "offset": [
+              0,
+              -48
+            ],
+            "z_offset": 0
+          },
+          "source_path": "game/tools/creative_design_kit_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/manifest.json",
+          "review_path": "dev/CREATIVE_DESIGN_KIT_NATIVE_REVIEW.md",
+          "method": "Exact deterministic code-native north surface_decor_rear overlay; no raster transform or source extraction."
+        },
+        {
+          "layer": "surface_decor_front",
+          "source_layer": "CreativeDesignSurfaceDecorFront",
+          "path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/north-surface_decor_front.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "opaque_bounds_px": [
+            50,
+            124,
+            91,
+            17
+          ],
+          "opaque_pixels": 576,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 10,
+          "decoded_rgba_sha256": "39279a78930f0980e744ac976da391b308bceaff50f73058044ef31856032615",
+          "sha256": "1ca509454a04158e6acc72100d9229398272826c11188da6e09a1ef7cf8c4124",
+          "verify_decoded_facts": true,
+          "z_offset": 2,
+          "render_descriptor": {
+            "name": "CreativeDesignSurfaceDecorFront",
+            "art": "res://tests/fixtures/furniture-calibration/creative-design-kit-v1/north-surface_decor_front.png",
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "offset": [
+              0,
+              -48
+            ],
+            "z_offset": 2
+          },
+          "source_path": "game/tools/creative_design_kit_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/manifest.json",
+          "review_path": "dev/CREATIVE_DESIGN_KIT_NATIVE_REVIEW.md",
+          "method": "Exact deterministic code-native north surface_decor_front overlay; no raster transform or source extraction."
+        }
+      ],
+      "composite_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/north-whole.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "opaque_bounds_px": [
+            50,
+            115,
+            91,
+            26
+          ],
+          "opaque_pixels": 720,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 12,
+          "decoded_rgba_sha256": "ba46e0a49f0f8b4173c54682b28d96ab28ac9357bf0fc6a51e2ef4c728043a08",
+          "sha256": "438df4652d2aa7fda8f3dc2c6a68f538bd9da2e81383900c6f0166be4e8f23b5",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/creative_design_kit_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/manifest.json",
+          "review_path": "dev/CREATIVE_DESIGN_KIT_NATIVE_REVIEW.md",
+          "method": "Byte-exact rear/front reconstruction for native review only; not approved or installed runtime art."
+        }
+      ],
+      "actual_game_main": {
+        "scene": "actual GameMain / production TownRoom",
+        "viewport_px": [
+          1280,
+          720
+        ],
+        "actors": {
+          "mira": {
+            "actor_overlay_occlusion": {
+              "surface_decor_front": 0,
+              "surface_decor_rear": 0
+            },
+            "actor_pixel_delta": 1603,
+            "collision_shapes": 3,
+            "desk_asset_revision": "workstations-v2",
+            "layer_visibility": {
+              "surface_decor_front": {
+                "changed": 576,
+                "covered_by_existing_workstation_or_actor": 0,
+                "source_opaque": 576
+              },
+              "surface_decor_rear": {
+                "changed": 144,
+                "covered_by_existing_workstation_or_actor": 0,
+                "source_opaque": 144
+              }
+            },
+            "layer_z": {
+              "front": 274,
+              "rear": 272
+            },
+            "work_position_px": [
+              336,
+              304
+            ],
+            "workstation_capability_revision": "workstations-v2:north"
+          },
+          "theo": {
+            "actor_overlay_occlusion": {
+              "surface_decor_front": 0,
+              "surface_decor_rear": 0
+            },
+            "actor_pixel_delta": 1773,
+            "collision_shapes": 3,
+            "desk_asset_revision": "workstations-v2",
+            "layer_visibility": {
+              "surface_decor_front": {
+                "changed": 576,
+                "covered_by_existing_workstation_or_actor": 0,
+                "source_opaque": 576
+              },
+              "surface_decor_rear": {
+                "changed": 144,
+                "covered_by_existing_workstation_or_actor": 0,
+                "source_opaque": 144
+              }
+            },
+            "layer_z": {
+              "front": 274,
+              "rear": 272
+            },
+            "work_position_px": [
+              656,
+              304
+            ],
+            "workstation_capability_revision": "workstations-v2:north"
+          }
+        },
+        "direct_actor_overlay_intersection_px": {
+          "mira": 0,
+          "theo": 0
+        },
+        "intersection_required": false,
+        "accepted_contact_and_visible_layers": true,
+        "checks": 168,
+        "failures": 0
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 3,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "note": "Bounded native-review gate passes at mean 2.83/minimum 2. The pen display and swatches read clearly; the deliberately tiny stylus tray is subtle beside the ordinary computer. Mina/Theo prove existing contact, gaze and host depth only, not a creative role pose. Zero direct actor/tool overlap is correct clearance, not a missing occlusion workaround.",
+        "acceptance_scope": "native_review_candidate_only",
+        "review_date": "2026-09-06",
+        "image_generation_used": false
+      }
+    },
+    {
+      "facing": "east",
+      "status": "native_review_required",
+      "deliverable_availability": "native_export",
+      "approved_art_path": null,
+      "evidence_path": "game/tests/output/creative-design-kit/actual-room-contact-sheet-native.png",
+      "source_reference_path": "game/tools/creative_design_kit_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        0,
+        0
+      ],
+      "proposed_occupied_cell_offsets": [],
+      "employee_look_vector": [
+        1,
+        0
+      ],
+      "proposed_interaction_cell": null,
+      "seated_pose_needed": false,
+      "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+      "production_status": null,
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "preview_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/east-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/east-whole.png",
+      "review_path": "dev/CREATIVE_DESIGN_KIT_NATIVE_REVIEW.md",
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/manifest.json",
+        "game/tests/output/creative-design-kit/structural-results.json",
+        "game/tests/output/creative-design-kit/actual-room-results.json",
+        "game/tests/output/creative-design-kit/actual-room-results-initial-failure.json",
+        "game/tests/output/creative-design-kit/candidate-contact-sheet-native.png",
+        "game/tests/output/creative-design-kit/candidate-contact-sheet-4x.png",
+        "game/tests/output/creative-design-kit/candidate-layers-native.png",
+        "game/tests/output/creative-design-kit/actual-room-contact-sheet-native.png",
+        "game/tests/output/creative-design-kit/actual-room-contact-sheet-4x.png",
+        "game/tests/output/creative-design-kit/actual-room-unoccupied-contact-sheet-native.png",
+        "game/tests/output/creative-design-kit/actual-room-full-panels-native.png"
+      ],
+      "reason": "Deterministic code-native creative-design-kit-v1 native-review candidate only: east independently authors one low pen display, physical swatch fan and stylus/tool tray on the accepted desk plane. Export 16/0, structural 227/0 and corrected native GameMain 168/0 checks pass. Mina and Theo prove exact accepted seat/contact/gaze and ordered visible host layers; zero direct tool/actor intersection is retained as correct clearance. No approval, runtime binding, new creative role/backend, active pen pose or default placement.",
+      "export_method": "Original editable code-native RGBA construction on the common 192x224 canvas and [96,160] floor pivot; screen-axis coordinates and fixed upper-left light are authored per facing without loading, rotating, mirroring, flipping, resampling, cropping or masking a finished bitmap.",
+      "native_exports": [
+        {
+          "layer": "surface_decor_rear",
+          "source_layer": "CreativeDesignSurfaceDecorRear",
+          "path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/east-surface_decor_rear.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "opaque_bounds_px": [
+            89,
+            82,
+            18,
+            24
+          ],
+          "opaque_pixels": 372,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 8,
+          "decoded_rgba_sha256": "4b6169eef7a0844a510accaf3f22bc4181a5371f52b5a35662628e070cca218a",
+          "sha256": "1e55ada82aa3f4ffac95f254ce01682c3844f7fb528b65a3cc872111ef1ba316",
+          "verify_decoded_facts": true,
+          "z_offset": 0,
+          "render_descriptor": {
+            "name": "CreativeDesignSurfaceDecorRear",
+            "art": "res://tests/fixtures/furniture-calibration/creative-design-kit-v1/east-surface_decor_rear.png",
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "offset": [
+              0,
+              -48
+            ],
+            "z_offset": 0
+          },
+          "source_path": "game/tools/creative_design_kit_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/manifest.json",
+          "review_path": "dev/CREATIVE_DESIGN_KIT_NATIVE_REVIEW.md",
+          "method": "Exact deterministic code-native east surface_decor_rear overlay; no raster transform or source extraction."
+        },
+        {
+          "layer": "surface_decor_front",
+          "source_layer": "CreativeDesignSurfaceDecorFront",
+          "path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/east-surface_decor_front.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "opaque_bounds_px": [
+            83,
+            148,
+            26,
+            25
+          ],
+          "opaque_pixels": 256,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 10,
+          "decoded_rgba_sha256": "5016d411364cec5c05d00412654d65bb680e82068499b8e91258868a86a980ed",
+          "sha256": "53d2b6af7e4de9065a8e0a72119d6bdc466b8518d77ed7840e6a3a3f66b2e2db",
+          "verify_decoded_facts": true,
+          "z_offset": 3,
+          "render_descriptor": {
+            "name": "CreativeDesignSurfaceDecorFront",
+            "art": "res://tests/fixtures/furniture-calibration/creative-design-kit-v1/east-surface_decor_front.png",
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "offset": [
+              0,
+              -48
+            ],
+            "z_offset": 3
+          },
+          "source_path": "game/tools/creative_design_kit_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/manifest.json",
+          "review_path": "dev/CREATIVE_DESIGN_KIT_NATIVE_REVIEW.md",
+          "method": "Exact deterministic code-native east surface_decor_front overlay; no raster transform or source extraction."
+        }
+      ],
+      "composite_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/east-whole.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "opaque_bounds_px": [
+            83,
+            82,
+            26,
+            91
+          ],
+          "opaque_pixels": 628,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 12,
+          "decoded_rgba_sha256": "3c3cbe7dbea20072696a642586029e7b3d97d40f78d786828ed018872c217164",
+          "sha256": "30965f9151e8a756d66da2a2a19c8473c2e2f084c7e6e8df1b3e0e66e261ed90",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/creative_design_kit_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/manifest.json",
+          "review_path": "dev/CREATIVE_DESIGN_KIT_NATIVE_REVIEW.md",
+          "method": "Byte-exact rear/front reconstruction for native review only; not approved or installed runtime art."
+        }
+      ],
+      "actual_game_main": {
+        "scene": "actual GameMain / production TownRoom",
+        "viewport_px": [
+          1280,
+          720
+        ],
+        "actors": {
+          "mira": {
+            "actor_overlay_occlusion": {
+              "surface_decor_front": 0,
+              "surface_decor_rear": 0
+            },
+            "actor_pixel_delta": 900,
+            "collision_shapes": 3,
+            "desk_asset_revision": "workstations-v2",
+            "layer_visibility": {
+              "surface_decor_front": {
+                "changed": 256,
+                "covered_by_existing_workstation_or_actor": 0,
+                "source_opaque": 256
+              },
+              "surface_decor_rear": {
+                "changed": 372,
+                "covered_by_existing_workstation_or_actor": 0,
+                "source_opaque": 372
+              }
+            },
+            "layer_z": {
+              "front": 275,
+              "rear": 272
+            },
+            "work_position_px": [
+              304,
+              272
+            ],
+            "workstation_capability_revision": "workstations-v2:east"
+          },
+          "theo": {
+            "actor_overlay_occlusion": {
+              "surface_decor_front": 0,
+              "surface_decor_rear": 0
+            },
+            "actor_pixel_delta": 897,
+            "collision_shapes": 3,
+            "desk_asset_revision": "workstations-v2",
+            "layer_visibility": {
+              "surface_decor_front": {
+                "changed": 256,
+                "covered_by_existing_workstation_or_actor": 0,
+                "source_opaque": 256
+              },
+              "surface_decor_rear": {
+                "changed": 372,
+                "covered_by_existing_workstation_or_actor": 0,
+                "source_opaque": 372
+              }
+            },
+            "layer_z": {
+              "front": 275,
+              "rear": 272
+            },
+            "work_position_px": [
+              624,
+              272
+            ],
+            "workstation_capability_revision": "workstations-v2:east"
+          }
+        },
+        "direct_actor_overlay_intersection_px": {
+          "mira": 0,
+          "theo": 0
+        },
+        "intersection_required": false,
+        "accepted_contact_and_visible_layers": true,
+        "checks": 168,
+        "failures": 0
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 3,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "note": "Bounded native-review gate passes at mean 2.83/minimum 2. The pen display and swatches read clearly; the deliberately tiny stylus tray is subtle beside the ordinary computer. Mina/Theo prove existing contact, gaze and host depth only, not a creative role pose. Zero direct actor/tool overlap is correct clearance, not a missing occlusion workaround.",
+        "acceptance_scope": "native_review_candidate_only",
+        "review_date": "2026-09-06",
+        "image_generation_used": false
+      }
+    },
+    {
+      "facing": "south",
+      "status": "native_review_required",
+      "deliverable_availability": "native_export",
+      "approved_art_path": null,
+      "evidence_path": "game/tests/output/creative-design-kit/actual-room-contact-sheet-native.png",
+      "source_reference_path": "game/tools/creative_design_kit_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        0,
+        0
+      ],
+      "proposed_occupied_cell_offsets": [],
+      "employee_look_vector": [
+        0,
+        1
+      ],
+      "proposed_interaction_cell": null,
+      "seated_pose_needed": false,
+      "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+      "production_status": null,
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "preview_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/south-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/south-whole.png",
+      "review_path": "dev/CREATIVE_DESIGN_KIT_NATIVE_REVIEW.md",
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/manifest.json",
+        "game/tests/output/creative-design-kit/structural-results.json",
+        "game/tests/output/creative-design-kit/actual-room-results.json",
+        "game/tests/output/creative-design-kit/actual-room-results-initial-failure.json",
+        "game/tests/output/creative-design-kit/candidate-contact-sheet-native.png",
+        "game/tests/output/creative-design-kit/candidate-contact-sheet-4x.png",
+        "game/tests/output/creative-design-kit/candidate-layers-native.png",
+        "game/tests/output/creative-design-kit/actual-room-contact-sheet-native.png",
+        "game/tests/output/creative-design-kit/actual-room-contact-sheet-4x.png",
+        "game/tests/output/creative-design-kit/actual-room-unoccupied-contact-sheet-native.png",
+        "game/tests/output/creative-design-kit/actual-room-full-panels-native.png"
+      ],
+      "reason": "Deterministic code-native creative-design-kit-v1 native-review candidate only: south independently authors one low pen display, physical swatch fan and stylus/tool tray on the accepted desk plane. Export 16/0, structural 227/0 and corrected native GameMain 168/0 checks pass. Mina and Theo prove exact accepted seat/contact/gaze and ordered visible host layers; zero direct tool/actor intersection is retained as correct clearance. No approval, runtime binding, new creative role/backend, active pen pose or default placement.",
+      "export_method": "Original editable code-native RGBA construction on the common 192x224 canvas and [96,160] floor pivot; screen-axis coordinates and fixed upper-left light are authored per facing without loading, rotating, mirroring, flipping, resampling, cropping or masking a finished bitmap.",
+      "native_exports": [
+        {
+          "layer": "surface_decor_rear",
+          "source_layer": "CreativeDesignSurfaceDecorRear",
+          "path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/south-surface_decor_rear.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "opaque_bounds_px": [
+            50,
+            115,
+            92,
+            24
+          ],
+          "opaque_pixels": 576,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 12,
+          "decoded_rgba_sha256": "8b6588f8a732cc77f9084148a0d93f2e8a1d769b26915c0856990b725874cd36",
+          "sha256": "732b61e978a9c8ee2d8cbd68a0f0f55a367704f15f122ec16fa6c1f0321eaaec",
+          "verify_decoded_facts": true,
+          "z_offset": 2,
+          "render_descriptor": {
+            "name": "CreativeDesignSurfaceDecorRear",
+            "art": "res://tests/fixtures/furniture-calibration/creative-design-kit-v1/south-surface_decor_rear.png",
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "offset": [
+              0,
+              -48
+            ],
+            "z_offset": 2
+          },
+          "source_path": "game/tools/creative_design_kit_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/manifest.json",
+          "review_path": "dev/CREATIVE_DESIGN_KIT_NATIVE_REVIEW.md",
+          "method": "Exact deterministic code-native south surface_decor_rear overlay; no raster transform or source extraction."
+        },
+        {
+          "layer": "surface_decor_front",
+          "source_layer": "CreativeDesignSurfaceDecorFront",
+          "path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/south-surface_decor_front.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "opaque_bounds_px": [
+            50,
+            134,
+            22,
+            7
+          ],
+          "opaque_pixels": 154,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 6,
+          "decoded_rgba_sha256": "7083c35661bcc1d3277e8f48878c6ac646784065109815e61d66d33c4c58c12b",
+          "sha256": "105dc5b780b196be1f04b12382cb8023d71da33e850a5285a042d031bdbaf23c",
+          "verify_decoded_facts": true,
+          "z_offset": 4,
+          "render_descriptor": {
+            "name": "CreativeDesignSurfaceDecorFront",
+            "art": "res://tests/fixtures/furniture-calibration/creative-design-kit-v1/south-surface_decor_front.png",
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "offset": [
+              0,
+              -48
+            ],
+            "z_offset": 4
+          },
+          "source_path": "game/tools/creative_design_kit_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/manifest.json",
+          "review_path": "dev/CREATIVE_DESIGN_KIT_NATIVE_REVIEW.md",
+          "method": "Exact deterministic code-native south surface_decor_front overlay; no raster transform or source extraction."
+        }
+      ],
+      "composite_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/south-whole.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "opaque_bounds_px": [
+            50,
+            115,
+            92,
+            26
+          ],
+          "opaque_pixels": 730,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 12,
+          "decoded_rgba_sha256": "22c1cf19a7b257c24306be4f88d28529bb6f3d8913229ff63f84d6dcb4bd62dc",
+          "sha256": "dc93bada4ab7aa5e8c2f6814f865d5b9a0c6f6836a99377b2abd9bf73b5d3270",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/creative_design_kit_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/manifest.json",
+          "review_path": "dev/CREATIVE_DESIGN_KIT_NATIVE_REVIEW.md",
+          "method": "Byte-exact rear/front reconstruction for native review only; not approved or installed runtime art."
+        }
+      ],
+      "actual_game_main": {
+        "scene": "actual GameMain / production TownRoom",
+        "viewport_px": [
+          1280,
+          720
+        ],
+        "actors": {
+          "mira": {
+            "actor_overlay_occlusion": {
+              "surface_decor_front": 0,
+              "surface_decor_rear": 0
+            },
+            "actor_pixel_delta": 856,
+            "collision_shapes": 3,
+            "desk_asset_revision": "workstations-v2",
+            "layer_visibility": {
+              "surface_decor_front": {
+                "changed": 154,
+                "covered_by_existing_workstation_or_actor": 0,
+                "source_opaque": 154
+              },
+              "surface_decor_rear": {
+                "changed": 576,
+                "covered_by_existing_workstation_or_actor": 0,
+                "source_opaque": 576
+              }
+            },
+            "layer_z": {
+              "front": 276,
+              "rear": 274
+            },
+            "work_position_px": [
+              336,
+              240
+            ],
+            "workstation_capability_revision": "workstations-v2:south"
+          },
+          "theo": {
+            "actor_overlay_occlusion": {
+              "surface_decor_front": 0,
+              "surface_decor_rear": 0
+            },
+            "actor_pixel_delta": 902,
+            "collision_shapes": 3,
+            "desk_asset_revision": "workstations-v2",
+            "layer_visibility": {
+              "surface_decor_front": {
+                "changed": 154,
+                "covered_by_existing_workstation_or_actor": 0,
+                "source_opaque": 154
+              },
+              "surface_decor_rear": {
+                "changed": 576,
+                "covered_by_existing_workstation_or_actor": 0,
+                "source_opaque": 576
+              }
+            },
+            "layer_z": {
+              "front": 276,
+              "rear": 274
+            },
+            "work_position_px": [
+              656,
+              240
+            ],
+            "workstation_capability_revision": "workstations-v2:south"
+          }
+        },
+        "direct_actor_overlay_intersection_px": {
+          "mira": 0,
+          "theo": 0
+        },
+        "intersection_required": false,
+        "accepted_contact_and_visible_layers": true,
+        "checks": 168,
+        "failures": 0
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 3,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "note": "Bounded native-review gate passes at mean 2.83/minimum 2. The pen display and swatches read clearly; the deliberately tiny stylus tray is subtle beside the ordinary computer. Mina/Theo prove existing contact, gaze and host depth only, not a creative role pose. Zero direct actor/tool overlap is correct clearance, not a missing occlusion workaround.",
+        "acceptance_scope": "native_review_candidate_only",
+        "review_date": "2026-09-06",
+        "image_generation_used": false
+      }
+    },
+    {
+      "facing": "west",
+      "status": "native_review_required",
+      "deliverable_availability": "native_export",
+      "approved_art_path": null,
+      "evidence_path": "game/tests/output/creative-design-kit/actual-room-contact-sheet-native.png",
+      "source_reference_path": "game/tools/creative_design_kit_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        0,
+        0
+      ],
+      "proposed_occupied_cell_offsets": [],
+      "employee_look_vector": [
+        -1,
+        0
+      ],
+      "proposed_interaction_cell": null,
+      "seated_pose_needed": false,
+      "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+      "production_status": null,
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "preview_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/west-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/west-whole.png",
+      "review_path": "dev/CREATIVE_DESIGN_KIT_NATIVE_REVIEW.md",
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/manifest.json",
+        "game/tests/output/creative-design-kit/structural-results.json",
+        "game/tests/output/creative-design-kit/actual-room-results.json",
+        "game/tests/output/creative-design-kit/actual-room-results-initial-failure.json",
+        "game/tests/output/creative-design-kit/candidate-contact-sheet-native.png",
+        "game/tests/output/creative-design-kit/candidate-contact-sheet-4x.png",
+        "game/tests/output/creative-design-kit/candidate-layers-native.png",
+        "game/tests/output/creative-design-kit/actual-room-contact-sheet-native.png",
+        "game/tests/output/creative-design-kit/actual-room-contact-sheet-4x.png",
+        "game/tests/output/creative-design-kit/actual-room-unoccupied-contact-sheet-native.png",
+        "game/tests/output/creative-design-kit/actual-room-full-panels-native.png"
+      ],
+      "reason": "Deterministic code-native creative-design-kit-v1 native-review candidate only: west independently authors one low pen display, physical swatch fan and stylus/tool tray on the accepted desk plane. Export 16/0, structural 227/0 and corrected native GameMain 168/0 checks pass. Mina and Theo prove exact accepted seat/contact/gaze and ordered visible host layers; zero direct tool/actor intersection is retained as correct clearance. No approval, runtime binding, new creative role/backend, active pen pose or default placement.",
+      "export_method": "Original editable code-native RGBA construction on the common 192x224 canvas and [96,160] floor pivot; screen-axis coordinates and fixed upper-left light are authored per facing without loading, rotating, mirroring, flipping, resampling, cropping or masking a finished bitmap.",
+      "native_exports": [
+        {
+          "layer": "surface_decor_rear",
+          "source_layer": "CreativeDesignSurfaceDecorRear",
+          "path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/west-surface_decor_rear.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "opaque_bounds_px": [
+            83,
+            83,
+            26,
+            16
+          ],
+          "opaque_pixels": 266,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 11,
+          "decoded_rgba_sha256": "d6c20fde1c2577ad52fcd9198ebd064a1c7e0defa2a5403961dde1d6b133a00c",
+          "sha256": "ea7e3c28bbc8a9e9be81fc48c3a24d004687218233eb4cb65c10e39303c3a400",
+          "verify_decoded_facts": true,
+          "z_offset": 0,
+          "render_descriptor": {
+            "name": "CreativeDesignSurfaceDecorRear",
+            "art": "res://tests/fixtures/furniture-calibration/creative-design-kit-v1/west-surface_decor_rear.png",
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "offset": [
+              0,
+              -48
+            ],
+            "z_offset": 0
+          },
+          "source_path": "game/tools/creative_design_kit_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/manifest.json",
+          "review_path": "dev/CREATIVE_DESIGN_KIT_NATIVE_REVIEW.md",
+          "method": "Exact deterministic code-native west surface_decor_rear overlay; no raster transform or source extraction."
+        },
+        {
+          "layer": "surface_decor_front",
+          "source_layer": "CreativeDesignSurfaceDecorFront",
+          "path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/west-surface_decor_front.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "opaque_bounds_px": [
+            82,
+            148,
+            17,
+            24
+          ],
+          "opaque_pixels": 366,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 8,
+          "decoded_rgba_sha256": "69e478e7b8dbc3a5d436e448d81ebb713eb449c8643dea1b4df9d5cbd66642e7",
+          "sha256": "b85fff8927e09d59aea63fc770c69c7193ac0c92c080afc576d624d614bc53d7",
+          "verify_decoded_facts": true,
+          "z_offset": 3,
+          "render_descriptor": {
+            "name": "CreativeDesignSurfaceDecorFront",
+            "art": "res://tests/fixtures/furniture-calibration/creative-design-kit-v1/west-surface_decor_front.png",
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "offset": [
+              0,
+              -48
+            ],
+            "z_offset": 3
+          },
+          "source_path": "game/tools/creative_design_kit_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/manifest.json",
+          "review_path": "dev/CREATIVE_DESIGN_KIT_NATIVE_REVIEW.md",
+          "method": "Exact deterministic code-native west surface_decor_front overlay; no raster transform or source extraction."
+        }
+      ],
+      "composite_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/west-whole.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "opaque_bounds_px": [
+            82,
+            83,
+            27,
+            89
+          ],
+          "opaque_pixels": 632,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 12,
+          "decoded_rgba_sha256": "bd603871cc6fbd63cb203009c5f96dfaa5210a685f7b023655d1efb9ecdb66aa",
+          "sha256": "3fce88d55d27d128932fe11faea0a4eb61af56481fd4a8206df271236e91857e",
+          "verify_decoded_facts": true,
+          "source_path": "game/tools/creative_design_kit_geometry.gd",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/manifest.json",
+          "review_path": "dev/CREATIVE_DESIGN_KIT_NATIVE_REVIEW.md",
+          "method": "Byte-exact rear/front reconstruction for native review only; not approved or installed runtime art."
+        }
+      ],
+      "actual_game_main": {
+        "scene": "actual GameMain / production TownRoom",
+        "viewport_px": [
+          1280,
+          720
+        ],
+        "actors": {
+          "mira": {
+            "actor_overlay_occlusion": {
+              "surface_decor_front": 0,
+              "surface_decor_rear": 0
+            },
+            "actor_pixel_delta": 875,
+            "collision_shapes": 3,
+            "desk_asset_revision": "workstations-v2",
+            "layer_visibility": {
+              "surface_decor_front": {
+                "changed": 366,
+                "covered_by_existing_workstation_or_actor": 0,
+                "source_opaque": 366
+              },
+              "surface_decor_rear": {
+                "changed": 251,
+                "covered_by_existing_workstation_or_actor": 15,
+                "source_opaque": 266
+              }
+            },
+            "layer_z": {
+              "front": 275,
+              "rear": 272
+            },
+            "work_position_px": [
+              368,
+              272
+            ],
+            "workstation_capability_revision": "workstations-v2:west"
+          },
+          "theo": {
+            "actor_overlay_occlusion": {
+              "surface_decor_front": 0,
+              "surface_decor_rear": 0
+            },
+            "actor_pixel_delta": 811,
+            "collision_shapes": 3,
+            "desk_asset_revision": "workstations-v2",
+            "layer_visibility": {
+              "surface_decor_front": {
+                "changed": 366,
+                "covered_by_existing_workstation_or_actor": 0,
+                "source_opaque": 366
+              },
+              "surface_decor_rear": {
+                "changed": 251,
+                "covered_by_existing_workstation_or_actor": 15,
+                "source_opaque": 266
+              }
+            },
+            "layer_z": {
+              "front": 275,
+              "rear": 272
+            },
+            "work_position_px": [
+              688,
+              272
+            ],
+            "workstation_capability_revision": "workstations-v2:west"
+          }
+        },
+        "direct_actor_overlay_intersection_px": {
+          "mira": 0,
+          "theo": 0
+        },
+        "intersection_required": false,
+        "accepted_contact_and_visible_layers": true,
+        "checks": 168,
+        "failures": 0
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 3,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "note": "Bounded native-review gate passes at mean 2.83/minimum 2. The pen display and swatches read clearly; the deliberately tiny stylus tray is subtle beside the ordinary computer. Mina/Theo prove existing contact, gaze and host depth only, not a creative role pose. Zero direct actor/tool overlap is correct clearance, not a missing occlusion workaround.",
+        "acceptance_scope": "native_review_candidate_only",
+        "review_date": "2026-09-06",
+        "image_generation_used": false
+      }
+    }
+  ],
+  "candidate_completion": {
+    "status": "native_review_candidate_complete_not_production",
+    "validated": [
+      "four independently authored N/E/S/W screen-axis projections",
+      "one pen display, swatch fan and stylus/tool tray per direction",
+      "binary alpha, clean transparent RGB, integer common canvas/pivot and byte-exact rear/front reconstruction",
+      "zero floor collision and accepted monitor/keyboard/mouse clearance",
+      "actual GameMain Mina/Theo accepted contact, gaze and visible host depth in all four facings",
+      "preserved North generated source, attempt, component, prompt and review provenance",
+      "16 exporter, 227 structural and corrected 168 native checks with zero final failures"
+    ],
+    "remaining": [
+      "explicit main-agent art approval and catalogue promotion",
+      "runtime registration and default-layout decision",
+      "a future creative employee and any active pen-use animation or role behavior"
+    ],
+    "native_review_passed": true,
+    "production_acceptance_claim": false,
+    "runtime_registration_claim": false,
+    "image_generation_used": false,
+    "native_visual_mean_score": 2.83,
+    "native_visual_minimum_score": 2,
+    "review_date": "2026-09-06"
+  }
+}

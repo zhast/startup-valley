@@ -1,0 +1,22 @@
+{
+	"actual_room_results_path": "tests/output/tall-storage-cabinet-v2/actual-room-results.json",
+	"checks": 196,
+	"default_layout_sha256_after": "820d4e7cfe206d8f7543ab421c437de2a5037299f707e5602f6a6faf299078eb",
+	"default_layout_sha256_before": "820d4e7cfe206d8f7543ab421c437de2a5037299f707e5602f6a6faf299078eb",
+	"failures": [],
+	"production_catalogue_sha256_after": "36f81e5d20ee0894e66657bcfcdb275c69266bd48116f3d324c8df37f484b883",
+	"production_catalogue_sha256_before": "36f81e5d20ee0894e66657bcfcdb275c69266bd48116f3d324c8df37f484b883",
+	"renderer": "macOS",
+	"runtime_registered": false,
+	"save_access": false,
+	"selected_family": "tall_storage_cabinet",
+	"service_backend_or_interaction_created": false,
+	"shared_art_catalogue_sha256_after": "0d243b4bfc1cd8c43886ffbf2376c512fea0db0142efb0ece89629b621b0aef7",
+	"shared_art_catalogue_sha256_before": "0d243b4bfc1cd8c43886ffbf2376c512fea0db0142efb0ece89629b621b0aef7",
+	"status": "passed",
+	"viewport": [
+		1280,
+		720
+	],
+	"worker_disabled": true
+}

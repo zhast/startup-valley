@@ -1,0 +1,555 @@
+{
+	"captures": [
+		"south-room.png",
+		"south-room-4x.png",
+		"west-committed.png",
+		"west-committed-4x.png",
+		"west-founder-behind-start.png",
+		"west-founder-behind-middle.png",
+		"west-founder-behind-middle-4x.png",
+		"west-founder-behind-end.png",
+		"west-founder-front-start.png",
+		"west-founder-front-middle.png",
+		"west-founder-front-middle-4x.png",
+		"west-founder-front-end.png",
+		"west-mira-behind-start.png",
+		"west-mira-behind-middle.png",
+		"west-mira-behind-middle-4x.png",
+		"west-mira-behind-end.png",
+		"west-mira-front-start.png",
+		"west-mira-front-middle.png",
+		"west-mira-front-middle-4x.png",
+		"west-mira-front-end.png",
+		"west-theo-behind-start.png",
+		"west-theo-behind-middle.png",
+		"west-theo-behind-middle-4x.png",
+		"west-theo-behind-end.png",
+		"west-theo-front-start.png",
+		"west-theo-front-middle.png",
+		"west-theo-front-middle-4x.png",
+		"west-theo-front-end.png",
+		"north-committed.png",
+		"north-committed-4x.png",
+		"north-founder-behind-start.png",
+		"north-founder-behind-middle.png",
+		"north-founder-behind-middle-4x.png",
+		"north-founder-behind-end.png",
+		"north-founder-front-start.png",
+		"north-founder-front-middle.png",
+		"north-founder-front-middle-4x.png",
+		"north-founder-front-end.png",
+		"north-mira-behind-start.png",
+		"north-mira-behind-middle.png",
+		"north-mira-behind-middle-4x.png",
+		"north-mira-behind-end.png",
+		"north-mira-front-start.png",
+		"north-mira-front-middle.png",
+		"north-mira-front-middle-4x.png",
+		"north-mira-front-end.png",
+		"north-theo-behind-start.png",
+		"north-theo-behind-middle.png",
+		"north-theo-behind-middle-4x.png",
+		"north-theo-behind-end.png",
+		"north-theo-front-start.png",
+		"north-theo-front-middle.png",
+		"north-theo-front-middle-4x.png",
+		"north-theo-front-end.png",
+		"east-committed.png",
+		"east-committed-4x.png",
+		"east-founder-behind-start.png",
+		"east-founder-behind-middle.png",
+		"east-founder-behind-middle-4x.png",
+		"east-founder-behind-end.png",
+		"east-founder-front-start.png",
+		"east-founder-front-middle.png",
+		"east-founder-front-middle-4x.png",
+		"east-founder-front-end.png",
+		"east-mira-behind-start.png",
+		"east-mira-behind-middle.png",
+		"east-mira-behind-middle-4x.png",
+		"east-mira-behind-end.png",
+		"east-mira-front-start.png",
+		"east-mira-front-middle.png",
+		"east-mira-front-middle-4x.png",
+		"east-mira-front-end.png",
+		"east-theo-behind-start.png",
+		"east-theo-behind-middle.png",
+		"east-theo-behind-middle-4x.png",
+		"east-theo-behind-end.png",
+		"east-theo-front-start.png",
+		"east-theo-front-middle.png",
+		"east-theo-front-middle-4x.png",
+		"east-theo-front-end.png",
+		"south-committed.png",
+		"south-committed-4x.png",
+		"south-founder-behind-start.png",
+		"south-founder-behind-middle.png",
+		"south-founder-behind-middle-4x.png",
+		"south-founder-behind-end.png",
+		"south-founder-front-start.png",
+		"south-founder-front-middle.png",
+		"south-founder-front-middle-4x.png",
+		"south-founder-front-end.png",
+		"south-mira-behind-start.png",
+		"south-mira-behind-middle.png",
+		"south-mira-behind-middle-4x.png",
+		"south-mira-behind-end.png",
+		"south-mira-front-start.png",
+		"south-mira-front-middle.png",
+		"south-mira-front-middle-4x.png",
+		"south-mira-front-end.png",
+		"south-theo-behind-start.png",
+		"south-theo-behind-middle.png",
+		"south-theo-behind-middle-4x.png",
+		"south-theo-behind-end.png",
+		"south-theo-front-start.png",
+		"south-theo-front-middle.png",
+		"south-theo-front-middle-4x.png",
+		"south-theo-front-end.png",
+		"invalid-wall.png",
+		"occupied-rotation-rejected.png"
+	],
+	"checks": 328,
+	"failures": [],
+	"limitations": [
+		"Only South exposes generated open-bay content; closed E/W ends are equivalent.",
+		"No new gameplay action, seat, shadow, production family or saving.",
+		"Recorded visual review is required separately from these geometry checks."
+	],
+	"runtime_approved": false,
+	"source_status": "One generated South open-bay insert; code-native shelf with unchanged axis oak tiles",
+	"walks": [
+		{
+			"name": "west-founder-behind",
+			"positions": [
+				[
+					624.0,
+					432.0
+				],
+				[
+					725.0,
+					432.0
+				],
+				[
+					816.0,
+					432.0
+				]
+			],
+			"ticks": 37
+		},
+		{
+			"name": "west-founder-front",
+			"positions": [
+				[
+					624.0,
+					560.0
+				],
+				[
+					725.0,
+					560.0
+				],
+				[
+					816.0,
+					560.0
+				]
+			],
+			"ticks": 37
+		},
+		{
+			"name": "west-mira-behind",
+			"positions": [
+				[
+					624.0,
+					432.0
+				],
+				[
+					720.0,
+					432.0
+				],
+				[
+					816.0,
+					432.0
+				]
+			],
+			"ticks": 54
+		},
+		{
+			"name": "west-mira-front",
+			"positions": [
+				[
+					624.0,
+					560.0
+				],
+				[
+					720.0,
+					560.0
+				],
+				[
+					816.0,
+					560.0
+				]
+			],
+			"ticks": 54
+		},
+		{
+			"name": "west-theo-behind",
+			"positions": [
+				[
+					624.0,
+					432.0
+				],
+				[
+					720.0,
+					432.0
+				],
+				[
+					816.0,
+					432.0
+				]
+			],
+			"ticks": 54
+		},
+		{
+			"name": "west-theo-front",
+			"positions": [
+				[
+					624.0,
+					560.0
+				],
+				[
+					720.0,
+					560.0
+				],
+				[
+					816.0,
+					560.0
+				]
+			],
+			"ticks": 54
+		},
+		{
+			"name": "north-founder-behind",
+			"positions": [
+				[
+					624.0,
+					464.0
+				],
+				[
+					725.0,
+					464.0
+				],
+				[
+					816.0,
+					464.0
+				]
+			],
+			"ticks": 37
+		},
+		{
+			"name": "north-founder-front",
+			"positions": [
+				[
+					624.0,
+					528.0
+				],
+				[
+					725.0,
+					528.0
+				],
+				[
+					816.0,
+					528.0
+				]
+			],
+			"ticks": 37
+		},
+		{
+			"name": "north-mira-behind",
+			"positions": [
+				[
+					624.0,
+					464.0
+				],
+				[
+					720.0,
+					464.0
+				],
+				[
+					816.0,
+					464.0
+				]
+			],
+			"ticks": 54
+		},
+		{
+			"name": "north-mira-front",
+			"positions": [
+				[
+					624.0,
+					528.0
+				],
+				[
+					720.0,
+					528.0
+				],
+				[
+					816.0,
+					528.0
+				]
+			],
+			"ticks": 54
+		},
+		{
+			"name": "north-theo-behind",
+			"positions": [
+				[
+					624.0,
+					464.0
+				],
+				[
+					720.0,
+					464.0
+				],
+				[
+					816.0,
+					464.0
+				]
+			],
+			"ticks": 54
+		},
+		{
+			"name": "north-theo-front",
+			"positions": [
+				[
+					624.0,
+					528.0
+				],
+				[
+					720.0,
+					528.0
+				],
+				[
+					816.0,
+					528.0
+				]
+			],
+			"ticks": 54
+		},
+		{
+			"name": "east-founder-behind",
+			"positions": [
+				[
+					624.0,
+					432.0
+				],
+				[
+					725.0,
+					432.0
+				],
+				[
+					816.0,
+					432.0
+				]
+			],
+			"ticks": 37
+		},
+		{
+			"name": "east-founder-front",
+			"positions": [
+				[
+					624.0,
+					560.0
+				],
+				[
+					725.0,
+					560.0
+				],
+				[
+					816.0,
+					560.0
+				]
+			],
+			"ticks": 37
+		},
+		{
+			"name": "east-mira-behind",
+			"positions": [
+				[
+					624.0,
+					432.0
+				],
+				[
+					720.0,
+					432.0
+				],
+				[
+					816.0,
+					432.0
+				]
+			],
+			"ticks": 54
+		},
+		{
+			"name": "east-mira-front",
+			"positions": [
+				[
+					624.0,
+					560.0
+				],
+				[
+					720.0,
+					560.0
+				],
+				[
+					816.0,
+					560.0
+				]
+			],
+			"ticks": 54
+		},
+		{
+			"name": "east-theo-behind",
+			"positions": [
+				[
+					624.0,
+					432.0
+				],
+				[
+					720.0,
+					432.0
+				],
+				[
+					816.0,
+					432.0
+				]
+			],
+			"ticks": 54
+		},
+		{
+			"name": "east-theo-front",
+			"positions": [
+				[
+					624.0,
+					560.0
+				],
+				[
+					720.0,
+					560.0
+				],
+				[
+					816.0,
+					560.0
+				]
+			],
+			"ticks": 54
+		},
+		{
+			"name": "south-founder-behind",
+			"positions": [
+				[
+					624.0,
+					464.0
+				],
+				[
+					725.0,
+					464.0
+				],
+				[
+					816.0,
+					464.0
+				]
+			],
+			"ticks": 37
+		},
+		{
+			"name": "south-founder-front",
+			"positions": [
+				[
+					624.0,
+					528.0
+				],
+				[
+					725.0,
+					528.0
+				],
+				[
+					816.0,
+					528.0
+				]
+			],
+			"ticks": 37
+		},
+		{
+			"name": "south-mira-behind",
+			"positions": [
+				[
+					624.0,
+					464.0
+				],
+				[
+					720.0,
+					464.0
+				],
+				[
+					816.0,
+					464.0
+				]
+			],
+			"ticks": 54
+		},
+		{
+			"name": "south-mira-front",
+			"positions": [
+				[
+					624.0,
+					528.0
+				],
+				[
+					720.0,
+					528.0
+				],
+				[
+					816.0,
+					528.0
+				]
+			],
+			"ticks": 54
+		},
+		{
+			"name": "south-theo-behind",
+			"positions": [
+				[
+					624.0,
+					464.0
+				],
+				[
+					720.0,
+					464.0
+				],
+				[
+					816.0,
+					464.0
+				]
+			],
+			"ticks": 54
+		},
+		{
+			"name": "south-theo-front",
+			"positions": [
+				[
+					624.0,
+					528.0
+				],
+				[
+					720.0,
+					528.0
+				],
+				[
+					816.0,
+					528.0
+				]
+			],
+			"ticks": 54
+		}
+	]
+}

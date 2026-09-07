@@ -1,0 +1,119 @@
+{
+  "checks": 25,
+  "failures": [],
+  "isolated": true,
+  "layout_ticks": 42,
+  "permit_revoked": true,
+  "ready": true,
+  "redraw_ticks": 84,
+  "samples": [
+    {
+      "labels": [
+        {
+          "employee": "mira",
+          "painted": "[P: (336.0, 477.0), S: (64.0, 40.0)]",
+          "shown": true,
+          "suppressed": false
+        },
+        {
+          "employee": "theo",
+          "painted": "[P: (653.0, 542.0), S: (72.0, 32.0)]",
+          "shown": true,
+          "suppressed": false
+        }
+      ],
+      "phase": "initial",
+      "toolbar": "[P: (24.0, 610.0), S: (1080.0, 102.0)]"
+    },
+    {
+      "labels": [
+        {
+          "employee": "mira",
+          "painted": "[P: (336.0, 477.0), S: (64.0, 40.0)]",
+          "shown": true,
+          "suppressed": false
+        },
+        {
+          "employee": "theo",
+          "painted": "[P: (653.0, 542.0), S: (72.0, 32.0)]",
+          "shown": true,
+          "suppressed": false
+        }
+      ],
+      "phase": "rendered-initial",
+      "toolbar": "[P: (24.0, 610.0), S: (1080.0, 102.0)]"
+    },
+    {
+      "labels": [
+        {
+          "employee": "mira",
+          "painted": "[P: (336.0, 477.0), S: (64.0, 40.0)]",
+          "shown": true,
+          "suppressed": false
+        },
+        {
+          "employee": "theo",
+          "painted": "[P: (653.0, 542.0), S: (72.0, 32.0)]",
+          "shown": true,
+          "suppressed": false
+        }
+      ],
+      "phase": "settled",
+      "toolbar": "[P: (24.0, 610.0), S: (1080.0, 102.0)]"
+    },
+    {
+      "labels": [
+        {
+          "employee": "mira",
+          "painted": "[P: (336.0, 477.0), S: (64.0, 40.0)]",
+          "shown": true,
+          "suppressed": false
+        },
+        {
+          "employee": "theo",
+          "painted": "[P: (653.0, 542.0), S: (72.0, 32.0)]",
+          "shown": true,
+          "suppressed": false
+        }
+      ],
+      "phase": "rendered-settled",
+      "toolbar": "[P: (24.0, 610.0), S: (1080.0, 102.0)]"
+    },
+    {
+      "labels": [
+        {
+          "employee": "mira",
+          "painted": "[P: (336.0, 550.0), S: (64.0, 41.0)]",
+          "shown": true,
+          "suppressed": false
+        },
+        {
+          "employee": "theo",
+          "painted": "[P: (720.0, 550.0), S: (64.0, 41.0)]",
+          "shown": true,
+          "suppressed": false
+        }
+      ],
+      "phase": "ongoing",
+      "toolbar": "[P: (24.0, 610.0), S: (1080.0, 102.0)]"
+    },
+    {
+      "labels": [
+        {
+          "employee": "mira",
+          "painted": "[P: (336.0, 550.0), S: (64.0, 41.0)]",
+          "shown": true,
+          "suppressed": false
+        },
+        {
+          "employee": "theo",
+          "painted": "[P: (720.0, 550.0), S: (64.0, 41.0)]",
+          "shown": true,
+          "suppressed": false
+        }
+      ],
+      "phase": "rendered",
+      "toolbar": "[P: (24.0, 610.0), S: (1080.0, 102.0)]"
+    }
+  ]
+}

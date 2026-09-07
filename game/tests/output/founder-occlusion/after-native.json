@@ -1,0 +1,53 @@
+{
+	"checks": 33,
+	"failures": [],
+	"fixed": true,
+	"records": [
+		{
+			"capture": "after-station.png",
+			"case": "station",
+			"expected": "",
+			"founder_depth": 304,
+			"founder_feet": [
+				336.0,
+				304.0
+			],
+			"point": [
+				336.0,
+				238.0
+			],
+			"target": ""
+		},
+		{
+			"capture": "after-employee.png",
+			"case": "employee",
+			"expected": "",
+			"founder_depth": 464,
+			"founder_feet": [
+				464.0,
+				464.0
+			],
+			"point": [
+				464.0,
+				398.0
+			],
+			"target": ""
+		},
+		{
+			"capture": "after-employee-behind.png",
+			"case": "employee-behind",
+			"expected": "mira",
+			"founder_depth": 400,
+			"founder_feet": [
+				464.0,
+				400.0
+			],
+			"point": [
+				464.0,
+				364.0
+			],
+			"target": "mira"
+		}
+	],
+	"worker_started": false
+}

@@ -1,0 +1,27 @@
+{
+	"canvas": [
+		192,
+		224
+	],
+	"checks": 178,
+	"collision_cells": [],
+	"dev_catalogue_family": "mina_discovery_kit",
+	"dev_catalogue_registered": true,
+	"failures": [],
+	"layers_per_facing": [
+		"surface_decor_rear",
+		"surface_decor_front"
+	],
+	"objects_per_facing": [
+		"insight_notebook",
+		"prototype_wireframes",
+		"testing_tokens"
+	],
+	"pivot": [
+		96,
+		160
+	],
+	"production_catalogue_registered": false,
+	"runtime_registered": false,
+	"status": "native_review_candidate_not_runtime_registered"
+}

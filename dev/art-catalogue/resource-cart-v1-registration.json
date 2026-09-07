@@ -1,0 +1,2075 @@
+{
+  "id": "resource_cart",
+  "direction_semantics": "service_side",
+  "display_name": "Rolling resource cart",
+  "asset_kind": "furniture_base",
+  "base_vs_decor": "base",
+  "category": "storage",
+  "priority": "P2",
+  "production_status": "approved",
+  "role_tags": [
+    "product",
+    "creative",
+    "lawyer",
+    "shared"
+  ],
+  "role_tools": [
+    "two open trays",
+    "casters",
+    "handle"
+  ],
+  "design_brief": "Mobile shared supplies instead of duplicating a full storage wall at every specialist desk. The measured 88px handle feature supersedes the planned 80px estimate inside the unchanged canvas. Pivot, masks, scale and collision remain fixed.",
+  "gameplay_scope": "Art and future layout proposal only; no new hiring, role behavior, tool authority, transaction or interaction is implemented.",
+  "primary_host": null,
+  "current_availability": {
+    "status": "no_catalogue_runtime_binding",
+    "runtime_family_id": null,
+    "runtime_registered_facings": [],
+    "art_path": null,
+    "direction_art_review": "N/E/S/W resource-cart-v1 passive art passes the 2026-09-06 agent-native review. Every view has two visibly separated open trays, oriented handle/caster cues, footprint-derived top geometry, fixed light, clean layers/anchors and actual GameMain wall/route/depth evidence. Approval is passive-library only; no cart motion, production/runtime binding, default placement, interaction, hire, role pose or backend is claimed.",
+    "previous_catalogue_availability": {
+      "status": "no_catalogue_runtime_binding",
+      "runtime_family_id": null,
+      "runtime_registered_facings": [],
+      "art_path": null,
+      "direction_art_review": "No finished art or runtime family is claimed for this proposal; unrelated concept/source art may exist."
+    },
+    "candidate_status": "approved",
+    "candidate_revision": "resource-cart-v1",
+    "candidate_fixture_manifest_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/manifest.json",
+    "candidate_structural_results_path": "game/tests/output/resource-cart-v1/structural-results.json",
+    "candidate_actual_room_results_path": "game/tests/output/resource-cart-v1/actual-room-results.json",
+    "candidate_actual_room_evidence_path": "game/tests/output/resource-cart-v1/actual-room-approach-contact-sheet-native.png",
+    "candidate_review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+    "candidate_actor_probe": "founder_standing_scale_route_contact_and_depth_only",
+    "candidate_image_generation_used": false,
+    "candidate_runtime_registration": null,
+    "candidate_default_layout_binding": null,
+    "approved_candidate_art_path": null
+  },
+  "native_geometry": {
+    "status": "reviewed_code_native_library_not_runtime_admission",
+    "canvas_size_px": [
+      160,
+      208
+    ],
+    "floor_anchor_px": [
+      80,
+      144
+    ],
+    "grid_size_px": 32,
+    "estimated_max_rise_above_occupied_floor_px": 136,
+    "minimum_transparent_padding_px": 16,
+    "anchor_rule": "One unchanged canvas coordinate represents local floor pivot [0,0] in every direction and every layer. Transparent padding is not sprite scaling.",
+    "sprite_offset_px": [
+      0,
+      -40
+    ],
+    "candidate_revision": "resource-cart-v1",
+    "dimension_review": {
+      "authored_vertical_feature_rise_px": 88,
+      "east_west_top_plane_depth_px": 64,
+      "maximum_expected_projected_rise_px": 152,
+      "measured_base_elevation_px": 72,
+      "north_south_top_plane_depth_px": 32,
+      "planned_canvas_retained": [
+        160,
+        208
+      ],
+      "planned_floor_anchor_retained": [
+        80,
+        144
+      ],
+      "planned_vertical_feature_envelope_px": 80,
+      "revision": "The planned rise is retained as the vertical feature envelope. Full screen-projected rise is recorded separately because a truthful E/W top plane also contains the exact 64px depth of the 1x2 physical footprint. Canvas, pivot, scale and collision masks do not change.",
+      "observed_maximum_projected_rise_px": 136
+    },
+    "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/manifest.json",
+    "fixture_manifest_sha256": "65fb9c19b6c138cf622af32cc673c5c7ce6bfb40cd67e8fd66fe451100e85ee1",
+    "structural_results_path": "game/tests/output/resource-cart-v1/structural-results.json",
+    "structural_results_sha256": "bffce72b06696e29904b6ee269d750f9b20812b17db5ec9f07ed774a147ae318",
+    "actual_room_results_path": "game/tests/output/resource-cart-v1/actual-room-results.json",
+    "actual_room_results_sha256": "dafc7e78b417b3554cfc23c66d3c65fa92d82efcb6fbbf178b6e399f50e9fac6",
+    "actual_room_evidence_path": "game/tests/output/resource-cart-v1/actual-room-approach-contact-sheet-native.png",
+    "isolated_invocation_path": "game/tests/output/passive-service-library/native-invocation-resource-cart.json",
+    "isolated_invocation_sha256": "89a7000e8f6fd54330ceb0849d17cee785c656b35e31270a5b812da7836be010",
+    "aggregate_results_path": "game/tests/output/passive-service-library/actual-room-isolated-aggregate-results.json",
+    "aggregate_results_sha256": "829869c75e633b58228f46a72c8d18bbeda514a7ffba52f504096eca3b278ba4",
+    "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+    "source_paths": [
+      "game/tools/passive_service_library_geometry.gd",
+      "game/tools/export_passive_service_library.gd",
+      "game/tests/test_passive_service_library.gd",
+      "game/tools/capture_passive_service_library.gd",
+      "game/tests/aggregate_passive_service_library_native.gd"
+    ],
+    "layers_per_direction": [
+      "floor_shadow",
+      "rear_structure",
+      "front_structure"
+    ],
+    "collision_contract": {
+      "cells_per_direction": 2,
+      "north_south_footprint_cells": [
+        2,
+        1
+      ],
+      "east_west_footprint_cells": [
+        1,
+        2
+      ],
+      "actual_town_room_collision_shapes_per_direction": 2,
+      "masks_changed_from_plan": false
+    },
+    "top_plane_contract": "For each facing, top_plane_px is exactly floor_plane_px translated upward by one family-wide base elevation, with identical footprint width/depth; solid fronts reach floor contact and the open cart retains a measured transparent tray interval.",
+    "production_registration": null,
+    "default_layout_binding": null,
+    "image_generation_used_for_native_candidate": false
+  },
+  "layers": [
+    {
+      "id": "floor_shadow",
+      "required": true,
+      "same_canvas_and_floor_anchor": true,
+      "status": "approved",
+      "approved_revision": "resource-cart-v1"
+    },
+    {
+      "id": "rear_structure",
+      "required": true,
+      "same_canvas_and_floor_anchor": true,
+      "status": "approved",
+      "approved_revision": "resource-cart-v1"
+    },
+    {
+      "id": "front_structure",
+      "required": true,
+      "same_canvas_and_floor_anchor": true,
+      "status": "approved",
+      "approved_revision": "resource-cart-v1"
+    }
+  ],
+  "variants": [
+    {
+      "facing": "north",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/north-whole.png",
+      "evidence_path": "game/tests/output/resource-cart-v1/actual-room-approach-contact-sheet-native.png",
+      "source_reference_path": "game/tools/passive_service_library_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        2,
+        1
+      ],
+      "proposed_occupied_cell_offsets": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "employee_look_vector": [
+        0,
+        1
+      ],
+      "proposed_interaction_cell": [
+        0,
+        -1
+      ],
+      "seated_pose_needed": false,
+      "redraw_requirement": "Draw the actual north service front; operator approaches that side looking south. Fixed screen floor axes and upper-left light; do not rotate or mirror finished raster art. No implemented interaction is implied.",
+      "service_side": "north",
+      "approach_gaze": "south",
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_evidence": null,
+      "runtime_exports": [],
+      "preview_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/north-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/north-whole.png",
+      "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+      "review_paths": [
+        "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      ],
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/resource-cart-v1/manifest.json",
+        "game/tests/output/resource-cart-v1/structural-results.json",
+        "game/tests/output/resource-cart-v1/actual-room-results.json",
+        "game/tests/output/passive-service-library/native-invocation-resource-cart.json",
+        "game/tests/output/passive-service-library/actual-room-isolated-aggregate-results.json",
+        "game/tests/output/resource-cart-v1/candidate-contact-sheet-native.png",
+        "game/tests/output/resource-cart-v1/candidate-contact-sheet-4x.png",
+        "game/tests/output/resource-cart-v1/candidate-layers-native.png",
+        "game/tests/output/resource-cart-v1/actual-room-base-contact-sheet-native.png",
+        "game/tests/output/resource-cart-v1/actual-room-approach-contact-sheet-native.png",
+        "game/tests/output/resource-cart-v1/actual-room-approach-contact-sheet-4x.png",
+        "game/tests/output/resource-cart-v1/room-north.png",
+        "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      ],
+      "reason": "resource-cart-v1 north passes passive-library review at mean 2.67/minimum 2. two-tray open resource cart with handle, casters and neutral supplies; actual GameMain records 883 natural actor/prop overlap pixels with actor_behind_structure. The cart is passive artwork; caster and handle cues do not implement movement, inventory, pickup or service behavior.",
+      "export_method": "Independent deterministic typed-GDScript screen-axis geometry for resource-cart-v1 north; retained reviewed material tiles only, with zero image-generation calls and no finished-raster rotation, mirror, flip, scale, text, logo, fake metric or baked actor.",
+      "authored_clearance_cell_offsets": [
+        [
+          0,
+          -1
+        ]
+      ],
+      "camera_face_identity": "rear",
+      "role_identity": {
+        "camera_face": "rear_handle",
+        "casters": 4,
+        "mobile_behavior_implemented": false,
+        "open_trays": 2
+      },
+      "native_geometry": {
+        "canvas_size_px": [
+          160,
+          208
+        ],
+        "floor_anchor_px": [
+          80,
+          144
+        ],
+        "sprite_offset_px": [
+          0,
+          -40
+        ],
+        "floor_plane_px": [
+          -16,
+          -16,
+          64,
+          32
+        ],
+        "top_plane_px": [
+          -16,
+          -88,
+          64,
+          32
+        ],
+        "camera_front_elevation_px": [
+          -16,
+          -56,
+          64,
+          72
+        ],
+        "contact_boundary_y": 16,
+        "base_elevation_px": 72,
+        "top_plane_depth_px": 32,
+        "base_projected_rise_px": 104,
+        "authored_vertical_feature_rise_px": 88,
+        "measured_whole_projected_rise_px": 120,
+        "base_solid_bounds_px": [
+          -16,
+          -88,
+          64,
+          104
+        ],
+        "whole_opaque_bounds_px": [
+          59,
+          40,
+          74,
+          120
+        ],
+        "whole_opaque_pixels": 4636,
+        "whole_partial_alpha_pixels": 0,
+        "whole_hidden_rgb_pixels": 0,
+        "whole_used_colors": 14,
+        "whole_sha256": "033f65a81deee313abc54d2ec5cdf0a5000e0059e4068439e0bd96f5d3248858"
+      },
+      "native_exports": [
+        {
+          "layer": "floor_shadow",
+          "source_layer": "ResourceCartV1NorthFloorShadow",
+          "path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/north-floor_shadow.png",
+          "canvas_size_px": [
+            160,
+            208
+          ],
+          "floor_anchor_px": [
+            80,
+            144
+          ],
+          "sprite_offset_px": [
+            0,
+            -40
+          ],
+          "opaque_bounds_px": [
+            59,
+            155,
+            74,
+            4
+          ],
+          "opaque_pixels": 30,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 1,
+          "sha256": "128137f308d737b443b706069b5525c7cd01858fb420a38525cb5cada6ee91b8",
+          "z_offset": -2,
+          "render_descriptor": {
+            "name": "ResourceCartV1NorthFloorShadow",
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/north-floor_shadow.png",
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "offset": [
+              0,
+              -40
+            ],
+            "z_offset": -2
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native north layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        },
+        {
+          "layer": "rear_structure",
+          "source_layer": "ResourceCartV1NorthRearStructure",
+          "path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/north-rear_structure.png",
+          "canvas_size_px": [
+            160,
+            208
+          ],
+          "floor_anchor_px": [
+            80,
+            144
+          ],
+          "sprite_offset_px": [
+            0,
+            -40
+          ],
+          "opaque_bounds_px": [
+            64,
+            40,
+            64,
+            118
+          ],
+          "opaque_pixels": 2714,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 9,
+          "sha256": "3675f618d116edbf740dc1a1233c3b6c3142ced523498bc51f8784e32996ad27",
+          "z_offset": -1,
+          "render_descriptor": {
+            "name": "ResourceCartV1NorthRearStructure",
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/north-rear_structure.png",
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "offset": [
+              0,
+              -40
+            ],
+            "z_offset": -1
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native north layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        },
+        {
+          "layer": "front_structure",
+          "source_layer": "ResourceCartV1NorthFrontStructure",
+          "path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/north-front_structure.png",
+          "canvas_size_px": [
+            160,
+            208
+          ],
+          "floor_anchor_px": [
+            80,
+            144
+          ],
+          "sprite_offset_px": [
+            0,
+            -40
+          ],
+          "opaque_bounds_px": [
+            64,
+            63,
+            64,
+            97
+          ],
+          "opaque_pixels": 2284,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 11,
+          "sha256": "e7dfd9d60296e52a013bb4b1fbbb0164e874c4ccf227964a3e0f911005c30ae9",
+          "z_offset": 1,
+          "render_descriptor": {
+            "name": "ResourceCartV1NorthFrontStructure",
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/north-front_structure.png",
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "offset": [
+              0,
+              -40
+            ],
+            "z_offset": 1
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native north layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        }
+      ],
+      "composite_exports": [
+        {
+          "layer_ids": [
+            "floor_shadow",
+            "rear_structure",
+            "front_structure"
+          ],
+          "path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/north-whole.png",
+          "canvas_size_px": [
+            160,
+            208
+          ],
+          "floor_anchor_px": [
+            80,
+            144
+          ],
+          "sprite_offset_px": [
+            0,
+            -40
+          ],
+          "opaque_bounds_px": [
+            59,
+            40,
+            74,
+            120
+          ],
+          "opaque_pixels": 4636,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 14,
+          "sha256": "033f65a81deee313abc54d2ec5cdf0a5000e0059e4068439e0bd96f5d3248858",
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact ordered floor_shadow over rear_structure over front_structure reconstruction."
+        }
+      ],
+      "actual_game_main": {
+        "scene": "actual GameMain and production TownRoom architecture/navigation with one owner-scoped passive candidate definition",
+        "viewport_px": [
+          1280,
+          720
+        ],
+        "common_safe_pivot": [
+          12,
+          13
+        ],
+        "grid": [
+          12,
+          13
+        ],
+        "occupied_cell_offsets": [
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "clearance_cells": [
+          [
+            12,
+            12
+          ]
+        ],
+        "collision_shapes": 2,
+        "founder_probe": {
+          "actor_z": 400,
+          "depth_class": "actor_behind_structure",
+          "destination_cell": [
+            12,
+            12
+          ],
+          "destination_px": [
+            400,
+            400
+          ],
+          "employee_look_vector": [
+            0,
+            1
+          ],
+          "front_z": 433,
+          "initial_route_points": 11,
+          "rear_z": 431,
+          "traveled_px": 345.243702888489
+        },
+        "actor_pixel_delta": 691,
+        "actor_prop_overlap_measured_not_acceptance_threshold": {
+          "actor_in_front_pixels": 0,
+          "pixels": 883,
+          "prop_in_front_pixels": 883
+        },
+        "render_layers": [
+          {
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/north-floor_shadow.png",
+            "name": "ResourceCartNorthFloorShadow",
+            "offset": [
+              0,
+              -40
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "z_offset": -2
+          },
+          {
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/north-rear_structure.png",
+            "name": "ResourceCartNorthRearStructure",
+            "offset": [
+              0,
+              -40
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "z_offset": -1
+          },
+          {
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/north-front_structure.png",
+            "name": "ResourceCartNorthFrontStructure",
+            "offset": [
+              0,
+              -40
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "z_offset": 1
+          }
+        ],
+        "wall_corner": {
+          "grid": [
+            1,
+            3
+          ],
+          "issue_codes": [
+            "visual_wall_intersection",
+            "decorative_headroom",
+            "wall_clearance"
+          ],
+          "wall_neighbors": 2
+        },
+        "worker_disabled": true,
+        "save_access": false,
+        "runtime_registered": false
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "role_specific_actor_pose_claimed": false,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 2,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "mean_score": 2.67,
+        "minimum_score": 2,
+        "note": "Accepted by the 2026-09-06 agent-native review for passive library use. The cart is passive artwork; caster and handle cues do not implement movement, inventory, pickup or service behavior. Measured overlap is recorded without using arbitrary overlap as a quality threshold; the founder is only a standing route/contact/gaze/depth probe.",
+        "acceptance_scope": "passive_art_library",
+        "acceptance_date": "2026-09-06",
+        "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      },
+      "code_native_provenance": {
+        "image_generation_calls": 0,
+        "generated_raster_sources_used": false,
+        "construction": "Editable typed-GDScript geometry using already reviewed material tiles; no raster-generation retry budget applies."
+      },
+      "source_attempts": [],
+      "source_attempts_created": 0
+    },
+    {
+      "facing": "east",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/east-whole.png",
+      "evidence_path": "game/tests/output/resource-cart-v1/actual-room-approach-contact-sheet-native.png",
+      "source_reference_path": "game/tools/passive_service_library_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        1,
+        2
+      ],
+      "proposed_occupied_cell_offsets": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "employee_look_vector": [
+        -1,
+        0
+      ],
+      "proposed_interaction_cell": [
+        1,
+        0
+      ],
+      "seated_pose_needed": false,
+      "redraw_requirement": "Draw the actual east service front; operator approaches that side looking west. Fixed screen floor axes and upper-left light; do not rotate or mirror finished raster art. No implemented interaction is implied.",
+      "service_side": "east",
+      "approach_gaze": "west",
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_evidence": null,
+      "runtime_exports": [],
+      "preview_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/east-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/east-whole.png",
+      "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+      "review_paths": [
+        "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      ],
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/resource-cart-v1/manifest.json",
+        "game/tests/output/resource-cart-v1/structural-results.json",
+        "game/tests/output/resource-cart-v1/actual-room-results.json",
+        "game/tests/output/passive-service-library/native-invocation-resource-cart.json",
+        "game/tests/output/passive-service-library/actual-room-isolated-aggregate-results.json",
+        "game/tests/output/resource-cart-v1/candidate-contact-sheet-native.png",
+        "game/tests/output/resource-cart-v1/candidate-contact-sheet-4x.png",
+        "game/tests/output/resource-cart-v1/candidate-layers-native.png",
+        "game/tests/output/resource-cart-v1/actual-room-base-contact-sheet-native.png",
+        "game/tests/output/resource-cart-v1/actual-room-approach-contact-sheet-native.png",
+        "game/tests/output/resource-cart-v1/actual-room-approach-contact-sheet-4x.png",
+        "game/tests/output/resource-cart-v1/room-east.png",
+        "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      ],
+      "reason": "resource-cart-v1 east passes passive-library review at mean 2.67/minimum 2. two-tray open resource cart with handle, casters and neutral supplies; actual GameMain records 21 natural actor/prop overlap pixels with actor_between_rear_and_front_layers. The cart is passive artwork; caster and handle cues do not implement movement, inventory, pickup or service behavior.",
+      "export_method": "Independent deterministic typed-GDScript screen-axis geometry for resource-cart-v1 east; retained reviewed material tiles only, with zero image-generation calls and no finished-raster rotation, mirror, flip, scale, text, logo, fake metric or baked actor.",
+      "authored_clearance_cell_offsets": [
+        [
+          1,
+          0
+        ]
+      ],
+      "camera_face_identity": "service_front_right_end",
+      "role_identity": {
+        "camera_face": "right_handle_end",
+        "casters": 4,
+        "mobile_behavior_implemented": false,
+        "open_trays": 2
+      },
+      "native_geometry": {
+        "canvas_size_px": [
+          160,
+          208
+        ],
+        "floor_anchor_px": [
+          80,
+          144
+        ],
+        "sprite_offset_px": [
+          0,
+          -40
+        ],
+        "floor_plane_px": [
+          -16,
+          -16,
+          32,
+          64
+        ],
+        "top_plane_px": [
+          -16,
+          -88,
+          32,
+          64
+        ],
+        "camera_front_elevation_px": [
+          -16,
+          -24,
+          32,
+          72
+        ],
+        "contact_boundary_y": 48,
+        "base_elevation_px": 72,
+        "top_plane_depth_px": 64,
+        "base_projected_rise_px": 136,
+        "authored_vertical_feature_rise_px": 88,
+        "measured_whole_projected_rise_px": 136,
+        "base_solid_bounds_px": [
+          -16,
+          -88,
+          32,
+          136
+        ],
+        "whole_opaque_bounds_px": [
+          59,
+          56,
+          57,
+          136
+        ],
+        "whole_opaque_pixels": 4321,
+        "whole_partial_alpha_pixels": 0,
+        "whole_hidden_rgb_pixels": 0,
+        "whole_used_colors": 14,
+        "whole_sha256": "42cec387a3f94d233addbf07df114a420f096c19557d443ce8df48902540dac8"
+      },
+      "native_exports": [
+        {
+          "layer": "floor_shadow",
+          "source_layer": "ResourceCartV1EastFloorShadow",
+          "path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/east-floor_shadow.png",
+          "canvas_size_px": [
+            160,
+            208
+          ],
+          "floor_anchor_px": [
+            80,
+            144
+          ],
+          "sprite_offset_px": [
+            0,
+            -40
+          ],
+          "opaque_bounds_px": [
+            59,
+            187,
+            42,
+            4
+          ],
+          "opaque_pixels": 30,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 1,
+          "sha256": "723b1d16e9f8987d37b1f7d6cc447b3a791766dacebaf9cf5a0c72f8ba14a244",
+          "z_offset": -2,
+          "render_descriptor": {
+            "name": "ResourceCartV1EastFloorShadow",
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/east-floor_shadow.png",
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "offset": [
+              0,
+              -40
+            ],
+            "z_offset": -2
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native east layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        },
+        {
+          "layer": "rear_structure",
+          "source_layer": "ResourceCartV1EastRearStructure",
+          "path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/east-rear_structure.png",
+          "canvas_size_px": [
+            160,
+            208
+          ],
+          "floor_anchor_px": [
+            80,
+            144
+          ],
+          "sprite_offset_px": [
+            0,
+            -40
+          ],
+          "opaque_bounds_px": [
+            64,
+            56,
+            52,
+            134
+          ],
+          "opaque_pixels": 2591,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 9,
+          "sha256": "fa7b1479d625c6be06a4fe9658d37954d44ccb6236c117e84dca2e4f34c049d7",
+          "z_offset": -1,
+          "render_descriptor": {
+            "name": "ResourceCartV1EastRearStructure",
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/east-rear_structure.png",
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "offset": [
+              0,
+              -40
+            ],
+            "z_offset": -1
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native east layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        },
+        {
+          "layer": "front_structure",
+          "source_layer": "ResourceCartV1EastFrontStructure",
+          "path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/east-front_structure.png",
+          "canvas_size_px": [
+            160,
+            208
+          ],
+          "floor_anchor_px": [
+            80,
+            144
+          ],
+          "sprite_offset_px": [
+            0,
+            -40
+          ],
+          "opaque_bounds_px": [
+            64,
+            65,
+            32,
+            127
+          ],
+          "opaque_pixels": 2284,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 11,
+          "sha256": "afc8496e293d612ebbc463edd4c8476f4ae2759b8a92c527b271d8b650828311",
+          "z_offset": 1,
+          "render_descriptor": {
+            "name": "ResourceCartV1EastFrontStructure",
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/east-front_structure.png",
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "offset": [
+              0,
+              -40
+            ],
+            "z_offset": 1
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native east layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        }
+      ],
+      "composite_exports": [
+        {
+          "layer_ids": [
+            "floor_shadow",
+            "rear_structure",
+            "front_structure"
+          ],
+          "path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/east-whole.png",
+          "canvas_size_px": [
+            160,
+            208
+          ],
+          "floor_anchor_px": [
+            80,
+            144
+          ],
+          "sprite_offset_px": [
+            0,
+            -40
+          ],
+          "opaque_bounds_px": [
+            59,
+            56,
+            57,
+            136
+          ],
+          "opaque_pixels": 4321,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 14,
+          "sha256": "42cec387a3f94d233addbf07df114a420f096c19557d443ce8df48902540dac8",
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact ordered floor_shadow over rear_structure over front_structure reconstruction."
+        }
+      ],
+      "actual_game_main": {
+        "scene": "actual GameMain and production TownRoom architecture/navigation with one owner-scoped passive candidate definition",
+        "viewport_px": [
+          1280,
+          720
+        ],
+        "common_safe_pivot": [
+          12,
+          13
+        ],
+        "grid": [
+          12,
+          13
+        ],
+        "occupied_cell_offsets": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "clearance_cells": [
+          [
+            13,
+            13
+          ]
+        ],
+        "collision_shapes": 2,
+        "founder_probe": {
+          "actor_z": 432,
+          "depth_class": "actor_between_rear_and_front_layers",
+          "destination_cell": [
+            13,
+            13
+          ],
+          "destination_px": [
+            432,
+            432
+          ],
+          "employee_look_vector": [
+            -1,
+            0
+          ],
+          "front_z": 433,
+          "initial_route_points": 9,
+          "rear_z": 431,
+          "traveled_px": 277.159844398499
+        },
+        "actor_pixel_delta": 1293,
+        "actor_prop_overlap_measured_not_acceptance_threshold": {
+          "actor_in_front_pixels": 21,
+          "pixels": 21,
+          "prop_in_front_pixels": 0
+        },
+        "render_layers": [
+          {
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/east-floor_shadow.png",
+            "name": "ResourceCartEastFloorShadow",
+            "offset": [
+              0,
+              -40
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "z_offset": -2
+          },
+          {
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/east-rear_structure.png",
+            "name": "ResourceCartEastRearStructure",
+            "offset": [
+              0,
+              -40
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "z_offset": -1
+          },
+          {
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/east-front_structure.png",
+            "name": "ResourceCartEastFrontStructure",
+            "offset": [
+              0,
+              -40
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "z_offset": 1
+          }
+        ],
+        "wall_corner": {
+          "grid": [
+            1,
+            3
+          ],
+          "issue_codes": [
+            "visual_wall_intersection",
+            "decorative_headroom"
+          ],
+          "wall_neighbors": 2
+        },
+        "worker_disabled": true,
+        "save_access": false,
+        "runtime_registered": false
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "role_specific_actor_pose_claimed": false,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 2,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "mean_score": 2.67,
+        "minimum_score": 2,
+        "note": "Accepted by the 2026-09-06 agent-native review for passive library use. The cart is passive artwork; caster and handle cues do not implement movement, inventory, pickup or service behavior. Measured overlap is recorded without using arbitrary overlap as a quality threshold; the founder is only a standing route/contact/gaze/depth probe.",
+        "acceptance_scope": "passive_art_library",
+        "acceptance_date": "2026-09-06",
+        "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      },
+      "code_native_provenance": {
+        "image_generation_calls": 0,
+        "generated_raster_sources_used": false,
+        "construction": "Editable typed-GDScript geometry using already reviewed material tiles; no raster-generation retry budget applies."
+      },
+      "source_attempts": [],
+      "source_attempts_created": 0
+    },
+    {
+      "facing": "south",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/south-whole.png",
+      "evidence_path": "game/tests/output/resource-cart-v1/actual-room-approach-contact-sheet-native.png",
+      "source_reference_path": "game/tools/passive_service_library_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        2,
+        1
+      ],
+      "proposed_occupied_cell_offsets": [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "employee_look_vector": [
+        0,
+        -1
+      ],
+      "proposed_interaction_cell": [
+        0,
+        1
+      ],
+      "seated_pose_needed": false,
+      "redraw_requirement": "Draw the actual south service front; operator approaches that side looking north. Fixed screen floor axes and upper-left light; do not rotate or mirror finished raster art. No implemented interaction is implied.",
+      "service_side": "south",
+      "approach_gaze": "north",
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_evidence": null,
+      "runtime_exports": [],
+      "preview_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/south-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/south-whole.png",
+      "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+      "review_paths": [
+        "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      ],
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/resource-cart-v1/manifest.json",
+        "game/tests/output/resource-cart-v1/structural-results.json",
+        "game/tests/output/resource-cart-v1/actual-room-results.json",
+        "game/tests/output/passive-service-library/native-invocation-resource-cart.json",
+        "game/tests/output/passive-service-library/actual-room-isolated-aggregate-results.json",
+        "game/tests/output/resource-cart-v1/candidate-contact-sheet-native.png",
+        "game/tests/output/resource-cart-v1/candidate-contact-sheet-4x.png",
+        "game/tests/output/resource-cart-v1/candidate-layers-native.png",
+        "game/tests/output/resource-cart-v1/actual-room-base-contact-sheet-native.png",
+        "game/tests/output/resource-cart-v1/actual-room-approach-contact-sheet-native.png",
+        "game/tests/output/resource-cart-v1/actual-room-approach-contact-sheet-4x.png",
+        "game/tests/output/resource-cart-v1/room-south.png",
+        "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      ],
+      "reason": "resource-cart-v1 south passes passive-library review at mean 2.67/minimum 2. two-tray open resource cart with handle, casters and neutral supplies; actual GameMain records 870 natural actor/prop overlap pixels with actor_in_front_of_structure. The cart is passive artwork; caster and handle cues do not implement movement, inventory, pickup or service behavior.",
+      "export_method": "Independent deterministic typed-GDScript screen-axis geometry for resource-cart-v1 south; retained reviewed material tiles only, with zero image-generation calls and no finished-raster rotation, mirror, flip, scale, text, logo, fake metric or baked actor.",
+      "authored_clearance_cell_offsets": [
+        [
+          0,
+          1
+        ]
+      ],
+      "camera_face_identity": "service_front",
+      "role_identity": {
+        "camera_face": "open_tray_fronts",
+        "casters": 4,
+        "mobile_behavior_implemented": false,
+        "open_trays": 2
+      },
+      "native_geometry": {
+        "canvas_size_px": [
+          160,
+          208
+        ],
+        "floor_anchor_px": [
+          80,
+          144
+        ],
+        "sprite_offset_px": [
+          0,
+          -40
+        ],
+        "floor_plane_px": [
+          -48,
+          -16,
+          64,
+          32
+        ],
+        "top_plane_px": [
+          -48,
+          -88,
+          64,
+          32
+        ],
+        "camera_front_elevation_px": [
+          -48,
+          -56,
+          64,
+          72
+        ],
+        "contact_boundary_y": 16,
+        "base_elevation_px": 72,
+        "top_plane_depth_px": 32,
+        "base_projected_rise_px": 104,
+        "authored_vertical_feature_rise_px": 88,
+        "measured_whole_projected_rise_px": 104,
+        "base_solid_bounds_px": [
+          -48,
+          -88,
+          64,
+          104
+        ],
+        "whole_opaque_bounds_px": [
+          27,
+          56,
+          74,
+          104
+        ],
+        "whole_opaque_pixels": 4540,
+        "whole_partial_alpha_pixels": 0,
+        "whole_hidden_rgb_pixels": 0,
+        "whole_used_colors": 14,
+        "whole_sha256": "4fc41442952fdbf4a6136006907b64e4f135cc9ed98990fd9cf617f747a10c65"
+      },
+      "native_exports": [
+        {
+          "layer": "floor_shadow",
+          "source_layer": "ResourceCartV1SouthFloorShadow",
+          "path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/south-floor_shadow.png",
+          "canvas_size_px": [
+            160,
+            208
+          ],
+          "floor_anchor_px": [
+            80,
+            144
+          ],
+          "sprite_offset_px": [
+            0,
+            -40
+          ],
+          "opaque_bounds_px": [
+            27,
+            155,
+            74,
+            4
+          ],
+          "opaque_pixels": 30,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 1,
+          "sha256": "d6a0380bde710f7c8ec3b4d947f7178b0784099d931c302130abcaefa42784d7",
+          "z_offset": -2,
+          "render_descriptor": {
+            "name": "ResourceCartV1SouthFloorShadow",
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/south-floor_shadow.png",
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "offset": [
+              0,
+              -40
+            ],
+            "z_offset": -2
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native south layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        },
+        {
+          "layer": "rear_structure",
+          "source_layer": "ResourceCartV1SouthRearStructure",
+          "path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/south-rear_structure.png",
+          "canvas_size_px": [
+            160,
+            208
+          ],
+          "floor_anchor_px": [
+            80,
+            144
+          ],
+          "sprite_offset_px": [
+            0,
+            -40
+          ],
+          "opaque_bounds_px": [
+            32,
+            56,
+            64,
+            102
+          ],
+          "opaque_pixels": 2468,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 8,
+          "sha256": "286c64f69edf86d0709e240b2c2100eed7b539e79e566b7274a07b8ce73b27c4",
+          "z_offset": -1,
+          "render_descriptor": {
+            "name": "ResourceCartV1SouthRearStructure",
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/south-rear_structure.png",
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "offset": [
+              0,
+              -40
+            ],
+            "z_offset": -1
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native south layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        },
+        {
+          "layer": "front_structure",
+          "source_layer": "ResourceCartV1SouthFrontStructure",
+          "path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/south-front_structure.png",
+          "canvas_size_px": [
+            160,
+            208
+          ],
+          "floor_anchor_px": [
+            80,
+            144
+          ],
+          "sprite_offset_px": [
+            0,
+            -40
+          ],
+          "opaque_bounds_px": [
+            32,
+            63,
+            64,
+            97
+          ],
+          "opaque_pixels": 2554,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 13,
+          "sha256": "c836f7a749d73e1a61ab57b0cebbab76cad631f3ddc98be5a0f81cd479c2dfe6",
+          "z_offset": 1,
+          "render_descriptor": {
+            "name": "ResourceCartV1SouthFrontStructure",
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/south-front_structure.png",
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "offset": [
+              0,
+              -40
+            ],
+            "z_offset": 1
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native south layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        }
+      ],
+      "composite_exports": [
+        {
+          "layer_ids": [
+            "floor_shadow",
+            "rear_structure",
+            "front_structure"
+          ],
+          "path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/south-whole.png",
+          "canvas_size_px": [
+            160,
+            208
+          ],
+          "floor_anchor_px": [
+            80,
+            144
+          ],
+          "sprite_offset_px": [
+            0,
+            -40
+          ],
+          "opaque_bounds_px": [
+            27,
+            56,
+            74,
+            104
+          ],
+          "opaque_pixels": 4540,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 14,
+          "sha256": "4fc41442952fdbf4a6136006907b64e4f135cc9ed98990fd9cf617f747a10c65",
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact ordered floor_shadow over rear_structure over front_structure reconstruction."
+        }
+      ],
+      "actual_game_main": {
+        "scene": "actual GameMain and production TownRoom architecture/navigation with one owner-scoped passive candidate definition",
+        "viewport_px": [
+          1280,
+          720
+        ],
+        "common_safe_pivot": [
+          12,
+          13
+        ],
+        "grid": [
+          12,
+          13
+        ],
+        "occupied_cell_offsets": [
+          [
+            -1,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "clearance_cells": [
+          [
+            12,
+            14
+          ]
+        ],
+        "collision_shapes": 2,
+        "founder_probe": {
+          "actor_z": 464,
+          "depth_class": "actor_in_front_of_structure",
+          "destination_cell": [
+            12,
+            14
+          ],
+          "destination_px": [
+            400,
+            464
+          ],
+          "employee_look_vector": [
+            0,
+            -1
+          ],
+          "front_z": 433,
+          "initial_route_points": 9,
+          "rear_z": 431,
+          "traveled_px": 279.0352435112
+        },
+        "actor_pixel_delta": 1547,
+        "actor_prop_overlap_measured_not_acceptance_threshold": {
+          "actor_in_front_pixels": 870,
+          "pixels": 870,
+          "prop_in_front_pixels": 0
+        },
+        "render_layers": [
+          {
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/south-floor_shadow.png",
+            "name": "ResourceCartSouthFloorShadow",
+            "offset": [
+              0,
+              -40
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "z_offset": -2
+          },
+          {
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/south-rear_structure.png",
+            "name": "ResourceCartSouthRearStructure",
+            "offset": [
+              0,
+              -40
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "z_offset": -1
+          },
+          {
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/south-front_structure.png",
+            "name": "ResourceCartSouthFrontStructure",
+            "offset": [
+              0,
+              -40
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "z_offset": 1
+          }
+        ],
+        "wall_corner": {
+          "grid": [
+            1,
+            3
+          ],
+          "issue_codes": [
+            "wall_intersection",
+            "visual_wall_intersection",
+            "decorative_headroom"
+          ],
+          "wall_neighbors": 2
+        },
+        "worker_disabled": true,
+        "save_access": false,
+        "runtime_registered": false
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "role_specific_actor_pose_claimed": false,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 2,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "mean_score": 2.67,
+        "minimum_score": 2,
+        "note": "Accepted by the 2026-09-06 agent-native review for passive library use. The cart is passive artwork; caster and handle cues do not implement movement, inventory, pickup or service behavior. Measured overlap is recorded without using arbitrary overlap as a quality threshold; the founder is only a standing route/contact/gaze/depth probe.",
+        "acceptance_scope": "passive_art_library",
+        "acceptance_date": "2026-09-06",
+        "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      },
+      "code_native_provenance": {
+        "image_generation_calls": 0,
+        "generated_raster_sources_used": false,
+        "construction": "Editable typed-GDScript geometry using already reviewed material tiles; no raster-generation retry budget applies."
+      },
+      "source_attempts": [],
+      "source_attempts_created": 0
+    },
+    {
+      "facing": "west",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/west-whole.png",
+      "evidence_path": "game/tests/output/resource-cart-v1/actual-room-approach-contact-sheet-native.png",
+      "source_reference_path": "game/tools/passive_service_library_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        1,
+        2
+      ],
+      "proposed_occupied_cell_offsets": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "employee_look_vector": [
+        1,
+        0
+      ],
+      "proposed_interaction_cell": [
+        -1,
+        0
+      ],
+      "seated_pose_needed": false,
+      "redraw_requirement": "Draw the actual west service front; operator approaches that side looking east. Fixed screen floor axes and upper-left light; do not rotate or mirror finished raster art. No implemented interaction is implied.",
+      "service_side": "west",
+      "approach_gaze": "east",
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_evidence": null,
+      "runtime_exports": [],
+      "preview_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/west-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/west-whole.png",
+      "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+      "review_paths": [
+        "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      ],
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/resource-cart-v1/manifest.json",
+        "game/tests/output/resource-cart-v1/structural-results.json",
+        "game/tests/output/resource-cart-v1/actual-room-results.json",
+        "game/tests/output/passive-service-library/native-invocation-resource-cart.json",
+        "game/tests/output/passive-service-library/actual-room-isolated-aggregate-results.json",
+        "game/tests/output/resource-cart-v1/candidate-contact-sheet-native.png",
+        "game/tests/output/resource-cart-v1/candidate-contact-sheet-4x.png",
+        "game/tests/output/resource-cart-v1/candidate-layers-native.png",
+        "game/tests/output/resource-cart-v1/actual-room-base-contact-sheet-native.png",
+        "game/tests/output/resource-cart-v1/actual-room-approach-contact-sheet-native.png",
+        "game/tests/output/resource-cart-v1/actual-room-approach-contact-sheet-4x.png",
+        "game/tests/output/resource-cart-v1/room-west.png",
+        "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      ],
+      "reason": "resource-cart-v1 west passes passive-library review at mean 2.67/minimum 2. two-tray open resource cart with handle, casters and neutral supplies; actual GameMain records 57 natural actor/prop overlap pixels with actor_between_rear_and_front_layers. The cart is passive artwork; caster and handle cues do not implement movement, inventory, pickup or service behavior.",
+      "export_method": "Independent deterministic typed-GDScript screen-axis geometry for resource-cart-v1 west; retained reviewed material tiles only, with zero image-generation calls and no finished-raster rotation, mirror, flip, scale, text, logo, fake metric or baked actor.",
+      "authored_clearance_cell_offsets": [
+        [
+          -1,
+          0
+        ]
+      ],
+      "camera_face_identity": "service_front_left_end",
+      "role_identity": {
+        "camera_face": "left_handle_end",
+        "casters": 4,
+        "mobile_behavior_implemented": false,
+        "open_trays": 2
+      },
+      "native_geometry": {
+        "canvas_size_px": [
+          160,
+          208
+        ],
+        "floor_anchor_px": [
+          80,
+          144
+        ],
+        "sprite_offset_px": [
+          0,
+          -40
+        ],
+        "floor_plane_px": [
+          -16,
+          -48,
+          32,
+          64
+        ],
+        "top_plane_px": [
+          -16,
+          -120,
+          32,
+          64
+        ],
+        "camera_front_elevation_px": [
+          -16,
+          -56,
+          32,
+          72
+        ],
+        "contact_boundary_y": 16,
+        "base_elevation_px": 72,
+        "top_plane_depth_px": 64,
+        "base_projected_rise_px": 136,
+        "authored_vertical_feature_rise_px": 88,
+        "measured_whole_projected_rise_px": 136,
+        "base_solid_bounds_px": [
+          -16,
+          -120,
+          32,
+          136
+        ],
+        "whole_opaque_bounds_px": [
+          44,
+          24,
+          57,
+          136
+        ],
+        "whole_opaque_pixels": 4321,
+        "whole_partial_alpha_pixels": 0,
+        "whole_hidden_rgb_pixels": 0,
+        "whole_used_colors": 14,
+        "whole_sha256": "270b00831e12525979c37eec7ce2a8843c2cb473b6e5e204e98b838274eb221d"
+      },
+      "native_exports": [
+        {
+          "layer": "floor_shadow",
+          "source_layer": "ResourceCartV1WestFloorShadow",
+          "path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/west-floor_shadow.png",
+          "canvas_size_px": [
+            160,
+            208
+          ],
+          "floor_anchor_px": [
+            80,
+            144
+          ],
+          "sprite_offset_px": [
+            0,
+            -40
+          ],
+          "opaque_bounds_px": [
+            59,
+            155,
+            42,
+            4
+          ],
+          "opaque_pixels": 30,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 1,
+          "sha256": "7191add134e3972d6fe6fb0f87700b94d99d375dc5c9682a97964eff6760bde7",
+          "z_offset": -2,
+          "render_descriptor": {
+            "name": "ResourceCartV1WestFloorShadow",
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/west-floor_shadow.png",
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "offset": [
+              0,
+              -40
+            ],
+            "z_offset": -2
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native west layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        },
+        {
+          "layer": "rear_structure",
+          "source_layer": "ResourceCartV1WestRearStructure",
+          "path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/west-rear_structure.png",
+          "canvas_size_px": [
+            160,
+            208
+          ],
+          "floor_anchor_px": [
+            80,
+            144
+          ],
+          "sprite_offset_px": [
+            0,
+            -40
+          ],
+          "opaque_bounds_px": [
+            44,
+            24,
+            52,
+            134
+          ],
+          "opaque_pixels": 2591,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 9,
+          "sha256": "5bce98529f4bc048c0d50bfa63d55df026c910923b481fd8ce28273fabc7cbdb",
+          "z_offset": -1,
+          "render_descriptor": {
+            "name": "ResourceCartV1WestRearStructure",
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/west-rear_structure.png",
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "offset": [
+              0,
+              -40
+            ],
+            "z_offset": -1
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native west layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        },
+        {
+          "layer": "front_structure",
+          "source_layer": "ResourceCartV1WestFrontStructure",
+          "path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/west-front_structure.png",
+          "canvas_size_px": [
+            160,
+            208
+          ],
+          "floor_anchor_px": [
+            80,
+            144
+          ],
+          "sprite_offset_px": [
+            0,
+            -40
+          ],
+          "opaque_bounds_px": [
+            64,
+            33,
+            32,
+            127
+          ],
+          "opaque_pixels": 2284,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 11,
+          "sha256": "c4bebd07becaf367835f00e9de9ecf008d51d649eeca5c0c8a47bbd632cb981e",
+          "z_offset": 1,
+          "render_descriptor": {
+            "name": "ResourceCartV1WestFrontStructure",
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/west-front_structure.png",
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "offset": [
+              0,
+              -40
+            ],
+            "z_offset": 1
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native west layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        }
+      ],
+      "composite_exports": [
+        {
+          "layer_ids": [
+            "floor_shadow",
+            "rear_structure",
+            "front_structure"
+          ],
+          "path": "game/tests/fixtures/furniture-calibration/resource-cart-v1/west-whole.png",
+          "canvas_size_px": [
+            160,
+            208
+          ],
+          "floor_anchor_px": [
+            80,
+            144
+          ],
+          "sprite_offset_px": [
+            0,
+            -40
+          ],
+          "opaque_bounds_px": [
+            44,
+            24,
+            57,
+            136
+          ],
+          "opaque_pixels": 4321,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 14,
+          "sha256": "270b00831e12525979c37eec7ce2a8843c2cb473b6e5e204e98b838274eb221d",
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact ordered floor_shadow over rear_structure over front_structure reconstruction."
+        }
+      ],
+      "actual_game_main": {
+        "scene": "actual GameMain and production TownRoom architecture/navigation with one owner-scoped passive candidate definition",
+        "viewport_px": [
+          1280,
+          720
+        ],
+        "common_safe_pivot": [
+          12,
+          13
+        ],
+        "grid": [
+          12,
+          13
+        ],
+        "occupied_cell_offsets": [
+          [
+            0,
+            -1
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "clearance_cells": [
+          [
+            11,
+            13
+          ]
+        ],
+        "collision_shapes": 2,
+        "founder_probe": {
+          "actor_z": 432,
+          "depth_class": "actor_between_rear_and_front_layers",
+          "destination_cell": [
+            11,
+            13
+          ],
+          "destination_px": [
+            368,
+            432
+          ],
+          "employee_look_vector": [
+            1,
+            0
+          ],
+          "front_z": 433,
+          "initial_route_points": 11,
+          "rear_z": 431,
+          "traveled_px": 337.516654014587
+        },
+        "actor_pixel_delta": 1305,
+        "actor_prop_overlap_measured_not_acceptance_threshold": {
+          "actor_in_front_pixels": 57,
+          "pixels": 57,
+          "prop_in_front_pixels": 0
+        },
+        "render_layers": [
+          {
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/west-floor_shadow.png",
+            "name": "ResourceCartWestFloorShadow",
+            "offset": [
+              0,
+              -40
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "z_offset": -2
+          },
+          {
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/west-rear_structure.png",
+            "name": "ResourceCartWestRearStructure",
+            "offset": [
+              0,
+              -40
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "z_offset": -1
+          },
+          {
+            "art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/west-front_structure.png",
+            "name": "ResourceCartWestFrontStructure",
+            "offset": [
+              0,
+              -40
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              208
+            ],
+            "z_offset": 1
+          }
+        ],
+        "wall_corner": {
+          "grid": [
+            1,
+            3
+          ],
+          "issue_codes": [
+            "wall_intersection",
+            "visual_wall_intersection",
+            "decorative_headroom",
+            "wall_clearance"
+          ],
+          "wall_neighbors": 2
+        },
+        "worker_disabled": true,
+        "save_access": false,
+        "runtime_registered": false
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "role_specific_actor_pose_claimed": false,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 2,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "mean_score": 2.67,
+        "minimum_score": 2,
+        "note": "Accepted by the 2026-09-06 agent-native review for passive library use. The cart is passive artwork; caster and handle cues do not implement movement, inventory, pickup or service behavior. Measured overlap is recorded without using arbitrary overlap as a quality threshold; the founder is only a standing route/contact/gaze/depth probe.",
+        "acceptance_scope": "passive_art_library",
+        "acceptance_date": "2026-09-06",
+        "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      },
+      "code_native_provenance": {
+        "image_generation_calls": 0,
+        "generated_raster_sources_used": false,
+        "construction": "Editable typed-GDScript geometry using already reviewed material tiles; no raster-generation retry budget applies."
+      },
+      "source_attempts": [],
+      "source_attempts_created": 0
+    }
+  ],
+  "construction": {
+    "revision": "resource-cart-v1",
+    "method": "Editable typed-GDScript floor-axis extrusion with a physical-footprint top plane and separately authored front/rear/end identity; reviewed native oak/powdercoat tiles are retained materials only. No generated full view, transformed finished raster, provider call, text, logo, fake metric, baked actor, or service implementation.",
+    "source_paths": [
+      "game/tools/passive_service_library_geometry.gd",
+      "game/tools/export_passive_service_library.gd",
+      "game/tests/test_passive_service_library.gd",
+      "game/tools/capture_passive_service_library.gd",
+      "game/tests/aggregate_passive_service_library_native.gd"
+    ],
+    "material_sources": {
+      "charcoal_powdercoat": {
+        "path": "res://tests/fixtures/furniture-calibration/materials/charcoal-powdercoat-v1.png",
+        "retained_unchanged": true,
+        "sha256": "807152a50c8a1771cd451d0984fe1fd4ba3fb6328089e5fa9dd1fb2c858ad42d"
+      },
+      "oak_horizontal": {
+        "path": "res://tests/fixtures/furniture-calibration/materials-v2/oak-horizontal-v2.png",
+        "retained_unchanged": true,
+        "sha256": "bcd3ccf8c6411b4ce24997a88b3fabf78f7fa2132b240f66ee1d59ab3e0dded6"
+      },
+      "oak_vertical": {
+        "path": "res://tests/fixtures/furniture-calibration/materials-v2/oak-vertical-v2.png",
+        "retained_unchanged": true,
+        "sha256": "28a84e93bcdd6e026fbd3a56ae598f14a6c74acd07d1c5950a1a2347a1a24fae"
+      }
+    },
+    "image_generation_calls": 0,
+    "source_attempts_created": 0,
+    "runtime_registration": null,
+    "default_layout_binding": null,
+    "service_backend_or_interaction_created": false
+  },
+  "contract_revision": {
+    "date": "2026-09-06",
+    "statement": "The measured 88px handle feature supersedes the planned 80px estimate inside the unchanged canvas. Pivot, masks, scale and collision remain fixed.",
+    "runtime_or_service_effect": "none"
+  },
+  "art_library_approval": {
+    "status": "approved",
+    "scope": "passive_art_library",
+    "acceptance_date": "2026-09-06",
+    "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+    "review_sha256": "467bfe006c7e48587132e1fa7566fdc0fe5dc447b0a70b024d00f05924016a79",
+    "runtime_admission": false,
+    "default_layout_admission": false,
+    "service_or_interaction_admission": false,
+    "role_pose_claim": false
+  },
+  "candidate_completion": {
+    "status": "approved_passive_art_library_not_runtime",
+    "validated": [
+      "four independent N/E/S/W screen-axis constructions",
+      "exact footprint-derived top planes and separately measured contact/open-frame geometry",
+      "binary alpha, zero hidden RGB, integer common canvas/pivot and exact three-layer reconstruction",
+      "two exact collision cells, safe adjacent approach and wall/corner rejection",
+      "actual GameMain native 1280x720 contact/gaze/depth evidence",
+      "120 exporter, 719 structural, 106 aggregate and three isolated 196-check native invocations with zero failures"
+    ],
+    "remaining": [
+      "optional future production/runtime registration",
+      "optional future default-layout decision",
+      "any future interaction/service/role behavior"
+    ],
+    "native_review_passed": true,
+    "passive_art_library_approved": true,
+    "production_acceptance_claim": false,
+    "runtime_registration_claim": false,
+    "image_generation_used_for_native_candidate": false,
+    "native_visual_mean_score": 2.67,
+    "native_visual_minimum_score": 2,
+    "review_date": "2026-09-06",
+    "source_catalogue_sha256": "4b3d400e50b3c26f02fe8c1c7f0988b36588f442847a3c40ae4efbf73b77019d"
+  },
+  "current_runtime_registration": null,
+  "runtime_art_path": null,
+  "runtime_exports": []
+}

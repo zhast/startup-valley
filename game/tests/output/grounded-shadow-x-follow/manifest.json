@@ -1,0 +1,5963 @@
+{
+	"actual_visible_shadow_pixels": 1548,
+	"baseline_sha256": {
+		"res://tests/output/grounded-work-shadow/east-frame0.png": "b86a89c145ddbb0550ad7edeaf3ca02b65c5cdca9707f6b2a295fc95b881b0da",
+		"res://tests/output/grounded-work-shadow/east-frame1.png": "b23c91af53b29061e7490fa70cfd1f73ed5ba44495dab1bd623f61dfa44ab794",
+		"res://tests/output/grounded-work-shadow/east-frame2.png": "23563328d507c78e6f08f6197048b986eaf76d7c70c4b2b38fa51fe68f26ac22",
+		"res://tests/output/grounded-work-shadow/east-frame3.png": "dcb859988e990bf375166aa3a878440b092e6c13a1c73fa8b97a929efe82a0bf",
+		"res://tests/output/grounded-work-shadow/east-frame4.png": "9c1fc9b7df559a9f1c39ac27f6de60a9056338572ba847b74d3df7a7add21f18",
+		"res://tests/output/grounded-work-shadow/east-frame5.png": "ff557a5b4164d35baf98a44df69bb9caa6b9e70bd5c72fb54190d41daebb04db",
+		"res://tests/output/grounded-work-shadow/north-frame0.png": "38c367bb863c58bd5b06812f61c3861cc1916890f43d273e2c400747d5ff69fd",
+		"res://tests/output/grounded-work-shadow/north-frame1.png": "e0d43c97211890c22cd5ad3a1425d6d618f1df19daee70c85ca2259e241b3ecd",
+		"res://tests/output/grounded-work-shadow/north-frame2.png": "cb99988f554e6ed2647161791b6b5bcd78d6b34f3c9d5b5a1a4beb110a8c4c78",
+		"res://tests/output/grounded-work-shadow/north-frame3.png": "26a1e8157933df5126687316b7841d707a783511dea1b779fd6408fdffbdaac0",
+		"res://tests/output/grounded-work-shadow/north-frame4.png": "3216332f9f16ce9878707f25f0a28a982b9d26bba1b836cb511903aba575bca0",
+		"res://tests/output/grounded-work-shadow/north-frame5.png": "ab7e0b3bb08a7b4c43f96eebaa004ddb4109e32c770d54e58c1a0e9d34025d47",
+		"res://tests/output/grounded-work-shadow/south-frame0.png": "666658657f4d07d6ba7942a568ff1c910f4420d9db3bfcd3fa3563f88d0faffe",
+		"res://tests/output/grounded-work-shadow/south-frame1.png": "7811724dd8dd73a117a7a7d1fbfe725b30894c0d78f7e955c54b2964e393a7ff",
+		"res://tests/output/grounded-work-shadow/south-frame2.png": "0364a6d84ce4585539f65a1dbb6b90fb7c7d2519efed25906ce926408daf89f3",
+		"res://tests/output/grounded-work-shadow/south-frame3.png": "77d43f6d1f3942261099882979536a47a5e5764e475861706778572729cf1f31",
+		"res://tests/output/grounded-work-shadow/south-frame4.png": "bdbc7f36852a824932395468d5cb68d22ed217054072cf367be33025c75fb1e2",
+		"res://tests/output/grounded-work-shadow/south-frame5.png": "3d1abab8f2cb84b00274dcc324148c961ae173b797d58a712632fda45094d125",
+		"res://tests/output/grounded-work-shadow/west-frame0.png": "1ece706392e99c14b12dd913d9fdb568951bc58ea1f45462fdeaa9bf790ce990",
+		"res://tests/output/grounded-work-shadow/west-frame1.png": "27b89bf2578ed5d23b00c39ed66020e193901445c9604a9a7165d84fb03fee25",
+		"res://tests/output/grounded-work-shadow/west-frame2.png": "7b285d98d03ef411150cf55c7e1b2f7294d3fcf72a0a54bc1fb3a796bf9f83d3",
+		"res://tests/output/grounded-work-shadow/west-frame3.png": "ecaac5479458d3c5d57bb1f5df63e8e8f668cc51a53215d682635b88c8beecff",
+		"res://tests/output/grounded-work-shadow/west-frame4.png": "a75637b24cc597bd34911a4ca3c7fac31fcba201f5bcf6e8ee2b2ddb8fc7d132",
+		"res://tests/output/grounded-work-shadow/west-frame5.png": "31484ef18cadb4c72e23db01d48e9e4b80dea244975e3907849c45b0bfe5c873"
+	},
+	"before_after_comparison_pixels": 1351680,
+	"capture_settle_frames": 160,
+	"captures": [
+		"north-enter-00.png",
+		"north-mira-enter-00-4x.png",
+		"north-theo-enter-00-4x.png",
+		"north-enter-01.png",
+		"north-mira-enter-01-4x.png",
+		"north-theo-enter-01-4x.png",
+		"north-enter-02.png",
+		"north-mira-enter-02-4x.png",
+		"north-theo-enter-02-4x.png",
+		"north-enter-03.png",
+		"north-mira-enter-03-4x.png",
+		"north-theo-enter-03-4x.png",
+		"north-enter-04.png",
+		"north-mira-enter-04-4x.png",
+		"north-theo-enter-04-4x.png",
+		"north-enter-05.png",
+		"north-mira-enter-05-4x.png",
+		"north-theo-enter-05-4x.png",
+		"north-frame0.png",
+		"north-mira-frame0-4x.png",
+		"north-theo-frame0-4x.png",
+		"north-frame1.png",
+		"north-mira-frame1-4x.png",
+		"north-theo-frame1-4x.png",
+		"north-frame2.png",
+		"north-mira-frame2-4x.png",
+		"north-theo-frame2-4x.png",
+		"north-frame3.png",
+		"north-mira-frame3-4x.png",
+		"north-theo-frame3-4x.png",
+		"north-frame4.png",
+		"north-mira-frame4-4x.png",
+		"north-theo-frame4-4x.png",
+		"north-frame5.png",
+		"north-mira-frame5-4x.png",
+		"north-theo-frame5-4x.png",
+		"north-paused.png",
+		"north-mira-paused-4x.png",
+		"north-theo-paused-4x.png",
+		"north-leave-00.png",
+		"north-mira-leave-00-4x.png",
+		"north-theo-leave-00-4x.png",
+		"north-leave-01.png",
+		"north-mira-leave-01-4x.png",
+		"north-theo-leave-01-4x.png",
+		"north-leave-02.png",
+		"north-mira-leave-02-4x.png",
+		"north-theo-leave-02-4x.png",
+		"north-leave-03.png",
+		"north-mira-leave-03-4x.png",
+		"north-theo-leave-03-4x.png",
+		"north-leave-04.png",
+		"north-mira-leave-04-4x.png",
+		"north-theo-leave-04-4x.png",
+		"north-leave-05.png",
+		"north-mira-leave-05-4x.png",
+		"north-theo-leave-05-4x.png",
+		"north-returned-idle.png",
+		"north-mira-returned-idle-4x.png",
+		"north-theo-returned-idle-4x.png",
+		"east-enter-00.png",
+		"east-mira-enter-00-4x.png",
+		"east-theo-enter-00-4x.png",
+		"east-enter-01.png",
+		"east-mira-enter-01-4x.png",
+		"east-theo-enter-01-4x.png",
+		"east-enter-02.png",
+		"east-mira-enter-02-4x.png",
+		"east-theo-enter-02-4x.png",
+		"east-enter-03.png",
+		"east-mira-enter-03-4x.png",
+		"east-theo-enter-03-4x.png",
+		"east-enter-04.png",
+		"east-mira-enter-04-4x.png",
+		"east-theo-enter-04-4x.png",
+		"east-enter-05.png",
+		"east-mira-enter-05-4x.png",
+		"east-theo-enter-05-4x.png",
+		"east-frame0.png",
+		"east-mira-frame0-4x.png",
+		"east-theo-frame0-4x.png",
+		"east-frame1.png",
+		"east-mira-frame1-4x.png",
+		"east-theo-frame1-4x.png",
+		"east-frame2.png",
+		"east-mira-frame2-4x.png",
+		"east-theo-frame2-4x.png",
+		"east-frame3.png",
+		"east-mira-frame3-4x.png",
+		"east-theo-frame3-4x.png",
+		"east-frame4.png",
+		"east-mira-frame4-4x.png",
+		"east-theo-frame4-4x.png",
+		"east-frame5.png",
+		"east-mira-frame5-4x.png",
+		"east-theo-frame5-4x.png",
+		"east-paused.png",
+		"east-mira-paused-4x.png",
+		"east-theo-paused-4x.png",
+		"east-leave-00.png",
+		"east-mira-leave-00-4x.png",
+		"east-theo-leave-00-4x.png",
+		"east-leave-01.png",
+		"east-mira-leave-01-4x.png",
+		"east-theo-leave-01-4x.png",
+		"east-leave-02.png",
+		"east-mira-leave-02-4x.png",
+		"east-theo-leave-02-4x.png",
+		"east-leave-03.png",
+		"east-mira-leave-03-4x.png",
+		"east-theo-leave-03-4x.png",
+		"east-leave-04.png",
+		"east-mira-leave-04-4x.png",
+		"east-theo-leave-04-4x.png",
+		"east-leave-05.png",
+		"east-mira-leave-05-4x.png",
+		"east-theo-leave-05-4x.png",
+		"east-returned-idle.png",
+		"east-mira-returned-idle-4x.png",
+		"east-theo-returned-idle-4x.png",
+		"south-enter-00.png",
+		"south-mira-enter-00-4x.png",
+		"south-theo-enter-00-4x.png",
+		"south-enter-01.png",
+		"south-mira-enter-01-4x.png",
+		"south-theo-enter-01-4x.png",
+		"south-enter-02.png",
+		"south-mira-enter-02-4x.png",
+		"south-theo-enter-02-4x.png",
+		"south-enter-03.png",
+		"south-mira-enter-03-4x.png",
+		"south-theo-enter-03-4x.png",
+		"south-enter-04.png",
+		"south-mira-enter-04-4x.png",
+		"south-theo-enter-04-4x.png",
+		"south-enter-05.png",
+		"south-mira-enter-05-4x.png",
+		"south-theo-enter-05-4x.png",
+		"south-frame0.png",
+		"south-mira-frame0-4x.png",
+		"south-theo-frame0-4x.png",
+		"south-frame1.png",
+		"south-mira-frame1-4x.png",
+		"south-theo-frame1-4x.png",
+		"south-frame2.png",
+		"south-mira-frame2-4x.png",
+		"south-theo-frame2-4x.png",
+		"south-frame3.png",
+		"south-mira-frame3-4x.png",
+		"south-theo-frame3-4x.png",
+		"south-frame4.png",
+		"south-mira-frame4-4x.png",
+		"south-theo-frame4-4x.png",
+		"south-frame5.png",
+		"south-mira-frame5-4x.png",
+		"south-theo-frame5-4x.png",
+		"south-paused.png",
+		"south-mira-paused-4x.png",
+		"south-theo-paused-4x.png",
+		"south-leave-00.png",
+		"south-mira-leave-00-4x.png",
+		"south-theo-leave-00-4x.png",
+		"south-leave-01.png",
+		"south-mira-leave-01-4x.png",
+		"south-theo-leave-01-4x.png",
+		"south-leave-02.png",
+		"south-mira-leave-02-4x.png",
+		"south-theo-leave-02-4x.png",
+		"south-leave-03.png",
+		"south-mira-leave-03-4x.png",
+		"south-theo-leave-03-4x.png",
+		"south-leave-04.png",
+		"south-mira-leave-04-4x.png",
+		"south-theo-leave-04-4x.png",
+		"south-leave-05.png",
+		"south-mira-leave-05-4x.png",
+		"south-theo-leave-05-4x.png",
+		"south-returned-idle.png",
+		"south-mira-returned-idle-4x.png",
+		"south-theo-returned-idle-4x.png",
+		"west-enter-00.png",
+		"west-mira-enter-00-4x.png",
+		"west-theo-enter-00-4x.png",
+		"west-enter-01.png",
+		"west-mira-enter-01-4x.png",
+		"west-theo-enter-01-4x.png",
+		"west-enter-02.png",
+		"west-mira-enter-02-4x.png",
+		"west-theo-enter-02-4x.png",
+		"west-enter-03.png",
+		"west-mira-enter-03-4x.png",
+		"west-theo-enter-03-4x.png",
+		"west-enter-04.png",
+		"west-mira-enter-04-4x.png",
+		"west-theo-enter-04-4x.png",
+		"west-enter-05.png",
+		"west-mira-enter-05-4x.png",
+		"west-theo-enter-05-4x.png",
+		"west-frame0.png",
+		"west-mira-frame0-4x.png",
+		"west-theo-frame0-4x.png",
+		"west-frame1.png",
+		"west-mira-frame1-4x.png",
+		"west-theo-frame1-4x.png",
+		"west-frame2.png",
+		"west-mira-frame2-4x.png",
+		"west-theo-frame2-4x.png",
+		"west-frame3.png",
+		"west-mira-frame3-4x.png",
+		"west-theo-frame3-4x.png",
+		"west-frame4.png",
+		"west-mira-frame4-4x.png",
+		"west-theo-frame4-4x.png",
+		"west-frame5.png",
+		"west-mira-frame5-4x.png",
+		"west-theo-frame5-4x.png",
+		"west-paused.png",
+		"west-mira-paused-4x.png",
+		"west-theo-paused-4x.png",
+		"west-leave-00.png",
+		"west-mira-leave-00-4x.png",
+		"west-theo-leave-00-4x.png",
+		"west-leave-01.png",
+		"west-mira-leave-01-4x.png",
+		"west-theo-leave-01-4x.png",
+		"west-leave-02.png",
+		"west-mira-leave-02-4x.png",
+		"west-theo-leave-02-4x.png",
+		"west-leave-03.png",
+		"west-mira-leave-03-4x.png",
+		"west-theo-leave-03-4x.png",
+		"west-leave-04.png",
+		"west-mira-leave-04-4x.png",
+		"west-theo-leave-04-4x.png",
+		"west-leave-05.png",
+		"west-mira-leave-05-4x.png",
+		"west-theo-leave-05-4x.png",
+		"west-returned-idle.png",
+		"west-mira-returned-idle-4x.png",
+		"west-theo-returned-idle-4x.png",
+		"north-all-six-native.png",
+		"east-all-six-native.png",
+		"south-all-six-native.png",
+		"west-all-six-native.png",
+		"all-four-native.png",
+		"north-enter-native.png",
+		"north-leave-native.png",
+		"east-enter-native.png",
+		"east-leave-native.png",
+		"south-enter-native.png",
+		"south-leave-native.png",
+		"west-enter-native.png",
+		"west-leave-native.png",
+		"east-before-after-native.png",
+		"east-before-after-4x.png",
+		"west-before-after-native.png",
+		"west-before-after-4x.png"
+	],
+	"checks": 10833,
+	"continuous_frames": 776,
+	"failures": [],
+	"floor_visibility_proof": "Saved scenes always show real shadows; a temporary dev-only hidden-shadow readback provides exact background for original-alpha blend verification.",
+	"grounded_observations": [
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame0",
+			"employee": "mira",
+			"facing": "north",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				320,
+				294,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				320,
+				294,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame0",
+			"employee": "theo",
+			"facing": "north",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				768,
+				294,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				768,
+				294,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame0",
+			"employee": "mira",
+			"facing": "north",
+			"native_visible_ground_shadow_pixels": 43,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame0",
+			"employee": "theo",
+			"facing": "north",
+			"native_visible_ground_shadow_pixels": 43,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame1",
+			"employee": "mira",
+			"facing": "north",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				320,
+				294,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				320,
+				294,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame1",
+			"employee": "theo",
+			"facing": "north",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				768,
+				294,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				768,
+				294,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame1",
+			"employee": "mira",
+			"facing": "north",
+			"native_visible_ground_shadow_pixels": 43,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame1",
+			"employee": "theo",
+			"facing": "north",
+			"native_visible_ground_shadow_pixels": 43,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame2",
+			"employee": "mira",
+			"facing": "north",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				320,
+				294,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				320,
+				294,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame2",
+			"employee": "theo",
+			"facing": "north",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				768,
+				294,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				768,
+				294,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame2",
+			"employee": "mira",
+			"facing": "north",
+			"native_visible_ground_shadow_pixels": 43,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame2",
+			"employee": "theo",
+			"facing": "north",
+			"native_visible_ground_shadow_pixels": 43,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame3",
+			"employee": "mira",
+			"facing": "north",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				320,
+				294,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				320,
+				294,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame3",
+			"employee": "theo",
+			"facing": "north",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				768,
+				294,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				768,
+				294,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame3",
+			"employee": "mira",
+			"facing": "north",
+			"native_visible_ground_shadow_pixels": 43,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame3",
+			"employee": "theo",
+			"facing": "north",
+			"native_visible_ground_shadow_pixels": 43,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame4",
+			"employee": "mira",
+			"facing": "north",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				320,
+				294,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				320,
+				294,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame4",
+			"employee": "theo",
+			"facing": "north",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				768,
+				294,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				768,
+				294,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame4",
+			"employee": "mira",
+			"facing": "north",
+			"native_visible_ground_shadow_pixels": 43,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame4",
+			"employee": "theo",
+			"facing": "north",
+			"native_visible_ground_shadow_pixels": 43,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame5",
+			"employee": "mira",
+			"facing": "north",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				320,
+				294,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				320,
+				294,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame5",
+			"employee": "theo",
+			"facing": "north",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				768,
+				294,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				768,
+				294,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame5",
+			"employee": "mira",
+			"facing": "north",
+			"native_visible_ground_shadow_pixels": 43,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame5",
+			"employee": "theo",
+			"facing": "north",
+			"native_visible_ground_shadow_pixels": 43,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "paused",
+			"employee": "mira",
+			"facing": "north",
+			"native_visible_ground_shadow_pixels": 43,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "paused",
+			"employee": "theo",
+			"facing": "north",
+			"native_visible_ground_shadow_pixels": 43,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "returned-idle",
+			"employee": "mira",
+			"facing": "north",
+			"native_visible_ground_shadow_pixels": 29,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "returned-idle",
+			"employee": "theo",
+			"facing": "north",
+			"native_visible_ground_shadow_pixels": 32,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 75,
+			"checkpoint": "frame0",
+			"employee": "mira",
+			"facing": "east",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				300,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				288,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 75,
+			"checkpoint": "frame0",
+			"employee": "theo",
+			"facing": "east",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				748,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				736,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame0",
+			"employee": "mira",
+			"facing": "east",
+			"native_visible_ground_shadow_pixels": 27,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame0",
+			"employee": "theo",
+			"facing": "east",
+			"native_visible_ground_shadow_pixels": 27,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 75,
+			"checkpoint": "frame1",
+			"employee": "mira",
+			"facing": "east",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				300,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				288,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 75,
+			"checkpoint": "frame1",
+			"employee": "theo",
+			"facing": "east",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				748,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				736,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame1",
+			"employee": "mira",
+			"facing": "east",
+			"native_visible_ground_shadow_pixels": 27,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame1",
+			"employee": "theo",
+			"facing": "east",
+			"native_visible_ground_shadow_pixels": 27,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 75,
+			"checkpoint": "frame2",
+			"employee": "mira",
+			"facing": "east",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				300,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				288,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 75,
+			"checkpoint": "frame2",
+			"employee": "theo",
+			"facing": "east",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				748,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				736,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame2",
+			"employee": "mira",
+			"facing": "east",
+			"native_visible_ground_shadow_pixels": 27,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame2",
+			"employee": "theo",
+			"facing": "east",
+			"native_visible_ground_shadow_pixels": 27,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 75,
+			"checkpoint": "frame3",
+			"employee": "mira",
+			"facing": "east",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				300,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				288,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 75,
+			"checkpoint": "frame3",
+			"employee": "theo",
+			"facing": "east",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				748,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				736,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame3",
+			"employee": "mira",
+			"facing": "east",
+			"native_visible_ground_shadow_pixels": 27,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame3",
+			"employee": "theo",
+			"facing": "east",
+			"native_visible_ground_shadow_pixels": 27,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 75,
+			"checkpoint": "frame4",
+			"employee": "mira",
+			"facing": "east",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				300,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				288,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 75,
+			"checkpoint": "frame4",
+			"employee": "theo",
+			"facing": "east",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				748,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				736,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame4",
+			"employee": "mira",
+			"facing": "east",
+			"native_visible_ground_shadow_pixels": 27,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame4",
+			"employee": "theo",
+			"facing": "east",
+			"native_visible_ground_shadow_pixels": 27,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 75,
+			"checkpoint": "frame5",
+			"employee": "mira",
+			"facing": "east",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				300,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				288,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 75,
+			"checkpoint": "frame5",
+			"employee": "theo",
+			"facing": "east",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				748,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				736,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame5",
+			"employee": "mira",
+			"facing": "east",
+			"native_visible_ground_shadow_pixels": 27,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame5",
+			"employee": "theo",
+			"facing": "east",
+			"native_visible_ground_shadow_pixels": 27,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "paused",
+			"employee": "mira",
+			"facing": "east",
+			"native_visible_ground_shadow_pixels": 27,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "paused",
+			"employee": "theo",
+			"facing": "east",
+			"native_visible_ground_shadow_pixels": 27,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "returned-idle",
+			"employee": "mira",
+			"facing": "east",
+			"native_visible_ground_shadow_pixels": 29,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "returned-idle",
+			"employee": "theo",
+			"facing": "east",
+			"native_visible_ground_shadow_pixels": 32,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame0",
+			"employee": "mira",
+			"facing": "south",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				320,
+				230,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				320,
+				230,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame0",
+			"employee": "theo",
+			"facing": "south",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				768,
+				230,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				768,
+				230,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame0",
+			"employee": "mira",
+			"facing": "south",
+			"native_visible_ground_shadow_pixels": 0,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame0",
+			"employee": "theo",
+			"facing": "south",
+			"native_visible_ground_shadow_pixels": 0,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame1",
+			"employee": "mira",
+			"facing": "south",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				320,
+				230,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				320,
+				230,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame1",
+			"employee": "theo",
+			"facing": "south",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				768,
+				230,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				768,
+				230,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame1",
+			"employee": "mira",
+			"facing": "south",
+			"native_visible_ground_shadow_pixels": 0,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame1",
+			"employee": "theo",
+			"facing": "south",
+			"native_visible_ground_shadow_pixels": 0,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame2",
+			"employee": "mira",
+			"facing": "south",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				320,
+				230,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				320,
+				230,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame2",
+			"employee": "theo",
+			"facing": "south",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				768,
+				230,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				768,
+				230,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame2",
+			"employee": "mira",
+			"facing": "south",
+			"native_visible_ground_shadow_pixels": 0,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame2",
+			"employee": "theo",
+			"facing": "south",
+			"native_visible_ground_shadow_pixels": 0,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame3",
+			"employee": "mira",
+			"facing": "south",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				320,
+				230,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				320,
+				230,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame3",
+			"employee": "theo",
+			"facing": "south",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				768,
+				230,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				768,
+				230,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame3",
+			"employee": "mira",
+			"facing": "south",
+			"native_visible_ground_shadow_pixels": 0,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame3",
+			"employee": "theo",
+			"facing": "south",
+			"native_visible_ground_shadow_pixels": 0,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame4",
+			"employee": "mira",
+			"facing": "south",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				320,
+				230,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				320,
+				230,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame4",
+			"employee": "theo",
+			"facing": "south",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				768,
+				230,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				768,
+				230,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame4",
+			"employee": "mira",
+			"facing": "south",
+			"native_visible_ground_shadow_pixels": 0,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame4",
+			"employee": "theo",
+			"facing": "south",
+			"native_visible_ground_shadow_pixels": 0,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame5",
+			"employee": "mira",
+			"facing": "south",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				320,
+				230,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				320,
+				230,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 0,
+			"checkpoint": "frame5",
+			"employee": "theo",
+			"facing": "south",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				768,
+				230,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				768,
+				230,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame5",
+			"employee": "mira",
+			"facing": "south",
+			"native_visible_ground_shadow_pixels": 0,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame5",
+			"employee": "theo",
+			"facing": "south",
+			"native_visible_ground_shadow_pixels": 0,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "paused",
+			"employee": "mira",
+			"facing": "south",
+			"native_visible_ground_shadow_pixels": 0,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "paused",
+			"employee": "theo",
+			"facing": "south",
+			"native_visible_ground_shadow_pixels": 0,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "returned-idle",
+			"employee": "mira",
+			"facing": "south",
+			"native_visible_ground_shadow_pixels": 23,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "returned-idle",
+			"employee": "theo",
+			"facing": "south",
+			"native_visible_ground_shadow_pixels": 25,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 70,
+			"checkpoint": "frame0",
+			"employee": "mira",
+			"facing": "west",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				340,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				352,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 70,
+			"checkpoint": "frame0",
+			"employee": "theo",
+			"facing": "west",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				788,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				800,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame0",
+			"employee": "mira",
+			"facing": "west",
+			"native_visible_ground_shadow_pixels": 25,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame0",
+			"employee": "theo",
+			"facing": "west",
+			"native_visible_ground_shadow_pixels": 25,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 70,
+			"checkpoint": "frame1",
+			"employee": "mira",
+			"facing": "west",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				340,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				352,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 70,
+			"checkpoint": "frame1",
+			"employee": "theo",
+			"facing": "west",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				788,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				800,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame1",
+			"employee": "mira",
+			"facing": "west",
+			"native_visible_ground_shadow_pixels": 25,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame1",
+			"employee": "theo",
+			"facing": "west",
+			"native_visible_ground_shadow_pixels": 25,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 70,
+			"checkpoint": "frame2",
+			"employee": "mira",
+			"facing": "west",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				340,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				352,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 70,
+			"checkpoint": "frame2",
+			"employee": "theo",
+			"facing": "west",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				788,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				800,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame2",
+			"employee": "mira",
+			"facing": "west",
+			"native_visible_ground_shadow_pixels": 25,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame2",
+			"employee": "theo",
+			"facing": "west",
+			"native_visible_ground_shadow_pixels": 25,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 70,
+			"checkpoint": "frame3",
+			"employee": "mira",
+			"facing": "west",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				340,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				352,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 70,
+			"checkpoint": "frame3",
+			"employee": "theo",
+			"facing": "west",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				788,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				800,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame3",
+			"employee": "mira",
+			"facing": "west",
+			"native_visible_ground_shadow_pixels": 25,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame3",
+			"employee": "theo",
+			"facing": "west",
+			"native_visible_ground_shadow_pixels": 25,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 70,
+			"checkpoint": "frame4",
+			"employee": "mira",
+			"facing": "west",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				340,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				352,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 70,
+			"checkpoint": "frame4",
+			"employee": "theo",
+			"facing": "west",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				788,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				800,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame4",
+			"employee": "mira",
+			"facing": "west",
+			"native_visible_ground_shadow_pixels": 25,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame4",
+			"employee": "theo",
+			"facing": "west",
+			"native_visible_ground_shadow_pixels": 25,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"before_after_changed_pixels": 70,
+			"checkpoint": "frame5",
+			"employee": "mira",
+			"facing": "west",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				340,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				352,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"before_after_changed_pixels": 70,
+			"checkpoint": "frame5",
+			"employee": "theo",
+			"facing": "west",
+			"mat_changed_pixels": 0,
+			"new_shadow_rect": [
+				788,
+				262,
+				32,
+				16
+			],
+			"old_shadow_rect": [
+				800,
+				262,
+				32,
+				16
+			],
+			"unrelated_pixel_changes": 0
+		},
+		{
+			"checkpoint": "frame5",
+			"employee": "mira",
+			"facing": "west",
+			"native_visible_ground_shadow_pixels": 25,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "frame5",
+			"employee": "theo",
+			"facing": "west",
+			"native_visible_ground_shadow_pixels": 25,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "paused",
+			"employee": "mira",
+			"facing": "west",
+			"native_visible_ground_shadow_pixels": 25,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "paused",
+			"employee": "theo",
+			"facing": "west",
+			"native_visible_ground_shadow_pixels": 25,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "returned-idle",
+			"employee": "mira",
+			"facing": "west",
+			"native_visible_ground_shadow_pixels": 23,
+			"original_alpha_blend_mismatches": 0
+		},
+		{
+			"checkpoint": "returned-idle",
+			"employee": "theo",
+			"facing": "west",
+			"native_visible_ground_shadow_pixels": 25,
+			"original_alpha_blend_mismatches": 0
+		}
+	],
+	"mat_depth_pixels": 102400,
+	"observations": [
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-00",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 441
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-00",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 343
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-01",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 376
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-01",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 289
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-02",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 261
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-02",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 165
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-03",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 185
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-03",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 157
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-04",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 156
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-04",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 164
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-05",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 156
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-05",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 164
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-60
+			],
+			"employee": "mira",
+			"facing": "north",
+			"frame": 0,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "resting seated reference",
+			"projected_body_mat_pixels": 484,
+			"projected_upper_36rows_mat_pixels": 430
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-56
+			],
+			"employee": "theo",
+			"facing": "north",
+			"frame": 0,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "resting seated reference",
+			"projected_body_mat_pixels": 476,
+			"projected_upper_36rows_mat_pixels": 476
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame0",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 156
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame0",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 164
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-60
+			],
+			"employee": "mira",
+			"facing": "north",
+			"frame": 1,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "resting seated reference",
+			"projected_body_mat_pixels": 478,
+			"projected_upper_36rows_mat_pixels": 424
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-56
+			],
+			"employee": "theo",
+			"facing": "north",
+			"frame": 1,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "resting seated reference",
+			"projected_body_mat_pixels": 471,
+			"projected_upper_36rows_mat_pixels": 471
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame1",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 162
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame1",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 169
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-60
+			],
+			"employee": "mira",
+			"facing": "north",
+			"frame": 2,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 500,
+			"projected_upper_36rows_mat_pixels": 436
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-56
+			],
+			"employee": "theo",
+			"facing": "north",
+			"frame": 2,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 489,
+			"projected_upper_36rows_mat_pixels": 489
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame2",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 140
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame2",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 151
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-60
+			],
+			"employee": "mira",
+			"facing": "north",
+			"frame": 3,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 488,
+			"projected_upper_36rows_mat_pixels": 425
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-56
+			],
+			"employee": "theo",
+			"facing": "north",
+			"frame": 3,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 502,
+			"projected_upper_36rows_mat_pixels": 502
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame3",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 152
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame3",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 138
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-60
+			],
+			"employee": "mira",
+			"facing": "north",
+			"frame": 4,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 489,
+			"projected_upper_36rows_mat_pixels": 429
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-56
+			],
+			"employee": "theo",
+			"facing": "north",
+			"frame": 4,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 473,
+			"projected_upper_36rows_mat_pixels": 473
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame4",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 151
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame4",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 167
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-60
+			],
+			"employee": "mira",
+			"facing": "north",
+			"frame": 5,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 507,
+			"projected_upper_36rows_mat_pixels": 443
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-56
+			],
+			"employee": "theo",
+			"facing": "north",
+			"frame": 5,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 489,
+			"projected_upper_36rows_mat_pixels": 489
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame5",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 133
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame5",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 151
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "paused",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 133
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "paused",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 151
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-00",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 253
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-00",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 179
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-01",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 389
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-01",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 307
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-02",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 574
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-02",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 552
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-03",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-03",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-04",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-04",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-05",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-05",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "returned-idle",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "returned-idle",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "north",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-00",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-00",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-01",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-01",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-02",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-02",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-03",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 625
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-03",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 626
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-04",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 608
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-04",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 610
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-05",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 608
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-05",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 610
+		},
+		{
+			"body_origin_from_desk": [
+				-44,
+				-69
+			],
+			"employee": "mira",
+			"facing": "east",
+			"frame": 0,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "resting seated reference",
+			"projected_body_mat_pixels": 39,
+			"projected_upper_36rows_mat_pixels": 2
+		},
+		{
+			"body_origin_from_desk": [
+				-44,
+				-68
+			],
+			"employee": "theo",
+			"facing": "east",
+			"frame": 0,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "resting seated reference",
+			"projected_body_mat_pixels": 30,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame0",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 608
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame0",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 610
+		},
+		{
+			"body_origin_from_desk": [
+				-44,
+				-69
+			],
+			"employee": "mira",
+			"facing": "east",
+			"frame": 1,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "resting seated reference",
+			"projected_body_mat_pixels": 38,
+			"projected_upper_36rows_mat_pixels": 2
+		},
+		{
+			"body_origin_from_desk": [
+				-44,
+				-68
+			],
+			"employee": "theo",
+			"facing": "east",
+			"frame": 1,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "resting seated reference",
+			"projected_body_mat_pixels": 32,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame1",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 609
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame1",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 608
+		},
+		{
+			"body_origin_from_desk": [
+				-44,
+				-69
+			],
+			"employee": "mira",
+			"facing": "east",
+			"frame": 2,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 40,
+			"projected_upper_36rows_mat_pixels": 3
+		},
+		{
+			"body_origin_from_desk": [
+				-44,
+				-68
+			],
+			"employee": "theo",
+			"facing": "east",
+			"frame": 2,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 35,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame2",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 607
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame2",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 605
+		},
+		{
+			"body_origin_from_desk": [
+				-44,
+				-69
+			],
+			"employee": "mira",
+			"facing": "east",
+			"frame": 3,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 37,
+			"projected_upper_36rows_mat_pixels": 2
+		},
+		{
+			"body_origin_from_desk": [
+				-44,
+				-68
+			],
+			"employee": "theo",
+			"facing": "east",
+			"frame": 3,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 33,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame3",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 610
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame3",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 607
+		},
+		{
+			"body_origin_from_desk": [
+				-44,
+				-69
+			],
+			"employee": "mira",
+			"facing": "east",
+			"frame": 4,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 40,
+			"projected_upper_36rows_mat_pixels": 3
+		},
+		{
+			"body_origin_from_desk": [
+				-44,
+				-68
+			],
+			"employee": "theo",
+			"facing": "east",
+			"frame": 4,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 42,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame4",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 607
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame4",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 598
+		},
+		{
+			"body_origin_from_desk": [
+				-44,
+				-69
+			],
+			"employee": "mira",
+			"facing": "east",
+			"frame": 5,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 37,
+			"projected_upper_36rows_mat_pixels": 3
+		},
+		{
+			"body_origin_from_desk": [
+				-44,
+				-68
+			],
+			"employee": "theo",
+			"facing": "east",
+			"frame": 5,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 32,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame5",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 610
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame5",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 608
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "paused",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 610
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "paused",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 608
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-00",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 622
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-00",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 593
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-01",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-01",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-02",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-02",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-03",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-03",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-04",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-04",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-05",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-05",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "returned-idle",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "returned-idle",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "east",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-00",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-00",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-01",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-01",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-02",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-02",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-03",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-03",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-04",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-04",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-05",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-05",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-92
+			],
+			"employee": "mira",
+			"facing": "south",
+			"frame": 0,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "resting seated reference",
+			"projected_body_mat_pixels": 301,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-92
+			],
+			"employee": "theo",
+			"facing": "south",
+			"frame": 0,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "resting seated reference",
+			"projected_body_mat_pixels": 364,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame0",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame0",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-92
+			],
+			"employee": "mira",
+			"facing": "south",
+			"frame": 1,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "resting seated reference",
+			"projected_body_mat_pixels": 297,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-92
+			],
+			"employee": "theo",
+			"facing": "south",
+			"frame": 1,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "resting seated reference",
+			"projected_body_mat_pixels": 363,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame1",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame1",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-92
+			],
+			"employee": "mira",
+			"facing": "south",
+			"frame": 2,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 297,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-92
+			],
+			"employee": "theo",
+			"facing": "south",
+			"frame": 2,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 365,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame2",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame2",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-92
+			],
+			"employee": "mira",
+			"facing": "south",
+			"frame": 3,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 297,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-92
+			],
+			"employee": "theo",
+			"facing": "south",
+			"frame": 3,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 359,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame3",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame3",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-92
+			],
+			"employee": "mira",
+			"facing": "south",
+			"frame": 4,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 297,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-92
+			],
+			"employee": "theo",
+			"facing": "south",
+			"frame": 4,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 372,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame4",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame4",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-92
+			],
+			"employee": "mira",
+			"facing": "south",
+			"frame": 5,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 297,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"body_origin_from_desk": [
+				-24,
+				-92
+			],
+			"employee": "theo",
+			"facing": "south",
+			"frame": 5,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 364,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame5",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame5",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "paused",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "paused",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-00",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-00",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-01",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-01",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-02",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-02",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-03",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-03",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-04",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-04",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-05",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-05",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "returned-idle",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "returned-idle",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "south",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-00",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-00",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-01",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-01",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-02",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-02",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-03",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 633
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-03",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 630
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-04",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 617
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-04",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 613
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-05",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 617
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "enter-05",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 613
+		},
+		{
+			"body_origin_from_desk": [
+				-4,
+				-68
+			],
+			"employee": "mira",
+			"facing": "west",
+			"frame": 0,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "resting seated reference",
+			"projected_body_mat_pixels": 32,
+			"projected_upper_36rows_mat_pixels": 3
+		},
+		{
+			"body_origin_from_desk": [
+				-4,
+				-64
+			],
+			"employee": "theo",
+			"facing": "west",
+			"frame": 0,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "resting seated reference",
+			"projected_body_mat_pixels": 27,
+			"projected_upper_36rows_mat_pixels": 3
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame0",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 617
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame0",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 613
+		},
+		{
+			"body_origin_from_desk": [
+				-4,
+				-68
+			],
+			"employee": "mira",
+			"facing": "west",
+			"frame": 1,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "resting seated reference",
+			"projected_body_mat_pixels": 27,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"body_origin_from_desk": [
+				-4,
+				-64
+			],
+			"employee": "theo",
+			"facing": "west",
+			"frame": 1,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "resting seated reference",
+			"projected_body_mat_pixels": 27,
+			"projected_upper_36rows_mat_pixels": 2
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame1",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 622
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame1",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 613
+		},
+		{
+			"body_origin_from_desk": [
+				-4,
+				-68
+			],
+			"employee": "mira",
+			"facing": "west",
+			"frame": 2,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 34,
+			"projected_upper_36rows_mat_pixels": 0
+		},
+		{
+			"body_origin_from_desk": [
+				-4,
+				-64
+			],
+			"employee": "theo",
+			"facing": "west",
+			"frame": 2,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 52,
+			"projected_upper_36rows_mat_pixels": 1
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame2",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 615
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame2",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 595
+		},
+		{
+			"body_origin_from_desk": [
+				-4,
+				-68
+			],
+			"employee": "mira",
+			"facing": "west",
+			"frame": 3,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 45,
+			"projected_upper_36rows_mat_pixels": 4
+		},
+		{
+			"body_origin_from_desk": [
+				-4,
+				-64
+			],
+			"employee": "theo",
+			"facing": "west",
+			"frame": 3,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 52,
+			"projected_upper_36rows_mat_pixels": 1
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame3",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 606
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame3",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 595
+		},
+		{
+			"body_origin_from_desk": [
+				-4,
+				-68
+			],
+			"employee": "mira",
+			"facing": "west",
+			"frame": 4,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 49,
+			"projected_upper_36rows_mat_pixels": 4
+		},
+		{
+			"body_origin_from_desk": [
+				-4,
+				-64
+			],
+			"employee": "theo",
+			"facing": "west",
+			"frame": 4,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 38,
+			"projected_upper_36rows_mat_pixels": 1
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame4",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 602
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame4",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 608
+		},
+		{
+			"body_origin_from_desk": [
+				-4,
+				-68
+			],
+			"employee": "mira",
+			"facing": "west",
+			"frame": 5,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 46,
+			"projected_upper_36rows_mat_pixels": 5
+		},
+		{
+			"body_origin_from_desk": [
+				-4,
+				-64
+			],
+			"employee": "theo",
+			"facing": "west",
+			"frame": 5,
+			"head_region_is_conservative_inference": true,
+			"pose_semantics": "incompatible existing typing stress test; not probe use",
+			"projected_body_mat_pixels": 45,
+			"projected_upper_36rows_mat_pixels": 2
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame5",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 605
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "frame5",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 595
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "paused",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 605
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "paused",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 595
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-00",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 630
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-00",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 633
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-01",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-01",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-02",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-02",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-03",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-03",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-04",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-04",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-05",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "leave-05",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "returned-idle",
+			"depth_mismatches": 0,
+			"employee": "mira",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		},
+		{
+			"actual_depth_pixels": 640,
+			"checkpoint": "returned-idle",
+			"depth_mismatches": 0,
+			"employee": "theo",
+			"facing": "west",
+			"shadow_on_mat_is_visual_defect": false,
+			"visible_floor_shadow_on_mat_pixels": 0,
+			"visible_mat_pixels": 640
+		}
+	],
+	"physics_ticks": 1552,
+	"production_profiles_changed": false,
+	"runtime_art_approved": false,
+	"source_sha256": {
+		"res://assets/source/overnight-20260904/roles/engineer-mat-east-v1.png": "4d5688c0bf757351abb2470d7c52cf0aec3b74cd73a1979762d7c4a1e365f856",
+		"res://assets/source/overnight-20260904/roles/engineer-mat-north-v2.png": "e96e938435902bcb1323409177443b3ad56bb7688ba48f32084609ecfc50c7f4",
+		"res://assets/source/overnight-20260904/roles/engineer-mat-south-v2.png": "8b735f19797d9fe3c46a6a00ebd08372089a6b2239650748862f3785b2d07c93",
+		"res://assets/source/overnight-20260904/roles/engineer-mat-west-v1.png": "372f5b5e9fa3bfd4d4031709d36cd230a8dc6f568feb411189d6dbc3a6e89a59",
+		"res://tests/fixtures/furniture-calibration/engineer-mat-v1/east-v1.png": "a6e2323708bbb64b23c462ee9b3d1317bda9ab8718c38730bbc1eb7ea2874450",
+		"res://tests/fixtures/furniture-calibration/engineer-mat-v1/north-v2.png": "78f2877d83d0af0f81f9fff8b670ce8e4621f392b474248eff6a9b15540b7fc0",
+		"res://tests/fixtures/furniture-calibration/engineer-mat-v1/south-v2.png": "46494712079df1335e20fc10c9d5913fb2d7129203329d92d46416d436d15e38",
+		"res://tests/fixtures/furniture-calibration/engineer-mat-v1/west-v1.png": "2742221f198e1f2f853135e9ec1fdf8c9b92724b0693b844b1d41a9ceff2ff8c"
+	},
+	"transition_states": [
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "north",
+			"feet": [
+				336.0,
+				304.0
+			],
+			"image": "north-enter-00.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				336.0,
+				302.0
+			],
+			"shadow_depth": 270,
+			"tick": 71
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "north",
+			"feet": [
+				784.0,
+				304.0
+			],
+			"image": "north-enter-00.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				784.0,
+				302.0
+			],
+			"shadow_depth": 270,
+			"tick": 71
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "north",
+			"feet": [
+				336.0,
+				304.0
+			],
+			"image": "north-enter-01.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				-3.0
+			],
+			"shadow": [
+				336.0,
+				302.0
+			],
+			"shadow_depth": 270,
+			"tick": 72
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "north",
+			"feet": [
+				784.0,
+				304.0
+			],
+			"image": "north-enter-01.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				-2.0
+			],
+			"shadow": [
+				784.0,
+				302.0
+			],
+			"shadow_depth": 270,
+			"tick": 72
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "north",
+			"feet": [
+				336.0,
+				304.0
+			],
+			"image": "north-enter-02.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				-9.0
+			],
+			"shadow": [
+				336.0,
+				302.0
+			],
+			"shadow_depth": 270,
+			"tick": 73
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "north",
+			"feet": [
+				784.0,
+				304.0
+			],
+			"image": "north-enter-02.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				-7.0
+			],
+			"shadow": [
+				784.0,
+				302.0
+			],
+			"shadow_depth": 270,
+			"tick": 73
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "north",
+			"feet": [
+				336.0,
+				304.0
+			],
+			"image": "north-enter-03.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				-16.0
+			],
+			"shadow": [
+				336.0,
+				302.0
+			],
+			"shadow_depth": 270,
+			"tick": 74
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "north",
+			"feet": [
+				784.0,
+				304.0
+			],
+			"image": "north-enter-03.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				-13.0
+			],
+			"shadow": [
+				784.0,
+				302.0
+			],
+			"shadow_depth": 270,
+			"tick": 74
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "north",
+			"feet": [
+				336.0,
+				304.0
+			],
+			"image": "north-enter-04.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				-20.0
+			],
+			"shadow": [
+				336.0,
+				302.0
+			],
+			"shadow_depth": 270,
+			"tick": 75
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "north",
+			"feet": [
+				784.0,
+				304.0
+			],
+			"image": "north-enter-04.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				-16.0
+			],
+			"shadow": [
+				784.0,
+				302.0
+			],
+			"shadow_depth": 270,
+			"tick": 75
+		},
+		{
+			"active": false,
+			"employee": "mira",
+			"facing": "north",
+			"feet": [
+				336.0,
+				304.0
+			],
+			"image": "north-enter-05.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				-20.0
+			],
+			"shadow": [
+				336.0,
+				302.0
+			],
+			"shadow_depth": 270,
+			"tick": 76
+		},
+		{
+			"active": false,
+			"employee": "theo",
+			"facing": "north",
+			"feet": [
+				784.0,
+				304.0
+			],
+			"image": "north-enter-05.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				-16.0
+			],
+			"shadow": [
+				784.0,
+				302.0
+			],
+			"shadow_depth": 270,
+			"tick": 76
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "north",
+			"feet": [
+				336.0,
+				307.666656494141
+			],
+			"image": "north-leave-00.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				-17.0
+			],
+			"shadow": [
+				336.0,
+				306.0
+			],
+			"shadow_depth": 270,
+			"tick": 0
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "north",
+			"feet": [
+				784.0,
+				307.666656494141
+			],
+			"image": "north-leave-00.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				-14.0
+			],
+			"shadow": [
+				784.0,
+				306.0
+			],
+			"shadow_depth": 270,
+			"tick": 0
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "north",
+			"feet": [
+				336.0,
+				311.333312988281
+			],
+			"image": "north-leave-01.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				-11.0
+			],
+			"shadow": [
+				336.0,
+				309.0
+			],
+			"shadow_depth": 270,
+			"tick": 1
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "north",
+			"feet": [
+				784.0,
+				311.333312988281
+			],
+			"image": "north-leave-01.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				-9.0
+			],
+			"shadow": [
+				784.0,
+				309.0
+			],
+			"shadow_depth": 270,
+			"tick": 1
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "north",
+			"feet": [
+				336.0,
+				314.999969482422
+			],
+			"image": "north-leave-02.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				-4.0
+			],
+			"shadow": [
+				336.0,
+				313.0
+			],
+			"shadow_depth": 270,
+			"tick": 2
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "north",
+			"feet": [
+				784.0,
+				314.999969482422
+			],
+			"image": "north-leave-02.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				-3.0
+			],
+			"shadow": [
+				784.0,
+				313.0
+			],
+			"shadow_depth": 270,
+			"tick": 2
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "north",
+			"feet": [
+				336.0,
+				318.666625976562
+			],
+			"image": "north-leave-03.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				336.0,
+				317.0
+			],
+			"shadow_depth": 270,
+			"tick": 3
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "north",
+			"feet": [
+				784.0,
+				318.666625976562
+			],
+			"image": "north-leave-03.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				784.0,
+				317.0
+			],
+			"shadow_depth": 270,
+			"tick": 3
+		},
+		{
+			"active": false,
+			"employee": "mira",
+			"facing": "north",
+			"feet": [
+				336.0,
+				322.333282470703
+			],
+			"image": "north-leave-04.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				336.0,
+				320.0
+			],
+			"shadow_depth": 322,
+			"tick": 4
+		},
+		{
+			"active": false,
+			"employee": "theo",
+			"facing": "north",
+			"feet": [
+				784.0,
+				322.333282470703
+			],
+			"image": "north-leave-04.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				784.0,
+				320.0
+			],
+			"shadow_depth": 322,
+			"tick": 4
+		},
+		{
+			"active": false,
+			"employee": "mira",
+			"facing": "north",
+			"feet": [
+				336.0,
+				560.0
+			],
+			"image": "north-leave-05.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				336.0,
+				558.0
+			],
+			"shadow_depth": 560,
+			"tick": 71
+		},
+		{
+			"active": false,
+			"employee": "theo",
+			"facing": "north",
+			"feet": [
+				784.0,
+				560.0
+			],
+			"image": "north-leave-05.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				784.0,
+				558.0
+			],
+			"shadow_depth": 560,
+			"tick": 71
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "east",
+			"feet": [
+				304.0,
+				272.0
+			],
+			"image": "east-enter-00.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				304.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 89
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "east",
+			"feet": [
+				752.0,
+				272.0
+			],
+			"image": "east-enter-00.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				752.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 89
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "east",
+			"feet": [
+				304.0,
+				272.0
+			],
+			"image": "east-enter-01.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				2.0,
+				0.0
+			],
+			"shadow": [
+				306.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 90
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "east",
+			"feet": [
+				752.0,
+				272.0
+			],
+			"image": "east-enter-01.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				2.0,
+				1.0
+			],
+			"shadow": [
+				754.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 90
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "east",
+			"feet": [
+				304.0,
+				272.0
+			],
+			"image": "east-enter-02.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				6.0,
+				1.0
+			],
+			"shadow": [
+				310.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 91
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "east",
+			"feet": [
+				752.0,
+				272.0
+			],
+			"image": "east-enter-02.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				6.0,
+				2.0
+			],
+			"shadow": [
+				758.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 91
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "east",
+			"feet": [
+				304.0,
+				272.0
+			],
+			"image": "east-enter-03.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				10.0,
+				2.0
+			],
+			"shadow": [
+				314.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 92
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "east",
+			"feet": [
+				752.0,
+				272.0
+			],
+			"image": "east-enter-03.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				10.0,
+				3.0
+			],
+			"shadow": [
+				762.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 92
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "east",
+			"feet": [
+				304.0,
+				272.0
+			],
+			"image": "east-enter-04.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				12.0,
+				3.0
+			],
+			"shadow": [
+				316.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 93
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "east",
+			"feet": [
+				752.0,
+				272.0
+			],
+			"image": "east-enter-04.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				12.0,
+				4.0
+			],
+			"shadow": [
+				764.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 93
+		},
+		{
+			"active": false,
+			"employee": "mira",
+			"facing": "east",
+			"feet": [
+				304.0,
+				272.0
+			],
+			"image": "east-enter-05.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				12.0,
+				3.0
+			],
+			"shadow": [
+				316.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 94
+		},
+		{
+			"active": false,
+			"employee": "theo",
+			"facing": "east",
+			"feet": [
+				752.0,
+				272.0
+			],
+			"image": "east-enter-05.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				12.0,
+				4.0
+			],
+			"shadow": [
+				764.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 94
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "east",
+			"feet": [
+				304.0,
+				275.666656494141
+			],
+			"image": "east-leave-00.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				10.0,
+				3.0
+			],
+			"shadow": [
+				314.0,
+				274.0
+			],
+			"shadow_depth": 266,
+			"tick": 0
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "east",
+			"feet": [
+				752.0,
+				275.666656494141
+			],
+			"image": "east-leave-00.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				10.0,
+				3.0
+			],
+			"shadow": [
+				762.0,
+				274.0
+			],
+			"shadow_depth": 266,
+			"tick": 0
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "east",
+			"feet": [
+				304.0,
+				279.333312988281
+			],
+			"image": "east-leave-01.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				6.0,
+				2.0
+			],
+			"shadow": [
+				310.0,
+				277.0
+			],
+			"shadow_depth": 266,
+			"tick": 1
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "east",
+			"feet": [
+				752.0,
+				279.333312988281
+			],
+			"image": "east-leave-01.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				6.0,
+				2.0
+			],
+			"shadow": [
+				758.0,
+				277.0
+			],
+			"shadow_depth": 266,
+			"tick": 1
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "east",
+			"feet": [
+				304.0,
+				282.999969482422
+			],
+			"image": "east-leave-02.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				2.0,
+				1.0
+			],
+			"shadow": [
+				306.0,
+				281.0
+			],
+			"shadow_depth": 266,
+			"tick": 2
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "east",
+			"feet": [
+				752.0,
+				282.999969482422
+			],
+			"image": "east-leave-02.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				2.0,
+				1.0
+			],
+			"shadow": [
+				754.0,
+				281.0
+			],
+			"shadow_depth": 266,
+			"tick": 2
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "east",
+			"feet": [
+				304.0,
+				286.666625976562
+			],
+			"image": "east-leave-03.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				304.0,
+				285.0
+			],
+			"shadow_depth": 266,
+			"tick": 3
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "east",
+			"feet": [
+				752.0,
+				286.666625976562
+			],
+			"image": "east-leave-03.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				752.0,
+				285.0
+			],
+			"shadow_depth": 266,
+			"tick": 3
+		},
+		{
+			"active": false,
+			"employee": "mira",
+			"facing": "east",
+			"feet": [
+				304.0,
+				290.333282470703
+			],
+			"image": "east-leave-04.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				304.0,
+				288.0
+			],
+			"shadow_depth": 290,
+			"tick": 4
+		},
+		{
+			"active": false,
+			"employee": "theo",
+			"facing": "east",
+			"feet": [
+				752.0,
+				290.333282470703
+			],
+			"image": "east-leave-04.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				752.0,
+				288.0
+			],
+			"shadow_depth": 290,
+			"tick": 4
+		},
+		{
+			"active": false,
+			"employee": "mira",
+			"facing": "east",
+			"feet": [
+				336.0,
+				560.0
+			],
+			"image": "east-leave-05.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				336.0,
+				558.0
+			],
+			"shadow_depth": 560,
+			"tick": 89
+		},
+		{
+			"active": false,
+			"employee": "theo",
+			"facing": "east",
+			"feet": [
+				784.0,
+				560.0
+			],
+			"image": "east-leave-05.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				784.0,
+				558.0
+			],
+			"shadow_depth": 560,
+			"tick": 89
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "south",
+			"feet": [
+				336.0,
+				240.0
+			],
+			"image": "south-enter-00.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				336.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 125
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "south",
+			"feet": [
+				784.0,
+				240.0
+			],
+			"image": "south-enter-00.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				784.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 125
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "south",
+			"feet": [
+				336.0,
+				240.0
+			],
+			"image": "south-enter-01.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				2.0
+			],
+			"shadow": [
+				336.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 126
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "south",
+			"feet": [
+				784.0,
+				240.0
+			],
+			"image": "south-enter-01.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				2.0
+			],
+			"shadow": [
+				784.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 126
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "south",
+			"feet": [
+				336.0,
+				240.0
+			],
+			"image": "south-enter-02.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				6.0
+			],
+			"shadow": [
+				336.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 127
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "south",
+			"feet": [
+				784.0,
+				240.0
+			],
+			"image": "south-enter-02.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				6.0
+			],
+			"shadow": [
+				784.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 127
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "south",
+			"feet": [
+				336.0,
+				240.0
+			],
+			"image": "south-enter-03.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				10.0
+			],
+			"shadow": [
+				336.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 128
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "south",
+			"feet": [
+				784.0,
+				240.0
+			],
+			"image": "south-enter-03.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				10.0
+			],
+			"shadow": [
+				784.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 128
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "south",
+			"feet": [
+				336.0,
+				240.0
+			],
+			"image": "south-enter-04.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				12.0
+			],
+			"shadow": [
+				336.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 129
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "south",
+			"feet": [
+				784.0,
+				240.0
+			],
+			"image": "south-enter-04.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				12.0
+			],
+			"shadow": [
+				784.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 129
+		},
+		{
+			"active": false,
+			"employee": "mira",
+			"facing": "south",
+			"feet": [
+				336.0,
+				240.0
+			],
+			"image": "south-enter-05.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				12.0
+			],
+			"shadow": [
+				336.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 130
+		},
+		{
+			"active": false,
+			"employee": "theo",
+			"facing": "south",
+			"feet": [
+				784.0,
+				240.0
+			],
+			"image": "south-enter-05.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				12.0
+			],
+			"shadow": [
+				784.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 130
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "south",
+			"feet": [
+				339.666656494141,
+				240.0
+			],
+			"image": "south-leave-00.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				10.0
+			],
+			"shadow": [
+				340.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 0
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "south",
+			"feet": [
+				787.666687011719,
+				240.0
+			],
+			"image": "south-leave-00.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				10.0
+			],
+			"shadow": [
+				788.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 0
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "south",
+			"feet": [
+				343.333312988281,
+				240.0
+			],
+			"image": "south-leave-01.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				6.0
+			],
+			"shadow": [
+				343.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 1
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "south",
+			"feet": [
+				791.333374023438,
+				240.0
+			],
+			"image": "south-leave-01.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				6.0
+			],
+			"shadow": [
+				791.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 1
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "south",
+			"feet": [
+				346.999969482422,
+				240.0
+			],
+			"image": "south-leave-02.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				2.0
+			],
+			"shadow": [
+				347.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 2
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "south",
+			"feet": [
+				795.000061035156,
+				240.0
+			],
+			"image": "south-leave-02.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				2.0
+			],
+			"shadow": [
+				795.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 2
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "south",
+			"feet": [
+				350.666625976562,
+				240.0
+			],
+			"image": "south-leave-03.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				351.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 3
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "south",
+			"feet": [
+				798.666748046875,
+				240.0
+			],
+			"image": "south-leave-03.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				799.0,
+				238.0
+			],
+			"shadow_depth": 269,
+			"tick": 3
+		},
+		{
+			"active": false,
+			"employee": "mira",
+			"facing": "south",
+			"feet": [
+				354.333282470703,
+				240.0
+			],
+			"image": "south-leave-04.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				354.0,
+				238.0
+			],
+			"shadow_depth": 240,
+			"tick": 4
+		},
+		{
+			"active": false,
+			"employee": "theo",
+			"facing": "south",
+			"feet": [
+				802.333435058594,
+				240.0
+			],
+			"image": "south-leave-04.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				802.0,
+				238.0
+			],
+			"shadow_depth": 240,
+			"tick": 4
+		},
+		{
+			"active": false,
+			"employee": "mira",
+			"facing": "south",
+			"feet": [
+				336.0,
+				560.0
+			],
+			"image": "south-leave-05.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				336.0,
+				558.0
+			],
+			"shadow_depth": 560,
+			"tick": 125
+		},
+		{
+			"active": false,
+			"employee": "theo",
+			"facing": "south",
+			"feet": [
+				784.0,
+				560.0
+			],
+			"image": "south-leave-05.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				784.0,
+				558.0
+			],
+			"shadow_depth": 560,
+			"tick": 125
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "west",
+			"feet": [
+				368.0,
+				272.0
+			],
+			"image": "west-enter-00.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				368.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 89
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "west",
+			"feet": [
+				816.0,
+				272.0
+			],
+			"image": "west-enter-00.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				816.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 89
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "west",
+			"feet": [
+				368.0,
+				272.0
+			],
+			"image": "west-enter-01.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				-2.0,
+				1.0
+			],
+			"shadow": [
+				366.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 90
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "west",
+			"feet": [
+				816.0,
+				272.0
+			],
+			"image": "west-enter-01.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				-2.0,
+				1.0
+			],
+			"shadow": [
+				814.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 90
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "west",
+			"feet": [
+				368.0,
+				272.0
+			],
+			"image": "west-enter-02.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				-6.0,
+				2.0
+			],
+			"shadow": [
+				362.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 91
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "west",
+			"feet": [
+				816.0,
+				272.0
+			],
+			"image": "west-enter-02.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				-6.0,
+				4.0
+			],
+			"shadow": [
+				810.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 91
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "west",
+			"feet": [
+				368.0,
+				272.0
+			],
+			"image": "west-enter-03.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				-10.0,
+				3.0
+			],
+			"shadow": [
+				358.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 92
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "west",
+			"feet": [
+				816.0,
+				272.0
+			],
+			"image": "west-enter-03.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				-10.0,
+				6.0
+			],
+			"shadow": [
+				806.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 92
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "west",
+			"feet": [
+				368.0,
+				272.0
+			],
+			"image": "west-enter-04.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				-12.0,
+				4.0
+			],
+			"shadow": [
+				356.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 93
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "west",
+			"feet": [
+				816.0,
+				272.0
+			],
+			"image": "west-enter-04.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				-12.0,
+				8.0
+			],
+			"shadow": [
+				804.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 93
+		},
+		{
+			"active": false,
+			"employee": "mira",
+			"facing": "west",
+			"feet": [
+				368.0,
+				272.0
+			],
+			"image": "west-enter-05.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				-12.0,
+				4.0
+			],
+			"shadow": [
+				356.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 94
+		},
+		{
+			"active": false,
+			"employee": "theo",
+			"facing": "west",
+			"feet": [
+				816.0,
+				272.0
+			],
+			"image": "west-enter-05.png",
+			"phase": "enter",
+			"seat_render_offset": [
+				-12.0,
+				8.0
+			],
+			"shadow": [
+				804.0,
+				270.0
+			],
+			"shadow_depth": 266,
+			"tick": 94
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "west",
+			"feet": [
+				368.0,
+				275.666656494141
+			],
+			"image": "west-leave-00.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				-10.0,
+				3.0
+			],
+			"shadow": [
+				358.0,
+				274.0
+			],
+			"shadow_depth": 266,
+			"tick": 0
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "west",
+			"feet": [
+				816.0,
+				275.666656494141
+			],
+			"image": "west-leave-00.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				-10.0,
+				7.0
+			],
+			"shadow": [
+				806.0,
+				274.0
+			],
+			"shadow_depth": 266,
+			"tick": 0
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "west",
+			"feet": [
+				368.0,
+				279.333312988281
+			],
+			"image": "west-leave-01.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				-6.0,
+				2.0
+			],
+			"shadow": [
+				362.0,
+				277.0
+			],
+			"shadow_depth": 266,
+			"tick": 1
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "west",
+			"feet": [
+				816.0,
+				279.333312988281
+			],
+			"image": "west-leave-01.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				-6.0,
+				4.0
+			],
+			"shadow": [
+				810.0,
+				277.0
+			],
+			"shadow_depth": 266,
+			"tick": 1
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "west",
+			"feet": [
+				368.0,
+				282.999969482422
+			],
+			"image": "west-leave-02.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				-2.0,
+				1.0
+			],
+			"shadow": [
+				366.0,
+				281.0
+			],
+			"shadow_depth": 266,
+			"tick": 2
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "west",
+			"feet": [
+				816.0,
+				282.999969482422
+			],
+			"image": "west-leave-02.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				-2.0,
+				2.0
+			],
+			"shadow": [
+				814.0,
+				281.0
+			],
+			"shadow_depth": 266,
+			"tick": 2
+		},
+		{
+			"active": true,
+			"employee": "mira",
+			"facing": "west",
+			"feet": [
+				368.0,
+				286.666625976562
+			],
+			"image": "west-leave-03.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				368.0,
+				285.0
+			],
+			"shadow_depth": 266,
+			"tick": 3
+		},
+		{
+			"active": true,
+			"employee": "theo",
+			"facing": "west",
+			"feet": [
+				816.0,
+				286.666625976562
+			],
+			"image": "west-leave-03.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				816.0,
+				285.0
+			],
+			"shadow_depth": 266,
+			"tick": 3
+		},
+		{
+			"active": false,
+			"employee": "mira",
+			"facing": "west",
+			"feet": [
+				368.0,
+				290.333282470703
+			],
+			"image": "west-leave-04.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				368.0,
+				288.0
+			],
+			"shadow_depth": 290,
+			"tick": 4
+		},
+		{
+			"active": false,
+			"employee": "theo",
+			"facing": "west",
+			"feet": [
+				816.0,
+				290.333282470703
+			],
+			"image": "west-leave-04.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				816.0,
+				288.0
+			],
+			"shadow_depth": 290,
+			"tick": 4
+		},
+		{
+			"active": false,
+			"employee": "mira",
+			"facing": "west",
+			"feet": [
+				336.0,
+				560.0
+			],
+			"image": "west-leave-05.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				336.0,
+				558.0
+			],
+			"shadow_depth": 560,
+			"tick": 89
+		},
+		{
+			"active": false,
+			"employee": "theo",
+			"facing": "west",
+			"feet": [
+				784.0,
+				560.0
+			],
+			"image": "west-leave-05.png",
+			"phase": "leave",
+			"seat_render_offset": [
+				0.0,
+				0.0
+			],
+			"shadow": [
+				784.0,
+				558.0
+			],
+			"shadow_depth": 560,
+			"tick": 89
+		}
+	],
+	"worker_disabled": true
+}

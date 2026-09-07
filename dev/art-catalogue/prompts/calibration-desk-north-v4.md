@@ -1,0 +1,5 @@
+# Final bounded north geometry retry — only blueprint as edit target
+
+Texture the desk ALREADY DRAWN in this image. Do not redraw or redesign its shape. Keep every outer edge, leg length, support position and rectangular top-plane proportion EXACTLY where it is in the provided blueprint. The tabletop is intentionally deep: width:depth=3:1; leg rise equals tabletop depth. Preserve that geometry, not a shallow frontal table. Apply restrained warm honey-oak pixel grain INSIDE the brown tabletop and subtle charcoal metal pixel highlights INSIDE the gray legs/support. Light remains upper-left. Crisp pixel clusters at the blueprint's enlarged native grid, no gradients, no added objects. Keep all transparent space transparent. This is a material/texture pass only over locked existing geometry; no camera, perspective, size, silhouette or layout changes. Return genuine RGBA with no checkerboard, floor or matte.
+
+This is the third and final targeted correction for the north calibration desk. A visually different silhouette is rejected, even if attractive.

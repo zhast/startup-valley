@@ -1,0 +1,1533 @@
+{
+	"captures": [
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.57790460060602,
+					"outline_samples_below_1_5": 19
+				}
+			},
+			"material": "baseline",
+			"name": "baseline-hires-0-office",
+			"path": "res://tests/output/terrazzo-floor-review/baseline-hires-0-office.png",
+			"sha256": "9e1c26485c8bf31d9a6fb7fd1b5c89ff9ac84f76cabb658317d69c451282aa1f",
+			"stage": 0,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 14.2566337116338,
+					"outline_samples_below_1_5": 9
+				}
+			},
+			"material": "terrazzo-v1",
+			"name": "terrazzo-v1-hires-0-office",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v1-hires-0-office.png",
+			"sha256": "0f4b94fb9998f6786c67d345321c655a7cfb40231da99ee7571b650ab016ac06",
+			"stage": 0,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.8719534143,
+					"outline_samples_below_1_5": 8
+				}
+			},
+			"material": "terrazzo-v2-normalized",
+			"name": "terrazzo-v2-normalized-hires-0-office",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v2-normalized-hires-0-office.png",
+			"sha256": "236dfdf3f27751b2e5d30310387c15c1883077cb90a8f0bdf9eb4fe1c2bd7016",
+			"stage": 0,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.57790460060602,
+					"outline_samples_below_1_5": 19
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.04137619360854,
+					"outline_samples_below_1_5": 10
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.13900710004838,
+					"outline_samples_below_1_5": 16
+				}
+			},
+			"material": "baseline",
+			"name": "baseline-hires-2-office",
+			"path": "res://tests/output/terrazzo-floor-review/baseline-hires-2-office.png",
+			"sha256": "ce6e06ea699931449ead76ab483463761a49e5af5d5686979d7452a2e2890733",
+			"stage": 2,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 14.2566337116338,
+					"outline_samples_below_1_5": 9
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.5023012764607,
+					"outline_samples_below_1_5": 17
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 11.8129802175906,
+					"outline_samples_below_1_5": 2
+				}
+			},
+			"material": "terrazzo-v1",
+			"name": "terrazzo-v1-hires-2-office",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v1-hires-2-office.png",
+			"sha256": "00fa1d6e81ec773ff1d6dae1384bfcfc3bb0bab0272e74c1d81d5fc5c1718f00",
+			"stage": 2,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.8719534143,
+					"outline_samples_below_1_5": 8
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.1379747899437,
+					"outline_samples_below_1_5": 17
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 11.4942359169081,
+					"outline_samples_below_1_5": 4
+				}
+			},
+			"material": "terrazzo-v2-normalized",
+			"name": "terrazzo-v2-normalized-hires-2-office",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v2-normalized-hires-2-office.png",
+			"sha256": "1cb40214a070c17ee6d83b09b65864d63cb878854dba90fe2b13166f53ab5700",
+			"stage": 2,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.57790460060602,
+					"outline_samples_below_1_5": 19
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.04137619360854,
+					"outline_samples_below_1_5": 10
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.13900710004838,
+					"outline_samples_below_1_5": 16
+				}
+			},
+			"material": "baseline",
+			"name": "baseline-hires-2-chat",
+			"path": "res://tests/output/terrazzo-floor-review/baseline-hires-2-chat.png",
+			"sha256": "4f72cf099aab108d65b3643125bd147298c26cfcfc1f9fdb0b9bf35a7f8bbc98",
+			"stage": 2,
+			"view": "chat"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 14.2566337116338,
+					"outline_samples_below_1_5": 9
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.5023012764607,
+					"outline_samples_below_1_5": 17
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 11.8129802175906,
+					"outline_samples_below_1_5": 2
+				}
+			},
+			"material": "terrazzo-v1",
+			"name": "terrazzo-v1-hires-2-chat",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v1-hires-2-chat.png",
+			"sha256": "8cb0f3ba81ba4f6f452a023d2b7ad94a69a5569e29cdf73822bba9ef42b90e51",
+			"stage": 2,
+			"view": "chat"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.8719534143,
+					"outline_samples_below_1_5": 8
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.1379747899437,
+					"outline_samples_below_1_5": 17
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 11.4942359169081,
+					"outline_samples_below_1_5": 4
+				}
+			},
+			"material": "terrazzo-v2-normalized",
+			"name": "terrazzo-v2-normalized-hires-2-chat",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v2-normalized-hires-2-chat.png",
+			"sha256": "e3c93258297a49650d70f26f4f25ca159a44cb3bc89a5b0a23254f7189870aab",
+			"stage": 2,
+			"view": "chat"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.57790460060602,
+					"outline_samples_below_1_5": 19
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.04137619360854,
+					"outline_samples_below_1_5": 10
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.13900710004838,
+					"outline_samples_below_1_5": 16
+				}
+			},
+			"material": "baseline",
+			"name": "baseline-hires-4-office",
+			"path": "res://tests/output/terrazzo-floor-review/baseline-hires-4-office.png",
+			"sha256": "b72022e579643148a0a67a1a6ef6e8a2ce39d522db84f1bab5c9a5a7ac2d1419",
+			"stage": 4,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 14.2566337116338,
+					"outline_samples_below_1_5": 9
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.5023012764607,
+					"outline_samples_below_1_5": 17
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 11.8129802175906,
+					"outline_samples_below_1_5": 2
+				}
+			},
+			"material": "terrazzo-v1",
+			"name": "terrazzo-v1-hires-4-office",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v1-hires-4-office.png",
+			"sha256": "1b2a4813d0a89bf53957c375086a927556df6b8a46aa36514637ee637a9aac97",
+			"stage": 4,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.8719534143,
+					"outline_samples_below_1_5": 8
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.1379747899437,
+					"outline_samples_below_1_5": 17
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 11.4942359169081,
+					"outline_samples_below_1_5": 4
+				}
+			},
+			"material": "terrazzo-v2-normalized",
+			"name": "terrazzo-v2-normalized-hires-4-office",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v2-normalized-hires-4-office.png",
+			"sha256": "62f52f63912ab622c34d45d0d7710c7fb5c3734e92e92809d0e5a4f1753eaad0",
+			"stage": 4,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 246,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.52905605419666,
+					"outline_samples_below_1_5": 3
+				},
+				"mira": {
+					"border_samples": 274,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.45381557857221,
+					"outline_samples_below_1_5": 34
+				},
+				"theo": {
+					"border_samples": 282,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.68488895937304,
+					"outline_samples_below_1_5": 17
+				}
+			},
+			"material": "baseline",
+			"name": "baseline-hires-2-walk-000",
+			"path": "res://tests/output/terrazzo-floor-review/baseline-hires-2-walk-000.png",
+			"sha256": "aa919e3836e86495f9acfaf338632ea385e8c6faa582c5dad935a80e92ebaf51",
+			"stage": 2,
+			"view": "walk-000"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 306,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.48133674337591,
+					"outline_samples_below_1_5": 15
+				},
+				"mira": {
+					"border_samples": 276,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.37858524014546,
+					"outline_samples_below_1_5": 18
+				},
+				"theo": {
+					"border_samples": 288,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.7867868271945,
+					"outline_samples_below_1_5": 16
+				}
+			},
+			"material": "baseline",
+			"name": "baseline-hires-2-walk-007",
+			"path": "res://tests/output/terrazzo-floor-review/baseline-hires-2-walk-007.png",
+			"sha256": "b036277a89328c30a7977f605ea44ca056607215b4d4e89ea36f04723545cb47",
+			"stage": 2,
+			"view": "walk-007"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 312,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.48133674337591,
+					"outline_samples_below_1_5": 14
+				},
+				"mira": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.38933381588965,
+					"outline_samples_below_1_5": 25
+				},
+				"theo": {
+					"border_samples": 290,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.65746023986029,
+					"outline_samples_below_1_5": 9
+				}
+			},
+			"material": "baseline",
+			"name": "baseline-hires-2-walk-015",
+			"path": "res://tests/output/terrazzo-floor-review/baseline-hires-2-walk-015.png",
+			"sha256": "2bb7e777a4692f46de8b61189f95220284e3b66a663e9df546f87242e97f49e3",
+			"stage": 2,
+			"view": "walk-015"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 298,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.48133674337591,
+					"outline_samples_below_1_5": 13
+				},
+				"mira": {
+					"border_samples": 282,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.64952975077106,
+					"outline_samples_below_1_5": 30
+				},
+				"theo": {
+					"border_samples": 288,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.02820278750535,
+					"outline_samples_below_1_5": 15
+				}
+			},
+			"material": "baseline",
+			"name": "baseline-hires-2-walk-023",
+			"path": "res://tests/output/terrazzo-floor-review/baseline-hires-2-walk-023.png",
+			"sha256": "5e3f01aeeb2dfc2e9943cc740b322a4ed2337f916ac6350f93226285cc98ef8c",
+			"stage": 2,
+			"view": "walk-023"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 304,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.48133674337591,
+					"outline_samples_below_1_5": 24
+				},
+				"mira": {
+					"border_samples": 274,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.40141263750122,
+					"outline_samples_below_1_5": 33
+				},
+				"theo": {
+					"border_samples": 282,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.68488895937304,
+					"outline_samples_below_1_5": 19
+				}
+			},
+			"material": "baseline",
+			"name": "baseline-hires-2-walk-032",
+			"path": "res://tests/output/terrazzo-floor-review/baseline-hires-2-walk-032.png",
+			"sha256": "bccf95865c2c98e7c31e9644726bcc951a08453922267e85f91486f29e5798eb",
+			"stage": 2,
+			"view": "walk-032"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 246,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.48133674337591,
+					"outline_samples_below_1_5": 4
+				},
+				"mira": {
+					"border_samples": 274,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.58540432648055,
+					"outline_samples_below_1_5": 34
+				},
+				"theo": {
+					"border_samples": 282,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.74880299480541,
+					"outline_samples_below_1_5": 16
+				}
+			},
+			"material": "baseline",
+			"name": "baseline-hires-2-walk-048",
+			"path": "res://tests/output/terrazzo-floor-review/baseline-hires-2-walk-048.png",
+			"sha256": "5485b4d2263b331266d289903da39977071ddab2d7506d1580bd0057eeb7f4f4",
+			"stage": 2,
+			"view": "walk-048"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 246,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.48133674337591,
+					"outline_samples_below_1_5": 4
+				},
+				"mira": {
+					"border_samples": 218,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.02668475954476,
+					"outline_samples_below_1_5": 15
+				},
+				"theo": {
+					"border_samples": 242,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.02820278750535,
+					"outline_samples_below_1_5": 13
+				}
+			},
+			"material": "baseline",
+			"name": "baseline-hires-2-walk-128",
+			"path": "res://tests/output/terrazzo-floor-review/baseline-hires-2-walk-128.png",
+			"sha256": "3a7beba3b19e17dc7c798141f917e4f2d7711900c017f08a04043e4f32b03989",
+			"stage": 2,
+			"view": "walk-128"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 246,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 15.2192537795365,
+					"outline_samples_below_1_5": 6
+				},
+				"mira": {
+					"border_samples": 274,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.418233219749,
+					"outline_samples_below_1_5": 24
+				},
+				"theo": {
+					"border_samples": 282,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.3931296277052,
+					"outline_samples_below_1_5": 3
+				}
+			},
+			"material": "terrazzo-v1",
+			"name": "terrazzo-v1-hires-2-walk-000",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v1-hires-2-walk-000.png",
+			"sha256": "db9e141e2e17a27daa78a3739b03caec50348bba4246affb7cd3f318ee018d74",
+			"stage": 2,
+			"view": "walk-000"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 306,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 14.2566337116338,
+					"outline_samples_below_1_5": 9
+				},
+				"mira": {
+					"border_samples": 276,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 12.6715202460699,
+					"outline_samples_below_1_5": 27
+				},
+				"theo": {
+					"border_samples": 288,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.3931296277052,
+					"outline_samples_below_1_5": 3
+				}
+			},
+			"material": "terrazzo-v1",
+			"name": "terrazzo-v1-hires-2-walk-007",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v1-hires-2-walk-007.png",
+			"sha256": "265d26973e0146dbeed2f6e1f776d93e02f9fa7c89d530445fe2a632c7c929d9",
+			"stage": 2,
+			"view": "walk-007"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 312,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 15.2122155020117,
+					"outline_samples_below_1_5": 4
+				},
+				"mira": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 12.6715202460699,
+					"outline_samples_below_1_5": 23
+				},
+				"theo": {
+					"border_samples": 290,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.3931296277052,
+					"outline_samples_below_1_5": 3
+				}
+			},
+			"material": "terrazzo-v1",
+			"name": "terrazzo-v1-hires-2-walk-015",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v1-hires-2-walk-015.png",
+			"sha256": "e910bd2fabd7594a046b6889e6c04021f847166d649917c5c392fe30302cf7eb",
+			"stage": 2,
+			"view": "walk-015"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 298,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 15.2122155020117,
+					"outline_samples_below_1_5": 3
+				},
+				"mira": {
+					"border_samples": 282,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 14.1313718299517,
+					"outline_samples_below_1_5": 29
+				},
+				"theo": {
+					"border_samples": 288,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 14.0689211872295,
+					"outline_samples_below_1_5": 3
+				}
+			},
+			"material": "terrazzo-v1",
+			"name": "terrazzo-v1-hires-2-walk-023",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v1-hires-2-walk-023.png",
+			"sha256": "3ef2d182bf8312c8303b861b390ae9ba1077093b8635762279681a4a5f5f8867",
+			"stage": 2,
+			"view": "walk-023"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 304,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 14.2566337116338,
+					"outline_samples_below_1_5": 9
+				},
+				"mira": {
+					"border_samples": 274,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 12.6715202460699,
+					"outline_samples_below_1_5": 25
+				},
+				"theo": {
+					"border_samples": 282,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.3931296277052,
+					"outline_samples_below_1_5": 3
+				}
+			},
+			"material": "terrazzo-v1",
+			"name": "terrazzo-v1-hires-2-walk-032",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v1-hires-2-walk-032.png",
+			"sha256": "6ad880fa4ad1cc3c8cf6047b1b2167a897004fc752b764bc3a325c4da74d977b",
+			"stage": 2,
+			"view": "walk-032"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 246,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 15.2122155020117,
+					"outline_samples_below_1_5": 6
+				},
+				"mira": {
+					"border_samples": 274,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.4535953128025,
+					"outline_samples_below_1_5": 28
+				},
+				"theo": {
+					"border_samples": 282,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.3931296277052,
+					"outline_samples_below_1_5": 3
+				}
+			},
+			"material": "terrazzo-v1",
+			"name": "terrazzo-v1-hires-2-walk-048",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v1-hires-2-walk-048.png",
+			"sha256": "5284c983d46321f9f0cd1c1c3b437fb95be8d57a5117b3e232fe41fa107a3c6b",
+			"stage": 2,
+			"view": "walk-048"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 246,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 15.2122155020117,
+					"outline_samples_below_1_5": 6
+				},
+				"mira": {
+					"border_samples": 218,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 14.1449819754675,
+					"outline_samples_below_1_5": 14
+				},
+				"theo": {
+					"border_samples": 242,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 14.3984054122726,
+					"outline_samples_below_1_5": 3
+				}
+			},
+			"material": "terrazzo-v1",
+			"name": "terrazzo-v1-hires-2-walk-128",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v1-hires-2-walk-128.png",
+			"sha256": "3386c361692778c0be36815804157b37bd141c1f2b2e32df752d751d066b13a7",
+			"stage": 2,
+			"view": "walk-128"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 246,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 14.8017511735606,
+					"outline_samples_below_1_5": 5
+				},
+				"mira": {
+					"border_samples": 274,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.0561751035714,
+					"outline_samples_below_1_5": 25
+				},
+				"theo": {
+					"border_samples": 282,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.0362083687004,
+					"outline_samples_below_1_5": 6
+				}
+			},
+			"material": "terrazzo-v2-normalized",
+			"name": "terrazzo-v2-normalized-hires-2-walk-000",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v2-normalized-hires-2-walk-000.png",
+			"sha256": "99a8d70926ff3c3d5f614794001fb8434c286cb0a4fc867d8ac0545d720ad334",
+			"stage": 2,
+			"view": "walk-000"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 306,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.8719534143,
+					"outline_samples_below_1_5": 10
+				},
+				"mira": {
+					"border_samples": 276,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 12.3296103482269,
+					"outline_samples_below_1_5": 27
+				},
+				"theo": {
+					"border_samples": 288,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.0317488703942,
+					"outline_samples_below_1_5": 4
+				}
+			},
+			"material": "terrazzo-v2-normalized",
+			"name": "terrazzo-v2-normalized-hires-2-walk-007",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v2-normalized-hires-2-walk-007.png",
+			"sha256": "69a359f113c71d720276803ff22430dfeb21f9c9644d115d988d20513b7d1b9a",
+			"stage": 2,
+			"view": "walk-007"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 312,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 14.8017511735606,
+					"outline_samples_below_1_5": 4
+				},
+				"mira": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 12.0250726821046,
+					"outline_samples_below_1_5": 22
+				},
+				"theo": {
+					"border_samples": 290,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.0317488703942,
+					"outline_samples_below_1_5": 4
+				}
+			},
+			"material": "terrazzo-v2-normalized",
+			"name": "terrazzo-v2-normalized-hires-2-walk-015",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v2-normalized-hires-2-walk-015.png",
+			"sha256": "8bd438a83f11577c0b8afd00dd2dbfc7156ab96e3d24e0662cc579c56d9cf2cb",
+			"stage": 2,
+			"view": "walk-015"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 298,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.8719534143,
+					"outline_samples_below_1_5": 3
+				},
+				"mira": {
+					"border_samples": 282,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.7633143264163,
+					"outline_samples_below_1_5": 33
+				},
+				"theo": {
+					"border_samples": 288,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.6893058520152,
+					"outline_samples_below_1_5": 4
+				}
+			},
+			"material": "terrazzo-v2-normalized",
+			"name": "terrazzo-v2-normalized-hires-2-walk-023",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v2-normalized-hires-2-walk-023.png",
+			"sha256": "1e04ecc2f210bc14a930873a26c3bc13292484d066e3e4bb3852ff1d65eb8f45",
+			"stage": 2,
+			"view": "walk-023"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 304,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.8719534143,
+					"outline_samples_below_1_5": 8
+				},
+				"mira": {
+					"border_samples": 274,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 12.7897114448493,
+					"outline_samples_below_1_5": 24
+				},
+				"theo": {
+					"border_samples": 282,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 12.584113498565,
+					"outline_samples_below_1_5": 5
+				}
+			},
+			"material": "terrazzo-v2-normalized",
+			"name": "terrazzo-v2-normalized-hires-2-walk-032",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v2-normalized-hires-2-walk-032.png",
+			"sha256": "757ce63dad116dca45463a21edd3123eee45f364a68bcd1a674205bdffeee6f4",
+			"stage": 2,
+			"view": "walk-032"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 246,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 14.8017511735606,
+					"outline_samples_below_1_5": 7
+				},
+				"mira": {
+					"border_samples": 274,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.0561751035714,
+					"outline_samples_below_1_5": 26
+				},
+				"theo": {
+					"border_samples": 282,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.3176494966681,
+					"outline_samples_below_1_5": 5
+				}
+			},
+			"material": "terrazzo-v2-normalized",
+			"name": "terrazzo-v2-normalized-hires-2-walk-048",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v2-normalized-hires-2-walk-048.png",
+			"sha256": "56ec8e81d37aad8ed2ae5ecc082c9b00651080dbfe0aa542f4bc923f25fec7c1",
+			"stage": 2,
+			"view": "walk-048"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 246,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 14.8017511735606,
+					"outline_samples_below_1_5": 7
+				},
+				"mira": {
+					"border_samples": 218,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.7633143264163,
+					"outline_samples_below_1_5": 12
+				},
+				"theo": {
+					"border_samples": 242,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 14.0285755606581,
+					"outline_samples_below_1_5": 3
+				}
+			},
+			"material": "terrazzo-v2-normalized",
+			"name": "terrazzo-v2-normalized-hires-2-walk-128",
+			"path": "res://tests/output/terrazzo-floor-review/terrazzo-v2-normalized-hires-2-walk-128.png",
+			"sha256": "9313e211f46075fd43d83e2dfe90360878450754bfb008eb2e16ec02fcf3be88",
+			"stage": 2,
+			"view": "walk-128"
+		}
+	],
+	"checks": 1562,
+	"failures": [],
+	"limitations": [
+		"Disposable actual GameMain fixtures; only floor_art changes.",
+		"Native captures are 1280×720; half-size overviews are not readability evidence.",
+		"Actual production walk methods advance fixed30Hz along real navigation routes; scene physics is disabled between deterministic steps.",
+		"No seated calibration shadows or other new production features are enabled.",
+		"Stage4 means mature office furniture with the supported two-person roster."
+	],
+	"materials": {
+		"baseline": {
+			"approved": true,
+			"edge_mismatch_x": 0,
+			"edge_mismatch_y": 0,
+			"mean_luminance": 0.378567259657963,
+			"palette_colors": 20,
+			"path": "res://assets/runtime/office/architecture/floor.png",
+			"sha256": "6202478639de33fe7f8b548b49a20dddff6b69b59300300bcc89cfa064f2d0bd",
+			"size": [
+				128,
+				128
+			]
+		},
+		"normalization": {
+			"after": "res://tests/fixtures/material-concepts/terrazzo-v2/cream-terrazzo-floor-v2-normalized.png",
+			"before": "res://tests/fixtures/material-concepts/terrazzo-v2/cream-terrazzo-floor-v2.png",
+			"changed_pixels": 10536,
+			"mapping": "#EBE4D5 → #EAE4D7",
+			"unexpected_changes": 0
+		},
+		"terrazzo-v1": {
+			"approved": false,
+			"edge_mismatch_x": 33,
+			"edge_mismatch_y": 23,
+			"mean_luminance": 0.791609723533669,
+			"palette_colors": 12,
+			"path": "res://tests/fixtures/material-concepts/overnight-v1/cream-terrazzo-floor-v1.png",
+			"sha256": "562c41a4be9613eb981428a466c745527afe5e1aba763ea6ef9e9db766092588",
+			"size": [
+				128,
+				128
+			]
+		},
+		"terrazzo-v2-normalized": {
+			"approved": false,
+			"edge_mismatch_x": 0,
+			"edge_mismatch_y": 0,
+			"mean_luminance": 0.768073869780131,
+			"palette_colors": 11,
+			"path": "res://tests/fixtures/material-concepts/terrazzo-v2/cream-terrazzo-floor-v2-normalized.png",
+			"sha256": "13d436fdb317409d10dc4d68a9f1e4008a836d43fb271c3433ab7b5f597fd089",
+			"size": [
+				128,
+				128
+			]
+		}
+	},
+	"movement": [
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(432.0, 336.0)",
+					"body_region": "[P: (0.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(432.0, 368.0)",
+					"shadow_origin": "(432.0, 366.0)",
+					"shadow_region": "[P: (0.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(432.0, 432.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(432.0, 464.0)",
+					"shadow_origin": "(432.0, 462.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(432.0, 528.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(432.0, 560.0)",
+					"shadow_origin": "(432.0, 558.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "baseline",
+			"tick": 0
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(469.0, 336.0)",
+					"body_region": "[P: (144.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(469.0, 368.0)",
+					"shadow_origin": "(469.0, 366.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(458.0, 432.0)",
+					"body_region": "[P: (144.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(457.6666, 464.0)",
+					"shadow_origin": "(458.0, 462.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(458.0, 528.0)",
+					"body_region": "[P: (144.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(457.6666, 560.0)",
+					"shadow_origin": "(458.0, 558.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "baseline",
+			"tick": 7
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(511.0, 336.0)",
+					"body_region": "[P: (240.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(511.0, 368.0)",
+					"shadow_origin": "(511.0, 366.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(486.0, 432.0)",
+					"body_region": "[P: (240.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(485.9999, 464.0)",
+					"shadow_origin": "(486.0, 462.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(486.0, 528.0)",
+					"body_region": "[P: (240.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(485.9999, 560.0)",
+					"shadow_origin": "(486.0, 558.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "baseline",
+			"tick": 15
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(553.0, 336.0)",
+					"body_region": "[P: (192.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(553.0, 368.0)",
+					"shadow_origin": "(553.0, 366.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(514.0, 432.0)",
+					"body_region": "[P: (192.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(514.3333, 464.0)",
+					"shadow_origin": "(514.0, 462.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(514.0, 528.0)",
+					"body_region": "[P: (192.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(514.3333, 560.0)",
+					"shadow_origin": "(514.0, 558.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "baseline",
+			"tick": 23
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(602.0, 336.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(602.0, 368.0)",
+					"shadow_origin": "(602.0, 366.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(546.0, 432.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(546.3334, 464.0)",
+					"shadow_origin": "(546.0, 462.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(546.0, 528.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(546.3334, 560.0)",
+					"shadow_origin": "(546.0, 558.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "baseline",
+			"tick": 32
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(624.0, 336.0)",
+					"body_region": "[P: (0.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(624.0, 368.0)",
+					"shadow_origin": "(624.0, 366.0)",
+					"shadow_region": "[P: (0.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(603.0, 432.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(603.0001, 464.0)",
+					"shadow_origin": "(603.0, 462.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(603.0, 528.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(603.0001, 560.0)",
+					"shadow_origin": "(603.0, 558.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "baseline",
+			"tick": 48
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(624.0, 336.0)",
+					"body_region": "[P: (0.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(624.0, 368.0)",
+					"shadow_origin": "(624.0, 366.0)",
+					"shadow_region": "[P: (0.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(624.0, 432.0)",
+					"body_region": "[P: (48.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(624.0, 464.0)",
+					"shadow_origin": "(624.0, 462.0)",
+					"shadow_region": "[P: (0.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(624.0, 528.0)",
+					"body_region": "[P: (48.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(624.0, 560.0)",
+					"shadow_origin": "(624.0, 558.0)",
+					"shadow_region": "[P: (0.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "baseline",
+			"tick": 128
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(432.0, 336.0)",
+					"body_region": "[P: (0.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(432.0, 368.0)",
+					"shadow_origin": "(432.0, 366.0)",
+					"shadow_region": "[P: (0.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(432.0, 432.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(432.0, 464.0)",
+					"shadow_origin": "(432.0, 462.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(432.0, 528.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(432.0, 560.0)",
+					"shadow_origin": "(432.0, 558.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "terrazzo-v1",
+			"tick": 0
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(469.0, 336.0)",
+					"body_region": "[P: (144.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(469.0, 368.0)",
+					"shadow_origin": "(469.0, 366.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(458.0, 432.0)",
+					"body_region": "[P: (144.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(457.6666, 464.0)",
+					"shadow_origin": "(458.0, 462.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(458.0, 528.0)",
+					"body_region": "[P: (144.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(457.6666, 560.0)",
+					"shadow_origin": "(458.0, 558.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "terrazzo-v1",
+			"tick": 7
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(511.0, 336.0)",
+					"body_region": "[P: (240.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(511.0, 368.0)",
+					"shadow_origin": "(511.0, 366.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(486.0, 432.0)",
+					"body_region": "[P: (240.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(485.9999, 464.0)",
+					"shadow_origin": "(486.0, 462.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(486.0, 528.0)",
+					"body_region": "[P: (240.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(485.9999, 560.0)",
+					"shadow_origin": "(486.0, 558.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "terrazzo-v1",
+			"tick": 15
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(553.0, 336.0)",
+					"body_region": "[P: (192.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(553.0, 368.0)",
+					"shadow_origin": "(553.0, 366.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(514.0, 432.0)",
+					"body_region": "[P: (192.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(514.3333, 464.0)",
+					"shadow_origin": "(514.0, 462.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(514.0, 528.0)",
+					"body_region": "[P: (192.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(514.3333, 560.0)",
+					"shadow_origin": "(514.0, 558.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "terrazzo-v1",
+			"tick": 23
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(602.0, 336.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(602.0, 368.0)",
+					"shadow_origin": "(602.0, 366.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(546.0, 432.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(546.3334, 464.0)",
+					"shadow_origin": "(546.0, 462.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(546.0, 528.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(546.3334, 560.0)",
+					"shadow_origin": "(546.0, 558.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "terrazzo-v1",
+			"tick": 32
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(624.0, 336.0)",
+					"body_region": "[P: (0.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(624.0, 368.0)",
+					"shadow_origin": "(624.0, 366.0)",
+					"shadow_region": "[P: (0.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(603.0, 432.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(603.0001, 464.0)",
+					"shadow_origin": "(603.0, 462.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(603.0, 528.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(603.0001, 560.0)",
+					"shadow_origin": "(603.0, 558.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "terrazzo-v1",
+			"tick": 48
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(624.0, 336.0)",
+					"body_region": "[P: (0.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(624.0, 368.0)",
+					"shadow_origin": "(624.0, 366.0)",
+					"shadow_region": "[P: (0.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(624.0, 432.0)",
+					"body_region": "[P: (48.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(624.0, 464.0)",
+					"shadow_origin": "(624.0, 462.0)",
+					"shadow_region": "[P: (0.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(624.0, 528.0)",
+					"body_region": "[P: (48.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(624.0, 560.0)",
+					"shadow_origin": "(624.0, 558.0)",
+					"shadow_region": "[P: (0.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "terrazzo-v1",
+			"tick": 128
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(432.0, 336.0)",
+					"body_region": "[P: (0.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(432.0, 368.0)",
+					"shadow_origin": "(432.0, 366.0)",
+					"shadow_region": "[P: (0.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(432.0, 432.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(432.0, 464.0)",
+					"shadow_origin": "(432.0, 462.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(432.0, 528.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(432.0, 560.0)",
+					"shadow_origin": "(432.0, 558.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "terrazzo-v2-normalized",
+			"tick": 0
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(469.0, 336.0)",
+					"body_region": "[P: (144.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(469.0, 368.0)",
+					"shadow_origin": "(469.0, 366.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(458.0, 432.0)",
+					"body_region": "[P: (144.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(457.6666, 464.0)",
+					"shadow_origin": "(458.0, 462.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(458.0, 528.0)",
+					"body_region": "[P: (144.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(457.6666, 560.0)",
+					"shadow_origin": "(458.0, 558.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "terrazzo-v2-normalized",
+			"tick": 7
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(511.0, 336.0)",
+					"body_region": "[P: (240.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(511.0, 368.0)",
+					"shadow_origin": "(511.0, 366.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(486.0, 432.0)",
+					"body_region": "[P: (240.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(485.9999, 464.0)",
+					"shadow_origin": "(486.0, 462.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(486.0, 528.0)",
+					"body_region": "[P: (240.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(485.9999, 560.0)",
+					"shadow_origin": "(486.0, 558.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "terrazzo-v2-normalized",
+			"tick": 15
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(553.0, 336.0)",
+					"body_region": "[P: (192.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(553.0, 368.0)",
+					"shadow_origin": "(553.0, 366.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(514.0, 432.0)",
+					"body_region": "[P: (192.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(514.3333, 464.0)",
+					"shadow_origin": "(514.0, 462.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(514.0, 528.0)",
+					"body_region": "[P: (192.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(514.3333, 560.0)",
+					"shadow_origin": "(514.0, 558.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "terrazzo-v2-normalized",
+			"tick": 23
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(602.0, 336.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(602.0, 368.0)",
+					"shadow_origin": "(602.0, 366.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(546.0, 432.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(546.3334, 464.0)",
+					"shadow_origin": "(546.0, 462.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(546.0, 528.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(546.3334, 560.0)",
+					"shadow_origin": "(546.0, 558.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "terrazzo-v2-normalized",
+			"tick": 32
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(624.0, 336.0)",
+					"body_region": "[P: (0.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(624.0, 368.0)",
+					"shadow_origin": "(624.0, 366.0)",
+					"shadow_region": "[P: (0.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(603.0, 432.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(603.0001, 464.0)",
+					"shadow_origin": "(603.0, 462.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(603.0, 528.0)",
+					"body_region": "[P: (96.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(603.0001, 560.0)",
+					"shadow_origin": "(603.0, 558.0)",
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "terrazzo-v2-normalized",
+			"tick": 48
+		},
+		{
+			"actors": {
+				"founder": {
+					"body_origin": "(624.0, 336.0)",
+					"body_region": "[P: (0.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(624.0, 368.0)",
+					"shadow_origin": "(624.0, 366.0)",
+					"shadow_region": "[P: (0.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"mira": {
+					"body_origin": "(624.0, 432.0)",
+					"body_region": "[P: (48.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(624.0, 464.0)",
+					"shadow_origin": "(624.0, 462.0)",
+					"shadow_region": "[P: (0.0, 0.0), S: (32.0, 16.0)]"
+				},
+				"theo": {
+					"body_origin": "(624.0, 528.0)",
+					"body_region": "[P: (48.0, 240.0), S: (48.0, 80.0)]",
+					"physical": "(624.0, 560.0)",
+					"shadow_origin": "(624.0, 558.0)",
+					"shadow_region": "[P: (0.0, 0.0), S: (32.0, 16.0)]"
+				}
+			},
+			"material": "terrazzo-v2-normalized",
+			"tick": 128
+		}
+	],
+	"personal_save_access": false,
+	"pixel_checks": 2657633,
+	"production_changed": false,
+	"runtime_approved": false,
+	"source_hashes": {
+		"res://assets/runtime/office/architecture/floor.png": "6202478639de33fe7f8b548b49a20dddff6b69b59300300bcc89cfa064f2d0bd",
+		"res://assets/source/overnight-20260904/materials/cream-terrazzo-floor-v2.png": "5f49ad8e8c34662e0e65f20f7cb5df160f54e4887813f765c026d090b0b61f7e",
+		"res://data/furniture_catalog.json": "962d47f9fd3867328f3f293351fbb3124e6053f2d156fc20e97ee856cce09319",
+		"res://data/office_layout.json": "484bc653b3ff4ae4dcc4aaf613396d9d18b70d27ed59971e4b0460be4187632d",
+		"res://tests/fixtures/material-concepts/overnight-v1/cream-terrazzo-floor-v1.png": "562c41a4be9613eb981428a466c745527afe5e1aba763ea6ef9e9db766092588",
+		"res://tests/fixtures/material-concepts/terrazzo-v2/cream-terrazzo-floor-v2-normalized.png": "13d436fdb317409d10dc4d68a9f1e4008a836d43fb271c3433ab7b5f597fd089",
+		"res://tests/fixtures/material-concepts/terrazzo-v2/cream-terrazzo-floor-v2.png": "0876adae0c82641fc7ab20ad7330938689104a1e472e031b5630879ea97b4482",
+		"res://world/office_architecture.gd": "b97c4f69e7022d511734658c38772f126a0794adb00ad3b7c99d6c246d4d2c8f"
+	},
+	"worker_started": false
+}

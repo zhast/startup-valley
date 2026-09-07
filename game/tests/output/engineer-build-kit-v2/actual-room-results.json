@@ -1,0 +1,204 @@
+{
+	"actor_presentation": "Theo's accepted directional seated typing presentation at the authored desk work point; host contact, gaze, scale and occlusion probe only because no engineer employee or accepted engineer role pose exists",
+	"actor_role_claimed": false,
+	"candidate_revision": "engineer-build-kit-v2",
+	"candidate_revision_registered": false,
+	"canvas": [
+		192,
+		224
+	],
+	"captures": [
+		"res://tests/output/engineer-build-kit-v2/room-north.png",
+		"res://tests/output/engineer-build-kit-v2/detail-north-native.png",
+		"res://tests/output/engineer-build-kit-v2/detail-north-unoccupied-native.png",
+		"res://tests/output/engineer-build-kit-v2/room-east.png",
+		"res://tests/output/engineer-build-kit-v2/detail-east-native.png",
+		"res://tests/output/engineer-build-kit-v2/detail-east-unoccupied-native.png",
+		"res://tests/output/engineer-build-kit-v2/room-south.png",
+		"res://tests/output/engineer-build-kit-v2/detail-south-native.png",
+		"res://tests/output/engineer-build-kit-v2/detail-south-unoccupied-native.png",
+		"res://tests/output/engineer-build-kit-v2/room-west.png",
+		"res://tests/output/engineer-build-kit-v2/detail-west-native.png",
+		"res://tests/output/engineer-build-kit-v2/detail-west-unoccupied-native.png",
+		"res://tests/output/engineer-build-kit-v2/actual-room-contact-sheet-native.png",
+		"res://tests/output/engineer-build-kit-v2/actual-room-unoccupied-contact-sheet-native.png",
+		"res://tests/output/engineer-build-kit-v2/actual-room-contact-sheet-4x.png",
+		"res://tests/output/engineer-build-kit-v2/actual-room-unoccupied-contact-sheet-4x.png"
+	],
+	"checks": 111,
+	"default_layout_mutated": false,
+	"dev_catalogue_family": "engineer_build_kit",
+	"engineer_employee_service_backend_or_hire_created": false,
+	"facings": [
+		"north",
+		"east",
+		"south",
+		"west"
+	],
+	"failures": [],
+	"layers": [
+		"surface_decor_rear",
+		"surface_decor_front"
+	],
+	"legacy_files_hash_guarded": 12,
+	"objects": [
+		"electronics_test_mat",
+		"debug_instrument",
+		"precision_tool_tray"
+	],
+	"observations": {
+		"east": {
+			"actor_overlay_occlusion_measured_not_quality_proxy": {
+				"surface_decor_front": 0,
+				"surface_decor_rear": 47
+			},
+			"actor_pixel_delta": 897,
+			"actor_probe_role": "existing_theo_directional_seated_typing_not_engineer",
+			"actor_upper_z": 274,
+			"actor_work_point": [
+				624.0,
+				272.0
+			],
+			"collision_shapes_after": 3,
+			"collision_shapes_before": 3,
+			"desk_asset_revision": "workstations-v2",
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 144,
+					"covered_by_existing_assembly_or_actor": 0,
+					"source_opaque": 144
+				},
+				"surface_decor_rear": {
+					"changed": 461,
+					"covered_by_existing_assembly_or_actor": 83,
+					"source_opaque": 544
+				}
+			},
+			"layer_z": {
+				"front": 275,
+				"rear": 272
+			},
+			"work_facing": "east",
+			"workstation_capability_revision": "workstations-v2:east"
+		},
+		"north": {
+			"actor_overlay_occlusion_measured_not_quality_proxy": {
+				"surface_decor_front": 0,
+				"surface_decor_rear": 0
+			},
+			"actor_pixel_delta": 1773,
+			"actor_probe_role": "existing_theo_directional_seated_typing_not_engineer",
+			"actor_upper_z": 275,
+			"actor_work_point": [
+				656.0,
+				304.0
+			],
+			"collision_shapes_after": 3,
+			"collision_shapes_before": 3,
+			"desk_asset_revision": "workstations-v2",
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 144,
+					"covered_by_existing_assembly_or_actor": 0,
+					"source_opaque": 144
+				},
+				"surface_decor_rear": {
+					"changed": 544,
+					"covered_by_existing_assembly_or_actor": 0,
+					"source_opaque": 544
+				}
+			},
+			"layer_z": {
+				"front": 274,
+				"rear": 272
+			},
+			"work_facing": "north",
+			"workstation_capability_revision": "workstations-v2:north"
+		},
+		"south": {
+			"actor_overlay_occlusion_measured_not_quality_proxy": {
+				"surface_decor_front": 0,
+				"surface_decor_rear": 0
+			},
+			"actor_pixel_delta": 902,
+			"actor_probe_role": "existing_theo_directional_seated_typing_not_engineer",
+			"actor_upper_z": 275,
+			"actor_work_point": [
+				656.0,
+				240.0
+			],
+			"collision_shapes_after": 3,
+			"collision_shapes_before": 3,
+			"desk_asset_revision": "workstations-v2",
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 144,
+					"covered_by_existing_assembly_or_actor": 0,
+					"source_opaque": 144
+				},
+				"surface_decor_rear": {
+					"changed": 544,
+					"covered_by_existing_assembly_or_actor": 0,
+					"source_opaque": 544
+				}
+			},
+			"layer_z": {
+				"front": 276,
+				"rear": 274
+			},
+			"work_facing": "south",
+			"workstation_capability_revision": "workstations-v2:south"
+		},
+		"west": {
+			"actor_overlay_occlusion_measured_not_quality_proxy": {
+				"surface_decor_front": 0,
+				"surface_decor_rear": 0
+			},
+			"actor_pixel_delta": 811,
+			"actor_probe_role": "existing_theo_directional_seated_typing_not_engineer",
+			"actor_upper_z": 274,
+			"actor_work_point": [
+				688.0,
+				272.0
+			],
+			"collision_shapes_after": 3,
+			"collision_shapes_before": 3,
+			"desk_asset_revision": "workstations-v2",
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 144,
+					"covered_by_existing_assembly_or_actor": 0,
+					"source_opaque": 144
+				},
+				"surface_decor_rear": {
+					"changed": 510,
+					"covered_by_existing_assembly_or_actor": 34,
+					"source_opaque": 544
+				}
+			},
+			"layer_z": {
+				"front": 275,
+				"rear": 272
+			},
+			"work_facing": "west",
+			"workstation_capability_revision": "workstations-v2:west"
+		}
+	},
+	"pivot": [
+		96,
+		160
+	],
+	"production_catalog_mutated": false,
+	"production_catalogue_registered": false,
+	"renderer": "macOS",
+	"runtime_registered": false,
+	"save_access": false,
+	"scene": "actual GameMain and production TownRoom; fixture-only rear/front Sprite2D overlays on theo-workstation using accepted workstations-v2 desk",
+	"sprite_offset": [
+		0,
+		-48
+	],
+	"status": "native_review_candidate_not_catalogued_or_runtime_registered",
+	"total_actor_overlay_overlap_pixels_measured_not_acceptance_threshold": 47,
+	"worker_disabled": true
+}

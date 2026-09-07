@@ -1,0 +1,82 @@
+{
+	"candidate_direction": "west",
+	"canvas": [
+		192,
+		224
+	],
+	"checks": 43,
+	"failures": [],
+	"limitations": [
+		"Source was requested as east with incorrect identity instructions; source batch remains exhausted after one initial call and three retries.",
+		"West leaf order and near binder spines fit north identity, but source folder tabs remain screen-right rather than on the outer top edge.",
+		"Checkbox rows remain screen-upright rather than physically rotating with the page.",
+		"Cup keeps north-like pen order; an actual west cup view is not proven.",
+		"Uniform binder export is 12x32, not the desired 12x30; folder is 19x27 rather than 19x26.",
+		"Contacts are proposed 2D geometry only; no actor interaction or four-view runtime acceptance is asserted."
+	],
+	"new_generation_requests": 0,
+	"opaque_pixels": 942,
+	"original_batch_calls": 4,
+	"original_batch_exhausted": true,
+	"parts": {
+		"binders": {
+			"bounds": [
+				86,
+				70,
+				12,
+				32
+			],
+			"file": "res://tests/fixtures/furniture-calibration/roles/lawyer-west-reclassified-v4-binders.png",
+			"opaque_pixels": 382,
+			"proposed_contact": [
+				86,
+				82,
+				12,
+				20
+			]
+		},
+		"folder": {
+			"bounds": [
+				83,
+				147,
+				19,
+				27
+			],
+			"file": "res://tests/fixtures/furniture-calibration/roles/lawyer-west-reclassified-v4-folder.png",
+			"opaque_pixels": 493,
+			"proposed_contact": [
+				83,
+				147,
+				19,
+				27
+			]
+		},
+		"pen_cup": {
+			"bounds": [
+				103,
+				74,
+				6,
+				12
+			],
+			"file": "res://tests/fixtures/furniture-calibration/roles/lawyer-west-reclassified-v4-pen_cup.png",
+			"opaque_pixels": 67,
+			"proposed_contact": [
+				103,
+				83,
+				6,
+				3
+			]
+		}
+	},
+	"pivot": [
+		96,
+		160
+	],
+	"renderer": "headless",
+	"source": "res://assets/source/overnight-20260904/roles/lawyer-kit-east-v4.png",
+	"source_request_direction": "east",
+	"source_sha256": "2433507ee40add344a53bcb931cc12b2fc5cc66d711dd46e589ef4512a8c0335",
+	"status": "reclassified_west_cleanup_required_not_approved",
+	"transparent_pixels": 42066,
+	"workerDisabled": true
+}

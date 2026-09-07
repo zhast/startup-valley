@@ -1,0 +1,147 @@
+{
+	"captures": [
+		"native-framing-comparison.png",
+		"mira-native.png",
+		"mira-4x.png",
+		"lawyer-v3-native.png",
+		"lawyer-v3-4x.png",
+		"lawyer-a-native.png",
+		"lawyer-a-4x.png",
+		"lawyer-b-native.png",
+		"lawyer-b-4x.png",
+		"theo-native.png",
+		"theo-4x.png",
+		"creative-v3-native.png",
+		"creative-v3-4x.png",
+		"creative-a-native.png",
+		"creative-a-4x.png",
+		"creative-b-native.png",
+		"creative-b-4x.png",
+		"eye-guide-overlay.png",
+		"guides-hidden-again.png"
+	],
+	"checks": 234,
+	"employee_registered": false,
+	"failures": [],
+	"landmarks_approximate": true,
+	"new_plate_runtime_scale": 1,
+	"original_review_unchanged": true,
+	"rail_migration_required": true,
+	"records": [
+		{
+			"approximateEyeLine": 36.2857142857143,
+			"approximateHairTop": 5.57142857142857,
+			"approximateHairWidth": 42.8571428571429,
+			"colors": 32.0,
+			"crop": [
+				112.0,
+				32.0,
+				896.0,
+				1120.0
+			],
+			"dimensions": "64x80",
+			"factor": 0.0714285714285714,
+			"id": "lawyer",
+			"native": "game/tests/fixtures/character-concepts/overnight-crops-v1/lawyer-a.png",
+			"opaque": "True",
+			"padding": [
+				0.0,
+				0.0
+			],
+			"palette": "game/tests/fixtures/character-concepts/overnight-v1/lawyer-portrait-v3.png",
+			"paletteNormalization": "unchanged v3 native palette; dither disabled",
+			"runtimeApproved": false,
+			"sha256": "2bddadddccdf2d1d14fe0c550a8af1a38a481fe91515d5b4220152b7eed4bf9d",
+			"source": "game/assets/source/overnight-20260904/characters/lawyer-portrait-v3.png",
+			"sourceSha256": "e28952e8aec785883b324f53b18a9dd87fbdc3b5ce35ee9ca16dbe777e64a365",
+			"variant": "a"
+		},
+		{
+			"approximateEyeLine": 39.36,
+			"approximateHairTop": 4.96,
+			"approximateHairWidth": 48.0,
+			"colors": 32.0,
+			"crop": [
+				160.0,
+				48.0,
+				800.0,
+				1000.0
+			],
+			"dimensions": "64x80",
+			"factor": 0.08,
+			"id": "lawyer",
+			"native": "game/tests/fixtures/character-concepts/overnight-crops-v1/lawyer-b.png",
+			"opaque": "True",
+			"padding": [
+				0.0,
+				0.0
+			],
+			"palette": "game/tests/fixtures/character-concepts/overnight-v1/lawyer-portrait-v3.png",
+			"paletteNormalization": "unchanged v3 native palette; dither disabled",
+			"runtimeApproved": false,
+			"sha256": "79883ec9388f20343be46033741aabc25c239e594c19df3657b3a8e369615cb0",
+			"source": "game/assets/source/overnight-20260904/characters/lawyer-portrait-v3.png",
+			"sourceSha256": "e28952e8aec785883b324f53b18a9dd87fbdc3b5ce35ee9ca16dbe777e64a365",
+			"variant": "b"
+		},
+		{
+			"approximateEyeLine": 32.0,
+			"approximateHairTop": 4.0,
+			"approximateHairWidth": 52.0,
+			"colors": 32.0,
+			"crop": [
+				48.0,
+				8.0,
+				1024.0,
+				1280.0
+			],
+			"dimensions": "64x80",
+			"factor": 0.0625,
+			"id": "creative",
+			"native": "game/tests/fixtures/character-concepts/overnight-crops-v1/creative-a.png",
+			"opaque": "True",
+			"padding": [
+				0.0,
+				0.0
+			],
+			"palette": "game/tests/fixtures/character-concepts/overnight-v1/creative-portrait-v3.png",
+			"paletteNormalization": "unchanged v3 native palette; dither disabled",
+			"runtimeApproved": false,
+			"sha256": "5cb1c59cd4bb74c8a56a920b5bfa1f276fefdbe43b7133b4359a13e160e7d589",
+			"source": "game/assets/source/overnight-20260904/characters/creative-portrait-v3.png",
+			"sourceSha256": "874f98df78449889b5af81326200e307fa73e7db1df4774b7085df36d01eeaab",
+			"variant": "a"
+		},
+		{
+			"approximateEyeLine": 34.6666666666667,
+			"approximateHairTop": 4.8,
+			"approximateHairWidth": 55.4666666666667,
+			"colors": 32.0,
+			"crop": [
+				80.0,
+				0.0,
+				960.0,
+				1200.0
+			],
+			"dimensions": "64x80",
+			"factor": 0.0666666666666667,
+			"id": "creative",
+			"native": "game/tests/fixtures/character-concepts/overnight-crops-v1/creative-b.png",
+			"opaque": "True",
+			"padding": [
+				0.0,
+				0.0
+			],
+			"palette": "game/tests/fixtures/character-concepts/overnight-v1/creative-portrait-v3.png",
+			"paletteNormalization": "unchanged v3 native palette; dither disabled",
+			"runtimeApproved": false,
+			"sha256": "1dbf6040ebe60c8dfbb558142e8781d51d025c127905db5fe82cf4033f49416b",
+			"source": "game/assets/source/overnight-20260904/characters/creative-portrait-v3.png",
+			"sourceSha256": "874f98df78449889b5af81326200e307fa73e7db1df4774b7085df36d01eeaab",
+			"variant": "b"
+		}
+	],
+	"runtime_approved": false,
+	"save_access": false,
+	"worker_started": false
+}

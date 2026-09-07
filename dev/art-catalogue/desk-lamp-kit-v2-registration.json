@@ -1,0 +1,1252 @@
+{
+  "id": "desk_lamp_kit",
+  "direction_semantics": "host_gaze",
+  "display_name": "Desk task-light kit",
+  "asset_kind": "decor_kit",
+  "base_vs_decor": "decor",
+  "category": "workstations",
+  "priority": "P2",
+  "production_status": "approved",
+  "role_tags": [
+    "all roles"
+  ],
+  "role_tools": [
+    "small adjustable desk lamp"
+  ],
+  "design_brief": "Optional small light for varied workspaces; no collision or new desk base.",
+  "gameplay_scope": "Approved passive host-overlay art only; no runtime/default-layout binding, powered-light system, switch, interaction, service action, new host adaptation, actor behavior, worker authority, persistence or gameplay transaction.",
+  "primary_host": "desk",
+  "current_availability": {
+    "status": "no_catalogue_runtime_binding",
+    "runtime_family_id": null,
+    "runtime_registered_facings": [],
+    "art_path": null,
+    "direction_art_review": "Approved as exact desk-lamp-kit-v2 passive art only after native and 4x review on the accepted workstation in N/E/S/W. The independently authored rear shade/support and front base/lip overlays share the 192×224 host canvas and [96,160] pivot, add zero collision, clear all twelve direction-by-device checks and remain fully visible at z+2/z+4 above the host top. Export 112/0, final shared structural 412/0 and isolated actual-GameMain 67/0 checks pass; the main-agent rubric is 3/2/2/3/3/3 (2.67). Honest actor intersection is 0/2/0/0 because the lamp occupies clear edge space. No glow, switch, service, runtime binding or second-host adaptation is approved.",
+    "previous_catalogue_availability": {
+      "status": "no_catalogue_runtime_binding",
+      "runtime_family_id": null,
+      "runtime_registered_facings": [],
+      "art_path": null,
+      "direction_art_review": "No finished art or runtime family is claimed for this proposal; unrelated concept/source art may exist."
+    },
+    "approved_passive_revision": "desk-lamp-kit-v2",
+    "approved_fixture_manifest_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/manifest.json",
+    "approved_structural_results_path": "game/tests/output/desk-lamp-kit-v2/structural-results.json",
+    "approved_actual_room_results_path": "game/tests/output/desk-lamp-kit-v2/actual-room-results.json",
+    "approved_actual_room_evidence_path": "game/tests/output/desk-lamp-kit-v2/actual-room-actor-contact-sheet-native.png",
+    "approved_full_room_evidence_path": "game/tests/output/desk-lamp-kit-v2/actual-gamemain-contact-sheet-native.png",
+    "approved_review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+    "runtime_registration": null,
+    "default_layout_binding": null,
+    "superseded_v1_art_proposal": {
+      "revision": "desk-lamp-kit-v1",
+      "status": "rejected_after_native_art_review",
+      "reason": "The v1 South rear overlay sat behind the accepted desk top, leaving detached fragments while its green shade was hidden. Its files and evidence remain preserved and are not relabeled as approved art.",
+      "review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+      "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v1/manifest.json"
+    }
+  },
+  "native_geometry": {
+    "status": "reviewed_code_native_passive_library_not_runtime_admission",
+    "canvas_size_px": [
+      192,
+      224
+    ],
+    "floor_anchor_px": [
+      96,
+      160
+    ],
+    "grid_size_px": 32,
+    "estimated_max_rise_above_occupied_floor_px": null,
+    "minimum_transparent_padding_px": 16,
+    "anchor_rule": "One unchanged canvas coordinate represents local floor pivot [0,0] in every direction and every layer. Transparent padding is not sprite scaling.",
+    "host_rule": "Primary-host export shares the host canvas and floor anchor; zero new floor collision. A second host requires an explicitly reviewed socket adaptation, not runtime downscaling.",
+    "candidate_revision": "desk-lamp-kit-v2",
+    "sprite_offset_px": [
+      0,
+      -48
+    ],
+    "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/manifest.json",
+    "structural_results_path": "game/tests/output/desk-lamp-kit-v2/structural-results.json",
+    "actual_room_results_path": "game/tests/output/desk-lamp-kit-v2/actual-room-results.json",
+    "actual_room_evidence_path": "game/tests/output/desk-lamp-kit-v2/actual-room-actor-contact-sheet-native.png",
+    "full_room_evidence_path": "game/tests/output/desk-lamp-kit-v2/actual-gamemain-contact-sheet-native.png",
+    "review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+    "source_paths": [
+      "game/tools/passive_lighting_entry_geometry.gd",
+      "game/tools/export_passive_lighting_entry.gd",
+      "game/tests/test_passive_lighting_entry.gd",
+      "game/tools/capture_passive_lighting_entry.gd"
+    ],
+    "layers_per_direction": [
+      "surface_decor_rear",
+      "surface_decor_front"
+    ],
+    "occupied_cell_offsets": [],
+    "production_registration": null,
+    "default_layout_binding": null,
+    "image_generation_used": false,
+    "host_contact_contract": {
+      "host": "desk",
+      "production_probe": "mira-workstation",
+      "host_asset_revision": "workstations-v2",
+      "overlay_z_offsets": [
+        2,
+        4
+      ],
+      "collision_shapes_before_after": [
+        3,
+        3
+      ],
+      "computer_clearance_checks": 12,
+      "runtime_capability_created": false
+    }
+  },
+  "layers": [
+    {
+      "id": "surface_decor_rear",
+      "required": true,
+      "same_canvas_and_floor_anchor": true,
+      "status": "approved",
+      "approved_revision": "desk-lamp-kit-v2"
+    },
+    {
+      "id": "surface_decor_front",
+      "required": true,
+      "same_canvas_and_floor_anchor": true,
+      "status": "approved",
+      "approved_revision": "desk-lamp-kit-v2"
+    },
+    {
+      "id": "ambient_overlay",
+      "required": false,
+      "same_canvas_and_floor_anchor": true,
+      "status": "planned",
+      "approved_revision": null,
+      "note": "Optional ambient/glow overlay is absent and unclaimed; passive art approval does not create a powered state."
+    }
+  ],
+  "variants": [
+    {
+      "facing": "north",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/north-whole.png",
+      "evidence_path": "game/tests/output/desk-lamp-kit-v2/actual-room-actor-contact-sheet-native.png",
+      "source_reference_path": "game/tools/passive_lighting_entry_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        0,
+        0
+      ],
+      "proposed_occupied_cell_offsets": [],
+      "employee_look_vector": [
+        0,
+        -1
+      ],
+      "proposed_interaction_cell": null,
+      "seated_pose_needed": false,
+      "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_exports": [],
+      "production_status": null,
+      "preview_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/north-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/north-whole.png",
+      "review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+      "review_paths": [
+        "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md"
+      ],
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/manifest.json",
+        "game/tests/output/desk-lamp-kit-v2/structural-results.json",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-results.json",
+        "game/tests/output/desk-lamp-kit-v2/candidate-contact-sheet-native.png",
+        "game/tests/output/desk-lamp-kit-v2/candidate-contact-sheet-4x.png",
+        "game/tests/output/desk-lamp-kit-v2/candidate-layers-native.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-host-baseline-native.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-lamp-contact-sheet-native.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-actor-contact-sheet-native.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-actor-contact-sheet-4x.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-gamemain-contact-sheet-native.png"
+      ],
+      "native_exports": [
+        {
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "decoded_rgba_sha256": "bd4c6f8f60c8049c4824618ede9338849d136013947401aba99f8107e4415498",
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "hidden_rgb_pixels": 0,
+          "layer": "surface_decor_rear",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/manifest.json",
+          "method": "Exact deterministic code-native north/surface_decor_rear layer; fixed screen light and no finished-raster transform.",
+          "opaque_bounds_px": [
+            113,
+            114,
+            23,
+            23
+          ],
+          "opaque_pixels": 217,
+          "partial_alpha_pixels": 0,
+          "path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/north-surface_decor_rear.png",
+          "render_descriptor": {
+            "art": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/north-surface_decor_rear.png",
+            "name": "DeskLampKitSurfaceDecorRear",
+            "offset": [
+              0,
+              -48
+            ],
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "z_offset": 2
+          },
+          "review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "sha256": "58f1bb024ca0b58a3efce2847eb421b129292f4438159590cfe3107be32ac3f1",
+          "source_layer": "DeskLampKitSurfaceDecorRear",
+          "source_path": "game/tools/passive_lighting_entry_geometry.gd",
+          "used_colors": 6,
+          "verify_decoded_facts": true,
+          "z_offset": 2
+        },
+        {
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "decoded_rgba_sha256": "6b7c7ac859c00d928c7943e05612f5af5eb9b104ee27a4c1d9113df8efe616c3",
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "hidden_rgb_pixels": 0,
+          "layer": "surface_decor_front",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/manifest.json",
+          "method": "Exact deterministic code-native north/surface_decor_front layer; fixed screen light and no finished-raster transform.",
+          "opaque_bounds_px": [
+            113,
+            116,
+            29,
+            25
+          ],
+          "opaque_pixels": 155,
+          "partial_alpha_pixels": 0,
+          "path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/north-surface_decor_front.png",
+          "render_descriptor": {
+            "art": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/north-surface_decor_front.png",
+            "name": "DeskLampKitSurfaceDecorFront",
+            "offset": [
+              0,
+              -48
+            ],
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "z_offset": 4
+          },
+          "review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "sha256": "4c7f98653ebb1badfcd8c36ffded8a6bab80fc0c252874ee32b0d0a34c3fbf40",
+          "source_layer": "DeskLampKitSurfaceDecorFront",
+          "source_path": "game/tools/passive_lighting_entry_geometry.gd",
+          "used_colors": 5,
+          "verify_decoded_facts": true,
+          "z_offset": 4
+        }
+      ],
+      "composite_exports": [
+        {
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "decoded_rgba_sha256": "701aff255737c83b01f6b235e8346fe6fa92f846a68fe564ec4ac204bc4c2795",
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "hidden_rgb_pixels": 0,
+          "manifest_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/manifest.json",
+          "method": "Byte-exact ordered native-layer union for review only; no approval or runtime installation.",
+          "opaque_bounds_px": [
+            113,
+            114,
+            29,
+            27
+          ],
+          "opaque_pixels": 329,
+          "partial_alpha_pixels": 0,
+          "path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/north-whole.png",
+          "review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "sha256": "550a287fe77487cd751d46fdf17fe171eea8a5041ecd3ab4dce1b96076089311",
+          "source_path": "game/tools/passive_lighting_entry_geometry.gd",
+          "used_colors": 8,
+          "verify_decoded_facts": true
+        }
+      ],
+      "export_method": "Original editable code-native RGBA north screen-axis construction on the common canvas/pivot; no provider, generated raster, loaded source, finished-bitmap rotation, mirroring, flipping, scaling or resampling.",
+      "reason": "Approved passive-art-library desk-lamp-kit-v2 north view. Export 112/0, shared structural 412/0 and isolated actual GameMain 67/0 pass; accepted workstation collision remains 3→3, both overlays contribute visibly, and the complete shade/support region matches source with zero mismatches. Approval is art-library only; runtime/default placement and powered interaction remain absent.",
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 2,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "note": "Main-agent bounded passive-art review passes the corrected v2 at mean 2.67/minimum 2. North/South are immediately readable and the subtler side silhouettes remain coherent. Exact +2/+4 overlays preserve the full shade/support assembly above the accepted desk while clearing all production computer parts.",
+        "acceptance_scope": "passive_art_library_only",
+        "review_date": "2026-09-06",
+        "image_generation_used": false
+      },
+      "actual_game_main": {
+        "scene": "actual GameMain / production TownRoom with accepted workstation and manually attached exact candidate overlays",
+        "viewport_px": [
+          1280,
+          720
+        ],
+        "host_grid": [
+          10,
+          8
+        ],
+        "host_asset_revision": "workstations-v2",
+        "workstation_capability_revision": "workstations-v2:north",
+        "work_position_px": [
+          336,
+          304
+        ],
+        "collision_shapes_before_after": [
+          3,
+          3
+        ],
+        "support_centerline_visible_pixels": 19,
+        "support_centerline_total_pixels": 19,
+        "shade_whole_source_match": {
+          "mismatches": 0,
+          "opaque": 129
+        },
+        "layer_visibility": {
+          "surface_decor_front": {
+            "changed": 155,
+            "covered_by_host": 0,
+            "source_opaque": 155
+          },
+          "surface_decor_rear": {
+            "changed": 217,
+            "covered_by_host": 0,
+            "source_opaque": 217
+          }
+        },
+        "actor_overlay_intersection": {
+          "surface_decor_front": 0,
+          "surface_decor_rear": 0,
+          "total": 0
+        },
+        "render_descriptors": [
+          {
+            "art": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/north-surface_decor_rear.png",
+            "name": "DeskLampKitSurfaceDecorRear",
+            "offset": [
+              0,
+              -48
+            ],
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "z_offset": 2
+          },
+          {
+            "art": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/north-surface_decor_front.png",
+            "name": "DeskLampKitSurfaceDecorFront",
+            "offset": [
+              0,
+              -48
+            ],
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "z_offset": 4
+          }
+        ],
+        "checks": 67,
+        "failures": 0,
+        "worker_disabled": true,
+        "save_access": false,
+        "runtime_candidate_injected": false
+      }
+    },
+    {
+      "facing": "east",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/east-whole.png",
+      "evidence_path": "game/tests/output/desk-lamp-kit-v2/actual-room-actor-contact-sheet-native.png",
+      "source_reference_path": "game/tools/passive_lighting_entry_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        0,
+        0
+      ],
+      "proposed_occupied_cell_offsets": [],
+      "employee_look_vector": [
+        1,
+        0
+      ],
+      "proposed_interaction_cell": null,
+      "seated_pose_needed": false,
+      "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_exports": [],
+      "production_status": null,
+      "preview_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/east-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/east-whole.png",
+      "review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+      "review_paths": [
+        "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md"
+      ],
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/manifest.json",
+        "game/tests/output/desk-lamp-kit-v2/structural-results.json",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-results.json",
+        "game/tests/output/desk-lamp-kit-v2/candidate-contact-sheet-native.png",
+        "game/tests/output/desk-lamp-kit-v2/candidate-contact-sheet-4x.png",
+        "game/tests/output/desk-lamp-kit-v2/candidate-layers-native.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-host-baseline-native.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-lamp-contact-sheet-native.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-actor-contact-sheet-native.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-actor-contact-sheet-4x.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-gamemain-contact-sheet-native.png"
+      ],
+      "native_exports": [
+        {
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "decoded_rgba_sha256": "4fa8516768355f6e44b5304a06e4b8a29e40c9229d4dc6a3a537107bf7bc79ed",
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "hidden_rgb_pixels": 0,
+          "layer": "surface_decor_rear",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/manifest.json",
+          "method": "Exact deterministic code-native east/surface_decor_rear layer; fixed screen light and no finished-raster transform.",
+          "opaque_bounds_px": [
+            95,
+            151,
+            13,
+            16
+          ],
+          "opaque_pixels": 127,
+          "partial_alpha_pixels": 0,
+          "path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/east-surface_decor_rear.png",
+          "render_descriptor": {
+            "art": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/east-surface_decor_rear.png",
+            "name": "DeskLampKitSurfaceDecorRear",
+            "offset": [
+              0,
+              -48
+            ],
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "z_offset": 2
+          },
+          "review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "sha256": "4903c80f1cfe92c3c1836f961af5963780b0fb4570ab32fed3744f6f1c72f383",
+          "source_layer": "DeskLampKitSurfaceDecorRear",
+          "source_path": "game/tools/passive_lighting_entry_geometry.gd",
+          "used_colors": 4,
+          "verify_decoded_facts": true,
+          "z_offset": 2
+        },
+        {
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "decoded_rgba_sha256": "1992ed2827303090b39f7fc511c104a0cdc50fab5935415230e44a7c27a12d9e",
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "hidden_rgb_pixels": 0,
+          "layer": "surface_decor_front",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/manifest.json",
+          "method": "Exact deterministic code-native east/surface_decor_front layer; fixed screen light and no finished-raster transform.",
+          "opaque_bounds_px": [
+            91,
+            161,
+            20,
+            8
+          ],
+          "opaque_pixels": 128,
+          "partial_alpha_pixels": 0,
+          "path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/east-surface_decor_front.png",
+          "render_descriptor": {
+            "art": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/east-surface_decor_front.png",
+            "name": "DeskLampKitSurfaceDecorFront",
+            "offset": [
+              0,
+              -48
+            ],
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "z_offset": 4
+          },
+          "review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "sha256": "a8acefe6b1cf5bc7a1fad7a28d658315cb2f5337afb053fd943a7e81a60b0426",
+          "source_layer": "DeskLampKitSurfaceDecorFront",
+          "source_path": "game/tools/passive_lighting_entry_geometry.gd",
+          "used_colors": 5,
+          "verify_decoded_facts": true,
+          "z_offset": 4
+        }
+      ],
+      "composite_exports": [
+        {
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "decoded_rgba_sha256": "50720938b446f0939bae55bab7e6a0f30e50c55e12c902fc200805af34ab1f59",
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "hidden_rgb_pixels": 0,
+          "manifest_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/manifest.json",
+          "method": "Byte-exact ordered native-layer union for review only; no approval or runtime installation.",
+          "opaque_bounds_px": [
+            91,
+            151,
+            20,
+            18
+          ],
+          "opaque_pixels": 189,
+          "partial_alpha_pixels": 0,
+          "path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/east-whole.png",
+          "review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "sha256": "e20bdde0f78f2e3f2f9238e0ebab2ed0432375b380b967eff7c0c6a33351d08a",
+          "source_path": "game/tools/passive_lighting_entry_geometry.gd",
+          "used_colors": 7,
+          "verify_decoded_facts": true
+        }
+      ],
+      "export_method": "Original editable code-native RGBA east screen-axis construction on the common canvas/pivot; no provider, generated raster, loaded source, finished-bitmap rotation, mirroring, flipping, scaling or resampling.",
+      "reason": "Approved passive-art-library desk-lamp-kit-v2 east view. Export 112/0, shared structural 412/0 and isolated actual GameMain 67/0 pass; accepted workstation collision remains 3→3, both overlays contribute visibly, and the complete shade/support region matches source with zero mismatches. Approval is art-library only; runtime/default placement and powered interaction remain absent.",
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 2,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "note": "Main-agent bounded passive-art review passes the corrected v2 at mean 2.67/minimum 2. North/South are immediately readable and the subtler side silhouettes remain coherent. Exact +2/+4 overlays preserve the full shade/support assembly above the accepted desk while clearing all production computer parts.",
+        "acceptance_scope": "passive_art_library_only",
+        "review_date": "2026-09-06",
+        "image_generation_used": false
+      },
+      "actual_game_main": {
+        "scene": "actual GameMain / production TownRoom with accepted workstation and manually attached exact candidate overlays",
+        "viewport_px": [
+          1280,
+          720
+        ],
+        "host_grid": [
+          10,
+          8
+        ],
+        "host_asset_revision": "workstations-v2",
+        "workstation_capability_revision": "workstations-v2:east",
+        "work_position_px": [
+          304,
+          272
+        ],
+        "collision_shapes_before_after": [
+          3,
+          3
+        ],
+        "support_centerline_visible_pixels": 10,
+        "support_centerline_total_pixels": 10,
+        "shade_whole_source_match": {
+          "mismatches": 0,
+          "opaque": 136
+        },
+        "layer_visibility": {
+          "surface_decor_front": {
+            "changed": 128,
+            "covered_by_host": 0,
+            "source_opaque": 128
+          },
+          "surface_decor_rear": {
+            "changed": 127,
+            "covered_by_host": 0,
+            "source_opaque": 127
+          }
+        },
+        "actor_overlay_intersection": {
+          "surface_decor_front": 2,
+          "surface_decor_rear": 0,
+          "total": 2
+        },
+        "render_descriptors": [
+          {
+            "art": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/east-surface_decor_rear.png",
+            "name": "DeskLampKitSurfaceDecorRear",
+            "offset": [
+              0,
+              -48
+            ],
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "z_offset": 2
+          },
+          {
+            "art": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/east-surface_decor_front.png",
+            "name": "DeskLampKitSurfaceDecorFront",
+            "offset": [
+              0,
+              -48
+            ],
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "z_offset": 4
+          }
+        ],
+        "checks": 67,
+        "failures": 0,
+        "worker_disabled": true,
+        "save_access": false,
+        "runtime_candidate_injected": false
+      }
+    },
+    {
+      "facing": "south",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/south-whole.png",
+      "evidence_path": "game/tests/output/desk-lamp-kit-v2/actual-room-actor-contact-sheet-native.png",
+      "source_reference_path": "game/tools/passive_lighting_entry_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        0,
+        0
+      ],
+      "proposed_occupied_cell_offsets": [],
+      "employee_look_vector": [
+        0,
+        1
+      ],
+      "proposed_interaction_cell": null,
+      "seated_pose_needed": false,
+      "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_exports": [],
+      "production_status": null,
+      "preview_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/south-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/south-whole.png",
+      "review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+      "review_paths": [
+        "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md"
+      ],
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/manifest.json",
+        "game/tests/output/desk-lamp-kit-v2/structural-results.json",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-results.json",
+        "game/tests/output/desk-lamp-kit-v2/candidate-contact-sheet-native.png",
+        "game/tests/output/desk-lamp-kit-v2/candidate-contact-sheet-4x.png",
+        "game/tests/output/desk-lamp-kit-v2/candidate-layers-native.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-host-baseline-native.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-lamp-contact-sheet-native.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-actor-contact-sheet-native.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-actor-contact-sheet-4x.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-gamemain-contact-sheet-native.png"
+      ],
+      "native_exports": [
+        {
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "decoded_rgba_sha256": "88464c64928744b5468eca9dc5f9d1e1e6a6f941ee6f1fcddab37520da50db0a",
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "hidden_rgb_pixels": 0,
+          "layer": "surface_decor_rear",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/manifest.json",
+          "method": "Exact deterministic code-native south/surface_decor_rear layer; fixed screen light and no finished-raster transform.",
+          "opaque_bounds_px": [
+            118,
+            113,
+            19,
+            24
+          ],
+          "opaque_pixels": 207,
+          "partial_alpha_pixels": 0,
+          "path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/south-surface_decor_rear.png",
+          "render_descriptor": {
+            "art": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/south-surface_decor_rear.png",
+            "name": "DeskLampKitSurfaceDecorRear",
+            "offset": [
+              0,
+              -48
+            ],
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "z_offset": 2
+          },
+          "review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "sha256": "28357f06ab4ffe2f5bd7e596a1cec69e7d8fe87b0acb55eee0af7b8b37bf7c2c",
+          "source_layer": "DeskLampKitSurfaceDecorRear",
+          "source_path": "game/tools/passive_lighting_entry_geometry.gd",
+          "used_colors": 6,
+          "verify_decoded_facts": true,
+          "z_offset": 2
+        },
+        {
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "decoded_rgba_sha256": "e7ec0932cef271543bde473a954960135ff91d921358d4ae39c0dd5f8e3278ff",
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "hidden_rgb_pixels": 0,
+          "layer": "surface_decor_front",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/manifest.json",
+          "method": "Exact deterministic code-native south/surface_decor_front layer; fixed screen light and no finished-raster transform.",
+          "opaque_bounds_px": [
+            120,
+            124,
+            22,
+            17
+          ],
+          "opaque_pixels": 158,
+          "partial_alpha_pixels": 0,
+          "path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/south-surface_decor_front.png",
+          "render_descriptor": {
+            "art": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/south-surface_decor_front.png",
+            "name": "DeskLampKitSurfaceDecorFront",
+            "offset": [
+              0,
+              -48
+            ],
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "z_offset": 4
+          },
+          "review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "sha256": "6756842251b8c1e5e305765733456deae9443238d2875378bb477775b6110245",
+          "source_layer": "DeskLampKitSurfaceDecorFront",
+          "source_path": "game/tools/passive_lighting_entry_geometry.gd",
+          "used_colors": 5,
+          "verify_decoded_facts": true,
+          "z_offset": 4
+        }
+      ],
+      "composite_exports": [
+        {
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "decoded_rgba_sha256": "de91fe16114939bc341736d632e6a5ea181bed3aab28f306287bde524602bd4f",
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "hidden_rgb_pixels": 0,
+          "manifest_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/manifest.json",
+          "method": "Byte-exact ordered native-layer union for review only; no approval or runtime installation.",
+          "opaque_bounds_px": [
+            118,
+            113,
+            24,
+            28
+          ],
+          "opaque_pixels": 319,
+          "partial_alpha_pixels": 0,
+          "path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/south-whole.png",
+          "review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "sha256": "81b6588fd6a4e3e408e333d163c44a9a3ac7a052d7463113b4a4af887d374c1c",
+          "source_path": "game/tools/passive_lighting_entry_geometry.gd",
+          "used_colors": 8,
+          "verify_decoded_facts": true
+        }
+      ],
+      "export_method": "Original editable code-native RGBA south screen-axis construction on the common canvas/pivot; no provider, generated raster, loaded source, finished-bitmap rotation, mirroring, flipping, scaling or resampling.",
+      "reason": "Approved passive-art-library desk-lamp-kit-v2 south view. Export 112/0, shared structural 412/0 and isolated actual GameMain 67/0 pass; accepted workstation collision remains 3→3, both overlays contribute visibly, and the complete shade/support region matches source with zero mismatches. Approval is art-library only; runtime/default placement and powered interaction remain absent.",
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 2,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "note": "Main-agent bounded passive-art review passes the corrected v2 at mean 2.67/minimum 2. North/South are immediately readable and the subtler side silhouettes remain coherent. Exact +2/+4 overlays preserve the full shade/support assembly above the accepted desk while clearing all production computer parts.",
+        "acceptance_scope": "passive_art_library_only",
+        "review_date": "2026-09-06",
+        "image_generation_used": false
+      },
+      "actual_game_main": {
+        "scene": "actual GameMain / production TownRoom with accepted workstation and manually attached exact candidate overlays",
+        "viewport_px": [
+          1280,
+          720
+        ],
+        "host_grid": [
+          10,
+          8
+        ],
+        "host_asset_revision": "workstations-v2",
+        "workstation_capability_revision": "workstations-v2:south",
+        "work_position_px": [
+          336,
+          240
+        ],
+        "collision_shapes_before_after": [
+          3,
+          3
+        ],
+        "support_centerline_visible_pixels": 21,
+        "support_centerline_total_pixels": 21,
+        "shade_whole_source_match": {
+          "mismatches": 0,
+          "opaque": 129
+        },
+        "layer_visibility": {
+          "surface_decor_front": {
+            "changed": 158,
+            "covered_by_host": 0,
+            "source_opaque": 158
+          },
+          "surface_decor_rear": {
+            "changed": 207,
+            "covered_by_host": 0,
+            "source_opaque": 207
+          }
+        },
+        "actor_overlay_intersection": {
+          "surface_decor_front": 0,
+          "surface_decor_rear": 0,
+          "total": 0
+        },
+        "render_descriptors": [
+          {
+            "art": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/south-surface_decor_rear.png",
+            "name": "DeskLampKitSurfaceDecorRear",
+            "offset": [
+              0,
+              -48
+            ],
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "z_offset": 2
+          },
+          {
+            "art": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/south-surface_decor_front.png",
+            "name": "DeskLampKitSurfaceDecorFront",
+            "offset": [
+              0,
+              -48
+            ],
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "z_offset": 4
+          }
+        ],
+        "checks": 67,
+        "failures": 0,
+        "worker_disabled": true,
+        "save_access": false,
+        "runtime_candidate_injected": false
+      }
+    },
+    {
+      "facing": "west",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/west-whole.png",
+      "evidence_path": "game/tests/output/desk-lamp-kit-v2/actual-room-actor-contact-sheet-native.png",
+      "source_reference_path": "game/tools/passive_lighting_entry_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        0,
+        0
+      ],
+      "proposed_occupied_cell_offsets": [],
+      "employee_look_vector": [
+        -1,
+        0
+      ],
+      "proposed_interaction_cell": null,
+      "seated_pose_needed": false,
+      "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_exports": [],
+      "production_status": null,
+      "preview_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/west-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/west-whole.png",
+      "review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+      "review_paths": [
+        "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md"
+      ],
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/manifest.json",
+        "game/tests/output/desk-lamp-kit-v2/structural-results.json",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-results.json",
+        "game/tests/output/desk-lamp-kit-v2/candidate-contact-sheet-native.png",
+        "game/tests/output/desk-lamp-kit-v2/candidate-contact-sheet-4x.png",
+        "game/tests/output/desk-lamp-kit-v2/candidate-layers-native.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-host-baseline-native.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-lamp-contact-sheet-native.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-actor-contact-sheet-native.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-room-actor-contact-sheet-4x.png",
+        "game/tests/output/desk-lamp-kit-v2/actual-gamemain-contact-sheet-native.png"
+      ],
+      "native_exports": [
+        {
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "decoded_rgba_sha256": "7cae2256f3006080c78583d436101235e45339cc88aee7de126da303308be5de",
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "hidden_rgb_pixels": 0,
+          "layer": "surface_decor_rear",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/manifest.json",
+          "method": "Exact deterministic code-native west/surface_decor_rear layer; fixed screen light and no finished-raster transform.",
+          "opaque_bounds_px": [
+            82,
+            87,
+            14,
+            21
+          ],
+          "opaque_pixels": 140,
+          "partial_alpha_pixels": 0,
+          "path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/west-surface_decor_rear.png",
+          "render_descriptor": {
+            "art": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/west-surface_decor_rear.png",
+            "name": "DeskLampKitSurfaceDecorRear",
+            "offset": [
+              0,
+              -48
+            ],
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "z_offset": 2
+          },
+          "review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "sha256": "00ca738ba4be0c4fd4627d0d9a75e90913c5f88c45ed44ff92774f2ee97b3b1f",
+          "source_layer": "DeskLampKitSurfaceDecorRear",
+          "source_path": "game/tools/passive_lighting_entry_geometry.gd",
+          "used_colors": 6,
+          "verify_decoded_facts": true,
+          "z_offset": 2
+        },
+        {
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "decoded_rgba_sha256": "7e4e1489069ff1fd856ae9c3658985b3445281b6f5f2118bfac519cdb7a84c05",
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "hidden_rgb_pixels": 0,
+          "layer": "surface_decor_front",
+          "manifest_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/manifest.json",
+          "method": "Exact deterministic code-native west/surface_decor_front layer; fixed screen light and no finished-raster transform.",
+          "opaque_bounds_px": [
+            81,
+            87,
+            20,
+            19
+          ],
+          "opaque_pixels": 149,
+          "partial_alpha_pixels": 0,
+          "path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/west-surface_decor_front.png",
+          "render_descriptor": {
+            "art": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/west-surface_decor_front.png",
+            "name": "DeskLampKitSurfaceDecorFront",
+            "offset": [
+              0,
+              -48
+            ],
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "z_offset": 4
+          },
+          "review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "sha256": "423719f2042c28eca3d32d29e995f3590ae3e613f9d06ff820bddabc26cd628d",
+          "source_layer": "DeskLampKitSurfaceDecorFront",
+          "source_path": "game/tools/passive_lighting_entry_geometry.gd",
+          "used_colors": 5,
+          "verify_decoded_facts": true,
+          "z_offset": 4
+        }
+      ],
+      "composite_exports": [
+        {
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "decoded_rgba_sha256": "85369ae1dc2c4f6be4be4e00d8d6e7a9e0e5fd85ab044f868cf988b592e99f4e",
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "hidden_rgb_pixels": 0,
+          "manifest_path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/manifest.json",
+          "method": "Byte-exact ordered native-layer union for review only; no approval or runtime installation.",
+          "opaque_bounds_px": [
+            81,
+            87,
+            20,
+            21
+          ],
+          "opaque_pixels": 233,
+          "partial_alpha_pixels": 0,
+          "path": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/west-whole.png",
+          "review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "sha256": "7b5fcdb43bf23e2a939e4895db0edfb1d1714170415f09719663f2686840bb80",
+          "source_path": "game/tools/passive_lighting_entry_geometry.gd",
+          "used_colors": 8,
+          "verify_decoded_facts": true
+        }
+      ],
+      "export_method": "Original editable code-native RGBA west screen-axis construction on the common canvas/pivot; no provider, generated raster, loaded source, finished-bitmap rotation, mirroring, flipping, scaling or resampling.",
+      "reason": "Approved passive-art-library desk-lamp-kit-v2 west view. Export 112/0, shared structural 412/0 and isolated actual GameMain 67/0 pass; accepted workstation collision remains 3→3, both overlays contribute visibly, and the complete shade/support region matches source with zero mismatches. Approval is art-library only; runtime/default placement and powered interaction remain absent.",
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 2,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "note": "Main-agent bounded passive-art review passes the corrected v2 at mean 2.67/minimum 2. North/South are immediately readable and the subtler side silhouettes remain coherent. Exact +2/+4 overlays preserve the full shade/support assembly above the accepted desk while clearing all production computer parts.",
+        "acceptance_scope": "passive_art_library_only",
+        "review_date": "2026-09-06",
+        "image_generation_used": false
+      },
+      "actual_game_main": {
+        "scene": "actual GameMain / production TownRoom with accepted workstation and manually attached exact candidate overlays",
+        "viewport_px": [
+          1280,
+          720
+        ],
+        "host_grid": [
+          10,
+          8
+        ],
+        "host_asset_revision": "workstations-v2",
+        "workstation_capability_revision": "workstations-v2:west",
+        "work_position_px": [
+          368,
+          272
+        ],
+        "collision_shapes_before_after": [
+          3,
+          3
+        ],
+        "support_centerline_visible_pixels": 14,
+        "support_centerline_total_pixels": 14,
+        "shade_whole_source_match": {
+          "mismatches": 0,
+          "opaque": 92
+        },
+        "layer_visibility": {
+          "surface_decor_front": {
+            "changed": 149,
+            "covered_by_host": 0,
+            "source_opaque": 149
+          },
+          "surface_decor_rear": {
+            "changed": 140,
+            "covered_by_host": 0,
+            "source_opaque": 140
+          }
+        },
+        "actor_overlay_intersection": {
+          "surface_decor_front": 0,
+          "surface_decor_rear": 0,
+          "total": 0
+        },
+        "render_descriptors": [
+          {
+            "art": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/west-surface_decor_rear.png",
+            "name": "DeskLampKitSurfaceDecorRear",
+            "offset": [
+              0,
+              -48
+            ],
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "z_offset": 2
+          },
+          {
+            "art": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/west-surface_decor_front.png",
+            "name": "DeskLampKitSurfaceDecorFront",
+            "offset": [
+              0,
+              -48
+            ],
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "z_offset": 4
+          }
+        ],
+        "checks": 67,
+        "failures": 0,
+        "worker_disabled": true,
+        "save_access": false,
+        "runtime_candidate_injected": false
+      }
+    }
+  ],
+  "art_library_approval": {
+    "scope": "passive_art_library",
+    "review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+    "acceptance_date": "2026-09-06",
+    "runtime_admission": false,
+    "revision": "desk-lamp-kit-v2",
+    "source_catalogue_sha256": "4b3d400e50b3c26f02fe8c1c7f0988b36588f442847a3c40ae4efbf73b77019d",
+    "main_agent_visual_scores": {
+      "pixel_coherence": 3,
+      "perspective": 2,
+      "silhouette_readability": 2,
+      "layering_anchors": 3,
+      "direction_consistency": 3,
+      "placement": 3
+    }
+  },
+  "candidate_completion": {
+    "status": "passive_art_library_approved_not_runtime",
+    "validated": [
+      "four independently authored N/E/S/W screen-axis views",
+      "binary alpha, zero hidden RGB, integer common canvas/pivot and exact ordered-layer reconstruction",
+      "actual GameMain native 1280x720 placement, collision/navigation and depth evidence",
+      "main-agent native and 4x visual review above the 2.5 mean / 2 minimum threshold"
+    ],
+    "remaining": [
+      "any future production runtime registration and default-layout decision",
+      "any powered light state, interaction, service or actor behavior",
+      "the optional ambient overlay, which remains planned and absent"
+    ],
+    "passive_art_library_approval": true,
+    "production_runtime_acceptance_claim": false,
+    "runtime_registration_claim": false,
+    "image_generation_used": false,
+    "native_visual_mean_score": 2.67,
+    "native_visual_minimum_score": 2,
+    "review_date": "2026-09-06",
+    "source_catalogue_sha256": "4b3d400e50b3c26f02fe8c1c7f0988b36588f442847a3c40ae4efbf73b77019d"
+  },
+  "current_runtime_registration": null,
+  "runtime_art_path": null,
+  "runtime_exports": []
+}

@@ -1,0 +1,5 @@
+Use case: background-extraction
+Edit target: provided north-facing pixel-art chair.
+Change ONLY the background into genuine transparency. The gray-white checkerboard around the chair is currently painted opaque RGB and must be removed into alpha=0. Also make the empty gaps between arm posts, support stem and caster legs genuinely transparent. Keep every actual charcoal, gray and indigo chair pixel, including blue fabric texture, visible and unchanged.
+Preserve exactly: chair geometry, tall slender proportions, rear/back orientation, frame width, seat/backrest/arms, support post, caster placements, colors, pixel clusters, canvas composition and upper-left lighting. Do not redesign, rotate, mirror, warp, rescale or add/drop chair parts.
+Output a clean cutout PNG with actual RGBA alpha. Outside-chair pixels and empty gaps have alpha0; no checkerboard drawn into the output, no white matte, no black fill, no floor, no cast shadow, no labels. Retain indigo fabric pattern because it is chair material, not the background. This is a background extraction only.

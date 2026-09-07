@@ -1,0 +1,2 @@
+Use case: background-extraction
+Image1 is the edit target: a narrow, correctly projected EAST-facing desk. Remove ONLY its painted white/gray checkerboard to genuine transparent alpha, including the opening between its legs. Keep the EXACT long tabletop proportions, all edges, cable tray on the right, leg length, native pixel geometry, wood grain and upper-left light. Do not reframe, widen, shorten, taper or redraw the desk. No new shadows, floor, objects, text or background. Output transparent PNG, not a checkerboard picture.

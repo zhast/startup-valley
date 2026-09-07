@@ -1,0 +1,3 @@
+# North computer kit — alpha extraction only
+
+Edit the attached computer toolkit. Remove the painted pale gray and white checkerboard everywhere, including gaps between the monitor, stand, keyboard and mouse. Return those exact objects cut out on GENUINE transparent alpha. Checkerboard squares must not be drawn into the image. No white or black background, no halos, no floor, no new shadow. Preserve every object's layout, proportions, screen symbols, upper-left lighting, pixel edges, keyboard keys and relative size. Do not add a desk or character. This is background extraction only, not redesign. Keep complete objects with generous transparent padding. Output PNG with an actual alpha channel.

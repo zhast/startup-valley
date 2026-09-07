@@ -1,0 +1,320 @@
+{
+	"actor_overlay_occlusion_policy": "Measured honestly and allowed to remain zero: these passive edge tools correctly clear both actors. Acceptance requires exact work-point contact plus visible ordered rear/front host contribution, not manufactured pixel intersection.",
+	"actor_overlay_occlusion_totals": {
+		"mira": 0,
+		"theo": 0
+	},
+	"actor_presentation": "Mina and Theo use only their existing accepted directional seated typing presentations at authored desk work points as scale/contact/gaze/occlusion proxies.",
+	"candidate_revision_registered": false,
+	"canvas": [
+		192,
+		224
+	],
+	"captures": [
+		"res://tests/output/creative-design-kit/room-north.png",
+		"res://tests/output/creative-design-kit/detail-north-mira-native.png",
+		"res://tests/output/creative-design-kit/detail-north-theo-native.png",
+		"res://tests/output/creative-design-kit/detail-north-mira-unoccupied-native.png",
+		"res://tests/output/creative-design-kit/detail-north-theo-unoccupied-native.png",
+		"res://tests/output/creative-design-kit/room-east.png",
+		"res://tests/output/creative-design-kit/detail-east-mira-native.png",
+		"res://tests/output/creative-design-kit/detail-east-theo-native.png",
+		"res://tests/output/creative-design-kit/detail-east-mira-unoccupied-native.png",
+		"res://tests/output/creative-design-kit/detail-east-theo-unoccupied-native.png",
+		"res://tests/output/creative-design-kit/room-south.png",
+		"res://tests/output/creative-design-kit/detail-south-mira-native.png",
+		"res://tests/output/creative-design-kit/detail-south-theo-native.png",
+		"res://tests/output/creative-design-kit/detail-south-mira-unoccupied-native.png",
+		"res://tests/output/creative-design-kit/detail-south-theo-unoccupied-native.png",
+		"res://tests/output/creative-design-kit/room-west.png",
+		"res://tests/output/creative-design-kit/detail-west-mira-native.png",
+		"res://tests/output/creative-design-kit/detail-west-theo-native.png",
+		"res://tests/output/creative-design-kit/detail-west-mira-unoccupied-native.png",
+		"res://tests/output/creative-design-kit/detail-west-theo-unoccupied-native.png",
+		"res://tests/output/creative-design-kit/actual-room-contact-sheet-native.png",
+		"res://tests/output/creative-design-kit/actual-room-unoccupied-contact-sheet-native.png",
+		"res://tests/output/creative-design-kit/actual-room-contact-sheet-4x.png",
+		"res://tests/output/creative-design-kit/actual-room-full-panels-native.png"
+	],
+	"checks": 168,
+	"creative_employee_present": false,
+	"creative_role_or_backend_claimed": false,
+	"default_layout_mutated": false,
+	"default_layout_sha256": "820d4e7cfe206d8f7543ab421c437de2a5037299f707e5602f6a6faf299078eb",
+	"dev_catalogue_family": "creative_design_kit",
+	"dev_catalogue_mutated": false,
+	"dev_catalogue_sha256": "ff924c58ad887510b35f482b80b5bff74c1ddfff2753f4baf369a60c21eff42b",
+	"facings": [
+		"north",
+		"east",
+		"south",
+		"west"
+	],
+	"failures": [],
+	"image_generation_used": false,
+	"observations": {
+		"east": {
+			"mira": {
+				"actor_overlay_occlusion": {
+					"surface_decor_front": 0,
+					"surface_decor_rear": 0
+				},
+				"actor_pixel_delta": 900,
+				"collision_shapes": 3,
+				"desk_asset_revision": "workstations-v2",
+				"layer_visibility": {
+					"surface_decor_front": {
+						"changed": 256,
+						"covered_by_existing_workstation_or_actor": 0,
+						"source_opaque": 256
+					},
+					"surface_decor_rear": {
+						"changed": 372,
+						"covered_by_existing_workstation_or_actor": 0,
+						"source_opaque": 372
+					}
+				},
+				"layer_z": {
+					"front": 275,
+					"rear": 272
+				},
+				"work_position_px": [
+					304.0,
+					272.0
+				],
+				"workstation_capability_revision": "workstations-v2:east"
+			},
+			"theo": {
+				"actor_overlay_occlusion": {
+					"surface_decor_front": 0,
+					"surface_decor_rear": 0
+				},
+				"actor_pixel_delta": 897,
+				"collision_shapes": 3,
+				"desk_asset_revision": "workstations-v2",
+				"layer_visibility": {
+					"surface_decor_front": {
+						"changed": 256,
+						"covered_by_existing_workstation_or_actor": 0,
+						"source_opaque": 256
+					},
+					"surface_decor_rear": {
+						"changed": 372,
+						"covered_by_existing_workstation_or_actor": 0,
+						"source_opaque": 372
+					}
+				},
+				"layer_z": {
+					"front": 275,
+					"rear": 272
+				},
+				"work_position_px": [
+					624.0,
+					272.0
+				],
+				"workstation_capability_revision": "workstations-v2:east"
+			}
+		},
+		"north": {
+			"mira": {
+				"actor_overlay_occlusion": {
+					"surface_decor_front": 0,
+					"surface_decor_rear": 0
+				},
+				"actor_pixel_delta": 1603,
+				"collision_shapes": 3,
+				"desk_asset_revision": "workstations-v2",
+				"layer_visibility": {
+					"surface_decor_front": {
+						"changed": 576,
+						"covered_by_existing_workstation_or_actor": 0,
+						"source_opaque": 576
+					},
+					"surface_decor_rear": {
+						"changed": 144,
+						"covered_by_existing_workstation_or_actor": 0,
+						"source_opaque": 144
+					}
+				},
+				"layer_z": {
+					"front": 274,
+					"rear": 272
+				},
+				"work_position_px": [
+					336.0,
+					304.0
+				],
+				"workstation_capability_revision": "workstations-v2:north"
+			},
+			"theo": {
+				"actor_overlay_occlusion": {
+					"surface_decor_front": 0,
+					"surface_decor_rear": 0
+				},
+				"actor_pixel_delta": 1773,
+				"collision_shapes": 3,
+				"desk_asset_revision": "workstations-v2",
+				"layer_visibility": {
+					"surface_decor_front": {
+						"changed": 576,
+						"covered_by_existing_workstation_or_actor": 0,
+						"source_opaque": 576
+					},
+					"surface_decor_rear": {
+						"changed": 144,
+						"covered_by_existing_workstation_or_actor": 0,
+						"source_opaque": 144
+					}
+				},
+				"layer_z": {
+					"front": 274,
+					"rear": 272
+				},
+				"work_position_px": [
+					656.0,
+					304.0
+				],
+				"workstation_capability_revision": "workstations-v2:north"
+			}
+		},
+		"south": {
+			"mira": {
+				"actor_overlay_occlusion": {
+					"surface_decor_front": 0,
+					"surface_decor_rear": 0
+				},
+				"actor_pixel_delta": 856,
+				"collision_shapes": 3,
+				"desk_asset_revision": "workstations-v2",
+				"layer_visibility": {
+					"surface_decor_front": {
+						"changed": 154,
+						"covered_by_existing_workstation_or_actor": 0,
+						"source_opaque": 154
+					},
+					"surface_decor_rear": {
+						"changed": 576,
+						"covered_by_existing_workstation_or_actor": 0,
+						"source_opaque": 576
+					}
+				},
+				"layer_z": {
+					"front": 276,
+					"rear": 274
+				},
+				"work_position_px": [
+					336.0,
+					240.0
+				],
+				"workstation_capability_revision": "workstations-v2:south"
+			},
+			"theo": {
+				"actor_overlay_occlusion": {
+					"surface_decor_front": 0,
+					"surface_decor_rear": 0
+				},
+				"actor_pixel_delta": 902,
+				"collision_shapes": 3,
+				"desk_asset_revision": "workstations-v2",
+				"layer_visibility": {
+					"surface_decor_front": {
+						"changed": 154,
+						"covered_by_existing_workstation_or_actor": 0,
+						"source_opaque": 154
+					},
+					"surface_decor_rear": {
+						"changed": 576,
+						"covered_by_existing_workstation_or_actor": 0,
+						"source_opaque": 576
+					}
+				},
+				"layer_z": {
+					"front": 276,
+					"rear": 274
+				},
+				"work_position_px": [
+					656.0,
+					240.0
+				],
+				"workstation_capability_revision": "workstations-v2:south"
+			}
+		},
+		"west": {
+			"mira": {
+				"actor_overlay_occlusion": {
+					"surface_decor_front": 0,
+					"surface_decor_rear": 0
+				},
+				"actor_pixel_delta": 875,
+				"collision_shapes": 3,
+				"desk_asset_revision": "workstations-v2",
+				"layer_visibility": {
+					"surface_decor_front": {
+						"changed": 366,
+						"covered_by_existing_workstation_or_actor": 0,
+						"source_opaque": 366
+					},
+					"surface_decor_rear": {
+						"changed": 251,
+						"covered_by_existing_workstation_or_actor": 15,
+						"source_opaque": 266
+					}
+				},
+				"layer_z": {
+					"front": 275,
+					"rear": 272
+				},
+				"work_position_px": [
+					368.0,
+					272.0
+				],
+				"workstation_capability_revision": "workstations-v2:west"
+			},
+			"theo": {
+				"actor_overlay_occlusion": {
+					"surface_decor_front": 0,
+					"surface_decor_rear": 0
+				},
+				"actor_pixel_delta": 811,
+				"collision_shapes": 3,
+				"desk_asset_revision": "workstations-v2",
+				"layer_visibility": {
+					"surface_decor_front": {
+						"changed": 366,
+						"covered_by_existing_workstation_or_actor": 0,
+						"source_opaque": 366
+					},
+					"surface_decor_rear": {
+						"changed": 251,
+						"covered_by_existing_workstation_or_actor": 15,
+						"source_opaque": 266
+					}
+				},
+				"layer_z": {
+					"front": 275,
+					"rear": 272
+				},
+				"work_position_px": [
+					688.0,
+					272.0
+				],
+				"workstation_capability_revision": "workstations-v2:west"
+			}
+		}
+	},
+	"pivot": [
+		96,
+		160
+	],
+	"preserved_initial_failure": "The first native run recorded 154 checks and two failures because an overly strong assertion required nonzero direct actor/overlay pixel intersection for both proxies. Geometry and all other assertions passed; visual review found the zero intersection physically correct, so art was not moved to satisfy a counter.",
+	"preserved_initial_failure_path": "res://tests/output/creative-design-kit/actual-room-results-initial-failure.json",
+	"production_catalog_mutated": false,
+	"production_catalog_sha256": "36f81e5d20ee0894e66657bcfcdb275c69266bd48116f3d324c8df37f484b883",
+	"production_catalogue_registered": false,
+	"renderer": "macOS",
+	"runtime_registered": false,
+	"save_access": false,
+	"scene": "actual GameMain and production TownRoom; fixture-only two-layer creative overlays on mira-workstation and theo-workstation",
+	"status": "native_review_candidate_not_runtime_registered",
+	"worker_disabled": true
+}

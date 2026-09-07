@@ -1,0 +1,1390 @@
+{
+	"captures": [
+		"north-frame0.png",
+		"north-mira-frame0-4x.png",
+		"north-theo-frame0-4x.png",
+		"north-frame1.png",
+		"north-mira-frame1-4x.png",
+		"north-theo-frame1-4x.png",
+		"north-frame2.png",
+		"north-mira-frame2-4x.png",
+		"north-theo-frame2-4x.png",
+		"north-frame3.png",
+		"north-mira-frame3-4x.png",
+		"north-theo-frame3-4x.png",
+		"north-frame4.png",
+		"north-mira-frame4-4x.png",
+		"north-theo-frame4-4x.png",
+		"north-frame5.png",
+		"north-mira-frame5-4x.png",
+		"north-theo-frame5-4x.png",
+		"north-all-six-native.png",
+		"south-frame0.png",
+		"south-mira-frame0-4x.png",
+		"south-theo-frame0-4x.png",
+		"south-frame1.png",
+		"south-mira-frame1-4x.png",
+		"south-theo-frame1-4x.png",
+		"south-frame2.png",
+		"south-mira-frame2-4x.png",
+		"south-theo-frame2-4x.png",
+		"south-frame3.png",
+		"south-mira-frame3-4x.png",
+		"south-theo-frame3-4x.png",
+		"south-frame4.png",
+		"south-mira-frame4-4x.png",
+		"south-theo-frame4-4x.png",
+		"south-frame5.png",
+		"south-mira-frame5-4x.png",
+		"south-theo-frame5-4x.png",
+		"south-all-six-native.png",
+		"west-frame0.png",
+		"west-mira-frame0-4x.png",
+		"west-theo-frame0-4x.png",
+		"west-frame1.png",
+		"west-mira-frame1-4x.png",
+		"west-theo-frame1-4x.png",
+		"west-frame2.png",
+		"west-mira-frame2-4x.png",
+		"west-theo-frame2-4x.png",
+		"west-frame3.png",
+		"west-mira-frame3-4x.png",
+		"west-theo-frame3-4x.png",
+		"west-frame4.png",
+		"west-mira-frame4-4x.png",
+		"west-theo-frame4-4x.png",
+		"west-frame5.png",
+		"west-mira-frame5-4x.png",
+		"west-theo-frame5-4x.png",
+		"west-all-six-native.png"
+	],
+	"checks": 1196,
+	"clearance_corrected": true,
+	"corrections": {
+		"north_folder": [
+			0,
+			-4
+		],
+		"south_cup": [
+			0,
+			-1
+		],
+		"south_mouse_additional": [
+			0,
+			1
+		]
+	},
+	"directions": [
+		"north",
+		"south",
+		"west"
+	],
+	"east_available": false,
+	"failures": [],
+	"findings": [
+		{
+			"detail": "Transparent source padding retains invisible RGB. Alpha is binary, so this is normalization bookkeeping, not an opaque background or observed matte.",
+			"id": "north-binders-hidden-rgb",
+			"measurements": {
+				"hidden_rgb_pixels": 42571
+			},
+			"runtime_approval": false
+		},
+		{
+			"detail": "Transparent source padding retains invisible RGB. Alpha is binary, so this is normalization bookkeeping, not an opaque background or observed matte.",
+			"id": "north-folder-hidden-rgb",
+			"measurements": {
+				"hidden_rgb_pixels": 42558
+			},
+			"runtime_approval": false
+		},
+		{
+			"detail": "Transparent source padding retains invisible RGB. Alpha is binary, so this is normalization bookkeeping, not an opaque background or observed matte.",
+			"id": "north-pen_cup-hidden-rgb",
+			"measurements": {
+				"hidden_rgb_pixels": 42937
+			},
+			"runtime_approval": false
+		},
+		{
+			"detail": "Reclassified source has W-like checklist-top leaves and near binder spines, but outer tabs still point right, page marks stay screen-upright, pen order remains unproven, and binder is12x32 not12x30.",
+			"id": "west-identity",
+			"measurements": {},
+			"runtime_approval": false
+		},
+		{
+			"detail": "Role decoration projects onto actor source pixels; actual layered capture must distinguish intended occlusion from hand/face collision.",
+			"id": "west-mira-folder-actor-projection",
+			"measurements": {
+				"first_frame": 0,
+				"pixels": 36
+			},
+			"runtime_approval": false
+		},
+		{
+			"detail": "Role decoration projects onto actor source pixels; actual layered capture must distinguish intended occlusion from hand/face collision.",
+			"id": "west-theo-folder-actor-projection",
+			"measurements": {
+				"first_frame": 0,
+				"pixels": 84
+			},
+			"runtime_approval": false
+		}
+	],
+	"observations": [
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {},
+				"folder": {},
+				"pen_cup": {}
+			},
+			"depth": 292,
+			"direction": "north",
+			"employee": "mira",
+			"frame": 0,
+			"physical_position": [
+				336.0,
+				304.0
+			],
+			"render_offset": [
+				0.0,
+				-20.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				100
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {},
+				"folder": {},
+				"pen_cup": {}
+			},
+			"depth": 292,
+			"direction": "north",
+			"employee": "theo",
+			"frame": 0,
+			"physical_position": [
+				784.0,
+				304.0
+			],
+			"render_offset": [
+				0.0,
+				-16.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				104
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {},
+				"folder": {},
+				"pen_cup": {}
+			},
+			"depth": 292,
+			"direction": "north",
+			"employee": "mira",
+			"frame": 1,
+			"physical_position": [
+				336.0,
+				304.0
+			],
+			"render_offset": [
+				0.0,
+				-20.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				100
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {},
+				"folder": {},
+				"pen_cup": {}
+			},
+			"depth": 292,
+			"direction": "north",
+			"employee": "theo",
+			"frame": 1,
+			"physical_position": [
+				784.0,
+				304.0
+			],
+			"render_offset": [
+				0.0,
+				-16.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				104
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {},
+				"folder": {},
+				"pen_cup": {}
+			},
+			"depth": 292,
+			"direction": "north",
+			"employee": "mira",
+			"frame": 2,
+			"physical_position": [
+				336.0,
+				304.0
+			],
+			"render_offset": [
+				0.0,
+				-20.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				100
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {},
+				"folder": {},
+				"pen_cup": {}
+			},
+			"depth": 292,
+			"direction": "north",
+			"employee": "theo",
+			"frame": 2,
+			"physical_position": [
+				784.0,
+				304.0
+			],
+			"render_offset": [
+				0.0,
+				-16.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				104
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {},
+				"folder": {},
+				"pen_cup": {}
+			},
+			"depth": 292,
+			"direction": "north",
+			"employee": "mira",
+			"frame": 3,
+			"physical_position": [
+				336.0,
+				304.0
+			],
+			"render_offset": [
+				0.0,
+				-20.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				100
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {},
+				"folder": {},
+				"pen_cup": {}
+			},
+			"depth": 292,
+			"direction": "north",
+			"employee": "theo",
+			"frame": 3,
+			"physical_position": [
+				784.0,
+				304.0
+			],
+			"render_offset": [
+				0.0,
+				-16.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				104
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {},
+				"folder": {},
+				"pen_cup": {}
+			},
+			"depth": 292,
+			"direction": "north",
+			"employee": "mira",
+			"frame": 4,
+			"physical_position": [
+				336.0,
+				304.0
+			],
+			"render_offset": [
+				0.0,
+				-20.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				100
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {},
+				"folder": {},
+				"pen_cup": {}
+			},
+			"depth": 292,
+			"direction": "north",
+			"employee": "theo",
+			"frame": 4,
+			"physical_position": [
+				784.0,
+				304.0
+			],
+			"render_offset": [
+				0.0,
+				-16.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				104
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {},
+				"folder": {},
+				"pen_cup": {}
+			},
+			"depth": 292,
+			"direction": "north",
+			"employee": "mira",
+			"frame": 5,
+			"physical_position": [
+				336.0,
+				304.0
+			],
+			"render_offset": [
+				0.0,
+				-20.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				100
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {},
+				"folder": {},
+				"pen_cup": {}
+			},
+			"depth": 292,
+			"direction": "north",
+			"employee": "theo",
+			"frame": 5,
+			"physical_position": [
+				784.0,
+				304.0
+			],
+			"render_offset": [
+				0.0,
+				-16.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				104
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 0,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 275,
+			"direction": "south",
+			"employee": "mira",
+			"frame": 0,
+			"physical_position": [
+				336.0,
+				240.0
+			],
+			"render_offset": [
+				0.0,
+				12.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				68
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 0,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 275,
+			"direction": "south",
+			"employee": "theo",
+			"frame": 0,
+			"physical_position": [
+				784.0,
+				240.0
+			],
+			"render_offset": [
+				0.0,
+				12.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				68
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 0,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 275,
+			"direction": "south",
+			"employee": "mira",
+			"frame": 1,
+			"physical_position": [
+				336.0,
+				240.0
+			],
+			"render_offset": [
+				0.0,
+				12.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				68
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 0,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 275,
+			"direction": "south",
+			"employee": "theo",
+			"frame": 1,
+			"physical_position": [
+				784.0,
+				240.0
+			],
+			"render_offset": [
+				0.0,
+				12.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				68
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 0,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 275,
+			"direction": "south",
+			"employee": "mira",
+			"frame": 2,
+			"physical_position": [
+				336.0,
+				240.0
+			],
+			"render_offset": [
+				0.0,
+				12.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				68
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 0,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 275,
+			"direction": "south",
+			"employee": "theo",
+			"frame": 2,
+			"physical_position": [
+				784.0,
+				240.0
+			],
+			"render_offset": [
+				0.0,
+				12.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				68
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 0,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 275,
+			"direction": "south",
+			"employee": "mira",
+			"frame": 3,
+			"physical_position": [
+				336.0,
+				240.0
+			],
+			"render_offset": [
+				0.0,
+				12.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				68
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 0,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 275,
+			"direction": "south",
+			"employee": "theo",
+			"frame": 3,
+			"physical_position": [
+				784.0,
+				240.0
+			],
+			"render_offset": [
+				0.0,
+				12.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				68
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 0,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 275,
+			"direction": "south",
+			"employee": "mira",
+			"frame": 4,
+			"physical_position": [
+				336.0,
+				240.0
+			],
+			"render_offset": [
+				0.0,
+				12.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				68
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 0,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 275,
+			"direction": "south",
+			"employee": "theo",
+			"frame": 4,
+			"physical_position": [
+				784.0,
+				240.0
+			],
+			"render_offset": [
+				0.0,
+				12.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				68
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 0,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 275,
+			"direction": "south",
+			"employee": "mira",
+			"frame": 5,
+			"physical_position": [
+				336.0,
+				240.0
+			],
+			"render_offset": [
+				0.0,
+				12.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				68
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 0,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 0,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 275,
+			"direction": "south",
+			"employee": "theo",
+			"frame": 5,
+			"physical_position": [
+				784.0,
+				240.0
+			],
+			"render_offset": [
+				0.0,
+				12.0
+			],
+			"render_origin_on_192x224": [
+				72,
+				68
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 36,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 36,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 274,
+			"direction": "west",
+			"employee": "mira",
+			"frame": 0,
+			"physical_position": [
+				368.0,
+				272.0
+			],
+			"render_offset": [
+				-12.0,
+				4.0
+			],
+			"render_origin_on_192x224": [
+				92,
+				92
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 84,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 84,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 274,
+			"direction": "west",
+			"employee": "theo",
+			"frame": 0,
+			"physical_position": [
+				816.0,
+				272.0
+			],
+			"render_offset": [
+				-12.0,
+				8.0
+			],
+			"render_origin_on_192x224": [
+				92,
+				96
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 36,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 36,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 274,
+			"direction": "west",
+			"employee": "mira",
+			"frame": 1,
+			"physical_position": [
+				368.0,
+				272.0
+			],
+			"render_offset": [
+				-12.0,
+				4.0
+			],
+			"render_origin_on_192x224": [
+				92,
+				92
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 83,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 83,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 274,
+			"direction": "west",
+			"employee": "theo",
+			"frame": 1,
+			"physical_position": [
+				816.0,
+				272.0
+			],
+			"render_offset": [
+				-12.0,
+				8.0
+			],
+			"render_origin_on_192x224": [
+				92,
+				96
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 40,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 40,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 274,
+			"direction": "west",
+			"employee": "mira",
+			"frame": 2,
+			"physical_position": [
+				368.0,
+				272.0
+			],
+			"render_offset": [
+				-12.0,
+				4.0
+			],
+			"render_origin_on_192x224": [
+				92,
+				92
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 87,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 87,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 274,
+			"direction": "west",
+			"employee": "theo",
+			"frame": 2,
+			"physical_position": [
+				816.0,
+				272.0
+			],
+			"render_offset": [
+				-12.0,
+				8.0
+			],
+			"render_origin_on_192x224": [
+				92,
+				96
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 53,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 53,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 274,
+			"direction": "west",
+			"employee": "mira",
+			"frame": 3,
+			"physical_position": [
+				368.0,
+				272.0
+			],
+			"render_offset": [
+				-12.0,
+				4.0
+			],
+			"render_origin_on_192x224": [
+				92,
+				92
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 88,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 88,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 274,
+			"direction": "west",
+			"employee": "theo",
+			"frame": 3,
+			"physical_position": [
+				816.0,
+				272.0
+			],
+			"render_offset": [
+				-12.0,
+				8.0
+			],
+			"render_origin_on_192x224": [
+				92,
+				96
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 53,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 53,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 274,
+			"direction": "west",
+			"employee": "mira",
+			"frame": 4,
+			"physical_position": [
+				368.0,
+				272.0
+			],
+			"render_offset": [
+				-12.0,
+				4.0
+			],
+			"render_origin_on_192x224": [
+				92,
+				92
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 68,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 68,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 274,
+			"direction": "west",
+			"employee": "theo",
+			"frame": 4,
+			"physical_position": [
+				816.0,
+				272.0
+			],
+			"render_offset": [
+				-12.0,
+				8.0
+			],
+			"render_origin_on_192x224": [
+				92,
+				96
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 53,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 53,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 274,
+			"direction": "west",
+			"employee": "mira",
+			"frame": 5,
+			"physical_position": [
+				368.0,
+				272.0
+			],
+			"render_offset": [
+				-12.0,
+				4.0
+			],
+			"render_origin_on_192x224": [
+				92,
+				92
+			]
+		},
+		{
+			"actor_role_opaque_overlaps": {
+				"binders": 0,
+				"folder": 94,
+				"pen_cup": 0
+			},
+			"actor_role_overlap_by_source_layer": {
+				"binders": {
+					"lower": 0,
+					"upper": 0
+				},
+				"folder": {
+					"lower": 94,
+					"upper": 0
+				},
+				"pen_cup": {
+					"lower": 0,
+					"upper": 0
+				}
+			},
+			"depth": 274,
+			"direction": "west",
+			"employee": "theo",
+			"frame": 5,
+			"physical_position": [
+				816.0,
+				272.0
+			],
+			"render_offset": [
+				-12.0,
+				8.0
+			],
+			"render_origin_on_192x224": [
+				92,
+				96
+			]
+		}
+	],
+	"placement_advice": {},
+	"runtime_approved": false,
+	"save_access": false,
+	"scene": "actual GameMain via scoped calibrated_workstation_fixture",
+	"scripted_frames": 54,
+	"source_sha256": {
+		"res://tests/fixtures/furniture-calibration/kits/computer-north-v2-keyboard.png": "370b661c5d88cab4881f571f4c80a47b0d591cf7b4bc2abe8cc925934067c647",
+		"res://tests/fixtures/furniture-calibration/kits/computer-north-v2-monitor.png": "237b9e27311a0fc11dc772c0fac9a477f904bb02b7336fc0298c4f6a529f1088",
+		"res://tests/fixtures/furniture-calibration/kits/computer-north-v2-mouse.png": "4e730bbb85f1f13e794a256b75ff297223860bd2d8d439954176674e4d48a6ad",
+		"res://tests/fixtures/furniture-calibration/kits/computer-south-peripherals-v2-keyboard.png": "8b57a8a83600547a3f077dca2daf5e4df01836ab251764657fc7e5a66456eb89",
+		"res://tests/fixtures/furniture-calibration/kits/computer-south-peripherals-v2-mouse.png": "35fc55d02929dfbe6785f819c5b6c990c756aefa029551c8c38b5d88ccaf53b5",
+		"res://tests/fixtures/furniture-calibration/kits/computer-south-v3.png": "ade1a3685651e9babb2ad8d2342ed7d944cac45ce7f33caf7ca0b7b83a41524f",
+		"res://tests/fixtures/furniture-calibration/kits/computer-west-v2-keyboard.png": "1d56652c485e9785247d88192e12b77b6a0690036c5944210a54cb85035e89de",
+		"res://tests/fixtures/furniture-calibration/kits/computer-west-v2-monitor.png": "a70e5fc0465c2df58b9ecdb8a8309120c933a94ca348299ea29314e417d67f95",
+		"res://tests/fixtures/furniture-calibration/kits/computer-west-v2-mouse.png": "2c8f5ea5c4ba06d8bfc7a1d20193f0254b17a9789471c2ddd020e1bf30bd5ef4",
+		"res://tests/fixtures/furniture-calibration/roles/lawyer-north-v3-binders-brand.png": "5d50f4b528a0ec64c4fbb89de9f10ac50e77b6f8d5e46b4bb204bab99c0e3804",
+		"res://tests/fixtures/furniture-calibration/roles/lawyer-north-v3-brand.png": "85580dcbaa1acd26a806195623342f91bac33dfd8c9098fcc610972287342aff",
+		"res://tests/fixtures/furniture-calibration/roles/lawyer-north-v3-folder-brand.png": "760c70aed8d08a955b2997518aec47c7469d615fa6c7cfaf03abe09f09e46c05",
+		"res://tests/fixtures/furniture-calibration/roles/lawyer-north-v3-pen_cup-brand.png": "ed9babb67e7ebe2df6dbcfd6ad1ebcd694610ad65e9e084bd6df5eecaf589a3f",
+		"res://tests/fixtures/furniture-calibration/roles/lawyer-south-v2-binders.png": "245b308e8e0ab4168289f0b01055a85d8ad8de0dbbc08d9b6f396df0b43cdf7f",
+		"res://tests/fixtures/furniture-calibration/roles/lawyer-south-v2-folder.png": "e5f72255e0c81ba123958c04e29e24939a1881109f16c14c4c524f21f37194e7",
+		"res://tests/fixtures/furniture-calibration/roles/lawyer-south-v2-pen_cup.png": "c48dd5dfef0d460ea80c1037be07022e86359e0a1c4443ec1b7d69005385bb68",
+		"res://tests/fixtures/furniture-calibration/roles/lawyer-south-v2.png": "ae1250d0d5cf3228faea287c74083601ddce371a0be0c01e49fb1e055ce1bfc6",
+		"res://tests/fixtures/furniture-calibration/roles/lawyer-west-reclassified-v4-binders.png": "9e8139cd64e0c49a9b2888be2880faaf080600456ea914c8d9b1c2eb2971c254",
+		"res://tests/fixtures/furniture-calibration/roles/lawyer-west-reclassified-v4-folder.png": "9b22978b5f3d5174d56c92095e87003b38bb02a366ebd9c4107f14b4fabb0309",
+		"res://tests/fixtures/furniture-calibration/roles/lawyer-west-reclassified-v4-pen_cup.png": "bef92238301f8595898b4174b39accbc8a66aa4c207abb25cdb9673618d82493",
+		"res://tests/fixtures/furniture-calibration/roles/lawyer-west-reclassified-v4.png": "48bb6bd9c349ab76347bc6e95927ad6a77c8c9092f3c68687935012783720f4e"
+	},
+	"typing_frames": "Existing computer typing as scale/occlusion references only; no document or legal work happened.",
+	"worker_disabled": true
+}

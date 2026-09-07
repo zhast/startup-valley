@@ -1,0 +1,111 @@
+{
+  "checks": 80,
+  "engine": "4.7.2-stable (official)",
+  "engine_constants": {
+    "insert": 4194311,
+    "left": 4194319,
+    "pause": 4194313,
+    "right": 4194321
+  },
+  "failures": [],
+  "mappings": {
+    "move_down": [
+      83,
+      4194322
+    ],
+    "move_left": [
+      65,
+      4194319
+    ],
+    "move_right": [
+      68,
+      4194321
+    ],
+    "move_up": [
+      87,
+      4194320
+    ]
+  },
+  "records": [
+    {
+      "action": "move_left",
+      "code": 65,
+      "key": "A",
+      "mapped": true,
+      "motion": [
+        -2.5,
+        0.0
+      ]
+    },
+    {
+      "action": "move_left",
+      "code": 4194319,
+      "key": "Left",
+      "mapped": true,
+      "motion": [
+        -2.5,
+        0.0
+      ]
+    },
+    {
+      "action": "move_right",
+      "code": 68,
+      "key": "D",
+      "mapped": true,
+      "motion": [
+        2.5,
+        0.0
+      ]
+    },
+    {
+      "action": "move_right",
+      "code": 4194321,
+      "key": "Right",
+      "mapped": true,
+      "motion": [
+        2.5,
+        0.0
+      ]
+    },
+    {
+      "action": "move_up",
+      "code": 87,
+      "key": "W",
+      "mapped": true,
+      "motion": [
+        0.0,
+        -2.5
+      ]
+    },
+    {
+      "action": "move_up",
+      "code": 4194320,
+      "key": "Up",
+      "mapped": true,
+      "motion": [
+        0.0,
+        -2.5
+      ]
+    },
+    {
+      "action": "move_down",
+      "code": 83,
+      "key": "S",
+      "mapped": true,
+      "motion": [
+        0.0,
+        2.5
+      ]
+    },
+    {
+      "action": "move_down",
+      "code": 4194322,
+      "key": "Down",
+      "mapped": true,
+      "motion": [
+        0.0,
+        2.5
+      ]
+    }
+  ]
+}

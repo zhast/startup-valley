@@ -1,0 +1,89 @@
+{
+  "captures": [
+    "res://tests/output/station-hover/artifact-archive.png",
+    "res://tests/output/station-hover/founder-workstation.png",
+    "res://tests/output/station-hover/approval-console.png",
+    "res://tests/output/station-hover/mira-workstation.png",
+    "res://tests/output/station-hover/visible-face-not-desk.png",
+    "res://tests/output/station-hover/pending-approval.png",
+    "res://tests/output/station-hover/drawer-suppressed.png",
+    "res://tests/output/station-hover/removed-station.png",
+    "res://tests/output/station-hover/archive-crowded.png",
+    "res://tests/output/station-hover/console-near-rail.png",
+    "res://tests/output/station-hover/pointer-left-clears.png"
+  ],
+  "checks": 299,
+  "failures": [],
+  "samples": [
+    {
+      "body": "[P: (104.0, 301.0), S: (80.0, 40.0)]",
+      "caption": "Studio",
+      "painted": "[P: (104.0, 301.0), S: (80.0, 48.0)]",
+      "point": "(132.0, 400.0)",
+      "target": "artifact-archive"
+    },
+    {
+      "body": "[P: (195.0, 587.0), S: (155.0, 40.0)]",
+      "caption": "Company Journey",
+      "painted": "[P: (195.0, 578.0), S: (155.0, 49.0)]",
+      "point": "(272.0, 522.0)",
+      "target": "founder-workstation"
+    },
+    {
+      "body": "[P: (904.0, 295.0), S: (81.0, 40.0)]",
+      "caption": "Activity",
+      "painted": "[P: (904.0, 295.0), S: (81.0, 48.0)]",
+      "point": "(944.0, 376.0)",
+      "target": "approval-console"
+    },
+    {
+      "body": "[P: (296.0, 299.0), S: (80.0, 40.0)]",
+      "caption": "Assign",
+      "painted": "[P: (296.0, 290.0), S: (80.0, 49.0)]",
+      "point": "(336.0, 234.0)",
+      "target": "mira-workstation"
+    },
+    {
+      "body": "[P: (296.0, 299.0), S: (80.0, 40.0)]",
+      "caption": "Assign",
+      "painted": "[P: (296.0, 290.0), S: (80.0, 49.0)]",
+      "point": "(336.0, 234.0)",
+      "target": "mira-workstation"
+    },
+    {
+      "body": "[P: (296.0, 299.0), S: (81.0, 40.0)]",
+      "caption": "Activity",
+      "painted": "[P: (296.0, 290.0), S: (81.0, 49.0)]",
+      "point": "(336.0, 234.0)",
+      "target": "mira-workstation"
+    },
+    {
+      "body": "[P: (870.0, 295.0), S: (148.0, 40.0)]",
+      "caption": "Review approval",
+      "painted": "[P: (870.0, 295.0), S: (148.0, 48.0)]",
+      "point": "(944.0, 376.0)",
+      "target": "approval-console"
+    },
+    {
+      "body": "[P: (104.0, 301.0), S: (80.0, 40.0)]",
+      "caption": "Studio",
+      "painted": "[P: (104.0, 301.0), S: (80.0, 48.0)]",
+      "point": "(132.0, 400.0)",
+      "target": "artifact-archive"
+    },
+    {
+      "body": "[P: (104.0, 459.0), S: (80.0, 40.0)]",
+      "caption": "Studio",
+      "painted": "[P: (104.0, 450.0), S: (80.0, 49.0)]",
+      "point": "(132.0, 400.0)",
+      "target": "artifact-archive"
+    },
+    {
+      "body": "[P: (870.0, 295.0), S: (148.0, 40.0)]",
+      "caption": "Review approval",
+      "painted": "[P: (870.0, 295.0), S: (148.0, 48.0)]",
+      "point": "(944.0, 376.0)",
+      "target": "approval-console"
+    }
+  ]
+}

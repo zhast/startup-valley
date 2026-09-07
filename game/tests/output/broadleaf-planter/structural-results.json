@@ -1,0 +1,31 @@
+{
+	"canvas": [
+		128,
+		224
+	],
+	"checks": 281,
+	"dev_catalogue_registered": false,
+	"failures": [],
+	"image_generation_used_for_native_candidate": false,
+	"layers_per_facing": [
+		"floor_shadow",
+		"rear_structure",
+		"front_structure"
+	],
+	"leaves_per_facing": 6,
+	"occupied_cell_offsets": [
+		[
+			0,
+			0
+		]
+	],
+	"pivot": [
+		64,
+		176
+	],
+	"runtime_registered": false,
+	"source_pixels_used": false,
+	"source_v1_sha256": "1ef554d7ba1ef82a43e406ffadf46c9eef1147035e4aab0d7b0fc4bfd642346b",
+	"source_v2_sha256": "3ce72e2dcbc0f4a3983e6bf5bda5f5b556de0c918cf6467193e14ab2e7330e77",
+	"status": "native_review_candidate_not_runtime_registered"
+}

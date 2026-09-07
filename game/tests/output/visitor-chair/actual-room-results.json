@@ -1,0 +1,545 @@
+{
+	"actor_probe": "Existing Mina only: ordinary standing source and her accepted directional seated source at one candidate-declared physical contact socket; no actor art, hire, role, behavior, workstation, or seating capability is added.",
+	"captures": [
+		"res://tests/output/visitor-chair/detail-north-base-native.png",
+		"res://tests/output/visitor-chair/detail-north-standing-native.png",
+		"res://tests/output/visitor-chair/room-north-seated.png",
+		"res://tests/output/visitor-chair/detail-north-seated-native.png",
+		"res://tests/output/visitor-chair/detail-east-base-native.png",
+		"res://tests/output/visitor-chair/detail-east-standing-native.png",
+		"res://tests/output/visitor-chair/room-east-seated.png",
+		"res://tests/output/visitor-chair/detail-east-seated-native.png",
+		"res://tests/output/visitor-chair/detail-south-base-native.png",
+		"res://tests/output/visitor-chair/detail-south-standing-native.png",
+		"res://tests/output/visitor-chair/room-south-seated.png",
+		"res://tests/output/visitor-chair/detail-south-seated-native.png",
+		"res://tests/output/visitor-chair/detail-west-base-native.png",
+		"res://tests/output/visitor-chair/detail-west-standing-native.png",
+		"res://tests/output/visitor-chair/room-west-seated.png",
+		"res://tests/output/visitor-chair/detail-west-seated-native.png",
+		"res://tests/output/visitor-chair/actual-room-base-contact-sheet-native.png",
+		"res://tests/output/visitor-chair/actual-room-standing-contact-sheet-native.png",
+		"res://tests/output/visitor-chair/actual-room-seated-contact-sheet-native.png",
+		"res://tests/output/visitor-chair/actual-room-seated-contact-sheet-4x.png",
+		"res://tests/output/visitor-chair/actual-gamemain-contact-sheet-native.png"
+	],
+	"checks": 221,
+	"common_safe_pivot": [
+		12,
+		13
+	],
+	"default_layout_mutated": false,
+	"dev_catalogue_registered": true,
+	"failures": [],
+	"limitations": [
+		"Contact metadata proves only placement, scale, directional gaze, physical reservation, and visual depth; production seating behavior is absent.",
+		"Mina's accepted workstation pose is reused only in this disposable capture and remains character-owned, not chair-owned.",
+		"Production approval, runtime registration, and seated lifecycle review remain separate work."
+	],
+	"observations": {
+		"east": {
+			"clearance": [
+				[
+					11,
+					13
+				]
+			],
+			"collision_shapes": 1,
+			"depth_overlap": {
+				"front_overlap": 62,
+				"front_wrong_depth": 0,
+				"rear_overlap": 303,
+				"rear_wrong_depth": 0
+			},
+			"grid": [
+				12,
+				13
+			],
+			"occupied": [
+				[
+					12,
+					13
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/east-floor_shadow.png",
+					"name": "VisitorChairFloorShadow",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"z_offset": -8
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/east-seat_back.png",
+					"name": "VisitorChairSeatBack",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"z_offset": -6
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/east-seat_front.png",
+					"name": "VisitorChairSeatFront",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"z_offset": 5
+				}
+			],
+			"seated_probe": {
+				"cell": [
+					11,
+					13
+				],
+				"depth": 433,
+				"physical": [
+					368.0,
+					432.0
+				],
+				"pose_set": "reviewed-workstations-v2",
+				"render": [
+					402.0,
+					430.0
+				],
+				"seat_offset": [
+					34.0,
+					-2.0
+				]
+			},
+			"source_match": {
+				"mismatch": 0,
+				"opaque": 1443
+			},
+			"standing_probe": {
+				"cell": [
+					11,
+					13
+				],
+				"position": [
+					368.0,
+					432.0
+				]
+			}
+		},
+		"north": {
+			"clearance": [
+				[
+					12,
+					14
+				]
+			],
+			"collision_shapes": 1,
+			"depth_overlap": {
+				"front_overlap": 102,
+				"front_wrong_depth": 0,
+				"rear_overlap": 978,
+				"rear_wrong_depth": 0
+			},
+			"grid": [
+				12,
+				13
+			],
+			"occupied": [
+				[
+					12,
+					13
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/north-floor_shadow.png",
+					"name": "VisitorChairFloorShadow",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"z_offset": -8
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/north-seat_back.png",
+					"name": "VisitorChairSeatBack",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"z_offset": -6
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/north-seat_front.png",
+					"name": "VisitorChairSeatFront",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"z_offset": 5
+				}
+			],
+			"seated_probe": {
+				"cell": [
+					12,
+					14
+				],
+				"depth": 433,
+				"physical": [
+					400.0,
+					464.0
+				],
+				"pose_set": "reviewed-workstations-v2",
+				"render": [
+					400.0,
+					430.0
+				],
+				"seat_offset": [
+					0.0,
+					-34.0
+				]
+			},
+			"source_match": {
+				"mismatch": 0,
+				"opaque": 1803
+			},
+			"standing_probe": {
+				"cell": [
+					12,
+					14
+				],
+				"position": [
+					400.0,
+					464.0
+				]
+			}
+		},
+		"south": {
+			"clearance": [
+				[
+					12,
+					12
+				]
+			],
+			"collision_shapes": 1,
+			"depth_overlap": {
+				"front_overlap": 82,
+				"front_wrong_depth": 0,
+				"rear_overlap": 841,
+				"rear_wrong_depth": 0
+			},
+			"grid": [
+				12,
+				13
+			],
+			"occupied": [
+				[
+					12,
+					13
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/south-floor_shadow.png",
+					"name": "VisitorChairFloorShadow",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"z_offset": -8
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/south-seat_back.png",
+					"name": "VisitorChairSeatBack",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"z_offset": -6
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/south-seat_front.png",
+					"name": "VisitorChairSeatFront",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"z_offset": 5
+				}
+			],
+			"seated_probe": {
+				"cell": [
+					12,
+					12
+				],
+				"depth": 433,
+				"physical": [
+					400.0,
+					400.0
+				],
+				"pose_set": "reviewed-workstations-v2",
+				"render": [
+					400.0,
+					429.0
+				],
+				"seat_offset": [
+					0.0,
+					29.0
+				]
+			},
+			"source_match": {
+				"mismatch": 0,
+				"opaque": 1880
+			},
+			"standing_probe": {
+				"cell": [
+					12,
+					12
+				],
+				"position": [
+					400.0,
+					400.0
+				]
+			}
+		},
+		"west": {
+			"clearance": [
+				[
+					13,
+					13
+				]
+			],
+			"collision_shapes": 1,
+			"depth_overlap": {
+				"front_overlap": 67,
+				"front_wrong_depth": 0,
+				"rear_overlap": 329,
+				"rear_wrong_depth": 0
+			},
+			"grid": [
+				12,
+				13
+			],
+			"occupied": [
+				[
+					12,
+					13
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/west-floor_shadow.png",
+					"name": "VisitorChairFloorShadow",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"z_offset": -8
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/west-seat_back.png",
+					"name": "VisitorChairSeatBack",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"z_offset": -6
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/west-seat_front.png",
+					"name": "VisitorChairSeatFront",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"z_offset": 5
+				}
+			],
+			"seated_probe": {
+				"cell": [
+					13,
+					13
+				],
+				"depth": 433,
+				"physical": [
+					432.0,
+					432.0
+				],
+				"pose_set": "reviewed-workstations-v2",
+				"render": [
+					398.0,
+					431.0
+				],
+				"seat_offset": [
+					-34.0,
+					-1.0
+				]
+			},
+			"source_match": {
+				"mismatch": 0,
+				"opaque": 1422
+			},
+			"standing_probe": {
+				"cell": [
+					13,
+					13
+				],
+				"position": [
+					432.0,
+					432.0
+				]
+			}
+		}
+	},
+	"production_catalogue_mutated": false,
+	"renderer": "macOS",
+	"runtime_registered": false,
+	"save_access": false,
+	"scene": "actual GameMain and production TownRoom architecture/navigation with one owner-scoped passive visitor_chair",
+	"shared_art_catalogue_mutated": false,
+	"status": "native_review_required_not_runtime_registered",
+	"viewport_per_panel": [
+		1280,
+		720
+	],
+	"wall_and_corner": {
+		"east": {
+			"corner_wall_neighbors": 2,
+			"nearest_valid": [
+				3,
+				20
+			],
+			"rejected_corner": [
+				1,
+				3
+			],
+			"rejection_codes": [
+				"visual_wall_intersection",
+				"decorative_headroom",
+				"wall_clearance"
+			],
+			"wall_distance_cells": 1
+		},
+		"north": {
+			"corner_wall_neighbors": 2,
+			"nearest_valid": [
+				2,
+				4
+			],
+			"rejected_corner": [
+				1,
+				3
+			],
+			"rejection_codes": [
+				"visual_wall_intersection",
+				"decorative_headroom"
+			],
+			"wall_distance_cells": 2
+		},
+		"south": {
+			"corner_wall_neighbors": 2,
+			"nearest_valid": [
+				2,
+				20
+			],
+			"rejected_corner": [
+				1,
+				3
+			],
+			"rejection_codes": [
+				"visual_wall_intersection",
+				"decorative_headroom",
+				"wall_clearance"
+			],
+			"wall_distance_cells": 1
+		},
+		"west": {
+			"corner_wall_neighbors": 2,
+			"nearest_valid": [
+				2,
+				20
+			],
+			"rejected_corner": [
+				1,
+				3
+			],
+			"rejection_codes": [
+				"visual_wall_intersection",
+				"decorative_headroom"
+			],
+			"wall_distance_cells": 1
+		}
+	},
+	"worker_disabled": true
+}

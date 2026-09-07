@@ -1,0 +1,31 @@
+{
+  "checks": 30,
+  "errors": [],
+  "browserVersion": "152.0.7977.82",
+  "isolatedProfile": true,
+  "workerStarted": false,
+  "personalSaveAccess": false,
+  "catalogueSha256": "ea1c950e82025a935ecf536c9d7b0514289797065b936e66dd0d9c7844285c65",
+  "htmlSha256": "4abf4d778b03b35f64d56671532a08650575f0d513feaee76dd182a143c0a1d2",
+  "counts": {
+    "accepted": 168,
+    "staged": 0,
+    "missing": 0
+  },
+  "lifecycleCounts": {
+    "runtime_integrated": 36,
+    "approved": 132
+  },
+  "evidence": [
+    "/Users/zhast/GitHub/startup-valley/game/tests/output/art-catalogue-browser-final-20260906-v2/1280-header.png",
+    "/Users/zhast/GitHub/startup-valley/game/tests/output/art-catalogue-browser-final-20260906-v2/1280-cafe-native.png",
+    "/Users/zhast/GitHub/startup-valley/game/tests/output/art-catalogue-browser-final-20260906-v2/1280-cafe-four-times.png",
+    "/Users/zhast/GitHub/startup-valley/game/tests/output/art-catalogue-browser-final-20260906-v2/1280-staged.png",
+    "/Users/zhast/GitHub/startup-valley/game/tests/output/art-catalogue-browser-final-20260906-v2/1280-no-results.png",
+    "/Users/zhast/GitHub/startup-valley/game/tests/output/art-catalogue-browser-final-20260906-v2/1280-keyboard-focus.png",
+    "/Users/zhast/GitHub/startup-valley/game/tests/output/art-catalogue-browser-final-20260906-v2/1280-responsive-cafe.png",
+    "/Users/zhast/GitHub/startup-valley/game/tests/output/art-catalogue-browser-final-20260906-v2/960-responsive-cafe.png"
+  ],
+  "localRequestCount": 23,
+  "status": "passed"
+}

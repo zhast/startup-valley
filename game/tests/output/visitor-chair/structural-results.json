@@ -1,0 +1,32 @@
+{
+	"actor_pixels_baked": false,
+	"canvas": [
+		96,
+		144
+	],
+	"checks": 312,
+	"collision_cells": [
+		[
+			0,
+			0
+		]
+	],
+	"contact_socket_modes": [
+		"standing_probe",
+		"seated_probe"
+	],
+	"dev_catalogue_registered": true,
+	"failures": [],
+	"layers": [
+		"floor_shadow",
+		"seat_back",
+		"seat_front"
+	],
+	"pivot": [
+		48,
+		96
+	],
+	"production_catalogue_registered": false,
+	"runtime_registered": false,
+	"status": "native_review_required_not_runtime_registered"
+}

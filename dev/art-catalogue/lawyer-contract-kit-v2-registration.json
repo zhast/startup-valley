@@ -1,0 +1,1507 @@
+{
+  "id": "lawyer_contract_kit",
+  "direction_semantics": "host_gaze",
+  "display_name": "Legal planning kit",
+  "asset_kind": "decor_kit",
+  "base_vs_decor": "decor",
+  "category": "lawyer",
+  "priority": "P1",
+  "production_status": "approved",
+  "role_tags": [
+    "lawyer"
+  ],
+  "role_tools": [
+    "contract binder",
+    "tabbed review folder",
+    "pen cup"
+  ],
+  "design_brief": "Legal planning and review, not a gavel stereotype or an implication of actual filing authority.",
+  "gameplay_scope": "Art and future layout proposal only; no new hiring, role behavior, tool authority, transaction or interaction is implemented.",
+  "primary_host": "desk",
+  "current_availability": {
+    "status": "no_catalogue_runtime_binding",
+    "runtime_family_id": null,
+    "runtime_registered_facings": [],
+    "art_path": null,
+    "direction_art_review": "N/E/S/W passive lawyer-contract-kit-v2 art passes the September 6 agent-native review. Both required layers, exact accepted-desk registration, true East/corrected West direction identity, and actual-room host evidence pass. Approval is passive-library only: no production/runtime binding, default-layout placement, legal employee, legal pose, service, behavior, interaction, case data, or filing authority.",
+    "previous_native_review": "North and south native candidates are preserved. Correct east remains missing after an exhausted wrongly directed batch; its E4 source supplies only a limited, cleanup-required west reclassification. Zero approved directions or runtime bindings; no role behavior or filing authority.",
+    "candidate_revision": "lawyer-contract-kit-v2"
+  },
+  "native_geometry": {
+    "status": "reviewed_code_native_library_not_runtime_admission",
+    "canvas_size_px": [
+      192,
+      224
+    ],
+    "floor_anchor_px": [
+      96,
+      160
+    ],
+    "grid_size_px": 32,
+    "estimated_max_rise_above_occupied_floor_px": null,
+    "minimum_transparent_padding_px": 16,
+    "anchor_rule": "One unchanged canvas coordinate represents local floor pivot [0,0] in every direction and every layer. Transparent padding is not sprite scaling.",
+    "host_rule": "Primary-host export shares the host canvas and floor anchor; zero new floor collision. A second host requires an explicitly reviewed socket adaptation, not runtime downscaling.",
+    "candidate_revision": "lawyer-contract-kit-v2",
+    "sprite_offset_px": [
+      0,
+      -48
+    ],
+    "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/manifest.json",
+    "structural_results_path": "game/tests/output/lawyer-contract-kit-v2/structural-results.json",
+    "actual_room_results_path": "game/tests/output/lawyer-contract-kit-v2/actual-room-results.json"
+  },
+  "layers": [
+    {
+      "id": "surface_decor_rear",
+      "required": true,
+      "same_canvas_and_floor_anchor": true,
+      "status": "approved"
+    },
+    {
+      "id": "surface_decor_front",
+      "required": true,
+      "same_canvas_and_floor_anchor": true,
+      "status": "approved"
+    }
+  ],
+  "variants": [
+    {
+      "facing": "north",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/north-whole.png",
+      "source_reference_path": null,
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        0,
+        0
+      ],
+      "proposed_occupied_cell_offsets": [],
+      "employee_look_vector": [
+        0,
+        -1
+      ],
+      "proposed_interaction_cell": null,
+      "seated_pose_needed": false,
+      "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+      "source_attempts": [
+        {
+          "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-north-v1.png",
+          "size_px": [
+            1536,
+            1024
+          ],
+          "channels": "RGBA",
+          "alpha": "genuine nonopaque alpha",
+          "prompt_path": "dev/art-catalogue/prompts/lawyer-kit-north-v1.md",
+          "disposition": "Wrong binder projection and soft glow; not native-reviewed.",
+          "sha256": "f7d813ec9a169ebd2cf134cc42c70dd246b5066663b20ad84652ce0a5505d2da"
+        },
+        {
+          "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-north-v2.png",
+          "size_px": [
+            1536,
+            1024
+          ],
+          "channels": "RGB",
+          "alpha": "opaque",
+          "prompt_path": "dev/art-catalogue/prompts/lawyer-kit-north-v2.md",
+          "disposition": "Corrected book projection but opaque.",
+          "sha256": "2688874c455e9321342abeb41fa606333cce3c74e4284604c94eb1b1766f3847"
+        },
+        {
+          "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-north-v3.png",
+          "size_px": [
+            1672,
+            941
+          ],
+          "channels": "RGBA",
+          "alpha": "genuine nonopaque alpha",
+          "prompt_path": "dev/art-catalogue/prompts/lawyer-kit-north-v3.md",
+          "disposition": "Targeted alpha extraction; original and brand-palette native exports plus staged north composition exist. No family or runtime approval.",
+          "sha256": "5551319e0cc60e339b76991c9cedb68a10aef523180a138b7a315fe46819c7ec"
+        }
+      ],
+      "evidence_path": "game/tests/output/lawyer-contract-kit-v2/actual-room-contact-sheet-native.png",
+      "preview_path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/north-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/north-whole.png",
+      "review_path": "dev/LAWYER_CONTRACT_KIT_V2_NATIVE_REVIEW.md",
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/manifest.json",
+        "game/tests/output/lawyer-contract-kit-v2/structural-results.json",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-results.json",
+        "game/tests/output/lawyer-contract-kit-v2/candidate-contact-sheet-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/candidate-contact-sheet-4x.png",
+        "game/tests/output/lawyer-contract-kit-v2/candidate-layers-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/candidate-objects-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-contact-sheet-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-contact-sheet-4x.png",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-unoccupied-contact-sheet-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-unoccupied-contact-sheet-4x.png",
+        "dev/LAWYER_CONTRACT_KIT_V2_NATIVE_REVIEW.md"
+      ],
+      "reason": "Approved passive four-facing art-library deliverable after explicit native-size and 4x agent visual review. The complete pre-v2 attempt and native-candidate record is retained below; approval creates no runtime binding, legal role pose, service, behavior, interaction, case state, or filing authority.",
+      "export_method": "Independent deterministic typed-GDScript screen-axis geometry for lawyer-contract-kit-v2 north; no ImageGen retry, generated source, finished-raster rotation, mirror, scale, text, logo, signature, gavel, baked character, or baked furniture.",
+      "native_geometry": {
+        "canvas_size_px": [
+          192,
+          224
+        ],
+        "floor_anchor_px": [
+          96,
+          160
+        ],
+        "sprite_offset_px": [
+          0,
+          -48
+        ],
+        "whole_opaque_bounds_px": [
+          51,
+          115,
+          91,
+          27
+        ],
+        "whole_opaque_pixels": 554
+      },
+      "native_exports": [
+        {
+          "layer": "surface_decor_rear",
+          "source_layer": "surface_decor_rear",
+          "path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/north-surface_decor_rear.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            51,
+            115,
+            91,
+            16
+          ],
+          "opaque_pixels": 460,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 10,
+          "sha256": "14465044c53fe54328f1a9cc4b639be214bf97cc80fd425b8da774f933380881",
+          "z_offset": 0,
+          "source_path": "game/tools/lawyer_contract_kit_v2_geometry.gd",
+          "review_path": "dev/LAWYER_CONTRACT_KIT_V2_NATIVE_REVIEW.md",
+          "method": "Exact code-native registered layer; binary alpha, zero hidden RGB, shared canvas/pivot, and independently declared north construction."
+        },
+        {
+          "layer": "surface_decor_front",
+          "source_layer": "surface_decor_front",
+          "path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/north-surface_decor_front.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            52,
+            128,
+            10,
+            14
+          ],
+          "opaque_pixels": 94,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 5,
+          "sha256": "ff40ada08afeefa47c9fcf20e9aa6fbc0f9783c02f4e1acd844a151fa3a2d3ae",
+          "z_offset": 2,
+          "source_path": "game/tools/lawyer_contract_kit_v2_geometry.gd",
+          "review_path": "dev/LAWYER_CONTRACT_KIT_V2_NATIVE_REVIEW.md",
+          "method": "Exact code-native registered layer; binary alpha, zero hidden RGB, shared canvas/pivot, and independently declared north construction."
+        }
+      ],
+      "composite_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/north-whole.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            51,
+            115,
+            91,
+            27
+          ],
+          "opaque_pixels": 554,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 13,
+          "sha256": "da833f27606da405c857220018ca98e37fdeb28b1b16be58d3c9bd96bfcbe339",
+          "method": "Byte-exact ordered union of the two approved native layers."
+        }
+      ],
+      "actual_room_observation": {
+        "scene": "actual GameMain and production TownRoom at native 1280x720",
+        "renderer": "macOS",
+        "workstation_capability_revision": "workstations-v2:north",
+        "work_facing": "north",
+        "actor_probe": "existing_mina_directional_seated_typing_not_lawyer",
+        "actor_work_point_px": [
+          336,
+          304
+        ],
+        "actor_pixel_delta": 1603,
+        "measured_actor_overlay_overlap_pixels": {
+          "surface_decor_rear": 0,
+          "surface_decor_front": 0,
+          "total": 0
+        },
+        "overlap_interpretation": "Recorded exactly as measured; zero is accepted because decor was not moved to manufacture pixel overlap. Mina proves accepted host gaze/contact/scale only and is not a legal-role pose.",
+        "host_assembly_covered_pixels": {
+          "surface_decor_rear": 0,
+          "surface_decor_front": 0
+        },
+        "visible_candidate_pixels": {
+          "surface_decor_rear": 460,
+          "surface_decor_front": 94
+        },
+        "collision_shapes_before": 3,
+        "collision_shapes_after": 3
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "role_specific_actor_pose_claimed": false,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 3,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "note": "Accepted by the September 6 lawyer-contract-kit-v2 agent-native review for passive library use only. Scores meet the catalogue gate. Mina is only the existing directional host-contact probe; zero measured actor/decor overlap and no legal pose or service are claimed.",
+        "acceptance_scope": "passive_art_library",
+        "acceptance_date": "2026-09-06"
+      },
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_exports": [],
+      "runtime_registered": false,
+      "historical_candidate_before_v2": {
+        "facing": "north",
+        "status": "native_review_required",
+        "deliverable_availability": "native_export",
+        "approved_art_path": null,
+        "evidence_path": "game/tests/output/lawyer-kit-north/frame2.png",
+        "source_reference_path": null,
+        "legacy_runtime_art_for_this_facing": false,
+        "footprint_cells": [
+          0,
+          0
+        ],
+        "proposed_occupied_cell_offsets": [],
+        "employee_look_vector": [
+          0,
+          -1
+        ],
+        "proposed_interaction_cell": null,
+        "seated_pose_needed": false,
+        "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+        "generated_source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-north-v3.png",
+        "prompt_path": "dev/art-catalogue/prompts/lawyer-kit-north-v3.md",
+        "reason": "Preferred brand-palette north export reviewed with actors; hand/seat and four-direction identity gates remain. Native candidate, no legal backend or production registration.",
+        "source_attempts": [
+          {
+            "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-north-v1.png",
+            "size_px": [
+              1536,
+              1024
+            ],
+            "channels": "RGBA",
+            "alpha": "genuine nonopaque alpha",
+            "prompt_path": "dev/art-catalogue/prompts/lawyer-kit-north-v1.md",
+            "disposition": "Wrong binder projection and soft glow; not native-reviewed.",
+            "sha256": "f7d813ec9a169ebd2cf134cc42c70dd246b5066663b20ad84652ce0a5505d2da"
+          },
+          {
+            "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-north-v2.png",
+            "size_px": [
+              1536,
+              1024
+            ],
+            "channels": "RGB",
+            "alpha": "opaque",
+            "prompt_path": "dev/art-catalogue/prompts/lawyer-kit-north-v2.md",
+            "disposition": "Corrected book projection but opaque.",
+            "sha256": "2688874c455e9321342abeb41fa606333cce3c74e4284604c94eb1b1766f3847"
+          },
+          {
+            "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-north-v3.png",
+            "size_px": [
+              1672,
+              941
+            ],
+            "channels": "RGBA",
+            "alpha": "genuine nonopaque alpha",
+            "prompt_path": "dev/art-catalogue/prompts/lawyer-kit-north-v3.md",
+            "disposition": "Targeted alpha extraction; original and brand-palette native exports plus staged north composition exist. No family or runtime approval.",
+            "sha256": "5551319e0cc60e339b76991c9cedb68a10aef523180a138b7a315fe46819c7ec"
+          }
+        ],
+        "native_export_path": "game/tests/fixtures/furniture-calibration/roles/lawyer-north-v3-brand.png",
+        "review_path": "dev/art-catalogue/LAWYER_NORTH_KIT_REVIEW.md",
+        "component_exports": [
+          {
+            "component": "binders",
+            "path": "game/tests/fixtures/furniture-calibration/roles/lawyer-north-v3-binders-brand.png",
+            "canvas_size_px": [
+              192,
+              224
+            ],
+            "opaque_bounds_px": [
+              54,
+              106,
+              20,
+              22
+            ],
+            "opaque_pixels": 437,
+            "floor_anchor_px": [
+              96,
+              160
+            ],
+            "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-north-v3.png",
+            "palette_path": "dev/art-catalogue/role-material-palette.svg",
+            "review_path": "dev/art-catalogue/LAWYER_NORTH_KIT_REVIEW.md",
+            "sha256": "5d50f4b528a0ec64c4fbb89de9f10ac50e77b6f8d5e46b4bb204bab99c0e3804",
+            "method": "Complete object uniformly point-normalized and alpha-preserving role-palette export; staged, not approved."
+          },
+          {
+            "component": "folder",
+            "path": "game/tests/fixtures/furniture-calibration/roles/lawyer-north-v3-folder-brand.png",
+            "canvas_size_px": [
+              192,
+              224
+            ],
+            "opaque_bounds_px": [
+              114,
+              118,
+              26,
+              19
+            ],
+            "opaque_pixels": 450,
+            "floor_anchor_px": [
+              96,
+              160
+            ],
+            "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-north-v3.png",
+            "palette_path": "dev/art-catalogue/role-material-palette.svg",
+            "review_path": "dev/art-catalogue/LAWYER_NORTH_KIT_REVIEW.md",
+            "sha256": "760c70aed8d08a955b2997518aec47c7469d615fa6c7cfaf03abe09f09e46c05",
+            "method": "Complete object uniformly point-normalized and alpha-preserving role-palette export; staged, not approved."
+          },
+          {
+            "component": "pen_cup",
+            "path": "game/tests/fixtures/furniture-calibration/roles/lawyer-north-v3-pen_cup-brand.png",
+            "canvas_size_px": [
+              192,
+              224
+            ],
+            "opaque_bounds_px": [
+              60,
+              129,
+              7,
+              12
+            ],
+            "opaque_pixels": 71,
+            "floor_anchor_px": [
+              96,
+              160
+            ],
+            "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-north-v3.png",
+            "palette_path": "dev/art-catalogue/role-material-palette.svg",
+            "review_path": "dev/art-catalogue/LAWYER_NORTH_KIT_REVIEW.md",
+            "sha256": "ed9babb67e7ebe2df6dbcfd6ad1ebcd694610ad65e9e084bd6df5eecaf589a3f",
+            "method": "Complete object uniformly point-normalized and alpha-preserving role-palette export; staged, not approved."
+          }
+        ],
+        "composite_exports": [
+          {
+            "path": "game/tests/fixtures/furniture-calibration/roles/lawyer-north-v3.png",
+            "canvas_size_px": [
+              192,
+              224
+            ],
+            "opaque_bounds_px": [
+              54,
+              106,
+              86,
+              35
+            ],
+            "opaque_pixels": 958,
+            "floor_anchor_px": [
+              96,
+              160
+            ],
+            "sha256": "d375acfc7437b26edffaa20ad8f2f475d1ed9ecab8b019feb82e2b58d56ce6a9",
+            "method": "Retained original palette; brand remap preferred."
+          }
+        ]
+      }
+    },
+    {
+      "facing": "east",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/east-whole.png",
+      "source_reference_path": null,
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        0,
+        0
+      ],
+      "proposed_occupied_cell_offsets": [],
+      "employee_look_vector": [
+        1,
+        0
+      ],
+      "proposed_interaction_cell": null,
+      "seated_pose_needed": false,
+      "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+      "source_batch": {
+        "original_requested_direction": "east",
+        "initial_calls": 1,
+        "targeted_retries": 3,
+        "retry_limit": 3,
+        "exhausted": true,
+        "reclassified_candidate_slot": "lawyer_contract_kit/west"
+      },
+      "source_attempts": [
+        {
+          "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v1.png",
+          "size_px": [
+            1672,
+            941
+          ],
+          "channels": "RGB",
+          "alpha": "opaque",
+          "prompt_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v1.md",
+          "sha256": "e7803c933077384c69424b2640283fe31ecd0e2465fb21b52ee1b02374f3ed9e",
+          "disposition": "Tapered top, opaque; misdirected E brief."
+        },
+        {
+          "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v2.png",
+          "size_px": [
+            1672,
+            941
+          ],
+          "channels": "RGBA",
+          "alpha": "nonopaque alpha present; see native review",
+          "prompt_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v2.md",
+          "sha256": "becc03eede387e6a57e82c8062a9a3e531081aa7fdbf0aa249207da405624e14",
+          "disposition": "Parallel edges, short top; misdirected E identity."
+        },
+        {
+          "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v3.png",
+          "size_px": [
+            1672,
+            941
+          ],
+          "channels": "RGB",
+          "alpha": "opaque",
+          "prompt_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v3.md",
+          "sha256": "66caac7bbd9bebed7ff8aa93c6b854047fed8e7919efbc56c7d19379d7850d4d",
+          "disposition": "Corrected taller top, opaque; misdirected E identity."
+        },
+        {
+          "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v4.png",
+          "size_px": [
+            1672,
+            941
+          ],
+          "channels": "RGBA",
+          "alpha": "nonopaque alpha present; see native review",
+          "prompt_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v4.md",
+          "sha256": "2433507ee40add344a53bcb931cc12b2fc5cc66d711dd46e589ef4512a8c0335",
+          "disposition": "Alpha-clean source partly W-compatible; tabs/cup/thickness still wrong. Not a correct E deliverable."
+        }
+      ],
+      "evidence_path": "game/tests/output/lawyer-contract-kit-v2/actual-room-contact-sheet-native.png",
+      "preview_path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/east-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/east-whole.png",
+      "review_path": "dev/LAWYER_CONTRACT_KIT_V2_NATIVE_REVIEW.md",
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/manifest.json",
+        "game/tests/output/lawyer-contract-kit-v2/structural-results.json",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-results.json",
+        "game/tests/output/lawyer-contract-kit-v2/candidate-contact-sheet-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/candidate-contact-sheet-4x.png",
+        "game/tests/output/lawyer-contract-kit-v2/candidate-layers-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/candidate-objects-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-contact-sheet-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-contact-sheet-4x.png",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-unoccupied-contact-sheet-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-unoccupied-contact-sheet-4x.png",
+        "dev/LAWYER_CONTRACT_KIT_V2_NATIVE_REVIEW.md"
+      ],
+      "reason": "Approved passive four-facing art-library deliverable after explicit native-size and 4x agent visual review. The complete pre-v2 attempt and native-candidate record is retained below; approval creates no runtime binding, legal role pose, service, behavior, interaction, case state, or filing authority.",
+      "export_method": "Independent deterministic typed-GDScript screen-axis geometry for lawyer-contract-kit-v2 east; no ImageGen retry, generated source, finished-raster rotation, mirror, scale, text, logo, signature, gavel, baked character, or baked furniture.",
+      "native_geometry": {
+        "canvas_size_px": [
+          192,
+          224
+        ],
+        "floor_anchor_px": [
+          96,
+          160
+        ],
+        "sprite_offset_px": [
+          0,
+          -48
+        ],
+        "whole_opaque_bounds_px": [
+          83,
+          83,
+          27,
+          82
+        ],
+        "whole_opaque_pixels": 551
+      },
+      "native_exports": [
+        {
+          "layer": "surface_decor_rear",
+          "source_layer": "surface_decor_rear",
+          "path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/east-surface_decor_rear.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            83,
+            83,
+            26,
+            20
+          ],
+          "opaque_pixels": 324,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 11,
+          "sha256": "1be902bf24e8195c1bf54cddc6de050dca7bce686096c839aefd44233b975b1f",
+          "z_offset": 0,
+          "source_path": "game/tools/lawyer_contract_kit_v2_geometry.gd",
+          "review_path": "dev/LAWYER_CONTRACT_KIT_V2_NATIVE_REVIEW.md",
+          "method": "Exact code-native registered layer; binary alpha, zero hidden RGB, shared canvas/pivot, and independently declared east construction."
+        },
+        {
+          "layer": "surface_decor_front",
+          "source_layer": "surface_decor_front",
+          "path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/east-surface_decor_front.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            96,
+            147,
+            14,
+            18
+          ],
+          "opaque_pixels": 227,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 8,
+          "sha256": "1fef40c194eff667caa1a46a26268d51f442f483aa649206257028b2ba3dfd5e",
+          "z_offset": 3,
+          "source_path": "game/tools/lawyer_contract_kit_v2_geometry.gd",
+          "review_path": "dev/LAWYER_CONTRACT_KIT_V2_NATIVE_REVIEW.md",
+          "method": "Exact code-native registered layer; binary alpha, zero hidden RGB, shared canvas/pivot, and independently declared east construction."
+        }
+      ],
+      "composite_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/east-whole.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            83,
+            83,
+            27,
+            82
+          ],
+          "opaque_pixels": 551,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 13,
+          "sha256": "585681b546c2f2b68688292172801665531825c7c2fc3547a7da8e8c332b9c8d",
+          "method": "Byte-exact ordered union of the two approved native layers."
+        }
+      ],
+      "actual_room_observation": {
+        "scene": "actual GameMain and production TownRoom at native 1280x720",
+        "renderer": "macOS",
+        "workstation_capability_revision": "workstations-v2:east",
+        "work_facing": "east",
+        "actor_probe": "existing_mina_directional_seated_typing_not_lawyer",
+        "actor_work_point_px": [
+          304,
+          272
+        ],
+        "actor_pixel_delta": 900,
+        "measured_actor_overlay_overlap_pixels": {
+          "surface_decor_rear": 0,
+          "surface_decor_front": 0,
+          "total": 0
+        },
+        "overlap_interpretation": "Recorded exactly as measured; zero is accepted because decor was not moved to manufacture pixel overlap. Mina proves accepted host gaze/contact/scale only and is not a legal-role pose.",
+        "host_assembly_covered_pixels": {
+          "surface_decor_rear": 19,
+          "surface_decor_front": 0
+        },
+        "visible_candidate_pixels": {
+          "surface_decor_rear": 305,
+          "surface_decor_front": 227
+        },
+        "collision_shapes_before": 3,
+        "collision_shapes_after": 3
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "role_specific_actor_pose_claimed": false,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 3,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "note": "Accepted by the September 6 lawyer-contract-kit-v2 agent-native review for passive library use only. Scores meet the catalogue gate. Mina is only the existing directional host-contact probe; zero measured actor/decor overlap and no legal pose or service are claimed.",
+        "acceptance_scope": "passive_art_library",
+        "acceptance_date": "2026-09-06"
+      },
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_exports": [],
+      "runtime_registered": false,
+      "historical_candidate_before_v2": {
+        "facing": "east",
+        "status": "blocked",
+        "deliverable_availability": "missing",
+        "approved_art_path": null,
+        "evidence_path": null,
+        "source_reference_path": null,
+        "legacy_runtime_art_for_this_facing": false,
+        "footprint_cells": [
+          0,
+          0
+        ],
+        "proposed_occupied_cell_offsets": [],
+        "employee_look_vector": [
+          1,
+          0
+        ],
+        "proposed_interaction_cell": null,
+        "seated_pose_needed": false,
+        "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+        "reason": "Correct east view remains missing. Original brief requested west folder leaf order; one initial call plus three retries exhausted. Final source reused as limited W candidate, not accepted as E and not a new retry budget.",
+        "review_path": "dev/art-catalogue/LAWYER_EAST_ATTEMPT_REVIEW.md",
+        "evidence_paths": [
+          "game/tests/output/lawyer-kit-east/manifest.json"
+        ],
+        "source_batch": {
+          "original_requested_direction": "east",
+          "initial_calls": 1,
+          "targeted_retries": 3,
+          "retry_limit": 3,
+          "exhausted": true,
+          "reclassified_candidate_slot": "lawyer_contract_kit/west"
+        },
+        "source_attempts": [
+          {
+            "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v1.png",
+            "size_px": [
+              1672,
+              941
+            ],
+            "channels": "RGB",
+            "alpha": "opaque",
+            "prompt_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v1.md",
+            "sha256": "e7803c933077384c69424b2640283fe31ecd0e2465fb21b52ee1b02374f3ed9e",
+            "disposition": "Tapered top, opaque; misdirected E brief."
+          },
+          {
+            "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v2.png",
+            "size_px": [
+              1672,
+              941
+            ],
+            "channels": "RGBA",
+            "alpha": "nonopaque alpha present; see native review",
+            "prompt_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v2.md",
+            "sha256": "becc03eede387e6a57e82c8062a9a3e531081aa7fdbf0aa249207da405624e14",
+            "disposition": "Parallel edges, short top; misdirected E identity."
+          },
+          {
+            "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v3.png",
+            "size_px": [
+              1672,
+              941
+            ],
+            "channels": "RGB",
+            "alpha": "opaque",
+            "prompt_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v3.md",
+            "sha256": "66caac7bbd9bebed7ff8aa93c6b854047fed8e7919efbc56c7d19379d7850d4d",
+            "disposition": "Corrected taller top, opaque; misdirected E identity."
+          },
+          {
+            "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v4.png",
+            "size_px": [
+              1672,
+              941
+            ],
+            "channels": "RGBA",
+            "alpha": "nonopaque alpha present; see native review",
+            "prompt_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v4.md",
+            "sha256": "2433507ee40add344a53bcb931cc12b2fc5cc66d711dd46e589ef4512a8c0335",
+            "disposition": "Alpha-clean source partly W-compatible; tabs/cup/thickness still wrong. Not a correct E deliverable."
+          }
+        ]
+      }
+    },
+    {
+      "facing": "south",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/south-whole.png",
+      "source_reference_path": null,
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        0,
+        0
+      ],
+      "proposed_occupied_cell_offsets": [],
+      "employee_look_vector": [
+        0,
+        1
+      ],
+      "proposed_interaction_cell": null,
+      "seated_pose_needed": false,
+      "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+      "source_attempts": [
+        {
+          "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-south-v1.png",
+          "size_px": [
+            1672,
+            941
+          ],
+          "channels": "RGB",
+          "alpha": "opaque",
+          "prompt_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-south-v1.md",
+          "sha256": "db41ae7fe4d5687eb2280f9abd722d2b374ff1ad57fb7298d799c41f48f3abc2",
+          "disposition": "RGB checkerboard; correct broad opposite-view identity."
+        },
+        {
+          "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-south-v2.png",
+          "size_px": [
+            1672,
+            941
+          ],
+          "channels": "RGBA",
+          "alpha": "nonopaque alpha present; see native review",
+          "prompt_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-south-v2.md",
+          "sha256": "773cf2b3e25e04c32c1a2d212a61111863c69ab8818bff8dc6f6764faf96f67c",
+          "disposition": "Targeted alpha extraction; native candidate, not accepted."
+        }
+      ],
+      "evidence_path": "game/tests/output/lawyer-contract-kit-v2/actual-room-contact-sheet-native.png",
+      "preview_path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/south-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/south-whole.png",
+      "review_path": "dev/LAWYER_CONTRACT_KIT_V2_NATIVE_REVIEW.md",
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/manifest.json",
+        "game/tests/output/lawyer-contract-kit-v2/structural-results.json",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-results.json",
+        "game/tests/output/lawyer-contract-kit-v2/candidate-contact-sheet-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/candidate-contact-sheet-4x.png",
+        "game/tests/output/lawyer-contract-kit-v2/candidate-layers-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/candidate-objects-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-contact-sheet-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-contact-sheet-4x.png",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-unoccupied-contact-sheet-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-unoccupied-contact-sheet-4x.png",
+        "dev/LAWYER_CONTRACT_KIT_V2_NATIVE_REVIEW.md"
+      ],
+      "reason": "Approved passive four-facing art-library deliverable after explicit native-size and 4x agent visual review. The complete pre-v2 attempt and native-candidate record is retained below; approval creates no runtime binding, legal role pose, service, behavior, interaction, case state, or filing authority.",
+      "export_method": "Independent deterministic typed-GDScript screen-axis geometry for lawyer-contract-kit-v2 south; no ImageGen retry, generated source, finished-raster rotation, mirror, scale, text, logo, signature, gavel, baked character, or baked furniture.",
+      "native_geometry": {
+        "canvas_size_px": [
+          192,
+          224
+        ],
+        "floor_anchor_px": [
+          96,
+          160
+        ],
+        "sprite_offset_px": [
+          0,
+          -48
+        ],
+        "whole_opaque_bounds_px": [
+          50,
+          115,
+          91,
+          27
+        ],
+        "whole_opaque_pixels": 557
+      },
+      "native_exports": [
+        {
+          "layer": "surface_decor_rear",
+          "source_layer": "surface_decor_rear",
+          "path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/south-surface_decor_rear.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            50,
+            115,
+            91,
+            16
+          ],
+          "opaque_pixels": 463,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 10,
+          "sha256": "02cdc501c798e650f00bf8a5cb8da75cd679e7655a43516a9aeddc641292d52e",
+          "z_offset": 2,
+          "source_path": "game/tools/lawyer_contract_kit_v2_geometry.gd",
+          "review_path": "dev/LAWYER_CONTRACT_KIT_V2_NATIVE_REVIEW.md",
+          "method": "Exact code-native registered layer; binary alpha, zero hidden RGB, shared canvas/pivot, and independently declared south construction."
+        },
+        {
+          "layer": "surface_decor_front",
+          "source_layer": "surface_decor_front",
+          "path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/south-surface_decor_front.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            130,
+            128,
+            10,
+            14
+          ],
+          "opaque_pixels": 94,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 5,
+          "sha256": "9a9d42eb56a9ff04c85ab6677e6f0182e182d1efd878deb641a2dd444ea6ec33",
+          "z_offset": 4,
+          "source_path": "game/tools/lawyer_contract_kit_v2_geometry.gd",
+          "review_path": "dev/LAWYER_CONTRACT_KIT_V2_NATIVE_REVIEW.md",
+          "method": "Exact code-native registered layer; binary alpha, zero hidden RGB, shared canvas/pivot, and independently declared south construction."
+        }
+      ],
+      "composite_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/south-whole.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            50,
+            115,
+            91,
+            27
+          ],
+          "opaque_pixels": 557,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 13,
+          "sha256": "b2fd40d5af77c91567769de46717f3016541d046f454f9d944e940e10c1a6afd",
+          "method": "Byte-exact ordered union of the two approved native layers."
+        }
+      ],
+      "actual_room_observation": {
+        "scene": "actual GameMain and production TownRoom at native 1280x720",
+        "renderer": "macOS",
+        "workstation_capability_revision": "workstations-v2:south",
+        "work_facing": "south",
+        "actor_probe": "existing_mina_directional_seated_typing_not_lawyer",
+        "actor_work_point_px": [
+          336,
+          240
+        ],
+        "actor_pixel_delta": 856,
+        "measured_actor_overlay_overlap_pixels": {
+          "surface_decor_rear": 0,
+          "surface_decor_front": 0,
+          "total": 0
+        },
+        "overlap_interpretation": "Recorded exactly as measured; zero is accepted because decor was not moved to manufacture pixel overlap. Mina proves accepted host gaze/contact/scale only and is not a legal-role pose.",
+        "host_assembly_covered_pixels": {
+          "surface_decor_rear": 0,
+          "surface_decor_front": 0
+        },
+        "visible_candidate_pixels": {
+          "surface_decor_rear": 463,
+          "surface_decor_front": 94
+        },
+        "collision_shapes_before": 3,
+        "collision_shapes_after": 3
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "role_specific_actor_pose_claimed": false,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 3,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "note": "Accepted by the September 6 lawyer-contract-kit-v2 agent-native review for passive library use only. Scores meet the catalogue gate. Mina is only the existing directional host-contact probe; zero measured actor/decor overlap and no legal pose or service are claimed.",
+        "acceptance_scope": "passive_art_library",
+        "acceptance_date": "2026-09-06"
+      },
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_exports": [],
+      "runtime_registered": false,
+      "historical_candidate_before_v2": {
+        "facing": "south",
+        "status": "native_review_required",
+        "deliverable_availability": "native_export",
+        "approved_art_path": null,
+        "evidence_path": "game/tests/fixtures/furniture-calibration/roles/lawyer-south-v2-paper-4x.png",
+        "source_reference_path": null,
+        "legacy_runtime_art_for_this_facing": false,
+        "footprint_cells": [
+          0,
+          0
+        ],
+        "proposed_occupied_cell_offsets": [],
+        "employee_look_vector": [
+          0,
+          1
+        ],
+        "proposed_interaction_cell": null,
+        "seated_pose_needed": false,
+        "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+        "generated_source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-south-v2.png",
+        "prompt_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-south-v2.md",
+        "native_export_path": "game/tests/fixtures/furniture-calibration/roles/lawyer-south-v2.png",
+        "review_path": "dev/art-catalogue/LAWYER_SOUTH_KIT_REVIEW.md",
+        "reason": "South native candidate: right spines, checklist left, blue pen right. Binder20x23 and folder26x18 differ slightly from N; actual room/mouse clearance and family approval remain pending at this checkpoint.",
+        "source_attempts": [
+          {
+            "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-south-v1.png",
+            "size_px": [
+              1672,
+              941
+            ],
+            "channels": "RGB",
+            "alpha": "opaque",
+            "prompt_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-south-v1.md",
+            "sha256": "db41ae7fe4d5687eb2280f9abd722d2b374ff1ad57fb7298d799c41f48f3abc2",
+            "disposition": "RGB checkerboard; correct broad opposite-view identity."
+          },
+          {
+            "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-south-v2.png",
+            "size_px": [
+              1672,
+              941
+            ],
+            "channels": "RGBA",
+            "alpha": "nonopaque alpha present; see native review",
+            "prompt_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-south-v2.md",
+            "sha256": "773cf2b3e25e04c32c1a2d212a61111863c69ab8818bff8dc6f6764faf96f67c",
+            "disposition": "Targeted alpha extraction; native candidate, not accepted."
+          }
+        ],
+        "component_exports": [
+          {
+            "component": "binders",
+            "path": "game/tests/fixtures/furniture-calibration/roles/lawyer-south-v2-binders.png",
+            "canvas_size_px": [
+              192,
+              224
+            ],
+            "opaque_bounds_px": [
+              122,
+              106,
+              20,
+              23
+            ],
+            "opaque_pixels": 460,
+            "floor_anchor_px": [
+              96,
+              160
+            ],
+            "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-south-v2.png",
+            "palette_path": "dev/art-catalogue/role-material-palette.svg",
+            "review_path": "dev/art-catalogue/LAWYER_SOUTH_KIT_REVIEW.md",
+            "sha256": "245b308e8e0ab4168289f0b01055a85d8ad8de0dbbc08d9b6f396df0b43cdf7f",
+            "method": "Complete object uniformly point-normalized and alpha-preserving role-palette export; staged, not approved."
+          },
+          {
+            "component": "folder",
+            "path": "game/tests/fixtures/furniture-calibration/roles/lawyer-south-v2-folder.png",
+            "canvas_size_px": [
+              192,
+              224
+            ],
+            "opaque_bounds_px": [
+              51,
+              117,
+              26,
+              18
+            ],
+            "opaque_pixels": 434,
+            "floor_anchor_px": [
+              96,
+              160
+            ],
+            "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-south-v2.png",
+            "palette_path": "dev/art-catalogue/role-material-palette.svg",
+            "review_path": "dev/art-catalogue/LAWYER_SOUTH_KIT_REVIEW.md",
+            "sha256": "e5f72255e0c81ba123958c04e29e24939a1881109f16c14c4c524f21f37194e7",
+            "method": "Complete object uniformly point-normalized and alpha-preserving role-palette export; staged, not approved."
+          },
+          {
+            "component": "pen_cup",
+            "path": "game/tests/fixtures/furniture-calibration/roles/lawyer-south-v2-pen_cup.png",
+            "canvas_size_px": [
+              192,
+              224
+            ],
+            "opaque_bounds_px": [
+              126,
+              131,
+              7,
+              12
+            ],
+            "opaque_pixels": 72,
+            "floor_anchor_px": [
+              96,
+              160
+            ],
+            "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-south-v2.png",
+            "palette_path": "dev/art-catalogue/role-material-palette.svg",
+            "review_path": "dev/art-catalogue/LAWYER_SOUTH_KIT_REVIEW.md",
+            "sha256": "c48dd5dfef0d460ea80c1037be07022e86359e0a1c4443ec1b7d69005385bb68",
+            "method": "Complete object uniformly point-normalized and alpha-preserving role-palette export; staged, not approved."
+          }
+        ]
+      }
+    },
+    {
+      "facing": "west",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/west-whole.png",
+      "source_reference_path": null,
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        0,
+        0
+      ],
+      "proposed_occupied_cell_offsets": [],
+      "employee_look_vector": [
+        -1,
+        0
+      ],
+      "proposed_interaction_cell": null,
+      "seated_pose_needed": false,
+      "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+      "reclassification": {
+        "source_requested_direction": "east",
+        "candidate_direction": "west",
+        "new_image_calls": 0,
+        "original_batch_exhausted": true,
+        "note": "Reused E4 source, original filenames/prompts retained. This is not a second correctly authored direction or a reset retry budget."
+      },
+      "evidence_path": "game/tests/output/lawyer-contract-kit-v2/actual-room-contact-sheet-native.png",
+      "preview_path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/west-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/west-whole.png",
+      "review_path": "dev/LAWYER_CONTRACT_KIT_V2_NATIVE_REVIEW.md",
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/manifest.json",
+        "game/tests/output/lawyer-contract-kit-v2/structural-results.json",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-results.json",
+        "game/tests/output/lawyer-contract-kit-v2/candidate-contact-sheet-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/candidate-contact-sheet-4x.png",
+        "game/tests/output/lawyer-contract-kit-v2/candidate-layers-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/candidate-objects-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-contact-sheet-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-contact-sheet-4x.png",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-unoccupied-contact-sheet-native.png",
+        "game/tests/output/lawyer-contract-kit-v2/actual-room-unoccupied-contact-sheet-4x.png",
+        "dev/LAWYER_CONTRACT_KIT_V2_NATIVE_REVIEW.md"
+      ],
+      "reason": "Approved passive four-facing art-library deliverable after explicit native-size and 4x agent visual review. The complete pre-v2 attempt and native-candidate record is retained below; approval creates no runtime binding, legal role pose, service, behavior, interaction, case state, or filing authority.",
+      "export_method": "Independent deterministic typed-GDScript screen-axis geometry for lawyer-contract-kit-v2 west; no ImageGen retry, generated source, finished-raster rotation, mirror, scale, text, logo, signature, gavel, baked character, or baked furniture.",
+      "native_geometry": {
+        "canvas_size_px": [
+          192,
+          224
+        ],
+        "floor_anchor_px": [
+          96,
+          160
+        ],
+        "sprite_offset_px": [
+          0,
+          -48
+        ],
+        "whole_opaque_bounds_px": [
+          82,
+          84,
+          27,
+          87
+        ],
+        "whole_opaque_pixels": 551
+      },
+      "native_exports": [
+        {
+          "layer": "surface_decor_rear",
+          "source_layer": "surface_decor_rear",
+          "path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/west-surface_decor_rear.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            82,
+            84,
+            14,
+            18
+          ],
+          "opaque_pixels": 227,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 8,
+          "sha256": "cc3fbc516305fdd6aa3383ac2e3912cd21656f479703292ae740d829dd90a35f",
+          "z_offset": 0,
+          "source_path": "game/tools/lawyer_contract_kit_v2_geometry.gd",
+          "review_path": "dev/LAWYER_CONTRACT_KIT_V2_NATIVE_REVIEW.md",
+          "method": "Exact code-native registered layer; binary alpha, zero hidden RGB, shared canvas/pivot, and independently declared west construction."
+        },
+        {
+          "layer": "surface_decor_front",
+          "source_layer": "surface_decor_front",
+          "path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/west-surface_decor_front.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            83,
+            149,
+            26,
+            22
+          ],
+          "opaque_pixels": 324,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 11,
+          "sha256": "3f4f4238e1f682bbdea51ac3fccf296aa8d9eb2fc48b1bb27950a3335fde33ce",
+          "z_offset": 3,
+          "source_path": "game/tools/lawyer_contract_kit_v2_geometry.gd",
+          "review_path": "dev/LAWYER_CONTRACT_KIT_V2_NATIVE_REVIEW.md",
+          "method": "Exact code-native registered layer; binary alpha, zero hidden RGB, shared canvas/pivot, and independently declared west construction."
+        }
+      ],
+      "composite_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/west-whole.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            82,
+            84,
+            27,
+            87
+          ],
+          "opaque_pixels": 551,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 13,
+          "sha256": "7bb14965bc430b6e4a62949080f35cf8c35fcf4e061ac10a089d9e40d8f1c76a",
+          "method": "Byte-exact ordered union of the two approved native layers."
+        }
+      ],
+      "actual_room_observation": {
+        "scene": "actual GameMain and production TownRoom at native 1280x720",
+        "renderer": "macOS",
+        "workstation_capability_revision": "workstations-v2:west",
+        "work_facing": "west",
+        "actor_probe": "existing_mina_directional_seated_typing_not_lawyer",
+        "actor_work_point_px": [
+          368,
+          272
+        ],
+        "actor_pixel_delta": 875,
+        "measured_actor_overlay_overlap_pixels": {
+          "surface_decor_rear": 0,
+          "surface_decor_front": 0,
+          "total": 0
+        },
+        "overlap_interpretation": "Recorded exactly as measured; zero is accepted because decor was not moved to manufacture pixel overlap. Mina proves accepted host gaze/contact/scale only and is not a legal-role pose.",
+        "host_assembly_covered_pixels": {
+          "surface_decor_rear": 25,
+          "surface_decor_front": 0
+        },
+        "visible_candidate_pixels": {
+          "surface_decor_rear": 202,
+          "surface_decor_front": 324
+        },
+        "collision_shapes_before": 3,
+        "collision_shapes_after": 3
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "role_specific_actor_pose_claimed": false,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 3,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "note": "Accepted by the September 6 lawyer-contract-kit-v2 agent-native review for passive library use only. Scores meet the catalogue gate. Mina is only the existing directional host-contact probe; zero measured actor/decor overlap and no legal pose or service are claimed.",
+        "acceptance_scope": "passive_art_library",
+        "acceptance_date": "2026-09-06"
+      },
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_exports": [],
+      "runtime_registered": false,
+      "historical_candidate_before_v2": {
+        "facing": "west",
+        "status": "cleanup_required",
+        "deliverable_availability": "native_export",
+        "approved_art_path": null,
+        "evidence_path": "game/tests/fixtures/furniture-calibration/roles/lawyer-west-reclassified-v4-paper-4x.png",
+        "source_reference_path": null,
+        "legacy_runtime_art_for_this_facing": false,
+        "footprint_cells": [
+          0,
+          0
+        ],
+        "proposed_occupied_cell_offsets": [],
+        "employee_look_vector": [
+          -1,
+          0
+        ],
+        "proposed_interaction_cell": null,
+        "seated_pose_needed": false,
+        "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+        "generated_source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v4.png",
+        "prompt_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v4.md",
+        "native_export_path": "game/tests/fixtures/furniture-calibration/roles/lawyer-west-reclassified-v4.png",
+        "review_path": "dev/art-catalogue/LAWYER_DIRECTION_IDENTITY_REVIEW.md",
+        "evidence_paths": [
+          "game/tests/output/lawyer-direction-identity/results.json"
+        ],
+        "reason": "Reclassified existing misdirected E4 pixels: W leaf order and near spines fit, tabs stay right, checkbox rows stay upright, cup turn is unproven, binder12x32 vs12x30 target. No new W generation or approval.",
+        "reclassification": {
+          "source_requested_direction": "east",
+          "candidate_direction": "west",
+          "new_image_calls": 0,
+          "original_batch_exhausted": true,
+          "note": "Reused E4 source, original filenames/prompts retained. This is not a second correctly authored direction or a reset retry budget."
+        },
+        "component_exports": [
+          {
+            "component": "binders",
+            "path": "game/tests/fixtures/furniture-calibration/roles/lawyer-west-reclassified-v4-binders.png",
+            "canvas_size_px": [
+              192,
+              224
+            ],
+            "opaque_bounds_px": [
+              86,
+              70,
+              12,
+              32
+            ],
+            "opaque_pixels": 382,
+            "floor_anchor_px": [
+              96,
+              160
+            ],
+            "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v4.png",
+            "palette_path": "dev/art-catalogue/role-material-palette.svg",
+            "review_path": "dev/art-catalogue/LAWYER_DIRECTION_IDENTITY_REVIEW.md",
+            "sha256": "9e8139cd64e0c49a9b2888be2880faaf080600456ea914c8d9b1c2eb2971c254",
+            "method": "Complete object uniformly point-normalized and alpha-preserving role-palette export; staged, not approved."
+          },
+          {
+            "component": "folder",
+            "path": "game/tests/fixtures/furniture-calibration/roles/lawyer-west-reclassified-v4-folder.png",
+            "canvas_size_px": [
+              192,
+              224
+            ],
+            "opaque_bounds_px": [
+              83,
+              147,
+              19,
+              27
+            ],
+            "opaque_pixels": 493,
+            "floor_anchor_px": [
+              96,
+              160
+            ],
+            "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v4.png",
+            "palette_path": "dev/art-catalogue/role-material-palette.svg",
+            "review_path": "dev/art-catalogue/LAWYER_DIRECTION_IDENTITY_REVIEW.md",
+            "sha256": "9b22978b5f3d5174d56c92095e87003b38bb02a366ebd9c4107f14b4fabb0309",
+            "method": "Complete object uniformly point-normalized and alpha-preserving role-palette export; staged, not approved."
+          },
+          {
+            "component": "pen_cup",
+            "path": "game/tests/fixtures/furniture-calibration/roles/lawyer-west-reclassified-v4-pen_cup.png",
+            "canvas_size_px": [
+              192,
+              224
+            ],
+            "opaque_bounds_px": [
+              103,
+              74,
+              6,
+              12
+            ],
+            "opaque_pixels": 67,
+            "floor_anchor_px": [
+              96,
+              160
+            ],
+            "source_path": "game/assets/source/overnight-20260904/roles/lawyer-kit-east-v4.png",
+            "palette_path": "dev/art-catalogue/role-material-palette.svg",
+            "review_path": "dev/art-catalogue/LAWYER_DIRECTION_IDENTITY_REVIEW.md",
+            "sha256": "bef92238301f8595898b4174b39accbc8a66aa4c207abb25cdb9673618d82493",
+            "method": "Complete object uniformly point-normalized and alpha-preserving role-palette export; staged, not approved."
+          }
+        ]
+      }
+    }
+  ]
+}

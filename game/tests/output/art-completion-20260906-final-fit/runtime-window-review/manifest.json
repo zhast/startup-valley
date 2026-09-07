@@ -1,0 +1,1101 @@
+{
+  "cases": [
+    {
+      "actual_station_cursor": [
+        128.0,
+        400.0
+      ],
+      "captures": [
+        "res://tests/output/art-completion-20260906-final-fit/runtime-window-review/native-world-hover.png",
+        "res://tests/output/art-completion-20260906-final-fit/runtime-window-review/native-drawer.png",
+        "res://tests/output/art-completion-20260906-final-fit/runtime-window-review/native-reader.png"
+      ],
+      "content_window_rect": [
+        0.0,
+        0.0,
+        1280.0,
+        720.0
+      ],
+      "detail_crops": [
+        "res://tests/output/art-completion-20260906-final-fit/runtime-window-review/native-world-hover-detail.png",
+        "res://tests/output/art-completion-20260906-final-fit/runtime-window-review/native-drawer-detail.png",
+        "res://tests/output/art-completion-20260906-final-fit/runtime-window-review/native-reader-detail.png"
+      ],
+      "full_client_texture": true,
+      "geometry": {
+        "drawer": [
+          1150.0,
+          0.0,
+          368.0,
+          720.0
+        ],
+        "hud": [
+          371.0,
+          8.0,
+          408.0,
+          68.0
+        ],
+        "rail": [
+          1150.0,
+          0.0,
+          130.0,
+          720.0
+        ]
+      },
+      "id": "native",
+      "open_drawer_rect": [
+        782.0,
+        0.0,
+        368.0,
+        720.0
+      ],
+      "reader_geometry": {
+        "ask_button": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Bold.tres",
+          "font_size": 16,
+          "logical_rect": [
+            1030.0,
+            598.0,
+            100.0,
+            48.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            1030.0,
+            598.0,
+            100.0,
+            48.0
+          ],
+          "window_rect": [
+            1030.0,
+            598.0,
+            100.0,
+            48.0
+          ]
+        },
+        "assign_tab": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Bold.tres",
+          "font_size": 16,
+          "logical_rect": [
+            880.0,
+            147.0,
+            86.0,
+            44.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            880.0,
+            147.0,
+            86.0,
+            44.0
+          ],
+          "window_rect": [
+            880.0,
+            147.0,
+            86.0,
+            44.0
+          ]
+        },
+        "chat_input": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Body.tres",
+          "font_size": 16,
+          "logical_rect": [
+            802.0,
+            598.0,
+            224.0,
+            48.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            802.0,
+            598.0,
+            224.0,
+            48.0
+          ],
+          "window_rect": [
+            802.0,
+            598.0,
+            224.0,
+            48.0
+          ]
+        },
+        "chat_tab": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Bold.tres",
+          "font_size": 16,
+          "logical_rect": [
+            794.0,
+            147.0,
+            86.0,
+            44.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            794.0,
+            147.0,
+            86.0,
+            44.0
+          ],
+          "window_rect": [
+            794.0,
+            147.0,
+            86.0,
+            44.0
+          ]
+        },
+        "day_caption": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Emphasis.tres",
+          "font_size": 14,
+          "logical_rect": [
+            397.0,
+            16.0,
+            116.0,
+            20.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            397.0,
+            16.0,
+            116.0,
+            20.0
+          ],
+          "window_rect": [
+            397.0,
+            16.0,
+            116.0,
+            20.0
+          ]
+        },
+        "day_value": {
+          "font": "res://assets/fonts/not-jam-slab/NotJamSlabSerif11.ttf",
+          "font_size": 22,
+          "logical_rect": [
+            397.0,
+            37.0,
+            116.0,
+            22.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            397.0,
+            37.0,
+            116.0,
+            22.0
+          ],
+          "window_rect": [
+            397.0,
+            37.0,
+            116.0,
+            22.0
+          ]
+        },
+        "earned_value": {
+          "font": "res://assets/fonts/not-jam-slab/NotJamSlabSerif11.ttf",
+          "font_size": 22,
+          "logical_rect": [
+            641.0,
+            37.0,
+            110.0,
+            22.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            641.0,
+            37.0,
+            110.0,
+            22.0
+          ],
+          "window_rect": [
+            641.0,
+            37.0,
+            110.0,
+            22.0
+          ]
+        },
+        "reader_close": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Bold.tres",
+          "font_size": 24,
+          "logical_rect": [
+            884.0,
+            88.0,
+            44.0,
+            44.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            884.0,
+            88.0,
+            44.0,
+            44.0
+          ],
+          "window_rect": [
+            884.0,
+            88.0,
+            44.0,
+            44.0
+          ]
+        },
+        "reader_content": {
+          "logical_rect": [
+            352.0,
+            192.0,
+            576.0,
+            432.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            352.0,
+            192.0,
+            576.0,
+            432.0
+          ],
+          "window_rect": [
+            352.0,
+            192.0,
+            576.0,
+            432.0
+          ]
+        },
+        "reader_title": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Bold.tres",
+          "font_size": 20,
+          "logical_rect": [
+            386.0,
+            95.0,
+            488.0,
+            29.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            386.0,
+            95.0,
+            488.0,
+            29.0
+          ],
+          "window_rect": [
+            386.0,
+            95.0,
+            488.0,
+            29.0
+          ]
+        },
+        "time_value": {
+          "font": "res://assets/fonts/not-jam-slab/NotJamSlabSerif11.ttf",
+          "font_size": 22,
+          "logical_rect": [
+            537.0,
+            37.0,
+            96.0,
+            22.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            537.0,
+            37.0,
+            96.0,
+            22.0
+          ],
+          "window_rect": [
+            537.0,
+            37.0,
+            96.0,
+            22.0
+          ]
+        }
+      },
+      "stationary_hashes": [
+        "261c518b88bf1873b5ca0868f1acb81bd498c7f25e77bfb0cfaea3b27ab4338c",
+        "261c518b88bf1873b5ca0868f1acb81bd498c7f25e77bfb0cfaea3b27ab4338c",
+        "261c518b88bf1873b5ca0868f1acb81bd498c7f25e77bfb0cfaea3b27ab4338c",
+        "261c518b88bf1873b5ca0868f1acb81bd498c7f25e77bfb0cfaea3b27ab4338c"
+      ],
+      "texture_size": [
+        1280.0,
+        720.0
+      ],
+      "transform": {
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "x": [
+          1.0,
+          0.0
+        ],
+        "y": [
+          0.0,
+          1.0
+        ]
+      },
+      "window": [
+        1280.0,
+        720.0
+      ]
+    },
+    {
+      "actual_station_cursor": [
+        128.0,
+        400.0
+      ],
+      "captures": [
+        "res://tests/output/art-completion-20260906-final-fit/runtime-window-review/integer2x-world-hover.png",
+        "res://tests/output/art-completion-20260906-final-fit/runtime-window-review/integer2x-drawer.png",
+        "res://tests/output/art-completion-20260906-final-fit/runtime-window-review/integer2x-reader.png"
+      ],
+      "content_window_rect": [
+        0.0,
+        0.0,
+        2560.0,
+        1440.0
+      ],
+      "detail_crops": [
+        "res://tests/output/art-completion-20260906-final-fit/runtime-window-review/integer2x-world-hover-detail.png",
+        "res://tests/output/art-completion-20260906-final-fit/runtime-window-review/integer2x-drawer-detail.png",
+        "res://tests/output/art-completion-20260906-final-fit/runtime-window-review/integer2x-reader-detail.png"
+      ],
+      "full_client_texture": true,
+      "geometry": {
+        "drawer": [
+          1150.0,
+          0.0,
+          368.0,
+          720.0
+        ],
+        "hud": [
+          371.0,
+          8.0,
+          408.0,
+          68.0
+        ],
+        "rail": [
+          1150.0,
+          0.0,
+          130.0,
+          720.0
+        ]
+      },
+      "id": "integer2x",
+      "open_drawer_rect": [
+        782.0,
+        0.0,
+        368.0,
+        720.0
+      ],
+      "reader_geometry": {
+        "ask_button": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Bold.tres",
+          "font_size": 16,
+          "logical_rect": [
+            1030.0,
+            598.0,
+            100.0,
+            48.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            2060.0,
+            1196.0,
+            200.0,
+            96.0
+          ],
+          "window_rect": [
+            2060.0,
+            1196.0,
+            200.0,
+            96.0
+          ]
+        },
+        "assign_tab": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Bold.tres",
+          "font_size": 16,
+          "logical_rect": [
+            880.0,
+            147.0,
+            86.0,
+            44.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            1760.0,
+            294.0,
+            172.0,
+            88.0
+          ],
+          "window_rect": [
+            1760.0,
+            294.0,
+            172.0,
+            88.0
+          ]
+        },
+        "chat_input": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Body.tres",
+          "font_size": 16,
+          "logical_rect": [
+            802.0,
+            598.0,
+            224.0,
+            48.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            1604.0,
+            1196.0,
+            448.0,
+            96.0
+          ],
+          "window_rect": [
+            1604.0,
+            1196.0,
+            448.0,
+            96.0
+          ]
+        },
+        "chat_tab": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Bold.tres",
+          "font_size": 16,
+          "logical_rect": [
+            794.0,
+            147.0,
+            86.0,
+            44.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            1588.0,
+            294.0,
+            172.0,
+            88.0
+          ],
+          "window_rect": [
+            1588.0,
+            294.0,
+            172.0,
+            88.0
+          ]
+        },
+        "day_caption": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Emphasis.tres",
+          "font_size": 14,
+          "logical_rect": [
+            397.0,
+            16.0,
+            116.0,
+            20.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            794.0,
+            32.0,
+            232.0,
+            40.0
+          ],
+          "window_rect": [
+            794.0,
+            32.0,
+            232.0,
+            40.0
+          ]
+        },
+        "day_value": {
+          "font": "res://assets/fonts/not-jam-slab/NotJamSlabSerif11.ttf",
+          "font_size": 22,
+          "logical_rect": [
+            397.0,
+            37.0,
+            116.0,
+            22.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            794.0,
+            74.0,
+            232.0,
+            44.0
+          ],
+          "window_rect": [
+            794.0,
+            74.0,
+            232.0,
+            44.0
+          ]
+        },
+        "earned_value": {
+          "font": "res://assets/fonts/not-jam-slab/NotJamSlabSerif11.ttf",
+          "font_size": 22,
+          "logical_rect": [
+            641.0,
+            37.0,
+            110.0,
+            22.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            1282.0,
+            74.0,
+            220.0,
+            44.0
+          ],
+          "window_rect": [
+            1282.0,
+            74.0,
+            220.0,
+            44.0
+          ]
+        },
+        "reader_close": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Bold.tres",
+          "font_size": 24,
+          "logical_rect": [
+            884.0,
+            88.0,
+            44.0,
+            44.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            1768.0,
+            176.0,
+            88.0,
+            88.0
+          ],
+          "window_rect": [
+            1768.0,
+            176.0,
+            88.0,
+            88.0
+          ]
+        },
+        "reader_content": {
+          "logical_rect": [
+            352.0,
+            192.0,
+            576.0,
+            432.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            704.0,
+            384.0,
+            1152.0,
+            864.0
+          ],
+          "window_rect": [
+            704.0,
+            384.0,
+            1152.0,
+            864.0
+          ]
+        },
+        "reader_title": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Bold.tres",
+          "font_size": 20,
+          "logical_rect": [
+            386.0,
+            95.0,
+            488.0,
+            29.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            772.0,
+            190.0,
+            976.0,
+            58.0
+          ],
+          "window_rect": [
+            772.0,
+            190.0,
+            976.0,
+            58.0
+          ]
+        },
+        "time_value": {
+          "font": "res://assets/fonts/not-jam-slab/NotJamSlabSerif11.ttf",
+          "font_size": 22,
+          "logical_rect": [
+            537.0,
+            37.0,
+            96.0,
+            22.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            1074.0,
+            74.0,
+            192.0,
+            44.0
+          ],
+          "window_rect": [
+            1074.0,
+            74.0,
+            192.0,
+            44.0
+          ]
+        }
+      },
+      "stationary_hashes": [
+        "f0f1673d90cc8ffc269b1c95cc924b1cdca95772415d700db488f2ad17c6d5b4",
+        "f0f1673d90cc8ffc269b1c95cc924b1cdca95772415d700db488f2ad17c6d5b4",
+        "f0f1673d90cc8ffc269b1c95cc924b1cdca95772415d700db488f2ad17c6d5b4",
+        "f0f1673d90cc8ffc269b1c95cc924b1cdca95772415d700db488f2ad17c6d5b4"
+      ],
+      "texture_size": [
+        2560.0,
+        1440.0
+      ],
+      "transform": {
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "x": [
+          2.0,
+          0.0
+        ],
+        "y": [
+          0.0,
+          2.0
+        ]
+      },
+      "window": [
+        2560.0,
+        1440.0
+      ]
+    },
+    {
+      "actual_station_cursor": [
+        128.0,
+        400.0
+      ],
+      "captures": [
+        "res://tests/output/art-completion-20260906-final-fit/runtime-window-review/letterbox-world-hover.png",
+        "res://tests/output/art-completion-20260906-final-fit/runtime-window-review/letterbox-drawer.png",
+        "res://tests/output/art-completion-20260906-final-fit/runtime-window-review/letterbox-reader.png"
+      ],
+      "content_window_rect": [
+        0.0,
+        50.0,
+        1600.0,
+        900.0
+      ],
+      "detail_crops": [
+        "res://tests/output/art-completion-20260906-final-fit/runtime-window-review/letterbox-world-hover-detail.png",
+        "res://tests/output/art-completion-20260906-final-fit/runtime-window-review/letterbox-drawer-detail.png",
+        "res://tests/output/art-completion-20260906-final-fit/runtime-window-review/letterbox-reader-detail.png"
+      ],
+      "full_client_texture": false,
+      "geometry": {
+        "drawer": [
+          1150.0,
+          0.0,
+          368.0,
+          720.0
+        ],
+        "hud": [
+          371.0,
+          8.0,
+          408.0,
+          68.0
+        ],
+        "rail": [
+          1150.0,
+          0.0,
+          130.0,
+          720.0
+        ]
+      },
+      "id": "letterbox",
+      "open_drawer_rect": [
+        782.0,
+        0.0,
+        368.0,
+        720.0
+      ],
+      "reader_geometry": {
+        "ask_button": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Bold.tres",
+          "font_size": 16,
+          "logical_rect": [
+            1030.0,
+            598.0,
+            100.0,
+            48.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            1287.5,
+            747.5,
+            125.0,
+            60.0
+          ],
+          "window_rect": [
+            1287.5,
+            797.5,
+            125.0,
+            60.0
+          ]
+        },
+        "assign_tab": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Bold.tres",
+          "font_size": 16,
+          "logical_rect": [
+            880.0,
+            147.0,
+            86.0,
+            44.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            1100.0,
+            183.75,
+            107.5,
+            55.0
+          ],
+          "window_rect": [
+            1100.0,
+            233.75,
+            107.5,
+            55.0
+          ]
+        },
+        "chat_input": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Body.tres",
+          "font_size": 16,
+          "logical_rect": [
+            802.0,
+            598.0,
+            224.0,
+            48.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            1002.5,
+            747.5,
+            280.0,
+            60.0
+          ],
+          "window_rect": [
+            1002.5,
+            797.5,
+            280.0,
+            60.0
+          ]
+        },
+        "chat_tab": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Bold.tres",
+          "font_size": 16,
+          "logical_rect": [
+            794.0,
+            147.0,
+            86.0,
+            44.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            992.5,
+            183.75,
+            107.5,
+            55.0
+          ],
+          "window_rect": [
+            992.5,
+            233.75,
+            107.5,
+            55.0
+          ]
+        },
+        "day_caption": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Emphasis.tres",
+          "font_size": 14,
+          "logical_rect": [
+            397.0,
+            16.0,
+            116.0,
+            20.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            496.25,
+            20.0,
+            145.0,
+            25.0
+          ],
+          "window_rect": [
+            496.25,
+            70.0,
+            145.0,
+            25.0
+          ]
+        },
+        "day_value": {
+          "font": "res://assets/fonts/not-jam-slab/NotJamSlabSerif11.ttf",
+          "font_size": 22,
+          "logical_rect": [
+            397.0,
+            37.0,
+            116.0,
+            22.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            496.25,
+            46.25,
+            145.0,
+            27.5
+          ],
+          "window_rect": [
+            496.25,
+            96.25,
+            145.0,
+            27.5
+          ]
+        },
+        "earned_value": {
+          "font": "res://assets/fonts/not-jam-slab/NotJamSlabSerif11.ttf",
+          "font_size": 22,
+          "logical_rect": [
+            641.0,
+            37.0,
+            110.0,
+            22.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            801.25,
+            46.25,
+            137.5,
+            27.5
+          ],
+          "window_rect": [
+            801.25,
+            96.25,
+            137.5,
+            27.5
+          ]
+        },
+        "reader_close": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Bold.tres",
+          "font_size": 24,
+          "logical_rect": [
+            884.0,
+            88.0,
+            44.0,
+            44.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            1105.0,
+            110.0,
+            55.0,
+            55.0
+          ],
+          "window_rect": [
+            1105.0,
+            160.0,
+            55.0,
+            55.0
+          ]
+        },
+        "reader_content": {
+          "logical_rect": [
+            352.0,
+            192.0,
+            576.0,
+            432.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            440.0,
+            240.0,
+            720.0,
+            540.0
+          ],
+          "window_rect": [
+            440.0,
+            290.0,
+            720.0,
+            540.0
+          ]
+        },
+        "reader_title": {
+          "font": "res://assets/fonts/nunito-sans/NunitoSans-Bold.tres",
+          "font_size": 20,
+          "logical_rect": [
+            386.0,
+            95.0,
+            488.0,
+            29.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            482.5,
+            118.75,
+            610.0,
+            36.25
+          ],
+          "window_rect": [
+            482.5,
+            168.75,
+            610.0,
+            36.25
+          ]
+        },
+        "time_value": {
+          "font": "res://assets/fonts/not-jam-slab/NotJamSlabSerif11.ttf",
+          "font_size": 22,
+          "logical_rect": [
+            537.0,
+            37.0,
+            96.0,
+            22.0
+          ],
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "texture_rect": [
+            671.25,
+            46.25,
+            120.0,
+            27.5
+          ],
+          "window_rect": [
+            671.25,
+            96.25,
+            120.0,
+            27.5
+          ]
+        }
+      },
+      "stationary_hashes": [
+        "583e68d9f83ad47939376260a1e5550efddcb1b3c3ca77f4b64ae1b24a61e273",
+        "583e68d9f83ad47939376260a1e5550efddcb1b3c3ca77f4b64ae1b24a61e273",
+        "583e68d9f83ad47939376260a1e5550efddcb1b3c3ca77f4b64ae1b24a61e273",
+        "583e68d9f83ad47939376260a1e5550efddcb1b3c3ca77f4b64ae1b24a61e273"
+      ],
+      "texture_size": [
+        1600.0,
+        900.0
+      ],
+      "transform": {
+        "origin": [
+          0.0,
+          50.0
+        ],
+        "x": [
+          1.25,
+          0.0
+        ],
+        "y": [
+          0.0,
+          1.25
+        ]
+      },
+      "window": [
+        1600.0,
+        1000.0
+      ]
+    }
+  ],
+  "checks": 442,
+  "failures": [],
+  "fullscreen_used": false,
+  "production_changes": false,
+  "worker_or_save_access": false
+}

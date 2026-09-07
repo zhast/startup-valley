@@ -1,0 +1,578 @@
+{
+	"calibration_permits": false,
+	"captures": [
+		"office-stage-0.png",
+		"office-stage-1.png",
+		"office-stage-1-4x.png",
+		"office-stage-2.png",
+		"office-stage-2-4x.png",
+		"office-stage-3.png",
+		"office-stage-3-4x.png",
+		"office-stage-4.png",
+		"office-stage-4-4x.png",
+		"stage1-initial-walk-start.png",
+		"stage1-initial-walk-middle.png",
+		"stage1-initial-walk-end.png",
+		"stage1-view-south.png",
+		"stage1-view-south-4x.png",
+		"stage1-approach-south-start.png",
+		"stage1-approach-south-middle.png",
+		"stage1-approach-south-end.png",
+		"stage1-studio-south.png",
+		"stage1-leave-south-start.png",
+		"stage1-leave-south-middle.png",
+		"stage1-leave-south-end.png",
+		"stage1-view-west.png",
+		"stage1-view-west-4x.png",
+		"stage1-approach-west-start.png",
+		"stage1-approach-west-middle.png",
+		"stage1-approach-west-end.png",
+		"stage1-studio-west.png",
+		"stage1-leave-west-start.png",
+		"stage1-leave-west-middle.png",
+		"stage1-leave-west-end.png",
+		"stage1-view-north.png",
+		"stage1-view-north-4x.png",
+		"stage1-approach-north-start.png",
+		"stage1-approach-north-middle.png",
+		"stage1-approach-north-end.png",
+		"stage1-studio-north.png",
+		"stage1-leave-north-start.png",
+		"stage1-leave-north-middle.png",
+		"stage1-leave-north-end.png",
+		"stage1-view-east.png",
+		"stage1-view-east-4x.png",
+		"stage1-approach-east-start.png",
+		"stage1-approach-east-middle.png",
+		"stage1-approach-east-end.png",
+		"stage1-studio-east.png",
+		"stage1-leave-east-start.png",
+		"stage1-leave-east-middle.png",
+		"stage1-leave-east-end.png",
+		"stage4-initial-walk-start.png",
+		"stage4-initial-walk-middle.png",
+		"stage4-initial-walk-end.png",
+		"stage4-view-south.png",
+		"stage4-view-south-4x.png",
+		"stage4-approach-south-start.png",
+		"stage4-approach-south-middle.png",
+		"stage4-approach-south-end.png",
+		"stage4-studio-south.png",
+		"stage4-leave-south-start.png",
+		"stage4-leave-south-middle.png",
+		"stage4-leave-south-end.png",
+		"stage4-view-west.png",
+		"stage4-view-west-4x.png",
+		"stage4-approach-west-start.png",
+		"stage4-approach-west-middle.png",
+		"stage4-approach-west-end.png",
+		"stage4-studio-west.png",
+		"stage4-leave-west-start.png",
+		"stage4-leave-west-middle.png",
+		"stage4-leave-west-end.png",
+		"stage4-view-north.png",
+		"stage4-view-north-4x.png",
+		"stage4-approach-north-start.png",
+		"stage4-approach-north-middle.png",
+		"stage4-approach-north-end.png",
+		"stage4-studio-north.png",
+		"stage4-leave-north-start.png",
+		"stage4-leave-north-middle.png",
+		"stage4-leave-north-end.png",
+		"stage4-view-east.png",
+		"stage4-view-east-4x.png",
+		"stage4-approach-east-start.png",
+		"stage4-approach-east-middle.png",
+		"stage4-approach-east-end.png",
+		"stage4-studio-east.png",
+		"stage4-leave-east-start.png",
+		"stage4-leave-east-middle.png",
+		"stage4-leave-east-end.png"
+	],
+	"checks": 2255,
+	"completed": true,
+	"failures": [],
+	"paths": [
+		{
+			"samples": [
+				{
+					"foot": [
+						560.0,
+						624.0
+					],
+					"hash": "7011cd40432ebcd82e3a3cdcb21535634bc358a47477f618ad1cb0df22f9bab8"
+				},
+				{
+					"foot": [
+						560.0,
+						577.0
+					],
+					"hash": "30b55192e42d838607bf48ee0170144e809e59234c4d1d6ecc45ec00660a1946"
+				},
+				{
+					"foot": [
+						560.0,
+						528.0
+					],
+					"hash": "f4aef944e3d719612a75008dcd0119d565f57b701193c74a1cd7a1048e063b23"
+				}
+			],
+			"scenario": "stage1-initial-walk"
+		},
+		{
+			"samples": [
+				{
+					"foot": [
+						560.0,
+						528.0
+					],
+					"hash": "17f55773a41f1b99f676b4aafbb008da689f08403ccfb9983f7ad26a7420bd37"
+				},
+				{
+					"foot": [
+						306.0,
+						528.0
+					],
+					"hash": "9018d3cf8af4696db9cea9c3d11d5ee5c202e8ccd60621feafb4c66c97dede34"
+				},
+				{
+					"foot": [
+						144.0,
+						464.0
+					],
+					"hash": "c931893ee03ba3a539d050f48853c42fdae7f41e2d7339b030077c3bd11e8f34"
+				}
+			],
+			"scenario": "stage1-approach-south"
+		},
+		{
+			"samples": [
+				{
+					"foot": [
+						144.0,
+						464.0
+					],
+					"hash": "593f4778403ae61634b7f155d17da16c07795bc36cdfb5129502fae8b6ec5209"
+				},
+				{
+					"foot": [
+						398.0,
+						464.0
+					],
+					"hash": "61031b75903d1cbe68221ff8a6927acf9dfd44728549590971f328498f6ef8b7"
+				},
+				{
+					"foot": [
+						560.0,
+						528.0
+					],
+					"hash": "7a3392a50ed4ee42050a4d0e75e216c8c716f81b03ae239380a6d0acf1291597"
+				}
+			],
+			"scenario": "stage1-leave-south"
+		},
+		{
+			"samples": [
+				{
+					"foot": [
+						560.0,
+						528.0
+					],
+					"hash": "1fa4e0f532c19524034133e9a7d56e0799a327a3297a0d22b0126b1fc040698b"
+				},
+				{
+					"foot": [
+						274.0,
+						528.0
+					],
+					"hash": "70c10e755f6b17a4e7f949b443a054b08f09dc29e41b120c5780b316ca7ed3b5"
+				},
+				{
+					"foot": [
+						112.0,
+						432.0
+					],
+					"hash": "61219e8b4a8565176e4c08df00b74fff7a93ad22ca6a662689b02ea0d5032384"
+				}
+			],
+			"scenario": "stage1-approach-west"
+		},
+		{
+			"samples": [
+				{
+					"foot": [
+						112.0,
+						432.0
+					],
+					"hash": "3bca087ceb98da3f435f87e1ee330c314a854fc32ab4a35fb69bbc0516956bd8"
+				},
+				{
+					"foot": [
+						334.0,
+						496.0
+					],
+					"hash": "137ef1e0f99fd7c85ffaf57536c46252e22f5510a0b783fa9a2254c66a8b6ad1"
+				},
+				{
+					"foot": [
+						560.0,
+						528.0
+					],
+					"hash": "4e2ecae377d41e34bfe3d7a4a329582e262046b850c932a67e980fb9520852cb"
+				}
+			],
+			"scenario": "stage1-leave-west"
+		},
+		{
+			"samples": [
+				{
+					"foot": [
+						560.0,
+						528.0
+					],
+					"hash": "c69427104cfcf1e6b706f52f8e72bdc392d8999376cfab1e024cafa5a00bf09b"
+				},
+				{
+					"foot": [
+						274.0,
+						528.0
+					],
+					"hash": "8a7fed1c559581ffc37ac8fad45a6155a1d07607343de4f61b8f370334fc0248"
+				},
+				{
+					"foot": [
+						144.0,
+						400.0
+					],
+					"hash": "e791257cf9b8ea44e7adf1b9bdf3d12f6ca488522d289c87d3cf3c2a4c8f736b"
+				}
+			],
+			"scenario": "stage1-approach-north"
+		},
+		{
+			"samples": [
+				{
+					"foot": [
+						144.0,
+						400.0
+					],
+					"hash": "615ca55fc548e6f4bb82ae2ea825e99470954e74ff7d28155fede76ab7df96dc"
+				},
+				{
+					"foot": [
+						366.0,
+						464.0
+					],
+					"hash": "da58f6fa782ebb393a04ea39ed6e01d31d2a2d2d5f12d9f527bcfab4d036036b"
+				},
+				{
+					"foot": [
+						560.0,
+						528.0
+					],
+					"hash": "969321a1aba7bcfffaee3ada9ca9f40b2bc7ed8695c86e64866e8ef0fe11f4f4"
+				}
+			],
+			"scenario": "stage1-leave-north"
+		},
+		{
+			"samples": [
+				{
+					"foot": [
+						560.0,
+						528.0
+					],
+					"hash": "d88a83e8d8fdf75017cf0e0f6b384d1a6b6d3b4db7a81bd965fb2de72129c96b"
+				},
+				{
+					"foot": [
+						306.0,
+						528.0
+					],
+					"hash": "b08d4d751cb4a3754ffd533e276b4c1f51ff8dc9209424b07a2a5f7840572bf2"
+				},
+				{
+					"foot": [
+						176.0,
+						432.0
+					],
+					"hash": "d068c5bef1d36113e469b1aa3556c916491be07d4af9d55e3dc503db728e2a7c"
+				}
+			],
+			"scenario": "stage1-approach-east"
+		},
+		{
+			"samples": [
+				{
+					"foot": [
+						176.0,
+						432.0
+					],
+					"hash": "94305195f9003d05fb6aa63076ea5c161efadac504df1718dfb4d7a7c47a1d83"
+				},
+				{
+					"foot": [
+						398.0,
+						464.0
+					],
+					"hash": "b2f6468e786cb4c1d394b1d8639685ed101da2df8dfae4b9aa0510286a392762"
+				},
+				{
+					"foot": [
+						560.0,
+						528.0
+					],
+					"hash": "0dc0d63aee269b7ea67ef57bcd329647937f81d26a7d1d7c53cefc8d63d7ebe6"
+				}
+			],
+			"scenario": "stage1-leave-east"
+		},
+		{
+			"samples": [
+				{
+					"foot": [
+						560.0,
+						624.0
+					],
+					"hash": "11b06e73d8d14936df05d8f418ccd38813f4de0bd57370e715d5a2406739cc7e"
+				},
+				{
+					"foot": [
+						560.0,
+						577.0
+					],
+					"hash": "08aa02c41f5a8d2f294f8310122962d4e540b88917eb39f489c99780e98a2da1"
+				},
+				{
+					"foot": [
+						560.0,
+						528.0
+					],
+					"hash": "2110a550a9f6ac58507586918045092f2a4229d4044d1d58c5a1cf5d7b5b0744"
+				}
+			],
+			"scenario": "stage4-initial-walk"
+		},
+		{
+			"samples": [
+				{
+					"foot": [
+						560.0,
+						528.0
+					],
+					"hash": "aba8d432549a4b8da7c283f6f32522475aa5c72cb45b5c86f17349c6042b42cc"
+				},
+				{
+					"foot": [
+						306.0,
+						528.0
+					],
+					"hash": "fca4a3671990bc3c86aef958c24fcc7d68b7d44440f4f2b37841ebbe6e863355"
+				},
+				{
+					"foot": [
+						144.0,
+						464.0
+					],
+					"hash": "3df86a447ea935555f2429aae6d07b9e03fb461dcc4eeef66ef5ce050657e5b5"
+				}
+			],
+			"scenario": "stage4-approach-south"
+		},
+		{
+			"samples": [
+				{
+					"foot": [
+						144.0,
+						464.0
+					],
+					"hash": "b69219bf82a639f817736c63b165e18c1f13774a7180c6a61576f5e45c0b44dc"
+				},
+				{
+					"foot": [
+						398.0,
+						464.0
+					],
+					"hash": "5bb3158857f7d804038917e16dcac283a3083c6ed03e76e3513b2707b05f6289"
+				},
+				{
+					"foot": [
+						560.0,
+						528.0
+					],
+					"hash": "3bc37683bcab9fedde68a104b96362374578359b635889fd3f081db8c532cb93"
+				}
+			],
+			"scenario": "stage4-leave-south"
+		},
+		{
+			"samples": [
+				{
+					"foot": [
+						560.0,
+						528.0
+					],
+					"hash": "0cfed7b2331f7e2ea1ef423b391d58ca0bbb676976d3d13bcb637ca0068527c8"
+				},
+				{
+					"foot": [
+						274.0,
+						528.0
+					],
+					"hash": "3473a128d5279dc6dbf738f13ec538bd550dfd72512d2bc9d9730bbd5a4380c6"
+				},
+				{
+					"foot": [
+						112.0,
+						432.0
+					],
+					"hash": "a3460dfee228728355906599fd833db5dfc2481f9ef89acf7b2f818a5594a3a5"
+				}
+			],
+			"scenario": "stage4-approach-west"
+		},
+		{
+			"samples": [
+				{
+					"foot": [
+						112.0,
+						432.0
+					],
+					"hash": "7d67debfdab5d8c010c8fc5d0707f022fd160f597741e0befb450b4a3992a46d"
+				},
+				{
+					"foot": [
+						334.0,
+						496.0
+					],
+					"hash": "cee6903cff30dbbc7980e247accee5743885efe8dbdb7f1cba009bf85a157b39"
+				},
+				{
+					"foot": [
+						560.0,
+						528.0
+					],
+					"hash": "0f6c3809391522e353f0f5c54da90cc4af6450d74519fed823f7d6c1c9632ef0"
+				}
+			],
+			"scenario": "stage4-leave-west"
+		},
+		{
+			"samples": [
+				{
+					"foot": [
+						560.0,
+						528.0
+					],
+					"hash": "62bc063f8dddda444e61cf7ce8cc588a59b1a82cb938c09c88da22da46125ca8"
+				},
+				{
+					"foot": [
+						274.0,
+						528.0
+					],
+					"hash": "2777f2f2d8843c5914f0577f2f459fb2b397b0659c0c7ef62da38ca4dd84ccab"
+				},
+				{
+					"foot": [
+						144.0,
+						400.0
+					],
+					"hash": "017c7722c2341de6709d6ba5a3288d1640c2aed08c4acbb86aeca72402c2336e"
+				}
+			],
+			"scenario": "stage4-approach-north"
+		},
+		{
+			"samples": [
+				{
+					"foot": [
+						144.0,
+						400.0
+					],
+					"hash": "91b1c2c67a4191d2397fb47624ca4564354b6569802b1b7233905f0b528789a2"
+				},
+				{
+					"foot": [
+						366.0,
+						464.0
+					],
+					"hash": "d0cdff031e8c41a763068d2a9b2673cdf402a0f440213ae685211010f2d7cc5c"
+				},
+				{
+					"foot": [
+						560.0,
+						528.0
+					],
+					"hash": "887163ff3e3bc64251d70bf87209cf02089f1c2d34761c28fa8ea5215dfd5127"
+				}
+			],
+			"scenario": "stage4-leave-north"
+		},
+		{
+			"samples": [
+				{
+					"foot": [
+						560.0,
+						528.0
+					],
+					"hash": "8ade460a08c41e5f2350e910f626885f87f6aef32d7c61fef188cecf3c90f224"
+				},
+				{
+					"foot": [
+						306.0,
+						528.0
+					],
+					"hash": "a4694cadabfe28918e1fe411f31bef954c388f8c7f4bf9df41ede6b011628896"
+				},
+				{
+					"foot": [
+						176.0,
+						432.0
+					],
+					"hash": "5d79533c5d06c90ed68abae2abf2a1eacac718ea88cef0aa0f57aa8288a1b8a7"
+				}
+			],
+			"scenario": "stage4-approach-east"
+		},
+		{
+			"samples": [
+				{
+					"foot": [
+						176.0,
+						432.0
+					],
+					"hash": "d28806a848e2f377ebfabcaf5da60850a70c08fe69e9e889c958dd58e951784c"
+				},
+				{
+					"foot": [
+						398.0,
+						464.0
+					],
+					"hash": "a5ba603a95e8b8b57232a8e8a9fe073c5b9d5c8b583f7a62164e6c29ae22d3b2"
+				},
+				{
+					"foot": [
+						560.0,
+						528.0
+					],
+					"hash": "faed2333b037087fb33ada71a9ddfa355eacf7b25eef8cf31073744501b3f76b"
+				}
+			],
+			"scenario": "stage4-leave-east"
+		}
+	],
+	"personal_state_loaded": false,
+	"physics_ticks": 1590,
+	"source_hashes": {
+		"res://actors/employee_avatar.gd": "5e0e114e768b60127f4b15a62518bff0e0a3bb3ef6021dfc10ebcd179419effe",
+		"res://actors/player_avatar.gd": "8e3736788ac99fbe15195ccae5450e6da4994e2d64dad3598af38bf65dee810d",
+		"res://data/furniture_catalog.json": "962d47f9fd3867328f3f293351fbb3124e6053f2d156fc20e97ee856cce09319",
+		"res://tests/test_archive_production.gd": "2d148e6af5b06be3fc97bbfb3defd92532f2d1a324015856826caf68fbe49345",
+		"res://tools/archive_production_fixture.gd": "36b45d7c8c24813015bd61771a55e1d4ba383cbcbb192d758b77713fb45d475b",
+		"res://world/main.gd": "3e605ca86b31f1e873d479860040f1a262b1304493772a13f10237f731bd84aa",
+		"res://world/office_layout.gd": "182e872e88a7c035b1168a48f6e1529fe0997740e3b17b8552fb2581e76baec1",
+		"res://world/town_room.gd": "a42a4656b869393bc860033f8fee47f9b8a32804bdc10d7cefdc3b8357a0360d"
+	},
+	"worker_started": false
+}

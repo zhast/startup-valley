@@ -1,0 +1,299 @@
+{
+	"actor_probe_limit": "Existing Mina proves accepted workstation contact, gaze, host depth and visible overlay contribution only; no lamp service, switch or work behavior is created.",
+	"captures": [
+		"res://tests/output/desk-lamp-kit-v2/room-north.png",
+		"res://tests/output/desk-lamp-kit-v2/room-east.png",
+		"res://tests/output/desk-lamp-kit-v2/room-south.png",
+		"res://tests/output/desk-lamp-kit-v2/room-west.png",
+		"res://tests/output/desk-lamp-kit-v2/actual-room-host-baseline-native.png",
+		"res://tests/output/desk-lamp-kit-v2/actual-room-lamp-contact-sheet-native.png",
+		"res://tests/output/desk-lamp-kit-v2/actual-room-actor-contact-sheet-native.png",
+		"res://tests/output/desk-lamp-kit-v2/actual-room-actor-contact-sheet-4x.png",
+		"res://tests/output/desk-lamp-kit-v2/actual-gamemain-contact-sheet-native.png"
+	],
+	"checks": 67,
+	"failures": [],
+	"family": "desk_lamp_kit",
+	"floor_collision_added": false,
+	"observations": {
+		"east": {
+			"actor_overlay_intersection_measured_not_required": {
+				"surface_decor_front": 2,
+				"surface_decor_rear": 0,
+				"total": 2
+			},
+			"collision_shapes_before_after": [
+				3,
+				3
+			],
+			"desk_asset_revision": "workstations-v2",
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 128,
+					"covered_by_host": 0,
+					"source_opaque": 128
+				},
+				"surface_decor_rear": {
+					"changed": 127,
+					"covered_by_host": 0,
+					"source_opaque": 127
+				}
+			},
+			"render_descriptors": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/desk-lamp-kit-v2/east-surface_decor_rear.png",
+					"name": "DeskLampKitSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/desk-lamp-kit-v2/east-surface_decor_front.png",
+					"name": "DeskLampKitSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 4
+				}
+			],
+			"shade_whole_source_match": {
+				"mismatches": 0,
+				"opaque": 136
+			},
+			"support_centerline_total_pixels": 10,
+			"support_centerline_visible_pixels": 10,
+			"work_position_px": [
+				304.0,
+				272.0
+			],
+			"workstation_capability_revision": "workstations-v2:east"
+		},
+		"north": {
+			"actor_overlay_intersection_measured_not_required": {
+				"surface_decor_front": 0,
+				"surface_decor_rear": 0,
+				"total": 0
+			},
+			"collision_shapes_before_after": [
+				3,
+				3
+			],
+			"desk_asset_revision": "workstations-v2",
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 155,
+					"covered_by_host": 0,
+					"source_opaque": 155
+				},
+				"surface_decor_rear": {
+					"changed": 217,
+					"covered_by_host": 0,
+					"source_opaque": 217
+				}
+			},
+			"render_descriptors": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/desk-lamp-kit-v2/north-surface_decor_rear.png",
+					"name": "DeskLampKitSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/desk-lamp-kit-v2/north-surface_decor_front.png",
+					"name": "DeskLampKitSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 4
+				}
+			],
+			"shade_whole_source_match": {
+				"mismatches": 0,
+				"opaque": 129
+			},
+			"support_centerline_total_pixels": 19,
+			"support_centerline_visible_pixels": 19,
+			"work_position_px": [
+				336.0,
+				304.0
+			],
+			"workstation_capability_revision": "workstations-v2:north"
+		},
+		"south": {
+			"actor_overlay_intersection_measured_not_required": {
+				"surface_decor_front": 0,
+				"surface_decor_rear": 0,
+				"total": 0
+			},
+			"collision_shapes_before_after": [
+				3,
+				3
+			],
+			"desk_asset_revision": "workstations-v2",
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 158,
+					"covered_by_host": 0,
+					"source_opaque": 158
+				},
+				"surface_decor_rear": {
+					"changed": 207,
+					"covered_by_host": 0,
+					"source_opaque": 207
+				}
+			},
+			"render_descriptors": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/desk-lamp-kit-v2/south-surface_decor_rear.png",
+					"name": "DeskLampKitSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/desk-lamp-kit-v2/south-surface_decor_front.png",
+					"name": "DeskLampKitSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 4
+				}
+			],
+			"shade_whole_source_match": {
+				"mismatches": 0,
+				"opaque": 129
+			},
+			"support_centerline_total_pixels": 21,
+			"support_centerline_visible_pixels": 21,
+			"work_position_px": [
+				336.0,
+				240.0
+			],
+			"workstation_capability_revision": "workstations-v2:south"
+		},
+		"west": {
+			"actor_overlay_intersection_measured_not_required": {
+				"surface_decor_front": 0,
+				"surface_decor_rear": 0,
+				"total": 0
+			},
+			"collision_shapes_before_after": [
+				3,
+				3
+			],
+			"desk_asset_revision": "workstations-v2",
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 149,
+					"covered_by_host": 0,
+					"source_opaque": 149
+				},
+				"surface_decor_rear": {
+					"changed": 140,
+					"covered_by_host": 0,
+					"source_opaque": 140
+				}
+			},
+			"render_descriptors": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/desk-lamp-kit-v2/west-surface_decor_rear.png",
+					"name": "DeskLampKitSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/desk-lamp-kit-v2/west-surface_decor_front.png",
+					"name": "DeskLampKitSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 4
+				}
+			],
+			"shade_whole_source_match": {
+				"mismatches": 0,
+				"opaque": 92
+			},
+			"support_centerline_total_pixels": 14,
+			"support_centerline_visible_pixels": 14,
+			"work_position_px": [
+				368.0,
+				272.0
+			],
+			"workstation_capability_revision": "workstations-v2:west"
+		}
+	},
+	"renderer": "macOS",
+	"runtime_registered": false,
+	"save_access": false,
+	"scene": "actual GameMain / production TownRoom with accepted workstation and manually attached exact candidate overlays",
+	"service_created": false,
+	"status": "native_review_candidate_not_runtime_registered",
+	"viewport": [
+		1280,
+		720
+	],
+	"worker_disabled": true
+}

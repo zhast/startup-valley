@@ -1,0 +1,314 @@
+{
+	"captures": [
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.57790460060602,
+					"outline_samples_below_1_5": 19
+				}
+			},
+			"floor_origin": "(0.0, 0.0)",
+			"material": "baseline",
+			"name": "baseline-hires-0-office",
+			"path": "res://tests/output/terrazzo-v4-review/baseline-hires-0-office.png",
+			"repeat_detail_path": "res://tests/output/terrazzo-v4-review/baseline-repeat-native.png",
+			"sha256": "9e1c26485c8bf31d9a6fb7fd1b5c89ff9ac84f76cabb658317d69c451282aa1f",
+			"stage": 0,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.8719534143,
+					"outline_samples_below_1_5": 9
+				}
+			},
+			"floor_origin": "(0.0, 0.0)",
+			"material": "terrazzo-v3-unified",
+			"name": "terrazzo-v3-unified-hires-0-office",
+			"path": "res://tests/output/terrazzo-v4-review/terrazzo-v3-unified-hires-0-office.png",
+			"repeat_detail_path": "res://tests/output/terrazzo-v4-review/terrazzo-v3-unified-repeat-native.png",
+			"sha256": "d9fb0d0a4022b3db4acc90765c893b26616d8a31c54eb4e52c4e9a874d192813",
+			"stage": 0,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.8719534143,
+					"outline_samples_below_1_5": 8
+				}
+			},
+			"floor_origin": "(0.0, 0.0)",
+			"material": "terrazzo-v4-unified",
+			"name": "terrazzo-v4-unified-hires-0-office",
+			"path": "res://tests/output/terrazzo-v4-review/terrazzo-v4-unified-hires-0-office.png",
+			"repeat_detail_path": "res://tests/output/terrazzo-v4-review/terrazzo-v4-unified-repeat-native.png",
+			"sha256": "b222caa4cd361c9ff2e6c18c43b0bd2eb1a2df8ac0beeedba47af166a745581d",
+			"stage": 0,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.57790460060602,
+					"outline_samples_below_1_5": 19
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.04137619360854,
+					"outline_samples_below_1_5": 10
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.13900710004838,
+					"outline_samples_below_1_5": 16
+				}
+			},
+			"floor_origin": "(0.0, 0.0)",
+			"material": "baseline",
+			"name": "baseline-hires-4-office",
+			"path": "res://tests/output/terrazzo-v4-review/baseline-hires-4-office.png",
+			"sha256": "b72022e579643148a0a67a1a6ef6e8a2ce39d522db84f1bab5c9a5a7ac2d1419",
+			"stage": 4,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.8719534143,
+					"outline_samples_below_1_5": 9
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.1379747899437,
+					"outline_samples_below_1_5": 17
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 11.4942359169081,
+					"outline_samples_below_1_5": 4
+				}
+			},
+			"floor_origin": "(0.0, 0.0)",
+			"material": "terrazzo-v3-unified",
+			"name": "terrazzo-v3-unified-hires-4-office",
+			"path": "res://tests/output/terrazzo-v4-review/terrazzo-v3-unified-hires-4-office.png",
+			"sha256": "6354d0d949ac95e9b68cd88c763f3b9a78a26c86f61ba13027bbac4e5646f0fc",
+			"stage": 4,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.8719534143,
+					"outline_samples_below_1_5": 8
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.1379747899437,
+					"outline_samples_below_1_5": 16
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 11.0977563757409,
+					"outline_samples_below_1_5": 4
+				}
+			},
+			"floor_origin": "(0.0, 0.0)",
+			"material": "terrazzo-v4-unified",
+			"name": "terrazzo-v4-unified-hires-4-office",
+			"path": "res://tests/output/terrazzo-v4-review/terrazzo-v4-unified-hires-4-office.png",
+			"sha256": "eba5d7c6ac24749c75c12e8966bda039b64d89f06c3f9772d2743179b394d9c7",
+			"stage": 4,
+			"view": "office"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.57790460060602,
+					"outline_samples_below_1_5": 19
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 7.04137619360854,
+					"outline_samples_below_1_5": 10
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 6.13900710004838,
+					"outline_samples_below_1_5": 16
+				}
+			},
+			"floor_origin": "(0.0, 0.0)",
+			"material": "baseline",
+			"name": "baseline-hires-4-chat",
+			"path": "res://tests/output/terrazzo-v4-review/baseline-hires-4-chat.png",
+			"sha256": "4f72cf099aab108d65b3643125bd147298c26cfcfc1f9fdb0b9bf35a7f8bbc98",
+			"stage": 4,
+			"view": "chat"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.8719534143,
+					"outline_samples_below_1_5": 9
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.1379747899437,
+					"outline_samples_below_1_5": 17
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 11.4942359169081,
+					"outline_samples_below_1_5": 4
+				}
+			},
+			"floor_origin": "(0.0, 0.0)",
+			"material": "terrazzo-v3-unified",
+			"name": "terrazzo-v3-unified-hires-4-chat",
+			"path": "res://tests/output/terrazzo-v4-review/terrazzo-v3-unified-hires-4-chat.png",
+			"sha256": "bd65c478d99b1762826b3cd60cba79b726c0b1d2d14fdf1edb7819314085e574",
+			"stage": 4,
+			"view": "chat"
+		},
+		{
+			"actor_contrast": {
+				"founder": {
+					"border_samples": 272,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.8719534143,
+					"outline_samples_below_1_5": 8
+				},
+				"mira": {
+					"border_samples": 216,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 13.1379747899437,
+					"outline_samples_below_1_5": 16
+				},
+				"theo": {
+					"border_samples": 262,
+					"meaning": "Diagnostic contrast of source silhouette against sampled underlying floor; not a UI text WCAG test.",
+					"median_outline_to_floor_contrast": 11.0977563757409,
+					"outline_samples_below_1_5": 4
+				}
+			},
+			"floor_origin": "(0.0, 0.0)",
+			"material": "terrazzo-v4-unified",
+			"name": "terrazzo-v4-unified-hires-4-chat",
+			"path": "res://tests/output/terrazzo-v4-review/terrazzo-v4-unified-hires-4-chat.png",
+			"sha256": "2f0724f69a8b4461432fc6cc496568e39f68154be421d0c46f84faff87261621",
+			"stage": 4,
+			"view": "chat"
+		}
+	],
+	"checks": 112,
+	"failures": [],
+	"limitations": [
+		"Nine static actual GameMain views only; no movie, fullscreen or locomotion claim.",
+		"Only the instance floor_art changes. Native scale1 and nearest sampling remain.",
+		"Identical front-idle actors are frozen; stage4 means mature props with the two supported employees.",
+		"Simulated credential-ready UI projection, not actual credentials or worker.",
+		"Global palette normalization and exact edges do not constitute aesthetic approval.",
+		"All V1/V2/V3 sources, exports, helpers and prior evidence remain unchanged."
+	],
+	"materials": {
+		"baseline": {
+			"density_measurement": "Non-#EAE4D7 color only, not an aesthetic pass threshold; wood has no matching base.",
+			"exact_edge_mismatch": [
+				0,
+				0
+			],
+			"inner112_nonbase_percent": 100.0,
+			"native_path": "res://assets/runtime/office/architecture/floor.png",
+			"palette_colors": 20,
+			"production_default": true,
+			"sha256": "6202478639de33fe7f8b548b49a20dddff6b69b59300300bcc89cfa064f2d0bd",
+			"size": [
+				128,
+				128
+			],
+			"top8_nonbase_percent": 100.0
+		},
+		"terrazzo-v3-unified": {
+			"density_measurement": "Non-#EAE4D7 color only, not an aesthetic pass threshold; wood has no matching base.",
+			"exact_edge_mismatch": [
+				0,
+				0
+			],
+			"inner112_nonbase_percent": 11.4716198979592,
+			"native_path": "res://tests/fixtures/material-concepts/terrazzo-v3/cream-terrazzo-floor-v3-unified-base.png",
+			"palette_colors": 7,
+			"production_default": false,
+			"sha256": "ab19a213b712f31cf687f853bd6305a8e72c62098963fd2b52219359797f8989",
+			"size": [
+				128,
+				128
+			],
+			"top8_nonbase_percent": 5.95703125
+		},
+		"terrazzo-v4-unified": {
+			"density_measurement": "Non-#EAE4D7 color only, not an aesthetic pass threshold; wood has no matching base.",
+			"exact_edge_mismatch": [
+				0,
+				0
+			],
+			"inner112_nonbase_percent": 2.76626275510204,
+			"native_path": "res://tests/fixtures/material-concepts/terrazzo-v4/cream-terrazzo-floor-v4-unified-base.png",
+			"palette_colors": 7,
+			"production_default": false,
+			"sha256": "ed48b4cd1a1605e80a28d42f75a92e3059bb5abfeb37b162f1800d7469a865fc",
+			"size": [
+				128,
+				128
+			],
+			"top8_nonbase_percent": 2.734375
+		}
+	},
+	"personal_save_access": false,
+	"pixel_checks": 1843017,
+	"production_changed": false,
+	"renderer": "macOS",
+	"runtime_approved": false,
+	"source_hashes": {
+		"res://assets/runtime/office/architecture/floor.png": "6202478639de33fe7f8b548b49a20dddff6b69b59300300bcc89cfa064f2d0bd",
+		"res://assets/source/overnight-20260904/materials/cream-terrazzo-floor-v3.png": "c40cbd6a45cd85bce682b1c1747918e4f6baedb18667a63539739efa6057f089",
+		"res://assets/source/overnight-20260904/materials/cream-terrazzo-floor-v4.png": "9527d36fd99e864e14cba0589b4b3bb74e5c836094b96d59a01f80cb07de5953",
+		"res://data/furniture_catalog.json": "962d47f9fd3867328f3f293351fbb3124e6053f2d156fc20e97ee856cce09319",
+		"res://data/office_layout.json": "484bc653b3ff4ae4dcc4aaf613396d9d18b70d27ed59971e4b0460be4187632d",
+		"res://tests/fixtures/material-concepts/terrazzo-v3/cream-terrazzo-floor-v3-normalized.png": "1954ea4260213d492eebd314d8841b3b7e50250a4df19c34fbbd33f30c4f37b5",
+		"res://tests/fixtures/material-concepts/terrazzo-v3/cream-terrazzo-floor-v3-unified-base.png": "ab19a213b712f31cf687f853bd6305a8e72c62098963fd2b52219359797f8989",
+		"res://tests/fixtures/material-concepts/terrazzo-v3/cream-terrazzo-floor-v3.png": "74b02c505737ca94c5604405556bda011a4a85a77dac7396a1857f43454ba00b",
+		"res://tests/fixtures/material-concepts/terrazzo-v4/cream-terrazzo-floor-v4-unified-base.png": "ed48b4cd1a1605e80a28d42f75a92e3059bb5abfeb37b162f1800d7469a865fc",
+		"res://world/main.gd": "8915f4a56e8af3a4db2ee45e68fb9619dcce9b55391c9015f2080ebd092cdec5",
+		"res://world/office_architecture.gd": "b97c4f69e7022d511734658c38772f126a0794adb00ad3b7c99d6c246d4d2c8f"
+	},
+	"worker_started": false
+}

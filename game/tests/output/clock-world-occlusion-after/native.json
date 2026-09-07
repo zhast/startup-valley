@@ -1,0 +1,213 @@
+{
+	"cases": [
+		{
+			"actual_pending_id": "",
+			"actual_pending_kind": "",
+			"actual_route_count": 0,
+			"case": "day",
+			"clock_mouse_filter": 0,
+			"employee_feet": [
+				448.0,
+				112.0
+			],
+			"employee_hover_highlight": false,
+			"existing_route_preserved": true,
+			"founder_position_unchanged_during_input": true,
+			"full_hud_crop_unchanged": true,
+			"hovered_control": "/root/Main/Interface/ClockPanel",
+			"ledger_rect": "[P: (371.0, 8.0), S: (408.0, 68.0)]",
+			"ledger_source_pixel": "eddab8ff",
+			"memo_mouse_filter": 0,
+			"opaque_ledger_texture_pixel": [
+				77,
+				36
+			],
+			"point": [
+				448.0,
+				44.0
+			],
+			"rendered_pixel": "eddab8ff",
+			"rendered_pixel_matches_opaque_ledger": true,
+			"underlying_world_pick": {
+				"id": "mira",
+				"kind": "employee",
+				"point": "(448.0, 152.0)"
+			},
+			"worker_blocked": true
+		},
+		{
+			"actual_pending_id": "",
+			"actual_pending_kind": "",
+			"actual_route_count": 0,
+			"case": "time",
+			"clock_mouse_filter": 0,
+			"employee_feet": [
+				560.0,
+				112.0
+			],
+			"employee_hover_highlight": false,
+			"existing_route_preserved": true,
+			"founder_position_unchanged_during_input": true,
+			"full_hud_crop_unchanged": true,
+			"hovered_control": "/root/Main/Interface/ClockPanel",
+			"ledger_rect": "[P: (371.0, 8.0), S: (408.0, 68.0)]",
+			"ledger_source_pixel": "eedab9ff",
+			"memo_mouse_filter": 0,
+			"opaque_ledger_texture_pixel": [
+				189,
+				36
+			],
+			"point": [
+				560.0,
+				44.0
+			],
+			"rendered_pixel": "eedab9ff",
+			"rendered_pixel_matches_opaque_ledger": true,
+			"underlying_world_pick": {
+				"id": "mira",
+				"kind": "employee",
+				"point": "(560.0, 152.0)"
+			},
+			"worker_blocked": true
+		},
+		{
+			"actual_pending_id": "",
+			"actual_pending_kind": "",
+			"actual_route_count": 0,
+			"case": "earned",
+			"clock_mouse_filter": 0,
+			"employee_feet": [
+				704.0,
+				112.0
+			],
+			"employee_hover_highlight": false,
+			"existing_route_preserved": true,
+			"founder_position_unchanged_during_input": true,
+			"full_hud_crop_unchanged": true,
+			"hovered_control": "/root/Main/Interface/ClockPanel/@Label@1600",
+			"ledger_rect": "[P: (371.0, 8.0), S: (408.0, 68.0)]",
+			"ledger_source_pixel": "eedab8ff",
+			"memo_mouse_filter": 0,
+			"opaque_ledger_texture_pixel": [
+				333,
+				36
+			],
+			"point": [
+				704.0,
+				44.0
+			],
+			"rendered_pixel": "eedab8ff",
+			"rendered_pixel_matches_opaque_ledger": true,
+			"underlying_world_pick": {
+				"id": "mira",
+				"kind": "employee",
+				"point": "(704.0, 152.0)"
+			},
+			"worker_blocked": true
+		},
+		{
+			"actual_pending_id": "",
+			"actual_pending_kind": "",
+			"actual_route_count": 0,
+			"case": "memo-heading",
+			"clock_mouse_filter": 0,
+			"employee_feet": [
+				176.0,
+				112.0
+			],
+			"employee_hover_highlight": false,
+			"existing_route_preserved": true,
+			"founder_position_unchanged_during_input": true,
+			"full_hud_crop_unchanged": true,
+			"hovered_control": "/root/Main/Interface/FounderHud/DeliveryMemo",
+			"ledger_rect": "[P: (371.0, 8.0), S: (408.0, 68.0)]",
+			"memo_mouse_filter": 0,
+			"opaque_ledger_texture_pixel": [
+				0,
+				0
+			],
+			"point": [
+				176.0,
+				44.0
+			],
+			"rendered_pixel": "f1d5abff",
+			"underlying_world_pick": {
+				"id": "mira",
+				"kind": "employee",
+				"point": "(176.0, 152.0)"
+			},
+			"worker_blocked": true
+		},
+		{
+			"actual_pending_id": "",
+			"actual_pending_kind": "",
+			"actual_route_count": 0,
+			"case": "memo-detail",
+			"clock_mouse_filter": 0,
+			"employee_feet": [
+				176.0,
+				112.0
+			],
+			"employee_hover_highlight": false,
+			"existing_route_preserved": true,
+			"founder_position_unchanged_during_input": true,
+			"full_hud_crop_unchanged": true,
+			"hovered_control": "/root/Main/Interface/FounderHud/DeliveryMemo",
+			"ledger_rect": "[P: (371.0, 8.0), S: (408.0, 68.0)]",
+			"memo_mouse_filter": 0,
+			"opaque_ledger_texture_pixel": [
+				0,
+				0
+			],
+			"point": [
+				166.0,
+				60.0
+			],
+			"rendered_pixel": "efd4abff",
+			"underlying_world_pick": {
+				"id": "mira",
+				"kind": "employee",
+				"point": "(176.0, 152.0)"
+			},
+			"worker_blocked": true
+		},
+		{
+			"actual_pending_id": "",
+			"actual_pending_kind": "",
+			"actual_route_count": 0,
+			"case": "memo-blank",
+			"clock_mouse_filter": 0,
+			"employee_feet": [
+				176.0,
+				112.0
+			],
+			"employee_hover_highlight": false,
+			"existing_route_preserved": true,
+			"founder_position_unchanged_during_input": true,
+			"full_hud_crop_unchanged": true,
+			"hovered_control": "/root/Main/Interface/FounderHud/DeliveryMemo",
+			"ledger_rect": "[P: (371.0, 8.0), S: (408.0, 68.0)]",
+			"memo_mouse_filter": 0,
+			"opaque_ledger_texture_pixel": [
+				0,
+				0
+			],
+			"point": [
+				164.0,
+				84.0
+			],
+			"rendered_pixel": "efd5acff",
+			"underlying_world_pick": {
+				"id": "mira",
+				"kind": "employee",
+				"point": "(176.0, 152.0)"
+			},
+			"view_opened_theo_activity_and_hidden_memo_released": true,
+			"worker_blocked": true
+		}
+	],
+	"checks": 72,
+	"mode": "after_assertions",
+	"probe_failures": [],
+	"production_modified_by_probe": false
+}

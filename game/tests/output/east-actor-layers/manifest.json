@@ -1,0 +1,1174 @@
+{
+	"assembly_x_shift": 12,
+	"captures": [
+		"native-frame0.png",
+		"native-frame1.png",
+		"native-frame2.png",
+		"native-frame2-mira-cut50-4x.png",
+		"native-frame2-mira-cut52-4x.png",
+		"native-frame2-mira-cut55-4x.png",
+		"native-frame2-theo-cut50-4x.png",
+		"native-frame2-theo-cut52-4x.png",
+		"native-frame2-theo-cut55-4x.png",
+		"native-frame3.png",
+		"native-frame4.png",
+		"native-frame5.png",
+		"guides-frame2.png",
+		"support-frame2.png",
+		"whole-chair-behind-frame2.png",
+		"chair-above-lower-frame2.png",
+		"reunion-original.png",
+		"reunion-split.png",
+		"chair-reunion-original.png",
+		"chair-reunion-split.png"
+	],
+	"chair_depth": "rear-5 / neararm-3; tabletop-1; explicit whole-chair controls",
+	"chair_partition": "res://tools/calibration_chair_layers.gd",
+	"chair_rendered_reunion_pixels_compared": 122880,
+	"chair_source_pixels_compared": 15360,
+	"checks": 1272,
+	"cut_rows": [
+		50,
+		52,
+		55
+	],
+	"diagnostic_motion_frames": 180,
+	"failures": [],
+	"logical_work_pixel": [
+		-32,
+		0
+	],
+	"lower_depth": "desk-4",
+	"observations": [
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 191,
+			"cut_row": 50,
+			"frame": 0,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 20,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 470,
+			"hip_band_minus_observed_seat": [
+				-3,
+				-1
+			],
+			"id": "mira",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 296,
+			"lower_source_pixels_occluded_by_top": 226,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 30,
+			"sampled_hand_pixels_below_cut": 4,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 0
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 191,
+			"cut_row": 52,
+			"frame": 0,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 20,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 470,
+			"hip_band_minus_observed_seat": [
+				-3,
+				-1
+			],
+			"id": "mira",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 250,
+			"lower_source_pixels_occluded_by_top": 202,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 30,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 24
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 191,
+			"cut_row": 55,
+			"frame": 0,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 20,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 470,
+			"hip_band_minus_observed_seat": [
+				-3,
+				-1
+			],
+			"id": "mira",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 179,
+			"lower_source_pixels_occluded_by_top": 163,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 30,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 63
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 165,
+			"cut_row": 50,
+			"frame": 0,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 13,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 509,
+			"hip_band_minus_observed_seat": [
+				-4,
+				-2
+			],
+			"id": "theo",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 277,
+			"lower_source_pixels_occluded_by_top": 224,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 14,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 0
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 165,
+			"cut_row": 52,
+			"frame": 0,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 13,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 509,
+			"hip_band_minus_observed_seat": [
+				-4,
+				-2
+			],
+			"id": "theo",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 231,
+			"lower_source_pixels_occluded_by_top": 202,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 14,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 22
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 165,
+			"cut_row": 55,
+			"frame": 0,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 13,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 509,
+			"hip_band_minus_observed_seat": [
+				-4,
+				-2
+			],
+			"id": "theo",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 169,
+			"lower_source_pixels_occluded_by_top": 169,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 14,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 55
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 191,
+			"cut_row": 50,
+			"frame": 1,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 18,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 465,
+			"hip_band_minus_observed_seat": [
+				-3,
+				-1
+			],
+			"id": "mira",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 295,
+			"lower_source_pixels_occluded_by_top": 225,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 28,
+			"sampled_hand_pixels_below_cut": 4,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 0
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 191,
+			"cut_row": 52,
+			"frame": 1,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 18,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 465,
+			"hip_band_minus_observed_seat": [
+				-3,
+				-1
+			],
+			"id": "mira",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 250,
+			"lower_source_pixels_occluded_by_top": 202,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 28,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 23
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 191,
+			"cut_row": 55,
+			"frame": 1,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 18,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 465,
+			"hip_band_minus_observed_seat": [
+				-3,
+				-1
+			],
+			"id": "mira",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 179,
+			"lower_source_pixels_occluded_by_top": 163,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 28,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 62
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 165,
+			"cut_row": 50,
+			"frame": 1,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 9,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 516,
+			"hip_band_minus_observed_seat": [
+				-4,
+				-2
+			],
+			"id": "theo",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 288,
+			"lower_source_pixels_occluded_by_top": 235,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 12,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 0
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 165,
+			"cut_row": 52,
+			"frame": 1,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 9,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 516,
+			"hip_band_minus_observed_seat": [
+				-4,
+				-2
+			],
+			"id": "theo",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 241,
+			"lower_source_pixels_occluded_by_top": 212,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 12,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 23
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 165,
+			"cut_row": 55,
+			"frame": 1,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 9,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 516,
+			"hip_band_minus_observed_seat": [
+				-4,
+				-2
+			],
+			"id": "theo",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 176,
+			"lower_source_pixels_occluded_by_top": 176,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 12,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 59
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 191,
+			"cut_row": 50,
+			"frame": 2,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 18,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 470,
+			"hip_band_minus_observed_seat": [
+				-3,
+				-1
+			],
+			"id": "mira",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 297,
+			"lower_source_pixels_occluded_by_top": 227,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 28,
+			"sampled_hand_pixels_below_cut": 3,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 0
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 191,
+			"cut_row": 52,
+			"frame": 2,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 18,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 470,
+			"hip_band_minus_observed_seat": [
+				-3,
+				-1
+			],
+			"id": "mira",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 250,
+			"lower_source_pixels_occluded_by_top": 202,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 28,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 25
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 191,
+			"cut_row": 55,
+			"frame": 2,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 18,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 470,
+			"hip_band_minus_observed_seat": [
+				-3,
+				-1
+			],
+			"id": "mira",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 179,
+			"lower_source_pixels_occluded_by_top": 163,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 28,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 64
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 166,
+			"cut_row": 50,
+			"frame": 2,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 11,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 516,
+			"hip_band_minus_observed_seat": [
+				-4,
+				-2
+			],
+			"id": "theo",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 290,
+			"lower_source_pixels_occluded_by_top": 238,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 12,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 0
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 166,
+			"cut_row": 52,
+			"frame": 2,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 11,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 516,
+			"hip_band_minus_observed_seat": [
+				-4,
+				-2
+			],
+			"id": "theo",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 243,
+			"lower_source_pixels_occluded_by_top": 215,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 12,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 23
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 166,
+			"cut_row": 55,
+			"frame": 2,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 11,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 516,
+			"hip_band_minus_observed_seat": [
+				-4,
+				-2
+			],
+			"id": "theo",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 179,
+			"lower_source_pixels_occluded_by_top": 179,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 12,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 59
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 191,
+			"cut_row": 50,
+			"frame": 3,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 18,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 464,
+			"hip_band_minus_observed_seat": [
+				-3,
+				-1
+			],
+			"id": "mira",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 295,
+			"lower_source_pixels_occluded_by_top": 225,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 29,
+			"sampled_hand_pixels_below_cut": 4,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 0
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 191,
+			"cut_row": 52,
+			"frame": 3,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 18,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 464,
+			"hip_band_minus_observed_seat": [
+				-3,
+				-1
+			],
+			"id": "mira",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 250,
+			"lower_source_pixels_occluded_by_top": 202,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 29,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 23
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 191,
+			"cut_row": 55,
+			"frame": 3,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 18,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 464,
+			"hip_band_minus_observed_seat": [
+				-3,
+				-1
+			],
+			"id": "mira",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 179,
+			"lower_source_pixels_occluded_by_top": 163,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 29,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 62
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 168,
+			"cut_row": 50,
+			"frame": 3,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 10,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 516,
+			"hip_band_minus_observed_seat": [
+				-4,
+				-2
+			],
+			"id": "theo",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 287,
+			"lower_source_pixels_occluded_by_top": 236,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 12,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 0
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 168,
+			"cut_row": 52,
+			"frame": 3,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 10,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 516,
+			"hip_band_minus_observed_seat": [
+				-4,
+				-2
+			],
+			"id": "theo",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 240,
+			"lower_source_pixels_occluded_by_top": 213,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 12,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 23
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 168,
+			"cut_row": 55,
+			"frame": 3,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 10,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 516,
+			"hip_band_minus_observed_seat": [
+				-4,
+				-2
+			],
+			"id": "theo",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 177,
+			"lower_source_pixels_occluded_by_top": 177,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 12,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 59
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 191,
+			"cut_row": 50,
+			"frame": 4,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 18,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 470,
+			"hip_band_minus_observed_seat": [
+				-3,
+				-1
+			],
+			"id": "mira",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 295,
+			"lower_source_pixels_occluded_by_top": 225,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 29,
+			"sampled_hand_pixels_below_cut": 4,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 0
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 191,
+			"cut_row": 52,
+			"frame": 4,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 18,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 470,
+			"hip_band_minus_observed_seat": [
+				-3,
+				-1
+			],
+			"id": "mira",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 250,
+			"lower_source_pixels_occluded_by_top": 202,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 29,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 23
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 191,
+			"cut_row": 55,
+			"frame": 4,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 18,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 470,
+			"hip_band_minus_observed_seat": [
+				-3,
+				-1
+			],
+			"id": "mira",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 179,
+			"lower_source_pixels_occluded_by_top": 163,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 29,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 62
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 147,
+			"cut_row": 50,
+			"frame": 4,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 12,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 518,
+			"hip_band_minus_observed_seat": [
+				-4,
+				-2
+			],
+			"id": "theo",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 279,
+			"lower_source_pixels_occluded_by_top": 229,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 14,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 0
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 147,
+			"cut_row": 52,
+			"frame": 4,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 12,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 518,
+			"hip_band_minus_observed_seat": [
+				-4,
+				-2
+			],
+			"id": "theo",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 232,
+			"lower_source_pixels_occluded_by_top": 205,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 14,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 24
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 147,
+			"cut_row": 55,
+			"frame": 4,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 12,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 518,
+			"hip_band_minus_observed_seat": [
+				-4,
+				-2
+			],
+			"id": "theo",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 169,
+			"lower_source_pixels_occluded_by_top": 169,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 14,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 60
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 197,
+			"cut_row": 50,
+			"frame": 5,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 18,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 468,
+			"hip_band_minus_observed_seat": [
+				-3,
+				-1
+			],
+			"id": "mira",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 300,
+			"lower_source_pixels_occluded_by_top": 229,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 30,
+			"sampled_hand_pixels_below_cut": 6,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 0
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 197,
+			"cut_row": 52,
+			"frame": 5,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 18,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 468,
+			"hip_band_minus_observed_seat": [
+				-3,
+				-1
+			],
+			"id": "mira",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 255,
+			"lower_source_pixels_occluded_by_top": 206,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 30,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 23
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 197,
+			"cut_row": 55,
+			"frame": 5,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 18,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 468,
+			"hip_band_minus_observed_seat": [
+				-3,
+				-1
+			],
+			"id": "mira",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 184,
+			"lower_source_pixels_occluded_by_top": 167,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 30,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 62
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 168,
+			"cut_row": 50,
+			"frame": 5,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 12,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 507,
+			"hip_band_minus_observed_seat": [
+				-4,
+				-2
+			],
+			"id": "theo",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 288,
+			"lower_source_pixels_occluded_by_top": 235,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 18,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 0
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 168,
+			"cut_row": 52,
+			"frame": 5,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 12,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 507,
+			"hip_band_minus_observed_seat": [
+				-4,
+				-2
+			],
+			"id": "theo",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 241,
+			"lower_source_pixels_occluded_by_top": 212,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 18,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 23
+		},
+		{
+			"actor_relative_chair": [
+				0,
+				0
+			],
+			"assembly_render_x": 12,
+			"body_pixels_hidden_if_whole_chair_in_front": 168,
+			"cut_row": 55,
+			"frame": 5,
+			"hand_pixels_outside_tabletop": 0,
+			"hand_pixels_over_short_key_bed": 12,
+			"head_hidden_by_monitor": 0,
+			"head_pixels": 507,
+			"hip_band_minus_observed_seat": [
+				-4,
+				-2
+			],
+			"id": "theo",
+			"instant_endpoint_jump_px": 12,
+			"logical_work_pixel": [
+				-32,
+				0
+			],
+			"lower_opaque_pixels": 176,
+			"lower_source_pixels_occluded_by_top": 176,
+			"registration": "original48x80 pivot24,72; region positions include original row offset",
+			"sampled_hand_pixels": 18,
+			"sampled_hand_pixels_below_cut": 0,
+			"short_keyboard_approved": false,
+			"upper_lap_roi_pixels_still_over_top": 59
+		}
+	],
+	"production_or_source_art_changed": false,
+	"rendered_reunion_pixels_compared": 122880,
+	"renderer": "macOS",
+	"short_keyboard_approved": false,
+	"source_pixel_hashes": {
+		"chair_front_opaque": 81,
+		"chair_rear_opaque": 659,
+		"mira": "aab4e6fbf7fcb2a5f673497bf047110d92e672f080df1ec00782ef5f4cc78f68",
+		"theo": "48a1e255ed8435ec085c0f3803b4083dd94226fdf307f746249134ee1b67fbfe"
+	},
+	"source_pixels_compared": 138240,
+	"status": "dev_source_preserving_layer_study_not_runtime_approved",
+	"upper_depth": "desk+2",
+	"workerDisabled": true
+}

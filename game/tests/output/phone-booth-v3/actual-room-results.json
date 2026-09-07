@@ -1,0 +1,70 @@
+{
+	"checks": 1891,
+	"failures": [],
+	"observations": [
+		{
+			"actor_destination": [
+				368.0,
+				400.0
+			],
+			"actor_z": 400,
+			"collision_cells": 4,
+			"facing": "north",
+			"grid": [
+				11,
+				13
+			],
+			"prop_z": 432,
+			"route_safe": true
+		},
+		{
+			"actor_destination": [
+				400.0,
+				432.0
+			],
+			"actor_z": 432,
+			"collision_cells": 4,
+			"facing": "east",
+			"grid": [
+				11,
+				13
+			],
+			"prop_z": 432,
+			"route_safe": true
+		},
+		{
+			"actor_destination": [
+				368.0,
+				464.0
+			],
+			"actor_z": 464,
+			"collision_cells": 4,
+			"facing": "south",
+			"grid": [
+				11,
+				13
+			],
+			"prop_z": 432,
+			"route_safe": true
+		},
+		{
+			"actor_destination": [
+				336.0,
+				432.0
+			],
+			"actor_z": 432,
+			"collision_cells": 4,
+			"facing": "west",
+			"grid": [
+				11,
+				13
+			],
+			"prop_z": 432,
+			"route_safe": true
+		}
+	],
+	"runtime_registered": false,
+	"save_access": false,
+	"scope": "Closed passive library: proposed approach and exterior founder depth, no booth entry, interior pose or calling behavior",
+	"worker_started": false
+}

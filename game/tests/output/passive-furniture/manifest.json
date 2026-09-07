@@ -1,0 +1,105 @@
+{
+	"captures": [
+		"office-stage-0.png",
+		"office-stage-1.png",
+		"office-stage-2.png",
+		"office-stage-3.png",
+		"office-stage-4.png",
+		"dev-whiteboard-west.png",
+		"dev-whiteboard-west-4x.png",
+		"dev-whiteboard-north.png",
+		"dev-whiteboard-north-4x.png",
+		"dev-whiteboard-east.png",
+		"dev-whiteboard-east-4x.png",
+		"dev-whiteboard-south.png",
+		"dev-whiteboard-south-4x.png",
+		"dev-pedestal-west.png",
+		"dev-pedestal-west-4x.png",
+		"dev-pedestal-north.png",
+		"dev-pedestal-north-4x.png",
+		"dev-pedestal-east.png",
+		"dev-pedestal-east-4x.png",
+		"dev-pedestal-south.png",
+		"dev-pedestal-south-4x.png",
+		"invalid-wall.png",
+		"occupied-rotation-rejected.png",
+		"passive-occludes-employee.png",
+		"passive-occludes-employee-4x.png",
+		"walk-around-whiteboard-start.png",
+		"walk-around-whiteboard-middle.png",
+		"walk-around-whiteboard-end.png",
+		"replanned-around-pedestal-start.png",
+		"replanned-around-pedestal-middle.png",
+		"replanned-around-pedestal-end.png"
+	],
+	"checks": 935,
+	"failures": [],
+	"hashes": {
+		"dev-pedestal-east": "3716e5a6a0507c77cdee71e49c9c29789c4a3da2341bb483e72f3fee0e54e023",
+		"dev-pedestal-north": "1110101ce4ce4125481e35f5828b9644c4a02f2b454622839eab241a4de3b645",
+		"dev-pedestal-south": "d112c6f925c637d5d37c12d6c721e531ad5aa88889097baa3bd1650e8195ac6b",
+		"dev-pedestal-west": "4df6e43bd332a49b2dbb2e7b1821caf3d2e9c35b09d5a348c57f75421c043aa0",
+		"dev-whiteboard-east": "6cf3af83c4575b5b72744c173f43370d862ef43fe1b0582e7337bd2907697595",
+		"dev-whiteboard-north": "fd986d4c38b29be1b0a752456234dd40aa237ae67e182704329c5aacaf0e95ba",
+		"dev-whiteboard-south": "d5b008f67aa36b2c2b8c044acb7e37cbde475cfdd702a82b97878cb95054a2a5",
+		"dev-whiteboard-west": "48a729793ed433833f04a2ba6d533b2f0b7c0b8db6039be5c1ffd8353fe33f27",
+		"invalid-wall": "0287d659b545c26ebf40d74e279680ca5955c56ffa35c4227bbb41f9a20e11f4",
+		"occupied-rotation-rejected": "5e8c3dd7cc7d6e76b323a17b07254b3892e00aa1e94a2e40eb82e32695dbb6a3",
+		"office-stage-0": "573d70dbc9dece575fd73f605120d8f1fa5c4dadf2ad99940478e667535e23ee",
+		"office-stage-1": "13b9007d2219fd2d8b0919c515bcea3e9f0a35c1d5e99e9852adc25b20b39c7c",
+		"office-stage-2": "363f4131d1533f0613c35d3b93fbf6df6c4cb199db17bd80a4cb9c24d9f963ed",
+		"office-stage-3": "6ac8e8a2e92bd12387a33d4999d3076b66a69afbabd58c307d6758321be035a9",
+		"office-stage-4": "6d657528a39a2f4115226ecbf9c37e1cce5e32b4ffb65ada7c3fa10e4616a8c5",
+		"passive-occludes-employee": "79d17c8fc5dd3bc8916a23d516325393a996105d9170de1f604341bd88c2af3c",
+		"replanned-around-pedestal-end": "3e61ae1263df1879c90df78a4f851313de35109df5399576d1b18e913bfaffef",
+		"replanned-around-pedestal-middle": "db1084fa050de22b9e4cfff2b4c11ec4dafa63c79d3d185f022afb2ec144d0c9",
+		"replanned-around-pedestal-start": "42565a680caed137c59365eaa7834db2c30fa22f65c57a21b580328e63131522",
+		"walk-around-whiteboard-end": "cb3559da0defb2cd7a507c451a296cb05cd6697ae7f232c028097c74ba9d07b2",
+		"walk-around-whiteboard-middle": "df79138362411f1cc06f76ebb69063d139346a9cff26a7d649bd4862f5fa7713",
+		"walk-around-whiteboard-start": "60bf1768ebf3ed417c8fca34fde3b097f9d5d0676c3f947c3e72b26a36e5e134"
+	},
+	"limitations": [
+		"Dev candidates only; no gameplay use action.",
+		"Native visual review remains separate from geometry assertions."
+	],
+	"routes": [
+		{
+			"name": "walk-around-whiteboard",
+			"positions": [
+				[
+					560.0,
+					624.0
+				],
+				[
+					688.0,
+					550.0
+				],
+				[
+					784.0,
+					464.0
+				]
+			],
+			"ticks": 73
+		},
+		{
+			"name": "replanned-around-pedestal",
+			"positions": [
+				[
+					784.0,
+					464.0
+				],
+				[
+					816.0,
+					516.0
+				],
+				[
+					816.0,
+					592.0
+				]
+			],
+			"ticks": 104
+		}
+	],
+	"runtime_approved": false,
+	"ticks": 104
+}

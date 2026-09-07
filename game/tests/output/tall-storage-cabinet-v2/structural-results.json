@@ -1,0 +1,32 @@
+{
+	"canvas": [
+		160,
+		288
+	],
+	"checks": 205,
+	"dev_catalogue_status_observed": "planned",
+	"east_west_top_plane_depth_px": 64,
+	"failures": [],
+	"family": "tall_storage_cabinet",
+	"layers": [
+		"floor_shadow",
+		"rear_structure",
+		"front_structure"
+	],
+	"maximum_projected_opaque_rise_px": 144,
+	"measured_vertical_elevation_px": 80,
+	"north_south_top_plane_depth_px": 32,
+	"pivot": [
+		80,
+		224
+	],
+	"planned_vertical_elevation_envelope_px": 160,
+	"production_catalogue_registered": false,
+	"runtime_registered": false,
+	"service_backend_or_interaction_created": false,
+	"sprite_offset": [
+		0,
+		-80
+	],
+	"status": "perspective_corrected_v2_candidate_without_runtime_binding"
+}

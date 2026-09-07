@@ -1,0 +1,67 @@
+{
+  "baseline_orphan_nodes": 0,
+  "checks": 57,
+  "details": [
+    {
+      "atlas_hole": [
+        472.5,
+        422.5
+      ],
+      "blocked_floor_overlap": [
+        346.5,
+        287.5
+      ],
+      "opaque_overlap": [
+        470.5,
+        431.5
+      ],
+      "repeat": 0,
+      "shadow_only": [
+        465.5,
+        466.5
+      ]
+    },
+    {
+      "atlas_hole": [
+        472.5,
+        422.5
+      ],
+      "blocked_floor_overlap": [
+        346.5,
+        287.5
+      ],
+      "opaque_overlap": [
+        470.5,
+        431.5
+      ],
+      "repeat": 1,
+      "shadow_only": [
+        465.5,
+        466.5
+      ]
+    },
+    {
+      "atlas_hole": [
+        472.5,
+        422.5
+      ],
+      "blocked_floor_overlap": [
+        346.5,
+        287.5
+      ],
+      "opaque_overlap": [
+        470.5,
+        431.5
+      ],
+      "repeat": 2,
+      "shadow_only": [
+        465.5,
+        466.5
+      ]
+    }
+  ],
+  "failures": [],
+  "final_orphan_nodes": 0,
+  "renderer_used": false,
+  "worker_or_save_access": false
+}

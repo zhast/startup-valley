@@ -1,0 +1,2826 @@
+{
+  "proposal_id": "passive-tables-registration-20260906",
+  "status": "proposed_not_applied",
+  "scope": "Passive table base art-library approval only. No runtime catalogue/default-layout binding, chair, seat, service, work behavior, worker, save or gameplay lifecycle.",
+  "source_catalogue": "dev/art-catalogue/furniture.json",
+  "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+  "catalogue_application_note": "Replace only low_coffee_table, cafe_table and round_meeting_table by id. Recompute generated summary/gallery separately; at this catalogue snapshot approved_directional_deliverables increases by twelve.",
+  "validation": {
+    "merged_catalogue_checks": 25469,
+    "errors": [],
+    "approved_directional_deliverables_after_apply": 120
+  },
+  "family_count": 3,
+  "families": [
+    {
+      "id": "low_coffee_table",
+      "direction_semantics": "visual_orientation",
+      "display_name": "Low lounge table",
+      "asset_kind": "furniture_base",
+      "base_vs_decor": "base",
+      "category": "comfort",
+      "priority": "P2",
+      "production_status": "approved",
+      "role_tags": [
+        "shared"
+      ],
+      "role_tools": [
+        "low clear tabletop"
+      ],
+      "design_brief": "Pairs with lounge seating without blocking faces; no baked magazines or cups.",
+      "gameplay_scope": "Approved passive art-library object only; no runtime/default-layout binding, chair, seat, service, work behavior, worker authority, persistence or gameplay transaction.",
+      "primary_host": null,
+      "current_availability": {
+        "status": "no_catalogue_runtime_binding",
+        "runtime_family_id": null,
+        "runtime_registered_facings": [],
+        "art_path": null,
+        "direction_art_review": "Approved as a low two-cell lounge-table base with a 20px rise, four separated supports and support-local contact marks. The long-axis top stays deliberately simple at native size. No seating, props or interaction is included. Actor evidence is scale/depth only.",
+        "previous_catalogue_availability": {
+          "status": "no_catalogue_runtime_binding",
+          "runtime_family_id": null,
+          "runtime_registered_facings": [],
+          "art_path": null,
+          "direction_art_review": "No finished art or runtime family is claimed for this proposal; unrelated concept/source art may exist."
+        }
+      },
+      "native_geometry": {
+        "status": "reviewed_code_native_passive_library_not_runtime_admission",
+        "candidate_revision": "low-coffee-table-v1",
+        "canvas_size_px": [
+          160,
+          160
+        ],
+        "floor_anchor_px": [
+          80,
+          96
+        ],
+        "sprite_offset_px": [
+          0,
+          -16
+        ],
+        "grid_size_px": 32,
+        "estimated_max_rise_above_occupied_floor_px": 20,
+        "minimum_transparent_padding_px": 16,
+        "anchor_rule": "One unchanged canvas coordinate represents local floor pivot [0,0] in every direction and every layer. Transparent padding is not sprite scaling.",
+        "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/manifest.json",
+        "structural_results_path": "game/tests/output/passive-tables-v2/export-results.json",
+        "actual_room_results_path": "game/tests/output/passive-tables-v2/actual-room-results.json",
+        "passive_library_review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+        "focused_test_path": "game/tests/test_passive_tables.gd"
+      },
+      "layers": [
+        {
+          "id": "floor_shadow",
+          "required": true,
+          "same_canvas_and_floor_anchor": true,
+          "status": "approved",
+          "approved_revision": "low-coffee-table-v1"
+        },
+        {
+          "id": "rear_structure",
+          "required": true,
+          "same_canvas_and_floor_anchor": true,
+          "status": "approved",
+          "approved_revision": "low-coffee-table-v1"
+        },
+        {
+          "id": "front_structure",
+          "required": true,
+          "same_canvas_and_floor_anchor": true,
+          "status": "approved",
+          "approved_revision": "low-coffee-table-v1"
+        }
+      ],
+      "variants": [
+        {
+          "facing": "north",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/north-whole.png",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "evidence_path": "game/tests/output/passive-tables-v2/all-tables-north-room.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            2,
+            1
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "employee_look_vector": [
+            0,
+            -1
+          ],
+          "proposed_interaction_cell": null,
+          "seated_pose_needed": false,
+          "redraw_requirement": "Deterministic screen-axis native geometry under fixed upper-left light. Never rotate, mirror, flip, stretch or scale a finished bitmap to substitute for a registered view.",
+          "preview_path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/north-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/north-whole.png",
+          "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/manifest.json",
+            "game/tests/output/passive-tables-v2/export-results.json",
+            "game/tests/output/passive-tables-v2/actual-room-results.json",
+            "game/tests/output/passive-tables-v2/all-tables-north-room.png",
+            "game/tests/output/passive-tables-v2/low_coffee_table-north-base-native.png",
+            "game/tests/output/passive-tables-v2/low_coffee_table-north-base-4x.png",
+            "game/tests/output/passive-tables-v2/low_coffee_table-north-founder-behind-native.png",
+            "game/tests/output/passive-tables-v2/low_coffee_table-north-founder-behind-4x.png",
+            "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved as a low two-cell lounge-table base with a 20px rise, four separated supports and support-local contact marks. The long-axis top stays deliberately simple at native size. No seating, props or interaction is included. Passive art-library approval only; no runtime/default-layout binding follows.",
+          "export_method": "Deterministic typed-GDScript screen-axis geometry using the shared quiet-oak material and existing charcoal/metal palette. No generated complete source, finished-bitmap rotation, mirror, flip, scale, baked actor, chair, tool, text or logo.",
+          "native_exports": [
+            {
+              "canvas_size_px": [
+                160,
+                160
+              ],
+              "decoded_rgba_sha256": "6c86dcc115402585ad0fbe011db0d6ffce916edbc609d8593d353ac3ba416a6f",
+              "floor_anchor_px": [
+                80,
+                96
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "floor_shadow",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                41,
+                87,
+                52,
+                22
+              ],
+              "opaque_pixels": 28,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/north-floor_shadow.png",
+              "sha256": "4402814001c14f31f25639e907e0c41a1aa27c7db3527f8403ed68972a4713fb",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 1,
+              "verify_decoded_facts": true,
+              "z_offset": -2,
+              "source_layer": "floor_shadow",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                160,
+                160
+              ],
+              "decoded_rgba_sha256": "3c8b39d159a4a72f54a57f23f2fbe8bbd6a4b3f9003887d44eb139c44397d8aa",
+              "floor_anchor_px": [
+                80,
+                96
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "rear_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                36,
+                64,
+                56,
+                25
+              ],
+              "opaque_pixels": 1344,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/north-rear_structure.png",
+              "sha256": "40c032f06b780d432f90fac7227f427c0d51f4729d1d9fa4f92be11b8ff39086",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 6,
+              "verify_decoded_facts": true,
+              "z_offset": -1,
+              "source_layer": "rear_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                160,
+                160
+              ],
+              "decoded_rgba_sha256": "5c385c68c62e60e1c6aa92ed1546fe697a27943a3c117f2e8da207fb340ee716",
+              "floor_anchor_px": [
+                80,
+                96
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "front_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                37,
+                84,
+                54,
+                25
+              ],
+              "opaque_pixels": 456,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/north-front_structure.png",
+              "sha256": "13acdc3896e92b589f788e1df18b1b20a38e14412ebf615ddeaea08185df1587",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 4,
+              "verify_decoded_facts": true,
+              "z_offset": 1,
+              "source_layer": "front_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            }
+          ],
+          "composite_exports": [
+            {
+              "canvas_size_px": [
+                160,
+                160
+              ],
+              "decoded_rgba_sha256": "eeb8ee8cd6ffb633529e35c123c3dd7831b068a8ce501482437b33c1e15564d8",
+              "floor_anchor_px": [
+                80,
+                96
+              ],
+              "hidden_rgb_pixels": 0,
+              "method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+              "opaque_bounds_px": [
+                36,
+                64,
+                57,
+                45
+              ],
+              "opaque_pixels": 1598,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/north-whole.png",
+              "sha256": "f693e36362ff742af7e0a02014e9f8e5543296cdfe669809e5d3c7e987092b53",
+              "used_colors": 9,
+              "verify_decoded_facts": true
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "canonical_integration_passed": false,
+            "mean_score": 2.83,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 2,
+              "silhouette_readability": 3,
+              "layering_anchors": 3,
+              "direction_consistency": 3,
+              "placement": 3
+            },
+            "note": "Approved as a low two-cell lounge-table base with a 20px rise, four separated supports and support-local contact marks. The long-axis top stays deliberately simple at native size. No seating, props or interaction is included. Direction is a visual/reference axis only; the actor probe is not a seat or action.",
+            "acceptance_scope": "passive_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "measured_geometry": {
+            "rise_px": 20,
+            "axis": "horizontal",
+            "equivalent_view": "north",
+            "opaque_union_bounds_px": [
+              36,
+              64,
+              57,
+              45
+            ]
+          },
+          "symmetry_equivalent_to": "south"
+        },
+        {
+          "facing": "east",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/east-whole.png",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "evidence_path": "game/tests/output/passive-tables-v2/all-tables-east-room.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            1,
+            2
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "employee_look_vector": [
+            1,
+            0
+          ],
+          "proposed_interaction_cell": null,
+          "seated_pose_needed": false,
+          "redraw_requirement": "Deterministic screen-axis native geometry under fixed upper-left light. Never rotate, mirror, flip, stretch or scale a finished bitmap to substitute for a registered view.",
+          "preview_path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/east-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/east-whole.png",
+          "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/manifest.json",
+            "game/tests/output/passive-tables-v2/export-results.json",
+            "game/tests/output/passive-tables-v2/actual-room-results.json",
+            "game/tests/output/passive-tables-v2/all-tables-east-room.png",
+            "game/tests/output/passive-tables-v2/low_coffee_table-east-base-native.png",
+            "game/tests/output/passive-tables-v2/low_coffee_table-east-base-4x.png",
+            "game/tests/output/passive-tables-v2/low_coffee_table-east-founder-behind-native.png",
+            "game/tests/output/passive-tables-v2/low_coffee_table-east-founder-behind-4x.png",
+            "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved as a low two-cell lounge-table base with a 20px rise, four separated supports and support-local contact marks. The long-axis top stays deliberately simple at native size. No seating, props or interaction is included. Passive art-library approval only; no runtime/default-layout binding follows.",
+          "export_method": "Deterministic typed-GDScript screen-axis geometry using the shared quiet-oak material and existing charcoal/metal palette. No generated complete source, finished-bitmap rotation, mirror, flip, scale, baked actor, chair, tool, text or logo.",
+          "native_exports": [
+            {
+              "canvas_size_px": [
+                160,
+                160
+              ],
+              "decoded_rgba_sha256": "75292a48f41057453ee634c508f5b85e6b1e632877ef03a1eb2b2023fb2c05d1",
+              "floor_anchor_px": [
+                80,
+                96
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "floor_shadow",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                73,
+                55,
+                20,
+                54
+              ],
+              "opaque_pixels": 28,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/east-floor_shadow.png",
+              "sha256": "67a1bf3b61bf883c4509cf8c7fc709e153f2652c0e5edede731f72cd7debc5bb",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 1,
+              "verify_decoded_facts": true,
+              "z_offset": -2,
+              "source_layer": "floor_shadow",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                160,
+                160
+              ],
+              "decoded_rgba_sha256": "1c36ff4b1eec5a601d355451ff864c246925dd160a6566df65d45001426a917d",
+              "floor_anchor_px": [
+                80,
+                96
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "rear_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                68,
+                32,
+                24,
+                56
+              ],
+              "opaque_pixels": 1328,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/east-rear_structure.png",
+              "sha256": "6e1b7e84e5221c8a52e907c08d5cab8764c021b9d98bd0e079d9368de3db711c",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 6,
+              "verify_decoded_facts": true,
+              "z_offset": -1,
+              "source_layer": "rear_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                160,
+                160
+              ],
+              "decoded_rgba_sha256": "49d3f85fcc7c9e4d8d2fede2bf2774a95c135328d3c711236fb679b18b38a555",
+              "floor_anchor_px": [
+                80,
+                96
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "front_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                69,
+                84,
+                22,
+                25
+              ],
+              "opaque_pixels": 328,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/east-front_structure.png",
+              "sha256": "5e997cff1d7a56e9139cf3583c2d0d25111afaa0480a4fd49b44487d4f329cbb",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 4,
+              "verify_decoded_facts": true,
+              "z_offset": 1,
+              "source_layer": "front_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            }
+          ],
+          "composite_exports": [
+            {
+              "canvas_size_px": [
+                160,
+                160
+              ],
+              "decoded_rgba_sha256": "d428d827559055c262299b6d4083b3c089a53f15e7f41d5cb7f13b200a6d8be4",
+              "floor_anchor_px": [
+                80,
+                96
+              ],
+              "hidden_rgb_pixels": 0,
+              "method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+              "opaque_bounds_px": [
+                68,
+                32,
+                25,
+                77
+              ],
+              "opaque_pixels": 1594,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/east-whole.png",
+              "sha256": "0f917d017c14c01919de53c4b00be626bf8dd41fcf976201317b3397fc3edf7e",
+              "used_colors": 9,
+              "verify_decoded_facts": true
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "canonical_integration_passed": false,
+            "mean_score": 2.83,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 2,
+              "silhouette_readability": 3,
+              "layering_anchors": 3,
+              "direction_consistency": 3,
+              "placement": 3
+            },
+            "note": "Approved as a low two-cell lounge-table base with a 20px rise, four separated supports and support-local contact marks. The long-axis top stays deliberately simple at native size. No seating, props or interaction is included. Direction is a visual/reference axis only; the actor probe is not a seat or action.",
+            "acceptance_scope": "passive_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "measured_geometry": {
+            "rise_px": 20,
+            "axis": "vertical",
+            "equivalent_view": "east",
+            "opaque_union_bounds_px": [
+              68,
+              32,
+              25,
+              77
+            ]
+          },
+          "symmetry_equivalent_to": "west"
+        },
+        {
+          "facing": "south",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/south-whole.png",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "evidence_path": "game/tests/output/passive-tables-v2/all-tables-south-room.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            2,
+            1
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "employee_look_vector": [
+            0,
+            1
+          ],
+          "proposed_interaction_cell": null,
+          "seated_pose_needed": false,
+          "redraw_requirement": "Deterministic screen-axis native geometry under fixed upper-left light. Never rotate, mirror, flip, stretch or scale a finished bitmap to substitute for a registered view.",
+          "preview_path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/south-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/south-whole.png",
+          "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/manifest.json",
+            "game/tests/output/passive-tables-v2/export-results.json",
+            "game/tests/output/passive-tables-v2/actual-room-results.json",
+            "game/tests/output/passive-tables-v2/all-tables-south-room.png",
+            "game/tests/output/passive-tables-v2/low_coffee_table-south-base-native.png",
+            "game/tests/output/passive-tables-v2/low_coffee_table-south-base-4x.png",
+            "game/tests/output/passive-tables-v2/low_coffee_table-south-founder-behind-native.png",
+            "game/tests/output/passive-tables-v2/low_coffee_table-south-founder-behind-4x.png",
+            "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved as a low two-cell lounge-table base with a 20px rise, four separated supports and support-local contact marks. The long-axis top stays deliberately simple at native size. No seating, props or interaction is included. Passive art-library approval only; no runtime/default-layout binding follows.",
+          "export_method": "Deterministic typed-GDScript screen-axis geometry using the shared quiet-oak material and existing charcoal/metal palette. No generated complete source, finished-bitmap rotation, mirror, flip, scale, baked actor, chair, tool, text or logo.",
+          "native_exports": [
+            {
+              "canvas_size_px": [
+                160,
+                160
+              ],
+              "decoded_rgba_sha256": "baf6101edf1dbfe438ebb83de58f7b5052cd3c64d93b0aa491f43f4a9601a242",
+              "floor_anchor_px": [
+                80,
+                96
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "floor_shadow",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                73,
+                87,
+                52,
+                22
+              ],
+              "opaque_pixels": 28,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/south-floor_shadow.png",
+              "sha256": "334ce951535e6444eddb47a8d075b17753a944ac81f06c3c35ae94ca6647fb80",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 1,
+              "verify_decoded_facts": true,
+              "z_offset": -2,
+              "source_layer": "floor_shadow",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                160,
+                160
+              ],
+              "decoded_rgba_sha256": "c78bd31908b1f0b7cb2ac1b6525e6e6bbc10e141b130413ab3fc5ce4eabb8b65",
+              "floor_anchor_px": [
+                80,
+                96
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "rear_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                68,
+                64,
+                56,
+                25
+              ],
+              "opaque_pixels": 1344,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/south-rear_structure.png",
+              "sha256": "b12a235d565b818a32f4e80a3676101ca6d90cfa2056ab7347ec4ccba3d36609",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 6,
+              "verify_decoded_facts": true,
+              "z_offset": -1,
+              "source_layer": "rear_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                160,
+                160
+              ],
+              "decoded_rgba_sha256": "5c460b50d80d382ebe4c972e4310b808c6aa4478c63aefb45dadd8511212b9f5",
+              "floor_anchor_px": [
+                80,
+                96
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "front_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                69,
+                84,
+                54,
+                25
+              ],
+              "opaque_pixels": 456,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/south-front_structure.png",
+              "sha256": "271bc65410e0bfca24a15dae4a7f19c550ab87d267a3e5f67a0d9e184166938a",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 4,
+              "verify_decoded_facts": true,
+              "z_offset": 1,
+              "source_layer": "front_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            }
+          ],
+          "composite_exports": [
+            {
+              "canvas_size_px": [
+                160,
+                160
+              ],
+              "decoded_rgba_sha256": "b55931dd8750af8934edfc1ba9a137b08c467501012be67e214eba54dd9bfb63",
+              "floor_anchor_px": [
+                80,
+                96
+              ],
+              "hidden_rgb_pixels": 0,
+              "method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+              "opaque_bounds_px": [
+                68,
+                64,
+                57,
+                45
+              ],
+              "opaque_pixels": 1598,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/south-whole.png",
+              "sha256": "0d3f583c9a22b5fce144f4c540c433506e6d50d49ef7af968629102b0fe2fbe3",
+              "used_colors": 9,
+              "verify_decoded_facts": true
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "canonical_integration_passed": false,
+            "mean_score": 2.83,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 2,
+              "silhouette_readability": 3,
+              "layering_anchors": 3,
+              "direction_consistency": 3,
+              "placement": 3
+            },
+            "note": "Approved as a low two-cell lounge-table base with a 20px rise, four separated supports and support-local contact marks. The long-axis top stays deliberately simple at native size. No seating, props or interaction is included. Direction is a visual/reference axis only; the actor probe is not a seat or action.",
+            "acceptance_scope": "passive_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "measured_geometry": {
+            "rise_px": 20,
+            "axis": "horizontal",
+            "equivalent_view": "north",
+            "opaque_union_bounds_px": [
+              68,
+              64,
+              57,
+              45
+            ]
+          },
+          "symmetry_equivalent_to": "north"
+        },
+        {
+          "facing": "west",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/west-whole.png",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "evidence_path": "game/tests/output/passive-tables-v2/all-tables-west-room.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            1,
+            2
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "employee_look_vector": [
+            -1,
+            0
+          ],
+          "proposed_interaction_cell": null,
+          "seated_pose_needed": false,
+          "redraw_requirement": "Deterministic screen-axis native geometry under fixed upper-left light. Never rotate, mirror, flip, stretch or scale a finished bitmap to substitute for a registered view.",
+          "preview_path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/west-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/west-whole.png",
+          "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/manifest.json",
+            "game/tests/output/passive-tables-v2/export-results.json",
+            "game/tests/output/passive-tables-v2/actual-room-results.json",
+            "game/tests/output/passive-tables-v2/all-tables-west-room.png",
+            "game/tests/output/passive-tables-v2/low_coffee_table-west-base-native.png",
+            "game/tests/output/passive-tables-v2/low_coffee_table-west-base-4x.png",
+            "game/tests/output/passive-tables-v2/low_coffee_table-west-founder-behind-native.png",
+            "game/tests/output/passive-tables-v2/low_coffee_table-west-founder-behind-4x.png",
+            "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved as a low two-cell lounge-table base with a 20px rise, four separated supports and support-local contact marks. The long-axis top stays deliberately simple at native size. No seating, props or interaction is included. Passive art-library approval only; no runtime/default-layout binding follows.",
+          "export_method": "Deterministic typed-GDScript screen-axis geometry using the shared quiet-oak material and existing charcoal/metal palette. No generated complete source, finished-bitmap rotation, mirror, flip, scale, baked actor, chair, tool, text or logo.",
+          "native_exports": [
+            {
+              "canvas_size_px": [
+                160,
+                160
+              ],
+              "decoded_rgba_sha256": "e27c13ed507e71e80ba9a4cc8f7529be470d9a6a4697e0d49e02c05b1c3a5791",
+              "floor_anchor_px": [
+                80,
+                96
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "floor_shadow",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                73,
+                87,
+                20,
+                54
+              ],
+              "opaque_pixels": 28,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/west-floor_shadow.png",
+              "sha256": "83303a0d94fa126db382f365ac5999f8af65d178ca36bd8de78a49d9be7d3b25",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 1,
+              "verify_decoded_facts": true,
+              "z_offset": -2,
+              "source_layer": "floor_shadow",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                160,
+                160
+              ],
+              "decoded_rgba_sha256": "245cbba4337e0b1aac6a021a38da20b91d7997874cbcc600d39aaa276557de69",
+              "floor_anchor_px": [
+                80,
+                96
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "rear_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                68,
+                64,
+                24,
+                56
+              ],
+              "opaque_pixels": 1328,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/west-rear_structure.png",
+              "sha256": "649f8e93bbc12e21188a4894c3bc3ae2aebf3d7b706a64b1ef2d8f01fc3566a2",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 6,
+              "verify_decoded_facts": true,
+              "z_offset": -1,
+              "source_layer": "rear_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                160,
+                160
+              ],
+              "decoded_rgba_sha256": "494420bb871cee3e9ffb5383a914d805b608cd4c572155b53bf32455fbc484d0",
+              "floor_anchor_px": [
+                80,
+                96
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "front_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                69,
+                116,
+                22,
+                25
+              ],
+              "opaque_pixels": 328,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/west-front_structure.png",
+              "sha256": "47f8b701288afa2df3ab3f0b77f50ef60f4ca915ff7311b9f55a4f414691959a",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 4,
+              "verify_decoded_facts": true,
+              "z_offset": 1,
+              "source_layer": "front_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            }
+          ],
+          "composite_exports": [
+            {
+              "canvas_size_px": [
+                160,
+                160
+              ],
+              "decoded_rgba_sha256": "0044a8fdf6c1daa15e99aae914828db8ef98992e332e822022c830d43c9c9ca4",
+              "floor_anchor_px": [
+                80,
+                96
+              ],
+              "hidden_rgb_pixels": 0,
+              "method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+              "opaque_bounds_px": [
+                68,
+                64,
+                25,
+                77
+              ],
+              "opaque_pixels": 1594,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/west-whole.png",
+              "sha256": "4293bb0e476d5296e0b2d27644b3f1720169c3b2e7035430f363bfe216cafce4",
+              "used_colors": 9,
+              "verify_decoded_facts": true
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "canonical_integration_passed": false,
+            "mean_score": 2.83,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 2,
+              "silhouette_readability": 3,
+              "layering_anchors": 3,
+              "direction_consistency": 3,
+              "placement": 3
+            },
+            "note": "Approved as a low two-cell lounge-table base with a 20px rise, four separated supports and support-local contact marks. The long-axis top stays deliberately simple at native size. No seating, props or interaction is included. Direction is a visual/reference axis only; the actor probe is not a seat or action.",
+            "acceptance_scope": "passive_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "measured_geometry": {
+            "rise_px": 20,
+            "axis": "vertical",
+            "equivalent_view": "east",
+            "opaque_union_bounds_px": [
+              68,
+              64,
+              25,
+              77
+            ]
+          },
+          "symmetry_equivalent_to": "east"
+        }
+      ],
+      "art_library_approval": {
+        "scope": "passive_art_library",
+        "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+        "acceptance_date": "2026-09-06",
+        "runtime_admission": false
+      }
+    },
+    {
+      "id": "cafe_table",
+      "direction_semantics": "visual_orientation",
+      "display_name": "Two-person break table",
+      "asset_kind": "furniture_base",
+      "base_vs_decor": "base",
+      "category": "comfort",
+      "priority": "P2",
+      "production_status": "approved",
+      "role_tags": [
+        "shared"
+      ],
+      "role_tools": [
+        "small break surface"
+      ],
+      "design_brief": "A compact eating spot distinct from the larger meeting table; seats and food stay separate.",
+      "gameplay_scope": "Approved passive art-library object only; no runtime/default-layout binding, chair, seat, service, work behavior, worker authority, persistence or gameplay transaction.",
+      "primary_host": null,
+      "current_availability": {
+        "status": "no_catalogue_runtime_binding",
+        "runtime_family_id": null,
+        "runtime_registered_facings": [],
+        "art_path": null,
+        "direction_art_review": "Approved as cafe-table-v2 after extending the previously floating post into the unchanged pedestal base. The 44px-rise chamfered square top and central support now form one continuous silhouette in every view. Its square symmetry is explicit rather than decorated with a false front. No seats, food or interaction is included. Actor evidence is scale/depth only.",
+        "previous_catalogue_availability": {
+          "status": "no_catalogue_runtime_binding",
+          "runtime_family_id": null,
+          "runtime_registered_facings": [],
+          "art_path": null,
+          "direction_art_review": "No finished art or runtime family is claimed for this proposal; unrelated concept/source art may exist."
+        },
+        "superseded_v1_art_proposal": {
+          "revision": "cafe-table-v1",
+          "status": "rejected_after_native_art_review",
+          "reason": "The central post stopped seven native pixels above the foot, reading as a floating tabletop support. V1 files and actual-room evidence remain preserved.",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/cafe-table-v1/manifest.json",
+          "evidence_path": "game/tests/output/passive-tables/cafe_table-north-base-4x.png",
+          "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+        }
+      },
+      "native_geometry": {
+        "status": "reviewed_code_native_passive_library_not_runtime_admission",
+        "candidate_revision": "cafe-table-v2",
+        "canvas_size_px": [
+          160,
+          240
+        ],
+        "floor_anchor_px": [
+          80,
+          160
+        ],
+        "sprite_offset_px": [
+          0,
+          -40
+        ],
+        "grid_size_px": 32,
+        "estimated_max_rise_above_occupied_floor_px": 44,
+        "minimum_transparent_padding_px": 16,
+        "anchor_rule": "One unchanged canvas coordinate represents local floor pivot [0,0] in every direction and every layer. Transparent padding is not sprite scaling.",
+        "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/manifest.json",
+        "structural_results_path": "game/tests/output/passive-tables-v2/export-results.json",
+        "actual_room_results_path": "game/tests/output/passive-tables-v2/actual-room-results.json",
+        "passive_library_review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+        "focused_test_path": "game/tests/test_passive_tables.gd"
+      },
+      "layers": [
+        {
+          "id": "floor_shadow",
+          "required": true,
+          "same_canvas_and_floor_anchor": true,
+          "status": "approved",
+          "approved_revision": "cafe-table-v2"
+        },
+        {
+          "id": "rear_structure",
+          "required": true,
+          "same_canvas_and_floor_anchor": true,
+          "status": "approved",
+          "approved_revision": "cafe-table-v2"
+        },
+        {
+          "id": "front_structure",
+          "required": true,
+          "same_canvas_and_floor_anchor": true,
+          "status": "approved",
+          "approved_revision": "cafe-table-v2"
+        }
+      ],
+      "variants": [
+        {
+          "facing": "north",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/north-whole.png",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "evidence_path": "game/tests/output/passive-tables-v2/all-tables-north-room.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            2,
+            2
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              -1,
+              -1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "employee_look_vector": [
+            0,
+            -1
+          ],
+          "proposed_interaction_cell": null,
+          "seated_pose_needed": false,
+          "redraw_requirement": "Deterministic screen-axis native geometry under fixed upper-left light. Never rotate, mirror, flip, stretch or scale a finished bitmap to substitute for a registered view.",
+          "preview_path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/north-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/north-whole.png",
+          "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/cafe-table-v2/manifest.json",
+            "game/tests/output/passive-tables-v2/export-results.json",
+            "game/tests/output/passive-tables-v2/actual-room-results.json",
+            "game/tests/output/passive-tables-v2/all-tables-north-room.png",
+            "game/tests/output/passive-tables-v2/cafe_table-north-base-native.png",
+            "game/tests/output/passive-tables-v2/cafe_table-north-base-4x.png",
+            "game/tests/output/passive-tables-v2/cafe_table-north-mira-behind-native.png",
+            "game/tests/output/passive-tables-v2/cafe_table-north-mira-behind-4x.png",
+            "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved as cafe-table-v2 after extending the previously floating post into the unchanged pedestal base. The 44px-rise chamfered square top and central support now form one continuous silhouette in every view. Its square symmetry is explicit rather than decorated with a false front. No seats, food or interaction is included. Passive art-library approval only; no runtime/default-layout binding follows.",
+          "export_method": "Cafe-table-v2 deterministic typed-GDScript screen-axis geometry. The v1 tabletop, foot, masks, pivot and material are retained; only the central post extends into the base with a one-pixel overlap. No generated complete source, finished-bitmap rotation, mirror, flip, scale, baked actor, chair, food, text or logo.",
+          "native_exports": [
+            {
+              "canvas_size_px": [
+                160,
+                240
+              ],
+              "decoded_rgba_sha256": "6cfef6010bfb43f47787730ab8640707dc603a05d7dc525fd1e4300f0dce8cea",
+              "floor_anchor_px": [
+                80,
+                160
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "floor_shadow",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                55,
+                132,
+                22,
+                34
+              ],
+              "opaque_pixels": 14,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/north-floor_shadow.png",
+              "sha256": "56929ff3c15feb749cef0ed01b9c4e3a8bf3efd9be3a412d44c56099b980cd6a",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 1,
+              "verify_decoded_facts": true,
+              "z_offset": -2,
+              "source_layer": "floor_shadow",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                160,
+                240
+              ],
+              "decoded_rgba_sha256": "0e622db86b1c941b4792215b4f0f3fc3848faac5e8d623234880958f30c8cdd7",
+              "floor_anchor_px": [
+                80,
+                160
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "rear_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                38,
+                80,
+                52,
+                78
+              ],
+              "opaque_pixels": 2444,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/north-rear_structure.png",
+              "sha256": "b94960beff764694cac31d5676d83aadefc4c9e8635a6c87b5ec6f770cdb9ecb",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 8,
+              "verify_decoded_facts": true,
+              "z_offset": -1,
+              "source_layer": "rear_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                160,
+                240
+              ],
+              "decoded_rgba_sha256": "8bb124a1415cbce0082d72a91438ab05c3b93234c6b24cc2e93985360fe09aa3",
+              "floor_anchor_px": [
+                80,
+                160
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "front_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                42,
+                116,
+                44,
+                47
+              ],
+              "opaque_pixels": 368,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/north-front_structure.png",
+              "sha256": "d61428afc07934bc260dd73f6ae00b78581309fc1b082ae01fb12ffd6946e0e7",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 3,
+              "verify_decoded_facts": true,
+              "z_offset": 1,
+              "source_layer": "front_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            }
+          ],
+          "composite_exports": [
+            {
+              "canvas_size_px": [
+                160,
+                240
+              ],
+              "decoded_rgba_sha256": "6d559d5ef7b85b7fce4f9e56f870a0d2bb00ad98b7f10c9127bf3b674e456f02",
+              "floor_anchor_px": [
+                80,
+                160
+              ],
+              "hidden_rgb_pixels": 0,
+              "method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+              "opaque_bounds_px": [
+                38,
+                80,
+                52,
+                86
+              ],
+              "opaque_pixels": 2640,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/north-whole.png",
+              "sha256": "4d1b7b2875e5de718a27fa77b8dd141def40c6d9fc09e4e80a9daf0d722b707b",
+              "used_colors": 10,
+              "verify_decoded_facts": true
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "canonical_integration_passed": false,
+            "mean_score": 2.83,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 3,
+              "silhouette_readability": 3,
+              "layering_anchors": 3,
+              "direction_consistency": 2,
+              "placement": 3
+            },
+            "note": "Approved as cafe-table-v2 after correcting the seven-pixel support gap. Direction is a visual/reference axis only; the actor probe is not a seat or action.",
+            "acceptance_scope": "passive_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "measured_geometry": {
+            "rise_px": 44,
+            "axis": "square",
+            "equivalent_view": "translated_square",
+            "opaque_union_bounds_px": [
+              38,
+              80,
+              52,
+              86
+            ]
+          },
+          "symmetry_equivalent_to": "physically_square"
+        },
+        {
+          "facing": "east",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/east-whole.png",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "evidence_path": "game/tests/output/passive-tables-v2/all-tables-east-room.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            2,
+            2
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              0,
+              -1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "employee_look_vector": [
+            1,
+            0
+          ],
+          "proposed_interaction_cell": null,
+          "seated_pose_needed": false,
+          "redraw_requirement": "Deterministic screen-axis native geometry under fixed upper-left light. Never rotate, mirror, flip, stretch or scale a finished bitmap to substitute for a registered view.",
+          "preview_path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/east-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/east-whole.png",
+          "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/cafe-table-v2/manifest.json",
+            "game/tests/output/passive-tables-v2/export-results.json",
+            "game/tests/output/passive-tables-v2/actual-room-results.json",
+            "game/tests/output/passive-tables-v2/all-tables-east-room.png",
+            "game/tests/output/passive-tables-v2/cafe_table-east-base-native.png",
+            "game/tests/output/passive-tables-v2/cafe_table-east-base-4x.png",
+            "game/tests/output/passive-tables-v2/cafe_table-east-mira-behind-native.png",
+            "game/tests/output/passive-tables-v2/cafe_table-east-mira-behind-4x.png",
+            "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved as cafe-table-v2 after extending the previously floating post into the unchanged pedestal base. The 44px-rise chamfered square top and central support now form one continuous silhouette in every view. Its square symmetry is explicit rather than decorated with a false front. No seats, food or interaction is included. Passive art-library approval only; no runtime/default-layout binding follows.",
+          "export_method": "Cafe-table-v2 deterministic typed-GDScript screen-axis geometry. The v1 tabletop, foot, masks, pivot and material are retained; only the central post extends into the base with a one-pixel overlap. No generated complete source, finished-bitmap rotation, mirror, flip, scale, baked actor, chair, food, text or logo.",
+          "native_exports": [
+            {
+              "canvas_size_px": [
+                160,
+                240
+              ],
+              "decoded_rgba_sha256": "91427e5fab534c611b1cd3cb10ef8647a44e68071400876c8af249002d19b658",
+              "floor_anchor_px": [
+                80,
+                160
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "floor_shadow",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                87,
+                132,
+                22,
+                34
+              ],
+              "opaque_pixels": 14,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/east-floor_shadow.png",
+              "sha256": "fcb039b49d838b400e0bba30c96f8fb3f05b3197b87b26eb83534118ffe7b997",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 1,
+              "verify_decoded_facts": true,
+              "z_offset": -2,
+              "source_layer": "floor_shadow",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                160,
+                240
+              ],
+              "decoded_rgba_sha256": "e88d04b32fbe181751c39bcf6c57d512a0b597881dc498499417ffee5aaa1bfa",
+              "floor_anchor_px": [
+                80,
+                160
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "rear_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                70,
+                80,
+                52,
+                78
+              ],
+              "opaque_pixels": 2444,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/east-rear_structure.png",
+              "sha256": "318ad2bfe956ea0c014e130b516e5fe015707db68099d7732bef50f20e3ac6b0",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 8,
+              "verify_decoded_facts": true,
+              "z_offset": -1,
+              "source_layer": "rear_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                160,
+                240
+              ],
+              "decoded_rgba_sha256": "1dd5d2e7cbbde85b32a1dac5bf2adb9ed290679b30027d3a8e1f4cfbf5359305",
+              "floor_anchor_px": [
+                80,
+                160
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "front_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                74,
+                116,
+                44,
+                47
+              ],
+              "opaque_pixels": 368,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/east-front_structure.png",
+              "sha256": "cb490a6bef71319cea7b14d4d2fc37266e234a6341598e27600f3c42b0b29c2e",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 3,
+              "verify_decoded_facts": true,
+              "z_offset": 1,
+              "source_layer": "front_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            }
+          ],
+          "composite_exports": [
+            {
+              "canvas_size_px": [
+                160,
+                240
+              ],
+              "decoded_rgba_sha256": "93e9b5ae6bddb49998f7cd4e314230dca1ddb8e1d07b32daca1ced8e9846a40e",
+              "floor_anchor_px": [
+                80,
+                160
+              ],
+              "hidden_rgb_pixels": 0,
+              "method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+              "opaque_bounds_px": [
+                70,
+                80,
+                52,
+                86
+              ],
+              "opaque_pixels": 2640,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/east-whole.png",
+              "sha256": "50b3a28ed75a7b4dbd58f8331ea7342cae7d7ddf8a1184b602b67d8c089d9306",
+              "used_colors": 10,
+              "verify_decoded_facts": true
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "canonical_integration_passed": false,
+            "mean_score": 2.83,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 3,
+              "silhouette_readability": 3,
+              "layering_anchors": 3,
+              "direction_consistency": 2,
+              "placement": 3
+            },
+            "note": "Approved as cafe-table-v2 after correcting the seven-pixel support gap. Direction is a visual/reference axis only; the actor probe is not a seat or action.",
+            "acceptance_scope": "passive_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "measured_geometry": {
+            "rise_px": 44,
+            "axis": "square",
+            "equivalent_view": "translated_square",
+            "opaque_union_bounds_px": [
+              70,
+              80,
+              52,
+              86
+            ]
+          },
+          "symmetry_equivalent_to": "physically_square"
+        },
+        {
+          "facing": "south",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/south-whole.png",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "evidence_path": "game/tests/output/passive-tables-v2/all-tables-south-room.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            2,
+            2
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "employee_look_vector": [
+            0,
+            1
+          ],
+          "proposed_interaction_cell": null,
+          "seated_pose_needed": false,
+          "redraw_requirement": "Deterministic screen-axis native geometry under fixed upper-left light. Never rotate, mirror, flip, stretch or scale a finished bitmap to substitute for a registered view.",
+          "preview_path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/south-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/south-whole.png",
+          "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/cafe-table-v2/manifest.json",
+            "game/tests/output/passive-tables-v2/export-results.json",
+            "game/tests/output/passive-tables-v2/actual-room-results.json",
+            "game/tests/output/passive-tables-v2/all-tables-south-room.png",
+            "game/tests/output/passive-tables-v2/cafe_table-south-base-native.png",
+            "game/tests/output/passive-tables-v2/cafe_table-south-base-4x.png",
+            "game/tests/output/passive-tables-v2/cafe_table-south-mira-behind-native.png",
+            "game/tests/output/passive-tables-v2/cafe_table-south-mira-behind-4x.png",
+            "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved as cafe-table-v2 after extending the previously floating post into the unchanged pedestal base. The 44px-rise chamfered square top and central support now form one continuous silhouette in every view. Its square symmetry is explicit rather than decorated with a false front. No seats, food or interaction is included. Passive art-library approval only; no runtime/default-layout binding follows.",
+          "export_method": "Cafe-table-v2 deterministic typed-GDScript screen-axis geometry. The v1 tabletop, foot, masks, pivot and material are retained; only the central post extends into the base with a one-pixel overlap. No generated complete source, finished-bitmap rotation, mirror, flip, scale, baked actor, chair, food, text or logo.",
+          "native_exports": [
+            {
+              "canvas_size_px": [
+                160,
+                240
+              ],
+              "decoded_rgba_sha256": "2ae8136216b8513a33d435c0a30b2c97fea5c1088f65064ed1bc3dff3e9fc9ad",
+              "floor_anchor_px": [
+                80,
+                160
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "floor_shadow",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                87,
+                164,
+                22,
+                34
+              ],
+              "opaque_pixels": 14,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/south-floor_shadow.png",
+              "sha256": "46dd28c3e6a6f75d43a6feb29c3366dd8d1aa837d6d72d812772a34aeed82788",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 1,
+              "verify_decoded_facts": true,
+              "z_offset": -2,
+              "source_layer": "floor_shadow",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                160,
+                240
+              ],
+              "decoded_rgba_sha256": "3ca2ffc735f5669f00cddd8a2278fa827cd54d463108d08fca1d22ed3cbd4a59",
+              "floor_anchor_px": [
+                80,
+                160
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "rear_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                70,
+                112,
+                52,
+                78
+              ],
+              "opaque_pixels": 2444,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/south-rear_structure.png",
+              "sha256": "e78e84f08d307bc514043bd70a0f2b4a576f556461d5ad654563fec86a046c83",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 8,
+              "verify_decoded_facts": true,
+              "z_offset": -1,
+              "source_layer": "rear_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                160,
+                240
+              ],
+              "decoded_rgba_sha256": "9663098215d4b7a18911e2bfc741193829d7233ae90436fc789b8e67be2afa4e",
+              "floor_anchor_px": [
+                80,
+                160
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "front_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                74,
+                148,
+                44,
+                47
+              ],
+              "opaque_pixels": 368,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/south-front_structure.png",
+              "sha256": "1e540206b1cb39c898c68e0b87a4d12b825a5e37a1ae447abdd694abc90580d7",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 3,
+              "verify_decoded_facts": true,
+              "z_offset": 1,
+              "source_layer": "front_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            }
+          ],
+          "composite_exports": [
+            {
+              "canvas_size_px": [
+                160,
+                240
+              ],
+              "decoded_rgba_sha256": "43e3046190e44f1f25950c8f0bf6acaf8b6c18291f5a5833356784548ed763c3",
+              "floor_anchor_px": [
+                80,
+                160
+              ],
+              "hidden_rgb_pixels": 0,
+              "method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+              "opaque_bounds_px": [
+                70,
+                112,
+                52,
+                86
+              ],
+              "opaque_pixels": 2640,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/south-whole.png",
+              "sha256": "065fab4b9e1e28364244afc6045855eaaac2f77b990b770d65498837c8bd1c68",
+              "used_colors": 10,
+              "verify_decoded_facts": true
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "canonical_integration_passed": false,
+            "mean_score": 2.83,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 3,
+              "silhouette_readability": 3,
+              "layering_anchors": 3,
+              "direction_consistency": 2,
+              "placement": 3
+            },
+            "note": "Approved as cafe-table-v2 after correcting the seven-pixel support gap. Direction is a visual/reference axis only; the actor probe is not a seat or action.",
+            "acceptance_scope": "passive_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "measured_geometry": {
+            "rise_px": 44,
+            "axis": "square",
+            "equivalent_view": "translated_square",
+            "opaque_union_bounds_px": [
+              70,
+              112,
+              52,
+              86
+            ]
+          },
+          "symmetry_equivalent_to": "physically_square"
+        },
+        {
+          "facing": "west",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/west-whole.png",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "evidence_path": "game/tests/output/passive-tables-v2/all-tables-west-room.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            2,
+            2
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "employee_look_vector": [
+            -1,
+            0
+          ],
+          "proposed_interaction_cell": null,
+          "seated_pose_needed": false,
+          "redraw_requirement": "Deterministic screen-axis native geometry under fixed upper-left light. Never rotate, mirror, flip, stretch or scale a finished bitmap to substitute for a registered view.",
+          "preview_path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/west-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/west-whole.png",
+          "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/cafe-table-v2/manifest.json",
+            "game/tests/output/passive-tables-v2/export-results.json",
+            "game/tests/output/passive-tables-v2/actual-room-results.json",
+            "game/tests/output/passive-tables-v2/all-tables-west-room.png",
+            "game/tests/output/passive-tables-v2/cafe_table-west-base-native.png",
+            "game/tests/output/passive-tables-v2/cafe_table-west-base-4x.png",
+            "game/tests/output/passive-tables-v2/cafe_table-west-mira-behind-native.png",
+            "game/tests/output/passive-tables-v2/cafe_table-west-mira-behind-4x.png",
+            "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved as cafe-table-v2 after extending the previously floating post into the unchanged pedestal base. The 44px-rise chamfered square top and central support now form one continuous silhouette in every view. Its square symmetry is explicit rather than decorated with a false front. No seats, food or interaction is included. Passive art-library approval only; no runtime/default-layout binding follows.",
+          "export_method": "Cafe-table-v2 deterministic typed-GDScript screen-axis geometry. The v1 tabletop, foot, masks, pivot and material are retained; only the central post extends into the base with a one-pixel overlap. No generated complete source, finished-bitmap rotation, mirror, flip, scale, baked actor, chair, food, text or logo.",
+          "native_exports": [
+            {
+              "canvas_size_px": [
+                160,
+                240
+              ],
+              "decoded_rgba_sha256": "86f8b8caaa7ed36c00be6225718eafe0725aaa9967e3ab9b09bd22f887e22c95",
+              "floor_anchor_px": [
+                80,
+                160
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "floor_shadow",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                55,
+                164,
+                22,
+                34
+              ],
+              "opaque_pixels": 14,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/west-floor_shadow.png",
+              "sha256": "c4c0c934192f8166e328dadf101440aa32375139fc20dbeed98565e90e758132",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 1,
+              "verify_decoded_facts": true,
+              "z_offset": -2,
+              "source_layer": "floor_shadow",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                160,
+                240
+              ],
+              "decoded_rgba_sha256": "8f6d06b7af7e2847733e99270042bb42f52a230ed947f947fa25c9a62fabcbdb",
+              "floor_anchor_px": [
+                80,
+                160
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "rear_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                38,
+                112,
+                52,
+                78
+              ],
+              "opaque_pixels": 2444,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/west-rear_structure.png",
+              "sha256": "a89794c544e36635474648588e0db7557e1d73451c2fd0cf5b76458aab8bab07",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 8,
+              "verify_decoded_facts": true,
+              "z_offset": -1,
+              "source_layer": "rear_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                160,
+                240
+              ],
+              "decoded_rgba_sha256": "3f8ecc2f9cc354c29ea947b1a550e1abaa65480ee321453c1baad407c90aacc5",
+              "floor_anchor_px": [
+                80,
+                160
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "front_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                42,
+                148,
+                44,
+                47
+              ],
+              "opaque_pixels": 368,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/west-front_structure.png",
+              "sha256": "cb3b92fab7f943db6239adb9471464d03a4785cacc438788c6d71d5bde9eec8c",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 3,
+              "verify_decoded_facts": true,
+              "z_offset": 1,
+              "source_layer": "front_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            }
+          ],
+          "composite_exports": [
+            {
+              "canvas_size_px": [
+                160,
+                240
+              ],
+              "decoded_rgba_sha256": "3caa15839ebe67abb427833f5ee6567239dc428315e4edd8e7bb4436fa476726",
+              "floor_anchor_px": [
+                80,
+                160
+              ],
+              "hidden_rgb_pixels": 0,
+              "method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+              "opaque_bounds_px": [
+                38,
+                112,
+                52,
+                86
+              ],
+              "opaque_pixels": 2640,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/cafe-table-v2/west-whole.png",
+              "sha256": "da87ac9fdf5ad916cc335a987e046f70240651e607fa0675bb18f6faf1c255b3",
+              "used_colors": 10,
+              "verify_decoded_facts": true
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "canonical_integration_passed": false,
+            "mean_score": 2.83,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 3,
+              "silhouette_readability": 3,
+              "layering_anchors": 3,
+              "direction_consistency": 2,
+              "placement": 3
+            },
+            "note": "Approved as cafe-table-v2 after correcting the seven-pixel support gap. Direction is a visual/reference axis only; the actor probe is not a seat or action.",
+            "acceptance_scope": "passive_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "measured_geometry": {
+            "rise_px": 44,
+            "axis": "square",
+            "equivalent_view": "translated_square",
+            "opaque_union_bounds_px": [
+              38,
+              112,
+              52,
+              86
+            ]
+          },
+          "symmetry_equivalent_to": "physically_square"
+        }
+      ],
+      "art_library_approval": {
+        "scope": "passive_art_library",
+        "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+        "acceptance_date": "2026-09-06",
+        "runtime_admission": false
+      }
+    },
+    {
+      "id": "round_meeting_table",
+      "direction_semantics": "visual_orientation",
+      "display_name": "Small round meeting table",
+      "asset_kind": "furniture_base",
+      "base_vs_decor": "base",
+      "category": "shared",
+      "priority": "P1",
+      "production_status": "approved",
+      "role_tags": [
+        "founder",
+        "lawyer",
+        "customer_success",
+        "shared"
+      ],
+      "role_tools": [
+        "compact meeting surface"
+      ],
+      "design_brief": "Useful for two-person reviews in tight rooms; chairs remain independent.",
+      "gameplay_scope": "Approved passive art-library object only; no runtime/default-layout binding, chair, seat, service, work behavior, worker authority, persistence or gameplay transaction.",
+      "primary_host": null,
+      "current_availability": {
+        "status": "no_catalogue_runtime_binding",
+        "runtime_family_id": null,
+        "runtime_registered_facings": [],
+        "art_path": null,
+        "direction_art_review": "Approved as a larger three-by-three round meeting-table base with a 52px-rise elliptical surface and wide central pedestal foot. Its registered NESW composites are intentionally equal by physical rotational symmetry. No seats, meeting action or interaction is included. Actor evidence is scale/depth only.",
+        "previous_catalogue_availability": {
+          "status": "no_catalogue_runtime_binding",
+          "runtime_family_id": null,
+          "runtime_registered_facings": [],
+          "art_path": null,
+          "direction_art_review": "No finished art or runtime family is claimed for this proposal; unrelated concept/source art may exist."
+        }
+      },
+      "native_geometry": {
+        "status": "reviewed_code_native_passive_library_not_runtime_admission",
+        "candidate_revision": "round-meeting-table-v1",
+        "canvas_size_px": [
+          224,
+          288
+        ],
+        "floor_anchor_px": [
+          112,
+          176
+        ],
+        "sprite_offset_px": [
+          0,
+          -32
+        ],
+        "grid_size_px": 32,
+        "estimated_max_rise_above_occupied_floor_px": 52,
+        "minimum_transparent_padding_px": 16,
+        "anchor_rule": "One unchanged canvas coordinate represents local floor pivot [0,0] in every direction and every layer. Transparent padding is not sprite scaling.",
+        "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/manifest.json",
+        "structural_results_path": "game/tests/output/passive-tables-v2/export-results.json",
+        "actual_room_results_path": "game/tests/output/passive-tables-v2/actual-room-results.json",
+        "passive_library_review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+        "focused_test_path": "game/tests/test_passive_tables.gd"
+      },
+      "layers": [
+        {
+          "id": "floor_shadow",
+          "required": true,
+          "same_canvas_and_floor_anchor": true,
+          "status": "approved",
+          "approved_revision": "round-meeting-table-v1"
+        },
+        {
+          "id": "rear_structure",
+          "required": true,
+          "same_canvas_and_floor_anchor": true,
+          "status": "approved",
+          "approved_revision": "round-meeting-table-v1"
+        },
+        {
+          "id": "front_structure",
+          "required": true,
+          "same_canvas_and_floor_anchor": true,
+          "status": "approved",
+          "approved_revision": "round-meeting-table-v1"
+        }
+      ],
+      "variants": [
+        {
+          "facing": "north",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/north-whole.png",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "evidence_path": "game/tests/output/passive-tables-v2/all-tables-north-room.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            3,
+            3
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              -1,
+              -1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "employee_look_vector": [
+            0,
+            -1
+          ],
+          "proposed_interaction_cell": null,
+          "seated_pose_needed": false,
+          "redraw_requirement": "Deterministic screen-axis native geometry under fixed upper-left light. Never rotate, mirror, flip, stretch or scale a finished bitmap to substitute for a registered view.",
+          "preview_path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/north-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/north-whole.png",
+          "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/manifest.json",
+            "game/tests/output/passive-tables-v2/export-results.json",
+            "game/tests/output/passive-tables-v2/actual-room-results.json",
+            "game/tests/output/passive-tables-v2/all-tables-north-room.png",
+            "game/tests/output/passive-tables-v2/round_meeting_table-north-base-native.png",
+            "game/tests/output/passive-tables-v2/round_meeting_table-north-base-4x.png",
+            "game/tests/output/passive-tables-v2/round_meeting_table-north-theo-behind-native.png",
+            "game/tests/output/passive-tables-v2/round_meeting_table-north-theo-behind-4x.png",
+            "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved as a larger three-by-three round meeting-table base with a 52px-rise elliptical surface and wide central pedestal foot. Its registered NESW composites are intentionally equal by physical rotational symmetry. No seats, meeting action or interaction is included. Passive art-library approval only; no runtime/default-layout binding follows.",
+          "export_method": "Deterministic typed-GDScript screen-axis geometry using the shared quiet-oak material and existing charcoal/metal palette. No generated complete source, finished-bitmap rotation, mirror, flip, scale, baked actor, chair, tool, text or logo.",
+          "native_exports": [
+            {
+              "canvas_size_px": [
+                224,
+                288
+              ],
+              "decoded_rgba_sha256": "652c39437a58781df87d7c1b1af72b545165f335fef8647db19f4e4b7d87d818",
+              "floor_anchor_px": [
+                112,
+                176
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "floor_shadow",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                93,
+                201,
+                44,
+                15
+              ],
+              "opaque_pixels": 28,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/north-floor_shadow.png",
+              "sha256": "d28da9f2797781285196b1b8c47fad7ece4fe9d57d070bb93a54145a919e0645",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 1,
+              "verify_decoded_facts": true,
+              "z_offset": -2,
+              "source_layer": "floor_shadow",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                224,
+                288
+              ],
+              "decoded_rgba_sha256": "2baf5e148cbf8dd6e35236df7de2445e06f08128691252d1958df98c98829b4d",
+              "floor_anchor_px": [
+                112,
+                176
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "rear_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                70,
+                98,
+                84,
+                113
+              ],
+              "opaque_pixels": 4294,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/north-rear_structure.png",
+              "sha256": "cd30a75e0220be2eb01174050d241db380fe018db7bd674f294632c10ac2bba8",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 8,
+              "verify_decoded_facts": true,
+              "z_offset": -1,
+              "source_layer": "rear_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                224,
+                288
+              ],
+              "decoded_rgba_sha256": "814436c1da99418dd1bc20a57f4b4322c8c465602d8bb17d8cb4fbf1c01ca874",
+              "floor_anchor_px": [
+                112,
+                176
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "front_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                84,
+                147,
+                56,
+                68
+              ],
+              "opaque_pixels": 598,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/north-front_structure.png",
+              "sha256": "4853f88f783e27684bbc67e2bc07458c1ac1d8d12fad55f21e69b403792ce1eb",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 5,
+              "verify_decoded_facts": true,
+              "z_offset": 1,
+              "source_layer": "front_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            }
+          ],
+          "composite_exports": [
+            {
+              "canvas_size_px": [
+                224,
+                288
+              ],
+              "decoded_rgba_sha256": "ff728daf5d8e2638a62e266f479867b076a8beae980be6ed5110c7af406b88af",
+              "floor_anchor_px": [
+                112,
+                176
+              ],
+              "hidden_rgb_pixels": 0,
+              "method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+              "opaque_bounds_px": [
+                70,
+                98,
+                84,
+                118
+              ],
+              "opaque_pixels": 4776,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/north-whole.png",
+              "sha256": "ffed2973897c23a0eb17017dfc7e53a2bc6c2b653d774d9f791910428c4d3bfb",
+              "used_colors": 10,
+              "verify_decoded_facts": true
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "canonical_integration_passed": false,
+            "mean_score": 2.83,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 3,
+              "silhouette_readability": 3,
+              "layering_anchors": 3,
+              "direction_consistency": 2,
+              "placement": 3
+            },
+            "note": "Approved as a larger three-by-three round meeting-table base with a 52px-rise elliptical surface and wide central pedestal foot. Its registered NESW composites are intentionally equal by physical rotational symmetry. No seats, meeting action or interaction is included. Direction is a visual/reference axis only; the actor probe is not a seat or action.",
+            "acceptance_scope": "passive_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "measured_geometry": {
+            "rise_px": 52,
+            "axis": "round",
+            "equivalent_view": "rotationally_symmetric",
+            "opaque_union_bounds_px": [
+              70,
+              98,
+              84,
+              118
+            ]
+          },
+          "symmetry_equivalent_to": "south"
+        },
+        {
+          "facing": "east",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/east-whole.png",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "evidence_path": "game/tests/output/passive-tables-v2/all-tables-east-room.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            3,
+            3
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              -1,
+              -1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "employee_look_vector": [
+            1,
+            0
+          ],
+          "proposed_interaction_cell": null,
+          "seated_pose_needed": false,
+          "redraw_requirement": "Deterministic screen-axis native geometry under fixed upper-left light. Never rotate, mirror, flip, stretch or scale a finished bitmap to substitute for a registered view.",
+          "preview_path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/east-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/east-whole.png",
+          "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/manifest.json",
+            "game/tests/output/passive-tables-v2/export-results.json",
+            "game/tests/output/passive-tables-v2/actual-room-results.json",
+            "game/tests/output/passive-tables-v2/all-tables-east-room.png",
+            "game/tests/output/passive-tables-v2/round_meeting_table-east-base-native.png",
+            "game/tests/output/passive-tables-v2/round_meeting_table-east-base-4x.png",
+            "game/tests/output/passive-tables-v2/round_meeting_table-east-theo-behind-native.png",
+            "game/tests/output/passive-tables-v2/round_meeting_table-east-theo-behind-4x.png",
+            "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved as a larger three-by-three round meeting-table base with a 52px-rise elliptical surface and wide central pedestal foot. Its registered NESW composites are intentionally equal by physical rotational symmetry. No seats, meeting action or interaction is included. Passive art-library approval only; no runtime/default-layout binding follows.",
+          "export_method": "Deterministic typed-GDScript screen-axis geometry using the shared quiet-oak material and existing charcoal/metal palette. No generated complete source, finished-bitmap rotation, mirror, flip, scale, baked actor, chair, tool, text or logo.",
+          "native_exports": [
+            {
+              "canvas_size_px": [
+                224,
+                288
+              ],
+              "decoded_rgba_sha256": "652c39437a58781df87d7c1b1af72b545165f335fef8647db19f4e4b7d87d818",
+              "floor_anchor_px": [
+                112,
+                176
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "floor_shadow",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                93,
+                201,
+                44,
+                15
+              ],
+              "opaque_pixels": 28,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/east-floor_shadow.png",
+              "sha256": "d28da9f2797781285196b1b8c47fad7ece4fe9d57d070bb93a54145a919e0645",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 1,
+              "verify_decoded_facts": true,
+              "z_offset": -2,
+              "source_layer": "floor_shadow",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                224,
+                288
+              ],
+              "decoded_rgba_sha256": "2baf5e148cbf8dd6e35236df7de2445e06f08128691252d1958df98c98829b4d",
+              "floor_anchor_px": [
+                112,
+                176
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "rear_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                70,
+                98,
+                84,
+                113
+              ],
+              "opaque_pixels": 4294,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/east-rear_structure.png",
+              "sha256": "cd30a75e0220be2eb01174050d241db380fe018db7bd674f294632c10ac2bba8",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 8,
+              "verify_decoded_facts": true,
+              "z_offset": -1,
+              "source_layer": "rear_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                224,
+                288
+              ],
+              "decoded_rgba_sha256": "814436c1da99418dd1bc20a57f4b4322c8c465602d8bb17d8cb4fbf1c01ca874",
+              "floor_anchor_px": [
+                112,
+                176
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "front_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                84,
+                147,
+                56,
+                68
+              ],
+              "opaque_pixels": 598,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/east-front_structure.png",
+              "sha256": "4853f88f783e27684bbc67e2bc07458c1ac1d8d12fad55f21e69b403792ce1eb",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 5,
+              "verify_decoded_facts": true,
+              "z_offset": 1,
+              "source_layer": "front_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            }
+          ],
+          "composite_exports": [
+            {
+              "canvas_size_px": [
+                224,
+                288
+              ],
+              "decoded_rgba_sha256": "ff728daf5d8e2638a62e266f479867b076a8beae980be6ed5110c7af406b88af",
+              "floor_anchor_px": [
+                112,
+                176
+              ],
+              "hidden_rgb_pixels": 0,
+              "method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+              "opaque_bounds_px": [
+                70,
+                98,
+                84,
+                118
+              ],
+              "opaque_pixels": 4776,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/east-whole.png",
+              "sha256": "ffed2973897c23a0eb17017dfc7e53a2bc6c2b653d774d9f791910428c4d3bfb",
+              "used_colors": 10,
+              "verify_decoded_facts": true
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "canonical_integration_passed": false,
+            "mean_score": 2.83,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 3,
+              "silhouette_readability": 3,
+              "layering_anchors": 3,
+              "direction_consistency": 2,
+              "placement": 3
+            },
+            "note": "Approved as a larger three-by-three round meeting-table base with a 52px-rise elliptical surface and wide central pedestal foot. Its registered NESW composites are intentionally equal by physical rotational symmetry. No seats, meeting action or interaction is included. Direction is a visual/reference axis only; the actor probe is not a seat or action.",
+            "acceptance_scope": "passive_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "measured_geometry": {
+            "rise_px": 52,
+            "axis": "round",
+            "equivalent_view": "rotationally_symmetric",
+            "opaque_union_bounds_px": [
+              70,
+              98,
+              84,
+              118
+            ]
+          },
+          "symmetry_equivalent_to": "west"
+        },
+        {
+          "facing": "south",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/south-whole.png",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "evidence_path": "game/tests/output/passive-tables-v2/all-tables-south-room.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            3,
+            3
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              -1,
+              -1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "employee_look_vector": [
+            0,
+            1
+          ],
+          "proposed_interaction_cell": null,
+          "seated_pose_needed": false,
+          "redraw_requirement": "Deterministic screen-axis native geometry under fixed upper-left light. Never rotate, mirror, flip, stretch or scale a finished bitmap to substitute for a registered view.",
+          "preview_path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/south-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/south-whole.png",
+          "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/manifest.json",
+            "game/tests/output/passive-tables-v2/export-results.json",
+            "game/tests/output/passive-tables-v2/actual-room-results.json",
+            "game/tests/output/passive-tables-v2/all-tables-south-room.png",
+            "game/tests/output/passive-tables-v2/round_meeting_table-south-base-native.png",
+            "game/tests/output/passive-tables-v2/round_meeting_table-south-base-4x.png",
+            "game/tests/output/passive-tables-v2/round_meeting_table-south-theo-behind-native.png",
+            "game/tests/output/passive-tables-v2/round_meeting_table-south-theo-behind-4x.png",
+            "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved as a larger three-by-three round meeting-table base with a 52px-rise elliptical surface and wide central pedestal foot. Its registered NESW composites are intentionally equal by physical rotational symmetry. No seats, meeting action or interaction is included. Passive art-library approval only; no runtime/default-layout binding follows.",
+          "export_method": "Deterministic typed-GDScript screen-axis geometry using the shared quiet-oak material and existing charcoal/metal palette. No generated complete source, finished-bitmap rotation, mirror, flip, scale, baked actor, chair, tool, text or logo.",
+          "native_exports": [
+            {
+              "canvas_size_px": [
+                224,
+                288
+              ],
+              "decoded_rgba_sha256": "652c39437a58781df87d7c1b1af72b545165f335fef8647db19f4e4b7d87d818",
+              "floor_anchor_px": [
+                112,
+                176
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "floor_shadow",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                93,
+                201,
+                44,
+                15
+              ],
+              "opaque_pixels": 28,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/south-floor_shadow.png",
+              "sha256": "d28da9f2797781285196b1b8c47fad7ece4fe9d57d070bb93a54145a919e0645",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 1,
+              "verify_decoded_facts": true,
+              "z_offset": -2,
+              "source_layer": "floor_shadow",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                224,
+                288
+              ],
+              "decoded_rgba_sha256": "2baf5e148cbf8dd6e35236df7de2445e06f08128691252d1958df98c98829b4d",
+              "floor_anchor_px": [
+                112,
+                176
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "rear_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                70,
+                98,
+                84,
+                113
+              ],
+              "opaque_pixels": 4294,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/south-rear_structure.png",
+              "sha256": "cd30a75e0220be2eb01174050d241db380fe018db7bd674f294632c10ac2bba8",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 8,
+              "verify_decoded_facts": true,
+              "z_offset": -1,
+              "source_layer": "rear_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                224,
+                288
+              ],
+              "decoded_rgba_sha256": "814436c1da99418dd1bc20a57f4b4322c8c465602d8bb17d8cb4fbf1c01ca874",
+              "floor_anchor_px": [
+                112,
+                176
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "front_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                84,
+                147,
+                56,
+                68
+              ],
+              "opaque_pixels": 598,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/south-front_structure.png",
+              "sha256": "4853f88f783e27684bbc67e2bc07458c1ac1d8d12fad55f21e69b403792ce1eb",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 5,
+              "verify_decoded_facts": true,
+              "z_offset": 1,
+              "source_layer": "front_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            }
+          ],
+          "composite_exports": [
+            {
+              "canvas_size_px": [
+                224,
+                288
+              ],
+              "decoded_rgba_sha256": "ff728daf5d8e2638a62e266f479867b076a8beae980be6ed5110c7af406b88af",
+              "floor_anchor_px": [
+                112,
+                176
+              ],
+              "hidden_rgb_pixels": 0,
+              "method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+              "opaque_bounds_px": [
+                70,
+                98,
+                84,
+                118
+              ],
+              "opaque_pixels": 4776,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/south-whole.png",
+              "sha256": "ffed2973897c23a0eb17017dfc7e53a2bc6c2b653d774d9f791910428c4d3bfb",
+              "used_colors": 10,
+              "verify_decoded_facts": true
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "canonical_integration_passed": false,
+            "mean_score": 2.83,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 3,
+              "silhouette_readability": 3,
+              "layering_anchors": 3,
+              "direction_consistency": 2,
+              "placement": 3
+            },
+            "note": "Approved as a larger three-by-three round meeting-table base with a 52px-rise elliptical surface and wide central pedestal foot. Its registered NESW composites are intentionally equal by physical rotational symmetry. No seats, meeting action or interaction is included. Direction is a visual/reference axis only; the actor probe is not a seat or action.",
+            "acceptance_scope": "passive_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "measured_geometry": {
+            "rise_px": 52,
+            "axis": "round",
+            "equivalent_view": "rotationally_symmetric",
+            "opaque_union_bounds_px": [
+              70,
+              98,
+              84,
+              118
+            ]
+          },
+          "symmetry_equivalent_to": "north"
+        },
+        {
+          "facing": "west",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/west-whole.png",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "evidence_path": "game/tests/output/passive-tables-v2/all-tables-west-room.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            3,
+            3
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              -1,
+              -1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "employee_look_vector": [
+            -1,
+            0
+          ],
+          "proposed_interaction_cell": null,
+          "seated_pose_needed": false,
+          "redraw_requirement": "Deterministic screen-axis native geometry under fixed upper-left light. Never rotate, mirror, flip, stretch or scale a finished bitmap to substitute for a registered view.",
+          "preview_path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/west-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/west-whole.png",
+          "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/manifest.json",
+            "game/tests/output/passive-tables-v2/export-results.json",
+            "game/tests/output/passive-tables-v2/actual-room-results.json",
+            "game/tests/output/passive-tables-v2/all-tables-west-room.png",
+            "game/tests/output/passive-tables-v2/round_meeting_table-west-base-native.png",
+            "game/tests/output/passive-tables-v2/round_meeting_table-west-base-4x.png",
+            "game/tests/output/passive-tables-v2/round_meeting_table-west-theo-behind-native.png",
+            "game/tests/output/passive-tables-v2/round_meeting_table-west-theo-behind-4x.png",
+            "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved as a larger three-by-three round meeting-table base with a 52px-rise elliptical surface and wide central pedestal foot. Its registered NESW composites are intentionally equal by physical rotational symmetry. No seats, meeting action or interaction is included. Passive art-library approval only; no runtime/default-layout binding follows.",
+          "export_method": "Deterministic typed-GDScript screen-axis geometry using the shared quiet-oak material and existing charcoal/metal palette. No generated complete source, finished-bitmap rotation, mirror, flip, scale, baked actor, chair, tool, text or logo.",
+          "native_exports": [
+            {
+              "canvas_size_px": [
+                224,
+                288
+              ],
+              "decoded_rgba_sha256": "652c39437a58781df87d7c1b1af72b545165f335fef8647db19f4e4b7d87d818",
+              "floor_anchor_px": [
+                112,
+                176
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "floor_shadow",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                93,
+                201,
+                44,
+                15
+              ],
+              "opaque_pixels": 28,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/west-floor_shadow.png",
+              "sha256": "d28da9f2797781285196b1b8c47fad7ece4fe9d57d070bb93a54145a919e0645",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 1,
+              "verify_decoded_facts": true,
+              "z_offset": -2,
+              "source_layer": "floor_shadow",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                224,
+                288
+              ],
+              "decoded_rgba_sha256": "2baf5e148cbf8dd6e35236df7de2445e06f08128691252d1958df98c98829b4d",
+              "floor_anchor_px": [
+                112,
+                176
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "rear_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                70,
+                98,
+                84,
+                113
+              ],
+              "opaque_pixels": 4294,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/west-rear_structure.png",
+              "sha256": "cd30a75e0220be2eb01174050d241db380fe018db7bd674f294632c10ac2bba8",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 8,
+              "verify_decoded_facts": true,
+              "z_offset": -1,
+              "source_layer": "rear_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            },
+            {
+              "canvas_size_px": [
+                224,
+                288
+              ],
+              "decoded_rgba_sha256": "814436c1da99418dd1bc20a57f4b4322c8c465602d8bb17d8cb4fbf1c01ca874",
+              "floor_anchor_px": [
+                112,
+                176
+              ],
+              "hidden_rgb_pixels": 0,
+              "layer": "front_structure",
+              "method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+              "opaque_bounds_px": [
+                84,
+                147,
+                56,
+                68
+              ],
+              "opaque_pixels": 598,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/west-front_structure.png",
+              "sha256": "4853f88f783e27684bbc67e2bc07458c1ac1d8d12fad55f21e69b403792ce1eb",
+              "source_path": "game/tools/passive_table_geometry.gd",
+              "used_colors": 5,
+              "verify_decoded_facts": true,
+              "z_offset": 1,
+              "source_layer": "front_structure",
+              "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md"
+            }
+          ],
+          "composite_exports": [
+            {
+              "canvas_size_px": [
+                224,
+                288
+              ],
+              "decoded_rgba_sha256": "ff728daf5d8e2638a62e266f479867b076a8beae980be6ed5110c7af406b88af",
+              "floor_anchor_px": [
+                112,
+                176
+              ],
+              "hidden_rgb_pixels": 0,
+              "method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+              "opaque_bounds_px": [
+                70,
+                98,
+                84,
+                118
+              ],
+              "opaque_pixels": 4776,
+              "partial_alpha_pixels": 0,
+              "path": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/west-whole.png",
+              "sha256": "ffed2973897c23a0eb17017dfc7e53a2bc6c2b653d774d9f791910428c4d3bfb",
+              "used_colors": 10,
+              "verify_decoded_facts": true
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "canonical_integration_passed": false,
+            "mean_score": 2.83,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 3,
+              "silhouette_readability": 3,
+              "layering_anchors": 3,
+              "direction_consistency": 2,
+              "placement": 3
+            },
+            "note": "Approved as a larger three-by-three round meeting-table base with a 52px-rise elliptical surface and wide central pedestal foot. Its registered NESW composites are intentionally equal by physical rotational symmetry. No seats, meeting action or interaction is included. Direction is a visual/reference axis only; the actor probe is not a seat or action.",
+            "acceptance_scope": "passive_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "measured_geometry": {
+            "rise_px": 52,
+            "axis": "round",
+            "equivalent_view": "rotationally_symmetric",
+            "opaque_union_bounds_px": [
+              70,
+              98,
+              84,
+              118
+            ]
+          },
+          "symmetry_equivalent_to": "east"
+        }
+      ],
+      "art_library_approval": {
+        "scope": "passive_art_library",
+        "review_path": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+        "acceptance_date": "2026-09-06",
+        "runtime_admission": false
+      }
+    }
+  ]
+}

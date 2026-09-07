@@ -1,0 +1,101 @@
+{
+	"actual_clicks": 1,
+	"captures": [
+		"native-notebook.png",
+		"mira-card-native.png",
+		"mira-card-4x.png",
+		"theo-card-native.png",
+		"theo-card-4x.png",
+		"lawyer-card-native.png",
+		"lawyer-card-4x.png",
+		"creative-card-native.png",
+		"creative-card-4x.png",
+		"keyboard-focus.png",
+		"inspected-local-only.png"
+	],
+	"checks": 292,
+	"employee_registered": false,
+	"failures": [],
+	"headless": false,
+	"intentionally_opaque": true,
+	"limitations": [
+		"Portrait concepts only; no world poses, employee backend or hiring.",
+		"Current cast retains production COVERED fit behavior, not new64x80 native source art.",
+		"New native plate frame uses82x98 with64x80 opening; existing84x92 rail opening66x74 would crop/enlarge this plate."
+	],
+	"portraits": [
+		{
+			"alpha": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					0,
+					0,
+					64,
+					80
+				],
+				"opaque_colors": 32,
+				"opaque_pixels": 5120,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 0
+			},
+			"corner_colors": [
+				"f7e0bf",
+				"f7e1c0",
+				"f7e0bf",
+				"f7e0bf"
+			],
+			"employee_registered": false,
+			"id": "lawyer",
+			"intentionally_opaque": true,
+			"native_path": "res://tests/fixtures/character-concepts/overnight-v1/lawyer-portrait-v3.png",
+			"portrait_cutout": false
+		},
+		{
+			"alpha": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					0,
+					0,
+					64,
+					80
+				],
+				"opaque_colors": 32,
+				"opaque_pixels": 5120,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 0
+			},
+			"corner_colors": [
+				"f6e1c1",
+				"f7e1c1",
+				"f6e1c1",
+				"f7e1c1"
+			],
+			"employee_registered": false,
+			"id": "creative",
+			"intentionally_opaque": true,
+			"native_path": "res://tests/fixtures/character-concepts/overnight-v1/creative-portrait-v3.png",
+			"portrait_cutout": false
+		}
+	],
+	"runtime_approved": false,
+	"save_access": false,
+	"sources": [
+		{
+			"path": "res://tests/fixtures/character-concepts/overnight-v1/lawyer-portrait-v3.png",
+			"sha256": "6aaaf7452da67fd6c42b480dc95f717d8dea98d1f7bbe53ef9621189750405c1"
+		},
+		{
+			"path": "res://assets/source/overnight-20260904/characters/lawyer-portrait-v3.png",
+			"sha256": "e28952e8aec785883b324f53b18a9dd87fbdc3b5ce35ee9ca16dbe777e64a365"
+		},
+		{
+			"path": "res://tests/fixtures/character-concepts/overnight-v1/creative-portrait-v3.png",
+			"sha256": "98e65a92e358253701ae78cc72eb5dd01105f64dd86a46630ab50c28562853ad"
+		},
+		{
+			"path": "res://assets/source/overnight-20260904/characters/creative-portrait-v3.png",
+			"sha256": "874f98df78449889b5af81326200e307fa73e7db1df4774b7085df36d01eeaab"
+		}
+	],
+	"worker_started": false
+}

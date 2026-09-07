@@ -1,0 +1,1591 @@
+{
+	"actor_pixel_checks": 143706,
+	"captures": [
+		"bare-assembly.png",
+		"south-assembly.png",
+		"north-assembly.png",
+		"native-comparison.png",
+		"native-comparison-bare-mira-4x.png",
+		"native-comparison-south-mira-4x.png",
+		"native-comparison-north-mira-4x.png",
+		"native-comparison-bare-theo-4x.png",
+		"native-comparison-south-theo-4x.png",
+		"native-comparison-north-theo-4x.png",
+		"service-approach.png",
+		"service-approach-bare-mira-4x.png",
+		"service-approach-south-mira-4x.png",
+		"service-approach-north-mira-4x.png",
+		"service-approach-bare-theo-4x.png",
+		"service-approach-south-theo-4x.png",
+		"service-approach-north-theo-4x.png",
+		"support-guides.png",
+		"support-guides-bare-mira-4x.png",
+		"support-guides-south-mira-4x.png",
+		"support-guides-north-mira-4x.png",
+		"support-guides-bare-theo-4x.png",
+		"support-guides-south-theo-4x.png",
+		"support-guides-north-theo-4x.png",
+		"close-behind.png",
+		"close-behind-bare-mira-4x.png",
+		"close-behind-south-mira-4x.png",
+		"close-behind-north-mira-4x.png",
+		"close-behind-bare-theo-4x.png",
+		"close-behind-south-theo-4x.png",
+		"close-behind-north-theo-4x.png",
+		"in-front.png",
+		"in-front-bare-mira-4x.png",
+		"in-front-south-mira-4x.png",
+		"in-front-north-mira-4x.png",
+		"in-front-bare-theo-4x.png",
+		"in-front-south-theo-4x.png",
+		"in-front-north-theo-4x.png",
+		"walk-0-0.png",
+		"walk-0-16.png",
+		"walk-0-32.png",
+		"walk-1-0.png",
+		"walk-1-16.png",
+		"walk-1-32.png",
+		"walk-2-0.png",
+		"walk-2-16.png",
+		"walk-2-32.png",
+		"walk-3-0.png",
+		"walk-3-16.png",
+		"walk-3-32.png",
+		"final-service.png",
+		"machine-aligned-proposal.png",
+		"machine-aligned-proposal-bare-mira-4x.png",
+		"machine-aligned-proposal-south-mira-4x.png",
+		"machine-aligned-proposal-north-mira-4x.png",
+		"machine-aligned-proposal-bare-theo-4x.png",
+		"machine-aligned-proposal-south-theo-4x.png",
+		"machine-aligned-proposal-north-theo-4x.png"
+	],
+	"checks": 9030,
+	"contact_regions_are_hypotheses": true,
+	"depth_observations": [
+		{
+			"checkpoint": "native-comparison",
+			"foot_offset": [
+				-80.0,
+				32.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1315
+		},
+		{
+			"checkpoint": "native-comparison",
+			"foot_offset": [
+				-80.0,
+				32.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1315
+		},
+		{
+			"checkpoint": "native-comparison",
+			"foot_offset": [
+				-80.0,
+				32.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1315
+		},
+		{
+			"checkpoint": "native-comparison",
+			"foot_offset": [
+				-80.0,
+				32.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1467
+		},
+		{
+			"checkpoint": "native-comparison",
+			"foot_offset": [
+				-80.0,
+				32.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1467
+		},
+		{
+			"checkpoint": "native-comparison",
+			"foot_offset": [
+				-80.0,
+				32.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1467
+		},
+		{
+			"checkpoint": "service-approach",
+			"foot_offset": [
+				0.0,
+				32.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 1153,
+			"source_actor_pixels": 1399
+		},
+		{
+			"checkpoint": "service-approach",
+			"foot_offset": [
+				0.0,
+				32.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 1153,
+			"source_actor_pixels": 1399
+		},
+		{
+			"checkpoint": "service-approach",
+			"foot_offset": [
+				0.0,
+				-32.0
+			],
+			"hidden_by_assembly": 359,
+			"id": "north-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 359,
+			"source_actor_pixels": 1315
+		},
+		{
+			"checkpoint": "service-approach",
+			"foot_offset": [
+				0.0,
+				32.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 1197,
+			"source_actor_pixels": 1471
+		},
+		{
+			"checkpoint": "service-approach",
+			"foot_offset": [
+				0.0,
+				32.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 1197,
+			"source_actor_pixels": 1471
+		},
+		{
+			"checkpoint": "service-approach",
+			"foot_offset": [
+				0.0,
+				-32.0
+			],
+			"hidden_by_assembly": 400,
+			"id": "north-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 400,
+			"source_actor_pixels": 1467
+		},
+		{
+			"checkpoint": "close-behind",
+			"foot_offset": [
+				0.0,
+				-32.0
+			],
+			"hidden_by_assembly": 253,
+			"id": "bare-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 253,
+			"source_actor_pixels": 1315
+		},
+		{
+			"checkpoint": "close-behind",
+			"foot_offset": [
+				0.0,
+				-32.0
+			],
+			"hidden_by_assembly": 403,
+			"id": "south-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 403,
+			"source_actor_pixels": 1315
+		},
+		{
+			"checkpoint": "close-behind",
+			"foot_offset": [
+				0.0,
+				-32.0
+			],
+			"hidden_by_assembly": 359,
+			"id": "north-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 359,
+			"source_actor_pixels": 1315
+		},
+		{
+			"checkpoint": "close-behind",
+			"foot_offset": [
+				0.0,
+				-32.0
+			],
+			"hidden_by_assembly": 280,
+			"id": "bare-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 280,
+			"source_actor_pixels": 1467
+		},
+		{
+			"checkpoint": "close-behind",
+			"foot_offset": [
+				0.0,
+				-32.0
+			],
+			"hidden_by_assembly": 459,
+			"id": "south-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 459,
+			"source_actor_pixels": 1467
+		},
+		{
+			"checkpoint": "close-behind",
+			"foot_offset": [
+				0.0,
+				-32.0
+			],
+			"hidden_by_assembly": 400,
+			"id": "north-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 400,
+			"source_actor_pixels": 1467
+		},
+		{
+			"checkpoint": "in-front",
+			"foot_offset": [
+				0.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 339,
+			"source_actor_pixels": 1160
+		},
+		{
+			"checkpoint": "in-front",
+			"foot_offset": [
+				0.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 339,
+			"source_actor_pixels": 1160
+		},
+		{
+			"checkpoint": "in-front",
+			"foot_offset": [
+				0.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 339,
+			"source_actor_pixels": 1160
+		},
+		{
+			"checkpoint": "in-front",
+			"foot_offset": [
+				0.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 429,
+			"source_actor_pixels": 1240
+		},
+		{
+			"checkpoint": "in-front",
+			"foot_offset": [
+				0.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 429,
+			"source_actor_pixels": 1240
+		},
+		{
+			"checkpoint": "in-front",
+			"foot_offset": [
+				0.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 429,
+			"source_actor_pixels": 1240
+		},
+		{
+			"checkpoint": "walk-0-0",
+			"foot_offset": [
+				-80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1338
+		},
+		{
+			"checkpoint": "walk-0-0",
+			"foot_offset": [
+				-80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1338
+		},
+		{
+			"checkpoint": "walk-0-0",
+			"foot_offset": [
+				-80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1338
+		},
+		{
+			"checkpoint": "walk-0-0",
+			"foot_offset": [
+				-80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1417
+		},
+		{
+			"checkpoint": "walk-0-0",
+			"foot_offset": [
+				-80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1417
+		},
+		{
+			"checkpoint": "walk-0-0",
+			"foot_offset": [
+				-80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1417
+		},
+		{
+			"checkpoint": "walk-0-16",
+			"foot_offset": [
+				-80.0,
+				0.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1338
+		},
+		{
+			"checkpoint": "walk-0-16",
+			"foot_offset": [
+				-80.0,
+				0.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1338
+		},
+		{
+			"checkpoint": "walk-0-16",
+			"foot_offset": [
+				-80.0,
+				0.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1338
+		},
+		{
+			"checkpoint": "walk-0-16",
+			"foot_offset": [
+				-80.0,
+				0.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1417
+		},
+		{
+			"checkpoint": "walk-0-16",
+			"foot_offset": [
+				-80.0,
+				0.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1417
+		},
+		{
+			"checkpoint": "walk-0-16",
+			"foot_offset": [
+				-80.0,
+				0.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1417
+		},
+		{
+			"checkpoint": "walk-0-32",
+			"foot_offset": [
+				-80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1338
+		},
+		{
+			"checkpoint": "walk-0-32",
+			"foot_offset": [
+				-80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1338
+		},
+		{
+			"checkpoint": "walk-0-32",
+			"foot_offset": [
+				-80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1338
+		},
+		{
+			"checkpoint": "walk-0-32",
+			"foot_offset": [
+				-80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1417
+		},
+		{
+			"checkpoint": "walk-0-32",
+			"foot_offset": [
+				-80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1417
+		},
+		{
+			"checkpoint": "walk-0-32",
+			"foot_offset": [
+				-80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1417
+		},
+		{
+			"checkpoint": "walk-1-0",
+			"foot_offset": [
+				-80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1269
+		},
+		{
+			"checkpoint": "walk-1-0",
+			"foot_offset": [
+				-80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1269
+		},
+		{
+			"checkpoint": "walk-1-0",
+			"foot_offset": [
+				-80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1269
+		},
+		{
+			"checkpoint": "walk-1-0",
+			"foot_offset": [
+				-80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1227
+		},
+		{
+			"checkpoint": "walk-1-0",
+			"foot_offset": [
+				-80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1227
+		},
+		{
+			"checkpoint": "walk-1-0",
+			"foot_offset": [
+				-80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1227
+		},
+		{
+			"checkpoint": "walk-1-16",
+			"foot_offset": [
+				0.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1269
+		},
+		{
+			"checkpoint": "walk-1-16",
+			"foot_offset": [
+				0.0,
+				-64.0
+			],
+			"hidden_by_assembly": 25,
+			"id": "south-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 25,
+			"source_actor_pixels": 1269
+		},
+		{
+			"checkpoint": "walk-1-16",
+			"foot_offset": [
+				0.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1269
+		},
+		{
+			"checkpoint": "walk-1-16",
+			"foot_offset": [
+				0.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1227
+		},
+		{
+			"checkpoint": "walk-1-16",
+			"foot_offset": [
+				0.0,
+				-64.0
+			],
+			"hidden_by_assembly": 24,
+			"id": "south-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 24,
+			"source_actor_pixels": 1227
+		},
+		{
+			"checkpoint": "walk-1-16",
+			"foot_offset": [
+				0.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1227
+		},
+		{
+			"checkpoint": "walk-1-32",
+			"foot_offset": [
+				80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1269
+		},
+		{
+			"checkpoint": "walk-1-32",
+			"foot_offset": [
+				80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1269
+		},
+		{
+			"checkpoint": "walk-1-32",
+			"foot_offset": [
+				80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1269
+		},
+		{
+			"checkpoint": "walk-1-32",
+			"foot_offset": [
+				80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1227
+		},
+		{
+			"checkpoint": "walk-1-32",
+			"foot_offset": [
+				80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1227
+		},
+		{
+			"checkpoint": "walk-1-32",
+			"foot_offset": [
+				80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1227
+		},
+		{
+			"checkpoint": "walk-2-0",
+			"foot_offset": [
+				80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1265
+		},
+		{
+			"checkpoint": "walk-2-0",
+			"foot_offset": [
+				80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1265
+		},
+		{
+			"checkpoint": "walk-2-0",
+			"foot_offset": [
+				80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1265
+		},
+		{
+			"checkpoint": "walk-2-0",
+			"foot_offset": [
+				80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1439
+		},
+		{
+			"checkpoint": "walk-2-0",
+			"foot_offset": [
+				80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1439
+		},
+		{
+			"checkpoint": "walk-2-0",
+			"foot_offset": [
+				80.0,
+				-64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1439
+		},
+		{
+			"checkpoint": "walk-2-16",
+			"foot_offset": [
+				80.0,
+				0.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1265
+		},
+		{
+			"checkpoint": "walk-2-16",
+			"foot_offset": [
+				80.0,
+				0.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1265
+		},
+		{
+			"checkpoint": "walk-2-16",
+			"foot_offset": [
+				80.0,
+				0.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1265
+		},
+		{
+			"checkpoint": "walk-2-16",
+			"foot_offset": [
+				80.0,
+				0.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1439
+		},
+		{
+			"checkpoint": "walk-2-16",
+			"foot_offset": [
+				80.0,
+				0.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1439
+		},
+		{
+			"checkpoint": "walk-2-16",
+			"foot_offset": [
+				80.0,
+				0.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1439
+		},
+		{
+			"checkpoint": "walk-2-32",
+			"foot_offset": [
+				80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1265
+		},
+		{
+			"checkpoint": "walk-2-32",
+			"foot_offset": [
+				80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1265
+		},
+		{
+			"checkpoint": "walk-2-32",
+			"foot_offset": [
+				80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1265
+		},
+		{
+			"checkpoint": "walk-2-32",
+			"foot_offset": [
+				80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1439
+		},
+		{
+			"checkpoint": "walk-2-32",
+			"foot_offset": [
+				80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1439
+		},
+		{
+			"checkpoint": "walk-2-32",
+			"foot_offset": [
+				80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1439
+		},
+		{
+			"checkpoint": "walk-3-0",
+			"foot_offset": [
+				80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1271
+		},
+		{
+			"checkpoint": "walk-3-0",
+			"foot_offset": [
+				80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1271
+		},
+		{
+			"checkpoint": "walk-3-0",
+			"foot_offset": [
+				80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1271
+		},
+		{
+			"checkpoint": "walk-3-0",
+			"foot_offset": [
+				80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1246
+		},
+		{
+			"checkpoint": "walk-3-0",
+			"foot_offset": [
+				80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1246
+		},
+		{
+			"checkpoint": "walk-3-0",
+			"foot_offset": [
+				80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1246
+		},
+		{
+			"checkpoint": "walk-3-16",
+			"foot_offset": [
+				0.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 345,
+			"source_actor_pixels": 1271
+		},
+		{
+			"checkpoint": "walk-3-16",
+			"foot_offset": [
+				0.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 345,
+			"source_actor_pixels": 1271
+		},
+		{
+			"checkpoint": "walk-3-16",
+			"foot_offset": [
+				0.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 345,
+			"source_actor_pixels": 1271
+		},
+		{
+			"checkpoint": "walk-3-16",
+			"foot_offset": [
+				0.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 411,
+			"source_actor_pixels": 1246
+		},
+		{
+			"checkpoint": "walk-3-16",
+			"foot_offset": [
+				0.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 411,
+			"source_actor_pixels": 1246
+		},
+		{
+			"checkpoint": "walk-3-16",
+			"foot_offset": [
+				0.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 411,
+			"source_actor_pixels": 1246
+		},
+		{
+			"checkpoint": "walk-3-32",
+			"foot_offset": [
+				-80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1271
+		},
+		{
+			"checkpoint": "walk-3-32",
+			"foot_offset": [
+				-80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1271
+		},
+		{
+			"checkpoint": "walk-3-32",
+			"foot_offset": [
+				-80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1271
+		},
+		{
+			"checkpoint": "walk-3-32",
+			"foot_offset": [
+				-80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1246
+		},
+		{
+			"checkpoint": "walk-3-32",
+			"foot_offset": [
+				-80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1246
+		},
+		{
+			"checkpoint": "walk-3-32",
+			"foot_offset": [
+				-80.0,
+				64.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "north-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 0,
+			"source_actor_pixels": 1246
+		},
+		{
+			"checkpoint": "final-service",
+			"foot_offset": [
+				0.0,
+				32.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 1153,
+			"source_actor_pixels": 1399
+		},
+		{
+			"checkpoint": "final-service",
+			"foot_offset": [
+				0.0,
+				32.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 1153,
+			"source_actor_pixels": 1399
+		},
+		{
+			"checkpoint": "final-service",
+			"foot_offset": [
+				0.0,
+				-32.0
+			],
+			"hidden_by_assembly": 359,
+			"id": "north-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 359,
+			"source_actor_pixels": 1315
+		},
+		{
+			"checkpoint": "final-service",
+			"foot_offset": [
+				0.0,
+				32.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 1197,
+			"source_actor_pixels": 1471
+		},
+		{
+			"checkpoint": "final-service",
+			"foot_offset": [
+				0.0,
+				32.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 1197,
+			"source_actor_pixels": 1471
+		},
+		{
+			"checkpoint": "final-service",
+			"foot_offset": [
+				0.0,
+				-32.0
+			],
+			"hidden_by_assembly": 400,
+			"id": "north-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 400,
+			"source_actor_pixels": 1467
+		},
+		{
+			"checkpoint": "machine-aligned-proposal",
+			"foot_offset": [
+				-32.0,
+				32.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 1153,
+			"source_actor_pixels": 1399
+		},
+		{
+			"checkpoint": "machine-aligned-proposal",
+			"foot_offset": [
+				-32.0,
+				32.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 1153,
+			"source_actor_pixels": 1399
+		},
+		{
+			"checkpoint": "machine-aligned-proposal",
+			"foot_offset": [
+				32.0,
+				-32.0
+			],
+			"hidden_by_assembly": 538,
+			"id": "north-mira",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 538,
+			"source_actor_pixels": 1315
+		},
+		{
+			"checkpoint": "machine-aligned-proposal",
+			"foot_offset": [
+				-32.0,
+				32.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "bare-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 1197,
+			"source_actor_pixels": 1471
+		},
+		{
+			"checkpoint": "machine-aligned-proposal",
+			"foot_offset": [
+				-32.0,
+				32.0
+			],
+			"hidden_by_assembly": 0,
+			"id": "south-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 1197,
+			"source_actor_pixels": 1471
+		},
+		{
+			"checkpoint": "machine-aligned-proposal",
+			"foot_offset": [
+				32.0,
+				-32.0
+			],
+			"hidden_by_assembly": 588,
+			"id": "north-theo",
+			"pixel_mismatches": 0,
+			"projected_over_assembly": 588,
+			"source_actor_pixels": 1467
+		}
+	],
+	"failures": [],
+	"frames": 198,
+	"limitations": [
+		"No new coffee interaction or drinking/reaching pose.",
+		"Scripted visual walk is not canonical path/input proof.",
+		"North service means South approach gaze; South service means North approach gaze.",
+		"Bare counter front is intentionally unfinished; no production replacement.",
+		"The independently authored N/S views support identity comparison but do not recover hidden appliance depth; contact boxes remain hypotheses. E/W are not shown or approved."
+	],
+	"north_sha256": "a81dacc9933a2d9d08996b778922f7fa096abf803525505f044a5f99d856e9c8",
+	"north_source": "res://assets/source/overnight-20260904/kits/coffee-service-north-v2.png",
+	"parts": [
+		{
+			"alpha": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					107,
+					129,
+					28,
+					44
+				],
+				"opaque_colors": 22,
+				"opaque_pixels": 1209,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 47943
+			},
+			"contact_hypothesis": [
+				11,
+				-32,
+				28,
+				13
+			],
+			"contact_measured_from_hidden_geometry": false,
+			"part": "espresso",
+			"path": "res://tests/fixtures/furniture-calibration/kits/coffee-service-north-v2-espresso.png",
+			"runtime_approved": false,
+			"sha256": "5d44d18f412ba351cb7af24d6c09314eafc70aea245fb740424bd69fcbd32614"
+		},
+		{
+			"alpha": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					86,
+					136,
+					12,
+					30
+				],
+				"opaque_colors": 26,
+				"opaque_pixels": 323,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 48829
+			},
+			"contact_hypothesis": [
+				-10,
+				-32,
+				12,
+				6
+			],
+			"contact_measured_from_hidden_geometry": false,
+			"part": "grinder",
+			"path": "res://tests/fixtures/furniture-calibration/kits/coffee-service-north-v2-grinder.png",
+			"runtime_approved": false,
+			"sha256": "cfa703536b274a15cf278b8bbb62c307fa578df324caf36364cfac3430f87e29"
+		},
+		{
+			"alpha": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					72,
+					143,
+					10,
+					10
+				],
+				"opaque_colors": 9,
+				"opaque_pixels": 79,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 49073
+			},
+			"contact_hypothesis": [
+				-21,
+				-43,
+				7,
+				4
+			],
+			"contact_measured_from_hidden_geometry": false,
+			"part": "mug",
+			"path": "res://tests/fixtures/furniture-calibration/kits/coffee-service-north-v2-mug.png",
+			"runtime_approved": false,
+			"sha256": "aa02f05deb5463aa85ffa8810e8e070137ad6755e09086f59ca9d0f2e0726a1b"
+		},
+		{
+			"alpha": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					55,
+					147,
+					15,
+					24
+				],
+				"opaque_colors": 26,
+				"opaque_pixels": 272,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 48880
+			},
+			"contact_hypothesis": [
+				-40,
+				-32,
+				14,
+				11
+			],
+			"contact_measured_from_hidden_geometry": false,
+			"part": "plant",
+			"path": "res://tests/fixtures/furniture-calibration/kits/coffee-service-north-v2-plant.png",
+			"runtime_approved": false,
+			"sha256": "5f365ef920e8fda5c118e3e04d6edd176eaff470b61fb63992fb6125ffe3c2d0"
+		}
+	],
+	"runtime_approved": false,
+	"save_access": false,
+	"south_parts": [
+		{
+			"alpha": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					56,
+					116,
+					29,
+					44
+				],
+				"opaque_colors": 31,
+				"opaque_pixels": 1255,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 47897
+			},
+			"contact_hypothesis": [
+				-40,
+				-45,
+				29,
+				13
+			],
+			"contact_measured_from_hidden_geometry": false,
+			"part": "espresso",
+			"path": "res://tests/fixtures/furniture-calibration/kits/coffee-service-south-v4-espresso.png",
+			"runtime_approved": false,
+			"sha256": "78950af0a4bb519db1ce05f29dac2d15626636455a845c8c52ef40335f70bb42"
+		},
+		{
+			"alpha": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					94,
+					130,
+					12,
+					30
+				],
+				"opaque_colors": 30,
+				"opaque_pixels": 297,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 48855
+			},
+			"contact_hypothesis": [
+				-2,
+				-38,
+				12,
+				6
+			],
+			"contact_measured_from_hidden_geometry": false,
+			"part": "grinder",
+			"path": "res://tests/fixtures/furniture-calibration/kits/coffee-service-south-v4-grinder.png",
+			"runtime_approved": false,
+			"sha256": "9770a8e5651941fa580dcbc317ca2a5fbf39a5e33b0c04f7bbfc3e05e48fda96"
+		},
+		{
+			"alpha": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					109,
+					161,
+					10,
+					10
+				],
+				"opaque_colors": 17,
+				"opaque_pixels": 80,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 49072
+			},
+			"contact_hypothesis": [
+				14,
+				-25,
+				7,
+				4
+			],
+			"contact_measured_from_hidden_geometry": false,
+			"part": "mug",
+			"path": "res://tests/fixtures/furniture-calibration/kits/coffee-service-south-v4-mug.png",
+			"runtime_approved": false,
+			"sha256": "5453e3f283a2af7cc968fc948e0437baaa3598830c690984f913af3ad368d46d"
+		},
+		{
+			"alpha": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					121,
+					136,
+					16,
+					24
+				],
+				"opaque_colors": 20,
+				"opaque_pixels": 266,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 48886
+			},
+			"contact_hypothesis": [
+				26,
+				-43,
+				14,
+				11
+			],
+			"contact_measured_from_hidden_geometry": false,
+			"part": "plant",
+			"path": "res://tests/fixtures/furniture-calibration/kits/coffee-service-south-v4-plant.png",
+			"runtime_approved": false,
+			"sha256": "4b59b00e6c03a1cea54012d8924eacfa172f236e320be9d38c56cb224b2b159b"
+		}
+	],
+	"south_sha256": "05169e5073bb987dd2563dea6059a684f742ea22f17c5a728c3143a2d65a68a3",
+	"south_source": "res://assets/source/overnight-20260904/kits/coffee-service-south-v4.png",
+	"worker_started": false
+}

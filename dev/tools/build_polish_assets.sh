@@ -123,9 +123,9 @@ normalize_prop() {
 		-define png:color-type=6 "$output_path"
 }
 
-build_grid "$polish_source/founder-locomotion-master.png" "$character_output/founder-locomotion.png" 6 4 48 80 44 68 72 yes
-build_grid "$polish_source/mira-locomotion-master.png" "$character_output/mira-locomotion.png" 6 4 48 80 44 68 72 yes
-build_grid "$polish_source/theo-locomotion-master.png" "$character_output/theo-locomotion.png" 6 4 48 80 44 68 72 yes
+# Locomotion masters have uneven gutters. Their dedicated measured-band export
+# preserves complete boots and prevents pixels leaking from neighboring rows.
+bash "$project_root/dev/tools/build_locomotion_assets.sh"
 build_grid "$polish_source/mira-work-master.png" "$character_output/mira-work.png" 8 4 48 80 44 68 72 yes
 build_grid "$polish_source/theo-work-master.png" "$character_output/theo-work.png" 8 4 48 80 44 68 72 yes
 

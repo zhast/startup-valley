@@ -1,0 +1,50 @@
+{
+	"canvas": [
+		192,
+		224
+	],
+	"checks": 25,
+	"failures": [],
+	"opaque_pixels": 563,
+	"parts": {
+		"camera": {
+			"bounds": [
+				124,
+				119,
+				12,
+				12
+			],
+			"colors": 9,
+			"opaque_pixels": 130
+		},
+		"swatches": {
+			"bounds": [
+				58,
+				128,
+				12,
+				12
+			],
+			"colors": 15,
+			"opaque_pixels": 95
+		},
+		"tablet": {
+			"bounds": [
+				83,
+				127,
+				24,
+				15
+			],
+			"colors": 8,
+			"opaque_pixels": 338
+		}
+	},
+	"pivot": [
+		96,
+		160
+	],
+	"source": "res://assets/source/overnight-20260904/roles/creative-north-v1.png",
+	"source_or_production_mutated": false,
+	"status": "staged_native_export_not_runtime_approved",
+	"transparent_pixels": 42445,
+	"workerDisabled": true
+}

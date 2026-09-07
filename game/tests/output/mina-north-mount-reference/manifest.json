@@ -1,0 +1,1335 @@
+{
+	"actor_cell": [
+		48,
+		80
+	],
+	"checks": 920,
+	"current_duration_ms": 140,
+	"failures": [],
+	"new_art": false,
+	"physics_ticks": 169,
+	"registered_diagnostic_canvas": [
+		96,
+		112
+	],
+	"registered_diagnostic_pivot": [
+		48,
+		96
+	],
+	"runtime_approved": false,
+	"sample_order": "Contact sheets follow samples in six columns; no text or guide is baked into actor exports.",
+	"samples": [
+		{
+			"actor_depth": 560,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 851,
+			"name": "00-walk-start",
+			"physical_foot": [
+				336.0,
+				560.0
+			],
+			"physics_tick": 0,
+			"registered_sha256": "d7807f18691403c697d8de37814bf71eac92cda4f72e075704233561fb2deb73",
+			"render_foot": [
+				336.0,
+				560.0
+			],
+			"render_offset": [
+				0.0,
+				0.0
+			],
+			"scene_sha256": "06be1226a9c0445e5f5533fc19e3b6aea80aaa0d9a85fe83b658d41b1af7578a",
+			"seat_elapsed_ms": 0.0,
+			"seat_transition_active": false,
+			"source": "res://assets/runtime/characters/mira-locomotion.png",
+			"source_ink": [
+				11,
+				4,
+				27,
+				68
+			],
+			"source_region": [
+				0,
+				0,
+				48,
+				80
+			],
+			"source_sha256": "0d03f91611f1b8192aaf5d764997fc2c0763b3f20b1406de2748b3659b76dfcb",
+			"walking": false,
+			"work_state": 0,
+			"world_ink": [
+				323.0,
+				492.0,
+				27,
+				68
+			]
+		},
+		{
+			"actor_depth": 325,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 872,
+			"name": "01-approach-00",
+			"physical_foot": [
+				336.0,
+				325.000030517578
+			],
+			"physics_tick": 66,
+			"registered_sha256": "40d55b94b3b859bde7ccacd197ac6bcaede9762d39e96ea992ad548c634bb374",
+			"render_foot": [
+				336.0,
+				325.0
+			],
+			"render_offset": [
+				0.0,
+				0.0
+			],
+			"scene_sha256": "4f1ff0d3f91784f096937fe5b7ae1547f158efa92b52114390402a4d0fb075e2",
+			"seat_elapsed_ms": 0.0,
+			"seat_transition_active": false,
+			"source": "res://assets/runtime/characters/mira-locomotion.png",
+			"source_ink": [
+				10,
+				4,
+				30,
+				68
+			],
+			"source_region": [
+				144,
+				80,
+				48,
+				80
+			],
+			"source_sha256": "800c21f1adf06c0f018b01011e30c5489c9155d15cd9d3d18ba118f481e593af",
+			"walking": true,
+			"work_state": 6,
+			"world_ink": [
+				322.0,
+				257.0,
+				30,
+				68
+			]
+		},
+		{
+			"actor_depth": 321,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 872,
+			"name": "01-approach-01",
+			"physical_foot": [
+				336.0,
+				321.333374023438
+			],
+			"physics_tick": 67,
+			"registered_sha256": "40d55b94b3b859bde7ccacd197ac6bcaede9762d39e96ea992ad548c634bb374",
+			"render_foot": [
+				336.0,
+				321.0
+			],
+			"render_offset": [
+				0.0,
+				0.0
+			],
+			"scene_sha256": "74a31cc3838c3c05b3d440252251cc7bd14938e7dc27d117de1c0c483e084853",
+			"seat_elapsed_ms": 0.0,
+			"seat_transition_active": false,
+			"source": "res://assets/runtime/characters/mira-locomotion.png",
+			"source_ink": [
+				10,
+				4,
+				30,
+				68
+			],
+			"source_region": [
+				144,
+				80,
+				48,
+				80
+			],
+			"source_sha256": "800c21f1adf06c0f018b01011e30c5489c9155d15cd9d3d18ba118f481e593af",
+			"walking": true,
+			"work_state": 6,
+			"world_ink": [
+				322.0,
+				253.0,
+				30,
+				68
+			]
+		},
+		{
+			"actor_depth": 317,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 861,
+			"name": "01-approach-02",
+			"physical_foot": [
+				336.0,
+				317.666717529297
+			],
+			"physics_tick": 68,
+			"registered_sha256": "798fc2870f06a900a6e73730b6056a39b91a1b21d3743b8098d84fd2d79df218",
+			"render_foot": [
+				336.0,
+				318.0
+			],
+			"render_offset": [
+				0.0,
+				0.0
+			],
+			"scene_sha256": "4aa5448c409559a04a40c5cff86452fac800189629b379d63300f5949fc21c98",
+			"seat_elapsed_ms": 0.0,
+			"seat_transition_active": false,
+			"source": "res://assets/runtime/characters/mira-locomotion.png",
+			"source_ink": [
+				9,
+				4,
+				30,
+				68
+			],
+			"source_region": [
+				192,
+				80,
+				48,
+				80
+			],
+			"source_sha256": "d6f301e98df27dcc5d72cbb90abdd2cd5f5d56f27cf8866ed1d04058848e4b24",
+			"walking": true,
+			"work_state": 6,
+			"world_ink": [
+				321.0,
+				250.0,
+				30,
+				68
+			]
+		},
+		{
+			"actor_depth": 314,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 861,
+			"name": "01-approach-03",
+			"physical_foot": [
+				336.0,
+				314.000061035156
+			],
+			"physics_tick": 69,
+			"registered_sha256": "798fc2870f06a900a6e73730b6056a39b91a1b21d3743b8098d84fd2d79df218",
+			"render_foot": [
+				336.0,
+				314.0
+			],
+			"render_offset": [
+				0.0,
+				0.0
+			],
+			"scene_sha256": "b374aca7ea34abb366dee33fd1857ae53991dd9ab3ff31a45eb6517a7f7dacb5",
+			"seat_elapsed_ms": 0.0,
+			"seat_transition_active": false,
+			"source": "res://assets/runtime/characters/mira-locomotion.png",
+			"source_ink": [
+				9,
+				4,
+				30,
+				68
+			],
+			"source_region": [
+				192,
+				80,
+				48,
+				80
+			],
+			"source_sha256": "d6f301e98df27dcc5d72cbb90abdd2cd5f5d56f27cf8866ed1d04058848e4b24",
+			"walking": true,
+			"work_state": 6,
+			"world_ink": [
+				321.0,
+				246.0,
+				30,
+				68
+			]
+		},
+		{
+			"actor_depth": 310,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 861,
+			"name": "01-approach-04",
+			"physical_foot": [
+				336.0,
+				310.333404541016
+			],
+			"physics_tick": 70,
+			"registered_sha256": "798fc2870f06a900a6e73730b6056a39b91a1b21d3743b8098d84fd2d79df218",
+			"render_foot": [
+				336.0,
+				310.0
+			],
+			"render_offset": [
+				0.0,
+				0.0
+			],
+			"scene_sha256": "20f66c24558fc945aa28b71ce77d3368a360e65221df7d3530f073dd1382a39d",
+			"seat_elapsed_ms": 0.0,
+			"seat_transition_active": false,
+			"source": "res://assets/runtime/characters/mira-locomotion.png",
+			"source_ink": [
+				9,
+				4,
+				30,
+				68
+			],
+			"source_region": [
+				192,
+				80,
+				48,
+				80
+			],
+			"source_sha256": "d6f301e98df27dcc5d72cbb90abdd2cd5f5d56f27cf8866ed1d04058848e4b24",
+			"walking": true,
+			"work_state": 6,
+			"world_ink": [
+				321.0,
+				242.0,
+				30,
+				68
+			]
+		},
+		{
+			"actor_depth": 306,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 861,
+			"name": "01-approach-05",
+			"physical_foot": [
+				336.0,
+				306.666748046875
+			],
+			"physics_tick": 71,
+			"registered_sha256": "798fc2870f06a900a6e73730b6056a39b91a1b21d3743b8098d84fd2d79df218",
+			"render_foot": [
+				336.0,
+				307.0
+			],
+			"render_offset": [
+				0.0,
+				0.0
+			],
+			"scene_sha256": "b6005bc2d3108dd1f2dbc1d820736d09a9fa622034ce7814b1bebd1b5c301d19",
+			"seat_elapsed_ms": 0.0,
+			"seat_transition_active": false,
+			"source": "res://assets/runtime/characters/mira-locomotion.png",
+			"source_ink": [
+				9,
+				4,
+				30,
+				68
+			],
+			"source_region": [
+				192,
+				80,
+				48,
+				80
+			],
+			"source_sha256": "d6f301e98df27dcc5d72cbb90abdd2cd5f5d56f27cf8866ed1d04058848e4b24",
+			"walking": true,
+			"work_state": 6,
+			"world_ink": [
+				321.0,
+				239.0,
+				30,
+				68
+			]
+		},
+		{
+			"actor_depth": 292,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 0,
+			"name": "02-seat-pose-boundary",
+			"physical_foot": [
+				336.0,
+				304.0
+			],
+			"physics_tick": 72,
+			"registered_sha256": "5066301b550fc2c6a185734d4ce5e4eff5a9391596d25d4dbb633ef8274dd933",
+			"render_foot": [
+				336.0,
+				304.0
+			],
+			"render_offset": [
+				0.0,
+				0.0
+			],
+			"scene_sha256": "6ac4cdfa75d4491d81876a817b1391d9e3fb17578718d812b47071ce643853b5",
+			"seat_elapsed_ms": 0.0,
+			"seat_transition_active": true,
+			"source": "res://tests/fixtures/furniture-calibration/characters/mira-north-seated-v2.png",
+			"source_ink": [
+				10,
+				4,
+				29,
+				68
+			],
+			"source_region": [
+				0,
+				0,
+				48,
+				80
+			],
+			"source_sha256": "0dc967763bcb795eecba49f7027e312d82d093f2791ff0594fdef7f51a5a550b",
+			"walking": false,
+			"work_state": 2,
+			"world_ink": [
+				322.0,
+				236.0,
+				29,
+				68
+			]
+		},
+		{
+			"actor_depth": 292,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 0,
+			"name": "03-seat-00",
+			"physical_foot": [
+				336.0,
+				304.0
+			],
+			"physics_tick": 73,
+			"registered_sha256": "893ba8186fcf54b2127833550d098b576b861f9e0d7fd7f048bc2fc23ec5b004",
+			"render_foot": [
+				336.0,
+				301.0
+			],
+			"render_offset": [
+				0.0,
+				-3.0
+			],
+			"scene_sha256": "24c31173e5aa6c3e22eece5da0a30246915cb8a505331b1376a4bcb2f82043f4",
+			"seat_elapsed_ms": 33.3333333333333,
+			"seat_transition_active": true,
+			"source": "res://tests/fixtures/furniture-calibration/characters/mira-north-seated-v2.png",
+			"source_ink": [
+				10,
+				4,
+				29,
+				68
+			],
+			"source_region": [
+				0,
+				0,
+				48,
+				80
+			],
+			"source_sha256": "0dc967763bcb795eecba49f7027e312d82d093f2791ff0594fdef7f51a5a550b",
+			"walking": false,
+			"work_state": 2,
+			"world_ink": [
+				322.0,
+				233.0,
+				29,
+				68
+			]
+		},
+		{
+			"actor_depth": 292,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 0,
+			"name": "03-seat-01",
+			"physical_foot": [
+				336.0,
+				304.0
+			],
+			"physics_tick": 74,
+			"registered_sha256": "56cab13428e6cc02df4b7c9ecce80e3cfd618cb77b8c4e21b1d00960941aea95",
+			"render_foot": [
+				336.0,
+				295.0
+			],
+			"render_offset": [
+				0.0,
+				-9.0
+			],
+			"scene_sha256": "0eafd28025f8039b41e60ccfa45e48a1a508e90d7f7d6dcda0617c89bc9d1bee",
+			"seat_elapsed_ms": 66.6666666666667,
+			"seat_transition_active": true,
+			"source": "res://tests/fixtures/furniture-calibration/characters/mira-north-seated-v2.png",
+			"source_ink": [
+				10,
+				4,
+				29,
+				68
+			],
+			"source_region": [
+				0,
+				0,
+				48,
+				80
+			],
+			"source_sha256": "0dc967763bcb795eecba49f7027e312d82d093f2791ff0594fdef7f51a5a550b",
+			"walking": false,
+			"work_state": 2,
+			"world_ink": [
+				322.0,
+				227.0,
+				29,
+				68
+			]
+		},
+		{
+			"actor_depth": 292,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 0,
+			"name": "03-seat-02",
+			"physical_foot": [
+				336.0,
+				304.0
+			],
+			"physics_tick": 75,
+			"registered_sha256": "4571b932e606b3cb3ca84fcb9cde58287b66aaf180e398b684ce98d7ef454c61",
+			"render_foot": [
+				336.0,
+				288.0
+			],
+			"render_offset": [
+				0.0,
+				-16.0
+			],
+			"scene_sha256": "4eabf70e1f3ef5ff6448c446abde0828ffc2e5bc383ad90b06c1fe9fd0b49507",
+			"seat_elapsed_ms": 100.0,
+			"seat_transition_active": true,
+			"source": "res://tests/fixtures/furniture-calibration/characters/mira-north-seated-v2.png",
+			"source_ink": [
+				10,
+				4,
+				29,
+				68
+			],
+			"source_region": [
+				0,
+				0,
+				48,
+				80
+			],
+			"source_sha256": "0dc967763bcb795eecba49f7027e312d82d093f2791ff0594fdef7f51a5a550b",
+			"walking": false,
+			"work_state": 2,
+			"world_ink": [
+				322.0,
+				220.0,
+				29,
+				68
+			]
+		},
+		{
+			"actor_depth": 292,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 0,
+			"name": "03-seat-03",
+			"physical_foot": [
+				336.0,
+				304.0
+			],
+			"physics_tick": 76,
+			"registered_sha256": "a7ab515b7ab38fc281154972462dce5cb383a8947fe49577d53675767aef80bc",
+			"render_foot": [
+				336.0,
+				284.0
+			],
+			"render_offset": [
+				0.0,
+				-20.0
+			],
+			"scene_sha256": "603b4532c212129bb029a6129e7aaa4756176e716a8670aaa57c76369142e8ab",
+			"seat_elapsed_ms": 133.333333333333,
+			"seat_transition_active": true,
+			"source": "res://tests/fixtures/furniture-calibration/characters/mira-north-seated-v2.png",
+			"source_ink": [
+				10,
+				4,
+				29,
+				68
+			],
+			"source_region": [
+				0,
+				0,
+				48,
+				80
+			],
+			"source_sha256": "0dc967763bcb795eecba49f7027e312d82d093f2791ff0594fdef7f51a5a550b",
+			"walking": false,
+			"work_state": 2,
+			"world_ink": [
+				322.0,
+				216.0,
+				29,
+				68
+			]
+		},
+		{
+			"actor_depth": 292,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 0,
+			"name": "03-seat-04",
+			"physical_foot": [
+				336.0,
+				304.0
+			],
+			"physics_tick": 77,
+			"registered_sha256": "a7ab515b7ab38fc281154972462dce5cb383a8947fe49577d53675767aef80bc",
+			"render_foot": [
+				336.0,
+				284.0
+			],
+			"render_offset": [
+				0.0,
+				-20.0
+			],
+			"scene_sha256": "603b4532c212129bb029a6129e7aaa4756176e716a8670aaa57c76369142e8ab",
+			"seat_elapsed_ms": 140.0,
+			"seat_transition_active": false,
+			"source": "res://tests/fixtures/furniture-calibration/characters/mira-north-seated-v2.png",
+			"source_ink": [
+				10,
+				4,
+				29,
+				68
+			],
+			"source_region": [
+				0,
+				0,
+				48,
+				80
+			],
+			"source_sha256": "0dc967763bcb795eecba49f7027e312d82d093f2791ff0594fdef7f51a5a550b",
+			"walking": false,
+			"work_state": 2,
+			"world_ink": [
+				322.0,
+				216.0,
+				29,
+				68
+			]
+		},
+		{
+			"actor_depth": 292,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 0,
+			"name": "04-idle-a",
+			"physical_foot": [
+				336.0,
+				304.0
+			],
+			"physics_tick": 77,
+			"registered_sha256": "a7ab515b7ab38fc281154972462dce5cb383a8947fe49577d53675767aef80bc",
+			"render_foot": [
+				336.0,
+				284.0
+			],
+			"render_offset": [
+				0.0,
+				-20.0
+			],
+			"scene_sha256": "603b4532c212129bb029a6129e7aaa4756176e716a8670aaa57c76369142e8ab",
+			"seat_elapsed_ms": 140.0,
+			"seat_transition_active": false,
+			"source": "res://tests/fixtures/furniture-calibration/characters/mira-north-seated-v2.png",
+			"source_ink": [
+				10,
+				4,
+				29,
+				68
+			],
+			"source_region": [
+				0,
+				0,
+				48,
+				80
+			],
+			"source_sha256": "0dc967763bcb795eecba49f7027e312d82d093f2791ff0594fdef7f51a5a550b",
+			"walking": false,
+			"work_state": 2,
+			"world_ink": [
+				322.0,
+				216.0,
+				29,
+				68
+			]
+		},
+		{
+			"actor_depth": 292,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 0,
+			"name": "04-idle-b",
+			"physical_foot": [
+				336.0,
+				304.0
+			],
+			"physics_tick": 97,
+			"registered_sha256": "8c1c7d5da68305faf5c143b60f3914b56a984ace7b3c97f45c019ef8248c554b",
+			"render_foot": [
+				336.0,
+				284.0
+			],
+			"render_offset": [
+				0.0,
+				-20.0
+			],
+			"scene_sha256": "623dc71f65a34f8b975d6f3c82b8c0a4e8962413b33beeb6ccf3eadb6508f71a",
+			"seat_elapsed_ms": 140.0,
+			"seat_transition_active": false,
+			"source": "res://tests/fixtures/furniture-calibration/characters/mira-north-seated-v2.png",
+			"source_ink": [
+				10,
+				4,
+				29,
+				68
+			],
+			"source_region": [
+				48,
+				0,
+				48,
+				80
+			],
+			"source_sha256": "2e4677e344a7875e3a73daabc54353162384f7a531723e541d53d17ad534e476",
+			"walking": false,
+			"work_state": 2,
+			"world_ink": [
+				322.0,
+				216.0,
+				29,
+				68
+			]
+		},
+		{
+			"actor_depth": 304,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 856,
+			"name": "05-leave-pose-boundary",
+			"physical_foot": [
+				336.0,
+				304.0
+			],
+			"physics_tick": 97,
+			"registered_sha256": "9a1df3d6925db997412837be995bb5d9dec0827aeddfec0a845bae668ceb9ccd",
+			"render_foot": [
+				336.0,
+				284.0
+			],
+			"render_offset": [
+				0.0,
+				-20.0
+			],
+			"scene_sha256": "ca04144e3f5a667278a829441ffe067c57496fbb55a3bd4f658c5c61bedbfeb0",
+			"seat_elapsed_ms": 0.0,
+			"seat_transition_active": true,
+			"source": "res://assets/runtime/characters/mira-locomotion.png",
+			"source_ink": [
+				10,
+				4,
+				29,
+				68
+			],
+			"source_region": [
+				96,
+				0,
+				48,
+				80
+			],
+			"source_sha256": "c928fd37d8ecda8ef34a666cc65aa6bd21bc481963f50f1a54498ae015161fc3",
+			"walking": true,
+			"work_state": 3,
+			"world_ink": [
+				322.0,
+				216.0,
+				29,
+				68
+			]
+		},
+		{
+			"actor_depth": 307,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 856,
+			"name": "06-leave-00",
+			"physical_foot": [
+				336.0,
+				307.666656494141
+			],
+			"physics_tick": 98,
+			"registered_sha256": "4e56a2a512897a6296e1d6b423f61b6574e3e43dcad92f0818b0519149a50c56",
+			"render_foot": [
+				336.0,
+				291.0
+			],
+			"render_offset": [
+				0.0,
+				-17.0
+			],
+			"scene_sha256": "38b1668ef6a43cb4249d545ec225e8db7e2efaf8b9af16b1ae9c1baa2de7cf52",
+			"seat_elapsed_ms": 33.3333333333333,
+			"seat_transition_active": true,
+			"source": "res://assets/runtime/characters/mira-locomotion.png",
+			"source_ink": [
+				10,
+				4,
+				29,
+				68
+			],
+			"source_region": [
+				96,
+				0,
+				48,
+				80
+			],
+			"source_sha256": "c928fd37d8ecda8ef34a666cc65aa6bd21bc481963f50f1a54498ae015161fc3",
+			"walking": true,
+			"work_state": 3,
+			"world_ink": [
+				322.0,
+				223.0,
+				29,
+				68
+			]
+		},
+		{
+			"actor_depth": 311,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 856,
+			"name": "06-leave-01",
+			"physical_foot": [
+				336.0,
+				311.333312988281
+			],
+			"physics_tick": 99,
+			"registered_sha256": "4aacaafbbe47fe82955a8795e3b10982c61ab44b1bc7c929e1b3959f194fb056",
+			"render_foot": [
+				336.0,
+				300.0
+			],
+			"render_offset": [
+				0.0,
+				-11.0
+			],
+			"scene_sha256": "11e7c46defb0bd8003d096e24d0b758de72aa1fb4f0dd0d07b745ec040ddb69a",
+			"seat_elapsed_ms": 66.6666666666667,
+			"seat_transition_active": true,
+			"source": "res://assets/runtime/characters/mira-locomotion.png",
+			"source_ink": [
+				10,
+				4,
+				29,
+				68
+			],
+			"source_region": [
+				96,
+				0,
+				48,
+				80
+			],
+			"source_sha256": "c928fd37d8ecda8ef34a666cc65aa6bd21bc481963f50f1a54498ae015161fc3",
+			"walking": true,
+			"work_state": 3,
+			"world_ink": [
+				322.0,
+				232.0,
+				29,
+				68
+			]
+		},
+		{
+			"actor_depth": 314,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 856,
+			"name": "06-leave-02",
+			"physical_foot": [
+				336.0,
+				314.999969482422
+			],
+			"physics_tick": 100,
+			"registered_sha256": "7f8c18dc89d2d9cd49d8b3425c3367c84e247733b258310d718078fec57deb01",
+			"render_foot": [
+				336.0,
+				311.0
+			],
+			"render_offset": [
+				0.0,
+				-4.0
+			],
+			"scene_sha256": "ed4d0fde4005455fd7e6a43f917e9e1504d96bce7c00dcfc2da5cae4671415e1",
+			"seat_elapsed_ms": 100.0,
+			"seat_transition_active": true,
+			"source": "res://assets/runtime/characters/mira-locomotion.png",
+			"source_ink": [
+				10,
+				4,
+				29,
+				68
+			],
+			"source_region": [
+				96,
+				0,
+				48,
+				80
+			],
+			"source_sha256": "c928fd37d8ecda8ef34a666cc65aa6bd21bc481963f50f1a54498ae015161fc3",
+			"walking": true,
+			"work_state": 3,
+			"world_ink": [
+				322.0,
+				243.0,
+				29,
+				68
+			]
+		},
+		{
+			"actor_depth": 318,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 870,
+			"name": "06-leave-03",
+			"physical_foot": [
+				336.0,
+				318.666625976562
+			],
+			"physics_tick": 101,
+			"registered_sha256": "40551ffce44b49de942040595ca346838b4955808c9bcad0edcb3cf135c25dbf",
+			"render_foot": [
+				336.0,
+				319.0
+			],
+			"render_offset": [
+				0.0,
+				0.0
+			],
+			"scene_sha256": "0ad5a8315a21869a7e37d5180b96b56986dd4e6405de9391438f5d0d9ee1dfa9",
+			"seat_elapsed_ms": 133.333333333333,
+			"seat_transition_active": true,
+			"source": "res://assets/runtime/characters/mira-locomotion.png",
+			"source_ink": [
+				9,
+				4,
+				30,
+				68
+			],
+			"source_region": [
+				144,
+				0,
+				48,
+				80
+			],
+			"source_sha256": "6bc045412d626298ed1bd36923bb0204e76864b4eca5c50438340980c0bf3850",
+			"walking": true,
+			"work_state": 3,
+			"world_ink": [
+				321.0,
+				251.0,
+				30,
+				68
+			]
+		},
+		{
+			"actor_depth": 322,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 870,
+			"name": "06-leave-04",
+			"physical_foot": [
+				336.0,
+				322.333282470703
+			],
+			"physics_tick": 102,
+			"registered_sha256": "40551ffce44b49de942040595ca346838b4955808c9bcad0edcb3cf135c25dbf",
+			"render_foot": [
+				336.0,
+				322.0
+			],
+			"render_offset": [
+				0.0,
+				0.0
+			],
+			"scene_sha256": "f57d1f277976c519008f3e162ef87b04225d308d1d9ecc4bf842a31a0d4b0b5a",
+			"seat_elapsed_ms": 140.0,
+			"seat_transition_active": false,
+			"source": "res://assets/runtime/characters/mira-locomotion.png",
+			"source_ink": [
+				9,
+				4,
+				30,
+				68
+			],
+			"source_region": [
+				144,
+				0,
+				48,
+				80
+			],
+			"source_sha256": "6bc045412d626298ed1bd36923bb0204e76864b4eca5c50438340980c0bf3850",
+			"walking": true,
+			"work_state": 3,
+			"world_ink": [
+				321.0,
+				254.0,
+				30,
+				68
+			]
+		},
+		{
+			"actor_depth": 560,
+			"assembly_crop": [
+				256,
+				160,
+				160,
+				192
+			],
+			"chair_anchor": [
+				336.0,
+				292.0
+			],
+			"chair_depth": 293,
+			"desk_anchor": [
+				336.0,
+				272.0
+			],
+			"legacy_import_zero_alpha_rgb_differences": 851,
+			"name": "07-home",
+			"physical_foot": [
+				336.0,
+				560.0
+			],
+			"physics_tick": 169,
+			"registered_sha256": "d7807f18691403c697d8de37814bf71eac92cda4f72e075704233561fb2deb73",
+			"render_foot": [
+				336.0,
+				560.0
+			],
+			"render_offset": [
+				0.0,
+				0.0
+			],
+			"scene_sha256": "468cfb75374456dff03d93243f6f108d39f59d2809013463acbb993cdcd2e61d",
+			"seat_elapsed_ms": 140.0,
+			"seat_transition_active": false,
+			"source": "res://assets/runtime/characters/mira-locomotion.png",
+			"source_ink": [
+				11,
+				4,
+				27,
+				68
+			],
+			"source_region": [
+				0,
+				0,
+				48,
+				80
+			],
+			"source_sha256": "0d03f91611f1b8192aaf5d764997fc2c0763b3f20b1406de2748b3659b76dfcb",
+			"walking": false,
+			"work_state": 0,
+			"world_ink": [
+				323.0,
+				492.0,
+				27,
+				68
+			]
+		}
+	],
+	"source_hashes": {
+		"res://actors/employee_avatar.gd": "5e0e114e768b60127f4b15a62518bff0e0a3bb3ef6021dfc10ebcd179419effe",
+		"res://assets/runtime/characters/mira-locomotion.png": "bf59c1b6c0f6e0162bcf4a8100740ec7082af598c9dcb05b4a2d000d6c178889",
+		"res://data/furniture_catalog.json": "962d47f9fd3867328f3f293351fbb3124e6053f2d156fc20e97ee856cce09319",
+		"res://data/office_layout.json": "484bc653b3ff4ae4dcc4aaf613396d9d18b70d27ed59971e4b0460be4187632d",
+		"res://tests/fixtures/furniture-calibration/chair-north-v1.png": "4959e5da8909cdc791fc2f1a41d637c7b291f5b23b380a1538ee99db66939642",
+		"res://tests/fixtures/furniture-calibration/characters/mira-north-seated-v2.png": "067b7b8781b589bbcdc89a46a69d7531363882faab34ba4cc80e7a2c9718458f",
+		"res://tools/calibrated_workstation_fixture.gd": "b9f673bc86294815df7a462a5fb8d0a3ead391c34f326a4464f989522bac7abe"
+	},
+	"source_pivot": [
+		24,
+		72
+	],
+	"worker_started": false
+}

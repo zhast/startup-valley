@@ -1,0 +1,33 @@
+{
+	"authored_vertical_feature_rise_px": 96,
+	"canvas": [
+		160,
+		240
+	],
+	"checks": 213,
+	"dev_catalogue_status_observed": "planned",
+	"east_west_top_plane_depth_px": 64,
+	"failures": [],
+	"family": "water_station",
+	"layers": [
+		"floor_shadow",
+		"rear_structure",
+		"front_structure"
+	],
+	"maximum_expected_projected_rise_px": 160,
+	"measured_base_elevation_px": 40,
+	"north_south_top_plane_depth_px": 32,
+	"pivot": [
+		80,
+		176
+	],
+	"planned_vertical_feature_envelope_px": 112,
+	"production_catalogue_registered": false,
+	"runtime_registered": false,
+	"service_backend_or_interaction_created": false,
+	"sprite_offset": [
+		0,
+		-56
+	],
+	"status": "native_review_candidate_without_runtime_binding"
+}

@@ -1,0 +1,103 @@
+{
+	"captures": [
+		{
+			"native_crop": "common-south-native.png",
+			"native_pixels_compared": 9216,
+			"new_front_visible": false,
+			"role": "common",
+			"room": "common-south-room.png",
+			"side": "south",
+			"view_source": "unchanged approved common archive components; no new visible rolefront"
+		},
+		{
+			"native_crop": "legal-south-native.png",
+			"native_pixels_compared": 9216,
+			"new_front_visible": true,
+			"role": "legal",
+			"room": "legal-south-room.png",
+			"side": "south",
+			"view_source": "new unapproved role South insert + reused common shell"
+		},
+		{
+			"native_crop": "legal-west-native.png",
+			"native_pixels_compared": 5120,
+			"new_front_visible": false,
+			"role": "legal",
+			"room": "legal-west-room.png",
+			"side": "west",
+			"view_source": "unchanged approved common archive components; no new visible rolefront"
+		},
+		{
+			"native_crop": "legal-north-native.png",
+			"native_pixels_compared": 9216,
+			"new_front_visible": false,
+			"role": "legal",
+			"room": "legal-north-room.png",
+			"side": "north",
+			"view_source": "unchanged approved common archive components; no new visible rolefront"
+		},
+		{
+			"native_crop": "legal-east-native.png",
+			"native_pixels_compared": 5120,
+			"new_front_visible": false,
+			"role": "legal",
+			"room": "legal-east-room.png",
+			"side": "east",
+			"view_source": "unchanged approved common archive components; no new visible rolefront"
+		},
+		{
+			"native_crop": "creative-south-native.png",
+			"native_pixels_compared": 9216,
+			"new_front_visible": true,
+			"role": "creative",
+			"room": "creative-south-room.png",
+			"side": "south",
+			"view_source": "new unapproved role South insert + reused common shell"
+		},
+		{
+			"native_crop": "creative-west-native.png",
+			"native_pixels_compared": 5120,
+			"new_front_visible": false,
+			"role": "creative",
+			"room": "creative-west-room.png",
+			"side": "west",
+			"view_source": "unchanged approved common archive components; no new visible rolefront"
+		},
+		{
+			"native_crop": "creative-north-native.png",
+			"native_pixels_compared": 9216,
+			"new_front_visible": false,
+			"role": "creative",
+			"room": "creative-north-room.png",
+			"side": "north",
+			"view_source": "unchanged approved common archive components; no new visible rolefront"
+		},
+		{
+			"native_crop": "creative-east-native.png",
+			"native_pixels_compared": 5120,
+			"new_front_visible": false,
+			"role": "creative",
+			"room": "creative-east-room.png",
+			"side": "east",
+			"view_source": "unchanged approved common archive components; no new visible rolefront"
+		}
+	],
+	"checks": 216,
+	"comparison_note": "Fresh independent actualGameMain scenes, shown sidebyside at unchanged nativepixels; no new productionvariant schema or specialist backend.",
+	"failures": [],
+	"new_drawings": 2,
+	"reused_views_per_role": [
+		"north",
+		"east",
+		"west"
+	],
+	"runtime_approved": false,
+	"source_hashes": {
+		"res://assets/source/overnight-20260904/kits/creative-storage-front-v1.png": "27f689984417ac8d6679f6b1371c0c995768c04db97344904729da769829aee7",
+		"res://assets/source/overnight-20260904/kits/legal-storage-front-v1.png": "44cf80672ae9ae6a6fae17032b56bb16fd20256a36934fb359845b070e0eb9b0",
+		"res://data/furniture_catalog.json": "962d47f9fd3867328f3f293351fbb3124e6053f2d156fc20e97ee856cce09319",
+		"res://data/office_layout.json": "484bc653b3ff4ae4dcc4aaf613396d9d18b70d27ed59971e4b0460be4187632d",
+		"res://tests/fixtures/furniture-calibration/role-storage-v1/creative-south-insert.png": "e54bfa14dbe761cdfc8b6d170a5b7c77f63e56fe24d3b45f453376e7d9ea532d",
+		"res://tests/fixtures/furniture-calibration/role-storage-v1/legal-south-insert.png": "ac59da7f08028f82f84b3077f23ea1e133b69c54f74ebd3eeb94a32efb99b780"
+	}
+}

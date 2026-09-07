@@ -1,0 +1,18 @@
+{
+	"captures": [
+		"res://tests/output/prototype-bench-room/room-north.png",
+		"res://tests/output/prototype-bench-room/detail-north-native.png",
+		"res://tests/output/prototype-bench-room/room-east.png",
+		"res://tests/output/prototype-bench-room/detail-east-native.png",
+		"res://tests/output/prototype-bench-room/room-south.png",
+		"res://tests/output/prototype-bench-room/detail-south-native.png",
+		"res://tests/output/prototype-bench-room/room-west.png",
+		"res://tests/output/prototype-bench-room/detail-west-native.png",
+		"res://tests/output/prototype-bench-room/actual-room-contact-sheet-native.png"
+	],
+	"checks": 48,
+	"failures": [],
+	"runtime_registered": false,
+	"status": "actual_room_review_required",
+	"worker_disabled": true
+}

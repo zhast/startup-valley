@@ -1,0 +1,659 @@
+{
+	"actor_render_y_candidates": [
+		0,
+		8,
+		12
+	],
+	"arm_sample_source_rows": [
+		40,
+		47
+	],
+	"arm_sample_source_x": "x <=19 or x >=28; opaque ROI, not semantic hand mask",
+	"captures": [
+		"standing-endpoint.png",
+		"native-frame0.png",
+		"native-frame1.png",
+		"native-frame2.png",
+		"native-frame2-mira-y0-4x.png",
+		"native-frame2-mira-y8-4x.png",
+		"native-frame2-mira-y12-4x.png",
+		"native-frame2-theo-y0-4x.png",
+		"native-frame2-theo-y8-4x.png",
+		"native-frame2-theo-y12-4x.png",
+		"native-frame3.png",
+		"native-frame4.png",
+		"native-frame5.png",
+		"support-frame0.png",
+		"support-frame1.png",
+		"support-frame2.png",
+		"support-frame2-mira-y0-4x.png",
+		"support-frame2-mira-y8-4x.png",
+		"support-frame2-mira-y12-4x.png",
+		"support-frame2-theo-y0-4x.png",
+		"support-frame2-theo-y8-4x.png",
+		"support-frame2-theo-y12-4x.png",
+		"support-frame3.png",
+		"support-frame4.png",
+		"support-frame5.png",
+		"guides-frame2.png"
+	],
+	"chair_render_y": 0,
+	"checks": 1010,
+	"failures": [],
+	"floor": [
+		-48,
+		-16,
+		96,
+		32
+	],
+	"head_sample_source_rows": [
+		0,
+		31
+	],
+	"hip_ranges_estimated_not_masks": {
+		"mira": [
+			47,
+			50
+		],
+		"theo": [
+			45,
+			48
+		]
+	},
+	"keyboard": "not authored/absent from south rear-monitor source",
+	"logical_work_foot": [
+		0,
+		-32
+	],
+	"material": "generated native soft oak",
+	"movie_sequence_frames": 210,
+	"observations": [
+		{
+			"actor_render_y": 0,
+			"arm_roi_hidden_by_top_or_monitor": 0,
+			"arm_roi_pixels": 127,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 0,
+			"frame": 0,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 534,
+			"hip_minus_seat_y_range": [
+				-8,
+				-5
+			],
+			"id": "mira",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 8,
+			"arm_roi_hidden_by_top_or_monitor": 44,
+			"arm_roi_pixels": 127,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 8,
+			"frame": 0,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 534,
+			"hip_minus_seat_y_range": [
+				0,
+				3
+			],
+			"id": "mira",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 12,
+			"arm_roi_hidden_by_top_or_monitor": 110,
+			"arm_roi_pixels": 127,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 12,
+			"frame": 0,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 534,
+			"hip_minus_seat_y_range": [
+				4,
+				7
+			],
+			"id": "mira",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 0,
+			"arm_roi_hidden_by_top_or_monitor": 0,
+			"arm_roi_pixels": 148,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 0,
+			"frame": 0,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 578,
+			"hip_minus_seat_y_range": [
+				-10,
+				-7
+			],
+			"id": "theo",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 8,
+			"arm_roi_hidden_by_top_or_monitor": 39,
+			"arm_roi_pixels": 148,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 8,
+			"frame": 0,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 578,
+			"hip_minus_seat_y_range": [
+				-2,
+				1
+			],
+			"id": "theo",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 12,
+			"arm_roi_hidden_by_top_or_monitor": 126,
+			"arm_roi_pixels": 148,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 12,
+			"frame": 0,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 578,
+			"hip_minus_seat_y_range": [
+				2,
+				5
+			],
+			"id": "theo",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 0,
+			"arm_roi_hidden_by_top_or_monitor": 0,
+			"arm_roi_pixels": 128,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 0,
+			"frame": 1,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 533,
+			"hip_minus_seat_y_range": [
+				-8,
+				-5
+			],
+			"id": "mira",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 8,
+			"arm_roi_hidden_by_top_or_monitor": 45,
+			"arm_roi_pixels": 128,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 8,
+			"frame": 1,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 533,
+			"hip_minus_seat_y_range": [
+				0,
+				3
+			],
+			"id": "mira",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 12,
+			"arm_roi_hidden_by_top_or_monitor": 111,
+			"arm_roi_pixels": 128,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 12,
+			"frame": 1,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 533,
+			"hip_minus_seat_y_range": [
+				4,
+				7
+			],
+			"id": "mira",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 0,
+			"arm_roi_hidden_by_top_or_monitor": 0,
+			"arm_roi_pixels": 150,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 0,
+			"frame": 1,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 566,
+			"hip_minus_seat_y_range": [
+				-10,
+				-7
+			],
+			"id": "theo",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 8,
+			"arm_roi_hidden_by_top_or_monitor": 41,
+			"arm_roi_pixels": 150,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 8,
+			"frame": 1,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 566,
+			"hip_minus_seat_y_range": [
+				-2,
+				1
+			],
+			"id": "theo",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 12,
+			"arm_roi_hidden_by_top_or_monitor": 128,
+			"arm_roi_pixels": 150,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 12,
+			"frame": 1,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 566,
+			"hip_minus_seat_y_range": [
+				2,
+				5
+			],
+			"id": "theo",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 0,
+			"arm_roi_hidden_by_top_or_monitor": 0,
+			"arm_roi_pixels": 125,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 0,
+			"frame": 2,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 533,
+			"hip_minus_seat_y_range": [
+				-8,
+				-5
+			],
+			"id": "mira",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 8,
+			"arm_roi_hidden_by_top_or_monitor": 44,
+			"arm_roi_pixels": 125,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 8,
+			"frame": 2,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 533,
+			"hip_minus_seat_y_range": [
+				0,
+				3
+			],
+			"id": "mira",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 12,
+			"arm_roi_hidden_by_top_or_monitor": 108,
+			"arm_roi_pixels": 125,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 12,
+			"frame": 2,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 533,
+			"hip_minus_seat_y_range": [
+				4,
+				7
+			],
+			"id": "mira",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 0,
+			"arm_roi_hidden_by_top_or_monitor": 0,
+			"arm_roi_pixels": 144,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 0,
+			"frame": 2,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 565,
+			"hip_minus_seat_y_range": [
+				-10,
+				-7
+			],
+			"id": "theo",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 8,
+			"arm_roi_hidden_by_top_or_monitor": 39,
+			"arm_roi_pixels": 144,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 8,
+			"frame": 2,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 565,
+			"hip_minus_seat_y_range": [
+				-2,
+				1
+			],
+			"id": "theo",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 12,
+			"arm_roi_hidden_by_top_or_monitor": 123,
+			"arm_roi_pixels": 144,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 12,
+			"frame": 2,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 565,
+			"hip_minus_seat_y_range": [
+				2,
+				5
+			],
+			"id": "theo",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 0,
+			"arm_roi_hidden_by_top_or_monitor": 0,
+			"arm_roi_pixels": 127,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 0,
+			"frame": 3,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 535,
+			"hip_minus_seat_y_range": [
+				-8,
+				-5
+			],
+			"id": "mira",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 8,
+			"arm_roi_hidden_by_top_or_monitor": 45,
+			"arm_roi_pixels": 127,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 8,
+			"frame": 3,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 535,
+			"hip_minus_seat_y_range": [
+				0,
+				3
+			],
+			"id": "mira",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 12,
+			"arm_roi_hidden_by_top_or_monitor": 109,
+			"arm_roi_pixels": 127,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 12,
+			"frame": 3,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 535,
+			"hip_minus_seat_y_range": [
+				4,
+				7
+			],
+			"id": "mira",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 0,
+			"arm_roi_hidden_by_top_or_monitor": 0,
+			"arm_roi_pixels": 148,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 0,
+			"frame": 3,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 564,
+			"hip_minus_seat_y_range": [
+				-10,
+				-7
+			],
+			"id": "theo",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 8,
+			"arm_roi_hidden_by_top_or_monitor": 41,
+			"arm_roi_pixels": 148,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 8,
+			"frame": 3,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 564,
+			"hip_minus_seat_y_range": [
+				-2,
+				1
+			],
+			"id": "theo",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 12,
+			"arm_roi_hidden_by_top_or_monitor": 126,
+			"arm_roi_pixels": 148,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 12,
+			"frame": 3,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 564,
+			"hip_minus_seat_y_range": [
+				2,
+				5
+			],
+			"id": "theo",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 0,
+			"arm_roi_hidden_by_top_or_monitor": 0,
+			"arm_roi_pixels": 130,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 0,
+			"frame": 4,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 542,
+			"hip_minus_seat_y_range": [
+				-8,
+				-5
+			],
+			"id": "mira",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 8,
+			"arm_roi_hidden_by_top_or_monitor": 46,
+			"arm_roi_pixels": 130,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 8,
+			"frame": 4,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 542,
+			"hip_minus_seat_y_range": [
+				0,
+				3
+			],
+			"id": "mira",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 12,
+			"arm_roi_hidden_by_top_or_monitor": 112,
+			"arm_roi_pixels": 130,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 12,
+			"frame": 4,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 542,
+			"hip_minus_seat_y_range": [
+				4,
+				7
+			],
+			"id": "mira",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 0,
+			"arm_roi_hidden_by_top_or_monitor": 0,
+			"arm_roi_pixels": 148,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 0,
+			"frame": 4,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 559,
+			"hip_minus_seat_y_range": [
+				-10,
+				-7
+			],
+			"id": "theo",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 8,
+			"arm_roi_hidden_by_top_or_monitor": 40,
+			"arm_roi_pixels": 148,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 8,
+			"frame": 4,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 559,
+			"hip_minus_seat_y_range": [
+				-2,
+				1
+			],
+			"id": "theo",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 12,
+			"arm_roi_hidden_by_top_or_monitor": 126,
+			"arm_roi_pixels": 148,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 12,
+			"frame": 4,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 559,
+			"hip_minus_seat_y_range": [
+				2,
+				5
+			],
+			"id": "theo",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 0,
+			"arm_roi_hidden_by_top_or_monitor": 0,
+			"arm_roi_pixels": 127,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 0,
+			"frame": 5,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 537,
+			"hip_minus_seat_y_range": [
+				-8,
+				-5
+			],
+			"id": "mira",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 8,
+			"arm_roi_hidden_by_top_or_monitor": 43,
+			"arm_roi_pixels": 127,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 8,
+			"frame": 5,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 537,
+			"hip_minus_seat_y_range": [
+				0,
+				3
+			],
+			"id": "mira",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 12,
+			"arm_roi_hidden_by_top_or_monitor": 109,
+			"arm_roi_pixels": 127,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 12,
+			"frame": 5,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 537,
+			"hip_minus_seat_y_range": [
+				4,
+				7
+			],
+			"id": "mira",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 0,
+			"arm_roi_hidden_by_top_or_monitor": 0,
+			"arm_roi_pixels": 148,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 0,
+			"frame": 5,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 574,
+			"hip_minus_seat_y_range": [
+				-10,
+				-7
+			],
+			"id": "theo",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 8,
+			"arm_roi_hidden_by_top_or_monitor": 41,
+			"arm_roi_pixels": 148,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 8,
+			"frame": 5,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 574,
+			"hip_minus_seat_y_range": [
+				-2,
+				1
+			],
+			"id": "theo",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		},
+		{
+			"actor_render_y": 12,
+			"arm_roi_hidden_by_top_or_monitor": 127,
+			"arm_roi_pixels": 148,
+			"chair_render_y": 0,
+			"foot_endpoint_jump_px": 12,
+			"frame": 5,
+			"head_hidden_by_top_or_monitor": 0,
+			"head_pixels": 574,
+			"hip_minus_seat_y_range": [
+				2,
+				5
+			],
+			"id": "theo",
+			"keyboard": "not present in candidate south kit; cannot claim hand-key contact"
+		}
+	],
+	"production_changed": false,
+	"renderer": "macOS",
+	"seat_y_relative_chair_pivot": -17,
+	"status": "diagnostic_not_runtime_approval",
+	"top": [
+		-48,
+		-48,
+		96,
+		32
+	],
+	"worker_disabled": true
+}

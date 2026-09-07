@@ -1,0 +1,33 @@
+{
+	"candidate_revision": "lawyer-contract-kit-v2",
+	"canvas": [
+		192,
+		224
+	],
+	"checks": 312,
+	"collision_cells": [],
+	"dev_catalogue_registered": false,
+	"east_retry_budget_reopened": false,
+	"failures": [],
+	"family": "lawyer_contract_kit",
+	"host": "accepted desk / workstations-v2",
+	"image_generation_calls": 0,
+	"layers_per_facing": [
+		"surface_decor_rear",
+		"surface_decor_front"
+	],
+	"legacy_files_hash_guarded": 12,
+	"legal_service_or_hire_created": false,
+	"objects_per_facing": [
+		"contract_binder",
+		"tabbed_review_folder",
+		"pen_cup"
+	],
+	"pivot": [
+		96,
+		160
+	],
+	"production_catalogue_registered": false,
+	"runtime_registered": false,
+	"status": "native_review_candidate_not_catalogued_or_runtime_registered"
+}

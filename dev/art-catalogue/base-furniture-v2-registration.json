@@ -1,0 +1,3658 @@
+{
+  "proposal_id": "base-furniture-v2-registration-20260906",
+  "status": "proposed_not_applied",
+  "scope": "Passive art-library approval only. No runtime catalogue/default-layout binding, interaction, worker, save, employee pose or workstation lifecycle.",
+  "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+  "catalogue_application_note": "Replace only the compact_desk and shared_workbench family objects by id. Recompute generated summary fields and gallery separately; approved_directional_deliverables increases by eight from 60 to 68.",
+  "validation": {
+    "merged_catalogue_checks": 20210,
+    "errors": [],
+    "approved_directional_deliverables_after_apply": 68
+  },
+  "families": [
+    {
+      "id": "compact_desk",
+      "direction_semantics": "workstation_gaze",
+      "display_name": "Compact starter desk",
+      "asset_kind": "furniture_base",
+      "base_vs_decor": "base",
+      "category": "workstations",
+      "priority": "P0",
+      "production_status": "approved",
+      "role_tags": [
+        "founder",
+        "all future specialists"
+      ],
+      "role_tools": [
+        "small clean task surface"
+      ],
+      "design_brief": "Small-office starting point; use the same joinery and material as the shared workstation.",
+      "gameplay_scope": "Art and future layout proposal only; no new hiring, role behavior, tool authority, transaction or interaction is implemented.",
+      "primary_host": null,
+      "current_availability": {
+        "status": "no_catalogue_runtime_binding",
+        "runtime_family_id": null,
+        "runtime_registered_facings": [],
+        "art_path": null,
+        "direction_art_review": "Approved as a reusable passive compact base after the checker-mesh shadow was replaced by bounded contact marks. Chairs, devices, role tools, seated actors and lifecycle remain separate assembly work.",
+        "previous_native_review": "The deterministic code-native compact-desk-v1 base supplies exact N/E/S/W floor-shadow, rear-structure, front-structure and whole exports at 160×192 with pivot [80,128]. Export, structural and actual GameMain/TownRoom checks pass, but the honest visual score is 2.17/3 and the family remains cleanup-required: missing compatible compact chair/device/role overlays plus seated lifecycle review. There is no approved art, runtime family, production/default-layout binding, interaction or role behavior."
+      },
+      "native_geometry": {
+        "status": "reviewed_code_native_base_library_not_runtime_admission",
+        "candidate_revision": "compact-desk-v2",
+        "canvas_size_px": [
+          160,
+          192
+        ],
+        "floor_anchor_px": [
+          80,
+          128
+        ],
+        "sprite_offset_px": [
+          0,
+          -32
+        ],
+        "grid_size_px": 32,
+        "estimated_max_rise_above_occupied_floor_px": 64,
+        "minimum_transparent_padding_px": 16,
+        "anchor_rule": "One unchanged canvas coordinate represents local floor pivot [0,0] in every direction and every layer. Transparent padding is not sprite scaling.",
+        "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/manifest.json",
+        "structural_results_path": "game/tests/output/base-furniture-review-2026-09-06/export-results.json",
+        "actual_room_results_path": "game/tests/output/base-furniture-review-2026-09-06/actual-room-results.json",
+        "preserved_v1_structural_results_path": "game/tests/output/compact-desk/structural-results.json",
+        "preserved_v1_actual_room_results_path": "game/tests/output/compact-desk/actual-room-results.json",
+        "base_only_review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md"
+      },
+      "layers": [
+        {
+          "id": "floor_shadow",
+          "required": true,
+          "same_canvas_and_floor_anchor": true,
+          "status": "approved"
+        },
+        {
+          "id": "rear_structure",
+          "required": true,
+          "same_canvas_and_floor_anchor": true,
+          "status": "approved"
+        },
+        {
+          "id": "front_structure",
+          "required": true,
+          "same_canvas_and_floor_anchor": true,
+          "status": "approved"
+        }
+      ],
+      "variants": [
+        {
+          "facing": "north",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/north-whole.png",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "evidence_path": "game/tests/output/base-furniture-review-2026-09-06/compact_desk-actual-room-base-native.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            2,
+            1
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "employee_look_vector": [
+            0,
+            -1
+          ],
+          "proposed_interaction_cell": [
+            0,
+            1
+          ],
+          "seated_pose_needed": false,
+          "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+          "preview_path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/north-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/north-whole.png",
+          "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/compact-desk-v2/manifest.json",
+            "game/tests/output/base-furniture-review-2026-09-06/export-results.json",
+            "game/tests/output/base-furniture-review-2026-09-06/actual-room-results.json",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-after-v2-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-before-after-4x.png",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-actual-room-base-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-actual-room-actor-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-actual-room-actor-4x.png",
+            "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved as a reusable passive compact base after the checker-mesh shadow was replaced by bounded contact marks. Chairs, devices, role tools, seated actors and lifecycle remain separate assembly work. This approval is passive base-art only; no runtime/default-layout binding or workstation capability is implied.",
+          "export_method": "Versioned deterministic typed-GDScript screen-axis base. compact-desk-v2 retains rear/front structure byte-identical to v1 and replaces only floor_shadow with authored contact marks; no generated source, raster rotation, mirror, scale, baked attachment, actor, text or logo.",
+          "native_exports": [
+            {
+              "layer": "floor_shadow",
+              "source_layer": "floor_shadow",
+              "path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/north-floor_shadow.png",
+              "canvas_size_px": [
+                160,
+                192
+              ],
+              "floor_anchor_px": [
+                80,
+                128
+              ],
+              "opaque_bounds_px": [
+                40,
+                141,
+                56,
+                3
+              ],
+              "opaque_pixels": 32,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 1,
+              "decoded_rgba_sha256": "1bdcff4ae53f79aa667055998ae5271f061a120f4eec0f7f0f7f1cc23b419204",
+              "verify_decoded_facts": true,
+              "sha256": "ff4b59ae7430301fe05a50cdd49e1969731d0b0deed170240e5c80d5be6e962f",
+              "z_offset": -2,
+              "source_path": "game/tools/base_furniture_review_v2.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Exact code-native north contact-shadow revision; fixed upper-left light, binary alpha, zero hidden RGB, shared canvas/pivot, no finished-raster transform."
+            },
+            {
+              "layer": "rear_structure",
+              "source_layer": "rear_structure",
+              "path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/north-rear_structure.png",
+              "canvas_size_px": [
+                160,
+                192
+              ],
+              "floor_anchor_px": [
+                80,
+                128
+              ],
+              "opaque_bounds_px": [
+                32,
+                80,
+                64,
+                35
+              ],
+              "opaque_pixels": 1970,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 6,
+              "decoded_rgba_sha256": "ec7ff084ed2853f1eb2b330081923ed8f0356d5ff1a0095cf623929bff8804ac",
+              "verify_decoded_facts": true,
+              "sha256": "74d15753aeb0e9eb1289a59055784da0efeb6848ff9d38a5cbbdd8d4f35983e3",
+              "z_offset": -1,
+              "source_path": "game/tools/compact_desk_geometry.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Byte-identical north v1 structure layer retained inside the versioned v2 base bundle."
+            },
+            {
+              "layer": "front_structure",
+              "source_layer": "front_structure",
+              "path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/north-front_structure.png",
+              "canvas_size_px": [
+                160,
+                192
+              ],
+              "floor_anchor_px": [
+                80,
+                128
+              ],
+              "opaque_bounds_px": [
+                32,
+                110,
+                64,
+                34
+              ],
+              "opaque_pixels": 718,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 5,
+              "decoded_rgba_sha256": "af6ca961a2ed5e025a84d390f110d4abc78d1a75a68bd08b7c837dc10360fffe",
+              "verify_decoded_facts": true,
+              "sha256": "caaaa76956de43086d9f5ad9b68e1d65aa78a99e34e7e0198c6bebb71b954f01",
+              "z_offset": 1,
+              "source_path": "game/tools/compact_desk_geometry.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Byte-identical north v1 structure layer retained inside the versioned v2 base bundle."
+            }
+          ],
+          "composite_exports": [
+            {
+              "path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/north-whole.png",
+              "canvas_size_px": [
+                160,
+                192
+              ],
+              "floor_anchor_px": [
+                80,
+                128
+              ],
+              "opaque_bounds_px": [
+                32,
+                80,
+                64,
+                64
+              ],
+              "opaque_pixels": 2668,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 7,
+              "decoded_rgba_sha256": "aa11e9ddd52c985f375827384e7deccc67bed40d092534dc9f43545697804630",
+              "verify_decoded_facts": true,
+              "sha256": "edb7173482b71b8fefadd3e8d043030073d45cf59f5ed7d3b573ddbc224ce4d7",
+              "method": "Byte-exact ordered union of the three registered v2 native base layers."
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "mean_score": 2.67,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 2,
+              "silhouette_readability": 3,
+              "layering_anchors": 3,
+              "direction_consistency": 2,
+              "placement": 3
+            },
+            "note": "Approved as a reusable passive compact base after the checker-mesh shadow was replaced by bounded contact marks. Chairs, devices, role tools, seated actors and lifecycle remain separate assembly work. Founder evidence is scale/occlusion only and does not approve an assembled workstation.",
+            "acceptance_scope": "passive_base_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "historical_v1": {
+            "revision": "compact-desk-v1",
+            "status": "cleanup_required",
+            "deliverable_availability": "native_export",
+            "preview_path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/north-whole.png",
+            "native_export_path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/north-whole.png",
+            "review_path": "dev/COMPACT_DESK_NATIVE_REVIEW.md",
+            "evidence_path": "game/tests/output/compact-desk/actual-room-approach-contact-sheet-native.png",
+            "evidence_paths": [
+              "game/tests/fixtures/furniture-calibration/compact-desk-v1/manifest.json",
+              "game/tests/output/compact-desk/structural-results.json",
+              "game/tests/output/compact-desk/actual-room-results.json",
+              "game/tests/output/compact-desk/candidate-contact-sheet-native.png",
+              "game/tests/output/compact-desk/candidate-layers-native.png",
+              "game/tests/output/compact-desk/actual-room-base-contact-sheet-native.png",
+              "game/tests/output/compact-desk/actual-room-approach-contact-sheet-4x.png",
+              "game/tests/output/compact-desk/accepted-shared-vs-compact-native.png"
+            ],
+            "cleanup_blocker": "Missing compatible compact chair/device/role overlays plus seated lifecycle review.",
+            "reason": "Deterministic code-native compact-desk-v1 base candidate only: 47 export, 259 structural/admission and 438 actual GameMain/TownRoom checks pass with no failures. The base has exactly two collision cells and separate floor-shadow/rear/front layers, but its 2.17/3 visual score and standing-founder-only evidence do not establish a compatible compact chair, device/role overlays, seated contact, typing, mount/exit or lifecycle review. No generated source master, approval, runtime/default-layout binding, interaction, role behavior or transaction capability.",
+            "native_exports": [
+              {
+                "layer": "floor_shadow",
+                "source_layer": "floor_shadow",
+                "path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/north-floor_shadow.png",
+                "canvas_size_px": [
+                  160,
+                  192
+                ],
+                "floor_anchor_px": [
+                  80,
+                  128
+                ],
+                "opaque_bounds_px": [
+                  36,
+                  122,
+                  56,
+                  12
+                ],
+                "opaque_pixels": 344,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 1,
+                "decoded_rgba_sha256": "6cb9b8909b8e2070b83d4cb9dd46e353051d626f7826ad57f1274dacb81bed59",
+                "verify_decoded_facts": true,
+                "sha256": "123c3851b3bee211d4259af6dab8571e3430d296ea7ff41918c7eaa06d7246a9",
+                "z_offset": -2,
+                "source_path": "game/tools/compact_desk_geometry.gd",
+                "review_path": "dev/COMPACT_DESK_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared north layout."
+              },
+              {
+                "layer": "rear_structure",
+                "source_layer": "rear_structure",
+                "path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/north-rear_structure.png",
+                "canvas_size_px": [
+                  160,
+                  192
+                ],
+                "floor_anchor_px": [
+                  80,
+                  128
+                ],
+                "opaque_bounds_px": [
+                  32,
+                  80,
+                  64,
+                  35
+                ],
+                "opaque_pixels": 1970,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 6,
+                "decoded_rgba_sha256": "ec7ff084ed2853f1eb2b330081923ed8f0356d5ff1a0095cf623929bff8804ac",
+                "verify_decoded_facts": true,
+                "sha256": "74d15753aeb0e9eb1289a59055784da0efeb6848ff9d38a5cbbdd8d4f35983e3",
+                "z_offset": -1,
+                "source_path": "game/tools/compact_desk_geometry.gd",
+                "review_path": "dev/COMPACT_DESK_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared north layout."
+              },
+              {
+                "layer": "front_structure",
+                "source_layer": "front_structure",
+                "path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/north-front_structure.png",
+                "canvas_size_px": [
+                  160,
+                  192
+                ],
+                "floor_anchor_px": [
+                  80,
+                  128
+                ],
+                "opaque_bounds_px": [
+                  32,
+                  110,
+                  64,
+                  34
+                ],
+                "opaque_pixels": 718,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 5,
+                "decoded_rgba_sha256": "af6ca961a2ed5e025a84d390f110d4abc78d1a75a68bd08b7c837dc10360fffe",
+                "verify_decoded_facts": true,
+                "sha256": "caaaa76956de43086d9f5ad9b68e1d65aa78a99e34e7e0198c6bebb71b954f01",
+                "z_offset": 1,
+                "source_path": "game/tools/compact_desk_geometry.gd",
+                "review_path": "dev/COMPACT_DESK_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared north layout."
+              }
+            ],
+            "composite_exports": [
+              {
+                "path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/north-whole.png",
+                "canvas_size_px": [
+                  160,
+                  192
+                ],
+                "floor_anchor_px": [
+                  80,
+                  128
+                ],
+                "opaque_bounds_px": [
+                  32,
+                  80,
+                  64,
+                  64
+                ],
+                "opaque_pixels": 2960,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 7,
+                "decoded_rgba_sha256": "c8fd704b2ddcc7a48664914dc048d472ad388a0796e92ffb8185c434fbfeb110",
+                "verify_decoded_facts": true,
+                "sha256": "8313735fb8200efcd535d52d29906611b85bc3bcb6131c3399fbe699b805a7d9",
+                "method": "Byte-exact ordered union of the three registered native base layers."
+              }
+            ],
+            "review": {
+              "geometry_reviewed": true,
+              "placement_tests_passed": true,
+              "actor_pose_reviewed": false,
+              "native_geometry_tests_passed": true,
+              "actual_room_tests_passed": true,
+              "mean_score": 2.17,
+              "scores": {
+                "pixel_coherence": 2,
+                "perspective": 2,
+                "silhouette_readability": 2,
+                "layering_anchors": 3,
+                "direction_consistency": 2,
+                "placement": 2
+              },
+              "note": "Cleanup-only base gate: mean 2.17/3. Actual-room placement, collision, wall/corner safety, alpha picking and standing-founder approach pass; compatible compact chair/device/role overlays and the seated work lifecycle remain unreviewed."
+            }
+          }
+        },
+        {
+          "facing": "east",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/east-whole.png",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "evidence_path": "game/tests/output/base-furniture-review-2026-09-06/compact_desk-actual-room-base-native.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            1,
+            2
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "employee_look_vector": [
+            1,
+            0
+          ],
+          "proposed_interaction_cell": [
+            -1,
+            0
+          ],
+          "seated_pose_needed": false,
+          "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+          "preview_path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/east-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/east-whole.png",
+          "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/compact-desk-v2/manifest.json",
+            "game/tests/output/base-furniture-review-2026-09-06/export-results.json",
+            "game/tests/output/base-furniture-review-2026-09-06/actual-room-results.json",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-after-v2-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-before-after-4x.png",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-actual-room-base-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-actual-room-actor-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-actual-room-actor-4x.png",
+            "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved as a reusable passive compact base after the checker-mesh shadow was replaced by bounded contact marks. Chairs, devices, role tools, seated actors and lifecycle remain separate assembly work. This approval is passive base-art only; no runtime/default-layout binding or workstation capability is implied.",
+          "export_method": "Versioned deterministic typed-GDScript screen-axis base. compact-desk-v2 retains rear/front structure byte-identical to v1 and replaces only floor_shadow with authored contact marks; no generated source, raster rotation, mirror, scale, baked attachment, actor, text or logo.",
+          "native_exports": [
+            {
+              "layer": "floor_shadow",
+              "source_layer": "floor_shadow",
+              "path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/east-floor_shadow.png",
+              "canvas_size_px": [
+                160,
+                192
+              ],
+              "floor_anchor_px": [
+                80,
+                128
+              ],
+              "opaque_bounds_px": [
+                71,
+                141,
+                25,
+                3
+              ],
+              "opaque_pixels": 32,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 1,
+              "decoded_rgba_sha256": "0ee5f6cf861b95b2724678d1550c4dd19a9be888b4c981ffcf7bdd6ec4d52ecd",
+              "verify_decoded_facts": true,
+              "sha256": "74d52918b05311d46e94d8441900c275fc46c89be4a71f034859750cc466539c",
+              "z_offset": -2,
+              "source_path": "game/tools/base_furniture_review_v2.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Exact code-native east contact-shadow revision; fixed upper-left light, binary alpha, zero hidden RGB, shared canvas/pivot, no finished-raster transform."
+            },
+            {
+              "layer": "rear_structure",
+              "source_layer": "rear_structure",
+              "path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/east-rear_structure.png",
+              "canvas_size_px": [
+                160,
+                192
+              ],
+              "floor_anchor_px": [
+                80,
+                128
+              ],
+              "opaque_bounds_px": [
+                64,
+                48,
+                30,
+                64
+              ],
+              "opaque_pixels": 1920,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 5,
+              "decoded_rgba_sha256": "aefd72878f168d57730647aab7803697f110b03685da5c4f4125d8b8fc9937c2",
+              "verify_decoded_facts": true,
+              "sha256": "5fb552cc9e0ade31aa956dde2f097a485b1b9a98ac70b7c3f5733d1b1baeaad9",
+              "z_offset": -1,
+              "source_path": "game/tools/compact_desk_geometry.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Byte-identical east v1 structure layer retained inside the versioned v2 base bundle."
+            },
+            {
+              "layer": "front_structure",
+              "source_layer": "front_structure",
+              "path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/east-front_structure.png",
+              "canvas_size_px": [
+                160,
+                192
+              ],
+              "floor_anchor_px": [
+                80,
+                128
+              ],
+              "opaque_bounds_px": [
+                67,
+                48,
+                29,
+                96
+              ],
+              "opaque_pixels": 704,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 5,
+              "decoded_rgba_sha256": "9d25e74b133e8616b6d0d37a3d1e850dc8ecca92855bb37ed1d1220485e625f7",
+              "verify_decoded_facts": true,
+              "sha256": "ca7ab3014827fd33b6b300d976ad379027abee96136639c5bc8813ca9070c959",
+              "z_offset": 1,
+              "source_path": "game/tools/compact_desk_geometry.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Byte-identical east v1 structure layer retained inside the versioned v2 base bundle."
+            }
+          ],
+          "composite_exports": [
+            {
+              "path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/east-whole.png",
+              "canvas_size_px": [
+                160,
+                192
+              ],
+              "floor_anchor_px": [
+                80,
+                128
+              ],
+              "opaque_bounds_px": [
+                64,
+                48,
+                32,
+                96
+              ],
+              "opaque_pixels": 2398,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 7,
+              "decoded_rgba_sha256": "766141bf8480a39ab2ad4e72d6a7de0562b3336cd1aaabf75c95d4c251d51d57",
+              "verify_decoded_facts": true,
+              "sha256": "0be72dd38b56dab744702183225588b1de13309bf838377ac5e86b20d3feba63",
+              "method": "Byte-exact ordered union of the three registered v2 native base layers."
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "mean_score": 2.67,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 2,
+              "silhouette_readability": 3,
+              "layering_anchors": 3,
+              "direction_consistency": 2,
+              "placement": 3
+            },
+            "note": "Approved as a reusable passive compact base after the checker-mesh shadow was replaced by bounded contact marks. Chairs, devices, role tools, seated actors and lifecycle remain separate assembly work. Founder evidence is scale/occlusion only and does not approve an assembled workstation.",
+            "acceptance_scope": "passive_base_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "historical_v1": {
+            "revision": "compact-desk-v1",
+            "status": "cleanup_required",
+            "deliverable_availability": "native_export",
+            "preview_path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/east-whole.png",
+            "native_export_path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/east-whole.png",
+            "review_path": "dev/COMPACT_DESK_NATIVE_REVIEW.md",
+            "evidence_path": "game/tests/output/compact-desk/actual-room-approach-contact-sheet-native.png",
+            "evidence_paths": [
+              "game/tests/fixtures/furniture-calibration/compact-desk-v1/manifest.json",
+              "game/tests/output/compact-desk/structural-results.json",
+              "game/tests/output/compact-desk/actual-room-results.json",
+              "game/tests/output/compact-desk/candidate-contact-sheet-native.png",
+              "game/tests/output/compact-desk/candidate-layers-native.png",
+              "game/tests/output/compact-desk/actual-room-base-contact-sheet-native.png",
+              "game/tests/output/compact-desk/actual-room-approach-contact-sheet-4x.png",
+              "game/tests/output/compact-desk/accepted-shared-vs-compact-native.png"
+            ],
+            "cleanup_blocker": "Missing compatible compact chair/device/role overlays plus seated lifecycle review.",
+            "reason": "Deterministic code-native compact-desk-v1 base candidate only: 47 export, 259 structural/admission and 438 actual GameMain/TownRoom checks pass with no failures. The base has exactly two collision cells and separate floor-shadow/rear/front layers, but its 2.17/3 visual score and standing-founder-only evidence do not establish a compatible compact chair, device/role overlays, seated contact, typing, mount/exit or lifecycle review. No generated source master, approval, runtime/default-layout binding, interaction, role behavior or transaction capability.",
+            "native_exports": [
+              {
+                "layer": "floor_shadow",
+                "source_layer": "floor_shadow",
+                "path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/east-floor_shadow.png",
+                "canvas_size_px": [
+                  160,
+                  192
+                ],
+                "floor_anchor_px": [
+                  80,
+                  128
+                ],
+                "opaque_bounds_px": [
+                  74,
+                  84,
+                  12,
+                  56
+                ],
+                "opaque_pixels": 344,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 1,
+                "decoded_rgba_sha256": "7a13ab61c3481debfb72b2617847ff0ce797d8d43db32423fde11e3be5c2d0ab",
+                "verify_decoded_facts": true,
+                "sha256": "88ff0237d819a285b938a62d4c590c6f837504b04f13d0d4e16990ec72a8f60b",
+                "z_offset": -2,
+                "source_path": "game/tools/compact_desk_geometry.gd",
+                "review_path": "dev/COMPACT_DESK_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared east layout."
+              },
+              {
+                "layer": "rear_structure",
+                "source_layer": "rear_structure",
+                "path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/east-rear_structure.png",
+                "canvas_size_px": [
+                  160,
+                  192
+                ],
+                "floor_anchor_px": [
+                  80,
+                  128
+                ],
+                "opaque_bounds_px": [
+                  64,
+                  48,
+                  30,
+                  64
+                ],
+                "opaque_pixels": 1920,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 5,
+                "decoded_rgba_sha256": "aefd72878f168d57730647aab7803697f110b03685da5c4f4125d8b8fc9937c2",
+                "verify_decoded_facts": true,
+                "sha256": "5fb552cc9e0ade31aa956dde2f097a485b1b9a98ac70b7c3f5733d1b1baeaad9",
+                "z_offset": -1,
+                "source_path": "game/tools/compact_desk_geometry.gd",
+                "review_path": "dev/COMPACT_DESK_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared east layout."
+              },
+              {
+                "layer": "front_structure",
+                "source_layer": "front_structure",
+                "path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/east-front_structure.png",
+                "canvas_size_px": [
+                  160,
+                  192
+                ],
+                "floor_anchor_px": [
+                  80,
+                  128
+                ],
+                "opaque_bounds_px": [
+                  67,
+                  48,
+                  29,
+                  96
+                ],
+                "opaque_pixels": 704,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 5,
+                "decoded_rgba_sha256": "9d25e74b133e8616b6d0d37a3d1e850dc8ecca92855bb37ed1d1220485e625f7",
+                "verify_decoded_facts": true,
+                "sha256": "ca7ab3014827fd33b6b300d976ad379027abee96136639c5bc8813ca9070c959",
+                "z_offset": 1,
+                "source_path": "game/tools/compact_desk_geometry.gd",
+                "review_path": "dev/COMPACT_DESK_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared east layout."
+              }
+            ],
+            "composite_exports": [
+              {
+                "path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/east-whole.png",
+                "canvas_size_px": [
+                  160,
+                  192
+                ],
+                "floor_anchor_px": [
+                  80,
+                  128
+                ],
+                "opaque_bounds_px": [
+                  64,
+                  48,
+                  32,
+                  96
+                ],
+                "opaque_pixels": 2540,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 7,
+                "decoded_rgba_sha256": "bbe32d7fff21130a8a6fd6e9f9dc93a1f50b2a8766559c4ac3c856d76c78c0dc",
+                "verify_decoded_facts": true,
+                "sha256": "721739c9d7a888e70c064bc79ce164cff1c2d55968dfb00f99306af7ac1d7a6b",
+                "method": "Byte-exact ordered union of the three registered native base layers."
+              }
+            ],
+            "review": {
+              "geometry_reviewed": true,
+              "placement_tests_passed": true,
+              "actor_pose_reviewed": false,
+              "native_geometry_tests_passed": true,
+              "actual_room_tests_passed": true,
+              "mean_score": 2.17,
+              "scores": {
+                "pixel_coherence": 2,
+                "perspective": 2,
+                "silhouette_readability": 2,
+                "layering_anchors": 3,
+                "direction_consistency": 2,
+                "placement": 2
+              },
+              "note": "Cleanup-only base gate: mean 2.17/3. Actual-room placement, collision, wall/corner safety, alpha picking and standing-founder approach pass; compatible compact chair/device/role overlays and the seated work lifecycle remain unreviewed."
+            }
+          }
+        },
+        {
+          "facing": "south",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/south-whole.png",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "evidence_path": "game/tests/output/base-furniture-review-2026-09-06/compact_desk-actual-room-base-native.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            2,
+            1
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "employee_look_vector": [
+            0,
+            1
+          ],
+          "proposed_interaction_cell": [
+            0,
+            -1
+          ],
+          "seated_pose_needed": false,
+          "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+          "preview_path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/south-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/south-whole.png",
+          "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/compact-desk-v2/manifest.json",
+            "game/tests/output/base-furniture-review-2026-09-06/export-results.json",
+            "game/tests/output/base-furniture-review-2026-09-06/actual-room-results.json",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-after-v2-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-before-after-4x.png",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-actual-room-base-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-actual-room-actor-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-actual-room-actor-4x.png",
+            "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved as a reusable passive compact base after the checker-mesh shadow was replaced by bounded contact marks. Chairs, devices, role tools, seated actors and lifecycle remain separate assembly work. This approval is passive base-art only; no runtime/default-layout binding or workstation capability is implied.",
+          "export_method": "Versioned deterministic typed-GDScript screen-axis base. compact-desk-v2 retains rear/front structure byte-identical to v1 and replaces only floor_shadow with authored contact marks; no generated source, raster rotation, mirror, scale, baked attachment, actor, text or logo.",
+          "native_exports": [
+            {
+              "layer": "floor_shadow",
+              "source_layer": "floor_shadow",
+              "path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/south-floor_shadow.png",
+              "canvas_size_px": [
+                160,
+                192
+              ],
+              "floor_anchor_px": [
+                80,
+                128
+              ],
+              "opaque_bounds_px": [
+                72,
+                141,
+                56,
+                3
+              ],
+              "opaque_pixels": 32,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 1,
+              "decoded_rgba_sha256": "941dfcb4324e1e5ee67fcffac490da99b0c478127e3f86d4ca9ad18eb3e60395",
+              "verify_decoded_facts": true,
+              "sha256": "e34e6478327c8054457139179fd7c57897b9bb7fabbb13554c23d367cbd793ac",
+              "z_offset": -2,
+              "source_path": "game/tools/base_furniture_review_v2.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Exact code-native south contact-shadow revision; fixed upper-left light, binary alpha, zero hidden RGB, shared canvas/pivot, no finished-raster transform."
+            },
+            {
+              "layer": "rear_structure",
+              "source_layer": "rear_structure",
+              "path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/south-rear_structure.png",
+              "canvas_size_px": [
+                160,
+                192
+              ],
+              "floor_anchor_px": [
+                80,
+                128
+              ],
+              "opaque_bounds_px": [
+                68,
+                84,
+                56,
+                39
+              ],
+              "opaque_pixels": 590,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 3,
+              "decoded_rgba_sha256": "8ed273ad556b3a68cd12dec6080c25db8cbcade7caf4524d6e46db037a6742f8",
+              "verify_decoded_facts": true,
+              "sha256": "48adf9613d1a4d3baa363625b0effc2be0a33a808b2219eeaf8a000f3816d8e3",
+              "z_offset": -1,
+              "source_path": "game/tools/compact_desk_geometry.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Byte-identical south v1 structure layer retained inside the versioned v2 base bundle."
+            },
+            {
+              "layer": "front_structure",
+              "source_layer": "front_structure",
+              "path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/south-front_structure.png",
+              "canvas_size_px": [
+                160,
+                192
+              ],
+              "floor_anchor_px": [
+                80,
+                128
+              ],
+              "opaque_bounds_px": [
+                64,
+                80,
+                64,
+                64
+              ],
+              "opaque_pixels": 2746,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 6,
+              "decoded_rgba_sha256": "e83ebd16ab70dfae56168e8060be8f19376fd0d3d8650ed3fe6123f4968d6652",
+              "verify_decoded_facts": true,
+              "sha256": "89c4e6ebd9fe6b6a5cf3b5e247751be46d5fb3298d05b9772d8daa0f5057317f",
+              "z_offset": 1,
+              "source_path": "game/tools/compact_desk_geometry.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Byte-identical south v1 structure layer retained inside the versioned v2 base bundle."
+            }
+          ],
+          "composite_exports": [
+            {
+              "path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/south-whole.png",
+              "canvas_size_px": [
+                160,
+                192
+              ],
+              "floor_anchor_px": [
+                80,
+                128
+              ],
+              "opaque_bounds_px": [
+                64,
+                80,
+                64,
+                64
+              ],
+              "opaque_pixels": 2872,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 8,
+              "decoded_rgba_sha256": "a76c9dd7654feeb5c6fcf0c4303967bfe77bb2c4d69575f11134903a78c92fc7",
+              "verify_decoded_facts": true,
+              "sha256": "50eee6c5ff25ccb9890860fd7d94b88af30bfcd1b2450ffa123d857a15710a1e",
+              "method": "Byte-exact ordered union of the three registered v2 native base layers."
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "mean_score": 2.67,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 2,
+              "silhouette_readability": 3,
+              "layering_anchors": 3,
+              "direction_consistency": 2,
+              "placement": 3
+            },
+            "note": "Approved as a reusable passive compact base after the checker-mesh shadow was replaced by bounded contact marks. Chairs, devices, role tools, seated actors and lifecycle remain separate assembly work. Founder evidence is scale/occlusion only and does not approve an assembled workstation.",
+            "acceptance_scope": "passive_base_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "historical_v1": {
+            "revision": "compact-desk-v1",
+            "status": "cleanup_required",
+            "deliverable_availability": "native_export",
+            "preview_path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/south-whole.png",
+            "native_export_path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/south-whole.png",
+            "review_path": "dev/COMPACT_DESK_NATIVE_REVIEW.md",
+            "evidence_path": "game/tests/output/compact-desk/actual-room-approach-contact-sheet-native.png",
+            "evidence_paths": [
+              "game/tests/fixtures/furniture-calibration/compact-desk-v1/manifest.json",
+              "game/tests/output/compact-desk/structural-results.json",
+              "game/tests/output/compact-desk/actual-room-results.json",
+              "game/tests/output/compact-desk/candidate-contact-sheet-native.png",
+              "game/tests/output/compact-desk/candidate-layers-native.png",
+              "game/tests/output/compact-desk/actual-room-base-contact-sheet-native.png",
+              "game/tests/output/compact-desk/actual-room-approach-contact-sheet-4x.png",
+              "game/tests/output/compact-desk/accepted-shared-vs-compact-native.png"
+            ],
+            "cleanup_blocker": "Missing compatible compact chair/device/role overlays plus seated lifecycle review.",
+            "reason": "Deterministic code-native compact-desk-v1 base candidate only: 47 export, 259 structural/admission and 438 actual GameMain/TownRoom checks pass with no failures. The base has exactly two collision cells and separate floor-shadow/rear/front layers, but its 2.17/3 visual score and standing-founder-only evidence do not establish a compatible compact chair, device/role overlays, seated contact, typing, mount/exit or lifecycle review. No generated source master, approval, runtime/default-layout binding, interaction, role behavior or transaction capability.",
+            "native_exports": [
+              {
+                "layer": "floor_shadow",
+                "source_layer": "floor_shadow",
+                "path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/south-floor_shadow.png",
+                "canvas_size_px": [
+                  160,
+                  192
+                ],
+                "floor_anchor_px": [
+                  80,
+                  128
+                ],
+                "opaque_bounds_px": [
+                  68,
+                  122,
+                  56,
+                  12
+                ],
+                "opaque_pixels": 344,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 1,
+                "decoded_rgba_sha256": "704e83e11758b3631bf683a089377eae0fd2dcb337ca58a0681ea716c4531681",
+                "verify_decoded_facts": true,
+                "sha256": "7df4987ab9818d860c2b629e38865cf53754f07b79c014c2fabdaa24279856f6",
+                "z_offset": -2,
+                "source_path": "game/tools/compact_desk_geometry.gd",
+                "review_path": "dev/COMPACT_DESK_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared south layout."
+              },
+              {
+                "layer": "rear_structure",
+                "source_layer": "rear_structure",
+                "path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/south-rear_structure.png",
+                "canvas_size_px": [
+                  160,
+                  192
+                ],
+                "floor_anchor_px": [
+                  80,
+                  128
+                ],
+                "opaque_bounds_px": [
+                  68,
+                  84,
+                  56,
+                  39
+                ],
+                "opaque_pixels": 590,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 3,
+                "decoded_rgba_sha256": "8ed273ad556b3a68cd12dec6080c25db8cbcade7caf4524d6e46db037a6742f8",
+                "verify_decoded_facts": true,
+                "sha256": "48adf9613d1a4d3baa363625b0effc2be0a33a808b2219eeaf8a000f3816d8e3",
+                "z_offset": -1,
+                "source_path": "game/tools/compact_desk_geometry.gd",
+                "review_path": "dev/COMPACT_DESK_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared south layout."
+              },
+              {
+                "layer": "front_structure",
+                "source_layer": "front_structure",
+                "path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/south-front_structure.png",
+                "canvas_size_px": [
+                  160,
+                  192
+                ],
+                "floor_anchor_px": [
+                  80,
+                  128
+                ],
+                "opaque_bounds_px": [
+                  64,
+                  80,
+                  64,
+                  64
+                ],
+                "opaque_pixels": 2746,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 6,
+                "decoded_rgba_sha256": "e83ebd16ab70dfae56168e8060be8f19376fd0d3d8650ed3fe6123f4968d6652",
+                "verify_decoded_facts": true,
+                "sha256": "89c4e6ebd9fe6b6a5cf3b5e247751be46d5fb3298d05b9772d8daa0f5057317f",
+                "z_offset": 1,
+                "source_path": "game/tools/compact_desk_geometry.gd",
+                "review_path": "dev/COMPACT_DESK_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared south layout."
+              }
+            ],
+            "composite_exports": [
+              {
+                "path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/south-whole.png",
+                "canvas_size_px": [
+                  160,
+                  192
+                ],
+                "floor_anchor_px": [
+                  80,
+                  128
+                ],
+                "opaque_bounds_px": [
+                  64,
+                  80,
+                  64,
+                  64
+                ],
+                "opaque_pixels": 3153,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 8,
+                "decoded_rgba_sha256": "1f9591e64528df6599f408ebca1d56999225c578cd951197409d075e4cdc1277",
+                "verify_decoded_facts": true,
+                "sha256": "e003cc23444a053bb2fed08cf54cee310090b7c52a1b4b321a621deb35332812",
+                "method": "Byte-exact ordered union of the three registered native base layers."
+              }
+            ],
+            "review": {
+              "geometry_reviewed": true,
+              "placement_tests_passed": true,
+              "actor_pose_reviewed": false,
+              "native_geometry_tests_passed": true,
+              "actual_room_tests_passed": true,
+              "mean_score": 2.17,
+              "scores": {
+                "pixel_coherence": 2,
+                "perspective": 2,
+                "silhouette_readability": 2,
+                "layering_anchors": 3,
+                "direction_consistency": 2,
+                "placement": 2
+              },
+              "note": "Cleanup-only base gate: mean 2.17/3. Actual-room placement, collision, wall/corner safety, alpha picking and standing-founder approach pass; compatible compact chair/device/role overlays and the seated work lifecycle remain unreviewed."
+            }
+          }
+        },
+        {
+          "facing": "west",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/west-whole.png",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "evidence_path": "game/tests/output/base-furniture-review-2026-09-06/compact_desk-actual-room-base-native.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            1,
+            2
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "employee_look_vector": [
+            -1,
+            0
+          ],
+          "proposed_interaction_cell": [
+            1,
+            0
+          ],
+          "seated_pose_needed": false,
+          "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+          "preview_path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/west-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/west-whole.png",
+          "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/compact-desk-v2/manifest.json",
+            "game/tests/output/base-furniture-review-2026-09-06/export-results.json",
+            "game/tests/output/base-furniture-review-2026-09-06/actual-room-results.json",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-after-v2-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-before-after-4x.png",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-actual-room-base-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-actual-room-actor-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/compact_desk-actual-room-actor-4x.png",
+            "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved as a reusable passive compact base after the checker-mesh shadow was replaced by bounded contact marks. Chairs, devices, role tools, seated actors and lifecycle remain separate assembly work. This approval is passive base-art only; no runtime/default-layout binding or workstation capability is implied.",
+          "export_method": "Versioned deterministic typed-GDScript screen-axis base. compact-desk-v2 retains rear/front structure byte-identical to v1 and replaces only floor_shadow with authored contact marks; no generated source, raster rotation, mirror, scale, baked attachment, actor, text or logo.",
+          "native_exports": [
+            {
+              "layer": "floor_shadow",
+              "source_layer": "floor_shadow",
+              "path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/west-floor_shadow.png",
+              "canvas_size_px": [
+                160,
+                192
+              ],
+              "floor_anchor_px": [
+                80,
+                128
+              ],
+              "opaque_bounds_px": [
+                73,
+                173,
+                23,
+                3
+              ],
+              "opaque_pixels": 26,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 1,
+              "decoded_rgba_sha256": "374b58cc179c816faaff19b113184f0d5587f40815e1cceb0d82c322dc6b07e0",
+              "verify_decoded_facts": true,
+              "sha256": "7c0137bf0d8c01cbb7fcef1328b1734339f3a0a8696abf720f2325de9ff2a6b1",
+              "z_offset": -2,
+              "source_path": "game/tools/base_furniture_review_v2.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Exact code-native west contact-shadow revision; fixed upper-left light, binary alpha, zero hidden RGB, shared canvas/pivot, no finished-raster transform."
+            },
+            {
+              "layer": "rear_structure",
+              "source_layer": "rear_structure",
+              "path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/west-rear_structure.png",
+              "canvas_size_px": [
+                160,
+                192
+              ],
+              "floor_anchor_px": [
+                80,
+                128
+              ],
+              "opaque_bounds_px": [
+                66,
+                80,
+                30,
+                64
+              ],
+              "opaque_pixels": 1920,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 5,
+              "decoded_rgba_sha256": "c6259ce2956ae8695dc1e2bf76199de8d7148d160a6edbe455e5234d9812c061",
+              "verify_decoded_facts": true,
+              "sha256": "5723f1771d32ebe7d020e53be7e753c0f330a3aca40c3730943ac222481f0d1a",
+              "z_offset": -1,
+              "source_path": "game/tools/compact_desk_geometry.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Byte-identical west v1 structure layer retained inside the versioned v2 base bundle."
+            },
+            {
+              "layer": "front_structure",
+              "source_layer": "front_structure",
+              "path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/west-front_structure.png",
+              "canvas_size_px": [
+                160,
+                192
+              ],
+              "floor_anchor_px": [
+                80,
+                128
+              ],
+              "opaque_bounds_px": [
+                64,
+                80,
+                30,
+                96
+              ],
+              "opaque_pixels": 704,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 5,
+              "decoded_rgba_sha256": "bc56e3d77b16a1c3b08f6182ee888786e5d54a2e140777e61cdcdcb8abb3f85b",
+              "verify_decoded_facts": true,
+              "sha256": "8e5b8553843bd7741a437c4e682ad55b71e493524988c560cbb1c3cd7586739f",
+              "z_offset": 1,
+              "source_path": "game/tools/compact_desk_geometry.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Byte-identical west v1 structure layer retained inside the versioned v2 base bundle."
+            }
+          ],
+          "composite_exports": [
+            {
+              "path": "game/tests/fixtures/furniture-calibration/compact-desk-v2/west-whole.png",
+              "canvas_size_px": [
+                160,
+                192
+              ],
+              "floor_anchor_px": [
+                80,
+                128
+              ],
+              "opaque_bounds_px": [
+                64,
+                80,
+                32,
+                96
+              ],
+              "opaque_pixels": 2392,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 7,
+              "decoded_rgba_sha256": "c0ce4d4e9d554b194f94b6709adeb37930777e631a0722c2945d884a1cb28c03",
+              "verify_decoded_facts": true,
+              "sha256": "4bcff6516a3a5cb8ec8692f561b81bc831f32242be56952442a1b1293696eafb",
+              "method": "Byte-exact ordered union of the three registered v2 native base layers."
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "mean_score": 2.67,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 2,
+              "silhouette_readability": 3,
+              "layering_anchors": 3,
+              "direction_consistency": 2,
+              "placement": 3
+            },
+            "note": "Approved as a reusable passive compact base after the checker-mesh shadow was replaced by bounded contact marks. Chairs, devices, role tools, seated actors and lifecycle remain separate assembly work. Founder evidence is scale/occlusion only and does not approve an assembled workstation.",
+            "acceptance_scope": "passive_base_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "historical_v1": {
+            "revision": "compact-desk-v1",
+            "status": "cleanup_required",
+            "deliverable_availability": "native_export",
+            "preview_path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/west-whole.png",
+            "native_export_path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/west-whole.png",
+            "review_path": "dev/COMPACT_DESK_NATIVE_REVIEW.md",
+            "evidence_path": "game/tests/output/compact-desk/actual-room-approach-contact-sheet-native.png",
+            "evidence_paths": [
+              "game/tests/fixtures/furniture-calibration/compact-desk-v1/manifest.json",
+              "game/tests/output/compact-desk/structural-results.json",
+              "game/tests/output/compact-desk/actual-room-results.json",
+              "game/tests/output/compact-desk/candidate-contact-sheet-native.png",
+              "game/tests/output/compact-desk/candidate-layers-native.png",
+              "game/tests/output/compact-desk/actual-room-base-contact-sheet-native.png",
+              "game/tests/output/compact-desk/actual-room-approach-contact-sheet-4x.png",
+              "game/tests/output/compact-desk/accepted-shared-vs-compact-native.png"
+            ],
+            "cleanup_blocker": "Missing compatible compact chair/device/role overlays plus seated lifecycle review.",
+            "reason": "Deterministic code-native compact-desk-v1 base candidate only: 47 export, 259 structural/admission and 438 actual GameMain/TownRoom checks pass with no failures. The base has exactly two collision cells and separate floor-shadow/rear/front layers, but its 2.17/3 visual score and standing-founder-only evidence do not establish a compatible compact chair, device/role overlays, seated contact, typing, mount/exit or lifecycle review. No generated source master, approval, runtime/default-layout binding, interaction, role behavior or transaction capability.",
+            "native_exports": [
+              {
+                "layer": "floor_shadow",
+                "source_layer": "floor_shadow",
+                "path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/west-floor_shadow.png",
+                "canvas_size_px": [
+                  160,
+                  192
+                ],
+                "floor_anchor_px": [
+                  80,
+                  128
+                ],
+                "opaque_bounds_px": [
+                  74,
+                  116,
+                  12,
+                  56
+                ],
+                "opaque_pixels": 344,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 1,
+                "decoded_rgba_sha256": "8bd9a7d6d4725e6ff7e971461d1da253e2cf25720a60c4b81eacbc561f9ea449",
+                "verify_decoded_facts": true,
+                "sha256": "27728b888b68ea9d003a1fcc66e4676766756c959a3fa144680d08feef51eec9",
+                "z_offset": -2,
+                "source_path": "game/tools/compact_desk_geometry.gd",
+                "review_path": "dev/COMPACT_DESK_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared west layout."
+              },
+              {
+                "layer": "rear_structure",
+                "source_layer": "rear_structure",
+                "path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/west-rear_structure.png",
+                "canvas_size_px": [
+                  160,
+                  192
+                ],
+                "floor_anchor_px": [
+                  80,
+                  128
+                ],
+                "opaque_bounds_px": [
+                  66,
+                  80,
+                  30,
+                  64
+                ],
+                "opaque_pixels": 1920,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 5,
+                "decoded_rgba_sha256": "c6259ce2956ae8695dc1e2bf76199de8d7148d160a6edbe455e5234d9812c061",
+                "verify_decoded_facts": true,
+                "sha256": "5723f1771d32ebe7d020e53be7e753c0f330a3aca40c3730943ac222481f0d1a",
+                "z_offset": -1,
+                "source_path": "game/tools/compact_desk_geometry.gd",
+                "review_path": "dev/COMPACT_DESK_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared west layout."
+              },
+              {
+                "layer": "front_structure",
+                "source_layer": "front_structure",
+                "path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/west-front_structure.png",
+                "canvas_size_px": [
+                  160,
+                  192
+                ],
+                "floor_anchor_px": [
+                  80,
+                  128
+                ],
+                "opaque_bounds_px": [
+                  64,
+                  80,
+                  30,
+                  96
+                ],
+                "opaque_pixels": 704,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 5,
+                "decoded_rgba_sha256": "bc56e3d77b16a1c3b08f6182ee888786e5d54a2e140777e61cdcdcb8abb3f85b",
+                "verify_decoded_facts": true,
+                "sha256": "8e5b8553843bd7741a437c4e682ad55b71e493524988c560cbb1c3cd7586739f",
+                "z_offset": 1,
+                "source_path": "game/tools/compact_desk_geometry.gd",
+                "review_path": "dev/COMPACT_DESK_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared west layout."
+              }
+            ],
+            "composite_exports": [
+              {
+                "path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/west-whole.png",
+                "canvas_size_px": [
+                  160,
+                  192
+                ],
+                "floor_anchor_px": [
+                  80,
+                  128
+                ],
+                "opaque_bounds_px": [
+                  64,
+                  80,
+                  32,
+                  96
+                ],
+                "opaque_pixels": 2540,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 7,
+                "decoded_rgba_sha256": "9cb3df25f08fe8bb00be6a79803bb0093b57a91a5aeffec7141073564380e8ea",
+                "verify_decoded_facts": true,
+                "sha256": "e5e1ae019401da7f487d16101ab65b64a2284643c0c13832f66c0c1f09a1c0f9",
+                "method": "Byte-exact ordered union of the three registered native base layers."
+              }
+            ],
+            "review": {
+              "geometry_reviewed": true,
+              "placement_tests_passed": true,
+              "actor_pose_reviewed": false,
+              "native_geometry_tests_passed": true,
+              "actual_room_tests_passed": true,
+              "mean_score": 2.17,
+              "scores": {
+                "pixel_coherence": 2,
+                "perspective": 2,
+                "silhouette_readability": 2,
+                "layering_anchors": 3,
+                "direction_consistency": 2,
+                "placement": 2
+              },
+              "note": "Cleanup-only base gate: mean 2.17/3. Actual-room placement, collision, wall/corner safety, alpha picking and standing-founder approach pass; compatible compact chair/device/role overlays and the seated work lifecycle remain unreviewed."
+            }
+          }
+        }
+      ],
+      "historical_v1_review": {
+        "revision": "compact-desk-v1",
+        "production_status": "cleanup_required",
+        "current_availability": {
+          "status": "no_catalogue_runtime_binding",
+          "runtime_family_id": null,
+          "runtime_registered_facings": [],
+          "art_path": null,
+          "direction_art_review": "The deterministic code-native compact-desk-v1 base supplies exact N/E/S/W floor-shadow, rear-structure, front-structure and whole exports at 160×192 with pivot [80,128]. Export, structural and actual GameMain/TownRoom checks pass, but the honest visual score is 2.17/3 and the family remains cleanup-required: missing compatible compact chair/device/role overlays plus seated lifecycle review. There is no approved art, runtime family, production/default-layout binding, interaction or role behavior."
+        },
+        "native_geometry": {
+          "status": "measured_code_native_cleanup_candidate_not_runtime_admission",
+          "candidate_revision": "compact-desk-v1",
+          "canvas_size_px": [
+            160,
+            192
+          ],
+          "floor_anchor_px": [
+            80,
+            128
+          ],
+          "sprite_offset_px": [
+            0,
+            -32
+          ],
+          "grid_size_px": 32,
+          "estimated_max_rise_above_occupied_floor_px": 64,
+          "minimum_transparent_padding_px": 16,
+          "anchor_rule": "One unchanged canvas coordinate represents local floor pivot [0,0] in every direction and every layer. Transparent padding is not sprite scaling.",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/compact-desk-v1/manifest.json",
+          "structural_results_path": "game/tests/output/compact-desk/structural-results.json",
+          "actual_room_results_path": "game/tests/output/compact-desk/actual-room-results.json"
+        },
+        "layers": [
+          {
+            "id": "floor_shadow",
+            "required": true,
+            "same_canvas_and_floor_anchor": true,
+            "status": "cleanup_required"
+          },
+          {
+            "id": "rear_structure",
+            "required": true,
+            "same_canvas_and_floor_anchor": true,
+            "status": "cleanup_required"
+          },
+          {
+            "id": "front_structure",
+            "required": true,
+            "same_canvas_and_floor_anchor": true,
+            "status": "cleanup_required"
+          }
+        ],
+        "cleanup_blocker": "Missing compatible compact chair/device/role overlays plus seated lifecycle review."
+      }
+    },
+    {
+      "id": "shared_workbench",
+      "direction_semantics": "workstation_gaze",
+      "display_name": "Two-person workbench",
+      "asset_kind": "furniture_base",
+      "base_vs_decor": "base",
+      "category": "workstations",
+      "priority": "P2",
+      "production_status": "approved",
+      "role_tags": [
+        "engineer",
+        "creative",
+        "shared"
+      ],
+      "role_tools": [
+        "two modular work bays",
+        "cable trough"
+      ],
+      "design_brief": "A space-efficient paired surface; two separate seats and tool kits attach independently.",
+      "gameplay_scope": "Art and future layout proposal only; no new hiring, role behavior, tool authority, transaction or interaction is implemented.",
+      "primary_host": null,
+      "current_availability": {
+        "status": "no_catalogue_runtime_binding",
+        "runtime_family_id": null,
+        "runtime_registered_facings": [],
+        "art_path": null,
+        "direction_art_review": "Approved at the minimum threshold as a reusable passive two-bay base after the dominant checker shadow was replaced by bounded contact marks. Bare East/West ambiguity and all paired attachments/lifecycle remain separate work.",
+        "previous_native_review": "The deterministic code-native shared-workbench-v1 base supplies exact N/E/S/W floor-shadow, rear-structure, front-structure and whole exports at 256×304 with pivot [128,208]. Export, structural and actual GameMain/TownRoom checks pass, but the honest visual score is 2.17/3 and the family remains cleanup-required: paired chair/device/role overlays, two-actor shared-work lifecycle and final narrow-side/shadow art review remain incomplete. There is no approved art, runtime family, production/default-layout binding, interaction or role behavior."
+      },
+      "native_geometry": {
+        "status": "reviewed_code_native_base_library_not_runtime_admission",
+        "canvas_size_px": [
+          256,
+          304
+        ],
+        "floor_anchor_px": [
+          128,
+          208
+        ],
+        "grid_size_px": 32,
+        "estimated_max_rise_above_occupied_floor_px": 112,
+        "minimum_transparent_padding_px": 16,
+        "anchor_rule": "One unchanged canvas coordinate represents local floor pivot [0,0] in every direction and every layer. Transparent padding is not sprite scaling.",
+        "candidate_revision": "shared-workbench-v2",
+        "sprite_offset_px": [
+          0,
+          -56
+        ],
+        "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/manifest.json",
+        "structural_results_path": "game/tests/output/base-furniture-review-2026-09-06/export-results.json",
+        "actual_room_results_path": "game/tests/output/base-furniture-review-2026-09-06/actual-room-results.json",
+        "preserved_v1_structural_results_path": "game/tests/output/shared-workbench/structural-results.json",
+        "preserved_v1_actual_room_results_path": "game/tests/output/shared-workbench/actual-room-results.json",
+        "base_only_review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md"
+      },
+      "layers": [
+        {
+          "id": "floor_shadow",
+          "required": true,
+          "same_canvas_and_floor_anchor": true,
+          "status": "approved"
+        },
+        {
+          "id": "rear_structure",
+          "required": true,
+          "same_canvas_and_floor_anchor": true,
+          "status": "approved"
+        },
+        {
+          "id": "front_structure",
+          "required": true,
+          "same_canvas_and_floor_anchor": true,
+          "status": "approved"
+        }
+      ],
+      "variants": [
+        {
+          "facing": "north",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/north-whole.png",
+          "evidence_path": "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-actual-room-base-native.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            5,
+            1
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              -2,
+              0
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              0
+            ]
+          ],
+          "employee_look_vector": [
+            0,
+            -1
+          ],
+          "proposed_interaction_cell": [
+            0,
+            1
+          ],
+          "seated_pose_needed": false,
+          "redraw_requirement": "Preserve this independent screen-axis projection and exact base-layer depth order. Do not rotate, mirror, flip, rescale or derive the complete bitmap from another facing.",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "preview_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/north-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/north-whole.png",
+          "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/shared-workbench-v2/manifest.json",
+            "game/tests/output/base-furniture-review-2026-09-06/export-results.json",
+            "game/tests/output/base-furniture-review-2026-09-06/actual-room-results.json",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-after-v2-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-before-after-4x.png",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-actual-room-base-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-actual-room-actor-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-actual-room-actor-4x.png",
+            "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved at the minimum threshold as a reusable passive two-bay base after the dominant checker shadow was replaced by bounded contact marks. Bare East/West ambiguity and all paired attachments/lifecycle remain separate work. This approval is passive base-art only; no runtime/default-layout binding or workstation capability is implied.",
+          "export_method": "Versioned deterministic typed-GDScript screen-axis base. shared-workbench-v2 retains rear/front structure byte-identical to v1 and replaces only floor_shadow with authored contact marks; no generated source, raster rotation, mirror, scale, baked attachment, actor, text or logo.",
+          "validated_candidate_profile": {
+            "catalogue_status": "cleanup_required",
+            "fixture_profile_status": "calibration_candidate",
+            "fixture_profile_status_note": "The disposable fixture profile proves passive descriptor completeness only; it is not production registration or workstation capability.",
+            "profile_kind": "decorative",
+            "asset_revision": "shared-workbench-v1",
+            "occupied_cell_offsets": [
+              [
+                -2,
+                0
+              ],
+              [
+                -1,
+                0
+              ],
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                0
+              ]
+            ],
+            "clearance_cell_offsets": [
+              [
+                -1,
+                1
+              ],
+              [
+                0,
+                1
+              ],
+              [
+                1,
+                1
+              ]
+            ],
+            "proposed_work_cell_offsets": [
+              [
+                -1,
+                1
+              ],
+              [
+                1,
+                1
+              ]
+            ],
+            "interaction_cell": [
+              0,
+              1
+            ],
+            "employee_look_vector": [
+              0,
+              -1
+            ],
+            "floor_plane": [
+              -80,
+              -16,
+              160,
+              32
+            ],
+            "top_plane": [
+              -77,
+              -54,
+              154,
+              32
+            ],
+            "contact_boundary_y": 16,
+            "overlay_contract": {
+              "chair_a": {
+                "adds_base_collision": false,
+                "cell": [
+                  -1,
+                  1
+                ],
+                "included_in_base": false,
+                "owner_family": "ergonomic_chair"
+              },
+              "chair_b": {
+                "adds_base_collision": false,
+                "cell": [
+                  1,
+                  1
+                ],
+                "included_in_base": false,
+                "owner_family": "ergonomic_chair"
+              },
+              "device_a": {
+                "adds_base_collision": false,
+                "included_in_base": false,
+                "owner_family": "computer_kit",
+                "surface_zone": [
+                  -69,
+                  -48,
+                  40,
+                  18
+                ]
+              },
+              "device_b": {
+                "adds_base_collision": false,
+                "included_in_base": false,
+                "owner_family": "computer_kit",
+                "surface_zone": [
+                  7,
+                  -48,
+                  40,
+                  18
+                ]
+              },
+              "role_a": {
+                "adds_base_collision": false,
+                "included_in_base": false,
+                "owner_family": "role_tool_kits",
+                "surface_zone": [
+                  -25,
+                  -47,
+                  18,
+                  16
+                ]
+              },
+              "role_b": {
+                "adds_base_collision": false,
+                "included_in_base": false,
+                "owner_family": "role_tool_kits",
+                "surface_zone": [
+                  51,
+                  -47,
+                  18,
+                  16
+                ]
+              }
+            },
+            "collision_cell_count": 5,
+            "render_layer_count": 3,
+            "runtime_registered": false
+          },
+          "native_exports": [
+            {
+              "layer": "floor_shadow",
+              "source_layer": "floor_shadow",
+              "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/north-floor_shadow.png",
+              "canvas_size_px": [
+                256,
+                304
+              ],
+              "floor_anchor_px": [
+                128,
+                208
+              ],
+              "opaque_bounds_px": [
+                62,
+                221,
+                144,
+                3
+              ],
+              "opaque_pixels": 60,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 1,
+              "decoded_rgba_sha256": "ef7d288ee1c2b8bf181977891a2f85bb3399ba12c97272788891bd6175505071",
+              "verify_decoded_facts": true,
+              "sha256": "047883824753aced2155611d9808fb29419aa0c7c76170e32c428946f9b0de0a",
+              "z_offset": -2,
+              "source_path": "game/tools/base_furniture_review_v2.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Exact code-native north contact-shadow revision; fixed upper-left light, binary alpha, zero hidden RGB, shared canvas/pivot, no finished-raster transform."
+            },
+            {
+              "layer": "rear_structure",
+              "source_layer": "rear_structure",
+              "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/north-rear_structure.png",
+              "canvas_size_px": [
+                256,
+                304
+              ],
+              "floor_anchor_px": [
+                128,
+                208
+              ],
+              "opaque_bounds_px": [
+                51,
+                154,
+                154,
+                41
+              ],
+              "opaque_pixels": 5090,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 7,
+              "decoded_rgba_sha256": "9119d578e6f346d9b403bb405178429c46f611dd5223d9a742d48e9785c8709b",
+              "verify_decoded_facts": true,
+              "sha256": "16bcee085f80132747d36f34d18e348c6503d50d45e5558a4a97e018dbb0610e",
+              "z_offset": -1,
+              "source_path": "game/tools/shared_workbench_geometry.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Byte-identical north v1 structure layer retained inside the versioned v2 base bundle."
+            },
+            {
+              "layer": "front_structure",
+              "source_layer": "front_structure",
+              "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/north-front_structure.png",
+              "canvas_size_px": [
+                256,
+                304
+              ],
+              "floor_anchor_px": [
+                128,
+                208
+              ],
+              "opaque_bounds_px": [
+                51,
+                186,
+                154,
+                38
+              ],
+              "opaque_pixels": 1908,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 5,
+              "decoded_rgba_sha256": "7bada533d3fd79461a809774e7f9ff0c5a661749db10a6c104672d257352fd63",
+              "verify_decoded_facts": true,
+              "sha256": "4c9349c1fc5b667ae07b6250ca22457f25294dc082db62927dbaeee42c0b8b46",
+              "z_offset": 1,
+              "source_path": "game/tools/shared_workbench_geometry.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Byte-identical north v1 structure layer retained inside the versioned v2 base bundle."
+            }
+          ],
+          "composite_exports": [
+            {
+              "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/north-whole.png",
+              "canvas_size_px": [
+                256,
+                304
+              ],
+              "floor_anchor_px": [
+                128,
+                208
+              ],
+              "opaque_bounds_px": [
+                51,
+                154,
+                155,
+                70
+              ],
+              "opaque_pixels": 6893,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 7,
+              "decoded_rgba_sha256": "3cc9ef4e2a35c2ff6f0ecbb3c670548a8e95fe4ed661dd56cec855c76e20d2bf",
+              "verify_decoded_facts": true,
+              "sha256": "f85701dba2091c890e261a435630ce91eaacce2de9db5da3076d8c2121bfa280",
+              "method": "Byte-exact ordered union of the three registered v2 native base layers."
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "mean_score": 2.5,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 2,
+              "silhouette_readability": 2,
+              "layering_anchors": 3,
+              "direction_consistency": 2,
+              "placement": 3
+            },
+            "note": "Approved at the minimum threshold as a reusable passive two-bay base after the dominant checker shadow was replaced by bounded contact marks. Bare East/West ambiguity and all paired attachments/lifecycle remain separate work. Founder evidence is scale/occlusion only and does not approve an assembled workstation.",
+            "acceptance_scope": "passive_base_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "historical_v1": {
+            "revision": "shared-workbench-v1",
+            "status": "cleanup_required",
+            "deliverable_availability": "native_export",
+            "preview_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/north-whole.png",
+            "native_export_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/north-whole.png",
+            "review_path": "dev/SHARED_WORKBENCH_NATIVE_REVIEW.md",
+            "evidence_path": "game/tests/output/shared-workbench/actual-room-approach-contact-sheet-native.png",
+            "evidence_paths": [
+              "game/tests/fixtures/furniture-calibration/shared-workbench-v1/manifest.json",
+              "game/tests/output/shared-workbench/structural-results.json",
+              "game/tests/output/shared-workbench/actual-room-results.json",
+              "game/tests/output/shared-workbench/candidate-contact-sheet-native.png",
+              "game/tests/output/shared-workbench/candidate-layers-native.png",
+              "game/tests/output/shared-workbench/actual-room-base-contact-sheet-native.png",
+              "game/tests/output/shared-workbench/actual-room-approach-contact-sheet-4x.png",
+              "game/tests/output/shared-workbench/compact-workbench-prototype-native.png"
+            ],
+            "cleanup_blocker": "Paired ergonomic-chair, computer-kit and role-tool overlays are not fit or reviewed; two-actor reservation, simultaneous approach, seated/work/exit lifecycle and final narrow-side/shadow art review remain incomplete.",
+            "reason": "Deterministic code-native shared-workbench-v1 base candidate only: 51 export, 292 structural/admission and 462 actual GameMain/TownRoom checks pass with no failures. The base has exactly five collision cells, two proposed work bays and separate floor-shadow/rear/front layers, but its 2.17/3 visual score and standing-founder-only evidence do not establish paired chair/device/role fits, simultaneous two-actor reservation, seated/work/exit lifecycle or final narrow-side/shadow art acceptance. No generated source master, approval, runtime/default-layout binding, interaction, role behavior or transaction capability.",
+            "native_exports": [
+              {
+                "layer": "floor_shadow",
+                "source_layer": "floor_shadow",
+                "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/north-floor_shadow.png",
+                "canvas_size_px": [
+                  256,
+                  304
+                ],
+                "floor_anchor_px": [
+                  128,
+                  208
+                ],
+                "opaque_bounds_px": [
+                  52,
+                  202,
+                  152,
+                  12
+                ],
+                "opaque_pixels": 932,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 1,
+                "decoded_rgba_sha256": "616017b8e601f4d000d5458d26081196deee8365ae1ad97abeaeb1e0934259e7",
+                "verify_decoded_facts": true,
+                "sha256": "3915980b5a6bb3bbdb92a31a410c8b4ad9bcbde0efeb3d65726e08c2f69d60aa",
+                "z_offset": -2,
+                "source_path": "game/tools/shared_workbench_geometry.gd",
+                "review_path": "dev/SHARED_WORKBENCH_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared north layout."
+              },
+              {
+                "layer": "rear_structure",
+                "source_layer": "rear_structure",
+                "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/north-rear_structure.png",
+                "canvas_size_px": [
+                  256,
+                  304
+                ],
+                "floor_anchor_px": [
+                  128,
+                  208
+                ],
+                "opaque_bounds_px": [
+                  51,
+                  154,
+                  154,
+                  41
+                ],
+                "opaque_pixels": 5090,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 7,
+                "decoded_rgba_sha256": "9119d578e6f346d9b403bb405178429c46f611dd5223d9a742d48e9785c8709b",
+                "verify_decoded_facts": true,
+                "sha256": "16bcee085f80132747d36f34d18e348c6503d50d45e5558a4a97e018dbb0610e",
+                "z_offset": -1,
+                "source_path": "game/tools/shared_workbench_geometry.gd",
+                "review_path": "dev/SHARED_WORKBENCH_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared north layout."
+              },
+              {
+                "layer": "front_structure",
+                "source_layer": "front_structure",
+                "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/north-front_structure.png",
+                "canvas_size_px": [
+                  256,
+                  304
+                ],
+                "floor_anchor_px": [
+                  128,
+                  208
+                ],
+                "opaque_bounds_px": [
+                  51,
+                  186,
+                  154,
+                  38
+                ],
+                "opaque_pixels": 1908,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 5,
+                "decoded_rgba_sha256": "7bada533d3fd79461a809774e7f9ff0c5a661749db10a6c104672d257352fd63",
+                "verify_decoded_facts": true,
+                "sha256": "4c9349c1fc5b667ae07b6250ca22457f25294dc082db62927dbaeee42c0b8b46",
+                "z_offset": 1,
+                "source_path": "game/tools/shared_workbench_geometry.gd",
+                "review_path": "dev/SHARED_WORKBENCH_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared north layout."
+              }
+            ],
+            "composite_exports": [
+              {
+                "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/north-whole.png",
+                "canvas_size_px": [
+                  256,
+                  304
+                ],
+                "floor_anchor_px": [
+                  128,
+                  208
+                ],
+                "opaque_bounds_px": [
+                  51,
+                  154,
+                  154,
+                  70
+                ],
+                "opaque_pixels": 7682,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 7,
+                "decoded_rgba_sha256": "6ea07545226bf5a4664f0761a12a11b1097ad023fed9ee3254f8ab8ed317f740",
+                "verify_decoded_facts": true,
+                "sha256": "eb3021d3b417a1b9f5511aa580e7b7138ff2d5df9bb63fcf271f8481608f767a",
+                "method": "Byte-exact ordered union of the three registered native base layers."
+              }
+            ],
+            "review": {
+              "geometry_reviewed": true,
+              "placement_tests_passed": true,
+              "actor_pose_reviewed": false,
+              "native_geometry_tests_passed": true,
+              "actual_room_tests_passed": true,
+              "mean_score": 2.17,
+              "scores": {
+                "pixel_coherence": 2,
+                "perspective": 2,
+                "silhouette_readability": 2,
+                "layering_anchors": 3,
+                "direction_consistency": 2,
+                "placement": 2
+              },
+              "note": "Cleanup-only base gate: mean 2.17/3. Actual-room placement, five-cell collision, wall/corner safety, alpha picking and both bay routes pass; paired chair/device/role overlays, the two-actor seated/work/exit lifecycle and narrow-side/shadow art acceptance remain unreviewed."
+            }
+          }
+        },
+        {
+          "facing": "east",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/east-whole.png",
+          "evidence_path": "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-actual-room-base-native.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            1,
+            5
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              2
+            ]
+          ],
+          "employee_look_vector": [
+            1,
+            0
+          ],
+          "proposed_interaction_cell": [
+            -1,
+            0
+          ],
+          "seated_pose_needed": false,
+          "redraw_requirement": "Preserve this independent screen-axis projection and exact base-layer depth order. Do not rotate, mirror, flip, rescale or derive the complete bitmap from another facing.",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "preview_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/east-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/east-whole.png",
+          "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/shared-workbench-v2/manifest.json",
+            "game/tests/output/base-furniture-review-2026-09-06/export-results.json",
+            "game/tests/output/base-furniture-review-2026-09-06/actual-room-results.json",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-after-v2-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-before-after-4x.png",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-actual-room-base-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-actual-room-actor-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-actual-room-actor-4x.png",
+            "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved at the minimum threshold as a reusable passive two-bay base after the dominant checker shadow was replaced by bounded contact marks. Bare East/West ambiguity and all paired attachments/lifecycle remain separate work. This approval is passive base-art only; no runtime/default-layout binding or workstation capability is implied.",
+          "export_method": "Versioned deterministic typed-GDScript screen-axis base. shared-workbench-v2 retains rear/front structure byte-identical to v1 and replaces only floor_shadow with authored contact marks; no generated source, raster rotation, mirror, scale, baked attachment, actor, text or logo.",
+          "validated_candidate_profile": {
+            "catalogue_status": "cleanup_required",
+            "fixture_profile_status": "calibration_candidate",
+            "fixture_profile_status_note": "The disposable fixture profile proves passive descriptor completeness only; it is not production registration or workstation capability.",
+            "profile_kind": "decorative",
+            "asset_revision": "shared-workbench-v1",
+            "occupied_cell_offsets": [
+              [
+                0,
+                -2
+              ],
+              [
+                0,
+                -1
+              ],
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ],
+              [
+                0,
+                2
+              ]
+            ],
+            "clearance_cell_offsets": [
+              [
+                -1,
+                -1
+              ],
+              [
+                -1,
+                0
+              ],
+              [
+                -1,
+                1
+              ]
+            ],
+            "proposed_work_cell_offsets": [
+              [
+                -1,
+                -1
+              ],
+              [
+                -1,
+                1
+              ]
+            ],
+            "interaction_cell": [
+              -1,
+              0
+            ],
+            "employee_look_vector": [
+              1,
+              0
+            ],
+            "floor_plane": [
+              -16,
+              -80,
+              32,
+              160
+            ],
+            "top_plane": [
+              -14,
+              -77,
+              28,
+              154
+            ],
+            "contact_boundary_y": 80,
+            "overlay_contract": {
+              "chair_a": {
+                "adds_base_collision": false,
+                "cell": [
+                  -1,
+                  -1
+                ],
+                "included_in_base": false,
+                "owner_family": "ergonomic_chair"
+              },
+              "chair_b": {
+                "adds_base_collision": false,
+                "cell": [
+                  -1,
+                  1
+                ],
+                "included_in_base": false,
+                "owner_family": "ergonomic_chair"
+              },
+              "device_a": {
+                "adds_base_collision": false,
+                "included_in_base": false,
+                "owner_family": "computer_kit",
+                "surface_zone": [
+                  -8,
+                  -69,
+                  18,
+                  40
+                ]
+              },
+              "device_b": {
+                "adds_base_collision": false,
+                "included_in_base": false,
+                "owner_family": "computer_kit",
+                "surface_zone": [
+                  -8,
+                  7,
+                  18,
+                  40
+                ]
+              },
+              "role_a": {
+                "adds_base_collision": false,
+                "included_in_base": false,
+                "owner_family": "role_tool_kits",
+                "surface_zone": [
+                  -7,
+                  -25,
+                  16,
+                  18
+                ]
+              },
+              "role_b": {
+                "adds_base_collision": false,
+                "included_in_base": false,
+                "owner_family": "role_tool_kits",
+                "surface_zone": [
+                  -7,
+                  51,
+                  16,
+                  18
+                ]
+              }
+            },
+            "collision_cell_count": 5,
+            "render_layer_count": 3,
+            "runtime_registered": false
+          },
+          "native_exports": [
+            {
+              "layer": "floor_shadow",
+              "source_layer": "floor_shadow",
+              "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/east-floor_shadow.png",
+              "canvas_size_px": [
+                256,
+                304
+              ],
+              "floor_anchor_px": [
+                128,
+                208
+              ],
+              "opaque_bounds_px": [
+                140,
+                139,
+                4,
+                149
+              ],
+              "opaque_pixels": 36,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 1,
+              "decoded_rgba_sha256": "b2b67734b6b4833b50815706f7d8d9c01faa165ef90a8bba687bf799ed2a6132",
+              "verify_decoded_facts": true,
+              "sha256": "2c221f6fb0f7c241ebd579ff88b69fbc113aaea065ee60205761859da43ba849",
+              "z_offset": -2,
+              "source_path": "game/tools/base_furniture_review_v2.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Exact code-native east contact-shadow revision; fixed upper-left light, binary alpha, zero hidden RGB, shared canvas/pivot, no finished-raster transform."
+            },
+            {
+              "layer": "rear_structure",
+              "source_layer": "rear_structure",
+              "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/east-rear_structure.png",
+              "canvas_size_px": [
+                256,
+                304
+              ],
+              "floor_anchor_px": [
+                128,
+                208
+              ],
+              "opaque_bounds_px": [
+                114,
+                131,
+                28,
+                154
+              ],
+              "opaque_pixels": 4312,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 6,
+              "decoded_rgba_sha256": "891d193388f713cb0be69d3d9be10f0503d277f40e396ff22f3a007771e2aaed",
+              "verify_decoded_facts": true,
+              "sha256": "8229ac842726bff7f83d100305fdcfc980948ec5add92d83ff23ccc24c10f277",
+              "z_offset": -1,
+              "source_path": "game/tools/shared_workbench_geometry.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Byte-identical east v1 structure layer retained inside the versioned v2 base bundle."
+            },
+            {
+              "layer": "front_structure",
+              "source_layer": "front_structure",
+              "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/east-front_structure.png",
+              "canvas_size_px": [
+                256,
+                304
+              ],
+              "floor_anchor_px": [
+                128,
+                208
+              ],
+              "opaque_bounds_px": [
+                133,
+                131,
+                9,
+                157
+              ],
+              "opaque_pixels": 882,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 5,
+              "decoded_rgba_sha256": "c1cee4cea2bdd63da837c392f32f18286dd114229ad27b7c4c47eea39c8fda4d",
+              "verify_decoded_facts": true,
+              "sha256": "3f8fbcc58627247e9f7021041418ba58056dc69d4d464bd558099fd3339c918a",
+              "z_offset": 1,
+              "source_path": "game/tools/shared_workbench_geometry.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Byte-identical east v1 structure layer retained inside the versioned v2 base bundle."
+            }
+          ],
+          "composite_exports": [
+            {
+              "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/east-whole.png",
+              "canvas_size_px": [
+                256,
+                304
+              ],
+              "floor_anchor_px": [
+                128,
+                208
+              ],
+              "opaque_bounds_px": [
+                114,
+                131,
+                30,
+                157
+              ],
+              "opaque_pixels": 4362,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 7,
+              "decoded_rgba_sha256": "8371af5c45d02373904ec21e0eb71402e07112e9dc4f707b75f56400038632e6",
+              "verify_decoded_facts": true,
+              "sha256": "6bda2baba9daa5efa20aba6224919309abd65018d5e85c3dc3a53d5409472c8b",
+              "method": "Byte-exact ordered union of the three registered v2 native base layers."
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "mean_score": 2.5,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 2,
+              "silhouette_readability": 2,
+              "layering_anchors": 3,
+              "direction_consistency": 2,
+              "placement": 3
+            },
+            "note": "Approved at the minimum threshold as a reusable passive two-bay base after the dominant checker shadow was replaced by bounded contact marks. Bare East/West ambiguity and all paired attachments/lifecycle remain separate work. Founder evidence is scale/occlusion only and does not approve an assembled workstation.",
+            "acceptance_scope": "passive_base_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "historical_v1": {
+            "revision": "shared-workbench-v1",
+            "status": "cleanup_required",
+            "deliverable_availability": "native_export",
+            "preview_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/east-whole.png",
+            "native_export_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/east-whole.png",
+            "review_path": "dev/SHARED_WORKBENCH_NATIVE_REVIEW.md",
+            "evidence_path": "game/tests/output/shared-workbench/actual-room-approach-contact-sheet-native.png",
+            "evidence_paths": [
+              "game/tests/fixtures/furniture-calibration/shared-workbench-v1/manifest.json",
+              "game/tests/output/shared-workbench/structural-results.json",
+              "game/tests/output/shared-workbench/actual-room-results.json",
+              "game/tests/output/shared-workbench/candidate-contact-sheet-native.png",
+              "game/tests/output/shared-workbench/candidate-layers-native.png",
+              "game/tests/output/shared-workbench/actual-room-base-contact-sheet-native.png",
+              "game/tests/output/shared-workbench/actual-room-approach-contact-sheet-4x.png",
+              "game/tests/output/shared-workbench/compact-workbench-prototype-native.png"
+            ],
+            "cleanup_blocker": "Paired ergonomic-chair, computer-kit and role-tool overlays are not fit or reviewed; two-actor reservation, simultaneous approach, seated/work/exit lifecycle and final narrow-side/shadow art review remain incomplete.",
+            "reason": "Deterministic code-native shared-workbench-v1 base candidate only: 51 export, 292 structural/admission and 462 actual GameMain/TownRoom checks pass with no failures. The base has exactly five collision cells, two proposed work bays and separate floor-shadow/rear/front layers, but its 2.17/3 visual score and standing-founder-only evidence do not establish paired chair/device/role fits, simultaneous two-actor reservation, seated/work/exit lifecycle or final narrow-side/shadow art acceptance. No generated source master, approval, runtime/default-layout binding, interaction, role behavior or transaction capability.",
+            "native_exports": [
+              {
+                "layer": "floor_shadow",
+                "source_layer": "floor_shadow",
+                "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/east-floor_shadow.png",
+                "canvas_size_px": [
+                  256,
+                  304
+                ],
+                "floor_anchor_px": [
+                  128,
+                  208
+                ],
+                "opaque_bounds_px": [
+                  113,
+                  132,
+                  30,
+                  152
+                ],
+                "opaque_pixels": 2332,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 1,
+                "decoded_rgba_sha256": "d8f603d9a5eb41316db98b916ec94f574de77ea695d26adc2b624bb8f5ae7e33",
+                "verify_decoded_facts": true,
+                "sha256": "b84e06fe8ce2127e7621a5e1bdc34f0142b9c322559583a6cc203ffdc8f23bf9",
+                "z_offset": -2,
+                "source_path": "game/tools/shared_workbench_geometry.gd",
+                "review_path": "dev/SHARED_WORKBENCH_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared east layout."
+              },
+              {
+                "layer": "rear_structure",
+                "source_layer": "rear_structure",
+                "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/east-rear_structure.png",
+                "canvas_size_px": [
+                  256,
+                  304
+                ],
+                "floor_anchor_px": [
+                  128,
+                  208
+                ],
+                "opaque_bounds_px": [
+                  114,
+                  131,
+                  28,
+                  154
+                ],
+                "opaque_pixels": 4312,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 6,
+                "decoded_rgba_sha256": "891d193388f713cb0be69d3d9be10f0503d277f40e396ff22f3a007771e2aaed",
+                "verify_decoded_facts": true,
+                "sha256": "8229ac842726bff7f83d100305fdcfc980948ec5add92d83ff23ccc24c10f277",
+                "z_offset": -1,
+                "source_path": "game/tools/shared_workbench_geometry.gd",
+                "review_path": "dev/SHARED_WORKBENCH_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared east layout."
+              },
+              {
+                "layer": "front_structure",
+                "source_layer": "front_structure",
+                "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/east-front_structure.png",
+                "canvas_size_px": [
+                  256,
+                  304
+                ],
+                "floor_anchor_px": [
+                  128,
+                  208
+                ],
+                "opaque_bounds_px": [
+                  133,
+                  131,
+                  9,
+                  157
+                ],
+                "opaque_pixels": 882,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 5,
+                "decoded_rgba_sha256": "c1cee4cea2bdd63da837c392f32f18286dd114229ad27b7c4c47eea39c8fda4d",
+                "verify_decoded_facts": true,
+                "sha256": "3f8fbcc58627247e9f7021041418ba58056dc69d4d464bd558099fd3339c918a",
+                "z_offset": 1,
+                "source_path": "game/tools/shared_workbench_geometry.gd",
+                "review_path": "dev/SHARED_WORKBENCH_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared east layout."
+              }
+            ],
+            "composite_exports": [
+              {
+                "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/east-whole.png",
+                "canvas_size_px": [
+                  256,
+                  304
+                ],
+                "floor_anchor_px": [
+                  128,
+                  208
+                ],
+                "opaque_bounds_px": [
+                  113,
+                  131,
+                  30,
+                  157
+                ],
+                "opaque_pixels": 4374,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 7,
+                "decoded_rgba_sha256": "18b3abf0e89e69f76b415dde6d3b8205a7b23eb0a6ce22ca75cebb543bc98f1a",
+                "verify_decoded_facts": true,
+                "sha256": "f997365fd941602b12288b4be8d83fb3c3ba7138f9babaa572918b6eab563a62",
+                "method": "Byte-exact ordered union of the three registered native base layers."
+              }
+            ],
+            "review": {
+              "geometry_reviewed": true,
+              "placement_tests_passed": true,
+              "actor_pose_reviewed": false,
+              "native_geometry_tests_passed": true,
+              "actual_room_tests_passed": true,
+              "mean_score": 2.17,
+              "scores": {
+                "pixel_coherence": 2,
+                "perspective": 2,
+                "silhouette_readability": 2,
+                "layering_anchors": 3,
+                "direction_consistency": 2,
+                "placement": 2
+              },
+              "note": "Cleanup-only base gate: mean 2.17/3. Actual-room placement, five-cell collision, wall/corner safety, alpha picking and both bay routes pass; paired chair/device/role overlays, the two-actor seated/work/exit lifecycle and narrow-side/shadow art acceptance remain unreviewed."
+            }
+          }
+        },
+        {
+          "facing": "south",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/south-whole.png",
+          "evidence_path": "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-actual-room-base-native.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            5,
+            1
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              2,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -2,
+              0
+            ]
+          ],
+          "employee_look_vector": [
+            0,
+            1
+          ],
+          "proposed_interaction_cell": [
+            0,
+            -1
+          ],
+          "seated_pose_needed": false,
+          "redraw_requirement": "Preserve this independent screen-axis projection and exact base-layer depth order. Do not rotate, mirror, flip, rescale or derive the complete bitmap from another facing.",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "preview_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/south-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/south-whole.png",
+          "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/shared-workbench-v2/manifest.json",
+            "game/tests/output/base-furniture-review-2026-09-06/export-results.json",
+            "game/tests/output/base-furniture-review-2026-09-06/actual-room-results.json",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-after-v2-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-before-after-4x.png",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-actual-room-base-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-actual-room-actor-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-actual-room-actor-4x.png",
+            "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved at the minimum threshold as a reusable passive two-bay base after the dominant checker shadow was replaced by bounded contact marks. Bare East/West ambiguity and all paired attachments/lifecycle remain separate work. This approval is passive base-art only; no runtime/default-layout binding or workstation capability is implied.",
+          "export_method": "Versioned deterministic typed-GDScript screen-axis base. shared-workbench-v2 retains rear/front structure byte-identical to v1 and replaces only floor_shadow with authored contact marks; no generated source, raster rotation, mirror, scale, baked attachment, actor, text or logo.",
+          "validated_candidate_profile": {
+            "catalogue_status": "cleanup_required",
+            "fixture_profile_status": "calibration_candidate",
+            "fixture_profile_status_note": "The disposable fixture profile proves passive descriptor completeness only; it is not production registration or workstation capability.",
+            "profile_kind": "decorative",
+            "asset_revision": "shared-workbench-v1",
+            "occupied_cell_offsets": [
+              [
+                2,
+                0
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ],
+              [
+                -1,
+                0
+              ],
+              [
+                -2,
+                0
+              ]
+            ],
+            "clearance_cell_offsets": [
+              [
+                1,
+                -1
+              ],
+              [
+                0,
+                -1
+              ],
+              [
+                -1,
+                -1
+              ]
+            ],
+            "proposed_work_cell_offsets": [
+              [
+                1,
+                -1
+              ],
+              [
+                -1,
+                -1
+              ]
+            ],
+            "interaction_cell": [
+              0,
+              -1
+            ],
+            "employee_look_vector": [
+              0,
+              1
+            ],
+            "floor_plane": [
+              -80,
+              -16,
+              160,
+              32
+            ],
+            "top_plane": [
+              -77,
+              -54,
+              154,
+              32
+            ],
+            "contact_boundary_y": 16,
+            "overlay_contract": {
+              "chair_a": {
+                "adds_base_collision": false,
+                "cell": [
+                  1,
+                  -1
+                ],
+                "included_in_base": false,
+                "owner_family": "ergonomic_chair"
+              },
+              "chair_b": {
+                "adds_base_collision": false,
+                "cell": [
+                  -1,
+                  -1
+                ],
+                "included_in_base": false,
+                "owner_family": "ergonomic_chair"
+              },
+              "device_a": {
+                "adds_base_collision": false,
+                "included_in_base": false,
+                "owner_family": "computer_kit",
+                "surface_zone": [
+                  -69,
+                  -48,
+                  40,
+                  18
+                ]
+              },
+              "device_b": {
+                "adds_base_collision": false,
+                "included_in_base": false,
+                "owner_family": "computer_kit",
+                "surface_zone": [
+                  7,
+                  -48,
+                  40,
+                  18
+                ]
+              },
+              "role_a": {
+                "adds_base_collision": false,
+                "included_in_base": false,
+                "owner_family": "role_tool_kits",
+                "surface_zone": [
+                  -25,
+                  -47,
+                  18,
+                  16
+                ]
+              },
+              "role_b": {
+                "adds_base_collision": false,
+                "included_in_base": false,
+                "owner_family": "role_tool_kits",
+                "surface_zone": [
+                  51,
+                  -47,
+                  18,
+                  16
+                ]
+              }
+            },
+            "collision_cell_count": 5,
+            "render_layer_count": 3,
+            "runtime_registered": false
+          },
+          "native_exports": [
+            {
+              "layer": "floor_shadow",
+              "source_layer": "floor_shadow",
+              "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/south-floor_shadow.png",
+              "canvas_size_px": [
+                256,
+                304
+              ],
+              "floor_anchor_px": [
+                128,
+                208
+              ],
+              "opaque_bounds_px": [
+                64,
+                221,
+                140,
+                3
+              ],
+              "opaque_pixels": 60,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 1,
+              "decoded_rgba_sha256": "2a4c6c05fac4cac48fe0bc4057098a820cee6af834cb5ce9568bfcd4d35ef092",
+              "verify_decoded_facts": true,
+              "sha256": "d50d4cfbc52c5aa2e5bc5f43dc263fa5ef156a7356995741a9c3514a8174e9f7",
+              "z_offset": -2,
+              "source_path": "game/tools/base_furniture_review_v2.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Exact code-native south contact-shadow revision; fixed upper-left light, binary alpha, zero hidden RGB, shared canvas/pivot, no finished-raster transform."
+            },
+            {
+              "layer": "rear_structure",
+              "source_layer": "rear_structure",
+              "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/south-rear_structure.png",
+              "canvas_size_px": [
+                256,
+                304
+              ],
+              "floor_anchor_px": [
+                128,
+                208
+              ],
+              "opaque_bounds_px": [
+                59,
+                158,
+                138,
+                45
+              ],
+              "opaque_pixels": 1362,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 3,
+              "decoded_rgba_sha256": "2f68f024242951fa2450ea1d443161f37e9a854704584173befdedf333a91a51",
+              "verify_decoded_facts": true,
+              "sha256": "02c220c128640557fe98a8183e30cb9e3750f01c5736ce40f48add08de0edeff",
+              "z_offset": -1,
+              "source_path": "game/tools/shared_workbench_geometry.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Byte-identical south v1 structure layer retained inside the versioned v2 base bundle."
+            },
+            {
+              "layer": "front_structure",
+              "source_layer": "front_structure",
+              "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/south-front_structure.png",
+              "canvas_size_px": [
+                256,
+                304
+              ],
+              "floor_anchor_px": [
+                128,
+                208
+              ],
+              "opaque_bounds_px": [
+                51,
+                154,
+                154,
+                70
+              ],
+              "opaque_pixels": 6836,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 6,
+              "decoded_rgba_sha256": "9d7090dc1bc9032023057c573678aebfbe1a156f8a8f1d0ed7df4d323cd46d5d",
+              "verify_decoded_facts": true,
+              "sha256": "aa9603a2b0dce919931ec5297f83ca2927612d5d6bdb765221c40c6c4e2df13b",
+              "z_offset": 1,
+              "source_path": "game/tools/shared_workbench_geometry.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Byte-identical south v1 structure layer retained inside the versioned v2 base bundle."
+            }
+          ],
+          "composite_exports": [
+            {
+              "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/south-whole.png",
+              "canvas_size_px": [
+                256,
+                304
+              ],
+              "floor_anchor_px": [
+                128,
+                208
+              ],
+              "opaque_bounds_px": [
+                51,
+                154,
+                154,
+                70
+              ],
+              "opaque_pixels": 6965,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 8,
+              "decoded_rgba_sha256": "4767bc0ab02f3bc6c0aecaed4a81370e1b838325489de54671e593a8e1c19ee4",
+              "verify_decoded_facts": true,
+              "sha256": "c011c3485f5d0d2f71b40c2d47ed5fb63676740a8d8538e8555835a273eff7f4",
+              "method": "Byte-exact ordered union of the three registered v2 native base layers."
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "mean_score": 2.5,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 2,
+              "silhouette_readability": 2,
+              "layering_anchors": 3,
+              "direction_consistency": 2,
+              "placement": 3
+            },
+            "note": "Approved at the minimum threshold as a reusable passive two-bay base after the dominant checker shadow was replaced by bounded contact marks. Bare East/West ambiguity and all paired attachments/lifecycle remain separate work. Founder evidence is scale/occlusion only and does not approve an assembled workstation.",
+            "acceptance_scope": "passive_base_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "historical_v1": {
+            "revision": "shared-workbench-v1",
+            "status": "cleanup_required",
+            "deliverable_availability": "native_export",
+            "preview_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/south-whole.png",
+            "native_export_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/south-whole.png",
+            "review_path": "dev/SHARED_WORKBENCH_NATIVE_REVIEW.md",
+            "evidence_path": "game/tests/output/shared-workbench/actual-room-approach-contact-sheet-native.png",
+            "evidence_paths": [
+              "game/tests/fixtures/furniture-calibration/shared-workbench-v1/manifest.json",
+              "game/tests/output/shared-workbench/structural-results.json",
+              "game/tests/output/shared-workbench/actual-room-results.json",
+              "game/tests/output/shared-workbench/candidate-contact-sheet-native.png",
+              "game/tests/output/shared-workbench/candidate-layers-native.png",
+              "game/tests/output/shared-workbench/actual-room-base-contact-sheet-native.png",
+              "game/tests/output/shared-workbench/actual-room-approach-contact-sheet-4x.png",
+              "game/tests/output/shared-workbench/compact-workbench-prototype-native.png"
+            ],
+            "cleanup_blocker": "Paired ergonomic-chair, computer-kit and role-tool overlays are not fit or reviewed; two-actor reservation, simultaneous approach, seated/work/exit lifecycle and final narrow-side/shadow art review remain incomplete.",
+            "reason": "Deterministic code-native shared-workbench-v1 base candidate only: 51 export, 292 structural/admission and 462 actual GameMain/TownRoom checks pass with no failures. The base has exactly five collision cells, two proposed work bays and separate floor-shadow/rear/front layers, but its 2.17/3 visual score and standing-founder-only evidence do not establish paired chair/device/role fits, simultaneous two-actor reservation, seated/work/exit lifecycle or final narrow-side/shadow art acceptance. No generated source master, approval, runtime/default-layout binding, interaction, role behavior or transaction capability.",
+            "native_exports": [
+              {
+                "layer": "floor_shadow",
+                "source_layer": "floor_shadow",
+                "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/south-floor_shadow.png",
+                "canvas_size_px": [
+                  256,
+                  304
+                ],
+                "floor_anchor_px": [
+                  128,
+                  208
+                ],
+                "opaque_bounds_px": [
+                  52,
+                  202,
+                  152,
+                  12
+                ],
+                "opaque_pixels": 932,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 1,
+                "decoded_rgba_sha256": "616017b8e601f4d000d5458d26081196deee8365ae1ad97abeaeb1e0934259e7",
+                "verify_decoded_facts": true,
+                "sha256": "3915980b5a6bb3bbdb92a31a410c8b4ad9bcbde0efeb3d65726e08c2f69d60aa",
+                "z_offset": -2,
+                "source_path": "game/tools/shared_workbench_geometry.gd",
+                "review_path": "dev/SHARED_WORKBENCH_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared south layout."
+              },
+              {
+                "layer": "rear_structure",
+                "source_layer": "rear_structure",
+                "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/south-rear_structure.png",
+                "canvas_size_px": [
+                  256,
+                  304
+                ],
+                "floor_anchor_px": [
+                  128,
+                  208
+                ],
+                "opaque_bounds_px": [
+                  59,
+                  158,
+                  138,
+                  45
+                ],
+                "opaque_pixels": 1362,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 3,
+                "decoded_rgba_sha256": "2f68f024242951fa2450ea1d443161f37e9a854704584173befdedf333a91a51",
+                "verify_decoded_facts": true,
+                "sha256": "02c220c128640557fe98a8183e30cb9e3750f01c5736ce40f48add08de0edeff",
+                "z_offset": -1,
+                "source_path": "game/tools/shared_workbench_geometry.gd",
+                "review_path": "dev/SHARED_WORKBENCH_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared south layout."
+              },
+              {
+                "layer": "front_structure",
+                "source_layer": "front_structure",
+                "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/south-front_structure.png",
+                "canvas_size_px": [
+                  256,
+                  304
+                ],
+                "floor_anchor_px": [
+                  128,
+                  208
+                ],
+                "opaque_bounds_px": [
+                  51,
+                  154,
+                  154,
+                  70
+                ],
+                "opaque_pixels": 6836,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 6,
+                "decoded_rgba_sha256": "9d7090dc1bc9032023057c573678aebfbe1a156f8a8f1d0ed7df4d323cd46d5d",
+                "verify_decoded_facts": true,
+                "sha256": "aa9603a2b0dce919931ec5297f83ca2927612d5d6bdb765221c40c6c4e2df13b",
+                "z_offset": 1,
+                "source_path": "game/tools/shared_workbench_geometry.gd",
+                "review_path": "dev/SHARED_WORKBENCH_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared south layout."
+              }
+            ],
+            "composite_exports": [
+              {
+                "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/south-whole.png",
+                "canvas_size_px": [
+                  256,
+                  304
+                ],
+                "floor_anchor_px": [
+                  128,
+                  208
+                ],
+                "opaque_bounds_px": [
+                  51,
+                  154,
+                  154,
+                  70
+                ],
+                "opaque_pixels": 7741,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 8,
+                "decoded_rgba_sha256": "67f68c7a8ba65efbca42a2f66d807a61449adfefe6533a9a95bea5ca417fecfe",
+                "verify_decoded_facts": true,
+                "sha256": "ad10bd6f1d94abdc2ae9fa7bbe1d65cd7296f8d9312db259c47892638eb26bc1",
+                "method": "Byte-exact ordered union of the three registered native base layers."
+              }
+            ],
+            "review": {
+              "geometry_reviewed": true,
+              "placement_tests_passed": true,
+              "actor_pose_reviewed": false,
+              "native_geometry_tests_passed": true,
+              "actual_room_tests_passed": true,
+              "mean_score": 2.17,
+              "scores": {
+                "pixel_coherence": 2,
+                "perspective": 2,
+                "silhouette_readability": 2,
+                "layering_anchors": 3,
+                "direction_consistency": 2,
+                "placement": 2
+              },
+              "note": "Cleanup-only base gate: mean 2.17/3. Actual-room placement, five-cell collision, wall/corner safety, alpha picking and both bay routes pass; paired chair/device/role overlays, the two-actor seated/work/exit lifecycle and narrow-side/shadow art acceptance remain unreviewed."
+            }
+          }
+        },
+        {
+          "facing": "west",
+          "status": "approved",
+          "deliverable_availability": "approved",
+          "approved_art_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/west-whole.png",
+          "evidence_path": "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-actual-room-base-native.png",
+          "source_reference_path": null,
+          "legacy_runtime_art_for_this_facing": false,
+          "footprint_cells": [
+            1,
+            5
+          ],
+          "proposed_occupied_cell_offsets": [
+            [
+              0,
+              2
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              -2
+            ]
+          ],
+          "employee_look_vector": [
+            -1,
+            0
+          ],
+          "proposed_interaction_cell": [
+            1,
+            0
+          ],
+          "seated_pose_needed": false,
+          "redraw_requirement": "Preserve this independent screen-axis projection and exact base-layer depth order. Do not rotate, mirror, flip, rescale or derive the complete bitmap from another facing.",
+          "runtime_art_path": null,
+          "runtime_evidence_path": null,
+          "preview_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/west-whole.png",
+          "native_export_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/west-whole.png",
+          "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+          "evidence_paths": [
+            "game/tests/fixtures/furniture-calibration/shared-workbench-v2/manifest.json",
+            "game/tests/output/base-furniture-review-2026-09-06/export-results.json",
+            "game/tests/output/base-furniture-review-2026-09-06/actual-room-results.json",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-after-v2-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-before-after-4x.png",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-actual-room-base-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-actual-room-actor-native.png",
+            "game/tests/output/base-furniture-review-2026-09-06/shared_workbench-actual-room-actor-4x.png",
+            "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md"
+          ],
+          "reason": "Approved at the minimum threshold as a reusable passive two-bay base after the dominant checker shadow was replaced by bounded contact marks. Bare East/West ambiguity and all paired attachments/lifecycle remain separate work. This approval is passive base-art only; no runtime/default-layout binding or workstation capability is implied.",
+          "export_method": "Versioned deterministic typed-GDScript screen-axis base. shared-workbench-v2 retains rear/front structure byte-identical to v1 and replaces only floor_shadow with authored contact marks; no generated source, raster rotation, mirror, scale, baked attachment, actor, text or logo.",
+          "validated_candidate_profile": {
+            "catalogue_status": "cleanup_required",
+            "fixture_profile_status": "calibration_candidate",
+            "fixture_profile_status_note": "The disposable fixture profile proves passive descriptor completeness only; it is not production registration or workstation capability.",
+            "profile_kind": "decorative",
+            "asset_revision": "shared-workbench-v1",
+            "occupied_cell_offsets": [
+              [
+                0,
+                2
+              ],
+              [
+                0,
+                1
+              ],
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                -1
+              ],
+              [
+                0,
+                -2
+              ]
+            ],
+            "clearance_cell_offsets": [
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                1,
+                -1
+              ]
+            ],
+            "proposed_work_cell_offsets": [
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                -1
+              ]
+            ],
+            "interaction_cell": [
+              1,
+              0
+            ],
+            "employee_look_vector": [
+              -1,
+              0
+            ],
+            "floor_plane": [
+              -16,
+              -80,
+              32,
+              160
+            ],
+            "top_plane": [
+              -14,
+              -77,
+              28,
+              154
+            ],
+            "contact_boundary_y": 80,
+            "overlay_contract": {
+              "chair_a": {
+                "adds_base_collision": false,
+                "cell": [
+                  1,
+                  1
+                ],
+                "included_in_base": false,
+                "owner_family": "ergonomic_chair"
+              },
+              "chair_b": {
+                "adds_base_collision": false,
+                "cell": [
+                  1,
+                  -1
+                ],
+                "included_in_base": false,
+                "owner_family": "ergonomic_chair"
+              },
+              "device_a": {
+                "adds_base_collision": false,
+                "included_in_base": false,
+                "owner_family": "computer_kit",
+                "surface_zone": [
+                  -8,
+                  -69,
+                  18,
+                  40
+                ]
+              },
+              "device_b": {
+                "adds_base_collision": false,
+                "included_in_base": false,
+                "owner_family": "computer_kit",
+                "surface_zone": [
+                  -8,
+                  7,
+                  18,
+                  40
+                ]
+              },
+              "role_a": {
+                "adds_base_collision": false,
+                "included_in_base": false,
+                "owner_family": "role_tool_kits",
+                "surface_zone": [
+                  -7,
+                  -25,
+                  16,
+                  18
+                ]
+              },
+              "role_b": {
+                "adds_base_collision": false,
+                "included_in_base": false,
+                "owner_family": "role_tool_kits",
+                "surface_zone": [
+                  -7,
+                  51,
+                  16,
+                  18
+                ]
+              }
+            },
+            "collision_cell_count": 5,
+            "render_layer_count": 3,
+            "runtime_registered": false
+          },
+          "native_exports": [
+            {
+              "layer": "floor_shadow",
+              "source_layer": "floor_shadow",
+              "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/west-floor_shadow.png",
+              "canvas_size_px": [
+                256,
+                304
+              ],
+              "floor_anchor_px": [
+                128,
+                208
+              ],
+              "opaque_bounds_px": [
+                122,
+                141,
+                8,
+                147
+              ],
+              "opaque_pixels": 80,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 1,
+              "decoded_rgba_sha256": "7f81e8261ae9474bf613d70ff8023efe4a257ea350e80655be96e63fc9fdd690",
+              "verify_decoded_facts": true,
+              "sha256": "c37bd27a4b4e90c98777d0b175a5e44d3724edd7c567dd6166247889fe3f5644",
+              "z_offset": -2,
+              "source_path": "game/tools/base_furniture_review_v2.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Exact code-native west contact-shadow revision; fixed upper-left light, binary alpha, zero hidden RGB, shared canvas/pivot, no finished-raster transform."
+            },
+            {
+              "layer": "rear_structure",
+              "source_layer": "rear_structure",
+              "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/west-rear_structure.png",
+              "canvas_size_px": [
+                256,
+                304
+              ],
+              "floor_anchor_px": [
+                128,
+                208
+              ],
+              "opaque_bounds_px": [
+                114,
+                131,
+                28,
+                154
+              ],
+              "opaque_pixels": 4312,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 6,
+              "decoded_rgba_sha256": "891d193388f713cb0be69d3d9be10f0503d277f40e396ff22f3a007771e2aaed",
+              "verify_decoded_facts": true,
+              "sha256": "8229ac842726bff7f83d100305fdcfc980948ec5add92d83ff23ccc24c10f277",
+              "z_offset": -1,
+              "source_path": "game/tools/shared_workbench_geometry.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Byte-identical west v1 structure layer retained inside the versioned v2 base bundle."
+            },
+            {
+              "layer": "front_structure",
+              "source_layer": "front_structure",
+              "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/west-front_structure.png",
+              "canvas_size_px": [
+                256,
+                304
+              ],
+              "floor_anchor_px": [
+                128,
+                208
+              ],
+              "opaque_bounds_px": [
+                114,
+                131,
+                9,
+                157
+              ],
+              "opaque_pixels": 882,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 5,
+              "decoded_rgba_sha256": "a3cd1f030412cf9ca3ad596fffeb0a6f2de326ac7a89765b73075c5e6eaab602",
+              "verify_decoded_facts": true,
+              "sha256": "6863c141c3af230f5f1e44185cc3b55b461bc08b1d150b65ae40611ce4553753",
+              "z_offset": 1,
+              "source_path": "game/tools/shared_workbench_geometry.gd",
+              "review_path": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+              "method": "Byte-identical west v1 structure layer retained inside the versioned v2 base bundle."
+            }
+          ],
+          "composite_exports": [
+            {
+              "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/west-whole.png",
+              "canvas_size_px": [
+                256,
+                304
+              ],
+              "floor_anchor_px": [
+                128,
+                208
+              ],
+              "opaque_bounds_px": [
+                114,
+                131,
+                28,
+                157
+              ],
+              "opaque_pixels": 4355,
+              "partial_alpha_pixels": 0,
+              "hidden_rgb_pixels": 0,
+              "used_colors": 7,
+              "decoded_rgba_sha256": "2a29fcc3fed23ee7ab1c29b8ec1f983b6d5f55205736844e4975f8f2fbccd141",
+              "verify_decoded_facts": true,
+              "sha256": "8b8541fad71ea7e7f84dbd3b389e2eade2f1d47337902fbc4bdb44d426abb680",
+              "method": "Byte-exact ordered union of the three registered v2 native base layers."
+            }
+          ],
+          "review": {
+            "geometry_reviewed": true,
+            "placement_tests_passed": true,
+            "actor_pose_reviewed": false,
+            "native_geometry_tests_passed": true,
+            "actual_room_tests_passed": true,
+            "mean_score": 2.5,
+            "scores": {
+              "pixel_coherence": 3,
+              "perspective": 2,
+              "silhouette_readability": 2,
+              "layering_anchors": 3,
+              "direction_consistency": 2,
+              "placement": 3
+            },
+            "note": "Approved at the minimum threshold as a reusable passive two-bay base after the dominant checker shadow was replaced by bounded contact marks. Bare East/West ambiguity and all paired attachments/lifecycle remain separate work. Founder evidence is scale/occlusion only and does not approve an assembled workstation.",
+            "acceptance_scope": "passive_base_art_library",
+            "acceptance_date": "2026-09-06"
+          },
+          "historical_v1": {
+            "revision": "shared-workbench-v1",
+            "status": "cleanup_required",
+            "deliverable_availability": "native_export",
+            "preview_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/west-whole.png",
+            "native_export_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/west-whole.png",
+            "review_path": "dev/SHARED_WORKBENCH_NATIVE_REVIEW.md",
+            "evidence_path": "game/tests/output/shared-workbench/actual-room-approach-contact-sheet-native.png",
+            "evidence_paths": [
+              "game/tests/fixtures/furniture-calibration/shared-workbench-v1/manifest.json",
+              "game/tests/output/shared-workbench/structural-results.json",
+              "game/tests/output/shared-workbench/actual-room-results.json",
+              "game/tests/output/shared-workbench/candidate-contact-sheet-native.png",
+              "game/tests/output/shared-workbench/candidate-layers-native.png",
+              "game/tests/output/shared-workbench/actual-room-base-contact-sheet-native.png",
+              "game/tests/output/shared-workbench/actual-room-approach-contact-sheet-4x.png",
+              "game/tests/output/shared-workbench/compact-workbench-prototype-native.png"
+            ],
+            "cleanup_blocker": "Paired ergonomic-chair, computer-kit and role-tool overlays are not fit or reviewed; two-actor reservation, simultaneous approach, seated/work/exit lifecycle and final narrow-side/shadow art review remain incomplete.",
+            "reason": "Deterministic code-native shared-workbench-v1 base candidate only: 51 export, 292 structural/admission and 462 actual GameMain/TownRoom checks pass with no failures. The base has exactly five collision cells, two proposed work bays and separate floor-shadow/rear/front layers, but its 2.17/3 visual score and standing-founder-only evidence do not establish paired chair/device/role fits, simultaneous two-actor reservation, seated/work/exit lifecycle or final narrow-side/shadow art acceptance. No generated source master, approval, runtime/default-layout binding, interaction, role behavior or transaction capability.",
+            "native_exports": [
+              {
+                "layer": "floor_shadow",
+                "source_layer": "floor_shadow",
+                "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/west-floor_shadow.png",
+                "canvas_size_px": [
+                  256,
+                  304
+                ],
+                "floor_anchor_px": [
+                  128,
+                  208
+                ],
+                "opaque_bounds_px": [
+                  113,
+                  132,
+                  30,
+                  152
+                ],
+                "opaque_pixels": 2332,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 1,
+                "decoded_rgba_sha256": "d8f603d9a5eb41316db98b916ec94f574de77ea695d26adc2b624bb8f5ae7e33",
+                "verify_decoded_facts": true,
+                "sha256": "b84e06fe8ce2127e7621a5e1bdc34f0142b9c322559583a6cc203ffdc8f23bf9",
+                "z_offset": -2,
+                "source_path": "game/tools/shared_workbench_geometry.gd",
+                "review_path": "dev/SHARED_WORKBENCH_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared west layout."
+              },
+              {
+                "layer": "rear_structure",
+                "source_layer": "rear_structure",
+                "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/west-rear_structure.png",
+                "canvas_size_px": [
+                  256,
+                  304
+                ],
+                "floor_anchor_px": [
+                  128,
+                  208
+                ],
+                "opaque_bounds_px": [
+                  114,
+                  131,
+                  28,
+                  154
+                ],
+                "opaque_pixels": 4312,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 6,
+                "decoded_rgba_sha256": "891d193388f713cb0be69d3d9be10f0503d277f40e396ff22f3a007771e2aaed",
+                "verify_decoded_facts": true,
+                "sha256": "8229ac842726bff7f83d100305fdcfc980948ec5add92d83ff23ccc24c10f277",
+                "z_offset": -1,
+                "source_path": "game/tools/shared_workbench_geometry.gd",
+                "review_path": "dev/SHARED_WORKBENCH_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared west layout."
+              },
+              {
+                "layer": "front_structure",
+                "source_layer": "front_structure",
+                "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/west-front_structure.png",
+                "canvas_size_px": [
+                  256,
+                  304
+                ],
+                "floor_anchor_px": [
+                  128,
+                  208
+                ],
+                "opaque_bounds_px": [
+                  114,
+                  131,
+                  9,
+                  157
+                ],
+                "opaque_pixels": 882,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 5,
+                "decoded_rgba_sha256": "a3cd1f030412cf9ca3ad596fffeb0a6f2de326ac7a89765b73075c5e6eaab602",
+                "verify_decoded_facts": true,
+                "sha256": "6863c141c3af230f5f1e44185cc3b55b461bc08b1d150b65ae40611ce4553753",
+                "z_offset": 1,
+                "source_path": "game/tools/shared_workbench_geometry.gd",
+                "review_path": "dev/SHARED_WORKBENCH_NATIVE_REVIEW.md",
+                "method": "Exact code-native registered base layer; binary alpha, zero hidden RGB, shared canvas/pivot and independently declared west layout."
+              }
+            ],
+            "composite_exports": [
+              {
+                "path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/west-whole.png",
+                "canvas_size_px": [
+                  256,
+                  304
+                ],
+                "floor_anchor_px": [
+                  128,
+                  208
+                ],
+                "opaque_bounds_px": [
+                  113,
+                  131,
+                  30,
+                  157
+                ],
+                "opaque_pixels": 4374,
+                "partial_alpha_pixels": 0,
+                "hidden_rgb_pixels": 0,
+                "used_colors": 7,
+                "decoded_rgba_sha256": "f3bbb5b8afeff20ffae16f0b7ec5013e6be136c57ab9e32415ee63d1b66edab8",
+                "verify_decoded_facts": true,
+                "sha256": "3551b88edc381e3e0ef98b8dbb537f143a843330655d80f6f3846f0bfb099792",
+                "method": "Byte-exact ordered union of the three registered native base layers."
+              }
+            ],
+            "review": {
+              "geometry_reviewed": true,
+              "placement_tests_passed": true,
+              "actor_pose_reviewed": false,
+              "native_geometry_tests_passed": true,
+              "actual_room_tests_passed": true,
+              "mean_score": 2.17,
+              "scores": {
+                "pixel_coherence": 2,
+                "perspective": 2,
+                "silhouette_readability": 2,
+                "layering_anchors": 3,
+                "direction_consistency": 2,
+                "placement": 2
+              },
+              "note": "Cleanup-only base gate: mean 2.17/3. Actual-room placement, five-cell collision, wall/corner safety, alpha picking and both bay routes pass; paired chair/device/role overlays, the two-actor seated/work/exit lifecycle and narrow-side/shadow art acceptance remain unreviewed."
+            }
+          }
+        }
+      ],
+      "historical_v1_review": {
+        "revision": "shared-workbench-v1",
+        "production_status": "cleanup_required",
+        "current_availability": {
+          "status": "no_catalogue_runtime_binding",
+          "runtime_family_id": null,
+          "runtime_registered_facings": [],
+          "art_path": null,
+          "direction_art_review": "The deterministic code-native shared-workbench-v1 base supplies exact N/E/S/W floor-shadow, rear-structure, front-structure and whole exports at 256×304 with pivot [128,208]. Export, structural and actual GameMain/TownRoom checks pass, but the honest visual score is 2.17/3 and the family remains cleanup-required: paired chair/device/role overlays, two-actor shared-work lifecycle and final narrow-side/shadow art review remain incomplete. There is no approved art, runtime family, production/default-layout binding, interaction or role behavior."
+        },
+        "native_geometry": {
+          "status": "measured_code_native_cleanup_candidate_not_runtime_admission",
+          "canvas_size_px": [
+            256,
+            304
+          ],
+          "floor_anchor_px": [
+            128,
+            208
+          ],
+          "grid_size_px": 32,
+          "estimated_max_rise_above_occupied_floor_px": 112,
+          "minimum_transparent_padding_px": 16,
+          "anchor_rule": "One unchanged canvas coordinate represents local floor pivot [0,0] in every direction and every layer. Transparent padding is not sprite scaling.",
+          "candidate_revision": "shared-workbench-v1",
+          "sprite_offset_px": [
+            0,
+            -56
+          ],
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/shared-workbench-v1/manifest.json",
+          "structural_results_path": "game/tests/output/shared-workbench/structural-results.json",
+          "actual_room_results_path": "game/tests/output/shared-workbench/actual-room-results.json"
+        },
+        "layers": [
+          {
+            "id": "floor_shadow",
+            "required": true,
+            "same_canvas_and_floor_anchor": true,
+            "status": "cleanup_required"
+          },
+          {
+            "id": "rear_structure",
+            "required": true,
+            "same_canvas_and_floor_anchor": true,
+            "status": "cleanup_required"
+          },
+          {
+            "id": "front_structure",
+            "required": true,
+            "same_canvas_and_floor_anchor": true,
+            "status": "cleanup_required"
+          }
+        ],
+        "cleanup_blocker": "Paired ergonomic-chair, computer-kit and role-tool overlays are not fit or reviewed; two-actor reservation, simultaneous approach, seated/work/exit lifecycle and final narrow-side/shadow art review remain incomplete."
+      }
+    }
+  ]
+}

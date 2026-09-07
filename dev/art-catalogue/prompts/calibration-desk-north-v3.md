@@ -1,0 +1,9 @@
+# North desk — correct measured top plane, keep fixed-camera physical geometry
+
+The first image is a TECHNICAL GEOMETRY GUIDE; the second is the previous wooden desk's material identity. Redraw the same original Startup Valley empty desk, correcting its proportions to the guide exactly. The current north candidate has a top only24pixels deep and legs/rise too tall; that is incorrect for our32px square-floor grid.
+
+Final native model192×224 canvas withfloorpivot(96,160): a RECTANGULAR tabletop spans x48…143 and y112…143, exactly96pixels wide by32pixels screen-depth, no isometric slants, no perspective taper. Front rim is aroundy144…148. Two charcoal legs reach groundcontactrow175 (exclusivebottom176); verticalrise from near tabletop edge144 tofloor176 is32pixels. Respect the guide's ratios at any enlarged output size: TOP WIDTH:TOP DEPTH:GROUND RISE =3:1:1. Do not make a shallow24px desktop or long42px legs again. Guide canvas margins are technical padding; do not enlarge the desk to fill them.
+
+Facing is NORTH-using: worker sits below/on south side and looks north; this is an empty base with the underside support/cable tray appropriate to that side. Add restrained warm orange-brown wood grain to the plain guide surface and subtle charcoal structural details, keeping its exact screen-aligned rectangular geometry. Match the old candidate's material family, fixed upper-left light, crisp original pixel clusters, no smooth shading or tiny noise. No monitor, keyboard, chair, person, floor, room, wall, text, extra prop, cast-floor shadow or guide marks.
+
+Output the complete independently redrawn desk on TRUE TRANSPARENT RGBA with generous padding. Keep the guide's transparent space transparent; no checkerboard or matte. Exact proportions and usable alpha matter more than decorative detail. One north base only; no other views.

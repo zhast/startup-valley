@@ -1,0 +1,28 @@
+{
+	"base_layers": [
+		"floor_shadow",
+		"rear_structure",
+		"front_structure"
+	],
+	"canvas": [
+		256,
+		304
+	],
+	"checks": 292,
+	"clearance_cells_per_facing": 3,
+	"dev_catalogue_registered": false,
+	"failures": [],
+	"overlay_owners": [
+		"ergonomic_chair",
+		"computer_kit",
+		"role_tool_kits"
+	],
+	"pivot": [
+		128,
+		208
+	],
+	"production_catalogue_registered": false,
+	"runtime_registered": false,
+	"status": "native_review_candidate_not_runtime_registered",
+	"work_cells_per_facing": 2
+}

@@ -1,0 +1,2272 @@
+{
+  "id": "water_station",
+  "direction_semantics": "service_side",
+  "display_name": "Water and tea station",
+  "asset_kind": "furniture_base",
+  "base_vs_decor": "base",
+  "category": "shared",
+  "priority": "P2",
+  "production_status": "approved",
+  "role_tags": [
+    "shared"
+  ],
+  "role_tools": [
+    "water dispenser",
+    "tea kettle",
+    "cups"
+  ],
+  "design_brief": "A smaller shared-break alternative to coffee, not another large counter. V2 changes only the native reservoir silhouette rejected in v1. Base elevation, top-plane geometry, floor contact, canvas, pivot, masks and layers remain fixed.",
+  "gameplay_scope": "Art and future layout proposal only; no new hiring, role behavior, tool authority, transaction or interaction is implemented.",
+  "primary_host": null,
+  "current_availability": {
+    "status": "no_catalogue_runtime_binding",
+    "runtime_family_id": null,
+    "runtime_registered_facings": [],
+    "art_path": null,
+    "direction_art_review": "N/E/S/W water-station-v2 passive art passes the 2026-09-06 agent-native review. The rejected narrow-reservoir v1 remains preserved. V2 uses a supported broad stepped jug, exact footprint-derived top planes, separate contact geometry, fixed light, clean layers/anchors and actual GameMain wall/route/depth evidence. Approval is passive-library only; no water service, animation, production/runtime binding, default placement, interaction, hire, role pose or backend is claimed.",
+    "previous_catalogue_availability": {
+      "status": "no_catalogue_runtime_binding",
+      "runtime_family_id": null,
+      "runtime_registered_facings": [],
+      "art_path": null,
+      "direction_art_review": "No finished art or runtime family is claimed for this proposal; unrelated concept/source art may exist."
+    },
+    "candidate_status": "approved",
+    "candidate_revision": "water-station-v2",
+    "candidate_fixture_manifest_path": "game/tests/fixtures/furniture-calibration/water-station-v2/manifest.json",
+    "candidate_structural_results_path": "game/tests/output/water-station-v2/structural-results.json",
+    "candidate_actual_room_results_path": "game/tests/output/water-station-v2/actual-room-results.json",
+    "candidate_actual_room_evidence_path": "game/tests/output/water-station-v2/actual-room-approach-contact-sheet-native.png",
+    "candidate_review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+    "candidate_actor_probe": "founder_standing_scale_route_contact_and_depth_only",
+    "candidate_image_generation_used": false,
+    "candidate_runtime_registration": null,
+    "candidate_default_layout_binding": null,
+    "approved_candidate_art_path": null
+  },
+  "native_geometry": {
+    "status": "reviewed_code_native_library_not_runtime_admission",
+    "canvas_size_px": [
+      160,
+      240
+    ],
+    "floor_anchor_px": [
+      80,
+      176
+    ],
+    "grid_size_px": 32,
+    "estimated_max_rise_above_occupied_floor_px": 143,
+    "minimum_transparent_padding_px": 16,
+    "anchor_rule": "One unchanged canvas coordinate represents local floor pivot [0,0] in every direction and every layer. Transparent padding is not sprite scaling.",
+    "sprite_offset_px": [
+      0,
+      -56
+    ],
+    "candidate_revision": "water-station-v2",
+    "dimension_review": {
+      "authored_vertical_feature_rise_px": 80,
+      "east_west_top_plane_depth_px": 64,
+      "maximum_expected_projected_rise_px": 144,
+      "measured_base_elevation_px": 40,
+      "north_south_top_plane_depth_px": 32,
+      "planned_canvas_retained": [
+        160,
+        240
+      ],
+      "planned_floor_anchor_retained": [
+        80,
+        176
+      ],
+      "planned_vertical_feature_envelope_px": 112,
+      "revision": "Water v2 replaces only the rejected narrow reservoir with a supported broad stepped jug; base elevation, footprint top plane, contact geometry, canvas, pivot, scale and masks stay unchanged. ",
+      "observed_maximum_projected_rise_px": 143
+    },
+    "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/water-station-v2/manifest.json",
+    "fixture_manifest_sha256": "6430a2acc6fdad66636265c90563b48e3ea5d7a4e52ec0e396f31bba5819ae08",
+    "structural_results_path": "game/tests/output/water-station-v2/structural-results.json",
+    "structural_results_sha256": "319e6b0ca5f7973ff11b72ac119baa751ac8c56dfd8ca08a2dff0044867db57e",
+    "actual_room_results_path": "game/tests/output/water-station-v2/actual-room-results.json",
+    "actual_room_results_sha256": "534f78b85d3ad869678be4a903ca5a63af3e73d30ca5765367494d191d06d943",
+    "actual_room_evidence_path": "game/tests/output/water-station-v2/actual-room-approach-contact-sheet-native.png",
+    "isolated_invocation_path": "game/tests/output/passive-service-library/native-invocation-water-station.json",
+    "isolated_invocation_sha256": "35e6b550503415442b8b52adacd85ce0e9965818f8c22d9f497e7ea62ed4b9ec",
+    "aggregate_results_path": "game/tests/output/passive-service-library/actual-room-isolated-aggregate-results.json",
+    "aggregate_results_sha256": "829869c75e633b58228f46a72c8d18bbeda514a7ffba52f504096eca3b278ba4",
+    "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+    "source_paths": [
+      "game/tools/passive_service_library_geometry.gd",
+      "game/tools/export_passive_service_library.gd",
+      "game/tests/test_passive_service_library.gd",
+      "game/tools/capture_passive_service_library.gd",
+      "game/tests/aggregate_passive_service_library_native.gd"
+    ],
+    "layers_per_direction": [
+      "floor_shadow",
+      "rear_structure",
+      "front_structure"
+    ],
+    "collision_contract": {
+      "cells_per_direction": 2,
+      "north_south_footprint_cells": [
+        2,
+        1
+      ],
+      "east_west_footprint_cells": [
+        1,
+        2
+      ],
+      "actual_town_room_collision_shapes_per_direction": 2,
+      "masks_changed_from_plan": false
+    },
+    "top_plane_contract": "For each facing, top_plane_px is exactly floor_plane_px translated upward by one family-wide base elevation, with identical footprint width/depth; solid fronts reach floor contact and the open cart retains a measured transparent tray interval.",
+    "production_registration": null,
+    "default_layout_binding": null,
+    "image_generation_used_for_native_candidate": false
+  },
+  "layers": [
+    {
+      "id": "floor_shadow",
+      "required": true,
+      "same_canvas_and_floor_anchor": true,
+      "status": "approved",
+      "approved_revision": "water-station-v2"
+    },
+    {
+      "id": "rear_structure",
+      "required": true,
+      "same_canvas_and_floor_anchor": true,
+      "status": "approved",
+      "approved_revision": "water-station-v2"
+    },
+    {
+      "id": "front_structure",
+      "required": true,
+      "same_canvas_and_floor_anchor": true,
+      "status": "approved",
+      "approved_revision": "water-station-v2"
+    },
+    {
+      "id": "ambient_overlay",
+      "required": false,
+      "same_canvas_and_floor_anchor": true,
+      "status": "planned"
+    }
+  ],
+  "variants": [
+    {
+      "facing": "north",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/water-station-v2/north-whole.png",
+      "evidence_path": "game/tests/output/water-station-v2/actual-room-approach-contact-sheet-native.png",
+      "source_reference_path": "game/tools/passive_service_library_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        2,
+        1
+      ],
+      "proposed_occupied_cell_offsets": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "employee_look_vector": [
+        0,
+        1
+      ],
+      "proposed_interaction_cell": [
+        0,
+        -1
+      ],
+      "seated_pose_needed": false,
+      "redraw_requirement": "Draw the actual north service front; operator approaches that side looking south. Fixed screen floor axes and upper-left light; do not rotate or mirror finished raster art. No implemented interaction is implied.",
+      "service_side": "north",
+      "approach_gaze": "south",
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_evidence": null,
+      "runtime_exports": [],
+      "preview_path": "game/tests/fixtures/furniture-calibration/water-station-v2/north-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/water-station-v2/north-whole.png",
+      "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+      "review_paths": [
+        "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      ],
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/water-station-v2/manifest.json",
+        "game/tests/output/water-station-v2/structural-results.json",
+        "game/tests/output/water-station-v2/actual-room-results.json",
+        "game/tests/output/passive-service-library/native-invocation-water-station.json",
+        "game/tests/output/passive-service-library/actual-room-isolated-aggregate-results.json",
+        "game/tests/output/water-station-v2/candidate-contact-sheet-native.png",
+        "game/tests/output/water-station-v2/candidate-contact-sheet-4x.png",
+        "game/tests/output/water-station-v2/candidate-layers-native.png",
+        "game/tests/output/water-station-v2/actual-room-base-contact-sheet-native.png",
+        "game/tests/output/water-station-v2/actual-room-approach-contact-sheet-native.png",
+        "game/tests/output/water-station-v2/actual-room-approach-contact-sheet-4x.png",
+        "game/tests/output/water-station-v2/room-north.png",
+        "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      ],
+      "reason": "water-station-v2 north passes passive-library review at mean 2.50/minimum 2. supported broad stepped water jug, dispenser, kettle and cup station; actual GameMain records 1363 natural actor/prop overlap pixels with actor_behind_structure. The reservoir and opaque appliance sides are deliberately simple/flat; no translucent fluid, glow, flow animation or active water service is claimed.",
+      "export_method": "Independent deterministic typed-GDScript screen-axis geometry for water-station-v2 north; retained reviewed material tiles only, with zero image-generation calls and no finished-raster rotation, mirror, flip, scale, text, logo, fake metric or baked actor.",
+      "authored_clearance_cell_offsets": [
+        [
+          0,
+          -1
+        ]
+      ],
+      "camera_face_identity": "rear",
+      "role_identity": {
+        "camera_face": "reservoir_and_rear_cable",
+        "cups": 3,
+        "tea_kettle": true,
+        "water_dispenser": true
+      },
+      "native_geometry": {
+        "canvas_size_px": [
+          160,
+          240
+        ],
+        "floor_anchor_px": [
+          80,
+          176
+        ],
+        "sprite_offset_px": [
+          0,
+          -56
+        ],
+        "floor_plane_px": [
+          -16,
+          -16,
+          64,
+          32
+        ],
+        "top_plane_px": [
+          -16,
+          -56,
+          64,
+          32
+        ],
+        "camera_front_elevation_px": [
+          -16,
+          -24,
+          64,
+          40
+        ],
+        "contact_boundary_y": 16,
+        "base_elevation_px": 40,
+        "top_plane_depth_px": 32,
+        "base_projected_rise_px": 72,
+        "authored_vertical_feature_rise_px": 80,
+        "measured_whole_projected_rise_px": 111,
+        "base_solid_bounds_px": [
+          -16,
+          -56,
+          64,
+          72
+        ],
+        "whole_opaque_bounds_px": [
+          59,
+          81,
+          74,
+          111
+        ],
+        "whole_opaque_pixels": 5600,
+        "whole_partial_alpha_pixels": 0,
+        "whole_hidden_rgb_pixels": 0,
+        "whole_used_colors": 12,
+        "whole_sha256": "f0c1c8746c953a14ef600270556c82ed0f4947c0eb41eaf993a68052569175b2"
+      },
+      "native_exports": [
+        {
+          "layer": "floor_shadow",
+          "source_layer": "WaterStationV2NorthFloorShadow",
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v2/north-floor_shadow.png",
+          "canvas_size_px": [
+            160,
+            240
+          ],
+          "floor_anchor_px": [
+            80,
+            176
+          ],
+          "sprite_offset_px": [
+            0,
+            -56
+          ],
+          "opaque_bounds_px": [
+            59,
+            187,
+            74,
+            4
+          ],
+          "opaque_pixels": 30,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 1,
+          "sha256": "3dd018cb9af50be2d8ae36843cfd02f1a65ac70f3ee1f40c89f0a8f519994698",
+          "z_offset": -2,
+          "render_descriptor": {
+            "name": "WaterStationV2NorthFloorShadow",
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/north-floor_shadow.png",
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "offset": [
+              0,
+              -56
+            ],
+            "z_offset": -2
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/water-station-v2/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native north layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        },
+        {
+          "layer": "rear_structure",
+          "source_layer": "WaterStationV2NorthRearStructure",
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v2/north-rear_structure.png",
+          "canvas_size_px": [
+            160,
+            240
+          ],
+          "floor_anchor_px": [
+            80,
+            176
+          ],
+          "sprite_offset_px": [
+            0,
+            -56
+          ],
+          "opaque_bounds_px": [
+            64,
+            81,
+            64,
+            111
+          ],
+          "opaque_pixels": 5570,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 8,
+          "sha256": "b3a2e07a54fb46ec1d116701c5cc59ba2272bf138df5546925cd6721824aad20",
+          "z_offset": -1,
+          "render_descriptor": {
+            "name": "WaterStationV2NorthRearStructure",
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/north-rear_structure.png",
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "offset": [
+              0,
+              -56
+            ],
+            "z_offset": -1
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/water-station-v2/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native north layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        },
+        {
+          "layer": "front_structure",
+          "source_layer": "WaterStationV2NorthFrontStructure",
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v2/north-front_structure.png",
+          "canvas_size_px": [
+            160,
+            240
+          ],
+          "floor_anchor_px": [
+            80,
+            176
+          ],
+          "sprite_offset_px": [
+            0,
+            -56
+          ],
+          "opaque_bounds_px": [
+            69,
+            124,
+            54,
+            63
+          ],
+          "opaque_pixels": 1816,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 6,
+          "sha256": "905f78435c878ec7a2bc8e8833b4573f56d42a1eea3c0fc07f561040e4e65136",
+          "z_offset": 1,
+          "render_descriptor": {
+            "name": "WaterStationV2NorthFrontStructure",
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/north-front_structure.png",
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "offset": [
+              0,
+              -56
+            ],
+            "z_offset": 1
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/water-station-v2/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native north layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        }
+      ],
+      "composite_exports": [
+        {
+          "layer_ids": [
+            "floor_shadow",
+            "rear_structure",
+            "front_structure"
+          ],
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v2/north-whole.png",
+          "canvas_size_px": [
+            160,
+            240
+          ],
+          "floor_anchor_px": [
+            80,
+            176
+          ],
+          "sprite_offset_px": [
+            0,
+            -56
+          ],
+          "opaque_bounds_px": [
+            59,
+            81,
+            74,
+            111
+          ],
+          "opaque_pixels": 5600,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 12,
+          "sha256": "f0c1c8746c953a14ef600270556c82ed0f4947c0eb41eaf993a68052569175b2",
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact ordered floor_shadow over rear_structure over front_structure reconstruction."
+        }
+      ],
+      "actual_game_main": {
+        "scene": "actual GameMain and production TownRoom architecture/navigation with one owner-scoped passive candidate definition",
+        "viewport_px": [
+          1280,
+          720
+        ],
+        "common_safe_pivot": [
+          12,
+          13
+        ],
+        "grid": [
+          12,
+          13
+        ],
+        "occupied_cell_offsets": [
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "clearance_cells": [
+          [
+            12,
+            12
+          ]
+        ],
+        "collision_shapes": 2,
+        "founder_probe": {
+          "actor_z": 400,
+          "depth_class": "actor_behind_structure",
+          "destination_cell": [
+            12,
+            12
+          ],
+          "destination_px": [
+            400,
+            400
+          ],
+          "employee_look_vector": [
+            0,
+            1
+          ],
+          "front_z": 433,
+          "initial_route_points": 11,
+          "rear_z": 431,
+          "traveled_px": 343.041073322296
+        },
+        "actor_pixel_delta": 179,
+        "actor_prop_overlap_measured_not_acceptance_threshold": {
+          "actor_in_front_pixels": 0,
+          "pixels": 1363,
+          "prop_in_front_pixels": 1363
+        },
+        "render_layers": [
+          {
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/north-floor_shadow.png",
+            "name": "WaterStationV2NorthFloorShadow",
+            "offset": [
+              0,
+              -56
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "z_offset": -2
+          },
+          {
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/north-rear_structure.png",
+            "name": "WaterStationV2NorthRearStructure",
+            "offset": [
+              0,
+              -56
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "z_offset": -1
+          },
+          {
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/north-front_structure.png",
+            "name": "WaterStationV2NorthFrontStructure",
+            "offset": [
+              0,
+              -56
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "z_offset": 1
+          }
+        ],
+        "wall_corner": {
+          "grid": [
+            1,
+            3
+          ],
+          "issue_codes": [
+            "visual_wall_intersection",
+            "decorative_headroom",
+            "wall_clearance"
+          ],
+          "wall_neighbors": 2
+        },
+        "worker_disabled": true,
+        "save_access": false,
+        "runtime_registered": false
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "role_specific_actor_pose_claimed": false,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 2,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 2,
+          "placement": 3
+        },
+        "mean_score": 2.5,
+        "minimum_score": 2,
+        "note": "Accepted by the 2026-09-06 agent-native review for passive library use. The reservoir and opaque appliance sides are deliberately simple/flat; no translucent fluid, glow, flow animation or active water service is claimed. Measured overlap is recorded without using arbitrary overlap as a quality threshold; the founder is only a standing route/contact/gaze/depth probe.",
+        "acceptance_scope": "passive_art_library",
+        "acceptance_date": "2026-09-06",
+        "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      },
+      "code_native_provenance": {
+        "image_generation_calls": 0,
+        "generated_raster_sources_used": false,
+        "construction": "Editable typed-GDScript geometry using already reviewed material tiles; no raster-generation retry budget applies."
+      },
+      "source_attempts": [],
+      "source_attempts_created": 0,
+      "historical_rejected_revision_v1": {
+        "revision": "water-station-v1",
+        "status": "rejected",
+        "path": "game/tests/fixtures/furniture-calibration/water-station-v1/north-whole.png",
+        "sha256": "2b7a857754fc09bf5ed7ac53c92d5859930242c80c32c14b569013ae65aafb75",
+        "disposition": "Preserved but rejected because the narrow featureless reservoir read as a chimney at native actor scale."
+      }
+    },
+    {
+      "facing": "east",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/water-station-v2/east-whole.png",
+      "evidence_path": "game/tests/output/water-station-v2/actual-room-approach-contact-sheet-native.png",
+      "source_reference_path": "game/tools/passive_service_library_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        1,
+        2
+      ],
+      "proposed_occupied_cell_offsets": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "employee_look_vector": [
+        -1,
+        0
+      ],
+      "proposed_interaction_cell": [
+        1,
+        0
+      ],
+      "seated_pose_needed": false,
+      "redraw_requirement": "Draw the actual east service front; operator approaches that side looking west. Fixed screen floor axes and upper-left light; do not rotate or mirror finished raster art. No implemented interaction is implied.",
+      "service_side": "east",
+      "approach_gaze": "west",
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_evidence": null,
+      "runtime_exports": [],
+      "preview_path": "game/tests/fixtures/furniture-calibration/water-station-v2/east-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/water-station-v2/east-whole.png",
+      "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+      "review_paths": [
+        "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      ],
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/water-station-v2/manifest.json",
+        "game/tests/output/water-station-v2/structural-results.json",
+        "game/tests/output/water-station-v2/actual-room-results.json",
+        "game/tests/output/passive-service-library/native-invocation-water-station.json",
+        "game/tests/output/passive-service-library/actual-room-isolated-aggregate-results.json",
+        "game/tests/output/water-station-v2/candidate-contact-sheet-native.png",
+        "game/tests/output/water-station-v2/candidate-contact-sheet-4x.png",
+        "game/tests/output/water-station-v2/candidate-layers-native.png",
+        "game/tests/output/water-station-v2/actual-room-base-contact-sheet-native.png",
+        "game/tests/output/water-station-v2/actual-room-approach-contact-sheet-native.png",
+        "game/tests/output/water-station-v2/actual-room-approach-contact-sheet-4x.png",
+        "game/tests/output/water-station-v2/room-east.png",
+        "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      ],
+      "reason": "water-station-v2 east passes passive-library review at mean 2.50/minimum 2. supported broad stepped water jug, dispenser, kettle and cup station; actual GameMain records 0 natural actor/prop overlap pixels with actor_between_rear_and_front_layers. The reservoir and opaque appliance sides are deliberately simple/flat; no translucent fluid, glow, flow animation or active water service is claimed.",
+      "export_method": "Independent deterministic typed-GDScript screen-axis geometry for water-station-v2 east; retained reviewed material tiles only, with zero image-generation calls and no finished-raster rotation, mirror, flip, scale, text, logo, fake metric or baked actor.",
+      "authored_clearance_cell_offsets": [
+        [
+          1,
+          0
+        ]
+      ],
+      "camera_face_identity": "service_front_right_end",
+      "role_identity": {
+        "camera_face": "right_dispenser_end",
+        "cups": 3,
+        "tea_kettle": true,
+        "water_dispenser": true
+      },
+      "native_geometry": {
+        "canvas_size_px": [
+          160,
+          240
+        ],
+        "floor_anchor_px": [
+          80,
+          176
+        ],
+        "sprite_offset_px": [
+          0,
+          -56
+        ],
+        "floor_plane_px": [
+          -16,
+          -16,
+          32,
+          64
+        ],
+        "top_plane_px": [
+          -16,
+          -56,
+          32,
+          64
+        ],
+        "camera_front_elevation_px": [
+          -16,
+          8,
+          32,
+          40
+        ],
+        "contact_boundary_y": 48,
+        "base_elevation_px": 40,
+        "top_plane_depth_px": 64,
+        "base_projected_rise_px": 104,
+        "authored_vertical_feature_rise_px": 80,
+        "measured_whole_projected_rise_px": 143,
+        "base_solid_bounds_px": [
+          -16,
+          -56,
+          32,
+          104
+        ],
+        "whole_opaque_bounds_px": [
+          59,
+          81,
+          42,
+          143
+        ],
+        "whole_opaque_pixels": 4188,
+        "whole_partial_alpha_pixels": 0,
+        "whole_hidden_rgb_pixels": 0,
+        "whole_used_colors": 12,
+        "whole_sha256": "b6ddc3bc5a048f46b371e96318ec646e1a175fea0d6225e499e5542e912d60dc"
+      },
+      "native_exports": [
+        {
+          "layer": "floor_shadow",
+          "source_layer": "WaterStationV2EastFloorShadow",
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v2/east-floor_shadow.png",
+          "canvas_size_px": [
+            160,
+            240
+          ],
+          "floor_anchor_px": [
+            80,
+            176
+          ],
+          "sprite_offset_px": [
+            0,
+            -56
+          ],
+          "opaque_bounds_px": [
+            59,
+            219,
+            42,
+            4
+          ],
+          "opaque_pixels": 30,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 1,
+          "sha256": "84fa086f790b16c746e59af3a46d53f1b1d3e936d3cbf2f98a0042d07cedfeb2",
+          "z_offset": -2,
+          "render_descriptor": {
+            "name": "WaterStationV2EastFloorShadow",
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/east-floor_shadow.png",
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "offset": [
+              0,
+              -56
+            ],
+            "z_offset": -2
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/water-station-v2/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native east layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        },
+        {
+          "layer": "rear_structure",
+          "source_layer": "WaterStationV2EastRearStructure",
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v2/east-rear_structure.png",
+          "canvas_size_px": [
+            160,
+            240
+          ],
+          "floor_anchor_px": [
+            80,
+            176
+          ],
+          "sprite_offset_px": [
+            0,
+            -56
+          ],
+          "opaque_bounds_px": [
+            64,
+            81,
+            32,
+            143
+          ],
+          "opaque_pixels": 4158,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 7,
+          "sha256": "538a7763a5651aead312b6590ecd4bc7bb46f573ea9cfd00d58a9cfd608f9689",
+          "z_offset": -1,
+          "render_descriptor": {
+            "name": "WaterStationV2EastRearStructure",
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/east-rear_structure.png",
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "offset": [
+              0,
+              -56
+            ],
+            "z_offset": -1
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/water-station-v2/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native east layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        },
+        {
+          "layer": "front_structure",
+          "source_layer": "WaterStationV2EastFrontStructure",
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v2/east-front_structure.png",
+          "canvas_size_px": [
+            160,
+            240
+          ],
+          "floor_anchor_px": [
+            80,
+            176
+          ],
+          "sprite_offset_px": [
+            0,
+            -56
+          ],
+          "opaque_bounds_px": [
+            69,
+            155,
+            25,
+            64
+          ],
+          "opaque_pixels": 856,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 7,
+          "sha256": "23a491d59f6c095189a072e89933b10a3f608943be013d9f752a4e1c249afdc9",
+          "z_offset": 1,
+          "render_descriptor": {
+            "name": "WaterStationV2EastFrontStructure",
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/east-front_structure.png",
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "offset": [
+              0,
+              -56
+            ],
+            "z_offset": 1
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/water-station-v2/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native east layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        }
+      ],
+      "composite_exports": [
+        {
+          "layer_ids": [
+            "floor_shadow",
+            "rear_structure",
+            "front_structure"
+          ],
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v2/east-whole.png",
+          "canvas_size_px": [
+            160,
+            240
+          ],
+          "floor_anchor_px": [
+            80,
+            176
+          ],
+          "sprite_offset_px": [
+            0,
+            -56
+          ],
+          "opaque_bounds_px": [
+            59,
+            81,
+            42,
+            143
+          ],
+          "opaque_pixels": 4188,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 12,
+          "sha256": "b6ddc3bc5a048f46b371e96318ec646e1a175fea0d6225e499e5542e912d60dc",
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact ordered floor_shadow over rear_structure over front_structure reconstruction."
+        }
+      ],
+      "actual_game_main": {
+        "scene": "actual GameMain and production TownRoom architecture/navigation with one owner-scoped passive candidate definition",
+        "viewport_px": [
+          1280,
+          720
+        ],
+        "common_safe_pivot": [
+          12,
+          13
+        ],
+        "grid": [
+          12,
+          13
+        ],
+        "occupied_cell_offsets": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "clearance_cells": [
+          [
+            13,
+            13
+          ]
+        ],
+        "collision_shapes": 2,
+        "founder_probe": {
+          "actor_z": 432,
+          "depth_class": "actor_between_rear_and_front_layers",
+          "destination_cell": [
+            13,
+            13
+          ],
+          "destination_px": [
+            432,
+            432
+          ],
+          "employee_look_vector": [
+            -1,
+            0
+          ],
+          "front_z": 433,
+          "initial_route_points": 9,
+          "rear_z": 431,
+          "traveled_px": 277.649673700333
+        },
+        "actor_pixel_delta": 1293,
+        "actor_prop_overlap_measured_not_acceptance_threshold": {
+          "actor_in_front_pixels": 0,
+          "pixels": 0,
+          "prop_in_front_pixels": 0
+        },
+        "render_layers": [
+          {
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/east-floor_shadow.png",
+            "name": "WaterStationV2EastFloorShadow",
+            "offset": [
+              0,
+              -56
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "z_offset": -2
+          },
+          {
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/east-rear_structure.png",
+            "name": "WaterStationV2EastRearStructure",
+            "offset": [
+              0,
+              -56
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "z_offset": -1
+          },
+          {
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/east-front_structure.png",
+            "name": "WaterStationV2EastFrontStructure",
+            "offset": [
+              0,
+              -56
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "z_offset": 1
+          }
+        ],
+        "wall_corner": {
+          "grid": [
+            1,
+            3
+          ],
+          "issue_codes": [
+            "visual_wall_intersection",
+            "decorative_headroom"
+          ],
+          "wall_neighbors": 2
+        },
+        "worker_disabled": true,
+        "save_access": false,
+        "runtime_registered": false
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "role_specific_actor_pose_claimed": false,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 2,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 2,
+          "placement": 3
+        },
+        "mean_score": 2.5,
+        "minimum_score": 2,
+        "note": "Accepted by the 2026-09-06 agent-native review for passive library use. The reservoir and opaque appliance sides are deliberately simple/flat; no translucent fluid, glow, flow animation or active water service is claimed. Measured overlap is recorded without using arbitrary overlap as a quality threshold; the founder is only a standing route/contact/gaze/depth probe.",
+        "acceptance_scope": "passive_art_library",
+        "acceptance_date": "2026-09-06",
+        "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      },
+      "code_native_provenance": {
+        "image_generation_calls": 0,
+        "generated_raster_sources_used": false,
+        "construction": "Editable typed-GDScript geometry using already reviewed material tiles; no raster-generation retry budget applies."
+      },
+      "source_attempts": [],
+      "source_attempts_created": 0,
+      "historical_rejected_revision_v1": {
+        "revision": "water-station-v1",
+        "status": "rejected",
+        "path": "game/tests/fixtures/furniture-calibration/water-station-v1/east-whole.png",
+        "sha256": "d82ca25d01188f64d2f0419b3d4c71a545a7981cd4726054fed775f3917728a1",
+        "disposition": "Preserved but rejected because the narrow featureless reservoir read as a chimney at native actor scale."
+      }
+    },
+    {
+      "facing": "south",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/water-station-v2/south-whole.png",
+      "evidence_path": "game/tests/output/water-station-v2/actual-room-approach-contact-sheet-native.png",
+      "source_reference_path": "game/tools/passive_service_library_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        2,
+        1
+      ],
+      "proposed_occupied_cell_offsets": [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "employee_look_vector": [
+        0,
+        -1
+      ],
+      "proposed_interaction_cell": [
+        0,
+        1
+      ],
+      "seated_pose_needed": false,
+      "redraw_requirement": "Draw the actual south service front; operator approaches that side looking north. Fixed screen floor axes and upper-left light; do not rotate or mirror finished raster art. No implemented interaction is implied.",
+      "service_side": "south",
+      "approach_gaze": "north",
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_evidence": null,
+      "runtime_exports": [],
+      "preview_path": "game/tests/fixtures/furniture-calibration/water-station-v2/south-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/water-station-v2/south-whole.png",
+      "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+      "review_paths": [
+        "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      ],
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/water-station-v2/manifest.json",
+        "game/tests/output/water-station-v2/structural-results.json",
+        "game/tests/output/water-station-v2/actual-room-results.json",
+        "game/tests/output/passive-service-library/native-invocation-water-station.json",
+        "game/tests/output/passive-service-library/actual-room-isolated-aggregate-results.json",
+        "game/tests/output/water-station-v2/candidate-contact-sheet-native.png",
+        "game/tests/output/water-station-v2/candidate-contact-sheet-4x.png",
+        "game/tests/output/water-station-v2/candidate-layers-native.png",
+        "game/tests/output/water-station-v2/actual-room-base-contact-sheet-native.png",
+        "game/tests/output/water-station-v2/actual-room-approach-contact-sheet-native.png",
+        "game/tests/output/water-station-v2/actual-room-approach-contact-sheet-4x.png",
+        "game/tests/output/water-station-v2/room-south.png",
+        "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      ],
+      "reason": "water-station-v2 south passes passive-library review at mean 2.50/minimum 2. supported broad stepped water jug, dispenser, kettle and cup station; actual GameMain records 1242 natural actor/prop overlap pixels with actor_in_front_of_structure. The reservoir and opaque appliance sides are deliberately simple/flat; no translucent fluid, glow, flow animation or active water service is claimed.",
+      "export_method": "Independent deterministic typed-GDScript screen-axis geometry for water-station-v2 south; retained reviewed material tiles only, with zero image-generation calls and no finished-raster rotation, mirror, flip, scale, text, logo, fake metric or baked actor.",
+      "authored_clearance_cell_offsets": [
+        [
+          0,
+          1
+        ]
+      ],
+      "camera_face_identity": "service_front",
+      "role_identity": {
+        "camera_face": "taps_kettle_and_cups",
+        "cups": 3,
+        "tea_kettle": true,
+        "water_dispenser": true
+      },
+      "native_geometry": {
+        "canvas_size_px": [
+          160,
+          240
+        ],
+        "floor_anchor_px": [
+          80,
+          176
+        ],
+        "sprite_offset_px": [
+          0,
+          -56
+        ],
+        "floor_plane_px": [
+          -48,
+          -16,
+          64,
+          32
+        ],
+        "top_plane_px": [
+          -48,
+          -56,
+          64,
+          32
+        ],
+        "camera_front_elevation_px": [
+          -48,
+          -24,
+          64,
+          40
+        ],
+        "contact_boundary_y": 16,
+        "base_elevation_px": 40,
+        "top_plane_depth_px": 32,
+        "base_projected_rise_px": 72,
+        "authored_vertical_feature_rise_px": 80,
+        "measured_whole_projected_rise_px": 111,
+        "base_solid_bounds_px": [
+          -48,
+          -56,
+          64,
+          72
+        ],
+        "whole_opaque_bounds_px": [
+          27,
+          81,
+          74,
+          111
+        ],
+        "whole_opaque_pixels": 5600,
+        "whole_partial_alpha_pixels": 0,
+        "whole_hidden_rgb_pixels": 0,
+        "whole_used_colors": 13,
+        "whole_sha256": "49c2628c0bd9674497b2eb30b4022503fc213968d403da0780c42855f9cbed0f"
+      },
+      "native_exports": [
+        {
+          "layer": "floor_shadow",
+          "source_layer": "WaterStationV2SouthFloorShadow",
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v2/south-floor_shadow.png",
+          "canvas_size_px": [
+            160,
+            240
+          ],
+          "floor_anchor_px": [
+            80,
+            176
+          ],
+          "sprite_offset_px": [
+            0,
+            -56
+          ],
+          "opaque_bounds_px": [
+            27,
+            187,
+            74,
+            4
+          ],
+          "opaque_pixels": 30,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 1,
+          "sha256": "0796117769a6c6b7b330b3a470f0b5f8ee4a1b5af9451c8af7db3e0e22996331",
+          "z_offset": -2,
+          "render_descriptor": {
+            "name": "WaterStationV2SouthFloorShadow",
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/south-floor_shadow.png",
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "offset": [
+              0,
+              -56
+            ],
+            "z_offset": -2
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/water-station-v2/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native south layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        },
+        {
+          "layer": "rear_structure",
+          "source_layer": "WaterStationV2SouthRearStructure",
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v2/south-rear_structure.png",
+          "canvas_size_px": [
+            160,
+            240
+          ],
+          "floor_anchor_px": [
+            80,
+            176
+          ],
+          "sprite_offset_px": [
+            0,
+            -56
+          ],
+          "opaque_bounds_px": [
+            32,
+            81,
+            64,
+            111
+          ],
+          "opaque_pixels": 5570,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 8,
+          "sha256": "eaac6b57525ef97cc6a84bccc6d7093e198c219e8b8ecefec7d4cd9cd220eb67",
+          "z_offset": -1,
+          "render_descriptor": {
+            "name": "WaterStationV2SouthRearStructure",
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/south-rear_structure.png",
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "offset": [
+              0,
+              -56
+            ],
+            "z_offset": -1
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/water-station-v2/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native south layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        },
+        {
+          "layer": "front_structure",
+          "source_layer": "WaterStationV2SouthFrontStructure",
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v2/south-front_structure.png",
+          "canvas_size_px": [
+            160,
+            240
+          ],
+          "floor_anchor_px": [
+            80,
+            176
+          ],
+          "sprite_offset_px": [
+            0,
+            -56
+          ],
+          "opaque_bounds_px": [
+            37,
+            129,
+            54,
+            58
+          ],
+          "opaque_pixels": 1816,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 8,
+          "sha256": "b99e5466cfa4ac2b931f977ed3b5f14ebf5a5624b2ec3dbdb0b0f358d4136c47",
+          "z_offset": 1,
+          "render_descriptor": {
+            "name": "WaterStationV2SouthFrontStructure",
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/south-front_structure.png",
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "offset": [
+              0,
+              -56
+            ],
+            "z_offset": 1
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/water-station-v2/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native south layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        }
+      ],
+      "composite_exports": [
+        {
+          "layer_ids": [
+            "floor_shadow",
+            "rear_structure",
+            "front_structure"
+          ],
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v2/south-whole.png",
+          "canvas_size_px": [
+            160,
+            240
+          ],
+          "floor_anchor_px": [
+            80,
+            176
+          ],
+          "sprite_offset_px": [
+            0,
+            -56
+          ],
+          "opaque_bounds_px": [
+            27,
+            81,
+            74,
+            111
+          ],
+          "opaque_pixels": 5600,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 13,
+          "sha256": "49c2628c0bd9674497b2eb30b4022503fc213968d403da0780c42855f9cbed0f",
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact ordered floor_shadow over rear_structure over front_structure reconstruction."
+        }
+      ],
+      "actual_game_main": {
+        "scene": "actual GameMain and production TownRoom architecture/navigation with one owner-scoped passive candidate definition",
+        "viewport_px": [
+          1280,
+          720
+        ],
+        "common_safe_pivot": [
+          12,
+          13
+        ],
+        "grid": [
+          12,
+          13
+        ],
+        "occupied_cell_offsets": [
+          [
+            -1,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "clearance_cells": [
+          [
+            12,
+            14
+          ]
+        ],
+        "collision_shapes": 2,
+        "founder_probe": {
+          "actor_z": 464,
+          "depth_class": "actor_in_front_of_structure",
+          "destination_cell": [
+            12,
+            14
+          ],
+          "destination_px": [
+            400,
+            464
+          ],
+          "employee_look_vector": [
+            0,
+            -1
+          ],
+          "front_z": 433,
+          "initial_route_points": 9,
+          "rear_z": 431,
+          "traveled_px": 279.026254177094
+        },
+        "actor_pixel_delta": 1547,
+        "actor_prop_overlap_measured_not_acceptance_threshold": {
+          "actor_in_front_pixels": 1242,
+          "pixels": 1242,
+          "prop_in_front_pixels": 0
+        },
+        "render_layers": [
+          {
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/south-floor_shadow.png",
+            "name": "WaterStationV2SouthFloorShadow",
+            "offset": [
+              0,
+              -56
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "z_offset": -2
+          },
+          {
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/south-rear_structure.png",
+            "name": "WaterStationV2SouthRearStructure",
+            "offset": [
+              0,
+              -56
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "z_offset": -1
+          },
+          {
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/south-front_structure.png",
+            "name": "WaterStationV2SouthFrontStructure",
+            "offset": [
+              0,
+              -56
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "z_offset": 1
+          }
+        ],
+        "wall_corner": {
+          "grid": [
+            1,
+            3
+          ],
+          "issue_codes": [
+            "wall_intersection",
+            "visual_wall_intersection",
+            "decorative_headroom"
+          ],
+          "wall_neighbors": 2
+        },
+        "worker_disabled": true,
+        "save_access": false,
+        "runtime_registered": false
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "role_specific_actor_pose_claimed": false,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 2,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 2,
+          "placement": 3
+        },
+        "mean_score": 2.5,
+        "minimum_score": 2,
+        "note": "Accepted by the 2026-09-06 agent-native review for passive library use. The reservoir and opaque appliance sides are deliberately simple/flat; no translucent fluid, glow, flow animation or active water service is claimed. Measured overlap is recorded without using arbitrary overlap as a quality threshold; the founder is only a standing route/contact/gaze/depth probe.",
+        "acceptance_scope": "passive_art_library",
+        "acceptance_date": "2026-09-06",
+        "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      },
+      "code_native_provenance": {
+        "image_generation_calls": 0,
+        "generated_raster_sources_used": false,
+        "construction": "Editable typed-GDScript geometry using already reviewed material tiles; no raster-generation retry budget applies."
+      },
+      "source_attempts": [],
+      "source_attempts_created": 0,
+      "historical_rejected_revision_v1": {
+        "revision": "water-station-v1",
+        "status": "rejected",
+        "path": "game/tests/fixtures/furniture-calibration/water-station-v1/south-whole.png",
+        "sha256": "09a426412fbd743da45f0e61126bc5fd8f0e1e973b2ac557ca55545b0827f62d",
+        "disposition": "Preserved but rejected because the narrow featureless reservoir read as a chimney at native actor scale."
+      }
+    },
+    {
+      "facing": "west",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/water-station-v2/west-whole.png",
+      "evidence_path": "game/tests/output/water-station-v2/actual-room-approach-contact-sheet-native.png",
+      "source_reference_path": "game/tools/passive_service_library_geometry.gd",
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        1,
+        2
+      ],
+      "proposed_occupied_cell_offsets": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "employee_look_vector": [
+        1,
+        0
+      ],
+      "proposed_interaction_cell": [
+        -1,
+        0
+      ],
+      "seated_pose_needed": false,
+      "redraw_requirement": "Draw the actual west service front; operator approaches that side looking east. Fixed screen floor axes and upper-left light; do not rotate or mirror finished raster art. No implemented interaction is implied.",
+      "service_side": "west",
+      "approach_gaze": "east",
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_evidence": null,
+      "runtime_exports": [],
+      "preview_path": "game/tests/fixtures/furniture-calibration/water-station-v2/west-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/water-station-v2/west-whole.png",
+      "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+      "review_paths": [
+        "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      ],
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/water-station-v2/manifest.json",
+        "game/tests/output/water-station-v2/structural-results.json",
+        "game/tests/output/water-station-v2/actual-room-results.json",
+        "game/tests/output/passive-service-library/native-invocation-water-station.json",
+        "game/tests/output/passive-service-library/actual-room-isolated-aggregate-results.json",
+        "game/tests/output/water-station-v2/candidate-contact-sheet-native.png",
+        "game/tests/output/water-station-v2/candidate-contact-sheet-4x.png",
+        "game/tests/output/water-station-v2/candidate-layers-native.png",
+        "game/tests/output/water-station-v2/actual-room-base-contact-sheet-native.png",
+        "game/tests/output/water-station-v2/actual-room-approach-contact-sheet-native.png",
+        "game/tests/output/water-station-v2/actual-room-approach-contact-sheet-4x.png",
+        "game/tests/output/water-station-v2/room-west.png",
+        "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      ],
+      "reason": "water-station-v2 west passes passive-library review at mean 2.50/minimum 2. supported broad stepped water jug, dispenser, kettle and cup station; actual GameMain records 0 natural actor/prop overlap pixels with actor_between_rear_and_front_layers. The reservoir and opaque appliance sides are deliberately simple/flat; no translucent fluid, glow, flow animation or active water service is claimed.",
+      "export_method": "Independent deterministic typed-GDScript screen-axis geometry for water-station-v2 west; retained reviewed material tiles only, with zero image-generation calls and no finished-raster rotation, mirror, flip, scale, text, logo, fake metric or baked actor.",
+      "authored_clearance_cell_offsets": [
+        [
+          -1,
+          0
+        ]
+      ],
+      "camera_face_identity": "service_front_left_end",
+      "role_identity": {
+        "camera_face": "left_dispenser_end",
+        "cups": 3,
+        "tea_kettle": true,
+        "water_dispenser": true
+      },
+      "native_geometry": {
+        "canvas_size_px": [
+          160,
+          240
+        ],
+        "floor_anchor_px": [
+          80,
+          176
+        ],
+        "sprite_offset_px": [
+          0,
+          -56
+        ],
+        "floor_plane_px": [
+          -16,
+          -48,
+          32,
+          64
+        ],
+        "top_plane_px": [
+          -16,
+          -88,
+          32,
+          64
+        ],
+        "camera_front_elevation_px": [
+          -16,
+          -24,
+          32,
+          40
+        ],
+        "contact_boundary_y": 16,
+        "base_elevation_px": 40,
+        "top_plane_depth_px": 64,
+        "base_projected_rise_px": 104,
+        "authored_vertical_feature_rise_px": 80,
+        "measured_whole_projected_rise_px": 143,
+        "base_solid_bounds_px": [
+          -16,
+          -88,
+          32,
+          104
+        ],
+        "whole_opaque_bounds_px": [
+          59,
+          49,
+          42,
+          143
+        ],
+        "whole_opaque_pixels": 4188,
+        "whole_partial_alpha_pixels": 0,
+        "whole_hidden_rgb_pixels": 0,
+        "whole_used_colors": 12,
+        "whole_sha256": "9bd97b2c3206491af625aa9bc03584464187c03751f5beb597aa7f0f678571a1"
+      },
+      "native_exports": [
+        {
+          "layer": "floor_shadow",
+          "source_layer": "WaterStationV2WestFloorShadow",
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v2/west-floor_shadow.png",
+          "canvas_size_px": [
+            160,
+            240
+          ],
+          "floor_anchor_px": [
+            80,
+            176
+          ],
+          "sprite_offset_px": [
+            0,
+            -56
+          ],
+          "opaque_bounds_px": [
+            59,
+            187,
+            42,
+            4
+          ],
+          "opaque_pixels": 30,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 1,
+          "sha256": "629ee770e6384296dd682b51d408cc491051fe983113d199c35fc7630f3e298c",
+          "z_offset": -2,
+          "render_descriptor": {
+            "name": "WaterStationV2WestFloorShadow",
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/west-floor_shadow.png",
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "offset": [
+              0,
+              -56
+            ],
+            "z_offset": -2
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/water-station-v2/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native west layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        },
+        {
+          "layer": "rear_structure",
+          "source_layer": "WaterStationV2WestRearStructure",
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v2/west-rear_structure.png",
+          "canvas_size_px": [
+            160,
+            240
+          ],
+          "floor_anchor_px": [
+            80,
+            176
+          ],
+          "sprite_offset_px": [
+            0,
+            -56
+          ],
+          "opaque_bounds_px": [
+            64,
+            49,
+            32,
+            143
+          ],
+          "opaque_pixels": 4158,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 7,
+          "sha256": "355c99ddd7e11a23c1388cdf6c1b4c097c514d749f128aedfef3536faef2c09b",
+          "z_offset": -1,
+          "render_descriptor": {
+            "name": "WaterStationV2WestRearStructure",
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/west-rear_structure.png",
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "offset": [
+              0,
+              -56
+            ],
+            "z_offset": -1
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/water-station-v2/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native west layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        },
+        {
+          "layer": "front_structure",
+          "source_layer": "WaterStationV2WestFrontStructure",
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v2/west-front_structure.png",
+          "canvas_size_px": [
+            160,
+            240
+          ],
+          "floor_anchor_px": [
+            80,
+            176
+          ],
+          "sprite_offset_px": [
+            0,
+            -56
+          ],
+          "opaque_bounds_px": [
+            67,
+            123,
+            24,
+            64
+          ],
+          "opaque_pixels": 856,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 6,
+          "sha256": "01cb55e416e1df90aacf201483cf35e70d4c561ab3451edd081cd7b8ec61336f",
+          "z_offset": 1,
+          "render_descriptor": {
+            "name": "WaterStationV2WestFrontStructure",
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/west-front_structure.png",
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "offset": [
+              0,
+              -56
+            ],
+            "z_offset": 1
+          },
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/water-station-v2/manifest.json",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact independently authored code-native west layer with binary alpha, zero hidden RGB, common canvas/pivot and no finished-raster transform."
+        }
+      ],
+      "composite_exports": [
+        {
+          "layer_ids": [
+            "floor_shadow",
+            "rear_structure",
+            "front_structure"
+          ],
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v2/west-whole.png",
+          "canvas_size_px": [
+            160,
+            240
+          ],
+          "floor_anchor_px": [
+            80,
+            176
+          ],
+          "sprite_offset_px": [
+            0,
+            -56
+          ],
+          "opaque_bounds_px": [
+            59,
+            49,
+            42,
+            143
+          ],
+          "opaque_pixels": 4188,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 12,
+          "sha256": "9bd97b2c3206491af625aa9bc03584464187c03751f5beb597aa7f0f678571a1",
+          "source_path": "game/tools/passive_service_library_geometry.gd",
+          "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "method": "Exact ordered floor_shadow over rear_structure over front_structure reconstruction."
+        }
+      ],
+      "actual_game_main": {
+        "scene": "actual GameMain and production TownRoom architecture/navigation with one owner-scoped passive candidate definition",
+        "viewport_px": [
+          1280,
+          720
+        ],
+        "common_safe_pivot": [
+          12,
+          13
+        ],
+        "grid": [
+          12,
+          13
+        ],
+        "occupied_cell_offsets": [
+          [
+            0,
+            -1
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "clearance_cells": [
+          [
+            11,
+            13
+          ]
+        ],
+        "collision_shapes": 2,
+        "founder_probe": {
+          "actor_z": 432,
+          "depth_class": "actor_between_rear_and_front_layers",
+          "destination_cell": [
+            11,
+            13
+          ],
+          "destination_px": [
+            368,
+            432
+          ],
+          "employee_look_vector": [
+            1,
+            0
+          ],
+          "front_z": 433,
+          "initial_route_points": 11,
+          "rear_z": 431,
+          "traveled_px": 338.293901205063
+        },
+        "actor_pixel_delta": 1305,
+        "actor_prop_overlap_measured_not_acceptance_threshold": {
+          "actor_in_front_pixels": 0,
+          "pixels": 0,
+          "prop_in_front_pixels": 0
+        },
+        "render_layers": [
+          {
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/west-floor_shadow.png",
+            "name": "WaterStationV2WestFloorShadow",
+            "offset": [
+              0,
+              -56
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "z_offset": -2
+          },
+          {
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/west-rear_structure.png",
+            "name": "WaterStationV2WestRearStructure",
+            "offset": [
+              0,
+              -56
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "z_offset": -1
+          },
+          {
+            "art": "res://tests/fixtures/furniture-calibration/water-station-v2/west-front_structure.png",
+            "name": "WaterStationV2WestFrontStructure",
+            "offset": [
+              0,
+              -56
+            ],
+            "region": [
+              0,
+              0,
+              160,
+              240
+            ],
+            "z_offset": 1
+          }
+        ],
+        "wall_corner": {
+          "grid": [
+            1,
+            3
+          ],
+          "issue_codes": [
+            "wall_intersection",
+            "visual_wall_intersection",
+            "decorative_headroom",
+            "wall_clearance"
+          ],
+          "wall_neighbors": 2
+        },
+        "worker_disabled": true,
+        "save_access": false,
+        "runtime_registered": false
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "role_specific_actor_pose_claimed": false,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 2,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 2,
+          "placement": 3
+        },
+        "mean_score": 2.5,
+        "minimum_score": 2,
+        "note": "Accepted by the 2026-09-06 agent-native review for passive library use. The reservoir and opaque appliance sides are deliberately simple/flat; no translucent fluid, glow, flow animation or active water service is claimed. Measured overlap is recorded without using arbitrary overlap as a quality threshold; the founder is only a standing route/contact/gaze/depth probe.",
+        "acceptance_scope": "passive_art_library",
+        "acceptance_date": "2026-09-06",
+        "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md"
+      },
+      "code_native_provenance": {
+        "image_generation_calls": 0,
+        "generated_raster_sources_used": false,
+        "construction": "Editable typed-GDScript geometry using already reviewed material tiles; no raster-generation retry budget applies."
+      },
+      "source_attempts": [],
+      "source_attempts_created": 0,
+      "historical_rejected_revision_v1": {
+        "revision": "water-station-v1",
+        "status": "rejected",
+        "path": "game/tests/fixtures/furniture-calibration/water-station-v1/west-whole.png",
+        "sha256": "9d2e21f30da68ce29a0b1d8de7991264c6afd8bbda3af78428865753eeb09777",
+        "disposition": "Preserved but rejected because the narrow featureless reservoir read as a chimney at native actor scale."
+      }
+    }
+  ],
+  "construction": {
+    "revision": "water-station-v2",
+    "method": "Editable typed-GDScript floor-axis extrusion with a physical-footprint top plane and separately authored front/rear/end identity; reviewed native oak/powdercoat tiles are retained materials only. No generated full view, transformed finished raster, provider call, text, logo, fake metric, baked actor, or service implementation.",
+    "source_paths": [
+      "game/tools/passive_service_library_geometry.gd",
+      "game/tools/export_passive_service_library.gd",
+      "game/tests/test_passive_service_library.gd",
+      "game/tools/capture_passive_service_library.gd",
+      "game/tests/aggregate_passive_service_library_native.gd"
+    ],
+    "material_sources": {
+      "charcoal_powdercoat": {
+        "path": "res://tests/fixtures/furniture-calibration/materials/charcoal-powdercoat-v1.png",
+        "retained_unchanged": true,
+        "sha256": "807152a50c8a1771cd451d0984fe1fd4ba3fb6328089e5fa9dd1fb2c858ad42d"
+      },
+      "oak_horizontal": {
+        "path": "res://tests/fixtures/furniture-calibration/materials-v2/oak-horizontal-v2.png",
+        "retained_unchanged": true,
+        "sha256": "bcd3ccf8c6411b4ce24997a88b3fabf78f7fa2132b240f66ee1d59ab3e0dded6"
+      },
+      "oak_vertical": {
+        "path": "res://tests/fixtures/furniture-calibration/materials-v2/oak-vertical-v2.png",
+        "retained_unchanged": true,
+        "sha256": "28a84e93bcdd6e026fbd3a56ae598f14a6c74acd07d1c5950a1a2347a1a24fae"
+      }
+    },
+    "image_generation_calls": 0,
+    "source_attempts_created": 0,
+    "runtime_registration": null,
+    "default_layout_binding": null,
+    "service_backend_or_interaction_created": false
+  },
+  "contract_revision": {
+    "date": "2026-09-06",
+    "statement": "V2 changes only the native reservoir silhouette rejected in v1. Base elevation, top-plane geometry, floor contact, canvas, pivot, masks and layers remain fixed.",
+    "runtime_or_service_effect": "none"
+  },
+  "art_library_approval": {
+    "status": "approved",
+    "scope": "passive_art_library",
+    "acceptance_date": "2026-09-06",
+    "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+    "review_sha256": "467bfe006c7e48587132e1fa7566fdc0fe5dc447b0a70b024d00f05924016a79",
+    "runtime_admission": false,
+    "default_layout_admission": false,
+    "service_or_interaction_admission": false,
+    "role_pose_claim": false
+  },
+  "candidate_completion": {
+    "status": "approved_passive_art_library_not_runtime",
+    "validated": [
+      "four independent N/E/S/W screen-axis constructions",
+      "exact footprint-derived top planes and separately measured contact/open-frame geometry",
+      "binary alpha, zero hidden RGB, integer common canvas/pivot and exact three-layer reconstruction",
+      "two exact collision cells, safe adjacent approach and wall/corner rejection",
+      "actual GameMain native 1280x720 contact/gaze/depth evidence",
+      "120 exporter, 719 structural, 106 aggregate and three isolated 196-check native invocations with zero failures",
+      "rejected water-station-v1 fixture and actual-room evidence retained byte-exact"
+    ],
+    "remaining": [
+      "optional future production/runtime registration",
+      "optional future default-layout decision",
+      "any future interaction/service/role behavior"
+    ],
+    "native_review_passed": true,
+    "passive_art_library_approved": true,
+    "production_acceptance_claim": false,
+    "runtime_registration_claim": false,
+    "image_generation_used_for_native_candidate": false,
+    "native_visual_mean_score": 2.5,
+    "native_visual_minimum_score": 2,
+    "review_date": "2026-09-06",
+    "source_catalogue_sha256": "4b3d400e50b3c26f02fe8c1c7f0988b36588f442847a3c40ae4efbf73b77019d"
+  },
+  "current_runtime_registration": null,
+  "runtime_art_path": null,
+  "runtime_exports": [],
+  "historical_rejected_revisions": [
+    {
+      "revision": "water-station-v1",
+      "status": "rejected",
+      "disposition": "preserved_non_production_history",
+      "reason": "Direct native review rejected the narrow featureless reservoir because it read as a blue chimney rather than an office water bottle.",
+      "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/water-station-v1/manifest.json",
+      "fixture_manifest_sha256": "e43ec199c41cbfbe39e118a357afc4a7be21fd4822c809a933cc45858c11978e",
+      "actual_room_results_path": "game/tests/output/water-station-v1/actual-room-results.json",
+      "actual_room_results_sha256": "8450d25ce7a029a62ca728b34c4b75cf791f5d75732b6c388489bdc8fd5901ba",
+      "review_path": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+      "review_sha256": "467bfe006c7e48587132e1fa7566fdc0fe5dc447b0a70b024d00f05924016a79",
+      "preserved_v1_files": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v1/east-floor_shadow.png",
+          "sha256": "84fa086f790b16c746e59af3a46d53f1b1d3e936d3cbf2f98a0042d07cedfeb2"
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v1/east-front_structure.png",
+          "sha256": "23a491d59f6c095189a072e89933b10a3f608943be013d9f752a4e1c249afdc9"
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v1/east-rear_structure.png",
+          "sha256": "f68850e0b9e2fed7b3d781d5421b0ab9fa61c9f30091c0697446e8dee578119d"
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v1/east-whole.png",
+          "sha256": "d82ca25d01188f64d2f0419b3d4c71a545a7981cd4726054fed775f3917728a1"
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v1/manifest.json",
+          "sha256": "e43ec199c41cbfbe39e118a357afc4a7be21fd4822c809a933cc45858c11978e"
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v1/north-floor_shadow.png",
+          "sha256": "3dd018cb9af50be2d8ae36843cfd02f1a65ac70f3ee1f40c89f0a8f519994698"
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v1/north-front_structure.png",
+          "sha256": "905f78435c878ec7a2bc8e8833b4573f56d42a1eea3c0fc07f561040e4e65136"
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v1/north-rear_structure.png",
+          "sha256": "09f3f7a541dc6ec684d9021c0b0d07581c4c7d705efa060ce7537c62088f1876"
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v1/north-whole.png",
+          "sha256": "2b7a857754fc09bf5ed7ac53c92d5859930242c80c32c14b569013ae65aafb75"
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v1/south-floor_shadow.png",
+          "sha256": "0796117769a6c6b7b330b3a470f0b5f8ee4a1b5af9451c8af7db3e0e22996331"
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v1/south-front_structure.png",
+          "sha256": "b99e5466cfa4ac2b931f977ed3b5f14ebf5a5624b2ec3dbdb0b0f358d4136c47"
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v1/south-rear_structure.png",
+          "sha256": "f44331103af34756b94f5261754b8bec0bebe8f971af162fbbc293a1144a2a39"
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v1/south-whole.png",
+          "sha256": "09a426412fbd743da45f0e61126bc5fd8f0e1e973b2ac557ca55545b0827f62d"
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v1/west-floor_shadow.png",
+          "sha256": "629ee770e6384296dd682b51d408cc491051fe983113d199c35fc7630f3e298c"
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v1/west-front_structure.png",
+          "sha256": "01cb55e416e1df90aacf201483cf35e70d4c561ab3451edd081cd7b8ec61336f"
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v1/west-rear_structure.png",
+          "sha256": "5142a16b1410d58096f24bec2fe520a008ffaf6b8b8739392a7d62f8ba8b6890"
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/water-station-v1/west-whole.png",
+          "sha256": "9d2e21f30da68ce29a0b1d8de7991264c6afd8bbda3af78428865753eeb09777"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/actual-room-approach-contact-sheet-4x.png",
+          "sha256": "996077056f5bedae568b50e6cafd6058e46890322b499d8e951f1e55cb9ac3d7"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/actual-room-approach-contact-sheet-native.png",
+          "sha256": "3502cb7faba081e373807a822aa036a1e64426ad3f0353130f2b523f225522d8"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/actual-room-base-contact-sheet-native.png",
+          "sha256": "dda94904a03b656f8a2ad5d220f53b5ac946760b836fb2d057029b790ea43804"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/actual-room-results.json",
+          "sha256": "8450d25ce7a029a62ca728b34c4b75cf791f5d75732b6c388489bdc8fd5901ba"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/candidate-contact-sheet-4x.png",
+          "sha256": "b452ada77b4bb00ef9afe1e9bb02c944505ca8629acc851a071b315f39f19165"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/candidate-contact-sheet-native.png",
+          "sha256": "09b46be88ac03e4d06a3a5df9f66fa00f836e08f01fab96f58b970ad1dad4a7f"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/candidate-layers-native.png",
+          "sha256": "3a8b13c44bc70f36272291ba68c67ec72e62e4afb835561d5ce0056a01cde8af"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/detail-east-approach-native.png",
+          "sha256": "8513078a9531d327cc61237f3bcbc464db11c1c32a1c69909ff0fc8992e71f68"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/detail-east-base-native.png",
+          "sha256": "c82202db95db8275be37ee6e53c0c25eca9573133702b68eadf2582dcf41e19c"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/detail-north-approach-native.png",
+          "sha256": "8417e8f99bb2af4bacdbe2bb4f40a05a8ded0a2863d5d0e242734d73581cf74d"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/detail-north-base-native.png",
+          "sha256": "bc5c2b191c0c285ebb0830477674d49770f276598c77285d457aba990d2d5884"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/detail-south-approach-native.png",
+          "sha256": "e61cca4a5c3de77a924a76b30d8c3f990286940411b389a0fcfadc638c98a2b4"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/detail-south-base-native.png",
+          "sha256": "303e323d5f6baacb1b939c95258adcf4a8fbcd7f0789d48fdebe99838cf32641"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/detail-west-approach-native.png",
+          "sha256": "39b1298be2d5e503d3465de19bf931363e5018a89108df361db72f6fd8d33400"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/detail-west-base-native.png",
+          "sha256": "536820bbced151b4cf7d2779bec70c7fffb5688c21dc0ce58e3c1d674e32be1a"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/room-east.png",
+          "sha256": "cf740f850f7513bd1d9f5c75bb7fc0f523893833ab9c03351de621bb76bf34d3"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/room-north.png",
+          "sha256": "b2bbd002a627a60df7967da1068a441565a04315facc7eb7deeba2e9fd698b12"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/room-south.png",
+          "sha256": "8f24d5555cbeacaf656fdeb3b007af3a797ef2aac1a6f7e017159cc5b6feebbc"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/room-west.png",
+          "sha256": "ab0a32d4d88305b83c54bbbe1a242fe09b5b755e8dafa7eaf163a10e34dc252e"
+        },
+        {
+          "path": "game/tests/output/water-station-v1/structural-results.json",
+          "sha256": "425810c0b276ed519070844c1013c252229ad1ff568f257255ddb3cbf3a18452"
+        }
+      ],
+      "history_guarantee": "Every v1 layer, whole, manifest, candidate sheet, actual-room sheet/detail/result and structural result is pinned byte-exact in the v2 manifest."
+    }
+  ]
+}

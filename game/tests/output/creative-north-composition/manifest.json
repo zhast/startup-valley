@@ -1,0 +1,1450 @@
+{
+	"actor_scale_reference_only": true,
+	"captures": [
+		"centered-unoccupied.png",
+		"centered-unoccupied-mira-option0-4x.png",
+		"centered-unoccupied-mira-option1-4x.png",
+		"centered-unoccupied-mira-option2-4x.png",
+		"centered-unoccupied-theo-option0-4x.png",
+		"centered-unoccupied-theo-option1-4x.png",
+		"centered-unoccupied-theo-option2-4x.png",
+		"centered-idle-frame0.png",
+		"centered-idle-frame0-mira-option0-4x.png",
+		"centered-idle-frame0-mira-option1-4x.png",
+		"centered-idle-frame0-mira-option2-4x.png",
+		"centered-idle-frame0-theo-option0-4x.png",
+		"centered-idle-frame0-theo-option1-4x.png",
+		"centered-idle-frame0-theo-option2-4x.png",
+		"centered-idle-frame1.png",
+		"centered-idle-frame1-mira-option0-4x.png",
+		"centered-idle-frame1-mira-option1-4x.png",
+		"centered-idle-frame1-mira-option2-4x.png",
+		"centered-idle-frame1-theo-option0-4x.png",
+		"centered-idle-frame1-theo-option1-4x.png",
+		"centered-idle-frame1-theo-option2-4x.png",
+		"parked_left-unoccupied.png",
+		"parked_left-unoccupied-mira-option0-4x.png",
+		"parked_left-unoccupied-mira-option1-4x.png",
+		"parked_left-unoccupied-mira-option2-4x.png",
+		"parked_left-unoccupied-theo-option0-4x.png",
+		"parked_left-unoccupied-theo-option1-4x.png",
+		"parked_left-unoccupied-theo-option2-4x.png",
+		"parked_left-idle-frame0.png",
+		"parked_left-idle-frame0-mira-option0-4x.png",
+		"parked_left-idle-frame0-mira-option1-4x.png",
+		"parked_left-idle-frame0-mira-option2-4x.png",
+		"parked_left-idle-frame0-theo-option0-4x.png",
+		"parked_left-idle-frame0-theo-option1-4x.png",
+		"parked_left-idle-frame0-theo-option2-4x.png",
+		"parked_left-idle-frame1.png",
+		"parked_left-idle-frame1-mira-option0-4x.png",
+		"parked_left-idle-frame1-mira-option1-4x.png",
+		"parked_left-idle-frame1-mira-option2-4x.png",
+		"parked_left-idle-frame1-theo-option0-4x.png",
+		"parked_left-idle-frame1-theo-option1-4x.png",
+		"parked_left-idle-frame1-theo-option2-4x.png",
+		"clearance-guides.png"
+	],
+	"checks": 857,
+	"columns": [
+		"plain_computer",
+		"tablet_with_monitor",
+		"tablet_only"
+	],
+	"failures": [],
+	"frames": [
+		0,
+		1
+	],
+	"layouts": [
+		"centered",
+		"parked_left"
+	],
+	"observations": [
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -20.0,
+			"chair_y_from_logical": -12,
+			"column": 0,
+			"id": "mira",
+			"idle_frame": 0,
+			"layout": "centered",
+			"opaque_device_intersections": {
+				"keyboard/monitor": 0,
+				"keyboard/mouse": 0,
+				"monitor/mouse": 0
+			},
+			"parts": {
+				"keyboard": {
+					"actor_projection_overlap": 289,
+					"bounds_on_host": [
+						-17.0,
+						-29.0,
+						31,
+						11
+					],
+					"conservative_wrist_box_overlap": 95,
+					"opaque_pixels": 337,
+					"wrist_source_ink_overlap": 47
+				},
+				"monitor": {
+					"actor_projection_overlap": 145,
+					"bounds_on_host": [
+						-16.0,
+						-73.0,
+						33,
+						30
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 833,
+					"wrist_source_ink_overlap": 0
+				},
+				"mouse": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						16.0,
+						-27.0,
+						6,
+						8
+					],
+					"conservative_wrist_box_overlap": 44,
+					"opaque_pixels": 44,
+					"wrist_source_ink_overlap": 0
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -20.0,
+			"chair_y_from_logical": -12,
+			"column": 1,
+			"id": "mira",
+			"idle_frame": 0,
+			"layout": "centered",
+			"opaque_device_intersections": {
+				"camera/monitor": 0,
+				"camera/swatches": 0,
+				"camera/tablet": 0,
+				"monitor/swatches": 0,
+				"monitor/tablet": 0,
+				"swatches/tablet": 0
+			},
+			"parts": {
+				"camera": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-41.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 130,
+					"wrist_source_ink_overlap": 0
+				},
+				"monitor": {
+					"actor_projection_overlap": 145,
+					"bounds_on_host": [
+						-16.0,
+						-73.0,
+						33,
+						30
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 833,
+					"wrist_source_ink_overlap": 0
+				},
+				"swatches": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						-38.0,
+						-32.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 95,
+					"wrist_source_ink_overlap": 0
+				},
+				"tablet": {
+					"actor_projection_overlap": 331,
+					"bounds_on_host": [
+						-13.0,
+						-33.0,
+						24,
+						15
+					],
+					"conservative_wrist_box_overlap": 21,
+					"opaque_pixels": 338,
+					"wrist_source_ink_overlap": 16
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -20.0,
+			"chair_y_from_logical": -12,
+			"column": 2,
+			"id": "mira",
+			"idle_frame": 0,
+			"layout": "centered",
+			"opaque_device_intersections": {
+				"camera/swatches": 0,
+				"camera/tablet": 0,
+				"swatches/tablet": 0
+			},
+			"parts": {
+				"camera": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-41.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 130,
+					"wrist_source_ink_overlap": 0
+				},
+				"swatches": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						-38.0,
+						-32.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 95,
+					"wrist_source_ink_overlap": 0
+				},
+				"tablet": {
+					"actor_projection_overlap": 331,
+					"bounds_on_host": [
+						-13.0,
+						-33.0,
+						24,
+						15
+					],
+					"conservative_wrist_box_overlap": 21,
+					"opaque_pixels": 338,
+					"wrist_source_ink_overlap": 16
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -16.0,
+			"chair_y_from_logical": -12,
+			"column": 0,
+			"id": "theo",
+			"idle_frame": 0,
+			"layout": "centered",
+			"opaque_device_intersections": {
+				"keyboard/monitor": 0,
+				"keyboard/mouse": 0,
+				"monitor/mouse": 0
+			},
+			"parts": {
+				"keyboard": {
+					"actor_projection_overlap": 247,
+					"bounds_on_host": [
+						-17.0,
+						-29.0,
+						31,
+						11
+					],
+					"conservative_wrist_box_overlap": 70,
+					"opaque_pixels": 337,
+					"wrist_source_ink_overlap": 26
+				},
+				"monitor": {
+					"actor_projection_overlap": 93,
+					"bounds_on_host": [
+						-16.0,
+						-73.0,
+						33,
+						30
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 833,
+					"wrist_source_ink_overlap": 0
+				},
+				"mouse": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						16.0,
+						-27.0,
+						6,
+						8
+					],
+					"conservative_wrist_box_overlap": 40,
+					"opaque_pixels": 44,
+					"wrist_source_ink_overlap": 0
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -16.0,
+			"chair_y_from_logical": -12,
+			"column": 1,
+			"id": "theo",
+			"idle_frame": 0,
+			"layout": "centered",
+			"opaque_device_intersections": {
+				"camera/monitor": 0,
+				"camera/swatches": 0,
+				"camera/tablet": 0,
+				"monitor/swatches": 0,
+				"monitor/tablet": 0,
+				"swatches/tablet": 0
+			},
+			"parts": {
+				"camera": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-41.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 130,
+					"wrist_source_ink_overlap": 0
+				},
+				"monitor": {
+					"actor_projection_overlap": 93,
+					"bounds_on_host": [
+						-16.0,
+						-73.0,
+						33,
+						30
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 833,
+					"wrist_source_ink_overlap": 0
+				},
+				"swatches": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						-38.0,
+						-32.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 95,
+					"wrist_source_ink_overlap": 0
+				},
+				"tablet": {
+					"actor_projection_overlap": 305,
+					"bounds_on_host": [
+						-13.0,
+						-33.0,
+						24,
+						15
+					],
+					"conservative_wrist_box_overlap": 13,
+					"opaque_pixels": 338,
+					"wrist_source_ink_overlap": 8
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -16.0,
+			"chair_y_from_logical": -12,
+			"column": 2,
+			"id": "theo",
+			"idle_frame": 0,
+			"layout": "centered",
+			"opaque_device_intersections": {
+				"camera/swatches": 0,
+				"camera/tablet": 0,
+				"swatches/tablet": 0
+			},
+			"parts": {
+				"camera": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-41.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 130,
+					"wrist_source_ink_overlap": 0
+				},
+				"swatches": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						-38.0,
+						-32.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 95,
+					"wrist_source_ink_overlap": 0
+				},
+				"tablet": {
+					"actor_projection_overlap": 305,
+					"bounds_on_host": [
+						-13.0,
+						-33.0,
+						24,
+						15
+					],
+					"conservative_wrist_box_overlap": 13,
+					"opaque_pixels": 338,
+					"wrist_source_ink_overlap": 8
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -20.0,
+			"chair_y_from_logical": -12,
+			"column": 0,
+			"id": "mira",
+			"idle_frame": 1,
+			"layout": "centered",
+			"opaque_device_intersections": {
+				"keyboard/monitor": 0,
+				"keyboard/mouse": 0,
+				"monitor/mouse": 0
+			},
+			"parts": {
+				"keyboard": {
+					"actor_projection_overlap": 284,
+					"bounds_on_host": [
+						-17.0,
+						-29.0,
+						31,
+						11
+					],
+					"conservative_wrist_box_overlap": 95,
+					"opaque_pixels": 337,
+					"wrist_source_ink_overlap": 42
+				},
+				"monitor": {
+					"actor_projection_overlap": 140,
+					"bounds_on_host": [
+						-16.0,
+						-73.0,
+						33,
+						30
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 833,
+					"wrist_source_ink_overlap": 0
+				},
+				"mouse": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						16.0,
+						-27.0,
+						6,
+						8
+					],
+					"conservative_wrist_box_overlap": 44,
+					"opaque_pixels": 44,
+					"wrist_source_ink_overlap": 0
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -20.0,
+			"chair_y_from_logical": -12,
+			"column": 1,
+			"id": "mira",
+			"idle_frame": 1,
+			"layout": "centered",
+			"opaque_device_intersections": {
+				"camera/monitor": 0,
+				"camera/swatches": 0,
+				"camera/tablet": 0,
+				"monitor/swatches": 0,
+				"monitor/tablet": 0,
+				"swatches/tablet": 0
+			},
+			"parts": {
+				"camera": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-41.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 130,
+					"wrist_source_ink_overlap": 0
+				},
+				"monitor": {
+					"actor_projection_overlap": 140,
+					"bounds_on_host": [
+						-16.0,
+						-73.0,
+						33,
+						30
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 833,
+					"wrist_source_ink_overlap": 0
+				},
+				"swatches": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						-38.0,
+						-32.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 95,
+					"wrist_source_ink_overlap": 0
+				},
+				"tablet": {
+					"actor_projection_overlap": 329,
+					"bounds_on_host": [
+						-13.0,
+						-33.0,
+						24,
+						15
+					],
+					"conservative_wrist_box_overlap": 21,
+					"opaque_pixels": 338,
+					"wrist_source_ink_overlap": 14
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -20.0,
+			"chair_y_from_logical": -12,
+			"column": 2,
+			"id": "mira",
+			"idle_frame": 1,
+			"layout": "centered",
+			"opaque_device_intersections": {
+				"camera/swatches": 0,
+				"camera/tablet": 0,
+				"swatches/tablet": 0
+			},
+			"parts": {
+				"camera": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-41.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 130,
+					"wrist_source_ink_overlap": 0
+				},
+				"swatches": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						-38.0,
+						-32.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 95,
+					"wrist_source_ink_overlap": 0
+				},
+				"tablet": {
+					"actor_projection_overlap": 329,
+					"bounds_on_host": [
+						-13.0,
+						-33.0,
+						24,
+						15
+					],
+					"conservative_wrist_box_overlap": 21,
+					"opaque_pixels": 338,
+					"wrist_source_ink_overlap": 14
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -16.0,
+			"chair_y_from_logical": -12,
+			"column": 0,
+			"id": "theo",
+			"idle_frame": 1,
+			"layout": "centered",
+			"opaque_device_intersections": {
+				"keyboard/monitor": 0,
+				"keyboard/mouse": 0,
+				"monitor/mouse": 0
+			},
+			"parts": {
+				"keyboard": {
+					"actor_projection_overlap": 244,
+					"bounds_on_host": [
+						-17.0,
+						-29.0,
+						31,
+						11
+					],
+					"conservative_wrist_box_overlap": 70,
+					"opaque_pixels": 337,
+					"wrist_source_ink_overlap": 24
+				},
+				"monitor": {
+					"actor_projection_overlap": 92,
+					"bounds_on_host": [
+						-16.0,
+						-73.0,
+						33,
+						30
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 833,
+					"wrist_source_ink_overlap": 0
+				},
+				"mouse": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						16.0,
+						-27.0,
+						6,
+						8
+					],
+					"conservative_wrist_box_overlap": 40,
+					"opaque_pixels": 44,
+					"wrist_source_ink_overlap": 0
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -16.0,
+			"chair_y_from_logical": -12,
+			"column": 1,
+			"id": "theo",
+			"idle_frame": 1,
+			"layout": "centered",
+			"opaque_device_intersections": {
+				"camera/monitor": 0,
+				"camera/swatches": 0,
+				"camera/tablet": 0,
+				"monitor/swatches": 0,
+				"monitor/tablet": 0,
+				"swatches/tablet": 0
+			},
+			"parts": {
+				"camera": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-41.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 130,
+					"wrist_source_ink_overlap": 0
+				},
+				"monitor": {
+					"actor_projection_overlap": 92,
+					"bounds_on_host": [
+						-16.0,
+						-73.0,
+						33,
+						30
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 833,
+					"wrist_source_ink_overlap": 0
+				},
+				"swatches": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						-38.0,
+						-32.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 95,
+					"wrist_source_ink_overlap": 0
+				},
+				"tablet": {
+					"actor_projection_overlap": 304,
+					"bounds_on_host": [
+						-13.0,
+						-33.0,
+						24,
+						15
+					],
+					"conservative_wrist_box_overlap": 13,
+					"opaque_pixels": 338,
+					"wrist_source_ink_overlap": 8
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -16.0,
+			"chair_y_from_logical": -12,
+			"column": 2,
+			"id": "theo",
+			"idle_frame": 1,
+			"layout": "centered",
+			"opaque_device_intersections": {
+				"camera/swatches": 0,
+				"camera/tablet": 0,
+				"swatches/tablet": 0
+			},
+			"parts": {
+				"camera": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-41.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 130,
+					"wrist_source_ink_overlap": 0
+				},
+				"swatches": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						-38.0,
+						-32.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 95,
+					"wrist_source_ink_overlap": 0
+				},
+				"tablet": {
+					"actor_projection_overlap": 304,
+					"bounds_on_host": [
+						-13.0,
+						-33.0,
+						24,
+						15
+					],
+					"conservative_wrist_box_overlap": 13,
+					"opaque_pixels": 338,
+					"wrist_source_ink_overlap": 8
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -20.0,
+			"chair_y_from_logical": -12,
+			"column": 0,
+			"id": "mira",
+			"idle_frame": 0,
+			"layout": "parked_left",
+			"opaque_device_intersections": {
+				"keyboard/monitor": 0,
+				"keyboard/mouse": 0,
+				"monitor/mouse": 0
+			},
+			"parts": {
+				"keyboard": {
+					"actor_projection_overlap": 289,
+					"bounds_on_host": [
+						-17.0,
+						-29.0,
+						31,
+						11
+					],
+					"conservative_wrist_box_overlap": 95,
+					"opaque_pixels": 337,
+					"wrist_source_ink_overlap": 47
+				},
+				"monitor": {
+					"actor_projection_overlap": 145,
+					"bounds_on_host": [
+						-16.0,
+						-73.0,
+						33,
+						30
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 833,
+					"wrist_source_ink_overlap": 0
+				},
+				"mouse": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						16.0,
+						-27.0,
+						6,
+						8
+					],
+					"conservative_wrist_box_overlap": 44,
+					"opaque_pixels": 44,
+					"wrist_source_ink_overlap": 0
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -20.0,
+			"chair_y_from_logical": -12,
+			"column": 1,
+			"id": "mira",
+			"idle_frame": 0,
+			"layout": "parked_left",
+			"opaque_device_intersections": {
+				"camera/monitor": 0,
+				"camera/swatches": 0,
+				"camera/tablet": 0,
+				"monitor/swatches": 0,
+				"monitor/tablet": 0,
+				"swatches/tablet": 0
+			},
+			"parts": {
+				"camera": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-43.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 130,
+					"wrist_source_ink_overlap": 0
+				},
+				"monitor": {
+					"actor_projection_overlap": 145,
+					"bounds_on_host": [
+						-16.0,
+						-73.0,
+						33,
+						30
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 833,
+					"wrist_source_ink_overlap": 0
+				},
+				"swatches": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-30.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 95,
+					"wrist_source_ink_overlap": 0
+				},
+				"tablet": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						-43.0,
+						-40.0,
+						24,
+						15
+					],
+					"conservative_wrist_box_overlap": 22,
+					"opaque_pixels": 338,
+					"wrist_source_ink_overlap": 0
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -20.0,
+			"chair_y_from_logical": -12,
+			"column": 2,
+			"id": "mira",
+			"idle_frame": 0,
+			"layout": "parked_left",
+			"opaque_device_intersections": {
+				"camera/swatches": 0,
+				"camera/tablet": 0,
+				"swatches/tablet": 0
+			},
+			"parts": {
+				"camera": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-43.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 130,
+					"wrist_source_ink_overlap": 0
+				},
+				"swatches": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-30.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 95,
+					"wrist_source_ink_overlap": 0
+				},
+				"tablet": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						-43.0,
+						-40.0,
+						24,
+						15
+					],
+					"conservative_wrist_box_overlap": 22,
+					"opaque_pixels": 338,
+					"wrist_source_ink_overlap": 0
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -16.0,
+			"chair_y_from_logical": -12,
+			"column": 0,
+			"id": "theo",
+			"idle_frame": 0,
+			"layout": "parked_left",
+			"opaque_device_intersections": {
+				"keyboard/monitor": 0,
+				"keyboard/mouse": 0,
+				"monitor/mouse": 0
+			},
+			"parts": {
+				"keyboard": {
+					"actor_projection_overlap": 247,
+					"bounds_on_host": [
+						-17.0,
+						-29.0,
+						31,
+						11
+					],
+					"conservative_wrist_box_overlap": 70,
+					"opaque_pixels": 337,
+					"wrist_source_ink_overlap": 26
+				},
+				"monitor": {
+					"actor_projection_overlap": 93,
+					"bounds_on_host": [
+						-16.0,
+						-73.0,
+						33,
+						30
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 833,
+					"wrist_source_ink_overlap": 0
+				},
+				"mouse": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						16.0,
+						-27.0,
+						6,
+						8
+					],
+					"conservative_wrist_box_overlap": 40,
+					"opaque_pixels": 44,
+					"wrist_source_ink_overlap": 0
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -16.0,
+			"chair_y_from_logical": -12,
+			"column": 1,
+			"id": "theo",
+			"idle_frame": 0,
+			"layout": "parked_left",
+			"opaque_device_intersections": {
+				"camera/monitor": 0,
+				"camera/swatches": 0,
+				"camera/tablet": 0,
+				"monitor/swatches": 0,
+				"monitor/tablet": 0,
+				"swatches/tablet": 0
+			},
+			"parts": {
+				"camera": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-43.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 130,
+					"wrist_source_ink_overlap": 0
+				},
+				"monitor": {
+					"actor_projection_overlap": 93,
+					"bounds_on_host": [
+						-16.0,
+						-73.0,
+						33,
+						30
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 833,
+					"wrist_source_ink_overlap": 0
+				},
+				"swatches": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-30.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 95,
+					"wrist_source_ink_overlap": 0
+				},
+				"tablet": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						-43.0,
+						-40.0,
+						24,
+						15
+					],
+					"conservative_wrist_box_overlap": 3,
+					"opaque_pixels": 338,
+					"wrist_source_ink_overlap": 0
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -16.0,
+			"chair_y_from_logical": -12,
+			"column": 2,
+			"id": "theo",
+			"idle_frame": 0,
+			"layout": "parked_left",
+			"opaque_device_intersections": {
+				"camera/swatches": 0,
+				"camera/tablet": 0,
+				"swatches/tablet": 0
+			},
+			"parts": {
+				"camera": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-43.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 130,
+					"wrist_source_ink_overlap": 0
+				},
+				"swatches": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-30.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 95,
+					"wrist_source_ink_overlap": 0
+				},
+				"tablet": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						-43.0,
+						-40.0,
+						24,
+						15
+					],
+					"conservative_wrist_box_overlap": 3,
+					"opaque_pixels": 338,
+					"wrist_source_ink_overlap": 0
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -20.0,
+			"chair_y_from_logical": -12,
+			"column": 0,
+			"id": "mira",
+			"idle_frame": 1,
+			"layout": "parked_left",
+			"opaque_device_intersections": {
+				"keyboard/monitor": 0,
+				"keyboard/mouse": 0,
+				"monitor/mouse": 0
+			},
+			"parts": {
+				"keyboard": {
+					"actor_projection_overlap": 284,
+					"bounds_on_host": [
+						-17.0,
+						-29.0,
+						31,
+						11
+					],
+					"conservative_wrist_box_overlap": 95,
+					"opaque_pixels": 337,
+					"wrist_source_ink_overlap": 42
+				},
+				"monitor": {
+					"actor_projection_overlap": 140,
+					"bounds_on_host": [
+						-16.0,
+						-73.0,
+						33,
+						30
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 833,
+					"wrist_source_ink_overlap": 0
+				},
+				"mouse": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						16.0,
+						-27.0,
+						6,
+						8
+					],
+					"conservative_wrist_box_overlap": 44,
+					"opaque_pixels": 44,
+					"wrist_source_ink_overlap": 0
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -20.0,
+			"chair_y_from_logical": -12,
+			"column": 1,
+			"id": "mira",
+			"idle_frame": 1,
+			"layout": "parked_left",
+			"opaque_device_intersections": {
+				"camera/monitor": 0,
+				"camera/swatches": 0,
+				"camera/tablet": 0,
+				"monitor/swatches": 0,
+				"monitor/tablet": 0,
+				"swatches/tablet": 0
+			},
+			"parts": {
+				"camera": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-43.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 130,
+					"wrist_source_ink_overlap": 0
+				},
+				"monitor": {
+					"actor_projection_overlap": 140,
+					"bounds_on_host": [
+						-16.0,
+						-73.0,
+						33,
+						30
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 833,
+					"wrist_source_ink_overlap": 0
+				},
+				"swatches": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-30.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 95,
+					"wrist_source_ink_overlap": 0
+				},
+				"tablet": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						-43.0,
+						-40.0,
+						24,
+						15
+					],
+					"conservative_wrist_box_overlap": 22,
+					"opaque_pixels": 338,
+					"wrist_source_ink_overlap": 0
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -20.0,
+			"chair_y_from_logical": -12,
+			"column": 2,
+			"id": "mira",
+			"idle_frame": 1,
+			"layout": "parked_left",
+			"opaque_device_intersections": {
+				"camera/swatches": 0,
+				"camera/tablet": 0,
+				"swatches/tablet": 0
+			},
+			"parts": {
+				"camera": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-43.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 130,
+					"wrist_source_ink_overlap": 0
+				},
+				"swatches": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-30.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 95,
+					"wrist_source_ink_overlap": 0
+				},
+				"tablet": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						-43.0,
+						-40.0,
+						24,
+						15
+					],
+					"conservative_wrist_box_overlap": 22,
+					"opaque_pixels": 338,
+					"wrist_source_ink_overlap": 0
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -16.0,
+			"chair_y_from_logical": -12,
+			"column": 0,
+			"id": "theo",
+			"idle_frame": 1,
+			"layout": "parked_left",
+			"opaque_device_intersections": {
+				"keyboard/monitor": 0,
+				"keyboard/mouse": 0,
+				"monitor/mouse": 0
+			},
+			"parts": {
+				"keyboard": {
+					"actor_projection_overlap": 244,
+					"bounds_on_host": [
+						-17.0,
+						-29.0,
+						31,
+						11
+					],
+					"conservative_wrist_box_overlap": 70,
+					"opaque_pixels": 337,
+					"wrist_source_ink_overlap": 24
+				},
+				"monitor": {
+					"actor_projection_overlap": 92,
+					"bounds_on_host": [
+						-16.0,
+						-73.0,
+						33,
+						30
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 833,
+					"wrist_source_ink_overlap": 0
+				},
+				"mouse": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						16.0,
+						-27.0,
+						6,
+						8
+					],
+					"conservative_wrist_box_overlap": 40,
+					"opaque_pixels": 44,
+					"wrist_source_ink_overlap": 0
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -16.0,
+			"chair_y_from_logical": -12,
+			"column": 1,
+			"id": "theo",
+			"idle_frame": 1,
+			"layout": "parked_left",
+			"opaque_device_intersections": {
+				"camera/monitor": 0,
+				"camera/swatches": 0,
+				"camera/tablet": 0,
+				"monitor/swatches": 0,
+				"monitor/tablet": 0,
+				"swatches/tablet": 0
+			},
+			"parts": {
+				"camera": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-43.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 130,
+					"wrist_source_ink_overlap": 0
+				},
+				"monitor": {
+					"actor_projection_overlap": 92,
+					"bounds_on_host": [
+						-16.0,
+						-73.0,
+						33,
+						30
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 833,
+					"wrist_source_ink_overlap": 0
+				},
+				"swatches": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-30.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 95,
+					"wrist_source_ink_overlap": 0
+				},
+				"tablet": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						-43.0,
+						-40.0,
+						24,
+						15
+					],
+					"conservative_wrist_box_overlap": 3,
+					"opaque_pixels": 338,
+					"wrist_source_ink_overlap": 0
+				}
+			}
+		},
+		{
+			"actor_scale_reference_only": true,
+			"actor_y_from_logical": -16.0,
+			"chair_y_from_logical": -12,
+			"column": 2,
+			"id": "theo",
+			"idle_frame": 1,
+			"layout": "parked_left",
+			"opaque_device_intersections": {
+				"camera/swatches": 0,
+				"camera/tablet": 0,
+				"swatches/tablet": 0
+			},
+			"parts": {
+				"camera": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-43.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 130,
+					"wrist_source_ink_overlap": 0
+				},
+				"swatches": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						28.0,
+						-30.0,
+						12,
+						12
+					],
+					"conservative_wrist_box_overlap": 0,
+					"opaque_pixels": 95,
+					"wrist_source_ink_overlap": 0
+				},
+				"tablet": {
+					"actor_projection_overlap": 0,
+					"bounds_on_host": [
+						-43.0,
+						-40.0,
+						24,
+						15
+					],
+					"conservative_wrist_box_overlap": 3,
+					"opaque_pixels": 338,
+					"wrist_source_ink_overlap": 0
+				}
+			}
+		}
+	],
+	"source_hashes": {
+		"res://tests/fixtures/furniture-calibration/chair-north-v1.png": "fbbb839f66a35359b11fe440f9723d7f07a26190b8ce5bbce5afbf415b538746",
+		"res://tests/fixtures/furniture-calibration/characters/mira-north-seated-v2.png": "5fc87311f460f08ef8cda15a43de550a46670295966b228619d4883a7b6e8e23",
+		"res://tests/fixtures/furniture-calibration/characters/theo-north-seated-v2.png": "064e962c64b0ca491c25d90180fecb10dbcf9420ee89a0525252d0c899b3d5b3",
+		"res://tests/fixtures/furniture-calibration/kits/computer-north-v2-keyboard.png": "06bd27ffeb1b84e881c55e310823d849edb12263e5cb726fee6c7a47c799c43c",
+		"res://tests/fixtures/furniture-calibration/kits/computer-north-v2-monitor.png": "71ae737643cc5c68e9a195d67428db923d57f5464b3e6df4389034603d826b52",
+		"res://tests/fixtures/furniture-calibration/kits/computer-north-v2-mouse.png": "b60dd31d9192b6f705945382951562f6d2a2a658c3cfd6e46744e3f687214116",
+		"res://tests/fixtures/furniture-calibration/materials/oak-horizontal-v1-soft.png": "b312c2b0abf5e25366d91faead88452e38472f6a0cf85d21a6d0063c05617c85",
+		"res://tests/fixtures/furniture-calibration/materials/oak-vertical-v1-soft.png": "6f9e47dcb413c0c2efea5a14b174b8d9f2826939149a553abe5dd4723be54de3",
+		"res://tests/fixtures/furniture-calibration/roles/creative-north-v1-camera.png": "a0c7d07071729e61ab86139ccc691d904b591b4dbd1312cd4c6b097fd579cc46",
+		"res://tests/fixtures/furniture-calibration/roles/creative-north-v1-swatches.png": "78422ad57dde60effbcaf5289f91552103db9de911d1538e1803984e659e08bd",
+		"res://tests/fixtures/furniture-calibration/roles/creative-north-v1-tablet.png": "c62166dbc4392088223de1e81670b237717870e2dd5a620fe7e3af2d1bf97875"
+	},
+	"source_or_production_changed": false,
+	"status": "staged_native_room_composition_not_runtime_approved",
+	"stylus_use_animation": false,
+	"workerDisabled": true
+}

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="224" viewBox="0 0 192 224" shape-rendering="crispEdges">
+  <!-- Independently specified west-facing geometry guide, not a bitmap flip.
+       Light remains upper-left; worker is east; outside cable tray is west. -->
+  <path fill="#151515" d="M82 176h7v32h-7zM103 176h7v32h-7z"/>
+  <path fill="#4b535d" d="M83 180h4v26h-4zM104 180h4v26h-4z"/>
+  <path fill="#151515" d="M76 119h6v47h-6z"/>
+  <path fill="#354b98" d="M77 121h3v43h-3z"/>
+  <path fill="#4a2b18" d="M80 80h32v100H80z"/>
+  <path fill="#b96b29" d="M81 81h30v94H81z"/>
+  <path fill="#d9913e" d="M81 81h30v1H82v93h-1z"/>
+  <path fill="#7e411c" d="M81 176h30v3H81z"/>
+</svg>

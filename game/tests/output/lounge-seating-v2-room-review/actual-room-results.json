@@ -1,0 +1,395 @@
+{
+	"captures": [
+		"res://tests/output/lounge-seating-v2-room-review/lounge-pair-north-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-north-base-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-north-base-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-north-founder-behind-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-north-founder-behind-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-north-founder-behind-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-north-founder-front-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-north-founder-front-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-north-founder-front-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-north-base-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-north-base-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-north-mira-behind-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-north-mira-behind-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-north-mira-behind-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-north-mira-front-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-north-mira-front-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-north-mira-front-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge-pair-east-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-east-base-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-east-base-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-east-founder-behind-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-east-founder-behind-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-east-founder-behind-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-east-founder-front-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-east-founder-front-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-east-founder-front-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-east-base-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-east-base-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-east-mira-behind-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-east-mira-behind-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-east-mira-behind-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-east-mira-front-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-east-mira-front-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-east-mira-front-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge-pair-south-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-south-base-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-south-base-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-south-founder-behind-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-south-founder-behind-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-south-founder-behind-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-south-founder-front-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-south-founder-front-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-south-founder-front-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-south-base-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-south-base-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-south-mira-behind-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-south-mira-behind-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-south-mira-behind-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-south-mira-front-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-south-mira-front-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-south-mira-front-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge-pair-west-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-west-base-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-west-base-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-west-founder-behind-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-west-founder-behind-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-west-founder-behind-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-west-founder-front-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-west-founder-front-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/two_seat_sofa-west-founder-front-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-west-base-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-west-base-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-west-mira-behind-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-west-mira-behind-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-west-mira-behind-4x.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-west-mira-front-room.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-west-mira-front-native.png",
+		"res://tests/output/lounge-seating-v2-room-review/lounge_armchair-west-mira-front-4x.png"
+	],
+	"checks": 287,
+	"date": "2026-09-06",
+	"failures": [],
+	"limitations": [
+		"Bare passive upholstery only: no seat socket, Sit action, reservation, actor pose, worker behavior, save data or production registration.",
+		"Actor probes establish native scale and front/rear depth only; they do not approve seated silhouettes.",
+		"Visual approval requires native and 4x inspection; check counts are geometry evidence only."
+	],
+	"observations": {
+		"east": {
+			"lounge_armchair": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							24,
+							11
+						],
+						"evidence_kind": "opaque_depth",
+						"opaque_overlap": 64,
+						"subcell_offset": [
+							0.0,
+							0.0
+						],
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							24,
+							14
+						],
+						"evidence_kind": "opaque_depth",
+						"opaque_overlap": 498,
+						"subcell_offset": [
+							0.0,
+							0.0
+						],
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-lounge-armchair: Footprint intersects a wall or room boundary",
+					"dev-lounge-armchair: Artwork extends into a wall; move furniture farther inward"
+				]
+			},
+			"two_seat_sofa": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							10,
+							11
+						],
+						"evidence_kind": "safe_clearance",
+						"opaque_overlap": 0,
+						"subcell_offset": [
+							0.0,
+							0.0
+						],
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							10,
+							15
+						],
+						"evidence_kind": "opaque_depth",
+						"opaque_overlap": 860,
+						"subcell_offset": [
+							0.0,
+							0.0
+						],
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-two-seat-sofa: Footprint intersects a wall or room boundary",
+					"dev-two-seat-sofa: Artwork extends into a wall; move furniture farther inward"
+				]
+			}
+		},
+		"north": {
+			"lounge_armchair": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							24,
+							11
+						],
+						"evidence_kind": "opaque_depth",
+						"opaque_overlap": 113,
+						"subcell_offset": [
+							0.0,
+							0.0
+						],
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							24,
+							14
+						],
+						"evidence_kind": "opaque_depth",
+						"opaque_overlap": 651,
+						"subcell_offset": [
+							0.0,
+							0.0
+						],
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-lounge-armchair: Footprint intersects a wall or room boundary",
+					"dev-lounge-armchair: Artwork extends into a wall; move furniture farther inward"
+				]
+			},
+			"two_seat_sofa": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							10,
+							11
+						],
+						"evidence_kind": "opaque_depth",
+						"opaque_overlap": 267,
+						"subcell_offset": [
+							0.0,
+							0.0
+						],
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							10,
+							14
+						],
+						"evidence_kind": "opaque_depth",
+						"opaque_overlap": 769,
+						"subcell_offset": [
+							0.0,
+							0.0
+						],
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-two-seat-sofa: Footprint intersects a wall or room boundary",
+					"dev-two-seat-sofa: Artwork extends into a wall; move furniture farther inward"
+				]
+			}
+		},
+		"south": {
+			"lounge_armchair": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							24,
+							12
+						],
+						"evidence_kind": "opaque_depth",
+						"opaque_overlap": 115,
+						"subcell_offset": [
+							0.0,
+							0.0
+						],
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							24,
+							15
+						],
+						"evidence_kind": "opaque_depth",
+						"opaque_overlap": 658,
+						"subcell_offset": [
+							0.0,
+							0.0
+						],
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-lounge-armchair: Artwork extends into a wall; move furniture farther inward"
+				]
+			},
+			"two_seat_sofa": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							10,
+							12
+						],
+						"evidence_kind": "opaque_depth",
+						"opaque_overlap": 267,
+						"subcell_offset": [
+							0.0,
+							0.0
+						],
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							10,
+							15
+						],
+						"evidence_kind": "opaque_depth",
+						"opaque_overlap": 769,
+						"subcell_offset": [
+							0.0,
+							0.0
+						],
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-two-seat-sofa: Footprint intersects a wall or room boundary",
+					"dev-two-seat-sofa: Artwork extends into a wall; move furniture farther inward"
+				]
+			}
+		},
+		"west": {
+			"lounge_armchair": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							24,
+							12
+						],
+						"evidence_kind": "opaque_depth",
+						"opaque_overlap": 68,
+						"subcell_offset": [
+							0.0,
+							0.0
+						],
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							24,
+							15
+						],
+						"evidence_kind": "opaque_depth",
+						"opaque_overlap": 491,
+						"subcell_offset": [
+							0.0,
+							0.0
+						],
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-lounge-armchair: Footprint intersects a wall or room boundary",
+					"dev-lounge-armchair: Artwork extends into a wall; move furniture farther inward"
+				]
+			},
+			"two_seat_sofa": {
+				"actor_depth": {
+					"behind": {
+						"cell": [
+							10,
+							11
+						],
+						"evidence_kind": "safe_clearance",
+						"opaque_overlap": 0,
+						"subcell_offset": [
+							0.0,
+							0.0
+						],
+						"wrong_depth": 0
+					},
+					"front": {
+						"cell": [
+							10,
+							15
+						],
+						"evidence_kind": "opaque_depth",
+						"opaque_overlap": 860,
+						"subcell_offset": [
+							0.0,
+							0.0
+						],
+						"wrong_depth": 0
+					}
+				},
+				"corner_rejection": [
+					"dev-two-seat-sofa: Footprint intersects a wall or room boundary",
+					"dev-two-seat-sofa: Artwork extends into a wall; move furniture farther inward"
+				]
+			}
+		}
+	},
+	"renderer": "macOS",
+	"routes": {
+		"lounge_armchair": {
+			"actor": "mira",
+			"start": [
+				19,
+				16
+			],
+			"target": [
+				29,
+				16
+			],
+			"waypoints": 10
+		},
+		"two_seat_sofa": {
+			"actor": "founder",
+			"start": [
+				5,
+				16
+			],
+			"target": [
+				15,
+				16
+			],
+			"waypoints": 10
+		}
+	},
+	"save_access": false,
+	"status": "two_passive_lounge_candidates_not_runtime_registered",
+	"viewport": [
+		1280,
+		720
+	],
+	"worker_disabled": true
+}

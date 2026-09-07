@@ -1,0 +1,532 @@
+{
+	"captures": [
+		"res://tests/output/base-furniture-review-2026-09-06/compact_desk-north-base-room.png",
+		"res://tests/output/base-furniture-review-2026-09-06/compact_desk-north-base-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/compact_desk-north-actor-room.png",
+		"res://tests/output/base-furniture-review-2026-09-06/compact_desk-north-actor-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/compact_desk-east-base-room.png",
+		"res://tests/output/base-furniture-review-2026-09-06/compact_desk-east-base-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/compact_desk-east-actor-room.png",
+		"res://tests/output/base-furniture-review-2026-09-06/compact_desk-east-actor-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/compact_desk-south-base-room.png",
+		"res://tests/output/base-furniture-review-2026-09-06/compact_desk-south-base-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/compact_desk-south-actor-room.png",
+		"res://tests/output/base-furniture-review-2026-09-06/compact_desk-south-actor-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/compact_desk-west-base-room.png",
+		"res://tests/output/base-furniture-review-2026-09-06/compact_desk-west-base-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/compact_desk-west-actor-room.png",
+		"res://tests/output/base-furniture-review-2026-09-06/compact_desk-west-actor-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/compact_desk-actual-room-base-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/compact_desk-actual-room-actor-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/compact_desk-actual-room-actor-4x.png",
+		"res://tests/output/base-furniture-review-2026-09-06/shared_workbench-north-base-room.png",
+		"res://tests/output/base-furniture-review-2026-09-06/shared_workbench-north-base-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/shared_workbench-north-actor-room.png",
+		"res://tests/output/base-furniture-review-2026-09-06/shared_workbench-north-actor-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/shared_workbench-east-base-room.png",
+		"res://tests/output/base-furniture-review-2026-09-06/shared_workbench-east-base-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/shared_workbench-east-actor-room.png",
+		"res://tests/output/base-furniture-review-2026-09-06/shared_workbench-east-actor-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/shared_workbench-south-base-room.png",
+		"res://tests/output/base-furniture-review-2026-09-06/shared_workbench-south-base-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/shared_workbench-south-actor-room.png",
+		"res://tests/output/base-furniture-review-2026-09-06/shared_workbench-south-actor-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/shared_workbench-west-base-room.png",
+		"res://tests/output/base-furniture-review-2026-09-06/shared_workbench-west-base-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/shared_workbench-west-actor-room.png",
+		"res://tests/output/base-furniture-review-2026-09-06/shared_workbench-west-actor-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/shared_workbench-actual-room-base-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/shared_workbench-actual-room-actor-native.png",
+		"res://tests/output/base-furniture-review-2026-09-06/shared_workbench-actual-room-actor-4x.png"
+	],
+	"change_scope": "floor shadow only; all v1 structure, geometry and overlay ownership retained",
+	"checks": 173,
+	"date": "2026-09-06",
+	"default_layout_mutated": false,
+	"failures": [],
+	"limitations": [
+		"The founder is an adjacent native scale/occlusion probe only; optional chairs, devices, tools and seated lifecycle remain separately owned.",
+		"Existing v1 route, wall, corner, collision and picking evidence remains applicable because v2 changes no geometry or structure pixels."
+	],
+	"observations": {
+		"compact_desk": {
+			"east": {
+				"actor_cell": [
+					11,
+					13
+				],
+				"grid": [
+					12,
+					13
+				],
+				"occupied_cells": 2,
+				"render_layers": [
+					{
+						"art": "res://tests/fixtures/furniture-calibration/compact-desk-v2/east-floor_shadow.png",
+						"name": "CompactDeskFloorShadow",
+						"offset": [
+							0,
+							-32
+						],
+						"region": [
+							0,
+							0,
+							160,
+							192
+						],
+						"z_offset": -2
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/compact-desk-v2/east-rear_structure.png",
+						"name": "CompactDeskRearStructure",
+						"offset": [
+							0,
+							-32
+						],
+						"region": [
+							0,
+							0,
+							160,
+							192
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/compact-desk-v2/east-front_structure.png",
+						"name": "CompactDeskFrontStructure",
+						"offset": [
+							0,
+							-32
+						],
+						"region": [
+							0,
+							0,
+							160,
+							192
+						],
+						"z_offset": 1
+					}
+				]
+			},
+			"north": {
+				"actor_cell": [
+					12,
+					14
+				],
+				"grid": [
+					12,
+					13
+				],
+				"occupied_cells": 2,
+				"render_layers": [
+					{
+						"art": "res://tests/fixtures/furniture-calibration/compact-desk-v2/north-floor_shadow.png",
+						"name": "CompactDeskFloorShadow",
+						"offset": [
+							0,
+							-32
+						],
+						"region": [
+							0,
+							0,
+							160,
+							192
+						],
+						"z_offset": -2
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/compact-desk-v2/north-rear_structure.png",
+						"name": "CompactDeskRearStructure",
+						"offset": [
+							0,
+							-32
+						],
+						"region": [
+							0,
+							0,
+							160,
+							192
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/compact-desk-v2/north-front_structure.png",
+						"name": "CompactDeskFrontStructure",
+						"offset": [
+							0,
+							-32
+						],
+						"region": [
+							0,
+							0,
+							160,
+							192
+						],
+						"z_offset": 1
+					}
+				]
+			},
+			"south": {
+				"actor_cell": [
+					12,
+					12
+				],
+				"grid": [
+					12,
+					13
+				],
+				"occupied_cells": 2,
+				"render_layers": [
+					{
+						"art": "res://tests/fixtures/furniture-calibration/compact-desk-v2/south-floor_shadow.png",
+						"name": "CompactDeskFloorShadow",
+						"offset": [
+							0,
+							-32
+						],
+						"region": [
+							0,
+							0,
+							160,
+							192
+						],
+						"z_offset": -2
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/compact-desk-v2/south-rear_structure.png",
+						"name": "CompactDeskRearStructure",
+						"offset": [
+							0,
+							-32
+						],
+						"region": [
+							0,
+							0,
+							160,
+							192
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/compact-desk-v2/south-front_structure.png",
+						"name": "CompactDeskFrontStructure",
+						"offset": [
+							0,
+							-32
+						],
+						"region": [
+							0,
+							0,
+							160,
+							192
+						],
+						"z_offset": 1
+					}
+				]
+			},
+			"west": {
+				"actor_cell": [
+					13,
+					13
+				],
+				"grid": [
+					12,
+					13
+				],
+				"occupied_cells": 2,
+				"render_layers": [
+					{
+						"art": "res://tests/fixtures/furniture-calibration/compact-desk-v2/west-floor_shadow.png",
+						"name": "CompactDeskFloorShadow",
+						"offset": [
+							0,
+							-32
+						],
+						"region": [
+							0,
+							0,
+							160,
+							192
+						],
+						"z_offset": -2
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/compact-desk-v2/west-rear_structure.png",
+						"name": "CompactDeskRearStructure",
+						"offset": [
+							0,
+							-32
+						],
+						"region": [
+							0,
+							0,
+							160,
+							192
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/compact-desk-v2/west-front_structure.png",
+						"name": "CompactDeskFrontStructure",
+						"offset": [
+							0,
+							-32
+						],
+						"region": [
+							0,
+							0,
+							160,
+							192
+						],
+						"z_offset": 1
+					}
+				]
+			}
+		},
+		"shared_workbench": {
+			"east": {
+				"actor_cell": [
+					11,
+					14
+				],
+				"grid": [
+					12,
+					14
+				],
+				"occupied_cells": 5,
+				"render_layers": [
+					{
+						"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/east-floor_shadow.png",
+						"name": "SharedWorkbenchFloorShadow",
+						"offset": [
+							0,
+							-56
+						],
+						"region": [
+							0,
+							0,
+							256,
+							304
+						],
+						"z_offset": -2
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/east-rear_structure.png",
+						"name": "SharedWorkbenchRearStructure",
+						"offset": [
+							0,
+							-56
+						],
+						"region": [
+							0,
+							0,
+							256,
+							304
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/east-front_structure.png",
+						"name": "SharedWorkbenchFrontStructure",
+						"offset": [
+							0,
+							-56
+						],
+						"region": [
+							0,
+							0,
+							256,
+							304
+						],
+						"z_offset": 1
+					}
+				]
+			},
+			"north": {
+				"actor_cell": [
+					12,
+					15
+				],
+				"grid": [
+					12,
+					14
+				],
+				"occupied_cells": 5,
+				"render_layers": [
+					{
+						"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/north-floor_shadow.png",
+						"name": "SharedWorkbenchFloorShadow",
+						"offset": [
+							0,
+							-56
+						],
+						"region": [
+							0,
+							0,
+							256,
+							304
+						],
+						"z_offset": -2
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/north-rear_structure.png",
+						"name": "SharedWorkbenchRearStructure",
+						"offset": [
+							0,
+							-56
+						],
+						"region": [
+							0,
+							0,
+							256,
+							304
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/north-front_structure.png",
+						"name": "SharedWorkbenchFrontStructure",
+						"offset": [
+							0,
+							-56
+						],
+						"region": [
+							0,
+							0,
+							256,
+							304
+						],
+						"z_offset": 1
+					}
+				]
+			},
+			"south": {
+				"actor_cell": [
+					12,
+					13
+				],
+				"grid": [
+					12,
+					14
+				],
+				"occupied_cells": 5,
+				"render_layers": [
+					{
+						"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/south-floor_shadow.png",
+						"name": "SharedWorkbenchFloorShadow",
+						"offset": [
+							0,
+							-56
+						],
+						"region": [
+							0,
+							0,
+							256,
+							304
+						],
+						"z_offset": -2
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/south-rear_structure.png",
+						"name": "SharedWorkbenchRearStructure",
+						"offset": [
+							0,
+							-56
+						],
+						"region": [
+							0,
+							0,
+							256,
+							304
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/south-front_structure.png",
+						"name": "SharedWorkbenchFrontStructure",
+						"offset": [
+							0,
+							-56
+						],
+						"region": [
+							0,
+							0,
+							256,
+							304
+						],
+						"z_offset": 1
+					}
+				]
+			},
+			"west": {
+				"actor_cell": [
+					13,
+					14
+				],
+				"grid": [
+					12,
+					14
+				],
+				"occupied_cells": 5,
+				"render_layers": [
+					{
+						"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/west-floor_shadow.png",
+						"name": "SharedWorkbenchFloorShadow",
+						"offset": [
+							0,
+							-56
+						],
+						"region": [
+							0,
+							0,
+							256,
+							304
+						],
+						"z_offset": -2
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/west-rear_structure.png",
+						"name": "SharedWorkbenchRearStructure",
+						"offset": [
+							0,
+							-56
+						],
+						"region": [
+							0,
+							0,
+							256,
+							304
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/west-front_structure.png",
+						"name": "SharedWorkbenchFrontStructure",
+						"offset": [
+							0,
+							-56
+						],
+						"region": [
+							0,
+							0,
+							256,
+							304
+						],
+						"z_offset": 1
+					}
+				]
+			}
+		}
+	},
+	"production_catalogue_mutated": false,
+	"renderer": "macOS",
+	"runtime_registered": false,
+	"save_access": false,
+	"shared_art_catalogue_mutated": false,
+	"status": "base_only_native_review_candidate_not_runtime_registered",
+	"viewport": [
+		1280,
+		720
+	],
+	"worker_disabled": true
+}

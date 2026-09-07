@@ -1,0 +1,596 @@
+{
+	"captures": [
+		"res://tests/output/shared-workbench/detail-north-base-native.png",
+		"res://tests/output/shared-workbench/room-north.png",
+		"res://tests/output/shared-workbench/detail-north-approach-native.png",
+		"res://tests/output/shared-workbench/detail-east-base-native.png",
+		"res://tests/output/shared-workbench/room-east.png",
+		"res://tests/output/shared-workbench/detail-east-approach-native.png",
+		"res://tests/output/shared-workbench/detail-south-base-native.png",
+		"res://tests/output/shared-workbench/room-south.png",
+		"res://tests/output/shared-workbench/detail-south-approach-native.png",
+		"res://tests/output/shared-workbench/detail-west-base-native.png",
+		"res://tests/output/shared-workbench/room-west.png",
+		"res://tests/output/shared-workbench/detail-west-approach-native.png",
+		"res://tests/output/shared-workbench/actual-room-base-contact-sheet-native.png",
+		"res://tests/output/shared-workbench/actual-room-approach-contact-sheet-native.png",
+		"res://tests/output/shared-workbench/actual-room-approach-contact-sheet-4x.png"
+	],
+	"checks": 462,
+	"common_safe_pivot": [
+		12,
+		14
+	],
+	"default_layout_mutated": false,
+	"dev_catalogue_registered": false,
+	"failures": [],
+	"limitations": [
+		"Founder standing locomotion is only a scale, route, contact, and occlusion probe; no two-actor reservation, paired seated pose, chair assembly, or shared work lifecycle is claimed.",
+		"The room carrier is passive so visible-surface picking deliberately yields no action.",
+		"Two chairs, two devices, and two role-overlay fits remain separate reviews."
+	],
+	"observations": {
+		"east": {
+			"clearance": [
+				[
+					11,
+					13
+				],
+				[
+					11,
+					14
+				],
+				[
+					11,
+					15
+				]
+			],
+			"collision_shapes": 5,
+			"founder_approach": {
+				"bay_route_points": {
+					"[-1, -1]": 11,
+					"[-1, 1]": 9
+				},
+				"destination": [
+					368.0,
+					464.0
+				],
+				"destination_cell": [
+					11,
+					14
+				],
+				"initial_route_points": 10,
+				"samples": [
+					[
+						560.0,
+						592.0
+					],
+					[
+						496.0,
+						572.0
+					],
+					[
+						368.0,
+						464.0
+					]
+				],
+				"start": [
+					560.0,
+					592.0
+				],
+				"traveled_px": 315.155494213104
+			},
+			"grid": [
+				12,
+				14
+			],
+			"occupied": [
+				[
+					12,
+					12
+				],
+				[
+					12,
+					13
+				],
+				[
+					12,
+					14
+				],
+				[
+					12,
+					15
+				],
+				[
+					12,
+					16
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/east-floor_shadow.png",
+					"name": "SharedWorkbenchFloorShadow",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/east-rear_structure.png",
+					"name": "SharedWorkbenchRearStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/east-front_structure.png",
+					"name": "SharedWorkbenchFrontStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"z_offset": 1
+				}
+			]
+		},
+		"north": {
+			"clearance": [
+				[
+					11,
+					15
+				],
+				[
+					12,
+					15
+				],
+				[
+					13,
+					15
+				]
+			],
+			"collision_shapes": 5,
+			"founder_approach": {
+				"bay_route_points": {
+					"[-1, 1]": 9,
+					"[1, 1]": 7
+				},
+				"destination": [
+					400.0,
+					496.0
+				],
+				"destination_cell": [
+					12,
+					15
+				],
+				"initial_route_points": 8,
+				"samples": [
+					[
+						560.0,
+						592.0
+					],
+					[
+						496.0,
+						572.0
+					],
+					[
+						400.0,
+						496.0
+					]
+				],
+				"start": [
+					560.0,
+					592.0
+				],
+				"traveled_px": 249.540658950806
+			},
+			"grid": [
+				12,
+				14
+			],
+			"occupied": [
+				[
+					10,
+					14
+				],
+				[
+					11,
+					14
+				],
+				[
+					12,
+					14
+				],
+				[
+					13,
+					14
+				],
+				[
+					14,
+					14
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/north-floor_shadow.png",
+					"name": "SharedWorkbenchFloorShadow",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/north-rear_structure.png",
+					"name": "SharedWorkbenchRearStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/north-front_structure.png",
+					"name": "SharedWorkbenchFrontStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"z_offset": 1
+				}
+			]
+		},
+		"south": {
+			"clearance": [
+				[
+					13,
+					13
+				],
+				[
+					12,
+					13
+				],
+				[
+					11,
+					13
+				]
+			],
+			"collision_shapes": 5,
+			"founder_approach": {
+				"bay_route_points": {
+					"[-1, -1]": 11,
+					"[1, -1]": 9
+				},
+				"destination": [
+					400.0,
+					432.0
+				],
+				"destination_cell": [
+					12,
+					13
+				],
+				"initial_route_points": 10,
+				"samples": [
+					[
+						560.0,
+						592.0
+					],
+					[
+						528.0,
+						540.0
+					],
+					[
+						400.0,
+						432.0
+					]
+				],
+				"start": [
+					560.0,
+					592.0
+				],
+				"traveled_px": 311.925823688507
+			},
+			"grid": [
+				12,
+				14
+			],
+			"occupied": [
+				[
+					14,
+					14
+				],
+				[
+					13,
+					14
+				],
+				[
+					12,
+					14
+				],
+				[
+					11,
+					14
+				],
+				[
+					10,
+					14
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/south-floor_shadow.png",
+					"name": "SharedWorkbenchFloorShadow",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/south-rear_structure.png",
+					"name": "SharedWorkbenchRearStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/south-front_structure.png",
+					"name": "SharedWorkbenchFrontStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"z_offset": 1
+				}
+			]
+		},
+		"west": {
+			"clearance": [
+				[
+					13,
+					15
+				],
+				[
+					13,
+					14
+				],
+				[
+					13,
+					13
+				]
+			],
+			"collision_shapes": 5,
+			"founder_approach": {
+				"bay_route_points": {
+					"[1, -1]": 9,
+					"[1, 1]": 7
+				},
+				"destination": [
+					432.0,
+					464.0
+				],
+				"destination_cell": [
+					13,
+					14
+				],
+				"initial_route_points": 8,
+				"samples": [
+					[
+						560.0,
+						592.0
+					],
+					[
+						528.0,
+						540.0
+					],
+					[
+						432.0,
+						464.0
+					]
+				],
+				"start": [
+					560.0,
+					592.0
+				],
+				"traveled_px": 247.925823688507
+			},
+			"grid": [
+				12,
+				14
+			],
+			"occupied": [
+				[
+					12,
+					16
+				],
+				[
+					12,
+					15
+				],
+				[
+					12,
+					14
+				],
+				[
+					12,
+					13
+				],
+				[
+					12,
+					12
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/west-floor_shadow.png",
+					"name": "SharedWorkbenchFloorShadow",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/west-rear_structure.png",
+					"name": "SharedWorkbenchRearStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/west-front_structure.png",
+					"name": "SharedWorkbenchFrontStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"z_offset": 1
+				}
+			]
+		}
+	},
+	"production_catalogue_mutated": false,
+	"renderer": "macOS",
+	"runtime_registered": false,
+	"save_access": false,
+	"scene": "actual GameMain and production TownRoom architecture/navigation; owner-scoped passive shared_workbench definition",
+	"shared_art_catalogue_mutated": false,
+	"status": "native_review_candidate_not_runtime_registered",
+	"viewport": [
+		1280,
+		720
+	],
+	"wall_corner_rejections": {
+		"east": {
+			"grid": [
+				1,
+				3
+			],
+			"issue_codes": [
+				"wall_intersection",
+				"visual_wall_intersection",
+				"decorative_headroom",
+				"wall_clearance"
+			],
+			"wall_neighbors": 2
+		},
+		"north": {
+			"grid": [
+				1,
+				3
+			],
+			"issue_codes": [
+				"wall_intersection",
+				"visual_wall_intersection",
+				"decorative_headroom",
+				"wall_clearance"
+			],
+			"wall_neighbors": 2
+		},
+		"south": {
+			"grid": [
+				1,
+				3
+			],
+			"issue_codes": [
+				"wall_intersection",
+				"visual_wall_intersection",
+				"decorative_headroom",
+				"wall_clearance"
+			],
+			"wall_neighbors": 2
+		},
+		"west": {
+			"grid": [
+				1,
+				3
+			],
+			"issue_codes": [
+				"wall_intersection",
+				"visual_wall_intersection",
+				"decorative_headroom",
+				"wall_clearance"
+			],
+			"wall_neighbors": 2
+		}
+	},
+	"worker_disabled": true
+}

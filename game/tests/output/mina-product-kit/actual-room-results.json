@@ -1,0 +1,177 @@
+{
+	"canvas": [
+		192,
+		224
+	],
+	"captures": [
+		"res://tests/output/mina-product-kit/room-north.png",
+		"res://tests/output/mina-product-kit/detail-north-native.png",
+		"res://tests/output/mina-product-kit/detail-north-unoccupied-native.png",
+		"res://tests/output/mina-product-kit/room-east.png",
+		"res://tests/output/mina-product-kit/detail-east-native.png",
+		"res://tests/output/mina-product-kit/detail-east-unoccupied-native.png",
+		"res://tests/output/mina-product-kit/room-south.png",
+		"res://tests/output/mina-product-kit/detail-south-native.png",
+		"res://tests/output/mina-product-kit/detail-south-unoccupied-native.png",
+		"res://tests/output/mina-product-kit/room-west.png",
+		"res://tests/output/mina-product-kit/detail-west-native.png",
+		"res://tests/output/mina-product-kit/detail-west-unoccupied-native.png",
+		"res://tests/output/mina-product-kit/actual-room-contact-sheet-native.png",
+		"res://tests/output/mina-product-kit/actual-room-unoccupied-contact-sheet-native.png",
+		"res://tests/output/mina-product-kit/actual-room-contact-sheet-4x.png"
+	],
+	"checks": 81,
+	"default_layout_mutated": false,
+	"dev_catalogue_family": "mina_discovery_kit",
+	"dev_catalogue_registered": true,
+	"facings": [
+		"north",
+		"east",
+		"south",
+		"west"
+	],
+	"failures": [],
+	"observations": {
+		"east": {
+			"actor_overlay_occlusion": {
+				"surface_decor_front": 0,
+				"surface_decor_rear": 5
+			},
+			"actor_pixel_delta": 900,
+			"actor_upper_z": 274,
+			"actor_work_point": [
+				304.0,
+				272.0
+			],
+			"collision_shapes_after": 3,
+			"collision_shapes_before": 3,
+			"desk_asset_revision": "workstations-v2",
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 158,
+					"covered_by_existing_assembly_or_actor": 0,
+					"source_opaque": 158
+				},
+				"surface_decor_rear": {
+					"changed": 318,
+					"covered_by_existing_assembly_or_actor": 18,
+					"source_opaque": 336
+				}
+			},
+			"layer_z": {
+				"front": 275,
+				"rear": 272
+			},
+			"workstation_capability_revision": "workstations-v2:east"
+		},
+		"north": {
+			"actor_overlay_occlusion": {
+				"surface_decor_front": 0,
+				"surface_decor_rear": 0
+			},
+			"actor_pixel_delta": 1603,
+			"actor_upper_z": 275,
+			"actor_work_point": [
+				336.0,
+				304.0
+			],
+			"collision_shapes_after": 3,
+			"collision_shapes_before": 3,
+			"desk_asset_revision": "workstations-v2",
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 184,
+					"covered_by_existing_assembly_or_actor": 0,
+					"source_opaque": 184
+				},
+				"surface_decor_rear": {
+					"changed": 336,
+					"covered_by_existing_assembly_or_actor": 0,
+					"source_opaque": 336
+				}
+			},
+			"layer_z": {
+				"front": 274,
+				"rear": 272
+			},
+			"workstation_capability_revision": "workstations-v2:north"
+		},
+		"south": {
+			"actor_overlay_occlusion": {
+				"surface_decor_front": 0,
+				"surface_decor_rear": 0
+			},
+			"actor_pixel_delta": 856,
+			"actor_upper_z": 275,
+			"actor_work_point": [
+				336.0,
+				240.0
+			],
+			"collision_shapes_after": 3,
+			"collision_shapes_before": 3,
+			"desk_asset_revision": "workstations-v2",
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 184,
+					"covered_by_existing_assembly_or_actor": 0,
+					"source_opaque": 184
+				},
+				"surface_decor_rear": {
+					"changed": 336,
+					"covered_by_existing_assembly_or_actor": 0,
+					"source_opaque": 336
+				}
+			},
+			"layer_z": {
+				"front": 276,
+				"rear": 274
+			},
+			"workstation_capability_revision": "workstations-v2:south"
+		},
+		"west": {
+			"actor_overlay_occlusion": {
+				"surface_decor_front": 0,
+				"surface_decor_rear": 0
+			},
+			"actor_pixel_delta": 875,
+			"actor_upper_z": 274,
+			"actor_work_point": [
+				368.0,
+				272.0
+			],
+			"collision_shapes_after": 3,
+			"collision_shapes_before": 3,
+			"desk_asset_revision": "workstations-v2",
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 158,
+					"covered_by_existing_assembly_or_actor": 0,
+					"source_opaque": 158
+				},
+				"surface_decor_rear": {
+					"changed": 327,
+					"covered_by_existing_assembly_or_actor": 9,
+					"source_opaque": 336
+				}
+			},
+			"layer_z": {
+				"front": 275,
+				"rear": 272
+			},
+			"workstation_capability_revision": "workstations-v2:west"
+		}
+	},
+	"pivot": [
+		96,
+		160
+	],
+	"production_catalog_mutated": false,
+	"production_catalogue_registered": false,
+	"renderer": "macOS",
+	"runtime_registered": false,
+	"save_access": false,
+	"scene": "actual GameMain and production TownRoom; fixture-only Sprite2D attachments on Mina's accepted desk",
+	"status": "native_review_candidate_not_runtime_registered",
+	"total_actor_overlay_occlusion": 5,
+	"worker_disabled": true
+}

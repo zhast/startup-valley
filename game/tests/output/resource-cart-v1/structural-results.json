@@ -1,0 +1,33 @@
+{
+	"authored_vertical_feature_rise_px": 88,
+	"canvas": [
+		160,
+		208
+	],
+	"checks": 213,
+	"dev_catalogue_status_observed": "planned",
+	"east_west_top_plane_depth_px": 64,
+	"failures": [],
+	"family": "resource_cart",
+	"layers": [
+		"floor_shadow",
+		"rear_structure",
+		"front_structure"
+	],
+	"maximum_expected_projected_rise_px": 152,
+	"measured_base_elevation_px": 72,
+	"north_south_top_plane_depth_px": 32,
+	"pivot": [
+		80,
+		144
+	],
+	"planned_vertical_feature_envelope_px": 80,
+	"production_catalogue_registered": false,
+	"runtime_registered": false,
+	"service_backend_or_interaction_created": false,
+	"sprite_offset": [
+		0,
+		-40
+	],
+	"status": "native_review_candidate_without_runtime_binding"
+}

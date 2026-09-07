@@ -1,0 +1,510 @@
+{
+	"actor_probe_limit": "The existing founder is only a scale, route, adjacent contact, gaze and occlusion/depth probe; no plant interaction, service, animation, hire or backend is claimed.",
+	"captures": [
+		"res://tests/output/broadleaf-planter/detail-north-base-native.png",
+		"res://tests/output/broadleaf-planter/room-north.png",
+		"res://tests/output/broadleaf-planter/detail-north-actor-native.png",
+		"res://tests/output/broadleaf-planter/detail-east-base-native.png",
+		"res://tests/output/broadleaf-planter/room-east.png",
+		"res://tests/output/broadleaf-planter/detail-east-actor-native.png",
+		"res://tests/output/broadleaf-planter/detail-south-base-native.png",
+		"res://tests/output/broadleaf-planter/room-south.png",
+		"res://tests/output/broadleaf-planter/detail-south-actor-native.png",
+		"res://tests/output/broadleaf-planter/detail-west-base-native.png",
+		"res://tests/output/broadleaf-planter/room-west.png",
+		"res://tests/output/broadleaf-planter/detail-west-actor-native.png",
+		"res://tests/output/broadleaf-planter/actual-room-base-contact-sheet-native.png",
+		"res://tests/output/broadleaf-planter/actual-room-actor-contact-sheet-native.png",
+		"res://tests/output/broadleaf-planter/actual-room-actor-contact-sheet-4x.png",
+		"res://tests/output/broadleaf-planter/actual-gamemain-contact-sheet-native.png"
+	],
+	"checks": 207,
+	"common_safe_pivot": [
+		12,
+		13
+	],
+	"default_layout_mutated": false,
+	"dev_catalogue_registration": "Not asserted; this capture only verifies the shared catalogue stays byte-exact during its run.",
+	"failures": [],
+	"family": "broadleaf_planter",
+	"observations": {
+		"east": {
+			"actor_layer_overlap": {
+				"floor_shadow": 0,
+				"front_structure": 399,
+				"rear_structure": 14,
+				"total": 413,
+				"wrong_depth_pixels": 0
+			},
+			"actor_pixel_delta": 906,
+			"clearance": [
+				[
+					11,
+					13
+				]
+			],
+			"collision_shapes": 1,
+			"founder_approach": {
+				"actor_z": 432,
+				"depth_class": "actor_between_rear_and_front_layers",
+				"destination_cell": [
+					11,
+					13
+				],
+				"destination_px": [
+					368.0,
+					432.0
+				],
+				"employee_look_vector": [
+					1,
+					0
+				],
+				"front_z": 437,
+				"initial_route_points": 11,
+				"occupied_crossings": 0,
+				"rear_z": 428,
+				"traveled_px": 338.519346237183
+			},
+			"grid": [
+				12,
+				13
+			],
+			"occupied": [
+				[
+					12,
+					13
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/east-floor_shadow.png",
+					"name": "BroadleafPlanterFloorShadow",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						128,
+						224
+					],
+					"z_offset": -8
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/east-rear_structure.png",
+					"name": "BroadleafPlanterRearStructure",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						128,
+						224
+					],
+					"z_offset": -4
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/east-front_structure.png",
+					"name": "BroadleafPlanterFrontStructure",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						128,
+						224
+					],
+					"z_offset": 5
+				}
+			],
+			"source_match": {
+				"mismatches": 0,
+				"opaque": 6060
+			}
+		},
+		"north": {
+			"actor_layer_overlap": {
+				"floor_shadow": 402,
+				"front_structure": 824,
+				"rear_structure": 210,
+				"total": 1436,
+				"wrong_depth_pixels": 0
+			},
+			"actor_pixel_delta": 1547,
+			"clearance": [
+				[
+					12,
+					14
+				]
+			],
+			"collision_shapes": 1,
+			"founder_approach": {
+				"actor_z": 464,
+				"depth_class": "actor_in_front_of_structure",
+				"destination_cell": [
+					12,
+					14
+				],
+				"destination_px": [
+					400.0,
+					464.0
+				],
+				"employee_look_vector": [
+					0,
+					-1
+				],
+				"front_z": 437,
+				"initial_route_points": 9,
+				"occupied_crossings": 0,
+				"rear_z": 428,
+				"traveled_px": 279.08526468277
+			},
+			"grid": [
+				12,
+				13
+			],
+			"occupied": [
+				[
+					12,
+					13
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/north-floor_shadow.png",
+					"name": "BroadleafPlanterFloorShadow",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						128,
+						224
+					],
+					"z_offset": -8
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/north-rear_structure.png",
+					"name": "BroadleafPlanterRearStructure",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						128,
+						224
+					],
+					"z_offset": -4
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/north-front_structure.png",
+					"name": "BroadleafPlanterFrontStructure",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						128,
+						224
+					],
+					"z_offset": 5
+				}
+			],
+			"source_match": {
+				"mismatches": 0,
+				"opaque": 6402
+			}
+		},
+		"south": {
+			"actor_layer_overlap": {
+				"floor_shadow": 0,
+				"front_structure": 49,
+				"rear_structure": 1336,
+				"total": 1385,
+				"wrong_depth_pixels": 0
+			},
+			"actor_pixel_delta": 186,
+			"clearance": [
+				[
+					12,
+					12
+				]
+			],
+			"collision_shapes": 1,
+			"founder_approach": {
+				"actor_z": 400,
+				"depth_class": "actor_behind_structure",
+				"destination_cell": [
+					12,
+					12
+				],
+				"destination_px": [
+					400.0,
+					400.0
+				],
+				"employee_look_vector": [
+					0,
+					1
+				],
+				"front_z": 437,
+				"initial_route_points": 11,
+				"occupied_crossings": 0,
+				"rear_z": 428,
+				"traveled_px": 339.347776412964
+			},
+			"grid": [
+				12,
+				13
+			],
+			"occupied": [
+				[
+					12,
+					13
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/south-floor_shadow.png",
+					"name": "BroadleafPlanterFloorShadow",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						128,
+						224
+					],
+					"z_offset": -8
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/south-rear_structure.png",
+					"name": "BroadleafPlanterRearStructure",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						128,
+						224
+					],
+					"z_offset": -4
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/south-front_structure.png",
+					"name": "BroadleafPlanterFrontStructure",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						128,
+						224
+					],
+					"z_offset": 5
+				}
+			],
+			"source_match": {
+				"mismatches": 0,
+				"opaque": 6314
+			}
+		},
+		"west": {
+			"actor_layer_overlap": {
+				"floor_shadow": 0,
+				"front_structure": 454,
+				"rear_structure": 32,
+				"total": 486,
+				"wrong_depth_pixels": 0
+			},
+			"actor_pixel_delta": 839,
+			"clearance": [
+				[
+					13,
+					13
+				]
+			],
+			"collision_shapes": 1,
+			"founder_approach": {
+				"actor_z": 432,
+				"depth_class": "actor_between_rear_and_front_layers",
+				"destination_cell": [
+					13,
+					13
+				],
+				"destination_px": [
+					432.0,
+					432.0
+				],
+				"employee_look_vector": [
+					-1,
+					0
+				],
+				"front_z": 437,
+				"initial_route_points": 9,
+				"occupied_crossings": 0,
+				"rear_z": 428,
+				"traveled_px": 276.871197223663
+			},
+			"grid": [
+				12,
+				13
+			],
+			"occupied": [
+				[
+					12,
+					13
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/west-floor_shadow.png",
+					"name": "BroadleafPlanterFloorShadow",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						128,
+						224
+					],
+					"z_offset": -8
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/west-rear_structure.png",
+					"name": "BroadleafPlanterRearStructure",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						128,
+						224
+					],
+					"z_offset": -4
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/west-front_structure.png",
+					"name": "BroadleafPlanterFrontStructure",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						128,
+						224
+					],
+					"z_offset": 5
+				}
+			],
+			"source_match": {
+				"mismatches": 0,
+				"opaque": 6187
+			}
+		}
+	},
+	"production_catalogue_mutated": false,
+	"renderer": "macOS",
+	"runtime_registered": false,
+	"save_access": false,
+	"scene": "actual GameMain and production TownRoom architecture/navigation with one owner-scoped passive broadleaf-planter candidate",
+	"service_backend_or_interaction_created": false,
+	"shared_art_catalogue_mutated": false,
+	"source_pixel_use": false,
+	"status": "native_review_candidate_not_runtime_registered",
+	"viewport_per_panel": [
+		1280,
+		720
+	],
+	"wall_and_corner": {
+		"east": {
+			"corner_wall_neighbors": 2,
+			"nearest_valid": [
+				3,
+				20
+			],
+			"rejected_corner": [
+				1,
+				3
+			],
+			"rejection_codes": [
+				"visual_wall_intersection",
+				"decorative_headroom",
+				"wall_clearance"
+			],
+			"wall_distance_cells": 1
+		},
+		"north": {
+			"corner_wall_neighbors": 2,
+			"nearest_valid": [
+				2,
+				7
+			],
+			"rejected_corner": [
+				1,
+				3
+			],
+			"rejection_codes": [
+				"visual_wall_intersection",
+				"decorative_headroom"
+			],
+			"wall_distance_cells": 2
+		},
+		"south": {
+			"corner_wall_neighbors": 2,
+			"nearest_valid": [
+				2,
+				20
+			],
+			"rejected_corner": [
+				1,
+				3
+			],
+			"rejection_codes": [
+				"visual_wall_intersection",
+				"decorative_headroom",
+				"wall_clearance"
+			],
+			"wall_distance_cells": 1
+		},
+		"west": {
+			"corner_wall_neighbors": 2,
+			"nearest_valid": [
+				2,
+				20
+			],
+			"rejected_corner": [
+				1,
+				3
+			],
+			"rejection_codes": [
+				"visual_wall_intersection",
+				"decorative_headroom"
+			],
+			"wall_distance_cells": 1
+		}
+	},
+	"worker_disabled": true
+}

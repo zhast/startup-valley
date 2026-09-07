@@ -1,54 +1,213 @@
 # UI immersion and component consistency audit
 
-Date: 2026-09-03. Original audit plus an implementation checkpoint.
+Date: 2026-09-03. Final scoped acceptance of `9d25e25` plus the uncommitted
+reconnect-copy fix and its regression/audit additions.
 
-## Checkpoint status — implementation saved, final acceptance pending
+## Implementation outcome
 
-The findings below preserve the original before-evidence, not the current
-implementation state. A user-requested Git checkpoint now includes the shared
-notebook material family, native small glyphs/portrait crops, screen integration,
-anchored world callouts, and regression/capture tooling. The approved C font
-roles, office, worker contracts, persistence and provider behavior are unchanged.
+I01–I12 are resolved within the tested two-employee desktop slice. The shared
+notebook material system is integrated into production, not a preview overlay.
+Native visual review and interaction/geometry/raster checks are separate parts
+of this acceptance; neither texture filenames nor passing test counts alone
+establish aesthetic quality. The result is ready for the user's final visual
+approval, which is not implied by this report.
 
-Implemented changes include the separate Activity ledger with a stable spend
-footer and Back/Escape restoration, synchronized attachment disclosures, full
-collapsed Assign controls, full-height founder-only onboarding paper, clearer
-connection/usage copy, and single approval/delivery cues during drawer pause.
-Shared styling covers tabs, quiet actions, input/card/dialogue surfaces, focus,
-close controls, dropdown marks, scrollbars and slider tracks.
+The approved C typography, palette, portrait identities, office assets and HUD
+composition remain. Work details, usage, attachments, navigation and close
+controls now share stepped corners, restrained lighting and stable geometry.
+Fields read as inset paper; cards/dialogue use quiet raised paper. Tabs attach
+to the page instead of looking like four orange consequence buttons. World
+tags and speech have native pointers, avoid important scenery, and suppress
+duplicate selected-employee information.
 
-Focused rendered verification passes: foundation 200, drawer 2,223, company 3,702,
-reader/HUD 222, and world 419 checks, all with zero failures. The latest drawer
-run has 17 native captures and all four spend-ink cases contain zero pixels
-outside the safe paper; the latest world run has 10 captures including actual
-approval and completion events. Headless runs cover the same components plus
-gameplay/UI flow and project validation. These counts establish specific
-technical properties, not final human aesthetic approval.
+No worker contracts, persistence, provider behavior, security boundaries or
+game mechanics were changed. The diff from the pre-integration checkpoint
+`4b6a4e8` contains no changes under `harness/`, `contracts/`, bundled font assets,
+office assets or logical game data. `game_fonts.gd` changes only tooltip skin;
+font roles are unchanged. World changes read visual bounds for UI placement
+and change attention paint ownership, not navigation or event timers.
+All fixtures disable the worker; no paid calls or real saves were used.
 
-Current focused evidence (generated locally, excluded from Git):
+The requested checkpoint commits are saved locally. This final report and the
+narrow reconnect-copy/test changes remain uncommitted; no additional commit or
+push is part of acceptance.
 
-- [Drawer results](../game/tests/output/ui-redesign/drawer/results.json)
-- [World-callout results](../game/tests/output/ui-material-world/results.json)
-- [Native material specimen](../game/tests/output/ui-material-specimen/manifest.json)
+## Finding-by-finding disposition
 
-The broader 37-state main capture, 14-state shell capture, motion audit and
-five-mode scaling run passed before the last Assign/onboarding/copy and live
-attention-cue fixes. They must be refreshed and reviewed before final acceptance.
-The latest live-event world images also catch part of the drawer entrance fade;
-they prove the world cue, not a settled whole-screen composition. All 12 audit
-findings still require final evidence-backed dispositions. No paid calls or
-real-save changes were made. This checkpoint is not completion of the goal.
+Coordinates are `(x,y,width,height)` in native 1280×720 screenshots. Before
+links retain the original evidence; the historical audit follows this section.
 
-Reproduce production evidence without overwriting the original audit captures:
+| Finding | Implemented correction and classification | Before → current evidence / acceptance |
+| --- | --- | --- |
+| I01 — button families | Reused the slim control master for lighter quiet/disclosure controls. Primary, secondary, danger, disclosure and navigation remain distinct while sharing corner construction, palette and press behavior. Code + normalized existing art. | [Before Activity](../game/tests/output/ui-material-audit/ui-journal-active.png) → [current Activity](../game/tests/output/ui-material-audit-after/ui-journal-active.png). Work details `(806,498,320,44)` and Usage details `(970,651,150,44)` now belong to the same family as Send update. [Seven-state specimen](../game/tests/output/ui-material-specimen/manifest.json) and foundation checks cover state geometry, source-corner pixels and input. |
+| I02 — detached/duplicate employee information | Shared anchored name/speech/attention paper with a fixed eight-pixel pointer. Selected drawer suppresses redundant identity/status. Short intentional ambient sentences replace truncated memory excerpts without rewriting employee memory. Answered approval clears paint immediately, retaining physical pose/timing. Code + narrow authored pointer. | [Before speech](../game/tests/output/ui-material-audit/ui-world-speech.png) → [complete speech clear of the desk](../game/tests/output/ui-material-world/speech-complete-desk-clear.png). [Pending cue](../game/tests/output/ui-material-world/drawer-live-approval-cue.png), [delivery cue](../game/tests/output/ui-material-world/drawer-live-delivery-cue.png), and [answered approval](../game/tests/output/polish-audit/ui/journal-and-approval-approval-answered.png) show distinct states. Real Approve/reopen/tool-resume tests verify no stale cue or timer change. |
+| I03 — pasted-on interaction prompt | One painted paper surface, native 26×28 E keycap and target pointer; the clickable body remains 112×44. Placement tests actors, furniture faces, HUD, rail, drawer and other callouts. Code + hand-authored key/pointer. | [Before prompt](../game/tests/output/ui-material-audit/ui-founder-hud.png) → [current prompt](../game/tests/output/ui-material-world/prompt-desk-clear.png), body `(403,472,112,44)`, complete painted bounds `(394,472,121,44)`. Hover/press/focus and real E/click tests pass; a crowded optional prompt may hide, but E still works. |
+| I04 — paper hierarchy | Native inset fields/read-only fields, lightly raised cards, related employee/founder bubbles and company cards. Reader keeps one notebook surface without an inner decorative frame. Code + small pixel edge parts. | [Before Assign](../game/tests/output/ui-material-audit/ui-work.png) → [current Assign](../game/tests/output/ui-material-audit-after/ui-work.png); [Chat](../game/tests/output/ui-material-audit-after/ui-chat.png), [Settings](../game/tests/output/ui-material-audit-after-shell/pause-settings.png), [summary](../game/tests/output/ui-material-audit-after-shell/day-summary.png), [reader](../game/tests/output/ui-redesign/reader-hud/reader-top.png). Native inspection confirms distinguishable well/card edges and quiet text centers, not nested heavy wood. |
+| I05 — clipped usage/work controls | Usage opens a dedicated ledger; pinned spend remains `(794,639,344,69)`. Back/Escape restores previous Activity context. Work details deliberately aligns at the top reading edge, including a one-event approval timeline. Explicit approval returns to the complete outcome. Code-only layout/state. | [Before clipped approval](../game/tests/output/ui-material-audit/approval-usage-expanded.png) → [ledger](../game/tests/output/ui-material-audit-after/approval-usage-expanded.png) → [restored Work details](../game/tests/output/ui-material-audit-after/work-restored-after-usage.png), toggle `(806,191,308,44)`. [Short approval history](../game/tests/output/ui-redesign/drawer/approval-details-restored.png) and [resolved approval](../game/tests/output/ui-redesign/drawer/approval-resolved.png) prove the newly caught top-edge defect is also fixed. All intersecting interactive controls fit at these deliberate resting positions. |
+| I06 — attachment state mismatch | One expanded state drives chevron, heading, picker and trailing paper. Guarded deferred reveals ignore closed/changed drawers and show the complete title→brief→attachment section. Template/employee changes synchronize state; collapsing restores the compact form. Code-only state/layout. | [Before round-trip](../game/tests/output/ui-material-audit/attachment-after-template-roundtrip.png) → [current round-trip](../game/tests/output/ui-material-audit-after/attachment-after-template-roundtrip.png): both arrow and content closed. [Expanded attachment](../game/tests/output/ui-redesign/drawer/attachment-revealed.png) has complete title at y191, toggle `(807,366,306,44)` and picker `(807,447,306,44)`, with no fragment of the purpose dropdown above it. Real popup keyboard selection, rapid open/close, reopening and employee switching pass. |
+| I07 — tabs versus actions | Open-bottom notebook-tab silhouette and a narrow Vermilion selected rule; labels and 44px targets preserved. Code + normalized narrow tab parts. | [Before Chat](../game/tests/output/ui-material-audit/ui-chat.png) → [current Chat](../game/tests/output/ui-material-audit-after/ui-chat.png). Four tabs remain `(794,147,344,44)` overall. They attach to the page; Start/Ask/Approve retain consequence-button faces. Repeated restyling does not add signal connections. |
+| I08 — close/focus mismatch | Native 16×16 close glyph in a 44×44 quiet-paper target; hollow inset stepped Indigo focus follows corners. Reader reserves 10px left ink clearance. Code + small authored glyph/focus outline. | [Before usage focus](../game/tests/output/ui-material-audit/usage-expanded.png) → [current ledger focus](../game/tests/output/ui-material-audit-after/usage-expanded.png); [close specimen](../game/tests/output/ui-material-specimen/close-focused.png); [reader keyboard focus](../game/tests/output/ui-redesign/reader-hud/reader-keyboard-focus.png). Actual Tab/Shift-Tab/Escape, focus trapping/return and native outline inspection pass. |
+| I09 — dropdowns/tracks | Shared popup rim and selection paper, native check glyphs, matched track end caps/thumb depth, retained native slider thumb. Code + narrow normalized/authored parts. | [Before dropdown](../game/tests/output/ui-material-audit/assignment-dropdown-open.png) → [current dropdown](../game/tests/output/ui-material-audit-after/assignment-dropdown-open.png); [Settings](../game/tests/output/ui-material-audit-after-shell/pause-settings.png). Keyboard selection, disabled controls, context menus, sliders and document scrolling retain their behavior. |
+| I10 — illegible miniatures | Reused unframed native 32×32 face crops; authored native 24×28 document, 32×24 folder and 16×16 close/check glyphs. Empty Studio renders its existing 62×47 tray without rescaling. Existing activity glyphs use a deliberate 36→18 exact-half reduction, not fractional framed-bust scaling. Art normalization + code. | [Before Chat](../game/tests/output/ui-material-audit/ui-chat.png) → [current Chat](../game/tests/output/ui-material-audit-after/ui-chat.png); [document](../game/tests/output/ui-redesign/reader-hud/reader-top.png); [native tray](../game/tests/output/ui-material-audit-after/ui-studio-empty.png), `(935,227,62,47)`. Native visual review and exact-size/filter checks pass. No new portraits or broad asset generation. |
+| I11 — technical information hierarchy | Compact daily spend footer; deliberate ledger separates Today from Selected work and states “Real money, not company cash.” Human event labels keep raw identifiers in tooltips. Side-project, connection and active-chat copy is shorter. Studio leads with title/type/owner and exposes full paths on demand. Code-only hierarchy/copy using the shared kit. | [Before usage](../game/tests/output/ui-material-audit/usage-expanded.png) → [AI ledger](../game/tests/output/ui-material-audit-after/usage-expanded.png); [human activity](../game/tests/output/ui-material-audit-after/work-details-expanded.png); [Studio](../game/tests/output/ui-material-audit-after/ui-studio.png); [connection error](../game/tests/output/ui-material-audit-after/ui-error.png). Live usage refresh preserves footer and reading context; no fake progress or hidden billing consequence. |
+| I12 — verification encoded old styling | Replaced flat-style-class expectations with role/material behavior, fixed geometry, rendered edge/ink checks and actual input. Added combined disclosure/live-refresh/short-timeline/rapid-close tests. Isolated evaluation fixtures no longer manufacture absent-worker errors; manifests separate logical expansion from in-tree visibility. Test/audit code. | [Drawer results](../game/tests/output/ui-redesign/drawer/results.json), [foundation results](../game/tests/output/ui-redesign/foundation/results.json), [UI motion checks](../game/tests/output/polish-audit/ui/manifest.json), [main manifest](../game/tests/output/ui-material-audit-after/manifest.json), [valid evaluating capture](../game/tests/output/ui-material-audit-after-shell/journey-evaluating.png). No requirement that a particular StyleBox class is inherently good; all affected screens also receive native visual review. |
+
+## Final evidence coverage
+
+The final production captures contain **37 main images (32 UI states + five
+office stages), 14 company-shell states, and seven specimen states**. These are
+46 UI-state captures, not 51 unique UI screens; stages two and three are identical.
+All main/shell images and specimen states were inspected at native size by the
+reviewing agents. The root reviewer also compared original/current problem
+states and all seven specimens/five office stages. Contact sheets are indexes,
+not substitutes for native review.
+
+- [Main production manifest](../game/tests/output/ui-material-audit-after/manifest.json) / [contact sheet](../game/tests/output/ui-material-audit-after/contact-sheet.png): rail, Chat/long/read-only, chat-to-Assign, attachments/popup/focus, running/queued/approval/usage/combined details, delivery/promotion/dismissal, Studio/list/empty, reader, connection/error, founder-only and off-hours. Waiting/send feedback is additionally captured in the UI motion suite.
+- [Company production manifest](../game/tests/output/ui-material-audit-after-shell/manifest.json) / [contact sheet](../game/tests/output/ui-material-audit-after-shell/contact-sheet.png): title, onboarding, available/revision/evidence, evaluating/retry, long error, Settings, closing, ordinary/large day summary and reset confirmation.
+- [Production component specimen](../game/tests/output/ui-material-specimen/manifest.json): normal, hover, pressed, expanded/focused, close focus, quiet focus and actual open dropdown. Disabled and native miniature examples remain present throughout.
+- Focused suites add 21 drawer, 17 company, 11 reader/HUD, 12 world-callout and five foundation captures. These overlap main coverage; their counts are not additional unique screens.
+
+Real Godot `InputEvent` tests exercise mouse motion/down/up, keyboard popup
+selection, text entry, focus navigation, disabled clicks, rapid close/reopen,
+employee/tab changes, ledger Back/Escape, steering, approval, file preview,
+promotion and reader scroll/reopen. Dispatch spies verify chat→`chat.send`,
+assignment→`job.start`, Activity update→`job.steer`; no provider is invoked.
+Styling refreshes bind feedback once. Press feedback is immediate; release is
+80ms and existing drawer/modal transitions remain 120–160ms without control
+scaling. Contrast checks sample actual textured text-safe interiors, including
+pressed tint, and require 4.5:1. Pixel-edge review complements those checks.
+
+Late visual review found and corrected four additional regressions: a tiny
+rescaled Studio tray, the purpose dropdown's top-edge fragment after attachment
+reveal, Approve/Deny fragments above a short expanded timeline, and a stale red
+world cue after approval. The current evidence includes all four corrections.
+Evaluation capture hydration was also fixed rather than concealing a fixture
+worker error. These issues were not dismissed because earlier tests passed.
+The final source review also caught “Reconnecting the local worker…” in a
+transient state: it now says “Reconnecting…”. A real Retry click captures the
+[pending connection](../game/tests/output/ui-redesign/drawer/worker-reconnecting.png),
+checks disabled duplicate submission and retains a reachable Back action.
+The first new motion assertion correctly failed because the fixture still
+called the real worker-disabled rejection handler. Retry is now observed at
+the same simulated boundary as other worker actions, with an explicit one-click
+dispatch assertion before the pending capture and simulated successful response.
+No production worker behavior was changed to make the fixture pass.
+
+### Verification results
+
+All listed suites exited successfully with zero failures on the integration.
+The final one-line reconnect-copy change was then verified with fresh drawer,
+UI-flow and UI-motion runs; unrelated component/world results are from the
+unchanged integration code. Headless/rendered totals overlap and must not be
+added as distinct coverage.
+
+| Suite | Headless | Rendered / inspected evidence |
+| --- | ---: | --- |
+| Godot import and project validation | Passed | Runtime scenes, art, fonts/licenses and office stages valid |
+| UI foundation | 196 checks | 200 checks, five captures; native corners, roles, contrast, input and bind-once |
+| Drawer | 2,542 checks | 2,571 checks, 21 captures; real interactions and combined/dynamic states |
+| Company | 3,668 checks | 3,702 checks, 17 captures; modal sizing/focus, busy navigation and refresh |
+| Reader/HUD | 203 checks | 222 checks, 11 captures; Markdown/source/fallbacks/reopening and safe HUD ink |
+| World presentation | 422 checks | 434 checks, 12 captures; anchored labels, placement, live attention and E/click behavior |
+| Gameplay, complete-game and UI flow | Passed | Real-input assertions included; no live startup/worker run |
+| Graphics regression | Passed | Rendered corner, workstation, seated-pose and scale-safe-feedback suite passed |
+| Window policy | 56 checks | 174 scaling checks across five modes |
+| Office architecture / layout | 477 / 830 checks | Existing world composition and validation preserved |
+| Modular office / editor / migration | 7,436 / 128 / 2,468 checks | Existing layout/input regression suites preserved |
+| Motion audit | Validator passed | Six world + six UI scenarios; 2,455 + 1,128 movie frames at 30FPS |
+| Art inventory / builder | No inventory flags | 145 textures; 35 material PNGs reproduce byte-for-byte |
+| Whitespace / scope | `git diff --check` passed | No worker/contracts/font/office/data changes in this integration |
+
+[Spend ink](../game/tests/output/ui-redesign/drawer/spend-ink.json) reports zero
+outside-paper pixels in four running/scrolled/approval/delivery cases.
+[HUD/reader results](../game/tests/output/ui-redesign/reader-hud/results.json)
+report zero outside-paper pixels across 19 HUD cases, including large amounts.
+The guards include invalid-placement negative checks; they measure painted ink,
+not just container rectangles.
+
+Motion manifests retain all frame markers, expected states, distinct samples,
+contact sheets and actual-input checks. All 18 world and 18 UI keyframes plus
+the 15 UI checkpoints were visually reviewed. The UI sequence now
+specifically checks stable approval-ledger footprint, restored work context,
+no partial action controls, cleared answered-approval cue and visible outcome.
+It also records the actual Retry dispatch, disabled pending state and distinct
+recovery, rather than skipping straight from an error to a fabricated result.
+
+- [World movie](../game/tests/output/polish-audit/world.avi) / [manifest](../game/tests/output/polish-audit/world/manifest.json)
+- [UI movie](../game/tests/output/polish-audit/ui.avi) / [manifest](../game/tests/output/polish-audit/ui/manifest.json)
+- [Texture/native-scale inventory](../game/tests/output/polish-audit/asset-inventory.json)
+- [Window/scaling manifest](../game/tests/output/typography-scaling/manifest.json)
+
+### Honest limits and intentional behavior
+
+- User aesthetic approval remains separate. This is a scoped implementation
+  and visual-review result, not a promise of perfection in every future state.
+- Native 1280×720 and integer 2560×1440 retain the intended pixel grid.
+  1600×900 (1.25×), 1440×1000 with 1440×810 content (1.125×), and available
+  fullscreen 3456×2168 with 3456×1944 content (2.7×) preserve layout and input,
+  but fractional scales necessarily produce uneven physical pixel widths.
+  All five modes have zero changed frames in 13-sample frozen UI probes and
+  stable UI regions during 13 one-logical-pixel sprite translations. This is
+  rest-shimmer evidence, not proof of every animation frame.
+- Viewport captures omit OS chrome and outer letterbox gutters. Their geometry
+  is measured, not their visual appearance. Events enter Godot, not physical
+  OS hardware. Other monitors/platforms and universal Unicode/bidi coverage
+  were not tested.
+- Long chat, documents, criteria and text-entry contents intentionally scroll.
+  The synthetic `journey-long-error` capture has a partial noninteractive money
+  explanation at the reading boundary around `(292,522,682,10)`; the recovery
+  notice/actions are complete. Baseline revision and valid Retry show the full
+  explanation. This is not the half-action-control defect fixed by I05/I06.
+- Crowded optional world tags/prompts can hide when all safe slots are blocked;
+  E and the rail remain usable. Important attention remains in the rail/Activity.
+  The reviewed world samples show no callout/actor/furniture overlap, but three
+  samples per scenario do not prove every frame. The synthetic job-cycle end
+  can show the preceding completed-job toast while a subsequent job fails;
+  that is sequential fixture context, not completion of the failed job.
+- Narrow focused world fixtures prove cue ownership, not full job-copy
+  hydration; use main/static and UI-motion captures for complete screen copy.
+- No paid provider, live evaluation/retry, OS keychain or real-save behavior
+  was exercised. The unchanged worker suite was not rerun for this UI goal.
+  Generated evidence is local and ignored by Git; commands below reproduce it.
+
+### Reproduction
+
+Godot 4.7.2; run from the repository root. Set the executable on PATH or use
+its full local path. Contact sheets also require ImageMagick (`magick`) on PATH
+and Node at `/opt/homebrew/bin/node`, as specified in the helper script.
+These commands capture production skins/fonts, not the
+old typography preview. Do not use `test_live_startup.gd` here: it deliberately
+unsets worker-disabled mode and requires its own disposable worker launcher.
 
 ```sh
+export STARTUP_VALLEY_NO_WORKER=1
+godot --headless --path game --import
+godot --headless --path game --script res://tools/validate_project.gd
+godot --headless --path game --script res://tests/run_all.gd
+godot --headless --path game --script res://tests/test_complete_game.gd
+godot --headless --path game --script res://tests/test_ui_flow_regressions.gd
+for suite in test_ui_foundation test_ui_drawer_redesign test_ui_company_redesign test_reader_hud_redesign test_world_ui_presentation test_graphics_regressions; do
+  godot --headless --path game --script "res://tests/$suite.gd" || exit 1
+  godot --path game --resolution 1280x720 --script "res://tests/$suite.gd" || exit 1
+done
+for suite in test_window_presentation test_office_architecture test_office_layout test_modular_office test_office_layout_editor test_office_migration; do
+  godot --headless --path game --script "res://tests/$suite.gd" || exit 1
+done
 godot --path game --resolution 1280x720 --script res://tools/capture_ui_material_specimen.gd
 godot --path game --resolution 1280x720 --fixed-fps 30 --script res://tools/capture_ui_material_audit.gd -- --after
 godot --path game --resolution 1280x720 --fixed-fps 30 --script res://tools/capture_typography_audit_c_shell.gd -- --material-after
+godot --path game --resolution 1280x720 --fixed-fps 30 --write-movie res://tests/output/polish-audit/world.avi --script res://tools/capture_polish_audit.gd -- --suite=world
+godot --path game --resolution 1280x720 --fixed-fps 30 --write-movie res://tests/output/polish-audit/ui.avi --script res://tools/capture_polish_audit.gd -- --suite=ui
+godot --headless --path game --script res://tools/validate_polish_audit.gd
+godot --path game --script res://tools/capture_typography_scaling.gd
 sh dev/tools/build_ui_immersion_contact_sheets.sh
 ```
 
 ## Original audit
+
+Historical before-evidence only. Present-tense descriptions, line references,
+counts and the final “remain open” statement below describe the pre-integration
+audit, not the accepted implementation above.
 
 ## Verdict
 

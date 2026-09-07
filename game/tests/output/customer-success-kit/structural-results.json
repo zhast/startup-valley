@@ -1,0 +1,28 @@
+{
+	"canvas": [
+		192,
+		224
+	],
+	"checks": 222,
+	"collision_cells": [],
+	"dev_catalogue_registered": false,
+	"failures": [],
+	"future_support_hire_present": false,
+	"host": "accepted desk / workstations-v2",
+	"layers_per_facing": [
+		"surface_decor_rear",
+		"surface_decor_front"
+	],
+	"objects_per_facing": [
+		"compact_headset_dock",
+		"ticket_triage_cards",
+		"conversation_status_console"
+	],
+	"pivot": [
+		96,
+		160
+	],
+	"production_catalogue_registered": false,
+	"runtime_registered": false,
+	"status": "native_review_candidate_not_runtime_registered"
+}

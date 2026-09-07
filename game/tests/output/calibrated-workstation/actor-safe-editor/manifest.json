@@ -1,0 +1,2880 @@
+{
+	"captures": [
+		"single-south-standing.png",
+		"single-south-seated.png",
+		"interrupted-leave.png",
+		"paused-mid-seat.png",
+		"thinking-fallback.png",
+		"interrupted-return-settled.png",
+		"occupied-rotation-rejected.png",
+		"single-west-seated.png",
+		"two-north-frame-0.png",
+		"two-north-frame-1.png",
+		"two-north-frame-2.png",
+		"two-north-frame-3.png",
+		"two-north-frame-4.png",
+		"two-north-frame-5.png",
+		"two-north-loop-return.png",
+		"two-east-frame-0.png",
+		"two-east-frame-1.png",
+		"two-east-frame-2.png",
+		"two-east-frame-3.png",
+		"two-east-frame-4.png",
+		"two-east-frame-5.png",
+		"two-east-loop-return.png",
+		"two-south-frame-0.png",
+		"two-south-frame-1.png",
+		"two-south-frame-2.png",
+		"two-south-frame-3.png",
+		"two-south-frame-4.png",
+		"two-south-frame-5.png",
+		"two-south-loop-return.png",
+		"two-west-frame-0.png",
+		"two-west-frame-1.png",
+		"two-west-frame-2.png",
+		"two-west-frame-3.png",
+		"two-west-frame-4.png",
+		"two-west-frame-5.png",
+		"two-west-loop-return.png",
+		"founder-placement-blocked.png",
+		"teammate-placement-blocked.png",
+		"route-target-replanned.png",
+		"occupied-undo-blocked.png",
+		"clear-undo-restored.png"
+	],
+	"checks": 6986,
+	"contact_grid": "Six unscaled paired Mina/Theo crops: frames0,1,2 across top;3,4,5 across bottom.",
+	"contact_sheets": [
+		"contact-north-native.png",
+		"contact-east-native.png",
+		"contact-south-native.png",
+		"contact-west-native.png"
+	],
+	"failures": [],
+	"fixture_scope": "single desk then two employees; all four directions and six exact source frames through actual GameMain/EmployeeAvatar/navigation/editor",
+	"limitations": [
+		"Calibration status remains unapproved.",
+		"North seat/hand support inferred.",
+		"East upper lap strip and Theo key contact borderline.",
+		"South hands naturally hidden by monitor.",
+		"West head-adjacent keyboard and Theo one-pixel sole/cushion variation.",
+		"Animation captures diagnose the real pipeline, not aesthetic acceptance."
+	],
+	"motion_paths": [
+		{
+			"employee": "mira",
+			"end_tick": 131,
+			"facing": "south",
+			"samples": [
+				{
+					"engine_frame": 7,
+					"path": "motion-00-start.png",
+					"position": [
+						336.0,
+						556.333312988281
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "7ec5f4301e0f85268b509260df2027105f2c72f91ab56a188b6d9df789182d5f",
+					"tick": 1,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 68,
+					"path": "motion-00-middle.png",
+					"position": [
+						336.0,
+						338.666748046875
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "dca28cc1a3f85e77a9f671288f23e8a97b8891e1c85f20bfea6bc1c2aace7e86",
+					"tick": 62,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 137,
+					"path": "motion-00-end.png",
+					"position": [
+						336.0,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						12.0
+					],
+					"sha256": "e120678c063f2d857600e92350521bb83874f3f9648710e39a5d4c29d85c36e2",
+					"tick": 131,
+					"work_state": 2
+				}
+			],
+			"start_tick": 0,
+			"transition_contact": "transition-00-native.png",
+			"transition_crop": [
+				256,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 132,
+					"path": "motion-00-transition-00.png",
+					"position": [
+						336.0,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "9f98c6ff0e1b4756b1bf5f8b746c420817aa94f9428f3f7ef6c8aa4031d075e6",
+					"tick": 126,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 133,
+					"path": "motion-00-transition-01.png",
+					"position": [
+						336.0,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						2.0
+					],
+					"sha256": "51eae8ee378069cd9b0e73997c59c222bda149dc21b49288f679cd5bc22e1a4d",
+					"tick": 127,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 134,
+					"path": "motion-00-transition-02.png",
+					"position": [
+						336.0,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						6.0
+					],
+					"sha256": "78d6672983fa7180ef8c71afbaa6a0efaba0ddd75f80f923f794cbb5e2729e59",
+					"tick": 128,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 135,
+					"path": "motion-00-transition-03.png",
+					"position": [
+						336.0,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						10.0
+					],
+					"sha256": "845d96ece08a34d6f2a44fd74cb2fa9e6cbcf97f9fd5d98097e303d44fcc6203",
+					"tick": 129,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 136,
+					"path": "motion-00-transition-04.png",
+					"position": [
+						336.0,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						12.0
+					],
+					"sha256": "e120678c063f2d857600e92350521bb83874f3f9648710e39a5d4c29d85c36e2",
+					"tick": 130,
+					"work_state": 2
+				}
+			]
+		},
+		{
+			"employee": "mira",
+			"end_tick": 257,
+			"facing": "south",
+			"samples": [
+				{
+					"engine_frame": 162,
+					"path": "motion-01-start.png",
+					"position": [
+						339.666656494141,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						10.0
+					],
+					"sha256": "7e5708ff2e90f25b67d552596121448943b9d88f9fbdf6cf31bfcc6bb6d31026",
+					"tick": 132,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 223,
+					"path": "motion-01-middle.png",
+					"position": [
+						400.0,
+						397.333251953125
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "2cb7229f119b76c3bf56204e84c990ad3944169c269e2a533258e81e92b956e3",
+					"tick": 193,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 287,
+					"path": "motion-01-end.png",
+					"position": [
+						336.0,
+						560.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "815a189a983924bcb00db15a37679bd753c6761bba9ebb905a8f652dce645af0",
+					"tick": 257,
+					"work_state": 0
+				}
+			],
+			"start_tick": 131,
+			"transition_contact": "transition-01-native.png",
+			"transition_crop": [
+				256,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 162,
+					"path": "motion-01-transition-00.png",
+					"position": [
+						339.666656494141,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						10.0
+					],
+					"sha256": "7e5708ff2e90f25b67d552596121448943b9d88f9fbdf6cf31bfcc6bb6d31026",
+					"tick": 132,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 163,
+					"path": "motion-01-transition-01.png",
+					"position": [
+						343.333312988281,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						6.0
+					],
+					"sha256": "27003cd4f9265af886a805b7dd6a49054d51a6281c5e71c440eb92be3db4e49e",
+					"tick": 133,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 164,
+					"path": "motion-01-transition-02.png",
+					"position": [
+						346.999969482422,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						2.0
+					],
+					"sha256": "b2f23519489151e24be9fe9b33bf5310465639509ca5a6a88ad65c8b7d7c5e14",
+					"tick": 134,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 165,
+					"path": "motion-01-transition-03.png",
+					"position": [
+						350.666625976562,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "e2e6e653cc8a2fa6cbf742f48a9a6d4ec3994f4b3fe018219c44ccab5ffa8d1f",
+					"tick": 135,
+					"work_state": 3
+				}
+			]
+		},
+		{
+			"employee": "mira",
+			"end_tick": 352,
+			"facing": "west",
+			"samples": [
+				{
+					"engine_frame": 294,
+					"path": "motion-02-start.png",
+					"position": [
+						336.0,
+						556.333312988281
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "f40cdfd76285af33709cf53dd7eb7a24bdd12d3e42f49be46a7cba5dd80ef10e",
+					"tick": 258,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 337,
+					"path": "motion-02-middle.png",
+					"position": [
+						336.0,
+						402.666748046875
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "7d15fc2e75df782b10ea63ea92a76d6f7fb98a0ce7e0e581f7e8046eb166530b",
+					"tick": 301,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 388,
+					"path": "motion-02-end.png",
+					"position": [
+						368.0,
+						272.0
+					],
+					"render_offset": [
+						-12.0,
+						4.0
+					],
+					"sha256": "0787780f1ff145672b52b8e3dadad2e61c737c3b042c0462b9a90d9d2ec686a9",
+					"tick": 352,
+					"work_state": 2
+				}
+			],
+			"start_tick": 257,
+			"transition_contact": "transition-02-native.png",
+			"transition_crop": [
+				256,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 383,
+					"path": "motion-02-transition-00.png",
+					"position": [
+						368.0,
+						272.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "3bc8dc249aae3f87e2882df3f4c0ae922af198aa813e9e0d0ddc5239681c39ba",
+					"tick": 347,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 384,
+					"path": "motion-02-transition-01.png",
+					"position": [
+						368.0,
+						272.0
+					],
+					"render_offset": [
+						-2.0,
+						1.0
+					],
+					"sha256": "d88ed3176ccd72c13ba36340cfef611f68077bcebdd702cb9676b4062ae72212",
+					"tick": 348,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 385,
+					"path": "motion-02-transition-02.png",
+					"position": [
+						368.0,
+						272.0
+					],
+					"render_offset": [
+						-6.0,
+						2.0
+					],
+					"sha256": "e9686f60ffcf094062d0495a8a177ec8047b7cb19a31b2a2a70cbeac088c21bb",
+					"tick": 349,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 386,
+					"path": "motion-02-transition-03.png",
+					"position": [
+						368.0,
+						272.0
+					],
+					"render_offset": [
+						-10.0,
+						3.0
+					],
+					"sha256": "5db2edf1fa4c98b81b9ae83d6280d694dd70b3ec020068d7df3a2b35dae8217b",
+					"tick": 350,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 387,
+					"path": "motion-02-transition-04.png",
+					"position": [
+						368.0,
+						272.0
+					],
+					"render_offset": [
+						-12.0,
+						4.0
+					],
+					"sha256": "0787780f1ff145672b52b8e3dadad2e61c737c3b042c0462b9a90d9d2ec686a9",
+					"tick": 351,
+					"work_state": 2
+				}
+			]
+		},
+		{
+			"employee": "mira",
+			"end_tick": 442,
+			"facing": "west",
+			"samples": [
+				{
+					"engine_frame": 396,
+					"path": "motion-03-start.png",
+					"position": [
+						368.0,
+						275.666656494141
+					],
+					"render_offset": [
+						-10.0,
+						3.0
+					],
+					"sha256": "640b4692a6022b7f009a976cabf1b4087711b20823fe901c92cb104320e28407",
+					"tick": 353,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 439,
+					"path": "motion-03-middle.png",
+					"position": [
+						368.0,
+						429.333251953125
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "08298af835ad4008e698f57ef839b89664ebf9f11dc219bc434d1a108fc423de",
+					"tick": 396,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 485,
+					"path": "motion-03-end.png",
+					"position": [
+						336.0,
+						560.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "cff897e02f458c65549186a5b9be8b39c06e0b5d76f46cc3ed44d9d1b4a73993",
+					"tick": 442,
+					"work_state": 0
+				}
+			],
+			"start_tick": 352,
+			"transition_contact": "transition-03-native.png",
+			"transition_crop": [
+				256,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 396,
+					"path": "motion-03-transition-00.png",
+					"position": [
+						368.0,
+						275.666656494141
+					],
+					"render_offset": [
+						-10.0,
+						3.0
+					],
+					"sha256": "640b4692a6022b7f009a976cabf1b4087711b20823fe901c92cb104320e28407",
+					"tick": 353,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 397,
+					"path": "motion-03-transition-01.png",
+					"position": [
+						368.0,
+						279.333312988281
+					],
+					"render_offset": [
+						-6.0,
+						2.0
+					],
+					"sha256": "0de7676dfac11d49844999de320876a9d0b361ff85a8394b32838a661808c267",
+					"tick": 354,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 398,
+					"path": "motion-03-transition-02.png",
+					"position": [
+						368.0,
+						282.999969482422
+					],
+					"render_offset": [
+						-2.0,
+						1.0
+					],
+					"sha256": "58a28ac506e47477ccb4902368397715d3f7844ff643c7b6e6fd3e7828971b98",
+					"tick": 355,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 399,
+					"path": "motion-03-transition-03.png",
+					"position": [
+						368.0,
+						286.666625976562
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "43d116913cde7b0e7e29ed8c27c4ce57c26b1c276c1787b35a7f9cc26d8ae887",
+					"tick": 356,
+					"work_state": 3
+				}
+			]
+		},
+		{
+			"employee": "mira",
+			"end_tick": 519,
+			"facing": "north",
+			"samples": [
+				{
+					"engine_frame": 496,
+					"path": "motion-04-start.png",
+					"position": [
+						336.0,
+						556.333312988281
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "d297944dc4ca70ba13f1825e0b0b624fab8be6219ab39d96b5138f2d46d968ea",
+					"tick": 443,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 530,
+					"path": "motion-04-middle.png",
+					"position": [
+						336.0,
+						434.666748046875
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "44e4bd526080f5b11c8dfe0cd6eb2a2636ac1a56bdf593dff33d964b2d74c574",
+					"tick": 477,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 572,
+					"path": "motion-04-end.png",
+					"position": [
+						336.0,
+						304.0
+					],
+					"render_offset": [
+						0.0,
+						-20.0
+					],
+					"sha256": "a7721a5844a697bb8c0ed051feb64130922b4da28447ff7a3d6a9ab7b6d1106a",
+					"tick": 519,
+					"work_state": 2
+				}
+			],
+			"start_tick": 442,
+			"transition_contact": "transition-04-native.png",
+			"transition_crop": [
+				256,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 567,
+					"path": "motion-04-transition-00.png",
+					"position": [
+						336.0,
+						304.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "e020b93e46b6d19a8bfd415f84840271a2230ec1d0ac96c18e42ab214e900714",
+					"tick": 514,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 568,
+					"path": "motion-04-transition-01.png",
+					"position": [
+						336.0,
+						304.0
+					],
+					"render_offset": [
+						0.0,
+						-3.0
+					],
+					"sha256": "5103d63a22419c67326b1f5c3444a57bdf7dfe061b35df749952a8c6feecb79c",
+					"tick": 515,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 569,
+					"path": "motion-04-transition-02.png",
+					"position": [
+						336.0,
+						304.0
+					],
+					"render_offset": [
+						0.0,
+						-9.0
+					],
+					"sha256": "ac0ef4ca284e3202b316760cc3bc8e030935dddde1ba70574769fbd4e577b87d",
+					"tick": 516,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 570,
+					"path": "motion-04-transition-03.png",
+					"position": [
+						336.0,
+						304.0
+					],
+					"render_offset": [
+						0.0,
+						-16.0
+					],
+					"sha256": "e1fe09223e936af4aa9295777e4f343b85fc233b94c166c5f01bb28a583500eb",
+					"tick": 517,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 571,
+					"path": "motion-04-transition-04.png",
+					"position": [
+						336.0,
+						304.0
+					],
+					"render_offset": [
+						0.0,
+						-20.0
+					],
+					"sha256": "a7721a5844a697bb8c0ed051feb64130922b4da28447ff7a3d6a9ab7b6d1106a",
+					"tick": 518,
+					"work_state": 2
+				}
+			]
+		},
+		{
+			"employee": "theo",
+			"end_tick": 596,
+			"facing": "north",
+			"samples": [
+				{
+					"engine_frame": 575,
+					"path": "motion-05-start.png",
+					"position": [
+						784.0,
+						556.333312988281
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "4339cc6fbb5aefc3e1ced1c64041b27f0b4475ceb39200fc113514b8b2f91575",
+					"tick": 520,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 609,
+					"path": "motion-05-middle.png",
+					"position": [
+						784.0,
+						434.666748046875
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "922d4a7a40c9f7d9fff5e8d5ebe37a485c390e57b58d412a04ad59870fc701f0",
+					"tick": 554,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 651,
+					"path": "motion-05-end.png",
+					"position": [
+						784.0,
+						304.0
+					],
+					"render_offset": [
+						0.0,
+						-16.0
+					],
+					"sha256": "db4e2d97c31dbc83371daf29ee552a7151623220d2e3703ff2eb5dad885bbc87",
+					"tick": 596,
+					"work_state": 2
+				}
+			],
+			"start_tick": 519,
+			"transition_contact": "transition-05-native.png",
+			"transition_crop": [
+				704,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 646,
+					"path": "motion-05-transition-00.png",
+					"position": [
+						784.0,
+						304.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "2796ab5970da121b2dbda2449acb3fdffa8a75be22fd67469f8696ef1b8548ad",
+					"tick": 591,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 647,
+					"path": "motion-05-transition-01.png",
+					"position": [
+						784.0,
+						304.0
+					],
+					"render_offset": [
+						0.0,
+						-2.0
+					],
+					"sha256": "68c5c5c0c21ba221aee5ac667850091127a51789179da277fd8c394a601d383e",
+					"tick": 592,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 648,
+					"path": "motion-05-transition-02.png",
+					"position": [
+						784.0,
+						304.0
+					],
+					"render_offset": [
+						0.0,
+						-7.0
+					],
+					"sha256": "a534c4e8498a7d883c6be12ac29c8dee879897eee49407789e7d1d7f4ca282cd",
+					"tick": 593,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 649,
+					"path": "motion-05-transition-03.png",
+					"position": [
+						784.0,
+						304.0
+					],
+					"render_offset": [
+						0.0,
+						-13.0
+					],
+					"sha256": "d6f186d23775521590eb3a7cd92ba3e1b3625f460616c496bde0ed9ff7041350",
+					"tick": 594,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 650,
+					"path": "motion-05-transition-04.png",
+					"position": [
+						784.0,
+						304.0
+					],
+					"render_offset": [
+						0.0,
+						-16.0
+					],
+					"sha256": "db4e2d97c31dbc83371daf29ee552a7151623220d2e3703ff2eb5dad885bbc87",
+					"tick": 595,
+					"work_state": 2
+				}
+			]
+		},
+		{
+			"employee": "mira",
+			"end_tick": 668,
+			"facing": "north",
+			"samples": [
+				{
+					"engine_frame": 681,
+					"path": "motion-06-start.png",
+					"position": [
+						336.0,
+						307.666656494141
+					],
+					"render_offset": [
+						0.0,
+						-17.0
+					],
+					"sha256": "677a305c20bbae0ca0e8421553addaf31b9722d8e714daf7cdb1fb6fd55919d4",
+					"tick": 597,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 715,
+					"path": "motion-06-middle.png",
+					"position": [
+						336.0,
+						429.333251953125
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "d526e73247334307f30b42d49f2d033b694a90528e1da34a2ed757df59c951de",
+					"tick": 631,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 752,
+					"path": "motion-06-end.png",
+					"position": [
+						336.0,
+						560.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "ec60471744a7e0a2b91134f53670d57f5ffd184c3054b70916da254a8ed88adf",
+					"tick": 668,
+					"work_state": 0
+				}
+			],
+			"start_tick": 596,
+			"transition_contact": "transition-06-native.png",
+			"transition_crop": [
+				256,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 681,
+					"path": "motion-06-transition-00.png",
+					"position": [
+						336.0,
+						307.666656494141
+					],
+					"render_offset": [
+						0.0,
+						-17.0
+					],
+					"sha256": "677a305c20bbae0ca0e8421553addaf31b9722d8e714daf7cdb1fb6fd55919d4",
+					"tick": 597,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 682,
+					"path": "motion-06-transition-01.png",
+					"position": [
+						336.0,
+						311.333312988281
+					],
+					"render_offset": [
+						0.0,
+						-11.0
+					],
+					"sha256": "c7cbcd9562c7198f4addd1bdbd89d6f2324757c833ba48bd745cafa7d11ba262",
+					"tick": 598,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 683,
+					"path": "motion-06-transition-02.png",
+					"position": [
+						336.0,
+						314.999969482422
+					],
+					"render_offset": [
+						0.0,
+						-4.0
+					],
+					"sha256": "168868e17c1f399ed7ec87752f2540c5ee7f3bf225d9a43fa1f5a36976c7d423",
+					"tick": 599,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 684,
+					"path": "motion-06-transition-03.png",
+					"position": [
+						336.0,
+						318.666625976562
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "341938cf056f97b6e7ed81e28216d314e0fb7e2e7786235c9cb910f84ea75754",
+					"tick": 600,
+					"work_state": 3
+				}
+			]
+		},
+		{
+			"employee": "mira",
+			"end_tick": 763,
+			"facing": "east",
+			"samples": [
+				{
+					"engine_frame": 759,
+					"path": "motion-07-start.png",
+					"position": [
+						336.0,
+						556.333312988281
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "074821612b2f8cf50231f5a6d76e19aad04f07c26fc3dc6d2e293a9bb2b6c524",
+					"tick": 669,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 802,
+					"path": "motion-07-middle.png",
+					"position": [
+						336.0,
+						402.666748046875
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "ddc715a31200e55a596650c5967fe3c3abc357de5c6e7c178d25dab0720ae188",
+					"tick": 712,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 853,
+					"path": "motion-07-end.png",
+					"position": [
+						304.0,
+						272.0
+					],
+					"render_offset": [
+						12.0,
+						3.0
+					],
+					"sha256": "329917546cfd6b16c2b5cd607cedef1de676997b2c1dda68d1d1fef96b08d476",
+					"tick": 763,
+					"work_state": 2
+				}
+			],
+			"start_tick": 668,
+			"transition_contact": "transition-07-native.png",
+			"transition_crop": [
+				256,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 848,
+					"path": "motion-07-transition-00.png",
+					"position": [
+						304.0,
+						272.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "e9a0a59d5d47ac6392ad7c1272f31c13aed57e3c90a75638c17676ccadc7a277",
+					"tick": 758,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 849,
+					"path": "motion-07-transition-01.png",
+					"position": [
+						304.0,
+						272.0
+					],
+					"render_offset": [
+						2.0,
+						0.0
+					],
+					"sha256": "ffc0fb3c019fd558e04ab167eb9845d60c6fb4f86467e398a8e7a38bcca1e0e2",
+					"tick": 759,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 850,
+					"path": "motion-07-transition-02.png",
+					"position": [
+						304.0,
+						272.0
+					],
+					"render_offset": [
+						6.0,
+						1.0
+					],
+					"sha256": "6927240a0e3c5be837deb3f263a7d08f312297a7ef016f0b50d0e6eb9836ae69",
+					"tick": 760,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 851,
+					"path": "motion-07-transition-03.png",
+					"position": [
+						304.0,
+						272.0
+					],
+					"render_offset": [
+						10.0,
+						2.0
+					],
+					"sha256": "b88b5b6445786cd9fb167fde2e490484e5d16269031d6503977974e448d4fb97",
+					"tick": 761,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 852,
+					"path": "motion-07-transition-04.png",
+					"position": [
+						304.0,
+						272.0
+					],
+					"render_offset": [
+						12.0,
+						3.0
+					],
+					"sha256": "329917546cfd6b16c2b5cd607cedef1de676997b2c1dda68d1d1fef96b08d476",
+					"tick": 762,
+					"work_state": 2
+				}
+			]
+		},
+		{
+			"employee": "theo",
+			"end_tick": 835,
+			"facing": "north",
+			"samples": [
+				{
+					"engine_frame": 856,
+					"path": "motion-08-start.png",
+					"position": [
+						784.0,
+						307.666656494141
+					],
+					"render_offset": [
+						0.0,
+						-14.0
+					],
+					"sha256": "015fdb9e61988ba521d14a01f364a3aecb7ec41f15cbaefdaf237d78c9b063e2",
+					"tick": 764,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 890,
+					"path": "motion-08-middle.png",
+					"position": [
+						784.0,
+						429.333251953125
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "192d6f6681c99d00bff4e2b93f3915a5d826d8ca77f42a13141f7df62b9b3870",
+					"tick": 798,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 927,
+					"path": "motion-08-end.png",
+					"position": [
+						784.0,
+						560.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "1597ba31d98f02eeab6e064e4396c0402c022d240ff4de7b06f3bc840485ea33",
+					"tick": 835,
+					"work_state": 0
+				}
+			],
+			"start_tick": 763,
+			"transition_contact": "transition-08-native.png",
+			"transition_crop": [
+				704,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 856,
+					"path": "motion-08-transition-00.png",
+					"position": [
+						784.0,
+						307.666656494141
+					],
+					"render_offset": [
+						0.0,
+						-14.0
+					],
+					"sha256": "015fdb9e61988ba521d14a01f364a3aecb7ec41f15cbaefdaf237d78c9b063e2",
+					"tick": 764,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 857,
+					"path": "motion-08-transition-01.png",
+					"position": [
+						784.0,
+						311.333312988281
+					],
+					"render_offset": [
+						0.0,
+						-9.0
+					],
+					"sha256": "bc1ca625ee878407b53918335f43650b9825ef1e4a6ace1391602fac80b80373",
+					"tick": 765,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 858,
+					"path": "motion-08-transition-02.png",
+					"position": [
+						784.0,
+						314.999969482422
+					],
+					"render_offset": [
+						0.0,
+						-3.0
+					],
+					"sha256": "d99ce1ed77e5f8f24ec2aca425db16e0819ab893113fa77c145194e35fcdb365",
+					"tick": 766,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 859,
+					"path": "motion-08-transition-03.png",
+					"position": [
+						784.0,
+						318.666625976562
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "26be4ec3c338eeba71939ebefc4084fe192af306f81b17329901951f72b52b64",
+					"tick": 767,
+					"work_state": 3
+				}
+			]
+		},
+		{
+			"employee": "theo",
+			"end_tick": 930,
+			"facing": "east",
+			"samples": [
+				{
+					"engine_frame": 934,
+					"path": "motion-09-start.png",
+					"position": [
+						784.0,
+						556.333312988281
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "5aa70dbf8f93f36553727e2b6cbfef3647082168b62b693fe36ff29e6f9fd60e",
+					"tick": 836,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 977,
+					"path": "motion-09-middle.png",
+					"position": [
+						784.0,
+						402.666748046875
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "55df9199846b7ec69d99f84dfdd7d9afc2ab001270ae9410c899741195c1038a",
+					"tick": 879,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 1028,
+					"path": "motion-09-end.png",
+					"position": [
+						752.0,
+						272.0
+					],
+					"render_offset": [
+						12.0,
+						4.0
+					],
+					"sha256": "a5623350d822862de05d74da98d77535f4de2230dc83fb72096aabb699767a23",
+					"tick": 930,
+					"work_state": 2
+				}
+			],
+			"start_tick": 835,
+			"transition_contact": "transition-09-native.png",
+			"transition_crop": [
+				704,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 1023,
+					"path": "motion-09-transition-00.png",
+					"position": [
+						752.0,
+						272.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "c282496aea0ee3876f2c4a26fc39453ec3e441905615f2115d56670b20f5d0ce",
+					"tick": 925,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1024,
+					"path": "motion-09-transition-01.png",
+					"position": [
+						752.0,
+						272.0
+					],
+					"render_offset": [
+						2.0,
+						1.0
+					],
+					"sha256": "543067512d2f68096f759b8817bfb51bcefbd852e7625723777009ab8a1c6325",
+					"tick": 926,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1025,
+					"path": "motion-09-transition-02.png",
+					"position": [
+						752.0,
+						272.0
+					],
+					"render_offset": [
+						6.0,
+						2.0
+					],
+					"sha256": "d94cdfe66a4a0fa6bb877da8c779fcdd06ddc08fba9f10def4f5155bfb625568",
+					"tick": 927,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1026,
+					"path": "motion-09-transition-03.png",
+					"position": [
+						752.0,
+						272.0
+					],
+					"render_offset": [
+						10.0,
+						3.0
+					],
+					"sha256": "037bc7f012ed453d1816f68bd96fd11c08f63e9770ccbaf4c887d066037df40f",
+					"tick": 928,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1027,
+					"path": "motion-09-transition-04.png",
+					"position": [
+						752.0,
+						272.0
+					],
+					"render_offset": [
+						12.0,
+						4.0
+					],
+					"sha256": "a5623350d822862de05d74da98d77535f4de2230dc83fb72096aabb699767a23",
+					"tick": 929,
+					"work_state": 2
+				}
+			]
+		},
+		{
+			"employee": "mira",
+			"end_tick": 1020,
+			"facing": "east",
+			"samples": [
+				{
+					"engine_frame": 1058,
+					"path": "motion-10-start.png",
+					"position": [
+						304.0,
+						275.666656494141
+					],
+					"render_offset": [
+						10.0,
+						3.0
+					],
+					"sha256": "d83047056246d3a79d6bbf0d357fe51076d3d016c6b27d7cbfe0b2702a2b7aba",
+					"tick": 931,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1101,
+					"path": "motion-10-middle.png",
+					"position": [
+						304.0,
+						429.333251953125
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "331d6428530263069a5e83f552799a92c3d8641255cb0ce2dd21bcad2aa8cf7a",
+					"tick": 974,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1147,
+					"path": "motion-10-end.png",
+					"position": [
+						336.0,
+						560.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "487a65733bb8d9d4393e6eea34963b7a0fcd738c603efb1dd73932ca698ec2f8",
+					"tick": 1020,
+					"work_state": 0
+				}
+			],
+			"start_tick": 930,
+			"transition_contact": "transition-10-native.png",
+			"transition_crop": [
+				256,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 1058,
+					"path": "motion-10-transition-00.png",
+					"position": [
+						304.0,
+						275.666656494141
+					],
+					"render_offset": [
+						10.0,
+						3.0
+					],
+					"sha256": "d83047056246d3a79d6bbf0d357fe51076d3d016c6b27d7cbfe0b2702a2b7aba",
+					"tick": 931,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1059,
+					"path": "motion-10-transition-01.png",
+					"position": [
+						304.0,
+						279.333312988281
+					],
+					"render_offset": [
+						6.0,
+						2.0
+					],
+					"sha256": "59e6a10d80ee864d7b0b134a4fabf168a68eb76a4760ebc75e9ecf503c2ff277",
+					"tick": 932,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1060,
+					"path": "motion-10-transition-02.png",
+					"position": [
+						304.0,
+						282.999969482422
+					],
+					"render_offset": [
+						2.0,
+						1.0
+					],
+					"sha256": "2afe75a035ca3232359f1f557b097457573c57dad68129e9737dc3dd8613e130",
+					"tick": 933,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1061,
+					"path": "motion-10-transition-03.png",
+					"position": [
+						304.0,
+						286.666625976562
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "e55226dbe4ac905d72730f9a4d46c69fbcb4ef243e582dd0bfafd4e7f0c03e31",
+					"tick": 934,
+					"work_state": 3
+				}
+			]
+		},
+		{
+			"employee": "mira",
+			"end_tick": 1151,
+			"facing": "south",
+			"samples": [
+				{
+					"engine_frame": 1154,
+					"path": "motion-11-start.png",
+					"position": [
+						336.0,
+						556.333312988281
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "7616ff323c2ec63ef287f7efd37e2ec970ad8c0d42047793972bca50ec59aa77",
+					"tick": 1021,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 1215,
+					"path": "motion-11-middle.png",
+					"position": [
+						336.0,
+						338.666748046875
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "17dd1ca95b0e000d31b92e31f5aa2784909da2af9f9322fa1958e742fcac9ad1",
+					"tick": 1082,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 1284,
+					"path": "motion-11-end.png",
+					"position": [
+						336.0,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						12.0
+					],
+					"sha256": "b34ad79909d391712ed6aadfd4e5858ad475e5ac61a4cd64180b1b890a3232c3",
+					"tick": 1151,
+					"work_state": 2
+				}
+			],
+			"start_tick": 1020,
+			"transition_contact": "transition-11-native.png",
+			"transition_crop": [
+				256,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 1279,
+					"path": "motion-11-transition-00.png",
+					"position": [
+						336.0,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "6d0b4f31974f19ca99f0eb574a8b1ed01f81cb0aae1cff0961d53c62b30c5772",
+					"tick": 1146,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1280,
+					"path": "motion-11-transition-01.png",
+					"position": [
+						336.0,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						2.0
+					],
+					"sha256": "6b22e1b90acce42793ed1ff6d6acf7696a33ac8476a3fb84ba701b4aa713d24f",
+					"tick": 1147,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1281,
+					"path": "motion-11-transition-02.png",
+					"position": [
+						336.0,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						6.0
+					],
+					"sha256": "8df64dad5eb933e19f7d66125e9a0180027311eec8c8e6cc62fed5bd9edcec16",
+					"tick": 1148,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1282,
+					"path": "motion-11-transition-03.png",
+					"position": [
+						336.0,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						10.0
+					],
+					"sha256": "40bfc672e71521e2ff7ac0bd356d3b0e5affe505ffea8ee0a7935354d4531ca2",
+					"tick": 1149,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1283,
+					"path": "motion-11-transition-04.png",
+					"position": [
+						336.0,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						12.0
+					],
+					"sha256": "b34ad79909d391712ed6aadfd4e5858ad475e5ac61a4cd64180b1b890a3232c3",
+					"tick": 1150,
+					"work_state": 2
+				}
+			]
+		},
+		{
+			"employee": "theo",
+			"end_tick": 1241,
+			"facing": "east",
+			"samples": [
+				{
+					"engine_frame": 1287,
+					"path": "motion-12-start.png",
+					"position": [
+						752.0,
+						275.666656494141
+					],
+					"render_offset": [
+						10.0,
+						3.0
+					],
+					"sha256": "2918b83619050c98cf7c705da7fe06db090ff2ab18080ee84c47c66eedf87230",
+					"tick": 1152,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1330,
+					"path": "motion-12-middle.png",
+					"position": [
+						752.0,
+						429.333251953125
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "2915c0b68e33ec5dda994027a02b37d3d032bf34b51fa873b78a253a56b7e9c5",
+					"tick": 1195,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1376,
+					"path": "motion-12-end.png",
+					"position": [
+						784.0,
+						560.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "a425c07820ef6972e414922f0b0054a833c4bf76490fb892ca6b7646f091a1de",
+					"tick": 1241,
+					"work_state": 0
+				}
+			],
+			"start_tick": 1151,
+			"transition_contact": "transition-12-native.png",
+			"transition_crop": [
+				704,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 1287,
+					"path": "motion-12-transition-00.png",
+					"position": [
+						752.0,
+						275.666656494141
+					],
+					"render_offset": [
+						10.0,
+						3.0
+					],
+					"sha256": "2918b83619050c98cf7c705da7fe06db090ff2ab18080ee84c47c66eedf87230",
+					"tick": 1152,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1288,
+					"path": "motion-12-transition-01.png",
+					"position": [
+						752.0,
+						279.333312988281
+					],
+					"render_offset": [
+						6.0,
+						2.0
+					],
+					"sha256": "9e7c50a548c37ab84a7b642de29180373b392faa7534f0d321f2bd821d89c1a1",
+					"tick": 1153,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1289,
+					"path": "motion-12-transition-02.png",
+					"position": [
+						752.0,
+						282.999969482422
+					],
+					"render_offset": [
+						2.0,
+						1.0
+					],
+					"sha256": "9bf16757350650bac52671c61c1283b11bcdfa8dd943b43d4ea5e7dc19950b3d",
+					"tick": 1154,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1290,
+					"path": "motion-12-transition-03.png",
+					"position": [
+						752.0,
+						286.666625976562
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "cdcc88a41d3c04c8dfd9bc003c8354e5583a9efa78ac652555069fd155de67a0",
+					"tick": 1155,
+					"work_state": 3
+				}
+			]
+		},
+		{
+			"employee": "theo",
+			"end_tick": 1372,
+			"facing": "south",
+			"samples": [
+				{
+					"engine_frame": 1383,
+					"path": "motion-13-start.png",
+					"position": [
+						784.0,
+						556.333312988281
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "ef1a05dd15c16f6a846466db946f85a39814917cce68eb09f9159119c103d6e4",
+					"tick": 1242,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 1444,
+					"path": "motion-13-middle.png",
+					"position": [
+						784.0,
+						338.666748046875
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "5490b5d15358df6b991e3870b33de60e909545f86ccd187dc51ce7d7adb20ae2",
+					"tick": 1303,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 1513,
+					"path": "motion-13-end.png",
+					"position": [
+						784.0,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						12.0
+					],
+					"sha256": "334e703646bb65b97f4a9036e7945d4334aeec891e8fbbace096650b1823c46f",
+					"tick": 1372,
+					"work_state": 2
+				}
+			],
+			"start_tick": 1241,
+			"transition_contact": "transition-13-native.png",
+			"transition_crop": [
+				704,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 1508,
+					"path": "motion-13-transition-00.png",
+					"position": [
+						784.0,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "6b06ad2e05fe51a96d437cef9f20ac05389535395c6074fdbb272b6c1341f797",
+					"tick": 1367,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1509,
+					"path": "motion-13-transition-01.png",
+					"position": [
+						784.0,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						2.0
+					],
+					"sha256": "1f07f27066a6db1058134b4ea2d40f3dc25add031c911f9554142c9dac1bc5dc",
+					"tick": 1368,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1510,
+					"path": "motion-13-transition-02.png",
+					"position": [
+						784.0,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						6.0
+					],
+					"sha256": "12d270f5c9b687168b75ee694f39e0a60c1bfb676aed172964b21f07b4efc330",
+					"tick": 1369,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1511,
+					"path": "motion-13-transition-03.png",
+					"position": [
+						784.0,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						10.0
+					],
+					"sha256": "b24f84f20cd45ae4a27a64851abaaa1eb49c5641e7ea10894ecbcb8262661a1a",
+					"tick": 1370,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1512,
+					"path": "motion-13-transition-04.png",
+					"position": [
+						784.0,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						12.0
+					],
+					"sha256": "334e703646bb65b97f4a9036e7945d4334aeec891e8fbbace096650b1823c46f",
+					"tick": 1371,
+					"work_state": 2
+				}
+			]
+		},
+		{
+			"employee": "mira",
+			"end_tick": 1498,
+			"facing": "south",
+			"samples": [
+				{
+					"engine_frame": 1543,
+					"path": "motion-14-start.png",
+					"position": [
+						339.666656494141,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						10.0
+					],
+					"sha256": "78ecd644e2420ad09d494ca393ac81aa68fc2ee72723fa730606218b9f8ea470",
+					"tick": 1373,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1604,
+					"path": "motion-14-middle.png",
+					"position": [
+						400.0,
+						397.333251953125
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "97b33fc59b613210a6f909fb6635dc2e5b409ed108e08801c11996e51c61ec89",
+					"tick": 1434,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1668,
+					"path": "motion-14-end.png",
+					"position": [
+						336.0,
+						560.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "f047c88de56c782e81aa4cd9454538a7766bb30eb93a34bb5f31ddfab6811ac8",
+					"tick": 1498,
+					"work_state": 0
+				}
+			],
+			"start_tick": 1372,
+			"transition_contact": "transition-14-native.png",
+			"transition_crop": [
+				256,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 1543,
+					"path": "motion-14-transition-00.png",
+					"position": [
+						339.666656494141,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						10.0
+					],
+					"sha256": "78ecd644e2420ad09d494ca393ac81aa68fc2ee72723fa730606218b9f8ea470",
+					"tick": 1373,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1544,
+					"path": "motion-14-transition-01.png",
+					"position": [
+						343.333312988281,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						6.0
+					],
+					"sha256": "1c4f5725c1d71b8bc44c9ec5a9bcec54b73de1aa3c2c8a643d7032a891f9a0b4",
+					"tick": 1374,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1545,
+					"path": "motion-14-transition-02.png",
+					"position": [
+						346.999969482422,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						2.0
+					],
+					"sha256": "28145b82d499294d333b86d933c617b0e86f555e8fbddcfbfd3bac4e563b232c",
+					"tick": 1375,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1546,
+					"path": "motion-14-transition-03.png",
+					"position": [
+						350.666625976562,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "ae9083fbbe4ef2b25b5351b10b8a3fb4b04abe6cc35d5780648b12d9c69c7eca",
+					"tick": 1376,
+					"work_state": 3
+				}
+			]
+		},
+		{
+			"employee": "mira",
+			"end_tick": 1593,
+			"facing": "west",
+			"samples": [
+				{
+					"engine_frame": 1675,
+					"path": "motion-15-start.png",
+					"position": [
+						336.0,
+						556.333312988281
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "f29a0ce2f48aaf94cca46e18e2bc86ef4da69bd898dbe4d63b3597b1c585d4db",
+					"tick": 1499,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 1718,
+					"path": "motion-15-middle.png",
+					"position": [
+						336.0,
+						402.666748046875
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "e45da0c164a41099c69fa10e79a7409912f2e02eaeecc930f292b5ef78797391",
+					"tick": 1542,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 1769,
+					"path": "motion-15-end.png",
+					"position": [
+						368.0,
+						272.0
+					],
+					"render_offset": [
+						-12.0,
+						4.0
+					],
+					"sha256": "42ab3f4aa529daa151b7a3b3005736e67a620bba75614929b1bb8f21c7caf626",
+					"tick": 1593,
+					"work_state": 2
+				}
+			],
+			"start_tick": 1498,
+			"transition_contact": "transition-15-native.png",
+			"transition_crop": [
+				256,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 1764,
+					"path": "motion-15-transition-00.png",
+					"position": [
+						368.0,
+						272.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "fc624ad77e8d748d700383fb22fbf0de7f041bc09dcb9b20cb5c7d8a7bab688d",
+					"tick": 1588,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1765,
+					"path": "motion-15-transition-01.png",
+					"position": [
+						368.0,
+						272.0
+					],
+					"render_offset": [
+						-2.0,
+						1.0
+					],
+					"sha256": "0e9a71f8b5ceeea32dab8abe7847aa72d046c3be9b9d5f88c7736ec75c4f770b",
+					"tick": 1589,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1766,
+					"path": "motion-15-transition-02.png",
+					"position": [
+						368.0,
+						272.0
+					],
+					"render_offset": [
+						-6.0,
+						2.0
+					],
+					"sha256": "0b6900b0ac8ce851fdf7e9933e376ecacc306a70a426b2bfd401881d0c28dbe3",
+					"tick": 1590,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1767,
+					"path": "motion-15-transition-03.png",
+					"position": [
+						368.0,
+						272.0
+					],
+					"render_offset": [
+						-10.0,
+						3.0
+					],
+					"sha256": "b88ed1bd041d8210d7af81cbd12737ea428f98668e726ad74410f291e608a438",
+					"tick": 1591,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1768,
+					"path": "motion-15-transition-04.png",
+					"position": [
+						368.0,
+						272.0
+					],
+					"render_offset": [
+						-12.0,
+						4.0
+					],
+					"sha256": "42ab3f4aa529daa151b7a3b3005736e67a620bba75614929b1bb8f21c7caf626",
+					"tick": 1592,
+					"work_state": 2
+				}
+			]
+		},
+		{
+			"employee": "theo",
+			"end_tick": 1719,
+			"facing": "south",
+			"samples": [
+				{
+					"engine_frame": 1772,
+					"path": "motion-16-start.png",
+					"position": [
+						787.666687011719,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						10.0
+					],
+					"sha256": "48f29bfe6f8775c864529ca8adedba8d2f7973a85288e69802434c13b583fdba",
+					"tick": 1594,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1833,
+					"path": "motion-16-middle.png",
+					"position": [
+						848.0,
+						397.333251953125
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "1bf1c6656c08b623660aab289e0451fc49ebe609df47dbf0048d72506be6acc5",
+					"tick": 1655,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1897,
+					"path": "motion-16-end.png",
+					"position": [
+						784.0,
+						560.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "b0022920f876535cdce9f56950ecbf81c08bb3e590a0ff08935e58f2564c3575",
+					"tick": 1719,
+					"work_state": 0
+				}
+			],
+			"start_tick": 1593,
+			"transition_contact": "transition-16-native.png",
+			"transition_crop": [
+				704,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 1772,
+					"path": "motion-16-transition-00.png",
+					"position": [
+						787.666687011719,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						10.0
+					],
+					"sha256": "48f29bfe6f8775c864529ca8adedba8d2f7973a85288e69802434c13b583fdba",
+					"tick": 1594,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1773,
+					"path": "motion-16-transition-01.png",
+					"position": [
+						791.333374023438,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						6.0
+					],
+					"sha256": "480be7e35e8bef6521027e3b71185100f00305aa91b893e2160ae968aaf48268",
+					"tick": 1595,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1774,
+					"path": "motion-16-transition-02.png",
+					"position": [
+						795.000061035156,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						2.0
+					],
+					"sha256": "96911c82edd61925729ee8a0d4ae1282340921b292254ba765f21a0683cb03f3",
+					"tick": 1596,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 1775,
+					"path": "motion-16-transition-03.png",
+					"position": [
+						798.666748046875,
+						240.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "4a8a0652687c218e5c1b3cca7e0e23af559ece850b26f5486842a4bc413eb0bc",
+					"tick": 1597,
+					"work_state": 3
+				}
+			]
+		},
+		{
+			"employee": "theo",
+			"end_tick": 1814,
+			"facing": "west",
+			"samples": [
+				{
+					"engine_frame": 1904,
+					"path": "motion-17-start.png",
+					"position": [
+						784.0,
+						556.333312988281
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "e0608c9c77964fa1ab3586def5418691a1d3d0a12d25a29ffa36835f186773d1",
+					"tick": 1720,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 1947,
+					"path": "motion-17-middle.png",
+					"position": [
+						784.0,
+						402.666748046875
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "692d0b241de62f574fc8ad61a89b004635cee1e3bec6aa851b43b647577fcb1c",
+					"tick": 1763,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 1998,
+					"path": "motion-17-end.png",
+					"position": [
+						816.0,
+						272.0
+					],
+					"render_offset": [
+						-12.0,
+						8.0
+					],
+					"sha256": "88c92561a38c2aea50f58d165901809d15ac1f01244834f7c53145d13ce16f55",
+					"tick": 1814,
+					"work_state": 2
+				}
+			],
+			"start_tick": 1719,
+			"transition_contact": "transition-17-native.png",
+			"transition_crop": [
+				704,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 1993,
+					"path": "motion-17-transition-00.png",
+					"position": [
+						816.0,
+						272.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "97bf4dc34cd53de82790ae9c4f454dee9f5868753901c837b0263e9423274f52",
+					"tick": 1809,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1994,
+					"path": "motion-17-transition-01.png",
+					"position": [
+						816.0,
+						272.0
+					],
+					"render_offset": [
+						-2.0,
+						1.0
+					],
+					"sha256": "e56293f768fc5fde7486ba6e8041c2a42c968bcb46ca8f6c841af447586e6c3c",
+					"tick": 1810,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1995,
+					"path": "motion-17-transition-02.png",
+					"position": [
+						816.0,
+						272.0
+					],
+					"render_offset": [
+						-6.0,
+						4.0
+					],
+					"sha256": "36c26111ee73b864a766d4a6033cc3b66fa662784599d924468246316f696029",
+					"tick": 1811,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1996,
+					"path": "motion-17-transition-03.png",
+					"position": [
+						816.0,
+						272.0
+					],
+					"render_offset": [
+						-10.0,
+						6.0
+					],
+					"sha256": "0aa9338a1a60523aa8d28d2b8c31fff95988682619d2e97eff21f00d87453ba6",
+					"tick": 1812,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 1997,
+					"path": "motion-17-transition-04.png",
+					"position": [
+						816.0,
+						272.0
+					],
+					"render_offset": [
+						-12.0,
+						8.0
+					],
+					"sha256": "88c92561a38c2aea50f58d165901809d15ac1f01244834f7c53145d13ce16f55",
+					"tick": 1813,
+					"work_state": 2
+				}
+			]
+		},
+		{
+			"employee": "mira",
+			"end_tick": 1904,
+			"facing": "east",
+			"samples": [
+				{
+					"engine_frame": 2057,
+					"path": "motion-18-start.png",
+					"position": [
+						336.0,
+						537.999877929688
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "9d2dd9b70ba6238d4d0bed0497472be570b52e7077e2a017bcfafb48838c136f",
+					"tick": 1815,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 2098,
+					"path": "motion-18-middle.png",
+					"position": [
+						336.0,
+						392.666687011719
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "2294bbd848a503b27d2b34119d5bf6b38f0b2f4d07d2fbc191fa9e0ca06d8ef7",
+					"tick": 1856,
+					"work_state": 6
+				},
+				{
+					"engine_frame": 2146,
+					"path": "motion-18-end.png",
+					"position": [
+						304.0,
+						272.0
+					],
+					"render_offset": [
+						12.0,
+						3.0
+					],
+					"sha256": "34ece77bf99d31d4a0549b0503c9485e94dd8d10874a90575f0ee7db9c3708fa",
+					"tick": 1904,
+					"work_state": 2
+				}
+			],
+			"start_tick": 1814,
+			"transition_contact": "transition-18-native.png",
+			"transition_crop": [
+				256,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 2141,
+					"path": "motion-18-transition-00.png",
+					"position": [
+						304.0,
+						272.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "44e42d3da98c5f4b8dd09efd3f319cb26679714bfaa5817a8dc3c21701a9308b",
+					"tick": 1899,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 2142,
+					"path": "motion-18-transition-01.png",
+					"position": [
+						304.0,
+						272.0
+					],
+					"render_offset": [
+						2.0,
+						0.0
+					],
+					"sha256": "36eb2ca53b976441999f50c7979b9c8bdec1a197c794d1c3d1119d18c960389a",
+					"tick": 1900,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 2143,
+					"path": "motion-18-transition-02.png",
+					"position": [
+						304.0,
+						272.0
+					],
+					"render_offset": [
+						6.0,
+						1.0
+					],
+					"sha256": "59245f75c861c3e2efe27c8b3276e9fb1ac7d504eaad2254707c0e43e532d6b7",
+					"tick": 1901,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 2144,
+					"path": "motion-18-transition-03.png",
+					"position": [
+						304.0,
+						272.0
+					],
+					"render_offset": [
+						10.0,
+						2.0
+					],
+					"sha256": "06b9e30a1b05e9bba73fcd963a5ad3487738a139af067162bbd7c5ed7f7b5463",
+					"tick": 1902,
+					"work_state": 2
+				},
+				{
+					"engine_frame": 2145,
+					"path": "motion-18-transition-04.png",
+					"position": [
+						304.0,
+						272.0
+					],
+					"render_offset": [
+						12.0,
+						3.0
+					],
+					"sha256": "34ece77bf99d31d4a0549b0503c9485e94dd8d10874a90575f0ee7db9c3708fa",
+					"tick": 1903,
+					"work_state": 2
+				}
+			]
+		},
+		{
+			"employee": "mira",
+			"end_tick": 1994,
+			"facing": "east",
+			"samples": [
+				{
+					"engine_frame": 2154,
+					"path": "motion-19-start.png",
+					"position": [
+						304.0,
+						275.666656494141
+					],
+					"render_offset": [
+						10.0,
+						3.0
+					],
+					"sha256": "cfeab0ff99a70b23746b56cf7ac6f9423b1297b4dd6ede59ee433305fb886001",
+					"tick": 1905,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 2197,
+					"path": "motion-19-middle.png",
+					"position": [
+						304.0,
+						429.333251953125
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "643427f4a29664783917dbc2b04be0a961403b7ba0611526f4b9f3ff99f6c345",
+					"tick": 1948,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 2243,
+					"path": "motion-19-end.png",
+					"position": [
+						336.0,
+						560.0
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "840d8533abeadc463ebbbbcecd18e38eb4872dcc179d2bfb0afea192481a637d",
+					"tick": 1994,
+					"work_state": 0
+				}
+			],
+			"start_tick": 1904,
+			"transition_contact": "transition-19-native.png",
+			"transition_crop": [
+				256,
+				160,
+				160,
+				176
+			],
+			"transition_samples": [
+				{
+					"engine_frame": 2154,
+					"path": "motion-19-transition-00.png",
+					"position": [
+						304.0,
+						275.666656494141
+					],
+					"render_offset": [
+						10.0,
+						3.0
+					],
+					"sha256": "cfeab0ff99a70b23746b56cf7ac6f9423b1297b4dd6ede59ee433305fb886001",
+					"tick": 1905,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 2155,
+					"path": "motion-19-transition-01.png",
+					"position": [
+						304.0,
+						279.333312988281
+					],
+					"render_offset": [
+						6.0,
+						2.0
+					],
+					"sha256": "c9ef3bb79c5c57b5e3a465af58be95b181b7ed844eed437d46637597d7c47cff",
+					"tick": 1906,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 2156,
+					"path": "motion-19-transition-02.png",
+					"position": [
+						304.0,
+						282.999969482422
+					],
+					"render_offset": [
+						2.0,
+						1.0
+					],
+					"sha256": "e8f8385c2dba0a9adb2f5ecc92eaa4edb0d6a61c05f23d38e56189d3906fef94",
+					"tick": 1907,
+					"work_state": 3
+				},
+				{
+					"engine_frame": 2157,
+					"path": "motion-19-transition-03.png",
+					"position": [
+						304.0,
+						286.666625976562
+					],
+					"render_offset": [
+						0.0,
+						0.0
+					],
+					"sha256": "173e986dbd16fbef93bbaf013fe3801e3b33756f4b7e0bf6d777f30cbdbbac36",
+					"tick": 1908,
+					"work_state": 3
+				}
+			]
+		}
+	],
+	"motion_ticks": 1994,
+	"production_activation": false,
+	"samples": [
+		{
+			"motion_tick": 0,
+			"path": "single-south-standing.png",
+			"scenario": "single-south-standing"
+		},
+		{
+			"motion_tick": 131,
+			"path": "single-south-seated.png",
+			"scenario": "single-south-seated"
+		},
+		{
+			"motion_tick": 131,
+			"path": "interrupted-leave.png",
+			"scenario": "interrupted-leave"
+		},
+		{
+			"motion_tick": 131,
+			"path": "paused-mid-seat.png",
+			"scenario": "paused-mid-seat"
+		},
+		{
+			"motion_tick": 131,
+			"path": "thinking-fallback.png",
+			"scenario": "thinking-fallback"
+		},
+		{
+			"motion_tick": 131,
+			"path": "interrupted-return-settled.png",
+			"scenario": "interrupted-return-settled"
+		},
+		{
+			"motion_tick": 131,
+			"path": "occupied-rotation-rejected.png",
+			"scenario": "occupied-rotation-rejected"
+		},
+		{
+			"motion_tick": 352,
+			"path": "single-west-seated.png",
+			"scenario": "single-west-seated"
+		},
+		{
+			"motion_tick": 596,
+			"path": "two-north-frame-0.png",
+			"scenario": "two-north-frame-0"
+		},
+		{
+			"motion_tick": 596,
+			"path": "two-north-frame-1.png",
+			"scenario": "two-north-frame-1"
+		},
+		{
+			"motion_tick": 596,
+			"path": "two-north-frame-2.png",
+			"scenario": "two-north-frame-2"
+		},
+		{
+			"motion_tick": 596,
+			"path": "two-north-frame-3.png",
+			"scenario": "two-north-frame-3"
+		},
+		{
+			"motion_tick": 596,
+			"path": "two-north-frame-4.png",
+			"scenario": "two-north-frame-4"
+		},
+		{
+			"motion_tick": 596,
+			"path": "two-north-frame-5.png",
+			"scenario": "two-north-frame-5"
+		},
+		{
+			"motion_tick": 596,
+			"path": "two-north-loop-return.png",
+			"scenario": "two-north-loop-return"
+		},
+		{
+			"motion_tick": 930,
+			"path": "two-east-frame-0.png",
+			"scenario": "two-east-frame-0"
+		},
+		{
+			"motion_tick": 930,
+			"path": "two-east-frame-1.png",
+			"scenario": "two-east-frame-1"
+		},
+		{
+			"motion_tick": 930,
+			"path": "two-east-frame-2.png",
+			"scenario": "two-east-frame-2"
+		},
+		{
+			"motion_tick": 930,
+			"path": "two-east-frame-3.png",
+			"scenario": "two-east-frame-3"
+		},
+		{
+			"motion_tick": 930,
+			"path": "two-east-frame-4.png",
+			"scenario": "two-east-frame-4"
+		},
+		{
+			"motion_tick": 930,
+			"path": "two-east-frame-5.png",
+			"scenario": "two-east-frame-5"
+		},
+		{
+			"motion_tick": 930,
+			"path": "two-east-loop-return.png",
+			"scenario": "two-east-loop-return"
+		},
+		{
+			"motion_tick": 1372,
+			"path": "two-south-frame-0.png",
+			"scenario": "two-south-frame-0"
+		},
+		{
+			"motion_tick": 1372,
+			"path": "two-south-frame-1.png",
+			"scenario": "two-south-frame-1"
+		},
+		{
+			"motion_tick": 1372,
+			"path": "two-south-frame-2.png",
+			"scenario": "two-south-frame-2"
+		},
+		{
+			"motion_tick": 1372,
+			"path": "two-south-frame-3.png",
+			"scenario": "two-south-frame-3"
+		},
+		{
+			"motion_tick": 1372,
+			"path": "two-south-frame-4.png",
+			"scenario": "two-south-frame-4"
+		},
+		{
+			"motion_tick": 1372,
+			"path": "two-south-frame-5.png",
+			"scenario": "two-south-frame-5"
+		},
+		{
+			"motion_tick": 1372,
+			"path": "two-south-loop-return.png",
+			"scenario": "two-south-loop-return"
+		},
+		{
+			"motion_tick": 1814,
+			"path": "two-west-frame-0.png",
+			"scenario": "two-west-frame-0"
+		},
+		{
+			"motion_tick": 1814,
+			"path": "two-west-frame-1.png",
+			"scenario": "two-west-frame-1"
+		},
+		{
+			"motion_tick": 1814,
+			"path": "two-west-frame-2.png",
+			"scenario": "two-west-frame-2"
+		},
+		{
+			"motion_tick": 1814,
+			"path": "two-west-frame-3.png",
+			"scenario": "two-west-frame-3"
+		},
+		{
+			"motion_tick": 1814,
+			"path": "two-west-frame-4.png",
+			"scenario": "two-west-frame-4"
+		},
+		{
+			"motion_tick": 1814,
+			"path": "two-west-frame-5.png",
+			"scenario": "two-west-frame-5"
+		},
+		{
+			"motion_tick": 1814,
+			"path": "two-west-loop-return.png",
+			"scenario": "two-west-loop-return"
+		},
+		{
+			"motion_tick": 1814,
+			"path": "founder-placement-blocked.png",
+			"scenario": "founder-placement-blocked"
+		},
+		{
+			"motion_tick": 1814,
+			"path": "teammate-placement-blocked.png",
+			"scenario": "teammate-placement-blocked"
+		},
+		{
+			"motion_tick": 1814,
+			"path": "route-target-replanned.png",
+			"scenario": "route-target-replanned"
+		},
+		{
+			"motion_tick": 1904,
+			"path": "occupied-undo-blocked.png",
+			"scenario": "occupied-undo-blocked"
+		},
+		{
+			"motion_tick": 1994,
+			"path": "clear-undo-restored.png",
+			"scenario": "clear-undo-restored"
+		}
+	],
+	"worker_disabled": true
+}

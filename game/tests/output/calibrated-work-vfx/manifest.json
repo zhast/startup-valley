@@ -1,0 +1,6752 @@
+{
+	"attachments": [
+		{
+			"anchor_from_prop": [
+				0.0,
+				-89.0
+			],
+			"employee": "mira",
+			"facing": "north"
+		},
+		{
+			"anchor_from_prop": [
+				0.0,
+				-89.0
+			],
+			"employee": "theo",
+			"facing": "north"
+		},
+		{
+			"anchor_from_prop": [
+				-20.0,
+				-96.0
+			],
+			"employee": "mira",
+			"facing": "east"
+		},
+		{
+			"anchor_from_prop": [
+				-20.0,
+				-96.0
+			],
+			"employee": "theo",
+			"facing": "east"
+		},
+		{
+			"anchor_from_prop": [
+				0.0,
+				-116.0
+			],
+			"employee": "mira",
+			"facing": "south"
+		},
+		{
+			"anchor_from_prop": [
+				0.0,
+				-116.0
+			],
+			"employee": "theo",
+			"facing": "south"
+		},
+		{
+			"anchor_from_prop": [
+				20.0,
+				-96.0
+			],
+			"employee": "mira",
+			"facing": "west"
+		},
+		{
+			"anchor_from_prop": [
+				20.0,
+				-96.0
+			],
+			"employee": "theo",
+			"facing": "west"
+		},
+		{
+			"anchor_from_prop": [
+				0.0,
+				-89.0
+			],
+			"employee": "mira",
+			"facing": "north"
+		},
+		{
+			"anchor_from_prop": [
+				0.0,
+				-89.0
+			],
+			"employee": "theo",
+			"facing": "north"
+		}
+	],
+	"basis": "Full24px cue4px above actual prop ink and source-head extrema, including both ends of seated visual correction; prop-relative attachment, no artwork movement.",
+	"captures": [
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						304.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						304.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						236.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						304.0
+					],
+					"cue_rect": [
+						772.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						752.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						767.0,
+						236.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "north-seat-transition-071.png",
+			"tick": 1
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						301.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						304.0,
+						307.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						233.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						302.0
+					],
+					"cue_rect": [
+						772.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						752.0,
+						308.0,
+						64.0,
+						41.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						767.0,
+						234.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "north-seat-transition-072.png",
+			"tick": 2
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						295.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						304.0,
+						301.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						227.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						297.0
+					],
+					"cue_rect": [
+						772.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						752.0,
+						303.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						767.0,
+						229.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "north-seat-transition-073.png",
+			"tick": 3
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						288.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						304.0,
+						294.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						220.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						291.0
+					],
+					"cue_rect": [
+						772.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						752.0,
+						297.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						767.0,
+						223.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "north-seat-transition-074.png",
+			"tick": 4
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						304.0,
+						290.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						216.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						288.0
+					],
+					"cue_rect": [
+						772.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						752.0,
+						294.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						767.0,
+						220.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "north-seat-transition-075.png",
+			"tick": 5
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						304.0,
+						290.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						216.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						288.0
+					],
+					"cue_rect": [
+						772.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						752.0,
+						294.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						767.0,
+						220.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "north-thinking-frame0.png",
+			"tick": 5
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						304.0,
+						290.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						216.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						288.0
+					],
+					"cue_rect": [
+						772.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						752.0,
+						294.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						767.0,
+						220.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "north-thinking-frame1.png",
+			"tick": 5
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						304.0,
+						290.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						216.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						288.0
+					],
+					"cue_rect": [
+						772.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						752.0,
+						294.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						767.0,
+						220.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "north-thinking-frame2.png",
+			"tick": 5
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						304.0,
+						290.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						216.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						288.0
+					],
+					"cue_rect": [
+						772.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						752.0,
+						294.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						767.0,
+						220.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "north-thinking-frame3.png",
+			"tick": 5
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						270.0,
+						310.0,
+						132.0,
+						63.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						322.0,
+						216.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						288.0
+					],
+					"cue_rect": [
+						772.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						718.0,
+						310.0,
+						132.0,
+						63.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						767.0,
+						220.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "north-thinking-labels.png",
+			"tick": 5
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						270.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						216.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						288.0
+					],
+					"cue_rect": [
+						772.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						718.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						767.0,
+						220.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "north-thinking-selected.png",
+			"tick": 5
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						270.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						319.0,
+						216.0,
+						35.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						784.0,
+						288.0
+					],
+					"cue_rect": [
+						772.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						718.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						766.0,
+						220.0,
+						36.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "north-typing-frame0.png",
+			"tick": 29
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						270.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						320.0,
+						216.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						784.0,
+						288.0
+					],
+					"cue_rect": [
+						772.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						718.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						766.0,
+						220.0,
+						36.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "north-typing-frame1.png",
+			"tick": 29
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						270.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						319.0,
+						216.0,
+						35.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						784.0,
+						288.0
+					],
+					"cue_rect": [
+						772.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						718.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						766.0,
+						220.0,
+						37.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "north-typing-frame2.png",
+			"tick": 29
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						270.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						319.0,
+						216.0,
+						35.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						784.0,
+						288.0
+					],
+					"cue_rect": [
+						772.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						718.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						766.0,
+						220.0,
+						36.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "north-typing-frame3.png",
+			"tick": 29
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						270.0,
+						310.0,
+						132.0,
+						63.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						319.0,
+						216.0,
+						35.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						784.0,
+						288.0
+					],
+					"cue_rect": [
+						772.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						718.0,
+						310.0,
+						132.0,
+						63.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						766.0,
+						220.0,
+						36.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "north-typing-labels.png",
+			"tick": 29
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						270.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						319.0,
+						216.0,
+						35.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						784.0,
+						288.0
+					],
+					"cue_rect": [
+						772.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						718.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						766.0,
+						220.0,
+						36.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "north-typing-selected.png",
+			"tick": 29
+		},
+		{
+			"actors": [
+				{
+					"activity": "failure",
+					"body_position": [
+						336.0,
+						304.0
+					],
+					"cue_rect": [
+						324.0,
+						214.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						270.0,
+						330.0,
+						132.0,
+						63.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						236.0,
+						29.0,
+						67.0
+					],
+					"source_region": [
+						24.0,
+						120.0,
+						24,
+						24
+					],
+					"state": 0
+				},
+				{
+					"activity": "failure",
+					"body_position": [
+						784.0,
+						304.0
+					],
+					"cue_rect": [
+						772.0,
+						214.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						718.0,
+						326.0,
+						132.0,
+						63.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						769.0,
+						236.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						120.0,
+						24,
+						24
+					],
+					"state": 0
+				}
+			],
+			"path": "north-failure-original-cue.png",
+			"tick": 53
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						304.0,
+						272.0
+					],
+					"cue_rect": [
+						304.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						205.0,
+						222.0,
+						72.0,
+						32.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						292.0,
+						204.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						752.0,
+						272.0
+					],
+					"cue_rect": [
+						752.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						653.0,
+						222.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						739.0,
+						204.0,
+						34.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "east-seat-transition-089.png",
+			"tick": 54
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						306.0,
+						272.0
+					],
+					"cue_rect": [
+						304.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						207.0,
+						222.0,
+						72.0,
+						32.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						294.0,
+						204.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						754.0,
+						273.0
+					],
+					"cue_rect": [
+						752.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						655.0,
+						223.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						741.0,
+						205.0,
+						34.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "east-seat-transition-090.png",
+			"tick": 55
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						310.0,
+						273.0
+					],
+					"cue_rect": [
+						304.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						211.0,
+						223.0,
+						72.0,
+						32.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						298.0,
+						205.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						758.0,
+						274.0
+					],
+					"cue_rect": [
+						752.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						659.0,
+						224.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						745.0,
+						206.0,
+						34.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "east-seat-transition-091.png",
+			"tick": 56
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						314.0,
+						274.0
+					],
+					"cue_rect": [
+						304.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						215.0,
+						224.0,
+						72.0,
+						32.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						302.0,
+						206.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						762.0,
+						275.0
+					],
+					"cue_rect": [
+						752.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						663.0,
+						225.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						749.0,
+						207.0,
+						34.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "east-seat-transition-092.png",
+			"tick": 57
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						316.0,
+						275.0
+					],
+					"cue_rect": [
+						304.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						217.0,
+						225.0,
+						72.0,
+						32.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						304.0,
+						207.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						764.0,
+						276.0
+					],
+					"cue_rect": [
+						752.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						665.0,
+						226.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						751.0,
+						208.0,
+						34.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "east-seat-transition-093.png",
+			"tick": 58
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						316.0,
+						275.0
+					],
+					"cue_rect": [
+						304.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						217.0,
+						225.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						304.0,
+						207.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						764.0,
+						276.0
+					],
+					"cue_rect": [
+						752.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						665.0,
+						226.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						751.0,
+						208.0,
+						34.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "east-thinking-frame0.png",
+			"tick": 58
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						316.0,
+						275.0
+					],
+					"cue_rect": [
+						304.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						217.0,
+						225.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						304.0,
+						207.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						764.0,
+						276.0
+					],
+					"cue_rect": [
+						752.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						665.0,
+						226.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						751.0,
+						208.0,
+						34.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "east-thinking-frame1.png",
+			"tick": 58
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						316.0,
+						275.0
+					],
+					"cue_rect": [
+						304.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						217.0,
+						225.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						304.0,
+						207.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						764.0,
+						276.0
+					],
+					"cue_rect": [
+						752.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						665.0,
+						226.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						751.0,
+						208.0,
+						34.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "east-thinking-frame2.png",
+			"tick": 58
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						316.0,
+						275.0
+					],
+					"cue_rect": [
+						304.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						217.0,
+						225.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						304.0,
+						207.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						764.0,
+						276.0
+					],
+					"cue_rect": [
+						752.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						665.0,
+						226.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						751.0,
+						208.0,
+						34.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "east-thinking-frame3.png",
+			"tick": 58
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						316.0,
+						275.0
+					],
+					"cue_rect": [
+						304.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						149.0,
+						214.0,
+						140.0,
+						54.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						304.0,
+						207.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						764.0,
+						276.0
+					],
+					"cue_rect": [
+						752.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						597.0,
+						215.0,
+						140.0,
+						54.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						751.0,
+						208.0,
+						34.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "east-thinking-labels.png",
+			"tick": 58
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						316.0,
+						275.0
+					],
+					"cue_rect": [
+						304.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						217.0,
+						225.0,
+						72.0,
+						32.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						304.0,
+						207.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						764.0,
+						276.0
+					],
+					"cue_rect": [
+						752.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						665.0,
+						226.0,
+						72.0,
+						32.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						751.0,
+						208.0,
+						34.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "east-thinking-selected.png",
+			"tick": 58
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						316.0,
+						275.0
+					],
+					"cue_rect": [
+						304.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						217.0,
+						225.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						304.0,
+						207.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						764.0,
+						276.0
+					],
+					"cue_rect": [
+						752.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						665.0,
+						226.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						751.0,
+						208.0,
+						34.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "east-typing-frame0.png",
+			"tick": 82
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						316.0,
+						275.0
+					],
+					"cue_rect": [
+						304.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						217.0,
+						225.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						304.0,
+						207.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						764.0,
+						276.0
+					],
+					"cue_rect": [
+						752.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						665.0,
+						226.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						751.0,
+						208.0,
+						34.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "east-typing-frame1.png",
+			"tick": 82
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						316.0,
+						275.0
+					],
+					"cue_rect": [
+						304.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						217.0,
+						225.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						304.0,
+						207.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						764.0,
+						276.0
+					],
+					"cue_rect": [
+						752.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						665.0,
+						226.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						751.0,
+						208.0,
+						35.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "east-typing-frame2.png",
+			"tick": 82
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						316.0,
+						275.0
+					],
+					"cue_rect": [
+						304.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						217.0,
+						225.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						304.0,
+						207.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						764.0,
+						276.0
+					],
+					"cue_rect": [
+						752.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						665.0,
+						226.0,
+						72.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						751.0,
+						208.0,
+						34.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "east-typing-frame3.png",
+			"tick": 82
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						316.0,
+						275.0
+					],
+					"cue_rect": [
+						304.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						149.0,
+						214.0,
+						140.0,
+						54.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						304.0,
+						207.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						764.0,
+						276.0
+					],
+					"cue_rect": [
+						752.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						597.0,
+						215.0,
+						140.0,
+						54.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						751.0,
+						208.0,
+						34.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "east-typing-labels.png",
+			"tick": 82
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						316.0,
+						275.0
+					],
+					"cue_rect": [
+						304.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						217.0,
+						225.0,
+						72.0,
+						32.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						304.0,
+						207.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						764.0,
+						276.0
+					],
+					"cue_rect": [
+						752.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						665.0,
+						226.0,
+						72.0,
+						32.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						751.0,
+						208.0,
+						34.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "east-typing-selected.png",
+			"tick": 82
+		},
+		{
+			"actors": [
+				{
+					"activity": "failure",
+					"body_position": [
+						304.0,
+						272.0
+					],
+					"cue_rect": [
+						292.0,
+						182.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						205.0,
+						222.0,
+						132.0,
+						54.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						290.0,
+						204.0,
+						29.0,
+						67.0
+					],
+					"source_region": [
+						24.0,
+						120.0,
+						24,
+						24
+					],
+					"state": 0
+				},
+				{
+					"activity": "failure",
+					"body_position": [
+						752.0,
+						272.0
+					],
+					"cue_rect": [
+						740.0,
+						182.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						653.0,
+						222.0,
+						132.0,
+						54.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						737.0,
+						204.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						120.0,
+						24,
+						24
+					],
+					"state": 0
+				}
+			],
+			"path": "east-failure-original-cue.png",
+			"tick": 106
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						240.0
+					],
+					"cue_rect": [
+						324.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						237.0,
+						125.0,
+						64.0,
+						40.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						323.0,
+						172.0,
+						28.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						240.0
+					],
+					"cue_rect": [
+						772.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						685.0,
+						125.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						769.0,
+						172.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "south-seat-transition-125.png",
+			"tick": 107
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						242.0
+					],
+					"cue_rect": [
+						324.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						237.0,
+						127.0,
+						64.0,
+						40.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						323.0,
+						174.0,
+						28.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						242.0
+					],
+					"cue_rect": [
+						772.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						685.0,
+						127.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						769.0,
+						174.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "south-seat-transition-126.png",
+			"tick": 108
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						246.0
+					],
+					"cue_rect": [
+						324.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						237.0,
+						131.0,
+						64.0,
+						40.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						323.0,
+						178.0,
+						28.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						246.0
+					],
+					"cue_rect": [
+						772.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						685.0,
+						131.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						769.0,
+						178.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "south-seat-transition-127.png",
+			"tick": 109
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						250.0
+					],
+					"cue_rect": [
+						324.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						237.0,
+						135.0,
+						64.0,
+						40.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						323.0,
+						182.0,
+						28.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						250.0
+					],
+					"cue_rect": [
+						772.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						685.0,
+						135.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						769.0,
+						182.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "south-seat-transition-128.png",
+			"tick": 110
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						252.0
+					],
+					"cue_rect": [
+						324.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						237.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						323.0,
+						184.0,
+						28.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						252.0
+					],
+					"cue_rect": [
+						772.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						685.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						769.0,
+						184.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "south-seat-transition-129.png",
+			"tick": 111
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						252.0
+					],
+					"cue_rect": [
+						324.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						237.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						323.0,
+						184.0,
+						28.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						252.0
+					],
+					"cue_rect": [
+						772.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						685.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						769.0,
+						184.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "south-thinking-frame0.png",
+			"tick": 111
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						252.0
+					],
+					"cue_rect": [
+						324.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						237.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						322.0,
+						184.0,
+						28.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						252.0
+					],
+					"cue_rect": [
+						772.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						685.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						769.0,
+						184.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "south-thinking-frame1.png",
+			"tick": 111
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						252.0
+					],
+					"cue_rect": [
+						324.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						237.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						323.0,
+						184.0,
+						28.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						252.0
+					],
+					"cue_rect": [
+						772.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						685.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						769.0,
+						184.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "south-thinking-frame2.png",
+			"tick": 111
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						252.0
+					],
+					"cue_rect": [
+						324.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						237.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						322.0,
+						184.0,
+						28.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						252.0
+					],
+					"cue_rect": [
+						772.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						685.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						769.0,
+						184.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "south-thinking-frame3.png",
+			"tick": 111
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						252.0
+					],
+					"cue_rect": [
+						324.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						169.0,
+						115.0,
+						132.0,
+						62.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						322.0,
+						184.0,
+						28.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						252.0
+					],
+					"cue_rect": [
+						772.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						617.0,
+						115.0,
+						132.0,
+						62.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						769.0,
+						184.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "south-thinking-labels.png",
+			"tick": 111
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						252.0
+					],
+					"cue_rect": [
+						324.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						237.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						184.0,
+						28.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						784.0,
+						252.0
+					],
+					"cue_rect": [
+						772.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						685.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						769.0,
+						184.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "south-thinking-selected.png",
+			"tick": 111
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						336.0,
+						252.0
+					],
+					"cue_rect": [
+						324.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						237.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						322.0,
+						184.0,
+						28.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						784.0,
+						252.0
+					],
+					"cue_rect": [
+						772.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						685.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						770.0,
+						184.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "south-typing-frame0.png",
+			"tick": 135
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						336.0,
+						252.0
+					],
+					"cue_rect": [
+						324.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						237.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						322.0,
+						184.0,
+						28.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						784.0,
+						252.0
+					],
+					"cue_rect": [
+						772.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						685.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						769.0,
+						184.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "south-typing-frame1.png",
+			"tick": 135
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						336.0,
+						252.0
+					],
+					"cue_rect": [
+						324.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						237.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						322.0,
+						184.0,
+						28.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						784.0,
+						252.0
+					],
+					"cue_rect": [
+						772.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						685.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						769.0,
+						185.0,
+						30.0,
+						67.0
+					],
+					"source_region": [
+						48.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "south-typing-frame2.png",
+			"tick": 135
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						336.0,
+						252.0
+					],
+					"cue_rect": [
+						324.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						237.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						322.0,
+						184.0,
+						28.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						784.0,
+						252.0
+					],
+					"cue_rect": [
+						772.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						685.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						769.0,
+						184.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "south-typing-frame3.png",
+			"tick": 135
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						336.0,
+						252.0
+					],
+					"cue_rect": [
+						324.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						169.0,
+						115.0,
+						132.0,
+						62.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						322.0,
+						184.0,
+						28.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						784.0,
+						252.0
+					],
+					"cue_rect": [
+						772.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						617.0,
+						115.0,
+						132.0,
+						62.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						769.0,
+						184.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "south-typing-labels.png",
+			"tick": 135
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						336.0,
+						252.0
+					],
+					"cue_rect": [
+						324.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						237.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						184.0,
+						28.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						784.0,
+						252.0
+					],
+					"cue_rect": [
+						772.0,
+						144.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						685.0,
+						137.0,
+						64.0,
+						40.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						769.0,
+						184.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "south-typing-selected.png",
+			"tick": 135
+		},
+		{
+			"actors": [
+				{
+					"activity": "failure",
+					"body_position": [
+						336.0,
+						240.0
+					],
+					"cue_rect": [
+						324.0,
+						150.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						237.0,
+						125.0,
+						132.0,
+						62.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						322.0,
+						172.0,
+						27.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						120.0,
+						24,
+						24
+					],
+					"state": 0
+				},
+				{
+					"activity": "failure",
+					"body_position": [
+						784.0,
+						240.0
+					],
+					"cue_rect": [
+						772.0,
+						150.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						685.0,
+						125.0,
+						132.0,
+						62.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						770.0,
+						172.0,
+						28.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						120.0,
+						24,
+						24
+					],
+					"state": 0
+				}
+			],
+			"path": "south-failure-original-cue.png",
+			"tick": 159
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						368.0,
+						272.0
+					],
+					"cue_rect": [
+						344.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						394.0,
+						222.0,
+						73.0,
+						32.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						349.0,
+						204.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						816.0,
+						272.0
+					],
+					"cue_rect": [
+						792.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						842.0,
+						222.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						793.0,
+						204.0,
+						35.0,
+						67.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "west-seat-transition-089.png",
+			"tick": 160
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						366.0,
+						273.0
+					],
+					"cue_rect": [
+						344.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						392.0,
+						223.0,
+						73.0,
+						32.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						347.0,
+						205.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						814.0,
+						273.0
+					],
+					"cue_rect": [
+						792.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						840.0,
+						223.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						791.0,
+						205.0,
+						35.0,
+						67.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "west-seat-transition-090.png",
+			"tick": 161
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						362.0,
+						274.0
+					],
+					"cue_rect": [
+						344.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						388.0,
+						224.0,
+						73.0,
+						32.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						343.0,
+						206.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						810.0,
+						276.0
+					],
+					"cue_rect": [
+						792.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						836.0,
+						226.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						787.0,
+						208.0,
+						35.0,
+						67.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "west-seat-transition-091.png",
+			"tick": 162
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						358.0,
+						275.0
+					],
+					"cue_rect": [
+						344.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						384.0,
+						225.0,
+						73.0,
+						32.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						339.0,
+						207.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						806.0,
+						278.0
+					],
+					"cue_rect": [
+						792.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						832.0,
+						228.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						783.0,
+						210.0,
+						35.0,
+						67.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "west-seat-transition-092.png",
+			"tick": 163
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						356.0,
+						276.0
+					],
+					"cue_rect": [
+						344.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						382.0,
+						226.0,
+						73.0,
+						32.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						337.0,
+						208.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						804.0,
+						280.0
+					],
+					"cue_rect": [
+						792.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						830.0,
+						230.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						781.0,
+						212.0,
+						35.0,
+						67.0
+					],
+					"source_region": [
+						24.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "west-seat-transition-093.png",
+			"tick": 164
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						356.0,
+						276.0
+					],
+					"cue_rect": [
+						344.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						382.0,
+						226.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						337.0,
+						208.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						804.0,
+						280.0
+					],
+					"cue_rect": [
+						792.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						830.0,
+						230.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						781.0,
+						212.0,
+						35.0,
+						67.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "west-thinking-frame0.png",
+			"tick": 164
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						356.0,
+						276.0
+					],
+					"cue_rect": [
+						344.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						382.0,
+						226.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						337.0,
+						208.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						804.0,
+						280.0
+					],
+					"cue_rect": [
+						792.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						830.0,
+						230.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						781.0,
+						212.0,
+						35.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "west-thinking-frame1.png",
+			"tick": 164
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						356.0,
+						276.0
+					],
+					"cue_rect": [
+						344.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						382.0,
+						226.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						337.0,
+						208.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						804.0,
+						280.0
+					],
+					"cue_rect": [
+						792.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						830.0,
+						230.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						781.0,
+						212.0,
+						35.0,
+						67.0
+					],
+					"source_region": [
+						48.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "west-thinking-frame2.png",
+			"tick": 164
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						356.0,
+						276.0
+					],
+					"cue_rect": [
+						344.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						382.0,
+						226.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						337.0,
+						208.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						804.0,
+						280.0
+					],
+					"cue_rect": [
+						792.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						830.0,
+						230.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						781.0,
+						212.0,
+						35.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "west-thinking-frame3.png",
+			"tick": 164
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						356.0,
+						276.0
+					],
+					"cue_rect": [
+						344.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						382.0,
+						215.0,
+						141.0,
+						54.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						337.0,
+						208.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						804.0,
+						280.0
+					],
+					"cue_rect": [
+						792.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						830.0,
+						219.0,
+						141.0,
+						54.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						781.0,
+						212.0,
+						35.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "west-thinking-labels.png",
+			"tick": 164
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						356.0,
+						276.0
+					],
+					"cue_rect": [
+						344.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						382.0,
+						226.0,
+						73.0,
+						32.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						337.0,
+						208.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						804.0,
+						280.0
+					],
+					"cue_rect": [
+						792.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						830.0,
+						230.0,
+						73.0,
+						32.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						781.0,
+						212.0,
+						35.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "west-thinking-selected.png",
+			"tick": 164
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						356.0,
+						276.0
+					],
+					"cue_rect": [
+						344.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						382.0,
+						226.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						337.0,
+						208.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						804.0,
+						280.0
+					],
+					"cue_rect": [
+						792.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						830.0,
+						230.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						781.0,
+						212.0,
+						35.0,
+						67.0
+					],
+					"source_region": [
+						0.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "west-typing-frame0.png",
+			"tick": 188
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						356.0,
+						276.0
+					],
+					"cue_rect": [
+						344.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						382.0,
+						226.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						336.0,
+						208.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						804.0,
+						280.0
+					],
+					"cue_rect": [
+						792.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						830.0,
+						230.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						781.0,
+						212.0,
+						35.0,
+						67.0
+					],
+					"source_region": [
+						24.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "west-typing-frame1.png",
+			"tick": 188
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						356.0,
+						276.0
+					],
+					"cue_rect": [
+						344.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						382.0,
+						226.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						336.0,
+						208.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						804.0,
+						280.0
+					],
+					"cue_rect": [
+						792.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						830.0,
+						230.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						782.0,
+						212.0,
+						34.0,
+						67.0
+					],
+					"source_region": [
+						48.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "west-typing-frame2.png",
+			"tick": 188
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						356.0,
+						276.0
+					],
+					"cue_rect": [
+						344.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						382.0,
+						226.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						336.0,
+						208.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						804.0,
+						280.0
+					],
+					"cue_rect": [
+						792.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						830.0,
+						230.0,
+						73.0,
+						32.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						781.0,
+						212.0,
+						35.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "west-typing-frame3.png",
+			"tick": 188
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						356.0,
+						276.0
+					],
+					"cue_rect": [
+						344.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						382.0,
+						215.0,
+						141.0,
+						54.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						336.0,
+						208.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						804.0,
+						280.0
+					],
+					"cue_rect": [
+						792.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						830.0,
+						219.0,
+						141.0,
+						54.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						781.0,
+						212.0,
+						35.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "west-typing-labels.png",
+			"tick": 188
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						356.0,
+						276.0
+					],
+					"cue_rect": [
+						344.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						382.0,
+						226.0,
+						73.0,
+						32.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						336.0,
+						208.0,
+						32.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						804.0,
+						280.0
+					],
+					"cue_rect": [
+						792.0,
+						164.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						830.0,
+						230.0,
+						73.0,
+						32.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						781.0,
+						212.0,
+						35.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "west-typing-selected.png",
+			"tick": 188
+		},
+		{
+			"actors": [
+				{
+					"activity": "failure",
+					"body_position": [
+						368.0,
+						272.0
+					],
+					"cue_rect": [
+						356.0,
+						182.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						394.0,
+						222.0,
+						141.0,
+						54.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						354.0,
+						204.0,
+						29.0,
+						67.0
+					],
+					"source_region": [
+						24.0,
+						120.0,
+						24,
+						24
+					],
+					"state": 0
+				},
+				{
+					"activity": "failure",
+					"body_position": [
+						816.0,
+						272.0
+					],
+					"cue_rect": [
+						804.0,
+						182.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						842.0,
+						222.0,
+						141.0,
+						54.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						801.0,
+						204.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						120.0,
+						24,
+						24
+					],
+					"state": 0
+				}
+			],
+			"path": "west-failure-original-cue.png",
+			"tick": 212
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						304.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						304.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						236.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						624.0,
+						464.0
+					],
+					"cue_rect": [
+						612.0,
+						374.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						592.0,
+						470.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						609.0,
+						396.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 6
+				}
+			],
+			"path": "nearby-north-seat-transition-071.png",
+			"tick": 213
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						301.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						304.0,
+						307.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						233.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						624.0,
+						460.0
+					],
+					"cue_rect": [
+						612.0,
+						370.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						592.0,
+						466.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						609.0,
+						392.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 6
+				}
+			],
+			"path": "nearby-north-seat-transition-072.png",
+			"tick": 214
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						295.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						304.0,
+						301.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						227.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						624.0,
+						457.0
+					],
+					"cue_rect": [
+						612.0,
+						367.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						592.0,
+						463.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						609.0,
+						389.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 6
+				}
+			],
+			"path": "nearby-north-seat-transition-073.png",
+			"tick": 215
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						288.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						304.0,
+						294.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						220.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						624.0,
+						453.0
+					],
+					"cue_rect": [
+						612.0,
+						363.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						592.0,
+						459.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						609.0,
+						385.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 6
+				}
+			],
+			"path": "nearby-north-seat-transition-074.png",
+			"tick": 216
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						304.0,
+						290.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						216.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						624.0,
+						449.0
+					],
+					"cue_rect": [
+						612.0,
+						359.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						592.0,
+						455.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						609.0,
+						381.0,
+						30.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 6
+				}
+			],
+			"path": "nearby-north-seat-transition-075.png",
+			"tick": 217
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						304.0,
+						290.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						216.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						464.0,
+						288.0
+					],
+					"cue_rect": [
+						452.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						432.0,
+						294.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						447.0,
+						220.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "nearby-north-thinking-frame0.png",
+			"tick": 217
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						304.0,
+						290.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						216.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						464.0,
+						288.0
+					],
+					"cue_rect": [
+						452.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						432.0,
+						294.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						447.0,
+						220.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "nearby-north-thinking-frame1.png",
+			"tick": 217
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						304.0,
+						290.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						216.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						464.0,
+						288.0
+					],
+					"cue_rect": [
+						452.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						432.0,
+						294.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						447.0,
+						220.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "nearby-north-thinking-frame2.png",
+			"tick": 217
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						304.0,
+						290.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						216.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						464.0,
+						288.0
+					],
+					"cue_rect": [
+						452.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						432.0,
+						294.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						447.0,
+						220.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "nearby-north-thinking-frame3.png",
+			"tick": 217
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						270.0,
+						310.0,
+						132.0,
+						63.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						322.0,
+						216.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						464.0,
+						288.0
+					],
+					"cue_rect": [
+						452.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						514.0,
+						227.0,
+						141.0,
+						54.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						447.0,
+						220.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "nearby-north-thinking-labels.png",
+			"tick": 217
+		},
+		{
+			"actors": [
+				{
+					"activity": "thinking",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						270.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						216.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				},
+				{
+					"activity": "thinking",
+					"body_position": [
+						464.0,
+						288.0
+					],
+					"cue_rect": [
+						452.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						398.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						447.0,
+						220.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						0.0,
+						24,
+						24
+					],
+					"state": 7
+				}
+			],
+			"path": "nearby-north-thinking-selected.png",
+			"tick": 217
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						270.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						319.0,
+						216.0,
+						35.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						464.0,
+						288.0
+					],
+					"cue_rect": [
+						452.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						398.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						446.0,
+						220.0,
+						36.0,
+						68.0
+					],
+					"source_region": [
+						0.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "nearby-north-typing-frame0.png",
+			"tick": 241
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						270.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						320.0,
+						216.0,
+						33.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						464.0,
+						288.0
+					],
+					"cue_rect": [
+						452.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						398.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						446.0,
+						220.0,
+						36.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "nearby-north-typing-frame1.png",
+			"tick": 241
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						270.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						319.0,
+						216.0,
+						35.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						464.0,
+						288.0
+					],
+					"cue_rect": [
+						452.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						398.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						446.0,
+						220.0,
+						37.0,
+						68.0
+					],
+					"source_region": [
+						48.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "nearby-north-typing-frame2.png",
+			"tick": 241
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						270.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						319.0,
+						216.0,
+						35.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						464.0,
+						288.0
+					],
+					"cue_rect": [
+						452.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						398.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						446.0,
+						220.0,
+						36.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "nearby-north-typing-frame3.png",
+			"tick": 241
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						270.0,
+						310.0,
+						132.0,
+						63.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						319.0,
+						216.0,
+						35.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						464.0,
+						288.0
+					],
+					"cue_rect": [
+						452.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						514.0,
+						227.0,
+						141.0,
+						54.0
+					],
+					"label_visible": true,
+					"source_body_bounds": [
+						446.0,
+						220.0,
+						36.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "nearby-north-typing-labels.png",
+			"tick": 241
+		},
+		{
+			"actors": [
+				{
+					"activity": "typing",
+					"body_position": [
+						336.0,
+						284.0
+					],
+					"cue_rect": [
+						324.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						270.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						319.0,
+						216.0,
+						35.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				},
+				{
+					"activity": "typing",
+					"body_position": [
+						464.0,
+						288.0
+					],
+					"cue_rect": [
+						452.0,
+						171.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						398.0,
+						310.0,
+						64.0,
+						41.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						446.0,
+						220.0,
+						36.0,
+						68.0
+					],
+					"source_region": [
+						72.0,
+						24.0,
+						24,
+						24
+					],
+					"state": 8
+				}
+			],
+			"path": "nearby-north-typing-selected.png",
+			"tick": 241
+		},
+		{
+			"actors": [
+				{
+					"activity": "failure",
+					"body_position": [
+						336.0,
+						304.0
+					],
+					"cue_rect": [
+						324.0,
+						214.0,
+						24.0,
+						24.0
+					],
+					"employee": "mira",
+					"label_rect": [
+						270.0,
+						330.0,
+						132.0,
+						63.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						322.0,
+						236.0,
+						29.0,
+						67.0
+					],
+					"source_region": [
+						24.0,
+						120.0,
+						24,
+						24
+					],
+					"state": 0
+				},
+				{
+					"activity": "failure",
+					"body_position": [
+						464.0,
+						304.0
+					],
+					"cue_rect": [
+						452.0,
+						214.0,
+						24.0,
+						24.0
+					],
+					"employee": "theo",
+					"label_rect": [
+						398.0,
+						326.0,
+						132.0,
+						63.0
+					],
+					"label_visible": false,
+					"source_body_bounds": [
+						450.0,
+						236.0,
+						29.0,
+						68.0
+					],
+					"source_region": [
+						24.0,
+						120.0,
+						24,
+						24
+					],
+					"state": 0
+				}
+			],
+			"path": "nearby-north-failure-original-cue.png",
+			"tick": 265
+		}
+	],
+	"checks": 20301,
+	"failures": [],
+	"motion_ticks": 265,
+	"production_activation": false,
+	"worker_disabled": true
+}

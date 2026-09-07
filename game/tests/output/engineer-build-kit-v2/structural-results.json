@@ -1,0 +1,34 @@
+{
+	"candidate_revision": "engineer-build-kit-v2",
+	"canvas": [
+		192,
+		224
+	],
+	"checks": 298,
+	"collision_cells": [],
+	"dev_catalogue_registered": false,
+	"engineer_pose_service_or_hire_created": false,
+	"failures": [],
+	"family": "engineer_build_kit",
+	"generation_budget_changed": false,
+	"host": "current accepted desk / workstations-v2",
+	"image_generation_calls": 0,
+	"layers_per_facing": [
+		"surface_decor_rear",
+		"surface_decor_front"
+	],
+	"legacy_files_hash_guarded": 12,
+	"objects_per_facing": [
+		"electronics_test_mat",
+		"debug_instrument",
+		"precision_tool_tray"
+	],
+	"old_planning_host_not_used": "prototype_bench",
+	"pivot": [
+		96,
+		160
+	],
+	"production_catalogue_registered": false,
+	"runtime_registered": false,
+	"status": "native_review_candidate_not_catalogued_or_runtime_registered"
+}

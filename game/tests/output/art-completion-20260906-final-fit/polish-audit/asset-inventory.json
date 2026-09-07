@@ -1,0 +1,7221 @@
+{
+	"characterAtlases": [
+		{
+			"cellHeight": 80,
+			"cellWidth": 48,
+			"characterId": "founder",
+			"columns": 6,
+			"height": 320,
+			"path": "res://assets/runtime/characters/founder-locomotion.png",
+			"rows": 4,
+			"width": 288
+		},
+		{
+			"cellHeight": 80,
+			"cellWidth": 48,
+			"characterId": "mira",
+			"columns": 6,
+			"height": 320,
+			"path": "res://assets/runtime/characters/mira-locomotion.png",
+			"rows": 4,
+			"width": 288
+		},
+		{
+			"cellHeight": 80,
+			"cellWidth": 48,
+			"characterId": "theo",
+			"columns": 6,
+			"height": 320,
+			"path": "res://assets/runtime/characters/theo-locomotion.png",
+			"rows": 4,
+			"width": 288
+		}
+	],
+	"expectedFurnitureLayers": [
+		"founder-workstation/ChairWhole",
+		"founder-workstation/DeskRear",
+		"founder-workstation/DeskFront",
+		"founder-workstation/Keyboard",
+		"founder-workstation/Mouse",
+		"founder-workstation/Monitor",
+		"mira-workstation/ChairWhole",
+		"mira-workstation/DeskRear",
+		"mira-workstation/DeskFront",
+		"mira-workstation/Keyboard",
+		"mira-workstation/Mouse",
+		"mira-workstation/Monitor",
+		"coffee-station/CoffeeFloorShadow",
+		"coffee-station/CoffeeCounterCarcass",
+		"coffee-station/CoffeeCounterTop",
+		"coffee-station/CoffeeCounterFront",
+		"coffee-station/CoffeeCounterPlinth",
+		"coffee-station/CoffeeServicePanel",
+		"coffee-station/CoffeeGrinder",
+		"coffee-station/CoffeeEspresso",
+		"coffee-station/CoffeePlant",
+		"coffee-station/CoffeeServiceware",
+		"collaboration-cluster/TableFloorShadow",
+		"collaboration-cluster/NorthChair0Whole",
+		"collaboration-cluster/NorthChair1Whole",
+		"collaboration-cluster/TableRearStructure",
+		"collaboration-cluster/TableFrontStructure",
+		"collaboration-cluster/SouthChair0Whole",
+		"collaboration-cluster/SouthChair1Whole",
+		"artifact-archive/ArchiveCarcass",
+		"artifact-archive/ArchiveTop",
+		"artifact-archive/ArchiveFront",
+		"artifact-archive/ArchivePlinth",
+		"artifact-archive/ArchiveInsert",
+		"theo-workstation/ChairWhole",
+		"theo-workstation/DeskRear",
+		"theo-workstation/DeskFront",
+		"theo-workstation/Keyboard",
+		"theo-workstation/Mouse",
+		"theo-workstation/Monitor",
+		"research-bench/FloorShadow",
+		"research-bench/RearStructure",
+		"research-bench/ToolOverlay",
+		"research-bench/FrontStructure",
+		"approval-console/FloorShadow",
+		"approval-console/RearStructure",
+		"approval-console/FrontStructure",
+		"approval-console/AmbientOverlay",
+		"prototype-bench/FloorShadow",
+		"prototype-bench/RearStructure",
+		"prototype-bench/FrontStructure",
+		"prototype-bench/ToolOverlay"
+	],
+	"fonts": [
+		{
+			"license": "res://assets/fonts/not-jam-slab/LICENSE-CC0.txt",
+			"nativePixels": 22,
+			"path": "res://assets/fonts/not-jam-slab/NotJamSlabSerif11.ttf",
+			"role": "display"
+		},
+		{
+			"license": "res://assets/fonts/nunito-sans/OFL.txt",
+			"path": "res://assets/fonts/nunito-sans/NunitoSans-Body.tres",
+			"role": "body"
+		},
+		{
+			"license": "res://assets/fonts/nunito-sans/OFL.txt",
+			"path": "res://assets/fonts/nunito-sans/NunitoSans-Emphasis.tres",
+			"role": "emphasis"
+		},
+		{
+			"license": "res://assets/fonts/nunito-sans/OFL.txt",
+			"path": "res://assets/fonts/nunito-sans/NunitoSans-Bold.tres",
+			"role": "bold"
+		},
+		{
+			"license": "res://assets/fonts/nunito-sans/OFL.txt",
+			"path": "res://assets/fonts/nunito-sans/NunitoSans-BodyItalic.tres",
+			"role": "italic"
+		},
+		{
+			"license": "res://assets/fonts/nunito-sans/OFL.txt",
+			"path": "res://assets/fonts/nunito-sans/NunitoSans-BoldItalic.tres",
+			"role": "bold_italic"
+		},
+		{
+			"license": "res://assets/fonts/jetbrains-mono/OFL.txt",
+			"path": "res://assets/fonts/jetbrains-mono/JetBrainsMono-Body.tres",
+			"role": "code"
+		}
+	],
+	"generatedBy": "capture_polish_audit.gd",
+	"knownFlags": [],
+	"liveSprites": [
+		{
+			"displayedHeight": 160.0,
+			"displayedWidth": 96.0,
+			"flags": [],
+			"id": "founder-workstation/ChairWhole",
+			"kind": "office-prop",
+			"layerName": "ChairWhole",
+			"placementId": "founder-workstation",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 160.0,
+			"sourcePath": "res://assets/runtime/office/workstations-v2/chair-south.png",
+			"sourceWidth": 96.0
+		},
+		{
+			"displayedHeight": 224.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "founder-workstation/DeskRear",
+			"kind": "office-prop",
+			"layerName": "DeskRear",
+			"placementId": "founder-workstation",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 224.0,
+			"sourcePath": "res://assets/runtime/office/workstations-v2/desk-south-rear.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 224.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "founder-workstation/DeskFront",
+			"kind": "office-prop",
+			"layerName": "DeskFront",
+			"placementId": "founder-workstation",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 224.0,
+			"sourcePath": "res://assets/runtime/office/workstations-v2/desk-south-front.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 224.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "founder-workstation/Keyboard",
+			"kind": "office-prop",
+			"layerName": "Keyboard",
+			"placementId": "founder-workstation",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 224.0,
+			"sourcePath": "res://assets/runtime/office/workstations-v2/keyboard-south.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 224.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "founder-workstation/Mouse",
+			"kind": "office-prop",
+			"layerName": "Mouse",
+			"placementId": "founder-workstation",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 224.0,
+			"sourcePath": "res://assets/runtime/office/workstations-v2/mouse-south.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 224.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "founder-workstation/Monitor",
+			"kind": "office-prop",
+			"layerName": "Monitor",
+			"placementId": "founder-workstation",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 224.0,
+			"sourcePath": "res://assets/runtime/office/workstations-v2/monitor-south.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 160.0,
+			"displayedWidth": 96.0,
+			"flags": [],
+			"id": "mira-workstation/ChairWhole",
+			"kind": "office-prop",
+			"layerName": "ChairWhole",
+			"placementId": "mira-workstation",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 160.0,
+			"sourcePath": "res://assets/runtime/office/workstations-v2/chair-south.png",
+			"sourceWidth": 96.0
+		},
+		{
+			"displayedHeight": 224.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "mira-workstation/DeskRear",
+			"kind": "office-prop",
+			"layerName": "DeskRear",
+			"placementId": "mira-workstation",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 224.0,
+			"sourcePath": "res://assets/runtime/office/workstations-v2/desk-south-rear.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 224.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "mira-workstation/DeskFront",
+			"kind": "office-prop",
+			"layerName": "DeskFront",
+			"placementId": "mira-workstation",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 224.0,
+			"sourcePath": "res://assets/runtime/office/workstations-v2/desk-south-front.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 224.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "mira-workstation/Keyboard",
+			"kind": "office-prop",
+			"layerName": "Keyboard",
+			"placementId": "mira-workstation",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 224.0,
+			"sourcePath": "res://assets/runtime/office/workstations-v2/keyboard-south.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 224.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "mira-workstation/Mouse",
+			"kind": "office-prop",
+			"layerName": "Mouse",
+			"placementId": "mira-workstation",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 224.0,
+			"sourcePath": "res://assets/runtime/office/workstations-v2/mouse-south.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 224.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "mira-workstation/Monitor",
+			"kind": "office-prop",
+			"layerName": "Monitor",
+			"placementId": "mira-workstation",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 224.0,
+			"sourcePath": "res://assets/runtime/office/workstations-v2/monitor-south.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 256.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "coffee-station/CoffeeFloorShadow",
+			"kind": "office-prop",
+			"layerName": "CoffeeFloorShadow",
+			"placementId": "coffee-station",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 256.0,
+			"sourcePath": "res://assets/runtime/office/coffee-station-v1/south-floor_shadow.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 256.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "coffee-station/CoffeeCounterCarcass",
+			"kind": "office-prop",
+			"layerName": "CoffeeCounterCarcass",
+			"placementId": "coffee-station",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 256.0,
+			"sourcePath": "res://assets/runtime/office/coffee-station-v1/south-counter_carcass.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 256.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "coffee-station/CoffeeCounterTop",
+			"kind": "office-prop",
+			"layerName": "CoffeeCounterTop",
+			"placementId": "coffee-station",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 256.0,
+			"sourcePath": "res://assets/runtime/office/coffee-station-v1/south-counter_top.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 256.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "coffee-station/CoffeeCounterFront",
+			"kind": "office-prop",
+			"layerName": "CoffeeCounterFront",
+			"placementId": "coffee-station",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 256.0,
+			"sourcePath": "res://assets/runtime/office/coffee-station-v1/south-counter_front.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 256.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "coffee-station/CoffeeCounterPlinth",
+			"kind": "office-prop",
+			"layerName": "CoffeeCounterPlinth",
+			"placementId": "coffee-station",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 256.0,
+			"sourcePath": "res://assets/runtime/office/coffee-station-v1/south-counter_plinth.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 256.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "coffee-station/CoffeeServicePanel",
+			"kind": "office-prop",
+			"layerName": "CoffeeServicePanel",
+			"placementId": "coffee-station",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 256.0,
+			"sourcePath": "res://assets/runtime/office/coffee-station-v1/south-service_panel.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 256.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "coffee-station/CoffeeGrinder",
+			"kind": "office-prop",
+			"layerName": "CoffeeGrinder",
+			"placementId": "coffee-station",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 256.0,
+			"sourcePath": "res://assets/runtime/office/coffee-station-v1/south-grinder.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 256.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "coffee-station/CoffeeEspresso",
+			"kind": "office-prop",
+			"layerName": "CoffeeEspresso",
+			"placementId": "coffee-station",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 256.0,
+			"sourcePath": "res://assets/runtime/office/coffee-station-v1/south-espresso.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 256.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "coffee-station/CoffeePlant",
+			"kind": "office-prop",
+			"layerName": "CoffeePlant",
+			"placementId": "coffee-station",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 256.0,
+			"sourcePath": "res://assets/runtime/office/coffee-station-v1/south-plant.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 256.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "coffee-station/CoffeeServiceware",
+			"kind": "office-prop",
+			"layerName": "CoffeeServiceware",
+			"placementId": "coffee-station",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 256.0,
+			"sourcePath": "res://assets/runtime/office/coffee-station-v1/south-serviceware.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 272.0,
+			"displayedWidth": 256.0,
+			"flags": [],
+			"id": "collaboration-cluster/TableFloorShadow",
+			"kind": "office-prop",
+			"layerName": "TableFloorShadow",
+			"placementId": "collaboration-cluster",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 272.0,
+			"sourcePath": "res://assets/runtime/office/collaboration-cluster-v2/south-table_floor_shadow.png",
+			"sourceWidth": 256.0
+		},
+		{
+			"displayedHeight": 272.0,
+			"displayedWidth": 256.0,
+			"flags": [],
+			"id": "collaboration-cluster/NorthChair0Whole",
+			"kind": "office-prop",
+			"layerName": "NorthChair0Whole",
+			"placementId": "collaboration-cluster",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 272.0,
+			"sourcePath": "res://assets/runtime/office/collaboration-cluster-v2/south-north_chair_0_whole.png",
+			"sourceWidth": 256.0
+		},
+		{
+			"displayedHeight": 272.0,
+			"displayedWidth": 256.0,
+			"flags": [],
+			"id": "collaboration-cluster/NorthChair1Whole",
+			"kind": "office-prop",
+			"layerName": "NorthChair1Whole",
+			"placementId": "collaboration-cluster",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 272.0,
+			"sourcePath": "res://assets/runtime/office/collaboration-cluster-v2/south-north_chair_1_whole.png",
+			"sourceWidth": 256.0
+		},
+		{
+			"displayedHeight": 272.0,
+			"displayedWidth": 256.0,
+			"flags": [],
+			"id": "collaboration-cluster/TableRearStructure",
+			"kind": "office-prop",
+			"layerName": "TableRearStructure",
+			"placementId": "collaboration-cluster",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 272.0,
+			"sourcePath": "res://assets/runtime/office/collaboration-cluster-v2/south-table_rear_structure.png",
+			"sourceWidth": 256.0
+		},
+		{
+			"displayedHeight": 272.0,
+			"displayedWidth": 256.0,
+			"flags": [],
+			"id": "collaboration-cluster/TableFrontStructure",
+			"kind": "office-prop",
+			"layerName": "TableFrontStructure",
+			"placementId": "collaboration-cluster",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 272.0,
+			"sourcePath": "res://assets/runtime/office/collaboration-cluster-v2/south-table_front_structure.png",
+			"sourceWidth": 256.0
+		},
+		{
+			"displayedHeight": 272.0,
+			"displayedWidth": 256.0,
+			"flags": [],
+			"id": "collaboration-cluster/SouthChair0Whole",
+			"kind": "office-prop",
+			"layerName": "SouthChair0Whole",
+			"placementId": "collaboration-cluster",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 272.0,
+			"sourcePath": "res://assets/runtime/office/collaboration-cluster-v2/south-south_chair_0_whole.png",
+			"sourceWidth": 256.0
+		},
+		{
+			"displayedHeight": 272.0,
+			"displayedWidth": 256.0,
+			"flags": [],
+			"id": "collaboration-cluster/SouthChair1Whole",
+			"kind": "office-prop",
+			"layerName": "SouthChair1Whole",
+			"placementId": "collaboration-cluster",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 272.0,
+			"sourcePath": "res://assets/runtime/office/collaboration-cluster-v2/south-south_chair_1_whole.png",
+			"sourceWidth": 256.0
+		},
+		{
+			"displayedHeight": 288.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "artifact-archive/ArchiveCarcass",
+			"kind": "office-prop",
+			"layerName": "ArchiveCarcass",
+			"placementId": "artifact-archive",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 288.0,
+			"sourcePath": "res://assets/runtime/office/archive-v1/south-carcass.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 288.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "artifact-archive/ArchiveTop",
+			"kind": "office-prop",
+			"layerName": "ArchiveTop",
+			"placementId": "artifact-archive",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 288.0,
+			"sourcePath": "res://assets/runtime/office/archive-v1/south-top.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 288.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "artifact-archive/ArchiveFront",
+			"kind": "office-prop",
+			"layerName": "ArchiveFront",
+			"placementId": "artifact-archive",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 288.0,
+			"sourcePath": "res://assets/runtime/office/archive-v1/south-front.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 288.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "artifact-archive/ArchivePlinth",
+			"kind": "office-prop",
+			"layerName": "ArchivePlinth",
+			"placementId": "artifact-archive",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 288.0,
+			"sourcePath": "res://assets/runtime/office/archive-v1/south-plinth.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 288.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "artifact-archive/ArchiveInsert",
+			"kind": "office-prop",
+			"layerName": "ArchiveInsert",
+			"placementId": "artifact-archive",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 288.0,
+			"sourcePath": "res://assets/runtime/office/archive-v1/south-insert.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 160.0,
+			"displayedWidth": 96.0,
+			"flags": [],
+			"id": "theo-workstation/ChairWhole",
+			"kind": "office-prop",
+			"layerName": "ChairWhole",
+			"placementId": "theo-workstation",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 160.0,
+			"sourcePath": "res://assets/runtime/office/workstations-v2/chair-south.png",
+			"sourceWidth": 96.0
+		},
+		{
+			"displayedHeight": 224.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "theo-workstation/DeskRear",
+			"kind": "office-prop",
+			"layerName": "DeskRear",
+			"placementId": "theo-workstation",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 224.0,
+			"sourcePath": "res://assets/runtime/office/workstations-v2/desk-south-rear.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 224.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "theo-workstation/DeskFront",
+			"kind": "office-prop",
+			"layerName": "DeskFront",
+			"placementId": "theo-workstation",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 224.0,
+			"sourcePath": "res://assets/runtime/office/workstations-v2/desk-south-front.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 224.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "theo-workstation/Keyboard",
+			"kind": "office-prop",
+			"layerName": "Keyboard",
+			"placementId": "theo-workstation",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 224.0,
+			"sourcePath": "res://assets/runtime/office/workstations-v2/keyboard-south.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 224.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "theo-workstation/Mouse",
+			"kind": "office-prop",
+			"layerName": "Mouse",
+			"placementId": "theo-workstation",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 224.0,
+			"sourcePath": "res://assets/runtime/office/workstations-v2/mouse-south.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 224.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "theo-workstation/Monitor",
+			"kind": "office-prop",
+			"layerName": "Monitor",
+			"placementId": "theo-workstation",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 224.0,
+			"sourcePath": "res://assets/runtime/office/workstations-v2/monitor-south.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 320.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "research-bench/FloorShadow",
+			"kind": "office-prop",
+			"layerName": "FloorShadow",
+			"placementId": "research-bench",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 320.0,
+			"sourcePath": "res://assets/runtime/office/research-bench-v1/south-floor_shadow.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 320.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "research-bench/RearStructure",
+			"kind": "office-prop",
+			"layerName": "RearStructure",
+			"placementId": "research-bench",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 320.0,
+			"sourcePath": "res://assets/runtime/office/research-bench-v1/south-rear_structure.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 320.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "research-bench/ToolOverlay",
+			"kind": "office-prop",
+			"layerName": "ToolOverlay",
+			"placementId": "research-bench",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 320.0,
+			"sourcePath": "res://assets/runtime/office/research-bench-v1/south-tool_overlay.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 320.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "research-bench/FrontStructure",
+			"kind": "office-prop",
+			"layerName": "FrontStructure",
+			"placementId": "research-bench",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 320.0,
+			"sourcePath": "res://assets/runtime/office/research-bench-v1/south-front_structure.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 288.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "approval-console/FloorShadow",
+			"kind": "office-prop",
+			"layerName": "FloorShadow",
+			"placementId": "approval-console",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 288.0,
+			"sourcePath": "res://assets/runtime/office/approval-console-v1/south-floor_shadow.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 288.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "approval-console/RearStructure",
+			"kind": "office-prop",
+			"layerName": "RearStructure",
+			"placementId": "approval-console",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 288.0,
+			"sourcePath": "res://assets/runtime/office/approval-console-v1/south-rear_structure.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 288.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "approval-console/FrontStructure",
+			"kind": "office-prop",
+			"layerName": "FrontStructure",
+			"placementId": "approval-console",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 288.0,
+			"sourcePath": "res://assets/runtime/office/approval-console-v1/south-front_structure.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 288.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "approval-console/AmbientOverlay",
+			"kind": "office-prop",
+			"layerName": "AmbientOverlay",
+			"placementId": "approval-console",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 288.0,
+			"sourcePath": "res://assets/runtime/office/approval-console-v1/south-ambient_overlay.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 320.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "prototype-bench/FloorShadow",
+			"kind": "office-prop",
+			"layerName": "FloorShadow",
+			"placementId": "prototype-bench",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 320.0,
+			"sourcePath": "res://assets/runtime/office/prototype-bench-v1/south-floor_shadow.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 320.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "prototype-bench/RearStructure",
+			"kind": "office-prop",
+			"layerName": "RearStructure",
+			"placementId": "prototype-bench",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 320.0,
+			"sourcePath": "res://assets/runtime/office/prototype-bench-v1/south-rear_structure.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 320.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "prototype-bench/FrontStructure",
+			"kind": "office-prop",
+			"layerName": "FrontStructure",
+			"placementId": "prototype-bench",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 320.0,
+			"sourcePath": "res://assets/runtime/office/prototype-bench-v1/south-front_structure.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 320.0,
+			"displayedWidth": 192.0,
+			"flags": [],
+			"id": "prototype-bench/ToolOverlay",
+			"kind": "office-prop",
+			"layerName": "ToolOverlay",
+			"placementId": "prototype-bench",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 320.0,
+			"sourcePath": "res://assets/runtime/office/prototype-bench-v1/south-tool_overlay.png",
+			"sourceWidth": 192.0
+		},
+		{
+			"displayedHeight": 80.0,
+			"displayedWidth": 48.0,
+			"flags": [],
+			"id": "mira",
+			"kind": "character",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 80.0,
+			"sourcePath": "res://assets/runtime/characters/mira-locomotion.png",
+			"sourceWidth": 48.0
+		},
+		{
+			"displayedHeight": 80.0,
+			"displayedWidth": 48.0,
+			"flags": [],
+			"id": "theo",
+			"kind": "character",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 80.0,
+			"sourcePath": "res://assets/runtime/characters/theo-locomotion.png",
+			"sourceWidth": 48.0
+		},
+		{
+			"displayedHeight": 80.0,
+			"displayedWidth": 48.0,
+			"flags": [],
+			"id": "founder",
+			"kind": "character",
+			"scaleX": 1.0,
+			"scaleY": 1.0,
+			"sourceHeight": 80.0,
+			"sourcePath": "res://assets/runtime/characters/founder-locomotion.png",
+			"sourceWidth": 48.0
+		}
+	],
+	"roomModel": {
+		"architectureManifest": "res://assets/runtime/office/architecture/manifest.json",
+		"architectureMode": "modular-kit",
+		"catalog": "res://data/furniture_catalog.json",
+		"definition": "res://data/office_layout.json",
+		"floorCellCount": 614,
+		"gridHeight": 23,
+		"gridWidth": 40,
+		"stages": [
+			{
+				"errors": [],
+				"hires": 0,
+				"propCount": 1,
+				"valid": true
+			},
+			{
+				"errors": [],
+				"hires": 1,
+				"propCount": 5,
+				"valid": true
+			},
+			{
+				"errors": [],
+				"hires": 2,
+				"propCount": 8,
+				"valid": true
+			},
+			{
+				"errors": [],
+				"hires": 3,
+				"propCount": 8,
+				"valid": true
+			},
+			{
+				"errors": [],
+				"hires": 4,
+				"propCount": 9,
+				"valid": true
+			}
+		],
+		"tileSize": 32
+	},
+	"schemaVersion": 4,
+	"textures": [
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/founder-locomotion.png",
+			"usedRect": {
+				"height": 308,
+				"width": 273,
+				"x": 8,
+				"y": 4
+			},
+			"width": 288
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/mira-locomotion.png",
+			"usedRect": {
+				"height": 308,
+				"width": 270,
+				"x": 10,
+				"y": 4
+			},
+			"width": 288
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 80,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/mira-seated.png",
+			"usedRect": {
+				"height": 68,
+				"width": 267,
+				"x": 11,
+				"y": 4
+			},
+			"width": 288
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/mira-work.png",
+			"usedRect": {
+				"height": 307,
+				"width": 371,
+				"x": 8,
+				"y": 5
+			},
+			"width": 384
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 80,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/research-v1/mira-east.png",
+			"usedRect": {
+				"height": 68,
+				"width": 172,
+				"x": 10,
+				"y": 4
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 80,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/research-v1/mira-north.png",
+			"usedRect": {
+				"height": 67,
+				"width": 173,
+				"x": 10,
+				"y": 4
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 80,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/research-v1/mira-south.png",
+			"usedRect": {
+				"height": 68,
+				"width": 171,
+				"x": 11,
+				"y": 4
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 80,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/research-v1/mira-west.png",
+			"usedRect": {
+				"height": 68,
+				"width": 172,
+				"x": 10,
+				"y": 4
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 80,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/research-v1/theo-east.png",
+			"usedRect": {
+				"height": 68,
+				"width": 172,
+				"x": 10,
+				"y": 4
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 80,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/research-v1/theo-north.png",
+			"usedRect": {
+				"height": 68,
+				"width": 175,
+				"x": 9,
+				"y": 4
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 80,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/research-v1/theo-south.png",
+			"usedRect": {
+				"height": 68,
+				"width": 175,
+				"x": 9,
+				"y": 4
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 80,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/research-v1/theo-west.png",
+			"usedRect": {
+				"height": 68,
+				"width": 173,
+				"x": 10,
+				"y": 4
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/theo-locomotion.png",
+			"usedRect": {
+				"height": 308,
+				"width": 272,
+				"x": 9,
+				"y": 4
+			},
+			"width": 288
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 80,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/theo-seated.png",
+			"usedRect": {
+				"height": 68,
+				"width": 270,
+				"x": 9,
+				"y": 4
+			},
+			"width": 288
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/theo-work.png",
+			"usedRect": {
+				"height": 304,
+				"width": 369,
+				"x": 9,
+				"y": 8
+			},
+			"width": 384
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 80,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/workstations-v2/mira-east.png",
+			"usedRect": {
+				"height": 68,
+				"width": 272,
+				"x": 12,
+				"y": 4
+			},
+			"width": 288
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 80,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/workstations-v2/mira-north.png",
+			"usedRect": {
+				"height": 68,
+				"width": 272,
+				"x": 10,
+				"y": 4
+			},
+			"width": 288
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 80,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/workstations-v2/mira-west.png",
+			"usedRect": {
+				"height": 68,
+				"width": 271,
+				"x": 5,
+				"y": 4
+			},
+			"width": 288
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 80,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/workstations-v2/theo-east.png",
+			"usedRect": {
+				"height": 68,
+				"width": 274,
+				"x": 11,
+				"y": 4
+			},
+			"width": 288
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 80,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/workstations-v2/theo-north.png",
+			"usedRect": {
+				"height": 68,
+				"width": 275,
+				"x": 7,
+				"y": 4
+			},
+			"width": 288
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 80,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/characters/workstations-v2/theo-west.png",
+			"usedRect": {
+				"height": 68,
+				"width": 275,
+				"x": 1,
+				"y": 4
+			},
+			"width": 288
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 160,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/effects/ambient-office.png",
+			"usedRect": {
+				"height": 140,
+				"width": 113,
+				"x": 8,
+				"y": 8
+			},
+			"width": 128
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 16,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/effects/character-shadows.png",
+			"usedRect": {
+				"height": 9,
+				"width": 76,
+				"x": 11,
+				"y": 4
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 64,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/effects/office-unlock.png",
+			"usedRect": {
+				"height": 45,
+				"width": 278,
+				"x": 23,
+				"y": 13
+			},
+			"width": 384
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 144,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/effects/world-state-vfx.png",
+			"usedRect": {
+				"height": 139,
+				"width": 89,
+				"x": 5,
+				"y": 3
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/approval-console-v1/east-ambient_overlay.png",
+			"usedRect": {
+				"height": 34,
+				"width": 7,
+				"x": 113,
+				"y": 119
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/approval-console-v1/east-floor_shadow.png",
+			"usedRect": {
+				"height": 113,
+				"width": 40,
+				"x": 80,
+				"y": 103
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/approval-console-v1/east-front_structure.png",
+			"usedRect": {
+				"height": 110,
+				"width": 32,
+				"x": 66,
+				"y": 100
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/approval-console-v1/east-rear_structure.png",
+			"usedRect": {
+				"height": 106,
+				"width": 76,
+				"x": 68,
+				"y": 96
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/approval-console-v1/north-ambient_overlay.png",
+			"usedRect": {
+				"height": 3,
+				"width": 3,
+				"x": 125,
+				"y": 120
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/approval-console-v1/north-floor_shadow.png",
+			"usedRect": {
+				"height": 22,
+				"width": 94,
+				"x": 51,
+				"y": 193
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/approval-console-v1/north-front_structure.png",
+			"usedRect": {
+				"height": 36,
+				"width": 96,
+				"x": 48,
+				"y": 174
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/approval-console-v1/north-rear_structure.png",
+			"usedRect": {
+				"height": 84,
+				"width": 88,
+				"x": 52,
+				"y": 108
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/approval-console-v1/south-ambient_overlay.png",
+			"usedRect": {
+				"height": 2,
+				"width": 41,
+				"x": 75,
+				"y": 125
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/approval-console-v1/south-floor_shadow.png",
+			"usedRect": {
+				"height": 22,
+				"width": 94,
+				"x": 51,
+				"y": 193
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/approval-console-v1/south-front_structure.png",
+			"usedRect": {
+				"height": 36,
+				"width": 96,
+				"x": 48,
+				"y": 174
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/approval-console-v1/south-rear_structure.png",
+			"usedRect": {
+				"height": 84,
+				"width": 88,
+				"x": 52,
+				"y": 108
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/approval-console-v1/west-ambient_overlay.png",
+			"usedRect": {
+				"height": 34,
+				"width": 7,
+				"x": 81,
+				"y": 119
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/approval-console-v1/west-floor_shadow.png",
+			"usedRect": {
+				"height": 113,
+				"width": 40,
+				"x": 80,
+				"y": 103
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/approval-console-v1/west-front_structure.png",
+			"usedRect": {
+				"height": 110,
+				"width": 32,
+				"x": 94,
+				"y": 100
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/approval-console-v1/west-rear_structure.png",
+			"usedRect": {
+				"height": 106,
+				"width": 76,
+				"x": 48,
+				"y": 96
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 88,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/approval-console.png",
+			"usedRect": {
+				"height": 84,
+				"width": 105,
+				"x": 13,
+				"y": 4
+			},
+			"width": 132
+		},
+		{
+			"alphaExpectation": "opaque",
+			"assetRole": "architecture",
+			"flags": [],
+			"hasTransparency": false,
+			"hasTransparentBorder": false,
+			"height": 32,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/architecture/door.png",
+			"usedRect": {
+				"height": 32,
+				"width": 64,
+				"x": 0,
+				"y": 0
+			},
+			"width": 64
+		},
+		{
+			"alphaExpectation": "opaque",
+			"assetRole": "architecture",
+			"flags": [],
+			"hasTransparency": false,
+			"hasTransparentBorder": false,
+			"height": 128,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/architecture/floor.png",
+			"usedRect": {
+				"height": 128,
+				"width": 128,
+				"x": 0,
+				"y": 0
+			},
+			"width": 128
+		},
+		{
+			"alphaExpectation": "opaque",
+			"assetRole": "architecture",
+			"flags": [],
+			"hasTransparency": false,
+			"hasTransparentBorder": false,
+			"height": 64,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/architecture/trim.png",
+			"usedRect": {
+				"height": 64,
+				"width": 128,
+				"x": 0,
+				"y": 0
+			},
+			"width": 128
+		},
+		{
+			"alphaExpectation": "opaque",
+			"assetRole": "architecture",
+			"flags": [],
+			"hasTransparency": false,
+			"hasTransparentBorder": false,
+			"height": 96,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/architecture/wall.png",
+			"usedRect": {
+				"height": 96,
+				"width": 128,
+				"x": 0,
+				"y": 0
+			},
+			"width": 128
+		},
+		{
+			"alphaExpectation": "binary",
+			"assetRole": "architecture",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 96,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/architecture/window.png",
+			"usedRect": {
+				"height": 88,
+				"width": 156,
+				"x": 2,
+				"y": 4
+			},
+			"width": 160
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/east-carcass.png",
+			"usedRect": {
+				"height": 60,
+				"width": 32,
+				"x": 80,
+				"y": 208
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/east-front.png",
+			"usedRect": {
+				"height": 60,
+				"width": 28,
+				"x": 82,
+				"y": 208
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/east-insert.png",
+			"usedRect": {
+				"height": 50,
+				"width": 24,
+				"x": 84,
+				"y": 215
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/east-plinth.png",
+			"usedRect": {
+				"height": 4,
+				"width": 32,
+				"x": 80,
+				"y": 268
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/east-top.png",
+			"usedRect": {
+				"height": 96,
+				"width": 32,
+				"x": 80,
+				"y": 112
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/east-whole.png",
+			"usedRect": {
+				"height": 160,
+				"width": 32,
+				"x": 80,
+				"y": 112
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/north-carcass.png",
+			"usedRect": {
+				"height": 60,
+				"width": 96,
+				"x": 48,
+				"y": 176
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/north-front.png",
+			"usedRect": {
+				"height": 60,
+				"width": 92,
+				"x": 50,
+				"y": 176
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/north-insert.png",
+			"usedRect": {
+				"height": 56,
+				"width": 88,
+				"x": 52,
+				"y": 180
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/north-plinth.png",
+			"usedRect": {
+				"height": 4,
+				"width": 96,
+				"x": 48,
+				"y": 236
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/north-top.png",
+			"usedRect": {
+				"height": 32,
+				"width": 96,
+				"x": 48,
+				"y": 144
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/north-whole.png",
+			"usedRect": {
+				"height": 96,
+				"width": 96,
+				"x": 48,
+				"y": 144
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/south-carcass.png",
+			"usedRect": {
+				"height": 60,
+				"width": 96,
+				"x": 48,
+				"y": 176
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/south-front.png",
+			"usedRect": {
+				"height": 60,
+				"width": 92,
+				"x": 50,
+				"y": 176
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/south-insert.png",
+			"usedRect": {
+				"height": 54,
+				"width": 88,
+				"x": 52,
+				"y": 181
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/south-plinth.png",
+			"usedRect": {
+				"height": 4,
+				"width": 96,
+				"x": 48,
+				"y": 236
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/south-top.png",
+			"usedRect": {
+				"height": 32,
+				"width": 96,
+				"x": 48,
+				"y": 144
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/south-whole.png",
+			"usedRect": {
+				"height": 96,
+				"width": 96,
+				"x": 48,
+				"y": 144
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/west-carcass.png",
+			"usedRect": {
+				"height": 60,
+				"width": 32,
+				"x": 80,
+				"y": 208
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/west-front.png",
+			"usedRect": {
+				"height": 60,
+				"width": 28,
+				"x": 82,
+				"y": 208
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/west-insert.png",
+			"usedRect": {
+				"height": 50,
+				"width": 24,
+				"x": 84,
+				"y": 215
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/west-plinth.png",
+			"usedRect": {
+				"height": 4,
+				"width": 32,
+				"x": 80,
+				"y": 268
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/west-top.png",
+			"usedRect": {
+				"height": 96,
+				"width": 32,
+				"x": 80,
+				"y": 112
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 288,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/archive-v1/west-whole.png",
+			"usedRect": {
+				"height": 160,
+				"width": 32,
+				"x": 80,
+				"y": 112
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 90,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/artifact-archive.png",
+			"usedRect": {
+				"height": 86,
+				"width": 132,
+				"x": 2,
+				"y": 4
+			},
+			"width": 136
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": false,
+			"hasTransparentBorder": false,
+			"height": 720,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/campus-surround.png",
+			"usedRect": {
+				"height": 720,
+				"width": 1280,
+				"x": 0,
+				"y": 0
+			},
+			"width": 1280
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/east-counter_carcass.png",
+			"usedRect": {
+				"height": 28,
+				"width": 32,
+				"x": 80,
+				"y": 208
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/east-counter_front.png",
+			"usedRect": {
+				"height": 28,
+				"width": 28,
+				"x": 82,
+				"y": 208
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/east-counter_plinth.png",
+			"usedRect": {
+				"height": 4,
+				"width": 32,
+				"x": 80,
+				"y": 236
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/east-counter_top.png",
+			"usedRect": {
+				"height": 96,
+				"width": 32,
+				"x": 80,
+				"y": 112
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/east-espresso.png",
+			"usedRect": {
+				"height": 62,
+				"width": 15,
+				"x": 86,
+				"y": 113
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/east-floor_shadow.png",
+			"usedRect": {
+				"height": 7,
+				"width": 26,
+				"x": 83,
+				"y": 237
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/east-grinder.png",
+			"usedRect": {
+				"height": 33,
+				"width": 13,
+				"x": 87,
+				"y": 102
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/east-plant.png",
+			"usedRect": {
+				"height": 25,
+				"width": 15,
+				"x": 89,
+				"y": 174
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/east-service_panel.png",
+			"usedRect": {
+				"height": 24,
+				"width": 24,
+				"x": 84,
+				"y": 212
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/east-serviceware.png",
+			"usedRect": {
+				"height": 10,
+				"width": 6,
+				"x": 103,
+				"y": 126
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/east-whole.png",
+			"usedRect": {
+				"height": 142,
+				"width": 32,
+				"x": 80,
+				"y": 102
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/north-counter_carcass.png",
+			"usedRect": {
+				"height": 28,
+				"width": 96,
+				"x": 48,
+				"y": 176
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/north-counter_front.png",
+			"usedRect": {
+				"height": 28,
+				"width": 92,
+				"x": 50,
+				"y": 176
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/north-counter_plinth.png",
+			"usedRect": {
+				"height": 4,
+				"width": 96,
+				"x": 48,
+				"y": 204
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/north-counter_top.png",
+			"usedRect": {
+				"height": 32,
+				"width": 96,
+				"x": 48,
+				"y": 144
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/north-espresso.png",
+			"usedRect": {
+				"height": 46,
+				"width": 31,
+				"x": 80,
+				"y": 124
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/north-floor_shadow.png",
+			"usedRect": {
+				"height": 7,
+				"width": 90,
+				"x": 51,
+				"y": 205
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/north-grinder.png",
+			"usedRect": {
+				"height": 33,
+				"width": 13,
+				"x": 60,
+				"y": 134
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/north-plant.png",
+			"usedRect": {
+				"height": 25,
+				"width": 15,
+				"x": 121,
+				"y": 142
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/north-service_panel.png",
+			"usedRect": {
+				"height": 24,
+				"width": 88,
+				"x": 52,
+				"y": 180
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/north-serviceware.png",
+			"usedRect": {
+				"height": 7,
+				"width": 7,
+				"x": 71,
+				"y": 141
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/north-whole.png",
+			"usedRect": {
+				"height": 88,
+				"width": 96,
+				"x": 48,
+				"y": 124
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/south-counter_carcass.png",
+			"usedRect": {
+				"height": 28,
+				"width": 96,
+				"x": 48,
+				"y": 176
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/south-counter_front.png",
+			"usedRect": {
+				"height": 28,
+				"width": 92,
+				"x": 50,
+				"y": 176
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/south-counter_plinth.png",
+			"usedRect": {
+				"height": 4,
+				"width": 96,
+				"x": 48,
+				"y": 204
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/south-counter_top.png",
+			"usedRect": {
+				"height": 32,
+				"width": 96,
+				"x": 48,
+				"y": 144
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/south-espresso.png",
+			"usedRect": {
+				"height": 46,
+				"width": 31,
+				"x": 81,
+				"y": 119
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/south-floor_shadow.png",
+			"usedRect": {
+				"height": 7,
+				"width": 90,
+				"x": 51,
+				"y": 205
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/south-grinder.png",
+			"usedRect": {
+				"height": 33,
+				"width": 13,
+				"x": 119,
+				"y": 129
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/south-plant.png",
+			"usedRect": {
+				"height": 25,
+				"width": 15,
+				"x": 56,
+				"y": 140
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/south-service_panel.png",
+			"usedRect": {
+				"height": 24,
+				"width": 88,
+				"x": 52,
+				"y": 180
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/south-serviceware.png",
+			"usedRect": {
+				"height": 7,
+				"width": 7,
+				"x": 114,
+				"y": 160
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/south-whole.png",
+			"usedRect": {
+				"height": 93,
+				"width": 96,
+				"x": 48,
+				"y": 119
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/west-counter_carcass.png",
+			"usedRect": {
+				"height": 28,
+				"width": 32,
+				"x": 80,
+				"y": 208
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/west-counter_front.png",
+			"usedRect": {
+				"height": 28,
+				"width": 28,
+				"x": 82,
+				"y": 208
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/west-counter_plinth.png",
+			"usedRect": {
+				"height": 4,
+				"width": 32,
+				"x": 80,
+				"y": 236
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/west-counter_top.png",
+			"usedRect": {
+				"height": 96,
+				"width": 32,
+				"x": 80,
+				"y": 112
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/west-espresso.png",
+			"usedRect": {
+				"height": 62,
+				"width": 15,
+				"x": 91,
+				"y": 114
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/west-floor_shadow.png",
+			"usedRect": {
+				"height": 7,
+				"width": 26,
+				"x": 83,
+				"y": 237
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/west-grinder.png",
+			"usedRect": {
+				"height": 33,
+				"width": 13,
+				"x": 92,
+				"y": 161
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/west-plant.png",
+			"usedRect": {
+				"height": 25,
+				"width": 15,
+				"x": 88,
+				"y": 108
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/west-service_panel.png",
+			"usedRect": {
+				"height": 24,
+				"width": 24,
+				"x": 84,
+				"y": 212
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/west-serviceware.png",
+			"usedRect": {
+				"height": 10,
+				"width": 6,
+				"x": 83,
+				"y": 169
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 256,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station-v1/west-whole.png",
+			"usedRect": {
+				"height": 136,
+				"width": 32,
+				"x": 80,
+				"y": 108
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 94,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/coffee-station.png",
+			"usedRect": {
+				"height": 90,
+				"width": 120,
+				"x": 11,
+				"y": 4
+			},
+			"width": 142
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/east-east_chair_0_front.png",
+			"usedRect": {
+				"height": 14,
+				"width": 13,
+				"x": 171,
+				"y": 121
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/east-east_chair_0_rear.png",
+			"usedRect": {
+				"height": 56,
+				"width": 29,
+				"x": 167,
+				"y": 104
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/east-east_chair_1_front.png",
+			"usedRect": {
+				"height": 14,
+				"width": 13,
+				"x": 171,
+				"y": 185
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/east-east_chair_1_rear.png",
+			"usedRect": {
+				"height": 56,
+				"width": 29,
+				"x": 167,
+				"y": 168
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/east-table_floor_shadow.png",
+			"usedRect": {
+				"height": 160,
+				"width": 60,
+				"x": 101,
+				"y": 97
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/east-table_front_structure.png",
+			"usedRect": {
+				"height": 186,
+				"width": 12,
+				"x": 148,
+				"y": 64
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/east-table_rear_structure.png",
+			"usedRect": {
+				"height": 184,
+				"width": 64,
+				"x": 96,
+				"y": 64
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/east-west_chair_0_front.png",
+			"usedRect": {
+				"height": 14,
+				"width": 14,
+				"x": 104,
+				"y": 120
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/east-west_chair_0_rear.png",
+			"usedRect": {
+				"height": 56,
+				"width": 32,
+				"x": 92,
+				"y": 104
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/east-west_chair_1_front.png",
+			"usedRect": {
+				"height": 14,
+				"width": 14,
+				"x": 104,
+				"y": 184
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/east-west_chair_1_rear.png",
+			"usedRect": {
+				"height": 56,
+				"width": 32,
+				"x": 92,
+				"y": 168
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/north-north_chair_0_whole.png",
+			"usedRect": {
+				"height": 52,
+				"width": 32,
+				"x": 80,
+				"y": 80
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/north-north_chair_1_whole.png",
+			"usedRect": {
+				"height": 52,
+				"width": 32,
+				"x": 144,
+				"y": 80
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/north-south_chair_0_whole.png",
+			"usedRect": {
+				"height": 55,
+				"width": 32,
+				"x": 80,
+				"y": 157
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/north-south_chair_1_whole.png",
+			"usedRect": {
+				"height": 55,
+				"width": 32,
+				"x": 144,
+				"y": 157
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/north-table_floor_shadow.png",
+			"usedRect": {
+				"height": 61,
+				"width": 160,
+				"x": 49,
+				"y": 149
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/north-table_front_structure.png",
+			"usedRect": {
+				"height": 34,
+				"width": 160,
+				"x": 48,
+				"y": 174
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/north-table_rear_structure.png",
+			"usedRect": {
+				"height": 64,
+				"width": 160,
+				"x": 48,
+				"y": 112
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/south-north_chair_0_whole.png",
+			"usedRect": {
+				"height": 52,
+				"width": 32,
+				"x": 80,
+				"y": 112
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/south-north_chair_1_whole.png",
+			"usedRect": {
+				"height": 52,
+				"width": 32,
+				"x": 144,
+				"y": 112
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/south-south_chair_0_whole.png",
+			"usedRect": {
+				"height": 55,
+				"width": 32,
+				"x": 80,
+				"y": 189
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/south-south_chair_1_whole.png",
+			"usedRect": {
+				"height": 55,
+				"width": 32,
+				"x": 144,
+				"y": 189
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/south-table_floor_shadow.png",
+			"usedRect": {
+				"height": 61,
+				"width": 160,
+				"x": 49,
+				"y": 181
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/south-table_front_structure.png",
+			"usedRect": {
+				"height": 34,
+				"width": 160,
+				"x": 48,
+				"y": 206
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/south-table_rear_structure.png",
+			"usedRect": {
+				"height": 64,
+				"width": 160,
+				"x": 48,
+				"y": 144
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/west-east_chair_0_front.png",
+			"usedRect": {
+				"height": 14,
+				"width": 13,
+				"x": 139,
+				"y": 121
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/west-east_chair_0_rear.png",
+			"usedRect": {
+				"height": 56,
+				"width": 29,
+				"x": 135,
+				"y": 104
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/west-east_chair_1_front.png",
+			"usedRect": {
+				"height": 14,
+				"width": 13,
+				"x": 139,
+				"y": 185
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/west-east_chair_1_rear.png",
+			"usedRect": {
+				"height": 56,
+				"width": 29,
+				"x": 135,
+				"y": 168
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/west-table_floor_shadow.png",
+			"usedRect": {
+				"height": 160,
+				"width": 60,
+				"x": 69,
+				"y": 97
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/west-table_front_structure.png",
+			"usedRect": {
+				"height": 186,
+				"width": 12,
+				"x": 116,
+				"y": 64
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/west-table_rear_structure.png",
+			"usedRect": {
+				"height": 184,
+				"width": 64,
+				"x": 64,
+				"y": 64
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/west-west_chair_0_front.png",
+			"usedRect": {
+				"height": 14,
+				"width": 14,
+				"x": 72,
+				"y": 120
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/west-west_chair_0_rear.png",
+			"usedRect": {
+				"height": 56,
+				"width": 32,
+				"x": 60,
+				"y": 104
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/west-west_chair_1_front.png",
+			"usedRect": {
+				"height": 14,
+				"width": 14,
+				"x": 72,
+				"y": 184
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster-v2/west-west_chair_1_rear.png",
+			"usedRect": {
+				"height": 56,
+				"width": 32,
+				"x": 60,
+				"y": 168
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 92,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-cluster.png",
+			"usedRect": {
+				"height": 54,
+				"width": 123,
+				"x": 6,
+				"y": 20
+			},
+			"width": 138
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-table-v1/east-floor_shadow.png",
+			"usedRect": {
+				"height": 160,
+				"width": 60,
+				"x": 101,
+				"y": 97
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-table-v1/east-front_structure.png",
+			"usedRect": {
+				"height": 186,
+				"width": 12,
+				"x": 148,
+				"y": 64
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-table-v1/east-rear_structure.png",
+			"usedRect": {
+				"height": 184,
+				"width": 64,
+				"x": 96,
+				"y": 64
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-table-v1/north-floor_shadow.png",
+			"usedRect": {
+				"height": 61,
+				"width": 160,
+				"x": 49,
+				"y": 149
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-table-v1/north-front_structure.png",
+			"usedRect": {
+				"height": 34,
+				"width": 160,
+				"x": 48,
+				"y": 174
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-table-v1/north-rear_structure.png",
+			"usedRect": {
+				"height": 64,
+				"width": 160,
+				"x": 48,
+				"y": 112
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-table-v1/south-floor_shadow.png",
+			"usedRect": {
+				"height": 61,
+				"width": 160,
+				"x": 49,
+				"y": 149
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-table-v1/south-front_structure.png",
+			"usedRect": {
+				"height": 34,
+				"width": 160,
+				"x": 48,
+				"y": 174
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-table-v1/south-rear_structure.png",
+			"usedRect": {
+				"height": 64,
+				"width": 160,
+				"x": 48,
+				"y": 112
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-table-v1/west-floor_shadow.png",
+			"usedRect": {
+				"height": 160,
+				"width": 60,
+				"x": 101,
+				"y": 97
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-table-v1/west-front_structure.png",
+			"usedRect": {
+				"height": 186,
+				"width": 12,
+				"x": 148,
+				"y": 64
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 272,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/collaboration-table-v1/west-rear_structure.png",
+			"usedRect": {
+				"height": 184,
+				"width": 64,
+				"x": 96,
+				"y": 64
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 88,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/employee-workstation.png",
+			"usedRect": {
+				"height": 68,
+				"width": 94,
+				"x": 18,
+				"y": 9
+			},
+			"width": 132
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 192,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/layered-furniture.png",
+			"usedRect": {
+				"height": 176,
+				"width": 250,
+				"x": 3,
+				"y": 8
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": false,
+			"hasTransparentBorder": false,
+			"height": 1044,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/main-office-background.png",
+			"usedRect": {
+				"height": 1044,
+				"width": 1507,
+				"x": 0,
+				"y": 0
+			},
+			"width": 1507
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": false,
+			"hasTransparentBorder": false,
+			"height": 576,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/office-shell-base.png",
+			"usedRect": {
+				"height": 576,
+				"width": 832,
+				"x": 0,
+				"y": 0
+			},
+			"width": 832
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/prototype-bench-v1/east-floor_shadow.png",
+			"usedRect": {
+				"height": 148,
+				"width": 44,
+				"x": 76,
+				"y": 100
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/prototype-bench-v1/east-front_structure.png",
+			"usedRect": {
+				"height": 152,
+				"width": 48,
+				"x": 48,
+				"y": 90
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/prototype-bench-v1/east-rear_structure.png",
+			"usedRect": {
+				"height": 144,
+				"width": 76,
+				"x": 66,
+				"y": 90
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/prototype-bench-v1/east-tool_overlay.png",
+			"usedRect": {
+				"height": 46,
+				"width": 69,
+				"x": 62,
+				"y": 103
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/prototype-bench-v1/north-floor_shadow.png",
+			"usedRect": {
+				"height": 22,
+				"width": 106,
+				"x": 44,
+				"y": 225
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/prototype-bench-v1/north-front_structure.png",
+			"usedRect": {
+				"height": 44,
+				"width": 116,
+				"x": 38,
+				"y": 198
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/prototype-bench-v1/north-rear_structure.png",
+			"usedRect": {
+				"height": 106,
+				"width": 110,
+				"x": 41,
+				"y": 98
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/prototype-bench-v1/north-tool_overlay.png",
+			"usedRect": {
+				"height": 56,
+				"width": 72,
+				"x": 62,
+				"y": 120
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/prototype-bench-v1/south-floor_shadow.png",
+			"usedRect": {
+				"height": 22,
+				"width": 106,
+				"x": 44,
+				"y": 225
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/prototype-bench-v1/south-front_structure.png",
+			"usedRect": {
+				"height": 44,
+				"width": 116,
+				"x": 38,
+				"y": 198
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/prototype-bench-v1/south-rear_structure.png",
+			"usedRect": {
+				"height": 106,
+				"width": 110,
+				"x": 41,
+				"y": 98
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/prototype-bench-v1/south-tool_overlay.png",
+			"usedRect": {
+				"height": 63,
+				"width": 81,
+				"x": 57,
+				"y": 110
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/prototype-bench-v1/west-floor_shadow.png",
+			"usedRect": {
+				"height": 148,
+				"width": 44,
+				"x": 76,
+				"y": 100
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/prototype-bench-v1/west-front_structure.png",
+			"usedRect": {
+				"height": 152,
+				"width": 48,
+				"x": 98,
+				"y": 90
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/prototype-bench-v1/west-rear_structure.png",
+			"usedRect": {
+				"height": 144,
+				"width": 76,
+				"x": 50,
+				"y": 90
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/prototype-bench-v1/west-tool_overlay.png",
+			"usedRect": {
+				"height": 46,
+				"width": 71,
+				"x": 59,
+				"y": 103
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 140,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/prototype-bench.png",
+			"usedRect": {
+				"height": 128,
+				"width": 136,
+				"x": 2,
+				"y": 12
+			},
+			"width": 140
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/research-bench-v1/east-floor_shadow.png",
+			"usedRect": {
+				"height": 150,
+				"width": 42,
+				"x": 76,
+				"y": 99
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/research-bench-v1/east-front_structure.png",
+			"usedRect": {
+				"height": 153,
+				"width": 46,
+				"x": 49,
+				"y": 89
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/research-bench-v1/east-rear_structure.png",
+			"usedRect": {
+				"height": 145,
+				"width": 68,
+				"x": 67,
+				"y": 89
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/research-bench-v1/east-tool_overlay.png",
+			"usedRect": {
+				"height": 78,
+				"width": 66,
+				"x": 59,
+				"y": 101
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/research-bench-v1/north-floor_shadow.png",
+			"usedRect": {
+				"height": 22,
+				"width": 108,
+				"x": 42,
+				"y": 226
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/research-bench-v1/north-front_structure.png",
+			"usedRect": {
+				"height": 48,
+				"width": 116,
+				"x": 38,
+				"y": 192
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/research-bench-v1/north-rear_structure.png",
+			"usedRect": {
+				"height": 91,
+				"width": 110,
+				"x": 41,
+				"y": 105
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/research-bench-v1/north-tool_overlay.png",
+			"usedRect": {
+				"height": 56,
+				"width": 76,
+				"x": 58,
+				"y": 121
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/research-bench-v1/south-floor_shadow.png",
+			"usedRect": {
+				"height": 22,
+				"width": 108,
+				"x": 42,
+				"y": 226
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/research-bench-v1/south-front_structure.png",
+			"usedRect": {
+				"height": 48,
+				"width": 116,
+				"x": 38,
+				"y": 192
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/research-bench-v1/south-rear_structure.png",
+			"usedRect": {
+				"height": 91,
+				"width": 110,
+				"x": 41,
+				"y": 105
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/research-bench-v1/south-tool_overlay.png",
+			"usedRect": {
+				"height": 72,
+				"width": 78,
+				"x": 55,
+				"y": 114
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/research-bench-v1/west-floor_shadow.png",
+			"usedRect": {
+				"height": 150,
+				"width": 42,
+				"x": 76,
+				"y": 99
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/research-bench-v1/west-front_structure.png",
+			"usedRect": {
+				"height": 153,
+				"width": 46,
+				"x": 97,
+				"y": 89
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/research-bench-v1/west-rear_structure.png",
+			"usedRect": {
+				"height": 145,
+				"width": 72,
+				"x": 53,
+				"y": 89
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 320,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/research-bench-v1/west-tool_overlay.png",
+			"usedRect": {
+				"height": 78,
+				"width": 71,
+				"x": 61,
+				"y": 101
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 92,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/research-bench.png",
+			"usedRect": {
+				"height": 77,
+				"width": 97,
+				"x": 20,
+				"y": 8
+			},
+			"width": 138
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 112,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/south-workstation.png",
+			"usedRect": {
+				"height": 104,
+				"width": 228,
+				"x": 16,
+				"y": 8
+			},
+			"width": 256
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 160,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/chair-east-front.png",
+			"usedRect": {
+				"height": 14,
+				"width": 14,
+				"x": 44,
+				"y": 88
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 160,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/chair-east-rear.png",
+			"usedRect": {
+				"height": 56,
+				"width": 32,
+				"x": 32,
+				"y": 72
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 160,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/chair-north.png",
+			"usedRect": {
+				"height": 55,
+				"width": 32,
+				"x": 32,
+				"y": 73
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 160,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/chair-south.png",
+			"usedRect": {
+				"height": 52,
+				"width": 32,
+				"x": 32,
+				"y": 76
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 160,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/chair-west-front.png",
+			"usedRect": {
+				"height": 14,
+				"width": 13,
+				"x": 39,
+				"y": 89
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 160,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/chair-west-rear.png",
+			"usedRect": {
+				"height": 56,
+				"width": 29,
+				"x": 35,
+				"y": 72
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/desk-east-front.png",
+			"usedRect": {
+				"height": 124,
+				"width": 32,
+				"x": 80,
+				"y": 84
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/desk-east-rear.png",
+			"usedRect": {
+				"height": 96,
+				"width": 32,
+				"x": 80,
+				"y": 80
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/desk-north-front.png",
+			"usedRect": {
+				"height": 32,
+				"width": 96,
+				"x": 48,
+				"y": 144
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/desk-north-rear.png",
+			"usedRect": {
+				"height": 32,
+				"width": 96,
+				"x": 48,
+				"y": 112
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/desk-south-front.png",
+			"usedRect": {
+				"height": 64,
+				"width": 96,
+				"x": 48,
+				"y": 112
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/desk-south-rear.png",
+			"usedRect": {
+				"height": 30,
+				"width": 88,
+				"x": 52,
+				"y": 114
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/desk-west-front.png",
+			"usedRect": {
+				"height": 124,
+				"width": 32,
+				"x": 80,
+				"y": 84
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/desk-west-rear.png",
+			"usedRect": {
+				"height": 96,
+				"width": 32,
+				"x": 80,
+				"y": 80
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/keyboard-east.png",
+			"usedRect": {
+				"height": 31,
+				"width": 9,
+				"x": 81,
+				"y": 115
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/keyboard-north.png",
+			"usedRect": {
+				"height": 11,
+				"width": 31,
+				"x": 79,
+				"y": 127
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/keyboard-south.png",
+			"usedRect": {
+				"height": 13,
+				"width": 31,
+				"x": 80,
+				"y": 112
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/keyboard-west.png",
+			"usedRect": {
+				"height": 31,
+				"width": 11,
+				"x": 99,
+				"y": 115
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/monitor-east.png",
+			"usedRect": {
+				"height": 30,
+				"width": 12,
+				"x": 99,
+				"y": 108
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/monitor-north.png",
+			"usedRect": {
+				"height": 30,
+				"width": 33,
+				"x": 80,
+				"y": 97
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/monitor-south.png",
+			"usedRect": {
+				"height": 31,
+				"width": 32,
+				"x": 80,
+				"y": 109
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/monitor-west.png",
+			"usedRect": {
+				"height": 30,
+				"width": 12,
+				"x": 81,
+				"y": 108
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/mouse-east.png",
+			"usedRect": {
+				"height": 6,
+				"width": 9,
+				"x": 81,
+				"y": 149
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/mouse-north.png",
+			"usedRect": {
+				"height": 8,
+				"width": 6,
+				"x": 112,
+				"y": 129
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/mouse-south.png",
+			"usedRect": {
+				"height": 8,
+				"width": 5,
+				"x": 69,
+				"y": 113
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "transparent-cutout",
+			"assetRole": "office-cutout",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 224,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/office/workstations-v2/mouse-west.png",
+			"usedRect": {
+				"height": 6,
+				"width": 9,
+				"x": 99,
+				"y": 103
+			},
+			"width": 192
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 16,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/cozy-controls/chevron.png",
+			"usedRect": {
+				"height": 6,
+				"width": 10,
+				"x": 3,
+				"y": 5
+			},
+			"width": 16
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 16,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/cozy-controls/close.png",
+			"usedRect": {
+				"height": 10,
+				"width": 10,
+				"x": 3,
+				"y": 3
+			},
+			"width": 16
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/cozy-controls/danger-disabled.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/cozy-controls/danger-hover.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/cozy-controls/danger-normal.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/cozy-controls/danger-pressed.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/cozy-controls/primary-disabled.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/cozy-controls/primary-hover.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/cozy-controls/primary-normal.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/cozy-controls/primary-pressed.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/cozy-controls/secondary-disabled.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/cozy-controls/secondary-hover.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/cozy-controls/secondary-normal.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/cozy-controls/secondary-pressed.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 24,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/cozy-controls/slider-disabled.png",
+			"usedRect": {
+				"height": 24,
+				"width": 24,
+				"x": 0,
+				"y": 0
+			},
+			"width": 24
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 24,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/cozy-controls/slider-hover.png",
+			"usedRect": {
+				"height": 24,
+				"width": 24,
+				"x": 0,
+				"y": 0
+			},
+			"width": 24
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 24,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/cozy-controls/slider-normal.png",
+			"usedRect": {
+				"height": 24,
+				"width": 24,
+				"x": 0,
+				"y": 0
+			},
+			"width": 24
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 52,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/founders-ledger/interaction-prompt.png",
+			"usedRect": {
+				"height": 50,
+				"width": 128,
+				"x": 1,
+				"y": 1
+			},
+			"width": 130
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 68,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/founders-ledger/ledger-hud-frame.png",
+			"usedRect": {
+				"height": 65,
+				"width": 404,
+				"x": 2,
+				"y": 1
+			},
+			"width": 408
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/founders-ledger/movement-plaque.png",
+			"usedRect": {
+				"height": 44,
+				"width": 238,
+				"x": 1,
+				"y": 2
+			},
+			"width": 240
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 100,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/founders-ledger/notification-memo.png",
+			"usedRect": {
+				"height": 98,
+				"width": 228,
+				"x": 1,
+				"y": 1
+			},
+			"width": 230
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 56,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/founders-ledger/title-plaque.png",
+			"usedRect": {
+				"height": 36,
+				"width": 214,
+				"x": 9,
+				"y": 6
+			},
+			"width": 224
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/bubble-employee.png",
+			"usedRect": {
+				"height": 48,
+				"width": 48,
+				"x": 0,
+				"y": 0
+			},
+			"width": 48
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/bubble-player.png",
+			"usedRect": {
+				"height": 48,
+				"width": 48,
+				"x": 0,
+				"y": 0
+			},
+			"width": 48
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/card.png",
+			"usedRect": {
+				"height": 48,
+				"width": 48,
+				"x": 0,
+				"y": 0
+			},
+			"width": 48
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 16,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/checked-disabled.png",
+			"usedRect": {
+				"height": 12,
+				"width": 14,
+				"x": 1,
+				"y": 2
+			},
+			"width": 16
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 16,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/checked.png",
+			"usedRect": {
+				"height": 12,
+				"width": 14,
+				"x": 1,
+				"y": 2
+			},
+			"width": 16
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 16,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/close.png",
+			"usedRect": {
+				"height": 14,
+				"width": 14,
+				"x": 1,
+				"y": 1
+			},
+			"width": 16
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 28,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/document.png",
+			"usedRect": {
+				"height": 26,
+				"width": 19,
+				"x": 3,
+				"y": 1
+			},
+			"width": 24
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/field.png",
+			"usedRect": {
+				"height": 48,
+				"width": 48,
+				"x": 0,
+				"y": 0
+			},
+			"width": 48
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/focus.png",
+			"usedRect": {
+				"height": 46,
+				"width": 46,
+				"x": 1,
+				"y": 1
+			},
+			"width": 48
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 24,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/folder.png",
+			"usedRect": {
+				"height": 22,
+				"width": 30,
+				"x": 1,
+				"y": 2
+			},
+			"width": 32
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/popup.png",
+			"usedRect": {
+				"height": 48,
+				"width": 48,
+				"x": 0,
+				"y": 0
+			},
+			"width": 48
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/quiet-disabled.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/quiet-hover.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/quiet-normal.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/quiet-pressed.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/readonly.png",
+			"usedRect": {
+				"height": 48,
+				"width": 48,
+				"x": 0,
+				"y": 0
+			},
+			"width": 48
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/selection.png",
+			"usedRect": {
+				"height": 48,
+				"width": 48,
+				"x": 0,
+				"y": 0
+			},
+			"width": 48
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/tab-active-disabled.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/tab-active-hover.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/tab-active-normal.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/tab-active-pressed.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/tab-inactive-disabled.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/tab-inactive-hover.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/tab-inactive-normal.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/tab-inactive-pressed.png",
+			"usedRect": {
+				"height": 48,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 12,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/thumb-horizontal.png",
+			"usedRect": {
+				"height": 12,
+				"width": 24,
+				"x": 0,
+				"y": 0
+			},
+			"width": 24
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 12,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/thumb-hover-horizontal.png",
+			"usedRect": {
+				"height": 12,
+				"width": 24,
+				"x": 0,
+				"y": 0
+			},
+			"width": 24
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 24,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/thumb-hover.png",
+			"usedRect": {
+				"height": 24,
+				"width": 12,
+				"x": 0,
+				"y": 0
+			},
+			"width": 12
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 12,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/thumb-pressed-horizontal.png",
+			"usedRect": {
+				"height": 12,
+				"width": 24,
+				"x": 0,
+				"y": 0
+			},
+			"width": 24
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 24,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/thumb-pressed.png",
+			"usedRect": {
+				"height": 24,
+				"width": 12,
+				"x": 0,
+				"y": 0
+			},
+			"width": 12
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 24,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/thumb.png",
+			"usedRect": {
+				"height": 24,
+				"width": 12,
+				"x": 0,
+				"y": 0
+			},
+			"width": 12
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 12,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/track-filled.png",
+			"usedRect": {
+				"height": 12,
+				"width": 24,
+				"x": 0,
+				"y": 0
+			},
+			"width": 24
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 12,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/track-horizontal.png",
+			"usedRect": {
+				"height": 12,
+				"width": 24,
+				"x": 0,
+				"y": 0
+			},
+			"width": 24
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 24,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/track.png",
+			"usedRect": {
+				"height": 24,
+				"width": 12,
+				"x": 0,
+				"y": 0
+			},
+			"width": 12
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 16,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/materials/unchecked.png",
+			"usedRect": {
+				"height": 12,
+				"width": 14,
+				"x": 1,
+				"y": 2
+			},
+			"width": 16
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 18,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/notebook/binder-ring.png",
+			"usedRect": {
+				"height": 17,
+				"width": 23,
+				"x": 0,
+				"y": 1
+			},
+			"width": 23
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 45,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/notebook/button-indigo.png",
+			"usedRect": {
+				"height": 45,
+				"width": 122,
+				"x": 0,
+				"y": 0
+			},
+			"width": 122
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 52,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/notebook/content-frame.png",
+			"usedRect": {
+				"height": 51,
+				"width": 170,
+				"x": 0,
+				"y": 1
+			},
+			"width": 170
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 46,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/notebook/input-frame.png",
+			"usedRect": {
+				"height": 46,
+				"width": 159,
+				"x": 0,
+				"y": 0
+			},
+			"width": 159
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 25,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/notebook/name-plaque.png",
+			"usedRect": {
+				"height": 25,
+				"width": 84,
+				"x": 0,
+				"y": 0
+			},
+			"width": 84
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 158,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/notebook/notebook-page.png",
+			"usedRect": {
+				"height": 158,
+				"width": 125,
+				"x": 0,
+				"y": 0
+			},
+			"width": 125
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 158,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/notebook/outer-frame.png",
+			"usedRect": {
+				"height": 158,
+				"width": 114,
+				"x": 0,
+				"y": 0
+			},
+			"width": 114
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 158,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/notebook/parchment-panel.png",
+			"usedRect": {
+				"height": 158,
+				"width": 127,
+				"x": 0,
+				"y": 0
+			},
+			"width": 127
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 75,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/notebook/portrait-frame.png",
+			"usedRect": {
+				"height": 75,
+				"width": 83,
+				"x": 0,
+				"y": 0
+			},
+			"width": 83
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 15,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/notebook/rivet.png",
+			"usedRect": {
+				"height": 15,
+				"width": 14,
+				"x": 0,
+				"y": 0
+			},
+			"width": 14
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/notebook/tab-vermilion.png",
+			"usedRect": {
+				"height": 48,
+				"width": 79,
+				"x": 0,
+				"y": 0
+			},
+			"width": 79
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 47,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/notebook/tab-wood.png",
+			"usedRect": {
+				"height": 47,
+				"width": 85,
+				"x": 0,
+				"y": 0
+			},
+			"width": 85
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 158,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/notebook/wood-fill.png",
+			"usedRect": {
+				"height": 158,
+				"width": 88,
+				"x": 0,
+				"y": 0
+			},
+			"width": 88
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 36,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/activity-approval.png",
+			"usedRect": {
+				"height": 36,
+				"width": 36,
+				"x": 0,
+				"y": 0
+			},
+			"width": 36
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 36,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/activity-artifact.png",
+			"usedRect": {
+				"height": 36,
+				"width": 36,
+				"x": 0,
+				"y": 0
+			},
+			"width": 36
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 36,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/activity-complete.png",
+			"usedRect": {
+				"height": 36,
+				"width": 36,
+				"x": 0,
+				"y": 0
+			},
+			"width": 36
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 36,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/activity-failed.png",
+			"usedRect": {
+				"height": 36,
+				"width": 36,
+				"x": 0,
+				"y": 0
+			},
+			"width": 36
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 36,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/activity-research.png",
+			"usedRect": {
+				"height": 36,
+				"width": 36,
+				"x": 0,
+				"y": 0
+			},
+			"width": 36
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 31,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/activity-row.png",
+			"usedRect": {
+				"height": 31,
+				"width": 123,
+				"x": 0,
+				"y": 0
+			},
+			"width": 123
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 36,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/activity-thinking.png",
+			"usedRect": {
+				"height": 36,
+				"width": 36,
+				"x": 0,
+				"y": 0
+			},
+			"width": 36
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 36,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/activity-tool.png",
+			"usedRect": {
+				"height": 36,
+				"width": 36,
+				"x": 0,
+				"y": 0
+			},
+			"width": 36
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 36,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/activity-writing.png",
+			"usedRect": {
+				"height": 36,
+				"width": 36,
+				"x": 0,
+				"y": 0
+			},
+			"width": 36
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 163,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/artifact-paper.png",
+			"usedRect": {
+				"height": 163,
+				"width": 134,
+				"x": 0,
+				"y": 0
+			},
+			"width": 134
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 167,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/artifact-reader-frame.png",
+			"usedRect": {
+				"height": 167,
+				"width": 180,
+				"x": 0,
+				"y": 0
+			},
+			"width": 180
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 31,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/attention-badge.png",
+			"usedRect": {
+				"height": 31,
+				"width": 27,
+				"x": 0,
+				"y": 0
+			},
+			"width": 27
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 37,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/button-primary-hover.png",
+			"usedRect": {
+				"height": 37,
+				"width": 126,
+				"x": 0,
+				"y": 0
+			},
+			"width": 126
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 37,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/button-primary-normal.png",
+			"usedRect": {
+				"height": 37,
+				"width": 126,
+				"x": 0,
+				"y": 0
+			},
+			"width": 126
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 37,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/button-primary-pressed.png",
+			"usedRect": {
+				"height": 37,
+				"width": 126,
+				"x": 0,
+				"y": 0
+			},
+			"width": 126
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 43,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/button-secondary-disabled.png",
+			"usedRect": {
+				"height": 43,
+				"width": 112,
+				"x": 0,
+				"y": 0
+			},
+			"width": 112
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 43,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/button-secondary-hover.png",
+			"usedRect": {
+				"height": 43,
+				"width": 112,
+				"x": 0,
+				"y": 0
+			},
+			"width": 112
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 43,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/button-secondary-normal.png",
+			"usedRect": {
+				"height": 43,
+				"width": 112,
+				"x": 0,
+				"y": 0
+			},
+			"width": 112
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 43,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/button-secondary-pressed.png",
+			"usedRect": {
+				"height": 43,
+				"width": 112,
+				"x": 0,
+				"y": 0
+			},
+			"width": 112
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 53,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/chat-employee-bubble.png",
+			"usedRect": {
+				"height": 53,
+				"width": 283,
+				"x": 0,
+				"y": 0
+			},
+			"width": 283
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 52,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/chat-founder-bubble.png",
+			"usedRect": {
+				"height": 52,
+				"width": 286,
+				"x": 0,
+				"y": 0
+			},
+			"width": 286
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 31,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/chat-system-strip.png",
+			"usedRect": {
+				"height": 31,
+				"width": 204,
+				"x": 0,
+				"y": 0
+			},
+			"width": 204
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 30,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/close-button.png",
+			"usedRect": {
+				"height": 30,
+				"width": 30,
+				"x": 0,
+				"y": 0
+			},
+			"width": 30
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 33,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/dropdown-field.png",
+			"usedRect": {
+				"height": 33,
+				"width": 276,
+				"x": 0,
+				"y": 0
+			},
+			"width": 276
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 34,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/dropdown-selected-row.png",
+			"usedRect": {
+				"height": 34,
+				"width": 276,
+				"x": 0,
+				"y": 0
+			},
+			"width": 276
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 56,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/file-card-selected.png",
+			"usedRect": {
+				"height": 56,
+				"width": 267,
+				"x": 0,
+				"y": 0
+			},
+			"width": 267
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 56,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/file-card.png",
+			"usedRect": {
+				"height": 56,
+				"width": 268,
+				"x": 0,
+				"y": 0
+			},
+			"width": 268
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 31,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/focus-ring.png",
+			"usedRect": {
+				"height": 31,
+				"width": 276,
+				"x": 0,
+				"y": 0
+			},
+			"width": 276
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 49,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/icon-delivery.png",
+			"usedRect": {
+				"height": 49,
+				"width": 53,
+				"x": 0,
+				"y": 0
+			},
+			"width": 53
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 58,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/icon-document.png",
+			"usedRect": {
+				"height": 58,
+				"width": 46,
+				"x": 0,
+				"y": 0
+			},
+			"width": 46
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 47,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/icon-empty-tray.png",
+			"usedRect": {
+				"height": 47,
+				"width": 62,
+				"x": 0,
+				"y": 0
+			},
+			"width": 62
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 48,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/icon-folder.png",
+			"usedRect": {
+				"height": 48,
+				"width": 60,
+				"x": 0,
+				"y": 0
+			},
+			"width": 60
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 67,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/journal-approval-card.png",
+			"usedRect": {
+				"height": 67,
+				"width": 267,
+				"x": 0,
+				"y": 0
+			},
+			"width": 267
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 57,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/journal-delivery-card.png",
+			"usedRect": {
+				"height": 57,
+				"width": 267,
+				"x": 0,
+				"y": 0
+			},
+			"width": 267
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 63,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/journal-work-card.png",
+			"usedRect": {
+				"height": 63,
+				"width": 266,
+				"x": 0,
+				"y": 0
+			},
+			"width": 266
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 19,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/scroll-corner.png",
+			"usedRect": {
+				"height": 19,
+				"width": 18,
+				"x": 0,
+				"y": 0
+			},
+			"width": 18
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 14,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/scroll-h-thumb.png",
+			"usedRect": {
+				"height": 14,
+				"width": 40,
+				"x": 0,
+				"y": 0
+			},
+			"width": 40
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 14,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/scroll-h-track.png",
+			"usedRect": {
+				"height": 14,
+				"width": 105,
+				"x": 0,
+				"y": 0
+			},
+			"width": 105
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 40,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/scroll-v-thumb.png",
+			"usedRect": {
+				"height": 40,
+				"width": 14,
+				"x": 0,
+				"y": 0
+			},
+			"width": 14
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 90,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/scroll-v-track.png",
+			"usedRect": {
+				"height": 90,
+				"width": 15,
+				"x": 0,
+				"y": 0
+			},
+			"width": 15
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 28,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/token-meter-frame.png",
+			"usedRect": {
+				"height": 28,
+				"width": 265,
+				"x": 0,
+				"y": 0
+			},
+			"width": 265
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": true,
+			"height": 1,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/transparent.png",
+			"usedRect": {
+				"height": 0,
+				"width": 0,
+				"x": 0,
+				"y": 0
+			},
+			"width": 1
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 27,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/world-attention.png",
+			"usedRect": {
+				"height": 27,
+				"width": 24,
+				"x": 0,
+				"y": 0
+			},
+			"width": 24
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 16,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/world-available.png",
+			"usedRect": {
+				"height": 16,
+				"width": 16,
+				"x": 0,
+				"y": 0
+			},
+			"width": 16
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 34,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/world-nameplate.png",
+			"usedRect": {
+				"height": 34,
+				"width": 96,
+				"x": 0,
+				"y": 0
+			},
+			"width": 96
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 73,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/world-speech-bubble.png",
+			"usedRect": {
+				"height": 73,
+				"width": 148,
+				"x": 0,
+				"y": 0
+			},
+			"width": 148
+		},
+		{
+			"alphaExpectation": "unrestricted",
+			"assetRole": "other",
+			"flags": [],
+			"hasTransparency": true,
+			"hasTransparentBorder": false,
+			"height": 32,
+			"losslessImport": true,
+			"mipmapsDisabled": true,
+			"path": "res://assets/runtime/ui/operations/world-status-plaque.png",
+			"usedRect": {
+				"height": 32,
+				"width": 90,
+				"x": 0,
+				"y": 0
+			},
+			"width": 90
+		}
+	]
+}

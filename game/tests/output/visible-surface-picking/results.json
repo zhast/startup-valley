@@ -1,0 +1,110 @@
+{
+  "baseline": false,
+  "captures": [
+    "res://tests/output/visible-surface-picking/after-legacy-seated.png",
+    "res://tests/output/visible-surface-picking/after-legacy-clicks.png",
+    "res://tests/output/visible-surface-picking/after-ui-focus-isolated.png",
+    "res://tests/output/visible-surface-picking/after-north-frame0.png",
+    "res://tests/output/visible-surface-picking/after-north-frame2.png",
+    "res://tests/output/visible-surface-picking/after-north-frame5.png",
+    "res://tests/output/visible-surface-picking/after-north-left-desk.png",
+    "res://tests/output/visible-surface-picking/after-east-frame0.png",
+    "res://tests/output/visible-surface-picking/after-east-frame2.png",
+    "res://tests/output/visible-surface-picking/after-east-frame5.png",
+    "res://tests/output/visible-surface-picking/after-east-left-desk.png",
+    "res://tests/output/visible-surface-picking/after-south-frame0.png",
+    "res://tests/output/visible-surface-picking/after-south-frame2.png",
+    "res://tests/output/visible-surface-picking/after-south-frame5.png",
+    "res://tests/output/visible-surface-picking/after-south-left-desk.png",
+    "res://tests/output/visible-surface-picking/after-west-frame0.png",
+    "res://tests/output/visible-surface-picking/after-west-frame2.png",
+    "res://tests/output/visible-surface-picking/after-west-frame5.png",
+    "res://tests/output/visible-surface-picking/after-west-left-desk.png"
+  ],
+  "checks": 32269,
+  "facings": [
+    "north",
+    "east",
+    "south",
+    "west"
+  ],
+  "failures": [],
+  "nativeTieOrder": true,
+  "observations": [
+    {
+      "kind": "prop",
+      "point": "(336.0, 234.0)",
+      "route": "[(272.0, 464.0), (240.0, 464.0), (240.0, 432.0), (240.0, 400.0), (240.0, 368.0), (272.0, 368.0), (272.0, 336.0), (304.0, 336.0), (304.0, 304.0), (336.0, 304.0)]",
+      "target": "mira-workstation"
+    },
+    {
+      "kind": "",
+      "point": "(210.0, 466.0)",
+      "route": "[(240.0, 496.0), (240.0, 464.0), (208.0, 464.0)]",
+      "target": ""
+    },
+    {
+      "employee": "mira",
+      "facing": "north",
+      "hiddenSamples": 144,
+      "opaqueOverlap": "(342.5, 282.5)",
+      "visibleBody": "(334.5, 216.5)"
+    },
+    {
+      "employee": "theo",
+      "facing": "north",
+      "hiddenSamples": 177,
+      "opaqueOverlap": "(792.5, 286.5)",
+      "visibleBody": "(784.5, 220.5)"
+    },
+    {
+      "employee": "mira",
+      "facing": "east",
+      "hiddenSamples": 57,
+      "opaqueOverlap": "(334.5, 273.5)",
+      "visibleBody": "(310.5, 207.5)"
+    },
+    {
+      "employee": "theo",
+      "facing": "east",
+      "hiddenSamples": 55,
+      "opaqueOverlap": "(784.5, 274.5)",
+      "visibleBody": "(764.5, 208.5)"
+    },
+    {
+      "employee": "mira",
+      "facing": "south",
+      "hiddenSamples": 112,
+      "opaqueOverlap": "(342.5, 250.5)",
+      "visibleBody": "(334.5, 184.5)"
+    },
+    {
+      "employee": "theo",
+      "facing": "south",
+      "hiddenSamples": 133,
+      "opaqueOverlap": "(792.5, 250.5)",
+      "visibleBody": "(782.5, 184.5)"
+    },
+    {
+      "employee": "mira",
+      "facing": "west",
+      "hiddenSamples": 61,
+      "opaqueOverlap": "(346.5, 274.5)",
+      "visibleBody": "(360.5, 208.5)"
+    },
+    {
+      "employee": "theo",
+      "facing": "west",
+      "hiddenSamples": 71,
+      "opaqueOverlap": "(792.5, 278.5)",
+      "visibleBody": "(798.5, 212.5)"
+    }
+  ],
+  "sampledPixels": 32065,
+  "sourceHashes": {
+    "res://assets/runtime/characters/mira-locomotion.png": "bf59c1b6c0f6e0162bcf4a8100740ec7082af598c9dcb05b4a2d000d6c178889",
+    "res://assets/runtime/characters/theo-locomotion.png": "2c68e0313f47a29a3b025b77fbe4dad4fc3cca8688382591e04787a8ec23cb2d",
+    "res://data/furniture_catalog.json": "962d47f9fd3867328f3f293351fbb3124e6053f2d156fc20e97ee856cce09319",
+    "res://data/office_layout.json": "484bc653b3ff4ae4dcc4aaf613396d9d18b70d27ed59971e4b0460be4187632d"
+  }
+}

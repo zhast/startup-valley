@@ -1,0 +1,1598 @@
+{
+  "id": "engineer_build_kit",
+  "direction_semantics": "host_gaze",
+  "display_name": "Engineering build kit",
+  "asset_kind": "decor_kit",
+  "base_vs_decor": "decor",
+  "category": "engineering",
+  "priority": "P1",
+  "production_status": "approved",
+  "role_tags": [
+    "engineer"
+  ],
+  "role_tools": [
+    "electronics test mat",
+    "debug instrument",
+    "precision tool tray"
+  ],
+  "design_brief": "Software/hardware startup prototyping without replacing every desk with a server rack.",
+  "gameplay_scope": "Art and future layout proposal only; no new hiring, role behavior, tool authority, transaction or interaction is implemented.",
+  "primary_host": "desk",
+  "current_availability": {
+    "status": "no_catalogue_runtime_binding",
+    "runtime_family_id": null,
+    "runtime_registered_facings": [],
+    "art_path": null,
+    "direction_art_review": "N/E/S/W passive engineer-build-kit-v2 art passes the September 6 agent-native review on the accepted workstations-v2 desk. Both required layers, exact desk registration, gaze-relative tool identity, and actual-room evidence pass. Approval is passive-library only: no production/runtime binding, default-layout placement, engineer employee, engineer pose, service, behavior, interaction, backend, device execution, or hire.",
+    "previous_native_review": "No finished art or runtime family is claimed for this proposal; unrelated concept/source art may exist.",
+    "candidate_revision": "engineer-build-kit-v2"
+  },
+  "native_geometry": {
+    "status": "reviewed_code_native_library_not_runtime_admission",
+    "canvas_size_px": [
+      192,
+      224
+    ],
+    "floor_anchor_px": [
+      96,
+      160
+    ],
+    "grid_size_px": 32,
+    "estimated_max_rise_above_occupied_floor_px": null,
+    "minimum_transparent_padding_px": 16,
+    "anchor_rule": "One unchanged canvas coordinate represents local floor pivot [0,0] in every direction and every layer. Transparent padding is not sprite scaling.",
+    "host_rule": "Primary-host export shares the accepted desk canvas and floor anchor; zero new floor collision. A second host requires an explicitly reviewed socket adaptation, not runtime downscaling.",
+    "candidate_revision": "engineer-build-kit-v2",
+    "sprite_offset_px": [
+      0,
+      -48
+    ],
+    "fixture_manifest_path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/manifest.json",
+    "structural_results_path": "game/tests/output/engineer-build-kit-v2/structural-results.json",
+    "actual_room_results_path": "game/tests/output/engineer-build-kit-v2/actual-room-results.json"
+  },
+  "layers": [
+    {
+      "id": "surface_decor_rear",
+      "required": true,
+      "same_canvas_and_floor_anchor": true,
+      "status": "approved"
+    },
+    {
+      "id": "surface_decor_front",
+      "required": true,
+      "same_canvas_and_floor_anchor": true,
+      "status": "approved"
+    },
+    {
+      "id": "ambient_overlay",
+      "required": false,
+      "same_canvas_and_floor_anchor": true,
+      "status": "planned"
+    }
+  ],
+  "variants": [
+    {
+      "facing": "north",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/north-whole.png",
+      "source_reference_path": null,
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        0,
+        0
+      ],
+      "proposed_occupied_cell_offsets": [],
+      "employee_look_vector": [
+        0,
+        -1
+      ],
+      "proposed_interaction_cell": null,
+      "seated_pose_needed": false,
+      "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+      "generated_source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-north-v2.png",
+      "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-north-v2.md",
+      "source_attempts": [
+        {
+          "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-north-v1.png",
+          "size_px": [
+            1586,
+            992
+          ],
+          "sha256": "58d4b551c5e725c3e87bb27b40cd87f152a0b15cefc1560e3eac18ed36813604",
+          "channels": "RGB",
+          "alpha": "Opaque source",
+          "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-north-v1.md",
+          "disposition": "Native tools too small; readability retry retained."
+        },
+        {
+          "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-north-v2.png",
+          "size_px": [
+            1586,
+            992
+          ],
+          "sha256": "e96e938435902bcb1323409177443b3ad56bb7688ba48f32084609ecfc50c7f4",
+          "channels": "RGB",
+          "alpha": "Opaque source",
+          "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-north-v2.md",
+          "disposition": "Native composition reviewed; partial mat requires identity/probe/pose cleanup. See ENGINEER_MAT_COMPOSITION_REVIEW; no full toolkit acceptance."
+        }
+      ],
+      "generation_budget": {
+        "initial_calls": 1,
+        "targeted_retries_included": 1,
+        "max_targeted_retries": 3,
+        "exhausted": false,
+        "checkpoint_utc": "2026-09-04T09:12:00Z"
+      },
+      "component_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/engineer-mat-v1/north-v1.png",
+          "canvas_size_px": [
+            32,
+            20
+          ],
+          "opaque_bounds_px": [
+            0,
+            0,
+            32,
+            20
+          ],
+          "opaque_pixels": 640,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 24,
+          "sha256": "9a3dcd2447d29cbd301976abb7a6c4923522af620ee3468fae9303cadecfae5d",
+          "component": "opaque_electronics_mat",
+          "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-north-v1.png",
+          "method": "Native opaque32x20 or20x32 flat insert, <=24colors. Not full192x320 engineering kit; no floor-anchor claim."
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/engineer-mat-v1/north-v2.png",
+          "canvas_size_px": [
+            32,
+            20
+          ],
+          "opaque_bounds_px": [
+            0,
+            0,
+            32,
+            20
+          ],
+          "opaque_pixels": 640,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 18,
+          "sha256": "78f2877d83d0af0f81f9fff8b670ce8e4621f392b474248eff6a9b15540b7fc0",
+          "component": "opaque_electronics_mat",
+          "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-north-v2.png",
+          "method": "Native opaque32x20 or20x32 flat insert, <=24colors. Not full192x320 engineering kit; no floor-anchor claim."
+        }
+      ],
+      "evidence_path": "game/tests/output/engineer-build-kit-v2/actual-room-contact-sheet-native.png",
+      "preview_path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/north-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/north-whole.png",
+      "review_path": "dev/ENGINEER_BUILD_KIT_V2_NATIVE_REVIEW.md",
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/manifest.json",
+        "game/tests/output/engineer-build-kit-v2/structural-results.json",
+        "game/tests/output/engineer-build-kit-v2/actual-room-results.json",
+        "game/tests/output/engineer-build-kit-v2/candidate-contact-sheet-native.png",
+        "game/tests/output/engineer-build-kit-v2/candidate-contact-sheet-4x.png",
+        "game/tests/output/engineer-build-kit-v2/candidate-layers-native.png",
+        "game/tests/output/engineer-build-kit-v2/candidate-objects-native.png",
+        "game/tests/output/engineer-build-kit-v2/actual-room-contact-sheet-native.png",
+        "game/tests/output/engineer-build-kit-v2/actual-room-contact-sheet-4x.png",
+        "game/tests/output/engineer-build-kit-v2/actual-room-unoccupied-contact-sheet-native.png",
+        "game/tests/output/engineer-build-kit-v2/actual-room-unoccupied-contact-sheet-4x.png",
+        "dev/ENGINEER_BUILD_KIT_V2_NATIVE_REVIEW.md"
+      ],
+      "reason": "Approved passive four-facing art-library deliverable after explicit native-size and 4x agent visual review. The complete pre-v2 generated/native mat record is retained below; approval creates no runtime binding, engineer role pose, service, behavior, interaction, backend, build state, device execution, or hire.",
+      "export_method": "Independent deterministic typed-GDScript screen-axis geometry for engineer-build-kit-v2 north; retained generated mats are provenance only, with no ImageGen retry, finished-raster rotation, mirror, scale, text, logo, fake metric, baked character, or baked furniture.",
+      "native_geometry": {
+        "canvas_size_px": [
+          192,
+          224
+        ],
+        "floor_anchor_px": [
+          96,
+          160
+        ],
+        "sprite_offset_px": [
+          0,
+          -48
+        ],
+        "whole_opaque_bounds_px": [
+          51,
+          115,
+          90,
+          25
+        ],
+        "whole_opaque_pixels": 688
+      },
+      "native_exports": [
+        {
+          "layer": "surface_decor_rear",
+          "source_layer": "surface_decor_rear",
+          "path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/north-surface_decor_rear.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            51,
+            115,
+            90,
+            14
+          ],
+          "opaque_pixels": 544,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 16,
+          "sha256": "2a214fe1f310a139abc61ca41735423b22187248b404e0e09748ce5da64939c9",
+          "z_offset": 0,
+          "source_path": "game/tools/engineer_build_kit_v2_geometry.gd",
+          "review_path": "dev/ENGINEER_BUILD_KIT_V2_NATIVE_REVIEW.md",
+          "method": "Exact code-native registered layer; binary alpha, zero hidden RGB, shared canvas/pivot, and independently declared north construction."
+        },
+        {
+          "layer": "surface_decor_front",
+          "source_layer": "surface_decor_front",
+          "path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/north-surface_decor_front.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            122,
+            132,
+            18,
+            8
+          ],
+          "opaque_pixels": 144,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 6,
+          "sha256": "780e6b9b83bee2f00b58dff5704fda7e746131b2098d115ec2112c95aabc1ba7",
+          "z_offset": 2,
+          "source_path": "game/tools/engineer_build_kit_v2_geometry.gd",
+          "review_path": "dev/ENGINEER_BUILD_KIT_V2_NATIVE_REVIEW.md",
+          "method": "Exact code-native registered layer; binary alpha, zero hidden RGB, shared canvas/pivot, and independently declared north construction."
+        }
+      ],
+      "composite_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/north-whole.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            51,
+            115,
+            90,
+            25
+          ],
+          "opaque_pixels": 688,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 18,
+          "sha256": "9a97eb09146a81a4483d0656f2abc0933a43c6f4b4d50a75ef3a466b7ab437bb",
+          "method": "Byte-exact ordered union of the two approved native layers."
+        }
+      ],
+      "actual_room_observation": {
+        "scene": "actual GameMain and production TownRoom at native 1280x720",
+        "renderer": "macOS",
+        "desk_asset_revision": "workstations-v2",
+        "workstation_capability_revision": "workstations-v2:north",
+        "work_facing": "north",
+        "actor_probe": "existing_theo_directional_seated_typing_not_engineer",
+        "actor_work_point_px": [
+          656,
+          304
+        ],
+        "actor_pixel_delta": 1773,
+        "measured_actor_overlay_overlap_pixels": {
+          "surface_decor_rear": 0,
+          "surface_decor_front": 0,
+          "total": 0
+        },
+        "overlap_interpretation": "Recorded exactly as measured and not manufactured as a quality threshold. Theo proves accepted host gaze/contact/scale only and is not an engineer-role pose.",
+        "existing_assembly_or_actor_covered_pixels": {
+          "surface_decor_rear": 0,
+          "surface_decor_front": 0
+        },
+        "coverage_interpretation": "The capture reports combined existing-assembly-or-actor masking and does not invent a host-only split.",
+        "visible_candidate_pixels": {
+          "surface_decor_rear": 544,
+          "surface_decor_front": 144
+        },
+        "collision_shapes_before": 3,
+        "collision_shapes_after": 3
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "role_specific_actor_pose_claimed": false,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 3,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "note": "Accepted by the September 6 engineer-build-kit-v2 agent-native review for passive library use only. Scores meet the catalogue gate. Theo is only the existing directional host-contact probe; exact measured actor/decor overlap is recorded and no engineer pose, service, backend, or execution is claimed.",
+        "acceptance_scope": "passive_art_library",
+        "acceptance_date": "2026-09-06"
+      },
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_registered": false,
+      "runtime_exports": [],
+      "historical_candidate_before_v2": {
+        "facing": "north",
+        "status": "cleanup_required",
+        "deliverable_availability": "source_only",
+        "approved_art_path": null,
+        "evidence_path": "game/tests/output/engineer-mat-composition/north-frame0.png",
+        "source_reference_path": null,
+        "legacy_runtime_art_for_this_facing": false,
+        "footprint_cells": [
+          0,
+          0
+        ],
+        "proposed_occupied_cell_offsets": [],
+        "employee_look_vector": [
+          0,
+          -1
+        ],
+        "proposed_interaction_cell": null,
+        "seated_pose_needed": false,
+        "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+        "generated_source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-north-v2.png",
+        "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-north-v2.md",
+        "source_attempts": [
+          {
+            "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-north-v1.png",
+            "size_px": [
+              1586,
+              992
+            ],
+            "sha256": "58d4b551c5e725c3e87bb27b40cd87f152a0b15cefc1560e3eac18ed36813604",
+            "channels": "RGB",
+            "alpha": "Opaque source",
+            "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-north-v1.md",
+            "disposition": "Native tools too small; readability retry retained."
+          },
+          {
+            "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-north-v2.png",
+            "size_px": [
+              1586,
+              992
+            ],
+            "sha256": "e96e938435902bcb1323409177443b3ad56bb7688ba48f32084609ecfc50c7f4",
+            "channels": "RGB",
+            "alpha": "Opaque source",
+            "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-north-v2.md",
+            "disposition": "Native composition reviewed; partial mat requires identity/probe/pose cleanup. See ENGINEER_MAT_COMPOSITION_REVIEW; no full toolkit acceptance."
+          }
+        ],
+        "generation_budget": {
+          "initial_calls": 1,
+          "targeted_retries_included": 1,
+          "max_targeted_retries": 3,
+          "exhausted": false,
+          "checkpoint_utc": "2026-09-04T09:12:00Z"
+        },
+        "component_exports": [
+          {
+            "path": "game/tests/fixtures/furniture-calibration/engineer-mat-v1/north-v1.png",
+            "canvas_size_px": [
+              32,
+              20
+            ],
+            "opaque_bounds_px": [
+              0,
+              0,
+              32,
+              20
+            ],
+            "opaque_pixels": 640,
+            "partial_alpha_pixels": 0,
+            "hidden_rgb_pixels": 0,
+            "used_colors": 24,
+            "sha256": "9a3dcd2447d29cbd301976abb7a6c4923522af620ee3468fae9303cadecfae5d",
+            "component": "opaque_electronics_mat",
+            "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-north-v1.png",
+            "method": "Native opaque32x20 or20x32 flat insert, <=24colors. Not full192x320 engineering kit; no floor-anchor claim."
+          },
+          {
+            "path": "game/tests/fixtures/furniture-calibration/engineer-mat-v1/north-v2.png",
+            "canvas_size_px": [
+              32,
+              20
+            ],
+            "opaque_bounds_px": [
+              0,
+              0,
+              32,
+              20
+            ],
+            "opaque_pixels": 640,
+            "partial_alpha_pixels": 0,
+            "hidden_rgb_pixels": 0,
+            "used_colors": 18,
+            "sha256": "78f2877d83d0af0f81f9fff8b670ce8e4621f392b474248eff6a9b15540b7fc0",
+            "component": "opaque_electronics_mat",
+            "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-north-v2.png",
+            "method": "Native opaque32x20 or20x32 flat insert, <=24colors. Not full192x320 engineering kit; no floor-anchor claim."
+          }
+        ],
+        "reason": "Resting-only mat shifted28px left exposes605–637/640pixels(94.5–99.5%), versus old centered133–169. No actor/source changes or probe-use pose; E/Wsize mismatch and cross-view tools still block the complete kit.",
+        "review_path": "dev/art-catalogue/ENGINEER_MAT_COMPOSITION_REVIEW.md",
+        "composition_review": {
+          "scores": [
+            2,
+            2,
+            1,
+            2,
+            1,
+            2
+          ],
+          "score_order": [
+            "pixel_coherence",
+            "perspective",
+            "silhouette_readability",
+            "layering_anchors",
+            "direction_consistency",
+            "placement"
+          ],
+          "runtime_approved": false,
+          "scope": "Actual calibrated desk mat-only stress test, not planned prototype-bench full toolkit.",
+          "grounded_shadow_review_path": "dev/art-catalogue/GROUNDED_WORK_SHADOW_REVIEW.md",
+          "later_horizontal_shadow_refinement": "In progress at09:40; not included in frozen first shadow or AFTER regression evidence."
+        },
+        "review_paths": [
+          "dev/art-catalogue/RESTING_NORTH_ENGINEER_REVIEW.md"
+        ],
+        "evidence_paths": [
+          "game/tests/output/resting-north-engineer/manifest.json"
+        ]
+      }
+    },
+    {
+      "facing": "east",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/east-whole.png",
+      "source_reference_path": null,
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        0,
+        0
+      ],
+      "proposed_occupied_cell_offsets": [],
+      "employee_look_vector": [
+        1,
+        0
+      ],
+      "proposed_interaction_cell": null,
+      "seated_pose_needed": false,
+      "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+      "generated_source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-east-v1.png",
+      "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-east-v1.md",
+      "source_attempts": [
+        {
+          "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-east-v1.png",
+          "size_px": [
+            992,
+            1586
+          ],
+          "sha256": "4d5688c0bf757351abb2470d7c52cf0aec3b74cd73a1979762d7c4a1e365f856",
+          "channels": "RGB",
+          "alpha": "Opaque source",
+          "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-east-v1.md",
+          "disposition": "Native composition reviewed; partial mat requires identity/probe/pose cleanup. See ENGINEER_MAT_COMPOSITION_REVIEW; no full toolkit acceptance."
+        }
+      ],
+      "generation_budget": {
+        "initial_calls": 1,
+        "targeted_retries_included": 0,
+        "max_targeted_retries": 3,
+        "exhausted": false,
+        "checkpoint_utc": "2026-09-04T09:12:00Z"
+      },
+      "component_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/engineer-mat-v1/east-v1.png",
+          "canvas_size_px": [
+            20,
+            32
+          ],
+          "opaque_bounds_px": [
+            0,
+            0,
+            20,
+            32
+          ],
+          "opaque_pixels": 640,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 20,
+          "sha256": "a6e2323708bbb64b23c462ee9b3d1317bda9ab8718c38730bbc1eb7ea2874450",
+          "component": "opaque_electronics_mat",
+          "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-east-v1.png",
+          "method": "Native opaque32x20 or20x32 flat insert, <=24colors. Not full192x320 engineering kit; no floor-anchor claim."
+        }
+      ],
+      "evidence_path": "game/tests/output/engineer-build-kit-v2/actual-room-contact-sheet-native.png",
+      "preview_path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/east-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/east-whole.png",
+      "review_path": "dev/ENGINEER_BUILD_KIT_V2_NATIVE_REVIEW.md",
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/manifest.json",
+        "game/tests/output/engineer-build-kit-v2/structural-results.json",
+        "game/tests/output/engineer-build-kit-v2/actual-room-results.json",
+        "game/tests/output/engineer-build-kit-v2/candidate-contact-sheet-native.png",
+        "game/tests/output/engineer-build-kit-v2/candidate-contact-sheet-4x.png",
+        "game/tests/output/engineer-build-kit-v2/candidate-layers-native.png",
+        "game/tests/output/engineer-build-kit-v2/candidate-objects-native.png",
+        "game/tests/output/engineer-build-kit-v2/actual-room-contact-sheet-native.png",
+        "game/tests/output/engineer-build-kit-v2/actual-room-contact-sheet-4x.png",
+        "game/tests/output/engineer-build-kit-v2/actual-room-unoccupied-contact-sheet-native.png",
+        "game/tests/output/engineer-build-kit-v2/actual-room-unoccupied-contact-sheet-4x.png",
+        "dev/ENGINEER_BUILD_KIT_V2_NATIVE_REVIEW.md"
+      ],
+      "reason": "Approved passive four-facing art-library deliverable after explicit native-size and 4x agent visual review. The complete pre-v2 generated/native mat record is retained below; approval creates no runtime binding, engineer role pose, service, behavior, interaction, backend, build state, device execution, or hire.",
+      "export_method": "Independent deterministic typed-GDScript screen-axis geometry for engineer-build-kit-v2 east; retained generated mats are provenance only, with no ImageGen retry, finished-raster rotation, mirror, scale, text, logo, fake metric, baked character, or baked furniture.",
+      "native_geometry": {
+        "canvas_size_px": [
+          192,
+          224
+        ],
+        "floor_anchor_px": [
+          96,
+          160
+        ],
+        "sprite_offset_px": [
+          0,
+          -48
+        ],
+        "whole_opaque_bounds_px": [
+          82,
+          82,
+          28,
+          91
+        ],
+        "whole_opaque_pixels": 688
+      },
+      "native_exports": [
+        {
+          "layer": "surface_decor_rear",
+          "source_layer": "surface_decor_rear",
+          "path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/east-surface_decor_rear.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            82,
+            82,
+            28,
+            91
+          ],
+          "opaque_pixels": 544,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 16,
+          "sha256": "4acd09f82c6702d2de2b2d3fe21e9c796f1388acc1880af95b5d0cbf2bb09783",
+          "z_offset": 0,
+          "source_path": "game/tools/engineer_build_kit_v2_geometry.gd",
+          "review_path": "dev/ENGINEER_BUILD_KIT_V2_NATIVE_REVIEW.md",
+          "method": "Exact code-native registered layer; binary alpha, zero hidden RGB, shared canvas/pivot, and independently declared east construction."
+        },
+        {
+          "layer": "surface_decor_front",
+          "source_layer": "surface_decor_front",
+          "path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/east-surface_decor_front.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            82,
+            155,
+            8,
+            18
+          ],
+          "opaque_pixels": 144,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 6,
+          "sha256": "22c8d9a2d721f5b794d0e37bdd95ca91aaabb6380b9f81646af635c2b5c56b96",
+          "z_offset": 3,
+          "source_path": "game/tools/engineer_build_kit_v2_geometry.gd",
+          "review_path": "dev/ENGINEER_BUILD_KIT_V2_NATIVE_REVIEW.md",
+          "method": "Exact code-native registered layer; binary alpha, zero hidden RGB, shared canvas/pivot, and independently declared east construction."
+        }
+      ],
+      "composite_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/east-whole.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            82,
+            82,
+            28,
+            91
+          ],
+          "opaque_pixels": 688,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 18,
+          "sha256": "4ae526b596198cc5b5e4cf187d694f18bad4abd2de64cae0451d1146dbaebbb6",
+          "method": "Byte-exact ordered union of the two approved native layers."
+        }
+      ],
+      "actual_room_observation": {
+        "scene": "actual GameMain and production TownRoom at native 1280x720",
+        "renderer": "macOS",
+        "desk_asset_revision": "workstations-v2",
+        "workstation_capability_revision": "workstations-v2:east",
+        "work_facing": "east",
+        "actor_probe": "existing_theo_directional_seated_typing_not_engineer",
+        "actor_work_point_px": [
+          624,
+          272
+        ],
+        "actor_pixel_delta": 897,
+        "measured_actor_overlay_overlap_pixels": {
+          "surface_decor_rear": 47,
+          "surface_decor_front": 0,
+          "total": 47
+        },
+        "overlap_interpretation": "Recorded exactly as measured and not manufactured as a quality threshold. Theo proves accepted host gaze/contact/scale only and is not an engineer-role pose.",
+        "existing_assembly_or_actor_covered_pixels": {
+          "surface_decor_rear": 83,
+          "surface_decor_front": 0
+        },
+        "coverage_interpretation": "The capture reports combined existing-assembly-or-actor masking and does not invent a host-only split.",
+        "visible_candidate_pixels": {
+          "surface_decor_rear": 461,
+          "surface_decor_front": 144
+        },
+        "collision_shapes_before": 3,
+        "collision_shapes_after": 3
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "role_specific_actor_pose_claimed": false,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 3,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "note": "Accepted by the September 6 engineer-build-kit-v2 agent-native review for passive library use only. Scores meet the catalogue gate. Theo is only the existing directional host-contact probe; exact measured actor/decor overlap is recorded and no engineer pose, service, backend, or execution is claimed.",
+        "acceptance_scope": "passive_art_library",
+        "acceptance_date": "2026-09-06"
+      },
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_registered": false,
+      "runtime_exports": [],
+      "historical_candidate_before_v2": {
+        "facing": "east",
+        "status": "cleanup_required",
+        "deliverable_availability": "source_only",
+        "approved_art_path": null,
+        "evidence_path": "game/tests/output/engineer-mat-composition/east-frame0.png",
+        "source_reference_path": null,
+        "legacy_runtime_art_for_this_facing": false,
+        "footprint_cells": [
+          0,
+          0
+        ],
+        "proposed_occupied_cell_offsets": [],
+        "employee_look_vector": [
+          1,
+          0
+        ],
+        "proposed_interaction_cell": null,
+        "seated_pose_needed": false,
+        "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+        "generated_source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-east-v1.png",
+        "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-east-v1.md",
+        "source_attempts": [
+          {
+            "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-east-v1.png",
+            "size_px": [
+              992,
+              1586
+            ],
+            "sha256": "4d5688c0bf757351abb2470d7c52cf0aec3b74cd73a1979762d7c4a1e365f856",
+            "channels": "RGB",
+            "alpha": "Opaque source",
+            "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-east-v1.md",
+            "disposition": "Native composition reviewed; partial mat requires identity/probe/pose cleanup. See ENGINEER_MAT_COMPOSITION_REVIEW; no full toolkit acceptance."
+          }
+        ],
+        "generation_budget": {
+          "initial_calls": 1,
+          "targeted_retries_included": 0,
+          "max_targeted_retries": 3,
+          "exhausted": false,
+          "checkpoint_utc": "2026-09-04T09:12:00Z"
+        },
+        "component_exports": [
+          {
+            "path": "game/tests/fixtures/furniture-calibration/engineer-mat-v1/east-v1.png",
+            "canvas_size_px": [
+              20,
+              32
+            ],
+            "opaque_bounds_px": [
+              0,
+              0,
+              20,
+              32
+            ],
+            "opaque_pixels": 640,
+            "partial_alpha_pixels": 0,
+            "hidden_rgb_pixels": 0,
+            "used_colors": 20,
+            "sha256": "a6e2323708bbb64b23c462ee9b3d1317bda9ab8718c38730bbc1eb7ea2874450",
+            "component": "opaque_electronics_mat",
+            "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-east-v1.png",
+            "method": "Native opaque32x20 or20x32 flat insert, <=24colors. Not full192x320 engineering kit; no floor-anchor claim."
+          }
+        ],
+        "reason": "Circuit board8x14 and breadboard5x15 exceed physical N-family counterpart; some probe tips unclear and tools read upright. No probe-use pose or complete host toolkit.",
+        "review_path": "dev/art-catalogue/ENGINEER_MAT_COMPOSITION_REVIEW.md",
+        "composition_review": {
+          "scores": [
+            2,
+            2,
+            2,
+            2,
+            1,
+            3
+          ],
+          "score_order": [
+            "pixel_coherence",
+            "perspective",
+            "silhouette_readability",
+            "layering_anchors",
+            "direction_consistency",
+            "placement"
+          ],
+          "runtime_approved": false,
+          "scope": "Actual calibrated desk mat-only stress test, not planned prototype-bench full toolkit.",
+          "grounded_shadow_review_path": "dev/art-catalogue/GROUNDED_WORK_SHADOW_REVIEW.md",
+          "later_horizontal_shadow_refinement": "In progress at09:40; not included in frozen first shadow or AFTER regression evidence."
+        }
+      }
+    },
+    {
+      "facing": "south",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/south-whole.png",
+      "source_reference_path": null,
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        0,
+        0
+      ],
+      "proposed_occupied_cell_offsets": [],
+      "employee_look_vector": [
+        0,
+        1
+      ],
+      "proposed_interaction_cell": null,
+      "seated_pose_needed": false,
+      "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+      "generated_source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-south-v2.png",
+      "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-south-v2.md",
+      "source_attempts": [
+        {
+          "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-south-v1.png",
+          "size_px": [
+            1586,
+            992
+          ],
+          "sha256": "a2f5a669cf15d3d465299a562bd6ef503cbf0e7b2563d0decff85c7495ddeed7",
+          "channels": "RGB",
+          "alpha": "Opaque source",
+          "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-south-v1.md",
+          "disposition": "Probes face wrong way; targeted down-tip correction retained."
+        },
+        {
+          "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-south-v2.png",
+          "size_px": [
+            1586,
+            992
+          ],
+          "sha256": "8b735f19797d9fe3c46a6a00ebd08372089a6b2239650748862f3785b2d07c93",
+          "channels": "RGB",
+          "alpha": "Opaque source",
+          "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-south-v2.md",
+          "disposition": "Native composition reviewed; partial mat requires identity/probe/pose cleanup. See ENGINEER_MAT_COMPOSITION_REVIEW; no full toolkit acceptance."
+        }
+      ],
+      "generation_budget": {
+        "initial_calls": 1,
+        "targeted_retries_included": 1,
+        "max_targeted_retries": 3,
+        "exhausted": false,
+        "checkpoint_utc": "2026-09-04T09:12:00Z"
+      },
+      "component_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/engineer-mat-v1/south-v1.png",
+          "canvas_size_px": [
+            32,
+            20
+          ],
+          "opaque_bounds_px": [
+            0,
+            0,
+            32,
+            20
+          ],
+          "opaque_pixels": 640,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 20,
+          "sha256": "67ded27384c11a703e62b20d987de37f3970cbfea7d5d3775885a12b949899fe",
+          "component": "opaque_electronics_mat",
+          "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-south-v1.png",
+          "method": "Native opaque32x20 or20x32 flat insert, <=24colors. Not full192x320 engineering kit; no floor-anchor claim."
+        },
+        {
+          "path": "game/tests/fixtures/furniture-calibration/engineer-mat-v1/south-v2.png",
+          "canvas_size_px": [
+            32,
+            20
+          ],
+          "opaque_bounds_px": [
+            0,
+            0,
+            32,
+            20
+          ],
+          "opaque_pixels": 640,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 22,
+          "sha256": "46494712079df1335e20fc10c9d5913fb2d7129203329d92d46416d436d15e38",
+          "component": "opaque_electronics_mat",
+          "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-south-v2.png",
+          "method": "Native opaque32x20 or20x32 flat insert, <=24colors. Not full192x320 engineering kit; no floor-anchor claim."
+        }
+      ],
+      "evidence_path": "game/tests/output/engineer-build-kit-v2/actual-room-contact-sheet-native.png",
+      "preview_path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/south-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/south-whole.png",
+      "review_path": "dev/ENGINEER_BUILD_KIT_V2_NATIVE_REVIEW.md",
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/manifest.json",
+        "game/tests/output/engineer-build-kit-v2/structural-results.json",
+        "game/tests/output/engineer-build-kit-v2/actual-room-results.json",
+        "game/tests/output/engineer-build-kit-v2/candidate-contact-sheet-native.png",
+        "game/tests/output/engineer-build-kit-v2/candidate-contact-sheet-4x.png",
+        "game/tests/output/engineer-build-kit-v2/candidate-layers-native.png",
+        "game/tests/output/engineer-build-kit-v2/candidate-objects-native.png",
+        "game/tests/output/engineer-build-kit-v2/actual-room-contact-sheet-native.png",
+        "game/tests/output/engineer-build-kit-v2/actual-room-contact-sheet-4x.png",
+        "game/tests/output/engineer-build-kit-v2/actual-room-unoccupied-contact-sheet-native.png",
+        "game/tests/output/engineer-build-kit-v2/actual-room-unoccupied-contact-sheet-4x.png",
+        "dev/ENGINEER_BUILD_KIT_V2_NATIVE_REVIEW.md"
+      ],
+      "reason": "Approved passive four-facing art-library deliverable after explicit native-size and 4x agent visual review. The complete pre-v2 generated/native mat record is retained below; approval creates no runtime binding, engineer role pose, service, behavior, interaction, backend, build state, device execution, or hire.",
+      "export_method": "Independent deterministic typed-GDScript screen-axis geometry for engineer-build-kit-v2 south; retained generated mats are provenance only, with no ImageGen retry, finished-raster rotation, mirror, scale, text, logo, fake metric, baked character, or baked furniture.",
+      "native_geometry": {
+        "canvas_size_px": [
+          192,
+          224
+        ],
+        "floor_anchor_px": [
+          96,
+          160
+        ],
+        "sprite_offset_px": [
+          0,
+          -48
+        ],
+        "whole_opaque_bounds_px": [
+          50,
+          115,
+          91,
+          25
+        ],
+        "whole_opaque_pixels": 688
+      },
+      "native_exports": [
+        {
+          "layer": "surface_decor_rear",
+          "source_layer": "surface_decor_rear",
+          "path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/south-surface_decor_rear.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            50,
+            115,
+            91,
+            14
+          ],
+          "opaque_pixels": 544,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 16,
+          "sha256": "0a56e9e7062d361daec4aeef64755e5820080599b718d64bc066fc1d0efee15b",
+          "z_offset": 2,
+          "source_path": "game/tools/engineer_build_kit_v2_geometry.gd",
+          "review_path": "dev/ENGINEER_BUILD_KIT_V2_NATIVE_REVIEW.md",
+          "method": "Exact code-native registered layer; binary alpha, zero hidden RGB, shared canvas/pivot, and independently declared south construction."
+        },
+        {
+          "layer": "surface_decor_front",
+          "source_layer": "surface_decor_front",
+          "path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/south-surface_decor_front.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            50,
+            132,
+            18,
+            8
+          ],
+          "opaque_pixels": 144,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 6,
+          "sha256": "fbcc083a1ee0db0576bd5a991db93b160e22464eaebde0afea045482963188f3",
+          "z_offset": 4,
+          "source_path": "game/tools/engineer_build_kit_v2_geometry.gd",
+          "review_path": "dev/ENGINEER_BUILD_KIT_V2_NATIVE_REVIEW.md",
+          "method": "Exact code-native registered layer; binary alpha, zero hidden RGB, shared canvas/pivot, and independently declared south construction."
+        }
+      ],
+      "composite_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/south-whole.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            50,
+            115,
+            91,
+            25
+          ],
+          "opaque_pixels": 688,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 18,
+          "sha256": "16e073f6b8e9d5bdb3b877aa4bb4062a416ffabaf5268de767e760f63d979867",
+          "method": "Byte-exact ordered union of the two approved native layers."
+        }
+      ],
+      "actual_room_observation": {
+        "scene": "actual GameMain and production TownRoom at native 1280x720",
+        "renderer": "macOS",
+        "desk_asset_revision": "workstations-v2",
+        "workstation_capability_revision": "workstations-v2:south",
+        "work_facing": "south",
+        "actor_probe": "existing_theo_directional_seated_typing_not_engineer",
+        "actor_work_point_px": [
+          656,
+          240
+        ],
+        "actor_pixel_delta": 902,
+        "measured_actor_overlay_overlap_pixels": {
+          "surface_decor_rear": 0,
+          "surface_decor_front": 0,
+          "total": 0
+        },
+        "overlap_interpretation": "Recorded exactly as measured and not manufactured as a quality threshold. Theo proves accepted host gaze/contact/scale only and is not an engineer-role pose.",
+        "existing_assembly_or_actor_covered_pixels": {
+          "surface_decor_rear": 0,
+          "surface_decor_front": 0
+        },
+        "coverage_interpretation": "The capture reports combined existing-assembly-or-actor masking and does not invent a host-only split.",
+        "visible_candidate_pixels": {
+          "surface_decor_rear": 544,
+          "surface_decor_front": 144
+        },
+        "collision_shapes_before": 3,
+        "collision_shapes_after": 3
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "role_specific_actor_pose_claimed": false,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 3,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "note": "Accepted by the September 6 engineer-build-kit-v2 agent-native review for passive library use only. Scores meet the catalogue gate. Theo is only the existing directional host-contact probe; exact measured actor/decor overlap is recorded and no engineer pose, service, backend, or execution is claimed.",
+        "acceptance_scope": "passive_art_library",
+        "acceptance_date": "2026-09-06"
+      },
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_registered": false,
+      "runtime_exports": [],
+      "historical_candidate_before_v2": {
+        "facing": "south",
+        "status": "cleanup_required",
+        "deliverable_availability": "source_only",
+        "approved_art_path": null,
+        "evidence_path": "game/tests/output/engineer-mat-composition/south-frame0.png",
+        "source_reference_path": null,
+        "legacy_runtime_art_for_this_facing": false,
+        "footprint_cells": [
+          0,
+          0
+        ],
+        "proposed_occupied_cell_offsets": [],
+        "employee_look_vector": [
+          0,
+          1
+        ],
+        "proposed_interaction_cell": null,
+        "seated_pose_needed": false,
+        "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+        "generated_source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-south-v2.png",
+        "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-south-v2.md",
+        "source_attempts": [
+          {
+            "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-south-v1.png",
+            "size_px": [
+              1586,
+              992
+            ],
+            "sha256": "a2f5a669cf15d3d465299a562bd6ef503cbf0e7b2563d0decff85c7495ddeed7",
+            "channels": "RGB",
+            "alpha": "Opaque source",
+            "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-south-v1.md",
+            "disposition": "Probes face wrong way; targeted down-tip correction retained."
+          },
+          {
+            "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-south-v2.png",
+            "size_px": [
+              1586,
+              992
+            ],
+            "sha256": "8b735f19797d9fe3c46a6a00ebd08372089a6b2239650748862f3785b2d07c93",
+            "channels": "RGB",
+            "alpha": "Opaque source",
+            "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-south-v2.md",
+            "disposition": "Native composition reviewed; partial mat requires identity/probe/pose cleanup. See ENGINEER_MAT_COMPOSITION_REVIEW; no full toolkit acceptance."
+          }
+        ],
+        "generation_budget": {
+          "initial_calls": 1,
+          "targeted_retries_included": 1,
+          "max_targeted_retries": 3,
+          "exhausted": false,
+          "checkpoint_utc": "2026-09-04T09:12:00Z"
+        },
+        "component_exports": [
+          {
+            "path": "game/tests/fixtures/furniture-calibration/engineer-mat-v1/south-v1.png",
+            "canvas_size_px": [
+              32,
+              20
+            ],
+            "opaque_bounds_px": [
+              0,
+              0,
+              32,
+              20
+            ],
+            "opaque_pixels": 640,
+            "partial_alpha_pixels": 0,
+            "hidden_rgb_pixels": 0,
+            "used_colors": 20,
+            "sha256": "67ded27384c11a703e62b20d987de37f3970cbfea7d5d3775885a12b949899fe",
+            "component": "opaque_electronics_mat",
+            "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-south-v1.png",
+            "method": "Native opaque32x20 or20x32 flat insert, <=24colors. Not full192x320 engineering kit; no floor-anchor claim."
+          },
+          {
+            "path": "game/tests/fixtures/furniture-calibration/engineer-mat-v1/south-v2.png",
+            "canvas_size_px": [
+              32,
+              20
+            ],
+            "opaque_bounds_px": [
+              0,
+              0,
+              32,
+              20
+            ],
+            "opaque_pixels": 640,
+            "partial_alpha_pixels": 0,
+            "hidden_rgb_pixels": 0,
+            "used_colors": 22,
+            "sha256": "46494712079df1335e20fc10c9d5913fb2d7129203329d92d46416d436d15e38",
+            "component": "opaque_electronics_mat",
+            "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-south-v2.png",
+            "method": "Native opaque32x20 or20x32 flat insert, <=24colors. Not full192x320 engineering kit; no floor-anchor claim."
+          }
+        ],
+        "reason": "Baseline had47 floor-shadow pixels on mat per actor/frame; separately default-off physical-foot shadow correction removes them. South2 probe tips remain ambiguous at native size; typing is not probe use. No full toolkit approval.",
+        "review_path": "dev/art-catalogue/ENGINEER_MAT_COMPOSITION_REVIEW.md",
+        "composition_review": {
+          "scores": [
+            2,
+            2,
+            2,
+            1,
+            1,
+            3
+          ],
+          "score_order": [
+            "pixel_coherence",
+            "perspective",
+            "silhouette_readability",
+            "layering_anchors",
+            "direction_consistency",
+            "placement"
+          ],
+          "runtime_approved": false,
+          "scope": "Actual calibrated desk mat-only stress test, not planned prototype-bench full toolkit.",
+          "grounded_shadow_review_path": "dev/art-catalogue/GROUNDED_WORK_SHADOW_REVIEW.md",
+          "later_horizontal_shadow_refinement": "In progress at09:40; not included in frozen first shadow or AFTER regression evidence."
+        }
+      }
+    },
+    {
+      "facing": "west",
+      "status": "approved",
+      "deliverable_availability": "approved",
+      "approved_art_path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/west-whole.png",
+      "source_reference_path": null,
+      "legacy_runtime_art_for_this_facing": false,
+      "footprint_cells": [
+        0,
+        0
+      ],
+      "proposed_occupied_cell_offsets": [],
+      "employee_look_vector": [
+        -1,
+        0
+      ],
+      "proposed_interaction_cell": null,
+      "seated_pose_needed": false,
+      "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+      "generated_source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-west-v1.png",
+      "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-west-v1.md",
+      "source_attempts": [
+        {
+          "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-west-v1.png",
+          "size_px": [
+            992,
+            1586
+          ],
+          "sha256": "372f5b5e9fa3bfd4d4031709d36cd230a8dc6f568feb411189d6dbc3a6e89a59",
+          "channels": "RGB",
+          "alpha": "Opaque source",
+          "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-west-v1.md",
+          "disposition": "Native composition reviewed; partial mat requires identity/probe/pose cleanup. See ENGINEER_MAT_COMPOSITION_REVIEW; no full toolkit acceptance."
+        }
+      ],
+      "generation_budget": {
+        "initial_calls": 1,
+        "targeted_retries_included": 0,
+        "max_targeted_retries": 3,
+        "exhausted": false,
+        "checkpoint_utc": "2026-09-04T09:12:00Z"
+      },
+      "component_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/engineer-mat-v1/west-v1.png",
+          "canvas_size_px": [
+            20,
+            32
+          ],
+          "opaque_bounds_px": [
+            0,
+            0,
+            20,
+            32
+          ],
+          "opaque_pixels": 640,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 19,
+          "sha256": "2742221f198e1f2f853135e9ec1fdf8c9b92724b0693b844b1d41a9ceff2ff8c",
+          "component": "opaque_electronics_mat",
+          "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-west-v1.png",
+          "method": "Native opaque32x20 or20x32 flat insert, <=24colors. Not full192x320 engineering kit; no floor-anchor claim."
+        }
+      ],
+      "evidence_path": "game/tests/output/engineer-build-kit-v2/actual-room-contact-sheet-native.png",
+      "preview_path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/west-whole.png",
+      "native_export_path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/west-whole.png",
+      "review_path": "dev/ENGINEER_BUILD_KIT_V2_NATIVE_REVIEW.md",
+      "evidence_paths": [
+        "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/manifest.json",
+        "game/tests/output/engineer-build-kit-v2/structural-results.json",
+        "game/tests/output/engineer-build-kit-v2/actual-room-results.json",
+        "game/tests/output/engineer-build-kit-v2/candidate-contact-sheet-native.png",
+        "game/tests/output/engineer-build-kit-v2/candidate-contact-sheet-4x.png",
+        "game/tests/output/engineer-build-kit-v2/candidate-layers-native.png",
+        "game/tests/output/engineer-build-kit-v2/candidate-objects-native.png",
+        "game/tests/output/engineer-build-kit-v2/actual-room-contact-sheet-native.png",
+        "game/tests/output/engineer-build-kit-v2/actual-room-contact-sheet-4x.png",
+        "game/tests/output/engineer-build-kit-v2/actual-room-unoccupied-contact-sheet-native.png",
+        "game/tests/output/engineer-build-kit-v2/actual-room-unoccupied-contact-sheet-4x.png",
+        "dev/ENGINEER_BUILD_KIT_V2_NATIVE_REVIEW.md"
+      ],
+      "reason": "Approved passive four-facing art-library deliverable after explicit native-size and 4x agent visual review. The complete pre-v2 generated/native mat record is retained below; approval creates no runtime binding, engineer role pose, service, behavior, interaction, backend, build state, device execution, or hire.",
+      "export_method": "Independent deterministic typed-GDScript screen-axis geometry for engineer-build-kit-v2 west; retained generated mats are provenance only, with no ImageGen retry, finished-raster rotation, mirror, scale, text, logo, fake metric, baked character, or baked furniture.",
+      "native_geometry": {
+        "canvas_size_px": [
+          192,
+          224
+        ],
+        "floor_anchor_px": [
+          96,
+          160
+        ],
+        "sprite_offset_px": [
+          0,
+          -48
+        ],
+        "whole_opaque_bounds_px": [
+          82,
+          83,
+          28,
+          90
+        ],
+        "whole_opaque_pixels": 688
+      },
+      "native_exports": [
+        {
+          "layer": "surface_decor_rear",
+          "source_layer": "surface_decor_rear",
+          "path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/west-surface_decor_rear.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            82,
+            83,
+            28,
+            90
+          ],
+          "opaque_pixels": 544,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 16,
+          "sha256": "17d5cb46090d2731714600397e63419279356a6b5a6edfbc38baf5faf54afe3a",
+          "z_offset": 0,
+          "source_path": "game/tools/engineer_build_kit_v2_geometry.gd",
+          "review_path": "dev/ENGINEER_BUILD_KIT_V2_NATIVE_REVIEW.md",
+          "method": "Exact code-native registered layer; binary alpha, zero hidden RGB, shared canvas/pivot, and independently declared west construction."
+        },
+        {
+          "layer": "surface_decor_front",
+          "source_layer": "surface_decor_front",
+          "path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/west-surface_decor_front.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            101,
+            83,
+            8,
+            18
+          ],
+          "opaque_pixels": 144,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 6,
+          "sha256": "42405f08e29620c930dac32981eaa5b3f3ec58026776a4f136496e17afc182ee",
+          "z_offset": 3,
+          "source_path": "game/tools/engineer_build_kit_v2_geometry.gd",
+          "review_path": "dev/ENGINEER_BUILD_KIT_V2_NATIVE_REVIEW.md",
+          "method": "Exact code-native registered layer; binary alpha, zero hidden RGB, shared canvas/pivot, and independently declared west construction."
+        }
+      ],
+      "composite_exports": [
+        {
+          "path": "game/tests/fixtures/furniture-calibration/engineer-build-kit-v2/west-whole.png",
+          "canvas_size_px": [
+            192,
+            224
+          ],
+          "floor_anchor_px": [
+            96,
+            160
+          ],
+          "sprite_offset_px": [
+            0,
+            -48
+          ],
+          "opaque_bounds_px": [
+            82,
+            83,
+            28,
+            90
+          ],
+          "opaque_pixels": 688,
+          "partial_alpha_pixels": 0,
+          "hidden_rgb_pixels": 0,
+          "used_colors": 18,
+          "sha256": "e90dbfe16f2e003c9e6f68c36c1d8807165b9bed9d6b90633ab2fa082756edac",
+          "method": "Byte-exact ordered union of the two approved native layers."
+        }
+      ],
+      "actual_room_observation": {
+        "scene": "actual GameMain and production TownRoom at native 1280x720",
+        "renderer": "macOS",
+        "desk_asset_revision": "workstations-v2",
+        "workstation_capability_revision": "workstations-v2:west",
+        "work_facing": "west",
+        "actor_probe": "existing_theo_directional_seated_typing_not_engineer",
+        "actor_work_point_px": [
+          688,
+          272
+        ],
+        "actor_pixel_delta": 811,
+        "measured_actor_overlay_overlap_pixels": {
+          "surface_decor_rear": 0,
+          "surface_decor_front": 0,
+          "total": 0
+        },
+        "overlap_interpretation": "Recorded exactly as measured and not manufactured as a quality threshold. Theo proves accepted host gaze/contact/scale only and is not an engineer-role pose.",
+        "existing_assembly_or_actor_covered_pixels": {
+          "surface_decor_rear": 34,
+          "surface_decor_front": 0
+        },
+        "coverage_interpretation": "The capture reports combined existing-assembly-or-actor masking and does not invent a host-only split.",
+        "visible_candidate_pixels": {
+          "surface_decor_rear": 510,
+          "surface_decor_front": 144
+        },
+        "collision_shapes_before": 3,
+        "collision_shapes_after": 3
+      },
+      "review": {
+        "geometry_reviewed": true,
+        "placement_tests_passed": true,
+        "native_geometry_tests_passed": true,
+        "actual_room_tests_passed": true,
+        "actor_pose_reviewed": false,
+        "role_specific_actor_pose_claimed": false,
+        "scores": {
+          "pixel_coherence": 3,
+          "perspective": 3,
+          "silhouette_readability": 2,
+          "layering_anchors": 3,
+          "direction_consistency": 3,
+          "placement": 3
+        },
+        "note": "Accepted by the September 6 engineer-build-kit-v2 agent-native review for passive library use only. Scores meet the catalogue gate. Theo is only the existing directional host-contact probe; exact measured actor/decor overlap is recorded and no engineer pose, service, backend, or execution is claimed.",
+        "acceptance_scope": "passive_art_library",
+        "acceptance_date": "2026-09-06"
+      },
+      "runtime_art_path": null,
+      "runtime_evidence_path": null,
+      "runtime_registered": false,
+      "runtime_exports": [],
+      "historical_candidate_before_v2": {
+        "facing": "west",
+        "status": "cleanup_required",
+        "deliverable_availability": "source_only",
+        "approved_art_path": null,
+        "evidence_path": "game/tests/output/engineer-mat-composition/west-frame0.png",
+        "source_reference_path": null,
+        "legacy_runtime_art_for_this_facing": false,
+        "footprint_cells": [
+          0,
+          0
+        ],
+        "proposed_occupied_cell_offsets": [],
+        "employee_look_vector": [
+          -1,
+          0
+        ],
+        "proposed_interaction_cell": null,
+        "seated_pose_needed": false,
+        "redraw_requirement": "Author this view in the same top-down/front-elevation projection. Do not rotate the complete bitmap; do not count a mirrored image as accepted without a direction and lighting review.",
+        "generated_source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-west-v1.png",
+        "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-west-v1.md",
+        "source_attempts": [
+          {
+            "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-west-v1.png",
+            "size_px": [
+              992,
+              1586
+            ],
+            "sha256": "372f5b5e9fa3bfd4d4031709d36cd230a8dc6f568feb411189d6dbc3a6e89a59",
+            "channels": "RGB",
+            "alpha": "Opaque source",
+            "prompt_path": "game/assets/source/overnight-20260904/roles/engineer-mat-west-v1.md",
+            "disposition": "Native composition reviewed; partial mat requires identity/probe/pose cleanup. See ENGINEER_MAT_COMPOSITION_REVIEW; no full toolkit acceptance."
+          }
+        ],
+        "generation_budget": {
+          "initial_calls": 1,
+          "targeted_retries_included": 0,
+          "max_targeted_retries": 3,
+          "exhausted": false,
+          "checkpoint_utc": "2026-09-04T09:12:00Z"
+        },
+        "component_exports": [
+          {
+            "path": "game/tests/fixtures/furniture-calibration/engineer-mat-v1/west-v1.png",
+            "canvas_size_px": [
+              20,
+              32
+            ],
+            "opaque_bounds_px": [
+              0,
+              0,
+              20,
+              32
+            ],
+            "opaque_pixels": 640,
+            "partial_alpha_pixels": 0,
+            "hidden_rgb_pixels": 0,
+            "used_colors": 19,
+            "sha256": "2742221f198e1f2f853135e9ec1fdf8c9b92724b0693b844b1d41a9ceff2ff8c",
+            "component": "opaque_electronics_mat",
+            "source_path": "game/assets/source/overnight-20260904/roles/engineer-mat-west-v1.png",
+            "method": "Native opaque32x20 or20x32 flat insert, <=24colors. Not full192x320 engineering kit; no floor-anchor claim."
+          }
+        ],
+        "reason": "Circuit board9x15 and breadboard5x14 exceed N-family physical size; both probe tips unclear. No probe-use pose; no full toolkit or host registration.",
+        "review_path": "dev/art-catalogue/ENGINEER_MAT_COMPOSITION_REVIEW.md",
+        "composition_review": {
+          "scores": [
+            2,
+            2,
+            2,
+            2,
+            1,
+            3
+          ],
+          "score_order": [
+            "pixel_coherence",
+            "perspective",
+            "silhouette_readability",
+            "layering_anchors",
+            "direction_consistency",
+            "placement"
+          ],
+          "runtime_approved": false,
+          "scope": "Actual calibrated desk mat-only stress test, not planned prototype-bench full toolkit.",
+          "grounded_shadow_review_path": "dev/art-catalogue/GROUNDED_WORK_SHADOW_REVIEW.md",
+          "later_horizontal_shadow_refinement": "In progress at09:40; not included in frozen first shadow or AFTER regression evidence."
+        }
+      }
+    }
+  ]
+}

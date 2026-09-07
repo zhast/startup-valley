@@ -1,0 +1,148 @@
+{
+	"canvas": [
+		192,
+		224
+	],
+	"captures": [
+		"res://tests/output/founder-strategy-kit/room-north.png",
+		"res://tests/output/founder-strategy-kit/detail-north-native.png",
+		"res://tests/output/founder-strategy-kit/room-east.png",
+		"res://tests/output/founder-strategy-kit/detail-east-native.png",
+		"res://tests/output/founder-strategy-kit/room-south.png",
+		"res://tests/output/founder-strategy-kit/detail-south-native.png",
+		"res://tests/output/founder-strategy-kit/room-west.png",
+		"res://tests/output/founder-strategy-kit/detail-west-native.png",
+		"res://tests/output/founder-strategy-kit/actual-room-contact-sheet-native.png",
+		"res://tests/output/founder-strategy-kit/actual-room-contact-sheet-4x.png"
+	],
+	"checks": 61,
+	"facings": [
+		"north",
+		"east",
+		"south",
+		"west"
+	],
+	"failures": [],
+	"founder_presentation": "actual standing PlayerAvatar at the authored work cell; occlusion/scale probe only, not a seated or working pose",
+	"observations": {
+		"east": {
+			"collision_shapes_after": 3,
+			"collision_shapes_before": 3,
+			"desk_asset_revision": "workstations-v2",
+			"founder_probe_cell": [
+				19,
+				8
+			],
+			"founder_probe_z": 272,
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 111,
+					"covered_by_existing_assembly_or_founder": 0,
+					"source_opaque": 111
+				},
+				"surface_decor_rear": {
+					"changed": 368,
+					"covered_by_existing_assembly_or_founder": 42,
+					"source_opaque": 410
+				}
+			},
+			"layer_z": {
+				"front": 275,
+				"rear": 272
+			},
+			"workstation_capability_revision": "workstations-v2:east"
+		},
+		"north": {
+			"collision_shapes_after": 3,
+			"collision_shapes_before": 3,
+			"desk_asset_revision": "workstations-v2",
+			"founder_probe_cell": [
+				20,
+				9
+			],
+			"founder_probe_z": 304,
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 252,
+					"covered_by_existing_assembly_or_founder": 0,
+					"source_opaque": 252
+				},
+				"surface_decor_rear": {
+					"changed": 269,
+					"covered_by_existing_assembly_or_founder": 0,
+					"source_opaque": 269
+				}
+			},
+			"layer_z": {
+				"front": 274,
+				"rear": 272
+			},
+			"workstation_capability_revision": "workstations-v2:north"
+		},
+		"south": {
+			"collision_shapes_after": 3,
+			"collision_shapes_before": 3,
+			"desk_asset_revision": "workstations-v2",
+			"founder_probe_cell": [
+				20,
+				7
+			],
+			"founder_probe_z": 240,
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 252,
+					"covered_by_existing_assembly_or_founder": 0,
+					"source_opaque": 252
+				},
+				"surface_decor_rear": {
+					"changed": 269,
+					"covered_by_existing_assembly_or_founder": 0,
+					"source_opaque": 269
+				}
+			},
+			"layer_z": {
+				"front": 276,
+				"rear": 274
+			},
+			"workstation_capability_revision": "workstations-v2:south"
+		},
+		"west": {
+			"collision_shapes_after": 3,
+			"collision_shapes_before": 3,
+			"desk_asset_revision": "workstations-v2",
+			"founder_probe_cell": [
+				21,
+				8
+			],
+			"founder_probe_z": 272,
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 158,
+					"covered_by_existing_assembly_or_founder": 0,
+					"source_opaque": 158
+				},
+				"surface_decor_rear": {
+					"changed": 321,
+					"covered_by_existing_assembly_or_founder": 42,
+					"source_opaque": 363
+				}
+			},
+			"layer_z": {
+				"front": 275,
+				"rear": 272
+			},
+			"workstation_capability_revision": "workstations-v2:west"
+		}
+	},
+	"pivot": [
+		96,
+		160
+	],
+	"production_catalog_mutated": false,
+	"renderer": "macOS",
+	"runtime_registered": false,
+	"save_access": false,
+	"scene": "actual GameMain/production TownRoom founder-workstation with fixture-only overlays",
+	"status": "native_review_candidate_not_runtime_registered",
+	"worker_disabled": true
+}

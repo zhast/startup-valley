@@ -1,0 +1,6 @@
+Use case: style-transfer
+Asset type: original pixel-game west-facing desk sprite, geometry-locked redraw.
+Input images: Image1 is the EDIT TARGET, a plain projection blueprint. Image2 is the SOUTH-view material/identity reference only.
+Texture the desk in Image1 with the same honey-oak top, charcoal metal legs and indigo cable tray as Image2. Preserve Image1's EXACT SILHOUETTE AND PROPORTIONS: tabletop32 native pixels wide,96 deep vertically, then32px leg rise, no taper or diagonal edges. The desk has rotated on the floor, the camera has NOT rotated. Worker will sit EAST/right and gaze WEST/left; cable tray is west/left. Do not mirror a previously rendered sprite or move upper-left light to the right.
+Keep fixed native192×224 transparent canvas, floor pivot(96,160), tabletop x80..112,y80..176, floor-contact bottom y208. Use the7x-enlarged native grid of Image1. Restrained pixel clusters, long vertical wood grain,1-pixel contours, gentle upper-left highlights, same material tones as reference; no painterly microtexture. Do not enlarge the narrow table to fill the canvas and do not shorten its depth.
+Genuine transparent alpha outside furniture and between legs, not checkerboard or matte. Empty surface; no character, chair, monitor, labels, floor, room, ground shadow, arrows, text, watermark or extra items. One furniture sprite only.

@@ -1,0 +1,451 @@
+{
+	"actual_production_pose": true,
+	"actual_schedule_ticks": 500,
+	"captures": [
+		{
+			"actors": {
+				"mira": {
+					"facing": "left",
+					"phase": "work",
+					"position": [
+						336.0,
+						240.0
+					],
+					"region": [
+						0.0,
+						0.0,
+						48.0,
+						80.0
+					],
+					"render_position": [
+						336.0,
+						240.0
+					],
+					"shadow_region": "[P: (64.0, 0.0), S: (32.0, 16.0)]",
+					"source": "res://assets/runtime/characters/mira-seated.png",
+					"state": 2,
+					"walking": false,
+					"work_layers": 2
+				},
+				"theo": {
+					"facing": "left",
+					"phase": "work",
+					"position": [
+						656.0,
+						240.0
+					],
+					"region": [
+						0.0,
+						0.0,
+						48.0,
+						80.0
+					],
+					"render_position": [
+						656.0,
+						252.0
+					],
+					"shadow_region": "[P: (64.0, 0.0), S: (32.0, 16.0)]",
+					"source": "res://assets/runtime/characters/theo-seated.png",
+					"state": 2,
+					"walking": false,
+					"work_layers": 2
+				}
+			},
+			"clock": "12:29",
+			"name": "before-lunch",
+			"path": "res://tests/output/lunch-standing-after/before-lunch.png",
+			"phase": "work",
+			"prototype_only": false,
+			"sha256": "e79c56ec4b2db1fd705a3bc59c37e05bd4d3c937b64a78bb6d903467007cacfe",
+			"tick": 160
+		},
+		{
+			"actors": {
+				"mira": {
+					"facing": "front",
+					"phase": "lunch",
+					"position": [
+						272.0,
+						258.333343505859
+					],
+					"region": [
+						192.0,
+						0.0,
+						48.0,
+						80.0
+					],
+					"render_position": [
+						272.0,
+						258.0
+					],
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]",
+					"source": "res://assets/runtime/characters/mira-locomotion.png",
+					"state": 4,
+					"walking": true,
+					"work_layers": 0
+				},
+				"theo": {
+					"facing": "front",
+					"phase": "lunch",
+					"position": [
+						592.0,
+						258.333343505859
+					],
+					"region": [
+						192.0,
+						0.0,
+						48.0,
+						80.0
+					],
+					"render_position": [
+						592.0,
+						258.0
+					],
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]",
+					"source": "res://assets/runtime/characters/theo-locomotion.png",
+					"state": 4,
+					"walking": true,
+					"work_layers": 0
+				}
+			},
+			"clock": "12:30",
+			"name": "walking-to-lounge",
+			"path": "res://tests/output/lunch-standing-after/walking-to-lounge.png",
+			"phase": "lunch",
+			"prototype_only": false,
+			"sha256": "3a6ebc5467b81e6d87b1079722a45563d8d02106a54e20f72a7f1f2cc85309da",
+			"tick": 183
+		},
+		{
+			"actors": {
+				"mira": {
+					"facing": "front",
+					"phase": "lunch",
+					"position": [
+						304.0,
+						368.0
+					],
+					"region": [
+						0.0,
+						0.0,
+						48.0,
+						80.0
+					],
+					"render_position": [
+						304.0,
+						380.0
+					],
+					"shadow_region": "[P: (64.0, 0.0), S: (32.0, 16.0)]",
+					"source": "res://assets/runtime/characters/mira-seated.png",
+					"state": 4,
+					"walking": false,
+					"work_layers": 2
+				},
+				"theo": {
+					"facing": "left",
+					"phase": "lunch",
+					"position": [
+						368.0,
+						464.0
+					],
+					"region": [
+						0.0,
+						0.0,
+						48.0,
+						80.0
+					],
+					"render_position": [
+						368.0,
+						448.0
+					],
+					"shadow_region": "[P: (64.0, 0.0), S: (32.0, 16.0)]",
+					"source": "res://assets/runtime/characters/workstations-v2/theo-north.png",
+					"state": 4,
+					"walking": false,
+					"work_layers": 2
+				}
+			},
+			"clock": "12:30",
+			"name": "lunch-idle-0",
+			"native_detail": "res://tests/output/lunch-standing-after/lunch-idle-0-lounge-native.png",
+			"path": "res://tests/output/lunch-standing-after/lunch-idle-0.png",
+			"phase": "lunch",
+			"prototype_only": false,
+			"sha256": "976b613cd8edbe25ac425dccab5aff139eaaa659af5980c15957922d2fff49d1",
+			"tick": 304
+		},
+		{
+			"actors": {
+				"mira": {
+					"facing": "front",
+					"phase": "lunch",
+					"position": [
+						304.0,
+						368.0
+					],
+					"region": [
+						48.0,
+						0.0,
+						48.0,
+						80.0
+					],
+					"render_position": [
+						304.0,
+						380.0
+					],
+					"shadow_region": "[P: (64.0, 0.0), S: (32.0, 16.0)]",
+					"source": "res://assets/runtime/characters/mira-seated.png",
+					"state": 4,
+					"walking": false,
+					"work_layers": 2
+				},
+				"theo": {
+					"facing": "left",
+					"phase": "lunch",
+					"position": [
+						368.0,
+						464.0
+					],
+					"region": [
+						48.0,
+						0.0,
+						48.0,
+						80.0
+					],
+					"render_position": [
+						368.0,
+						448.0
+					],
+					"shadow_region": "[P: (64.0, 0.0), S: (32.0, 16.0)]",
+					"source": "res://assets/runtime/characters/workstations-v2/theo-north.png",
+					"state": 4,
+					"walking": false,
+					"work_layers": 2
+				}
+			},
+			"clock": "12:30",
+			"name": "lunch-idle-1",
+			"native_detail": "res://tests/output/lunch-standing-after/lunch-idle-1-lounge-native.png",
+			"path": "res://tests/output/lunch-standing-after/lunch-idle-1.png",
+			"phase": "lunch",
+			"prototype_only": false,
+			"sha256": "b9bfb6328087e4dfb242decf4401d968da49026b3f694f37ce773a138d9b731b",
+			"tick": 325
+		},
+		{
+			"actors": {
+				"mira": {
+					"facing": "front",
+					"phase": "lunch",
+					"position": [
+						304.0,
+						368.0
+					],
+					"region": [
+						48.0,
+						0.0,
+						48.0,
+						80.0
+					],
+					"render_position": [
+						304.0,
+						380.0
+					],
+					"shadow_region": "[P: (64.0, 0.0), S: (32.0, 16.0)]",
+					"source": "res://assets/runtime/characters/mira-seated.png",
+					"state": 4,
+					"walking": false,
+					"work_layers": 2
+				},
+				"theo": {
+					"facing": "left",
+					"phase": "lunch",
+					"position": [
+						368.0,
+						464.0
+					],
+					"region": [
+						48.0,
+						0.0,
+						48.0,
+						80.0
+					],
+					"render_position": [
+						368.0,
+						448.0
+					],
+					"shadow_region": "[P: (64.0, 0.0), S: (32.0, 16.0)]",
+					"source": "res://assets/runtime/characters/workstations-v2/theo-north.png",
+					"state": 4,
+					"walking": false,
+					"work_layers": 2
+				}
+			},
+			"clock": "12:31",
+			"name": "lunch-paused",
+			"path": "res://tests/output/lunch-standing-after/lunch-paused.png",
+			"phase": "lunch",
+			"prototype_only": false,
+			"sha256": "bd711e92d921f2cd6b44c644b49cd6e3ba27507fd463ef4ed5001f66b182edce",
+			"tick": 340
+		},
+		{
+			"actors": {
+				"mira": {
+					"facing": "back",
+					"phase": "work",
+					"position": [
+						304.0,
+						342.333404541016
+					],
+					"region": [
+						144.0,
+						80.0,
+						48.0,
+						80.0
+					],
+					"render_position": [
+						304.0,
+						342.0
+					],
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]",
+					"source": "res://assets/runtime/characters/mira-locomotion.png",
+					"state": 1,
+					"walking": true,
+					"work_layers": 0
+				},
+				"theo": {
+					"facing": "right",
+					"phase": "work",
+					"position": [
+						393.666595458984,
+						464.0
+					],
+					"region": [
+						144.0,
+						240.0,
+						48.0,
+						80.0
+					],
+					"render_position": [
+						394.0,
+						464.0
+					],
+					"shadow_region": "[P: (32.0, 0.0), S: (32.0, 16.0)]",
+					"source": "res://assets/runtime/characters/theo-locomotion.png",
+					"state": 1,
+					"walking": true,
+					"work_layers": 0
+				}
+			},
+			"clock": "13:30",
+			"name": "returning-to-work",
+			"path": "res://tests/output/lunch-standing-after/returning-to-work.png",
+			"phase": "work",
+			"prototype_only": false,
+			"sha256": "7c517cca44f7559280ab3cd5f8684394fb209c0228ee7aec74c2eceef38fdaa6",
+			"tick": 363
+		},
+		{
+			"actors": {
+				"mira": {
+					"facing": "right",
+					"phase": "work",
+					"position": [
+						336.0,
+						240.0
+					],
+					"region": [
+						0.0,
+						0.0,
+						48.0,
+						80.0
+					],
+					"render_position": [
+						336.0,
+						252.0
+					],
+					"shadow_region": "[P: (64.0, 0.0), S: (32.0, 16.0)]",
+					"source": "res://assets/runtime/characters/mira-seated.png",
+					"state": 2,
+					"walking": false,
+					"work_layers": 2
+				},
+				"theo": {
+					"facing": "right",
+					"phase": "work",
+					"position": [
+						656.0,
+						240.0
+					],
+					"region": [
+						0.0,
+						0.0,
+						48.0,
+						80.0
+					],
+					"render_position": [
+						656.0,
+						240.0
+					],
+					"shadow_region": "[P: (64.0, 0.0), S: (32.0, 16.0)]",
+					"source": "res://assets/runtime/characters/theo-seated.png",
+					"state": 2,
+					"walking": false,
+					"work_layers": 2
+				}
+			},
+			"clock": "13:30",
+			"name": "work-restored",
+			"path": "res://tests/output/lunch-standing-after/work-restored.png",
+			"phase": "work",
+			"prototype_only": false,
+			"sha256": "ea82a4f0388d5eb992800afec148fc97f1528da2b201ea49c97f59dca73dc5a4",
+			"tick": 500
+		}
+	],
+	"checks": 2255,
+	"coverage": [
+		"mira: four directions, idle 0/1, walk 2–5, source/transform/layer/shadow checks",
+		"mira: actual active-job guard, failure, blocked work, completion, delivery guard/pause and lunch return",
+		"theo: four directions, idle 0/1, walk 2–5, source/transform/layer/shadow checks",
+		"theo: actual active-job guard, failure, blocked work, completion, delivery guard/pause and lunch return"
+	],
+	"failures": [
+		"Actual stationary lunch uses locomotion idle, not work-seat art: mira",
+		"Actual break has no stale seat layers or visual offset",
+		"Actual break uses standing shadow",
+		"Actual stationary lunch uses locomotion idle, not work-seat art: theo",
+		"Actual break has no stale seat layers or visual offset",
+		"Actual break uses standing shadow",
+		"Actual stationary lunch uses locomotion idle, not work-seat art: mira",
+		"Actual break has no stale seat layers or visual offset",
+		"Actual break uses standing shadow",
+		"Actual stationary lunch uses locomotion idle, not work-seat art: theo",
+		"Actual break has no stale seat layers or visual offset",
+		"Actual break uses standing shadow",
+		"Actual stationary lunch uses locomotion idle, not work-seat art: mira",
+		"Actual break has no stale seat layers or visual offset",
+		"Actual break uses standing shadow",
+		"Actual stationary lunch uses locomotion idle, not work-seat art: theo",
+		"Actual break has no stale seat layers or visual offset",
+		"Actual break uses standing shadow"
+	],
+	"historical_before_sha256": "ab19649297dedfb7f984c5a34d88b38310c1936553f8040a56266480ec4bc751",
+	"limits": "Native keyframes, not a movie. Real production schedule and actor event paths with disposable NullWorker; no paid work or personal save.",
+	"renderer": "macOS",
+	"source_sha256": {
+		"res://actors/employee_avatar.gd": "d30b6cd7b175ecbce124dd080dd903fec4302e642388ebe5a5f2c7948c85cc7b",
+		"res://assets/runtime/characters/mira-locomotion.png": "bf59c1b6c0f6e0162bcf4a8100740ec7082af598c9dcb05b4a2d000d6c178889",
+		"res://assets/runtime/characters/mira-seated.png": "33f60d0fb218d9a2742a9d2bb62583205c94ba6441d4cbb7a7f789657d084256",
+		"res://assets/runtime/characters/theo-locomotion.png": "2c68e0313f47a29a3b025b77fbe4dad4fc3cca8688382591e04787a8ec23cb2d",
+		"res://assets/runtime/characters/theo-seated.png": "369332b974031472d64fbce8b9b21d77cc43a20232e28169b043f958017a8c63",
+		"res://assets/runtime/characters/workstations-v2/theo-north.png": "6f8a7427cb0823e2bedf5ae98a4c4f0c294b3be77430e4a96b3491fa92465ae1",
+		"res://character_art.gd": "b721c801ca79198ce76ab5673f096dd5ab26bab6ec00130f2c5a5c82d84d4dae",
+		"res://simulation/day_clock.gd": "65a1eebf4cc8519cc2576177ce87de3c040a4b7b967979e7d21234d958ef2b1f",
+		"res://world/main.gd": "bf6062a61c0db0b813b1af1d0a6aa7c6ffd72e934bdde9bb86fcac0f00ffeba2",
+		"res://world/office_navigation.gd": "7889f1e6984df0822b10b6a1bc38e5449f354c4afb0f1f83fe6db769c5888909",
+		"res://world/town_room.gd": "42a1d3fe5b78e9ead4057073bfb70869dce1d23d8b9f5e7ea8b0dfe107f77b81"
+	},
+	"workerDisabled": true
+}

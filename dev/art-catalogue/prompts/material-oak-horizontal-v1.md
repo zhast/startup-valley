@@ -1,0 +1,5 @@
+# Warm oak — horizontal native game material
+
+Create one square, seamless, edge-to-edge pixel-art wood SURFACE TEXTURE for an original cozy-tech office game. This is flat material only, not a rendered desk, plank object, room, furniture, floor scene or perspective view. Logical tile32×32 pixels enlarged cleanly; every cluster snaps to that coarse native grid. Wood grain runs horizontally left-to-right in sparse short darker streaks, with small warm highlights. No thick plank seams, nails, knots shaped like eyes, directional cast shadow, bevel, outer border or margin. Opposite edges tile seamlessly both ways. Simple calm honey-oak, low visual noise so tiny characters and tools remain readable above it.
+
+Restrained material colors: dark#754326,#8F4B24; middle#A75927,#B7672C,#C47734; highlight#D58A42,#E3A45A. Use flat clustered colors without photographic grain, smooth gradients or antialiasing. Avoid bright neon orange or chocolate-black surfaces. Keep the whole texture evenly illuminated; object edge lighting will be separate game geometry. Output square full-bleed opaque RGB, not transparency or a checkerboard. No text, logos, icons, labels or objects.

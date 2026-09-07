@@ -1,0 +1,152 @@
+{
+	"checks": 37,
+	"failures": [],
+	"scope": "Real old two-employee entry; Sit/Type are diagnostic art controls, not real jobs.",
+	"snapshots": [
+		{
+			"labels": [
+				{
+					"employee": "mira",
+					"rect": "[P: (304.0, 566.0), S: (64.0, 41.0)]",
+					"toolbar_overlap": false,
+					"visible": true
+				},
+				{
+					"employee": "theo",
+					"rect": "[P: (752.0, 566.0), S: (64.0, 41.0)]",
+					"toolbar_overlap": false,
+					"visible": true
+				}
+			],
+			"name": "initial",
+			"toolbar": "[P: (24.0, 622.0), S: (1080.0, 90.0)]"
+		},
+		{
+			"labels": [
+				{
+					"employee": "mira",
+					"rect": "[P: (304.0, 557.0), S: (64.0, 41.0)]",
+					"toolbar_overlap": false,
+					"visible": true
+				},
+				{
+					"employee": "theo",
+					"rect": "[P: (752.0, 557.0), S: (64.0, 41.0)]",
+					"toolbar_overlap": false,
+					"visible": true
+				}
+			],
+			"name": "settled",
+			"toolbar": "[P: (24.0, 622.0), S: (1080.0, 90.0)]"
+		},
+		{
+			"labels": [
+				{
+					"employee": "mira",
+					"rect": "[P: (304.0, 137.0), S: (64.0, 40.0)]",
+					"toolbar_overlap": false,
+					"visible": true
+				},
+				{
+					"employee": "theo",
+					"rect": "[P: (752.0, 137.0), S: (64.0, 40.0)]",
+					"toolbar_overlap": false,
+					"visible": true
+				}
+			],
+			"name": "seated",
+			"toolbar": "[P: (24.0, 622.0), S: (1080.0, 90.0)]"
+		},
+		{
+			"labels": [
+				{
+					"employee": "mira",
+					"rect": "[P: (304.0, 137.0), S: (64.0, 40.0)]",
+					"toolbar_overlap": false,
+					"visible": true
+				},
+				{
+					"employee": "theo",
+					"rect": "[P: (752.0, 137.0), S: (64.0, 40.0)]",
+					"toolbar_overlap": false,
+					"visible": true
+				}
+			],
+			"name": "typing",
+			"toolbar": "[P: (24.0, 622.0), S: (1080.0, 90.0)]"
+		},
+		{
+			"labels": [
+				{
+					"employee": "mira",
+					"rect": "[P: (304.0, 137.0), S: (64.0, 40.0)]",
+					"toolbar_overlap": false,
+					"visible": true
+				},
+				{
+					"employee": "theo",
+					"rect": "[P: (752.0, 137.0), S: (64.0, 40.0)]",
+					"toolbar_overlap": false,
+					"visible": true
+				}
+			],
+			"name": "occupied-rotation",
+			"toolbar": "[P: (24.0, 622.0), S: (1080.0, 90.0)]"
+		},
+		{
+			"labels": [
+				{
+					"employee": "mira",
+					"rect": "[P: (304.0, 566.0), S: (64.0, 41.0)]",
+					"toolbar_overlap": false,
+					"visible": true
+				},
+				{
+					"employee": "theo",
+					"rect": "[P: (752.0, 137.0), S: (64.0, 40.0)]",
+					"toolbar_overlap": false,
+					"visible": false
+				}
+			],
+			"name": "left",
+			"toolbar": "[P: (24.0, 622.0), S: (1080.0, 90.0)]"
+		},
+		{
+			"labels": [
+				{
+					"employee": "mira",
+					"rect": "[P: (304.0, 566.0), S: (64.0, 41.0)]",
+					"toolbar_overlap": false,
+					"visible": true
+				},
+				{
+					"employee": "theo",
+					"rect": "[P: (752.0, 137.0), S: (64.0, 40.0)]",
+					"toolbar_overlap": false,
+					"visible": false
+				}
+			],
+			"name": "rotated",
+			"toolbar": "[P: (24.0, 622.0), S: (1080.0, 90.0)]"
+		},
+		{
+			"labels": [
+				{
+					"employee": "mira",
+					"rect": "[P: (382.0, 226.0), S: (73.0, 32.0)]",
+					"toolbar_overlap": false,
+					"visible": true
+				},
+				{
+					"employee": "theo",
+					"rect": "[P: (874.0, 222.0), S: (73.0, 32.0)]",
+					"toolbar_overlap": false,
+					"visible": true
+				}
+			],
+			"name": "west-seated",
+			"toolbar": "[P: (24.0, 622.0), S: (1080.0, 90.0)]"
+		}
+	],
+	"unmodified_old_entry": true
+}

@@ -1,0 +1,5 @@
+# Legal toolkit — correct the binder camera projection
+
+Edit only the STACK OF TWO BINDERS on the left of the supplied toolkit. Redraw that stack in the game's screen-aligned overhead/front-elevation projection. Each top cover is a true rectangle, with every edge vertical or horizontal in the image: its rear-left corner must sit directly above its front-left corner, not shifted right. NO visible right-side diagonal face, trapezoid, isometric yaw or slanted depth edges. A short front spine/page face sits immediately below the rectangular top, also screen-aligned. The covers share the same front-left alignment and are not skewed relative to each other.
+
+Keep the same charcoal/indigo covers, cream page edges, two-book count, tiny blank cream spine labels and upper-left light. Intended native top20px wide×12px deep with6px total stacked vertical rise. Keep the open folder and pen cup, their colors and separate source positions unchanged. Do not add objects, text, furniture or a room. Preserve actual transparency if present; this is a geometry correction to the binders, not a new scene or a different style.

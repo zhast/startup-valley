@@ -1,0 +1,176 @@
+{
+	"actor_presentation": "Mina's accepted directional seated typing presentation at her authored desk work point; scale, contact and occlusion probe only because no customer-success employee or accepted customer-success role pose exists",
+	"actor_role_claimed": false,
+	"candidate_revision_registered": false,
+	"canvas": [
+		192,
+		224
+	],
+	"captures": [
+		"res://tests/output/customer-success-kit/room-north.png",
+		"res://tests/output/customer-success-kit/detail-north-native.png",
+		"res://tests/output/customer-success-kit/detail-north-unoccupied-native.png",
+		"res://tests/output/customer-success-kit/room-east.png",
+		"res://tests/output/customer-success-kit/detail-east-native.png",
+		"res://tests/output/customer-success-kit/detail-east-unoccupied-native.png",
+		"res://tests/output/customer-success-kit/room-south.png",
+		"res://tests/output/customer-success-kit/detail-south-native.png",
+		"res://tests/output/customer-success-kit/detail-south-unoccupied-native.png",
+		"res://tests/output/customer-success-kit/room-west.png",
+		"res://tests/output/customer-success-kit/detail-west-native.png",
+		"res://tests/output/customer-success-kit/detail-west-unoccupied-native.png",
+		"res://tests/output/customer-success-kit/actual-room-contact-sheet-native.png",
+		"res://tests/output/customer-success-kit/actual-room-unoccupied-contact-sheet-native.png",
+		"res://tests/output/customer-success-kit/actual-room-contact-sheet-4x.png"
+	],
+	"checks": 83,
+	"default_layout_mutated": false,
+	"dev_catalogue_family": "customer_success_kit",
+	"facings": [
+		"north",
+		"east",
+		"south",
+		"west"
+	],
+	"failures": [],
+	"future_support_hire_present": false,
+	"observations": {
+		"east": {
+			"actor_overlay_occlusion": {
+				"surface_decor_front": 0,
+				"surface_decor_rear": 3
+			},
+			"actor_pixel_delta": 900,
+			"collision_shapes_after": 3,
+			"collision_shapes_before": 3,
+			"desk_asset_revision": "workstations-v2",
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 240,
+					"covered_by_existing_assembly_or_mina": 0,
+					"source_opaque": 240
+				},
+				"surface_decor_rear": {
+					"changed": 232,
+					"covered_by_existing_assembly_or_mina": 11,
+					"source_opaque": 243
+				}
+			},
+			"layer_z": {
+				"front": 275,
+				"rear": 272
+			},
+			"mina_probe_work_point": [
+				304.0,
+				272.0
+			],
+			"workstation_capability_revision": "workstations-v2:east"
+		},
+		"north": {
+			"actor_overlay_occlusion": {
+				"surface_decor_front": 0,
+				"surface_decor_rear": 0
+			},
+			"actor_pixel_delta": 1603,
+			"collision_shapes_after": 3,
+			"collision_shapes_before": 3,
+			"desk_asset_revision": "workstations-v2",
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 240,
+					"covered_by_existing_assembly_or_mina": 0,
+					"source_opaque": 240
+				},
+				"surface_decor_rear": {
+					"changed": 242,
+					"covered_by_existing_assembly_or_mina": 0,
+					"source_opaque": 242
+				}
+			},
+			"layer_z": {
+				"front": 274,
+				"rear": 272
+			},
+			"mina_probe_work_point": [
+				336.0,
+				304.0
+			],
+			"workstation_capability_revision": "workstations-v2:north"
+		},
+		"south": {
+			"actor_overlay_occlusion": {
+				"surface_decor_front": 0,
+				"surface_decor_rear": 0
+			},
+			"actor_pixel_delta": 856,
+			"collision_shapes_after": 3,
+			"collision_shapes_before": 3,
+			"desk_asset_revision": "workstations-v2",
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 240,
+					"covered_by_existing_assembly_or_mina": 0,
+					"source_opaque": 240
+				},
+				"surface_decor_rear": {
+					"changed": 242,
+					"covered_by_existing_assembly_or_mina": 0,
+					"source_opaque": 242
+				}
+			},
+			"layer_z": {
+				"front": 276,
+				"rear": 274
+			},
+			"mina_probe_work_point": [
+				336.0,
+				240.0
+			],
+			"workstation_capability_revision": "workstations-v2:south"
+		},
+		"west": {
+			"actor_overlay_occlusion": {
+				"surface_decor_front": 0,
+				"surface_decor_rear": 0
+			},
+			"actor_pixel_delta": 875,
+			"collision_shapes_after": 3,
+			"collision_shapes_before": 3,
+			"desk_asset_revision": "workstations-v2",
+			"layer_visibility": {
+				"surface_decor_front": {
+					"changed": 240,
+					"covered_by_existing_assembly_or_mina": 0,
+					"source_opaque": 240
+				},
+				"surface_decor_rear": {
+					"changed": 208,
+					"covered_by_existing_assembly_or_mina": 20,
+					"source_opaque": 228
+				}
+			},
+			"layer_z": {
+				"front": 275,
+				"rear": 272
+			},
+			"mina_probe_work_point": [
+				368.0,
+				272.0
+			],
+			"workstation_capability_revision": "workstations-v2:west"
+		}
+	},
+	"pivot": [
+		96,
+		160
+	],
+	"production_catalog_mutated": false,
+	"production_catalogue_registered": false,
+	"renderer": "macOS",
+	"runtime_registered": false,
+	"save_access": false,
+	"scene": "actual GameMain and production TownRoom; fixture-only Sprite2D overlays on mira-workstation using accepted workstations-v2 desk",
+	"status": "native_review_candidate_not_runtime_registered",
+	"total_actor_overlay_occlusion": 3,
+	"worker_disabled": true
+}

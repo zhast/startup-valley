@@ -1,0 +1,141 @@
+{
+	"assembly_compared_pixels": 2752512,
+	"captures": [
+		"north-v1-standing.png",
+		"north-v1-pose-0.png",
+		"north-v1-pose-1.png",
+		"north-v1-pose-2.png",
+		"north-v1-pose-3.png",
+		"north-v1-pose-4.png",
+		"north-v1-pose-5.png",
+		"north-v1-left.png",
+		"north-v2-standing.png",
+		"north-v2-pose-0.png",
+		"north-v2-pose-1.png",
+		"north-v2-pose-2.png",
+		"north-v2-pose-3.png",
+		"north-v2-pose-4.png",
+		"north-v2-pose-5.png",
+		"north-v2-left.png",
+		"east-v1-standing.png",
+		"east-v1-pose-0.png",
+		"east-v1-pose-1.png",
+		"east-v1-pose-2.png",
+		"east-v1-pose-3.png",
+		"east-v1-pose-4.png",
+		"east-v1-pose-5.png",
+		"east-v1-left.png",
+		"east-v2-standing.png",
+		"east-v2-pose-0.png",
+		"east-v2-pose-1.png",
+		"east-v2-pose-2.png",
+		"east-v2-pose-3.png",
+		"east-v2-pose-4.png",
+		"east-v2-pose-5.png",
+		"east-v2-left.png",
+		"south-v1-standing.png",
+		"south-v1-pose-0.png",
+		"south-v1-pose-1.png",
+		"south-v1-pose-2.png",
+		"south-v1-pose-3.png",
+		"south-v1-pose-4.png",
+		"south-v1-pose-5.png",
+		"south-v1-left.png",
+		"south-v2-standing.png",
+		"south-v2-pose-0.png",
+		"south-v2-pose-1.png",
+		"south-v2-pose-2.png",
+		"south-v2-pose-3.png",
+		"south-v2-pose-4.png",
+		"south-v2-pose-5.png",
+		"south-v2-left.png",
+		"west-v1-standing.png",
+		"west-v1-pose-0.png",
+		"west-v1-pose-1.png",
+		"west-v1-pose-2.png",
+		"west-v1-pose-3.png",
+		"west-v1-pose-4.png",
+		"west-v1-pose-5.png",
+		"west-v1-left.png",
+		"west-v2-standing.png",
+		"west-v2-pose-0.png",
+		"west-v2-pose-1.png",
+		"west-v2-pose-2.png",
+		"west-v2-pose-3.png",
+		"west-v2-pose-4.png",
+		"west-v2-pose-5.png",
+		"west-v2-left.png"
+	],
+	"changed_layer_pixels": 0,
+	"checks": 6134,
+	"compared_layer_pixels": 0,
+	"failures": [],
+	"id": "desk-finish-v2",
+	"mode": "room",
+	"physical_ticks": 3104,
+	"renderer": "macOS",
+	"runtime_approved": false,
+	"source_files": [
+		{
+			"path": "res://tools/modular_desk_geometry.gd",
+			"sha256": "3810ea5c9cdaeeea9aa4f0ef95789fdbe8a6a2a33f3e9d2763ce0df2db62f4ba"
+		},
+		{
+			"path": "res://tools/export_modular_desk_layers.gd",
+			"sha256": "2d9d2849c71506a30bf5f3924483134cee5a5ac9de9ca97d186c0b6d5f15a0b4"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/materials/oak-horizontal-v1-soft.png",
+			"sha256": "c325d84fe0e8b3884b585a2d4b95463b9ba8fa75afdc3d90c22923b9e6b03a4b"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/materials/oak-vertical-v1-soft.png",
+			"sha256": "d7e23016bc9cb0df7b95218131864a4bc13dc64fb8c4c6a0bb64907f63d12958"
+		},
+		{
+			"path": "res://assets/source/overnight-20260904/materials/oak-horizontal-v1.png",
+			"sha256": "3aa16971a5457afeac422cca2cb53d28b0f76ab70dbdbfbe5f68a701f8836f01"
+		},
+		{
+			"path": "res://assets/source/overnight-20260904/materials/oak-vertical-v1.png",
+			"sha256": "d28136db4dcb3b0a3439cde29dd224923d5540ae33033fb87d39357917b36528"
+		},
+		{
+			"path": "res://../dev/art-catalogue/oak-material-palette-soft.svg",
+			"sha256": "9f08d52f438a7ee0993638adf61e1cf245700f5818c4e0883d33bfebf097591f"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/modular-desk-v1/north-rear.png",
+			"sha256": "78a5ef32121a00f773c388cd7d044c4935fc9e6fc408de57f467821d98514b0a"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/modular-desk-v1/north-front.png",
+			"sha256": "05506872f3cb44801bc130ac1f04e820af20a0c72b01791a55dc7b058830bc3e"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/modular-desk-v1/east-rear.png",
+			"sha256": "5162d89690c419b767a473d7d34440a85df67807f0e99bf2bd5d10c00c7c7855"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/modular-desk-v1/east-front.png",
+			"sha256": "51eafbac5e2df2cb8698ef5866138b1eb027ada2757bb81c09bdafab796f587d"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/modular-desk-v1/south-rear.png",
+			"sha256": "d26b4b861ce6f8c4178f4c6215af499f67613543a56b18067bd38d4ff54fa831"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/modular-desk-v1/south-front.png",
+			"sha256": "2cb27e08c70d55d28735c6cf09a7da660fe5f253b17b14977dad4950c4ce4955"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/modular-desk-v1/west-rear.png",
+			"sha256": "5162d89690c419b767a473d7d34440a85df67807f0e99bf2bd5d10c00c7c7855"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/modular-desk-v1/west-front.png",
+			"sha256": "a69cce503d8072557033ec88d4ae3b2bcc7905cfe13c02364eafd55ecdb6ae17"
+		}
+	],
+	"worker_disabled": true
+}

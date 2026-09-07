@@ -1,0 +1,496 @@
+{
+	"captures": [
+		"res://tests/output/compact-desk/detail-north-base-native.png",
+		"res://tests/output/compact-desk/room-north.png",
+		"res://tests/output/compact-desk/detail-north-approach-native.png",
+		"res://tests/output/compact-desk/detail-east-base-native.png",
+		"res://tests/output/compact-desk/room-east.png",
+		"res://tests/output/compact-desk/detail-east-approach-native.png",
+		"res://tests/output/compact-desk/detail-south-base-native.png",
+		"res://tests/output/compact-desk/room-south.png",
+		"res://tests/output/compact-desk/detail-south-approach-native.png",
+		"res://tests/output/compact-desk/detail-west-base-native.png",
+		"res://tests/output/compact-desk/room-west.png",
+		"res://tests/output/compact-desk/detail-west-approach-native.png",
+		"res://tests/output/compact-desk/actual-room-base-contact-sheet-native.png",
+		"res://tests/output/compact-desk/actual-room-approach-contact-sheet-native.png",
+		"res://tests/output/compact-desk/actual-room-approach-contact-sheet-4x.png"
+	],
+	"checks": 438,
+	"common_safe_pivot": [
+		12,
+		13
+	],
+	"default_layout_mutated": false,
+	"dev_catalogue_registered": false,
+	"failures": [],
+	"limitations": [
+		"Founder standing locomotion is only a scale, route, contact, and occlusion probe; no compact seated pose or chair assembly is claimed.",
+		"The room carrier is passive so visible-surface picking deliberately yields no action.",
+		"Chair, device, and role overlay compatibility remains a separate review."
+	],
+	"observations": {
+		"east": {
+			"clearance": [
+				[
+					11,
+					13
+				]
+			],
+			"collision_shapes": 2,
+			"founder_approach": {
+				"destination": [
+					368.0,
+					432.0
+				],
+				"destination_cell": [
+					11,
+					13
+				],
+				"initial_route_points": 11,
+				"samples": [
+					[
+						560.0,
+						592.0
+					],
+					[
+						496.0,
+						572.0
+					],
+					[
+						368.0,
+						432.0
+					]
+				],
+				"start": [
+					560.0,
+					592.0
+				],
+				"traveled_px": 337.466482639313
+			},
+			"grid": [
+				12,
+				13
+			],
+			"occupied": [
+				[
+					12,
+					12
+				],
+				[
+					12,
+					13
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/east-floor_shadow.png",
+					"name": "CompactDeskFloorShadow",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/east-rear_structure.png",
+					"name": "CompactDeskRearStructure",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/east-front_structure.png",
+					"name": "CompactDeskFrontStructure",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"z_offset": 1
+				}
+			]
+		},
+		"north": {
+			"clearance": [
+				[
+					12,
+					14
+				]
+			],
+			"collision_shapes": 2,
+			"founder_approach": {
+				"destination": [
+					400.0,
+					464.0
+				],
+				"destination_cell": [
+					12,
+					14
+				],
+				"initial_route_points": 9,
+				"samples": [
+					[
+						560.0,
+						592.0
+					],
+					[
+						496.0,
+						572.0
+					],
+					[
+						400.0,
+						464.0
+					]
+				],
+				"start": [
+					560.0,
+					592.0
+				],
+				"traveled_px": 278.310988426208
+			},
+			"grid": [
+				12,
+				13
+			],
+			"occupied": [
+				[
+					11,
+					13
+				],
+				[
+					12,
+					13
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/north-floor_shadow.png",
+					"name": "CompactDeskFloorShadow",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/north-rear_structure.png",
+					"name": "CompactDeskRearStructure",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/north-front_structure.png",
+					"name": "CompactDeskFrontStructure",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"z_offset": 1
+				}
+			]
+		},
+		"south": {
+			"clearance": [
+				[
+					12,
+					12
+				]
+			],
+			"collision_shapes": 2,
+			"founder_approach": {
+				"destination": [
+					400.0,
+					400.0
+				],
+				"destination_cell": [
+					12,
+					12
+				],
+				"initial_route_points": 11,
+				"samples": [
+					[
+						560.0,
+						592.0
+					],
+					[
+						528.0,
+						540.0
+					],
+					[
+						400.0,
+						400.0
+					]
+				],
+				"start": [
+					560.0,
+					592.0
+				],
+				"traveled_px": 340.69615316391
+			},
+			"grid": [
+				12,
+				13
+			],
+			"occupied": [
+				[
+					13,
+					13
+				],
+				[
+					12,
+					13
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/south-floor_shadow.png",
+					"name": "CompactDeskFloorShadow",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/south-rear_structure.png",
+					"name": "CompactDeskRearStructure",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/south-front_structure.png",
+					"name": "CompactDeskFrontStructure",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"z_offset": 1
+				}
+			]
+		},
+		"west": {
+			"clearance": [
+				[
+					13,
+					13
+				]
+			],
+			"collision_shapes": 2,
+			"founder_approach": {
+				"destination": [
+					432.0,
+					432.0
+				],
+				"destination_cell": [
+					13,
+					13
+				],
+				"initial_route_points": 9,
+				"samples": [
+					[
+						560.0,
+						592.0
+					],
+					[
+						528.0,
+						540.0
+					],
+					[
+						432.0,
+						432.0
+					]
+				],
+				"start": [
+					560.0,
+					592.0
+				],
+				"traveled_px": 276.69615316391
+			},
+			"grid": [
+				12,
+				13
+			],
+			"occupied": [
+				[
+					12,
+					14
+				],
+				[
+					12,
+					13
+				]
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/west-floor_shadow.png",
+					"name": "CompactDeskFloorShadow",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/west-rear_structure.png",
+					"name": "CompactDeskRearStructure",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/west-front_structure.png",
+					"name": "CompactDeskFrontStructure",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"z_offset": 1
+				}
+			]
+		}
+	},
+	"production_catalogue_mutated": false,
+	"renderer": "macOS",
+	"runtime_registered": false,
+	"save_access": false,
+	"scene": "actual GameMain and production TownRoom architecture/navigation; owner-scoped passive compact_desk definition",
+	"shared_art_catalogue_mutated": false,
+	"status": "native_review_candidate_not_runtime_registered",
+	"viewport": [
+		1280,
+		720
+	],
+	"wall_corner_rejections": {
+		"east": {
+			"grid": [
+				1,
+				3
+			],
+			"issue_codes": [
+				"wall_intersection",
+				"visual_wall_intersection",
+				"decorative_headroom",
+				"wall_clearance"
+			],
+			"wall_neighbors": 2
+		},
+		"north": {
+			"grid": [
+				1,
+				3
+			],
+			"issue_codes": [
+				"wall_intersection",
+				"visual_wall_intersection",
+				"decorative_headroom"
+			],
+			"wall_neighbors": 2
+		},
+		"south": {
+			"grid": [
+				1,
+				3
+			],
+			"issue_codes": [
+				"visual_wall_intersection",
+				"decorative_headroom",
+				"wall_clearance"
+			],
+			"wall_neighbors": 2
+		},
+		"west": {
+			"grid": [
+				1,
+				3
+			],
+			"issue_codes": [
+				"visual_wall_intersection",
+				"decorative_headroom"
+			],
+			"wall_neighbors": 2
+		}
+	},
+	"worker_disabled": true
+}

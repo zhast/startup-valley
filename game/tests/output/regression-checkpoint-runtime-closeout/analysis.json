@@ -1,0 +1,395 @@
+{
+  "rawResultsRetained": true,
+  "godotAndValidatorProcessesPassed": false,
+  "sourceGuardRawExitWasNonzero": false,
+  "excludedUnrelatedSourceChanges": [],
+  "unexpectedSourceChanges": [],
+  "comparisons": [
+    {
+      "file": "visual-review/office-hires-0.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/office-hires-1.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/office-hires-2.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/office-hires-3.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/office-hires-4.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-artifact.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-chat-active-readonly.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-chat-long.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-chat-to-assignment.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-chat.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-completion-memo.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-connect.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-empty-team.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-error.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-founder-hud.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-journal-active.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-journal-approval.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-journal-promotion.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-journal-queued.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-keyboard-focus.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-notification-dismissed.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-off-hours.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-studio-empty.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-studio.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-team-rail.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-work.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "visual-review/ui-world-speech.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/world/depth-and-occlusion-end.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/world/depth-and-occlusion-middle.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/world/depth-and-occlusion-start.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/world/employee-idle-cycle-end.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/world/employee-idle-cycle-middle.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/world/employee-idle-cycle-start.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/world/founder-locomotion-end.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/world/founder-locomotion-middle.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/world/founder-locomotion-start.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/world/job-state-cycle-end.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/world/job-state-cycle-middle.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/world/job-state-cycle-start.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/world/office-growth-end.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/world/office-growth-middle.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/world/office-growth-start.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/world/schedule-cycle-end.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/world/schedule-cycle-middle.png",
+      "differentPixels": 3176
+    },
+    {
+      "file": "polish-audit/world/schedule-cycle-start.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/chat-and-work-order-chat-waiting.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/chat-and-work-order-end.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/chat-and-work-order-middle.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/chat-and-work-order-start.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/delivery-studio-reader-delivery-promoted.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/delivery-studio-reader-end.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/delivery-studio-reader-middle.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/delivery-studio-reader-reader-scrolled.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/delivery-studio-reader-start.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/delivery-studio-reader-studio-empty.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/journal-and-approval-approval-answered.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/journal-and-approval-approval-ledger.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/journal-and-approval-approval-visible.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/journal-and-approval-end.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/journal-and-approval-middle.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/journal-and-approval-start.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/journal-and-approval-work-details-restored.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/journal-and-approval-work-details-revealed.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/queued-errors-and-overflow-end.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/queued-errors-and-overflow-middle.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/queued-errors-and-overflow-start.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/queued-errors-and-overflow-worker-error.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/queued-errors-and-overflow-worker-reconnecting.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/queued-errors-and-overflow-worker-recovered.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/team-drawer-controls-end.png",
+      "differentPixels": 4764
+    },
+    {
+      "file": "polish-audit/ui/team-drawer-controls-middle.png",
+      "differentPixels": 1692
+    },
+    {
+      "file": "polish-audit/ui/team-drawer-controls-start.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/work-controls-assignment-disabled.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/work-controls-dropdown-selected.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/work-controls-end.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/work-controls-middle.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/work-controls-start.png",
+      "differentPixels": 0
+    },
+    {
+      "file": "polish-audit/ui/work-controls-visible-title-focus.png",
+      "differentPixels": 0
+    }
+  ],
+  "counts": [
+    {
+      "name": "import",
+      "exitCode": 0,
+      "checks": null
+    },
+    {
+      "name": "validate_project",
+      "exitCode": 0,
+      "checks": null
+    },
+    {
+      "name": "test_audit_output_scope",
+      "exitCode": 0,
+      "checks": 15
+    },
+    {
+      "name": "run_all",
+      "exitCode": 0,
+      "checks": null
+    },
+    {
+      "name": "test_complete_game",
+      "exitCode": 0,
+      "checks": null
+    },
+    {
+      "name": "test_ui_flow_regressions",
+      "exitCode": 0,
+      "checks": null
+    },
+    {
+      "name": "test_graphics_regressions",
+      "exitCode": 0,
+      "checks": null
+    },
+    {
+      "name": "test_office_layout",
+      "exitCode": 0,
+      "checks": 830
+    },
+    {
+      "name": "test_office_migration",
+      "exitCode": 0,
+      "checks": 2468
+    },
+    {
+      "name": "test_office_architecture",
+      "exitCode": 0,
+      "checks": 486
+    },
+    {
+      "name": "test_office_layout_editor",
+      "exitCode": 0,
+      "checks": 258
+    },
+    {
+      "name": "test_furniture_directions",
+      "exitCode": 0,
+      "checks": 429
+    },
+    {
+      "name": "test_workstation_facing",
+      "exitCode": 1,
+      "checks": 249
+    }
+  ],
+  "countedChecks": 4735,
+  "limitations": [
+    "Raw aggregate runner exited 1 solely for the separately documented unrelated dev-source change; its original results were not rewritten as exit 0.",
+    "Passive native replay was concurrent and not a checkpoint test: its935/1 manifest was accidentally restored to an older version by an overly broad report backup, then recovered exactly. It is preserved separately as concurrent-passive-replay/manifest.json. Future runner backup now targets only headless report/export paths.",
+    "This snapshot precedes the company agent's later test-only actual-line toolbar-bound correction and final standalone native passive replay.",
+    "New runtime inventory is limited to assets/runtime; staged source/material work after catalogue113 is excluded."
+  ]
+}

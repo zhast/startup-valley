@@ -1,0 +1,1283 @@
+{
+	"actor_pixel_checks": 225602,
+	"canonical_family": false,
+	"canvas": [
+		96,
+		144
+	],
+	"captures": [
+		"north-room",
+		"north-founder-walk-010",
+		"north-founder-walk-017",
+		"north-founder-walk-030",
+		"north-founder-arrival",
+		"north-mira-walk-010",
+		"north-mira-walk-017",
+		"north-mira-walk-030",
+		"north-mira-arrival",
+		"north-theo-walk-010",
+		"north-theo-walk-017",
+		"north-theo-walk-030",
+		"north-theo-walk-050",
+		"north-theo-arrival",
+		"east-room",
+		"east-founder-walk-010",
+		"east-founder-walk-017",
+		"east-founder-walk-030",
+		"east-founder-arrival",
+		"east-mira-walk-010",
+		"east-mira-walk-017",
+		"east-mira-walk-030",
+		"east-mira-arrival",
+		"east-theo-walk-010",
+		"east-theo-walk-017",
+		"east-theo-walk-030",
+		"east-theo-walk-050",
+		"east-theo-arrival",
+		"south-room",
+		"south-founder-walk-010",
+		"south-founder-walk-017",
+		"south-founder-walk-030",
+		"south-founder-arrival",
+		"south-mira-walk-010",
+		"south-live-label-relayout",
+		"south-mira-walk-017",
+		"south-mira-walk-030",
+		"south-mira-arrival",
+		"south-theo-walk-010",
+		"south-theo-walk-017",
+		"south-theo-walk-030",
+		"south-theo-walk-050",
+		"south-theo-arrival",
+		"west-room",
+		"west-founder-walk-010",
+		"west-founder-walk-017",
+		"west-founder-walk-030",
+		"west-founder-arrival",
+		"west-mira-walk-010",
+		"west-mira-walk-017",
+		"west-mira-walk-030",
+		"west-mira-arrival",
+		"west-theo-walk-010",
+		"west-theo-walk-017",
+		"west-theo-walk-030",
+		"west-theo-walk-050",
+		"west-theo-arrival"
+	],
+	"checks": 1768,
+	"depth_samples": [
+		{
+			"actor": "founder",
+			"checkpoint": "north-room",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "north-room",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "north-room",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "north-founder-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1425
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "north-founder-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "north-founder-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "north-founder-walk-017",
+			"hidden_by_pedestal": 167,
+			"mismatches": 0,
+			"tested": 1406
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "north-founder-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "north-founder-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "north-founder-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "north-founder-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "north-founder-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "north-founder-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "north-founder-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "north-founder-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "north-mira-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "north-mira-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1288
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "north-mira-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "north-mira-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "north-mira-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1269
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "north-mira-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "north-mira-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "north-mira-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1269
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "north-mira-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "north-mira-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "north-mira-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "north-mira-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "north-theo-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "north-theo-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "north-theo-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1373
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "north-theo-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "north-theo-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "north-theo-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1417
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "north-theo-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "north-theo-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "north-theo-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1246
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "north-theo-walk-050",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "north-theo-walk-050",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "north-theo-walk-050",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1403
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "north-theo-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "north-theo-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "north-theo-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1196
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "east-room",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "east-room",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "east-room",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "east-founder-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1425
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "east-founder-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "east-founder-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "east-founder-walk-017",
+			"hidden_by_pedestal": 175,
+			"mismatches": 0,
+			"tested": 1406
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "east-founder-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "east-founder-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "east-founder-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "east-founder-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "east-founder-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "east-founder-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "east-founder-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "east-founder-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "east-mira-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "east-mira-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1288
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "east-mira-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "east-mira-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "east-mira-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1269
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "east-mira-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "east-mira-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "east-mira-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1269
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "east-mira-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "east-mira-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "east-mira-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "east-mira-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "east-theo-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "east-theo-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "east-theo-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1373
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "east-theo-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "east-theo-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "east-theo-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1417
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "east-theo-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "east-theo-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "east-theo-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1246
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "east-theo-walk-050",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "east-theo-walk-050",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "east-theo-walk-050",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1403
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "east-theo-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "east-theo-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "east-theo-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1196
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "south-room",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "south-room",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "south-room",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "south-founder-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1425
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "south-founder-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "south-founder-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "south-founder-walk-017",
+			"hidden_by_pedestal": 167,
+			"mismatches": 0,
+			"tested": 1406
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "south-founder-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "south-founder-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "south-founder-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "south-founder-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "south-founder-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "south-founder-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "south-founder-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "south-founder-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "south-mira-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "south-mira-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1288
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "south-mira-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "south-live-label-relayout",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "south-live-label-relayout",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1269
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "south-live-label-relayout",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "south-mira-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "south-mira-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1269
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "south-mira-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "south-mira-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "south-mira-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1269
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "south-mira-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "south-mira-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "south-mira-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "south-mira-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "south-theo-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "south-theo-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "south-theo-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1373
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "south-theo-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "south-theo-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "south-theo-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1417
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "south-theo-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "south-theo-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "south-theo-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1246
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "south-theo-walk-050",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "south-theo-walk-050",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "south-theo-walk-050",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1403
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "south-theo-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "south-theo-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "south-theo-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1196
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "west-room",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "west-room",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "west-room",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "west-founder-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1425
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "west-founder-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "west-founder-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "west-founder-walk-017",
+			"hidden_by_pedestal": 175,
+			"mismatches": 0,
+			"tested": 1406
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "west-founder-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "west-founder-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "west-founder-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "west-founder-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "west-founder-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "west-founder-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "west-founder-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1315
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "west-founder-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "west-mira-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "west-mira-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1288
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "west-mira-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "west-mira-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "west-mira-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1269
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "west-mira-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "west-mira-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "west-mira-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1269
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "west-mira-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "west-mira-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "west-mira-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "west-mira-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1467
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "west-theo-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "west-theo-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "west-theo-walk-010",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1373
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "west-theo-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "west-theo-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "west-theo-walk-017",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1417
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "west-theo-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "west-theo-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "west-theo-walk-030",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1246
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "west-theo-walk-050",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "west-theo-walk-050",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "west-theo-walk-050",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1403
+		},
+		{
+			"actor": "founder",
+			"checkpoint": "west-theo-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1282
+		},
+		{
+			"actor": "mira",
+			"checkpoint": "west-theo-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1157
+		},
+		{
+			"actor": "theo",
+			"checkpoint": "west-theo-arrival",
+			"hidden_by_pedestal": 0,
+			"mismatches": 0,
+			"tested": 1196
+		}
+	],
+	"failures": [],
+	"physical_steps": 628,
+	"pivot": [
+		48,
+		96
+	],
+	"production_changed": false,
+	"runtime_approved": false,
+	"source_hashes": {
+		"res://assets/runtime/office/architecture/floor.png": "6202478639de33fe7f8b548b49a20dddff6b69b59300300bcc89cfa064f2d0bd",
+		"res://data/furniture_catalog.json": "962d47f9fd3867328f3f293351fbb3124e6053f2d156fc20e97ee856cce09319",
+		"res://data/office_layout.json": "484bc653b3ff4ae4dcc4aaf613396d9d18b70d27ed59971e4b0460be4187632d",
+		"res://tests/fixtures/furniture-calibration/materials/charcoal-powdercoat-v1.png": "807152a50c8a1771cd451d0984fe1fd4ba3fb6328089e5fa9dd1fb2c858ad42d",
+		"res://tests/fixtures/furniture-calibration/pedestal-v1/drawer-front.png": "e6663d928c99e27edcfbeaeabbb8efbadc53c39889bc33cb7d6b38952a654cd8"
+	},
+	"worker_started": false
+}

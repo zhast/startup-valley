@@ -1,0 +1,30 @@
+{
+	"canvas": [
+		192,
+		224
+	],
+	"checks": 227,
+	"collision_cells": [],
+	"creative_role_or_backend_added": false,
+	"dev_catalogue_registered": false,
+	"failures": [],
+	"historical_north_source_sha256": "93d3295cf53f652397ea664cf457600852ca9cefbc1f36c88c0f9e619f28ffc0",
+	"host": "accepted desk / workstations-v2",
+	"image_generation_used": false,
+	"layers_per_facing": [
+		"surface_decor_rear",
+		"surface_decor_front"
+	],
+	"objects_per_facing": [
+		"pen_display",
+		"swatch_fan",
+		"stylus_tool_tray"
+	],
+	"pivot": [
+		96,
+		160
+	],
+	"production_catalogue_registered": false,
+	"runtime_registered": false,
+	"status": "native_review_candidate_not_runtime_registered"
+}
