@@ -1,0 +1,26 @@
+{
+  "revision": "prototype-bench-v1",
+  "status": "runtime_ready",
+  "directions": ["north", "east", "south", "west"],
+  "canvas": [192, 320],
+  "pivot": [96, 240],
+  "native_scale": 1,
+  "files": {
+    "east-floor_shadow.png": "a7dd0b046206fc5cbb34aef557e649a1d1198079a00b48bf6618fac2eb552583",
+    "east-front_structure.png": "95cedb2f8791145bcba435d5c2d0b674d9b43d732d0f60c5ffd0bfe38dd906d2",
+    "east-rear_structure.png": "47c0c49d884dacc6a2cdb3eca64b6c9eeee7b2f3c5be5455a503abbfb31883e6",
+    "east-tool_overlay.png": "4eee1f55a10daa754e7db394dd003c257ce989f2c017605f973dd978e578767c",
+    "north-floor_shadow.png": "7b8449dc92b25636f52718884e1dde8ceb890c6dce287dace8c770097e1b94b5",
+    "north-front_structure.png": "cc2762542fd56b02c89b7f78aa1628d93c777effaad2977ec21ae0888b10584e",
+    "north-rear_structure.png": "2084fa2f0c7d5d1087fabdc7607f33880ec5bb49f8e7e602e546b44392d013c3",
+    "north-tool_overlay.png": "d94db6ede86dc7197afb886c91935cffd11c474f4875e0f9048d721f03737460",
+    "south-floor_shadow.png": "7b8449dc92b25636f52718884e1dde8ceb890c6dce287dace8c770097e1b94b5",
+    "south-front_structure.png": "cc2762542fd56b02c89b7f78aa1628d93c777effaad2977ec21ae0888b10584e",
+    "south-rear_structure.png": "2084fa2f0c7d5d1087fabdc7607f33880ec5bb49f8e7e602e546b44392d013c3",
+    "south-tool_overlay.png": "326236d43334e9e4d2879a00d8075aac9f14fb824cefbbd0109ed2f9c8011dbf",
+    "west-floor_shadow.png": "a7dd0b046206fc5cbb34aef557e649a1d1198079a00b48bf6618fac2eb552583",
+    "west-front_structure.png": "f5abee0f63391d9f8afa1d176ce40f640d69d182c485dd1c0b9fcc05424df0a8",
+    "west-rear_structure.png": "57fb21ba923ade05fb221f45750e1b700afdbd6efc4da3e6e659b71010ced761",
+    "west-tool_overlay.png": "1316045d77cf0b4615369c7e1d75efe36ca57a3083ad03ac3f5672ff5fbde009"
+  }
+}

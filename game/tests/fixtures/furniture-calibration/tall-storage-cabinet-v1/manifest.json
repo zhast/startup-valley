@@ -1,0 +1,736 @@
+{
+	"canvas": [
+		160,
+		288
+	],
+	"checks": 39,
+	"default_layout_registered": false,
+	"dev_catalogue_registration": "Not asserted. This exporter only verifies that the shared catalogue stays byte-exact during its own run.",
+	"dimension_review": {
+		"measured_opaque_rise_px": 112,
+		"planned_canvas_retained": [
+			160,
+			288
+		],
+		"planned_floor_anchor_retained": [
+			80,
+			224
+		],
+		"planned_max_rise_envelope_px": 160,
+		"revision": "The planned maximum rise was an envelope, not required opaque height. Tall supply storage uses 112px, compact server equipment uses 96px, and the low sorter keeps 48px; original native registration and two-cell collision masks remain unchanged."
+	},
+	"directions": [
+		{
+			"approach_gaze": "south",
+			"body_plane_px": [
+				-14,
+				-96,
+				60,
+				112
+			],
+			"camera_face_identity": "rear",
+			"clearance_cell_offsets": [
+				[
+					0,
+					-1
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"measured_opaque_rise_px": 112,
+				"planned_canvas_retained": [
+					160,
+					288
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					224
+				],
+				"planned_max_rise_envelope_px": 160,
+				"revision": "The planned maximum rise was an envelope, not required opaque height. Tall supply storage uses 112px, compact server equipment uses 96px, and the low sorter keeps 48px; original native registration and two-cell collision masks remain unchanged."
+			},
+			"employee_look_vector": [
+				0,
+				1
+			],
+			"facing": "north",
+			"floor_plane_px": [
+				-16,
+				-16,
+				64,
+				32
+			],
+			"footprint_cells": [
+				2,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/north-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							66,
+							233,
+							61,
+							7
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 214,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 45866
+					},
+					"name": "TallStorageCabinetNorthFloorShadow",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "6a31172d5bed623a6a34525e7dfbf97129a5554d7eff5041ea513edb1d931c0a",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/north-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							66,
+							128,
+							60,
+							112
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 6720,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 39360
+					},
+					"name": "TallStorageCabinetNorthRearStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "a19870c59ce460ef5681efbf79cd25b24cf9fe645e8485d760592364f7d4c19b",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/north-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							72,
+							134,
+							48,
+							100
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 4800,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 41280
+					},
+					"name": "TallStorageCabinetNorthFrontStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "6f3192023922191920499d20e5b83a5c0f6a6ac09b5a7758a48419ce78a2e0dc",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					1,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				0,
+				-1
+			],
+			"role_identity": {
+				"closed_supply_doors": false,
+				"door_edge": "broad",
+				"rear_brace": true
+			},
+			"service_side": "north",
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					66,
+					128,
+					61,
+					112
+				],
+				"opaque_colors": 9,
+				"opaque_pixels": 6721,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 39359
+			},
+			"whole_sha256": "ab43912fc7a834b092e76da42252bf0abb6b1813be8134d590782e5795bd71f0"
+		},
+		{
+			"approach_gaze": "west",
+			"body_plane_px": [
+				-14,
+				-64,
+				28,
+				112
+			],
+			"camera_face_identity": "service_front_right_edge",
+			"clearance_cell_offsets": [
+				[
+					1,
+					0
+				]
+			],
+			"contact_boundary_y": 48,
+			"dimension_review": {
+				"measured_opaque_rise_px": 112,
+				"planned_canvas_retained": [
+					160,
+					288
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					224
+				],
+				"planned_max_rise_envelope_px": 160,
+				"revision": "The planned maximum rise was an envelope, not required opaque height. Tall supply storage uses 112px, compact server equipment uses 96px, and the low sorter keeps 48px; original native registration and two-cell collision masks remain unchanged."
+			},
+			"employee_look_vector": [
+				-1,
+				0
+			],
+			"facing": "east",
+			"floor_plane_px": [
+				-16,
+				-16,
+				32,
+				64
+			],
+			"footprint_cells": [
+				1,
+				2
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/east-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							66,
+							265,
+							29,
+							7
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 102,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 45978
+					},
+					"name": "TallStorageCabinetEastFloorShadow",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "7bff9f09880ee82cd0338a84ef011ca86ff134d703ba21b2b4e152a92ce30b7a",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/east-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							66,
+							160,
+							28,
+							112
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 3136,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42944
+					},
+					"name": "TallStorageCabinetEastRearStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "9600ed4254dec586eb3741c1ece1af2123d916725db4e3e4f263851b9996f486",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/east-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							71,
+							165,
+							21,
+							102
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 2127,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 43953
+					},
+					"name": "TallStorageCabinetEastFrontStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "d7cbdcd89885e63181c92b129c35572075dd95a10e76a37a56627d85e2577b47",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					1
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				1,
+				0
+			],
+			"role_identity": {
+				"closed_supply_doors": false,
+				"door_edge": "right",
+				"rear_brace": false
+			},
+			"service_side": "east",
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					66,
+					160,
+					29,
+					112
+				],
+				"opaque_colors": 9,
+				"opaque_pixels": 3137,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 42943
+			},
+			"whole_sha256": "b0ec068b5ce01e920c9f0dcb312f1af4cb7ea349717756bbb498596946276b91"
+		},
+		{
+			"approach_gaze": "north",
+			"body_plane_px": [
+				-46,
+				-96,
+				60,
+				112
+			],
+			"camera_face_identity": "service_front",
+			"clearance_cell_offsets": [
+				[
+					0,
+					1
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"measured_opaque_rise_px": 112,
+				"planned_canvas_retained": [
+					160,
+					288
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					224
+				],
+				"planned_max_rise_envelope_px": 160,
+				"revision": "The planned maximum rise was an envelope, not required opaque height. Tall supply storage uses 112px, compact server equipment uses 96px, and the low sorter keeps 48px; original native registration and two-cell collision masks remain unchanged."
+			},
+			"employee_look_vector": [
+				0,
+				-1
+			],
+			"facing": "south",
+			"floor_plane_px": [
+				-48,
+				-16,
+				64,
+				32
+			],
+			"footprint_cells": [
+				2,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/south-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							34,
+							233,
+							61,
+							7
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 214,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 45866
+					},
+					"name": "TallStorageCabinetSouthFloorShadow",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "d498f256f0a198a3f9fa8fc267ee9192eb556d4a61687c8656a540b4367e1576",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/south-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							34,
+							128,
+							60,
+							112
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 6720,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 39360
+					},
+					"name": "TallStorageCabinetSouthRearStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "833a4f5d51be6d952ecc0e2e3bb00d8fb5fb41e902c4ce3547a826d7e33b14b0",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/south-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							39,
+							133,
+							50,
+							102
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 1160,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 44920
+					},
+					"name": "TallStorageCabinetSouthFrontStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "4400d14786bd6f3856f7a74e0d183debc1320d099521bfd5b416be542f2fb697",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				0,
+				1
+			],
+			"role_identity": {
+				"closed_supply_doors": true,
+				"door_edge": "broad",
+				"rear_brace": false
+			},
+			"service_side": "south",
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					34,
+					128,
+					61,
+					112
+				],
+				"opaque_colors": 10,
+				"opaque_pixels": 6721,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 39359
+			},
+			"whole_sha256": "b54238d1448f081da922678d8f2fe836d118512518782ae216a2c50e37b46ff0"
+		},
+		{
+			"approach_gaze": "east",
+			"body_plane_px": [
+				-14,
+				-96,
+				28,
+				112
+			],
+			"camera_face_identity": "service_front_left_edge",
+			"clearance_cell_offsets": [
+				[
+					-1,
+					0
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"measured_opaque_rise_px": 112,
+				"planned_canvas_retained": [
+					160,
+					288
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					224
+				],
+				"planned_max_rise_envelope_px": 160,
+				"revision": "The planned maximum rise was an envelope, not required opaque height. Tall supply storage uses 112px, compact server equipment uses 96px, and the low sorter keeps 48px; original native registration and two-cell collision masks remain unchanged."
+			},
+			"employee_look_vector": [
+				1,
+				0
+			],
+			"facing": "west",
+			"floor_plane_px": [
+				-16,
+				-48,
+				32,
+				64
+			],
+			"footprint_cells": [
+				1,
+				2
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/west-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							66,
+							233,
+							29,
+							7
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 102,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 45978
+					},
+					"name": "TallStorageCabinetWestFloorShadow",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "c2bcd95b639742b4f12bb929bf642d8214e41772981d7b3f58ae6d573cfa7013",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/west-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							66,
+							128,
+							28,
+							112
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 3136,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42944
+					},
+					"name": "TallStorageCabinetWestRearStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "62d9c74ca4a2746fdd7eed389aa212446f565d515dc7a95bc33cca9e25e339d4",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/west-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							68,
+							133,
+							21,
+							102
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 2130,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 43950
+					},
+					"name": "TallStorageCabinetWestFrontStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "7b4a8a7995d3f5b42367c4ac49ecdeeeb1ce372f2430b4e98d73638990098e55",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					-1
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				-1,
+				0
+			],
+			"role_identity": {
+				"closed_supply_doors": false,
+				"door_edge": "left",
+				"rear_brace": false
+			},
+			"service_side": "west",
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					66,
+					128,
+					29,
+					112
+				],
+				"opaque_colors": 9,
+				"opaque_pixels": 3137,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 42943
+			},
+			"whole_sha256": "fe32853c5b9059275fd4e65a820045ef58bb387255dc7c37992ad896f5268f7e"
+		}
+	],
+	"failures": [],
+	"family": "tall_storage_cabinet",
+	"id": "tall-storage-cabinet-v1",
+	"image_generation_calls": 0,
+	"layers": [
+		"floor_shadow",
+		"rear_structure",
+		"front_structure"
+	],
+	"material_sources": {
+		"charcoal_powdercoat": {
+			"path": "res://tests/fixtures/furniture-calibration/materials/charcoal-powdercoat-v1.png",
+			"retained_unchanged": true,
+			"sha256": "807152a50c8a1771cd451d0984fe1fd4ba3fb6328089e5fa9dd1fb2c858ad42d"
+		},
+		"oak_horizontal": {
+			"path": "res://tests/fixtures/furniture-calibration/materials-v2/oak-horizontal-v2.png",
+			"retained_unchanged": true,
+			"sha256": "bcd3ccf8c6411b4ce24997a88b3fabf78f7fa2132b240f66ee1d59ab3e0dded6"
+		},
+		"oak_vertical": {
+			"path": "res://tests/fixtures/furniture-calibration/materials-v2/oak-vertical-v2.png",
+			"retained_unchanged": true,
+			"sha256": "28a84e93bcdd6e026fbd3a56ae598f14a6c74acd07d1c5950a1a2347a1a24fae"
+		}
+	},
+	"pivot": [
+		80,
+		224
+	],
+	"production_catalogue_registered": false,
+	"provenance": "Editable typed-GDScript construction with retained reviewed oak/powdercoat native material tiles where relevant. No generated full view, transformed finished raster, provider call, text, logo, fake metric, baked actor, or service implementation.",
+	"runtime_registered": false,
+	"service_backend_or_interaction_created": false,
+	"source_attempts_created": 0,
+	"sprite_offset": [
+		0,
+		-80
+	],
+	"status": "passive_library_art_without_runtime_binding"
+}

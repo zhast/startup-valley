@@ -1,0 +1,590 @@
+{
+	"exports": [
+		{
+			"approach_gaze": "south",
+			"camera_face": "rear",
+			"canvas": [
+				192,
+				288
+			],
+			"face_socket": [
+				-44,
+				-44,
+				88,
+				56
+			],
+			"floor": [
+				-48,
+				-16,
+				96,
+				32
+			],
+			"pivot": [
+				96,
+				224
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/north-carcass.png",
+					"ink": [
+						48,
+						176,
+						96,
+						60
+					],
+					"name": "ArchiveCarcass",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/north-top.png",
+					"ink": [
+						48,
+						144,
+						96,
+						32
+					],
+					"name": "ArchiveTop",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/north-front.png",
+					"ink": [
+						50,
+						176,
+						92,
+						60
+					],
+					"name": "ArchiveFront",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/north-plinth.png",
+					"ink": [
+						48,
+						236,
+						96,
+						4
+					],
+					"name": "ArchivePlinth",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/north-insert.png",
+					"ink": [
+						52,
+						180,
+						88,
+						56
+					],
+					"name": "ArchiveInsert",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				}
+			],
+			"runtime_approved": false,
+			"service_side": "north",
+			"source_face": "res://tests/fixtures/furniture-calibration/kits/archive-service-north-back-v1.png",
+			"top": [
+				-48,
+				-80,
+				96,
+				32
+			],
+			"visual_bounds": [
+				-48,
+				-80,
+				96,
+				96
+			]
+		},
+		{
+			"approach_gaze": "west",
+			"camera_face": "locker_end",
+			"canvas": [
+				192,
+				288
+			],
+			"face_socket": [
+				-12,
+				-12,
+				24,
+				56
+			],
+			"floor": [
+				-16,
+				-48,
+				32,
+				96
+			],
+			"pivot": [
+				96,
+				224
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/east-carcass.png",
+					"ink": [
+						80,
+						208,
+						32,
+						60
+					],
+					"name": "ArchiveCarcass",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/east-top.png",
+					"ink": [
+						80,
+						112,
+						32,
+						96
+					],
+					"name": "ArchiveTop",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/east-front.png",
+					"ink": [
+						82,
+						208,
+						28,
+						60
+					],
+					"name": "ArchiveFront",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/east-plinth.png",
+					"ink": [
+						80,
+						268,
+						32,
+						4
+					],
+					"name": "ArchivePlinth",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/east-insert.png",
+					"ink": [
+						84,
+						215,
+						24,
+						50
+					],
+					"name": "ArchiveInsert",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				}
+			],
+			"runtime_approved": false,
+			"service_side": "east",
+			"source_face": "res://tests/fixtures/furniture-calibration/kits/archive-service-east-locker-end-v1.png",
+			"top": [
+				-16,
+				-112,
+				32,
+				96
+			],
+			"visual_bounds": [
+				-16,
+				-112,
+				32,
+				160
+			]
+		},
+		{
+			"approach_gaze": "north",
+			"camera_face": "service_front",
+			"canvas": [
+				192,
+				288
+			],
+			"face_socket": [
+				-44,
+				-44,
+				88,
+				56
+			],
+			"floor": [
+				-48,
+				-16,
+				96,
+				32
+			],
+			"pivot": [
+				96,
+				224
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/south-carcass.png",
+					"ink": [
+						48,
+						176,
+						96,
+						60
+					],
+					"name": "ArchiveCarcass",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/south-top.png",
+					"ink": [
+						48,
+						144,
+						96,
+						32
+					],
+					"name": "ArchiveTop",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/south-front.png",
+					"ink": [
+						50,
+						176,
+						92,
+						60
+					],
+					"name": "ArchiveFront",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/south-plinth.png",
+					"ink": [
+						48,
+						236,
+						96,
+						4
+					],
+					"name": "ArchivePlinth",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/south-insert.png",
+					"ink": [
+						52,
+						181,
+						88,
+						54
+					],
+					"name": "ArchiveInsert",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				}
+			],
+			"runtime_approved": false,
+			"service_side": "south",
+			"source_face": "res://tests/fixtures/furniture-calibration/kits/archive-service-south-insert-v1.png",
+			"top": [
+				-48,
+				-80,
+				96,
+				32
+			],
+			"visual_bounds": [
+				-48,
+				-80,
+				96,
+				96
+			]
+		},
+		{
+			"approach_gaze": "east",
+			"camera_face": "display_end",
+			"canvas": [
+				192,
+				288
+			],
+			"face_socket": [
+				-12,
+				-12,
+				24,
+				56
+			],
+			"floor": [
+				-16,
+				-48,
+				32,
+				96
+			],
+			"pivot": [
+				96,
+				224
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/west-carcass.png",
+					"ink": [
+						80,
+						208,
+						32,
+						60
+					],
+					"name": "ArchiveCarcass",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/west-top.png",
+					"ink": [
+						80,
+						112,
+						32,
+						96
+					],
+					"name": "ArchiveTop",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/west-front.png",
+					"ink": [
+						82,
+						208,
+						28,
+						60
+					],
+					"name": "ArchiveFront",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/west-plinth.png",
+					"ink": [
+						80,
+						268,
+						32,
+						4
+					],
+					"name": "ArchivePlinth",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-archive-v1/west-insert.png",
+					"ink": [
+						84,
+						215,
+						24,
+						50
+					],
+					"name": "ArchiveInsert",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						288
+					],
+					"z_offset": 0
+				}
+			],
+			"runtime_approved": false,
+			"service_side": "west",
+			"source_face": "res://tests/fixtures/furniture-calibration/kits/archive-service-west-display-end-v1.png",
+			"top": [
+				-16,
+				-112,
+				32,
+				96
+			],
+			"visual_bounds": [
+				-16,
+				-112,
+				32,
+				160
+			]
+		}
+	],
+	"runtime_approved": false,
+	"source_evidence": "res://tests/output/archive-assembly/manifest.json"
+}

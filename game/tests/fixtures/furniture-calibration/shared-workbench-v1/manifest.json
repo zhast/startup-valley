@@ -1,0 +1,1032 @@
+{
+	"asset_scope": "base furniture only",
+	"canvas": [
+		256,
+		304
+	],
+	"catalogue_family": "shared_workbench",
+	"checks": 51,
+	"default_layout_registered": false,
+	"dev_catalogue_registered": false,
+	"directions": [
+		{
+			"clearance_cell_offsets": [
+				[
+					-1,
+					1
+				],
+				[
+					0,
+					1
+				],
+				[
+					1,
+					1
+				]
+			],
+			"contact_boundary_y": 16,
+			"distinct_scale_references": {
+				"compact_bounds": [
+					32,
+					80,
+					64,
+					64
+				],
+				"compact_desk_path": "res://tests/fixtures/furniture-calibration/compact-desk-v1/north-whole.png",
+				"prototype_bench_path": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/north-whole.png",
+				"prototype_bounds": [
+					38,
+					98,
+					116,
+					149
+				]
+			},
+			"employee_look_vector": [
+				0,
+				-1
+			],
+			"facing": "north",
+			"floor_plane": [
+				-80,
+				-16,
+				160,
+				32
+			],
+			"footprint_cells": [
+				5,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/north-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							52,
+							202,
+							152,
+							12
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 932,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 76892
+					},
+					"name": "SharedWorkbenchFloorShadow",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "3915980b5a6bb3bbdb92a31a410c8b4ad9bcbde0efeb3d65726e08c2f69d60aa",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/north-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							51,
+							154,
+							154,
+							41
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 5090,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 72734
+					},
+					"name": "SharedWorkbenchRearStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "16bcee085f80132747d36f34d18e348c6503d50d45e5558a4a97e018dbb0610e",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/north-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							51,
+							186,
+							154,
+							38
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 1908,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 75916
+					},
+					"name": "SharedWorkbenchFrontStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "4c9349c1fc5b667ae07b6250ca22457f25294dc082db62927dbaeee42c0b8b46",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					-2,
+					0
+				],
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					1,
+					0
+				],
+				[
+					2,
+					0
+				]
+			],
+			"overlay_contract": {
+				"chair_a": {
+					"adds_base_collision": false,
+					"cell": [
+						-1,
+						1
+					],
+					"included_in_base": false,
+					"owner_family": "ergonomic_chair"
+				},
+				"chair_b": {
+					"adds_base_collision": false,
+					"cell": [
+						1,
+						1
+					],
+					"included_in_base": false,
+					"owner_family": "ergonomic_chair"
+				},
+				"device_a": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "computer_kit",
+					"surface_zone": [
+						-69,
+						-48,
+						40,
+						18
+					]
+				},
+				"device_b": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "computer_kit",
+					"surface_zone": [
+						7,
+						-48,
+						40,
+						18
+					]
+				},
+				"role_a": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "role_tool_kits",
+					"surface_zone": [
+						-25,
+						-47,
+						18,
+						16
+					]
+				},
+				"role_b": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "role_tool_kits",
+					"surface_zone": [
+						51,
+						-47,
+						18,
+						16
+					]
+				}
+			},
+			"proposed_interaction_cell": [
+				0,
+				1
+			],
+			"top_layer": "rear_structure",
+			"top_plane": [
+				-77,
+				-54,
+				154,
+				32
+			],
+			"whole_rgba_sha256": "6ea07545226bf5a4664f0761a12a11b1097ad023fed9ee3254f8ab8ed317f740",
+			"whole_sha256": "eb3021d3b417a1b9f5511aa580e7b7138ff2d5df9bb63fcf271f8481608f767a",
+			"work_cell_offsets": [
+				[
+					-1,
+					1
+				],
+				[
+					1,
+					1
+				]
+			]
+		},
+		{
+			"clearance_cell_offsets": [
+				[
+					-1,
+					-1
+				],
+				[
+					-1,
+					0
+				],
+				[
+					-1,
+					1
+				]
+			],
+			"contact_boundary_y": 80,
+			"distinct_scale_references": {
+				"compact_bounds": [
+					64,
+					48,
+					32,
+					96
+				],
+				"compact_desk_path": "res://tests/fixtures/furniture-calibration/compact-desk-v1/east-whole.png",
+				"prototype_bench_path": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/east-whole.png",
+				"prototype_bounds": [
+					48,
+					90,
+					94,
+					158
+				]
+			},
+			"employee_look_vector": [
+				1,
+				0
+			],
+			"facing": "east",
+			"floor_plane": [
+				-16,
+				-80,
+				32,
+				160
+			],
+			"footprint_cells": [
+				1,
+				5
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/east-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							113,
+							132,
+							30,
+							152
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 2332,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 75492
+					},
+					"name": "SharedWorkbenchFloorShadow",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "b84e06fe8ce2127e7621a5e1bdc34f0142b9c322559583a6cc203ffdc8f23bf9",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/east-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							114,
+							131,
+							28,
+							154
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 4312,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 73512
+					},
+					"name": "SharedWorkbenchRearStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "8229ac842726bff7f83d100305fdcfc980948ec5add92d83ff23ccc24c10f277",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/east-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							133,
+							131,
+							9,
+							157
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 882,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 76942
+					},
+					"name": "SharedWorkbenchFrontStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "3f8fbcc58627247e9f7021041418ba58056dc69d4d464bd558099fd3339c918a",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					-2
+				],
+				[
+					0,
+					-1
+				],
+				[
+					0,
+					0
+				],
+				[
+					0,
+					1
+				],
+				[
+					0,
+					2
+				]
+			],
+			"overlay_contract": {
+				"chair_a": {
+					"adds_base_collision": false,
+					"cell": [
+						-1,
+						-1
+					],
+					"included_in_base": false,
+					"owner_family": "ergonomic_chair"
+				},
+				"chair_b": {
+					"adds_base_collision": false,
+					"cell": [
+						-1,
+						1
+					],
+					"included_in_base": false,
+					"owner_family": "ergonomic_chair"
+				},
+				"device_a": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "computer_kit",
+					"surface_zone": [
+						-8,
+						-69,
+						18,
+						40
+					]
+				},
+				"device_b": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "computer_kit",
+					"surface_zone": [
+						-8,
+						7,
+						18,
+						40
+					]
+				},
+				"role_a": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "role_tool_kits",
+					"surface_zone": [
+						-7,
+						-25,
+						16,
+						18
+					]
+				},
+				"role_b": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "role_tool_kits",
+					"surface_zone": [
+						-7,
+						51,
+						16,
+						18
+					]
+				}
+			},
+			"proposed_interaction_cell": [
+				-1,
+				0
+			],
+			"top_layer": "rear_structure",
+			"top_plane": [
+				-14,
+				-77,
+				28,
+				154
+			],
+			"whole_rgba_sha256": "18b3abf0e89e69f76b415dde6d3b8205a7b23eb0a6ce22ca75cebb543bc98f1a",
+			"whole_sha256": "f997365fd941602b12288b4be8d83fb3c3ba7138f9babaa572918b6eab563a62",
+			"work_cell_offsets": [
+				[
+					-1,
+					-1
+				],
+				[
+					-1,
+					1
+				]
+			]
+		},
+		{
+			"clearance_cell_offsets": [
+				[
+					1,
+					-1
+				],
+				[
+					0,
+					-1
+				],
+				[
+					-1,
+					-1
+				]
+			],
+			"contact_boundary_y": 16,
+			"distinct_scale_references": {
+				"compact_bounds": [
+					64,
+					80,
+					64,
+					64
+				],
+				"compact_desk_path": "res://tests/fixtures/furniture-calibration/compact-desk-v1/south-whole.png",
+				"prototype_bench_path": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/south-whole.png",
+				"prototype_bounds": [
+					38,
+					98,
+					116,
+					149
+				]
+			},
+			"employee_look_vector": [
+				0,
+				1
+			],
+			"facing": "south",
+			"floor_plane": [
+				-80,
+				-16,
+				160,
+				32
+			],
+			"footprint_cells": [
+				5,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/south-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							52,
+							202,
+							152,
+							12
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 932,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 76892
+					},
+					"name": "SharedWorkbenchFloorShadow",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "3915980b5a6bb3bbdb92a31a410c8b4ad9bcbde0efeb3d65726e08c2f69d60aa",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/south-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							59,
+							158,
+							138,
+							45
+						],
+						"opaque_colors": 3,
+						"opaque_pixels": 1362,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 76462
+					},
+					"name": "SharedWorkbenchRearStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "02c220c128640557fe98a8183e30cb9e3750f01c5736ce40f48add08de0edeff",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/south-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							51,
+							154,
+							154,
+							70
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 6836,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 70988
+					},
+					"name": "SharedWorkbenchFrontStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "aa9603a2b0dce919931ec5297f83ca2927612d5d6bdb765221c40c6c4e2df13b",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					2,
+					0
+				],
+				[
+					1,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					-1,
+					0
+				],
+				[
+					-2,
+					0
+				]
+			],
+			"overlay_contract": {
+				"chair_a": {
+					"adds_base_collision": false,
+					"cell": [
+						1,
+						-1
+					],
+					"included_in_base": false,
+					"owner_family": "ergonomic_chair"
+				},
+				"chair_b": {
+					"adds_base_collision": false,
+					"cell": [
+						-1,
+						-1
+					],
+					"included_in_base": false,
+					"owner_family": "ergonomic_chair"
+				},
+				"device_a": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "computer_kit",
+					"surface_zone": [
+						-69,
+						-48,
+						40,
+						18
+					]
+				},
+				"device_b": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "computer_kit",
+					"surface_zone": [
+						7,
+						-48,
+						40,
+						18
+					]
+				},
+				"role_a": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "role_tool_kits",
+					"surface_zone": [
+						-25,
+						-47,
+						18,
+						16
+					]
+				},
+				"role_b": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "role_tool_kits",
+					"surface_zone": [
+						51,
+						-47,
+						18,
+						16
+					]
+				}
+			},
+			"proposed_interaction_cell": [
+				0,
+				-1
+			],
+			"top_layer": "front_structure",
+			"top_plane": [
+				-77,
+				-54,
+				154,
+				32
+			],
+			"whole_rgba_sha256": "67f68c7a8ba65efbca42a2f66d807a61449adfefe6533a9a95bea5ca417fecfe",
+			"whole_sha256": "ad10bd6f1d94abdc2ae9fa7bbe1d65cd7296f8d9312db259c47892638eb26bc1",
+			"work_cell_offsets": [
+				[
+					1,
+					-1
+				],
+				[
+					-1,
+					-1
+				]
+			]
+		},
+		{
+			"clearance_cell_offsets": [
+				[
+					1,
+					1
+				],
+				[
+					1,
+					0
+				],
+				[
+					1,
+					-1
+				]
+			],
+			"contact_boundary_y": 80,
+			"distinct_scale_references": {
+				"compact_bounds": [
+					64,
+					80,
+					32,
+					96
+				],
+				"compact_desk_path": "res://tests/fixtures/furniture-calibration/compact-desk-v1/west-whole.png",
+				"prototype_bench_path": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/west-whole.png",
+				"prototype_bounds": [
+					50,
+					90,
+					96,
+					158
+				]
+			},
+			"employee_look_vector": [
+				-1,
+				0
+			],
+			"facing": "west",
+			"floor_plane": [
+				-16,
+				-80,
+				32,
+				160
+			],
+			"footprint_cells": [
+				1,
+				5
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/west-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							113,
+							132,
+							30,
+							152
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 2332,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 75492
+					},
+					"name": "SharedWorkbenchFloorShadow",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "b84e06fe8ce2127e7621a5e1bdc34f0142b9c322559583a6cc203ffdc8f23bf9",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/west-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							114,
+							131,
+							28,
+							154
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 4312,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 73512
+					},
+					"name": "SharedWorkbenchRearStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "8229ac842726bff7f83d100305fdcfc980948ec5add92d83ff23ccc24c10f277",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v1/west-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							114,
+							131,
+							9,
+							157
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 882,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 76942
+					},
+					"name": "SharedWorkbenchFrontStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "6863c141c3af230f5f1e44185cc3b55b461bc08b1d150b65ae40611ce4553753",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					2
+				],
+				[
+					0,
+					1
+				],
+				[
+					0,
+					0
+				],
+				[
+					0,
+					-1
+				],
+				[
+					0,
+					-2
+				]
+			],
+			"overlay_contract": {
+				"chair_a": {
+					"adds_base_collision": false,
+					"cell": [
+						1,
+						1
+					],
+					"included_in_base": false,
+					"owner_family": "ergonomic_chair"
+				},
+				"chair_b": {
+					"adds_base_collision": false,
+					"cell": [
+						1,
+						-1
+					],
+					"included_in_base": false,
+					"owner_family": "ergonomic_chair"
+				},
+				"device_a": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "computer_kit",
+					"surface_zone": [
+						-8,
+						-69,
+						18,
+						40
+					]
+				},
+				"device_b": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "computer_kit",
+					"surface_zone": [
+						-8,
+						7,
+						18,
+						40
+					]
+				},
+				"role_a": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "role_tool_kits",
+					"surface_zone": [
+						-7,
+						-25,
+						16,
+						18
+					]
+				},
+				"role_b": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "role_tool_kits",
+					"surface_zone": [
+						-7,
+						51,
+						16,
+						18
+					]
+				}
+			},
+			"proposed_interaction_cell": [
+				1,
+				0
+			],
+			"top_layer": "rear_structure",
+			"top_plane": [
+				-14,
+				-77,
+				28,
+				154
+			],
+			"whole_rgba_sha256": "f3bbb5b8afeff20ffae16f0b7ec5013e6be136c57ab9e32415ee63d1b66edab8",
+			"whole_sha256": "3551b88edc381e3e0ef98b8dbb537f143a843330655d80f6f3846f0bfb099792",
+			"work_cell_offsets": [
+				[
+					1,
+					1
+				],
+				[
+					1,
+					-1
+				]
+			]
+		}
+	],
+	"evidence": [
+		"res://tests/output/shared-workbench/candidate-contact-sheet-native.png",
+		"res://tests/output/shared-workbench/candidate-contact-sheet-4x.png",
+		"res://tests/output/shared-workbench/candidate-layers-native.png",
+		"res://tests/output/shared-workbench/compact-workbench-prototype-native.png"
+	],
+	"failures": [],
+	"id": "shared-workbench-v1",
+	"pivot": [
+		128,
+		208
+	],
+	"production_catalogue_registered": false,
+	"provenance": "Original deterministic code-native paired oak/charcoal workbench base with two bays and one structural cable well; four screen-space declarations, no generated raster source, finished-bitmap rotation, mirroring, scaling, baked chair, device, role equipment, text, or logo.",
+	"runtime_registered": false,
+	"separation": {
+		"base_layers": [
+			"floor_shadow",
+			"rear_structure",
+			"front_structure"
+		],
+		"chair_device_role_pixels_baked_into_base": false,
+		"external_overlay_owners": [
+			"ergonomic_chair",
+			"computer_kit",
+			"role_tool_kits"
+		],
+		"two_independent_bays": true
+	},
+	"sprite_offset": [
+		0,
+		-56
+	],
+	"status": "native_review_candidate_not_runtime_registered",
+	"worker_disabled": true
+}

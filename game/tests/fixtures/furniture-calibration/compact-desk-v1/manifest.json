@@ -1,0 +1,763 @@
+{
+	"asset_scope": "base furniture only",
+	"canvas": [
+		160,
+		192
+	],
+	"catalogue_family": "compact_desk",
+	"checks": 47,
+	"default_layout_registered": false,
+	"dev_catalogue_registered": false,
+	"directions": [
+		{
+			"accepted_shared_base": {
+				"front_path": "res://assets/runtime/office/workstations-v2/desk-north-front.png",
+				"rear_path": "res://assets/runtime/office/workstations-v2/desk-north-rear.png",
+				"whole_opaque_bounds": [
+					48,
+					112,
+					96,
+					64
+				]
+			},
+			"clearance_cell_offsets": [
+				[
+					0,
+					1
+				]
+			],
+			"contact_boundary_y": 16,
+			"employee_look_vector": [
+				0,
+				-1
+			],
+			"facing": "north",
+			"floor_plane": [
+				-48,
+				-16,
+				64,
+				32
+			],
+			"footprint_cells": [
+				2,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/north-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							36,
+							122,
+							56,
+							12
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 344,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 30376
+					},
+					"name": "CompactDeskFloorShadow",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"sha256": "123c3851b3bee211d4259af6dab8571e3430d296ea7ff41918c7eaa06d7246a9",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/north-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							32,
+							80,
+							64,
+							35
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 1970,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 28750
+					},
+					"name": "CompactDeskRearStructure",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"sha256": "74d15753aeb0e9eb1289a59055784da0efeb6848ff9d38a5cbbdd8d4f35983e3",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/north-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							32,
+							110,
+							64,
+							34
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 718,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 30002
+					},
+					"name": "CompactDeskFrontStructure",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"sha256": "caaaa76956de43086d9f5ad9b68e1d65aa78a99e34e7e0198c6bebb71b954f01",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"overlay_contract": {
+				"chair": {
+					"adds_base_collision": false,
+					"cell": [
+						0,
+						1
+					],
+					"included_in_base": false,
+					"owner_family": "ergonomic_chair"
+				},
+				"device": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "computer_kit",
+					"surface_zone": [
+						-44,
+						-44,
+						35,
+						18
+					]
+				},
+				"role": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "role_tool_kits",
+					"surface_zone": [
+						-5,
+						-43,
+						16,
+						16
+					]
+				}
+			},
+			"proposed_interaction_cell": [
+				0,
+				1
+			],
+			"top_layer": "rear_structure",
+			"top_plane": [
+				-48,
+				-48,
+				64,
+				30
+			],
+			"whole_rgba_sha256": "c8fd704b2ddcc7a48664914dc048d472ad388a0796e92ffb8185c434fbfeb110",
+			"whole_sha256": "8313735fb8200efcd535d52d29906611b85bc3bcb6131c3399fbe699b805a7d9"
+		},
+		{
+			"accepted_shared_base": {
+				"front_path": "res://assets/runtime/office/workstations-v2/desk-east-front.png",
+				"rear_path": "res://assets/runtime/office/workstations-v2/desk-east-rear.png",
+				"whole_opaque_bounds": [
+					80,
+					80,
+					32,
+					128
+				]
+			},
+			"clearance_cell_offsets": [
+				[
+					-1,
+					0
+				]
+			],
+			"contact_boundary_y": 16,
+			"employee_look_vector": [
+				1,
+				0
+			],
+			"facing": "east",
+			"floor_plane": [
+				-16,
+				-48,
+				32,
+				64
+			],
+			"footprint_cells": [
+				1,
+				2
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/east-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							74,
+							84,
+							12,
+							56
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 344,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 30376
+					},
+					"name": "CompactDeskFloorShadow",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"sha256": "88ff0237d819a285b938a62d4c590c6f837504b04f13d0d4e16990ec72a8f60b",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/east-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							64,
+							48,
+							30,
+							64
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 1920,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 28800
+					},
+					"name": "CompactDeskRearStructure",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"sha256": "5fb552cc9e0ade31aa956dde2f097a485b1b9a98ac70b7c3f5733d1b1baeaad9",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/east-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							67,
+							48,
+							29,
+							96
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 704,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 30016
+					},
+					"name": "CompactDeskFrontStructure",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"sha256": "ca7ab3014827fd33b6b300d976ad379027abee96136639c5bc8813ca9070c959",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					-1
+				],
+				[
+					0,
+					0
+				]
+			],
+			"overlay_contract": {
+				"chair": {
+					"adds_base_collision": false,
+					"cell": [
+						-1,
+						0
+					],
+					"included_in_base": false,
+					"owner_family": "ergonomic_chair"
+				},
+				"device": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "computer_kit",
+					"surface_zone": [
+						-12,
+						-76,
+						18,
+						35
+					]
+				},
+				"role": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "role_tool_kits",
+					"surface_zone": [
+						-11,
+						-37,
+						16,
+						16
+					]
+				}
+			},
+			"proposed_interaction_cell": [
+				-1,
+				0
+			],
+			"top_layer": "rear_structure",
+			"top_plane": [
+				-16,
+				-80,
+				30,
+				64
+			],
+			"whole_rgba_sha256": "bbe32d7fff21130a8a6fd6e9f9dc93a1f50b2a8766559c4ac3c856d76c78c0dc",
+			"whole_sha256": "721739c9d7a888e70c064bc79ce164cff1c2d55968dfb00f99306af7ac1d7a6b"
+		},
+		{
+			"accepted_shared_base": {
+				"front_path": "res://assets/runtime/office/workstations-v2/desk-south-front.png",
+				"rear_path": "res://assets/runtime/office/workstations-v2/desk-south-rear.png",
+				"whole_opaque_bounds": [
+					48,
+					112,
+					96,
+					64
+				]
+			},
+			"clearance_cell_offsets": [
+				[
+					0,
+					-1
+				]
+			],
+			"contact_boundary_y": 16,
+			"employee_look_vector": [
+				0,
+				1
+			],
+			"facing": "south",
+			"floor_plane": [
+				-16,
+				-16,
+				64,
+				32
+			],
+			"footprint_cells": [
+				2,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/south-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							68,
+							122,
+							56,
+							12
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 344,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 30376
+					},
+					"name": "CompactDeskFloorShadow",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"sha256": "7df4987ab9818d860c2b629e38865cf53754f07b79c014c2fabdaa24279856f6",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/south-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							68,
+							84,
+							56,
+							39
+						],
+						"opaque_colors": 3,
+						"opaque_pixels": 590,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 30130
+					},
+					"name": "CompactDeskRearStructure",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"sha256": "48adf9613d1a4d3baa363625b0effc2be0a33a808b2219eeaf8a000f3816d8e3",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/south-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							64,
+							80,
+							64,
+							64
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 2746,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 27974
+					},
+					"name": "CompactDeskFrontStructure",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"sha256": "89c4e6ebd9fe6b6a5cf3b5e247751be46d5fb3298d05b9772d8daa0f5057317f",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					1,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"overlay_contract": {
+				"chair": {
+					"adds_base_collision": false,
+					"cell": [
+						0,
+						-1
+					],
+					"included_in_base": false,
+					"owner_family": "ergonomic_chair"
+				},
+				"device": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "computer_kit",
+					"surface_zone": [
+						9,
+						-44,
+						35,
+						18
+					]
+				},
+				"role": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "role_tool_kits",
+					"surface_zone": [
+						-11,
+						-43,
+						16,
+						16
+					]
+				}
+			},
+			"proposed_interaction_cell": [
+				0,
+				-1
+			],
+			"top_layer": "front_structure",
+			"top_plane": [
+				-16,
+				-48,
+				64,
+				30
+			],
+			"whole_rgba_sha256": "1f9591e64528df6599f408ebca1d56999225c578cd951197409d075e4cdc1277",
+			"whole_sha256": "e003cc23444a053bb2fed08cf54cee310090b7c52a1b4b321a621deb35332812"
+		},
+		{
+			"accepted_shared_base": {
+				"front_path": "res://assets/runtime/office/workstations-v2/desk-west-front.png",
+				"rear_path": "res://assets/runtime/office/workstations-v2/desk-west-rear.png",
+				"whole_opaque_bounds": [
+					80,
+					80,
+					32,
+					128
+				]
+			},
+			"clearance_cell_offsets": [
+				[
+					1,
+					0
+				]
+			],
+			"contact_boundary_y": 48,
+			"employee_look_vector": [
+				-1,
+				0
+			],
+			"facing": "west",
+			"floor_plane": [
+				-16,
+				-16,
+				32,
+				64
+			],
+			"footprint_cells": [
+				1,
+				2
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/west-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							74,
+							116,
+							12,
+							56
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 344,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 30376
+					},
+					"name": "CompactDeskFloorShadow",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"sha256": "27728b888b68ea9d003a1fcc66e4676766756c959a3fa144680d08feef51eec9",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/west-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							66,
+							80,
+							30,
+							64
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 1920,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 28800
+					},
+					"name": "CompactDeskRearStructure",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"sha256": "5723f1771d32ebe7d020e53be7e753c0f330a3aca40c3730943ac222481f0d1a",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/compact-desk-v1/west-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							64,
+							80,
+							30,
+							96
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 704,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 30016
+					},
+					"name": "CompactDeskFrontStructure",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						160,
+						192
+					],
+					"sha256": "8e5b8553843bd7741a437c4e682ad55b71e493524988c560cbb1c3cd7586739f",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					1
+				],
+				[
+					0,
+					0
+				]
+			],
+			"overlay_contract": {
+				"chair": {
+					"adds_base_collision": false,
+					"cell": [
+						1,
+						0
+					],
+					"included_in_base": false,
+					"owner_family": "ergonomic_chair"
+				},
+				"device": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "computer_kit",
+					"surface_zone": [
+						-10,
+						-23,
+						18,
+						35
+					]
+				},
+				"role": {
+					"adds_base_collision": false,
+					"included_in_base": false,
+					"owner_family": "role_tool_kits",
+					"surface_zone": [
+						-9,
+						-43,
+						16,
+						16
+					]
+				}
+			},
+			"proposed_interaction_cell": [
+				1,
+				0
+			],
+			"top_layer": "rear_structure",
+			"top_plane": [
+				-14,
+				-48,
+				30,
+				64
+			],
+			"whole_rgba_sha256": "9cb3df25f08fe8bb00be6a79803bb0093b57a91a5aeffec7141073564380e8ea",
+			"whole_sha256": "e5e1ae019401da7f487d16101ab65b64a2284643c0c13832f66c0c1f09a1c0f9"
+		}
+	],
+	"evidence": [
+		"res://tests/output/compact-desk/candidate-contact-sheet-native.png",
+		"res://tests/output/compact-desk/candidate-contact-sheet-4x.png",
+		"res://tests/output/compact-desk/candidate-layers-native.png",
+		"res://tests/output/compact-desk/accepted-shared-vs-compact-native.png"
+	],
+	"failures": [],
+	"id": "compact-desk-v1",
+	"pivot": [
+		80,
+		128
+	],
+	"production_catalogue_registered": false,
+	"provenance": "Original deterministic code-native compact oak/charcoal base; four screen-space declarations, no generated raster source, finished-bitmap rotation, mirroring, scaling, baked chair, device, role equipment, text, or logo.",
+	"runtime_registered": false,
+	"separation": {
+		"base_layers": [
+			"floor_shadow",
+			"rear_structure",
+			"front_structure"
+		],
+		"chair_device_role_pixels_baked_into_base": false,
+		"external_overlay_owners": [
+			"ergonomic_chair",
+			"computer_kit",
+			"role_tool_kits"
+		]
+	},
+	"sprite_offset": [
+		0,
+		-32
+	],
+	"status": "native_review_candidate_not_runtime_registered",
+	"worker_disabled": true
+}

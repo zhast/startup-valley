@@ -1,0 +1,827 @@
+{
+	"canvas": [
+		160,
+		208
+	],
+	"checks": 117,
+	"code_native_provenance": {
+		"generated_raster_sources_used": false,
+		"image_generation_calls": 0,
+		"source_attempts_created": 0
+	},
+	"default_layout_registered": false,
+	"dev_catalogue_registration": "Not asserted. This exporter only verifies byte-exact shared-catalogue immutability during its own run.",
+	"dimension_review": {
+		"authored_vertical_feature_rise_px": 88,
+		"east_west_top_plane_depth_px": 64,
+		"maximum_expected_projected_rise_px": 152,
+		"measured_base_elevation_px": 72,
+		"north_south_top_plane_depth_px": 32,
+		"planned_canvas_retained": [
+			160,
+			208
+		],
+		"planned_floor_anchor_retained": [
+			80,
+			144
+		],
+		"planned_vertical_feature_envelope_px": 80,
+		"revision": "The planned rise is retained as the vertical feature envelope. Full screen-projected rise is recorded separately because a truthful E/W top plane also contains the exact 64px depth of the 1x2 physical footprint. Canvas, pivot, scale and collision masks do not change."
+	},
+	"directions": [
+		{
+			"approach_gaze": "south",
+			"base_elevation_px": 72,
+			"base_projected_rise_px": 104,
+			"base_solid_bounds_px": [
+				-16,
+				-88,
+				64,
+				104
+			],
+			"camera_face_identity": "rear",
+			"camera_front_elevation_px": [
+				-16,
+				-56,
+				64,
+				72
+			],
+			"clearance_cell_offsets": [
+				[
+					0,
+					-1
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"authored_vertical_feature_rise_px": 88,
+				"east_west_top_plane_depth_px": 64,
+				"maximum_expected_projected_rise_px": 152,
+				"measured_base_elevation_px": 72,
+				"north_south_top_plane_depth_px": 32,
+				"planned_canvas_retained": [
+					160,
+					208
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					144
+				],
+				"planned_vertical_feature_envelope_px": 80,
+				"revision": "The planned rise is retained as the vertical feature envelope. Full screen-projected rise is recorded separately because a truthful E/W top plane also contains the exact 64px depth of the 1x2 physical footprint. Canvas, pivot, scale and collision masks do not change."
+			},
+			"employee_look_vector": [
+				0,
+				1
+			],
+			"facing": "north",
+			"floor_plane_px": [
+				-16,
+				-16,
+				64,
+				32
+			],
+			"footprint_cells": [
+				2,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/north-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							59,
+							155,
+							74,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 30,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 33250
+					},
+					"name": "ResourceCartV1NorthFloorShadow",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "128137f308d737b443b706069b5525c7cd01858fb420a38525cb5cada6ee91b8",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/north-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							64,
+							40,
+							64,
+							118
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 2714,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 30566
+					},
+					"name": "ResourceCartV1NorthRearStructure",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "3675f618d116edbf740dc1a1233c3b6c3142ced523498bc51f8784e32996ad27",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/north-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							64,
+							63,
+							64,
+							97
+						],
+						"opaque_colors": 11,
+						"opaque_pixels": 2284,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 30996
+					},
+					"name": "ResourceCartV1NorthFrontStructure",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "e7dfd9d60296e52a013bb4b1fbbb0164e874c4ccf227964a3e0f911005c30ae9",
+					"z_offset": 1
+				}
+			],
+			"measured_whole_projected_rise_px": 120,
+			"occupied_cell_offsets": [
+				[
+					1,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				0,
+				-1
+			],
+			"role_identity": {
+				"camera_face": "rear_handle",
+				"casters": 4,
+				"mobile_behavior_implemented": false,
+				"open_trays": 2
+			},
+			"service_side": "north",
+			"top_plane_depth_px": 32,
+			"top_plane_px": [
+				-16,
+				-88,
+				64,
+				32
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					59,
+					40,
+					74,
+					120
+				],
+				"opaque_colors": 14,
+				"opaque_pixels": 4636,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 28644
+			},
+			"whole_sha256": "033f65a81deee313abc54d2ec5cdf0a5000e0059e4068439e0bd96f5d3248858"
+		},
+		{
+			"approach_gaze": "west",
+			"base_elevation_px": 72,
+			"base_projected_rise_px": 136,
+			"base_solid_bounds_px": [
+				-16,
+				-88,
+				32,
+				136
+			],
+			"camera_face_identity": "service_front_right_end",
+			"camera_front_elevation_px": [
+				-16,
+				-24,
+				32,
+				72
+			],
+			"clearance_cell_offsets": [
+				[
+					1,
+					0
+				]
+			],
+			"contact_boundary_y": 48,
+			"dimension_review": {
+				"authored_vertical_feature_rise_px": 88,
+				"east_west_top_plane_depth_px": 64,
+				"maximum_expected_projected_rise_px": 152,
+				"measured_base_elevation_px": 72,
+				"north_south_top_plane_depth_px": 32,
+				"planned_canvas_retained": [
+					160,
+					208
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					144
+				],
+				"planned_vertical_feature_envelope_px": 80,
+				"revision": "The planned rise is retained as the vertical feature envelope. Full screen-projected rise is recorded separately because a truthful E/W top plane also contains the exact 64px depth of the 1x2 physical footprint. Canvas, pivot, scale and collision masks do not change."
+			},
+			"employee_look_vector": [
+				-1,
+				0
+			],
+			"facing": "east",
+			"floor_plane_px": [
+				-16,
+				-16,
+				32,
+				64
+			],
+			"footprint_cells": [
+				1,
+				2
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/east-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							59,
+							187,
+							42,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 30,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 33250
+					},
+					"name": "ResourceCartV1EastFloorShadow",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "723b1d16e9f8987d37b1f7d6cc447b3a791766dacebaf9cf5a0c72f8ba14a244",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/east-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							64,
+							56,
+							52,
+							134
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 2591,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 30689
+					},
+					"name": "ResourceCartV1EastRearStructure",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "fa7b1479d625c6be06a4fe9658d37954d44ccb6236c117e84dca2e4f34c049d7",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/east-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							64,
+							65,
+							32,
+							127
+						],
+						"opaque_colors": 11,
+						"opaque_pixels": 2284,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 30996
+					},
+					"name": "ResourceCartV1EastFrontStructure",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "afc8496e293d612ebbc463edd4c8476f4ae2759b8a92c527b271d8b650828311",
+					"z_offset": 1
+				}
+			],
+			"measured_whole_projected_rise_px": 136,
+			"occupied_cell_offsets": [
+				[
+					0,
+					1
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				1,
+				0
+			],
+			"role_identity": {
+				"camera_face": "right_handle_end",
+				"casters": 4,
+				"mobile_behavior_implemented": false,
+				"open_trays": 2
+			},
+			"service_side": "east",
+			"top_plane_depth_px": 64,
+			"top_plane_px": [
+				-16,
+				-88,
+				32,
+				64
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					59,
+					56,
+					57,
+					136
+				],
+				"opaque_colors": 14,
+				"opaque_pixels": 4321,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 28959
+			},
+			"whole_sha256": "42cec387a3f94d233addbf07df114a420f096c19557d443ce8df48902540dac8"
+		},
+		{
+			"approach_gaze": "north",
+			"base_elevation_px": 72,
+			"base_projected_rise_px": 104,
+			"base_solid_bounds_px": [
+				-48,
+				-88,
+				64,
+				104
+			],
+			"camera_face_identity": "service_front",
+			"camera_front_elevation_px": [
+				-48,
+				-56,
+				64,
+				72
+			],
+			"clearance_cell_offsets": [
+				[
+					0,
+					1
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"authored_vertical_feature_rise_px": 88,
+				"east_west_top_plane_depth_px": 64,
+				"maximum_expected_projected_rise_px": 152,
+				"measured_base_elevation_px": 72,
+				"north_south_top_plane_depth_px": 32,
+				"planned_canvas_retained": [
+					160,
+					208
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					144
+				],
+				"planned_vertical_feature_envelope_px": 80,
+				"revision": "The planned rise is retained as the vertical feature envelope. Full screen-projected rise is recorded separately because a truthful E/W top plane also contains the exact 64px depth of the 1x2 physical footprint. Canvas, pivot, scale and collision masks do not change."
+			},
+			"employee_look_vector": [
+				0,
+				-1
+			],
+			"facing": "south",
+			"floor_plane_px": [
+				-48,
+				-16,
+				64,
+				32
+			],
+			"footprint_cells": [
+				2,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/south-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							27,
+							155,
+							74,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 30,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 33250
+					},
+					"name": "ResourceCartV1SouthFloorShadow",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "d6a0380bde710f7c8ec3b4d947f7178b0784099d931c302130abcaefa42784d7",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/south-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							32,
+							56,
+							64,
+							102
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 2468,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 30812
+					},
+					"name": "ResourceCartV1SouthRearStructure",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "286c64f69edf86d0709e240b2c2100eed7b539e79e566b7274a07b8ce73b27c4",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/south-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							32,
+							63,
+							64,
+							97
+						],
+						"opaque_colors": 13,
+						"opaque_pixels": 2554,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 30726
+					},
+					"name": "ResourceCartV1SouthFrontStructure",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "c836f7a749d73e1a61ab57b0cebbab76cad631f3ddc98be5a0f81cd479c2dfe6",
+					"z_offset": 1
+				}
+			],
+			"measured_whole_projected_rise_px": 104,
+			"occupied_cell_offsets": [
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				0,
+				1
+			],
+			"role_identity": {
+				"camera_face": "open_tray_fronts",
+				"casters": 4,
+				"mobile_behavior_implemented": false,
+				"open_trays": 2
+			},
+			"service_side": "south",
+			"top_plane_depth_px": 32,
+			"top_plane_px": [
+				-48,
+				-88,
+				64,
+				32
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					27,
+					56,
+					74,
+					104
+				],
+				"opaque_colors": 14,
+				"opaque_pixels": 4540,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 28740
+			},
+			"whole_sha256": "4fc41442952fdbf4a6136006907b64e4f135cc9ed98990fd9cf617f747a10c65"
+		},
+		{
+			"approach_gaze": "east",
+			"base_elevation_px": 72,
+			"base_projected_rise_px": 136,
+			"base_solid_bounds_px": [
+				-16,
+				-120,
+				32,
+				136
+			],
+			"camera_face_identity": "service_front_left_end",
+			"camera_front_elevation_px": [
+				-16,
+				-56,
+				32,
+				72
+			],
+			"clearance_cell_offsets": [
+				[
+					-1,
+					0
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"authored_vertical_feature_rise_px": 88,
+				"east_west_top_plane_depth_px": 64,
+				"maximum_expected_projected_rise_px": 152,
+				"measured_base_elevation_px": 72,
+				"north_south_top_plane_depth_px": 32,
+				"planned_canvas_retained": [
+					160,
+					208
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					144
+				],
+				"planned_vertical_feature_envelope_px": 80,
+				"revision": "The planned rise is retained as the vertical feature envelope. Full screen-projected rise is recorded separately because a truthful E/W top plane also contains the exact 64px depth of the 1x2 physical footprint. Canvas, pivot, scale and collision masks do not change."
+			},
+			"employee_look_vector": [
+				1,
+				0
+			],
+			"facing": "west",
+			"floor_plane_px": [
+				-16,
+				-48,
+				32,
+				64
+			],
+			"footprint_cells": [
+				1,
+				2
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/west-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							59,
+							155,
+							42,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 30,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 33250
+					},
+					"name": "ResourceCartV1WestFloorShadow",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "7191add134e3972d6fe6fb0f87700b94d99d375dc5c9682a97964eff6760bde7",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/west-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							44,
+							24,
+							52,
+							134
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 2591,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 30689
+					},
+					"name": "ResourceCartV1WestRearStructure",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "5bce98529f4bc048c0d50bfa63d55df026c910923b481fd8ce28273fabc7cbdb",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/resource-cart-v1/west-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							64,
+							33,
+							32,
+							127
+						],
+						"opaque_colors": 11,
+						"opaque_pixels": 2284,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 30996
+					},
+					"name": "ResourceCartV1WestFrontStructure",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "c4bebd07becaf367835f00e9de9ecf008d51d649eeca5c0c8a47bbd632cb981e",
+					"z_offset": 1
+				}
+			],
+			"measured_whole_projected_rise_px": 136,
+			"occupied_cell_offsets": [
+				[
+					0,
+					-1
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				-1,
+				0
+			],
+			"role_identity": {
+				"camera_face": "left_handle_end",
+				"casters": 4,
+				"mobile_behavior_implemented": false,
+				"open_trays": 2
+			},
+			"service_side": "west",
+			"top_plane_depth_px": 64,
+			"top_plane_px": [
+				-16,
+				-120,
+				32,
+				64
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					44,
+					24,
+					57,
+					136
+				],
+				"opaque_colors": 14,
+				"opaque_pixels": 4321,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 28959
+			},
+			"whole_sha256": "270b00831e12525979c37eec7ce2a8843c2cb473b6e5e204e98b838274eb221d"
+		}
+	],
+	"failures": [],
+	"family": "resource_cart",
+	"id": "resource-cart-v1",
+	"layers": [
+		"floor_shadow",
+		"rear_structure",
+		"front_structure"
+	],
+	"material_sources": {
+		"charcoal_powdercoat": {
+			"path": "res://tests/fixtures/furniture-calibration/materials/charcoal-powdercoat-v1.png",
+			"retained_unchanged": true,
+			"sha256": "807152a50c8a1771cd451d0984fe1fd4ba3fb6328089e5fa9dd1fb2c858ad42d"
+		},
+		"oak_horizontal": {
+			"path": "res://tests/fixtures/furniture-calibration/materials-v2/oak-horizontal-v2.png",
+			"retained_unchanged": true,
+			"sha256": "bcd3ccf8c6411b4ce24997a88b3fabf78f7fa2132b240f66ee1d59ab3e0dded6"
+		},
+		"oak_vertical": {
+			"path": "res://tests/fixtures/furniture-calibration/materials-v2/oak-vertical-v2.png",
+			"retained_unchanged": true,
+			"sha256": "28a84e93bcdd6e026fbd3a56ae598f14a6c74acd07d1c5950a1a2347a1a24fae"
+		}
+	},
+	"pivot": [
+		80,
+		144
+	],
+	"production_catalogue_registered": false,
+	"provenance": "Editable typed-GDScript screen-axis construction with a physical-footprint top plane and separate elevation/contact geometry. Reviewed native oak/powdercoat tiles are retained materials only. No generated raster, transformed finished bitmap, provider call, text, logo, fake metric, baked actor, service, printing, dispensing or cart movement is implemented.",
+	"runtime_registered": false,
+	"service_backend_or_interaction_created": false,
+	"sprite_offset": [
+		0,
+		-40
+	],
+	"status": "native_review_candidate_without_runtime_binding"
+}

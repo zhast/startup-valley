@@ -1,0 +1,473 @@
+{
+	"catalogue_family": "shared_workbench",
+	"change_scope": "floor shadow only",
+	"default_layout_registered": false,
+	"directions": {
+		"east": {
+			"front_structure_sha256": "3f8fbcc58627247e9f7021041418ba58056dc69d4d464bd558099fd3339c918a",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/east-floor_shadow.png",
+					"decoded_rgba_sha256": "b2b67734b6b4833b50815706f7d8d9c01faa165ef90a8bba687bf799ed2a6132",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							140,
+							139,
+							4,
+							149
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 36,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 77788
+					},
+					"name": "SharedWorkbenchFloorShadow",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "2c221f6fb0f7c241ebd579ff88b69fbc113aaea065ee60205761859da43ba849",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/east-rear_structure.png",
+					"decoded_rgba_sha256": "891d193388f713cb0be69d3d9be10f0503d277f40e396ff22f3a007771e2aaed",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							114,
+							131,
+							28,
+							154
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 4312,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 73512
+					},
+					"name": "SharedWorkbenchRearStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "8229ac842726bff7f83d100305fdcfc980948ec5add92d83ff23ccc24c10f277",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/east-front_structure.png",
+					"decoded_rgba_sha256": "c1cee4cea2bdd63da837c392f32f18286dd114229ad27b7c4c47eea39c8fda4d",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							133,
+							131,
+							9,
+							157
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 882,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 76942
+					},
+					"name": "SharedWorkbenchFrontStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "3f8fbcc58627247e9f7021041418ba58056dc69d4d464bd558099fd3339c918a",
+					"z_offset": 1
+				}
+			],
+			"new_shadow_opaque_pixels": 36,
+			"old_shadow_opaque_pixels": 2332,
+			"rear_structure_sha256": "8229ac842726bff7f83d100305fdcfc980948ec5add92d83ff23ccc24c10f277",
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					114,
+					131,
+					30,
+					157
+				],
+				"opaque_colors": 7,
+				"opaque_pixels": 4362,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 73462
+			},
+			"whole_rgba_sha256": "8371af5c45d02373904ec21e0eb71402e07112e9dc4f707b75f56400038632e6",
+			"whole_sha256": "6bda2baba9daa5efa20aba6224919309abd65018d5e85c3dc3a53d5409472c8b"
+		},
+		"north": {
+			"front_structure_sha256": "4c9349c1fc5b667ae07b6250ca22457f25294dc082db62927dbaeee42c0b8b46",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/north-floor_shadow.png",
+					"decoded_rgba_sha256": "ef7d288ee1c2b8bf181977891a2f85bb3399ba12c97272788891bd6175505071",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							62,
+							221,
+							144,
+							3
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 60,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 77764
+					},
+					"name": "SharedWorkbenchFloorShadow",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "047883824753aced2155611d9808fb29419aa0c7c76170e32c428946f9b0de0a",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/north-rear_structure.png",
+					"decoded_rgba_sha256": "9119d578e6f346d9b403bb405178429c46f611dd5223d9a742d48e9785c8709b",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							51,
+							154,
+							154,
+							41
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 5090,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 72734
+					},
+					"name": "SharedWorkbenchRearStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "16bcee085f80132747d36f34d18e348c6503d50d45e5558a4a97e018dbb0610e",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/north-front_structure.png",
+					"decoded_rgba_sha256": "7bada533d3fd79461a809774e7f9ff0c5a661749db10a6c104672d257352fd63",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							51,
+							186,
+							154,
+							38
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 1908,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 75916
+					},
+					"name": "SharedWorkbenchFrontStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "4c9349c1fc5b667ae07b6250ca22457f25294dc082db62927dbaeee42c0b8b46",
+					"z_offset": 1
+				}
+			],
+			"new_shadow_opaque_pixels": 60,
+			"old_shadow_opaque_pixels": 932,
+			"rear_structure_sha256": "16bcee085f80132747d36f34d18e348c6503d50d45e5558a4a97e018dbb0610e",
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					51,
+					154,
+					155,
+					70
+				],
+				"opaque_colors": 7,
+				"opaque_pixels": 6893,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 70931
+			},
+			"whole_rgba_sha256": "3cc9ef4e2a35c2ff6f0ecbb3c670548a8e95fe4ed661dd56cec855c76e20d2bf",
+			"whole_sha256": "f85701dba2091c890e261a435630ce91eaacce2de9db5da3076d8c2121bfa280"
+		},
+		"south": {
+			"front_structure_sha256": "aa9603a2b0dce919931ec5297f83ca2927612d5d6bdb765221c40c6c4e2df13b",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/south-floor_shadow.png",
+					"decoded_rgba_sha256": "2a4c6c05fac4cac48fe0bc4057098a820cee6af834cb5ce9568bfcd4d35ef092",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							64,
+							221,
+							140,
+							3
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 60,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 77764
+					},
+					"name": "SharedWorkbenchFloorShadow",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "d50d4cfbc52c5aa2e5bc5f43dc263fa5ef156a7356995741a9c3514a8174e9f7",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/south-rear_structure.png",
+					"decoded_rgba_sha256": "2f68f024242951fa2450ea1d443161f37e9a854704584173befdedf333a91a51",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							59,
+							158,
+							138,
+							45
+						],
+						"opaque_colors": 3,
+						"opaque_pixels": 1362,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 76462
+					},
+					"name": "SharedWorkbenchRearStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "02c220c128640557fe98a8183e30cb9e3750f01c5736ce40f48add08de0edeff",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/south-front_structure.png",
+					"decoded_rgba_sha256": "9d7090dc1bc9032023057c573678aebfbe1a156f8a8f1d0ed7df4d323cd46d5d",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							51,
+							154,
+							154,
+							70
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 6836,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 70988
+					},
+					"name": "SharedWorkbenchFrontStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "aa9603a2b0dce919931ec5297f83ca2927612d5d6bdb765221c40c6c4e2df13b",
+					"z_offset": 1
+				}
+			],
+			"new_shadow_opaque_pixels": 60,
+			"old_shadow_opaque_pixels": 932,
+			"rear_structure_sha256": "02c220c128640557fe98a8183e30cb9e3750f01c5736ce40f48add08de0edeff",
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					51,
+					154,
+					154,
+					70
+				],
+				"opaque_colors": 8,
+				"opaque_pixels": 6965,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 70859
+			},
+			"whole_rgba_sha256": "4767bc0ab02f3bc6c0aecaed4a81370e1b838325489de54671e593a8e1c19ee4",
+			"whole_sha256": "c011c3485f5d0d2f71b40c2d47ed5fb63676740a8d8538e8555835a273eff7f4"
+		},
+		"west": {
+			"front_structure_sha256": "6863c141c3af230f5f1e44185cc3b55b461bc08b1d150b65ae40611ce4553753",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/west-floor_shadow.png",
+					"decoded_rgba_sha256": "7f81e8261ae9474bf613d70ff8023efe4a257ea350e80655be96e63fc9fdd690",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							122,
+							141,
+							8,
+							147
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 80,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 77744
+					},
+					"name": "SharedWorkbenchFloorShadow",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "c37bd27a4b4e90c98777d0b175a5e44d3724edd7c567dd6166247889fe3f5644",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/west-rear_structure.png",
+					"decoded_rgba_sha256": "891d193388f713cb0be69d3d9be10f0503d277f40e396ff22f3a007771e2aaed",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							114,
+							131,
+							28,
+							154
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 4312,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 73512
+					},
+					"name": "SharedWorkbenchRearStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "8229ac842726bff7f83d100305fdcfc980948ec5add92d83ff23ccc24c10f277",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/shared-workbench-v2/west-front_structure.png",
+					"decoded_rgba_sha256": "a3cd1f030412cf9ca3ad596fffeb0a6f2de326ac7a89765b73075c5e6eaab602",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							114,
+							131,
+							9,
+							157
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 882,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 76942
+					},
+					"name": "SharedWorkbenchFrontStructure",
+					"offset": [
+						0,
+						-56
+					],
+					"region": [
+						0,
+						0,
+						256,
+						304
+					],
+					"sha256": "6863c141c3af230f5f1e44185cc3b55b461bc08b1d150b65ae40611ce4553753",
+					"z_offset": 1
+				}
+			],
+			"new_shadow_opaque_pixels": 80,
+			"old_shadow_opaque_pixels": 2332,
+			"rear_structure_sha256": "8229ac842726bff7f83d100305fdcfc980948ec5add92d83ff23ccc24c10f277",
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					114,
+					131,
+					28,
+					157
+				],
+				"opaque_colors": 7,
+				"opaque_pixels": 4355,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 73469
+			},
+			"whole_rgba_sha256": "2a29fcc3fed23ee7ab1c29b8ec1f983b6d5f55205736844e4975f8f2fbccd141",
+			"whole_sha256": "8b8541fad71ea7e7f84dbd3b389e2eade2f1d47337902fbc4bdb44d426abb680"
+		}
+	},
+	"id": "shared-workbench-v2",
+	"production_catalogue_registered": false,
+	"runtime_registered": false,
+	"status": "base_only_native_review_candidate_not_runtime_registered",
+	"unchanged_from_v1": [
+		"rear_structure",
+		"front_structure",
+		"canvas",
+		"pivot",
+		"sprite_offset",
+		"footprint",
+		"clearance",
+		"overlay ownership"
+	]
+}

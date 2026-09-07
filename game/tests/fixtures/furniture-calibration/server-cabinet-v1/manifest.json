@@ -1,0 +1,732 @@
+{
+	"canvas": [
+		160,
+		288
+	],
+	"checks": 78,
+	"default_layout_registered": false,
+	"dev_catalogue_registration": "Not asserted. This exporter only verifies that the shared catalogue stays byte-exact during its own run.",
+	"dimension_review": {
+		"measured_opaque_rise_px": 96,
+		"planned_canvas_retained": [
+			160,
+			288
+		],
+		"planned_floor_anchor_retained": [
+			80,
+			224
+		],
+		"planned_max_rise_envelope_px": 160,
+		"revision": "The planned maximum rise was an envelope, not required opaque height. Tall supply storage uses 112px, compact server equipment uses 96px, and the low sorter keeps 48px; original native registration and two-cell collision masks remain unchanged."
+	},
+	"directions": [
+		{
+			"approach_gaze": "south",
+			"body_plane_px": [
+				-14,
+				-80,
+				60,
+				96
+			],
+			"camera_face_identity": "rear",
+			"clearance_cell_offsets": [
+				[
+					0,
+					-1
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"measured_opaque_rise_px": 96,
+				"planned_canvas_retained": [
+					160,
+					288
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					224
+				],
+				"planned_max_rise_envelope_px": 160,
+				"revision": "The planned maximum rise was an envelope, not required opaque height. Tall supply storage uses 112px, compact server equipment uses 96px, and the low sorter keeps 48px; original native registration and two-cell collision masks remain unchanged."
+			},
+			"employee_look_vector": [
+				0,
+				1
+			],
+			"facing": "north",
+			"floor_plane_px": [
+				-16,
+				-16,
+				64,
+				32
+			],
+			"footprint_cells": [
+				2,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/server-cabinet-v1/north-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							66,
+							233,
+							61,
+							7
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 214,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 45866
+					},
+					"name": "ServerCabinetNorthFloorShadow",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "6a31172d5bed623a6a34525e7dfbf97129a5554d7eff5041ea513edb1d931c0a",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/server-cabinet-v1/north-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							66,
+							144,
+							60,
+							96
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 5760,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 40320
+					},
+					"name": "ServerCabinetNorthRearStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "9ffcee8222f2a1d264f815adfb69bdb806f55fede39651e1b67f2a01d75c425a",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/server-cabinet-v1/north-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							71,
+							149,
+							50,
+							86
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 4300,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 41780
+					},
+					"name": "ServerCabinetNorthFrontStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "1ae00b2207a4db63eb50e9f19327cb96619796f0af05e2d9ee1d7a6548f55ae5",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					1,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				0,
+				-1
+			],
+			"role_identity": {
+				"equipment_face": "cable_fan_rear",
+				"static_unlit_indicators": true
+			},
+			"service_side": "north",
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					66,
+					144,
+					61,
+					96
+				],
+				"opaque_colors": 9,
+				"opaque_pixels": 5761,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 40319
+			},
+			"whole_sha256": "1cf1996aedfcc91da655d9352d2860d6bb49cf5ad68d77f18401146b3437f127"
+		},
+		{
+			"approach_gaze": "west",
+			"body_plane_px": [
+				-14,
+				-48,
+				28,
+				96
+			],
+			"camera_face_identity": "service_front_right_edge",
+			"clearance_cell_offsets": [
+				[
+					1,
+					0
+				]
+			],
+			"contact_boundary_y": 48,
+			"dimension_review": {
+				"measured_opaque_rise_px": 96,
+				"planned_canvas_retained": [
+					160,
+					288
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					224
+				],
+				"planned_max_rise_envelope_px": 160,
+				"revision": "The planned maximum rise was an envelope, not required opaque height. Tall supply storage uses 112px, compact server equipment uses 96px, and the low sorter keeps 48px; original native registration and two-cell collision masks remain unchanged."
+			},
+			"employee_look_vector": [
+				-1,
+				0
+			],
+			"facing": "east",
+			"floor_plane_px": [
+				-16,
+				-16,
+				32,
+				64
+			],
+			"footprint_cells": [
+				1,
+				2
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/server-cabinet-v1/east-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							66,
+							265,
+							29,
+							7
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 102,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 45978
+					},
+					"name": "ServerCabinetEastFloorShadow",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "7bff9f09880ee82cd0338a84ef011ca86ff134d703ba21b2b4e152a92ce30b7a",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/server-cabinet-v1/east-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							66,
+							176,
+							28,
+							96
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 2688,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 43392
+					},
+					"name": "ServerCabinetEastRearStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "7785137abf9e352674660708bbd460a50c2bbd7fffbc257e03d650ff9e0151a3",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/server-cabinet-v1/east-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							71,
+							181,
+							21,
+							86
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 1806,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 44274
+					},
+					"name": "ServerCabinetEastFrontStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "ff392a4929a6b8fba495a819b49acaa1941c3eb6c9e981ef8d1ba6680f3a7097",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					1
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				1,
+				0
+			],
+			"role_identity": {
+				"equipment_face": "vented_right_side",
+				"static_unlit_indicators": true
+			},
+			"service_side": "east",
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					66,
+					176,
+					29,
+					96
+				],
+				"opaque_colors": 8,
+				"opaque_pixels": 2689,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 43391
+			},
+			"whole_sha256": "dce1d6a25ca395be921d97173da517bd38fb5c93099d8d5b881f8c8b118a4f92"
+		},
+		{
+			"approach_gaze": "north",
+			"body_plane_px": [
+				-46,
+				-80,
+				60,
+				96
+			],
+			"camera_face_identity": "service_front",
+			"clearance_cell_offsets": [
+				[
+					0,
+					1
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"measured_opaque_rise_px": 96,
+				"planned_canvas_retained": [
+					160,
+					288
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					224
+				],
+				"planned_max_rise_envelope_px": 160,
+				"revision": "The planned maximum rise was an envelope, not required opaque height. Tall supply storage uses 112px, compact server equipment uses 96px, and the low sorter keeps 48px; original native registration and two-cell collision masks remain unchanged."
+			},
+			"employee_look_vector": [
+				0,
+				-1
+			],
+			"facing": "south",
+			"floor_plane_px": [
+				-48,
+				-16,
+				64,
+				32
+			],
+			"footprint_cells": [
+				2,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/server-cabinet-v1/south-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							34,
+							233,
+							61,
+							7
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 214,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 45866
+					},
+					"name": "ServerCabinetSouthFloorShadow",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "d498f256f0a198a3f9fa8fc267ee9192eb556d4a61687c8656a540b4367e1576",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/server-cabinet-v1/south-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							34,
+							144,
+							60,
+							96
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 5760,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 40320
+					},
+					"name": "ServerCabinetSouthRearStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "277b0f66be243ac1e264f37b4266949b4ee72cfc125d8d1e116a022ede1d7dc1",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/server-cabinet-v1/south-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							39,
+							149,
+							50,
+							86
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 4300,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 41780
+					},
+					"name": "ServerCabinetSouthFrontStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "1ef9c2d92b364ef0cc123102399ff40267aee43c3b122eea097e0f3af94021ea",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				0,
+				1
+			],
+			"role_identity": {
+				"equipment_face": "rack_front",
+				"static_unlit_indicators": true
+			},
+			"service_side": "south",
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					34,
+					144,
+					61,
+					96
+				],
+				"opaque_colors": 10,
+				"opaque_pixels": 5761,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 40319
+			},
+			"whole_sha256": "ffc085fe297090dcd5945478eecea39ca3de49cfc367fa51767db9f6845dc4c0"
+		},
+		{
+			"approach_gaze": "east",
+			"body_plane_px": [
+				-14,
+				-80,
+				28,
+				96
+			],
+			"camera_face_identity": "service_front_left_edge",
+			"clearance_cell_offsets": [
+				[
+					-1,
+					0
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"measured_opaque_rise_px": 96,
+				"planned_canvas_retained": [
+					160,
+					288
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					224
+				],
+				"planned_max_rise_envelope_px": 160,
+				"revision": "The planned maximum rise was an envelope, not required opaque height. Tall supply storage uses 112px, compact server equipment uses 96px, and the low sorter keeps 48px; original native registration and two-cell collision masks remain unchanged."
+			},
+			"employee_look_vector": [
+				1,
+				0
+			],
+			"facing": "west",
+			"floor_plane_px": [
+				-16,
+				-48,
+				32,
+				64
+			],
+			"footprint_cells": [
+				1,
+				2
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/server-cabinet-v1/west-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							66,
+							233,
+							29,
+							7
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 102,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 45978
+					},
+					"name": "ServerCabinetWestFloorShadow",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "c2bcd95b639742b4f12bb929bf642d8214e41772981d7b3f58ae6d573cfa7013",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/server-cabinet-v1/west-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							66,
+							144,
+							28,
+							96
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 2688,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 43392
+					},
+					"name": "ServerCabinetWestRearStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "fcd9c8e8182ee879d663f36e0669459b77e045f0b762d51ef577e0c784f23237",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/server-cabinet-v1/west-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							68,
+							149,
+							21,
+							86
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 1806,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 44274
+					},
+					"name": "ServerCabinetWestFrontStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "a8622206ffcb50639a0738c3d62d00f6f2dbfceefae917e270340ba107087304",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					-1
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				-1,
+				0
+			],
+			"role_identity": {
+				"equipment_face": "vented_left_side",
+				"static_unlit_indicators": true
+			},
+			"service_side": "west",
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					66,
+					144,
+					29,
+					96
+				],
+				"opaque_colors": 9,
+				"opaque_pixels": 2689,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 43391
+			},
+			"whole_sha256": "033a2131730c334f8183aa8683adac1552b79e747aa908da22df4a5a7034df1c"
+		}
+	],
+	"failures": [],
+	"family": "server_cabinet",
+	"id": "server-cabinet-v1",
+	"image_generation_calls": 0,
+	"layers": [
+		"floor_shadow",
+		"rear_structure",
+		"front_structure"
+	],
+	"material_sources": {
+		"charcoal_powdercoat": {
+			"path": "res://tests/fixtures/furniture-calibration/materials/charcoal-powdercoat-v1.png",
+			"retained_unchanged": true,
+			"sha256": "807152a50c8a1771cd451d0984fe1fd4ba3fb6328089e5fa9dd1fb2c858ad42d"
+		},
+		"oak_horizontal": {
+			"path": "res://tests/fixtures/furniture-calibration/materials-v2/oak-horizontal-v2.png",
+			"retained_unchanged": true,
+			"sha256": "bcd3ccf8c6411b4ce24997a88b3fabf78f7fa2132b240f66ee1d59ab3e0dded6"
+		},
+		"oak_vertical": {
+			"path": "res://tests/fixtures/furniture-calibration/materials-v2/oak-vertical-v2.png",
+			"retained_unchanged": true,
+			"sha256": "28a84e93bcdd6e026fbd3a56ae598f14a6c74acd07d1c5950a1a2347a1a24fae"
+		}
+	},
+	"pivot": [
+		80,
+		224
+	],
+	"production_catalogue_registered": false,
+	"provenance": "Editable typed-GDScript construction with retained reviewed oak/powdercoat native material tiles where relevant. No generated full view, transformed finished raster, provider call, text, logo, fake metric, baked actor, or service implementation.",
+	"runtime_registered": false,
+	"service_backend_or_interaction_created": false,
+	"source_attempts_created": 0,
+	"sprite_offset": [
+		0,
+		-80
+	],
+	"status": "passive_library_art_without_runtime_binding"
+}

@@ -1,0 +1,702 @@
+{
+	"asset_scope": "fixed base furniture; no actor pixels",
+	"canvas": [
+		96,
+		144
+	],
+	"catalogue_family": "visitor_chair",
+	"checks": 50,
+	"collision_cells": [
+		[
+			0,
+			0
+		]
+	],
+	"default_layout_registered": false,
+	"dev_catalogue_registered": true,
+	"directions": [
+		{
+			"contact_points": [
+				[
+					-12,
+					-8
+				],
+				[
+					12,
+					-8
+				],
+				[
+					-12,
+					15
+				],
+				[
+					12,
+					15
+				]
+			],
+			"employee_look_vector": [
+				0,
+				-1
+			],
+			"facing": "north",
+			"footprint_cells": [
+				1,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/north-floor_shadow.png",
+					"decoded_rgba_sha256": "0e92c25cf5d92c0dfa1ff34c284ef7a70db8c798587b541cf03d2a64266242e1",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							33,
+							87,
+							30,
+							23
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 364,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 13460
+					},
+					"name": "VisitorChairFloorShadow",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"sha256": "3a51b38620ea297e76b73ab1a03805e2ce6ae2aa52f3d6f914f4233592598f74",
+					"z_offset": -8
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/north-seat_back.png",
+					"decoded_rgba_sha256": "4ced68b397641dbfcd9936dc56c2f797d103d17baaae45b85e9c2fbf7a35ebda",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							32,
+							48,
+							32,
+							41
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 1208,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 12616
+					},
+					"name": "VisitorChairSeatBack",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"sha256": "7b33c334f10cff922dec4e4377ca01aacbedd9130151d6948af408a430c703bc",
+					"z_offset": -6
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/north-seat_front.png",
+					"decoded_rgba_sha256": "da8823f0ae02a1abc1b91e3b6f5ab0ddd854b9f8ea107291072cee33cc621162",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							32,
+							85,
+							32,
+							27
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 414,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 13410
+					},
+					"name": "VisitorChairSeatFront",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"sha256": "a5f3d917dc708ce149fe1d04fb54b390eb5fc8592eefa6ad6bf7d4b6483ef1c3",
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					0
+				]
+			],
+			"optional_contact_socket": {
+				"actor_gaze": [
+					0,
+					-1
+				],
+				"mounted_render_foot": [
+					0,
+					-2
+				],
+				"physical_cell": [
+					0,
+					1
+				],
+				"seated_render_offset": [
+					0,
+					-34
+				]
+			},
+			"proposed_interaction_cell": [
+				0,
+				1
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					32,
+					48,
+					32,
+					64
+				],
+				"opaque_colors": 7,
+				"opaque_pixels": 1803,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 12021
+			},
+			"whole_rgba_sha256": "fe15e92ab12b8aeb26caf7f7f664b0261e59d8110784e204664092d7af8a11b4",
+			"whole_sha256": "1fe0e6ef9309c1803f8eb0d595ae49df039f961fab697d6473a8f9d36dde8a16"
+		},
+		{
+			"contact_points": [
+				[
+					-14,
+					-6
+				],
+				[
+					-8,
+					11
+				],
+				[
+					8,
+					9
+				],
+				[
+					13,
+					15
+				]
+			],
+			"employee_look_vector": [
+				1,
+				0
+			],
+			"facing": "east",
+			"footprint_cells": [
+				1,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/east-floor_shadow.png",
+					"decoded_rgba_sha256": "d3643b448d7306975e447e3b438c0b15bbe434831085f3d48bcf2eed7227cc47",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							33,
+							86,
+							30,
+							25
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 394,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 13430
+					},
+					"name": "VisitorChairFloorShadow",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"sha256": "965b460515a4755fb92389eb16dec6709882b5f581869c8f65ab5ddcec858e2f",
+					"z_offset": -8
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/east-seat_back.png",
+					"decoded_rgba_sha256": "0529b3698115c97ac5fa462200e2da579dee0c71bafb6393c5880c0d2b05545f",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							30,
+							48,
+							35,
+							60
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 961,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 12863
+					},
+					"name": "VisitorChairSeatBack",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"sha256": "1979899fca2e8b84260b76322d00a03ae00d0577fca7b5510a0e0ef3da212011",
+					"z_offset": -6
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/east-seat_front.png",
+					"decoded_rgba_sha256": "15f8798a79749eff8a593e38df44511f281abfb1f895b1e1785abbab90aa92f5",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							40,
+							83,
+							26,
+							29
+						],
+						"opaque_colors": 3,
+						"opaque_pixels": 305,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 13519
+					},
+					"name": "VisitorChairSeatFront",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"sha256": "49321a0484a3c852985494cfdaab2de02d2b2745362a9442e927a791d3b6ae2d",
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					0
+				]
+			],
+			"optional_contact_socket": {
+				"actor_gaze": [
+					1,
+					0
+				],
+				"mounted_render_foot": [
+					2,
+					-2
+				],
+				"physical_cell": [
+					-1,
+					0
+				],
+				"seated_render_offset": [
+					34,
+					-2
+				]
+			},
+			"proposed_interaction_cell": [
+				-1,
+				0
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					30,
+					48,
+					36,
+					64
+				],
+				"opaque_colors": 9,
+				"opaque_pixels": 1443,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 12381
+			},
+			"whole_rgba_sha256": "e21fd1e95290fa074cf4841f0f5dab9fa07e4eb1ca416ca1a68722d51222c000",
+			"whole_sha256": "bf7f3018557fa1088b3a1603cb35f48f7aa38254ebdfaa4cdc5bd359436a089d"
+		},
+		{
+			"contact_points": [
+				[
+					-12,
+					-11
+				],
+				[
+					12,
+					-11
+				],
+				[
+					-11,
+					15
+				],
+				[
+					11,
+					15
+				]
+			],
+			"employee_look_vector": [
+				0,
+				1
+			],
+			"facing": "south",
+			"footprint_cells": [
+				1,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/south-floor_shadow.png",
+					"decoded_rgba_sha256": "5ef44e9e652fe9c2437db4722b7dae44db4b690202d5d40739d7379ae6df09d4",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							34,
+							88,
+							29,
+							23
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 353,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 13471
+					},
+					"name": "VisitorChairFloorShadow",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"sha256": "85c42a976fe1940646846d36bae603c0d2646d188ca33ebd83d18393f6a410aa",
+					"z_offset": -8
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/south-seat_back.png",
+					"decoded_rgba_sha256": "a26dca20899b20bd70b2affceb9076989a3d84dd54c4f9f76ff8dea010b1b128",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							31,
+							48,
+							34,
+							41
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 1298,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 12526
+					},
+					"name": "VisitorChairSeatBack",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"sha256": "da7ef9847c4a1a85c32d35cd0e2309cc8e96bc08b77c48b8f4f7155b676677a3",
+					"z_offset": -6
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/south-seat_front.png",
+					"decoded_rgba_sha256": "3e20d3c0b446b1893f972d99a73de7dc4b2a50aac10bdb0c6571b0f05c22ade9",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							32,
+							87,
+							32,
+							25
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 419,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 13405
+					},
+					"name": "VisitorChairSeatFront",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"sha256": "131631b7153da3c29efab91a3e8a840d5413560adc20e16879eba1a9915cb61e",
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					0
+				]
+			],
+			"optional_contact_socket": {
+				"actor_gaze": [
+					0,
+					1
+				],
+				"mounted_render_foot": [
+					0,
+					-3
+				],
+				"physical_cell": [
+					0,
+					-1
+				],
+				"seated_render_offset": [
+					0,
+					29
+				]
+			},
+			"proposed_interaction_cell": [
+				0,
+				-1
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					31,
+					48,
+					34,
+					64
+				],
+				"opaque_colors": 9,
+				"opaque_pixels": 1880,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 11944
+			},
+			"whole_rgba_sha256": "0f9c7544a09910010698661f9347818c0c7beccb75027ff8bff576131512d323",
+			"whole_sha256": "87c846d4ccc86a031f7ef735a54bb6fc55d0ab6150e4e9ba8887a86ac60e86d8"
+		},
+		{
+			"contact_points": [
+				[
+					14,
+					-6
+				],
+				[
+					8,
+					11
+				],
+				[
+					-9,
+					10
+				],
+				[
+					-13,
+					15
+				]
+			],
+			"employee_look_vector": [
+				-1,
+				0
+			],
+			"facing": "west",
+			"footprint_cells": [
+				1,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/west-floor_shadow.png",
+					"decoded_rgba_sha256": "5a2117a14ba29befff30ea2d2244585ba06369388de4aa83573c7c1370ee35ab",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							33,
+							87,
+							30,
+							24
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 382,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 13442
+					},
+					"name": "VisitorChairFloorShadow",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"sha256": "c15a172562dbd4eb768d13039acbe2a3d6acff4e3ccd0e8df7d8b5b5e0373be5",
+					"z_offset": -8
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/west-seat_back.png",
+					"decoded_rgba_sha256": "9ed566d313fd41e0ba3aa3dffaec7c5566eae07599bcd5cb278bf70f4e43b58b",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							31,
+							48,
+							35,
+							60
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 963,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 12861
+					},
+					"name": "VisitorChairSeatBack",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"sha256": "df660440defb0e210eba6ff2b5049dff48381af73a41a47031a308890156b6df",
+					"z_offset": -6
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/visitor-chair-v1/west-seat_front.png",
+					"decoded_rgba_sha256": "4f25897a7b10c6770be8b7859e9682a47ae1527205a34f4394aff151ab94053d",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							30,
+							84,
+							26,
+							28
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 301,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 13523
+					},
+					"name": "VisitorChairSeatFront",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						96,
+						144
+					],
+					"sha256": "dd99f6882e1141746fc493c31df6cec985c377a74fdd141f2b38114728436e12",
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					0
+				]
+			],
+			"optional_contact_socket": {
+				"actor_gaze": [
+					-1,
+					0
+				],
+				"mounted_render_foot": [
+					-2,
+					-1
+				],
+				"physical_cell": [
+					1,
+					0
+				],
+				"seated_render_offset": [
+					-34,
+					-1
+				]
+			},
+			"proposed_interaction_cell": [
+				1,
+				0
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					30,
+					48,
+					36,
+					64
+				],
+				"opaque_colors": 8,
+				"opaque_pixels": 1422,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 12402
+			},
+			"whole_rgba_sha256": "a7e91c74a64d1f4b1bdb53d7c69cb7ed99c73596272af6901261369ad6e89025",
+			"whole_sha256": "cf5867558a663718e2816548d2e7f736190fb9a00e28cabd76b0c768a819170e"
+		}
+	],
+	"evidence": [
+		"res://tests/output/visitor-chair/candidate-contact-sheet-native.png",
+		"res://tests/output/visitor-chair/candidate-contact-sheet-4x.png",
+		"res://tests/output/visitor-chair/candidate-layers-native.png",
+		"res://tests/output/visitor-chair/accepted-task-chair-vs-visitor-native.png"
+	],
+	"failures": [],
+	"id": "visitor-chair-v1",
+	"layers": [
+		"floor_shadow",
+		"seat_back",
+		"seat_front"
+	],
+	"pivot": [
+		48,
+		96
+	],
+	"production_catalogue_registered": false,
+	"provenance": "Original deterministic code-native guest chair with four independently declared screen-space projections; no generated raster, source extraction, finished-bitmap transform, text, logo, actor, or ergonomic-task-chair pixel reuse.",
+	"runtime_registered": false,
+	"sprite_offset": [
+		0,
+		-24
+	],
+	"status": "native_review_required_not_runtime_registered",
+	"structure": "low upholstered back, padded seat, exposed fixed wood frame, four contacts; no casters, lift column, controls, armrests, or headrest",
+	"worker_disabled": true
+}

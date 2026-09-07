@@ -1,0 +1,619 @@
+{
+	"canvas": [
+		192,
+		224
+	],
+	"catalogue_family": "two_seat_sofa",
+	"claims": "Bare passive lounge art only; no interaction, seat socket, actor pose, reservation or runtime admission.",
+	"directions": [
+		{
+			"axis": "horizontal",
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						192,
+						224
+					],
+					"decoded_rgba_sha256": "04cc1d9b43d2ef03abe81da3e5a19897c4dd5bf2258067415069982b3b598a13",
+					"floor_anchor_px": [
+						96,
+						144
+					],
+					"hidden_rgb_pixels": 0,
+					"method": "Byte-exact ordered union of support-local contact, rear upholstery and front upholstery.",
+					"opaque_bounds_px": [
+						48,
+						64,
+						96,
+						89
+					],
+					"opaque_pixels": 7209,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/two-seat-sofa-v2/north-whole.png",
+					"sha256": "1e7415187d323b324c430885210c5654a8e937bb1ca24f94eeb14beb60aef24e",
+					"used_colors": 7,
+					"verify_decoded_facts": true
+				}
+			],
+			"equivalent_view": "rear",
+			"facing": "north",
+			"footprint_cells": [
+				3,
+				2
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						192,
+						224
+					],
+					"decoded_rgba_sha256": "8d6204264943a477e1fe2e42d373a893e5d18160a86e17856ae6ffe337c2c358",
+					"floor_anchor_px": [
+						96,
+						144
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						59,
+						108,
+						81,
+						45
+					],
+					"opaque_pixels": 32,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/two-seat-sofa-v2/north-floor_shadow.png",
+					"sha256": "27540f6b888a9588ae3ce4295fd9ccb9a4c5f2631d58deee8403fb871c00c9b0",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						192,
+						224
+					],
+					"decoded_rgba_sha256": "7fd6ca3d414f4717ea7c644ea4ed4084ea4fb136cc94e11e1136b9b7f3e51d2a",
+					"floor_anchor_px": [
+						96,
+						144
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						49,
+						64,
+						94,
+						54
+					],
+					"opaque_pixels": 4822,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/two-seat-sofa-v2/north-rear_structure.png",
+					"sha256": "d56acf339f9553597a291742e9c01805307a5a7abfd809efbadf71a613e50223",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 4,
+					"verify_decoded_facts": true,
+					"z_offset": -6
+				},
+				{
+					"canvas_size_px": [
+						192,
+						224
+					],
+					"decoded_rgba_sha256": "fcd069b2e1d09145ef688b9c5230f652e9478276d8d9da136411a18c9ecd3895",
+					"floor_anchor_px": [
+						96,
+						144
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						48,
+						99,
+						96,
+						52
+					],
+					"opaque_pixels": 3227,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/two-seat-sofa-v2/north-front_structure.png",
+					"sha256": "04c66f0e328075de8cbafe7cc475a0a4479258e2bd6a5961340c87a2b9bd7e9f",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 6,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					-1,
+					-1
+				],
+				[
+					0,
+					-1
+				],
+				[
+					1,
+					-1
+				],
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					1,
+					0
+				]
+			]
+		},
+		{
+			"axis": "vertical",
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						192,
+						224
+					],
+					"decoded_rgba_sha256": "ffcf0879ade91449e3267c9e87e35220b2d6ce51a6287485dab33dc8baa4ca0d",
+					"floor_anchor_px": [
+						96,
+						144
+					],
+					"hidden_rgb_pixels": 0,
+					"method": "Byte-exact ordered union of support-local contact, rear upholstery and front upholstery.",
+					"opaque_bounds_px": [
+						81,
+						90,
+						62,
+						95
+					],
+					"opaque_pixels": 5053,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/two-seat-sofa-v2/east-whole.png",
+					"sha256": "0aaa694abd7d6706f53fa05ed35aaa20b22274345768fc11bc6af9252dc27a25",
+					"used_colors": 8,
+					"verify_decoded_facts": true
+				}
+			],
+			"equivalent_view": "right_side",
+			"facing": "east",
+			"footprint_cells": [
+				2,
+				3
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						192,
+						224
+					],
+					"decoded_rgba_sha256": "897eff5666af1affc8da5ad5a3683ca0987dbb7c2c58e65b3bf9336b19be2d12",
+					"floor_anchor_px": [
+						96,
+						144
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						91,
+						106,
+						49,
+						79
+					],
+					"opaque_pixels": 32,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/two-seat-sofa-v2/east-floor_shadow.png",
+					"sha256": "5247e37534087fb1e0f9b7d314304631491b3fef67ba558c12d36c51486b00fe",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						192,
+						224
+					],
+					"decoded_rgba_sha256": "a7ac9a1081870f78d71c61030835e265a80d3734338e14ac37dc54332339b2c2",
+					"floor_anchor_px": [
+						96,
+						144
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						81,
+						90,
+						53,
+						88
+					],
+					"opaque_pixels": 4296,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/two-seat-sofa-v2/east-rear_structure.png",
+					"sha256": "79146c3ce535a552d27bece68e2bd89de9ca8e137d557236a48a31a628933e04",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 4,
+					"verify_decoded_facts": true,
+					"z_offset": -6
+				},
+				{
+					"canvas_size_px": [
+						192,
+						224
+					],
+					"decoded_rgba_sha256": "76ab7138435bd3d71e27226346422038d6ef768a97e47fa1cde11621a140d880",
+					"floor_anchor_px": [
+						96,
+						144
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						89,
+						100,
+						54,
+						83
+					],
+					"opaque_pixels": 1436,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/two-seat-sofa-v2/east-front_structure.png",
+					"sha256": "52580afaf45e5355f2869a94070ed7d254455bd88696cabb798b4121a0e83ef4",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 6,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					-1
+				],
+				[
+					1,
+					-1
+				],
+				[
+					0,
+					0
+				],
+				[
+					1,
+					0
+				],
+				[
+					0,
+					1
+				],
+				[
+					1,
+					1
+				]
+			]
+		},
+		{
+			"axis": "horizontal",
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						192,
+						224
+					],
+					"decoded_rgba_sha256": "a2a1f1b47c18c65ff284f567293706013c2aa4dbb0eb9cedf39c4a5ecc28fbc0",
+					"floor_anchor_px": [
+						96,
+						144
+					],
+					"hidden_rgb_pixels": 0,
+					"method": "Byte-exact ordered union of support-local contact, rear upholstery and front upholstery.",
+					"opaque_bounds_px": [
+						48,
+						96,
+						96,
+						89
+					],
+					"opaque_pixels": 7209,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/two-seat-sofa-v2/south-whole.png",
+					"sha256": "77558063ec4f47d1b5bd9c6e51d4a18deabcd4828caeb0bf5b9908790b3f4eb5",
+					"used_colors": 8,
+					"verify_decoded_facts": true
+				}
+			],
+			"equivalent_view": "front",
+			"facing": "south",
+			"footprint_cells": [
+				3,
+				2
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						192,
+						224
+					],
+					"decoded_rgba_sha256": "6983ffc8a332e9e4bec68397445941fb2df33bfede218698f8c0628819c036dc",
+					"floor_anchor_px": [
+						96,
+						144
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						59,
+						140,
+						81,
+						45
+					],
+					"opaque_pixels": 32,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/two-seat-sofa-v2/south-floor_shadow.png",
+					"sha256": "aec30ee13e7137f69abc962bd30ed67389a498e8442c70f7223346784dbc834f",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						192,
+						224
+					],
+					"decoded_rgba_sha256": "54ab05f58d0c41d3518ac8ecfb9cecc81464c5ef6f5a11fe5ab3a433dd4ee1f5",
+					"floor_anchor_px": [
+						96,
+						144
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						49,
+						96,
+						94,
+						54
+					],
+					"opaque_pixels": 4822,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/two-seat-sofa-v2/south-rear_structure.png",
+					"sha256": "de7b00550056abeaccb659306c9f3988aab9eaac854461f6f4dba494ac44d337",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 4,
+					"verify_decoded_facts": true,
+					"z_offset": -6
+				},
+				{
+					"canvas_size_px": [
+						192,
+						224
+					],
+					"decoded_rgba_sha256": "93a81fbc0dbfcdfca57b87603f97945e3647e2272d9664a62125c2bd82a5946c",
+					"floor_anchor_px": [
+						96,
+						144
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						48,
+						131,
+						96,
+						52
+					],
+					"opaque_pixels": 3227,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/two-seat-sofa-v2/south-front_structure.png",
+					"sha256": "e242c4b06d7045f91e5502bf95a40e5f92da778c8160d1b49404b2d4936dd821",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 7,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					1,
+					0
+				],
+				[
+					-1,
+					1
+				],
+				[
+					0,
+					1
+				],
+				[
+					1,
+					1
+				]
+			]
+		},
+		{
+			"axis": "vertical",
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						192,
+						224
+					],
+					"decoded_rgba_sha256": "03174c22af61aac491d83e70bb90687a4a54d454b7a5a8f3b91f3cf3d0738708",
+					"floor_anchor_px": [
+						96,
+						144
+					],
+					"hidden_rgb_pixels": 0,
+					"method": "Byte-exact ordered union of support-local contact, rear upholstery and front upholstery.",
+					"opaque_bounds_px": [
+						49,
+						90,
+						62,
+						95
+					],
+					"opaque_pixels": 5053,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/two-seat-sofa-v2/west-whole.png",
+					"sha256": "502a39ae1ca8afc47fe958d72ecbb518866eec8a5688c881c0bd65b9fcc700e6",
+					"used_colors": 8,
+					"verify_decoded_facts": true
+				}
+			],
+			"equivalent_view": "left_side",
+			"facing": "west",
+			"footprint_cells": [
+				2,
+				3
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						192,
+						224
+					],
+					"decoded_rgba_sha256": "f0cc432e683213b1abd3c771a8b167c2ea0e0873572ae8df621c5621245ae36a",
+					"floor_anchor_px": [
+						96,
+						144
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						59,
+						106,
+						49,
+						79
+					],
+					"opaque_pixels": 32,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/two-seat-sofa-v2/west-floor_shadow.png",
+					"sha256": "bad291b1ef9a03e8a927dc58a3642bc804d0fa340bcea1ac2e3610682bb493d3",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						192,
+						224
+					],
+					"decoded_rgba_sha256": "e6e22b3c7922401f4850ffc7aac507f4103b45cbdf303973fb6127b838e43868",
+					"floor_anchor_px": [
+						96,
+						144
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						58,
+						90,
+						53,
+						88
+					],
+					"opaque_pixels": 4296,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/two-seat-sofa-v2/west-rear_structure.png",
+					"sha256": "b3b943ddad9895b7957d6415637c62b8245f801e7b7e45c5af9a68a1f10a5289",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 4,
+					"verify_decoded_facts": true,
+					"z_offset": -6
+				},
+				{
+					"canvas_size_px": [
+						192,
+						224
+					],
+					"decoded_rgba_sha256": "88cc68f0b035fedce80f1d1fff82f90d86797344378a5c6e64aa4b46654d12dc",
+					"floor_anchor_px": [
+						96,
+						144
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						49,
+						100,
+						55,
+						83
+					],
+					"opaque_pixels": 1436,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/two-seat-sofa-v2/west-front_structure.png",
+					"sha256": "56a98a211f0776e9518ca89b97c48aba3cc193848536c01dae3a24e0c650f229",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 7,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					-1,
+					-1
+				],
+				[
+					0,
+					-1
+				],
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					-1,
+					1
+				],
+				[
+					0,
+					1
+				]
+			]
+		}
+	],
+	"floor_pivot": [
+		96,
+		144
+	],
+	"id": "two-seat-sofa-v2",
+	"layer_order": [
+		"floor_shadow",
+		"rear_structure",
+		"front_structure"
+	],
+	"runtime_registered": false,
+	"sprite_offset": [
+		0,
+		-32
+	],
+	"status": "staged_unapproved_passive_art",
+	"worker_disabled": true
+}

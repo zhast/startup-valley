@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "asset_revision": "research-v1",
+  "cell": [48, 80],
+  "frames_per_facing": 4,
+  "anchor": [24, 72],
+  "facings": ["north", "east", "south", "west"],
+  "employees": ["mira", "theo"],
+  "source": "deterministic native reconstruction from accepted locomotion sheets",
+  "generator": "res://tools/build_directional_research_poses.gd",
+  "animation": "one stable handheld analyzer with a four-frame screen scan",
+  "alpha": true,
+  "runtime_scale": 1
+}

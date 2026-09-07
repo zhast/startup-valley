@@ -1,0 +1,347 @@
+{
+	"canvas": [
+		192,
+		320
+	],
+	"checks": 16,
+	"collision_cells": [],
+	"dev_catalogue_registered": false,
+	"directions": [
+		{
+			"facing": "north",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/product-prototype-kit-v1/north-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							45,
+							146,
+							99,
+							15
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 582,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 60858
+					},
+					"name": "ProductPrototypeSurfaceDecorRear",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						320
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/product-prototype-kit-v1/north-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							84,
+							179,
+							30,
+							8
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 137,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 61303
+					},
+					"name": "ProductPrototypeSurfaceDecorFront",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						320
+					],
+					"z_offset": 3
+				}
+			],
+			"objects": {
+				"inspection_gauge": {
+					"axis": "horizontal",
+					"layer": "surface_decor_front",
+					"origin": "(84, 179)"
+				},
+				"prototype_fixture": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(45, 146)"
+				},
+				"test_parts": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(124, 148)"
+				}
+			},
+			"whole_sha256": "7ff24a35f88611aa2d6eb021532a9eac0ff904fbd0d05662330b661a2455b527"
+		},
+		{
+			"facing": "east",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/product-prototype-kit-v1/east-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							72,
+							143,
+							44,
+							47
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 582,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 60858
+					},
+					"name": "ProductPrototypeSurfaceDecorRear",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						320
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/product-prototype-kit-v1/east-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							101,
+							180,
+							8,
+							30
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 137,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 61303
+					},
+					"name": "ProductPrototypeSurfaceDecorFront",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						320
+					],
+					"z_offset": 2
+				}
+			],
+			"objects": {
+				"inspection_gauge": {
+					"axis": "vertical",
+					"layer": "surface_decor_front",
+					"origin": "(101, 180)"
+				},
+				"prototype_fixture": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(101, 143)"
+				},
+				"test_parts": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(72, 170)"
+				}
+			},
+			"whole_sha256": "cb0b52a95654c183882eb7ea08a3cfd89cab37527e6247334901ebed2ac2119e"
+		},
+		{
+			"facing": "south",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/product-prototype-kit-v1/south-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							45,
+							146,
+							101,
+							15
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 582,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 60858
+					},
+					"name": "ProductPrototypeSurfaceDecorRear",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						320
+					],
+					"z_offset": -38
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/product-prototype-kit-v1/south-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							84,
+							186,
+							30,
+							8
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 137,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 61303
+					},
+					"name": "ProductPrototypeSurfaceDecorFront",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						320
+					],
+					"z_offset": 2
+				}
+			],
+			"objects": {
+				"inspection_gauge": {
+					"axis": "horizontal",
+					"layer": "surface_decor_front",
+					"origin": "(84, 186)"
+				},
+				"prototype_fixture": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(45, 146)"
+				},
+				"test_parts": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(126, 149)"
+				}
+			},
+			"whole_sha256": "74c4cbc630e8325fef9bdb90dfea848b528749863003e3285d29449d2f2dd420"
+		},
+		{
+			"facing": "west",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/product-prototype-kit-v1/west-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							55,
+							143,
+							78,
+							47
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 582,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 60858
+					},
+					"name": "ProductPrototypeSurfaceDecorRear",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						320
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/product-prototype-kit-v1/west-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							101,
+							180,
+							8,
+							30
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 137,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 61303
+					},
+					"name": "ProductPrototypeSurfaceDecorFront",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						192,
+						320
+					],
+					"z_offset": 2
+				}
+			],
+			"objects": {
+				"inspection_gauge": {
+					"axis": "vertical",
+					"layer": "surface_decor_front",
+					"origin": "(101, 180)"
+				},
+				"prototype_fixture": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(55, 143)"
+				},
+				"test_parts": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(122, 170)"
+				}
+			},
+			"whole_sha256": "9ede51695a28cb59fb8751a8ffe8fafa8119ecd4eb14bbba46850aab127d2b20"
+		}
+	],
+	"failures": [],
+	"footprint_cells": [
+		0,
+		0
+	],
+	"host": "accepted research_table / research-bench-v1",
+	"id": "product_prototype_kit-v1",
+	"pivot": [
+		96,
+		240
+	],
+	"production_catalogue_registered": false,
+	"production_files_changed": false,
+	"provenance": "Original deterministic code-native prototype fixture, fit-test parts and inspection gauge on independently declared screen-axis layouts; no image generation, source or bench extraction, finished-bitmap rotation, mirroring, scaling, text, logo, or metric.",
+	"runtime_registered": false,
+	"sprite_offset": [
+		0,
+		-80
+	],
+	"status": "native_review_candidate_not_runtime_registered"
+}

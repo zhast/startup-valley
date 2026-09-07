@@ -1,0 +1,347 @@
+{
+	"canvas": [
+		192,
+		224
+	],
+	"checks": 16,
+	"collision_cells": [],
+	"dev_catalogue_registered": false,
+	"directions": [
+		{
+			"facing": "north",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/customer-success-kit-v1/north-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							52,
+							116,
+							82,
+							12
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 242,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42766
+					},
+					"name": "CustomerSuccessSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/customer-success-kit-v1/north-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							50,
+							132,
+							24,
+							10
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 240,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42768
+					},
+					"name": "CustomerSuccessSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 2
+				}
+			],
+			"objects": {
+				"compact_headset_dock": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(50, 116)"
+				},
+				"conversation_status_console": {
+					"axis": "horizontal",
+					"layer": "surface_decor_front",
+					"origin": "(50, 132)"
+				},
+				"ticket_triage_cards": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(118, 118)"
+				}
+			},
+			"whole_sha256": "f2321095dfdc5d1982d92e9d57a31d62eba059e15cb67e0ee14b6b0f2f27c10d"
+		},
+		{
+			"facing": "east",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/customer-success-kit-v1/east-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							82,
+							84,
+							27,
+							22
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 243,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42765
+					},
+					"name": "CustomerSuccessSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/customer-success-kit-v1/east-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							99,
+							149,
+							10,
+							24
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 240,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42768
+					},
+					"name": "CustomerSuccessSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 3
+				}
+			],
+			"objects": {
+				"compact_headset_dock": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(82, 82)"
+				},
+				"conversation_status_console": {
+					"axis": "vertical",
+					"layer": "surface_decor_front",
+					"origin": "(99, 149)"
+				},
+				"ticket_triage_cards": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(100, 84)"
+				}
+			},
+			"whole_sha256": "29735e54deaa42cc6aa7c4d57923eef016f3b2e46fc42863622b3e6489fc7e8c"
+		},
+		{
+			"facing": "south",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/customer-success-kit-v1/south-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							52,
+							116,
+							88,
+							12
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 242,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42766
+					},
+					"name": "CustomerSuccessSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/customer-success-kit-v1/south-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							118,
+							132,
+							24,
+							10
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 240,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42768
+					},
+					"name": "CustomerSuccessSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 4
+				}
+			],
+			"objects": {
+				"compact_headset_dock": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(118, 116)"
+				},
+				"conversation_status_console": {
+					"axis": "horizontal",
+					"layer": "surface_decor_front",
+					"origin": "(118, 132)"
+				},
+				"ticket_triage_cards": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(52, 118)"
+				}
+			},
+			"whole_sha256": "f45e2fdb101e60c64bebb7da7051e57eda89e8c91f43af405979875c0c97995c"
+		},
+		{
+			"facing": "west",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/customer-success-kit-v1/west-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							82,
+							83,
+							28,
+							20
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 228,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42780
+					},
+					"name": "CustomerSuccessSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/customer-success-kit-v1/west-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							82,
+							149,
+							10,
+							24
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 240,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42768
+					},
+					"name": "CustomerSuccessSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 3
+				}
+			],
+			"objects": {
+				"compact_headset_dock": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(100, 81)"
+				},
+				"conversation_status_console": {
+					"axis": "vertical",
+					"layer": "surface_decor_front",
+					"origin": "(82, 149)"
+				},
+				"ticket_triage_cards": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(82, 84)"
+				}
+			},
+			"whole_sha256": "a9b46429f05ebe49007743d9f86bf9d2dedd9290832015953116ae8a84c22653"
+		}
+	],
+	"failures": [],
+	"footprint_cells": [
+		0,
+		0
+	],
+	"host": "accepted desk / workstations-v2",
+	"id": "customer_success_kit-v1",
+	"pivot": [
+		96,
+		160
+	],
+	"production_catalogue_registered": false,
+	"production_files_changed": false,
+	"provenance": "Original deterministic code-native customer-support decor: compact headset dock, glyph-free ticket triage cards, and blank conversation/status console on independently declared screen-axis layouts; no image generation, source extraction, finished-bitmap transform, text, number, logo, giant speech bubble, baked actor, or implied support-service implementation.",
+	"runtime_registered": false,
+	"sprite_offset": [
+		0,
+		-48
+	],
+	"status": "native_review_candidate_not_runtime_registered"
+}

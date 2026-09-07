@@ -1,0 +1,748 @@
+{
+	"canvas": [
+		160,
+		176
+	],
+	"checks": 117,
+	"default_layout_registered": false,
+	"dev_catalogue_registration": "Not asserted. This exporter only verifies that the shared catalogue stays byte-exact during its own run.",
+	"dimension_review": {
+		"measured_opaque_rise_px": 48,
+		"planned_canvas_retained": [
+			160,
+			176
+		],
+		"planned_floor_anchor_retained": [
+			80,
+			112
+		],
+		"planned_max_rise_envelope_px": 48,
+		"revision": "The planned maximum rise was an envelope, not required opaque height. Tall supply storage uses 112px, compact server equipment uses 96px, and the low sorter keeps 48px; original native registration and two-cell collision masks remain unchanged."
+	},
+	"directions": [
+		{
+			"approach_gaze": "south",
+			"body_plane_px": [
+				-14,
+				-32,
+				60,
+				48
+			],
+			"camera_face_identity": "rear",
+			"clearance_cell_offsets": [
+				[
+					0,
+					-1
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"measured_opaque_rise_px": 48,
+				"planned_canvas_retained": [
+					160,
+					176
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					112
+				],
+				"planned_max_rise_envelope_px": 48,
+				"revision": "The planned maximum rise was an envelope, not required opaque height. Tall supply storage uses 112px, compact server equipment uses 96px, and the low sorter keeps 48px; original native registration and two-cell collision masks remain unchanged."
+			},
+			"employee_look_vector": [
+				0,
+				1
+			],
+			"facing": "north",
+			"floor_plane_px": [
+				-16,
+				-16,
+				64,
+				32
+			],
+			"footprint_cells": [
+				2,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v1/north-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							66,
+							121,
+							61,
+							7
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 214,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 27946
+					},
+					"name": "RecyclingSorterNorthFloorShadow",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "fad313dd77b1168b97b14a1f20d786d352402546c2ba16b2d48fe077eb373604",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v1/north-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							66,
+							80,
+							60,
+							48
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 2880,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 25280
+					},
+					"name": "RecyclingSorterNorthRearStructure",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "43eb3b50b7c39d9577c161ed20e1e0438a5239f5356620fd7014bb7226f9d2cf",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v1/north-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							72,
+							88,
+							48,
+							31
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 292,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 27868
+					},
+					"name": "RecyclingSorterNorthFrontStructure",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "8d0dd886a4a563e7eed8580d0d331fc40084342c5055d709b17c402030d5cb66",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					1,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				0,
+				-1
+			],
+			"role_identity": {
+				"labels": "color_and_shape_only_no_text",
+				"three_stream_order": [
+					"grey",
+					"green",
+					"blue"
+				]
+			},
+			"service_side": "north",
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					66,
+					80,
+					61,
+					48
+				],
+				"opaque_colors": 8,
+				"opaque_pixels": 2881,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 25279
+			},
+			"whole_sha256": "5d7916e309eb485404e59899d64bcc7949bc93ec85c3f482be205620f546e4c9"
+		},
+		{
+			"approach_gaze": "west",
+			"body_plane_px": [
+				-14,
+				0,
+				28,
+				48
+			],
+			"camera_face_identity": "service_front_right_edge",
+			"clearance_cell_offsets": [
+				[
+					1,
+					0
+				]
+			],
+			"contact_boundary_y": 48,
+			"dimension_review": {
+				"measured_opaque_rise_px": 48,
+				"planned_canvas_retained": [
+					160,
+					176
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					112
+				],
+				"planned_max_rise_envelope_px": 48,
+				"revision": "The planned maximum rise was an envelope, not required opaque height. Tall supply storage uses 112px, compact server equipment uses 96px, and the low sorter keeps 48px; original native registration and two-cell collision masks remain unchanged."
+			},
+			"employee_look_vector": [
+				-1,
+				0
+			],
+			"facing": "east",
+			"floor_plane_px": [
+				-16,
+				-16,
+				32,
+				64
+			],
+			"footprint_cells": [
+				1,
+				2
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v1/east-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							66,
+							153,
+							29,
+							7
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 102,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 28058
+					},
+					"name": "RecyclingSorterEastFloorShadow",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "a5f4a3333eee550eec7afae9b66bbc982f0ad8089978bda84c053321bb1f5176",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v1/east-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							66,
+							112,
+							28,
+							48
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 1344,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 26816
+					},
+					"name": "RecyclingSorterEastRearStructure",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "22d770d2623faeb1aa0e6f23e7fd7f95cde7c6748034e808f51f83c45285d7d3",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v1/east-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							72,
+							116,
+							20,
+							40
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 416,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 27744
+					},
+					"name": "RecyclingSorterEastFrontStructure",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "442f8ac13a02eeb689c48f48c012520f66b449c980d5b23b2d0dbab8ab18667b",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					1
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				1,
+				0
+			],
+			"role_identity": {
+				"labels": "color_and_shape_only_no_text",
+				"three_stream_order": [
+					"blue",
+					"green",
+					"grey"
+				]
+			},
+			"service_side": "east",
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					66,
+					112,
+					29,
+					48
+				],
+				"opaque_colors": 8,
+				"opaque_pixels": 1345,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 26815
+			},
+			"whole_sha256": "dc164510f51c81ab5603f063993c5b101e0d3fb560aca915a95188e06b7a4274"
+		},
+		{
+			"approach_gaze": "north",
+			"body_plane_px": [
+				-46,
+				-32,
+				60,
+				48
+			],
+			"camera_face_identity": "service_front",
+			"clearance_cell_offsets": [
+				[
+					0,
+					1
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"measured_opaque_rise_px": 48,
+				"planned_canvas_retained": [
+					160,
+					176
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					112
+				],
+				"planned_max_rise_envelope_px": 48,
+				"revision": "The planned maximum rise was an envelope, not required opaque height. Tall supply storage uses 112px, compact server equipment uses 96px, and the low sorter keeps 48px; original native registration and two-cell collision masks remain unchanged."
+			},
+			"employee_look_vector": [
+				0,
+				-1
+			],
+			"facing": "south",
+			"floor_plane_px": [
+				-48,
+				-16,
+				64,
+				32
+			],
+			"footprint_cells": [
+				2,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v1/south-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							34,
+							121,
+							61,
+							7
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 214,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 27946
+					},
+					"name": "RecyclingSorterSouthFloorShadow",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "6fc46815d9ebc5e7f981c037eadcccac597164325f777c97f87b15ecd74e9972",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v1/south-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							34,
+							80,
+							60,
+							48
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 2880,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 25280
+					},
+					"name": "RecyclingSorterSouthRearStructure",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "e5c1a7ba4ddb80a396332d9ec0732f6bdf475033855df720e17f908904ee44f3",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v1/south-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							40,
+							87,
+							47,
+							34
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 1428,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 26732
+					},
+					"name": "RecyclingSorterSouthFrontStructure",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "051b743c5be72bfe1037397bad436ef700b1ae515badf0c31014e17c46b03256",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				0,
+				1
+			],
+			"role_identity": {
+				"labels": "color_and_shape_only_no_text",
+				"three_stream_order": [
+					"blue",
+					"green",
+					"grey"
+				]
+			},
+			"service_side": "south",
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					34,
+					80,
+					61,
+					48
+				],
+				"opaque_colors": 9,
+				"opaque_pixels": 2881,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 25279
+			},
+			"whole_sha256": "4784da12ee1f7dc6fe6f196d5d13c2fb8b50a15b385611bf83d30702d0562a85"
+		},
+		{
+			"approach_gaze": "east",
+			"body_plane_px": [
+				-14,
+				-32,
+				28,
+				48
+			],
+			"camera_face_identity": "service_front_left_edge",
+			"clearance_cell_offsets": [
+				[
+					-1,
+					0
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"measured_opaque_rise_px": 48,
+				"planned_canvas_retained": [
+					160,
+					176
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					112
+				],
+				"planned_max_rise_envelope_px": 48,
+				"revision": "The planned maximum rise was an envelope, not required opaque height. Tall supply storage uses 112px, compact server equipment uses 96px, and the low sorter keeps 48px; original native registration and two-cell collision masks remain unchanged."
+			},
+			"employee_look_vector": [
+				1,
+				0
+			],
+			"facing": "west",
+			"floor_plane_px": [
+				-16,
+				-48,
+				32,
+				64
+			],
+			"footprint_cells": [
+				1,
+				2
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v1/west-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							66,
+							121,
+							29,
+							7
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 102,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 28058
+					},
+					"name": "RecyclingSorterWestFloorShadow",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "f7de193b40bcdfbfcdae046c439af637d48c73a3a2556dcedbedc8109d7aee0d",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v1/west-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							66,
+							80,
+							28,
+							48
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 1344,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 26816
+					},
+					"name": "RecyclingSorterWestRearStructure",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "9082409f7e8eb57b22ebc14dba3d9ed7ead81272c86ccc2e8632f3159041d8e5",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v1/west-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							68,
+							84,
+							20,
+							40
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 416,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 27744
+					},
+					"name": "RecyclingSorterWestFrontStructure",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "150a083643b8f93f38e05156b90bb78794e796105cf1f11fdff6c24914e6dd3b",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					-1
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				-1,
+				0
+			],
+			"role_identity": {
+				"labels": "color_and_shape_only_no_text",
+				"three_stream_order": [
+					"grey",
+					"green",
+					"blue"
+				]
+			},
+			"service_side": "west",
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					66,
+					80,
+					29,
+					48
+				],
+				"opaque_colors": 8,
+				"opaque_pixels": 1345,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 26815
+			},
+			"whole_sha256": "78bf2ad9cc9cd8a34bac5e47abf6f9eba8bc469c7c30542d72ae513b1d5f31ae"
+		}
+	],
+	"failures": [],
+	"family": "recycling_sorter",
+	"id": "recycling-sorter-v1",
+	"image_generation_calls": 0,
+	"layers": [
+		"floor_shadow",
+		"rear_structure",
+		"front_structure"
+	],
+	"material_sources": {
+		"charcoal_powdercoat": {
+			"path": "res://tests/fixtures/furniture-calibration/materials/charcoal-powdercoat-v1.png",
+			"retained_unchanged": true,
+			"sha256": "807152a50c8a1771cd451d0984fe1fd4ba3fb6328089e5fa9dd1fb2c858ad42d"
+		},
+		"oak_horizontal": {
+			"path": "res://tests/fixtures/furniture-calibration/materials-v2/oak-horizontal-v2.png",
+			"retained_unchanged": true,
+			"sha256": "bcd3ccf8c6411b4ce24997a88b3fabf78f7fa2132b240f66ee1d59ab3e0dded6"
+		},
+		"oak_vertical": {
+			"path": "res://tests/fixtures/furniture-calibration/materials-v2/oak-vertical-v2.png",
+			"retained_unchanged": true,
+			"sha256": "28a84e93bcdd6e026fbd3a56ae598f14a6c74acd07d1c5950a1a2347a1a24fae"
+		}
+	},
+	"pivot": [
+		80,
+		112
+	],
+	"production_catalogue_registered": false,
+	"provenance": "Editable typed-GDScript construction with retained reviewed oak/powdercoat native material tiles where relevant. No generated full view, transformed finished raster, provider call, text, logo, fake metric, baked actor, or service implementation.",
+	"runtime_registered": false,
+	"service_backend_or_interaction_created": false,
+	"source_attempts_created": 0,
+	"sprite_offset": [
+		0,
+		-24
+	],
+	"status": "passive_library_art_without_runtime_binding"
+}

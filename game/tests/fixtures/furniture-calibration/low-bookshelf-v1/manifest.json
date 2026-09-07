@@ -1,0 +1,37 @@
+{
+	"axis_tiles": [
+		"res://tests/fixtures/furniture-calibration/materials-v2/oak-horizontal-v2.png",
+		"res://tests/fixtures/furniture-calibration/materials-v2/oak-vertical-v2.png"
+	],
+	"claims": "Only South has separately generated front content. No service/worker interaction, seat, cast shadow or production approval.",
+	"equivalent_pairs": [
+		[
+			"east",
+			"west"
+		]
+	],
+	"floor_pivot": [
+		96,
+		160
+	],
+	"generated_content_source": "res://tests/fixtures/furniture-calibration/low-bookshelf-v1/books-row-native.png",
+	"layer_order": [
+		"Carcass",
+		"Top",
+		"Front",
+		"Plinth",
+		"Insert"
+	],
+	"native_canvas": [
+		192,
+		224
+	],
+	"source_decoded_sha256": "9882029d2be7f58a2af383fb50651e5d2b833f9de0933a9a3f965f710132576b",
+	"status": "staged_unapproved",
+	"views": {
+		"east": "d8513f6df59a9adf038247b8017073422be4a94e7af4b3da086a2ccd203c8794",
+		"north": "5d730a899e981f448324e1c77f9721024ce48dd131d818998605824f967283ee",
+		"south": "19378b48959f5b9eda47ad8695be818db1f4b5450022b968b9d98f694c148981",
+		"west": "d8513f6df59a9adf038247b8017073422be4a94e7af4b3da086a2ccd203c8794"
+	}
+}

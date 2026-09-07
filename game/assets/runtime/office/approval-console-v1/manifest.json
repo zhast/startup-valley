@@ -1,0 +1,26 @@
+{
+  "revision": "approval-console-v1",
+  "status": "runtime_ready",
+  "directions": ["north", "east", "south", "west"],
+  "canvas": [192, 288],
+  "pivot": [96, 208],
+  "native_scale": 1,
+  "files": {
+    "east-ambient_overlay.png": "60f86f941ab37cf6f9622e9cbbd2b2f89d6375b4c9774b4af42b5a4f3f990085",
+    "east-floor_shadow.png": "8eeca01ede4477022604671df60f8f92e1aa73c6db9bd932cce961eec3515eaf",
+    "east-front_structure.png": "57c34036cfc99cd8436005c6e22b233e12d8dd93494076b61e54314ab9f61d73",
+    "east-rear_structure.png": "0a28afd582814a28665aaff9ef3cf94144765a35b3176ddbf10a1d47be7eb34f",
+    "north-ambient_overlay.png": "8242e612a1317fbd12d560661ee1b19283ab00eaab4d3b29b61edb8df9093768",
+    "north-floor_shadow.png": "6db8cb6cb2b97cba1231876e224d713bab127ea217596df438463e1780117a71",
+    "north-front_structure.png": "db91c03ae7cdcb0e13a043fdd81327df0aba200993f50280d8f68b29a81e510b",
+    "north-rear_structure.png": "3068c04f77e10a2249f92c7073e2b0868d3203a3c4d59dffbb41428bec13f56c",
+    "south-ambient_overlay.png": "5970c3ca460a05fcb645a53d4f236fc74b332ebeb38b375f41e2d1b16846c4dc",
+    "south-floor_shadow.png": "6db8cb6cb2b97cba1231876e224d713bab127ea217596df438463e1780117a71",
+    "south-front_structure.png": "0688efca273feb81f2b025ae6fdab874d6de3ff1203d81d49638169471e2e864",
+    "south-rear_structure.png": "f28cf9c34f36625b887468b464db479b96eb84dbf5520d9eda3494609d3ae02e",
+    "west-ambient_overlay.png": "c8cb127cdbbeb53bcb8153130a1b1cd678bab08db5cdd0c251104c931470447a",
+    "west-floor_shadow.png": "8eeca01ede4477022604671df60f8f92e1aa73c6db9bd932cce961eec3515eaf",
+    "west-front_structure.png": "b6dbbf6c4df93f1669255ec531f8fd143f7446d2992c361acd60e83306067d43",
+    "west-rear_structure.png": "a590f2c70f7cf9c7f778b112512775363b1208dd38b0e74f52cc890b4e1e30f7"
+  }
+}

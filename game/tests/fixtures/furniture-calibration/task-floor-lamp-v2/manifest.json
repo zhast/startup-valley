@@ -1,0 +1,922 @@
+{
+	"canvas": [
+		128,
+		256
+	],
+	"catalogue_family": "task_floor_lamp",
+	"checks_at_write": 39,
+	"dev_catalogue_mutated": false,
+	"directions": [
+		{
+			"authored_geometry": {
+				"base": "(64, 204)",
+				"elbow": "(63, 105)",
+				"employee_look_vector": [
+					0,
+					-1
+				],
+				"facing": "north",
+				"family": "task_floor_lamp",
+				"footprint": [
+					1,
+					1
+				],
+				"interaction": [
+					0,
+					1
+				],
+				"look": [
+					0,
+					-1
+				],
+				"neck": "(64, 68)",
+				"occupied": [
+					[
+						0,
+						0
+					]
+				],
+				"shade": "[P: (48, 50), S: (32, 19)]",
+				"shade_axis": "back"
+			},
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "c5584e1ebfa037c6e916b63419d6264285e0828e252cc6183a52b62f279b1e19",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"manifest_path": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/manifest.json",
+					"method": "Byte-exact ordered native-layer union for review only; no approval or runtime installation.",
+					"opaque_bounds_px": [
+						38,
+						50,
+						52,
+						161
+					],
+					"opaque_pixels": 1839,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/north-whole.png",
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "abcf81e7bc4f4b27096902b6f5e0234c8c21b8ade83a7e98945cf35659ef07d2",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 8,
+					"verify_decoded_facts": true
+				}
+			],
+			"employee_look_vector": [
+				0,
+				-1
+			],
+			"facing": "north",
+			"footprint_cells": [
+				1,
+				1
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "ff88adffe9104d6d3f7853e41a8f2a5d30a4da9efdc561f2d2e6fcb0b161ed28",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/manifest.json",
+					"method": "Exact deterministic code-native north/floor_shadow layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						38,
+						197,
+						52,
+						14
+					],
+					"opaque_pixels": 576,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/north-floor_shadow.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/north-floor_shadow.png",
+						"name": "TaskFloorLampFloorShadow",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": -8
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "c76de8bbbb953034ff6d70d2fbb5c44e0468cf4109390929b75fef39ff732681",
+					"source_layer": "TaskFloorLampFloorShadow",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "027c9578d05adfbf7e8af56e1fc594810b58aef26a26c8c7e220ad0c0aaab706",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/manifest.json",
+					"method": "Exact deterministic code-native north/rear_structure layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						48,
+						50,
+						32,
+						153
+					],
+					"opaque_pixels": 1299,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/north-rear_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/north-rear_structure.png",
+						"name": "TaskFloorLampRearStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": -4
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "5d0966effa581113f71f5943ac4d0cba9d4e0d2cd449806a45bb43ca3c410b9e",
+					"source_layer": "TaskFloorLampRearStructure",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 6,
+					"verify_decoded_facts": true,
+					"z_offset": -4
+				},
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "27ff4c1a75b9346d5da2017e6a019c454e2808799053cc18ee4627c9958d85b9",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/manifest.json",
+					"method": "Exact deterministic code-native north/front_structure layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						44,
+						65,
+						40,
+						146
+					],
+					"opaque_pixels": 556,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/north-front_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/north-front_structure.png",
+						"name": "TaskFloorLampFrontStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": 5
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "d42d5f2cfe8d076ceef95ca13b0c34b88b07db4fe408fdef11e4083bd01d6a60",
+					"source_layer": "TaskFloorLampFrontStructure",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 5,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				0,
+				1
+			]
+		},
+		{
+			"authored_geometry": {
+				"base": "(63, 204)",
+				"elbow": "(64, 105)",
+				"employee_look_vector": [
+					1,
+					0
+				],
+				"facing": "east",
+				"family": "task_floor_lamp",
+				"footprint": [
+					1,
+					1
+				],
+				"interaction": [
+					-1,
+					0
+				],
+				"look": [
+					1,
+					0
+				],
+				"neck": "(82, 73)",
+				"occupied": [
+					[
+						0,
+						0
+					]
+				],
+				"shade": "[P: (80, 61), S: (29, 21)]",
+				"shade_axis": "right"
+			},
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "7eae3cd2b2a29bfa62929ca6bfa39abf2c35388034d492f9bc205b1517edcec2",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"manifest_path": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/manifest.json",
+					"method": "Byte-exact ordered native-layer union for review only; no approval or runtime installation.",
+					"opaque_bounds_px": [
+						37,
+						61,
+						72,
+						150
+					],
+					"opaque_pixels": 1806,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/east-whole.png",
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "946ef94553d05056d86e08a45e5a303b45119ad667892aded38d378303a3227d",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 10,
+					"verify_decoded_facts": true
+				}
+			],
+			"employee_look_vector": [
+				1,
+				0
+			],
+			"facing": "east",
+			"footprint_cells": [
+				1,
+				1
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "8afccff6abf7631d815db8049318e11ca5c8b7ed0ff6a1b9dff65e697abf7c9f",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/manifest.json",
+					"method": "Exact deterministic code-native east/floor_shadow layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						37,
+						197,
+						52,
+						14
+					],
+					"opaque_pixels": 576,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/east-floor_shadow.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/east-floor_shadow.png",
+						"name": "TaskFloorLampFloorShadow",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": -8
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "9a8abe32fd685e2f46c5e4dc78a849472614d793e503ccd2c9d51d7df6ed2223",
+					"source_layer": "TaskFloorLampFloorShadow",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "df3c30789561cc0400c05fb60f013df81bfda5ce6364af8588795e5f95571684",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/manifest.json",
+					"method": "Exact deterministic code-native east/rear_structure layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						59,
+						61,
+						50,
+						142
+					],
+					"opaque_pixels": 1266,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/east-rear_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/east-rear_structure.png",
+						"name": "TaskFloorLampRearStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": -4
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "6deaa08ea40591f158efd3b19eecf254cef744ba417822b6436947987df19817",
+					"source_layer": "TaskFloorLampRearStructure",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 6,
+					"verify_decoded_facts": true,
+					"z_offset": -4
+				},
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "835babcaa6cf7bed8e3e36fbc656f770b585e0225110c5af6ce134a9105b04d6",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/manifest.json",
+					"method": "Exact deterministic code-native east/front_structure layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						43,
+						63,
+						66,
+						148
+					],
+					"opaque_pixels": 512,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/east-front_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/east-front_structure.png",
+						"name": "TaskFloorLampFrontStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": 5
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "f4c884070a64730e3fb05677241e586067a616cab08d5a79966e1c663ac8315d",
+					"source_layer": "TaskFloorLampFrontStructure",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 6,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				-1,
+				0
+			]
+		},
+		{
+			"authored_geometry": {
+				"base": "(64, 204)",
+				"elbow": "(65, 105)",
+				"employee_look_vector": [
+					0,
+					1
+				],
+				"facing": "south",
+				"family": "task_floor_lamp",
+				"footprint": [
+					1,
+					1
+				],
+				"interaction": [
+					0,
+					-1
+				],
+				"look": [
+					0,
+					1
+				],
+				"neck": "(64, 84)",
+				"occupied": [
+					[
+						0,
+						0
+					]
+				],
+				"shade": "[P: (47, 70), S: (34, 20)]",
+				"shade_axis": "front"
+			},
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "10cef768811a3c8562e025f862db68b3d2ac4590afd5f1fc9892254ed060c005",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"manifest_path": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/manifest.json",
+					"method": "Byte-exact ordered native-layer union for review only; no approval or runtime installation.",
+					"opaque_bounds_px": [
+						38,
+						70,
+						52,
+						141
+					],
+					"opaque_pixels": 1800,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/south-whole.png",
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "74bff8ac13ddff1542f4903643a83ffe77ec6c2d8a4d111042e618e77144e581",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 9,
+					"verify_decoded_facts": true
+				}
+			],
+			"employee_look_vector": [
+				0,
+				1
+			],
+			"facing": "south",
+			"footprint_cells": [
+				1,
+				1
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "ff88adffe9104d6d3f7853e41a8f2a5d30a4da9efdc561f2d2e6fcb0b161ed28",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/manifest.json",
+					"method": "Exact deterministic code-native south/floor_shadow layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						38,
+						197,
+						52,
+						14
+					],
+					"opaque_pixels": 576,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/south-floor_shadow.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/south-floor_shadow.png",
+						"name": "TaskFloorLampFloorShadow",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": -8
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "c76de8bbbb953034ff6d70d2fbb5c44e0468cf4109390929b75fef39ff732681",
+					"source_layer": "TaskFloorLampFloorShadow",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "3f64d90b33435cd7640ded7adefc967beae70f553a770a448dcf4c550d0c87d9",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/manifest.json",
+					"method": "Exact deterministic code-native south/rear_structure layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						47,
+						70,
+						34,
+						133
+					],
+					"opaque_pixels": 1260,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/south-rear_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/south-rear_structure.png",
+						"name": "TaskFloorLampRearStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": -4
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "1f2058dfe1ac4c65e3d3731b34b756729d59e4ff09edfa9f4b2c31c714a37626",
+					"source_layer": "TaskFloorLampRearStructure",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 6,
+					"verify_decoded_facts": true,
+					"z_offset": -4
+				},
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "e50db6ba3b83b234047fb586555e456d6de849f822512b60b6ff6c2dfc283ad3",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/manifest.json",
+					"method": "Exact deterministic code-native south/front_structure layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						44,
+						86,
+						40,
+						125
+					],
+					"opaque_pixels": 564,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/south-front_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/south-front_structure.png",
+						"name": "TaskFloorLampFrontStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": 5
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "a3c5f90267806222ab6fb28e49138bdce6735dc479ac42e5819ff04a0c7927fb",
+					"source_layer": "TaskFloorLampFrontStructure",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 5,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				0,
+				-1
+			]
+		},
+		{
+			"authored_geometry": {
+				"base": "(65, 204)",
+				"elbow": "(64, 104)",
+				"employee_look_vector": [
+					-1,
+					0
+				],
+				"facing": "west",
+				"family": "task_floor_lamp",
+				"footprint": [
+					1,
+					1
+				],
+				"interaction": [
+					1,
+					0
+				],
+				"look": [
+					-1,
+					0
+				],
+				"neck": "(47, 72)",
+				"occupied": [
+					[
+						0,
+						0
+					]
+				],
+				"shade": "[P: (19, 60), S: (30, 21)]",
+				"shade_axis": "left"
+			},
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "3b918334df69f27104c07270a0d5275deedd8ee204d01673628890dfa55a5c1a",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"manifest_path": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/manifest.json",
+					"method": "Byte-exact ordered native-layer union for review only; no approval or runtime installation.",
+					"opaque_bounds_px": [
+						19,
+						60,
+						72,
+						151
+					],
+					"opaque_pixels": 1828,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/west-whole.png",
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "466e5596d425be7d0514dde9208bcf6f790daaba01299b1da18d900179105821",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 10,
+					"verify_decoded_facts": true
+				}
+			],
+			"employee_look_vector": [
+				-1,
+				0
+			],
+			"facing": "west",
+			"footprint_cells": [
+				1,
+				1
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "714d551530cad42d959993649f6b959178ca34181fc641c811c358b274e19c6b",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/manifest.json",
+					"method": "Exact deterministic code-native west/floor_shadow layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						39,
+						197,
+						52,
+						14
+					],
+					"opaque_pixels": 576,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/west-floor_shadow.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/west-floor_shadow.png",
+						"name": "TaskFloorLampFloorShadow",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": -8
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "15b716d52cc53312cb20e31c7341dcc9f171289e564acd0ac929d4ae8398dae1",
+					"source_layer": "TaskFloorLampFloorShadow",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "cc34f7f0dbb1457ccdde68e7ab2c0e6b4573fa68c7e95db88c22646c977cbd99",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/manifest.json",
+					"method": "Exact deterministic code-native west/rear_structure layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						19,
+						60,
+						50,
+						143
+					],
+					"opaque_pixels": 1288,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/west-rear_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/west-rear_structure.png",
+						"name": "TaskFloorLampRearStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": -4
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "4404269d4e4d1afb8e50ff9115af00362eb781b12e487724fa2cb7e54e274db0",
+					"source_layer": "TaskFloorLampRearStructure",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 6,
+					"verify_decoded_facts": true,
+					"z_offset": -4
+				},
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "1de7307e76a01920facfbaa6424dd80a521c066dd5b31ed62202f2ea2759cf74",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/manifest.json",
+					"method": "Exact deterministic code-native west/front_structure layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						19,
+						62,
+						66,
+						149
+					],
+					"opaque_pixels": 512,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/west-front_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/task-floor-lamp-v2/west-front_structure.png",
+						"name": "TaskFloorLampFrontStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": 5
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "25db01bc76ff4c7d2dec0f7d0e8c66e59c77ba9b9c86208c66ec1d8cdc60d851",
+					"source_layer": "TaskFloorLampFrontStructure",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 6,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				1,
+				0
+			]
+		}
+	],
+	"evidence": [
+		"res://tests/output/task-floor-lamp-v2/candidate-contact-sheet-native.png",
+		"res://tests/output/task-floor-lamp-v2/candidate-contact-sheet-4x.png",
+		"res://tests/output/task-floor-lamp-v2/candidate-layers-native.png"
+	],
+	"failures_at_write": [],
+	"id": "task-floor-lamp-v2",
+	"image_generation_used": false,
+	"optional_ambient_overlay_exported": false,
+	"optional_ambient_overlay_status": "planned_unclaimed",
+	"pivot": [
+		64,
+		208
+	],
+	"production_files_changed": false,
+	"provenance": "Original editable code-native pixel geometry with independent screen-axis projections and fixed upper-left material light. No provider, generated raster, source extraction, text, baked actor, interaction, service or runtime binding.",
+	"runtime_registered": false,
+	"sprite_offset": [
+		0,
+		-80
+	],
+	"status": "native_review_candidate_not_runtime_registered",
+	"worker_disabled": true
+}

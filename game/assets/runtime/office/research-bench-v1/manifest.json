@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "asset_revision": "research-bench-v1",
+  "canvas": [192, 320],
+  "pivot": [96, 240],
+  "facings": ["north", "east", "south", "west"],
+  "layers": ["FloorShadow", "RearStructure", "FrontStructure", "ToolOverlay"],
+  "source_fixture": "res://tests/fixtures/furniture-calibration/research-bench-v1/",
+  "generator": "res://tools/export_research_bench.gd",
+  "runtime_scale": 1,
+  "filter": "nearest"
+}

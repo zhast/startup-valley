@@ -1,0 +1,553 @@
+{
+	"catalog_entry": {
+		"display_name": "Prototype bench",
+		"facing_profiles": {
+			"east": {
+				"ambient_overlays": [],
+				"anchor_offset": [
+					0,
+					0
+				],
+				"approach_gaze": "west",
+				"approach_visual_bounds": [
+					-24,
+					-72,
+					48,
+					80
+				],
+				"clearance": [
+					[
+						1,
+						-1
+					],
+					[
+						1,
+						0
+					],
+					[
+						1,
+						1
+					]
+				],
+				"interaction": [
+					1,
+					0
+				],
+				"occupied": [
+					[
+						-1,
+						-1
+					],
+					[
+						-1,
+						0
+					],
+					[
+						-1,
+						1
+					],
+					[
+						0,
+						-1
+					],
+					[
+						0,
+						0
+					],
+					[
+						0,
+						1
+					]
+				],
+				"profile_kind": "service",
+				"render_layers": [
+					{
+						"art": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/east-floor_shadow.png",
+						"name": "FloorShadow",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							192,
+							320
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/east-rear_structure.png",
+						"name": "RearStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							192,
+							320
+						],
+						"z_offset": 0
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/east-front_structure.png",
+						"name": "FrontStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							192,
+							320
+						],
+						"z_offset": 1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/east-tool_overlay.png",
+						"name": "ToolOverlay",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							192,
+							320
+						],
+						"z_offset": 2
+					}
+				],
+				"review": {
+					"art": false,
+					"geometry": false
+				},
+				"service_side": "east",
+				"status": "calibration_candidate",
+				"visual_bounds": [
+					-48,
+					-150,
+					94,
+					158
+				]
+			},
+			"north": {
+				"ambient_overlays": [],
+				"anchor_offset": [
+					0,
+					0
+				],
+				"approach_gaze": "south",
+				"approach_visual_bounds": [
+					-24,
+					-72,
+					48,
+					80
+				],
+				"clearance": [
+					[
+						-1,
+						-1
+					],
+					[
+						0,
+						-1
+					],
+					[
+						1,
+						-1
+					]
+				],
+				"interaction": [
+					0,
+					-1
+				],
+				"occupied": [
+					[
+						-1,
+						0
+					],
+					[
+						0,
+						0
+					],
+					[
+						1,
+						0
+					],
+					[
+						-1,
+						1
+					],
+					[
+						0,
+						1
+					],
+					[
+						1,
+						1
+					]
+				],
+				"profile_kind": "service",
+				"render_layers": [
+					{
+						"art": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/north-floor_shadow.png",
+						"name": "FloorShadow",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							192,
+							320
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/north-rear_structure.png",
+						"name": "RearStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							192,
+							320
+						],
+						"z_offset": 0
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/north-front_structure.png",
+						"name": "FrontStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							192,
+							320
+						],
+						"z_offset": 1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/north-tool_overlay.png",
+						"name": "ToolOverlay",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							192,
+							320
+						],
+						"z_offset": 2
+					}
+				],
+				"review": {
+					"art": false,
+					"geometry": false
+				},
+				"service_side": "north",
+				"status": "calibration_candidate",
+				"visual_bounds": [
+					-58,
+					-142,
+					116,
+					149
+				]
+			},
+			"south": {
+				"ambient_overlays": [],
+				"anchor_offset": [
+					0,
+					0
+				],
+				"approach_gaze": "north",
+				"approach_visual_bounds": [
+					-24,
+					-72,
+					48,
+					80
+				],
+				"clearance": [
+					[
+						-1,
+						1
+					],
+					[
+						0,
+						1
+					],
+					[
+						1,
+						1
+					]
+				],
+				"interaction": [
+					0,
+					1
+				],
+				"occupied": [
+					[
+						-1,
+						-1
+					],
+					[
+						0,
+						-1
+					],
+					[
+						1,
+						-1
+					],
+					[
+						-1,
+						0
+					],
+					[
+						0,
+						0
+					],
+					[
+						1,
+						0
+					]
+				],
+				"profile_kind": "service",
+				"render_layers": [
+					{
+						"art": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/south-floor_shadow.png",
+						"name": "FloorShadow",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							192,
+							320
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/south-rear_structure.png",
+						"name": "RearStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							192,
+							320
+						],
+						"z_offset": 0
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/south-front_structure.png",
+						"name": "FrontStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							192,
+							320
+						],
+						"z_offset": 1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/south-tool_overlay.png",
+						"name": "ToolOverlay",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							192,
+							320
+						],
+						"z_offset": 2
+					}
+				],
+				"review": {
+					"art": false,
+					"geometry": false
+				},
+				"service_side": "south",
+				"status": "calibration_candidate",
+				"visual_bounds": [
+					-58,
+					-142,
+					116,
+					149
+				]
+			},
+			"west": {
+				"ambient_overlays": [],
+				"anchor_offset": [
+					0,
+					0
+				],
+				"approach_gaze": "east",
+				"approach_visual_bounds": [
+					-24,
+					-72,
+					48,
+					80
+				],
+				"clearance": [
+					[
+						-1,
+						-1
+					],
+					[
+						-1,
+						0
+					],
+					[
+						-1,
+						1
+					]
+				],
+				"interaction": [
+					-1,
+					0
+				],
+				"occupied": [
+					[
+						0,
+						-1
+					],
+					[
+						0,
+						0
+					],
+					[
+						0,
+						1
+					],
+					[
+						1,
+						-1
+					],
+					[
+						1,
+						0
+					],
+					[
+						1,
+						1
+					]
+				],
+				"profile_kind": "service",
+				"render_layers": [
+					{
+						"art": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/west-floor_shadow.png",
+						"name": "FloorShadow",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							192,
+							320
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/west-rear_structure.png",
+						"name": "RearStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							192,
+							320
+						],
+						"z_offset": 0
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/west-front_structure.png",
+						"name": "FrontStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							192,
+							320
+						],
+						"z_offset": 1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/prototype-bench-v1/west-tool_overlay.png",
+						"name": "ToolOverlay",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							192,
+							320
+						],
+						"z_offset": 2
+					}
+				],
+				"review": {
+					"art": false,
+					"geometry": false
+				},
+				"service_side": "west",
+				"status": "calibration_candidate",
+				"visual_bounds": [
+					-46,
+					-150,
+					96,
+					158
+				]
+			}
+		},
+		"facings": [
+			"north",
+			"east",
+			"south",
+			"west"
+		],
+		"interaction_kind": "prototype",
+		"wall_mount": "none"
+	},
+	"checks": 25,
+	"failures": [],
+	"id": "prototype-bench-v1",
+	"provenance": "Original code-native geometry; no raster rotation/mirror/scale.",
+	"runtime_registered": false,
+	"status": "native_review_required"
+}

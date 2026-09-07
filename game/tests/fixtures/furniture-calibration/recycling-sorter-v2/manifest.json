@@ -1,0 +1,964 @@
+{
+	"canvas": [
+		160,
+		176
+	],
+	"checks": 117,
+	"default_layout_registered": false,
+	"dev_catalogue_registration": "Not asserted. This exporter only verifies byte-exact shared-catalogue immutability during its own run.",
+	"dimension_review": {
+		"east_west_top_plane_depth_px": 64,
+		"maximum_projected_opaque_rise_px": 96,
+		"measured_vertical_elevation_px": 32,
+		"north_south_top_plane_depth_px": 32,
+		"planned_canvas_retained": [
+			160,
+			176
+		],
+		"planned_floor_anchor_retained": [
+			80,
+			112
+		],
+		"planned_vertical_elevation_envelope_px": 48,
+		"revision": "V1 treated the body as a flat elevation. V2 retains the original canvas, pivot and masks, but interprets the planned rise as the solid's vertical elevation and separately records the 32px or 64px projected footprint depth. The full top plane is the physical floor rectangle translated upward by one consistent family elevation."
+	},
+	"directions": [
+		{
+			"approach_gaze": "south",
+			"camera_face_identity": "rear",
+			"camera_front_elevation_px": [
+				-16,
+				-16,
+				64,
+				32
+			],
+			"clearance_cell_offsets": [
+				[
+					0,
+					-1
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"east_west_top_plane_depth_px": 64,
+				"maximum_projected_opaque_rise_px": 96,
+				"measured_vertical_elevation_px": 32,
+				"north_south_top_plane_depth_px": 32,
+				"planned_canvas_retained": [
+					160,
+					176
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					112
+				],
+				"planned_vertical_elevation_envelope_px": 48,
+				"revision": "V1 treated the body as a flat elevation. V2 retains the original canvas, pivot and masks, but interprets the planned rise as the solid's vertical elevation and separately records the 32px or 64px projected footprint depth. The full top plane is the physical floor rectangle translated upward by one consistent family elevation."
+			},
+			"employee_look_vector": [
+				0,
+				1
+			],
+			"facing": "north",
+			"floor_plane_px": [
+				-16,
+				-16,
+				64,
+				32
+			],
+			"footprint_cells": [
+				2,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v2/north-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							59,
+							123,
+							74,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 30,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 28130
+					},
+					"name": "RecyclingSorterV2NorthFloorShadow",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "a5d2e1e36a3d10dab297297bb985dc7f0731d3b6525436fd1b3557acb7db060f",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v2/north-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							64,
+							64,
+							64,
+							64
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 4096,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 24064
+					},
+					"name": "RecyclingSorterV2NorthRearStructure",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "9920366cb5e5440849bced9d5f21998ead739573fca6ad8991b7f6da2668bba3",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v2/north-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							69,
+							69,
+							54,
+							54
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 1443,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 26717
+					},
+					"name": "RecyclingSorterV2NorthFrontStructure",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "a227f17fb7d05d1a0e27b77a85c3b4b2989db478306399e4bcc40c6f08c35dc9",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					1,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"projected_opaque_rise_px": 64,
+			"proposed_interaction_cell": [
+				0,
+				-1
+			],
+			"role_identity": {
+				"camera_face": "closed_rear",
+				"labels": "color_and_shape_only_no_text",
+				"top_apertures": 3
+			},
+			"service_side": "north",
+			"solid_bounds_px": [
+				-16,
+				-48,
+				64,
+				64
+			],
+			"top_plane_depth_px": 32,
+			"top_plane_px": [
+				-16,
+				-48,
+				64,
+				32
+			],
+			"vertical_elevation_px": 32,
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					59,
+					64,
+					74,
+					64
+				],
+				"opaque_colors": 9,
+				"opaque_pixels": 4126,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 24034
+			},
+			"whole_sha256": "14f32eb7177698927e9a825166d13c95c94d02d9b2aecf30fefbab5f84d07638"
+		},
+		{
+			"approach_gaze": "west",
+			"camera_face_identity": "service_front_right_end",
+			"camera_front_elevation_px": [
+				-16,
+				16,
+				32,
+				32
+			],
+			"clearance_cell_offsets": [
+				[
+					1,
+					0
+				]
+			],
+			"contact_boundary_y": 48,
+			"dimension_review": {
+				"east_west_top_plane_depth_px": 64,
+				"maximum_projected_opaque_rise_px": 96,
+				"measured_vertical_elevation_px": 32,
+				"north_south_top_plane_depth_px": 32,
+				"planned_canvas_retained": [
+					160,
+					176
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					112
+				],
+				"planned_vertical_elevation_envelope_px": 48,
+				"revision": "V1 treated the body as a flat elevation. V2 retains the original canvas, pivot and masks, but interprets the planned rise as the solid's vertical elevation and separately records the 32px or 64px projected footprint depth. The full top plane is the physical floor rectangle translated upward by one consistent family elevation."
+			},
+			"employee_look_vector": [
+				-1,
+				0
+			],
+			"facing": "east",
+			"floor_plane_px": [
+				-16,
+				-16,
+				32,
+				64
+			],
+			"footprint_cells": [
+				1,
+				2
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v2/east-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							59,
+							155,
+							42,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 30,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 28130
+					},
+					"name": "RecyclingSorterV2EastFloorShadow",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "47f8b70aeeeae1d817f32e542431b8fbeab5abd283c1e489664d1f1b8ca880a9",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v2/east-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							64,
+							64,
+							32,
+							96
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 3072,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 25088
+					},
+					"name": "RecyclingSorterV2EastRearStructure",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "42a64e3a618f45ea59d945dfd3da5464a14c6b3f3b3cb3946bc4fffa72d9a12c",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v2/east-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							69,
+							70,
+							24,
+							85
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 744,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 27416
+					},
+					"name": "RecyclingSorterV2EastFrontStructure",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "61eafc3762c19da26d4487124f9f4366a376bb36de2f1f608523cca366ddf08e",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					1
+				],
+				[
+					0,
+					0
+				]
+			],
+			"projected_opaque_rise_px": 96,
+			"proposed_interaction_cell": [
+				1,
+				0
+			],
+			"role_identity": {
+				"camera_face": "right_end",
+				"labels": "color_and_shape_only_no_text",
+				"top_apertures": 3
+			},
+			"service_side": "east",
+			"solid_bounds_px": [
+				-16,
+				-48,
+				32,
+				96
+			],
+			"top_plane_depth_px": 64,
+			"top_plane_px": [
+				-16,
+				-48,
+				32,
+				64
+			],
+			"vertical_elevation_px": 32,
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					59,
+					64,
+					42,
+					96
+				],
+				"opaque_colors": 9,
+				"opaque_pixels": 3102,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 25058
+			},
+			"whole_sha256": "b746130085dad974f077706935954bc7c4dba9a5129927e898121bac083523c4"
+		},
+		{
+			"approach_gaze": "north",
+			"camera_face_identity": "service_front",
+			"camera_front_elevation_px": [
+				-48,
+				-16,
+				64,
+				32
+			],
+			"clearance_cell_offsets": [
+				[
+					0,
+					1
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"east_west_top_plane_depth_px": 64,
+				"maximum_projected_opaque_rise_px": 96,
+				"measured_vertical_elevation_px": 32,
+				"north_south_top_plane_depth_px": 32,
+				"planned_canvas_retained": [
+					160,
+					176
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					112
+				],
+				"planned_vertical_elevation_envelope_px": 48,
+				"revision": "V1 treated the body as a flat elevation. V2 retains the original canvas, pivot and masks, but interprets the planned rise as the solid's vertical elevation and separately records the 32px or 64px projected footprint depth. The full top plane is the physical floor rectangle translated upward by one consistent family elevation."
+			},
+			"employee_look_vector": [
+				0,
+				-1
+			],
+			"facing": "south",
+			"floor_plane_px": [
+				-48,
+				-16,
+				64,
+				32
+			],
+			"footprint_cells": [
+				2,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v2/south-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							27,
+							123,
+							74,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 30,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 28130
+					},
+					"name": "RecyclingSorterV2SouthFloorShadow",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "37ba7ed553c6c831d5912e5ef201ee8c20c2665957c40ff8067ff46d65cc9482",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v2/south-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							32,
+							64,
+							64,
+							64
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 4096,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 24064
+					},
+					"name": "RecyclingSorterV2SouthRearStructure",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "fb93a0e46f14447842d7c1e377d8ae8fbf35c96e9ee4ab8a9dfbf0b009dbb08c",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v2/south-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							37,
+							86,
+							54,
+							37
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 1443,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 26717
+					},
+					"name": "RecyclingSorterV2SouthFrontStructure",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "0c7c9d77e57c1a48fd5b85e1663c95fbd233c4a0031e28d14b0ce2d2695c5ec3",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"projected_opaque_rise_px": 64,
+			"proposed_interaction_cell": [
+				0,
+				1
+			],
+			"role_identity": {
+				"camera_face": "three_front_doors",
+				"labels": "color_and_shape_only_no_text",
+				"top_apertures": 3
+			},
+			"service_side": "south",
+			"solid_bounds_px": [
+				-48,
+				-48,
+				64,
+				64
+			],
+			"top_plane_depth_px": 32,
+			"top_plane_px": [
+				-48,
+				-48,
+				64,
+				32
+			],
+			"vertical_elevation_px": 32,
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					27,
+					64,
+					74,
+					64
+				],
+				"opaque_colors": 9,
+				"opaque_pixels": 4126,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 24034
+			},
+			"whole_sha256": "341a6c6366810483053bb3880f7b0b30a403b4cf9c66dffb569d7adf0a4efe33"
+		},
+		{
+			"approach_gaze": "east",
+			"camera_face_identity": "service_front_left_end",
+			"camera_front_elevation_px": [
+				-16,
+				-16,
+				32,
+				32
+			],
+			"clearance_cell_offsets": [
+				[
+					-1,
+					0
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"east_west_top_plane_depth_px": 64,
+				"maximum_projected_opaque_rise_px": 96,
+				"measured_vertical_elevation_px": 32,
+				"north_south_top_plane_depth_px": 32,
+				"planned_canvas_retained": [
+					160,
+					176
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					112
+				],
+				"planned_vertical_elevation_envelope_px": 48,
+				"revision": "V1 treated the body as a flat elevation. V2 retains the original canvas, pivot and masks, but interprets the planned rise as the solid's vertical elevation and separately records the 32px or 64px projected footprint depth. The full top plane is the physical floor rectangle translated upward by one consistent family elevation."
+			},
+			"employee_look_vector": [
+				1,
+				0
+			],
+			"facing": "west",
+			"floor_plane_px": [
+				-16,
+				-48,
+				32,
+				64
+			],
+			"footprint_cells": [
+				1,
+				2
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v2/west-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							59,
+							123,
+							42,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 30,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 28130
+					},
+					"name": "RecyclingSorterV2WestFloorShadow",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "6359bc222c4d0ae25ca38e91976105e0b5a322047de47af421bed61fa20201b9",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v2/west-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							64,
+							32,
+							32,
+							96
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 3072,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 25088
+					},
+					"name": "RecyclingSorterV2WestRearStructure",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "dcd9e1dd048694331fcc07dbd8f708105ce92344309731cbbb3f463d9ac96890",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/recycling-sorter-v2/west-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							69,
+							38,
+							22,
+							85
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 744,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 27416
+					},
+					"name": "RecyclingSorterV2WestFrontStructure",
+					"offset": [
+						0,
+						-24
+					],
+					"region": [
+						0,
+						0,
+						160,
+						176
+					],
+					"sha256": "2371d58423723a0449273da7b282b5eba151035ee120d16e367fce3f595f0ad6",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					-1
+				],
+				[
+					0,
+					0
+				]
+			],
+			"projected_opaque_rise_px": 96,
+			"proposed_interaction_cell": [
+				-1,
+				0
+			],
+			"role_identity": {
+				"camera_face": "left_end",
+				"labels": "color_and_shape_only_no_text",
+				"top_apertures": 3
+			},
+			"service_side": "west",
+			"solid_bounds_px": [
+				-16,
+				-80,
+				32,
+				96
+			],
+			"top_plane_depth_px": 64,
+			"top_plane_px": [
+				-16,
+				-80,
+				32,
+				64
+			],
+			"vertical_elevation_px": 32,
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					59,
+					32,
+					42,
+					96
+				],
+				"opaque_colors": 9,
+				"opaque_pixels": 3102,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 25058
+			},
+			"whole_sha256": "f7d2baae871e588209313db40074a2fb32ab802bad3482d1638904a9daedebcc"
+		}
+	],
+	"failures": [],
+	"family": "recycling_sorter",
+	"id": "recycling-sorter-v2",
+	"image_generation_calls": 0,
+	"layers": [
+		"floor_shadow",
+		"rear_structure",
+		"front_structure"
+	],
+	"material_sources": {
+		"charcoal_powdercoat": {
+			"path": "res://tests/fixtures/furniture-calibration/materials/charcoal-powdercoat-v1.png",
+			"retained_unchanged": true,
+			"sha256": "807152a50c8a1771cd451d0984fe1fd4ba3fb6328089e5fa9dd1fb2c858ad42d"
+		},
+		"oak_horizontal": {
+			"path": "res://tests/fixtures/furniture-calibration/materials-v2/oak-horizontal-v2.png",
+			"retained_unchanged": true,
+			"sha256": "bcd3ccf8c6411b4ce24997a88b3fabf78f7fa2132b240f66ee1d59ab3e0dded6"
+		},
+		"oak_vertical": {
+			"path": "res://tests/fixtures/furniture-calibration/materials-v2/oak-vertical-v2.png",
+			"retained_unchanged": true,
+			"sha256": "28a84e93bcdd6e026fbd3a56ae598f14a6c74acd07d1c5950a1a2347a1a24fae"
+		}
+	},
+	"pivot": [
+		80,
+		112
+	],
+	"preserved_v1_files": [
+		{
+			"path": "game/tests/fixtures/furniture-calibration/recycling-sorter-v1/east-floor_shadow.png",
+			"sha256": "a5f4a3333eee550eec7afae9b66bbc982f0ad8089978bda84c053321bb1f5176"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/recycling-sorter-v1/east-front_structure.png",
+			"sha256": "442f8ac13a02eeb689c48f48c012520f66b449c980d5b23b2d0dbab8ab18667b"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/recycling-sorter-v1/east-rear_structure.png",
+			"sha256": "22d770d2623faeb1aa0e6f23e7fd7f95cde7c6748034e808f51f83c45285d7d3"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/recycling-sorter-v1/east-whole.png",
+			"sha256": "dc164510f51c81ab5603f063993c5b101e0d3fb560aca915a95188e06b7a4274"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/recycling-sorter-v1/manifest.json",
+			"sha256": "eed02fc8ef953b974772474712959481d9e22623b9ec2b2d2a0285457271c777"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/recycling-sorter-v1/north-floor_shadow.png",
+			"sha256": "fad313dd77b1168b97b14a1f20d786d352402546c2ba16b2d48fe077eb373604"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/recycling-sorter-v1/north-front_structure.png",
+			"sha256": "8d0dd886a4a563e7eed8580d0d331fc40084342c5055d709b17c402030d5cb66"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/recycling-sorter-v1/north-rear_structure.png",
+			"sha256": "43eb3b50b7c39d9577c161ed20e1e0438a5239f5356620fd7014bb7226f9d2cf"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/recycling-sorter-v1/north-whole.png",
+			"sha256": "5d7916e309eb485404e59899d64bcc7949bc93ec85c3f482be205620f546e4c9"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/recycling-sorter-v1/south-floor_shadow.png",
+			"sha256": "6fc46815d9ebc5e7f981c037eadcccac597164325f777c97f87b15ecd74e9972"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/recycling-sorter-v1/south-front_structure.png",
+			"sha256": "051b743c5be72bfe1037397bad436ef700b1ae515badf0c31014e17c46b03256"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/recycling-sorter-v1/south-rear_structure.png",
+			"sha256": "e5c1a7ba4ddb80a396332d9ec0732f6bdf475033855df720e17f908904ee44f3"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/recycling-sorter-v1/south-whole.png",
+			"sha256": "4784da12ee1f7dc6fe6f196d5d13c2fb8b50a15b385611bf83d30702d0562a85"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/recycling-sorter-v1/west-floor_shadow.png",
+			"sha256": "f7de193b40bcdfbfcdae046c439af637d48c73a3a2556dcedbedc8109d7aee0d"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/recycling-sorter-v1/west-front_structure.png",
+			"sha256": "150a083643b8f93f38e05156b90bb78794e796105cf1f11fdff6c24914e6dd3b"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/recycling-sorter-v1/west-rear_structure.png",
+			"sha256": "9082409f7e8eb57b22ebc14dba3d9ed7ead81272c86ccc2e8632f3159041d8e5"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/recycling-sorter-v1/west-whole.png",
+			"sha256": "78bf2ad9cc9cd8a34bac5e47abf6f9eba8bc469c7c30542d72ae513b1d5f31ae"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/actual-room-approach-contact-sheet-4x.png",
+			"sha256": "66fe199802034a96002498ef4d021e54089970b12afa3b1e8da9f632b8805598"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/actual-room-approach-contact-sheet-native.png",
+			"sha256": "ef97616235612b3758d497cab10ef4051c86acca0d070d5acbff645ad9309dda"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/actual-room-base-contact-sheet-native.png",
+			"sha256": "14e4d2f049493d3f68e042ac4fb465a9a7601c2f7ff91f25ff583367631e84fe"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/actual-room-results.json",
+			"sha256": "86321d6722a99e5b69990e28704fad8630f94de24612abd4d17ead7dcd1baef3"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/candidate-contact-sheet-4x.png",
+			"sha256": "41717b79666778a04fc8adb7f1f57ec8bfe558c5b088ee23ad7ff410cb032156"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/candidate-contact-sheet-native.png",
+			"sha256": "f3e228a8c95a7e12589d5c5beef8f1daaeba982258fd350ea74c478ac024bea8"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/candidate-layers-native.png",
+			"sha256": "f1c6885dd15953d10f4ff500da6693cf1f6f98e11da5ca9719954e91a65a4ab1"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/detail-east-approach-native.png",
+			"sha256": "d79d69aaef0c659077ceffc7d6ad9aecd9e492879c12e2f7e22072c5115e6fd5"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/detail-east-base-native.png",
+			"sha256": "7076514610bec8da7c0491461a48c9ac4d2dac24b7a96ab01c9bf7bc334a179b"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/detail-north-approach-native.png",
+			"sha256": "1328f3192c75e07da99b92aac69cf94f45d863df25a1fc70fff8d4b1ef2a483c"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/detail-north-base-native.png",
+			"sha256": "2e57b4fdd4d3e8b3790ad6f4fd5b1527e244b813ed3db42569aaba2dc6af539b"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/detail-south-approach-native.png",
+			"sha256": "57a536652e01300f8cc31adf67e8f56ed9137deb58de54582175f66b9e75e683"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/detail-south-base-native.png",
+			"sha256": "325b0ca90ac88756c6b2bc28542ec5e44216ef3f02e9f4da821ff5db0637f5df"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/detail-west-approach-native.png",
+			"sha256": "b80abe3b3b41c431463b039c45cd58a7885160ada0dfbe7a727ed42899784695"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/detail-west-base-native.png",
+			"sha256": "8172bce8c4b451173c3b41a0cfb3967fd08c4572f012ad7aacda6a4e6af2d264"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/room-east.png",
+			"sha256": "51cd89a71efc8c3f1ae623ca6bf6826e8572dd1aa43f5f60981995dbbb2b61c0"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/room-north.png",
+			"sha256": "4a87a2ce214c16b22e21898aa586d738d9d079439d76c59a235ea49de68ab738"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/room-south.png",
+			"sha256": "a769db2e275917d31ddf769379d5f71841f59651d50d3b7d7bbcbfdc55494f81"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/room-west.png",
+			"sha256": "199d9658118e4b43845bba926e06d8b49c8ebf32fc847d9d17422ba86ceb0413"
+		},
+		{
+			"path": "game/tests/output/recycling-sorter/structural-results.json",
+			"sha256": "fcdcf756b7d574549c608c0bbca28f2fa85b7cde5f5168b2acffafb34ea7d80f"
+		}
+	],
+	"production_catalogue_registered": false,
+	"provenance": "Editable typed-GDScript vertical extrusion with a physical-footprint top plane and separate camera-front elevation; reviewed native oak/powdercoat tiles are retained materials only. No generated full view, transformed finished raster, provider call, text, logo, fake metric, baked actor, or service implementation.",
+	"runtime_registered": false,
+	"service_backend_or_interaction_created": false,
+	"source_attempts_created": 0,
+	"sprite_offset": [
+		0,
+		-24
+	],
+	"status": "native_review_candidate_without_runtime_binding",
+	"supersedes_rejected_revision": "recycling-sorter-v1",
+	"v1_rejection_review_path": "dev/PASSIVE_UTILITY_LIBRARY_NATIVE_REVIEW.md",
+	"v1_rejection_review_sha256": "4c7e14247f344f02d72fbfe0048d2708cb879d1bb49d3577c7f0d20a4a8b0f7a"
+}

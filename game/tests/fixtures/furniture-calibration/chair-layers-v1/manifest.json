@@ -1,0 +1,383 @@
+{
+	"canvas_size_px": [
+		96,
+		160
+	],
+	"checks": 34,
+	"directions": [
+		{
+			"canvas_size_px": [
+				96,
+				160
+			],
+			"depth_reference": "Relative to desk anchor; E/W chair socket Y is unchanged. Rear -5 / lower actor -4 / near arm -3 / desk top -1. Final actor/desk assembly must be reviewed.",
+			"facing": "east",
+			"floor_anchor_px": [
+				48,
+				112
+			],
+			"measurements": {
+				"front": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						44,
+						88,
+						14,
+						14
+					],
+					"opaque_colors": 14,
+					"opaque_pixels": 81,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 15279
+				},
+				"rear": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						32,
+						72,
+						32,
+						56
+					],
+					"opaque_colors": 27,
+					"opaque_pixels": 659,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 14701
+				}
+			},
+			"partitions": {
+				"front": [
+					[
+						44,
+						88,
+						14,
+						4
+					],
+					[
+						48,
+						92,
+						4,
+						1
+					],
+					[
+						48,
+						93,
+						3,
+						9
+					]
+				],
+				"rear": [
+					[
+						0,
+						0,
+						96,
+						88
+					],
+					[
+						0,
+						102,
+						96,
+						58
+					],
+					[
+						0,
+						93,
+						48,
+						9
+					],
+					[
+						51,
+						93,
+						45,
+						9
+					],
+					[
+						0,
+						92,
+						48,
+						1
+					],
+					[
+						52,
+						92,
+						44,
+						1
+					],
+					[
+						0,
+						88,
+						44,
+						4
+					],
+					[
+						58,
+						88,
+						38,
+						4
+					]
+				]
+			},
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/chair-layers-v1/east-rear.png",
+					"content_bounds": [
+						32,
+						72,
+						32,
+						56
+					],
+					"name": "ChairRear",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						96,
+						160
+					],
+					"z_offset": -5
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/chair-layers-v1/east-front.png",
+					"content_bounds": [
+						44,
+						88,
+						14,
+						14
+					],
+					"name": "ChairNearArm",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						96,
+						160
+					],
+					"z_offset": -3
+				}
+			],
+			"socket_status": "Static calibration reference only; not a physical work-cell relocation or gameplay approval.",
+			"source": "res://tests/fixtures/furniture-calibration/chair-east-v2.png",
+			"source_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					32,
+					72,
+					32,
+					56
+				],
+				"opaque_colors": 27,
+				"opaque_pixels": 740,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 14620
+			},
+			"source_rgba_sha256": "8c4cd67143d78bddb375f3d633f43fbe2b7a46688f79f4dc6a3f8bc8d9063635",
+			"status": "exact_source_partition_not_runtime_approved",
+			"suggested_visual_socket_offset_from_work_foot": [
+				12,
+				0
+			]
+		},
+		{
+			"canvas_size_px": [
+				96,
+				160
+			],
+			"depth_reference": "Relative to desk anchor; E/W chair socket Y is unchanged. Rear -5 / lower actor -4 / near arm -3 / desk top -1. Final actor/desk assembly must be reviewed.",
+			"facing": "west",
+			"floor_anchor_px": [
+				48,
+				112
+			],
+			"measurements": {
+				"front": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						39,
+						89,
+						13,
+						14
+					],
+					"opaque_colors": 11,
+					"opaque_pixels": 86,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 15274
+				},
+				"rear": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						35,
+						72,
+						29,
+						56
+					],
+					"opaque_colors": 29,
+					"opaque_pixels": 574,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 14786
+				}
+			},
+			"partitions": {
+				"front": [
+					[
+						39,
+						89,
+						13,
+						4
+					],
+					[
+						44,
+						93,
+						4,
+						10
+					]
+				],
+				"rear": [
+					[
+						0,
+						0,
+						96,
+						89
+					],
+					[
+						0,
+						103,
+						96,
+						57
+					],
+					[
+						0,
+						93,
+						44,
+						10
+					],
+					[
+						48,
+						93,
+						48,
+						10
+					],
+					[
+						0,
+						89,
+						39,
+						4
+					],
+					[
+						52,
+						89,
+						44,
+						4
+					]
+				]
+			},
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/chair-layers-v1/west-rear.png",
+					"content_bounds": [
+						35,
+						72,
+						29,
+						56
+					],
+					"name": "ChairRear",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						96,
+						160
+					],
+					"z_offset": -5
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/chair-layers-v1/west-front.png",
+					"content_bounds": [
+						39,
+						89,
+						13,
+						14
+					],
+					"name": "ChairNearArm",
+					"offset": [
+						0,
+						-32
+					],
+					"region": [
+						0,
+						0,
+						96,
+						160
+					],
+					"z_offset": -3
+				}
+			],
+			"socket_status": "Static calibration reference only; not a physical work-cell relocation or gameplay approval.",
+			"source": "res://tests/fixtures/furniture-calibration/chair-west-v2-height56.png",
+			"source_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					35,
+					72,
+					29,
+					56
+				],
+				"opaque_colors": 29,
+				"opaque_pixels": 660,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 14700
+			},
+			"source_rgba_sha256": "0c79b2ab8c8c98479b551eeac1cda51efce8ce41bd8dd4b863c613e0d0b76905",
+			"status": "exact_source_partition_not_runtime_approved",
+			"suggested_visual_socket_offset_from_work_foot": [
+				-12,
+				0
+			]
+		}
+	],
+	"export_method": "CPU Image.blit_rect of existing calibrated source regions; no new pixels, resize, alpha threshold or renderer.",
+	"failures": [],
+	"floor_anchor_px": [
+		48,
+		112
+	],
+	"id": "chair-layers-v1",
+	"north_south_changed": false,
+	"runtime_registered": false,
+	"semantic_front": "Near arm only, not a whole foreground chair.",
+	"source_files": [
+		{
+			"path": "res://tools/calibration_chair_layers.gd",
+			"sha256": "cfa824f884a887621d973e3c6b00fcd86ab70f49e0c01ae8173131aac66ce428"
+		},
+		{
+			"path": "res://tools/calibration_west_chair_layers.gd",
+			"sha256": "cebf7dd72c2dcb5126de082de5a64ebb8c46bf22a8666bf9d9bd8df1faf3cfc4"
+		},
+		{
+			"path": "res://tools/export_chair_layers.gd",
+			"sha256": "c386510aa255f6b9310edde0eb0adf2da37c02778151ea8667bc1b4954383e48"
+		},
+		{
+			"path": "res://tools/export_modular_desk_layers.gd",
+			"sha256": "2d9d2849c71506a30bf5f3924483134cee5a5ac9de9ca97d186c0b6d5f15a0b4"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/chair-east-v2.png",
+			"sha256": "758c7809813fe1510c4cb99a1f53c90bb7f9e34256f3fb1e0e940bd74936c23e"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/chair-west-v2-height56.png",
+			"sha256": "289aa8c0b15bd08392cae4f91830611c6ff8d5d4785bb4689f5824398a5c63ab"
+		}
+	],
+	"status": "dev_source_partition_not_runtime_ready",
+	"worker_disabled": true
+}

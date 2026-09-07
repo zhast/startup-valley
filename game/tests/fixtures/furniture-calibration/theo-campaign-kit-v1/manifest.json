@@ -1,0 +1,344 @@
+{
+	"canvas": [
+		192,
+		224
+	],
+	"checks": 16,
+	"collision_cells": [],
+	"directions": [
+		{
+			"facing": "north",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/theo-campaign-kit-v1/north-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							51,
+							117,
+							77,
+							11
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 279,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42729
+					},
+					"name": "SurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/theo-campaign-kit-v1/north-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							50,
+							132,
+							20,
+							10
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 200,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42808
+					},
+					"name": "SurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 2
+				}
+			],
+			"objects": {
+				"audience_notes": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(113, 118)"
+				},
+				"campaign_cards": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(51, 117)"
+				},
+				"creative_thumbnail_sheet": {
+					"axis": "horizontal",
+					"layer": "surface_decor_front",
+					"origin": "(50, 132)"
+				}
+			},
+			"whole_sha256": "58dee10d5016eb62c45075a29073e152f42a589ae47550ea37d07b78a0097aa7"
+		},
+		{
+			"facing": "east",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/theo-campaign-kit-v1/east-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							82,
+							82,
+							27,
+							20
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 329,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42679
+					},
+					"name": "SurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/theo-campaign-kit-v1/east-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							100,
+							158,
+							10,
+							15
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 150,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42858
+					},
+					"name": "SurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 3
+				}
+			],
+			"objects": {
+				"audience_notes": {
+					"axis": "vertical",
+					"layer": "surface_decor_front",
+					"origin": "(100, 158)"
+				},
+				"campaign_cards": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(82, 83)"
+				},
+				"creative_thumbnail_sheet": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(99, 82)"
+				}
+			},
+			"whole_sha256": "7f70e8380dbfbb6cd36e02860ed8fb2f5d976ff0b1c5c06cb1f6a91d163bdf8b"
+		},
+		{
+			"facing": "south",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/theo-campaign-kit-v1/south-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							53,
+							117,
+							87,
+							11
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 279,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42729
+					},
+					"name": "SurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/theo-campaign-kit-v1/south-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							122,
+							132,
+							20,
+							10
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 200,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42808
+					},
+					"name": "SurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 4
+				}
+			],
+			"objects": {
+				"audience_notes": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(53, 118)"
+				},
+				"campaign_cards": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(125, 117)"
+				},
+				"creative_thumbnail_sheet": {
+					"axis": "horizontal",
+					"layer": "surface_decor_front",
+					"origin": "(122, 132)"
+				}
+			},
+			"whole_sha256": "b788d64eb81338c99750b8e429aef7f73a0aa6aeeb9d5a3ce370175a66e44344"
+		},
+		{
+			"facing": "west",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/theo-campaign-kit-v1/west-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							82,
+							82,
+							27,
+							20
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 350,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42658
+					},
+					"name": "SurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/theo-campaign-kit-v1/west-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							100,
+							158,
+							9,
+							15
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 129,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42879
+					},
+					"name": "SurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 3
+				}
+			],
+			"objects": {
+				"audience_notes": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(82, 83)"
+				},
+				"campaign_cards": {
+					"axis": "vertical",
+					"layer": "surface_decor_front",
+					"origin": "(100, 158)"
+				},
+				"creative_thumbnail_sheet": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(99, 82)"
+				}
+			},
+			"whole_sha256": "45c64fc7fd65dfc1083824460124eda4950f919391c3ff5d247be6db7ab84173"
+		}
+	],
+	"failures": [],
+	"footprint_cells": [
+		0,
+		0
+	],
+	"id": "theo_campaign_kit-v1",
+	"pivot": [
+		96,
+		160
+	],
+	"production_files_changed": false,
+	"provenance": "Original deterministic code-native rectangles on independently declared screen-axis layouts; no image generation, source extraction, finished-bitmap rotation, mirroring, scaling, text, logo, or metric.",
+	"runtime_registered": false,
+	"sprite_offset": [
+		0,
+		-48
+	],
+	"status": "native_review_candidate_not_runtime_registered"
+}

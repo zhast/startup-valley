@@ -1,0 +1,1810 @@
+{
+	"captures": [
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-floor_shadow.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-counter_carcass.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-counter_top.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-counter_front.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-counter_plinth.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-service_panel.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-espresso.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-grinder.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-serviceware.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-plant.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-whole.png",
+		"res://tests/output/coffee-station-candidate/north-whole-4x.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-floor_shadow.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-counter_carcass.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-counter_top.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-counter_front.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-counter_plinth.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-service_panel.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-espresso.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-grinder.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-serviceware.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-plant.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-whole.png",
+		"res://tests/output/coffee-station-candidate/east-whole-4x.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-floor_shadow.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-counter_carcass.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-counter_top.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-counter_front.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-counter_plinth.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-service_panel.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-espresso.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-grinder.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-serviceware.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-plant.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-whole.png",
+		"res://tests/output/coffee-station-candidate/south-whole-4x.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-floor_shadow.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-counter_carcass.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-counter_top.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-counter_front.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-counter_plinth.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-service_panel.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-espresso.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-grinder.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-serviceware.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-plant.png",
+		"res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-whole.png",
+		"res://tests/output/coffee-station-candidate/west-whole-4x.png",
+		"res://tests/output/coffee-station-candidate/registered-four-native.png",
+		"res://tests/output/coffee-station-candidate/registered-layers-native.png",
+		"res://tests/output/coffee-station-candidate/registered-four-4x.png"
+	],
+	"checks": 304,
+	"directions": [
+		{
+			"approach_gaze": "south",
+			"canvas": [
+				192,
+				256
+			],
+			"floor": [
+				-48,
+				-16,
+				96,
+				32
+			],
+			"machine_camera_face": "rear",
+			"measurements": {
+				"CounterCarcass": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						48,
+						176,
+						96,
+						28
+					],
+					"opaque_colors": 1,
+					"opaque_pixels": 112,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 49040
+				},
+				"CounterFront": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						50,
+						176,
+						92,
+						28
+					],
+					"opaque_colors": 3,
+					"opaque_pixels": 2576,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 46576
+				},
+				"CounterPlinth": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						48,
+						204,
+						96,
+						4
+					],
+					"opaque_colors": 2,
+					"opaque_pixels": 384,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 48768
+				},
+				"CounterTop": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						48,
+						144,
+						96,
+						32
+					],
+					"opaque_colors": 6,
+					"opaque_pixels": 3072,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 46080
+				},
+				"Espresso": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						80,
+						124,
+						31,
+						46
+					],
+					"opaque_colors": 8,
+					"opaque_pixels": 1426,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 47726
+				},
+				"FloorShadow": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						51,
+						205,
+						90,
+						7
+					],
+					"opaque_colors": 1,
+					"opaque_pixels": 560,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 48592
+				},
+				"Grinder": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						60,
+						134,
+						13,
+						33
+					],
+					"opaque_colors": 5,
+					"opaque_pixels": 323,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 48829
+				},
+				"Plant": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						121,
+						142,
+						15,
+						25
+					],
+					"opaque_colors": 6,
+					"opaque_pixels": 208,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 48944
+				},
+				"ServicePanel": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						52,
+						180,
+						88,
+						24
+					],
+					"opaque_colors": 5,
+					"opaque_pixels": 2112,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 47040
+				},
+				"Serviceware": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						71,
+						141,
+						7,
+						7
+					],
+					"opaque_colors": 3,
+					"opaque_pixels": 43,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 49109
+				},
+				"whole": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						48,
+						124,
+						96,
+						88
+					],
+					"opaque_colors": 26,
+					"opaque_pixels": 7186,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 41966
+				}
+			},
+			"pivot": [
+				96,
+				192
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-floor_shadow.png",
+					"content_bounds": [
+						51,
+						205,
+						90,
+						7
+					],
+					"name": "CoffeeFloorShadow",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-counter_carcass.png",
+					"content_bounds": [
+						48,
+						176,
+						96,
+						28
+					],
+					"name": "CoffeeCounterCarcass",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-counter_top.png",
+					"content_bounds": [
+						48,
+						144,
+						96,
+						32
+					],
+					"name": "CoffeeCounterTop",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-counter_front.png",
+					"content_bounds": [
+						50,
+						176,
+						92,
+						28
+					],
+					"name": "CoffeeCounterFront",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-counter_plinth.png",
+					"content_bounds": [
+						48,
+						204,
+						96,
+						4
+					],
+					"name": "CoffeeCounterPlinth",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-service_panel.png",
+					"content_bounds": [
+						52,
+						180,
+						88,
+						24
+					],
+					"name": "CoffeeServicePanel",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-espresso.png",
+					"content_bounds": [
+						80,
+						124,
+						31,
+						46
+					],
+					"name": "CoffeeEspresso",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-grinder.png",
+					"content_bounds": [
+						60,
+						134,
+						13,
+						33
+					],
+					"name": "CoffeeGrinder",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-serviceware.png",
+					"content_bounds": [
+						71,
+						141,
+						7,
+						7
+					],
+					"name": "CoffeeServiceware",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/north-plant.png",
+					"content_bounds": [
+						121,
+						142,
+						15,
+						25
+					],
+					"name": "CoffeePlant",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				}
+			],
+			"render_order": [
+				"FloorShadow",
+				"CounterCarcass",
+				"CounterTop",
+				"CounterFront",
+				"CounterPlinth",
+				"ServicePanel",
+				"Serviceware",
+				"Plant",
+				"Grinder",
+				"Espresso"
+			],
+			"runtime_approved": false,
+			"service_controls_visibility": "rear_hidden",
+			"service_side": "north",
+			"supports": {
+				"Espresso": [
+					-16,
+					-37,
+					31,
+					15
+				],
+				"Grinder": [
+					-35,
+					-35,
+					11,
+					11
+				],
+				"Plant": [
+					27,
+					-37,
+					12,
+					12
+				],
+				"Serviceware": [
+					-25,
+					-44,
+					7,
+					5
+				]
+			},
+			"top": [
+				-48,
+				-48,
+				96,
+				32
+			],
+			"visual_bounds": [
+				-48,
+				-68,
+				96,
+				88
+			]
+		},
+		{
+			"approach_gaze": "west",
+			"canvas": [
+				192,
+				256
+			],
+			"floor": [
+				-16,
+				-48,
+				32,
+				96
+			],
+			"machine_camera_face": "reservoir_end",
+			"measurements": {
+				"CounterCarcass": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						80,
+						208,
+						32,
+						28
+					],
+					"opaque_colors": 1,
+					"opaque_pixels": 112,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 49040
+				},
+				"CounterFront": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						82,
+						208,
+						28,
+						28
+					],
+					"opaque_colors": 3,
+					"opaque_pixels": 784,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 48368
+				},
+				"CounterPlinth": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						80,
+						236,
+						32,
+						4
+					],
+					"opaque_colors": 2,
+					"opaque_pixels": 128,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 49024
+				},
+				"CounterTop": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						80,
+						112,
+						32,
+						96
+					],
+					"opaque_colors": 6,
+					"opaque_pixels": 3072,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 46080
+				},
+				"Espresso": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						86,
+						113,
+						15,
+						62
+					],
+					"opaque_colors": 9,
+					"opaque_pixels": 930,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 48222
+				},
+				"FloorShadow": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						83,
+						237,
+						26,
+						7
+					],
+					"opaque_colors": 1,
+					"opaque_pixels": 144,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 49008
+				},
+				"Grinder": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						87,
+						102,
+						13,
+						33
+					],
+					"opaque_colors": 6,
+					"opaque_pixels": 323,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 48829
+				},
+				"Plant": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						89,
+						174,
+						15,
+						25
+					],
+					"opaque_colors": 6,
+					"opaque_pixels": 200,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 48952
+				},
+				"ServicePanel": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						84,
+						212,
+						24,
+						24
+					],
+					"opaque_colors": 5,
+					"opaque_pixels": 576,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 48576
+				},
+				"Serviceware": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						103,
+						126,
+						6,
+						10
+					],
+					"opaque_colors": 3,
+					"opaque_pixels": 53,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 49099
+				},
+				"whole": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						80,
+						102,
+						32,
+						142
+					],
+					"opaque_colors": 28,
+					"opaque_pixels": 4264,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 44888
+				}
+			},
+			"pivot": [
+				96,
+				192
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-floor_shadow.png",
+					"content_bounds": [
+						83,
+						237,
+						26,
+						7
+					],
+					"name": "CoffeeFloorShadow",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-counter_carcass.png",
+					"content_bounds": [
+						80,
+						208,
+						32,
+						28
+					],
+					"name": "CoffeeCounterCarcass",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-counter_top.png",
+					"content_bounds": [
+						80,
+						112,
+						32,
+						96
+					],
+					"name": "CoffeeCounterTop",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-counter_front.png",
+					"content_bounds": [
+						82,
+						208,
+						28,
+						28
+					],
+					"name": "CoffeeCounterFront",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-counter_plinth.png",
+					"content_bounds": [
+						80,
+						236,
+						32,
+						4
+					],
+					"name": "CoffeeCounterPlinth",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-service_panel.png",
+					"content_bounds": [
+						84,
+						212,
+						24,
+						24
+					],
+					"name": "CoffeeServicePanel",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-espresso.png",
+					"content_bounds": [
+						86,
+						113,
+						15,
+						62
+					],
+					"name": "CoffeeEspresso",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-grinder.png",
+					"content_bounds": [
+						87,
+						102,
+						13,
+						33
+					],
+					"name": "CoffeeGrinder",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-serviceware.png",
+					"content_bounds": [
+						103,
+						126,
+						6,
+						10
+					],
+					"name": "CoffeeServiceware",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/east-plant.png",
+					"content_bounds": [
+						89,
+						174,
+						15,
+						25
+					],
+					"name": "CoffeePlant",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				}
+			],
+			"render_order": [
+				"FloorShadow",
+				"CounterCarcass",
+				"CounterTop",
+				"CounterFront",
+				"CounterPlinth",
+				"ServicePanel",
+				"Grinder",
+				"Serviceware",
+				"Espresso",
+				"Plant"
+			],
+			"runtime_approved": false,
+			"service_controls_visibility": "edge_on",
+			"service_side": "east",
+			"supports": {
+				"Espresso": [
+					-10,
+					-48,
+					15,
+					31
+				],
+				"Grinder": [
+					-8,
+					-67,
+					11,
+					11
+				],
+				"Plant": [
+					-7,
+					-5,
+					12,
+					12
+				],
+				"Serviceware": [
+					7,
+					-57,
+					5,
+					7
+				]
+			},
+			"top": [
+				-16,
+				-80,
+				32,
+				96
+			],
+			"visual_bounds": [
+				-16,
+				-90,
+				32,
+				142
+			]
+		},
+		{
+			"approach_gaze": "north",
+			"canvas": [
+				192,
+				256
+			],
+			"floor": [
+				-48,
+				-16,
+				96,
+				32
+			],
+			"machine_camera_face": "service_controls",
+			"measurements": {
+				"CounterCarcass": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						48,
+						176,
+						96,
+						28
+					],
+					"opaque_colors": 1,
+					"opaque_pixels": 112,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 49040
+				},
+				"CounterFront": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						50,
+						176,
+						92,
+						28
+					],
+					"opaque_colors": 3,
+					"opaque_pixels": 2576,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 46576
+				},
+				"CounterPlinth": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						48,
+						204,
+						96,
+						4
+					],
+					"opaque_colors": 2,
+					"opaque_pixels": 384,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 48768
+				},
+				"CounterTop": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						48,
+						144,
+						96,
+						32
+					],
+					"opaque_colors": 6,
+					"opaque_pixels": 3072,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 46080
+				},
+				"Espresso": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						81,
+						119,
+						31,
+						46
+					],
+					"opaque_colors": 11,
+					"opaque_pixels": 1426,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 47726
+				},
+				"FloorShadow": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						51,
+						205,
+						90,
+						7
+					],
+					"opaque_colors": 1,
+					"opaque_pixels": 560,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 48592
+				},
+				"Grinder": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						119,
+						129,
+						13,
+						33
+					],
+					"opaque_colors": 6,
+					"opaque_pixels": 323,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 48829
+				},
+				"Plant": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						56,
+						140,
+						15,
+						25
+					],
+					"opaque_colors": 6,
+					"opaque_pixels": 206,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 48946
+				},
+				"ServicePanel": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						52,
+						180,
+						88,
+						24
+					],
+					"opaque_colors": 7,
+					"opaque_pixels": 2112,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 47040
+				},
+				"Serviceware": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						114,
+						160,
+						7,
+						7
+					],
+					"opaque_colors": 3,
+					"opaque_pixels": 43,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 49109
+				},
+				"whole": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						48,
+						119,
+						96,
+						93
+					],
+					"opaque_colors": 30,
+					"opaque_pixels": 7390,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 41762
+				}
+			},
+			"pivot": [
+				96,
+				192
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-floor_shadow.png",
+					"content_bounds": [
+						51,
+						205,
+						90,
+						7
+					],
+					"name": "CoffeeFloorShadow",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-counter_carcass.png",
+					"content_bounds": [
+						48,
+						176,
+						96,
+						28
+					],
+					"name": "CoffeeCounterCarcass",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-counter_top.png",
+					"content_bounds": [
+						48,
+						144,
+						96,
+						32
+					],
+					"name": "CoffeeCounterTop",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-counter_front.png",
+					"content_bounds": [
+						50,
+						176,
+						92,
+						28
+					],
+					"name": "CoffeeCounterFront",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-counter_plinth.png",
+					"content_bounds": [
+						48,
+						204,
+						96,
+						4
+					],
+					"name": "CoffeeCounterPlinth",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-service_panel.png",
+					"content_bounds": [
+						52,
+						180,
+						88,
+						24
+					],
+					"name": "CoffeeServicePanel",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-espresso.png",
+					"content_bounds": [
+						81,
+						119,
+						31,
+						46
+					],
+					"name": "CoffeeEspresso",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-grinder.png",
+					"content_bounds": [
+						119,
+						129,
+						13,
+						33
+					],
+					"name": "CoffeeGrinder",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-serviceware.png",
+					"content_bounds": [
+						114,
+						160,
+						7,
+						7
+					],
+					"name": "CoffeeServiceware",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/south-plant.png",
+					"content_bounds": [
+						56,
+						140,
+						15,
+						25
+					],
+					"name": "CoffeePlant",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				}
+			],
+			"render_order": [
+				"FloorShadow",
+				"CounterCarcass",
+				"CounterTop",
+				"CounterFront",
+				"CounterPlinth",
+				"ServicePanel",
+				"Grinder",
+				"Espresso",
+				"Plant",
+				"Serviceware"
+			],
+			"runtime_approved": false,
+			"service_controls_visibility": "front",
+			"service_side": "south",
+			"supports": {
+				"Espresso": [
+					-15,
+					-42,
+					31,
+					15
+				],
+				"Grinder": [
+					24,
+					-40,
+					11,
+					11
+				],
+				"Plant": [
+					-39,
+					-39,
+					12,
+					12
+				],
+				"Serviceware": [
+					18,
+					-25,
+					7,
+					5
+				]
+			},
+			"top": [
+				-48,
+				-48,
+				96,
+				32
+			],
+			"visual_bounds": [
+				-48,
+				-73,
+				96,
+				93
+			]
+		},
+		{
+			"approach_gaze": "east",
+			"canvas": [
+				192,
+				256
+			],
+			"floor": [
+				-16,
+				-48,
+				32,
+				96
+			],
+			"machine_camera_face": "vent_end",
+			"measurements": {
+				"CounterCarcass": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						80,
+						208,
+						32,
+						28
+					],
+					"opaque_colors": 1,
+					"opaque_pixels": 112,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 49040
+				},
+				"CounterFront": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						82,
+						208,
+						28,
+						28
+					],
+					"opaque_colors": 3,
+					"opaque_pixels": 784,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 48368
+				},
+				"CounterPlinth": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						80,
+						236,
+						32,
+						4
+					],
+					"opaque_colors": 2,
+					"opaque_pixels": 128,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 49024
+				},
+				"CounterTop": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						80,
+						112,
+						32,
+						96
+					],
+					"opaque_colors": 6,
+					"opaque_pixels": 3072,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 46080
+				},
+				"Espresso": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						91,
+						114,
+						15,
+						62
+					],
+					"opaque_colors": 8,
+					"opaque_pixels": 930,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 48222
+				},
+				"FloorShadow": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						83,
+						237,
+						26,
+						7
+					],
+					"opaque_colors": 1,
+					"opaque_pixels": 144,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 49008
+				},
+				"Grinder": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						92,
+						161,
+						13,
+						33
+					],
+					"opaque_colors": 5,
+					"opaque_pixels": 323,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 48829
+				},
+				"Plant": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						88,
+						108,
+						15,
+						25
+					],
+					"opaque_colors": 6,
+					"opaque_pixels": 204,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 48948
+				},
+				"ServicePanel": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						84,
+						212,
+						24,
+						24
+					],
+					"opaque_colors": 5,
+					"opaque_pixels": 576,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 48576
+				},
+				"Serviceware": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						83,
+						169,
+						6,
+						10
+					],
+					"opaque_colors": 3,
+					"opaque_pixels": 53,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 49099
+				},
+				"whole": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						80,
+						108,
+						32,
+						136
+					],
+					"opaque_colors": 24,
+					"opaque_pixels": 4194,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 44958
+				}
+			},
+			"pivot": [
+				96,
+				192
+			],
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-floor_shadow.png",
+					"content_bounds": [
+						83,
+						237,
+						26,
+						7
+					],
+					"name": "CoffeeFloorShadow",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-counter_carcass.png",
+					"content_bounds": [
+						80,
+						208,
+						32,
+						28
+					],
+					"name": "CoffeeCounterCarcass",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-counter_top.png",
+					"content_bounds": [
+						80,
+						112,
+						32,
+						96
+					],
+					"name": "CoffeeCounterTop",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-counter_front.png",
+					"content_bounds": [
+						82,
+						208,
+						28,
+						28
+					],
+					"name": "CoffeeCounterFront",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-counter_plinth.png",
+					"content_bounds": [
+						80,
+						236,
+						32,
+						4
+					],
+					"name": "CoffeeCounterPlinth",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-service_panel.png",
+					"content_bounds": [
+						84,
+						212,
+						24,
+						24
+					],
+					"name": "CoffeeServicePanel",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-espresso.png",
+					"content_bounds": [
+						91,
+						114,
+						15,
+						62
+					],
+					"name": "CoffeeEspresso",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-grinder.png",
+					"content_bounds": [
+						92,
+						161,
+						13,
+						33
+					],
+					"name": "CoffeeGrinder",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-serviceware.png",
+					"content_bounds": [
+						83,
+						169,
+						6,
+						10
+					],
+					"name": "CoffeeServiceware",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/west-plant.png",
+					"content_bounds": [
+						88,
+						108,
+						15,
+						25
+					],
+					"name": "CoffeePlant",
+					"offset": [
+						0,
+						-64
+					],
+					"region": [
+						0,
+						0,
+						192,
+						256
+					],
+					"z_offset": 0
+				}
+			],
+			"render_order": [
+				"FloorShadow",
+				"CounterCarcass",
+				"CounterTop",
+				"CounterFront",
+				"CounterPlinth",
+				"ServicePanel",
+				"Plant",
+				"Espresso",
+				"Serviceware",
+				"Grinder"
+			],
+			"runtime_approved": false,
+			"service_controls_visibility": "edge_on",
+			"service_side": "west",
+			"supports": {
+				"Espresso": [
+					-5,
+					-47,
+					15,
+					31
+				],
+				"Grinder": [
+					-3,
+					-8,
+					11,
+					11
+				],
+				"Plant": [
+					-5,
+					-71,
+					12,
+					12
+				],
+				"Serviceware": [
+					-12,
+					-14,
+					5,
+					7
+				]
+			},
+			"top": [
+				-16,
+				-80,
+				32,
+				96
+			],
+			"visual_bounds": [
+				-16,
+				-84,
+				32,
+				136
+			]
+		}
+	],
+	"failures": [],
+	"filter": "nearest",
+	"id": "coffee-station-code-v1",
+	"image_generation": false,
+	"limitations": [
+		"Candidate exports are not present in the production furniture catalogue.",
+		"Standing service uses existing locomotion poses; no reaching, pouring or drinking animation is claimed.",
+		"East/west service controls are honestly edge-on; the readable reservoir/vent ends identify the machine without rotating front pixels."
+	],
+	"msaa_2d": "disabled",
+	"pixel_scale": 1,
+	"provenance": "Deterministic typed GDScript geometry on the existing exact modular counter and reviewed native oak/powdercoat tiles. No image generation or semantic raster editing.",
+	"renderer": "macOS",
+	"runtime_registered": false,
+	"save_access": false,
+	"semantic_raster_edit": false,
+	"source_files": [
+		{
+			"path": "res://tools/coffee_station_geometry.gd",
+			"sha256": "6bf3e0ec3247a42d394bad8dbdd452c4db1191a185b33a0d7db30a6851742c7e"
+		},
+		{
+			"path": "res://tools/modular_cabinet_geometry.gd",
+			"sha256": "c6516d67578ce638e0035d02ff3c5c35ab241b373e991405204955256d08ac16"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/materials/oak-horizontal-v1-soft.png",
+			"sha256": "c325d84fe0e8b3884b585a2d4b95463b9ba8fa75afdc3d90c22923b9e6b03a4b"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/materials/oak-vertical-v1-soft.png",
+			"sha256": "d7e23016bc9cb0df7b95218131864a4bc13dc64fb8c4c6a0bb64907f63d12958"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/materials/charcoal-powdercoat-v1.png",
+			"sha256": "807152a50c8a1771cd451d0984fe1fd4ba3fb6328089e5fa9dd1fb2c858ad42d"
+		}
+	],
+	"status": "calibration_candidate",
+	"worker_disabled": true
+}

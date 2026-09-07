@@ -1,0 +1,869 @@
+{
+	"asset_kind": "furniture_base",
+	"canvas": [
+		128,
+		224
+	],
+	"catalogue_family": "broadleaf_planter",
+	"checks": 42,
+	"dev_catalogue_registered": false,
+	"directions": [
+		{
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						224
+					],
+					"decoded_rgba_sha256": "b780ee51ae9f6cf1be7c8337fb5833e527987040a160a678d295bcc84d8610ac",
+					"floor_anchor_px": [
+						64,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"manifest_path": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/manifest.json",
+					"method": "Byte-exact ordered union of floor shadow, rear structure and front structure for native review only.",
+					"opaque_bounds_px": [
+						21,
+						59,
+						88,
+						129
+					],
+					"opaque_pixels": 6402,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/north-whole.png",
+					"review_path": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+					"sha256": "6382c863a2556b98b1efbbd42006209cdd1a08461d28b9e53e28820d77112e5e",
+					"source_path": "game/tools/broadleaf_planter_geometry.gd",
+					"used_colors": 16,
+					"verify_decoded_facts": true
+				}
+			],
+			"employee_look_vector": [
+				0,
+				-1
+			],
+			"facing": "north",
+			"footprint_cells": [
+				1,
+				1
+			],
+			"leaf_count": 6,
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						224
+					],
+					"decoded_rgba_sha256": "2052d1aa0218efd54b748f9ccd0a9c4fc43870165eeb5bc2994b64a77eb75971",
+					"floor_anchor_px": [
+						64,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/manifest.json",
+					"method": "Exact deterministic code-native north floor_shadow layer; no generated-source sampling or finished-raster transform.",
+					"opaque_bounds_px": [
+						36,
+						170,
+						56,
+						18
+					],
+					"opaque_pixels": 584,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/north-floor_shadow.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/north-floor_shadow.png",
+						"name": "BroadleafPlanterFloorShadow",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							128,
+							224
+						],
+						"z_offset": -8
+					},
+					"review_path": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+					"sha256": "1a97fd0e5360de859beafecefc445fec5571bab1e303591c2f339e0cdc65e8bd",
+					"source_layer": "BroadleafPlanterFloorShadow",
+					"source_path": "game/tools/broadleaf_planter_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						128,
+						224
+					],
+					"decoded_rgba_sha256": "c49e24947001bfa888c606ff66cf08be3464a926920a64c95e59b4c912bc7d60",
+					"floor_anchor_px": [
+						64,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/manifest.json",
+					"method": "Exact deterministic code-native north rear_structure layer; no generated-source sampling or finished-raster transform.",
+					"opaque_bounds_px": [
+						29,
+						59,
+						71,
+						97
+					],
+					"opaque_pixels": 3482,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/north-rear_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/north-rear_structure.png",
+						"name": "BroadleafPlanterRearStructure",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							128,
+							224
+						],
+						"z_offset": -4
+					},
+					"review_path": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+					"sha256": "c1cfc47685207d0802fab394625027b86b8267bacbdbebe8bbe3edb11c70bd31",
+					"source_layer": "BroadleafPlanterRearStructure",
+					"source_path": "game/tools/broadleaf_planter_geometry.gd",
+					"used_colors": 11,
+					"verify_decoded_facts": true,
+					"z_offset": -4
+				},
+				{
+					"canvas_size_px": [
+						128,
+						224
+					],
+					"decoded_rgba_sha256": "6398223508837c5527a42e2773dae3727b40677f7511522008775dfcc1e43b6e",
+					"floor_anchor_px": [
+						64,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/manifest.json",
+					"method": "Exact deterministic code-native north front_structure layer; no generated-source sampling or finished-raster transform.",
+					"opaque_bounds_px": [
+						21,
+						113,
+						88,
+						68
+					],
+					"opaque_pixels": 3096,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/north-front_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/north-front_structure.png",
+						"name": "BroadleafPlanterFrontStructure",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							128,
+							224
+						],
+						"z_offset": 5
+					},
+					"review_path": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+					"sha256": "c963d5f23e71039f6640f2dc520286c835bb4132473b065566ceecfd36881a8e",
+					"source_layer": "BroadleafPlanterFrontStructure",
+					"source_path": "game/tools/broadleaf_planter_geometry.gd",
+					"used_colors": 12,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					0
+				]
+			],
+			"pot_geometry": {
+				"bottom_y": 180,
+				"center_x": 64,
+				"lower_half_width": 17,
+				"top_y": 147,
+				"upper_half_width": 21
+			},
+			"proposed_interaction_cell": [
+				0,
+				1
+			]
+		},
+		{
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						224
+					],
+					"decoded_rgba_sha256": "bf807ee7d3ccb3ffc2a13becee5ec524e7f12b1bb3a69f8412d2c25c91a729d5",
+					"floor_anchor_px": [
+						64,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"manifest_path": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/manifest.json",
+					"method": "Byte-exact ordered union of floor shadow, rear structure and front structure for native review only.",
+					"opaque_bounds_px": [
+						27,
+						59,
+						85,
+						129
+					],
+					"opaque_pixels": 6060,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/east-whole.png",
+					"review_path": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+					"sha256": "6ac077fff317af1383b49b2985a4dd20a37cb0debae97c4d6fcb81845039e5b5",
+					"source_path": "game/tools/broadleaf_planter_geometry.gd",
+					"used_colors": 16,
+					"verify_decoded_facts": true
+				}
+			],
+			"employee_look_vector": [
+				1,
+				0
+			],
+			"facing": "east",
+			"footprint_cells": [
+				1,
+				1
+			],
+			"leaf_count": 6,
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						224
+					],
+					"decoded_rgba_sha256": "23be34b5a98ab31fbca663c5fac47b27f76398a5a604f1156bbc6fdf943d1614",
+					"floor_anchor_px": [
+						64,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/manifest.json",
+					"method": "Exact deterministic code-native east floor_shadow layer; no generated-source sampling or finished-raster transform.",
+					"opaque_bounds_px": [
+						37,
+						170,
+						56,
+						18
+					],
+					"opaque_pixels": 584,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/east-floor_shadow.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/east-floor_shadow.png",
+						"name": "BroadleafPlanterFloorShadow",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							128,
+							224
+						],
+						"z_offset": -8
+					},
+					"review_path": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+					"sha256": "ed3ce3509b9614ef922e148e0e0b20bd83d0569496d5026d498da3eec534fbf7",
+					"source_layer": "BroadleafPlanterFloorShadow",
+					"source_path": "game/tools/broadleaf_planter_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						128,
+						224
+					],
+					"decoded_rgba_sha256": "ac8782de1d11dfc4bec7a87f897684a11446c1c2d7b66077129cc1e4e91ca879",
+					"floor_anchor_px": [
+						64,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/manifest.json",
+					"method": "Exact deterministic code-native east rear_structure layer; no generated-source sampling or finished-raster transform.",
+					"opaque_bounds_px": [
+						38,
+						59,
+						69,
+						98
+					],
+					"opaque_pixels": 3403,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/east-rear_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/east-rear_structure.png",
+						"name": "BroadleafPlanterRearStructure",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							128,
+							224
+						],
+						"z_offset": -4
+					},
+					"review_path": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+					"sha256": "31ff4a571c6249a863e894f78ab6de3ce444021720251626c953706f508d59d3",
+					"source_layer": "BroadleafPlanterRearStructure",
+					"source_path": "game/tools/broadleaf_planter_geometry.gd",
+					"used_colors": 11,
+					"verify_decoded_facts": true,
+					"z_offset": -4
+				},
+				{
+					"canvas_size_px": [
+						128,
+						224
+					],
+					"decoded_rgba_sha256": "77ffdd66a9bdcb45812c52cd102dd66069d9818965b71fddff84e03a63119291",
+					"floor_anchor_px": [
+						64,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/manifest.json",
+					"method": "Exact deterministic code-native east front_structure layer; no generated-source sampling or finished-raster transform.",
+					"opaque_bounds_px": [
+						27,
+						118,
+						85,
+						63
+					],
+					"opaque_pixels": 2748,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/east-front_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/east-front_structure.png",
+						"name": "BroadleafPlanterFrontStructure",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							128,
+							224
+						],
+						"z_offset": 5
+					},
+					"review_path": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+					"sha256": "ad16dbcc01c2cd0674955a7668098fdac822da72730bb60fb363e5a744154961",
+					"source_layer": "BroadleafPlanterFrontStructure",
+					"source_path": "game/tools/broadleaf_planter_geometry.gd",
+					"used_colors": 13,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					0
+				]
+			],
+			"pot_geometry": {
+				"bottom_y": 180,
+				"center_x": 65,
+				"lower_half_width": 16,
+				"top_y": 148,
+				"upper_half_width": 20
+			},
+			"proposed_interaction_cell": [
+				-1,
+				0
+			]
+		},
+		{
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						224
+					],
+					"decoded_rgba_sha256": "ca49c3408058cadacdc9389e8dd18d28342dc306317a94e9993cfc7792c314a8",
+					"floor_anchor_px": [
+						64,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"manifest_path": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/manifest.json",
+					"method": "Byte-exact ordered union of floor shadow, rear structure and front structure for native review only.",
+					"opaque_bounds_px": [
+						19,
+						60,
+						86,
+						127
+					],
+					"opaque_pixels": 6314,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/south-whole.png",
+					"review_path": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+					"sha256": "308a0796b912a2fb3a30d624c42cc3919b353701dfa4c3b1d180cb32e3e4a487",
+					"source_path": "game/tools/broadleaf_planter_geometry.gd",
+					"used_colors": 16,
+					"verify_decoded_facts": true
+				}
+			],
+			"employee_look_vector": [
+				0,
+				1
+			],
+			"facing": "south",
+			"footprint_cells": [
+				1,
+				1
+			],
+			"leaf_count": 6,
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						224
+					],
+					"decoded_rgba_sha256": "3b0230ce448b626edf59ffb7604302b7b641d5c5e6b726dcef188cd6bfbc0f40",
+					"floor_anchor_px": [
+						64,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/manifest.json",
+					"method": "Exact deterministic code-native south floor_shadow layer; no generated-source sampling or finished-raster transform.",
+					"opaque_bounds_px": [
+						35,
+						169,
+						56,
+						18
+					],
+					"opaque_pixels": 584,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/south-floor_shadow.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/south-floor_shadow.png",
+						"name": "BroadleafPlanterFloorShadow",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							128,
+							224
+						],
+						"z_offset": -8
+					},
+					"review_path": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+					"sha256": "5d4eb1f7c844c2970e86567fa8faa9c78ecd7e0dfa73f5922aa6873a911f1760",
+					"source_layer": "BroadleafPlanterFloorShadow",
+					"source_path": "game/tools/broadleaf_planter_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						128,
+						224
+					],
+					"decoded_rgba_sha256": "b0c75aa904f1b973c07226fefb5ee2fd7b5ab9b4628d913928554475a385e455",
+					"floor_anchor_px": [
+						64,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/manifest.json",
+					"method": "Exact deterministic code-native south rear_structure layer; no generated-source sampling or finished-raster transform.",
+					"opaque_bounds_px": [
+						24,
+						60,
+						76,
+						96
+					],
+					"opaque_pixels": 3777,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/south-rear_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/south-rear_structure.png",
+						"name": "BroadleafPlanterRearStructure",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							128,
+							224
+						],
+						"z_offset": -4
+					},
+					"review_path": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+					"sha256": "bdab83ac3749500f71bf27bdcc5b18d636ca818af2a3f55814be820640752553",
+					"source_layer": "BroadleafPlanterRearStructure",
+					"source_path": "game/tools/broadleaf_planter_geometry.gd",
+					"used_colors": 11,
+					"verify_decoded_facts": true,
+					"z_offset": -4
+				},
+				{
+					"canvas_size_px": [
+						128,
+						224
+					],
+					"decoded_rgba_sha256": "bdd8f9cbf94a8ff73e86058bce46e7b2e2ae3def26a7ab526f2882643c12c10d",
+					"floor_anchor_px": [
+						64,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/manifest.json",
+					"method": "Exact deterministic code-native south front_structure layer; no generated-source sampling or finished-raster transform.",
+					"opaque_bounds_px": [
+						19,
+						118,
+						86,
+						62
+					],
+					"opaque_pixels": 2814,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/south-front_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/south-front_structure.png",
+						"name": "BroadleafPlanterFrontStructure",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							128,
+							224
+						],
+						"z_offset": 5
+					},
+					"review_path": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+					"sha256": "80ae6b917f73b6b906304227f7fdd78d53854a654efbcf8522ab9b024c8ad5f4",
+					"source_layer": "BroadleafPlanterFrontStructure",
+					"source_path": "game/tools/broadleaf_planter_geometry.gd",
+					"used_colors": 13,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					0
+				]
+			],
+			"pot_geometry": {
+				"bottom_y": 179,
+				"center_x": 63,
+				"lower_half_width": 16,
+				"top_y": 147,
+				"upper_half_width": 21
+			},
+			"proposed_interaction_cell": [
+				0,
+				-1
+			]
+		},
+		{
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						224
+					],
+					"decoded_rgba_sha256": "3e7c44b66350365d642a1d272af3f6add7978189928f32c85cea81beae4a356e",
+					"floor_anchor_px": [
+						64,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"manifest_path": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/manifest.json",
+					"method": "Byte-exact ordered union of floor shadow, rear structure and front structure for native review only.",
+					"opaque_bounds_px": [
+						18,
+						61,
+						86,
+						127
+					],
+					"opaque_pixels": 6187,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/west-whole.png",
+					"review_path": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+					"sha256": "fe65387f3a74732be5e56d2b042c3f9e0710dfd0243cf1b33346c98f4bf39458",
+					"source_path": "game/tools/broadleaf_planter_geometry.gd",
+					"used_colors": 16,
+					"verify_decoded_facts": true
+				}
+			],
+			"employee_look_vector": [
+				-1,
+				0
+			],
+			"facing": "west",
+			"footprint_cells": [
+				1,
+				1
+			],
+			"leaf_count": 6,
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						224
+					],
+					"decoded_rgba_sha256": "2052d1aa0218efd54b748f9ccd0a9c4fc43870165eeb5bc2994b64a77eb75971",
+					"floor_anchor_px": [
+						64,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/manifest.json",
+					"method": "Exact deterministic code-native west floor_shadow layer; no generated-source sampling or finished-raster transform.",
+					"opaque_bounds_px": [
+						36,
+						170,
+						56,
+						18
+					],
+					"opaque_pixels": 584,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/west-floor_shadow.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/west-floor_shadow.png",
+						"name": "BroadleafPlanterFloorShadow",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							128,
+							224
+						],
+						"z_offset": -8
+					},
+					"review_path": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+					"sha256": "1a97fd0e5360de859beafecefc445fec5571bab1e303591c2f339e0cdc65e8bd",
+					"source_layer": "BroadleafPlanterFloorShadow",
+					"source_path": "game/tools/broadleaf_planter_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						128,
+						224
+					],
+					"decoded_rgba_sha256": "b70e8dcf14cc07f7ff15460168aad9c663b17e67f650589937624cfce4f79440",
+					"floor_anchor_px": [
+						64,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/manifest.json",
+					"method": "Exact deterministic code-native west rear_structure layer; no generated-source sampling or finished-raster transform.",
+					"opaque_bounds_px": [
+						20,
+						61,
+						72,
+						96
+					],
+					"opaque_pixels": 3491,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/west-rear_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/west-rear_structure.png",
+						"name": "BroadleafPlanterRearStructure",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							128,
+							224
+						],
+						"z_offset": -4
+					},
+					"review_path": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+					"sha256": "7784117cdc943927fe44417b6f4bbb0ad03055b869496aaef982e69a72287681",
+					"source_layer": "BroadleafPlanterRearStructure",
+					"source_path": "game/tools/broadleaf_planter_geometry.gd",
+					"used_colors": 11,
+					"verify_decoded_facts": true,
+					"z_offset": -4
+				},
+				{
+					"canvas_size_px": [
+						128,
+						224
+					],
+					"decoded_rgba_sha256": "a3ae8aecab2a54d506dea8eb40b5e956405573c50af8fba1fa1b8943ed042c65",
+					"floor_anchor_px": [
+						64,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/manifest.json",
+					"method": "Exact deterministic code-native west front_structure layer; no generated-source sampling or finished-raster transform.",
+					"opaque_bounds_px": [
+						18,
+						118,
+						86,
+						63
+					],
+					"opaque_pixels": 2771,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/west-front_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/broadleaf-planter-v1/west-front_structure.png",
+						"name": "BroadleafPlanterFrontStructure",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							128,
+							224
+						],
+						"z_offset": 5
+					},
+					"review_path": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+					"sha256": "487f6f231c9b7186bcd7ab6d7747034d6aa36b779f99bdfd2119eaaf06b3962e",
+					"source_layer": "BroadleafPlanterFrontStructure",
+					"source_path": "game/tools/broadleaf_planter_geometry.gd",
+					"used_colors": 13,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					0
+				]
+			],
+			"pot_geometry": {
+				"bottom_y": 180,
+				"center_x": 64,
+				"lower_half_width": 17,
+				"top_y": 148,
+				"upper_half_width": 20
+			},
+			"proposed_interaction_cell": [
+				1,
+				0
+			]
+		}
+	],
+	"evidence": [
+		"res://tests/output/broadleaf-planter/candidate-contact-sheet-native.png",
+		"res://tests/output/broadleaf-planter/candidate-contact-sheet-4x.png",
+		"res://tests/output/broadleaf-planter/candidate-layers-native.png"
+	],
+	"failed_generated_references": [
+		{
+			"decoded_dimensions_px": [
+				948,
+				1659
+			],
+			"decoded_format": "RGB8_without_alpha",
+			"disposition": "Painted-checkerboard failure retained only as historical physical-identity reference; no pixels used in native export.",
+			"path": "assets/source/overnight-20260904/plants/broadleaf-planter-fourway-v1.png",
+			"prompt_path": "dev/art-catalogue/prompts/broadleaf-planter-fourway-v1.md",
+			"sha256": "1ef554d7ba1ef82a43e406ffadf46c9eef1147035e4aab0d7b0fc4bfd642346b"
+		},
+		{
+			"decoded_dimensions_px": [
+				949,
+				1658
+			],
+			"decoded_format": "RGB8_without_alpha",
+			"disposition": "Painted-checkerboard retry failure retained only as historical physical-identity reference; no pixels used in native export.",
+			"path": "assets/source/overnight-20260904/plants/broadleaf-planter-fourway-v2.png",
+			"prompt_path": "dev/art-catalogue/prompts/broadleaf-planter-fourway-v2.md",
+			"sha256": "3ce72e2dcbc0f4a3983e6bf5bda5f5b556de0c918cf6467193e14ab2e7330e77"
+		}
+	],
+	"failures": [],
+	"footprint_cells": [
+		1,
+		1
+	],
+	"id": "broadleaf-planter-v1",
+	"image_generation_used_for_native_candidate": false,
+	"occupied_cell_offsets": [
+		[
+			0,
+			0
+		]
+	],
+	"pivot": [
+		64,
+		176
+	],
+	"production_files_changed": false,
+	"provenance": "Original editable code-native pixel construction: independently declared branch/leaf arrangements, ceramic pot geometry and fixed upper-left lighting for N/E/S/W. No source extraction, masking, keying, tracing, transform, provider call or ImageGen output.",
+	"runtime_registered": false,
+	"source_attempt_state": {
+		"batch_one_attempts": 2,
+		"batch_retry_limit_exhausted": false,
+		"equivalent_alpha_only_method_closed": true,
+		"reason": "Both built-in generations baked checkerboard cells into RGB pixels; repeating the same alpha request would not supply native transparency."
+	},
+	"sprite_offset": [
+		0,
+		-64
+	],
+	"status": "native_review_candidate_not_runtime_registered",
+	"worker_disabled": true
+}

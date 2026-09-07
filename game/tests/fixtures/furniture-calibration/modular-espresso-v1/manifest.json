@@ -1,0 +1,1027 @@
+{
+	"actor_pixel_checks": 169001,
+	"captures": [
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/north-face-material.png",
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/north-whole.png",
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/north-top.png",
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/north-housing.png",
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/north-face.png",
+		"res://tests/output/modular-espresso/north-appliance-4x.png",
+		"res://tests/output/modular-espresso/north-counter-assembly.png",
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/east-face-material.png",
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/east-whole.png",
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/east-top.png",
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/east-housing.png",
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/east-face.png",
+		"res://tests/output/modular-espresso/east-appliance-4x.png",
+		"res://tests/output/modular-espresso/east-counter-assembly.png",
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/south-face-material.png",
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/south-whole.png",
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/south-top.png",
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/south-housing.png",
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/south-face.png",
+		"res://tests/output/modular-espresso/south-appliance-4x.png",
+		"res://tests/output/modular-espresso/south-counter-assembly.png",
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/west-face-material.png",
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/west-whole.png",
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/west-top.png",
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/west-housing.png",
+		"res://tests/fixtures/furniture-calibration/modular-espresso-v1/west-face.png",
+		"res://tests/output/modular-espresso/west-appliance-4x.png",
+		"res://tests/output/modular-espresso/west-counter-assembly.png",
+		"res://tests/output/modular-espresso/native-four-views.png",
+		"res://tests/output/modular-espresso/native-four-views-north-mira-4x.png",
+		"res://tests/output/modular-espresso/native-four-views-east-mira-4x.png",
+		"res://tests/output/modular-espresso/native-four-views-south-mira-4x.png",
+		"res://tests/output/modular-espresso/native-four-views-west-mira-4x.png",
+		"res://tests/output/modular-espresso/native-four-views-north-theo-4x.png",
+		"res://tests/output/modular-espresso/native-four-views-east-theo-4x.png",
+		"res://tests/output/modular-espresso/native-four-views-south-theo-4x.png",
+		"res://tests/output/modular-espresso/native-four-views-west-theo-4x.png",
+		"res://tests/output/modular-espresso/service-approach.png",
+		"res://tests/output/modular-espresso/service-approach-north-mira-4x.png",
+		"res://tests/output/modular-espresso/service-approach-east-mira-4x.png",
+		"res://tests/output/modular-espresso/service-approach-south-mira-4x.png",
+		"res://tests/output/modular-espresso/service-approach-west-mira-4x.png",
+		"res://tests/output/modular-espresso/service-approach-north-theo-4x.png",
+		"res://tests/output/modular-espresso/service-approach-east-theo-4x.png",
+		"res://tests/output/modular-espresso/service-approach-south-theo-4x.png",
+		"res://tests/output/modular-espresso/service-approach-west-theo-4x.png",
+		"res://tests/output/modular-espresso/behind.png",
+		"res://tests/output/modular-espresso/behind-north-mira-4x.png",
+		"res://tests/output/modular-espresso/behind-east-mira-4x.png",
+		"res://tests/output/modular-espresso/behind-south-mira-4x.png",
+		"res://tests/output/modular-espresso/behind-west-mira-4x.png",
+		"res://tests/output/modular-espresso/behind-north-theo-4x.png",
+		"res://tests/output/modular-espresso/behind-east-theo-4x.png",
+		"res://tests/output/modular-espresso/behind-south-theo-4x.png",
+		"res://tests/output/modular-espresso/behind-west-theo-4x.png",
+		"res://tests/output/modular-espresso/in-front.png",
+		"res://tests/output/modular-espresso/walk-0-0.png",
+		"res://tests/output/modular-espresso/walk-0-4.png",
+		"res://tests/output/modular-espresso/walk-0-8.png",
+		"res://tests/output/modular-espresso/walk-1-0.png",
+		"res://tests/output/modular-espresso/walk-1-4.png",
+		"res://tests/output/modular-espresso/walk-1-8.png",
+		"res://tests/output/modular-espresso/walk-2-0.png",
+		"res://tests/output/modular-espresso/walk-2-4.png",
+		"res://tests/output/modular-espresso/walk-2-8.png",
+		"res://tests/output/modular-espresso/walk-3-0.png",
+		"res://tests/output/modular-espresso/walk-3-4.png",
+		"res://tests/output/modular-espresso/walk-3-8.png"
+	],
+	"checks": 2853,
+	"depth_observations": [
+		{
+			"checkpoint": "native-four-views",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-mira"
+		},
+		{
+			"checkpoint": "native-four-views",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-mira"
+		},
+		{
+			"checkpoint": "native-four-views",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-mira"
+		},
+		{
+			"checkpoint": "native-four-views",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-mira"
+		},
+		{
+			"checkpoint": "native-four-views",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-theo"
+		},
+		{
+			"checkpoint": "native-four-views",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-theo"
+		},
+		{
+			"checkpoint": "native-four-views",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-theo"
+		},
+		{
+			"checkpoint": "native-four-views",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-theo"
+		},
+		{
+			"checkpoint": "service-approach",
+			"hidden": 769,
+			"mismatches": 0,
+			"station": "north-mira"
+		},
+		{
+			"checkpoint": "service-approach",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-mira"
+		},
+		{
+			"checkpoint": "service-approach",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-mira"
+		},
+		{
+			"checkpoint": "service-approach",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-mira"
+		},
+		{
+			"checkpoint": "service-approach",
+			"hidden": 846,
+			"mismatches": 0,
+			"station": "north-theo"
+		},
+		{
+			"checkpoint": "service-approach",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-theo"
+		},
+		{
+			"checkpoint": "service-approach",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-theo"
+		},
+		{
+			"checkpoint": "service-approach",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-theo"
+		},
+		{
+			"checkpoint": "behind",
+			"hidden": 66,
+			"mismatches": 0,
+			"station": "north-mira"
+		},
+		{
+			"checkpoint": "behind",
+			"hidden": 253,
+			"mismatches": 0,
+			"station": "east-mira"
+		},
+		{
+			"checkpoint": "behind",
+			"hidden": 66,
+			"mismatches": 0,
+			"station": "south-mira"
+		},
+		{
+			"checkpoint": "behind",
+			"hidden": 253,
+			"mismatches": 0,
+			"station": "west-mira"
+		},
+		{
+			"checkpoint": "behind",
+			"hidden": 83,
+			"mismatches": 0,
+			"station": "north-theo"
+		},
+		{
+			"checkpoint": "behind",
+			"hidden": 280,
+			"mismatches": 0,
+			"station": "east-theo"
+		},
+		{
+			"checkpoint": "behind",
+			"hidden": 83,
+			"mismatches": 0,
+			"station": "south-theo"
+		},
+		{
+			"checkpoint": "behind",
+			"hidden": 280,
+			"mismatches": 0,
+			"station": "west-theo"
+		},
+		{
+			"checkpoint": "in-front",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-mira"
+		},
+		{
+			"checkpoint": "in-front",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-mira"
+		},
+		{
+			"checkpoint": "in-front",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-mira"
+		},
+		{
+			"checkpoint": "in-front",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-mira"
+		},
+		{
+			"checkpoint": "in-front",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-theo"
+		},
+		{
+			"checkpoint": "in-front",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-theo"
+		},
+		{
+			"checkpoint": "in-front",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-theo"
+		},
+		{
+			"checkpoint": "in-front",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-theo"
+		},
+		{
+			"checkpoint": "walk-0-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-mira"
+		},
+		{
+			"checkpoint": "walk-0-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-mira"
+		},
+		{
+			"checkpoint": "walk-0-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-mira"
+		},
+		{
+			"checkpoint": "walk-0-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-mira"
+		},
+		{
+			"checkpoint": "walk-0-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-theo"
+		},
+		{
+			"checkpoint": "walk-0-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-theo"
+		},
+		{
+			"checkpoint": "walk-0-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-theo"
+		},
+		{
+			"checkpoint": "walk-0-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-theo"
+		},
+		{
+			"checkpoint": "walk-0-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-mira"
+		},
+		{
+			"checkpoint": "walk-0-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-mira"
+		},
+		{
+			"checkpoint": "walk-0-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-mira"
+		},
+		{
+			"checkpoint": "walk-0-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-mira"
+		},
+		{
+			"checkpoint": "walk-0-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-theo"
+		},
+		{
+			"checkpoint": "walk-0-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-theo"
+		},
+		{
+			"checkpoint": "walk-0-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-theo"
+		},
+		{
+			"checkpoint": "walk-0-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-theo"
+		},
+		{
+			"checkpoint": "walk-0-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-mira"
+		},
+		{
+			"checkpoint": "walk-0-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-mira"
+		},
+		{
+			"checkpoint": "walk-0-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-mira"
+		},
+		{
+			"checkpoint": "walk-0-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-mira"
+		},
+		{
+			"checkpoint": "walk-0-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-theo"
+		},
+		{
+			"checkpoint": "walk-0-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-theo"
+		},
+		{
+			"checkpoint": "walk-0-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-theo"
+		},
+		{
+			"checkpoint": "walk-0-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-theo"
+		},
+		{
+			"checkpoint": "walk-1-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-mira"
+		},
+		{
+			"checkpoint": "walk-1-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-mira"
+		},
+		{
+			"checkpoint": "walk-1-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-mira"
+		},
+		{
+			"checkpoint": "walk-1-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-mira"
+		},
+		{
+			"checkpoint": "walk-1-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-theo"
+		},
+		{
+			"checkpoint": "walk-1-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-theo"
+		},
+		{
+			"checkpoint": "walk-1-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-theo"
+		},
+		{
+			"checkpoint": "walk-1-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-theo"
+		},
+		{
+			"checkpoint": "walk-1-4",
+			"hidden": 59,
+			"mismatches": 0,
+			"station": "north-mira"
+		},
+		{
+			"checkpoint": "walk-1-4",
+			"hidden": 194,
+			"mismatches": 0,
+			"station": "east-mira"
+		},
+		{
+			"checkpoint": "walk-1-4",
+			"hidden": 59,
+			"mismatches": 0,
+			"station": "south-mira"
+		},
+		{
+			"checkpoint": "walk-1-4",
+			"hidden": 194,
+			"mismatches": 0,
+			"station": "west-mira"
+		},
+		{
+			"checkpoint": "walk-1-4",
+			"hidden": 76,
+			"mismatches": 0,
+			"station": "north-theo"
+		},
+		{
+			"checkpoint": "walk-1-4",
+			"hidden": 242,
+			"mismatches": 0,
+			"station": "east-theo"
+		},
+		{
+			"checkpoint": "walk-1-4",
+			"hidden": 76,
+			"mismatches": 0,
+			"station": "south-theo"
+		},
+		{
+			"checkpoint": "walk-1-4",
+			"hidden": 242,
+			"mismatches": 0,
+			"station": "west-theo"
+		},
+		{
+			"checkpoint": "walk-1-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-mira"
+		},
+		{
+			"checkpoint": "walk-1-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-mira"
+		},
+		{
+			"checkpoint": "walk-1-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-mira"
+		},
+		{
+			"checkpoint": "walk-1-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-mira"
+		},
+		{
+			"checkpoint": "walk-1-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-theo"
+		},
+		{
+			"checkpoint": "walk-1-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-theo"
+		},
+		{
+			"checkpoint": "walk-1-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-theo"
+		},
+		{
+			"checkpoint": "walk-1-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-theo"
+		},
+		{
+			"checkpoint": "walk-2-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-mira"
+		},
+		{
+			"checkpoint": "walk-2-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-mira"
+		},
+		{
+			"checkpoint": "walk-2-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-mira"
+		},
+		{
+			"checkpoint": "walk-2-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-mira"
+		},
+		{
+			"checkpoint": "walk-2-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-theo"
+		},
+		{
+			"checkpoint": "walk-2-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-theo"
+		},
+		{
+			"checkpoint": "walk-2-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-theo"
+		},
+		{
+			"checkpoint": "walk-2-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-theo"
+		},
+		{
+			"checkpoint": "walk-2-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-mira"
+		},
+		{
+			"checkpoint": "walk-2-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-mira"
+		},
+		{
+			"checkpoint": "walk-2-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-mira"
+		},
+		{
+			"checkpoint": "walk-2-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-mira"
+		},
+		{
+			"checkpoint": "walk-2-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-theo"
+		},
+		{
+			"checkpoint": "walk-2-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-theo"
+		},
+		{
+			"checkpoint": "walk-2-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-theo"
+		},
+		{
+			"checkpoint": "walk-2-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-theo"
+		},
+		{
+			"checkpoint": "walk-2-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-mira"
+		},
+		{
+			"checkpoint": "walk-2-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-mira"
+		},
+		{
+			"checkpoint": "walk-2-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-mira"
+		},
+		{
+			"checkpoint": "walk-2-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-mira"
+		},
+		{
+			"checkpoint": "walk-2-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-theo"
+		},
+		{
+			"checkpoint": "walk-2-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-theo"
+		},
+		{
+			"checkpoint": "walk-2-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-theo"
+		},
+		{
+			"checkpoint": "walk-2-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-theo"
+		},
+		{
+			"checkpoint": "walk-3-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-mira"
+		},
+		{
+			"checkpoint": "walk-3-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-mira"
+		},
+		{
+			"checkpoint": "walk-3-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-mira"
+		},
+		{
+			"checkpoint": "walk-3-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-mira"
+		},
+		{
+			"checkpoint": "walk-3-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-theo"
+		},
+		{
+			"checkpoint": "walk-3-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-theo"
+		},
+		{
+			"checkpoint": "walk-3-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-theo"
+		},
+		{
+			"checkpoint": "walk-3-0",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-theo"
+		},
+		{
+			"checkpoint": "walk-3-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-mira"
+		},
+		{
+			"checkpoint": "walk-3-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-mira"
+		},
+		{
+			"checkpoint": "walk-3-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-mira"
+		},
+		{
+			"checkpoint": "walk-3-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-mira"
+		},
+		{
+			"checkpoint": "walk-3-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-theo"
+		},
+		{
+			"checkpoint": "walk-3-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-theo"
+		},
+		{
+			"checkpoint": "walk-3-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-theo"
+		},
+		{
+			"checkpoint": "walk-3-4",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-theo"
+		},
+		{
+			"checkpoint": "walk-3-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-mira"
+		},
+		{
+			"checkpoint": "walk-3-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-mira"
+		},
+		{
+			"checkpoint": "walk-3-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-mira"
+		},
+		{
+			"checkpoint": "walk-3-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-mira"
+		},
+		{
+			"checkpoint": "walk-3-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "north-theo"
+		},
+		{
+			"checkpoint": "walk-3-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "east-theo"
+		},
+		{
+			"checkpoint": "walk-3-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "south-theo"
+		},
+		{
+			"checkpoint": "walk-3-8",
+			"hidden": 0,
+			"mismatches": 0,
+			"station": "west-theo"
+		}
+	],
+	"failures": [],
+	"frames": 132,
+	"limitations": [
+		"Only exact espresso geometry/material interiors, not a full four-direction coffee kit.",
+		"Failed E/W source silhouettes remain opaque and unusable; only wholly interior rectangles are used.",
+		"Counter front unfinished, no new service action or character hand poses.",
+		"Scripted motion is not canonical AStar/editor/input evidence."
+	],
+	"runtime_approved": false,
+	"save_access": false,
+	"sources": [
+		{
+			"crop": [
+				214,
+				326,
+				318,
+				360
+			],
+			"factor": 0.0805555555555556,
+			"interior_opacity_normalized": true,
+			"minimum_original_alpha": 253,
+			"native_size": [
+				26,
+				29
+			],
+			"sha256": "a81dacc9933a2d9d08996b778922f7fa096abf803525505f044a5f99d856e9c8",
+			"side": "north",
+			"source": "res://assets/source/overnight-20260904/kits/coffee-service-north-v2.png",
+			"whole_source_alpha_accepted": true
+		},
+		{
+			"crop": [
+				283,
+				295,
+				204,
+				384
+			],
+			"factor": 0.053921568627451,
+			"interior_opacity_normalized": false,
+			"minimum_original_alpha": 255,
+			"native_size": [
+				11,
+				21
+			],
+			"sha256": "9ed0afab57cc1819400d859d758d56c990d2da8ce5f0880cbfaccadfcc2704f1",
+			"side": "east",
+			"source": "res://assets/source/overnight-20260904/kits/coffee-service-east-v2.png",
+			"whole_source_alpha_accepted": false
+		},
+		{
+			"crop": [
+				250,
+				326,
+				336,
+				354
+			],
+			"factor": 0.0803571428571429,
+			"interior_opacity_normalized": true,
+			"minimum_original_alpha": 253,
+			"native_size": [
+				27,
+				28
+			],
+			"sha256": "05169e5073bb987dd2563dea6059a684f742ea22f17c5a728c3143a2d65a68a3",
+			"side": "south",
+			"source": "res://assets/source/overnight-20260904/kits/coffee-service-south-v4.png",
+			"whole_source_alpha_accepted": true
+		},
+		{
+			"crop": [
+				293,
+				326,
+				221,
+				357
+			],
+			"factor": 0.0497737556561086,
+			"interior_opacity_normalized": false,
+			"minimum_original_alpha": 255,
+			"native_size": [
+				11,
+				18
+			],
+			"sha256": "ef93e331e8a0699ac3fa5ed73ed9e13613bbca693127522c9312f0981ffc2d4a",
+			"side": "west",
+			"source": "res://assets/source/overnight-20260904/kits/coffee-service-west-v2.png",
+			"whole_source_alpha_accepted": false
+		}
+	],
+	"views": [
+		{
+			"alpha": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					18,
+					35,
+					29,
+					44
+				],
+				"opaque_colors": 136,
+				"opaque_pixels": 1276,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 4868
+			},
+			"geometry": [
+				-14,
+				-37,
+				29,
+				44
+			],
+			"runtime_approved": false,
+			"side": "north"
+		},
+		{
+			"alpha": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					26,
+					27,
+					13,
+					60
+				],
+				"opaque_colors": 83,
+				"opaque_pixels": 780,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 5364
+			},
+			"geometry": [
+				-6,
+				-45,
+				13,
+				60
+			],
+			"runtime_approved": false,
+			"side": "east"
+		},
+		{
+			"alpha": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					18,
+					35,
+					29,
+					44
+				],
+				"opaque_colors": 459,
+				"opaque_pixels": 1276,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 4868
+			},
+			"geometry": [
+				-14,
+				-37,
+				29,
+				44
+			],
+			"runtime_approved": false,
+			"side": "south"
+		},
+		{
+			"alpha": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					26,
+					27,
+					13,
+					60
+				],
+				"opaque_colors": 118,
+				"opaque_pixels": 780,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 5364
+			},
+			"geometry": [
+				-6,
+				-45,
+				13,
+				60
+			],
+			"runtime_approved": false,
+			"side": "west"
+		}
+	],
+	"worker_started": false
+}

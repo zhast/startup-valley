@@ -1,0 +1,347 @@
+{
+	"canvas": [
+		192,
+		224
+	],
+	"checks": 16,
+	"collision_cells": [],
+	"dev_catalogue_registered": true,
+	"directions": [
+		{
+			"facing": "north",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/finance-accounts-kit-v1/north-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							50,
+							117,
+							81,
+							11
+						],
+						"opaque_colors": 10,
+						"opaque_pixels": 406,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42602
+					},
+					"name": "FinanceAccountsSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/finance-accounts-kit-v1/north-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							50,
+							132,
+							24,
+							9
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 182,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42826
+					},
+					"name": "FinanceAccountsSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 2
+				}
+			],
+			"objects": {
+				"keypad_device": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(118, 117)"
+				},
+				"ledger_folio": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(50, 117)"
+				},
+				"receipt_trays": {
+					"axis": "horizontal",
+					"layer": "surface_decor_front",
+					"origin": "(50, 132)"
+				}
+			},
+			"whole_sha256": "bea38405277e67cd78a984a725453d4acad07a13bb417ed41ec2d83b7b16bb8d"
+		},
+		{
+			"facing": "east",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/finance-accounts-kit-v1/east-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							82,
+							82,
+							27,
+							24
+						],
+						"opaque_colors": 10,
+						"opaque_pixels": 389,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42619
+					},
+					"name": "FinanceAccountsSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/finance-accounts-kit-v1/east-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							96,
+							149,
+							9,
+							24
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 183,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42825
+					},
+					"name": "FinanceAccountsSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 3
+				}
+			],
+			"objects": {
+				"keypad_device": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(100, 84)"
+				},
+				"ledger_folio": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(82, 82)"
+				},
+				"receipt_trays": {
+					"axis": "vertical",
+					"layer": "surface_decor_front",
+					"origin": "(96, 149)"
+				}
+			},
+			"whole_sha256": "c0217d1325d969d132da9350b70aeb1692beb55cc0e70c24566792f319f2db7c"
+		},
+		{
+			"facing": "south",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/finance-accounts-kit-v1/south-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							53,
+							117,
+							88,
+							12
+						],
+						"opaque_colors": 10,
+						"opaque_pixels": 406,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42602
+					},
+					"name": "FinanceAccountsSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/finance-accounts-kit-v1/south-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							117,
+							132,
+							24,
+							9
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 182,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42826
+					},
+					"name": "FinanceAccountsSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 4
+				}
+			],
+			"objects": {
+				"keypad_device": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(53, 118)"
+				},
+				"ledger_folio": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(117, 117)"
+				},
+				"receipt_trays": {
+					"axis": "horizontal",
+					"layer": "surface_decor_front",
+					"origin": "(117, 132)"
+				}
+			},
+			"whole_sha256": "45cbcd1719326b05527dee64de4e268e76da8a8f655a027b8806c121271f6f71"
+		},
+		{
+			"facing": "west",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/finance-accounts-kit-v1/west-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							82,
+							82,
+							28,
+							24
+						],
+						"opaque_colors": 10,
+						"opaque_pixels": 389,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42619
+					},
+					"name": "FinanceAccountsSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/finance-accounts-kit-v1/west-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							82,
+							149,
+							9,
+							24
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 183,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42825
+					},
+					"name": "FinanceAccountsSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 3
+				}
+			],
+			"objects": {
+				"keypad_device": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(101, 84)"
+				},
+				"ledger_folio": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(82, 82)"
+				},
+				"receipt_trays": {
+					"axis": "vertical",
+					"layer": "surface_decor_front",
+					"origin": "(82, 149)"
+				}
+			},
+			"whole_sha256": "87a13e7bcd3ad1c7a4f7fa16a820ee397db36492c60d6a86a0577e9905030645"
+		}
+	],
+	"failures": [],
+	"footprint_cells": [
+		0,
+		0
+	],
+	"host": "accepted desk / workstations-v2",
+	"id": "finance_accounts_kit-v1",
+	"pivot": [
+		96,
+		160
+	],
+	"production_catalogue_registered": false,
+	"production_files_changed": false,
+	"provenance": "Original deterministic code-native finance-planning decor: a closed ledger folio, glyph-free keypad device, and blank receipt trays on independently declared screen-axis layouts; no image generation, source extraction, finished-bitmap rotation, mirroring, scaling, text, numbers, logo, balance, bank action, or implied transaction execution.",
+	"runtime_registered": false,
+	"sprite_offset": [
+		0,
+		-48
+	],
+	"status": "native_review_candidate_not_runtime_registered"
+}

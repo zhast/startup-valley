@@ -1,0 +1,37 @@
+{
+	"claims": "No cast shadow, service/worker interaction, seat or production approval.",
+	"equivalent_pairs": [
+		[
+			"north",
+			"south"
+		],
+		[
+			"east",
+			"west"
+		]
+	],
+	"floor_pivot": [
+		96,
+		160
+	],
+	"generated_originals": 1,
+	"geometry": "code-native double-sided frame",
+	"layer_order": [
+		"RearSupport",
+		"Panel",
+		"FrontFoot"
+	],
+	"material": "res://tests/fixtures/furniture-calibration/acoustic-felt-v1/felt.png",
+	"material_decoded_sha256": "85723ba7a936ce19476dbc7c97159857d32ae1dfb8d84ec38c82aacfe0efd4a6",
+	"native_canvas": [
+		192,
+		224
+	],
+	"status": "staged_unapproved",
+	"views": {
+		"east": "41cab368d7be9deebeb38127ec2e4721efa29cf2c6ab1efce422b718640bf75f",
+		"north": "635516a05a5ace10b1eaa4aae7e705a293efdbd14a94516aa22080799882c100",
+		"south": "635516a05a5ace10b1eaa4aae7e705a293efdbd14a94516aa22080799882c100",
+		"west": "41cab368d7be9deebeb38127ec2e4721efa29cf2c6ab1efce422b718640bf75f"
+	}
+}

@@ -1,0 +1,649 @@
+{
+	"canvas": [
+		192,
+		224
+	],
+	"checks": 17,
+	"collision_cells": [],
+	"default_layout_registered": false,
+	"dev_catalogue_registered": false,
+	"directions": [
+		{
+			"facing": "north",
+			"identity": {
+				"binder_spine_edge": "west",
+				"blue_pen_side": "east",
+				"employee_look_vector": "(0, -1)",
+				"folder_blank_leaf": "west",
+				"folder_checklist_leaf": "east",
+				"folder_tab_edge": "east",
+				"page_mark_axis": "screen_horizontal",
+				"red_pen_side": "west",
+				"worker_left_edge": "west"
+			},
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/north-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							51,
+							115,
+							91,
+							16
+						],
+						"opaque_colors": 10,
+						"opaque_pixels": 460,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42548
+					},
+					"name": "LawyerContractV2NorthSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"sha256": "14465044c53fe54328f1a9cc4b639be214bf97cc80fd425b8da774f933380881",
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/north-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							52,
+							128,
+							10,
+							14
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 94,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42914
+					},
+					"name": "LawyerContractV2NorthSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"sha256": "ff40ada08afeefa47c9fcf20e9aa6fbc0f9783c02f4e1acd844a151fa3a2d3ae",
+					"z_offset": 2
+				}
+			],
+			"objects": [
+				{
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							51,
+							115,
+							20,
+							12
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 232,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42776
+					},
+					"object": "contract_binder"
+				},
+				{
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							124,
+							117,
+							18,
+							14
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 228,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42780
+					},
+					"object": "tabbed_review_folder"
+				},
+				{
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							52,
+							128,
+							10,
+							14
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 94,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42914
+					},
+					"object": "pen_cup"
+				}
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					51,
+					115,
+					91,
+					27
+				],
+				"opaque_colors": 13,
+				"opaque_pixels": 554,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 42454
+			},
+			"whole_sha256": "da833f27606da405c857220018ca98e37fdeb28b1b16be58d3c9bd96bfcbe339"
+		},
+		{
+			"facing": "east",
+			"identity": {
+				"binder_spine_edge": "north",
+				"blue_pen_side": "south",
+				"employee_look_vector": "(1, 0)",
+				"folder_blank_leaf": "north",
+				"folder_checklist_leaf": "south",
+				"folder_tab_edge": "south",
+				"page_mark_axis": "screen_vertical",
+				"red_pen_side": "north",
+				"worker_left_edge": "north"
+			},
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/east-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							83,
+							83,
+							26,
+							20
+						],
+						"opaque_colors": 11,
+						"opaque_pixels": 324,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42684
+					},
+					"name": "LawyerContractV2EastSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"sha256": "1be902bf24e8195c1bf54cddc6de050dca7bce686096c839aefd44233b975b1f",
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/east-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							96,
+							147,
+							14,
+							18
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 227,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42781
+					},
+					"name": "LawyerContractV2EastSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"sha256": "1fef40c194eff667caa1a46a26268d51f442f483aa649206257028b2ba3dfd5e",
+					"z_offset": 3
+				}
+			],
+			"objects": [
+				{
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							97,
+							83,
+							12,
+							20
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 232,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42776
+					},
+					"object": "contract_binder"
+				},
+				{
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							96,
+							147,
+							14,
+							18
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 227,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42781
+					},
+					"object": "tabbed_review_folder"
+				},
+				{
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							83,
+							85,
+							10,
+							14
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 92,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42916
+					},
+					"object": "pen_cup"
+				}
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					83,
+					83,
+					27,
+					82
+				],
+				"opaque_colors": 13,
+				"opaque_pixels": 551,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 42457
+			},
+			"whole_sha256": "585681b546c2f2b68688292172801665531825c7c2fc3547a7da8e8c332b9c8d"
+		},
+		{
+			"facing": "south",
+			"identity": {
+				"binder_spine_edge": "east",
+				"blue_pen_side": "west",
+				"employee_look_vector": "(0, 1)",
+				"folder_blank_leaf": "east",
+				"folder_checklist_leaf": "west",
+				"folder_tab_edge": "west",
+				"page_mark_axis": "screen_horizontal",
+				"red_pen_side": "east",
+				"worker_left_edge": "east"
+			},
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/south-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							50,
+							115,
+							91,
+							16
+						],
+						"opaque_colors": 10,
+						"opaque_pixels": 463,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42545
+					},
+					"name": "LawyerContractV2SouthSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"sha256": "02cdc501c798e650f00bf8a5cb8da75cd679e7655a43516a9aeddc641292d52e",
+					"z_offset": 2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/south-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							130,
+							128,
+							10,
+							14
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 94,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42914
+					},
+					"name": "LawyerContractV2SouthSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"sha256": "9a9d42eb56a9ff04c85ab6677e6f0182e182d1efd878deb641a2dd444ea6ec33",
+					"z_offset": 4
+				}
+			],
+			"objects": [
+				{
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							121,
+							115,
+							20,
+							12
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 235,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42773
+					},
+					"object": "contract_binder"
+				},
+				{
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							50,
+							117,
+							18,
+							14
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 228,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42780
+					},
+					"object": "tabbed_review_folder"
+				},
+				{
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							130,
+							128,
+							10,
+							14
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 94,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42914
+					},
+					"object": "pen_cup"
+				}
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					50,
+					115,
+					91,
+					27
+				],
+				"opaque_colors": 13,
+				"opaque_pixels": 557,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 42451
+			},
+			"whole_sha256": "b2fd40d5af77c91567769de46717f3016541d046f454f9d944e940e10c1a6afd"
+		},
+		{
+			"facing": "west",
+			"identity": {
+				"binder_spine_edge": "south",
+				"blue_pen_side": "north",
+				"employee_look_vector": "(-1, 0)",
+				"folder_blank_leaf": "south",
+				"folder_checklist_leaf": "north",
+				"folder_tab_edge": "north",
+				"page_mark_axis": "screen_vertical",
+				"red_pen_side": "south",
+				"worker_left_edge": "south"
+			},
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/west-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							82,
+							84,
+							14,
+							18
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 227,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42781
+					},
+					"name": "LawyerContractV2WestSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"sha256": "cc3fbc516305fdd6aa3383ac2e3912cd21656f479703292ae740d829dd90a35f",
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/lawyer-contract-kit-v2/west-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							83,
+							149,
+							26,
+							22
+						],
+						"opaque_colors": 11,
+						"opaque_pixels": 324,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42684
+					},
+					"name": "LawyerContractV2WestSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"sha256": "3f4f4238e1f682bbdea51ac3fccf296aa8d9eb2fc48b1bb27950a3335fde33ce",
+					"z_offset": 3
+				}
+			],
+			"objects": [
+				{
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							83,
+							151,
+							12,
+							20
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 232,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42776
+					},
+					"object": "contract_binder"
+				},
+				{
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							82,
+							84,
+							14,
+							18
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 227,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42781
+					},
+					"object": "tabbed_review_folder"
+				},
+				{
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							99,
+							149,
+							10,
+							14
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 92,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42916
+					},
+					"object": "pen_cup"
+				}
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					82,
+					84,
+					27,
+					87
+				],
+				"opaque_colors": 13,
+				"opaque_pixels": 551,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 42457
+			},
+			"whole_sha256": "7bb14965bc430b6e4a62949080f35cf8c35fcf4e061ac10a089d9e40d8f1c76a"
+		}
+	],
+	"east_retry_budget_reopened": false,
+	"failures": [],
+	"family": "lawyer_contract_kit",
+	"footprint_cells": [
+		0,
+		0
+	],
+	"host": "accepted desk / workstations-v2",
+	"id": "lawyer-contract-kit-v2",
+	"image_generation_calls": 0,
+	"legacy_sources_and_candidates": [
+		{
+			"path": "res://assets/source/overnight-20260904/roles/lawyer-kit-north-v1.png",
+			"preserved": true,
+			"sha256": "f7d813ec9a169ebd2cf134cc42c70dd246b5066663b20ad84652ce0a5505d2da"
+		},
+		{
+			"path": "res://assets/source/overnight-20260904/roles/lawyer-kit-north-v2.png",
+			"preserved": true,
+			"sha256": "2688874c455e9321342abeb41fa606333cce3c74e4284604c94eb1b1766f3847"
+		},
+		{
+			"path": "res://assets/source/overnight-20260904/roles/lawyer-kit-north-v3.png",
+			"preserved": true,
+			"sha256": "5551319e0cc60e339b76991c9cedb68a10aef523180a138b7a315fe46819c7ec"
+		},
+		{
+			"path": "res://assets/source/overnight-20260904/roles/lawyer-kit-east-v1.png",
+			"preserved": true,
+			"sha256": "e7803c933077384c69424b2640283fe31ecd0e2465fb21b52ee1b02374f3ed9e"
+		},
+		{
+			"path": "res://assets/source/overnight-20260904/roles/lawyer-kit-east-v2.png",
+			"preserved": true,
+			"sha256": "becc03eede387e6a57e82c8062a9a3e531081aa7fdbf0aa249207da405624e14"
+		},
+		{
+			"path": "res://assets/source/overnight-20260904/roles/lawyer-kit-east-v3.png",
+			"preserved": true,
+			"sha256": "66caac7bbd9bebed7ff8aa93c6b854047fed8e7919efbc56c7d19379d7850d4d"
+		},
+		{
+			"path": "res://assets/source/overnight-20260904/roles/lawyer-kit-east-v4.png",
+			"preserved": true,
+			"sha256": "2433507ee40add344a53bcb931cc12b2fc5cc66d711dd46e589ef4512a8c0335"
+		},
+		{
+			"path": "res://assets/source/overnight-20260904/roles/lawyer-kit-south-v1.png",
+			"preserved": true,
+			"sha256": "db41ae7fe4d5687eb2280f9abd722d2b374ff1ad57fb7298d799c41f48f3abc2"
+		},
+		{
+			"path": "res://assets/source/overnight-20260904/roles/lawyer-kit-south-v2.png",
+			"preserved": true,
+			"sha256": "773cf2b3e25e04c32c1a2d212a61111863c69ab8818bff8dc6f6764faf96f67c"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/roles/lawyer-north-v3-brand.png",
+			"preserved": true,
+			"sha256": "85580dcbaa1acd26a806195623342f91bac33dfd8c9098fcc610972287342aff"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/roles/lawyer-south-v2.png",
+			"preserved": true,
+			"sha256": "ae1250d0d5cf3228faea287c74083601ddce371a0be0c01e49fb1e055ce1bfc6"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/roles/lawyer-west-reclassified-v4.png",
+			"preserved": true,
+			"sha256": "48bb6bd9c349ab76347bc6e95927ad6a77c8c9092f3c68687935012783720f4e"
+		}
+	],
+	"legal_service_or_hire_created": false,
+	"pivot": [
+		96,
+		160
+	],
+	"production_catalogue_registered": false,
+	"provenance": "Original manual code-native legal-planning decor. East and West are newly and independently constructed with correct physical leaf/spine/tab direction; North and South are new coherent code constructions while every retained generated master and v1 native candidate remains untouched.",
+	"runtime_registered": false,
+	"sprite_offset": [
+		0,
+		-48
+	],
+	"status": "native_review_candidate_not_catalogued_or_runtime_registered"
+}

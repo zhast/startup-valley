@@ -1,0 +1,347 @@
+{
+	"canvas": [
+		192,
+		224
+	],
+	"checks": 16,
+	"collision_cells": [],
+	"dev_catalogue_family": "mina_discovery_kit",
+	"dev_catalogue_registered": true,
+	"directions": [
+		{
+			"facing": "north",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/mina-product-kit-v1/north-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							50,
+							117,
+							82,
+							11
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 336,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42672
+					},
+					"name": "MinaProductSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/mina-product-kit-v1/north-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							52,
+							132,
+							25,
+							10
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 184,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42824
+					},
+					"name": "MinaProductSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 2
+				}
+			],
+			"objects": {
+				"insight_notebook": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(50, 117)"
+				},
+				"prototype_wireframes": {
+					"axis": "horizontal",
+					"layer": "surface_decor_front",
+					"origin": "(52, 132)"
+				},
+				"testing_tokens": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(116, 119)"
+				}
+			},
+			"whole_sha256": "f0e83acbd86028ec6db2e4ab1205c82120104a7b2059936c2a20e8b61e23f454"
+		},
+		{
+			"facing": "east",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/mina-product-kit-v1/east-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							82,
+							82,
+							27,
+							24
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 336,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42672
+					},
+					"name": "MinaProductSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/mina-product-kit-v1/east-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							100,
+							148,
+							10,
+							20
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 158,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42850
+					},
+					"name": "MinaProductSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 3
+				}
+			],
+			"objects": {
+				"insight_notebook": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(82, 82)"
+				},
+				"prototype_wireframes": {
+					"axis": "vertical",
+					"layer": "surface_decor_front",
+					"origin": "(100, 148)"
+				},
+				"testing_tokens": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(102, 84)"
+				}
+			},
+			"whole_sha256": "728d088856bfb92590c83285c7e8c09703d8ceb03f871133c6bd7f10590d29c3"
+		},
+		{
+			"facing": "south",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/mina-product-kit-v1/south-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							56,
+							117,
+							85,
+							11
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 336,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42672
+					},
+					"name": "MinaProductSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/mina-product-kit-v1/south-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							114,
+							132,
+							25,
+							10
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 184,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42824
+					},
+					"name": "MinaProductSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 4
+				}
+			],
+			"objects": {
+				"insight_notebook": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(117, 117)"
+				},
+				"prototype_wireframes": {
+					"axis": "horizontal",
+					"layer": "surface_decor_front",
+					"origin": "(114, 132)"
+				},
+				"testing_tokens": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(55, 119)"
+				}
+			},
+			"whole_sha256": "275c36869b46be897b2cf8e7855a3d50d892efd68ca868cb02021d3d0813fce7"
+		},
+		{
+			"facing": "west",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/mina-product-kit-v1/west-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							83,
+							85,
+							27,
+							88
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 336,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42672
+					},
+					"name": "MinaProductSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/mina-product-kit-v1/west-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							100,
+							82,
+							10,
+							20
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 158,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42850
+					},
+					"name": "MinaProductSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 3
+				}
+			],
+			"objects": {
+				"insight_notebook": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(99, 149)"
+				},
+				"prototype_wireframes": {
+					"axis": "vertical",
+					"layer": "surface_decor_front",
+					"origin": "(100, 82)"
+				},
+				"testing_tokens": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(82, 84)"
+				}
+			},
+			"whole_sha256": "cf04f0011eddf73c15013458dfa17a818ba3ec135030e327ffb6ac30d4fd1ac4"
+		}
+	],
+	"failures": [],
+	"footprint_cells": [
+		0,
+		0
+	],
+	"id": "mina_product_kit-v1",
+	"pivot": [
+		96,
+		160
+	],
+	"production_catalogue_registered": false,
+	"production_files_changed": false,
+	"provenance": "Original deterministic code-native product/research tool rectangles on independently declared screen-axis layouts; no image generation, source extraction, finished-bitmap rotation, mirroring, scaling, text, logo, or metric.",
+	"runtime_registered": false,
+	"sprite_offset": [
+		0,
+		-48
+	],
+	"status": "native_review_candidate_not_runtime_registered"
+}

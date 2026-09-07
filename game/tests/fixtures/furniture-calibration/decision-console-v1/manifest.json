@@ -1,0 +1,807 @@
+{
+	"canvas": [
+		192,
+		288
+	],
+	"catalog_entry": {
+		"display_name": "Decision console",
+		"facing_profiles": {
+			"east": {
+				"ambient_overlays": [],
+				"anchor_offset": [
+					0,
+					0
+				],
+				"approach_gaze": "west",
+				"approach_visual_bounds": [
+					-24,
+					-72,
+					48,
+					80
+				],
+				"clearance": [
+					[
+						1,
+						-1
+					],
+					[
+						1,
+						0
+					],
+					[
+						1,
+						1
+					]
+				],
+				"hit_bounds": [
+					-30,
+					-112,
+					78,
+					120
+				],
+				"interaction": [
+					1,
+					0
+				],
+				"occupied": [
+					[
+						-1,
+						-1
+					],
+					[
+						-1,
+						0
+					],
+					[
+						-1,
+						1
+					],
+					[
+						0,
+						-1
+					],
+					[
+						0,
+						0
+					],
+					[
+						0,
+						1
+					]
+				],
+				"profile_kind": "service",
+				"render_layers": [
+					{
+						"art": "res://tests/fixtures/furniture-calibration/decision-console-v1/east-floor_shadow.png",
+						"name": "FloorShadow",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							192,
+							288
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/decision-console-v1/east-rear_structure.png",
+						"name": "RearStructure",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							192,
+							288
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/decision-console-v1/east-front_structure.png",
+						"name": "FrontStructure",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							192,
+							288
+						],
+						"z_offset": 1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/decision-console-v1/east-ambient_overlay.png",
+						"name": "AmbientOverlay",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							192,
+							288
+						],
+						"z_offset": 2
+					}
+				],
+				"review": {
+					"art": false,
+					"geometry": false
+				},
+				"service_side": "east",
+				"status": "calibration_candidate",
+				"visual_bounds": [
+					-30,
+					-112,
+					78,
+					120
+				]
+			},
+			"north": {
+				"ambient_overlays": [],
+				"anchor_offset": [
+					0,
+					0
+				],
+				"approach_gaze": "south",
+				"approach_visual_bounds": [
+					-24,
+					-72,
+					48,
+					80
+				],
+				"clearance": [
+					[
+						-1,
+						-1
+					],
+					[
+						0,
+						-1
+					],
+					[
+						1,
+						-1
+					]
+				],
+				"hit_bounds": [
+					-48,
+					-100,
+					97,
+					107
+				],
+				"interaction": [
+					0,
+					-1
+				],
+				"occupied": [
+					[
+						-1,
+						0
+					],
+					[
+						0,
+						0
+					],
+					[
+						1,
+						0
+					],
+					[
+						-1,
+						1
+					],
+					[
+						0,
+						1
+					],
+					[
+						1,
+						1
+					]
+				],
+				"profile_kind": "service",
+				"render_layers": [
+					{
+						"art": "res://tests/fixtures/furniture-calibration/decision-console-v1/north-floor_shadow.png",
+						"name": "FloorShadow",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							192,
+							288
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/decision-console-v1/north-rear_structure.png",
+						"name": "RearStructure",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							192,
+							288
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/decision-console-v1/north-front_structure.png",
+						"name": "FrontStructure",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							192,
+							288
+						],
+						"z_offset": 1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/decision-console-v1/north-ambient_overlay.png",
+						"name": "AmbientOverlay",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							192,
+							288
+						],
+						"z_offset": 2
+					}
+				],
+				"review": {
+					"art": false,
+					"geometry": false
+				},
+				"service_side": "north",
+				"status": "calibration_candidate",
+				"visual_bounds": [
+					-48,
+					-100,
+					97,
+					107
+				]
+			},
+			"south": {
+				"ambient_overlays": [],
+				"anchor_offset": [
+					0,
+					0
+				],
+				"approach_gaze": "north",
+				"approach_visual_bounds": [
+					-24,
+					-72,
+					48,
+					80
+				],
+				"clearance": [
+					[
+						-1,
+						1
+					],
+					[
+						0,
+						1
+					],
+					[
+						1,
+						1
+					]
+				],
+				"hit_bounds": [
+					-48,
+					-100,
+					97,
+					107
+				],
+				"interaction": [
+					0,
+					1
+				],
+				"occupied": [
+					[
+						-1,
+						-1
+					],
+					[
+						0,
+						-1
+					],
+					[
+						1,
+						-1
+					],
+					[
+						-1,
+						0
+					],
+					[
+						0,
+						0
+					],
+					[
+						1,
+						0
+					]
+				],
+				"profile_kind": "service",
+				"render_layers": [
+					{
+						"art": "res://tests/fixtures/furniture-calibration/decision-console-v1/south-floor_shadow.png",
+						"name": "FloorShadow",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							192,
+							288
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/decision-console-v1/south-rear_structure.png",
+						"name": "RearStructure",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							192,
+							288
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/decision-console-v1/south-front_structure.png",
+						"name": "FrontStructure",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							192,
+							288
+						],
+						"z_offset": 1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/decision-console-v1/south-ambient_overlay.png",
+						"name": "AmbientOverlay",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							192,
+							288
+						],
+						"z_offset": 2
+					}
+				],
+				"review": {
+					"art": false,
+					"geometry": false
+				},
+				"service_side": "south",
+				"status": "calibration_candidate",
+				"visual_bounds": [
+					-48,
+					-100,
+					97,
+					107
+				]
+			},
+			"west": {
+				"ambient_overlays": [],
+				"anchor_offset": [
+					0,
+					0
+				],
+				"approach_gaze": "east",
+				"approach_visual_bounds": [
+					-24,
+					-72,
+					48,
+					80
+				],
+				"clearance": [
+					[
+						-1,
+						-1
+					],
+					[
+						-1,
+						0
+					],
+					[
+						-1,
+						1
+					]
+				],
+				"hit_bounds": [
+					-48,
+					-112,
+					78,
+					120
+				],
+				"interaction": [
+					-1,
+					0
+				],
+				"occupied": [
+					[
+						0,
+						-1
+					],
+					[
+						0,
+						0
+					],
+					[
+						0,
+						1
+					],
+					[
+						1,
+						-1
+					],
+					[
+						1,
+						0
+					],
+					[
+						1,
+						1
+					]
+				],
+				"profile_kind": "service",
+				"render_layers": [
+					{
+						"art": "res://tests/fixtures/furniture-calibration/decision-console-v1/west-floor_shadow.png",
+						"name": "FloorShadow",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							192,
+							288
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/decision-console-v1/west-rear_structure.png",
+						"name": "RearStructure",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							192,
+							288
+						],
+						"z_offset": -1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/decision-console-v1/west-front_structure.png",
+						"name": "FrontStructure",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							192,
+							288
+						],
+						"z_offset": 1
+					},
+					{
+						"art": "res://tests/fixtures/furniture-calibration/decision-console-v1/west-ambient_overlay.png",
+						"name": "AmbientOverlay",
+						"offset": [
+							0,
+							-64
+						],
+						"region": [
+							0,
+							0,
+							192,
+							288
+						],
+						"z_offset": 2
+					}
+				],
+				"review": {
+					"art": false,
+					"geometry": false
+				},
+				"service_side": "west",
+				"status": "calibration_candidate",
+				"visual_bounds": [
+					-48,
+					-112,
+					78,
+					120
+				]
+			}
+		},
+		"facings": [
+			"north",
+			"east",
+			"south",
+			"west"
+		],
+		"interaction_kind": "activity",
+		"wall_mount": "none"
+	},
+	"checks": 26,
+	"directions": [
+		{
+			"facing": "north",
+			"profile": {
+				"axis": "horizontal",
+				"body": "[P: (-48, -80), S: (96, 80)]",
+				"clearance": [
+					[
+						-1,
+						-1
+					],
+					[
+						0,
+						-1
+					],
+					[
+						1,
+						-1
+					]
+				],
+				"facing": "north",
+				"interaction": [
+					0,
+					-1
+				],
+				"occupied": [
+					[
+						-1,
+						0
+					],
+					[
+						0,
+						0
+					],
+					[
+						1,
+						0
+					],
+					[
+						-1,
+						1
+					],
+					[
+						0,
+						1
+					],
+					[
+						1,
+						1
+					]
+				],
+				"service_sign": -1,
+				"top": "[P: (-48, -96), S: (96, 48)]"
+			},
+			"whole_sha256": "cf8f650c948cd35e6517b85367bcd4e35e6a60de76a44ee203f706e2f0798a97"
+		},
+		{
+			"facing": "east",
+			"profile": {
+				"axis": "vertical",
+				"body": "[P: (-32, -112), S: (64, 112)]",
+				"clearance": [
+					[
+						1,
+						-1
+					],
+					[
+						1,
+						0
+					],
+					[
+						1,
+						1
+					]
+				],
+				"facing": "east",
+				"interaction": [
+					1,
+					0
+				],
+				"occupied": [
+					[
+						-1,
+						-1
+					],
+					[
+						-1,
+						0
+					],
+					[
+						-1,
+						1
+					],
+					[
+						0,
+						-1
+					],
+					[
+						0,
+						0
+					],
+					[
+						0,
+						1
+					]
+				],
+				"service_sign": 1,
+				"top": "[P: (0, -112), S: (48, 96)]"
+			},
+			"whole_sha256": "503b660db11db499d6b3a6af07747ddd8ab54cd71e085ffca952bd5f3e750446"
+		},
+		{
+			"facing": "south",
+			"profile": {
+				"axis": "horizontal",
+				"body": "[P: (-48, -80), S: (96, 80)]",
+				"clearance": [
+					[
+						-1,
+						1
+					],
+					[
+						0,
+						1
+					],
+					[
+						1,
+						1
+					]
+				],
+				"facing": "south",
+				"interaction": [
+					0,
+					1
+				],
+				"occupied": [
+					[
+						-1,
+						-1
+					],
+					[
+						0,
+						-1
+					],
+					[
+						1,
+						-1
+					],
+					[
+						-1,
+						0
+					],
+					[
+						0,
+						0
+					],
+					[
+						1,
+						0
+					]
+				],
+				"service_sign": 1,
+				"top": "[P: (-48, -96), S: (96, 48)]"
+			},
+			"whole_sha256": "5dbf54a863e80087bb8d15c50e4ba2aec55a9275d052120753b1401628392409"
+		},
+		{
+			"facing": "west",
+			"profile": {
+				"axis": "vertical",
+				"body": "[P: (-32, -112), S: (64, 112)]",
+				"clearance": [
+					[
+						-1,
+						-1
+					],
+					[
+						-1,
+						0
+					],
+					[
+						-1,
+						1
+					]
+				],
+				"facing": "west",
+				"interaction": [
+					-1,
+					0
+				],
+				"occupied": [
+					[
+						0,
+						-1
+					],
+					[
+						0,
+						0
+					],
+					[
+						0,
+						1
+					],
+					[
+						1,
+						-1
+					],
+					[
+						1,
+						0
+					],
+					[
+						1,
+						1
+					]
+				],
+				"service_sign": -1,
+				"top": "[P: (-48, -112), S: (48, 96)]"
+			},
+			"whole_sha256": "9cb15b1f2e7bd14f50df4507f61faffc4636f4fff7e3fb26db597b5aad0fff6f"
+		}
+	],
+	"failures": [],
+	"id": "decision-console-v1",
+	"pivot": [
+		96,
+		208
+	],
+	"provenance": "Original code-native Startup Valley geometry; no raster rotation, mirror or scale.",
+	"runtime_registered": false,
+	"status": "native_review_required"
+}

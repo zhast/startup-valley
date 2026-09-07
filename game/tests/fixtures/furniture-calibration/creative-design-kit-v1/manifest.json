@@ -1,0 +1,415 @@
+{
+	"canvas": [
+		192,
+		224
+	],
+	"checks": 16,
+	"collision_cells": [],
+	"dev_catalogue_registered": false,
+	"directions": [
+		{
+			"facing": "north",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/creative-design-kit-v1/north-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							122,
+							115,
+							15,
+							12
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 144,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42864
+					},
+					"name": "CreativeDesignSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"sha256": "c189934e0685082a78df4bad26eb9aa77a95e87b773310171b9dc599c197c74c",
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/creative-design-kit-v1/north-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							50,
+							124,
+							91,
+							17
+						],
+						"opaque_colors": 10,
+						"opaque_pixels": 576,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42432
+					},
+					"name": "CreativeDesignSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"sha256": "1ca509454a04158e6acc72100d9229398272826c11188da6e09a1ef7cf8c4124",
+					"z_offset": 2
+				}
+			],
+			"objects": {
+				"pen_display": {
+					"axis": "horizontal",
+					"layer": "surface_decor_front",
+					"origin": "(50, 124)"
+				},
+				"stylus_tool_tray": {
+					"axis": "horizontal",
+					"layer": "surface_decor_front",
+					"origin": "(119, 134)"
+				},
+				"swatch_fan": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(122, 115)"
+				}
+			},
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					50,
+					115,
+					91,
+					26
+				],
+				"opaque_colors": 12,
+				"opaque_pixels": 720,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 42288
+			},
+			"whole_sha256": "438df4652d2aa7fda8f3dc2c6a68f538bd9da2e81383900c6f0166be4e8f23b5"
+		},
+		{
+			"facing": "east",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/creative-design-kit-v1/east-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							89,
+							82,
+							18,
+							24
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 372,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42636
+					},
+					"name": "CreativeDesignSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"sha256": "1e55ada82aa3f4ffac95f254ce01682c3844f7fb528b65a3cc872111ef1ba316",
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/creative-design-kit-v1/east-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							83,
+							148,
+							26,
+							25
+						],
+						"opaque_colors": 10,
+						"opaque_pixels": 256,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42752
+					},
+					"name": "CreativeDesignSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"sha256": "53d2b6af7e4de9065a8e0a72119d6bdc466b8518d77ed7840e6a3a3f66b2e2db",
+					"z_offset": 3
+				}
+			],
+			"objects": {
+				"pen_display": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(93, 82)"
+				},
+				"stylus_tool_tray": {
+					"axis": "vertical",
+					"layer": "surface_decor_front",
+					"origin": "(83, 157)"
+				},
+				"swatch_fan": {
+					"axis": "vertical",
+					"layer": "surface_decor_front",
+					"origin": "(97, 148)"
+				}
+			},
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					83,
+					82,
+					26,
+					91
+				],
+				"opaque_colors": 12,
+				"opaque_pixels": 628,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 42380
+			},
+			"whole_sha256": "30965f9151e8a756d66da2a2a19c8473c2e2f084c7e6e8df1b3e0e66e261ed90"
+		},
+		{
+			"facing": "south",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/creative-design-kit-v1/south-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							50,
+							115,
+							92,
+							24
+						],
+						"opaque_colors": 12,
+						"opaque_pixels": 576,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42432
+					},
+					"name": "CreativeDesignSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"sha256": "732b61e978a9c8ee2d8cbd68a0f0f55a367704f15f122ec16fa6c1f0321eaaec",
+					"z_offset": 2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/creative-design-kit-v1/south-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							50,
+							134,
+							22,
+							7
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 154,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42854
+					},
+					"name": "CreativeDesignSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"sha256": "105dc5b780b196be1f04b12382cb8023d71da33e850a5285a042d031bdbaf23c",
+					"z_offset": 4
+				}
+			],
+			"objects": {
+				"pen_display": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(114, 125)"
+				},
+				"stylus_tool_tray": {
+					"axis": "horizontal",
+					"layer": "surface_decor_front",
+					"origin": "(50, 134)"
+				},
+				"swatch_fan": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(50, 115)"
+				}
+			},
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					50,
+					115,
+					92,
+					26
+				],
+				"opaque_colors": 12,
+				"opaque_pixels": 730,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 42278
+			},
+			"whole_sha256": "dc93bada4ab7aa5e8c2f6814f865d5b9a0c6f6836a99377b2abd9bf73b5d3270"
+		},
+		{
+			"facing": "west",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/creative-design-kit-v1/west-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							83,
+							83,
+							26,
+							16
+						],
+						"opaque_colors": 11,
+						"opaque_pixels": 266,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42742
+					},
+					"name": "CreativeDesignSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"sha256": "ea7e3c28bbc8a9e9be81fc48c3a24d004687218233eb4cb65c10e39303c3a400",
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/creative-design-kit-v1/west-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							82,
+							148,
+							17,
+							24
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 366,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42642
+					},
+					"name": "CreativeDesignSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"sha256": "b85fff8927e09d59aea63fc770c69c7193ac0c92c080afc576d624d614bc53d7",
+					"z_offset": 3
+				}
+			],
+			"objects": {
+				"pen_display": {
+					"axis": "vertical",
+					"layer": "surface_decor_front",
+					"origin": "(82, 148)"
+				},
+				"stylus_tool_tray": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(83, 83)"
+				},
+				"swatch_fan": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(97, 83)"
+				}
+			},
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					82,
+					83,
+					27,
+					89
+				],
+				"opaque_colors": 12,
+				"opaque_pixels": 632,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 42376
+			},
+			"whole_sha256": "3fce88d55d27d128932fe11faea0a4eb61af56481fd4a8206df271236e91857e"
+		}
+	],
+	"failures": [],
+	"footprint_cells": [
+		0,
+		0
+	],
+	"historical_north_source": {
+		"composition_review_path": "res://../dev/art-catalogue/CREATIVE_NORTH_COMPOSITION_REVIEW.md",
+		"disposition": "Preserved unchanged as historical generated North provenance; not transformed or claimed as the source of the code-native four-facing exports.",
+		"path": "res://assets/source/overnight-20260904/roles/creative-north-v1.png",
+		"prompt_path": "res://../dev/art-catalogue/prompts/creative-north-v1.md",
+		"review_path": "res://../dev/art-catalogue/CREATIVE_NORTH_REVIEW.md",
+		"sha256": "93d3295cf53f652397ea664cf457600852ca9cefbc1f36c88c0f9e619f28ffc0"
+	},
+	"host": "accepted desk / workstations-v2",
+	"id": "creative-design-kit-v1",
+	"pivot": [
+		96,
+		160
+	],
+	"production_catalogue_registered": false,
+	"production_files_changed": false,
+	"provenance": "Original deterministic code-native passive decor: one low pen display, one swatch fan, and one stylus/tool tray on four independently declared screen-axis layouts with fixed upper-left light. No image generation, source extraction, finished-bitmap transform, text, metric, logo, baked actor, creative hire, role behavior, backend, or runtime binding.",
+	"runtime_registered": false,
+	"sprite_offset": [
+		0,
+		-48
+	],
+	"status": "native_review_candidate_not_runtime_registered"
+}

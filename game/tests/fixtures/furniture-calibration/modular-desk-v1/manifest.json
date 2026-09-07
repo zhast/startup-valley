@@ -1,0 +1,851 @@
+{
+	"assembly_approval": false,
+	"checks": 143,
+	"directions": [
+		{
+			"canvas_size_px": [
+				192,
+				224
+			],
+			"contact_boundary_y": 16,
+			"facing": "north",
+			"floor_anchor_px": [
+				96,
+				160
+			],
+			"floor_plane": [
+				-48,
+				-16,
+				96,
+				32
+			],
+			"geometry_parts": {
+				"front": [
+					{
+						"color_rgba": "282622ff",
+						"rect": [
+							-44,
+							-14,
+							6,
+							30
+						]
+					},
+					{
+						"color_rgba": "282622ff",
+						"rect": [
+							38,
+							-14,
+							6,
+							30
+						]
+					},
+					{
+						"color_rgba": "53524aff",
+						"rect": [
+							-43,
+							-12,
+							2,
+							26
+						]
+					},
+					{
+						"color_rgba": "53524aff",
+						"rect": [
+							39,
+							-12,
+							2,
+							26
+						]
+					},
+					{
+						"color_rgba": "77512fff",
+						"rect": [
+							-48,
+							-16,
+							96,
+							4
+						]
+					},
+					{
+						"color_rgba": "d1a369ff",
+						"rect": [
+							-46,
+							-15,
+							92,
+							1
+						]
+					}
+				],
+				"rear": [
+					{
+						"color_rgba": "383833ff",
+						"rect": [
+							-44,
+							-46,
+							6,
+							30
+						]
+					},
+					{
+						"color_rgba": "383833ff",
+						"rect": [
+							38,
+							-46,
+							6,
+							30
+						]
+					}
+				]
+			},
+			"hash_format": "SHA-256 of decoded RGBA bytes; not compressed PNG hash",
+			"material_axis": "horizontal",
+			"measurements": {
+				"front": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						48,
+						144,
+						96,
+						32
+					],
+					"opaque_colors": 4,
+					"opaque_pixels": 720,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 42288
+				},
+				"rear": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						48,
+						112,
+						96,
+						32
+					],
+					"opaque_colors": 6,
+					"opaque_pixels": 3072,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 39936
+				},
+				"whole": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						48,
+						112,
+						96,
+						64
+					],
+					"opaque_colors": 8,
+					"opaque_pixels": 3792,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 39216
+				}
+			},
+			"reconstruction_rgba_sha256": "0c12bd6b48890eea6b1ae5aefe7febf6a59951eb869552ffa2674596335a4681",
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-desk-v1/north-rear.png",
+					"content_bounds": [
+						48,
+						112,
+						96,
+						32
+					],
+					"name": "ModularDeskRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-desk-v1/north-front.png",
+					"content_bounds": [
+						48,
+						144,
+						96,
+						32
+					],
+					"name": "ModularDeskFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 1
+				}
+			],
+			"seat_reference_status": "Original geometry helper seat_reference is a rejected/off-grid placeholder; deliberately not exported as a usable socket.",
+			"top_layer": "rear",
+			"top_plane": [
+				-48,
+				-48,
+				96,
+				32
+			]
+		},
+		{
+			"canvas_size_px": [
+				192,
+				224
+			],
+			"contact_boundary_y": 48,
+			"facing": "east",
+			"floor_anchor_px": [
+				96,
+				160
+			],
+			"floor_plane": [
+				-16,
+				-48,
+				32,
+				96
+			],
+			"geometry_parts": {
+				"front": [
+					{
+						"color_rgba": "282622ff",
+						"rect": [
+							-12,
+							18,
+							6,
+							30
+						]
+					},
+					{
+						"color_rgba": "282622ff",
+						"rect": [
+							6,
+							18,
+							6,
+							30
+						]
+					},
+					{
+						"color_rgba": "53524aff",
+						"rect": [
+							-11,
+							20,
+							2,
+							26
+						]
+					},
+					{
+						"color_rgba": "53524aff",
+						"rect": [
+							7,
+							20,
+							2,
+							26
+						]
+					},
+					{
+						"color_rgba": "77512fff",
+						"rect": [
+							-16,
+							16,
+							32,
+							6
+						]
+					},
+					{
+						"color_rgba": "d1a369ff",
+						"rect": [
+							-14,
+							17,
+							28,
+							1
+						]
+					},
+					{
+						"color_rgba": "583d28ff",
+						"rect": [
+							12,
+							-76,
+							3,
+							92
+						]
+					}
+				],
+				"rear": [
+					{
+						"color_rgba": "383833ff",
+						"rect": [
+							-12,
+							-78,
+							6,
+							30
+						]
+					},
+					{
+						"color_rgba": "383833ff",
+						"rect": [
+							6,
+							-78,
+							6,
+							30
+						]
+					}
+				]
+			},
+			"hash_format": "SHA-256 of decoded RGBA bytes; not compressed PNG hash",
+			"material_axis": "vertical",
+			"measurements": {
+				"front": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						80,
+						84,
+						32,
+						124
+					],
+					"opaque_colors": 5,
+					"opaque_pixels": 780,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 42228
+				},
+				"rear": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						80,
+						80,
+						32,
+						96
+					],
+					"opaque_colors": 6,
+					"opaque_pixels": 3072,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 39936
+				},
+				"whole": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						80,
+						80,
+						32,
+						128
+					],
+					"opaque_colors": 8,
+					"opaque_pixels": 3576,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 39432
+				}
+			},
+			"reconstruction_rgba_sha256": "8f42ebfc1e3a7fa8cd279174655ff157f23e315e50ce6815d0cea76ba64b29b0",
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-desk-v1/east-rear.png",
+					"content_bounds": [
+						80,
+						80,
+						32,
+						96
+					],
+					"name": "ModularDeskRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-desk-v1/east-front.png",
+					"content_bounds": [
+						80,
+						84,
+						32,
+						124
+					],
+					"name": "ModularDeskFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 1
+				}
+			],
+			"seat_reference_status": "Original geometry helper seat_reference is a rejected/off-grid placeholder; deliberately not exported as a usable socket.",
+			"top_layer": "rear",
+			"top_plane": [
+				-16,
+				-80,
+				32,
+				96
+			]
+		},
+		{
+			"canvas_size_px": [
+				192,
+				224
+			],
+			"contact_boundary_y": 16,
+			"facing": "south",
+			"floor_anchor_px": [
+				96,
+				160
+			],
+			"floor_plane": [
+				-48,
+				-16,
+				96,
+				32
+			],
+			"geometry_parts": {
+				"front": [
+					{
+						"color_rgba": "282622ff",
+						"rect": [
+							-44,
+							-14,
+							6,
+							30
+						]
+					},
+					{
+						"color_rgba": "282622ff",
+						"rect": [
+							38,
+							-14,
+							6,
+							30
+						]
+					},
+					{
+						"color_rgba": "53524aff",
+						"rect": [
+							-43,
+							-12,
+							2,
+							26
+						]
+					},
+					{
+						"color_rgba": "53524aff",
+						"rect": [
+							39,
+							-12,
+							2,
+							26
+						]
+					},
+					{
+						"color_rgba": "77512fff",
+						"rect": [
+							-48,
+							-16,
+							96,
+							10
+						]
+					},
+					{
+						"color_rgba": "d1a369ff",
+						"rect": [
+							-46,
+							-15,
+							92,
+							1
+						]
+					},
+					{
+						"color_rgba": "583d28ff",
+						"rect": [
+							-44,
+							-8,
+							88,
+							1
+						]
+					}
+				],
+				"rear": [
+					{
+						"color_rgba": "383833ff",
+						"rect": [
+							-44,
+							-46,
+							6,
+							30
+						]
+					},
+					{
+						"color_rgba": "383833ff",
+						"rect": [
+							38,
+							-46,
+							6,
+							30
+						]
+					}
+				]
+			},
+			"hash_format": "SHA-256 of decoded RGBA bytes; not compressed PNG hash",
+			"material_axis": "horizontal",
+			"measurements": {
+				"front": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						48,
+						112,
+						96,
+						64
+					],
+					"opaque_colors": 8,
+					"opaque_pixels": 4296,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 38712
+				},
+				"rear": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						52,
+						114,
+						88,
+						30
+					],
+					"opaque_colors": 1,
+					"opaque_pixels": 360,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 42648
+				},
+				"whole": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						48,
+						112,
+						96,
+						64
+					],
+					"opaque_colors": 8,
+					"opaque_pixels": 4296,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 38712
+				}
+			},
+			"reconstruction_rgba_sha256": "8287030512eaec02a739812edecc2ffa89dbf1c612e3a06df1285fead0c54e70",
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-desk-v1/south-rear.png",
+					"content_bounds": [
+						52,
+						114,
+						88,
+						30
+					],
+					"name": "ModularDeskRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-desk-v1/south-front.png",
+					"content_bounds": [
+						48,
+						112,
+						96,
+						64
+					],
+					"name": "ModularDeskFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 1
+				}
+			],
+			"seat_reference_status": "Original geometry helper seat_reference is a rejected/off-grid placeholder; deliberately not exported as a usable socket.",
+			"top_layer": "front",
+			"top_plane": [
+				-48,
+				-48,
+				96,
+				32
+			]
+		},
+		{
+			"canvas_size_px": [
+				192,
+				224
+			],
+			"contact_boundary_y": 48,
+			"facing": "west",
+			"floor_anchor_px": [
+				96,
+				160
+			],
+			"floor_plane": [
+				-16,
+				-48,
+				32,
+				96
+			],
+			"geometry_parts": {
+				"front": [
+					{
+						"color_rgba": "282622ff",
+						"rect": [
+							-12,
+							18,
+							6,
+							30
+						]
+					},
+					{
+						"color_rgba": "282622ff",
+						"rect": [
+							6,
+							18,
+							6,
+							30
+						]
+					},
+					{
+						"color_rgba": "53524aff",
+						"rect": [
+							-11,
+							20,
+							2,
+							26
+						]
+					},
+					{
+						"color_rgba": "53524aff",
+						"rect": [
+							7,
+							20,
+							2,
+							26
+						]
+					},
+					{
+						"color_rgba": "77512fff",
+						"rect": [
+							-16,
+							16,
+							32,
+							6
+						]
+					},
+					{
+						"color_rgba": "d1a369ff",
+						"rect": [
+							-14,
+							17,
+							28,
+							1
+						]
+					},
+					{
+						"color_rgba": "d1a369ff",
+						"rect": [
+							-15,
+							-76,
+							3,
+							92
+						]
+					}
+				],
+				"rear": [
+					{
+						"color_rgba": "383833ff",
+						"rect": [
+							-12,
+							-78,
+							6,
+							30
+						]
+					},
+					{
+						"color_rgba": "383833ff",
+						"rect": [
+							6,
+							-78,
+							6,
+							30
+						]
+					}
+				]
+			},
+			"hash_format": "SHA-256 of decoded RGBA bytes; not compressed PNG hash",
+			"material_axis": "vertical",
+			"measurements": {
+				"front": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						80,
+						84,
+						32,
+						124
+					],
+					"opaque_colors": 4,
+					"opaque_pixels": 780,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 42228
+				},
+				"rear": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						80,
+						80,
+						32,
+						96
+					],
+					"opaque_colors": 6,
+					"opaque_pixels": 3072,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 39936
+				},
+				"whole": {
+					"hidden_rgb_pixels": 0,
+					"opaque_bounds": [
+						80,
+						80,
+						32,
+						128
+					],
+					"opaque_colors": 8,
+					"opaque_pixels": 3576,
+					"partial_alpha_pixels": 0,
+					"transparent_pixels": 39432
+				}
+			},
+			"reconstruction_rgba_sha256": "ea4611230409a5bb87209af6aafea251d49568b1c47db1534168a2b2e605c90c",
+			"render_layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-desk-v1/west-rear.png",
+					"content_bounds": [
+						80,
+						80,
+						32,
+						96
+					],
+					"name": "ModularDeskRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/modular-desk-v1/west-front.png",
+					"content_bounds": [
+						80,
+						84,
+						32,
+						124
+					],
+					"name": "ModularDeskFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 1
+				}
+			],
+			"seat_reference_status": "Original geometry helper seat_reference is a rejected/off-grid placeholder; deliberately not exported as a usable socket.",
+			"top_layer": "rear",
+			"top_plane": [
+				-16,
+				-80,
+				32,
+				96
+			]
+		}
+	],
+	"evidence": [
+		"res://tests/output/modular-desk-export/assembled-native.png",
+		"res://tests/output/modular-desk-export/assembled-4x.png",
+		"res://tests/output/modular-desk-export/layers-native.png"
+	],
+	"failures": [],
+	"filter": "nearest",
+	"id": "modular-desk-v1",
+	"limitations": [
+		"Flat prototype leg finish is not approved finished art.",
+		"No chair, actor, socket or walking/typing contact approval.",
+		"Layers retain the helper's explicit per-facing top/apron/cable rail/leg geometry; a reviewed assembly must select final actor depths."
+	],
+	"msaa_2d": "disabled",
+	"pixel_scale": 1,
+	"provenance": "Renderer export of existing code-native geometry with generated soft oak material. No new image generation or semantic bitmap alteration.",
+	"renderer": "macOS",
+	"runtime_registered": false,
+	"source_files": [
+		{
+			"path": "res://tools/modular_desk_geometry.gd",
+			"sha256": "3810ea5c9cdaeeea9aa4f0ef95789fdbe8a6a2a33f3e9d2763ce0df2db62f4ba"
+		},
+		{
+			"path": "res://tools/export_modular_desk_layers.gd",
+			"sha256": "2d9d2849c71506a30bf5f3924483134cee5a5ac9de9ca97d186c0b6d5f15a0b4"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/materials/oak-horizontal-v1-soft.png",
+			"sha256": "c325d84fe0e8b3884b585a2d4b95463b9ba8fa75afdc3d90c22923b9e6b03a4b"
+		},
+		{
+			"path": "res://tests/fixtures/furniture-calibration/materials/oak-vertical-v1-soft.png",
+			"sha256": "d7e23016bc9cb0df7b95218131864a4bc13dc64fb8c4c6a0bb64907f63d12958"
+		},
+		{
+			"path": "res://assets/source/overnight-20260904/materials/oak-horizontal-v1.png",
+			"sha256": "3aa16971a5457afeac422cca2cb53d28b0f76ab70dbdbfbe5f68a701f8836f01"
+		},
+		{
+			"path": "res://assets/source/overnight-20260904/materials/oak-vertical-v1.png",
+			"sha256": "d28136db4dcb3b0a3439cde29dd224923d5540ae33033fb87d39357917b36528"
+		},
+		{
+			"path": "res://../dev/art-catalogue/oak-material-palette-soft.svg",
+			"sha256": "9f08d52f438a7ee0993638adf61e1cf245700f5818c4e0883d33bfebf097591f"
+		}
+	],
+	"status": "dev_candidate_not_runtime_ready",
+	"worker_disabled": true
+}

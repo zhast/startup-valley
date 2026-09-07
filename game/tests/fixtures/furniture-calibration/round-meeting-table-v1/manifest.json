@@ -1,0 +1,667 @@
+{
+	"canvas": [
+		224,
+		288
+	],
+	"catalogue_family": "round_meeting_table",
+	"claims": "Bare passive table art only; no interaction, service, chair, seat, work pose, role kit or production admission.",
+	"directions": [
+		{
+			"axis": "round",
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						224,
+						288
+					],
+					"decoded_rgba_sha256": "ff728daf5d8e2638a62e266f479867b076a8beae980be6ed5110c7af406b88af",
+					"floor_anchor_px": [
+						112,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+					"opaque_bounds_px": [
+						70,
+						98,
+						84,
+						118
+					],
+					"opaque_pixels": 4776,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/round-meeting-table-v1/north-whole.png",
+					"sha256": "ffed2973897c23a0eb17017dfc7e53a2bc6c2b653d774d9f791910428c4d3bfb",
+					"used_colors": 10,
+					"verify_decoded_facts": true
+				}
+			],
+			"equivalent_view": "rotationally_symmetric",
+			"facing": "north",
+			"footprint_cells": [
+				3,
+				3
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						224,
+						288
+					],
+					"decoded_rgba_sha256": "652c39437a58781df87d7c1b1af72b545165f335fef8647db19f4e4b7d87d818",
+					"floor_anchor_px": [
+						112,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						93,
+						201,
+						44,
+						15
+					],
+					"opaque_pixels": 28,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/round-meeting-table-v1/north-floor_shadow.png",
+					"sha256": "d28da9f2797781285196b1b8c47fad7ece4fe9d57d070bb93a54145a919e0645",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -2
+				},
+				{
+					"canvas_size_px": [
+						224,
+						288
+					],
+					"decoded_rgba_sha256": "2baf5e148cbf8dd6e35236df7de2445e06f08128691252d1958df98c98829b4d",
+					"floor_anchor_px": [
+						112,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						70,
+						98,
+						84,
+						113
+					],
+					"opaque_pixels": 4294,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/round-meeting-table-v1/north-rear_structure.png",
+					"sha256": "cd30a75e0220be2eb01174050d241db380fe018db7bd674f294632c10ac2bba8",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 8,
+					"verify_decoded_facts": true,
+					"z_offset": -1
+				},
+				{
+					"canvas_size_px": [
+						224,
+						288
+					],
+					"decoded_rgba_sha256": "814436c1da99418dd1bc20a57f4b4322c8c465602d8bb17d8cb4fbf1c01ca874",
+					"floor_anchor_px": [
+						112,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						84,
+						147,
+						56,
+						68
+					],
+					"opaque_pixels": 598,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/round-meeting-table-v1/north-front_structure.png",
+					"sha256": "4853f88f783e27684bbc67e2bc07458c1ac1d8d12fad55f21e69b403792ce1eb",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 5,
+					"verify_decoded_facts": true,
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					-1,
+					-1
+				],
+				[
+					0,
+					-1
+				],
+				[
+					1,
+					-1
+				],
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					1,
+					0
+				],
+				[
+					-1,
+					1
+				],
+				[
+					0,
+					1
+				],
+				[
+					1,
+					1
+				]
+			]
+		},
+		{
+			"axis": "round",
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						224,
+						288
+					],
+					"decoded_rgba_sha256": "ff728daf5d8e2638a62e266f479867b076a8beae980be6ed5110c7af406b88af",
+					"floor_anchor_px": [
+						112,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+					"opaque_bounds_px": [
+						70,
+						98,
+						84,
+						118
+					],
+					"opaque_pixels": 4776,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/round-meeting-table-v1/east-whole.png",
+					"sha256": "ffed2973897c23a0eb17017dfc7e53a2bc6c2b653d774d9f791910428c4d3bfb",
+					"used_colors": 10,
+					"verify_decoded_facts": true
+				}
+			],
+			"equivalent_view": "rotationally_symmetric",
+			"facing": "east",
+			"footprint_cells": [
+				3,
+				3
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						224,
+						288
+					],
+					"decoded_rgba_sha256": "652c39437a58781df87d7c1b1af72b545165f335fef8647db19f4e4b7d87d818",
+					"floor_anchor_px": [
+						112,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						93,
+						201,
+						44,
+						15
+					],
+					"opaque_pixels": 28,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/round-meeting-table-v1/east-floor_shadow.png",
+					"sha256": "d28da9f2797781285196b1b8c47fad7ece4fe9d57d070bb93a54145a919e0645",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -2
+				},
+				{
+					"canvas_size_px": [
+						224,
+						288
+					],
+					"decoded_rgba_sha256": "2baf5e148cbf8dd6e35236df7de2445e06f08128691252d1958df98c98829b4d",
+					"floor_anchor_px": [
+						112,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						70,
+						98,
+						84,
+						113
+					],
+					"opaque_pixels": 4294,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/round-meeting-table-v1/east-rear_structure.png",
+					"sha256": "cd30a75e0220be2eb01174050d241db380fe018db7bd674f294632c10ac2bba8",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 8,
+					"verify_decoded_facts": true,
+					"z_offset": -1
+				},
+				{
+					"canvas_size_px": [
+						224,
+						288
+					],
+					"decoded_rgba_sha256": "814436c1da99418dd1bc20a57f4b4322c8c465602d8bb17d8cb4fbf1c01ca874",
+					"floor_anchor_px": [
+						112,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						84,
+						147,
+						56,
+						68
+					],
+					"opaque_pixels": 598,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/round-meeting-table-v1/east-front_structure.png",
+					"sha256": "4853f88f783e27684bbc67e2bc07458c1ac1d8d12fad55f21e69b403792ce1eb",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 5,
+					"verify_decoded_facts": true,
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					-1,
+					-1
+				],
+				[
+					0,
+					-1
+				],
+				[
+					1,
+					-1
+				],
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					1,
+					0
+				],
+				[
+					-1,
+					1
+				],
+				[
+					0,
+					1
+				],
+				[
+					1,
+					1
+				]
+			]
+		},
+		{
+			"axis": "round",
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						224,
+						288
+					],
+					"decoded_rgba_sha256": "ff728daf5d8e2638a62e266f479867b076a8beae980be6ed5110c7af406b88af",
+					"floor_anchor_px": [
+						112,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+					"opaque_bounds_px": [
+						70,
+						98,
+						84,
+						118
+					],
+					"opaque_pixels": 4776,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/round-meeting-table-v1/south-whole.png",
+					"sha256": "ffed2973897c23a0eb17017dfc7e53a2bc6c2b653d774d9f791910428c4d3bfb",
+					"used_colors": 10,
+					"verify_decoded_facts": true
+				}
+			],
+			"equivalent_view": "rotationally_symmetric",
+			"facing": "south",
+			"footprint_cells": [
+				3,
+				3
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						224,
+						288
+					],
+					"decoded_rgba_sha256": "652c39437a58781df87d7c1b1af72b545165f335fef8647db19f4e4b7d87d818",
+					"floor_anchor_px": [
+						112,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						93,
+						201,
+						44,
+						15
+					],
+					"opaque_pixels": 28,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/round-meeting-table-v1/south-floor_shadow.png",
+					"sha256": "d28da9f2797781285196b1b8c47fad7ece4fe9d57d070bb93a54145a919e0645",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -2
+				},
+				{
+					"canvas_size_px": [
+						224,
+						288
+					],
+					"decoded_rgba_sha256": "2baf5e148cbf8dd6e35236df7de2445e06f08128691252d1958df98c98829b4d",
+					"floor_anchor_px": [
+						112,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						70,
+						98,
+						84,
+						113
+					],
+					"opaque_pixels": 4294,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/round-meeting-table-v1/south-rear_structure.png",
+					"sha256": "cd30a75e0220be2eb01174050d241db380fe018db7bd674f294632c10ac2bba8",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 8,
+					"verify_decoded_facts": true,
+					"z_offset": -1
+				},
+				{
+					"canvas_size_px": [
+						224,
+						288
+					],
+					"decoded_rgba_sha256": "814436c1da99418dd1bc20a57f4b4322c8c465602d8bb17d8cb4fbf1c01ca874",
+					"floor_anchor_px": [
+						112,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						84,
+						147,
+						56,
+						68
+					],
+					"opaque_pixels": 598,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/round-meeting-table-v1/south-front_structure.png",
+					"sha256": "4853f88f783e27684bbc67e2bc07458c1ac1d8d12fad55f21e69b403792ce1eb",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 5,
+					"verify_decoded_facts": true,
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					-1,
+					-1
+				],
+				[
+					0,
+					-1
+				],
+				[
+					1,
+					-1
+				],
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					1,
+					0
+				],
+				[
+					-1,
+					1
+				],
+				[
+					0,
+					1
+				],
+				[
+					1,
+					1
+				]
+			]
+		},
+		{
+			"axis": "round",
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						224,
+						288
+					],
+					"decoded_rgba_sha256": "ff728daf5d8e2638a62e266f479867b076a8beae980be6ed5110c7af406b88af",
+					"floor_anchor_px": [
+						112,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+					"opaque_bounds_px": [
+						70,
+						98,
+						84,
+						118
+					],
+					"opaque_pixels": 4776,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/round-meeting-table-v1/west-whole.png",
+					"sha256": "ffed2973897c23a0eb17017dfc7e53a2bc6c2b653d774d9f791910428c4d3bfb",
+					"used_colors": 10,
+					"verify_decoded_facts": true
+				}
+			],
+			"equivalent_view": "rotationally_symmetric",
+			"facing": "west",
+			"footprint_cells": [
+				3,
+				3
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						224,
+						288
+					],
+					"decoded_rgba_sha256": "652c39437a58781df87d7c1b1af72b545165f335fef8647db19f4e4b7d87d818",
+					"floor_anchor_px": [
+						112,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						93,
+						201,
+						44,
+						15
+					],
+					"opaque_pixels": 28,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/round-meeting-table-v1/west-floor_shadow.png",
+					"sha256": "d28da9f2797781285196b1b8c47fad7ece4fe9d57d070bb93a54145a919e0645",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -2
+				},
+				{
+					"canvas_size_px": [
+						224,
+						288
+					],
+					"decoded_rgba_sha256": "2baf5e148cbf8dd6e35236df7de2445e06f08128691252d1958df98c98829b4d",
+					"floor_anchor_px": [
+						112,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						70,
+						98,
+						84,
+						113
+					],
+					"opaque_pixels": 4294,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/round-meeting-table-v1/west-rear_structure.png",
+					"sha256": "cd30a75e0220be2eb01174050d241db380fe018db7bd674f294632c10ac2bba8",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 8,
+					"verify_decoded_facts": true,
+					"z_offset": -1
+				},
+				{
+					"canvas_size_px": [
+						224,
+						288
+					],
+					"decoded_rgba_sha256": "814436c1da99418dd1bc20a57f4b4322c8c465602d8bb17d8cb4fbf1c01ca874",
+					"floor_anchor_px": [
+						112,
+						176
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						84,
+						147,
+						56,
+						68
+					],
+					"opaque_pixels": 598,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/round-meeting-table-v1/west-front_structure.png",
+					"sha256": "4853f88f783e27684bbc67e2bc07458c1ac1d8d12fad55f21e69b403792ce1eb",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 5,
+					"verify_decoded_facts": true,
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					-1,
+					-1
+				],
+				[
+					0,
+					-1
+				],
+				[
+					1,
+					-1
+				],
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					1,
+					0
+				],
+				[
+					-1,
+					1
+				],
+				[
+					0,
+					1
+				],
+				[
+					1,
+					1
+				]
+			]
+		}
+	],
+	"floor_pivot": [
+		112,
+		176
+	],
+	"id": "round-meeting-table-v1",
+	"layer_order": [
+		"floor_shadow",
+		"rear_structure",
+		"front_structure"
+	],
+	"runtime_registered": false,
+	"sprite_offset": [
+		0,
+		-32
+	],
+	"status": "staged_unapproved_passive_art",
+	"worker_disabled": true
+}

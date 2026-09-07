@@ -1,0 +1,823 @@
+{
+	"canvas": [
+		160,
+		208
+	],
+	"checks": 78,
+	"code_native_provenance": {
+		"generated_raster_sources_used": false,
+		"image_generation_calls": 0,
+		"source_attempts_created": 0
+	},
+	"default_layout_registered": false,
+	"dev_catalogue_registration": "Not asserted. This exporter only verifies byte-exact shared-catalogue immutability during its own run.",
+	"dimension_review": {
+		"authored_vertical_feature_rise_px": 62,
+		"east_west_top_plane_depth_px": 64,
+		"maximum_expected_projected_rise_px": 126,
+		"measured_base_elevation_px": 32,
+		"north_south_top_plane_depth_px": 32,
+		"planned_canvas_retained": [
+			160,
+			208
+		],
+		"planned_floor_anchor_retained": [
+			80,
+			144
+		],
+		"planned_vertical_feature_envelope_px": 80,
+		"revision": "The planned rise is retained as the vertical feature envelope. Full screen-projected rise is recorded separately because a truthful E/W top plane also contains the exact 64px depth of the 1x2 physical footprint. Canvas, pivot, scale and collision masks do not change."
+	},
+	"directions": [
+		{
+			"approach_gaze": "south",
+			"base_elevation_px": 32,
+			"base_projected_rise_px": 64,
+			"base_solid_bounds_px": [
+				-16,
+				-48,
+				64,
+				64
+			],
+			"camera_face_identity": "rear",
+			"camera_front_elevation_px": [
+				-16,
+				-16,
+				64,
+				32
+			],
+			"clearance_cell_offsets": [
+				[
+					0,
+					-1
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"authored_vertical_feature_rise_px": 62,
+				"east_west_top_plane_depth_px": 64,
+				"maximum_expected_projected_rise_px": 126,
+				"measured_base_elevation_px": 32,
+				"north_south_top_plane_depth_px": 32,
+				"planned_canvas_retained": [
+					160,
+					208
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					144
+				],
+				"planned_vertical_feature_envelope_px": 80,
+				"revision": "The planned rise is retained as the vertical feature envelope. Full screen-projected rise is recorded separately because a truthful E/W top plane also contains the exact 64px depth of the 1x2 physical footprint. Canvas, pivot, scale and collision masks do not change."
+			},
+			"employee_look_vector": [
+				0,
+				1
+			],
+			"facing": "north",
+			"floor_plane_px": [
+				-16,
+				-16,
+				64,
+				32
+			],
+			"footprint_cells": [
+				2,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/printer-scanner-station-v1/north-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							59,
+							155,
+							74,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 30,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 33250
+					},
+					"name": "PrinterScannerStationV1NorthFloorShadow",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "128137f308d737b443b706069b5525c7cd01858fb420a38525cb5cada6ee91b8",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/printer-scanner-station-v1/north-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							64,
+							74,
+							64,
+							86
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 5152,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 28128
+					},
+					"name": "PrinterScannerStationV1NorthRearStructure",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "fef103572db495173d3822b18f12eeea3548c53f4097435f6435d05253b8603f",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/printer-scanner-station-v1/north-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							69,
+							99,
+							54,
+							56
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 1374,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 31906
+					},
+					"name": "PrinterScannerStationV1NorthFrontStructure",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "d519dcd0cc67b4a02962f3258fa27c4fae98aa695f8a031b8ee877d79c4f17e1",
+					"z_offset": 1
+				}
+			],
+			"measured_whole_projected_rise_px": 86,
+			"occupied_cell_offsets": [
+				[
+					1,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				0,
+				-1
+			],
+			"role_identity": {
+				"camera_face": "hinge_and_cable_rear",
+				"paper_is_static": true,
+				"scanner_lid": true
+			},
+			"service_side": "north",
+			"top_plane_depth_px": 32,
+			"top_plane_px": [
+				-16,
+				-48,
+				64,
+				32
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					59,
+					74,
+					74,
+					86
+				],
+				"opaque_colors": 12,
+				"opaque_pixels": 5182,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 28098
+			},
+			"whole_sha256": "a8b41fc397129879e16386459e97b7060507aaffa3c567c07ac3f736f6ba3372"
+		},
+		{
+			"approach_gaze": "west",
+			"base_elevation_px": 32,
+			"base_projected_rise_px": 96,
+			"base_solid_bounds_px": [
+				-16,
+				-48,
+				32,
+				96
+			],
+			"camera_face_identity": "service_front_right_end",
+			"camera_front_elevation_px": [
+				-16,
+				16,
+				32,
+				32
+			],
+			"clearance_cell_offsets": [
+				[
+					1,
+					0
+				]
+			],
+			"contact_boundary_y": 48,
+			"dimension_review": {
+				"authored_vertical_feature_rise_px": 62,
+				"east_west_top_plane_depth_px": 64,
+				"maximum_expected_projected_rise_px": 126,
+				"measured_base_elevation_px": 32,
+				"north_south_top_plane_depth_px": 32,
+				"planned_canvas_retained": [
+					160,
+					208
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					144
+				],
+				"planned_vertical_feature_envelope_px": 80,
+				"revision": "The planned rise is retained as the vertical feature envelope. Full screen-projected rise is recorded separately because a truthful E/W top plane also contains the exact 64px depth of the 1x2 physical footprint. Canvas, pivot, scale and collision masks do not change."
+			},
+			"employee_look_vector": [
+				-1,
+				0
+			],
+			"facing": "east",
+			"floor_plane_px": [
+				-16,
+				-16,
+				32,
+				64
+			],
+			"footprint_cells": [
+				1,
+				2
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/printer-scanner-station-v1/east-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							59,
+							187,
+							42,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 30,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 33250
+					},
+					"name": "PrinterScannerStationV1EastFloorShadow",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "723b1d16e9f8987d37b1f7d6cc447b3a791766dacebaf9cf5a0c72f8ba14a244",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/printer-scanner-station-v1/east-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							64,
+							74,
+							32,
+							118
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 3512,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 29768
+					},
+					"name": "PrinterScannerStationV1EastRearStructure",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "a55a29877ca6d840a61123854c0d3d15bf5ce79ea1abab53975805010eaa61fb",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/printer-scanner-station-v1/east-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							69,
+							119,
+							22,
+							68
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 524,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 32756
+					},
+					"name": "PrinterScannerStationV1EastFrontStructure",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "bea9f38b0ce1afd8eca530d648d197c8e479a6f26b5f59dfd20c0328f4d27b3f",
+					"z_offset": 1
+				}
+			],
+			"measured_whole_projected_rise_px": 118,
+			"occupied_cell_offsets": [
+				[
+					0,
+					1
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				1,
+				0
+			],
+			"role_identity": {
+				"camera_face": "right_scanner_end",
+				"paper_is_static": true,
+				"scanner_lid": true
+			},
+			"service_side": "east",
+			"top_plane_depth_px": 64,
+			"top_plane_px": [
+				-16,
+				-48,
+				32,
+				64
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					59,
+					74,
+					42,
+					118
+				],
+				"opaque_colors": 11,
+				"opaque_pixels": 3542,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 29738
+			},
+			"whole_sha256": "f68e61ddbf13948832f33ea72dedfe8fb4c38010fc33f2f4f5659aa149e34a6c"
+		},
+		{
+			"approach_gaze": "north",
+			"base_elevation_px": 32,
+			"base_projected_rise_px": 64,
+			"base_solid_bounds_px": [
+				-48,
+				-48,
+				64,
+				64
+			],
+			"camera_face_identity": "service_front",
+			"camera_front_elevation_px": [
+				-48,
+				-16,
+				64,
+				32
+			],
+			"clearance_cell_offsets": [
+				[
+					0,
+					1
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"authored_vertical_feature_rise_px": 62,
+				"east_west_top_plane_depth_px": 64,
+				"maximum_expected_projected_rise_px": 126,
+				"measured_base_elevation_px": 32,
+				"north_south_top_plane_depth_px": 32,
+				"planned_canvas_retained": [
+					160,
+					208
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					144
+				],
+				"planned_vertical_feature_envelope_px": 80,
+				"revision": "The planned rise is retained as the vertical feature envelope. Full screen-projected rise is recorded separately because a truthful E/W top plane also contains the exact 64px depth of the 1x2 physical footprint. Canvas, pivot, scale and collision masks do not change."
+			},
+			"employee_look_vector": [
+				0,
+				-1
+			],
+			"facing": "south",
+			"floor_plane_px": [
+				-48,
+				-16,
+				64,
+				32
+			],
+			"footprint_cells": [
+				2,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/printer-scanner-station-v1/south-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							27,
+							155,
+							74,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 30,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 33250
+					},
+					"name": "PrinterScannerStationV1SouthFloorShadow",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "d6a0380bde710f7c8ec3b4d947f7178b0784099d931c302130abcaefa42784d7",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/printer-scanner-station-v1/south-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							32,
+							74,
+							64,
+							86
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 5152,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 28128
+					},
+					"name": "PrinterScannerStationV1SouthRearStructure",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "c7745faf8bb71f22a75bdaa6320cd1198b4d33a69a958abc146b5b0924b767e9",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/printer-scanner-station-v1/south-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							37,
+							99,
+							54,
+							56
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 1532,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 31748
+					},
+					"name": "PrinterScannerStationV1SouthFrontStructure",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "cb23d0beb4658f48732b1c947de58e11d92c7595cdae9da3df101dec144a373a",
+					"z_offset": 1
+				}
+			],
+			"measured_whole_projected_rise_px": 86,
+			"occupied_cell_offsets": [
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				0,
+				1
+			],
+			"role_identity": {
+				"camera_face": "output_slot_and_paper_tray",
+				"paper_is_static": true,
+				"scanner_lid": true
+			},
+			"service_side": "south",
+			"top_plane_depth_px": 32,
+			"top_plane_px": [
+				-48,
+				-48,
+				64,
+				32
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					27,
+					74,
+					74,
+					86
+				],
+				"opaque_colors": 12,
+				"opaque_pixels": 5182,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 28098
+			},
+			"whole_sha256": "eb2bc832b000459204484b0ad6637db27843007c0eeaeb92ff0a40334e29421e"
+		},
+		{
+			"approach_gaze": "east",
+			"base_elevation_px": 32,
+			"base_projected_rise_px": 96,
+			"base_solid_bounds_px": [
+				-16,
+				-80,
+				32,
+				96
+			],
+			"camera_face_identity": "service_front_left_end",
+			"camera_front_elevation_px": [
+				-16,
+				-16,
+				32,
+				32
+			],
+			"clearance_cell_offsets": [
+				[
+					-1,
+					0
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"authored_vertical_feature_rise_px": 62,
+				"east_west_top_plane_depth_px": 64,
+				"maximum_expected_projected_rise_px": 126,
+				"measured_base_elevation_px": 32,
+				"north_south_top_plane_depth_px": 32,
+				"planned_canvas_retained": [
+					160,
+					208
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					144
+				],
+				"planned_vertical_feature_envelope_px": 80,
+				"revision": "The planned rise is retained as the vertical feature envelope. Full screen-projected rise is recorded separately because a truthful E/W top plane also contains the exact 64px depth of the 1x2 physical footprint. Canvas, pivot, scale and collision masks do not change."
+			},
+			"employee_look_vector": [
+				1,
+				0
+			],
+			"facing": "west",
+			"floor_plane_px": [
+				-16,
+				-48,
+				32,
+				64
+			],
+			"footprint_cells": [
+				1,
+				2
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/printer-scanner-station-v1/west-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							59,
+							155,
+							42,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 30,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 33250
+					},
+					"name": "PrinterScannerStationV1WestFloorShadow",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "7191add134e3972d6fe6fb0f87700b94d99d375dc5c9682a97964eff6760bde7",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/printer-scanner-station-v1/west-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							64,
+							42,
+							32,
+							118
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 3512,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 29768
+					},
+					"name": "PrinterScannerStationV1WestRearStructure",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "a4a0f7e4ad40200c3c5d628f3effe0f9c8d5b3b62883aa77a2c8570e017c9049",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/printer-scanner-station-v1/west-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							69,
+							87,
+							22,
+							68
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 524,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 32756
+					},
+					"name": "PrinterScannerStationV1WestFrontStructure",
+					"offset": [
+						0,
+						-40
+					],
+					"region": [
+						0,
+						0,
+						160,
+						208
+					],
+					"sha256": "9e1951ab7ae9d776345db5143577b527659e2e29d4d8fbe26b2b28412886c45e",
+					"z_offset": 1
+				}
+			],
+			"measured_whole_projected_rise_px": 118,
+			"occupied_cell_offsets": [
+				[
+					0,
+					-1
+				],
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				-1,
+				0
+			],
+			"role_identity": {
+				"camera_face": "left_scanner_end",
+				"paper_is_static": true,
+				"scanner_lid": true
+			},
+			"service_side": "west",
+			"top_plane_depth_px": 64,
+			"top_plane_px": [
+				-16,
+				-80,
+				32,
+				64
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					59,
+					42,
+					42,
+					118
+				],
+				"opaque_colors": 11,
+				"opaque_pixels": 3542,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 29738
+			},
+			"whole_sha256": "591e3be55f17595111ada70bb972a2c0296da4ea38be6f2b8f334bc97c83b374"
+		}
+	],
+	"failures": [],
+	"family": "printer_scanner_station",
+	"id": "printer-scanner-station-v1",
+	"layers": [
+		"floor_shadow",
+		"rear_structure",
+		"front_structure"
+	],
+	"material_sources": {
+		"charcoal_powdercoat": {
+			"path": "res://tests/fixtures/furniture-calibration/materials/charcoal-powdercoat-v1.png",
+			"retained_unchanged": true,
+			"sha256": "807152a50c8a1771cd451d0984fe1fd4ba3fb6328089e5fa9dd1fb2c858ad42d"
+		},
+		"oak_horizontal": {
+			"path": "res://tests/fixtures/furniture-calibration/materials-v2/oak-horizontal-v2.png",
+			"retained_unchanged": true,
+			"sha256": "bcd3ccf8c6411b4ce24997a88b3fabf78f7fa2132b240f66ee1d59ab3e0dded6"
+		},
+		"oak_vertical": {
+			"path": "res://tests/fixtures/furniture-calibration/materials-v2/oak-vertical-v2.png",
+			"retained_unchanged": true,
+			"sha256": "28a84e93bcdd6e026fbd3a56ae598f14a6c74acd07d1c5950a1a2347a1a24fae"
+		}
+	},
+	"pivot": [
+		80,
+		144
+	],
+	"production_catalogue_registered": false,
+	"provenance": "Editable typed-GDScript screen-axis construction with a physical-footprint top plane and separate elevation/contact geometry. Reviewed native oak/powdercoat tiles are retained materials only. No generated raster, transformed finished bitmap, provider call, text, logo, fake metric, baked actor, service, printing, dispensing or cart movement is implemented.",
+	"runtime_registered": false,
+	"service_backend_or_interaction_created": false,
+	"sprite_offset": [
+		0,
+		-40
+	],
+	"status": "native_review_candidate_without_runtime_binding"
+}

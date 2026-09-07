@@ -1,0 +1,344 @@
+{
+	"canvas": [
+		192,
+		224
+	],
+	"checks": 16,
+	"collision_cells": [],
+	"directions": [
+		{
+			"facing": "north",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/founder-strategy-kit-v1/north-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							50,
+							117,
+							79,
+							10
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 269,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42739
+					},
+					"name": "FounderSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/founder-strategy-kit-v1/north-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							50,
+							131,
+							23,
+							11
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 252,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42756
+					},
+					"name": "FounderSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 2
+				}
+			],
+			"objects": {
+				"decision_folder": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(50, 117)"
+				},
+				"open_roadmap_notebook": {
+					"axis": "horizontal",
+					"layer": "surface_decor_front",
+					"origin": "(50, 131)"
+				},
+				"small_planning_cards": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(114, 118)"
+				}
+			},
+			"whole_sha256": "23b02d1d3a775daa1b54d962f85722fc661b0b0e8b3363b175e8281024c989e2"
+		},
+		{
+			"facing": "east",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/founder-strategy-kit-v1/east-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							82,
+							82,
+							28,
+							23
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 410,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42598
+					},
+					"name": "FounderSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/founder-strategy-kit-v1/east-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							100,
+							158,
+							9,
+							15
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 111,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42897
+					},
+					"name": "FounderSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 3
+				}
+			],
+			"objects": {
+				"decision_folder": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(82, 83)"
+				},
+				"open_roadmap_notebook": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(99, 82)"
+				},
+				"small_planning_cards": {
+					"axis": "vertical",
+					"layer": "surface_decor_front",
+					"origin": "(100, 158)"
+				}
+			},
+			"whole_sha256": "8e0aaba33dda15175066b7f3dc6284e88acd851b78ee5cb5255289bbbe5fb664"
+		},
+		{
+			"facing": "south",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/founder-strategy-kit-v1/south-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							52,
+							117,
+							88,
+							10
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 269,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42739
+					},
+					"name": "FounderSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/founder-strategy-kit-v1/south-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							119,
+							131,
+							23,
+							11
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 252,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42756
+					},
+					"name": "FounderSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 4
+				}
+			],
+			"objects": {
+				"decision_folder": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(122, 117)"
+				},
+				"open_roadmap_notebook": {
+					"axis": "horizontal",
+					"layer": "surface_decor_front",
+					"origin": "(119, 131)"
+				},
+				"small_planning_cards": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(52, 118)"
+				}
+			},
+			"whole_sha256": "cdca85c2a47a5552c3f58200ea05bc976aceccfa51c6011978f61be9c3413755"
+		},
+		{
+			"facing": "west",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/founder-strategy-kit-v1/west-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							82,
+							82,
+							27,
+							23
+						],
+						"opaque_colors": 9,
+						"opaque_pixels": 363,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42645
+					},
+					"name": "FounderSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/founder-strategy-kit-v1/west-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							100,
+							156,
+							10,
+							18
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 158,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42850
+					},
+					"name": "FounderSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 3
+				}
+			],
+			"objects": {
+				"decision_folder": {
+					"axis": "vertical",
+					"layer": "surface_decor_front",
+					"origin": "(100, 156)"
+				},
+				"open_roadmap_notebook": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(82, 82)"
+				},
+				"small_planning_cards": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(100, 84)"
+				}
+			},
+			"whole_sha256": "aa239c8c17c5e61b707cbb26323739c31988ad5696637d0e72fbbe3dddb3991d"
+		}
+	],
+	"failures": [],
+	"footprint_cells": [
+		0,
+		0
+	],
+	"id": "founder_strategy_kit-v1",
+	"pivot": [
+		96,
+		160
+	],
+	"production_files_changed": false,
+	"provenance": "Original deterministic code-native screen-axis geometry; no generated source, text, logo, metric, money imagery, finished-raster transform or production binding.",
+	"runtime_registered": false,
+	"sprite_offset": [
+		0,
+		-48
+	],
+	"status": "native_review_candidate_not_runtime_registered"
+}

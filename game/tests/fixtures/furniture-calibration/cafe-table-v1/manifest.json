@@ -1,0 +1,587 @@
+{
+	"canvas": [
+		160,
+		240
+	],
+	"catalogue_family": "cafe_table",
+	"claims": "Bare passive table art only; no interaction, service, chair, seat, work pose, role kit or production admission.",
+	"directions": [
+		{
+			"axis": "square",
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						160,
+						240
+					],
+					"decoded_rgba_sha256": "bca7a1a9b261faa7542700d51f704e8fba8c09be83b8b132bc41c2099e830743",
+					"floor_anchor_px": [
+						80,
+						160
+					],
+					"hidden_rgb_pixels": 0,
+					"method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+					"opaque_bounds_px": [
+						38,
+						80,
+						52,
+						86
+					],
+					"opaque_pixels": 2570,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/cafe-table-v1/north-whole.png",
+					"sha256": "383b39ab13f5002051abbc57beb4b2550af3235f26d58626b6ce4fa93cc76245",
+					"used_colors": 10,
+					"verify_decoded_facts": true
+				}
+			],
+			"equivalent_view": "translated_square",
+			"facing": "north",
+			"footprint_cells": [
+				2,
+				2
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						160,
+						240
+					],
+					"decoded_rgba_sha256": "6cfef6010bfb43f47787730ab8640707dc603a05d7dc525fd1e4300f0dce8cea",
+					"floor_anchor_px": [
+						80,
+						160
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						55,
+						132,
+						22,
+						34
+					],
+					"opaque_pixels": 14,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/cafe-table-v1/north-floor_shadow.png",
+					"sha256": "56929ff3c15feb749cef0ed01b9c4e3a8bf3efd9be3a412d44c56099b980cd6a",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -2
+				},
+				{
+					"canvas_size_px": [
+						160,
+						240
+					],
+					"decoded_rgba_sha256": "f950bd13b3d59b613f0bb105ca070bf8312a4f37d63e429610a393ee647d029e",
+					"floor_anchor_px": [
+						80,
+						160
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						38,
+						80,
+						52,
+						70
+					],
+					"opaque_pixels": 2364,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/cafe-table-v1/north-rear_structure.png",
+					"sha256": "6569fc89810b69b18b3a7d5cfc011beacfb59e757a6d77b6905679b05bfd04e1",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 8,
+					"verify_decoded_facts": true,
+					"z_offset": -1
+				},
+				{
+					"canvas_size_px": [
+						160,
+						240
+					],
+					"decoded_rgba_sha256": "8bb124a1415cbce0082d72a91438ab05c3b93234c6b24cc2e93985360fe09aa3",
+					"floor_anchor_px": [
+						80,
+						160
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						42,
+						116,
+						44,
+						47
+					],
+					"opaque_pixels": 368,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/cafe-table-v1/north-front_structure.png",
+					"sha256": "d61428afc07934bc260dd73f6ae00b78581309fc1b082ae01fb12ffd6946e0e7",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 3,
+					"verify_decoded_facts": true,
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					-1,
+					-1
+				],
+				[
+					0,
+					-1
+				],
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				]
+			]
+		},
+		{
+			"axis": "square",
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						160,
+						240
+					],
+					"decoded_rgba_sha256": "b3f59a84d4643aafae6af1828328436b7e2aa22339ca9f79dfa00278fa4bfbcf",
+					"floor_anchor_px": [
+						80,
+						160
+					],
+					"hidden_rgb_pixels": 0,
+					"method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+					"opaque_bounds_px": [
+						70,
+						80,
+						52,
+						86
+					],
+					"opaque_pixels": 2570,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/cafe-table-v1/east-whole.png",
+					"sha256": "22a4a722098337b222860d1b97f5674091fdafa07daa2f68978bab91a9fc2605",
+					"used_colors": 10,
+					"verify_decoded_facts": true
+				}
+			],
+			"equivalent_view": "translated_square",
+			"facing": "east",
+			"footprint_cells": [
+				2,
+				2
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						160,
+						240
+					],
+					"decoded_rgba_sha256": "91427e5fab534c611b1cd3cb10ef8647a44e68071400876c8af249002d19b658",
+					"floor_anchor_px": [
+						80,
+						160
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						87,
+						132,
+						22,
+						34
+					],
+					"opaque_pixels": 14,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/cafe-table-v1/east-floor_shadow.png",
+					"sha256": "fcb039b49d838b400e0bba30c96f8fb3f05b3197b87b26eb83534118ffe7b997",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -2
+				},
+				{
+					"canvas_size_px": [
+						160,
+						240
+					],
+					"decoded_rgba_sha256": "acc64a24a05beb4d55032c239fe662053321b7b11051d892ee3c2d40f8767adf",
+					"floor_anchor_px": [
+						80,
+						160
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						70,
+						80,
+						52,
+						70
+					],
+					"opaque_pixels": 2364,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/cafe-table-v1/east-rear_structure.png",
+					"sha256": "77cb9416c95795a6528ca3e1a41474d735f53984045e7ba07c33ad21b3eef76a",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 8,
+					"verify_decoded_facts": true,
+					"z_offset": -1
+				},
+				{
+					"canvas_size_px": [
+						160,
+						240
+					],
+					"decoded_rgba_sha256": "1dd5d2e7cbbde85b32a1dac5bf2adb9ed290679b30027d3a8e1f4cfbf5359305",
+					"floor_anchor_px": [
+						80,
+						160
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						74,
+						116,
+						44,
+						47
+					],
+					"opaque_pixels": 368,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/cafe-table-v1/east-front_structure.png",
+					"sha256": "cb490a6bef71319cea7b14d4d2fc37266e234a6341598e27600f3c42b0b29c2e",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 3,
+					"verify_decoded_facts": true,
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					-1
+				],
+				[
+					1,
+					-1
+				],
+				[
+					0,
+					0
+				],
+				[
+					1,
+					0
+				]
+			]
+		},
+		{
+			"axis": "square",
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						160,
+						240
+					],
+					"decoded_rgba_sha256": "9fdeb5c88bb50931822471836e7e4bdebd3a0bea30aadfe13950ee998808e80a",
+					"floor_anchor_px": [
+						80,
+						160
+					],
+					"hidden_rgb_pixels": 0,
+					"method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+					"opaque_bounds_px": [
+						70,
+						112,
+						52,
+						86
+					],
+					"opaque_pixels": 2570,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/cafe-table-v1/south-whole.png",
+					"sha256": "14fad176c036341d6f5620e397601430e857456e9eed675e06ade815f1bde9fd",
+					"used_colors": 10,
+					"verify_decoded_facts": true
+				}
+			],
+			"equivalent_view": "translated_square",
+			"facing": "south",
+			"footprint_cells": [
+				2,
+				2
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						160,
+						240
+					],
+					"decoded_rgba_sha256": "2ae8136216b8513a33d435c0a30b2c97fea5c1088f65064ed1bc3dff3e9fc9ad",
+					"floor_anchor_px": [
+						80,
+						160
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						87,
+						164,
+						22,
+						34
+					],
+					"opaque_pixels": 14,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/cafe-table-v1/south-floor_shadow.png",
+					"sha256": "46dd28c3e6a6f75d43a6feb29c3366dd8d1aa837d6d72d812772a34aeed82788",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -2
+				},
+				{
+					"canvas_size_px": [
+						160,
+						240
+					],
+					"decoded_rgba_sha256": "1ad683536aa990959ea495321fbfbd03e0ece263fa5d860a5fbbce6c71cf5410",
+					"floor_anchor_px": [
+						80,
+						160
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						70,
+						112,
+						52,
+						70
+					],
+					"opaque_pixels": 2364,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/cafe-table-v1/south-rear_structure.png",
+					"sha256": "a49e99740eb3a78493543fbf124d751b965bc2191cb2ecdc8f901a6c667ea90f",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 8,
+					"verify_decoded_facts": true,
+					"z_offset": -1
+				},
+				{
+					"canvas_size_px": [
+						160,
+						240
+					],
+					"decoded_rgba_sha256": "9663098215d4b7a18911e2bfc741193829d7233ae90436fc789b8e67be2afa4e",
+					"floor_anchor_px": [
+						80,
+						160
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						74,
+						148,
+						44,
+						47
+					],
+					"opaque_pixels": 368,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/cafe-table-v1/south-front_structure.png",
+					"sha256": "1e540206b1cb39c898c68e0b87a4d12b825a5e37a1ae447abdd694abc90580d7",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 3,
+					"verify_decoded_facts": true,
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					0
+				],
+				[
+					1,
+					0
+				],
+				[
+					0,
+					1
+				],
+				[
+					1,
+					1
+				]
+			]
+		},
+		{
+			"axis": "square",
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						160,
+						240
+					],
+					"decoded_rgba_sha256": "e2e796d2990257618aadaf58dadb00fdcb563cc7b6dc06fa586655bd9fb235f7",
+					"floor_anchor_px": [
+						80,
+						160
+					],
+					"hidden_rgb_pixels": 0,
+					"method": "Byte-exact ordered union of floor_shadow, rear_structure and front_structure.",
+					"opaque_bounds_px": [
+						38,
+						112,
+						52,
+						86
+					],
+					"opaque_pixels": 2570,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/cafe-table-v1/west-whole.png",
+					"sha256": "7731dea0e4ca8f3ca3f7e0c8c52a247d09c2cfd0c64092fdbfd636e59f8c1586",
+					"used_colors": 10,
+					"verify_decoded_facts": true
+				}
+			],
+			"equivalent_view": "translated_square",
+			"facing": "west",
+			"footprint_cells": [
+				2,
+				2
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						160,
+						240
+					],
+					"decoded_rgba_sha256": "86f8b8caaa7ed36c00be6225718eafe0725aaa9967e3ab9b09bd22f887e22c95",
+					"floor_anchor_px": [
+						80,
+						160
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						55,
+						164,
+						22,
+						34
+					],
+					"opaque_pixels": 14,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/cafe-table-v1/west-floor_shadow.png",
+					"sha256": "c4c0c934192f8166e328dadf101440aa32375139fc20dbeed98565e90e758132",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -2
+				},
+				{
+					"canvas_size_px": [
+						160,
+						240
+					],
+					"decoded_rgba_sha256": "ff8b610ddcc20b4ce9dbf03ae954af1c62eb5f131cbac8f00dd646ac8c91f98c",
+					"floor_anchor_px": [
+						80,
+						160
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						38,
+						112,
+						52,
+						70
+					],
+					"opaque_pixels": 2364,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/cafe-table-v1/west-rear_structure.png",
+					"sha256": "702c7176005a5b1f6846c8de64aaf545813530828be1950cac23da15a4de9075",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 8,
+					"verify_decoded_facts": true,
+					"z_offset": -1
+				},
+				{
+					"canvas_size_px": [
+						160,
+						240
+					],
+					"decoded_rgba_sha256": "3f8ecc2f9cc354c29ea947b1a550e1abaa65480ee321453c1baad407c90aacc5",
+					"floor_anchor_px": [
+						80,
+						160
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"method": "Deterministic native screen-axis geometry using the shared quiet-oak material; no complete-bitmap transform.",
+					"opaque_bounds_px": [
+						42,
+						148,
+						44,
+						47
+					],
+					"opaque_pixels": 368,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/cafe-table-v1/west-front_structure.png",
+					"sha256": "cb3b92fab7f943db6239adb9471464d03a4785cacc438788c6d71d5bde9eec8c",
+					"source_path": "game/tools/passive_table_geometry.gd",
+					"used_colors": 3,
+					"verify_decoded_facts": true,
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					-1,
+					1
+				],
+				[
+					0,
+					1
+				]
+			]
+		}
+	],
+	"floor_pivot": [
+		80,
+		160
+	],
+	"id": "cafe-table-v1",
+	"layer_order": [
+		"floor_shadow",
+		"rear_structure",
+		"front_structure"
+	],
+	"runtime_registered": false,
+	"sprite_offset": [
+		0,
+		-40
+	],
+	"status": "staged_unapproved_passive_art",
+	"worker_disabled": true
+}

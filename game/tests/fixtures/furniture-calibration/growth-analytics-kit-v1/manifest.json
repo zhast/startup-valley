@@ -1,0 +1,347 @@
+{
+	"canvas": [
+		192,
+		224
+	],
+	"checks": 16,
+	"collision_cells": [],
+	"dev_catalogue_registered": true,
+	"directions": [
+		{
+			"facing": "north",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/growth-analytics-kit-v1/north-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							50,
+							115,
+							82,
+							13
+						],
+						"opaque_colors": 11,
+						"opaque_pixels": 384,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42624
+					},
+					"name": "GrowthAnalyticsSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/growth-analytics-kit-v1/north-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							50,
+							134,
+							24,
+							6
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 78,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42930
+					},
+					"name": "GrowthAnalyticsSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 2
+				}
+			],
+			"objects": {
+				"attribution_test_notes": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(116, 119)"
+				},
+				"comparison_overlay": {
+					"axis": "horizontal",
+					"layer": "surface_decor_front",
+					"origin": "(50, 133)"
+				},
+				"measurement_console": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(50, 115)"
+				}
+			},
+			"whole_sha256": "319bf44f6619d84d19107d063fba7bfbf7d15369d50ae1771ba3d2f4f2303a89"
+		},
+		{
+			"facing": "east",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/growth-analytics-kit-v1/east-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							82,
+							82,
+							28,
+							24
+						],
+						"opaque_colors": 11,
+						"opaque_pixels": 384,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42624
+					},
+					"name": "GrowthAnalyticsSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/growth-analytics-kit-v1/east-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							103,
+							146,
+							6,
+							24
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 78,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42930
+					},
+					"name": "GrowthAnalyticsSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 3
+				}
+			],
+			"objects": {
+				"attribution_test_notes": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(101, 85)"
+				},
+				"comparison_overlay": {
+					"axis": "vertical",
+					"layer": "surface_decor_front",
+					"origin": "(102, 146)"
+				},
+				"measurement_console": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(82, 82)"
+				}
+			},
+			"whole_sha256": "c01d8079e5082dc11ffcfc386174ed878949fd1242642591fcdf3795833d1a77"
+		},
+		{
+			"facing": "south",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/growth-analytics-kit-v1/south-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							53,
+							117,
+							88,
+							11
+						],
+						"opaque_colors": 11,
+						"opaque_pixels": 384,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42624
+					},
+					"name": "GrowthAnalyticsSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/growth-analytics-kit-v1/south-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							116,
+							134,
+							24,
+							6
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 78,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42930
+					},
+					"name": "GrowthAnalyticsSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 4
+				}
+			],
+			"objects": {
+				"attribution_test_notes": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(53, 119)"
+				},
+				"comparison_overlay": {
+					"axis": "horizontal",
+					"layer": "surface_decor_front",
+					"origin": "(116, 133)"
+				},
+				"measurement_console": {
+					"axis": "horizontal",
+					"layer": "surface_decor_rear",
+					"origin": "(117, 117)"
+				}
+			},
+			"whole_sha256": "3cde36c2d5052949b75f9a97db2127f7c1cc6b42f772e1e3a6d0841e7baac60c"
+		},
+		{
+			"facing": "west",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/growth-analytics-kit-v1/west-surface_decor_rear.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							82,
+							82,
+							28,
+							24
+						],
+						"opaque_colors": 11,
+						"opaque_pixels": 384,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42624
+					},
+					"name": "GrowthAnalyticsSurfaceDecorRear",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 0
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/growth-analytics-kit-v1/west-surface_decor_front.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							101,
+							148,
+							6,
+							24
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 78,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42930
+					},
+					"name": "GrowthAnalyticsSurfaceDecorFront",
+					"offset": [
+						0,
+						-48
+					],
+					"region": [
+						0,
+						0,
+						192,
+						224
+					],
+					"z_offset": 3
+				}
+			],
+			"objects": {
+				"attribution_test_notes": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(101, 86)"
+				},
+				"comparison_overlay": {
+					"axis": "vertical",
+					"layer": "surface_decor_front",
+					"origin": "(100, 148)"
+				},
+				"measurement_console": {
+					"axis": "vertical",
+					"layer": "surface_decor_rear",
+					"origin": "(82, 82)"
+				}
+			},
+			"whole_sha256": "184acc2e740aa24a89c1caeb98a31646e44bd3b0c252003eae080336f8dc42e3"
+		}
+	],
+	"failures": [],
+	"footprint_cells": [
+		0,
+		0
+	],
+	"host": "accepted desk / workstations-v2",
+	"id": "growth_analytics_kit-v1",
+	"pivot": [
+		96,
+		160
+	],
+	"production_catalogue_registered": false,
+	"production_files_changed": false,
+	"provenance": "Original deterministic code-native measurement console, attribution/test notes and sparse comparison overlay on independently declared screen-axis layouts; no image generation, source extraction, finished-bitmap rotation, mirroring, scaling, text, logo, or metric.",
+	"runtime_registered": false,
+	"sprite_offset": [
+		0,
+		-48
+	],
+	"status": "native_review_candidate_not_runtime_registered"
+}

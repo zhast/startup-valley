@@ -1,0 +1,121 @@
+{
+  "source": "game/assets/source/overnight-20260904/materials/cream-terrazzo-floor-v4.png",
+  "source_sha256": "9527d36fd99e864e14cba0589b4b3bb74e5c836094b96d59a01f80cb07de5953",
+  "builder": "dev/tools/build_terrazzo_v4.sh",
+  "series_exhausted": true,
+  "initial_requests": 1,
+  "targeted_retries": 3,
+  "byte_identical_derivatives": 9,
+  "variants": [
+    {
+      "path": "game/tests/fixtures/material-concepts/terrazzo-v4/cream-terrazzo-floor-v4.png",
+      "sha256": "f154ea7a698f23356f021a2767b5b684c3eef54a7b95ee8917d3c4e7bcc8e199",
+      "opaque_bounds_px": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "opaque_pixels": 16384,
+      "partial_alpha_pixels": 0,
+      "hidden_rgb_pixels": 0,
+      "used_colors": 11,
+      "decoded_rgba_sha256": "3cfb4d148c7f4d641019b81532e9851d39b7d630a7bd594466cd5f79f2e95be1",
+      "base_color": "#e6ded2",
+      "base_pixels": 14813,
+      "nonbase_pixels": 1571,
+      "nonbase_density": 0.09588623046875,
+      "opposite_edge_x": 1,
+      "opposite_edge_y": 1,
+      "top8_density": 0.3076171875,
+      "interior_density": 0.035076530612244895,
+      "perimeter8_density": 0.29453125,
+      "histogram": {
+        "939498": 47,
+        "eae3d8": 1122,
+        "e6ded2": 14813,
+        "d8d0c7": 117,
+        "b0aeae": 93,
+        "ccc5bc": 64,
+        "9e9ea1": 56,
+        "c88f69": 18,
+        "f0ebe1": 26,
+        "c7b9ad": 25,
+        "907c71": 3
+      }
+    },
+    {
+      "path": "game/tests/fixtures/material-concepts/terrazzo-v4/cream-terrazzo-floor-v4-normalized.png",
+      "sha256": "e3522f7bf3b0c328833997bca2032f7cf56e233e2a27ecc7b4e8bc3babd8056d",
+      "opaque_bounds_px": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "opaque_pixels": 16384,
+      "partial_alpha_pixels": 0,
+      "hidden_rgb_pixels": 0,
+      "used_colors": 8,
+      "decoded_rgba_sha256": "7d1229e1fa1008bc25cb2a17fe1981fcae1c9eca565619240e9aac1b3c9606bb",
+      "base_color": "#e3dccf",
+      "base_pixels": 14813,
+      "nonbase_pixels": 1571,
+      "nonbase_density": 0.09588623046875,
+      "opposite_edge_x": 1,
+      "opposite_edge_y": 1,
+      "top8_density": 0.3076171875,
+      "interior_density": 0.035076530612244895,
+      "perimeter8_density": 0.29453125,
+      "histogram": {
+        "eae4d7": 1122,
+        "e3dccf": 14813,
+        "dbd6ca": 117,
+        "a6a39f": 106,
+        "b7b6b3": 93,
+        "c8c3bb": 89,
+        "cc9979": 18,
+        "f3eee1": 26
+      }
+    },
+    {
+      "path": "game/tests/fixtures/material-concepts/terrazzo-v4/cream-terrazzo-floor-v4-unified-base.png",
+      "sha256": "ed48b4cd1a1605e80a28d42f75a92e3059bb5abfeb37b162f1800d7469a865fc",
+      "opaque_bounds_px": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "opaque_pixels": 16384,
+      "partial_alpha_pixels": 0,
+      "hidden_rgb_pixels": 0,
+      "used_colors": 7,
+      "decoded_rgba_sha256": "a9dc513c33a47f0daecc72e9ef2ce0b0a8e476c0b3c67d1cfd0d4548b02a6e69",
+      "base_color": "#eae4d7",
+      "base_pixels": 15935,
+      "nonbase_pixels": 449,
+      "nonbase_density": 0.02740478515625,
+      "opposite_edge_x": 0,
+      "opposite_edge_y": 0,
+      "top8_density": 0.02734375,
+      "interior_density": 0.02766262755102041,
+      "perimeter8_density": 0.0265625,
+      "histogram": {
+        "eae4d7": 15935,
+        "dbd6ca": 117,
+        "a6a39f": 106,
+        "b7b6b3": 93,
+        "c8c3bb": 89,
+        "cc9979": 18,
+        "f3eee1": 26
+      }
+    }
+  ],
+  "global_base_collapse": {
+    "from": "#E3DCCF",
+    "to": "#EAE4D7",
+    "changed_pixels": 14813,
+    "other_pixel_changes": 0
+  }
+}

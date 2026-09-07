@@ -1,0 +1,653 @@
+{
+	"canvas": [
+		256,
+		272
+	],
+	"checks": 73,
+	"directions": [
+		{
+			"facing": "north",
+			"layers": [
+				{
+					"measurements": {
+						"bounds": [
+							49,
+							149,
+							160,
+							61
+						],
+						"colors": 1,
+						"hidden_rgb": 0,
+						"partial_alpha": 0
+					},
+					"name": "FloorShadow",
+					"path": "res://tests/fixtures/furniture-calibration/collaboration-table-v1/north-floor_shadow.png",
+					"sha256": "a883320cc32e0ed6b153c9dbbb5bc17d94bbceb349462fec95b4cc08c39dcc5b"
+				},
+				{
+					"measurements": {
+						"bounds": [
+							48,
+							112,
+							160,
+							64
+						],
+						"colors": 11,
+						"hidden_rgb": 0,
+						"partial_alpha": 0
+					},
+					"name": "RearStructure",
+					"path": "res://tests/fixtures/furniture-calibration/collaboration-table-v1/north-rear_structure.png",
+					"sha256": "38f376f3c2c67ea264bc42d3770e9bcb88c5673ba68577f178b1e0487f0b7a85"
+				},
+				{
+					"measurements": {
+						"bounds": [
+							48,
+							174,
+							160,
+							34
+						],
+						"colors": 5,
+						"hidden_rgb": 0,
+						"partial_alpha": 0
+					},
+					"name": "FrontStructure",
+					"path": "res://tests/fixtures/furniture-calibration/collaboration-table-v1/north-front_structure.png",
+					"sha256": "e35ca4d3a9c60308c8da7b1d0e00ff5b2e10e4ffd91942bda54bd657ce10be44"
+				}
+			],
+			"profile": {
+				"axis": "horizontal",
+				"cable": [
+					-7,
+					-38
+				],
+				"clearance": [
+					[
+						-1,
+						-2
+					],
+					[
+						0,
+						-2
+					],
+					[
+						1,
+						-2
+					]
+				],
+				"contact_y": 32,
+				"facing": "north",
+				"floor": "[P: (-80, -32), S: (160, 64)]",
+				"interaction": [
+					0,
+					-2
+				],
+				"notes": [
+					[
+						-54,
+						-44
+					],
+					[
+						-18,
+						-29
+					],
+					[
+						42,
+						-48
+					]
+				],
+				"occupied": [
+					[
+						-2,
+						-1
+					],
+					[
+						-1,
+						-1
+					],
+					[
+						0,
+						-1
+					],
+					[
+						1,
+						-1
+					],
+					[
+						2,
+						-1
+					],
+					[
+						-2,
+						0
+					],
+					[
+						-1,
+						0
+					],
+					[
+						0,
+						0
+					],
+					[
+						1,
+						0
+					],
+					[
+						2,
+						0
+					]
+				],
+				"pen": [
+					-36,
+					-25
+				],
+				"top": "[P: (-80, -64), S: (160, 64)]"
+			},
+			"whole": {
+				"measurements": {
+					"bounds": [
+						48,
+						112,
+						161,
+						98
+					],
+					"colors": 15,
+					"hidden_rgb": 0,
+					"partial_alpha": 0
+				},
+				"path": "res://tests/fixtures/furniture-calibration/collaboration-table-v1/north-whole.png",
+				"sha256": "2cc8f7163d2613bf8fa3e4f142168d79227a4ff51152472632f70007f7ab2993"
+			}
+		},
+		{
+			"facing": "east",
+			"layers": [
+				{
+					"measurements": {
+						"bounds": [
+							101,
+							97,
+							60,
+							160
+						],
+						"colors": 1,
+						"hidden_rgb": 0,
+						"partial_alpha": 0
+					},
+					"name": "FloorShadow",
+					"path": "res://tests/fixtures/furniture-calibration/collaboration-table-v1/east-floor_shadow.png",
+					"sha256": "7499bc116f914b2a783e9a37e2419df6cc17ae0e957ac8a4f7b216c0cf0f5089"
+				},
+				{
+					"measurements": {
+						"bounds": [
+							96,
+							64,
+							64,
+							184
+						],
+						"colors": 13,
+						"hidden_rgb": 0,
+						"partial_alpha": 0
+					},
+					"name": "RearStructure",
+					"path": "res://tests/fixtures/furniture-calibration/collaboration-table-v1/east-rear_structure.png",
+					"sha256": "927606813ca2c10e0d557c6acff952b23c1c06907fb1f9b36f8fd0a689542198"
+				},
+				{
+					"measurements": {
+						"bounds": [
+							148,
+							64,
+							12,
+							186
+						],
+						"colors": 5,
+						"hidden_rgb": 0,
+						"partial_alpha": 0
+					},
+					"name": "FrontStructure",
+					"path": "res://tests/fixtures/furniture-calibration/collaboration-table-v1/east-front_structure.png",
+					"sha256": "48cf02d25c669e1eaa76b460aac2ee51e9af903dc34171d34754cf0530c23373"
+				}
+			],
+			"profile": {
+				"axis": "vertical",
+				"cable": [
+					-8,
+					-22
+				],
+				"clearance": [
+					[
+						2,
+						-1
+					],
+					[
+						2,
+						0
+					],
+					[
+						2,
+						1
+					]
+				],
+				"contact_y": 80,
+				"facing": "east",
+				"floor": "[P: (-32, -80), S: (64, 160)]",
+				"interaction": [
+					2,
+					0
+				],
+				"notes": [
+					[
+						-21,
+						-89
+					],
+					[
+						7,
+						-48
+					],
+					[
+						-18,
+						10
+					]
+				],
+				"occupied": [
+					[
+						0,
+						-2
+					],
+					[
+						0,
+						-1
+					],
+					[
+						0,
+						0
+					],
+					[
+						0,
+						1
+					],
+					[
+						0,
+						2
+					],
+					[
+						1,
+						-2
+					],
+					[
+						1,
+						-1
+					],
+					[
+						1,
+						0
+					],
+					[
+						1,
+						1
+					],
+					[
+						1,
+						2
+					]
+				],
+				"pen": [
+					14,
+					24
+				],
+				"top": "[P: (-32, -112), S: (64, 160)]"
+			},
+			"whole": {
+				"measurements": {
+					"bounds": [
+						96,
+						64,
+						65,
+						193
+					],
+					"colors": 15,
+					"hidden_rgb": 0,
+					"partial_alpha": 0
+				},
+				"path": "res://tests/fixtures/furniture-calibration/collaboration-table-v1/east-whole.png",
+				"sha256": "09d6b9ab18839ddb6bbc589413ef3140051b078020766cb4c4ff6620372cb9b7"
+			}
+		},
+		{
+			"facing": "south",
+			"layers": [
+				{
+					"measurements": {
+						"bounds": [
+							49,
+							149,
+							160,
+							61
+						],
+						"colors": 1,
+						"hidden_rgb": 0,
+						"partial_alpha": 0
+					},
+					"name": "FloorShadow",
+					"path": "res://tests/fixtures/furniture-calibration/collaboration-table-v1/south-floor_shadow.png",
+					"sha256": "a883320cc32e0ed6b153c9dbbb5bc17d94bbceb349462fec95b4cc08c39dcc5b"
+				},
+				{
+					"measurements": {
+						"bounds": [
+							48,
+							112,
+							160,
+							64
+						],
+						"colors": 11,
+						"hidden_rgb": 0,
+						"partial_alpha": 0
+					},
+					"name": "RearStructure",
+					"path": "res://tests/fixtures/furniture-calibration/collaboration-table-v1/south-rear_structure.png",
+					"sha256": "19b1cb84b009dcae221e2dfd70e87fa7afc3cb523e709cbb68f9996549dc1cdd"
+				},
+				{
+					"measurements": {
+						"bounds": [
+							48,
+							174,
+							160,
+							34
+						],
+						"colors": 5,
+						"hidden_rgb": 0,
+						"partial_alpha": 0
+					},
+					"name": "FrontStructure",
+					"path": "res://tests/fixtures/furniture-calibration/collaboration-table-v1/south-front_structure.png",
+					"sha256": "e35ca4d3a9c60308c8da7b1d0e00ff5b2e10e4ffd91942bda54bd657ce10be44"
+				}
+			],
+			"profile": {
+				"axis": "horizontal",
+				"cable": [
+					5,
+					-38
+				],
+				"clearance": [
+					[
+						-1,
+						1
+					],
+					[
+						0,
+						1
+					],
+					[
+						1,
+						1
+					]
+				],
+				"contact_y": 32,
+				"facing": "south",
+				"floor": "[P: (-80, -32), S: (160, 64)]",
+				"interaction": [
+					0,
+					1
+				],
+				"notes": [
+					[
+						-59,
+						-33
+					],
+					[
+						16,
+						-45
+					],
+					[
+						48,
+						-25
+					]
+				],
+				"occupied": [
+					[
+						-2,
+						-1
+					],
+					[
+						-1,
+						-1
+					],
+					[
+						0,
+						-1
+					],
+					[
+						1,
+						-1
+					],
+					[
+						2,
+						-1
+					],
+					[
+						-2,
+						0
+					],
+					[
+						-1,
+						0
+					],
+					[
+						0,
+						0
+					],
+					[
+						1,
+						0
+					],
+					[
+						2,
+						0
+					]
+				],
+				"pen": [
+					35,
+					-49
+				],
+				"top": "[P: (-80, -64), S: (160, 64)]"
+			},
+			"whole": {
+				"measurements": {
+					"bounds": [
+						48,
+						112,
+						161,
+						98
+					],
+					"colors": 15,
+					"hidden_rgb": 0,
+					"partial_alpha": 0
+				},
+				"path": "res://tests/fixtures/furniture-calibration/collaboration-table-v1/south-whole.png",
+				"sha256": "d523ad6740aa7208d7f3aa4699af9b34462a6684a9202fd3ab0058174f3d5e29"
+			}
+		},
+		{
+			"facing": "west",
+			"layers": [
+				{
+					"measurements": {
+						"bounds": [
+							101,
+							97,
+							60,
+							160
+						],
+						"colors": 1,
+						"hidden_rgb": 0,
+						"partial_alpha": 0
+					},
+					"name": "FloorShadow",
+					"path": "res://tests/fixtures/furniture-calibration/collaboration-table-v1/west-floor_shadow.png",
+					"sha256": "7499bc116f914b2a783e9a37e2419df6cc17ae0e957ac8a4f7b216c0cf0f5089"
+				},
+				{
+					"measurements": {
+						"bounds": [
+							96,
+							64,
+							64,
+							184
+						],
+						"colors": 13,
+						"hidden_rgb": 0,
+						"partial_alpha": 0
+					},
+					"name": "RearStructure",
+					"path": "res://tests/fixtures/furniture-calibration/collaboration-table-v1/west-rear_structure.png",
+					"sha256": "0ebe5cac2af7bd427c13370be1882e1c7e1b66e494d76573b92e470546b2d9f6"
+				},
+				{
+					"measurements": {
+						"bounds": [
+							148,
+							64,
+							12,
+							186
+						],
+						"colors": 5,
+						"hidden_rgb": 0,
+						"partial_alpha": 0
+					},
+					"name": "FrontStructure",
+					"path": "res://tests/fixtures/furniture-calibration/collaboration-table-v1/west-front_structure.png",
+					"sha256": "48cf02d25c669e1eaa76b460aac2ee51e9af903dc34171d34754cf0530c23373"
+				}
+			],
+			"profile": {
+				"axis": "vertical",
+				"cable": [
+					5,
+					-18
+				],
+				"clearance": [
+					[
+						-1,
+						-1
+					],
+					[
+						-1,
+						0
+					],
+					[
+						-1,
+						1
+					]
+				],
+				"contact_y": 80,
+				"facing": "west",
+				"floor": "[P: (-32, -80), S: (64, 160)]",
+				"interaction": [
+					-1,
+					0
+				],
+				"notes": [
+					[
+						7,
+						-82
+					],
+					[
+						-20,
+						-34
+					],
+					[
+						9,
+						14
+					]
+				],
+				"occupied": [
+					[
+						0,
+						-2
+					],
+					[
+						0,
+						-1
+					],
+					[
+						0,
+						0
+					],
+					[
+						0,
+						1
+					],
+					[
+						0,
+						2
+					],
+					[
+						1,
+						-2
+					],
+					[
+						1,
+						-1
+					],
+					[
+						1,
+						0
+					],
+					[
+						1,
+						1
+					],
+					[
+						1,
+						2
+					]
+				],
+				"pen": [
+					-18,
+					-5
+				],
+				"top": "[P: (-32, -112), S: (64, 160)]"
+			},
+			"whole": {
+				"measurements": {
+					"bounds": [
+						96,
+						64,
+						65,
+						193
+					],
+					"colors": 15,
+					"hidden_rgb": 0,
+					"partial_alpha": 0
+				},
+				"path": "res://tests/fixtures/furniture-calibration/collaboration-table-v1/west-whole.png",
+				"sha256": "af6601984c7e2ef37ca609a59c1468d312a1b30097cde1cee115913c6763c930"
+			}
+		}
+	],
+	"failures": [],
+	"id": "collaboration-table-v1",
+	"pivot": [
+		128,
+		176
+	],
+	"provenance": "Exact code-native geometry using the established Startup Valley oak/charcoal palette after three retained ImageGen sheets failed alpha/scale gates; no finished raster was rotated or mirrored.",
+	"runtime_registered": false,
+	"source_references": [
+		"res://assets/source/overnight-20260904/furniture/collaboration-table-sheet-v1.png",
+		"res://assets/source/overnight-20260904/furniture/collaboration-table-sheet-v2.png",
+		"res://assets/source/overnight-20260904/furniture/collaboration-table-sheet-v3.png",
+		"res://tests/fixtures/furniture-calibration/materials/oak-horizontal-v1-soft.png",
+		"res://tests/fixtures/furniture-calibration/materials/oak-vertical-v1-soft.png"
+	],
+	"status": "native_review_required"
+}

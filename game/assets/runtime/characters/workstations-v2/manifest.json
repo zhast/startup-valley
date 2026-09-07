@@ -1,0 +1,15 @@
+{
+  "revision": "workstations-v2",
+  "status": "runtime_ready",
+  "atlas_canvas": [288, 80],
+  "grid": [6, 1],
+  "directions": ["north", "east", "south", "west"],
+  "files": {
+    "mira-east.png": "1bcf88f00b52b635bd5cda51a29f7eb769f9b579eca47fcdb09b7e69080f0dd0",
+    "mira-north.png": "067b7b8781b589bbcdc89a46a69d7531363882faab34ba4cc80e7a2c9718458f",
+    "mira-west.png": "c71d136b7468df7dde0d5d9ef87d073471a8a1a4a975dcc9e25ca6cc4fc2c14f",
+    "theo-east.png": "bcf40180294d72954a8e038c456fdc0db7faec9b5e2b99ac6ce59202b6096db8",
+    "theo-north.png": "6f8a7427cb0823e2bedf5ae98a4c4f0c294b3be77430e4a96b3491fa92465ae1",
+    "theo-west.png": "36fcf36849f83ce0a11dbcb60626677fe83cdd05b6aa9b50c9c91174551ad5ad"
+  }
+}

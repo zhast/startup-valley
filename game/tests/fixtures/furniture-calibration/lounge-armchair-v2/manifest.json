@@ -1,0 +1,587 @@
+{
+	"canvas": [
+		160,
+		208
+	],
+	"catalogue_family": "lounge_armchair",
+	"claims": "Bare passive lounge art only; no interaction, seat socket, actor pose, reservation or runtime admission.",
+	"directions": [
+		{
+			"axis": "screen_y",
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						160,
+						208
+					],
+					"decoded_rgba_sha256": "a69062b9f550adde404a3f63d5045e743127a9d521fad7e45514ccd125e4c228",
+					"floor_anchor_px": [
+						80,
+						128
+					],
+					"hidden_rgb_pixels": 0,
+					"method": "Byte-exact ordered union of support-local contact, rear upholstery and front upholstery.",
+					"opaque_bounds_px": [
+						34,
+						56,
+						60,
+						81
+					],
+					"opaque_pixels": 4085,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/lounge-armchair-v2/north-whole.png",
+					"sha256": "df03f399e9003f0499407026b81052d7dab087b8eef59388bc7f525edf8ab166",
+					"used_colors": 7,
+					"verify_decoded_facts": true
+				}
+			],
+			"equivalent_view": "rear",
+			"facing": "north",
+			"footprint_cells": [
+				2,
+				2
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						160,
+						208
+					],
+					"decoded_rgba_sha256": "2e491546f17ec141c1db71a1cc44181300deba876dce4cd818b90f7d3616616f",
+					"floor_anchor_px": [
+						80,
+						128
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						42,
+						92,
+						51,
+						45
+					],
+					"opaque_pixels": 32,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/lounge-armchair-v2/north-floor_shadow.png",
+					"sha256": "9225ff7d06ee92a31969052364aa41e1129b10fef02645a9793d3c9b2f896618",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						160,
+						208
+					],
+					"decoded_rgba_sha256": "c553946ed6fb25b33ecdbea7ff7ab24fb525cf71791872d729f9843903b51b59",
+					"floor_anchor_px": [
+						80,
+						128
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						34,
+						56,
+						60,
+						54
+					],
+					"opaque_pixels": 3022,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/lounge-armchair-v2/north-rear_structure.png",
+					"sha256": "ea7a0f20046d88a098e73d7935dbe2c42db08c0e83944e15a8a3309b3606f72b",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 4,
+					"verify_decoded_facts": true,
+					"z_offset": -6
+				},
+				{
+					"canvas_size_px": [
+						160,
+						208
+					],
+					"decoded_rgba_sha256": "faadd314cdfb3d4bfcb2dc21a8f0476e68690165bb9e4c0c4b93a0b2a903df9c",
+					"floor_anchor_px": [
+						80,
+						128
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						34,
+						90,
+						60,
+						45
+					],
+					"opaque_pixels": 1747,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/lounge-armchair-v2/north-front_structure.png",
+					"sha256": "d65552fb161a31020cd68f4122dfa6d90a5d0640fd9197e8c6cd3a5ae1821422",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 6,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					-1,
+					-1
+				],
+				[
+					0,
+					-1
+				],
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				]
+			]
+		},
+		{
+			"axis": "screen_x",
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						160,
+						208
+					],
+					"decoded_rgba_sha256": "f037332b5e8b011cf1e40f521b80755d0cf1c2583ee59ad22e25565aa43846ee",
+					"floor_anchor_px": [
+						80,
+						128
+					],
+					"hidden_rgb_pixels": 0,
+					"method": "Byte-exact ordered union of support-local contact, rear upholstery and front upholstery.",
+					"opaque_bounds_px": [
+						67,
+						57,
+						59,
+						80
+					],
+					"opaque_pixels": 2742,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/lounge-armchair-v2/east-whole.png",
+					"sha256": "b3a01f6d3be02fd34b80f1535367fd666ef8cb7aa021f1238cf0f59e478165ff",
+					"used_colors": 8,
+					"verify_decoded_facts": true
+				}
+			],
+			"equivalent_view": "right_side",
+			"facing": "east",
+			"footprint_cells": [
+				2,
+				2
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						160,
+						208
+					],
+					"decoded_rgba_sha256": "d5ffdd466532d439524c456c1bedebdb6b57ca1591aa3c98f58d0541b5d7628a",
+					"floor_anchor_px": [
+						80,
+						128
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						76,
+						91,
+						47,
+						46
+					],
+					"opaque_pixels": 32,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/lounge-armchair-v2/east-floor_shadow.png",
+					"sha256": "8d237ef4b861a8692e36e42afac3221d0a5b097d64ddd8fac0c77828c2b03b3f",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						160,
+						208
+					],
+					"decoded_rgba_sha256": "1a9bea855b37ab74a3623ad53883134de4d676b89784227aa6a9b7addcc62140",
+					"floor_anchor_px": [
+						80,
+						128
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						67,
+						57,
+						49,
+						54
+					],
+					"opaque_pixels": 1895,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/lounge-armchair-v2/east-rear_structure.png",
+					"sha256": "e7da2b8da39088043f859d4583d4775aeb254575027c634460f4d583fa0d912a",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 4,
+					"verify_decoded_facts": true,
+					"z_offset": -6
+				},
+				{
+					"canvas_size_px": [
+						160,
+						208
+					],
+					"decoded_rgba_sha256": "e824c87b8ee0527ea4ad629b64862bb3ded59879ab9a7acf04f92a6cad4d9edd",
+					"floor_anchor_px": [
+						80,
+						128
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						74,
+						83,
+						52,
+						52
+					],
+					"opaque_pixels": 1228,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/lounge-armchair-v2/east-front_structure.png",
+					"sha256": "43f684066e8d432df8d3092b8cf90b57e40677e79031e019e0b614e1d466672f",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 6,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					-1
+				],
+				[
+					1,
+					-1
+				],
+				[
+					0,
+					0
+				],
+				[
+					1,
+					0
+				]
+			]
+		},
+		{
+			"axis": "screen_y",
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						160,
+						208
+					],
+					"decoded_rgba_sha256": "a34b9fa06ecc60a6f4e2d071a9617cf96123f909f957c000ba796ed0dc5e767d",
+					"floor_anchor_px": [
+						80,
+						128
+					],
+					"hidden_rgb_pixels": 0,
+					"method": "Byte-exact ordered union of support-local contact, rear upholstery and front upholstery.",
+					"opaque_bounds_px": [
+						66,
+						88,
+						60,
+						81
+					],
+					"opaque_pixels": 4085,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/lounge-armchair-v2/south-whole.png",
+					"sha256": "0d9135d2c8f34cb54e62222e3f0d9dda8b1e87b24232bc22604aebcfbff6fa00",
+					"used_colors": 8,
+					"verify_decoded_facts": true
+				}
+			],
+			"equivalent_view": "front",
+			"facing": "south",
+			"footprint_cells": [
+				2,
+				2
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						160,
+						208
+					],
+					"decoded_rgba_sha256": "a0eac44f02595f00efbf436acc0c45df2708dcb54c149e73cfd517ce587fe553",
+					"floor_anchor_px": [
+						80,
+						128
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						74,
+						124,
+						51,
+						45
+					],
+					"opaque_pixels": 32,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/lounge-armchair-v2/south-floor_shadow.png",
+					"sha256": "22c0bcc893d58d1048f33f4e093b3980b722bac1291cba0a3d96367eb93be55d",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						160,
+						208
+					],
+					"decoded_rgba_sha256": "32dff091a2c09b44bb569436b2fb8e046615bbfc715076b1a3c586aaddc49427",
+					"floor_anchor_px": [
+						80,
+						128
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						66,
+						88,
+						60,
+						54
+					],
+					"opaque_pixels": 3022,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/lounge-armchair-v2/south-rear_structure.png",
+					"sha256": "533d1ef356e309b49695c8fe616c6e2dee84cc298557034ce4c1ec8cdce9a647",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 4,
+					"verify_decoded_facts": true,
+					"z_offset": -6
+				},
+				{
+					"canvas_size_px": [
+						160,
+						208
+					],
+					"decoded_rgba_sha256": "da0d5579c10e6e5bc40efb50e78b4b09d2dc2f90ed3d62520583b49ef0ba965c",
+					"floor_anchor_px": [
+						80,
+						128
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						66,
+						122,
+						60,
+						45
+					],
+					"opaque_pixels": 1747,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/lounge-armchair-v2/south-front_structure.png",
+					"sha256": "c26426923ad210cf846d45c87e5e96dfae56e7e1f9a536f3b425a35bd17a1562",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 7,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					0
+				],
+				[
+					1,
+					0
+				],
+				[
+					0,
+					1
+				],
+				[
+					1,
+					1
+				]
+			]
+		},
+		{
+			"axis": "screen_x",
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						160,
+						208
+					],
+					"decoded_rgba_sha256": "106f645513818b3fdaa6768b990accf0552183eab50fa59e5031264dcd8033e2",
+					"floor_anchor_px": [
+						80,
+						128
+					],
+					"hidden_rgb_pixels": 0,
+					"method": "Byte-exact ordered union of support-local contact, rear upholstery and front upholstery.",
+					"opaque_bounds_px": [
+						35,
+						89,
+						59,
+						80
+					],
+					"opaque_pixels": 2739,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/lounge-armchair-v2/west-whole.png",
+					"sha256": "911bac10020a84dad64666dffd721d9c6fae2355c026d3becdd9df84d3978232",
+					"used_colors": 8,
+					"verify_decoded_facts": true
+				}
+			],
+			"equivalent_view": "left_side",
+			"facing": "west",
+			"footprint_cells": [
+				2,
+				2
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						160,
+						208
+					],
+					"decoded_rgba_sha256": "9ed5dc5542f05baa27c0289d41e5f1cbfe732eecacf73e42e98f491c621ebd91",
+					"floor_anchor_px": [
+						80,
+						128
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						44,
+						123,
+						47,
+						46
+					],
+					"opaque_pixels": 32,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/lounge-armchair-v2/west-floor_shadow.png",
+					"sha256": "2e57777f4fc034b6324fe75ccba08e0c184b46c04c650a65aadb097baf109f00",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						160,
+						208
+					],
+					"decoded_rgba_sha256": "de2365ef1c92c587994eb3b99ab55951ed92cb9a0b803e6c94f4c02095c7ca2d",
+					"floor_anchor_px": [
+						80,
+						128
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						44,
+						89,
+						50,
+						54
+					],
+					"opaque_pixels": 1926,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/lounge-armchair-v2/west-rear_structure.png",
+					"sha256": "998334f660bcb8d5af96700b8c78ef268233a29493598a8b3e9f7d094a6b8e44",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 4,
+					"verify_decoded_facts": true,
+					"z_offset": -6
+				},
+				{
+					"canvas_size_px": [
+						160,
+						208
+					],
+					"decoded_rgba_sha256": "e71b5925717af0e973db88d7fd1ed23cade33c3505a7a4e646c00289d3519ac4",
+					"floor_anchor_px": [
+						80,
+						128
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"method": "Deterministic native screen-axis upholstery and structure; no finished-raster transform.",
+					"opaque_bounds_px": [
+						35,
+						115,
+						52,
+						52
+					],
+					"opaque_pixels": 1216,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/lounge-armchair-v2/west-front_structure.png",
+					"sha256": "281424f02d8061921ef2b5001c9e519660e8e566d72d5306871cfd4c1403e1e7",
+					"source_path": "game/tools/lounge_seating_geometry.gd",
+					"used_colors": 7,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					-1,
+					1
+				],
+				[
+					0,
+					1
+				]
+			]
+		}
+	],
+	"floor_pivot": [
+		80,
+		128
+	],
+	"id": "lounge-armchair-v2",
+	"layer_order": [
+		"floor_shadow",
+		"rear_structure",
+		"front_structure"
+	],
+	"runtime_registered": false,
+	"sprite_offset": [
+		0,
+		-24
+	],
+	"status": "staged_unapproved_passive_art",
+	"worker_disabled": true
+}

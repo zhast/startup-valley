@@ -1,0 +1,11 @@
+Use case: stylized-concept.
+Asset type: one SOUTH-view legal-document toolkit for original cozy-tech pixel game Startup Valley.
+Image 1 is the NORTH-view identity/material reference, not a bitmap to rotate, flip or mirror.
+Draw the same THREE independent objects after physically turning them 180 degrees on a fixed game tabletop, while the camera and upper-left light stay unchanged. Operator is now above the desk looking down.
+1. Three dark indigo document binders stacked flat: the top is a straight screen-aligned wide rectangle, approximately20 wide by12 deep, and the full stack including downward front thickness is20x22. The indigo spine strip is now on screen-RIGHT, blank label blocks on that right edge; visible cream paper edges occupy the left of the lower front bands. Keep parallel vertical sides, horizontal top/front edges, not a wedge.
+2. Open indigo two-leaf checklist folder, approximately26x19 total, hinge vertical. The off-white checklist page is now LEFT and the blank inner cover RIGHT. Abstract square checkboxes run on the right edge of that left page, with short neutral bars extending leftward. Chartreuse tabs emerge along the far LEFT outer page edge. No readable text. Redraw subtle highlights from upper-left, not mirrored light.
+3. Same small charcoal pen cup, approximately7x12 total; three pens remain upright. The distinctive blue pen is now right of the other pens from this view, but lighting remains upper-left. Do not put labels or logos on it.
+Composition: three full objects left stack / middle folder / right pen cup, large transparent gaps, generously padded. Each object isolated for later separate export; no desk, chair, computer, employee, room, frame or ground shadow.
+Hard-edged intentional pixel clusters, charcoal outlines, restrained #354B98 indigo, #F1F1F1 off-white, #C1FA81 chartreuse, warm neutral shading; no glow, gradients, noise or blurred borders. It should simplify cleanly at the stated native sizes.
+Genuinely transparent alpha, not painted checkerboard or opaque white/black. Preserve transparency between pens.
+Keep all floor axes horizontal/vertical, no diagonal isometric yaw, no perspective vanishing point, no squashing. Original game art only.

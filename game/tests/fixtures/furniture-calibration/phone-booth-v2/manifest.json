@@ -1,0 +1,842 @@
+{
+	"canvas": [
+		256,
+		416
+	],
+	"checks": 96,
+	"directions": [
+		{
+			"approach": [
+				0,
+				-1
+			],
+			"facing": "north",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/north-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							87,
+							381,
+							84,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 336,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 106160
+					},
+					"name": "BoothFloorShadow",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "5579c29530f136799ad99fbc00de9080c9d156b371ee803e429a393fdaac0e36",
+					"z_offset": -200
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/north-interior.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							89,
+							235,
+							78,
+							141
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 8052,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 98444
+					},
+					"name": "BoothInterior",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "52d970ca14881a46e7c510c0658699ae1b4e55bed79f38f7259a6f3698ab0789",
+					"z_offset": 76
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/north-door_glazing.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							97,
+							182,
+							62,
+							100
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 704,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 105792
+					},
+					"name": "BoothDoorGlazing",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "1bcb1034acd8cb71d89bc1010098def9c55a89583edc3ee61816b4e337bf4967",
+					"z_offset": 78
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/north-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							84,
+							176,
+							88,
+							204
+						],
+						"opaque_colors": 10,
+						"opaque_pixels": 10066,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 96430
+					},
+					"name": "BoothRearStructure",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "d45b9d80e9af52c76a27c7ef0a255a79e13b696c7421558e36b1d31a362da9c5",
+					"z_offset": 79
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/north-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							88,
+							272,
+							80,
+							110
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 7820,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 98676
+					},
+					"name": "BoothFrontStructure",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "6554ea946521e3da36b11cae0ad07fe96a42f52a17dcb179b475eb31649d8065",
+					"z_offset": 80
+				}
+			],
+			"occupied": [
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					1,
+					0
+				],
+				[
+					-1,
+					1
+				],
+				[
+					0,
+					1
+				],
+				[
+					1,
+					1
+				],
+				[
+					-1,
+					2
+				],
+				[
+					0,
+					2
+				],
+				[
+					1,
+					2
+				]
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					84,
+					176,
+					88,
+					209
+				],
+				"opaque_colors": 12,
+				"opaque_pixels": 17494,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 89002
+			},
+			"whole_sha256": "e82e2c5871055addeb89a07f711e32cdd0865dfe7a5d9fb5b6857193422174f6"
+		},
+		{
+			"approach": [
+				1,
+				0
+			],
+			"facing": "east",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/east-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							55,
+							349,
+							84,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 336,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 106160
+					},
+					"name": "BoothFloorShadow",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "cd37a840316343b58dc4916957f15788b10162a02d7e7a4e3592aa2093486eb4",
+					"z_offset": -200
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/east-interior.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							57,
+							192,
+							78,
+							152
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 8379,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 98117
+					},
+					"name": "BoothInterior",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "6d6312698bbd9245c294ea5937f6d73a7c0c14779e21be8d0ef1349be32d7731",
+					"z_offset": 44
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/east-door_glazing.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							122,
+							156,
+							6,
+							185
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 766,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 105730
+					},
+					"name": "BoothDoorGlazing",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "d2340695f31db788890da17c5dfa54f6e2f86b9ac44eaf7bbfdb7469018c4d96",
+					"z_offset": 46
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/east-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							52,
+							144,
+							88,
+							204
+						],
+						"opaque_colors": 10,
+						"opaque_pixels": 10066,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 96430
+					},
+					"name": "BoothRearStructure",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "22188ea404589e890f1f55f3ba9bb257afe3943eed08b5c5eb9732cce944dcb7",
+					"z_offset": 47
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/east-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							56,
+							240,
+							80,
+							110
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 7428,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 99068
+					},
+					"name": "BoothFrontStructure",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "f29fe75da6f5f5a04953b858e2fc3fce3f236f47eca83a81291700a68a1bc113",
+					"z_offset": 48
+				}
+			],
+			"occupied": [
+				[
+					-2,
+					-1
+				],
+				[
+					-1,
+					-1
+				],
+				[
+					0,
+					-1
+				],
+				[
+					-2,
+					0
+				],
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					-2,
+					1
+				],
+				[
+					-1,
+					1
+				],
+				[
+					0,
+					1
+				]
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					52,
+					144,
+					88,
+					209
+				],
+				"opaque_colors": 13,
+				"opaque_pixels": 17492,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 89004
+			},
+			"whole_sha256": "ad3ce79a5131bf1a697141d053acc69425a2c38b9a3f0d9edb056c73ef4c654b"
+		},
+		{
+			"approach": [
+				0,
+				1
+			],
+			"facing": "south",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/south-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							87,
+							317,
+							84,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 336,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 106160
+					},
+					"name": "BoothFloorShadow",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "f09e68d61d52f6a977cf22bf44055c82836f5aebadb58de01c75dbd13e41ae83",
+					"z_offset": -200
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/south-interior.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							89,
+							215,
+							78,
+							97
+						],
+						"opaque_colors": 8,
+						"opaque_pixels": 7566,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 98930
+					},
+					"name": "BoothInterior",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "23732cdbdeb1d891d47b54941c816cb006e68006c0dc759493931dd3134104aa",
+					"z_offset": 12
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/south-door_glazing.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							97,
+							213,
+							62,
+							100
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 704,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 105792
+					},
+					"name": "BoothDoorGlazing",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "d72d71400a972e780bdf6221fa9227ee77fff2e5d5e04eb8661d46af8d8e5964",
+					"z_offset": 14
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/south-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							84,
+							112,
+							88,
+							204
+						],
+						"opaque_colors": 10,
+						"opaque_pixels": 10066,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 96430
+					},
+					"name": "BoothRearStructure",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "842507e46cd9e78aa5ffc4e26eb4d16bf868380126b6d1b4afe1bed1fd3b52bf",
+					"z_offset": 15
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/south-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							88,
+							208,
+							80,
+							110
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 2528,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 103968
+					},
+					"name": "BoothFrontStructure",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "eff91eb8acd179871fb4263d457c4e49ee47d565878537be16bef089ab8ba432",
+					"z_offset": 16
+				}
+			],
+			"occupied": [
+				[
+					-1,
+					-2
+				],
+				[
+					0,
+					-2
+				],
+				[
+					1,
+					-2
+				],
+				[
+					-1,
+					-1
+				],
+				[
+					0,
+					-1
+				],
+				[
+					1,
+					-1
+				],
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					1,
+					0
+				]
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					84,
+					112,
+					88,
+					209
+				],
+				"opaque_colors": 16,
+				"opaque_pixels": 17488,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 89008
+			},
+			"whole_sha256": "be7e1a5f1e0c07999b5ffe73bf7ab6a89bacd9517735ff16a153c862b6d2a7d2"
+		},
+		{
+			"approach": [
+				-1,
+				0
+			],
+			"facing": "west",
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/west-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							119,
+							349,
+							84,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 336,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 106160
+					},
+					"name": "BoothFloorShadow",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "ef8d362c802c43c21d1d64cb7cb8ff297dc149e45a824786525d56bee31894e5",
+					"z_offset": -200
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/west-interior.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							121,
+							195,
+							78,
+							149
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 8334,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 98162
+					},
+					"name": "BoothInterior",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "b5bd58f92d00c8852347026f8931d117be08ed0dfad64316936bf187a35cee4b",
+					"z_offset": 44
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/west-door_glazing.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							128,
+							156,
+							6,
+							185
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 766,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 105730
+					},
+					"name": "BoothDoorGlazing",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "2e19f0835d9cd39d00515731be15d06cb131bec40f7b2ce431ab5aad8afa1cfb",
+					"z_offset": 46
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/west-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							116,
+							144,
+							88,
+							204
+						],
+						"opaque_colors": 10,
+						"opaque_pixels": 10066,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 96430
+					},
+					"name": "BoothRearStructure",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "978139d2a1536f657e7756391080b0bf65d1f01806aa03da65eed4ae744c1edc",
+					"z_offset": 47
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/phone-booth-v2/west-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							120,
+							240,
+							80,
+							110
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 7428,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 99068
+					},
+					"name": "BoothFrontStructure",
+					"offset": [
+						0,
+						-96
+					],
+					"region": [
+						0,
+						0,
+						256,
+						416
+					],
+					"sha256": "3e2883bced068a236daea4193fa4269aec1e14c5109c697b3878c4697248b579",
+					"z_offset": 48
+				}
+			],
+			"occupied": [
+				[
+					0,
+					-1
+				],
+				[
+					1,
+					-1
+				],
+				[
+					2,
+					-1
+				],
+				[
+					0,
+					0
+				],
+				[
+					1,
+					0
+				],
+				[
+					2,
+					0
+				],
+				[
+					0,
+					1
+				],
+				[
+					1,
+					1
+				],
+				[
+					2,
+					1
+				]
+			],
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					116,
+					144,
+					88,
+					209
+				],
+				"opaque_colors": 13,
+				"opaque_pixels": 17492,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 89004
+			},
+			"whole_sha256": "09cc9ecec6ce300699251edbe841255aed22ea361acc1e421bb8f24002e1a5c7"
+		}
+	],
+	"failures": [],
+	"id": "phone-booth-v2",
+	"pivot": [
+		128,
+		304
+	],
+	"provenance": "Original editable code-native geometry; no generated bitmap input, mirroring, rotation, runtime downscaling or fake transparency. Five independently occludable shell/interior/glass layers. Closed passive footprint, not an enterable phone action.",
+	"rise_px": 112,
+	"status": "native_review_candidate_not_runtime"
+}

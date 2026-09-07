@@ -1,0 +1,962 @@
+{
+	"canvas": [
+		128,
+		256
+	],
+	"catalogue_family": "coat_bag_stand",
+	"checks_at_write": 109,
+	"dev_catalogue_mutated": false,
+	"directions": [
+		{
+			"authored_geometry": {
+				"approach_gaze": "south",
+				"bag": "[P: (34, 138), S: (24, 31)]",
+				"bag_face": "front",
+				"coat": "[P: (67, 77), S: (27, 72)]",
+				"coat_face": "front",
+				"crossbar_from": "(41, 66)",
+				"crossbar_to": "(88, 65)",
+				"employee_look_vector": [
+					0,
+					1
+				],
+				"facing": "north",
+				"family": "coat_bag_stand",
+				"footprint": [
+					1,
+					1
+				],
+				"hanger_hook": "(82, 65)",
+				"interaction": [
+					0,
+					-1
+				],
+				"left_hook_tip": "(36, 57)",
+				"look": [
+					0,
+					1
+				],
+				"occupied": [
+					[
+						0,
+						0
+					]
+				],
+				"post_x": 64,
+				"projection": "front",
+				"right_hook_tip": "(92, 58)",
+				"service_side": "north",
+				"shelf": "[P: (38, 169), S: (52, 6)]",
+				"top_y": 55
+			},
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "c5b4683a95835940b607240a32f378a0a95fa9c874625dc0d602e55436ee2029",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"manifest_path": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/manifest.json",
+					"method": "Byte-exact ordered native-layer union for review only; no approval or runtime installation.",
+					"opaque_bounds_px": [
+						34,
+						51,
+						60,
+						162
+					],
+					"opaque_pixels": 4632,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/north-whole.png",
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "f98302d672dc43d23f1a5dddb20c798d2eda629b8ee171ba80e03b0975c0322a",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 15,
+					"verify_decoded_facts": true
+				}
+			],
+			"employee_look_vector": [
+				0,
+				1
+			],
+			"facing": "north",
+			"footprint_cells": [
+				1,
+				1
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "d185697ffa265db738cc68cefea5f4eabd0c35ea9e472ed50ebc0b9ab417e917",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/manifest.json",
+					"method": "Exact deterministic code-native north/floor_shadow layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						37,
+						199,
+						54,
+						14
+					],
+					"opaque_pixels": 596,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/north-floor_shadow.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/north-floor_shadow.png",
+						"name": "CoatBagStandFloorShadow",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": -8
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "e93a9e9e024bb0039176ccc367579148cdc2594b8bbbeff4e11549c2bc22e521",
+					"source_layer": "CoatBagStandFloorShadow",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "b8fe25056a978fde5a182060f6df4fca2ae4d051a86a03ec8cb7f833e4fe11c0",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/manifest.json",
+					"method": "Exact deterministic code-native north/rear_structure layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						35,
+						51,
+						59,
+						154
+					],
+					"opaque_pixels": 1735,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/north-rear_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/north-rear_structure.png",
+						"name": "CoatBagStandRearStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": -4
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "d234fa68af5e006fac8e1edf0e61ff8b23841826b576e4ca3ca10f4c68dc1cde",
+					"source_layer": "CoatBagStandRearStructure",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 5,
+					"verify_decoded_facts": true,
+					"z_offset": -4
+				},
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "50aa71bb211aeecd41d66fc5cf8559f86c0decc94f3b3e62ff81951e2276c0ab",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/manifest.json",
+					"method": "Exact deterministic code-native north/front_structure layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						34,
+						77,
+						58,
+						135
+					],
+					"opaque_pixels": 2878,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/north-front_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/north-front_structure.png",
+						"name": "CoatBagStandFrontStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": 5
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "54a1993426c9031e4f808ed43e81f22eec19ededd86c379ada67138f64acb12c",
+					"source_layer": "CoatBagStandFrontStructure",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 13,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				0,
+				-1
+			]
+		},
+		{
+			"authored_geometry": {
+				"approach_gaze": "west",
+				"bag": "[P: (68, 141), S: (12, 29)]",
+				"bag_face": "side_right",
+				"coat": "[P: (51, 79), S: (15, 70)]",
+				"coat_face": "side_left",
+				"crossbar_from": "(53, 69)",
+				"crossbar_to": "(77, 64)",
+				"employee_look_vector": [
+					-1,
+					0
+				],
+				"facing": "east",
+				"family": "coat_bag_stand",
+				"footprint": [
+					1,
+					1
+				],
+				"hanger_hook": "(59, 68)",
+				"interaction": [
+					1,
+					0
+				],
+				"left_hook_tip": "(49, 62)",
+				"look": [
+					-1,
+					0
+				],
+				"occupied": [
+					[
+						0,
+						0
+					]
+				],
+				"post_x": 65,
+				"projection": "side",
+				"right_hook_tip": "(80, 58)",
+				"service_side": "east",
+				"shelf": "[P: (50, 170), S: (31, 7)]",
+				"top_y": 57
+			},
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "29d782b60e051cf52d15014b34c8b978ab7733299b5a0120d57bc9c71efd1d90",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"manifest_path": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/manifest.json",
+					"method": "Byte-exact ordered native-layer union for review only; no approval or runtime installation.",
+					"opaque_bounds_px": [
+						38,
+						53,
+						54,
+						160
+					],
+					"opaque_pixels": 3081,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/east-whole.png",
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "ffd2a1adb9a5a49aa01a5bd09228d3ad225fb7c37c0bb8f840cc800337603bcf",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 13,
+					"verify_decoded_facts": true
+				}
+			],
+			"employee_look_vector": [
+				-1,
+				0
+			],
+			"facing": "east",
+			"footprint_cells": [
+				1,
+				1
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "bacc461ac97a6182287c0de1cbb0578dc9789b314648ed67d8ab434d6c4e6e6d",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/manifest.json",
+					"method": "Exact deterministic code-native east/floor_shadow layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						38,
+						199,
+						54,
+						14
+					],
+					"opaque_pixels": 596,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/east-floor_shadow.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/east-floor_shadow.png",
+						"name": "CoatBagStandFloorShadow",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": -8
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "53de8fa48ff74879aa4f3ab96efa5e31dc240a9d6cbe4ed2fe3c9b070f5c1e76",
+					"source_layer": "CoatBagStandFloorShadow",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "493b0a0961fb482c75a6c2a44b40eb45a9e9e018b1d86a7569f5f2ac4ab750b1",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/manifest.json",
+					"method": "Exact deterministic code-native east/rear_structure layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						48,
+						53,
+						34,
+						152
+					],
+					"opaque_pixels": 1479,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/east-rear_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/east-rear_structure.png",
+						"name": "CoatBagStandRearStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": -4
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "8cfed3264d95a26bb50a8bb15f9362353866e1902345c6b733dc6b19b6afa3bf",
+					"source_layer": "CoatBagStandRearStructure",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 5,
+					"verify_decoded_facts": true,
+					"z_offset": -4
+				},
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "0377bc67fa93f2a5fafb1e90e4575a681e6fb4d235af4d113ba61441df15a810",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/manifest.json",
+					"method": "Exact deterministic code-native east/front_structure layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						45,
+						79,
+						40,
+						133
+					],
+					"opaque_pixels": 1708,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/east-front_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/east-front_structure.png",
+						"name": "CoatBagStandFrontStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": 5
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "1587e472b98ccdeac6b0e2aeebc645b4820f5ea3b1816a6581b18115de359842",
+					"source_layer": "CoatBagStandFrontStructure",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 11,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				1,
+				0
+			]
+		},
+		{
+			"authored_geometry": {
+				"approach_gaze": "north",
+				"bag": "[P: (69, 135), S: (25, 33)]",
+				"bag_face": "rear",
+				"coat": "[P: (34, 78), S: (28, 73)]",
+				"coat_face": "rear",
+				"crossbar_from": "(39, 66)",
+				"crossbar_to": "(87, 64)",
+				"employee_look_vector": [
+					0,
+					-1
+				],
+				"facing": "south",
+				"family": "coat_bag_stand",
+				"footprint": [
+					1,
+					1
+				],
+				"hanger_hook": "(47, 65)",
+				"interaction": [
+					0,
+					1
+				],
+				"left_hook_tip": "(34, 57)",
+				"look": [
+					0,
+					-1
+				],
+				"occupied": [
+					[
+						0,
+						0
+					]
+				],
+				"post_x": 63,
+				"projection": "rear",
+				"right_hook_tip": "(91, 57)",
+				"service_side": "south",
+				"shelf": "[P: (37, 168), S: (53, 7)]",
+				"top_y": 54
+			},
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "f4db19d799fe4ef25973a083373eb5241f057b043dba64d79abb3934d62f23a7",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"manifest_path": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/manifest.json",
+					"method": "Byte-exact ordered native-layer union for review only; no approval or runtime installation.",
+					"opaque_bounds_px": [
+						33,
+						50,
+						61,
+						163
+					],
+					"opaque_pixels": 4846,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/south-whole.png",
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "6952d38731e7c5dcdb19a09c6a4383cebbb512b06489ed3e5e79cef576b1ab63",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 13,
+					"verify_decoded_facts": true
+				}
+			],
+			"employee_look_vector": [
+				0,
+				-1
+			],
+			"facing": "south",
+			"footprint_cells": [
+				1,
+				1
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "d1c2f2a25c23153628d9c301486d19ad9750b624a76b4908a6291a3fd228ea39",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/manifest.json",
+					"method": "Exact deterministic code-native south/floor_shadow layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						36,
+						199,
+						54,
+						14
+					],
+					"opaque_pixels": 596,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/south-floor_shadow.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/south-floor_shadow.png",
+						"name": "CoatBagStandFloorShadow",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": -8
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "a1283b03dce71d23cd446e629bf9a9a49fb36189c7caf5ea8d432ea6a9da2714",
+					"source_layer": "CoatBagStandFloorShadow",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "5fe74535f1145b4a581b2114d9c64339b2e06017d44518318c30844932186077",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/manifest.json",
+					"method": "Exact deterministic code-native south/rear_structure layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						33,
+						50,
+						60,
+						155
+					],
+					"opaque_pixels": 1809,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/south-rear_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/south-rear_structure.png",
+						"name": "CoatBagStandRearStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": -4
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "c5754150994cf6eb4b5675cd5117e9b9601e7d67d1c78df859b00dcf8bdc10a0",
+					"source_layer": "CoatBagStandRearStructure",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 5,
+					"verify_decoded_facts": true,
+					"z_offset": -4
+				},
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "9fde4c0d36a2c86e469394f21963408c07647f9f45043ccf96be16c2979ecdbf",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/manifest.json",
+					"method": "Exact deterministic code-native south/front_structure layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						36,
+						78,
+						58,
+						134
+					],
+					"opaque_pixels": 3055,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/south-front_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/south-front_structure.png",
+						"name": "CoatBagStandFrontStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": 5
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "e0316698ab337d07bf4efa58607ba23fa10341cf475e0374b44b7c3c60cb079f",
+					"source_layer": "CoatBagStandFrontStructure",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 11,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				0,
+				1
+			]
+		},
+		{
+			"authored_geometry": {
+				"approach_gaze": "east",
+				"bag": "[P: (49, 141), S: (12, 29)]",
+				"bag_face": "side_left",
+				"coat": "[P: (63, 80), S: (15, 69)]",
+				"coat_face": "side_right",
+				"crossbar_from": "(50, 65)",
+				"crossbar_to": "(75, 70)",
+				"employee_look_vector": [
+					1,
+					0
+				],
+				"facing": "west",
+				"family": "coat_bag_stand",
+				"footprint": [
+					1,
+					1
+				],
+				"hanger_hook": "(70, 68)",
+				"interaction": [
+					-1,
+					0
+				],
+				"left_hook_tip": "(46, 58)",
+				"look": [
+					1,
+					0
+				],
+				"occupied": [
+					[
+						0,
+						0
+					]
+				],
+				"post_x": 62,
+				"projection": "side",
+				"right_hook_tip": "(79, 63)",
+				"service_side": "west",
+				"shelf": "[P: (47, 170), S: (31, 6)]",
+				"top_y": 56
+			},
+			"composite_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "0e1714f057fc176a472bc8cf929c096c851d7ff86e5ea1b122e8e6d922ac9b19",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"manifest_path": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/manifest.json",
+					"method": "Byte-exact ordered native-layer union for review only; no approval or runtime installation.",
+					"opaque_bounds_px": [
+						35,
+						52,
+						54,
+						161
+					],
+					"opaque_pixels": 3104,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/west-whole.png",
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "1782b045b8c67d695c3c9ce525f67ca40d80e9c30458a1641f65fbc9ae4d08e9",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 13,
+					"verify_decoded_facts": true
+				}
+			],
+			"employee_look_vector": [
+				1,
+				0
+			],
+			"facing": "west",
+			"footprint_cells": [
+				1,
+				1
+			],
+			"native_exports": [
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "c7985cc54ceb15db121c246625ad7205ee15adbc16cbe0db23ab25a4634be9a7",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "floor_shadow",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/manifest.json",
+					"method": "Exact deterministic code-native west/floor_shadow layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						35,
+						199,
+						54,
+						14
+					],
+					"opaque_pixels": 596,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/west-floor_shadow.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/west-floor_shadow.png",
+						"name": "CoatBagStandFloorShadow",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": -8
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "2796936cc6a36c922fb5dabd0f76273bcc44629a07fbc351728509b92e85c584",
+					"source_layer": "CoatBagStandFloorShadow",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 1,
+					"verify_decoded_facts": true,
+					"z_offset": -8
+				},
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "21e149d002d1bc92107fbc88d2c2512b575ddddf5c2f938057b3380fb6dbfd47",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "rear_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/manifest.json",
+					"method": "Exact deterministic code-native west/rear_structure layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						45,
+						52,
+						36,
+						153
+					],
+					"opaque_pixels": 1473,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/west-rear_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/west-rear_structure.png",
+						"name": "CoatBagStandRearStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": -4
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "54c4a0641bc51cb432ab9d403652f379d7a3a790d5e1206c81248e7119dc763d",
+					"source_layer": "CoatBagStandRearStructure",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 5,
+					"verify_decoded_facts": true,
+					"z_offset": -4
+				},
+				{
+					"canvas_size_px": [
+						128,
+						256
+					],
+					"decoded_rgba_sha256": "1fa788ee3018284cb0327bc6e34fb2e53d63307384c94149cddf110e1c954e1d",
+					"floor_anchor_px": [
+						64,
+						208
+					],
+					"hidden_rgb_pixels": 0,
+					"layer": "front_structure",
+					"manifest_path": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/manifest.json",
+					"method": "Exact deterministic code-native west/front_structure layer; fixed screen light and no finished-raster transform.",
+					"opaque_bounds_px": [
+						42,
+						80,
+						40,
+						132
+					],
+					"opaque_pixels": 1695,
+					"partial_alpha_pixels": 0,
+					"path": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/west-front_structure.png",
+					"render_descriptor": {
+						"art": "res://tests/fixtures/furniture-calibration/coat-bag-stand-v3/west-front_structure.png",
+						"name": "CoatBagStandFrontStructure",
+						"offset": [
+							0,
+							-80
+						],
+						"region": [
+							0,
+							0,
+							128,
+							256
+						],
+						"z_offset": 5
+					},
+					"review_path": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+					"sha256": "14b52a5e65274225a5c680db5d793b0b1ae65a5a0a7b669be5f3f01503a64f91",
+					"source_layer": "CoatBagStandFrontStructure",
+					"source_path": "game/tools/passive_lighting_entry_geometry.gd",
+					"used_colors": 11,
+					"verify_decoded_facts": true,
+					"z_offset": 5
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					0
+				]
+			],
+			"proposed_interaction_cell": [
+				-1,
+				0
+			]
+		}
+	],
+	"evidence": [
+		"res://tests/output/coat-bag-stand-v3/candidate-contact-sheet-native.png",
+		"res://tests/output/coat-bag-stand-v3/candidate-contact-sheet-4x.png",
+		"res://tests/output/coat-bag-stand-v3/candidate-layers-native.png"
+	],
+	"failures_at_write": [],
+	"id": "coat-bag-stand-v3",
+	"image_generation_used": false,
+	"optional_ambient_overlay_exported": false,
+	"optional_ambient_overlay_status": "not_applicable",
+	"pivot": [
+		64,
+		208
+	],
+	"production_files_changed": false,
+	"provenance": "Original editable code-native pixel geometry with independent screen-axis projections and fixed upper-left material light. No provider, generated raster, source extraction, text, baked actor, interaction, service or runtime binding.",
+	"runtime_registered": false,
+	"sprite_offset": [
+		0,
+		-80
+	],
+	"status": "native_review_candidate_not_runtime_registered",
+	"worker_disabled": true
+}

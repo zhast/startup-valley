@@ -1,0 +1,7 @@
+# creative portrait — alpha extraction retry1
+
+Completed08:48UTC as exec-b8cbd05d-224e-4aac-a89d-88c637af0906.png,1122×1402RGB. First targeted retry; identity essentially unchanged but background is STILL an opaque checkerboard. This is not a usable cutout. Source retained; no flood-fill, matte keying or fake alpha.
+
+Use case: background-extraction. Edit only the background of this portrait.
+Erase the checkerboard grid completely and replace it with genuine transparent PNG alpha0 pixels. I need an actual cutout layer, not a picture of transparency.
+Keep the person unchanged: exact face, eyes, hair, clothing, palette, body crop, pixel edges and canvas composition. Preserve the full visible character and any negative spaces between arms/hair. Do not redraw or improve anything. No white, gray or black background, no checkerboard drawing, no glow or halo. Return a real RGBA PNG whose empty corners and space outside the person have alpha0.

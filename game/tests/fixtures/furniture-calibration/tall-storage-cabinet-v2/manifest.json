@@ -1,0 +1,960 @@
+{
+	"canvas": [
+		160,
+		288
+	],
+	"checks": 39,
+	"default_layout_registered": false,
+	"dev_catalogue_registration": "Not asserted. This exporter only verifies byte-exact shared-catalogue immutability during its own run.",
+	"dimension_review": {
+		"east_west_top_plane_depth_px": 64,
+		"maximum_projected_opaque_rise_px": 144,
+		"measured_vertical_elevation_px": 80,
+		"north_south_top_plane_depth_px": 32,
+		"planned_canvas_retained": [
+			160,
+			288
+		],
+		"planned_floor_anchor_retained": [
+			80,
+			224
+		],
+		"planned_vertical_elevation_envelope_px": 160,
+		"revision": "V1 treated the body as a flat elevation. V2 retains the original canvas, pivot and masks, but interprets the planned rise as the solid's vertical elevation and separately records the 32px or 64px projected footprint depth. The full top plane is the physical floor rectangle translated upward by one consistent family elevation."
+	},
+	"directions": [
+		{
+			"approach_gaze": "south",
+			"camera_face_identity": "rear",
+			"camera_front_elevation_px": [
+				-16,
+				-64,
+				64,
+				80
+			],
+			"clearance_cell_offsets": [
+				[
+					0,
+					-1
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"east_west_top_plane_depth_px": 64,
+				"maximum_projected_opaque_rise_px": 144,
+				"measured_vertical_elevation_px": 80,
+				"north_south_top_plane_depth_px": 32,
+				"planned_canvas_retained": [
+					160,
+					288
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					224
+				],
+				"planned_vertical_elevation_envelope_px": 160,
+				"revision": "V1 treated the body as a flat elevation. V2 retains the original canvas, pivot and masks, but interprets the planned rise as the solid's vertical elevation and separately records the 32px or 64px projected footprint depth. The full top plane is the physical floor rectangle translated upward by one consistent family elevation."
+			},
+			"employee_look_vector": [
+				0,
+				1
+			],
+			"facing": "north",
+			"floor_plane_px": [
+				-16,
+				-16,
+				64,
+				32
+			],
+			"footprint_cells": [
+				2,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/north-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							59,
+							235,
+							74,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 30,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 46050
+					},
+					"name": "TallStorageCabinetV2NorthFloorShadow",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "6cc2a907e602dffd6b813f7da0cf374fec0d2574e0a0f9ce18414f9922aa1883",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/north-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							64,
+							128,
+							64,
+							112
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 7168,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 38912
+					},
+					"name": "TallStorageCabinetV2NorthRearStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "eb1e13da2dae44780f7f3c5447a509b47dfcd70b05b78849e6f88bd4a0418a03",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/north-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							69,
+							144,
+							54,
+							91
+						],
+						"opaque_colors": 4,
+						"opaque_pixels": 3888,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42192
+					},
+					"name": "TallStorageCabinetV2NorthFrontStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "1f30aa4cf0da5d8f2ba84eee51480c969b5ce01b23685073bb6363c63cea73c3",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					1,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"projected_opaque_rise_px": 112,
+			"proposed_interaction_cell": [
+				0,
+				-1
+			],
+			"role_identity": {
+				"camera_face": "braced_rear",
+				"open_storage": false
+			},
+			"service_side": "north",
+			"solid_bounds_px": [
+				-16,
+				-96,
+				64,
+				112
+			],
+			"top_plane_depth_px": 32,
+			"top_plane_px": [
+				-16,
+				-96,
+				64,
+				32
+			],
+			"vertical_elevation_px": 80,
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					59,
+					128,
+					74,
+					112
+				],
+				"opaque_colors": 11,
+				"opaque_pixels": 7198,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 38882
+			},
+			"whole_sha256": "f3d9264182a035d990fda03241dd4334d767527c08d8f84741b07853db548b33"
+		},
+		{
+			"approach_gaze": "west",
+			"camera_face_identity": "service_front_right_end",
+			"camera_front_elevation_px": [
+				-16,
+				-32,
+				32,
+				80
+			],
+			"clearance_cell_offsets": [
+				[
+					1,
+					0
+				]
+			],
+			"contact_boundary_y": 48,
+			"dimension_review": {
+				"east_west_top_plane_depth_px": 64,
+				"maximum_projected_opaque_rise_px": 144,
+				"measured_vertical_elevation_px": 80,
+				"north_south_top_plane_depth_px": 32,
+				"planned_canvas_retained": [
+					160,
+					288
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					224
+				],
+				"planned_vertical_elevation_envelope_px": 160,
+				"revision": "V1 treated the body as a flat elevation. V2 retains the original canvas, pivot and masks, but interprets the planned rise as the solid's vertical elevation and separately records the 32px or 64px projected footprint depth. The full top plane is the physical floor rectangle translated upward by one consistent family elevation."
+			},
+			"employee_look_vector": [
+				-1,
+				0
+			],
+			"facing": "east",
+			"floor_plane_px": [
+				-16,
+				-16,
+				32,
+				64
+			],
+			"footprint_cells": [
+				1,
+				2
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/east-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							59,
+							267,
+							42,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 30,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 46050
+					},
+					"name": "TallStorageCabinetV2EastFloorShadow",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "6a429e60e874d2c439bae80d592fb6ad5177dc51f3f9c5582d6610a616b613ec",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/east-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							64,
+							128,
+							32,
+							144
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 4608,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 41472
+					},
+					"name": "TallStorageCabinetV2EastRearStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "cbb73d049c5a7d80887b7c0192bfa9581a1abc5fc29f34c349f5efbe1f774b7e",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/east-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							69,
+							160,
+							22,
+							107
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 1584,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 44496
+					},
+					"name": "TallStorageCabinetV2EastFrontStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "d604fe58c0e527ce2e553c091053e7112d9dfa60c7b8e8264ec3010a4f6139d6",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					1
+				],
+				[
+					0,
+					0
+				]
+			],
+			"projected_opaque_rise_px": 144,
+			"proposed_interaction_cell": [
+				1,
+				0
+			],
+			"role_identity": {
+				"camera_face": "right_closed_end",
+				"open_storage": false
+			},
+			"service_side": "east",
+			"solid_bounds_px": [
+				-16,
+				-96,
+				32,
+				144
+			],
+			"top_plane_depth_px": 64,
+			"top_plane_px": [
+				-16,
+				-96,
+				32,
+				64
+			],
+			"vertical_elevation_px": 80,
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					59,
+					128,
+					42,
+					144
+				],
+				"opaque_colors": 11,
+				"opaque_pixels": 4638,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 41442
+			},
+			"whole_sha256": "c482f94c0f4667a0f449286ec7676b5fd7bbfff7cab8f54e665757a4b1079d1d"
+		},
+		{
+			"approach_gaze": "north",
+			"camera_face_identity": "service_front",
+			"camera_front_elevation_px": [
+				-48,
+				-64,
+				64,
+				80
+			],
+			"clearance_cell_offsets": [
+				[
+					0,
+					1
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"east_west_top_plane_depth_px": 64,
+				"maximum_projected_opaque_rise_px": 144,
+				"measured_vertical_elevation_px": 80,
+				"north_south_top_plane_depth_px": 32,
+				"planned_canvas_retained": [
+					160,
+					288
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					224
+				],
+				"planned_vertical_elevation_envelope_px": 160,
+				"revision": "V1 treated the body as a flat elevation. V2 retains the original canvas, pivot and masks, but interprets the planned rise as the solid's vertical elevation and separately records the 32px or 64px projected footprint depth. The full top plane is the physical floor rectangle translated upward by one consistent family elevation."
+			},
+			"employee_look_vector": [
+				0,
+				-1
+			],
+			"facing": "south",
+			"floor_plane_px": [
+				-48,
+				-16,
+				64,
+				32
+			],
+			"footprint_cells": [
+				2,
+				1
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/south-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							27,
+							235,
+							74,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 30,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 46050
+					},
+					"name": "TallStorageCabinetV2SouthFloorShadow",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "009a9bddfd72dd8dadb87cb5e4c5cc4da9717712478b33808bc33bbf3ba7238e",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/south-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							32,
+							128,
+							64,
+							112
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 7168,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 38912
+					},
+					"name": "TallStorageCabinetV2SouthRearStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "07945515de4a6a55c075e52d39500cd7a9ed2f6c819737f051aa91510d99bcba",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/south-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							37,
+							144,
+							54,
+							91
+						],
+						"opaque_colors": 6,
+						"opaque_pixels": 3888,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 42192
+					},
+					"name": "TallStorageCabinetV2SouthFrontStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "ef4cfb897675c92cb765049a7e2c0075f5d38f6393cb18b3228b05fd5f19e867",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"projected_opaque_rise_px": 112,
+			"proposed_interaction_cell": [
+				0,
+				1
+			],
+			"role_identity": {
+				"camera_face": "paired_closed_doors",
+				"open_storage": false
+			},
+			"service_side": "south",
+			"solid_bounds_px": [
+				-48,
+				-96,
+				64,
+				112
+			],
+			"top_plane_depth_px": 32,
+			"top_plane_px": [
+				-48,
+				-96,
+				64,
+				32
+			],
+			"vertical_elevation_px": 80,
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					27,
+					128,
+					74,
+					112
+				],
+				"opaque_colors": 12,
+				"opaque_pixels": 7198,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 38882
+			},
+			"whole_sha256": "79f27b68276e6000e4ea80c50b05bcd857bade79029bc70f201b15bbdde31199"
+		},
+		{
+			"approach_gaze": "east",
+			"camera_face_identity": "service_front_left_end",
+			"camera_front_elevation_px": [
+				-16,
+				-64,
+				32,
+				80
+			],
+			"clearance_cell_offsets": [
+				[
+					-1,
+					0
+				]
+			],
+			"contact_boundary_y": 16,
+			"dimension_review": {
+				"east_west_top_plane_depth_px": 64,
+				"maximum_projected_opaque_rise_px": 144,
+				"measured_vertical_elevation_px": 80,
+				"north_south_top_plane_depth_px": 32,
+				"planned_canvas_retained": [
+					160,
+					288
+				],
+				"planned_floor_anchor_retained": [
+					80,
+					224
+				],
+				"planned_vertical_elevation_envelope_px": 160,
+				"revision": "V1 treated the body as a flat elevation. V2 retains the original canvas, pivot and masks, but interprets the planned rise as the solid's vertical elevation and separately records the 32px or 64px projected footprint depth. The full top plane is the physical floor rectangle translated upward by one consistent family elevation."
+			},
+			"employee_look_vector": [
+				1,
+				0
+			],
+			"facing": "west",
+			"floor_plane_px": [
+				-16,
+				-48,
+				32,
+				64
+			],
+			"footprint_cells": [
+				1,
+				2
+			],
+			"layers": [
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/west-floor_shadow.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							59,
+							235,
+							42,
+							4
+						],
+						"opaque_colors": 1,
+						"opaque_pixels": 30,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 46050
+					},
+					"name": "TallStorageCabinetV2WestFloorShadow",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "c1637997a45b1fc72d17e410dc8fa8ebb6a15f59e47c5d2c6fce7ec9e0bc9c9a",
+					"z_offset": -2
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/west-rear_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							64,
+							96,
+							32,
+							144
+						],
+						"opaque_colors": 7,
+						"opaque_pixels": 4608,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 41472
+					},
+					"name": "TallStorageCabinetV2WestRearStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "85c21e361995ff2211782d2ceb65ac00ceb7c7bfbd2526849feb2c9e16968d97",
+					"z_offset": -1
+				},
+				{
+					"art": "res://tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/west-front_structure.png",
+					"measurements": {
+						"hidden_rgb_pixels": 0,
+						"opaque_bounds": [
+							69,
+							128,
+							22,
+							107
+						],
+						"opaque_colors": 5,
+						"opaque_pixels": 1584,
+						"partial_alpha_pixels": 0,
+						"transparent_pixels": 44496
+					},
+					"name": "TallStorageCabinetV2WestFrontStructure",
+					"offset": [
+						0,
+						-80
+					],
+					"region": [
+						0,
+						0,
+						160,
+						288
+					],
+					"sha256": "d3127fc47470db8e13c07184c905752fabbd89c54f7955f1769c784101d007bb",
+					"z_offset": 1
+				}
+			],
+			"occupied_cell_offsets": [
+				[
+					0,
+					-1
+				],
+				[
+					0,
+					0
+				]
+			],
+			"projected_opaque_rise_px": 144,
+			"proposed_interaction_cell": [
+				-1,
+				0
+			],
+			"role_identity": {
+				"camera_face": "left_closed_end",
+				"open_storage": false
+			},
+			"service_side": "west",
+			"solid_bounds_px": [
+				-16,
+				-128,
+				32,
+				144
+			],
+			"top_plane_depth_px": 64,
+			"top_plane_px": [
+				-16,
+				-128,
+				32,
+				64
+			],
+			"vertical_elevation_px": 80,
+			"whole_measurements": {
+				"hidden_rgb_pixels": 0,
+				"opaque_bounds": [
+					59,
+					96,
+					42,
+					144
+				],
+				"opaque_colors": 11,
+				"opaque_pixels": 4638,
+				"partial_alpha_pixels": 0,
+				"transparent_pixels": 41442
+			},
+			"whole_sha256": "8c1406b6ff2feef38675353caff5a65d07044c4dd11a0bd59e5cb06bd8b7327d"
+		}
+	],
+	"failures": [],
+	"family": "tall_storage_cabinet",
+	"id": "tall-storage-cabinet-v2",
+	"image_generation_calls": 0,
+	"layers": [
+		"floor_shadow",
+		"rear_structure",
+		"front_structure"
+	],
+	"material_sources": {
+		"charcoal_powdercoat": {
+			"path": "res://tests/fixtures/furniture-calibration/materials/charcoal-powdercoat-v1.png",
+			"retained_unchanged": true,
+			"sha256": "807152a50c8a1771cd451d0984fe1fd4ba3fb6328089e5fa9dd1fb2c858ad42d"
+		},
+		"oak_horizontal": {
+			"path": "res://tests/fixtures/furniture-calibration/materials-v2/oak-horizontal-v2.png",
+			"retained_unchanged": true,
+			"sha256": "bcd3ccf8c6411b4ce24997a88b3fabf78f7fa2132b240f66ee1d59ab3e0dded6"
+		},
+		"oak_vertical": {
+			"path": "res://tests/fixtures/furniture-calibration/materials-v2/oak-vertical-v2.png",
+			"retained_unchanged": true,
+			"sha256": "28a84e93bcdd6e026fbd3a56ae598f14a6c74acd07d1c5950a1a2347a1a24fae"
+		}
+	},
+	"pivot": [
+		80,
+		224
+	],
+	"preserved_v1_files": [
+		{
+			"path": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/east-floor_shadow.png",
+			"sha256": "7bff9f09880ee82cd0338a84ef011ca86ff134d703ba21b2b4e152a92ce30b7a"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/east-front_structure.png",
+			"sha256": "d7cbdcd89885e63181c92b129c35572075dd95a10e76a37a56627d85e2577b47"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/east-rear_structure.png",
+			"sha256": "9600ed4254dec586eb3741c1ece1af2123d916725db4e3e4f263851b9996f486"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/east-whole.png",
+			"sha256": "b0ec068b5ce01e920c9f0dcb312f1af4cb7ea349717756bbb498596946276b91"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/manifest.json",
+			"sha256": "3e9e58eb3986672fe272a879950a6ae86ca9de36cee70978cccce5d60240d0fa"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/north-floor_shadow.png",
+			"sha256": "6a31172d5bed623a6a34525e7dfbf97129a5554d7eff5041ea513edb1d931c0a"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/north-front_structure.png",
+			"sha256": "6f3192023922191920499d20e5b83a5c0f6a6ac09b5a7758a48419ce78a2e0dc"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/north-rear_structure.png",
+			"sha256": "a19870c59ce460ef5681efbf79cd25b24cf9fe645e8485d760592364f7d4c19b"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/north-whole.png",
+			"sha256": "ab43912fc7a834b092e76da42252bf0abb6b1813be8134d590782e5795bd71f0"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/south-floor_shadow.png",
+			"sha256": "d498f256f0a198a3f9fa8fc267ee9192eb556d4a61687c8656a540b4367e1576"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/south-front_structure.png",
+			"sha256": "4400d14786bd6f3856f7a74e0d183debc1320d099521bfd5b416be542f2fb697"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/south-rear_structure.png",
+			"sha256": "833a4f5d51be6d952ecc0e2e3bb00d8fb5fb41e902c4ce3547a826d7e33b14b0"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/south-whole.png",
+			"sha256": "b54238d1448f081da922678d8f2fe836d118512518782ae216a2c50e37b46ff0"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/west-floor_shadow.png",
+			"sha256": "c2bcd95b639742b4f12bb929bf642d8214e41772981d7b3f58ae6d573cfa7013"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/west-front_structure.png",
+			"sha256": "7b4a8a7995d3f5b42367c4ac49ecdeeeb1ce372f2430b4e98d73638990098e55"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/west-rear_structure.png",
+			"sha256": "62d9c74ca4a2746fdd7eed389aa212446f565d515dc7a95bc33cca9e25e339d4"
+		},
+		{
+			"path": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v1/west-whole.png",
+			"sha256": "fe32853c5b9059275fd4e65a820045ef58bb387255dc7c37992ad896f5268f7e"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/actual-room-approach-contact-sheet-4x.png",
+			"sha256": "81c8990a11b15755b65cd2f96c157873b766acc6b2ee85d82aa9ac6f1e00207d"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/actual-room-approach-contact-sheet-native.png",
+			"sha256": "6dfb8d4c069ad49104b82d9c0dc7a4d4213e116099b696af83ba061621e81053"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/actual-room-base-contact-sheet-native.png",
+			"sha256": "093d73b26a5cfdf45a1e314f6d44698e21c8abd7fffb148dd17faafeb3869574"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/actual-room-results.json",
+			"sha256": "93a7e79b39010b2ba5a35e8fbf37535ebe51f9f925894f07c76f0c3277cbabc5"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/candidate-contact-sheet-4x.png",
+			"sha256": "ef837197365afcbaa47aa385749e86f6ab5b8e9d68ae1086028a12801817dc30"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/candidate-contact-sheet-native.png",
+			"sha256": "e580469d6883ffedcca341792f65a7934b6d3c8b0f4cf87272e7e48e3dd535ec"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/candidate-layers-native.png",
+			"sha256": "aebf4a569d5490fa32ad7ad366de175d405f31b3d680a73066eab7ccd0f1f9bb"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/detail-east-approach-native.png",
+			"sha256": "43b041a3cdf2be5e9543e6fd49826a9f83973851a5db9ae15af525d93f8a1a07"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/detail-east-base-native.png",
+			"sha256": "8c16214d71de9b176b58f9d6569909d196fb54beb7b7a9519d34daa180cffd09"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/detail-north-approach-native.png",
+			"sha256": "c1ba935a0ff8557b4f1f4637bef4dbff737911378003e14e3b233ff932689c8f"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/detail-north-base-native.png",
+			"sha256": "7cabe4b120f5ccd56e2f598c052aec474cf8112f28d3ac76ef602703a0cc25ed"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/detail-south-approach-native.png",
+			"sha256": "268fbdb3a9b3becbb614abee00e4370ae5f64b6571642a27f1c9ca1c6d2707c6"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/detail-south-base-native.png",
+			"sha256": "4ffb9101f75aa6c0b903e3fcdbee4bb2c8484e2987e971ee0c23ce48e66b20e4"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/detail-west-approach-native.png",
+			"sha256": "3ba2f43e4dded62da743fbba73442ababc73417ceb52cab4a973fba64b93e85a"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/detail-west-base-native.png",
+			"sha256": "197942744b0643cc1e4e41b945d49489bf91fff18b5be9154d901b84e8df7484"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/room-east.png",
+			"sha256": "0365d8ce7d21f85c8ae763092b6cc37f3911d6afd89af2cc6750fed8e78ba9c8"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/room-north.png",
+			"sha256": "378d02e4d0f29920708728b87cf36a1cd7e06a9b0898fb2b591250419a42bb8c"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/room-south.png",
+			"sha256": "055658ddad37b99ae175efe03bac2544f2658d8e5c1316b5219541cd18e47d58"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/room-west.png",
+			"sha256": "d6a4f453c334dc6d65d0f66716aeec2f92e96d13f4d9a4bd3b1e59c2f52ebded"
+		},
+		{
+			"path": "game/tests/output/tall-storage-cabinet/structural-results.json",
+			"sha256": "d0aca6bc9ad49af0638f103ef2326f3278041d317d0775f56e279b8ff855eb2b"
+		}
+	],
+	"production_catalogue_registered": false,
+	"provenance": "Editable typed-GDScript vertical extrusion with a physical-footprint top plane and separate camera-front elevation; reviewed native oak/powdercoat tiles are retained materials only. No generated full view, transformed finished raster, provider call, text, logo, fake metric, baked actor, or service implementation.",
+	"runtime_registered": false,
+	"service_backend_or_interaction_created": false,
+	"source_attempts_created": 0,
+	"sprite_offset": [
+		0,
+		-80
+	],
+	"status": "native_review_candidate_without_runtime_binding",
+	"supersedes_rejected_revision": "tall-storage-cabinet-v1",
+	"v1_rejection_review_path": "dev/PASSIVE_UTILITY_LIBRARY_NATIVE_REVIEW.md",
+	"v1_rejection_review_sha256": "4c7e14247f344f02d72fbfe0048d2708cb879d1bb49d3577c7f0d20a4a8b0f7a"
+}
