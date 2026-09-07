@@ -95,6 +95,14 @@ func check_world_typography() -> void:
 	check(EmployeeAvatar.STATUS_FONT == GameFonts.EMPHASIS and EmployeeAvatar.STATUS_FONT_SIZE == 14, "World status explicitly uses Nunito metadata14")
 	check(EmployeeAvatar.SPEECH_FONT == GameFonts.BODY and EmployeeAvatar.SPEECH_FONT_SIZE == 16, "World speech explicitly uses Nunito body16")
 	var employee := EmployeeAvatar.new()
+	for state: EmployeeAvatar.WorkState in [EmployeeAvatar.WorkState.IDLE_WALKING, EmployeeAvatar.WorkState.WALKING_TO_DESK, EmployeeAvatar.WorkState.LUNCH, EmployeeAvatar.WorkState.OFF_SHIFT]:
+		employee.work_state = state
+		var original := employee.state_label()
+		check(employee.presentation_label() == original.left(1).to_upper() + original.substr(1), "Physical status uses sentence case without title-casing every word")
+		employee._status_override = "using AI tools"
+		check(employee.presentation_label() == "Using AI tools", "Sentence case preserves meaningful internal capitals")
+		employee._status_override = ""
+	employee.work_state = EmployeeAvatar.WorkState.IDLE
 	for identity: String in ["Mina", "Theo", "Alexandria Customer Research", "Zoë – 顾客研究 🚀"]:
 		employee.display_name = identity
 		for detail: bool in [false, true]:
@@ -130,6 +138,31 @@ func check_world_typography() -> void:
 		var painted := WorldCalloutSkin.bounds(rect, WorldCalloutSkin.ACTOR_BOUNDS.get_center())
 		check(employee.world_label_rect() == Rect2(employee.position.round() + painted.position, painted.size), "Speech occlusion includes its fixed native pointer")
 	employee.free()
+
+func check_event_cue_clearance() -> void:
+	fixture()
+	var employee := main.get_employee("mira")
+	main.job_panel.close_drawer(false)
+	employee.position = Vector2(336, 248)
+	employee._has_target = false
+	employee.set_ui_highlighted(true)
+	for kind: StringName in [&"thinking", &"typing", &"research", &"approval", &"completion", &"failure"]:
+		employee.set_ui_presentation_state("")
+		employee._set_activity(kind)
+		employee._sync_render_transform()
+		var before := [employee.position, employee.work_state, employee._activity, employee._effect_elapsed, employee._effect_duration, employee._effect_sprite.region_rect]
+		var rect := employee.visible_world_vfx_rect()
+		check(rect.size == Vector2(24, 24), "Real %s event reserves one complete native24px cell" % kind)
+		check(main._world_ui_obstacles().has(rect.grow(4)), "Real %s event has4px callout breathing room" % kind)
+		check(not employee.calibration_work_vfx_rect().has_area(), "Ordinary event does not gain calibration-only assembly fallback")
+		main._update_label_visibility("mira")
+		check(employee.labels_suppressed or not employee.world_label_rect().intersects(rect.grow(4)), "Name and pointer avoid the whole %s cue" % kind)
+		check([employee.position, employee.work_state, employee._activity, employee._effect_elapsed, employee._effect_duration, employee._effect_sprite.region_rect] == before, "Avoidance does not mutate event timing, pose or navigation")
+		employee._effect_sprite.self_modulate.a = 0
+		check(not employee.visible_world_vfx_rect().has_area(), "Unpainted %s cue reserves no space" % kind)
+		employee._effect_sprite.self_modulate.a = 1
+	employee._effect_sprite.visible = false
+	check(not employee.visible_world_vfx_rect().has_area(), "Expired cue reserves no space")
 
 func frames(count: int = 3) -> void:
 	for index: int in range(count): await process_frame
@@ -174,16 +207,27 @@ func safe_callout(rect: Rect2, message: String) -> void:
 	for actor: EmployeeAvatar in main._employees.values():
 		check(not rect.intersects(WorldCalloutSkin.actor_rect(actor.position)), message + " clears " + actor.display_name)
 
+func place_callout_fixture(employee: EmployeeAvatar, other: EmployeeAvatar, employee_position: Vector2, founder_position: Vector2) -> void:
+	employee.position = employee_position
+	other.position = Vector2(1056, 624)
+	main.player.position = founder_position
+	# Keep the navigation cache consistent with the directly placed test actors.
+	main.room.navigation.actors[employee.employee_id] = employee.position
+	main.room.navigation.actors[other.employee_id] = other.position
+	main.room.navigation.actors["founder"] = main.player.position
+
 func check_callout_integration() -> void:
 	fixture()
 	main.job_panel.close_drawer(false)
 	var employee := main.get_employee("mira")
 	var other := main.get_employee("theo")
-	employee.position = Vector2(368, 528)
-	other.position = Vector2(752, 528)
-	main.player.position = Vector2(436, 592)
+	# The old probe occupied an unused chair in the new four-seat lunch cluster.
+	# Exercise visible prompt/speech placement on the clear central aisle; the
+	# crowded-chair case below still requires safe suppression plus E fallback.
+	place_callout_fixture(employee, other, Vector2(640, 560), Vector2(708, 624))
+	check(main.room.navigation.position_is_safe(employee.position, employee.employee_id), "Prompt probe stands on clear production floor")
 	main._process(0)
-	check(main.founder_hud.interaction_visible(), "Audited founder-desk approach still offers a visible Chat prompt")
+	check(main.founder_hud.interaction_visible(), "Clear office approach offers a visible Chat prompt")
 	safe_callout(main.founder_hud.interaction_rect(), "Prompt including pointer")
 	var prompt := main.founder_hud._interaction_prompt.get_node("ChatAction") as Button
 	check(prompt.size.x >= 44 and prompt.size.y >= 44 and prompt.focus_mode == Control.FOCUS_ALL, "Prompt keeps44px input target and keyboard focus")
@@ -211,7 +255,7 @@ func check_callout_integration() -> void:
 	await capture("drawer-delivery-cue")
 	main.job_panel.show_pending_promotions([])
 	main.job_panel.close_drawer(false)
-	main.player.position = Vector2(560, 620)
+	place_callout_fixture(employee, other, Vector2(640, 560), Vector2(816, 620))
 	main._process(0)
 	employee.memory_line = "Yesterday's customer notes point to one clear promise for the website."
 	employee._speech_visible = true
@@ -334,6 +378,7 @@ func check_answered_approval() -> void:
 func run() -> void:
 	root.size = Vector2i(1280, 720)
 	check_world_typography()
+	check_event_cue_clearance()
 	await check_callout_integration()
 	await check_live_attention()
 	await check_answered_approval()

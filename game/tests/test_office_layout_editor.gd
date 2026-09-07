@@ -23,7 +23,7 @@ func _run() -> void:
 	var original_hash := FileAccess.get_sha256(OfficeLayout.DEFAULT_PATH)
 	_check(bool(_editor.validate_all_stages({}).get("valid", false)), "Default layout validates before editing")
 	_check(_editor._placements.size() == 8, "Mina + Theo stage shows eight authored props")
-	_check(_editor._facing_picker.item_count == 1, "Only authored south orientation is selectable")
+	_check(_editor._facing_picker.item_count == 4, "Exactly the four reviewed orientations are selectable")
 	var original := _editor.model.placement_by_id("founder-workstation", 2)
 	var original_grid: Vector2i = original.get("grid", Vector2i.ZERO)
 	_editor.select_placement("founder-workstation")
@@ -54,7 +54,7 @@ func _run() -> void:
 	_editor.set_stage(2)
 	_editor.select_placement("founder-workstation")
 	await _key(KEY_M)
-	var target := original_grid + Vector2i.RIGHT
+	var target := original_grid + Vector2i.LEFT
 	var target_point := _editor.ROOM_ORIGIN + _editor.model.world(target)
 	await _move(target_point + Vector2(7, 5))
 	_check(_editor.preview_grid == target, "Sub-cell pointer movement uses stable snapped anchor")
@@ -103,9 +103,16 @@ func _test_catalog_anchor() -> void:
 	# Nonzero art anchors are supported catalog data. Keep the physical footprint
 	# and interaction cells unchanged while proving the preview's visual origin.
 	var original_profile: Dictionary = _editor.model.catalog["desk"].duplicate(true)
+	var founder_row: Dictionary
+	for row: Dictionary in _editor.model.data.props:
+		if row.id == "founder-workstation": founder_row = row
+	var original_founder_grid: Array = founder_row.grid.duplicate()
+	# The new lunch chairs occupy the old east-adjacent preview bay. Keep this
+	# independent anchor test in the clear western bay for the 12px art shift.
+	founder_row.grid = [7, 17]
 	var profile := original_profile.duplicate(true)
 	var offset := Vector2(12, -4)
-	profile["anchor_offset"] = [12, -4]
+	profile.facing_profiles.south["anchor_offset"] = [12, -4]
 	_editor.model.catalog["desk"] = profile
 	_check(_editor.room.set_placement_overrides({}), "Nonzero catalog art anchor retains valid physical placement")
 	_editor._refresh_placements()
@@ -124,7 +131,7 @@ func _test_catalog_anchor() -> void:
 	await _click(click_point)
 	_check(_editor.selected_id == "founder-workstation", "Real hit selection uses shifted art bounds, not the unshifted cell center")
 	await _key(KEY_M)
-	var target: Vector2i = placement.grid + Vector2i.RIGHT
+	var target: Vector2i = placement.grid + Vector2i.LEFT
 	await _move(_editor.ROOM_ORIGIN + _editor.model.world(target))
 	_check(bool(_editor.preview_result.get("valid", false)), "Offset-anchor preview validates after a grid move")
 	var ghost := _editor._candidate.duplicate(true)
@@ -139,14 +146,17 @@ func _test_catalog_anchor() -> void:
 	_check(_editor._preview_layers(placement) == ghost_layers, "Committed native layer rectangles equal the prior preview rectangles")
 	_check(_editor._visual_rect(placement) == _editor._visual_rect(ghost), "Committed art bounds equal the prior preview bounds")
 	await _capture("editor-offset-placed.png")
-	# Research uses row one of a different atlas; preview must not default to the
-	# workstation row or treat the entire atlas as a single giant prop.
+	# Research now uses four registered full-canvas layers; preview must match the
+	# runtime recipe rather than falling back to the historical row-one atlas.
 	_compare_preview_layers(_editor._placement("research-bench"), _editor.room.prop_node("research-bench"))
 	var research_layers := _editor._preview_layers(_editor._placement("research-bench"))
-	_check(research_layers.size() == 2 and research_layers[0].source.position.y == 96, "Research ghost uses its catalog atlas row")
+	_check(research_layers.size() == 4, "Research ghost uses all registered production layers")
+	for layer: Dictionary in research_layers:
+		_check(layer.source == Rect2(0, 0, 192, 320), "Research ghost uses the registered full native canvas")
 	for current: Dictionary in _editor._placements:
 		_compare_preview_layers(current, _editor.room.prop_node(str(current.id)))
 	_editor.model.catalog["desk"] = original_profile
+	founder_row.grid = original_founder_grid
 	_editor.cancel_move()
 	_editor.overrides.clear()
 	_check(_editor.room.set_placement_overrides({}), "Catalog-anchor fixture restores the original runtime layout")

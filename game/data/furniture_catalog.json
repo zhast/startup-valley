@@ -3,7 +3,7 @@
   "furniture": {
     "desk": {
       "display_name": "Workstation",
-      "facings": ["south"],
+      "facings": ["north", "east", "south", "west"],
       "occupied": [[-1, 0], [0, 0], [1, 0]],
       "clearance": [[-1, -1], [0, -1], [1, -1], [0, 1]],
       "interaction": [0, 1],
@@ -15,39 +15,321 @@
       "wall_mount": "none",
       "layers": {"rear_z_offset": -40, "front_z_offset": 1, "seat_z_offset": -32, "shared_origin": true},
       "art": "res://assets/runtime/office/south-workstation.png",
-      "atlas_cell": [128, 112]
+      "atlas_cell": [128, 112],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {"art": true, "geometry": true, "poses": true},
+          "asset_revision": "workstations-v2",
+          "workstation_capability_revision": "workstations-v2:north",
+          "occupied": [[-1, 0], [0, 0], [1, 0]],
+          "clearance": [[-1, 1], [0, 1], [1, 1], [0, -1]],
+          "interaction": [0, -1],
+          "work_cell": [0, 1],
+          "anchor_offset": [0, 0],
+          "visual_bounds": [-48, -73, 96, 109],
+          "hit_bounds": [-48, -73, 96, 109],
+          "work_facing": "north",
+          "seat_anchor": [0, -20],
+          "seat_anchor_by_employee": {"mira": [0, -20], "theo": [0, -16]},
+          "seat_z_offset": 20,
+          "seat_layer_z_offsets": {"upper": 3, "lower": 0},
+          "pose_set": "reviewed-workstations-v2",
+          "seat_pose_depth_lock": true,
+          "seat_state_handoff": {"clearance_pixels": 32},
+          "grounded_work_shadow": true,
+          "grounded_work_shadow_follow_seat_x": true,
+          "render_layers": [
+            {"name": "DeskRear", "art": "res://assets/runtime/office/workstations-v2/desk-north-rear.png", "region": [0, 0, 192, 224], "offset": [0, -48], "z_offset": -1},
+            {"name": "DeskFront", "art": "res://assets/runtime/office/workstations-v2/desk-north-front.png", "region": [0, 0, 192, 224], "offset": [0, -48], "z_offset": 1},
+            {"name": "ChairWhole", "art": "res://assets/runtime/office/workstations-v2/chair-north.png", "region": [0, 0, 96, 160], "offset": [0, -12], "z_offset": -2},
+            {"name": "Keyboard", "art": "res://assets/runtime/office/workstations-v2/keyboard-north.png", "region": [0, 0, 192, 224], "offset": [0, -44], "z_offset": 2},
+            {"name": "Mouse", "art": "res://assets/runtime/office/workstations-v2/mouse-north.png", "region": [0, 0, 192, 224], "offset": [0, -44], "z_offset": 2},
+            {"name": "Monitor", "art": "res://assets/runtime/office/workstations-v2/monitor-north.png", "region": [0, 0, 192, 224], "offset": [0, -58], "z_offset": 2}
+          ],
+          "ambient_overlays": []
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {"art": true, "geometry": true, "poses": true},
+          "asset_revision": "workstations-v2",
+          "workstation_capability_revision": "workstations-v2:east",
+          "occupied": [[0, -1], [0, 0], [0, 1]],
+          "clearance": [[-1, -1], [-1, 0], [-1, 1], [1, 0]],
+          "interaction": [1, 0],
+          "work_cell": [-1, 0],
+          "anchor_offset": [0, 0],
+          "visual_bounds": [-36, -80, 52, 128],
+          "hit_bounds": [-36, -80, 52, 128],
+          "work_facing": "east",
+          "seat_anchor": [12, 3],
+          "seat_anchor_by_employee": {"mira": [12, 3], "theo": [12, 4]},
+          "seat_z_offset": 2,
+          "seat_layer_z_offsets": {"upper": 2, "lower": -4},
+          "pose_set": "reviewed-workstations-v2",
+          "seat_pose_depth_lock": true,
+          "seat_state_handoff": {"clearance_pixels": 32},
+          "grounded_work_shadow": true,
+          "grounded_work_shadow_follow_seat_x": true,
+          "render_layers": [
+            {"name": "DeskRear", "art": "res://assets/runtime/office/workstations-v2/desk-east-rear.png", "region": [0, 0, 192, 224], "offset": [0, -48], "z_offset": -1},
+            {"name": "DeskFront", "art": "res://assets/runtime/office/workstations-v2/desk-east-front.png", "region": [0, 0, 192, 224], "offset": [0, -48], "z_offset": 1},
+            {"name": "ChairRear", "art": "res://assets/runtime/office/workstations-v2/chair-east-rear.png", "region": [0, 0, 96, 160], "offset": [-20, -32], "z_offset": -5},
+            {"name": "ChairNearArm", "art": "res://assets/runtime/office/workstations-v2/chair-east-front.png", "region": [0, 0, 96, 160], "offset": [-20, -32], "z_offset": -3},
+            {"name": "Keyboard", "art": "res://assets/runtime/office/workstations-v2/keyboard-east.png", "region": [0, 0, 192, 224], "offset": [6, -48], "z_offset": 1},
+            {"name": "Mouse", "art": "res://assets/runtime/office/workstations-v2/mouse-east.png", "region": [0, 0, 192, 224], "offset": [6, -48], "z_offset": 1},
+            {"name": "Monitor", "art": "res://assets/runtime/office/workstations-v2/monitor-east.png", "region": [0, 0, 192, 224], "offset": [0, -48], "z_offset": 3}
+          ],
+          "ambient_overlays": []
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {"art": true, "geometry": true, "poses": true},
+          "asset_revision": "workstations-v2",
+          "workstation_capability_revision": "workstations-v2:south",
+          "occupied": [[1, 0], [0, 0], [-1, 0]],
+          "clearance": [[1, -1], [0, -1], [-1, -1], [0, 1]],
+          "interaction": [0, 1],
+          "work_cell": [0, -1],
+          "anchor_offset": [0, 0],
+          "visual_bounds": [-48, -64, 96, 80],
+          "hit_bounds": [-48, -64, 96, 80],
+          "work_facing": "south",
+          "seat_anchor": [0, 12],
+          "seat_anchor_by_employee": {"mira": [0, 12], "theo": [0, 12]},
+          "seat_z_offset": 3,
+          "seat_layer_z_offsets": {"upper": 3, "lower": 0},
+          "pose_set": "reviewed-workstations-v2",
+          "seat_pose_depth_lock": true,
+          "seat_state_handoff": {"clearance_pixels": 32},
+          "grounded_work_shadow": true,
+          "grounded_work_shadow_follow_seat_x": true,
+          "render_layers": [
+            {"name": "DeskRear", "art": "res://assets/runtime/office/workstations-v2/desk-south-rear.png", "region": [0, 0, 192, 224], "offset": [0, -48], "z_offset": -1},
+            {"name": "DeskFront", "art": "res://assets/runtime/office/workstations-v2/desk-south-front.png", "region": [0, 0, 192, 224], "offset": [0, -48], "z_offset": 1},
+            {"name": "ChairWhole", "art": "res://assets/runtime/office/workstations-v2/chair-south.png", "region": [0, 0, 96, 160], "offset": [0, -60], "z_offset": -2},
+            {"name": "Keyboard", "art": "res://assets/runtime/office/workstations-v2/keyboard-south.png", "region": [0, 0, 192, 224], "offset": [0, -48], "z_offset": 2},
+            {"name": "Mouse", "art": "res://assets/runtime/office/workstations-v2/mouse-south.png", "region": [0, 0, 192, 224], "offset": [0, -48], "z_offset": 2},
+            {"name": "Monitor", "art": "res://assets/runtime/office/workstations-v2/monitor-south.png", "region": [0, 0, 192, 224], "offset": [0, -45], "z_offset": 4}
+          ],
+          "ambient_overlays": []
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {"art": true, "geometry": true, "poses": true},
+          "asset_revision": "workstations-v2",
+          "workstation_capability_revision": "workstations-v2:west",
+          "occupied": [[0, 1], [0, 0], [0, -1]],
+          "clearance": [[1, 1], [1, 0], [1, -1], [-1, 0]],
+          "interaction": [-1, 0],
+          "work_cell": [1, 0],
+          "anchor_offset": [0, 0],
+          "visual_bounds": [-16, -80, 52, 128],
+          "hit_bounds": [-16, -80, 52, 128],
+          "work_facing": "west",
+          "seat_anchor": [-12, 4],
+          "seat_anchor_by_employee": {"mira": [-12, 4], "theo": [-12, 8]},
+          "seat_z_offset": 2,
+          "seat_layer_z_offsets": {"upper": 2, "lower": -4},
+          "pose_set": "reviewed-workstations-v2",
+          "seat_pose_depth_lock": true,
+          "seat_state_handoff": {"clearance_pixels": 32},
+          "grounded_work_shadow": true,
+          "grounded_work_shadow_follow_seat_x": true,
+          "render_layers": [
+            {"name": "DeskRear", "art": "res://assets/runtime/office/workstations-v2/desk-west-rear.png", "region": [0, 0, 192, 224], "offset": [0, -48], "z_offset": -1},
+            {"name": "DeskFront", "art": "res://assets/runtime/office/workstations-v2/desk-west-front.png", "region": [0, 0, 192, 224], "offset": [0, -48], "z_offset": 1},
+            {"name": "ChairRear", "art": "res://assets/runtime/office/workstations-v2/chair-west-rear.png", "region": [0, 0, 96, 160], "offset": [20, -32], "z_offset": -5},
+            {"name": "ChairNearArm", "art": "res://assets/runtime/office/workstations-v2/chair-west-front.png", "region": [0, 0, 96, 160], "offset": [20, -32], "z_offset": -3},
+            {"name": "Keyboard", "art": "res://assets/runtime/office/workstations-v2/keyboard-west.png", "region": [0, 0, 192, 224], "offset": [0, -48], "z_offset": 1},
+            {"name": "Mouse", "art": "res://assets/runtime/office/workstations-v2/mouse-west.png", "region": [0, 0, 192, 224], "offset": [0, -48], "z_offset": 1},
+            {"name": "Monitor", "art": "res://assets/runtime/office/workstations-v2/monitor-west.png", "region": [0, 0, 192, 224], "offset": [0, -48], "z_offset": 3}
+          ],
+          "ambient_overlays": []
+        }
+      }
     },
     "coffee_station": {
       "display_name": "Coffee station",
-      "facings": ["south"],
+      "facings": ["north", "east", "south", "west"],
       "occupied": [[-1, 0], [0, 0], [1, 0]],
       "clearance": [[-1, 1], [0, 1], [1, 1]],
       "interaction": [0, 1],
       "interaction_kind": "coffee",
+      "interaction_enabled": false,
       "anchor_offset": [0, 0],
       "visual_bounds": [-71, -92, 142, 94],
       "sprite_offset": [0, -45],
       "wall_mount": "none",
       "layers": {"body_z_offset": 0},
-      "art": "res://assets/runtime/office/coffee-station.png"
+      "art": "res://assets/runtime/office/coffee-station.png",
+      "facing_profiles": {
+        "north": {
+          "profile_kind": "service", "status": "runtime_ready",
+          "review": {"art": true, "geometry": true}, "asset_revision": "coffee-station-v1",
+          "service_side": "north", "approach_gaze": "south", "approach_visual_bounds": [-24, -72, 48, 80],
+          "occupied": [[-1, 0], [0, 0], [1, 0]], "clearance": [[-1, -1], [0, -1], [1, -1]], "interaction": [0, -1],
+          "anchor_offset": [0, 0], "visual_bounds": [-48, -68, 96, 88], "hit_bounds": [-48, -68, 96, 84], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "CoffeeFloorShadow", "art": "res://assets/runtime/office/coffee-station-v1/north-floor_shadow.png", "region": [0, 0, 192, 256], "content_bounds": [51, 205, 90, 7], "offset": [0, -64], "z_offset": -1},
+            {"name": "CoffeeCounterCarcass", "art": "res://assets/runtime/office/coffee-station-v1/north-counter_carcass.png", "region": [0, 0, 192, 256], "content_bounds": [48, 176, 96, 28], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeCounterTop", "art": "res://assets/runtime/office/coffee-station-v1/north-counter_top.png", "region": [0, 0, 192, 256], "content_bounds": [48, 144, 96, 32], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeCounterFront", "art": "res://assets/runtime/office/coffee-station-v1/north-counter_front.png", "region": [0, 0, 192, 256], "content_bounds": [50, 176, 92, 28], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeCounterPlinth", "art": "res://assets/runtime/office/coffee-station-v1/north-counter_plinth.png", "region": [0, 0, 192, 256], "content_bounds": [48, 204, 96, 4], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeServicePanel", "art": "res://assets/runtime/office/coffee-station-v1/north-service_panel.png", "region": [0, 0, 192, 256], "content_bounds": [52, 180, 88, 24], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeServiceware", "art": "res://assets/runtime/office/coffee-station-v1/north-serviceware.png", "region": [0, 0, 192, 256], "content_bounds": [71, 141, 7, 7], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeePlant", "art": "res://assets/runtime/office/coffee-station-v1/north-plant.png", "region": [0, 0, 192, 256], "content_bounds": [121, 142, 15, 25], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeGrinder", "art": "res://assets/runtime/office/coffee-station-v1/north-grinder.png", "region": [0, 0, 192, 256], "content_bounds": [60, 134, 13, 33], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeEspresso", "art": "res://assets/runtime/office/coffee-station-v1/north-espresso.png", "region": [0, 0, 192, 256], "content_bounds": [80, 124, 31, 46], "offset": [0, -64], "z_offset": 0}
+          ]
+        },
+        "east": {
+          "profile_kind": "service", "status": "runtime_ready",
+          "review": {"art": true, "geometry": true}, "asset_revision": "coffee-station-v1",
+          "service_side": "east", "approach_gaze": "west", "approach_visual_bounds": [-24, -72, 48, 80],
+          "occupied": [[0, -1], [0, 0], [0, 1]], "clearance": [[1, -1], [1, 0], [1, 1]], "interaction": [1, 0],
+          "anchor_offset": [0, 0], "visual_bounds": [-16, -90, 32, 142], "hit_bounds": [-16, -90, 32, 138], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "CoffeeFloorShadow", "art": "res://assets/runtime/office/coffee-station-v1/east-floor_shadow.png", "region": [0, 0, 192, 256], "content_bounds": [83, 237, 26, 7], "offset": [0, -64], "z_offset": -1},
+            {"name": "CoffeeCounterCarcass", "art": "res://assets/runtime/office/coffee-station-v1/east-counter_carcass.png", "region": [0, 0, 192, 256], "content_bounds": [80, 208, 32, 28], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeCounterTop", "art": "res://assets/runtime/office/coffee-station-v1/east-counter_top.png", "region": [0, 0, 192, 256], "content_bounds": [80, 112, 32, 96], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeCounterFront", "art": "res://assets/runtime/office/coffee-station-v1/east-counter_front.png", "region": [0, 0, 192, 256], "content_bounds": [82, 208, 28, 28], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeCounterPlinth", "art": "res://assets/runtime/office/coffee-station-v1/east-counter_plinth.png", "region": [0, 0, 192, 256], "content_bounds": [80, 236, 32, 4], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeServicePanel", "art": "res://assets/runtime/office/coffee-station-v1/east-service_panel.png", "region": [0, 0, 192, 256], "content_bounds": [84, 212, 24, 24], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeGrinder", "art": "res://assets/runtime/office/coffee-station-v1/east-grinder.png", "region": [0, 0, 192, 256], "content_bounds": [87, 102, 13, 33], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeServiceware", "art": "res://assets/runtime/office/coffee-station-v1/east-serviceware.png", "region": [0, 0, 192, 256], "content_bounds": [103, 126, 6, 10], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeEspresso", "art": "res://assets/runtime/office/coffee-station-v1/east-espresso.png", "region": [0, 0, 192, 256], "content_bounds": [86, 113, 15, 62], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeePlant", "art": "res://assets/runtime/office/coffee-station-v1/east-plant.png", "region": [0, 0, 192, 256], "content_bounds": [89, 174, 15, 25], "offset": [0, -64], "z_offset": 0}
+          ]
+        },
+        "south": {
+          "profile_kind": "service", "status": "runtime_ready",
+          "review": {"art": true, "geometry": true}, "asset_revision": "coffee-station-v1",
+          "service_side": "south", "approach_gaze": "north", "approach_visual_bounds": [-24, -72, 48, 80],
+          "occupied": [[-1, 0], [0, 0], [1, 0]], "clearance": [[-1, 1], [0, 1], [1, 1]], "interaction": [0, 1],
+          "anchor_offset": [0, 0], "visual_bounds": [-48, -73, 96, 93], "hit_bounds": [-48, -73, 96, 89], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "CoffeeFloorShadow", "art": "res://assets/runtime/office/coffee-station-v1/south-floor_shadow.png", "region": [0, 0, 192, 256], "content_bounds": [51, 205, 90, 7], "offset": [0, -64], "z_offset": -1},
+            {"name": "CoffeeCounterCarcass", "art": "res://assets/runtime/office/coffee-station-v1/south-counter_carcass.png", "region": [0, 0, 192, 256], "content_bounds": [48, 176, 96, 28], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeCounterTop", "art": "res://assets/runtime/office/coffee-station-v1/south-counter_top.png", "region": [0, 0, 192, 256], "content_bounds": [48, 144, 96, 32], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeCounterFront", "art": "res://assets/runtime/office/coffee-station-v1/south-counter_front.png", "region": [0, 0, 192, 256], "content_bounds": [50, 176, 92, 28], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeCounterPlinth", "art": "res://assets/runtime/office/coffee-station-v1/south-counter_plinth.png", "region": [0, 0, 192, 256], "content_bounds": [48, 204, 96, 4], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeServicePanel", "art": "res://assets/runtime/office/coffee-station-v1/south-service_panel.png", "region": [0, 0, 192, 256], "content_bounds": [52, 180, 88, 24], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeGrinder", "art": "res://assets/runtime/office/coffee-station-v1/south-grinder.png", "region": [0, 0, 192, 256], "content_bounds": [119, 129, 13, 33], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeEspresso", "art": "res://assets/runtime/office/coffee-station-v1/south-espresso.png", "region": [0, 0, 192, 256], "content_bounds": [81, 119, 31, 46], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeePlant", "art": "res://assets/runtime/office/coffee-station-v1/south-plant.png", "region": [0, 0, 192, 256], "content_bounds": [56, 140, 15, 25], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeServiceware", "art": "res://assets/runtime/office/coffee-station-v1/south-serviceware.png", "region": [0, 0, 192, 256], "content_bounds": [114, 160, 7, 7], "offset": [0, -64], "z_offset": 0}
+          ]
+        },
+        "west": {
+          "profile_kind": "service", "status": "runtime_ready",
+          "review": {"art": true, "geometry": true}, "asset_revision": "coffee-station-v1",
+          "service_side": "west", "approach_gaze": "east", "approach_visual_bounds": [-24, -72, 48, 80],
+          "occupied": [[0, -1], [0, 0], [0, 1]], "clearance": [[-1, -1], [-1, 0], [-1, 1]], "interaction": [-1, 0],
+          "anchor_offset": [0, 0], "visual_bounds": [-16, -84, 32, 136], "hit_bounds": [-16, -84, 32, 132], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "CoffeeFloorShadow", "art": "res://assets/runtime/office/coffee-station-v1/west-floor_shadow.png", "region": [0, 0, 192, 256], "content_bounds": [83, 237, 26, 7], "offset": [0, -64], "z_offset": -1},
+            {"name": "CoffeeCounterCarcass", "art": "res://assets/runtime/office/coffee-station-v1/west-counter_carcass.png", "region": [0, 0, 192, 256], "content_bounds": [80, 208, 32, 28], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeCounterTop", "art": "res://assets/runtime/office/coffee-station-v1/west-counter_top.png", "region": [0, 0, 192, 256], "content_bounds": [80, 112, 32, 96], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeCounterFront", "art": "res://assets/runtime/office/coffee-station-v1/west-counter_front.png", "region": [0, 0, 192, 256], "content_bounds": [82, 208, 28, 28], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeCounterPlinth", "art": "res://assets/runtime/office/coffee-station-v1/west-counter_plinth.png", "region": [0, 0, 192, 256], "content_bounds": [80, 236, 32, 4], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeServicePanel", "art": "res://assets/runtime/office/coffee-station-v1/west-service_panel.png", "region": [0, 0, 192, 256], "content_bounds": [84, 212, 24, 24], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeePlant", "art": "res://assets/runtime/office/coffee-station-v1/west-plant.png", "region": [0, 0, 192, 256], "content_bounds": [88, 108, 15, 25], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeEspresso", "art": "res://assets/runtime/office/coffee-station-v1/west-espresso.png", "region": [0, 0, 192, 256], "content_bounds": [91, 114, 15, 62], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeServiceware", "art": "res://assets/runtime/office/coffee-station-v1/west-serviceware.png", "region": [0, 0, 192, 256], "content_bounds": [83, 169, 6, 10], "offset": [0, -64], "z_offset": 0},
+            {"name": "CoffeeGrinder", "art": "res://assets/runtime/office/coffee-station-v1/west-grinder.png", "region": [0, 0, 192, 256], "content_bounds": [92, 161, 13, 33], "offset": [0, -64], "z_offset": 0}
+          ]
+        }
+      }
     },
     "collaboration_cluster": {
       "display_name": "Collaboration table",
-      "facings": ["south"],
-      "occupied": [[-2, -1], [-1, -1], [0, -1], [1, -1], [2, -1], [-2, 0], [-1, 0], [0, 0], [1, 0], [2, 0]],
-      "clearance": [[-1, 1], [0, 1], [1, 1]],
-      "interaction": [0, 1],
+      "facings": ["north","east","south","west"],
+      "occupied": [[-2,-1],[-1,-1],[0,-1],[1,-1],[2,-1],[-2,0],[-1,0],[0,0],[1,0],[2,0]],
+      "clearance": [[-1,1],[0,1],[1,1]],
+      "interaction": [0,1],
       "interaction_kind": "collaboration",
-      "anchor_offset": [0, 0],
-      "visual_bounds": [-69, -90, 138, 92],
-      "sprite_offset": [0, -44],
+      "anchor_offset": [0,0],
+      "visual_bounds": [-69,-90,138,92],
+      "sprite_offset": [0,-44],
       "wall_mount": "none",
-      "layers": {"body_z_offset": 0},
-      "art": "res://assets/runtime/office/collaboration-cluster.png"
+      "layers": {"body_z_offset":0},
+      "art": "res://assets/runtime/office/collaboration-cluster.png",
+      "facing_profiles": {
+        "north": {
+          "ambient_overlays": [],
+          "anchor_offset": [0,0],
+          "asset_revision": "collaboration-cluster-v2",
+          "clearance": [[-1,-2],[1,-2],[-1,1],[1,1]],
+          "collaboration_pose_set": "reviewed-workstations-v2",
+          "collaboration_slots": [{"capability_revision":"collaboration-cluster-v2:north","cell":[-1,1],"ground_shadow_z_offset":3,"seat_anchor_by_employee":{"mira":[0,-20],"theo":[0,-16]},"seat_layer_z_offsets":{"lower":7,"upper":10},"seat_z_offset":7,"visual_bounds":[-24,-72,48,80],"work_facing":"north"},{"capability_revision":"collaboration-cluster-v2:south","cell":[1,-2],"ground_shadow_z_offset":-11,"seat_anchor_by_employee":{"mira":[0,12],"theo":[0,12]},"seat_layer_z_offsets":{"lower":-7,"upper":-2},"seat_z_offset":-7,"visual_bounds":[-24,-72,48,80],"work_facing":"south"},{"capability_revision":"collaboration-cluster-v2:north","cell":[1,1],"ground_shadow_z_offset":3,"seat_anchor_by_employee":{"mira":[0,-20],"theo":[0,-16]},"seat_layer_z_offsets":{"lower":7,"upper":10},"seat_z_offset":7,"visual_bounds":[-24,-72,48,80],"work_facing":"north"},{"capability_revision":"collaboration-cluster-v2:south","cell":[-1,-2],"ground_shadow_z_offset":-11,"seat_anchor_by_employee":{"mira":[0,12],"theo":[0,12]},"seat_layer_z_offsets":{"lower":-7,"upper":-2},"seat_z_offset":-7,"visual_bounds":[-24,-72,48,80],"work_facing":"south"}],
+          "hit_bounds": [-80,-96,161,132],
+          "interaction": [-1,1],
+          "occupied": [[-2,-1],[-1,-1],[0,-1],[1,-1],[2,-1],[-2,0],[-1,0],[0,0],[1,0],[2,0]],
+          "profile_kind": "collaboration",
+          "reference_gaze": "north",
+          "render_layers": [{"art":"res://assets/runtime/office/collaboration-cluster-v2/north-table_floor_shadow.png","name":"TableFloorShadow","offset":[0,-40],"region":[0,0,256,272],"z_offset":-12},{"art":"res://assets/runtime/office/collaboration-cluster-v2/north-table_rear_structure.png","name":"TableRearStructure","offset":[0,-40],"region":[0,0,256,272],"z_offset":0},{"art":"res://assets/runtime/office/collaboration-cluster-v2/north-table_front_structure.png","name":"TableFrontStructure","offset":[0,-40],"region":[0,0,256,272],"z_offset":3},{"art":"res://assets/runtime/office/collaboration-cluster-v2/north-north_chair_0_whole.png","name":"NorthChair0Whole","offset":[0,-40],"region":[0,0,256,272],"z_offset":-9},{"art":"res://assets/runtime/office/collaboration-cluster-v2/north-south_chair_0_whole.png","name":"SouthChair0Whole","offset":[0,-40],"region":[0,0,256,272],"z_offset":5},{"art":"res://assets/runtime/office/collaboration-cluster-v2/north-north_chair_1_whole.png","name":"NorthChair1Whole","offset":[0,-40],"region":[0,0,256,272],"z_offset":-9},{"art":"res://assets/runtime/office/collaboration-cluster-v2/north-south_chair_1_whole.png","name":"SouthChair1Whole","offset":[0,-40],"region":[0,0,256,272],"z_offset":5}],
+          "review": {"art":true,"geometry":true,"poses":true},
+          "status": "runtime_ready",
+          "visual_bounds": [-80,-96,161,132]
+        },
+        "east": {
+          "ambient_overlays": [],
+          "anchor_offset": [0,0],
+          "asset_revision": "collaboration-cluster-v2",
+          "clearance": [[-1,-1],[-1,1],[2,-1],[2,1]],
+          "collaboration_pose_set": "reviewed-workstations-v2",
+          "collaboration_slots": [{"capability_revision":"collaboration-cluster-v2:east","cell":[-1,-1],"ground_shadow_z_offset":-11,"seat_anchor_by_employee":{"mira":[12,3],"theo":[12,4]},"seat_layer_z_offsets":{"lower":-7,"upper":2},"seat_z_offset":-7,"visual_bounds":[-24,-72,48,80],"work_facing":"east"},{"capability_revision":"collaboration-cluster-v2:west","cell":[2,1],"ground_shadow_z_offset":3,"seat_anchor_by_employee":{"mira":[-12,4],"theo":[-12,8]},"seat_layer_z_offsets":{"lower":7,"upper":10},"seat_z_offset":7,"visual_bounds":[-24,-72,48,80],"work_facing":"west"},{"capability_revision":"collaboration-cluster-v2:east","cell":[-1,1],"ground_shadow_z_offset":3,"seat_anchor_by_employee":{"mira":[12,3],"theo":[12,4]},"seat_layer_z_offsets":{"lower":7,"upper":10},"seat_z_offset":7,"visual_bounds":[-24,-72,48,80],"work_facing":"east"},{"capability_revision":"collaboration-cluster-v2:west","cell":[2,-1],"ground_shadow_z_offset":-11,"seat_anchor_by_employee":{"mira":[-12,4],"theo":[-12,8]},"seat_layer_z_offsets":{"lower":-7,"upper":2},"seat_z_offset":-7,"visual_bounds":[-24,-72,48,80],"work_facing":"west"}],
+          "hit_bounds": [-36,-112,104,193],
+          "interaction": [-1,-1],
+          "occupied": [[0,-2],[0,-1],[0,0],[0,1],[0,2],[1,-2],[1,-1],[1,0],[1,1],[1,2]],
+          "profile_kind": "collaboration",
+          "reference_gaze": "east",
+          "render_layers": [{"art":"res://assets/runtime/office/collaboration-cluster-v2/east-table_floor_shadow.png","name":"TableFloorShadow","offset":[0,-40],"region":[0,0,256,272],"z_offset":-12},{"art":"res://assets/runtime/office/collaboration-cluster-v2/east-table_rear_structure.png","name":"TableRearStructure","offset":[0,-40],"region":[0,0,256,272],"z_offset":0},{"art":"res://assets/runtime/office/collaboration-cluster-v2/east-table_front_structure.png","name":"TableFrontStructure","offset":[0,-40],"region":[0,0,256,272],"z_offset":3},{"art":"res://assets/runtime/office/collaboration-cluster-v2/east-west_chair_0_rear.png","name":"WestChair0Rear","offset":[0,-40],"region":[0,0,256,272],"z_offset":-10},{"art":"res://assets/runtime/office/collaboration-cluster-v2/east-west_chair_0_front.png","name":"WestChair0Front","offset":[0,-40],"region":[0,0,256,272],"z_offset":-8},{"art":"res://assets/runtime/office/collaboration-cluster-v2/east-east_chair_0_rear.png","name":"EastChair0Rear","offset":[0,-40],"region":[0,0,256,272],"z_offset":-10},{"art":"res://assets/runtime/office/collaboration-cluster-v2/east-east_chair_0_front.png","name":"EastChair0Front","offset":[0,-40],"region":[0,0,256,272],"z_offset":-8},{"art":"res://assets/runtime/office/collaboration-cluster-v2/east-west_chair_1_rear.png","name":"WestChair1Rear","offset":[0,-40],"region":[0,0,256,272],"z_offset":4},{"art":"res://assets/runtime/office/collaboration-cluster-v2/east-west_chair_1_front.png","name":"WestChair1Front","offset":[0,-40],"region":[0,0,256,272],"z_offset":6},{"art":"res://assets/runtime/office/collaboration-cluster-v2/east-east_chair_1_rear.png","name":"EastChair1Rear","offset":[0,-40],"region":[0,0,256,272],"z_offset":4},{"art":"res://assets/runtime/office/collaboration-cluster-v2/east-east_chair_1_front.png","name":"EastChair1Front","offset":[0,-40],"region":[0,0,256,272],"z_offset":6}],
+          "review": {"art":true,"geometry":true,"poses":true},
+          "status": "runtime_ready",
+          "visual_bounds": [-36,-112,104,193]
+        },
+        "south": {
+          "ambient_overlays": [],
+          "anchor_offset": [0,0],
+          "asset_revision": "collaboration-cluster-v2",
+          "clearance": [[-1,-1],[1,-1],[-1,2],[1,2]],
+          "collaboration_pose_set": "reviewed-workstations-v2",
+          "collaboration_slots": [{"capability_revision":"collaboration-cluster-v2:south","cell":[-1,-1],"ground_shadow_z_offset":-11,"seat_anchor_by_employee":{"mira":[0,12],"theo":[0,12]},"seat_layer_z_offsets":{"lower":-7,"upper":-2},"seat_z_offset":-7,"visual_bounds":[-24,-72,48,80],"work_facing":"south"},{"capability_revision":"collaboration-cluster-v2:north","cell":[1,2],"ground_shadow_z_offset":3,"seat_anchor_by_employee":{"mira":[0,-20],"theo":[0,-16]},"seat_layer_z_offsets":{"lower":7,"upper":10},"seat_z_offset":7,"visual_bounds":[-24,-72,48,80],"work_facing":"north"},{"capability_revision":"collaboration-cluster-v2:south","cell":[1,-1],"ground_shadow_z_offset":-11,"seat_anchor_by_employee":{"mira":[0,12],"theo":[0,12]},"seat_layer_z_offsets":{"lower":-7,"upper":-2},"seat_z_offset":-7,"visual_bounds":[-24,-72,48,80],"work_facing":"south"},{"capability_revision":"collaboration-cluster-v2:north","cell":[-1,2],"ground_shadow_z_offset":3,"seat_anchor_by_employee":{"mira":[0,-20],"theo":[0,-16]},"seat_layer_z_offsets":{"lower":7,"upper":10},"seat_z_offset":7,"visual_bounds":[-24,-72,48,80],"work_facing":"north"}],
+          "hit_bounds": [-80,-64,161,132],
+          "interaction": [-1,-1],
+          "occupied": [[-2,0],[-1,0],[0,0],[1,0],[2,0],[-2,1],[-1,1],[0,1],[1,1],[2,1]],
+          "profile_kind": "collaboration",
+          "reference_gaze": "south",
+          "render_layers": [{"art":"res://assets/runtime/office/collaboration-cluster-v2/south-table_floor_shadow.png","name":"TableFloorShadow","offset":[0,-40],"region":[0,0,256,272],"z_offset":-12},{"art":"res://assets/runtime/office/collaboration-cluster-v2/south-table_rear_structure.png","name":"TableRearStructure","offset":[0,-40],"region":[0,0,256,272],"z_offset":0},{"art":"res://assets/runtime/office/collaboration-cluster-v2/south-table_front_structure.png","name":"TableFrontStructure","offset":[0,-40],"region":[0,0,256,272],"z_offset":3},{"art":"res://assets/runtime/office/collaboration-cluster-v2/south-north_chair_0_whole.png","name":"NorthChair0Whole","offset":[0,-40],"region":[0,0,256,272],"z_offset":-9},{"art":"res://assets/runtime/office/collaboration-cluster-v2/south-south_chair_0_whole.png","name":"SouthChair0Whole","offset":[0,-40],"region":[0,0,256,272],"z_offset":5},{"art":"res://assets/runtime/office/collaboration-cluster-v2/south-north_chair_1_whole.png","name":"NorthChair1Whole","offset":[0,-40],"region":[0,0,256,272],"z_offset":-9},{"art":"res://assets/runtime/office/collaboration-cluster-v2/south-south_chair_1_whole.png","name":"SouthChair1Whole","offset":[0,-40],"region":[0,0,256,272],"z_offset":5}],
+          "review": {"art":true,"geometry":true,"poses":true},
+          "status": "runtime_ready",
+          "visual_bounds": [-80,-64,161,132]
+        },
+        "west": {
+          "ambient_overlays": [],
+          "anchor_offset": [0,0],
+          "asset_revision": "collaboration-cluster-v2",
+          "clearance": [[-2,-1],[-2,1],[1,-1],[1,1]],
+          "collaboration_pose_set": "reviewed-workstations-v2",
+          "collaboration_slots": [{"capability_revision":"collaboration-cluster-v2:west","cell":[1,-1],"ground_shadow_z_offset":-11,"seat_anchor_by_employee":{"mira":[-12,4],"theo":[-12,8]},"seat_layer_z_offsets":{"lower":-7,"upper":2},"seat_z_offset":-7,"visual_bounds":[-24,-72,48,80],"work_facing":"west"},{"capability_revision":"collaboration-cluster-v2:east","cell":[-2,1],"ground_shadow_z_offset":3,"seat_anchor_by_employee":{"mira":[12,3],"theo":[12,4]},"seat_layer_z_offsets":{"lower":7,"upper":10},"seat_z_offset":7,"visual_bounds":[-24,-72,48,80],"work_facing":"east"},{"capability_revision":"collaboration-cluster-v2:west","cell":[1,1],"ground_shadow_z_offset":3,"seat_anchor_by_employee":{"mira":[-12,4],"theo":[-12,8]},"seat_layer_z_offsets":{"lower":7,"upper":10},"seat_z_offset":7,"visual_bounds":[-24,-72,48,80],"work_facing":"west"},{"capability_revision":"collaboration-cluster-v2:east","cell":[-2,-1],"ground_shadow_z_offset":-11,"seat_anchor_by_employee":{"mira":[12,3],"theo":[12,4]},"seat_layer_z_offsets":{"lower":-7,"upper":2},"seat_z_offset":-7,"visual_bounds":[-24,-72,48,80],"work_facing":"east"}],
+          "hit_bounds": [-68,-112,104,193],
+          "interaction": [1,-1],
+          "occupied": [[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[0,-2],[0,-1],[0,0],[0,1],[0,2]],
+          "profile_kind": "collaboration",
+          "reference_gaze": "west",
+          "render_layers": [{"art":"res://assets/runtime/office/collaboration-cluster-v2/west-table_floor_shadow.png","name":"TableFloorShadow","offset":[0,-40],"region":[0,0,256,272],"z_offset":-12},{"art":"res://assets/runtime/office/collaboration-cluster-v2/west-table_rear_structure.png","name":"TableRearStructure","offset":[0,-40],"region":[0,0,256,272],"z_offset":0},{"art":"res://assets/runtime/office/collaboration-cluster-v2/west-table_front_structure.png","name":"TableFrontStructure","offset":[0,-40],"region":[0,0,256,272],"z_offset":3},{"art":"res://assets/runtime/office/collaboration-cluster-v2/west-west_chair_0_rear.png","name":"WestChair0Rear","offset":[0,-40],"region":[0,0,256,272],"z_offset":-10},{"art":"res://assets/runtime/office/collaboration-cluster-v2/west-west_chair_0_front.png","name":"WestChair0Front","offset":[0,-40],"region":[0,0,256,272],"z_offset":-8},{"art":"res://assets/runtime/office/collaboration-cluster-v2/west-east_chair_0_rear.png","name":"EastChair0Rear","offset":[0,-40],"region":[0,0,256,272],"z_offset":-10},{"art":"res://assets/runtime/office/collaboration-cluster-v2/west-east_chair_0_front.png","name":"EastChair0Front","offset":[0,-40],"region":[0,0,256,272],"z_offset":-8},{"art":"res://assets/runtime/office/collaboration-cluster-v2/west-west_chair_1_rear.png","name":"WestChair1Rear","offset":[0,-40],"region":[0,0,256,272],"z_offset":4},{"art":"res://assets/runtime/office/collaboration-cluster-v2/west-west_chair_1_front.png","name":"WestChair1Front","offset":[0,-40],"region":[0,0,256,272],"z_offset":6},{"art":"res://assets/runtime/office/collaboration-cluster-v2/west-east_chair_1_rear.png","name":"EastChair1Rear","offset":[0,-40],"region":[0,0,256,272],"z_offset":4},{"art":"res://assets/runtime/office/collaboration-cluster-v2/west-east_chair_1_front.png","name":"EastChair1Front","offset":[0,-40],"region":[0,0,256,272],"z_offset":6}],
+          "review": {"art":true,"geometry":true,"poses":true},
+          "status": "runtime_ready",
+          "visual_bounds": [-68,-112,104,193]
+        }
+      },
+      "interaction_enabled": false
     },
     "artifact_archive": {
       "display_name": "Artifact archive",
-      "facings": ["south"],
+      "facings": ["north", "east", "south", "west"],
       "occupied": [[-1, 0], [0, 0], [1, 0]],
       "clearance": [[-1, 1], [0, 1], [1, 1]],
       "interaction": [0, 1],
@@ -57,27 +339,147 @@
       "sprite_offset": [0, -43],
       "wall_mount": "none",
       "layers": {"body_z_offset": 0},
-      "art": "res://assets/runtime/office/artifact-archive.png"
+      "art": "res://assets/runtime/office/artifact-archive.png",
+      "facing_profiles": {
+        "north": {
+          "profile_kind": "service", "status": "runtime_ready",
+          "review": {"art": true, "geometry": true}, "asset_revision": "archive-v1",
+          "service_side": "north", "approach_gaze": "south",
+          "approach_visual_bounds": [-24, -72, 48, 80],
+          "occupied": [[-1, 0], [0, 0], [1, 0]],
+          "clearance": [[-1, -1], [0, -1], [1, -1]],
+          "interaction": [0, -1], "anchor_offset": [0, 0],
+          "visual_bounds": [-48, -80, 96, 96], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "ArchiveCarcass", "art": "res://assets/runtime/office/archive-v1/north-carcass.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0},
+            {"name": "ArchiveTop", "art": "res://assets/runtime/office/archive-v1/north-top.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0},
+            {"name": "ArchiveFront", "art": "res://assets/runtime/office/archive-v1/north-front.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0},
+            {"name": "ArchivePlinth", "art": "res://assets/runtime/office/archive-v1/north-plinth.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0},
+            {"name": "ArchiveInsert", "art": "res://assets/runtime/office/archive-v1/north-insert.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0}
+          ]
+        },
+        "east": {
+          "profile_kind": "service", "status": "runtime_ready",
+          "review": {"art": true, "geometry": true}, "asset_revision": "archive-v1",
+          "service_side": "east", "approach_gaze": "west",
+          "approach_visual_bounds": [-24, -72, 48, 80],
+          "occupied": [[0, -1], [0, 0], [0, 1]],
+          "clearance": [[1, -1], [1, 0], [1, 1]],
+          "interaction": [1, 0], "anchor_offset": [0, 0],
+          "visual_bounds": [-16, -112, 32, 160], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "ArchiveCarcass", "art": "res://assets/runtime/office/archive-v1/east-carcass.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0},
+            {"name": "ArchiveTop", "art": "res://assets/runtime/office/archive-v1/east-top.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0},
+            {"name": "ArchiveFront", "art": "res://assets/runtime/office/archive-v1/east-front.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0},
+            {"name": "ArchivePlinth", "art": "res://assets/runtime/office/archive-v1/east-plinth.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0},
+            {"name": "ArchiveInsert", "art": "res://assets/runtime/office/archive-v1/east-insert.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0}
+          ]
+        },
+        "south": {
+          "profile_kind": "service", "status": "runtime_ready",
+          "review": {"art": true, "geometry": true}, "asset_revision": "archive-v1",
+          "service_side": "south", "approach_gaze": "north",
+          "approach_visual_bounds": [-24, -72, 48, 80],
+          "occupied": [[-1, 0], [0, 0], [1, 0]],
+          "clearance": [[-1, 1], [0, 1], [1, 1]],
+          "interaction": [0, 1], "anchor_offset": [0, 0],
+          "visual_bounds": [-48, -80, 96, 96], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "ArchiveCarcass", "art": "res://assets/runtime/office/archive-v1/south-carcass.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0},
+            {"name": "ArchiveTop", "art": "res://assets/runtime/office/archive-v1/south-top.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0},
+            {"name": "ArchiveFront", "art": "res://assets/runtime/office/archive-v1/south-front.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0},
+            {"name": "ArchivePlinth", "art": "res://assets/runtime/office/archive-v1/south-plinth.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0},
+            {"name": "ArchiveInsert", "art": "res://assets/runtime/office/archive-v1/south-insert.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0}
+          ]
+        },
+        "west": {
+          "profile_kind": "service", "status": "runtime_ready",
+          "review": {"art": true, "geometry": true}, "asset_revision": "archive-v1",
+          "service_side": "west", "approach_gaze": "east",
+          "approach_visual_bounds": [-24, -72, 48, 80],
+          "occupied": [[0, -1], [0, 0], [0, 1]],
+          "clearance": [[-1, -1], [-1, 0], [-1, 1]],
+          "interaction": [-1, 0], "anchor_offset": [0, 0],
+          "visual_bounds": [-16, -112, 32, 160], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "ArchiveCarcass", "art": "res://assets/runtime/office/archive-v1/west-carcass.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0},
+            {"name": "ArchiveTop", "art": "res://assets/runtime/office/archive-v1/west-top.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0},
+            {"name": "ArchiveFront", "art": "res://assets/runtime/office/archive-v1/west-front.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0},
+            {"name": "ArchivePlinth", "art": "res://assets/runtime/office/archive-v1/west-plinth.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0},
+            {"name": "ArchiveInsert", "art": "res://assets/runtime/office/archive-v1/west-insert.png", "region": [0, 0, 192, 288], "offset": [0, -80], "z_offset": 0}
+          ]
+        }
+      }
     },
     "research_table": {
       "display_name": "Research bench",
-      "facings": ["south"],
+      "facings": ["north", "east", "south", "west"],
       "occupied": [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0]],
       "clearance": [[-1, 1], [0, 1], [1, 1]],
       "interaction": [0, 1],
       "interaction_kind": "research",
       "anchor_offset": [0, 0],
-      "visual_bounds": [-64, -88, 128, 96],
-      "sprite_offset": [0, -40],
+      "visual_bounds": [-58, -135, 116, 143],
       "wall_mount": "none",
-      "layers": {"rear_z_offset": -40, "front_z_offset": 1, "shared_origin": true},
       "art": "res://assets/runtime/office/layered-furniture.png",
-      "atlas_cell": [128, 96],
-      "atlas_row": 1
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready", "review": {"art": true, "geometry": true, "poses": true}, "asset_revision": "research-bench-v1",
+          "occupied": [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0]], "clearance": [[-1, 1], [0, 1], [1, 1]],
+          "interaction": [0, 1], "work_cell": [0, 1], "anchor_offset": [0, 0], "work_facing": "north",
+          "seat_anchor": [0, 0], "seat_z_offset": 0, "pose_set": "reviewed-workstations-v2",
+          "visual_bounds": [-58, -135, 116, 143], "hit_bounds": [-58, -135, 116, 143], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "FloorShadow", "art": "res://assets/runtime/office/research-bench-v1/north-floor_shadow.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": -1},
+            {"name": "RearStructure", "art": "res://assets/runtime/office/research-bench-v1/north-rear_structure.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": -1},
+            {"name": "FrontStructure", "art": "res://assets/runtime/office/research-bench-v1/north-front_structure.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": 1},
+            {"name": "ToolOverlay", "art": "res://assets/runtime/office/research-bench-v1/north-tool_overlay.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": 2}
+          ]
+        },
+        "east": {
+          "status": "runtime_ready", "review": {"art": true, "geometry": true, "poses": true}, "asset_revision": "research-bench-v1",
+          "occupied": [[0, -1], [0, 0], [0, 1], [1, -1], [1, 0], [1, 1]], "clearance": [[-1, -1], [-1, 0], [-1, 1]],
+          "interaction": [-1, 0], "work_cell": [-1, 0], "anchor_offset": [0, 0], "work_facing": "east",
+          "seat_anchor": [0, 0], "seat_z_offset": 0, "pose_set": "reviewed-workstations-v2",
+          "visual_bounds": [-47, -151, 86, 160], "hit_bounds": [-47, -151, 86, 160], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "FloorShadow", "art": "res://assets/runtime/office/research-bench-v1/east-floor_shadow.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": -1},
+            {"name": "RearStructure", "art": "res://assets/runtime/office/research-bench-v1/east-rear_structure.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": -1},
+            {"name": "FrontStructure", "art": "res://assets/runtime/office/research-bench-v1/east-front_structure.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": -1},
+            {"name": "ToolOverlay", "art": "res://assets/runtime/office/research-bench-v1/east-tool_overlay.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": -1}
+          ]
+        },
+        "south": {
+          "status": "runtime_ready", "review": {"art": true, "geometry": true, "poses": true}, "asset_revision": "research-bench-v1",
+          "occupied": [[-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1], [1, 1]], "clearance": [[-1, -1], [0, -1], [1, -1]],
+          "interaction": [0, -1], "work_cell": [0, -1], "anchor_offset": [0, 0], "work_facing": "south",
+          "seat_anchor": [0, 0], "seat_z_offset": 0, "pose_set": "reviewed-workstations-v2",
+          "visual_bounds": [-58, -135, 116, 143], "hit_bounds": [-58, -135, 116, 143], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "FloorShadow", "art": "res://assets/runtime/office/research-bench-v1/south-floor_shadow.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": -40},
+            {"name": "RearStructure", "art": "res://assets/runtime/office/research-bench-v1/south-rear_structure.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": -40},
+            {"name": "FrontStructure", "art": "res://assets/runtime/office/research-bench-v1/south-front_structure.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": 1},
+            {"name": "ToolOverlay", "art": "res://assets/runtime/office/research-bench-v1/south-tool_overlay.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": -39}
+          ]
+        },
+        "west": {
+          "status": "runtime_ready", "review": {"art": true, "geometry": true, "poses": true}, "asset_revision": "research-bench-v1",
+          "occupied": [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 0], [0, 1]], "clearance": [[1, -1], [1, 0], [1, 1]],
+          "interaction": [1, 0], "work_cell": [1, 0], "anchor_offset": [0, 0], "work_facing": "west",
+          "seat_anchor": [0, 0], "seat_z_offset": 0, "pose_set": "reviewed-workstations-v2",
+          "visual_bounds": [-43, -151, 90, 160], "hit_bounds": [-43, -151, 90, 160], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "FloorShadow", "art": "res://assets/runtime/office/research-bench-v1/west-floor_shadow.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": -1},
+            {"name": "RearStructure", "art": "res://assets/runtime/office/research-bench-v1/west-rear_structure.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": -1},
+            {"name": "FrontStructure", "art": "res://assets/runtime/office/research-bench-v1/west-front_structure.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": -1},
+            {"name": "ToolOverlay", "art": "res://assets/runtime/office/research-bench-v1/west-tool_overlay.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": -1}
+          ]
+        }
+      }
     },
     "approval_console": {
       "display_name": "Approval console",
-      "facings": ["south"],
+      "facings": ["north", "east", "south", "west"],
       "occupied": [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0]],
       "clearance": [[-1, 1], [0, 1], [1, 1]],
       "interaction": [0, 1],
@@ -87,11 +489,69 @@
       "sprite_offset": [0, -42],
       "wall_mount": "none",
       "layers": {"body_z_offset": 0},
-      "art": "res://assets/runtime/office/approval-console.png"
+      "art": "res://assets/runtime/office/approval-console.png",
+      "facing_profiles": {
+        "north": {
+          "profile_kind": "service", "status": "runtime_ready",
+          "review": {"art": true, "geometry": true}, "asset_revision": "approval-console-v1",
+          "service_side": "north", "approach_gaze": "south", "approach_visual_bounds": [-24, -72, 48, 80],
+          "occupied": [[-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1], [1, 1]],
+          "clearance": [[-1, -1], [0, -1], [1, -1]], "interaction": [0, -1],
+          "anchor_offset": [0, 0], "visual_bounds": [-48, -100, 97, 107], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "FloorShadow", "art": "res://assets/runtime/office/approval-console-v1/north-floor_shadow.png", "region": [0, 0, 192, 288], "offset": [0, -64], "z_offset": -1},
+            {"name": "RearStructure", "art": "res://assets/runtime/office/approval-console-v1/north-rear_structure.png", "region": [0, 0, 192, 288], "offset": [0, -64], "z_offset": -1},
+            {"name": "FrontStructure", "art": "res://assets/runtime/office/approval-console-v1/north-front_structure.png", "region": [0, 0, 192, 288], "offset": [0, -64], "z_offset": 1},
+            {"name": "AmbientOverlay", "art": "res://assets/runtime/office/approval-console-v1/north-ambient_overlay.png", "region": [0, 0, 192, 288], "offset": [0, -64], "z_offset": 2}
+          ]
+        },
+        "east": {
+          "profile_kind": "service", "status": "runtime_ready",
+          "review": {"art": true, "geometry": true}, "asset_revision": "approval-console-v1",
+          "service_side": "east", "approach_gaze": "west", "approach_visual_bounds": [-24, -72, 48, 80],
+          "occupied": [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 0], [0, 1]],
+          "clearance": [[1, -1], [1, 0], [1, 1]], "interaction": [1, 0],
+          "anchor_offset": [0, 0], "visual_bounds": [-30, -112, 78, 120], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "FloorShadow", "art": "res://assets/runtime/office/approval-console-v1/east-floor_shadow.png", "region": [0, 0, 192, 288], "offset": [0, -64], "z_offset": -1},
+            {"name": "RearStructure", "art": "res://assets/runtime/office/approval-console-v1/east-rear_structure.png", "region": [0, 0, 192, 288], "offset": [0, -64], "z_offset": -1},
+            {"name": "FrontStructure", "art": "res://assets/runtime/office/approval-console-v1/east-front_structure.png", "region": [0, 0, 192, 288], "offset": [0, -64], "z_offset": 1},
+            {"name": "AmbientOverlay", "art": "res://assets/runtime/office/approval-console-v1/east-ambient_overlay.png", "region": [0, 0, 192, 288], "offset": [0, -64], "z_offset": 2}
+          ]
+        },
+        "south": {
+          "profile_kind": "service", "status": "runtime_ready",
+          "review": {"art": true, "geometry": true}, "asset_revision": "approval-console-v1",
+          "service_side": "south", "approach_gaze": "north", "approach_visual_bounds": [-24, -72, 48, 80],
+          "occupied": [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0]],
+          "clearance": [[-1, 1], [0, 1], [1, 1]], "interaction": [0, 1],
+          "anchor_offset": [0, 0], "visual_bounds": [-48, -100, 97, 107], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "FloorShadow", "art": "res://assets/runtime/office/approval-console-v1/south-floor_shadow.png", "region": [0, 0, 192, 288], "offset": [0, -64], "z_offset": -1},
+            {"name": "RearStructure", "art": "res://assets/runtime/office/approval-console-v1/south-rear_structure.png", "region": [0, 0, 192, 288], "offset": [0, -64], "z_offset": -1},
+            {"name": "FrontStructure", "art": "res://assets/runtime/office/approval-console-v1/south-front_structure.png", "region": [0, 0, 192, 288], "offset": [0, -64], "z_offset": 1},
+            {"name": "AmbientOverlay", "art": "res://assets/runtime/office/approval-console-v1/south-ambient_overlay.png", "region": [0, 0, 192, 288], "offset": [0, -64], "z_offset": 2}
+          ]
+        },
+        "west": {
+          "profile_kind": "service", "status": "runtime_ready",
+          "review": {"art": true, "geometry": true}, "asset_revision": "approval-console-v1",
+          "service_side": "west", "approach_gaze": "east", "approach_visual_bounds": [-24, -72, 48, 80],
+          "occupied": [[0, -1], [0, 0], [0, 1], [1, -1], [1, 0], [1, 1]],
+          "clearance": [[-1, -1], [-1, 0], [-1, 1]], "interaction": [-1, 0],
+          "anchor_offset": [0, 0], "visual_bounds": [-48, -112, 78, 120], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "FloorShadow", "art": "res://assets/runtime/office/approval-console-v1/west-floor_shadow.png", "region": [0, 0, 192, 288], "offset": [0, -64], "z_offset": -1},
+            {"name": "RearStructure", "art": "res://assets/runtime/office/approval-console-v1/west-rear_structure.png", "region": [0, 0, 192, 288], "offset": [0, -64], "z_offset": -1},
+            {"name": "FrontStructure", "art": "res://assets/runtime/office/approval-console-v1/west-front_structure.png", "region": [0, 0, 192, 288], "offset": [0, -64], "z_offset": 1},
+            {"name": "AmbientOverlay", "art": "res://assets/runtime/office/approval-console-v1/west-ambient_overlay.png", "region": [0, 0, 192, 288], "offset": [0, -64], "z_offset": 2}
+          ]
+        }
+      }
     },
     "prototype_bench": {
       "display_name": "Prototype bench",
-      "facings": ["south"],
+      "facings": ["north", "east", "south", "west"],
       "occupied": [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0]],
       "clearance": [[-1, 1], [0, 1], [1, 1]],
       "interaction": [0, 1],
@@ -101,7 +561,57 @@
       "sprite_offset": [0, -68],
       "wall_mount": "none",
       "layers": {"body_z_offset": 0},
-      "art": "res://assets/runtime/office/prototype-bench.png"
+      "art": "res://assets/runtime/office/prototype-bench.png",
+      "facing_profiles": {
+        "north": {
+          "profile_kind": "service", "status": "runtime_ready", "review": {"art": true, "geometry": true}, "asset_revision": "prototype-bench-v1",
+          "service_side": "north", "approach_gaze": "south", "approach_visual_bounds": [-24, -72, 48, 80],
+          "occupied": [[-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1], [1, 1]], "clearance": [[-1, -1], [0, -1], [1, -1]], "interaction": [0, -1],
+          "anchor_offset": [0, 0], "visual_bounds": [-58, -142, 116, 149], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "FloorShadow", "art": "res://assets/runtime/office/prototype-bench-v1/north-floor_shadow.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": -1},
+            {"name": "RearStructure", "art": "res://assets/runtime/office/prototype-bench-v1/north-rear_structure.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": 0},
+            {"name": "FrontStructure", "art": "res://assets/runtime/office/prototype-bench-v1/north-front_structure.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": 1},
+            {"name": "ToolOverlay", "art": "res://assets/runtime/office/prototype-bench-v1/north-tool_overlay.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": 2}
+          ]
+        },
+        "east": {
+          "profile_kind": "service", "status": "runtime_ready", "review": {"art": true, "geometry": true}, "asset_revision": "prototype-bench-v1",
+          "service_side": "east", "approach_gaze": "west", "approach_visual_bounds": [-24, -72, 48, 80],
+          "occupied": [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 0], [0, 1]], "clearance": [[1, -1], [1, 0], [1, 1]], "interaction": [1, 0],
+          "anchor_offset": [0, 0], "visual_bounds": [-48, -150, 94, 158], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "FloorShadow", "art": "res://assets/runtime/office/prototype-bench-v1/east-floor_shadow.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": -1},
+            {"name": "RearStructure", "art": "res://assets/runtime/office/prototype-bench-v1/east-rear_structure.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": 0},
+            {"name": "FrontStructure", "art": "res://assets/runtime/office/prototype-bench-v1/east-front_structure.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": 1},
+            {"name": "ToolOverlay", "art": "res://assets/runtime/office/prototype-bench-v1/east-tool_overlay.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": 2}
+          ]
+        },
+        "south": {
+          "profile_kind": "service", "status": "runtime_ready", "review": {"art": true, "geometry": true}, "asset_revision": "prototype-bench-v1",
+          "service_side": "south", "approach_gaze": "north", "approach_visual_bounds": [-24, -72, 48, 80],
+          "occupied": [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0]], "clearance": [[-1, 1], [0, 1], [1, 1]], "interaction": [0, 1],
+          "anchor_offset": [0, 0], "visual_bounds": [-58, -142, 116, 149], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "FloorShadow", "art": "res://assets/runtime/office/prototype-bench-v1/south-floor_shadow.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": -1},
+            {"name": "RearStructure", "art": "res://assets/runtime/office/prototype-bench-v1/south-rear_structure.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": 0},
+            {"name": "FrontStructure", "art": "res://assets/runtime/office/prototype-bench-v1/south-front_structure.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": 1},
+            {"name": "ToolOverlay", "art": "res://assets/runtime/office/prototype-bench-v1/south-tool_overlay.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": 2}
+          ]
+        },
+        "west": {
+          "profile_kind": "service", "status": "runtime_ready", "review": {"art": true, "geometry": true}, "asset_revision": "prototype-bench-v1",
+          "service_side": "west", "approach_gaze": "east", "approach_visual_bounds": [-24, -72, 48, 80],
+          "occupied": [[0, -1], [0, 0], [0, 1], [1, -1], [1, 0], [1, 1]], "clearance": [[-1, -1], [-1, 0], [-1, 1]], "interaction": [-1, 0],
+          "anchor_offset": [0, 0], "visual_bounds": [-46, -150, 96, 158], "ambient_overlays": [],
+          "render_layers": [
+            {"name": "FloorShadow", "art": "res://assets/runtime/office/prototype-bench-v1/west-floor_shadow.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": -1},
+            {"name": "RearStructure", "art": "res://assets/runtime/office/prototype-bench-v1/west-rear_structure.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": 0},
+            {"name": "FrontStructure", "art": "res://assets/runtime/office/prototype-bench-v1/west-front_structure.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": 1},
+            {"name": "ToolOverlay", "art": "res://assets/runtime/office/prototype-bench-v1/west-tool_overlay.png", "region": [0, 0, 192, 320], "offset": [0, -80], "z_offset": 2}
+          ]
+        }
+      }
     }
   }
 }

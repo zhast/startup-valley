@@ -1,11 +1,16 @@
 extends SceneTree
 
 const MAIN_SCENE: PackedScene = preload("res://world/main.tscn")
-const REVIEW_DIRECTORY := "res://tests/output/visual-review"
+# Dev-only checkpoint override; ordinary review commands keep their old output.
+var REVIEW_DIRECTORY := OS.get_environment("STARTUP_VALLEY_AUDIT_OUTPUT_ROOT").path_join("visual-review") if not OS.get_environment("STARTUP_VALLEY_AUDIT_OUTPUT_ROOT").is_empty() else "res://tests/output/visual-review"
 
 var _main: GameMain
 
 func _initialize() -> void:
+	if not preload("res://tools/audit_output_scope.gd").valid(OS.get_environment("STARTUP_VALLEY_AUDIT_OUTPUT_ROOT")):
+		push_error("Audit output override must be a strict res://tests/output/ descendant")
+		quit(2)
+		return
 	OS.set_environment("STARTUP_VALLEY_NO_WORKER", "1")
 	call_deferred("_run")
 
@@ -33,8 +38,7 @@ func _run() -> void:
 
 	await _fresh_main(2, true)
 	var mina := _main.get_employee("mira")
-	_main.player.position = mina.position + Vector2(68.0, 0.0)
-	_main.player._physics_process(0.0)
+	_place_callout_fixture(Vector2(708, 624))
 	_main._process(0.0)
 	await _settle()
 	if not await _capture("ui-founder-hud"):
@@ -42,6 +46,8 @@ func _run() -> void:
 
 	await _fresh_main(2)
 	mina = _main.get_employee("mira")
+	_place_callout_fixture(Vector2(816, 620))
+	_main._process(0.0)
 	mina.memory_line = "Yesterday's customer notes point to one clear promise."
 	mina._speech_visible = true
 	mina.queue_redraw()
@@ -273,6 +279,23 @@ func _disconnect_worker_actions() -> void:
 	_disconnect_if_connected(_main.job_panel.studio_open_requested, Callable(_main.worker_client, "read_studio_file"))
 	_disconnect_if_connected(_main.job_panel.promotion_decided, Callable(_main.worker_client, "promote_job"))
 
+func _place_callout_fixture(founder_position: Vector2) -> void:
+	# Static callout probes use the validated clear central aisle, not the old
+	# spawn next to the larger collaboration cluster. Freeze only actor physics;
+	# the real GameMain callout priority/avoidance and UI painting still run.
+	for employee: EmployeeAvatar in _main._employees.values():
+		employee.set_physics_process(false)
+		employee._has_target = false
+		employee.work_state = EmployeeAvatar.WorkState.IDLE
+		employee.position = Vector2(640, 560) if employee.employee_id == "mira" else Vector2(1056, 624)
+		employee._sync_render_transform()
+		employee._update_character_frame()
+		_main.room.navigation.actors[employee.employee_id] = employee.position
+	_main.player.cancel_route()
+	_main.player.set_physics_process(false)
+	_main.player.position = founder_position
+	_main.room.navigation.actors["founder"] = founder_position
+
 func _disconnect_if_connected(signal_value: Signal, callable: Callable) -> void:
 	if signal_value.is_connected(callable):
 		signal_value.disconnect(callable)
@@ -333,6 +356,16 @@ func _capture(name_value: String) -> bool:
 	# longest UI entrance (180ms) finish before judging static text contrast.
 	await create_timer(0.22).timeout
 	await process_frame
+	if name_value == "ui-founder-hud" and not _main.founder_hud.interaction_visible():
+		push_error("Static interaction fixture lost its visible Chat prompt")
+		quit(1)
+		return false
+	if name_value == "ui-world-speech":
+		var employee := _main.get_employee("mira")
+		if not employee._speech_visible or employee.labels_suppressed or employee._drawer_selected:
+			push_error("Static speech fixture lost its visible ambient memory card")
+			quit(1)
+			return false
 	RenderingServer.force_draw(false)
 	var image := root.get_texture().get_image()
 	var path := "%s/%s.png" % [REVIEW_DIRECTORY, name_value]

@@ -2,6 +2,7 @@ class_name GameMain
 extends Node
 
 const EMPLOYEE_SCENE: PackedScene = preload("res://actors/employee_avatar.tscn")
+const OFFICE_RENOVATION_SCRIPT: Script = preload("res://ui/office_renovation.gd")
 
 @onready var room: TownRoom = $TownRoom
 @onready var player: PlayerAvatar = $PlayerAvatar
@@ -21,6 +22,7 @@ var _worker_ready: bool = false
 var _state_loaded: bool = false
 var _job_artifact_names: Dictionary[String, String] = {}
 var company_panel: CompanyPanel
+var office_renovation: OfficeRenovation
 var game_audio: GameAudio
 var click_feedback: ClickFeedback
 var _journey: Dictionary = {}
@@ -49,9 +51,15 @@ func _ready() -> void:
 	_spawn_employees(initial_employees)
 	company_panel = CompanyPanel.new()
 	$Interface.add_child(company_panel)
+	office_renovation = OFFICE_RENOVATION_SCRIPT.new() as OfficeRenovation
+	office_renovation.name = "OfficeRenovation"
+	office_renovation.game = self
+	add_child(office_renovation)
+	founder_hud.station_input_enabled = func() -> bool: return not player.input_blocked and not _world_paused()
 	company_panel.action_requested.connect(worker_client.company_request)
 	company_panel.milestone_requested.connect(job_panel.prepare_milestone)
 	company_panel.connection_requested.connect(job_panel._open_connection_settings)
+	company_panel.renovation_requested.connect(_open_office_renovation)
 	job_panel.settings_requested.connect(func() -> void: company_panel.present("settings"))
 	job_panel.journey_requested.connect(func() -> void:
 		job_panel.close_drawer()
@@ -124,7 +132,14 @@ func _process(delta: float) -> void:
 	)
 	# Proximity/E remains valid even when crowded scenery hides the visual prompt.
 	var interaction_target := founder_hud.interaction_target_id()
-	var hover := _interaction_at(get_viewport().get_mouse_position()) if not paused else {}
+	var hovered_control := get_viewport().gui_get_hovered_control()
+	var ui_owns_hover := hovered_control != null and hovered_control.mouse_filter != Control.MOUSE_FILTER_IGNORE
+	var hover := _interaction_at(get_viewport().get_mouse_position()) if not paused and not ui_owns_hover else {}
+	var station := _station_hover_details(hover)
+	var station_obstacles := _world_ui_obstacles()
+	station_obstacles.append(WorldCalloutSkin.actor_rect(player.position))
+	for employee: EmployeeAvatar in _employees.values(): station_obstacles.append(WorldCalloutSkin.actor_rect(employee.render_position()))
+	founder_hud.update_station_hover(str(station.get("id", "")), str(station.get("caption", "")), station.get("bounds", Rect2()), not paused and not player.input_blocked, station_obstacles)
 	for employee_id: String in _employees:
 		var employee := _employees[employee_id]
 		employee.set_ui_presentation_state(job_panel._employee_ui_state(employee_id))
@@ -136,6 +151,23 @@ func _process(delta: float) -> void:
 	_update_label_visibility(interaction_target)
 	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND if not hover.is_empty() else Input.CURSOR_ARROW)
 
+func _station_hover_details(hover: Dictionary) -> Dictionary:
+	if str(hover.get("kind", "")) != "prop": return {}
+	var id := str(hover.get("id", ""))
+	var placement := room.placement_by_id(id)
+	if placement.is_empty(): return {}
+	var caption := ""
+	match id:
+		"founder-workstation": caption = "Company Journey"
+		"artifact-archive": caption = "Studio"
+		"approval-console": caption = "Review approval" if not job_panel._approval_id.is_empty() else "Activity"
+		_:
+			if str(placement.kind) == "desk" and _employees.has(str(placement.owner_id)):
+				caption = "Activity" if not job_panel.active_job_id().is_empty() else "Assign"
+	var bounds: Rect2 = placement.world_visual_bounds
+	bounds.position += room.global_position
+	return {"id": id, "caption": caption, "bounds": bounds} if not caption.is_empty() else {}
+
 func _retry_worker_connection() -> void:
 	if OS.get_environment("STARTUP_VALLEY_NO_WORKER") == "1":
 		job_panel.set_worker_connection_error("Worker is disabled in this deterministic preview.")
@@ -145,8 +177,16 @@ func _retry_worker_connection() -> void:
 	worker_client.start()
 	worker_client.refresh_journey()
 
+func _open_office_renovation() -> void:
+	job_panel.close_drawer(false)
+	artifact_viewer.hide()
+	player.cancel_route()
+	_pending_interaction = ""
+	_pending_kind = ""
+	office_renovation.open()
+
 func _world_paused() -> bool:
-	return job_panel.drawer_is_open() or job_panel._connection_panel.visible or artifact_viewer.visible or (company_panel != null and company_panel.visible)
+	return (office_renovation != null and office_renovation.active) or job_panel.drawer_is_open() or job_panel._connection_panel.visible or artifact_viewer.visible or (company_panel != null and company_panel.visible)
 
 func _connect_signals() -> void:
 	worker_client.daily_spend_received.connect(job_panel.set_spend)
@@ -308,7 +348,10 @@ func _on_room_placements_changed() -> void:
 		employee.home_position = room.employee_spawn_position(employee.employee_id)
 		employee.desk_position = room.employee_desk_position(employee.employee_id)
 		employee.research_position = room.research_position()
-		employee.lunch_position = room.lunch_position()
+		employee.lunch_position = room.lunch_position(employee.employee_id)
+		employee.configure_workstation_visual(room.employee_workstation_visual(employee.employee_id))
+		employee.configure_research_visual(room.research_visual())
+		employee.configure_collaboration_visual(room.collaboration_visual(employee.employee_id))
 		room.navigation.actors[employee.employee_id] = employee.position
 		room.navigation.reservations[employee.employee_id] = room.navigation.cell_at(employee.position)
 		if was_moving:
@@ -493,6 +536,7 @@ func _on_company_action(method: String, result: Dictionary) -> void:
 		job_panel.set_spend(float(result.dailySpend), 5.0)
 	match method:
 		"game.new":
+			office_renovation.reset_layout()
 			_restored_player = true
 			_closing_shown_day = -1
 			_job_employees.clear()
@@ -537,6 +581,9 @@ func _save_game() -> void:
 	})
 
 func _unhandled_input(event: InputEvent) -> void:
+	# Renovation owns its keys and its full-screen pointer surface. Do not let a
+	# placement click create a founder route or let Escape open Settings beneath it.
+	if office_renovation != null and office_renovation.active: return
 	if event is InputEventKey and event.is_pressed() and not event.is_echo():
 		var key := event as InputEventKey
 		if not _world_paused():
@@ -579,21 +626,43 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 	var accepted := player.move_to(point)
+	if accepted and str(interaction.get("kind", "")) == "prop" and not room.interaction_approach_direction(str(interaction.id)).is_zero_approx():
+		# General ground/employee movement may select a nearby free cell. An
+		# explicit service interaction must reach its authored standing socket,
+		# not silently open a UI from an occupied socket's fallback location.
+		if player.route[-1].distance_to(point) > 1.0:
+			player.cancel_route()
+			accepted = false
 	click_feedback.show_at(player.route[-1] if accepted else point, accepted)
 	if not accepted: _pending_interaction = ""
 	get_viewport().set_input_as_handled()
 
 func _interaction_at(point: Vector2) -> Dictionary:
+	var surface := room.surface_at(point)
+	var top_sprite := surface.get("sprite") as Sprite2D
+	var interaction: Dictionary = surface.get("interaction", {})
 	for id: String in _employees:
 		var employee := _employees[id]
-		if Rect2(employee.position + Vector2(-24, -72), Vector2(48, 84)).has_point(point):
-			return {"id": id, "kind": "employee", "point": employee.position + Vector2(0, 40)}
-	return room.interaction_at(point)
+		var body := employee.body_surface_at(point)
+		if VisibleSurface.in_front(body, top_sprite):
+			top_sprite = body
+			interaction = {"id": id, "kind": "employee", "point": employee.position + Vector2(0, 40)}
+	if VisibleSurface.in_front(player.body_surface_at(point), top_sprite):
+		return {} # Same noninteractive occlusion rule as passive furniture.
+	return interaction
 
 func _on_destination_reached() -> void:
 	var target := _pending_interaction
 	_pending_interaction = ""
 	if target.is_empty(): return
+	if _pending_kind == "prop":
+		var approach := room.interaction_approach_direction(target)
+		if not approach.is_zero_approx():
+			var socket := room.interaction_world_position(target)
+			if player.position.distance_to(socket) > 2.0 or not room.navigation.position_is_safe(socket, "founder"):
+				click_feedback.show_at(socket, false)
+				return
+		player.face_direction(approach)
 	if _pending_kind == "employee":
 		var employee := get_employee(target)
 		if employee != null and player.position.distance_to(employee.position) < 110:
@@ -624,6 +693,9 @@ func _world_ui_obstacles() -> Array[Rect2]:
 		var rect: Rect2 = placement.world_visual_bounds
 		rect.position += room.global_position
 		placed.append(rect)
+	for employee: EmployeeAvatar in _employees.values():
+		var cue := employee.visible_world_vfx_rect()
+		if cue.has_area(): placed.append(cue.grow(4))
 	placed.append(clock_panel.get_global_rect())
 	placed.append(job_panel.rail_global_rect())
 	if job_panel._drawer_panel.is_visible_in_tree(): placed.append(job_panel.drawer_global_rect())
@@ -637,8 +709,10 @@ func _world_ui_obstacles() -> Array[Rect2]:
 func _update_label_visibility(priority_id: String) -> void:
 	var placed := _world_ui_obstacles()
 	placed.append(WorldCalloutSkin.actor_rect(player.position))
-	for employee: EmployeeAvatar in _employees.values(): placed.append(WorldCalloutSkin.actor_rect(employee.position))
+	for employee: EmployeeAvatar in _employees.values(): placed.append(WorldCalloutSkin.actor_rect(employee.render_position()))
 	if founder_hud.interaction_visible(): placed.append(founder_hud.interaction_rect())
+	var station_hover := founder_hud.station_hover_rect()
+	if station_hover.has_area(): placed.append(station_hover)
 	var ordered: Array[EmployeeAvatar] = []
 	for employee: EmployeeAvatar in _employees.values(): ordered.append(employee)
 	ordered.sort_custom(func(a: EmployeeAvatar, b: EmployeeAvatar) -> bool:
@@ -651,11 +725,46 @@ func _update_label_visibility(priority_id: String) -> void:
 		employee.labels_suppressed = false
 		var viewport := Rect2(18, 82, 1114, get_viewport().get_visible_rect().size.y - 100)
 		var body := employee.world_label_body_rect()
-		var candidate := WorldCalloutSkin.place(employee.position, body.size, placed, viewport, employee._speech_visible or employee.attention_cue_visible())
+		var candidate := WorldCalloutSkin.place(employee.render_position(), body.size, placed, viewport, employee._speech_visible or employee.attention_cue_visible())
+		if not candidate.has_area() and (employee._interaction_highlighted or employee._ui_highlighted):
+			candidate = _calibration_callout_fallback(employee, body.size, placed, viewport)
 		employee.labels_suppressed = not candidate.has_area()
 		if candidate.has_area(): employee.set_callout_position(candidate.position)
 		if was_suppressed != employee.labels_suppressed: employee.queue_redraw()
 		if not employee.labels_suppressed and (employee._labels_visible() or employee._speech_visible or employee.attention_cue_visible()): placed.append(employee.world_label_rect())
+
+func _calibration_callout_fallback(employee: EmployeeAvatar, size: Vector2, occupied: Array[Rect2], viewport: Rect2) -> Rect2:
+	# A supported North chair can enclose every actor-relative candidate. Only
+	# reviewed production or owner-scoped calibration work cues opt into this
+	# larger assembly perimeter; legacy/unrequested labels remain unchanged.
+	var cue := employee.work_vfx_rect()
+	if not cue.has_area(): return Rect2()
+	var actor := WorldCalloutSkin.actor_rect(employee.render_position())
+	var assembly := actor.merge(cue)
+	for placement: Dictionary in room.resolved_placements:
+		if str(placement.get("owner_id", "")) != employee.employee_id: continue
+		var prop: Rect2 = placement.world_visual_bounds
+		prop.position += room.global_position
+		assembly = assembly.merge(prop)
+	var gap := float(WorldCalloutSkin.POINTER_LENGTH + 3)
+	var positions: Array[Vector2] = [
+		Vector2(actor.get_center().x - size.x * 0.5, assembly.end.y + gap),
+		Vector2(assembly.position.x - size.x - gap, actor.get_center().y - size.y * 0.5),
+		Vector2(assembly.end.x + gap, actor.get_center().y - size.y * 0.5),
+		Vector2(actor.get_center().x - size.x * 0.5, assembly.position.y - size.y - gap),
+	]
+	for point: Vector2 in positions:
+		var candidate := Rect2(point.round(), size.round())
+		# The pointer still aims at the real actor, not an invented larger body.
+		var painted := WorldCalloutSkin.bounds(candidate, actor.get_center())
+		if not viewport.encloses(painted): continue
+		var obstructed := false
+		for obstacle: Rect2 in occupied:
+			if painted.intersects(obstacle):
+				obstructed = true
+				break
+		if not obstructed: return candidate
+	return Rect2()
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST and not _quitting:

@@ -19,6 +19,9 @@ var _money_earned: float = 0.0
 
 func _ready() -> void:
 	theme = GameFonts.interface_theme()
+	# The paper covers the world: Day/Time and blank areas must not select
+	# employees behind it. Child labels can still delegate input to this panel.
+	mouse_filter = Control.MOUSE_FILTER_STOP
 	var ledger := TextureRect.new()
 	ledger.name = "LedgerTexture"
 	ledger.texture = LEDGER_TEXTURE

@@ -45,15 +45,22 @@ func run() -> void:
 		check(reached.size() == layout.walkable_cells(placements).size(), "All free floor remains connected at stage %d" % stage)
 		for placement: Dictionary in placements:
 			check(reached.has(placement.interaction), "%s interaction is reachable" % placement.id)
-			check(reached.has(placement.work_cell), "%s work/seat is reachable" % placement.id)
+			if placement.get("profile_kind", "") == "service":
+				check(not placement.has("work_cell"), "%s supplies a reachable standing service point, not a fictional seat" % placement.id)
+			elif placement.get("profile_kind", "") == "collaboration":
+				check(not placement.has("work_cell") and placement.collaboration_slots.size() == 4, "%s supplies four explicit collaboration sockets, not one fictional workstation" % placement.id)
+				for slot: Dictionary in placement.collaboration_slots:
+					check(reached.has(slot.cell), "%s collaboration socket is reachable: %s" % [placement.id, slot.cell])
+			else:
+				check(reached.has(placement.work_cell), "%s work/seat is reachable" % placement.id)
 			for cell: Vector2i in placement.clearance: check(reached.has(cell), "%s clearance is accessible" % placement.id)
 	var desk := layout.placement_by_id("mira-workstation", 2)
 	check(desk.work_cell == Vector2i(10, 7) and desk.interaction == Vector2i(10, 9), "Seat and founder approach are separate authored cells")
 	check(desk.profile.layers.shared_origin and desk.profile.layers.rear_z_offset < -32 and desk.profile.layers.front_z_offset > -32, "Layer metadata places seated actor between complementary images")
-	check(desk.visual_bounds == Rect2(-64, -96, 128, 112), "Corrected desk art retains native bounds")
+	check(desk.visual_bounds == Rect2(-48, -64, 96, 80), "Reviewed South assembly uses its measured native ink bounds")
 	check(layout.validate_candidate("mira-workstation", Vector2i(10, 8), "south", 2).valid, "Existing workstation position is valid")
 	check(layout.validate_candidate("mira-workstation", Vector2i(12, 7), "south", 2).valid, "Free workstation bay can be reauthored")
-	check(has_issue(layout.validate_candidate("mira-workstation", Vector2i(10, 8), "east", 2), "unsupported_facing"), "Unpainted orientation is rejected rather than rotated")
+	check(layout.validate_candidate("mira-workstation", Vector2i(10, 8), "east", 2).valid, "Reviewed East orientation resolves without rotating South art")
 	check(has_issue(layout.validate_candidate("mira-workstation", Vector2i(0, 8), "south", 2), "wall_intersection"), "Footprint cannot intersect side wall")
 	check(has_issue(layout.validate_candidate("mira-workstation", Vector2i(10, 4), "south", 2), "visual_wall_intersection"), "Furniture overhang cannot enter painted north wall even with a floor footprint")
 	check(has_issue(layout.validate_candidate("mira-workstation", Vector2i(10, 3), "south", 2), "wall_clearance"), "Seating cannot be hidden inside wall")

@@ -208,24 +208,33 @@ func _validate_modular_office() -> void:
 		var result := layout.validate_placements(placements)
 		if not result.valid: _fail("Office hire stage %d is invalid: %s" % [stage, result.errors])
 	for kind: String in layout.catalog:
-		var profile: Dictionary = layout.catalog[kind]
-		var path := str(profile.get("art", ""))
-		var texture := load(path) as Texture2D
-		if texture == null:
-			_fail("Furniture catalog art is missing: %s" % kind)
+		var base: Dictionary = layout.catalog[kind]
+		if not base.get("facings", []) is Array or base.get("facings", []).is_empty():
+			_fail("Furniture needs an explicit authored facing list: %s" % kind)
 			continue
-		var bounds := OfficeLayout.rectangle(profile.get("visual_bounds", []))
-		var sprite_offset := Vector2(OfficeLayout.vector(profile.get("sprite_offset", [])))
-		var native_size := Vector2(OfficeLayout.vector(profile.atlas_cell)) if profile.has("atlas_cell") else texture.get_size()
-		if bounds != Rect2(sprite_offset - native_size * 0.5, native_size):
-			_fail("Furniture native art bounds disagree with placement profile: %s" % kind)
-		if profile.has("atlas_cell"):
-			var cell := OfficeLayout.vector(profile.atlas_cell)
-			var atlas_row := int(profile.get("atlas_row", 0))
-			if texture.get_width() < cell.x * 2 or texture.get_height() < cell.y * (atlas_row + 1):
-				_fail("Furniture layer cells exceed their shared atlas: %s" % kind)
-		if profile.get("facings", []) != ["south"]:
-			_fail("Furniture exposes an orientation without authored art: %s" % kind)
+		for facing: Variant in base.facings:
+			var resolution := layout.resolve_profile(kind, str(facing))
+			if not resolution.errors.is_empty():
+				_fail("Furniture direction is unavailable: %s/%s: %s" % [kind, facing, resolution.errors])
+				continue
+			var profile: Dictionary = resolution.profile
+			var layers := OfficeLayout.render_layers(profile, kind)
+			if layers.is_empty(): _fail("Furniture catalog art is missing: %s/%s" % [kind, facing])
+			var union := Rect2()
+			for layer: Dictionary in layers:
+				var texture := load(str(layer.art)) as Texture2D
+				var region := OfficeLayout.rectangle(layer.region)
+				if texture == null or not region.has_area() or not Rect2(Vector2.ZERO, texture.get_size()).encloses(region):
+					_fail("Furniture native layer exceeds its art: %s/%s/%s" % [kind, facing, layer.name])
+					continue
+				var destination := Rect2(Vector2(OfficeLayout.vector(layer.offset)) - region.size * 0.5, region.size)
+				if bool(profile.get("direction_explicit", false)):
+					var content := OfficeLayout.layer_content_bounds(layer)
+					destination = Rect2(destination.position + content.position, content.size)
+				if not destination.has_area(): continue
+				union = union.merge(destination) if union.has_area() else destination
+			if union != OfficeLayout.rectangle(profile.get("visual_bounds", [])):
+				_fail("Furniture native art bounds disagree with placement profile: %s/%s" % [kind, facing])
 
 func _validate_runtime_atlas(spec: Dictionary) -> void:
 	var path := str(spec.get("path", ""))

@@ -32,6 +32,7 @@ var show_routes: bool = false
 var show_visual_bounds: bool = false
 var last_export_path: String = ""
 var _history: Array[Dictionary] = []
+var _preview_texture_cache: Dictionary[String, Texture2D] = {}
 var _placements: Array[Dictionary] = []
 var _candidate: Dictionary = {}
 var _routes: Array[PackedVector2Array] = []
@@ -110,7 +111,7 @@ func _build_interface() -> void:
 	_prop_picker = OptionButton.new()
 	_prop_picker.item_selected.connect(func(index: int) -> void: select_placement(_prop_picker.get_item_metadata(index)))
 	_inspector.add_child(_prop_picker)
-	_label("Authored facing")
+	_label("Authored facing [R]")
 	_facing_picker = OptionButton.new()
 	_facing_picker.item_selected.connect(_on_facing_selected)
 	_inspector.add_child(_facing_picker)
@@ -206,9 +207,8 @@ func select_placement(id: String) -> void:
 	for index: int in range(_prop_picker.item_count):
 		if _prop_picker.get_item_metadata(index) == id:
 			_prop_picker.select(index)
-	var profile: Dictionary = placement.get("profile", {})
 	_facing_picker.clear()
-	for facing: Variant in profile.get("facings", ["south"]):
+	for facing: String in model.available_facings(str(placement.get("kind", ""))):
 		_facing_picker.add_item(str(facing))
 		if str(facing) == preview_facing:
 			_facing_picker.select(_facing_picker.item_count - 1)
@@ -227,6 +227,13 @@ func begin_move() -> void:
 func cancel_move() -> void:
 	placement_active = false
 	_candidate = {}
+	var committed := _placement(selected_id)
+	if not committed.is_empty():
+		preview_grid = committed.grid
+		preview_facing = str(committed.facing)
+		if _facing_picker != null:
+			for index: int in range(_facing_picker.item_count):
+				if _facing_picker.get_item_text(index) == preview_facing: _facing_picker.select(index)
 	if room != null:
 		var prop := room.prop_node(selected_id)
 		if prop != null:
@@ -241,12 +248,19 @@ func preview_at(grid: Vector2i, facing: String = "") -> Dictionary:
 		preview_facing = facing
 	var proposed := _with_candidate()
 	preview_result = validate_all_stages(proposed)
+	var conflicts := room.placement_actor_conflicts(proposed)
+	preview_result["actor_conflicts"] = conflicts
+	for conflict: Dictionary in conflicts:
+		preview_result.errors.append(_actor_conflict_message(conflict))
+	preview_result["valid"] = preview_result.errors.is_empty()
 	_candidate = {}
 	for placement: Dictionary in model.resolve_placements(hire_count, proposed):
 		if str(placement.get("id", "")) == selected_id:
 			_candidate = placement
 	var errors: Array = preview_result.get("errors", [])
-	_set_status("VALID — click to place. Every office stage remains reachable." if bool(preview_result.get("valid", false)) else "INVALID — placement rejected.\n" + "\n".join(errors.slice(0, 2)), bool(preview_result.get("valid", false)))
+	var feedback := "VALID — click to place. Every office stage remains reachable." if bool(preview_result.get("valid", false)) else "INVALID — placement rejected.\n" + "\n".join(errors.slice(0, 2))
+	if not conflicts.is_empty(): feedback = _actor_conflict_message(conflicts[0])
+	_set_status(feedback, bool(preview_result.get("valid", false)))
 	_status.tooltip_text = "\n".join(errors)
 	_update_details()
 	queue_redraw()
@@ -266,6 +280,14 @@ func validate_all_stages(proposed: Dictionary) -> Dictionary:
 			if not errors.has(reason):
 				errors.append(reason)
 	return {"valid": errors.is_empty(), "errors": errors}
+
+func _actor_conflict_message(conflict: Dictionary) -> String:
+	var actor_id := str(conflict.get("actor_id", ""))
+	var placement := _placement(str(conflict.get("placement_id", "")))
+	var display_name := str(conflict.get("display_name", actor_id.capitalize()))
+	if str(placement.get("owner_id", "")) == actor_id:
+		return "Leave desk before rotating or moving it. %s is still in the new footprint." % display_name
+	return "Move %s clear before placing this furniture." % display_name
 
 func commit_preview() -> bool:
 	if not placement_active:
@@ -290,9 +312,14 @@ func undo() -> void:
 	if _history.is_empty():
 		_set_status("No placement changes to undo.", true)
 		return
+	var previous := _history[-1] as Dictionary
+	var conflicts := room.placement_actor_conflicts(previous)
+	if not conflicts.is_empty():
+		_set_status("Undo paused. " + _actor_conflict_message(conflicts[0]), false)
+		return
 	cancel_move()
-	var previous := _history.pop_back() as Dictionary
 	if room.set_placement_overrides(previous):
+		_history.pop_back()
 		overrides = previous
 		_refresh_placements()
 		select_placement(selected_id)
@@ -337,9 +364,18 @@ func export_layout(path: String = EXPORT_PATH) -> bool:
 	return true
 
 func _on_facing_selected(index: int) -> void:
+	if not placement_active: begin_move()
 	preview_facing = _facing_picker.get_item_text(index)
 	if placement_active:
 		preview_at(preview_grid)
+
+func rotate_preview() -> void:
+	if _facing_picker.item_count < 2:
+		_set_status("Only the current authored direction is ready; no bitmap rotation is substituted.", false)
+		return
+	var index := (_facing_picker.selected + 1) % _facing_picker.item_count
+	_facing_picker.select(index)
+	_on_facing_selected(index)
 
 func _set_status(message: String, valid: bool) -> void:
 	_status_text = message
@@ -351,9 +387,14 @@ func _set_status(message: String, valid: bool) -> void:
 func _update_details() -> void:
 	var placement := _candidate if not _candidate.is_empty() else _placement(selected_id)
 	var grid: Vector2i = placement.get("grid", preview_grid)
-	var profile: Dictionary = placement.get("profile", {})
 	_details.text = "Grid (%d, %d) · %s\n%d occupied · %d clearance cells\n%s" % [grid.x, grid.y, preview_facing, (placement.get("occupied", []) as Array).size(), (placement.get("clearance", []) as Array).size(), "Preview: click to place; Esc cancels." if placement_active else "Select on canvas or use Move [M]."]
-	_details.tooltip_text = "Occlusion layers: " + str(profile.get("layers", {}))
+	_details.tooltip_text = "Resolved occlusion layers: " + str(placement.get("render_layers", []))
+	if str(placement.get("profile_kind", "")) == "service":
+		_details.tooltip_text += "\nService side: %s · standing gaze: %s\nVisitor envelope: %s" % [placement.service_side, placement.approach_gaze, placement.approach_visual_bounds]
+	elif str(placement.get("profile_kind", "")) == "decorative":
+		_details.tooltip_text += "\nPassive furniture — no interaction or seat.\nViewing clearance: " + str(placement.get("standing_viewpoints", []))
+	else:
+		_details.tooltip_text += "\nSeat depth: " + str(placement.get("seat_z_offset", 0))
 	_move_button.disabled = placement_active
 	_cancel_button.disabled = not placement_active
 	_save_button.disabled = placement_active
@@ -372,9 +413,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			commit_preview()
 		else:
 			var local_point := click.position - ROOM_ORIGIN
-			for index: int in range(_placements.size() - 1, -1, -1):
-				var placement := _placements[index]
-				if _visual_rect(placement).has_point(local_point):
+			var sorted := _placements.duplicate()
+			sorted.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a.anchor.y > b.anchor.y)
+			for placement: Dictionary in sorted:
+				if (placement.get("world_hit_bounds", _visual_rect(placement)) as Rect2).has_point(local_point):
 					select_placement(str(placement.get("id", "")))
 					break
 		get_viewport().set_input_as_handled()
@@ -391,6 +433,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		match key.keycode:
 			KEY_ESCAPE: cancel_move()
 			KEY_M: begin_move()
+			KEY_R: rotate_preview()
 			KEY_G: _flip("show_grid")
 			KEY_F: _flip("show_footprints")
 			KEY_C: _flip("show_clearance")
@@ -469,7 +512,7 @@ func _draw_placement_overlay(placement: Dictionary, preview: bool) -> void:
 		for cell: Vector2i in placement.get("clearance", []):
 			draw_rect(_cell_rect(cell).grow(-3), Color(CLEARANCE, 0.18))
 			draw_rect(_cell_rect(cell).grow(-3), CLEARANCE, false)
-	if show_interactions:
+	if show_interactions and placement.has("interaction"):
 		var point := _cell_center(placement.get("interaction", Vector2i.ZERO))
 		draw_circle(point, 6, CLEARANCE)
 		draw_circle(point, 3, Color("151515"))
@@ -481,12 +524,12 @@ func _draw_placement_overlay(placement: Dictionary, preview: bool) -> void:
 		draw_line(anchor - Vector2(7, 0), anchor + Vector2(7, 0), INK)
 		draw_line(anchor - Vector2(0, 7), anchor + Vector2(0, 7), INK)
 		if show_visual_bounds:
-			var profile: Dictionary = placement.get("profile", {})
-			var layers: Dictionary = profile.get("layers", {})
-			for key: String in ["rear_z_offset", "front_z_offset", "seat_z_offset"]:
-				if layers.has(key):
-					var y := anchor.y + float(layers[key])
-					draw_line(Vector2(rect.position.x, y), Vector2(rect.end.x, y), Color(1, 0.9, 0.6, 0.85))
+			var depths: Array[int] = [int(placement.get("seat_z_offset", 0))]
+			for layer: Dictionary in placement.get("render_layers", []):
+				depths.append(int(layer.get("z_offset", 0)))
+			for depth: int in depths:
+				var y := anchor.y + depth
+				draw_line(Vector2(rect.position.x, y), Vector2(rect.end.x, y), Color(1, 0.9, 0.6, 0.85))
 
 func _draw_preview_art(placement: Dictionary) -> void:
 	var tint := Color(VALID if bool(preview_result.get("valid", false)) else INVALID, 0.55)
@@ -497,25 +540,22 @@ func _preview_layers(placement: Dictionary) -> Array[Dictionary]:
 	# Expose the same native rectangles used by drawing so regression tests can
 	# compare the ghost with actual placed Sprite2D layers, including atlas rows.
 	var result: Array[Dictionary] = []
-	var profile: Dictionary = placement.get("profile", {})
-	var art_path := str(profile.get("art", ""))
-	if art_path.is_empty():
-		return result
-	var texture := load(art_path) as Texture2D
-	if texture == null:
-		return result
 	var anchor := _visual_anchor(placement)
-	var offset := Vector2(OfficeLayout.vector(profile.get("sprite_offset", [0, 0])))
-	if profile.has("atlas_cell"):
-		var cell_size := Vector2(OfficeLayout.vector(profile["atlas_cell"]))
-		var row := int(profile.get("atlas_row", 0))
-		var dest := Rect2(anchor + offset - cell_size * 0.5, cell_size)
-		var layers: Dictionary = profile.get("layers", {})
-		var column_count := 2 if layers.has("rear_z_offset") or layers.has("front_z_offset") else 1
-		for column: int in range(column_count):
-			result.append({"texture": texture, "destination": dest, "source": Rect2(Vector2(column, row) * cell_size, cell_size)})
-	else:
-		result.append({"texture": texture, "destination": Rect2(anchor + offset - texture.get_size() * 0.5, texture.get_size()), "source": Rect2(Vector2.ZERO, texture.get_size())})
+	for layer: Dictionary in placement.get("render_layers", []):
+		var path := str(layer.get("art", ""))
+		if not ResourceLoader.exists(path, "Texture2D"): continue
+		# Canvas draw commands retain a rendering RID, not this local resource.
+		# A newly previewed direction may have no placed Sprite2D keeping it alive.
+		# Hold a strong reference or transparent art becomes a solid tinted quad
+		# when the temporary Texture2D is released before rendering completes.
+		var texture: Texture2D = _preview_texture_cache.get(path)
+		if texture == null:
+			texture = load(path) as Texture2D
+			if texture != null: _preview_texture_cache[path] = texture
+		if texture == null: continue
+		var source := OfficeLayout.rectangle(layer.get("region"))
+		var offset := Vector2(OfficeLayout.vector(layer.get("offset")))
+		result.append({"texture": texture, "destination": Rect2(anchor + offset - source.size * 0.5, source.size), "source": source})
 	return result
 
 func _update_routes() -> void:
@@ -539,6 +579,7 @@ func _update_routes() -> void:
 		return
 	var start := entrances[0]
 	for placement: Dictionary in _placements:
+		if not placement.has("interaction"): continue
 		var target: Vector2i = placement.get("interaction", Vector2i.ZERO)
 		if grid.region.has_point(target) and not grid.is_point_solid(target):
 			_routes.append(grid.get_point_path(start, target))

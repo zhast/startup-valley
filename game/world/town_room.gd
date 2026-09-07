@@ -84,6 +84,41 @@ func set_placement_overrides(overrides: Dictionary) -> bool:
 	_rebuild_props()
 	return true
 
+func placement_actor_conflicts(overrides: Dictionary) -> Array[Dictionary]:
+	# Read-only editor admission, deliberately not a bootstrap/migration guard.
+	# Reservations describe future destinations, not bodies: only live feet and
+	# the same10px footprint samples used by OfficeNavigation can block a commit.
+	var conflicts: Array[Dictionary] = []
+	if navigation == null or layout_model == null: return conflicts
+	var current := layout_model.occupied_cells(resolved_placements)
+	var next_placements := layout_model.resolve_placements(unlocked_hires, overrides)
+	var proposed := layout_model.occupied_cells(next_placements)
+	for actor_id: String in navigation.actors:
+		var feet: Vector2 = navigation.actors[actor_id]
+		var occupied_seat := ""
+		for placement: Dictionary in resolved_placements:
+			if str(placement.get("profile_kind", "")) != "collaboration": continue
+			var moved := true
+			for next: Dictionary in next_placements:
+				if next.id == placement.id:
+					moved = next.grid != placement.grid or next.facing != placement.facing
+					break
+			if not moved: continue
+			for slot: Dictionary in placement.get("collaboration_slots", []):
+				if feet.distance_to(global_position + Vector2(slot.position)) <= 10.0:
+					occupied_seat = str(placement.id)
+					break
+			if not occupied_seat.is_empty(): break
+		if not occupied_seat.is_empty():
+			conflicts.append({"actor_id": actor_id, "display_name": "Founder" if actor_id == "founder" else _employee_names.get(actor_id, actor_id.capitalize()), "position": feet, "cell": navigation.cell_at(feet), "placement_id": occupied_seat, "reason": "occupied_seat"})
+			continue
+		for offset: Vector2 in [Vector2.ZERO, Vector2(-10, -10), Vector2(10, -10), Vector2(-10, 10), Vector2(10, 10)]:
+			var cell := navigation.cell_at(feet + offset)
+			if proposed.has(cell) and not current.has(cell):
+				conflicts.append({"actor_id": actor_id, "display_name": "Founder" if actor_id == "founder" else _employee_names.get(actor_id, actor_id.capitalize()), "position": feet, "cell": cell, "placement_id": str(proposed[cell])})
+				break
+	return conflicts
+
 func configure_employee_desks(records: Array[EmployeeRecord]) -> void:
 	# Worker-owned legacy coordinates are suggestions, never unchecked geometry.
 	var proposed := placement_overrides.duplicate(true)
@@ -93,7 +128,7 @@ func configure_employee_desks(records: Array[EmployeeRecord]) -> void:
 		_employee_names[record.id] = record.display_name
 		var station_id := "%s-workstation" % record.id
 		if not layout_model.placement_by_id(station_id, 4).is_empty():
-			batch[station_id] = {"grid": [record.desk_grid.x, record.desk_grid.y], "facing": "south"}
+			batch[station_id] = {"grid": [record.desk_grid.x, record.desk_grid.y], "facing": _station_facing(station_id, proposed)}
 	# Validate a joint move first; two owners can safely exchange desks even if
 	# either move in isolation would collide with the other's previous station.
 	if _validate_all(batch):
@@ -105,13 +140,18 @@ func configure_employee_desks(records: Array[EmployeeRecord]) -> void:
 		var station_id := "%s-workstation" % record.id
 		if layout_model.placement_by_id(station_id, 4).is_empty(): continue
 		var candidate := proposed.duplicate(true)
-		candidate[station_id] = {"grid": [record.desk_grid.x, record.desk_grid.y], "facing": "south"}
+		candidate[station_id] = {"grid": [record.desk_grid.x, record.desk_grid.y], "facing": _station_facing(station_id, proposed)}
 		if _validate_all(candidate):
 			proposed = candidate
 		else:
 			migration_notes.append("%s: legacy desk %s is invalid; using the validated station." % [record.id, record.desk_grid])
 	placement_overrides = proposed
 	set_hire_count(records.size())
+
+func _station_facing(station_id: String, overrides: Dictionary) -> String:
+	# Old worker records own coordinates, not orientation. Preserve a validated
+	# local/exported facing instead of resetting every bootstrap to south.
+	return str(layout_model.placement_by_id(station_id, 4, overrides).get("facing", "south"))
 
 func set_hire_count(count: int) -> void:
 	var previous := unlocked_hires
@@ -133,8 +173,11 @@ func _rebuild_props(animate_from: int = -1) -> void:
 		child.queue_free()
 	for placement: Dictionary in resolved_placements:
 		var scene := PROP_SCENES.get(str(placement.kind)) as PackedScene
-		if scene == null: continue
-		var prop := scene.instantiate() as Node2D
+		var decorative := str(placement.get("profile_kind", "")) == "decorative" and bool(placement.profile.get("direction_explicit", false)) and (placement.get("direction_errors", []) as Array).is_empty()
+		if scene == null and not decorative: continue
+		# Only a fully validated explicit passive profile gets this neutral layer
+		# carrier. Unknown legacy kinds never acquire a fallback scene or action.
+		var prop := scene.instantiate() as Node2D if scene != null else Node2D.new()
 		if prop is OfficeDesk: (prop as OfficeDesk).configure(_employee_names.get(str(placement.owner_id), str(placement.owner_id)))
 		prop.name = str(placement.id)
 		prop.position = layout_model.world(placement.grid) + Vector2(placement.get("anchor_offset", Vector2.ZERO))
@@ -155,23 +198,45 @@ func _rebuild_props(animate_from: int = -1) -> void:
 
 func _apply_profile(prop: Node2D, placement: Dictionary) -> void:
 	var profile: Dictionary = placement.profile
-	var layers: Dictionary = profile.get("layers", {})
-	var texture := load(str(profile.art)) as Texture2D
+	var existing: Dictionary[String, Sprite2D] = {}
 	for child: Node in prop.get_children():
 		if child is Sprite2D and not child is OfficeAmbientOverlay:
-			var sprite := child as Sprite2D
-			sprite.texture = texture
-			sprite.position = Vector2(_vector(profile.get("sprite_offset", [0, 0])))
-			sprite.scale = Vector2.ONE
-			sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-			sprite.region_enabled = profile.has("atlas_cell")
-			if sprite.region_enabled:
-				var cell := Vector2(_vector(profile.atlas_cell))
-				var column := 1 if str(child.name).ends_with("Front") else 0
-				sprite.region_rect = Rect2(Vector2(column, int(profile.get("atlas_row", 0))) * cell, cell)
-			if str(child.name).ends_with("Rear"): child.z_index = prop.z_index + int(layers.get("rear_z_offset", -40))
-			elif str(child.name).ends_with("Front"): child.z_index = prop.z_index + int(layers.get("front_z_offset", 1))
-			else: child.z_index = int(layers.get("body_z_offset", 0))
+			existing[str(child.name)] = child as Sprite2D
+	for layer: Dictionary in placement.get("render_layers", []):
+		var layer_name := str(layer.name)
+		var sprite: Sprite2D = existing.get(layer_name)
+		if sprite == null:
+			sprite = Sprite2D.new()
+			sprite.name = layer_name
+			prop.add_child(sprite)
+		existing.erase(layer_name)
+		sprite.texture = load(str(layer.art)) as Texture2D
+		sprite.position = Vector2(OfficeLayout.vector(layer.offset))
+		sprite.scale = Vector2.ONE
+		sprite.rotation = 0.0
+		sprite.flip_h = false
+		sprite.flip_v = false
+		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		sprite.region_enabled = true
+		sprite.region_rect = OfficeLayout.rectangle(layer.region)
+		sprite.z_as_relative = false
+		sprite.z_index = prop.z_index + int(layer.z_offset)
+	for sprite: Sprite2D in existing.values():
+		prop.remove_child(sprite)
+		sprite.queue_free()
+	# Legacy scene attachments stay exactly as authored. An explicit direction
+	# must opt into its own attachments; never leave south's scan/glow floating.
+	if bool(profile.get("direction_explicit", false)):
+		for child: Node in prop.get_children():
+			if child is OfficeAmbientOverlay:
+				prop.remove_child(child)
+				child.queue_free()
+		for attachment: Dictionary in profile.get("ambient_overlays", []):
+			var overlay := OfficeAmbientOverlay.new()
+			overlay.configure(int(attachment.row), Vector2(OfficeLayout.vector(attachment.offset)))
+			overlay.z_as_relative = false
+			overlay.z_index = prop.z_index + int(attachment.z_offset)
+			prop.add_child(overlay)
 	var body := StaticBody2D.new()
 	body.name = "PlacementCollision"
 	body.collision_layer = 1
@@ -198,19 +263,43 @@ func placement_by_id(prop_id: String) -> Dictionary:
 
 func interaction_world_position(prop_id: String) -> Vector2:
 	var placement := placement_by_id(prop_id)
+	# Passive native-layer furniture has no target; never fabricate its pivot
+	# or the founder spawn as a usable socket. Existing missing-id fallback stays.
+	if str(placement.get("profile_kind", "")) == "decorative": return Vector2(INF, INF)
 	return grid_to_world_position(placement.interaction) if not placement.is_empty() else grid_to_world_position(player_spawn)
 
+func interaction_approach_direction(prop_id: String) -> Vector2:
+	var placement := placement_by_id(prop_id)
+	if str(placement.get("profile_kind", "")) != "service": return Vector2.ZERO
+	match str(placement.get("approach_gaze", "")):
+		"north": return Vector2.UP
+		"east": return Vector2.RIGHT
+		"south": return Vector2.DOWN
+		"west": return Vector2.LEFT
+	return Vector2.ZERO
+
 func interaction_at(point: Vector2) -> Dictionary:
-	# Hit-test in reverse render-depth order.
-	var sorted := resolved_placements.duplicate()
-	sorted.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a.grid.y > b.grid.y)
-	for placement: Dictionary in sorted:
-		if str(placement.kind) not in ["desk", "artifact_archive", "approval_console"]: continue
-		var bounds: Rect2 = placement.world_visual_bounds
-		bounds.position += global_position
-		if bounds.has_point(point):
-			return {"id": str(placement.id), "kind": "prop", "point": interaction_world_position(str(placement.id))}
-	return {}
+	return surface_at(point).get("interaction", {})
+
+func surface_at(point: Vector2) -> Dictionary:
+	var result := {}
+	var top_sprite: Sprite2D
+	for placement: Dictionary in resolved_placements:
+		var prop := prop_node(str(placement.id))
+		if prop == null: continue
+		# Include decorative furniture as an occluder, but never invent an action
+		# for it. Explicit registered layers exclude ambient animation and VFX.
+		for layer: Dictionary in placement.render_layers:
+			var sprite := prop.get_node_or_null(NodePath(str(layer.name))) as Sprite2D
+			if not VisibleSurface.painted(sprite, point) or not VisibleSurface.in_front(sprite, top_sprite): continue
+			top_sprite = sprite
+			var interaction := {}
+			var bounds: Rect2 = placement.world_hit_bounds
+			bounds.position += global_position
+			if str(placement.get("profile_kind", "")) != "decorative" and bool(placement.profile.get("interaction_enabled", true)) and str(placement.kind) in ["desk", "artifact_archive", "approval_console"] and bounds.has_point(point):
+				interaction = {"id": str(placement.id), "kind": "prop", "point": interaction_world_position(str(placement.id))}
+			result = {"sprite": sprite, "interaction": interaction}
+	return result
 
 func placeholder_records() -> Array[EmployeeRecord]:
 	var records: Array[EmployeeRecord] = []
@@ -238,11 +327,88 @@ func employee_desk_position(employee_id: String) -> Vector2:
 	var placement := placement_by_id("%s-workstation" % employee_id)
 	return grid_to_world_position(placement.get("work_cell", placement.get("interaction", player_spawn)))
 
+func employee_workstation(employee_id: String) -> Dictionary:
+	# UI/actor integration can obtain the exact reviewed pose/anchor/depth data
+	# without re-reading a second catalog or inferring facing from a walked path.
+	return placement_by_id("%s-workstation" % employee_id).duplicate(true)
+
+func employee_workstation_visual(employee_id: String) -> Dictionary:
+	return _workstation_visual("%s-workstation" % employee_id)
+
+func research_visual() -> Dictionary:
+	return _workstation_visual("research-bench")
+
+func _workstation_visual(prop_id: String) -> Dictionary:
+	var placement := placement_by_id(prop_id)
+	if placement.is_empty() or str(placement.get("profile_kind", "")) in ["service", "collaboration", "decorative"]: return {}
+	var result := {
+		"work_facing": placement.work_facing, "seat_anchor": placement.seat_anchor,
+		"seat_z_offset": placement.seat_z_offset, "pose_set": placement.pose_set,
+		"prop_anchor": global_position + placement.anchor,
+		"work_position": grid_to_world_position(placement.work_cell),
+	}
+	if placement.get("workstation_capability_revision") is String:
+		result["workstation_capability_revision"] = str(placement.workstation_capability_revision)
+	if placement.get("calibration_owner_id") is int:
+		result["calibration_owner_id"] = int(placement.calibration_owner_id)
+	if placement.has("seat_anchor_by_employee"):
+		var owner_id := str(placement.get("owner_id", ""))
+		if placement.seat_anchor_by_employee.has(owner_id):
+			result.seat_anchor = Vector2(OfficeLayout.vector(placement.seat_anchor_by_employee[owner_id]))
+	for field: String in ["seat_layer_z_offsets", "calibration_limitations"]:
+		if placement.has(field): result[field] = placement[field].duplicate(true)
+	if placement.get("seat_pose_depth_lock") is bool: result["seat_pose_depth_lock"] = placement.seat_pose_depth_lock
+	if placement.get("seat_state_handoff") is Dictionary: result["seat_state_handoff"] = placement.seat_state_handoff.duplicate(true)
+	if placement.get("grounded_work_shadow") is bool:
+		result["grounded_work_shadow"] = placement.grounded_work_shadow
+		if placement.grounded_work_shadow:
+			var lowest := 4096
+			for layer: Dictionary in placement.render_layers: lowest = mini(lowest, int(layer.z_offset))
+			# Includes chair, apron and all front/rear layers. No artist-entered
+			# shadow depth can accidentally paint a floor shadow over the top.
+			result["ground_shadow_z_offset"] = lowest - 1
+	if placement.get("grounded_work_shadow_follow_seat_x") is bool:
+		result["grounded_work_shadow_follow_seat_x"] = placement.grounded_work_shadow_follow_seat_x
+	return result
+
 func research_position() -> Vector2:
 	return interaction_world_position("research-bench")
 
-func lunch_position() -> Vector2:
+func _collaboration_slot(employee_id: String) -> Dictionary:
+	var placement := placement_by_id("collaboration-cluster")
+	if placement.is_empty() or str(placement.get("profile_kind", "")) != "collaboration": return {}
+	var slots: Array = placement.get("collaboration_slots", [])
+	if slots.is_empty(): return {}
+	if employee_id.is_empty(): return slots[0] as Dictionary
+	var employee_ids: Array[String] = []
+	for known_id: String in _employee_names: employee_ids.append(known_id)
+	employee_ids.sort()
+	var index := employee_ids.find(employee_id)
+	if index < 0 or index >= slots.size(): return {}
+	return slots[index] as Dictionary
+
+func lunch_position(employee_id: String = "") -> Vector2:
+	var slot := _collaboration_slot(employee_id)
+	if not slot.is_empty(): return global_position + Vector2(slot.position)
 	return interaction_world_position("collaboration-cluster")
+
+func collaboration_visual(employee_id: String) -> Dictionary:
+	var placement := placement_by_id("collaboration-cluster")
+	var slot := _collaboration_slot(employee_id)
+	if placement.is_empty() or slot.is_empty(): return {}
+	var anchors: Variant = slot.get("seat_anchor_by_employee")
+	if not anchors is Dictionary or not anchors.has(employee_id): return {}
+	return {
+		"work_facing": str(slot.get("work_facing", "")),
+		"pose_set": str(placement.profile.get("collaboration_pose_set", "")),
+		"collaboration_capability_revision": str(slot.get("capability_revision", "")),
+		"seat_anchor": Vector2(OfficeLayout.vector(anchors[employee_id])),
+		"seat_z_offset": int(slot.get("seat_z_offset", 0)),
+		"seat_layer_z_offsets": slot.get("seat_layer_z_offsets", {}).duplicate(true),
+		"ground_shadow_z_offset": int(slot.get("ground_shadow_z_offset", 0)),
+		"prop_anchor": global_position + Vector2(placement.anchor),
+		"seat_position": global_position + Vector2(slot.position),
+	}
 
 func playable_bounds() -> Rect2:
 	return Rect2(global_position, Vector2(grid_width * tile_size, mini(grid_height * tile_size, 720)))

@@ -24,10 +24,10 @@
     {"id": "founder-workstation", "kind": "desk", "grid": [8, 17], "facing": "south", "required_hires": 0, "owner_id": "founder"},
     {"id": "mira-workstation", "kind": "desk", "grid": [10, 8], "facing": "south", "required_hires": 1, "owner_id": "mira"},
     {"id": "coffee-station", "kind": "coffee_station", "grid": [4, 6], "facing": "south", "required_hires": 1},
-    {"id": "collaboration-cluster", "kind": "collaboration_cluster", "grid": [10, 13], "facing": "south", "required_hires": 1},
+    {"id": "collaboration-cluster", "kind": "collaboration_cluster", "grid": [12, 14], "facing": "south", "required_hires": 1},
     {"id": "artifact-archive", "kind": "artifact_archive", "grid": [4, 13], "facing": "south", "required_hires": 1},
     {"id": "theo-workstation", "kind": "desk", "grid": [20, 8], "facing": "south", "required_hires": 2, "owner_id": "theo"},
-    {"id": "research-bench", "kind": "research_table", "grid": [29, 6], "facing": "south", "required_hires": 2},
+    {"id": "research-bench", "kind": "research_table", "grid": [29, 8], "facing": "south", "required_hires": 2},
     {"id": "approval-console", "kind": "approval_console", "grid": [29, 13], "facing": "south", "required_hires": 2},
     {"id": "prototype-bench", "kind": "prototype_bench", "grid": [29, 18], "facing": "south", "required_hires": 4}
   ]

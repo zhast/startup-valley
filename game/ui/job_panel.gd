@@ -202,6 +202,7 @@ var _activity_details_job_id := ""
 var _status_card: PanelContainer
 var _activity_heading: Label
 var _worker_error := ""
+var _connection_retry_pending := false
 var _tab_strip: HBoxContainer
 var _tab_buttons: Array[Button] = []
 var _promotion_actions: Array[Button] = []
@@ -374,12 +375,7 @@ func _build_connection_panel() -> void:
 	content.add_child(_connection_save_button)
 	_connection_retry_button = Button.new()
 	_connection_retry_button.text = "Reconnect"
-	_connection_retry_button.pressed.connect(func() -> void:
-		_connection_retry_button.disabled = true
-		_key_status.text = "Reconnecting the local worker…"
-		_configure_connection_focus()
-		worker_retry_requested.emit()
-	)
+	_connection_retry_button.pressed.connect(_request_worker_retry)
 	CozyUI.button(_connection_retry_button, "primary")
 	content.add_child(_connection_retry_button)
 	_connection_retry_button.hide()
@@ -427,11 +423,11 @@ func _refresh_connection_surface() -> void:
 	_key_input.visible = not unavailable
 	_connection_save_button.visible = not unavailable
 	_connection_retry_button.visible = unavailable
-	_connection_retry_button.disabled = false
+	_connection_retry_button.disabled = _connection_retry_pending
 	if unavailable:
 		# The page heading and recovery action already explain a disconnection.
 		# Preserve diagnostic detail in a tooltip without repeating that prose.
-		_key_status.text = ""
+		_key_status.text = "Reconnecting…" if _connection_retry_pending else ""
 		_key_status.tooltip_text = _worker_error
 		_connection_retry_button.tooltip_text = _worker_error
 		_key_status.add_theme_color_override("font_color", ALERT_INK)
@@ -440,6 +436,33 @@ func _refresh_connection_surface() -> void:
 		_key_status.add_theme_color_override("font_color", CHARCOAL)
 	_refresh_connection_save_state()
 	_configure_connection_focus()
+
+func _request_worker_retry() -> void:
+	if _connection_retry_pending:
+		return
+	_connection_retry_pending = true
+	_refresh_rail_connection_action()
+	_refresh_connection_surface()
+	worker_retry_requested.emit()
+
+func _refresh_rail_connection_action() -> void:
+	if _settings_button == null:
+		return
+	if _connection_retry_pending:
+		_settings_button.text = "Linking…"
+		_settings_button.tooltip_text = "Reconnect request in progress."
+		_settings_button.disabled = true
+		CozyUI.button(_settings_button, "secondary")
+	elif not _worker_connected and not _worker_error.is_empty():
+		_settings_button.text = "Reconnect"
+		_settings_button.tooltip_text = _worker_error
+		_settings_button.disabled = false
+		CozyUI.button(_settings_button, "primary")
+	else:
+		_settings_button.text = "Settings" if _credential_configured else "Connect"
+		_settings_button.tooltip_text = "Open settings or connect AI"
+		_settings_button.disabled = false
+		CozyUI.button(_settings_button, "secondary")
 
 func _refresh_connection_save_state() -> void:
 	if _connection_save_button == null: return
@@ -2138,10 +2161,10 @@ func status_color() -> Color:
 func set_worker_ready() -> void:
 	_worker_connected = true
 	_worker_error = ""
+	_connection_retry_pending = false
 	if _connection_badge != null:
 		_connection_badge.visible = false
-	if _settings_button != null:
-		_settings_button.text = "Settings" if _credential_configured else "Connect"
+	_refresh_rail_connection_action()
 	if _key_status != null:
 		_key_status.text = "Connected. Key stored in the OS keychain." if _credential_configured else "Connection required before chat or work can start."
 		_key_status.add_theme_color_override("font_color", CHARCOAL if _credential_configured else ALERT_INK)
@@ -2153,12 +2176,11 @@ func set_worker_ready() -> void:
 func set_worker_connection_error(message: String) -> void:
 	_worker_connected = false
 	_worker_error = message
+	_connection_retry_pending = false
 	if _connection_badge != null:
 		_connection_badge.visible = true
 		_connection_badge.tooltip_text = message
-	if _settings_button != null:
-		_settings_button.text = "Reconnect"
-		_settings_button.tooltip_text = message
+	_refresh_rail_connection_action()
 	if _key_status != null:
 		_key_status.text = message
 		_key_status.add_theme_color_override("font_color", ALERT_INK)
@@ -2187,7 +2209,7 @@ func set_credential_status(configured: bool) -> void:
 	_credential_configured = configured
 	_key_status.text = "Connected. Key stored in the OS keychain." if configured else "Connection required before chat or work can start."
 	_key_status.add_theme_color_override("font_color", CHARCOAL if configured else ALERT_INK)
-	_settings_button.text = "Settings" if configured else "Connect"
+	_refresh_rail_connection_action()
 	_refresh_operation_availability()
 	_refresh_connection_surface()
 	if not configured:

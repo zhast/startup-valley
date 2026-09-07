@@ -18,6 +18,16 @@ func equal_color(a: Color, b: Color) -> bool:
 	return absf(a.r - b.r) + absf(a.g - b.g) + absf(a.b - b.b) + absf(a.a - b.a) < 0.025
 
 func run() -> void:
+	# A GDScript error or failed assertion aborts the called coroutine without
+	# necessarily giving the Godot process a nonzero exit code. Require the check
+	# body to reach its final sentinel before this wrapper can report success.
+	var completed: Array[bool] = [false]
+	await run_checks(completed)
+	check(completed[0], "Office architecture checks aborted on a script error or assertion")
+	if failures.is_empty(): print("Office architecture: %d checks passed" % checks)
+	quit(0 if failures.is_empty() else 1)
+
+func run_checks(completed: Array[bool]) -> void:
 	var dimensions := {"floor": Vector2i(128, 128), "wall": Vector2i(128, 96), "trim": Vector2i(128, 64), "window": Vector2i(160, 96), "door": Vector2i(64, 32)}
 	var images: Dictionary[String, Image] = {}
 	for name: String in dimensions:
@@ -73,28 +83,74 @@ func run() -> void:
 		DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
 		check(actual.save_png(output + "/architecture-only.png") == OK, "Save actual rendered architecture evidence")
 	architecture.free()
-	await check_catalog_rendering()
-	if failures.is_empty(): print("Office architecture: %d checks passed" % checks)
-	quit(0 if failures.is_empty() else 1)
+	check(check_catalog_rendering(), "Catalog authority check reaches its completion sentinel")
+	completed[0] = true
 
-func check_catalog_rendering() -> void:
+func ambient_overlays(prop: Node2D) -> Array[OfficeAmbientOverlay]:
+	var result: Array[OfficeAmbientOverlay] = []
+	if prop == null: return result
+	for child: Node in prop.get_children():
+		if child is OfficeAmbientOverlay: result.append(child as OfficeAmbientOverlay)
+	return result
+
+func check_profile_overlays(room: TownRoom, prop_id: String) -> void:
+	var placement := room.placement_by_id(prop_id)
+	var prop := room.prop_node(prop_id)
+	check(not placement.is_empty(), "Resolved placement exists for ambient profile: " + prop_id)
+	check(prop != null, "Runtime prop exists for ambient profile: " + prop_id)
+	if placement.is_empty() or prop == null: return
+	var declared: Variant = placement.profile.get("ambient_overlays")
+	check(declared is Array, "Resolved profile owns an ambient overlay list: " + prop_id)
+	if not declared is Array: return
+	var actual := ambient_overlays(prop)
+	var expected := declared as Array
+	check(actual.size() == expected.size(), "Runtime ambient overlays exactly match the resolved catalogue profile: " + prop_id)
+	for index: int in range(mini(actual.size(), expected.size())):
+		var attachment: Variant = expected[index]
+		check(attachment is Dictionary, "Catalogue ambient overlay is structured: %s[%d]" % [prop_id, index])
+		if not attachment is Dictionary: continue
+		var definition := attachment as Dictionary
+		var overlay := actual[index]
+		check(overlay.atlas_row == int(definition.row), "Runtime ambient row matches catalogue: %s[%d]" % [prop_id, index])
+		check(overlay.position == Vector2(OfficeLayout.vector(definition.offset)), "Runtime ambient offset matches catalogue: %s[%d]" % [prop_id, index])
+		check(overlay.z_index == prop.z_index + int(definition.z_offset), "Runtime ambient depth matches catalogue: %s[%d]" % [prop_id, index])
+		check(overlay.texture == PolishArt.AMBIENT_OFFICE, "Runtime ambient overlay uses the ambient atlas: %s[%d]" % [prop_id, index])
+
+func check_catalog_rendering() -> bool:
 	var room := load("res://world/town_room.tscn").instantiate() as TownRoom
 	root.add_child(room)
-	check(room.load_layout(), "Load room for catalog authority check")
-	# A temporary local fixture changes the art profile only. The ghost and
-	# production prop must not disagree because a scene retained old constants.
+	var loaded := room.load_layout()
+	check(loaded, "Load room for catalog authority check")
+	if not loaded:
+		room.free()
+		return false
+	# Reconstruct the legacy atlas-backed desk locally. It must remain catalog
+	# authoritative even though normal production desks now use an exact,
+	# reviewed render-layer registry.
 	var desk: Dictionary = room.layout_model.catalog.desk
+	desk.erase("facing_profiles")
+	desk.facings = ["south"]
 	desk.art = "res://assets/runtime/office/layered-furniture.png"
 	desk.atlas_cell = [128, 96]
 	desk.atlas_row = 1
 	desk.visual_bounds = [-64, -88, 128, 96]
+	# This legacy-only atlas has a wider painted edge than the admitted desk.
+	# Keep the authority probe clear of the enlarged production lunch cluster;
+	# normal placement still uses the unchanged current layout.
+	for row: Dictionary in room.layout_model.data.props:
+		if str(row.id) == "founder-workstation": row.grid = [7, 17]
 	room._rebuild_props()
-	var front := room.prop_node("mira-workstation").get_node("WorkstationFront") as Sprite2D
-	check(front.texture.resource_path == str(desk.art), "Placed prop uses catalog art, not scene constants")
-	check(front.region_rect == Rect2(128, 96, 128, 96), "Placed prop uses catalog atlas cell and row")
-	var coffee := room.prop_node("coffee-station").get_node("AmbientOverlay") as OfficeAmbientOverlay
-	var scan := room.prop_node("research-bench").get_node("ResearchScan") as OfficeAmbientOverlay
-	check(coffee.position == Vector2(20, -66) and scan.position == Vector2(0, -62), "Furniture profile cannot displace separate ambient overlays")
-	check(coffee.texture == PolishArt.AMBIENT_OFFICE and scan.texture == PolishArt.AMBIENT_OFFICE, "Furniture profile cannot replace ambient atlas with furniture")
-	room.navigation.free()
+	var workstation := room.prop_node("mira-workstation")
+	check(workstation != null, "Catalog-authoritative workstation exists")
+	var front := workstation.get_node_or_null("WorkstationFront") as Sprite2D if workstation != null else null
+	check(front != null, "Catalog-authoritative workstation front exists")
+	if front != null:
+		check(front.texture != null and front.texture.resource_path == str(desk.art), "Placed prop uses catalog art, not scene constants")
+		check(front.region_rect == Rect2(128, 96, 128, 96), "Placed prop uses catalog atlas cell and row")
+	# Explicit promoted profiles replace legacy scene attachments. The catalogue
+	# is authoritative even when its truthful declaration is an empty list.
+	check_profile_overlays(room, "coffee-station")
+	check_profile_overlays(room, "research-bench")
+	if room.navigation != null: room.navigation.free()
 	room.free()
+	return true

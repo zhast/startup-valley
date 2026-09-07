@@ -29,6 +29,20 @@ func cancel_route() -> void:
 	if navigation != null:
 		navigation.release("founder")
 
+func face_direction(direction: Vector2) -> void:
+	# Explicit standing-service arrival may face its surface even when the final
+	# path segment was sideways. This changes no feet, route, or source artwork.
+	if not direction.is_finite() or direction.is_zero_approx(): return
+	_facing = _direction_name(direction)
+	_animation_elapsed = 0.0
+	if _character_sprite != null:
+		_character_sprite.region_rect = CharacterArt.locomotion_region(_facing, 0)
+
+func body_surface_at(point: Vector2) -> Sprite2D:
+	# The founder has no click action, but opaque body pixels still hide objects
+	# behind them. Shadows and transparent cell padding are not body surfaces.
+	return _character_sprite if VisibleSurface.painted(_character_sprite, point) else null
+
 func _ready() -> void:
 	collision_mask = 3
 	z_as_relative = false

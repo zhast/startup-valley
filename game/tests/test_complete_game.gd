@@ -64,7 +64,9 @@ func check_world_label_ui_occlusion() -> void:
 	var other := main.get_employee("theo")
 	var original_position := employee.position
 	var original_other := other.position
-	other.position = Vector2(400, 480)
+	# Keep the second label probe on clear floor, outside the expanded lunch
+	# table. Modal restoration must not depend on painting a label through it.
+	other.position = Vector2(650, 480)
 	employee.position = Vector2(760, 360)
 	employee._label_hold = 5
 	main.job_panel.close_drawer(false)
@@ -353,7 +355,7 @@ func _run() -> void:
 		if not main.get_employee("mira")._has_target and not main.get_employee("theo")._has_target: break
 	for employee: EmployeeAvatar in main._employees.values():
 		if employee._has_target: print("lunch waiting ", employee.employee_id, " pos=", employee.position, " route=", employee._route, " actors=", main.room.navigation.actors)
-		check(employee.work_state == EmployeeAvatar.WorkState.LUNCH and not employee._has_target, "Employees reach separate lunch seats")
+		check(employee.work_state == EmployeeAvatar.WorkState.LUNCH and not employee._has_target, "Employees reach separate lunch destinations")
 	main._spawn_employees([])
 	main.player.position = main.room.grid_to_world_position(main.room.player_spawn)
 	await frames()

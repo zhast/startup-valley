@@ -187,8 +187,8 @@ func _run() -> void:
 	if main.room.prop_node("collaboration-cluster") == null or main.room.prop_node("coffee-station") == null:
 		_fail("test_modular_office: the first-hire meeting and coffee props were missing")
 	var staged_desk := main.room.prop_node("mira-workstation")
-	var staged_desk_rear := staged_desk.get_node_or_null("WorkstationRear") as Sprite2D if staged_desk != null else null
-	var staged_desk_front := staged_desk.get_node_or_null("WorkstationFront") as Sprite2D if staged_desk != null else null
+	var staged_desk_rear := staged_desk.get_node_or_null("DeskRear") as Sprite2D if staged_desk != null else null
+	var staged_desk_front := staged_desk.get_node_or_null("DeskFront") as Sprite2D if staged_desk != null else null
 	if staged_desk == null or not is_zero_approx(staged_desk.rotation) or staged_desk_rear == null or staged_desk_front == null:
 		_fail("test_modular_office: the workstation did not use authored rear/front layers")
 	elif not staged_desk_rear.scale.is_equal_approx(Vector2.ONE) or not staged_desk_front.scale.is_equal_approx(Vector2.ONE):
@@ -348,8 +348,11 @@ func _run() -> void:
 		if not employee.is_at_desk():
 			_fail("test_worker_walks_to_desk: employee did not reach the desk")
 		var mina_desk := main.room.prop_node("mira-workstation")
-		if mina_desk == null or employee.z_index >= mina_desk.z_index:
-			_fail("test_modular_office: Mina was not depth-sorted behind her workstation")
+		var desk_front := mina_desk.get_node_or_null("DeskFront") as Sprite2D if mina_desk != null else null
+		var actor_lower := employee._work_pose_layer_sprites.get("lower") as Sprite2D
+		var actor_upper := employee._work_pose_layer_sprites.get("upper") as Sprite2D
+		if desk_front == null or actor_lower == null or actor_upper == null or actor_lower.z_index >= desk_front.z_index or actor_upper.z_index <= desk_front.z_index:
+			_fail("test_modular_office: Mina's split seated pose did not bracket the reviewed desk front")
 		main.simulate_worker_event("mira", &"tool.started", "write_file")
 		await process_frame
 		if employee.work_state != EmployeeAvatar.WorkState.TYPING:

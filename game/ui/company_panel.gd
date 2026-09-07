@@ -4,6 +4,7 @@ extends Control
 signal action_requested(method: String, parameters: Dictionary)
 signal milestone_requested(definition: Dictionary)
 signal connection_requested
+signal renovation_requested
 signal volume_changed(effects: float, ambience: float)
 
 var state: Dictionary = {}
@@ -275,6 +276,7 @@ func _settings_screen() -> void:
 	_content.add_child(shortcuts)
 	_button("Company Journey", func() -> void: present("journey"), false, true, shortcuts)
 	_button("Connect AI", func() -> void: hide(); connection_requested.emit(), false, true, shortcuts)
+	_button("Renovate office", func() -> void: hide(); renovation_requested.emit(), false, true, shortcuts)
 	var audio := _card()
 	_label("Sound", true, audio)
 	_slider(effects_volume, true, audio)
@@ -284,7 +286,7 @@ func _settings_screen() -> void:
 	_content.add_child(display)
 	_label("Display", true, display)
 	_button("Switch to window" if get_window().mode == Window.MODE_FULLSCREEN else "Switch to fullscreen", _toggle_fullscreen, false, true, display)
-	_label("Move: WASD, arrows or click the floor.\nClick people or desks to interact. E: chat · J: Journey · Esc: back.")
+	_label("Explore: WASD, arrows, or click the floor · E chat · J Journey.\nRenovate: M move · R rotate · U undo · Esc cancel or back.")
 	_actions("Resume", hide, true, "Title screen", func() -> void: present("title"))
 
 func _slider(value: float, effects: bool, parent: Control = null) -> void:

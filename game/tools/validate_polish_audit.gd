@@ -1,6 +1,6 @@
 extends SceneTree
 
-const OUTPUT_ROOT := "res://tests/output/polish-audit"
+var OUTPUT_ROOT := OS.get_environment("STARTUP_VALLEY_AUDIT_OUTPUT_ROOT").path_join("polish-audit") if not OS.get_environment("STARTUP_VALLEY_AUDIT_OUTPUT_ROOT").is_empty() else "res://tests/output/polish-audit"
 const VIEWPORT_SIZE := Vector2i(1280, 720)
 const CONTACT_SIZE := Vector2i(1920, 360)
 const EXPECTED_SCENARIOS: Dictionary = {
@@ -27,7 +27,7 @@ const REQUIRED_UI_CHECKS := {
 	"work-controls": ["dropdown-selection-changed", "visible-editable-text-focus", "real-keyboard-text-entry", "confirmed-assignment-dispatch", "assignment-pending-disabled", "disabled-assignment-no-double-dispatch"],
 	"journal-and-approval": ["activity-only-steering-dispatch", "steering-pending-disabled", "approval-ledger-keeps-footer-footprint", "ledger-back-restores-approval", "combined-disclosures-restore-work-context", "combined-disclosures-no-partial-action-controls", "approval-click-dispatch", "answered-approval-clears-stale-world-cue", "answered-approval-reveals-result"],
 	"delivery-studio-reader": ["delivery-preview-in-first-view", "preview-opens-reader-before-decision", "reader-wheel-scroll", "reader-close-button-pressed", "reader-click-close", "reader-reopen-reset", "reader-reopen-retains-document", "reader-escape-close", "preview-before-promotion-dispatch-order", "studio-file-selection", "studio-reader-retains-document"],
-	"queued-errors-and-overflow": ["worker-error-retry-visible", "worker-recovery-distinct"],
+	"queued-errors-and-overflow": ["worker-error-retry-visible", "worker-retry-click-dispatch", "worker-reconnecting-player-copy", "worker-reconnecting-rail-consistent", "worker-recovery-distinct"],
 }
 const REQUIRED_DISPATCH_ORDER := {
 	"chat-and-work-order": ["chat.send"],
@@ -39,6 +39,10 @@ const REQUIRED_DISPATCH_ORDER := {
 var _failures: PackedStringArray = []
 
 func _initialize() -> void:
+	if not preload("res://tools/audit_output_scope.gd").valid(OS.get_environment("STARTUP_VALLEY_AUDIT_OUTPUT_ROOT")):
+		push_error("Audit output override must be a strict res://tests/output/ descendant")
+		quit(2)
+		return
 	_validate_inventory()
 	for suite: String in EXPECTED_SCENARIOS:
 		_validate_suite(suite)
@@ -59,6 +63,7 @@ func _validate_inventory() -> void:
 	var regions_value: Variant = inventory.get("characterAtlases", [])
 	var fonts_value: Variant = inventory.get("fonts", [])
 	var flags_value: Variant = inventory.get("knownFlags", [])
+	var expected_layers: Variant = inventory.get("expectedFurnitureLayers", [])
 	if not textures_value is Array or (textures_value as Array).is_empty():
 		_failures.append("Asset inventory did not contain texture metadata")
 	if not live_value is Array or (live_value as Array).size() < 12:
@@ -72,14 +77,31 @@ func _validate_inventory() -> void:
 	elif not (flags_value as Array).is_empty():
 		_failures.append("Runtime asset inventory still contains polish flags: %s" % str(flags_value))
 	if live_value is Array:
+		var seen_layers: Array[String] = []
+		var seen_characters: Array[String] = []
 		for live_value_item: Variant in live_value as Array:
 			if not live_value_item is Dictionary:
 				continue
 			var live := live_value_item as Dictionary
+			var id_value := str(live.get("id", ""))
+			if str(live.get("kind", "")) == "office-prop":
+				if id_value in seen_layers: _failures.append("Duplicate inventoried furniture layer: " + id_value)
+				seen_layers.append(id_value)
+			elif str(live.get("kind", "")) == "character":
+				if id_value in seen_characters: _failures.append("Duplicate inventoried character: " + id_value)
+				seen_characters.append(id_value)
 			if not is_equal_approx(float(live.get("scaleX", 0.0)), 1.0) or not is_equal_approx(float(live.get("scaleY", 0.0)), 1.0):
 				_failures.append("%s does not render at native scale" % str(live.get("id", "sprite")))
 			if str(live.get("kind", "")) == "character" and (int(live.get("sourceWidth", 0)) != 48 or int(live.get("sourceHeight", 0)) != 80):
 				_failures.append("%s does not use a 48x80 runtime cell" % str(live.get("id", "character")))
+		if not expected_layers is Array or (expected_layers as Array).is_empty():
+			_failures.append("Asset inventory omitted canonical furniture layer coverage")
+		else:
+			for key: Variant in expected_layers:
+				if str(key) not in seen_layers: _failures.append("Missing inventoried canonical furniture layer: " + str(key))
+			if seen_layers.size() != (expected_layers as Array).size(): _failures.append("Live furniture layer count differs from the canonical declarations")
+		for key: String in ["founder", "mira", "theo"]:
+			if key not in seen_characters: _failures.append("Missing live character: " + key)
 	if fonts_value is Array:
 		for font_value: Variant in fonts_value as Array:
 			if not font_value is Dictionary:
@@ -149,8 +171,13 @@ func _validate_ui_actions(scenario: Dictionary) -> void:
 	for label: String in checkpoints:
 		_validate_image(str(checkpoints[label].get("path", "")), VIEWPORT_SIZE, str(scenario.name) + " " + label)
 	if str(scenario.name) == "queued-errors-and-overflow":
-		for required: String in ["worker-error", "worker-recovered"]:
+		for required: String in ["worker-error", "worker-reconnecting", "worker-recovered"]:
 			if not checkpoints.has(required): _failures.append("Separate %s checkpoint missing" % required)
+		if checkpoints.has("worker-error") and checkpoints.has("worker-reconnecting") and checkpoints.has("worker-recovered"):
+			var pending_frame := int(checkpoints["worker-reconnecting"].frame)
+			if pending_frame <= int(checkpoints["worker-error"].frame) or pending_frame >= int(checkpoints["worker-recovered"].frame): _failures.append("Pending retry must be captured between error and recovery")
+			var pending_state: Dictionary = checkpoints["worker-reconnecting"].get("uiState", {})
+			if not bool(pending_state.get("connectionVisible", false)) or bool(pending_state.get("workerConnected", true)): _failures.append("Pending retry must retain its visible disconnected panel")
 		if checkpoints.has("worker-error") and checkpoints.has("worker-recovered"):
 			if int(checkpoints["worker-error"].frame) >= int(checkpoints["worker-recovered"].frame): _failures.append("Error/recovery checkpoints are not temporally distinct")
 			var error_state: Dictionary = checkpoints["worker-error"].get("uiState", {})

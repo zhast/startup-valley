@@ -13,6 +13,15 @@ class InteractionButton extends Button:
 		var baseline := floorf((size.y - font.get_height(16)) * 0.5) + ceilf(font.get_ascent(16))
 		draw_string(font, Vector2(44, baseline), "Chat", HORIZONTAL_ALIGNMENT_CENTER, size.x - 54, 16, CozyUI.INK)
 
+class StationCallout extends Control:
+	var callout_target := Vector2.ZERO
+	var caption := ""
+	func _draw() -> void:
+		WorldCalloutSkin.draw(self, Rect2(Vector2.ZERO, size), callout_target)
+		var font := GameFonts.BOLD
+		var baseline := floorf((size.y - font.get_height(16)) * 0.5) + ceilf(font.get_ascent(16))
+		draw_string(font, Vector2(12, baseline), caption, HORIZONTAL_ALIGNMENT_CENTER, size.x - 24, 16, CozyUI.INK)
+
 const MOVEMENT_TEXTURE: Texture2D = preload("res://assets/runtime/ui/founders-ledger/movement-plaque.png")
 
 const CHARCOAL := Color("151515")
@@ -35,6 +44,9 @@ var _notification_rest_position: Vector2
 var _movement_hint: Control
 var _movement_hint_tween: Tween
 var _movement_seen: bool = false
+var _station_callout: StationCallout
+var _station_target_id := ""
+var station_input_enabled: Callable
 
 func _ready() -> void:
 	theme = GameFonts.interface_theme()
@@ -42,9 +54,21 @@ func _ready() -> void:
 	_build_notification()
 	_notification_rest_position = _notification.position
 	_build_interaction_prompt()
+	_station_callout = StationCallout.new()
+	_station_callout.name = "StationHover"
+	_station_callout.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_station_callout.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_station_callout.set_meta("cozy_material", "world-callout")
+	add_child(_station_callout)
+	_station_callout.hide()
 	_build_movement_hint()
 
 func _process(_delta: float) -> void:
+	# Editor placement can disable world input while GameMain processing itself
+	# is paused. This lightweight guard prevents its last hover paper lingering.
+	if _station_callout != null and _station_callout.visible and station_input_enabled.is_valid() and not station_input_enabled.call():
+		_station_callout.hide()
+		_station_target_id = ""
 	if _movement_seen or _movement_hint == null:
 		return
 	if Input.get_vector("move_left", "move_right", "move_up", "move_down").is_zero_approx():
@@ -66,7 +90,8 @@ func _build_notification() -> void:
 	toast.position = Vector2(24, 18)
 	toast.size = Vector2(310, 84)
 	toast.add_theme_stylebox_override("panel", CozyUI.paper())
-	toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# Keep the whole visible memo above world input, not only its View button.
+	toast.mouse_filter = Control.MOUSE_FILTER_STOP
 	add_child(toast)
 	_notification = toast
 	_notification.visible = false
@@ -175,21 +200,74 @@ func update_interaction(
 	var silhouettes: Array[Rect2] = obstacles.duplicate()
 	silhouettes.append(WorldCalloutSkin.actor_rect(player_position))
 	for employee: EmployeeAvatar in employees.values():
-		silhouettes.append(WorldCalloutSkin.actor_rect(employee.position))
+		silhouettes.append(WorldCalloutSkin.actor_rect(employee.render_position()))
 	var prompt_size := _interaction_prompt.size
 	var viewport := Rect2(18, 82, PLAYFIELD_RIGHT - 36, get_viewport_rect().size.y - 100)
-	var candidate := WorldCalloutSkin.place(closest.position, prompt_size, silhouettes, viewport, true)
+	# Only presentation follows an authored seated socket. Distance above stays
+	# measured from physical feet, preserving proximity and navigation rules.
+	var visual_position := closest.render_position()
+	var candidate := WorldCalloutSkin.place(visual_position, prompt_size, silhouettes, viewport, true)
 	_interaction_prompt.visible = candidate.has_area()
 	if not candidate.has_area(): return
 	_interaction_prompt.position = candidate.position
 	var button := _interaction_prompt.get_node("ChatAction") as InteractionButton
-	button.callout_target = WorldCalloutSkin.actor_rect(closest.position).get_center() - candidate.position
+	button.callout_target = WorldCalloutSkin.actor_rect(visual_position).get_center() - candidate.position
 	button.tooltip_text = "Chat with %s (E)" % closest.display_name
 	button.queue_redraw()
 
 func interaction_rect() -> Rect2:
 	var button := _interaction_prompt.get_node("ChatAction") as InteractionButton
 	return WorldCalloutSkin.bounds(_interaction_prompt.get_global_rect(), _interaction_prompt.global_position + button.callout_target)
+
+func update_station_hover(target_id: String, caption: String, target_bounds: Rect2, enabled: bool, obstacles: Array[Rect2]) -> void:
+	_station_target_id = ""
+	_station_callout.hide()
+	if not enabled or target_id.is_empty() or caption.is_empty() or not target_bounds.has_area(): return
+	var width := ceilf(GameFonts.BOLD.get_string_size(caption, HORIZONTAL_ALIGNMENT_LEFT, -1, 16).x) + 24.0
+	var size_value := Vector2(maxf(80, width), 40)
+	var viewport := Rect2(18, 82, PLAYFIELD_RIGHT - 36, get_viewport_rect().size.y - 100)
+	var gap := float(WorldCalloutSkin.POINTER_LENGTH + 3)
+	var center := target_bounds.get_center()
+	var left := target_bounds.position.x - size_value.x - gap
+	var right := target_bounds.end.x + gap
+	var above := target_bounds.position.y - size_value.y - gap
+	var below := target_bounds.end.y + gap
+	var positions: Array[Vector2] = [
+		Vector2(center.x - size_value.x * 0.5, above),
+		Vector2(center.x - size_value.x * 0.5, below),
+		Vector2(left, center.y - size_value.y * 0.5),
+		Vector2(right, center.y - size_value.y * 0.5),
+		Vector2(left, above), Vector2(right, above),
+		Vector2(left, below), Vector2(right, below),
+	]
+	for point: Vector2 in positions:
+		var candidate := Rect2(point.round(), size_value)
+		var painted := WorldCalloutSkin.bounds(candidate, center)
+		if not viewport.encloses(painted): continue
+		var blocked := false
+		for obstacle: Rect2 in obstacles:
+			if painted.intersects(obstacle):
+				blocked = true
+				break
+		if blocked: continue
+		_station_target_id = target_id
+		_station_callout.caption = caption
+		_station_callout.position = candidate.position
+		_station_callout.size = candidate.size
+		_station_callout.callout_target = center - candidate.position
+		_station_callout.show()
+		_station_callout.queue_redraw()
+		# One actionable paper at a time. The physical proximity/E target stays
+		# intact; only its redundant visual is suppressed during station hover.
+		_interaction_prompt.hide()
+		return
+
+func station_hover_rect() -> Rect2:
+	if not _station_callout.visible: return Rect2()
+	return WorldCalloutSkin.bounds(_station_callout.get_global_rect(), _station_callout.global_position + _station_callout.callout_target)
+
+func station_hover_target_id() -> String:
+	return _station_target_id
 
 func show_delivery(job_id: String, employee_id: String, employee_name: String, detail: String) -> void:
 	_delivery_job_id = job_id

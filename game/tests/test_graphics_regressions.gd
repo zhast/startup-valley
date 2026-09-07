@@ -86,11 +86,13 @@ func run() -> void:
 		employee.queue_redraw()
 		check(employee._character_sprite.texture == CharacterArt.seated_sheet(employee_id), "Desk idle must use ergonomic seated art")
 		var desk := main.room.prop_node(employee_id + "-workstation")
-		var rear := desk.get_node("WorkstationRear") as Sprite2D
-		var front := desk.get_node("WorkstationFront") as Sprite2D
-		check(rear.texture == OfficeDesk.WORKSTATION and front.texture == rear.texture, "Furniture layers must share the new south-facing master")
+		var rear := desk.get_node("DeskRear") as Sprite2D
+		var front := desk.get_node("DeskFront") as Sprite2D
+		check(rear.texture.resource_path.ends_with("desk-south-rear.png") and front.texture.resource_path.ends_with("desk-south-front.png"), "Furniture uses the reviewed independent South layers")
 		check(rear.position == front.position and rear.scale == Vector2.ONE and front.scale == Vector2.ONE, "Furniture must preserve common origin and native scale")
-		check(rear.z_index < employee.z_index and front.z_index > employee.z_index, "Seated employee must render between chair and desktop")
+		var lower := employee._work_pose_layer_sprites.get("lower") as Sprite2D
+		var upper := employee._work_pose_layer_sprites.get("upper") as Sprite2D
+		check(lower != null and upper != null and lower.z_index < front.z_index and upper.z_index > front.z_index, "Split seated body brackets the reviewed desk front")
 	await capture("office-seated")
 	for employee_id: String in ["mira", "theo"]:
 		var employee := main.get_employee(employee_id)
@@ -101,7 +103,9 @@ func run() -> void:
 		check(employee._character_sprite.region_rect.size == Vector2(48, 80), "Seated cells must remain native 48x80")
 		employee.work_state = EmployeeAvatar.WorkState.LUNCH
 		employee._update_character_frame()
-		check(employee._character_sprite.texture == CharacterArt.work_sheet(employee_id), "Lunch keeps its separate original pose")
+		check(employee._character_sprite.texture == CharacterArt.locomotion_sheet(employee_id), "Lunch uses directional standing idle until supported lounge poses exist")
+		check(employee._character_sprite.region_rect.size == Vector2(48, 80), "Lunch preserves the native standing source cell")
+		check(employee._shadow_sprite.region_rect == PolishArt.shadow_region(0), "Lunch keeps the standing floor shadow")
 		employee.work_state = EmployeeAvatar.WorkState.TYPING
 		employee._update_character_frame()
 	await capture("office-typing")

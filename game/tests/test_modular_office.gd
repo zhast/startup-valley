@@ -314,11 +314,13 @@ func test_workstation_bay() -> void:
 	mina.set_physics_process(false)
 	mina._physics_process(0)
 	var desk := main.room.prop_node("mira-workstation")
-	var rear := desk.get_node("WorkstationRear") as Sprite2D
-	var front := desk.get_node("WorkstationFront") as Sprite2D
-	check(rear.z_index < mina.z_index and mina.z_index < front.z_index, "Chair/employee/front desktop have correct depth order")
+	var rear := desk.get_node("DeskRear") as Sprite2D
+	var front := desk.get_node("DeskFront") as Sprite2D
+	var lower := mina._work_pose_layer_sprites.get("lower") as Sprite2D
+	var upper := mina._work_pose_layer_sprites.get("upper") as Sprite2D
+	check(lower != null and upper != null and rear.z_index < lower.z_index and lower.z_index < front.z_index and upper.z_index > front.z_index, "Chair/employee/front desktop use the reviewed split depth order")
 	check(rear.position == front.position and rear.scale == Vector2.ONE and front.scale == Vector2.ONE, "Workstation layers retain one native registered origin")
-	check(mina._character_sprite.texture == CharacterArt.seated_sheet("mira"), "Sitting uses the corrected reusable chair pose")
+	check(mina._character_sprite.texture == CharacterArt.seated_sheet("mira"), "Sitting uses the reviewed reusable South pose")
 	await capture("bay-seated", "One complete workstation bay: reachable rear chair, actor between furniture layers, native pixels.")
 	mina.has_live_job = true
 	mina.apply_worker_event(WorkerEventRecord.from_dictionary({"type": "tool.started", "tool": "write_file"}), main.player.position)

@@ -1,7 +1,8 @@
 extends SceneTree
 
 const MAIN_SCENE: PackedScene = preload("res://world/main.tscn")
-const OUTPUT_ROOT := "res://tests/output/polish-audit"
+# Dev-only checkpoint override; manifests reference their actual new directory.
+var OUTPUT_ROOT := OS.get_environment("STARTUP_VALLEY_AUDIT_OUTPUT_ROOT").path_join("polish-audit") if not OS.get_environment("STARTUP_VALLEY_AUDIT_OUTPUT_ROOT").is_empty() else "res://tests/output/polish-audit"
 const AUDIT_FPS := 30
 const VIEWPORT_SIZE := Vector2i(1280, 720)
 const THUMBNAIL_SIZE := Vector2i(640, 360)
@@ -44,6 +45,10 @@ var _architecture_specs: Dictionary[String, Dictionary] = {}
 var _ui_dispatches: Array[Dictionary] = []
 
 func _initialize() -> void:
+	if not preload("res://tools/audit_output_scope.gd").valid(OS.get_environment("STARTUP_VALLEY_AUDIT_OUTPUT_ROOT")):
+		push_error("Audit output override must be a strict res://tests/output/ descendant")
+		quit(2)
+		return
 	_suite = _parse_suite()
 	if not EXPECTED_SCENARIOS.has(_suite):
 		push_error("Use --suite=world or --suite=ui after the -- separator")
@@ -569,10 +574,16 @@ func _capture_queued_errors_and_overflow() -> void:
 	await _frames(24)
 	_check(_main.job_panel._connection_panel.visible and _main.job_panel._connection_retry_button.visible, "worker-error-retry-visible")
 	await _checkpoint("worker-error")
+	var retry_clicks: Array[bool] = []
+	_main.job_panel.worker_retry_requested.connect(func() -> void: retry_clicks.append(true))
 	await _press_control(_main.job_panel._connection_retry_button)
+	_check(retry_clicks.size() == 1, "worker-retry-click-dispatch")
+	_check(_main.job_panel._key_status.text == "Reconnecting…" and _main.job_panel._connection_retry_button.disabled, "worker-reconnecting-player-copy")
+	_check(_main.job_panel._settings_button.text == "Linking…" and _main.job_panel._settings_button.disabled, "worker-reconnecting-rail-consistent")
+	await _checkpoint("worker-reconnecting")
 	# A deterministic successful bootstrap response, never a provider request.
 	_main.job_panel.set_worker_ready()
-	_main.job_panel.set_info("Worker recovered. Queued work remains in Activity.")
+	_main.job_panel.set_info("Connection restored. Queued work remains in Activity.")
 	await _frames(18)
 	_check(_main.job_panel._worker_connected and not _main.job_panel._connection_panel.visible, "worker-recovery-distinct")
 	await _checkpoint("worker-recovered")
@@ -726,11 +737,12 @@ func _write_asset_inventory() -> void:
 		textures.append(_inspect_texture(path))
 	var live_nodes: Array[Dictionary] = []
 	_main.room.set_hire_count(4)
-	for prop: Node in _main.room._prop_root.get_children():
-		var sprite := _prop_sprite(prop)
-		if sprite == null:
-			continue
-		live_nodes.append(_inspect_live_sprite("office-prop", prop.name, sprite))
+	var layers: Dictionary = preload("res://tools/polish_inventory_layers.gd").collect(_main.room)
+	for layer: Dictionary in layers.records:
+		var record := _inspect_live_sprite("office-prop", str(layer.id), layer.sprite as Sprite2D)
+		record["placementId"] = layer.placementId
+		record["layerName"] = layer.layerName
+		live_nodes.append(record)
 	for employee_id: String in _main._employees:
 		var employee := _main._employees[employee_id] as EmployeeAvatar
 		var sprite := employee.get_node_or_null("CharacterSprite") as Sprite2D
@@ -745,6 +757,7 @@ func _write_asset_inventory() -> void:
 		{"characterId": "theo", "path": CharacterArt.THEO_LOCOMOTION.resource_path, "width": 288, "height": 320, "columns": 6, "rows": 4, "cellWidth": 48, "cellHeight": 80},
 	]
 	var known_flags: PackedStringArray = []
+	for issue: String in layers.errors: known_flags.append(issue)
 	for texture_info: Dictionary in textures:
 		for issue: Variant in texture_info.get("flags", []):
 			known_flags.append("%s: %s" % [str(texture_info.get("path", "texture")), str(issue)])
@@ -757,10 +770,11 @@ func _write_asset_inventory() -> void:
 		var validation := _main.room.layout_model.validate_placements(placements)
 		stages.append({"hires": stage, "propCount": placements.size(), "valid": bool(validation.get("valid", false)), "errors": validation.get("errors", [])})
 	var inventory := {
-		"schemaVersion": 3,
+		"schemaVersion": 4,
 		"generatedBy": "capture_polish_audit.gd",
 		"textures": textures,
 		"liveSprites": live_nodes,
+		"expectedFurnitureLayers": layers.expected,
 		"characterAtlases": atlas_specs,
 		"roomModel": {
 			"definition": OfficeLayout.DEFAULT_PATH,
@@ -882,13 +896,6 @@ func _inspect_texture(path: String) -> Dictionary:
 		"flags": Array(flags),
 	}
 
-func _prop_sprite(prop: Node) -> Sprite2D:
-	for node_name: String in ["WorkstationFront", "ResearchBenchFront", "PropSprite"]:
-		var sprite := prop.get_node_or_null(node_name) as Sprite2D
-		if sprite != null:
-			return sprite
-	return null
-
 func _inspect_live_sprite(kind: String, id_value: String, sprite: Sprite2D) -> Dictionary:
 	var source_size := Vector2.ZERO
 	var source_path := ""
@@ -927,6 +934,9 @@ func _write_json(path: String, value: Variant) -> void:
 	file.store_string(JSON.stringify(value, "\t") + "\n")
 
 func _disconnect_worker_actions() -> void:
+	# Observe Retry like the other simulated dispatches. The production handler
+	# intentionally rejects a disabled worker; that is not a pending response.
+	_disconnect_if_connected(_main.job_panel.worker_retry_requested, Callable(_main, "_retry_worker_connection"))
 	_disconnect_if_connected(_main.job_panel.key_submitted, Callable(_main.worker_client, "save_openrouter_key"))
 	_disconnect_if_connected(_main.job_panel.chat_history_requested, Callable(_main.worker_client, "request_chat_history"))
 	_disconnect_if_connected(_main.job_panel.chat_submitted, Callable(_main.worker_client, "send_chat"))
