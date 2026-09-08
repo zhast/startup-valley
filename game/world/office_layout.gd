@@ -5,6 +5,7 @@ extends RefCounted
 
 const DEFAULT_PATH := "res://data/office_layout.json"
 const DEFAULT_CATALOG_PATH := "res://data/furniture_catalog.json"
+const FURNISHING_CATALOG_PATH := "res://data/furnishing_catalog.json"
 const NEIGHBORS: Array[Vector2i] = [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]
 const FACINGS: Array[String] = ["north", "east", "south", "west"]
 # A new direction must explicitly author camera-space geometry. Never inherit a
@@ -19,6 +20,10 @@ const OPPOSITE_GAZE := {"north": "south", "east": "west", "south": "north", "wes
 
 var data: Dictionary = {}
 var catalog: Dictionary = {}
+var role_kits: Dictionary = {}
+# This is a worker-supplied read-only projection, never a second inventory store.
+var furnishing_inventory: Dictionary = {}
+var furnishing_bound := false
 # Dev-only geometry fixtures can register labeled synthetic pose capabilities on
 # their own model instance. Production readiness uses actual CharacterArt data.
 var test_pose_capabilities: Dictionary = {}
@@ -111,6 +116,11 @@ func load_files(path: String = DEFAULT_PATH, catalog_path: String = DEFAULT_CATA
 		_definition_errors.append("Room and furniture catalog must be JSON objects")
 		return false
 	configure(room_json as Dictionary, catalog_json as Dictionary)
+	if catalog_path == DEFAULT_CATALOG_PATH:
+		var library: Variant = _read_json(FURNISHING_CATALOG_PATH)
+		if library is Dictionary:
+			catalog.merge(library.get("furniture", {}), false)
+			role_kits = library.get("role_kits", {}).duplicate(true)
 	return _definition_errors.is_empty()
 
 func configure(room_data: Dictionary, furniture_data: Dictionary) -> void:
@@ -118,6 +128,9 @@ func configure(room_data: Dictionary, furniture_data: Dictionary) -> void:
 	_calibration_decorative_profiles.clear()
 	data = room_data.duplicate(true)
 	catalog = furniture_data.get("furniture", furniture_data).duplicate(true)
+	role_kits = furniture_data.get("role_kits", {}).duplicate(true)
+	furnishing_inventory.clear()
+	furnishing_bound = false
 	tile_size = int(data.get("tile_size", 32))
 	width = int(data.get("width", 0))
 	height = int(data.get("height", 0))
@@ -223,8 +236,28 @@ func navigation_data() -> Dictionary:
 				start = -1
 	return {"tile_size": tile_size, "width": width, "height": height, "walkable_rects": rectangles, "wall_rects": []}
 
-func resolve_placements(hire_count: int, overrides: Dictionary = {}) -> Array[Dictionary]:
+func resolve_placements(hire_count: int, overrides: Dictionary = {}, include_future: bool = false) -> Array[Dictionary]:
 	var placements: Array[Dictionary] = []
+	if furnishing_bound:
+		var defaults: Dictionary = {}
+		for original: Dictionary in data.get("props", []): defaults[str(original.id)] = original
+		for id: String in furnishing_inventory:
+			var item: Dictionary = furnishing_inventory[id]
+			if not overrides.has(id): continue # An omitted optional item is in storage.
+			var raw: Dictionary = defaults.get(id, {}).duplicate(true)
+			raw.merge({"id": id, "kind": str(item.kind), "owner_id": str(item.get("ownerId", "")), "required_hires": int(raw.get("required_hires", 0))}, true)
+			raw.merge(overrides[id], true)
+			raw["role_kit"] = str(item.get("roleKit", ""))
+			placements.append(resolve(raw))
+		if include_future:
+			for original: Dictionary in data.get("props", []):
+				if not furnishing_inventory.has(str(original.id)) and int(original.get("required_hires", 0)) <= hire_count:
+					var future := original.duplicate(true)
+					for kit_id: String in role_kits:
+						if str(role_kits[kit_id].get("owner_id", "")) == str(future.get("owner_id", "")) and str(role_kits[kit_id].get("host_kind", "")) == str(future.get("kind", "")):
+							future["role_kit"] = kit_id
+					placements.append(resolve(future))
+		return placements
 	for original: Dictionary in data.get("props", []):
 		if int(original.get("required_hires", 0)) > maxi(0, hire_count): continue
 		var raw := original.duplicate(true)
@@ -260,6 +293,19 @@ func resolve(raw: Dictionary) -> Dictionary:
 	placement["world_visual_bounds"] = Rect2(placement["anchor"] + placement["visual_bounds"].position, placement["visual_bounds"].size)
 	placement["layers"] = profile.get("layers", {}).duplicate(true) if profile.get("layers", {}) is Dictionary else {}
 	placement["render_layers"] = render_layers(profile, kind)
+	var kit_id := str(raw.get("role_kit", ""))
+	if not kit_id.is_empty():
+		var kit: Dictionary = role_kits.get(kit_id, {})
+		var kit_profile: Dictionary = kit.get("facing_profiles", {}).get(facing, {})
+		if kind != str(kit.get("host_kind", "")) or str(raw.get("owner_id", "")) != str(kit.get("owner_id", "")) or kit_profile.is_empty():
+			placement.direction_errors.append("Role kit has no reviewed owner/host/facing binding")
+		else:
+			for layer: Dictionary in kit_profile.get("render_layers", []):
+				placement.render_layers.append(layer.duplicate(true))
+			# A kit may not silently protrude beyond the validated host envelope.
+			var kit_bounds := rectangle(kit_profile.get("visual_bounds", []))
+			placement.visual_bounds = placement.visual_bounds.merge(kit_bounds)
+			placement.world_visual_bounds = Rect2(placement.anchor + placement.visual_bounds.position, placement.visual_bounds.size)
 	placement["hit_bounds"] = rectangle(profile.get("hit_bounds", profile.get("visual_bounds", [])))
 	placement["world_hit_bounds"] = Rect2(placement["anchor"] + placement["hit_bounds"].position, placement["hit_bounds"].size)
 	if str(profile.get("profile_kind", "")) == "decorative":

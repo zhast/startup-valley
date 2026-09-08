@@ -28,6 +28,7 @@ var _employee_names: Dictionary[String, String] = {}
 var _prop_root: Node2D
 var _effect_root: Node2D
 var _last_built_hires: int = -1
+var furnishing_revision: int = -1
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -50,6 +51,7 @@ func load_layout(path: String = "res://data/office_layout.json") -> bool:
 		if not bool(next_model.validate_placements(next_model.resolve_placements(stage)).valid): return false
 	layout_model = next_model
 	placement_overrides.clear()
+	furnishing_revision = -1
 	migration_notes.clear()
 	tile_size = layout_model.tile_size
 	grid_width = layout_model.width
@@ -73,9 +75,41 @@ func _vector(value: Variant) -> Vector2i:
 	return Vector2i.ZERO
 
 func _validate_all(overrides: Dictionary) -> bool:
+	if layout_model.furnishing_bound:
+		for key: Variant in overrides:
+			if not layout_model.furnishing_inventory.has(str(key)): return false
+			var value: Variant = overrides[key]
+			if not value is Dictionary or not OfficeLayout._integer_pair(value.get("grid")) or not OfficeLayout.FACINGS.has(str(value.get("facing", ""))): return false
+			for field: Variant in value:
+				if str(field) not in ["grid", "facing"]: return false
+		for id: String in layout_model.furnishing_inventory:
+			if bool(layout_model.furnishing_inventory[id].get("essential", false)) and not overrides.has(id): return false
 	for stage: int in range(5):
-		var result := layout_model.validate_placements(layout_model.resolve_placements(stage, overrides))
+		var result := layout_model.validate_placements(layout_model.resolve_placements(stage, overrides, true))
 		if not bool(result.valid): return false
+	return true
+
+func apply_furnishing_state(state: Dictionary) -> bool:
+	# Commit the projection only after the entire worker snapshot validates. A
+	# failed snapshot leaves the room, inventory, collision and revision intact.
+	if layout_model == null or int(state.get("version", -1)) != 1 or not state.get("inventory") is Array or not state.get("placements") is Dictionary: return false
+	var next_inventory: Dictionary = {}
+	for value: Variant in state.inventory:
+		if not value is Dictionary or str(value.get("id", "")).is_empty() or not layout_model.catalog.has(str(value.get("kind", ""))): return false
+		var id := str(value.id)
+		if next_inventory.has(id): return false
+		next_inventory[id] = value.duplicate(true)
+	var previous_inventory := layout_model.furnishing_inventory
+	var previously_bound := layout_model.furnishing_bound
+	layout_model.furnishing_inventory = next_inventory
+	layout_model.furnishing_bound = true
+	if not _validate_all(state.placements):
+		layout_model.furnishing_inventory = previous_inventory
+		layout_model.furnishing_bound = previously_bound
+		return false
+	placement_overrides = state.placements.duplicate(true)
+	furnishing_revision = int(state.get("revision", 0))
+	_rebuild_props()
 	return true
 
 func set_placement_overrides(overrides: Dictionary) -> bool:
@@ -97,13 +131,19 @@ func placement_actor_conflicts(overrides: Dictionary) -> Array[Dictionary]:
 		var feet: Vector2 = navigation.actors[actor_id]
 		var occupied_seat := ""
 		for placement: Dictionary in resolved_placements:
-			if str(placement.get("profile_kind", "")) != "collaboration": continue
 			var moved := true
 			for next: Dictionary in next_placements:
 				if next.id == placement.id:
 					moved = next.grid != placement.grid or next.facing != placement.facing
 					break
 			if not moved: continue
+			if layout_model.furnishing_bound and (placement.get("occupied", []).has(navigation.cell_at(feet)) or placement.get("clearance", []).has(navigation.cell_at(feet))):
+				occupied_seat = str(placement.id)
+				break
+			if placement.has("work_position") and feet.distance_to(global_position + Vector2(placement.work_position)) <= 10.0:
+				occupied_seat = str(placement.id)
+				break
+			if str(placement.get("profile_kind", "")) != "collaboration": continue
 			for slot: Dictionary in placement.get("collaboration_slots", []):
 				if feet.distance_to(global_position + Vector2(slot.position)) <= 10.0:
 					occupied_seat = str(placement.id)
@@ -120,6 +160,10 @@ func placement_actor_conflicts(overrides: Dictionary) -> Array[Dictionary]:
 	return conflicts
 
 func configure_employee_desks(records: Array[EmployeeRecord]) -> void:
+	if layout_model.furnishing_bound:
+		for record: EmployeeRecord in records: _employee_names[record.id] = record.display_name
+		set_hire_count(records.size())
+		return
 	# Worker-owned legacy coordinates are suggestions, never unchecked geometry.
 	var proposed := placement_overrides.duplicate(true)
 	migration_notes.clear()

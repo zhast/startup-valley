@@ -422,6 +422,7 @@ func hold_and_reject_rotation(side: String, placement: Dictionary, collision_bef
 		full_holds[side] = hold_picture
 		hold_details[side] = placement_crop(hold_picture, placement)
 	var before_overrides := main.room.placement_overrides.duplicate(true)
+	preload("res://tests/renovation_transport_fixture.gd").bind_layout_only(main)
 	main.office_renovation.open()
 	await frames(2)
 	main._process(0.0)
@@ -515,6 +516,7 @@ func interrupt_for_work(side: String, collision_before: Array[String], targets: 
 func vacant_rotate_and_undo(side: String, collision_before: Array[String], placement: Dictionary) -> Dictionary:
 	var before_overrides := main.room.placement_overrides.duplicate(true)
 	var before_facing := str(placement.facing)
+	preload("res://tests/renovation_transport_fixture.gd").bind_layout_only(main)
 	main.office_renovation.open()
 	await frames(2)
 	main._process(0.0)

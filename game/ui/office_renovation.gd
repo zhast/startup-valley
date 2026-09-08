@@ -1,10 +1,11 @@
 class_name OfficeRenovation
 extends Node2D
 
-## Player-facing, session-local office placement. This deliberately consumes the
+## Player-facing office placement. This deliberately consumes the
 ## same resolved profiles and validation used by the room; it never rotates,
 ## mirrors, scales, or invents a missing directional bitmap.
 signal closed
+signal save_requested(operation_id: String, expected_revision: int, placements: Dictionary, actor_cells: Array)
 
 const VALID := Color("c1fa81")
 const INVALID := Color("fa4616")
@@ -21,6 +22,18 @@ var _candidate: Dictionary = {}
 var _placements: Array[Dictionary] = []
 var _history: Array[Dictionary] = []
 var _texture_cache: Dictionary[String, Texture2D] = {}
+var _committed_state: Dictionary = {}
+var _pending_mutation: Dictionary = {}
+var _save_pending := false
+var _transport_available := false
+var _pending_undo := false
+var _last_save_error := ""
+var _preview_panel: PanelContainer
+var _preview_canvas: Control
+var _ownership: Label
+var _store_button: Button
+var _cancel_button: Button
+var _retry_button: Button
 
 var _layer: CanvasLayer
 var _input_surface: Control
@@ -49,12 +62,13 @@ func _build_interface() -> void:
 	_input_surface.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_input_surface.theme = GameFonts.interface_theme()
 	_input_surface.mouse_filter = Control.MOUSE_FILTER_STOP
+	_input_surface.focus_mode = Control.FOCUS_ALL
 	_input_surface.mouse_default_cursor_shape = Control.CURSOR_CROSS
 	_input_surface.gui_input.connect(_on_world_gui_input)
 	_layer.add_child(_input_surface)
 	_panel = PanelContainer.new()
-	_panel.position = Vector2(20, 598)
-	_panel.size = Vector2(1110, 110)
+	_panel.position = Vector2(20, 540)
+	_panel.size = Vector2(1110, 168)
 	_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	_panel.add_theme_stylebox_override("panel", CozyUI.paper(Vector4(12, 9, 12, 9)))
 	_input_surface.add_child(_panel)
@@ -65,8 +79,9 @@ func _build_interface() -> void:
 	row.add_theme_constant_override("separation", 7)
 	column.add_child(row)
 	_prop_picker = OptionButton.new()
-	_prop_picker.custom_minimum_size = Vector2(250, 42)
-	_prop_picker.tooltip_text = "Choose unlocked furniture to move or rotate."
+	_prop_picker.custom_minimum_size = Vector2(310, 44)
+	_prop_picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_prop_picker.tooltip_text = "Choose an owned furnishing. Stored decorations can be placed again."
 	CozyUI.dropdown(_prop_picker)
 	_prop_picker.item_selected.connect(_on_prop_selected)
 	row.add_child(_prop_picker)
@@ -76,16 +91,43 @@ func _build_interface() -> void:
 	CozyUI.dropdown(_facing_picker)
 	_facing_picker.item_selected.connect(_on_facing_selected)
 	row.add_child(_facing_picker)
-	_move_button = _button("Move  M", begin_move, row)
-	_rotate_button = _button("Rotate  R", rotate_preview, row)
-	_undo_button = _button("Undo  U", undo, row)
-	_done_button = _button("Done", close, row, "primary")
+	_ownership = Label.new()
+	_ownership.custom_minimum_size = Vector2(470, 28)
+	CozyUI.label(_ownership, "meta")
+	row.add_child(_ownership)
+	var actions := HBoxContainer.new()
+	actions.add_theme_constant_override("separation", 7)
+	column.add_child(actions)
+	_move_button = _button("Move  M", begin_move, actions)
+	_rotate_button = _button("Rotate  R", rotate_preview, actions)
+	_store_button = _button("Store", store_selected, actions)
+	_undo_button = _button("Undo  U", undo, actions)
+	_cancel_button = _button("Cancel", cancel_preview, actions)
+	_retry_button = _button("Retry save", retry_save, actions)
+	_done_button = _button("Done", close, actions, "primary")
 	_status = Label.new()
 	_status.custom_minimum_size = Vector2(1060, 28)
 	_status.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_status.tooltip_text = ""
 	CozyUI.label(_status, "meta")
 	column.add_child(_status)
+	_preview_panel = PanelContainer.new()
+	_preview_panel.position = Vector2(920, 90)
+	_preview_panel.custom_minimum_size = Vector2(210, 264)
+	_preview_panel.add_theme_stylebox_override("panel", CozyUI.paper())
+	_input_surface.add_child(_preview_panel)
+	var preview_column := VBoxContainer.new()
+	_preview_panel.add_child(preview_column)
+	var preview_label := Label.new()
+	preview_label.text = "Furnishing preview"
+	CozyUI.label(preview_label, "body")
+	preview_column.add_child(preview_label)
+	_preview_canvas = Control.new()
+	_preview_canvas.custom_minimum_size = Vector2(186, 208)
+	_preview_canvas.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_preview_canvas.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_preview_canvas.draw.connect(_draw_picker_preview)
+	preview_column.add_child(_preview_canvas)
 
 func _button(copy: String, callback: Callable, parent: Control, variant: String = "secondary") -> Button:
 	var button := Button.new()
@@ -109,7 +151,9 @@ func open() -> void:
 		_set_status("No unlocked furniture is available to renovate.", false)
 	else:
 		select_placement(str(_placements[0].get("id", "")))
-		_set_status("Choose furniture. Move changes its cell; Rotate uses authored views only; U undoes this visit.", true)
+		_set_status("Choose a furnishing. Move or rotate it; click to place. Changes save to your company.", true)
+	if not _can_save(): _set_status("Office preview only. Reconnect the worker to save furnishings.", false)
+	elif not str(_committed_state.get("recovery", "")).is_empty(): _set_status(str(_committed_state.recovery), false)
 	show()
 	_layer.show()
 	_prop_picker.grab_focus()
@@ -117,6 +161,9 @@ func open() -> void:
 
 func close() -> void:
 	if not active: return
+	if _save_pending:
+		_set_status("Saving the office… wait for confirmation before closing Renovate.", true)
+		return
 	cancel_preview()
 	active = false
 	_layer.hide()
@@ -124,12 +171,14 @@ func close() -> void:
 	closed.emit()
 
 func reset_layout() -> void:
+	_save_pending = false
+	_pending_mutation.clear()
 	if active: close()
 	_history.clear()
-	if game != null and game.room != null and not game.room.placement_overrides.is_empty():
-		game.room.set_placement_overrides({})
+	# New Company bootstrap already supplied its authoritative new layout.
 
 func select_placement(id: String) -> void:
+	if _save_pending: return
 	if placement_active: cancel_preview()
 	var placement := _placement(id)
 	if placement.is_empty(): return
@@ -143,15 +192,16 @@ func select_placement(id: String) -> void:
 	_refresh_controls()
 
 func begin_move() -> void:
-	if not active or selected_id.is_empty(): return
+	if not active or selected_id.is_empty() or _save_pending: return
 	placement_active = true
 	var prop := game.room.prop_node(selected_id)
 	if prop != null: prop.hide()
 	preview_at(preview_grid)
+	_input_surface.grab_focus()
 	_refresh_controls()
 
 func rotate_preview() -> void:
-	if not active or selected_id.is_empty(): return
+	if not active or selected_id.is_empty() or _save_pending: return
 	var facings := _available_facings()
 	if facings.size() < 2:
 		_set_status("This furniture has only one reviewed view. A bitmap rotation is never substituted.", false)
@@ -199,23 +249,15 @@ func _current_workstation_occupant() -> Dictionary:
 	return {"actor_id": owner_id, "display_name": employee.display_name, "position": employee.position, "placement_id": selected_id}
 
 func commit_preview() -> bool:
-	if not active or not placement_active: return false
+	if not active or not placement_active or _save_pending: return false
 	preview_at(preview_grid)
 	if not bool(preview_result.get("valid", false)): return false
 	var proposed := _with_candidate()
-	var previous := game.room.placement_overrides.duplicate(true)
-	if not game.room.set_placement_overrides(proposed):
-		_set_status("The live room rejected that layout. Nothing moved.", false)
-		return false
-	_history.append(previous)
-	placement_active = false
-	_candidate.clear()
-	_refresh_placements()
-	select_placement(selected_id)
-	_set_status("Placed %s. Press U to undo while Renovate is open." % _display_name(_placement(selected_id)), true)
-	return true
+	return _submit_layout(proposed, false)
 
 func cancel_preview() -> void:
+	if _save_pending: return
+	var was_placing := placement_active
 	placement_active = false
 	_candidate.clear()
 	var committed := _placement(selected_id)
@@ -225,10 +267,12 @@ func cancel_preview() -> void:
 		var prop := game.room.prop_node(selected_id) if game != null and game.room != null else null
 		if prop != null: prop.show()
 		_refresh_facing_picker(committed)
+	if was_placing: _set_status("Placement canceled. Your saved room is unchanged.", true)
 	_refresh_controls()
 	queue_redraw()
 
 func undo() -> void:
+	if _save_pending: return
 	if placement_active: cancel_preview()
 	if _history.is_empty():
 		_set_status("Nothing to undo in this renovation visit.", true)
@@ -238,21 +282,158 @@ func undo() -> void:
 	if not conflicts.is_empty():
 		_set_status("Undo paused. " + _actor_conflict_message(conflicts[0]), false)
 		return
-	if game.room.set_placement_overrides(previous):
-		_history.pop_back()
-		_refresh_placements()
-		if _placement(selected_id).is_empty() and not _placements.is_empty(): selected_id = str(_placements[0].id)
-		select_placement(selected_id)
-		_set_status("Previous office layout restored.", true)
+	_submit_layout(previous, true)
 func _with_candidate() -> Dictionary:
-	var proposed := game.room.placement_overrides.duplicate(true)
+	var proposed: Dictionary = _committed_state.get("placements", game.room.placement_overrides).duplicate(true)
 	proposed[selected_id] = {"grid": [preview_grid.x, preview_grid.y], "facing": preview_facing}
 	return proposed
+
+func _can_save() -> bool:
+	return _transport_available and int(_committed_state.get("version", 0)) == 1
+
+func receive_state(state: Dictionary, operation_id: String = "") -> void:
+	if int(state.get("version", 0)) != 1: return
+	_transport_available = true
+	var was_pending := not _pending_mutation.is_empty()
+	var acknowledged: bool = was_pending and operation_id == str(_pending_mutation.operationId)
+	var matches: bool = was_pending and _same_placements(state.get("placements", {}), _pending_mutation.placements) and (acknowledged or int(state.get("revision", 0)) > int(_pending_mutation.expectedRevision))
+	if matches:
+		if _pending_undo:
+			if not _history.is_empty(): _history.pop_back()
+		else:
+			_history.append(_pending_mutation.previous.duplicate(true))
+	elif was_pending and (operation_id.is_empty() or acknowledged):
+		# Bootstrap is authoritative after a disconnect. Retain a failed request
+		# for explicit idempotent Retry unless another change superseded it.
+		_save_pending = false
+		if acknowledged or int(state.get("revision", 0)) != int(_pending_mutation.expectedRevision):
+			_pending_mutation.clear()
+			_last_save_error = "The office changed. Its saved layout is restored; choose a new placement."
+	_committed_state = state.duplicate(true)
+	if matches:
+		_save_pending = false
+		_pending_mutation.clear()
+		placement_active = false
+		_candidate.clear()
+		_pending_undo = false
+		_last_save_error = ""
+	elif not was_pending:
+		placement_active = false
+		_candidate.clear()
+	if active:
+		_refresh_placements()
+		if not _save_pending: select_placement(selected_id)
+		var recovery := str(state.get("recovery", ""))
+		_set_status(recovery if not recovery.is_empty() else ("Office saved. Your arrangement will be here when you return." if matches else "Saved office restored."), recovery.is_empty())
+		if was_pending and not matches: _set_status(_last_save_error if not _last_save_error.is_empty() else "Saved room restored. Retry the last change or choose a new placement.", false)
+		queue_redraw()
+
+static func _same_placements(left: Dictionary, right: Dictionary) -> bool:
+	# JSON numbers arrive as floats, while a snapped preview uses integers.
+	# Compare the authored grid/facing values, not Variant container types.
+	if left.size() != right.size(): return false
+	for id: Variant in left:
+		if not right.has(id) or not left[id] is Dictionary or not right[id] is Dictionary: return false
+		if OfficeLayout.vector(left[id].get("grid")) != OfficeLayout.vector(right[id].get("grid")): return false
+		if str(left[id].get("facing", "")) != str(right[id].get("facing", "")): return false
+	return true
+
+func save_failed(operation_id: String, message: String) -> void:
+	if not _pending_mutation.is_empty() and not operation_id.is_empty() and operation_id != str(_pending_mutation.operationId): return
+	_save_pending = false
+	_last_save_error = message
+	# Keep the operation ID: Retry is the same transaction even after lost ack.
+	cancel_preview()
+	_set_status(message, false)
+	_refresh_controls()
+
+func connection_lost() -> void:
+	_transport_available = false
+	_save_pending = false
+	_set_status("Worker disconnected. The last saved room is kept; reconnect to check the latest save.", false)
+	_refresh_controls()
+
+func _submit_layout(proposed: Dictionary, is_undo: bool) -> bool:
+	if not _can_save():
+		_set_status("Reconnect the worker before saving furnishings. The saved room is unchanged.", false)
+		return false
+	if not bool(_validate_all_stages(proposed).get("valid", false)):
+		_set_status("That layout blocks furniture or access. Nothing was saved.", false)
+		return false
+	var conflicts := game.room.placement_actor_conflicts(proposed)
+	if not conflicts.is_empty():
+		_set_status(_actor_conflict_message(conflicts[0]), false)
+		return false
+	_pending_undo = is_undo
+	_last_save_error = ""
+	_pending_mutation = {"operationId": "furnish-%x-%x" % [Time.get_ticks_usec(), randi()], "expectedRevision": int(_committed_state.get("revision", 0)), "placements": proposed.duplicate(true), "previous": _committed_state.get("placements", {}).duplicate(true)}
+	_dispatch_pending()
+	return true
+
+func _dispatch_pending() -> void:
+	_save_pending = true
+	_set_status("Saving office…", true)
+	_refresh_controls()
+	if not _pending_mutation.has("actorCells"):
+		var actors: Array = []
+		for actor_id: String in game.room.navigation.actors:
+			var position: Vector2 = game.room.navigation.actors[actor_id]
+			var cell := game.room.navigation.cell_at(position)
+			actors.append({"id": actor_id, "grid": [cell.x, cell.y], "position": [position.x, position.y]})
+		_pending_mutation["actorCells"] = actors
+	# Freeze the entire request, not only its ID, across an uncertain retry.
+	save_requested.emit(str(_pending_mutation.operationId), int(_pending_mutation.expectedRevision), _pending_mutation.placements.duplicate(true), _pending_mutation.actorCells.duplicate(true))
+
+func retry_save() -> void:
+	if _save_pending or _pending_mutation.is_empty() or not _can_save(): return
+	# A failed edit can be left open or revisited after actors have moved.
+	# Never replay its old founder-position snapshot into a newer world state.
+	# Keep the original request immutable; the next placement gets a fresh ID.
+	if not _retry_actors_unchanged():
+		_pending_mutation.clear()
+		_pending_undo = false
+		_last_save_error = "Someone moved since that save attempt. Choose the placement again to save your current room."
+		_set_status(_last_save_error, false)
+		_refresh_controls()
+		return
+	var conflicts := game.room.placement_actor_conflicts(_pending_mutation.placements)
+	if not conflicts.is_empty():
+		_set_status(_actor_conflict_message(conflicts[0]), false)
+		return
+	_dispatch_pending()
+
+func _retry_actors_unchanged() -> bool:
+	var previous: Array = _pending_mutation.get("actorCells", [])
+	if previous.size() != game.room.navigation.actors.size(): return false
+	for actor: Dictionary in previous:
+		var id := str(actor.get("id", ""))
+		if not game.room.navigation.actors.has(id): return false
+		var position: Vector2 = game.room.navigation.actors[id]
+		var saved: Variant = actor.get("position")
+		if not saved is Array or saved.size() != 2: return false
+		if not position.is_equal_approx(Vector2(float(saved[0]), float(saved[1]))): return false
+	return true
+
+func store_selected() -> void:
+	if _save_pending or placement_active or selected_id.is_empty(): return
+	var item := _inventory_item(selected_id)
+	if item.is_empty() or bool(item.get("essential", true)):
+		_set_status("This station is needed by your company and cannot be stored.", false)
+		return
+	var proposed: Dictionary = _committed_state.get("placements", {}).duplicate(true)
+	if not proposed.has(selected_id): return
+	proposed.erase(selected_id)
+	_submit_layout(proposed, false)
+
+func _inventory_item(id: String) -> Dictionary:
+	for item: Dictionary in _committed_state.get("inventory", []):
+		if str(item.get("id", "")) == id: return item
+	return {}
 
 func _validate_all_stages(proposed: Dictionary) -> Dictionary:
 	var errors: Array[String] = []
 	for stage: int in range(5):
-		var result := game.room.layout_model.validate_placements(game.room.layout_model.resolve_placements(stage, proposed))
+		var result := game.room.layout_model.validate_placements(game.room.layout_model.resolve_placements(stage, proposed, true))
 		for value: Variant in result.get("errors", []):
 			var message := "Stage %d: %s" % [stage, str(value)]
 			if not errors.has(message): errors.append(message)
@@ -277,9 +458,15 @@ func _friendly_error(message: String) -> String:
 
 func _refresh_placements() -> void:
 	_placements = game.room.layout_model.resolve_placements(game.room.unlocked_hires, game.room.placement_overrides)
+	for item: Dictionary in _committed_state.get("inventory", []):
+		if not _placement(str(item.get("id", ""))).is_empty(): continue
+		var raw := {"id": str(item.id), "kind": str(item.kind), "grid": [6, 17], "facing": "south", "owner_id": str(item.get("ownerId", "")), "required_hires": 0}
+		var stored := game.room.layout_model.resolve(raw)
+		stored["stored"] = true
+		_placements.append(stored)
 	_prop_picker.clear()
 	for placement: Dictionary in _placements:
-		_prop_picker.add_item(_display_name(placement))
+		_prop_picker.add_item(_display_name(placement) + (" — stored" if bool(placement.get("stored", false)) else ""))
 		_prop_picker.set_item_metadata(_prop_picker.item_count - 1, str(placement.id))
 		if str(placement.id) == selected_id: _prop_picker.select(_prop_picker.item_count - 1)
 	_refresh_controls()
@@ -301,16 +488,31 @@ func _placement(id: String) -> Dictionary:
 	return {}
 
 func _display_name(placement: Dictionary) -> String:
-	var id := str(placement.get("id", "Furniture")).replace("-", " ")
+	var item := _inventory_item(str(placement.get("id", "")))
+	if not str(item.get("name", "")).is_empty(): return str(item.name)
+	var id := str(placement.get("id", "Furniture")).trim_prefix("decor-").replace("mira", "Mina").replace("-", " ").replace("_", " ")
 	return id.capitalize()
 
 func _refresh_controls() -> void:
 	if _move_button == null: return
-	_move_button.disabled = placement_active or selected_id.is_empty()
-	_rotate_button.disabled = selected_id.is_empty()
-	_undo_button.disabled = _history.is_empty()
-	_prop_picker.disabled = placement_active
-	_facing_picker.disabled = selected_id.is_empty()
+	var selected := _placement(selected_id)
+	var stored := bool(selected.get("stored", false))
+	_move_button.text = "Place  M" if stored else "Move  M"
+	_move_button.disabled = _save_pending or placement_active or selected_id.is_empty()
+	_rotate_button.disabled = _save_pending or selected_id.is_empty()
+	_undo_button.disabled = _save_pending or _history.is_empty() or not _can_save()
+	_prop_picker.disabled = _save_pending or placement_active
+	_facing_picker.disabled = _save_pending or selected_id.is_empty()
+	_store_button.disabled = _save_pending or placement_active or stored or bool(_inventory_item(selected_id).get("essential", true)) or not _can_save()
+	_cancel_button.disabled = _save_pending or not placement_active
+	_retry_button.visible = not _pending_mutation.is_empty() and not _save_pending
+	_retry_button.disabled = not _can_save()
+	_done_button.disabled = _save_pending
+	_ownership.text = "1 owned  |  %s" % ("1 in storage" if stored else "1 placed")
+	if bool(_inventory_item(selected_id).get("essential", false)): _ownership.text += "  |  Required station"
+	if not _can_save(): _ownership.text = "Preview only — worker not connected"
+	_preview_panel.visible = not placement_active and not selected.is_empty()
+	_preview_canvas.queue_redraw()
 
 func _set_status(message: String, valid: bool) -> void:
 	if _status == null: return
@@ -329,6 +531,9 @@ func _on_facing_selected(index: int) -> void:
 
 func _on_world_gui_input(event: InputEvent) -> void:
 	if not active: return
+	if _save_pending:
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventMouseMotion:
 		var motion := event as InputEventMouseMotion
 		if placement_active and _room_rect().has_point(motion.position):
@@ -351,6 +556,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if not active or not event is InputEventKey: return
 	var key := event as InputEventKey
 	if not key.pressed or key.echo: return
+	if _save_pending:
+		get_viewport().set_input_as_handled()
+		return
 	if key.keycode == KEY_ESCAPE:
 		if placement_active: cancel_preview()
 		else: close()
@@ -360,6 +568,11 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		rotate_preview()
 	elif key.keycode == KEY_U or ((key.ctrl_pressed or key.meta_pressed) and key.keycode == KEY_Z):
 		undo()
+	elif placement_active and key.keycode in [KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN]:
+		var step := Vector2i.LEFT if key.keycode == KEY_LEFT else Vector2i.RIGHT if key.keycode == KEY_RIGHT else Vector2i.UP if key.keycode == KEY_UP else Vector2i.DOWN
+		preview_at(preview_grid + step)
+	elif placement_active and key.keycode in [KEY_ENTER, KEY_KP_ENTER]:
+		commit_preview()
 	else:
 		return
 	get_viewport().set_input_as_handled()
@@ -402,3 +615,21 @@ func _draw() -> void:
 	for cell: Vector2i in _candidate.get("occupied", []):
 		var rect := Rect2(game.room.global_position + game.room.layout_model.world(cell) - Vector2(16, 16), Vector2(32, 32))
 		draw_rect(rect.grow(-1), tint, false, 2.0)
+
+func _draw_picker_preview() -> void:
+	var placement := _placement(selected_id)
+	if placement.is_empty(): return
+	var bounds: Rect2 = placement.get("visual_bounds", Rect2())
+	var origin := (_preview_canvas.size * 0.5 - bounds.get_center()).round()
+	# Native pixels, not a scaled thumbnail. Approved envelopes fit this panel.
+	for layer: Dictionary in placement.get("render_layers", []):
+		var path := str(layer.get("art", ""))
+		if not ResourceLoader.exists(path, "Texture2D"): continue
+		var texture: Texture2D = _texture_cache.get(path)
+		if texture == null:
+			texture = load(path) as Texture2D
+			if texture != null: _texture_cache[path] = texture
+		if texture == null: continue
+		var source := OfficeLayout.rectangle(layer.get("region"))
+		var offset := Vector2(OfficeLayout.vector(layer.get("offset")))
+		_preview_canvas.draw_texture_rect_region(texture, Rect2(origin + offset - source.size * 0.5, source.size), source)

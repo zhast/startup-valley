@@ -36,6 +36,11 @@ signal journey_received(state: Dictionary)
 signal company_action_completed(method: String, result: Dictionary)
 signal company_action_failed(method: String, message: String)
 signal game_saved
+signal furnishing_received(state: Dictionary, operation_id: String)
+signal furnishing_failed(operation_id: String, message: String)
+
+# Worker-owned committed state. Kept separate from Renovate's local preview.
+var furnishing_state: Dictionary = {}
 
 var _stdio: FileAccess
 var _stderr: FileAccess
@@ -140,6 +145,9 @@ func _handle_line(line: String) -> void:
 	_pending_jobs.erase(request_id)
 	if not bool(message.get("ok", false)):
 		var error := str(message.get("error", "Worker request failed"))
+		if method == "furnishing.update":
+			furnishing_failed.emit(job_id, error)
+			return
 		if method.begins_with("milestone.") or method.begins_with("hiring.") or method.begins_with("game.") or method == "day.end":
 			company_action_failed.emit(method, error)
 			return
@@ -155,6 +163,14 @@ func _handle_line(line: String) -> void:
 
 func _handle_response(method: String, job_id: String, result_value: Variant) -> void:
 	var result: Dictionary = result_value as Dictionary if result_value is Dictionary else {}
+	if method == "furnishing.update" or (method == "bootstrap" and job_id == "furnishing"):
+		var value: Variant = result.get("furnishing")
+		if value is Dictionary and int(value.get("version", 0)) == 1:
+			furnishing_state = value.duplicate(true)
+			furnishing_received.emit(furnishing_state.duplicate(true), job_id if method == "furnishing.update" else "")
+		else:
+			furnishing_failed.emit(job_id, "The worker returned an unreadable office layout. Your last saved room was kept.")
+		return
 	if method == "bootstrap" and job_id in ["journey", "spend"]:
 		daily_spend_received.emit(float(result.get("dailySpend", 0.0)), float(result.get("dailySpendWarning", 5.0)))
 		if job_id == "journey": journey_received.emit(result.get("journey", {}))
@@ -173,6 +189,8 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 			_send_request("bootstrap", {})
 			_send_request("credential.status", {})
 		"bootstrap":
+			var furnishing_value: Variant = result.get("furnishing", {})
+			furnishing_state = furnishing_value.duplicate(true) if furnishing_value is Dictionary else {}
 			journey_received.emit(result.get("journey", {}))
 			var employees: Array[EmployeeRecord] = []
 			var employee_values: Variant = result.get("employees", [])
@@ -260,6 +278,15 @@ func _send_request(method: String, parameters: Dictionary, job_id: String = "") 
 
 func save_openrouter_key(key: String) -> void:
 	_send_request("credential.set", {"key": key})
+
+func update_furnishing(operation_id: String, expected_revision: int, placements: Dictionary, actor_cells: Array) -> void:
+	if _stdio == null:
+		furnishing_failed.emit(operation_id, "The worker is disconnected. Reconnect before saving the office.")
+		return
+	_send_request("furnishing.update", {"operationId": operation_id, "expectedRevision": expected_revision, "placements": placements, "actorCells": actor_cells}, operation_id)
+
+func refresh_furnishing() -> void:
+	if _stdio != null: _send_request("bootstrap", {}, "furnishing")
 
 func request_chat_history(employee_id: String) -> void:
 	_send_request("chat.history", {"employeeId": employee_id}, employee_id)

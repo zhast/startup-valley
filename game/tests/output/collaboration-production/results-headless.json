@@ -92,7 +92,7 @@
 			},
 			"hold_and_occupied_rotation": {
 				"conflicts": 2,
-				"status": "Move Mina clear before placing this furniture."
+				"status": "Placement canceled. Your saved room is unchanged."
 			},
 			"stages": {
 				"0": {
@@ -275,7 +275,7 @@
 			},
 			"hold_and_occupied_rotation": {
 				"conflicts": 2,
-				"status": "Move Mina clear before placing this furniture."
+				"status": "Placement canceled. Your saved room is unchanged."
 			},
 			"stages": {
 				"0": {
@@ -480,7 +480,7 @@
 			},
 			"hold_and_occupied_rotation": {
 				"conflicts": 2,
-				"status": "Move Mina clear before placing this furniture."
+				"status": "Placement canceled. Your saved room is unchanged."
 			},
 			"stages": {
 				"0": {
@@ -663,7 +663,7 @@
 			},
 			"hold_and_occupied_rotation": {
 				"conflicts": 2,
-				"status": "Move Mina clear before placing this furniture."
+				"status": "Placement canceled. Your saved room is unchanged."
 			},
 			"stages": {
 				"0": {

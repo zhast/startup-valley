@@ -17,6 +17,7 @@ func run() -> void:
 	main = MAIN_SCENE.instantiate() as GameMain
 	root.add_child(main)
 	await frames(5)
+	preload("res://tests/renovation_transport_fixture.gd").bind_layout_only(main)
 	check(main.office_renovation != null and not main.office_renovation.active, "Normal GameMain owns a closed player renovation controller")
 	main.company_panel.present("settings")
 	await frames(4)

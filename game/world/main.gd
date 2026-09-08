@@ -189,6 +189,9 @@ func _world_paused() -> bool:
 	return (office_renovation != null and office_renovation.active) or job_panel.drawer_is_open() or job_panel._connection_panel.visible or artifact_viewer.visible or (company_panel != null and company_panel.visible)
 
 func _connect_signals() -> void:
+	worker_client.furnishing_received.connect(_on_furnishing_received)
+	worker_client.furnishing_failed.connect(_on_furnishing_failed)
+	office_renovation.save_requested.connect(_save_furnishing)
 	worker_client.daily_spend_received.connect(job_panel.set_spend)
 	worker_client.game_saved.connect(func() -> void:
 		_save_acknowledged = true
@@ -250,6 +253,10 @@ func _on_bootstrap(
 ) -> void:
 	_project_id = project_id
 	_token_budget = default_token_budget
+	if not worker_client.furnishing_state.is_empty():
+		_updating_roster = true
+		_on_furnishing_received(worker_client.furnishing_state)
+		_updating_roster = false
 	_apply_memories(records, memories)
 	_spawn_employees(records)
 	job_panel.set_spend(daily_spend, daily_spend_warning)
@@ -266,6 +273,29 @@ func _on_bootstrap(
 	)
 	if not _restored_player:
 		_restore_player()
+	var furnishing_recovery := str(worker_client.furnishing_state.get("recovery", ""))
+	if not furnishing_recovery.is_empty() and company_panel.visible:
+		company_panel.show_error(furnishing_recovery)
+
+func _on_furnishing_received(state: Dictionary, operation_id: String = "") -> void:
+	if not operation_id.is_empty() and int(state.get("revision", -1)) < room.furnishing_revision:
+		office_renovation.save_failed(operation_id, "A newer office layout is already loaded. Your latest room was kept.")
+		return
+	if not room.apply_furnishing_state(state):
+		office_renovation.save_failed(operation_id, "The saved office could not be displayed safely. Your previous room is kept.")
+		return
+	office_renovation.receive_state(state, operation_id)
+
+func _on_furnishing_failed(operation_id: String, message: String) -> void:
+	office_renovation.save_failed(operation_id, message)
+	# A stale revision or uncertain write must be reconciled from the worker,
+	# not retried forever against a cached layout revision.
+	if _worker_ready and operation_id != "furnishing": worker_client.refresh_furnishing()
+
+func _save_furnishing(operation_id: String, expected_revision: int, placements: Dictionary, actor_cells: Array) -> void:
+	# The worker commits the exact founder position with the same layout write,
+	# so furniture cannot occupy the founder's stale autosave cell after a crash.
+	worker_client.update_furnishing(operation_id, expected_revision, placements, actor_cells)
 
 func _apply_memories(records: Array[EmployeeRecord], memories: Dictionary) -> void:
 	for record: EmployeeRecord in records:
@@ -781,6 +811,7 @@ func _notification(what: int) -> void:
 
 func _on_worker_crashed(message: String) -> void:
 	_worker_ready = false
+	if office_renovation != null: office_renovation.connection_lost()
 	company_panel.busy = false
 	if company_panel.visible:
 		company_panel.show_error("Connection interrupted. Your completed work is saved. Reconnecting…")
