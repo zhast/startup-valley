@@ -1,0 +1,2650 @@
+{
+  "schema_version": 1,
+  "source_catalogue": "dev/art-catalogue/furniture.json",
+  "starter_decor": [
+    {
+      "id": "decor-broadleaf_planter",
+      "kind": "broadleaf_planter"
+    },
+    {
+      "id": "decor-task_floor_lamp",
+      "kind": "task_floor_lamp"
+    },
+    {
+      "id": "decor-rolling_storage_pedestal",
+      "kind": "rolling_storage_pedestal"
+    }
+  ],
+  "employee_role_kits": {
+    "mira": "mina_discovery_kit",
+    "theo": "theo_campaign_kit"
+  },
+  "role_kits": {
+    "mina_discovery_kit": {
+      "display_name": "Mina discovery kit",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/ROLE_LIBRARY_ACCEPTANCE_20260906.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/mina_discovery_kit/north-whole.png",
+          "visual_bounds": [
+            -46,
+            -43,
+            82,
+            25
+          ],
+          "render_layers": [
+            {
+              "name": "mina_discovery_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/mina_discovery_kit/north-surface_decor_rear.png",
+              "content_bounds": [
+                50,
+                117,
+                82,
+                11
+              ]
+            },
+            {
+              "name": "mina_discovery_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 2,
+              "art": "res://assets/runtime/office/furnishing-library/mina_discovery_kit/north-surface_decor_front.png",
+              "content_bounds": [
+                52,
+                132,
+                25,
+                10
+              ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/ROLE_LIBRARY_ACCEPTANCE_20260906.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/mina_discovery_kit/east-whole.png",
+          "visual_bounds": [
+            -14,
+            -78,
+            28,
+            86
+          ],
+          "render_layers": [
+            {
+              "name": "mina_discovery_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/mina_discovery_kit/east-surface_decor_rear.png",
+              "content_bounds": [
+                82,
+                82,
+                27,
+                24
+              ]
+            },
+            {
+              "name": "mina_discovery_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 3,
+              "art": "res://assets/runtime/office/furnishing-library/mina_discovery_kit/east-surface_decor_front.png",
+              "content_bounds": [
+                100,
+                148,
+                10,
+                20
+              ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/ROLE_LIBRARY_ACCEPTANCE_20260906.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/mina_discovery_kit/south-whole.png",
+          "visual_bounds": [
+            -40,
+            -43,
+            85,
+            25
+          ],
+          "render_layers": [
+            {
+              "name": "mina_discovery_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 2,
+              "art": "res://assets/runtime/office/furnishing-library/mina_discovery_kit/south-surface_decor_rear.png",
+              "content_bounds": [
+                56,
+                117,
+                85,
+                11
+              ]
+            },
+            {
+              "name": "mina_discovery_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 4,
+              "art": "res://assets/runtime/office/furnishing-library/mina_discovery_kit/south-surface_decor_front.png",
+              "content_bounds": [
+                114,
+                132,
+                25,
+                10
+              ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/ROLE_LIBRARY_ACCEPTANCE_20260906.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/mina_discovery_kit/west-whole.png",
+          "visual_bounds": [
+            -13,
+            -78,
+            27,
+            91
+          ],
+          "render_layers": [
+            {
+              "name": "mina_discovery_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/mina_discovery_kit/west-surface_decor_rear.png",
+              "content_bounds": [
+                83,
+                85,
+                27,
+                88
+              ]
+            },
+            {
+              "name": "mina_discovery_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 3,
+              "art": "res://assets/runtime/office/furnishing-library/mina_discovery_kit/west-surface_decor_front.png",
+              "content_bounds": [
+                100,
+                82,
+                10,
+                20
+              ]
+            }
+          ]
+        }
+      },
+      "host_kind": "desk",
+      "owner_id": "mira"
+    },
+    "theo_campaign_kit": {
+      "display_name": "Theo campaign kit",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/ROLE_LIBRARY_ACCEPTANCE_20260906.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/theo_campaign_kit/north-whole.png",
+          "visual_bounds": [
+            -46,
+            -43,
+            78,
+            25
+          ],
+          "render_layers": [
+            {
+              "name": "theo_campaign_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/theo_campaign_kit/north-surface_decor_rear.png",
+              "content_bounds": [
+                51,
+                117,
+                77,
+                11
+              ]
+            },
+            {
+              "name": "theo_campaign_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 2,
+              "art": "res://assets/runtime/office/furnishing-library/theo_campaign_kit/north-surface_decor_front.png",
+              "content_bounds": [
+                50,
+                132,
+                20,
+                10
+              ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/ROLE_LIBRARY_ACCEPTANCE_20260906.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/theo_campaign_kit/east-whole.png",
+          "visual_bounds": [
+            -14,
+            -78,
+            28,
+            91
+          ],
+          "render_layers": [
+            {
+              "name": "theo_campaign_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/theo_campaign_kit/east-surface_decor_rear.png",
+              "content_bounds": [
+                82,
+                82,
+                27,
+                20
+              ]
+            },
+            {
+              "name": "theo_campaign_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 3,
+              "art": "res://assets/runtime/office/furnishing-library/theo_campaign_kit/east-surface_decor_front.png",
+              "content_bounds": [
+                100,
+                158,
+                10,
+                15
+              ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/ROLE_LIBRARY_ACCEPTANCE_20260906.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/theo_campaign_kit/south-whole.png",
+          "visual_bounds": [
+            -43,
+            -43,
+            89,
+            25
+          ],
+          "render_layers": [
+            {
+              "name": "theo_campaign_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 2,
+              "art": "res://assets/runtime/office/furnishing-library/theo_campaign_kit/south-surface_decor_rear.png",
+              "content_bounds": [
+                53,
+                117,
+                87,
+                11
+              ]
+            },
+            {
+              "name": "theo_campaign_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 4,
+              "art": "res://assets/runtime/office/furnishing-library/theo_campaign_kit/south-surface_decor_front.png",
+              "content_bounds": [
+                122,
+                132,
+                20,
+                10
+              ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/ROLE_LIBRARY_ACCEPTANCE_20260906.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/theo_campaign_kit/west-whole.png",
+          "visual_bounds": [
+            -14,
+            -78,
+            27,
+            91
+          ],
+          "render_layers": [
+            {
+              "name": "theo_campaign_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/theo_campaign_kit/west-surface_decor_rear.png",
+              "content_bounds": [
+                82,
+                82,
+                27,
+                20
+              ]
+            },
+            {
+              "name": "theo_campaign_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 3,
+              "art": "res://assets/runtime/office/furnishing-library/theo_campaign_kit/west-surface_decor_front.png",
+              "content_bounds": [
+                100,
+                158,
+                9,
+                15
+              ]
+            }
+          ]
+        }
+      },
+      "host_kind": "desk",
+      "owner_id": "theo"
+    }
+  },
+  "furniture": {
+    "broadleaf_planter": {
+      "display_name": "Broadleaf floor planter",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/broadleaf_planter/north-whole.png",
+          "visual_bounds": [
+            -43,
+            -117,
+            88,
+            129
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/broadleaf_planter/north-floor_shadow.png",
+              "name": "BroadleafPlanterFloorShadow",
+              "offset": [
+                0,
+                -64
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                224
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                36,
+                170,
+                56,
+                18
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/broadleaf_planter/north-rear_structure.png",
+              "name": "BroadleafPlanterRearStructure",
+              "offset": [
+                0,
+                -64
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                224
+              ],
+              "z_offset": -4,
+              "content_bounds": [
+                29,
+                59,
+                71,
+                97
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/broadleaf_planter/north-front_structure.png",
+              "name": "BroadleafPlanterFrontStructure",
+              "offset": [
+                0,
+                -64
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                224
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                21,
+                113,
+                88,
+                68
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -43,
+            -117,
+            88,
+            129
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/broadleaf_planter/east-whole.png",
+          "visual_bounds": [
+            -37,
+            -117,
+            85,
+            129
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/broadleaf_planter/east-floor_shadow.png",
+              "name": "BroadleafPlanterFloorShadow",
+              "offset": [
+                0,
+                -64
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                224
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                37,
+                170,
+                56,
+                18
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/broadleaf_planter/east-rear_structure.png",
+              "name": "BroadleafPlanterRearStructure",
+              "offset": [
+                0,
+                -64
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                224
+              ],
+              "z_offset": -4,
+              "content_bounds": [
+                38,
+                59,
+                69,
+                98
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/broadleaf_planter/east-front_structure.png",
+              "name": "BroadleafPlanterFrontStructure",
+              "offset": [
+                0,
+                -64
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                224
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                27,
+                118,
+                85,
+                63
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              -1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -37,
+            -117,
+            85,
+            129
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                -1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/broadleaf_planter/south-whole.png",
+          "visual_bounds": [
+            -45,
+            -116,
+            86,
+            127
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/broadleaf_planter/south-floor_shadow.png",
+              "name": "BroadleafPlanterFloorShadow",
+              "offset": [
+                0,
+                -64
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                224
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                35,
+                169,
+                56,
+                18
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/broadleaf_planter/south-rear_structure.png",
+              "name": "BroadleafPlanterRearStructure",
+              "offset": [
+                0,
+                -64
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                224
+              ],
+              "z_offset": -4,
+              "content_bounds": [
+                24,
+                60,
+                76,
+                96
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/broadleaf_planter/south-front_structure.png",
+              "name": "BroadleafPlanterFrontStructure",
+              "offset": [
+                0,
+                -64
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                224
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                19,
+                118,
+                86,
+                62
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              -1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -45,
+            -116,
+            86,
+            127
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                -1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/BROADLEAF_PLANTER_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/broadleaf_planter/west-whole.png",
+          "visual_bounds": [
+            -46,
+            -115,
+            86,
+            127
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/broadleaf_planter/west-floor_shadow.png",
+              "name": "BroadleafPlanterFloorShadow",
+              "offset": [
+                0,
+                -64
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                224
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                36,
+                170,
+                56,
+                18
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/broadleaf_planter/west-rear_structure.png",
+              "name": "BroadleafPlanterRearStructure",
+              "offset": [
+                0,
+                -64
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                224
+              ],
+              "z_offset": -4,
+              "content_bounds": [
+                20,
+                61,
+                72,
+                96
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/broadleaf_planter/west-front_structure.png",
+              "name": "BroadleafPlanterFrontStructure",
+              "offset": [
+                0,
+                -64
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                224
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                18,
+                118,
+                86,
+                63
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -46,
+            -115,
+            86,
+            127
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
+    "task_floor_lamp": {
+      "display_name": "Reading floor lamp",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/task_floor_lamp/north-whole.png",
+          "visual_bounds": [
+            -26,
+            -158,
+            52,
+            161
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/task_floor_lamp/north-floor_shadow.png",
+              "name": "TaskFloorLampFloorShadow",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                38,
+                197,
+                52,
+                14
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/task_floor_lamp/north-rear_structure.png",
+              "name": "TaskFloorLampRearStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": -4,
+              "content_bounds": [
+                48,
+                50,
+                32,
+                153
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/task_floor_lamp/north-front_structure.png",
+              "name": "TaskFloorLampFrontStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                44,
+                65,
+                40,
+                146
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -26,
+            -158,
+            52,
+            161
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/task_floor_lamp/east-whole.png",
+          "visual_bounds": [
+            -27,
+            -147,
+            72,
+            150
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/task_floor_lamp/east-floor_shadow.png",
+              "name": "TaskFloorLampFloorShadow",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                37,
+                197,
+                52,
+                14
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/task_floor_lamp/east-rear_structure.png",
+              "name": "TaskFloorLampRearStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": -4,
+              "content_bounds": [
+                59,
+                61,
+                50,
+                142
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/task_floor_lamp/east-front_structure.png",
+              "name": "TaskFloorLampFrontStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                43,
+                63,
+                66,
+                148
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              -1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -27,
+            -147,
+            72,
+            150
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                -1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/task_floor_lamp/south-whole.png",
+          "visual_bounds": [
+            -26,
+            -138,
+            52,
+            141
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/task_floor_lamp/south-floor_shadow.png",
+              "name": "TaskFloorLampFloorShadow",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                38,
+                197,
+                52,
+                14
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/task_floor_lamp/south-rear_structure.png",
+              "name": "TaskFloorLampRearStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": -4,
+              "content_bounds": [
+                47,
+                70,
+                34,
+                133
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/task_floor_lamp/south-front_structure.png",
+              "name": "TaskFloorLampFrontStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                44,
+                86,
+                40,
+                125
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              -1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -26,
+            -138,
+            52,
+            141
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                -1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/task_floor_lamp/west-whole.png",
+          "visual_bounds": [
+            -45,
+            -148,
+            72,
+            151
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/task_floor_lamp/west-floor_shadow.png",
+              "name": "TaskFloorLampFloorShadow",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                39,
+                197,
+                52,
+                14
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/task_floor_lamp/west-rear_structure.png",
+              "name": "TaskFloorLampRearStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": -4,
+              "content_bounds": [
+                19,
+                60,
+                50,
+                143
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/task_floor_lamp/west-front_structure.png",
+              "name": "TaskFloorLampFrontStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                19,
+                62,
+                66,
+                149
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -45,
+            -148,
+            72,
+            151
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
+    "rolling_storage_pedestal": {
+      "display_name": "Rolling storage pedestal",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-whole.png",
+          "visual_bounds": [
+            -14,
+            -44,
+            28,
+            58
+          ],
+          "render_layers": [
+            {
+              "name": "rolling_storage_pedestal_caster_rear",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-caster_rear.png",
+              "content_bounds": [
+                34,
+                76,
+                28,
+                8
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_caster_front",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-caster_front.png",
+              "content_bounds": [
+                34,
+                102,
+                28,
+                8
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_carcass",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-carcass.png",
+              "content_bounds": [
+                34,
+                76,
+                28,
+                28
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_top",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-top.png",
+              "content_bounds": [
+                34,
+                52,
+                28,
+                24
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_near_face",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-near_face.png",
+              "content_bounds": [
+                36,
+                78,
+                24,
+                24
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_face_insert",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-face_insert.png",
+              "content_bounds": [
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              -1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -14,
+            -44,
+            28,
+            58
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                -1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-whole.png",
+          "visual_bounds": [
+            -16,
+            -46,
+            32,
+            58
+          ],
+          "render_layers": [
+            {
+              "name": "rolling_storage_pedestal_caster_rear",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-caster_rear.png",
+              "content_bounds": [
+                32,
+                78,
+                32,
+                8
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_caster_front",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-caster_front.png",
+              "content_bounds": [
+                32,
+                100,
+                32,
+                8
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_carcass",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-carcass.png",
+              "content_bounds": [
+                36,
+                78,
+                24,
+                28
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_top",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-top.png",
+              "content_bounds": [
+                36,
+                50,
+                24,
+                28
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_near_face",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-near_face.png",
+              "content_bounds": [
+                38,
+                80,
+                20,
+                24
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_face_insert",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-face_insert.png",
+              "content_bounds": [
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -16,
+            -46,
+            32,
+            58
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-whole.png",
+          "visual_bounds": [
+            -14,
+            -44,
+            28,
+            58
+          ],
+          "render_layers": [
+            {
+              "name": "rolling_storage_pedestal_caster_rear",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-caster_rear.png",
+              "content_bounds": [
+                34,
+                76,
+                28,
+                8
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_caster_front",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-caster_front.png",
+              "content_bounds": [
+                34,
+                102,
+                28,
+                8
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_carcass",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-carcass.png",
+              "content_bounds": [
+                34,
+                76,
+                28,
+                28
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_top",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-top.png",
+              "content_bounds": [
+                34,
+                52,
+                28,
+                24
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_near_face",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-near_face.png",
+              "content_bounds": [
+                36,
+                78,
+                24,
+                24
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_face_insert",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-face_insert.png",
+              "content_bounds": [
+                36,
+                78,
+                24,
+                24
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -14,
+            -44,
+            28,
+            58
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-whole.png",
+          "visual_bounds": [
+            -16,
+            -46,
+            32,
+            58
+          ],
+          "render_layers": [
+            {
+              "name": "rolling_storage_pedestal_caster_rear",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-caster_rear.png",
+              "content_bounds": [
+                32,
+                78,
+                32,
+                8
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_caster_front",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-caster_front.png",
+              "content_bounds": [
+                32,
+                100,
+                32,
+                8
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_carcass",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-carcass.png",
+              "content_bounds": [
+                36,
+                78,
+                24,
+                28
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_top",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-top.png",
+              "content_bounds": [
+                36,
+                50,
+                24,
+                28
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_near_face",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-near_face.png",
+              "content_bounds": [
+                38,
+                80,
+                20,
+                24
+              ]
+            },
+            {
+              "name": "rolling_storage_pedestal_face_insert",
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-face_insert.png",
+              "content_bounds": [
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              -1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -16,
+            -46,
+            32,
+            58
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                -1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    }
+  },
+  "source_copies": [
+    {
+      "source": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/north-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/broadleaf_planter/north-floor_shadow.png",
+      "sha256": "1a97fd0e5360de859beafecefc445fec5571bab1e303591c2f339e0cdc65e8bd"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/north-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/broadleaf_planter/north-rear_structure.png",
+      "sha256": "c1cfc47685207d0802fab394625027b86b8267bacbdbebe8bbe3edb11c70bd31"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/north-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/broadleaf_planter/north-front_structure.png",
+      "sha256": "c963d5f23e71039f6640f2dc520286c835bb4132473b065566ceecfd36881a8e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/broadleaf_planter/north-whole.png",
+      "sha256": "6382c863a2556b98b1efbbd42006209cdd1a08461d28b9e53e28820d77112e5e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/east-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/broadleaf_planter/east-floor_shadow.png",
+      "sha256": "ed3ce3509b9614ef922e148e0e0b20bd83d0569496d5026d498da3eec534fbf7"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/east-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/broadleaf_planter/east-rear_structure.png",
+      "sha256": "31ff4a571c6249a863e894f78ab6de3ce444021720251626c953706f508d59d3"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/east-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/broadleaf_planter/east-front_structure.png",
+      "sha256": "ad16dbcc01c2cd0674955a7668098fdac822da72730bb60fb363e5a744154961"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/broadleaf_planter/east-whole.png",
+      "sha256": "6ac077fff317af1383b49b2985a4dd20a37cb0debae97c4d6fcb81845039e5b5"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/south-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/broadleaf_planter/south-floor_shadow.png",
+      "sha256": "5d4eb1f7c844c2970e86567fa8faa9c78ecd7e0dfa73f5922aa6873a911f1760"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/south-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/broadleaf_planter/south-rear_structure.png",
+      "sha256": "bdab83ac3749500f71bf27bdcc5b18d636ca818af2a3f55814be820640752553"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/south-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/broadleaf_planter/south-front_structure.png",
+      "sha256": "80ae6b917f73b6b906304227f7fdd78d53854a654efbcf8522ab9b024c8ad5f4"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/broadleaf_planter/south-whole.png",
+      "sha256": "308a0796b912a2fb3a30d624c42cc3919b353701dfa4c3b1d180cb32e3e4a487"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/west-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/broadleaf_planter/west-floor_shadow.png",
+      "sha256": "1a97fd0e5360de859beafecefc445fec5571bab1e303591c2f339e0cdc65e8bd"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/west-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/broadleaf_planter/west-rear_structure.png",
+      "sha256": "7784117cdc943927fe44417b6f4bbb0ad03055b869496aaef982e69a72287681"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/west-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/broadleaf_planter/west-front_structure.png",
+      "sha256": "487f6f231c9b7186bcd7ab6d7747034d6aa36b779f99bdfd2119eaaf06b3962e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/broadleaf-planter-v1/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/broadleaf_planter/west-whole.png",
+      "sha256": "fe65387f3a74732be5e56d2b042c3f9e0710dfd0243cf1b33346c98f4bf39458"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/north-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/task_floor_lamp/north-floor_shadow.png",
+      "sha256": "c76de8bbbb953034ff6d70d2fbb5c44e0468cf4109390929b75fef39ff732681"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/north-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/task_floor_lamp/north-rear_structure.png",
+      "sha256": "5d0966effa581113f71f5943ac4d0cba9d4e0d2cd449806a45bb43ca3c410b9e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/north-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/task_floor_lamp/north-front_structure.png",
+      "sha256": "d42d5f2cfe8d076ceef95ca13b0c34b88b07db4fe408fdef11e4083bd01d6a60"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/task_floor_lamp/north-whole.png",
+      "sha256": "abcf81e7bc4f4b27096902b6f5e0234c8c21b8ade83a7e98945cf35659ef07d2"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/east-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/task_floor_lamp/east-floor_shadow.png",
+      "sha256": "9a8abe32fd685e2f46c5e4dc78a849472614d793e503ccd2c9d51d7df6ed2223"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/east-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/task_floor_lamp/east-rear_structure.png",
+      "sha256": "6deaa08ea40591f158efd3b19eecf254cef744ba417822b6436947987df19817"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/east-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/task_floor_lamp/east-front_structure.png",
+      "sha256": "f4c884070a64730e3fb05677241e586067a616cab08d5a79966e1c663ac8315d"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/task_floor_lamp/east-whole.png",
+      "sha256": "946ef94553d05056d86e08a45e5a303b45119ad667892aded38d378303a3227d"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/south-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/task_floor_lamp/south-floor_shadow.png",
+      "sha256": "c76de8bbbb953034ff6d70d2fbb5c44e0468cf4109390929b75fef39ff732681"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/south-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/task_floor_lamp/south-rear_structure.png",
+      "sha256": "1f2058dfe1ac4c65e3d3731b34b756729d59e4ff09edfa9f4b2c31c714a37626"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/south-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/task_floor_lamp/south-front_structure.png",
+      "sha256": "a3c5f90267806222ab6fb28e49138bdce6735dc479ac42e5819ff04a0c7927fb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/task_floor_lamp/south-whole.png",
+      "sha256": "74bff8ac13ddff1542f4903643a83ffe77ec6c2d8a4d111042e618e77144e581"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/west-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/task_floor_lamp/west-floor_shadow.png",
+      "sha256": "15b716d52cc53312cb20e31c7341dcc9f171289e564acd0ac929d4ae8398dae1"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/west-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/task_floor_lamp/west-rear_structure.png",
+      "sha256": "4404269d4e4d1afb8e50ff9115af00362eb781b12e487724fa2cb7e54e274db0"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/west-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/task_floor_lamp/west-front_structure.png",
+      "sha256": "25db01bc76ff4c7d2dec0f7d0e8c66e59c77ba9b9c86208c66ec1d8cdc60d851"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/task-floor-lamp-v2/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/task_floor_lamp/west-whole.png",
+      "sha256": "466e5596d425be7d0514dde9208bcf6f790daaba01299b1da18d900179105821"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/north-caster_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-caster_rear.png",
+      "sha256": "bcf6def714054b402f0ef90d43313ec63f4de82e29b22478ed6a0149ea7f0eb7"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/north-caster_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-caster_front.png",
+      "sha256": "8fb162185c927074ae63cd6a2bc954ea5ee6c03d7ec0d294b3fb767c36c90754"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/north-carcass.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-carcass.png",
+      "sha256": "8e5d49dc67b2f1cb8a519710c421c0d31b69821accd9454d5b72a7c258c06c9c"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/north-top.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-top.png",
+      "sha256": "65bb34be2e7b0c9961448a6d08b81af3988b3fc27a6555c9d4dc5f7fca4727ad"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/north-near_face.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-near_face.png",
+      "sha256": "f406bf8ba4d0dcfe9b4d5df9851e407204e790fe7d1a239045afafd7d49fc418"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/north-face_insert.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-face_insert.png",
+      "sha256": "e34c07f1be1c44ff795871d03356bc7013286a92279d998b9891e580608bca8e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-whole.png",
+      "sha256": "162d1b766e39a5072b39ff32b2fd36aaac7d09da68bd9b5b070dae949f5fdd9d"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/east-caster_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-caster_rear.png",
+      "sha256": "755190c48d6c66ec0ea4372ccd746d6c097ca4b8181256ce39b8dc1b0ef7b0dd"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/east-caster_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-caster_front.png",
+      "sha256": "7b715c38947bdd6796410ebcfb959205734e08ccfb3ff5300cc776c43ccf346a"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/east-carcass.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-carcass.png",
+      "sha256": "36f0ae7b2515965f88219b46e4868ea58325737da01ddbd4f7aef44dd00d7610"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/east-top.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-top.png",
+      "sha256": "13f35795b9e5e5bb4e11f16ead27f43a81a65ede096f4f83448ce745b78b47c9"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/east-near_face.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-near_face.png",
+      "sha256": "15899c6052c5de1b21059cf2e7457f15894210264e5d442426422ee8ec867f6a"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/east-face_insert.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-face_insert.png",
+      "sha256": "e34c07f1be1c44ff795871d03356bc7013286a92279d998b9891e580608bca8e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-whole.png",
+      "sha256": "046eb49f5935bb11346fd9d8f868b3914bec2c2baf48d77cb5c7082e67e0ce62"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/south-caster_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-caster_rear.png",
+      "sha256": "bcf6def714054b402f0ef90d43313ec63f4de82e29b22478ed6a0149ea7f0eb7"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/south-caster_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-caster_front.png",
+      "sha256": "8fb162185c927074ae63cd6a2bc954ea5ee6c03d7ec0d294b3fb767c36c90754"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/south-carcass.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-carcass.png",
+      "sha256": "8e5d49dc67b2f1cb8a519710c421c0d31b69821accd9454d5b72a7c258c06c9c"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/south-top.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-top.png",
+      "sha256": "65bb34be2e7b0c9961448a6d08b81af3988b3fc27a6555c9d4dc5f7fca4727ad"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/south-near_face.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-near_face.png",
+      "sha256": "1abd368dab3375dee1d435b29ab69e4bd3e38cd3deece1361e4bdff235d16db4"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/south-face_insert.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-face_insert.png",
+      "sha256": "1a5165d980da8fb331cdb074cd485afe86466ce5ed47f797f4e6cb9a6b081faa"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-whole.png",
+      "sha256": "5dd1c36d8be3e96f7f3f7ab30a3ee00595aa46546b081a5af717525f4f6a94e1"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/west-caster_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-caster_rear.png",
+      "sha256": "755190c48d6c66ec0ea4372ccd746d6c097ca4b8181256ce39b8dc1b0ef7b0dd"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/west-caster_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-caster_front.png",
+      "sha256": "7b715c38947bdd6796410ebcfb959205734e08ccfb3ff5300cc776c43ccf346a"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/west-carcass.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-carcass.png",
+      "sha256": "36f0ae7b2515965f88219b46e4868ea58325737da01ddbd4f7aef44dd00d7610"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/west-top.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-top.png",
+      "sha256": "13f35795b9e5e5bb4e11f16ead27f43a81a65ede096f4f83448ce745b78b47c9"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/west-near_face.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-near_face.png",
+      "sha256": "d0f2cba4642f941698f45f47301f13cdd24780e049d42b225e0c645b6b717238"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/west-face_insert.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-face_insert.png",
+      "sha256": "e34c07f1be1c44ff795871d03356bc7013286a92279d998b9891e580608bca8e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/pedestal-v1/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-whole.png",
+      "sha256": "76abef0cd0b8dc7c84242af9aebd2ab7649941cdac6a263764955f7e9e6ea4bb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mina-product-kit-v1/north-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mina_discovery_kit/north-surface_decor_rear.png",
+      "sha256": "c6924d424d6dfadbf93e315032e6186d6cd7e85a50b0b1189aa3071e9d6022bc"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mina-product-kit-v1/north-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mina_discovery_kit/north-surface_decor_front.png",
+      "sha256": "6d80c7371e41db86e6fa1fa444581e63387bb3f6d25ea89bc0b46702f2fd4529"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mina-product-kit-v1/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mina_discovery_kit/north-whole.png",
+      "sha256": "f0e83acbd86028ec6db2e4ab1205c82120104a7b2059936c2a20e8b61e23f454"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mina-product-kit-v1/east-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mina_discovery_kit/east-surface_decor_rear.png",
+      "sha256": "fdb86faa227ba9d1caeadb4f0a5d66e218d9ce0fb6468824827428a65b7abef1"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mina-product-kit-v1/east-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mina_discovery_kit/east-surface_decor_front.png",
+      "sha256": "e73ef048854be23d098e2313d35add3b198169b7b7b7a7a9b3457ccf27bef920"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mina-product-kit-v1/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mina_discovery_kit/east-whole.png",
+      "sha256": "728d088856bfb92590c83285c7e8c09703d8ceb03f871133c6bd7f10590d29c3"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mina-product-kit-v1/south-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mina_discovery_kit/south-surface_decor_rear.png",
+      "sha256": "2774ad5b0ce94a0d03041d57258e499b5a3be6709f30305ce7f3cfd5836b67ae"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mina-product-kit-v1/south-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mina_discovery_kit/south-surface_decor_front.png",
+      "sha256": "e21405993b8f80bbef35da6b88bdf73c9dbfcaaba24ad3adfe5b3b1f22c46218"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mina-product-kit-v1/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mina_discovery_kit/south-whole.png",
+      "sha256": "275c36869b46be897b2cf8e7855a3d50d892efd68ca868cb02021d3d0813fce7"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mina-product-kit-v1/west-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mina_discovery_kit/west-surface_decor_rear.png",
+      "sha256": "4ab3da33944847fb28c3db307edca35ba5f175054c09f32e13aa333549008925"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mina-product-kit-v1/west-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mina_discovery_kit/west-surface_decor_front.png",
+      "sha256": "17c9336b899491e5998245784841023efdb8b8bc12a2732a56b532c84cefa3b8"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mina-product-kit-v1/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mina_discovery_kit/west-whole.png",
+      "sha256": "cf04f0011eddf73c15013458dfa17a818ba3ec135030e327ffb6ac30d4fd1ac4"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/theo-campaign-kit-v1/north-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/theo_campaign_kit/north-surface_decor_rear.png",
+      "sha256": "0b6e903285a988e6fd12f05e6f586b7e07f98396c8496b18d47fcbdf8fd622e6"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/theo-campaign-kit-v1/north-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/theo_campaign_kit/north-surface_decor_front.png",
+      "sha256": "e5b0269c40ed2d83bf7119c7abc76cfa582edde3cc3cdeee120725308c4bdf55"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/theo-campaign-kit-v1/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/theo_campaign_kit/north-whole.png",
+      "sha256": "58dee10d5016eb62c45075a29073e152f42a589ae47550ea37d07b78a0097aa7"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/theo-campaign-kit-v1/east-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/theo_campaign_kit/east-surface_decor_rear.png",
+      "sha256": "2e16b63c74fa288dfed156c6d0b3b22fb886f3af0f70a8b4121635bc15b6ee1f"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/theo-campaign-kit-v1/east-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/theo_campaign_kit/east-surface_decor_front.png",
+      "sha256": "efb2ad6ba4f2e9677b269a0749b2e8511cba45908c14647c9163343e8577b3b0"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/theo-campaign-kit-v1/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/theo_campaign_kit/east-whole.png",
+      "sha256": "7f70e8380dbfbb6cd36e02860ed8fb2f5d976ff0b1c5c06cb1f6a91d163bdf8b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/theo-campaign-kit-v1/south-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/theo_campaign_kit/south-surface_decor_rear.png",
+      "sha256": "963840a976a31869603853b39fd5974ffe4798a44060c547724cfa3cb82816dc"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/theo-campaign-kit-v1/south-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/theo_campaign_kit/south-surface_decor_front.png",
+      "sha256": "ce57315993400e56ace9e81d68012a30e69c8fdc6e39ef05f000202252911f4d"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/theo-campaign-kit-v1/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/theo_campaign_kit/south-whole.png",
+      "sha256": "b788d64eb81338c99750b8e429aef7f73a0aa6aeeb9d5a3ce370175a66e44344"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/theo-campaign-kit-v1/west-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/theo_campaign_kit/west-surface_decor_rear.png",
+      "sha256": "5cc9543b8af9c25d8801d499f13dd444506000a4ec35206db503c7a35b415df9"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/theo-campaign-kit-v1/west-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/theo_campaign_kit/west-surface_decor_front.png",
+      "sha256": "eb616e7cc1543d2fdbd2838ada99c6f48d906c687b813179eeff172a7836762e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/theo-campaign-kit-v1/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/theo_campaign_kit/west-whole.png",
+      "sha256": "45c64fc7fd65dfc1083824460124eda4950f919391c3ff5d247be6db7ab84173"
+    }
+  ]
+}

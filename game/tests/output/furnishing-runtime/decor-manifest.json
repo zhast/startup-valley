@@ -1,0 +1,27 @@
+{
+	"captures": [
+		{
+			"label": "decor-north",
+			"path": "res://tests/output/furnishing-runtime/decor-north.png",
+			"sha256": "e3995ef535c4edbc1d326a0a65901445b251a10414f50bc86beae47da012ab53"
+		},
+		{
+			"label": "decor-east",
+			"path": "res://tests/output/furnishing-runtime/decor-east.png",
+			"sha256": "61f636285d1ff24af46512f445f3eeee158f33b523ff048a4a031080ccc10971"
+		},
+		{
+			"label": "decor-south",
+			"path": "res://tests/output/furnishing-runtime/decor-south.png",
+			"sha256": "4659d204b19b5443647879f62cbb93aea7725de7046a6ce5fa5983c67f220cf1"
+		},
+		{
+			"label": "decor-west",
+			"path": "res://tests/output/furnishing-runtime/decor-west.png",
+			"sha256": "d3172915440bc764eb9ef577faf16fcfb2538b0fdc9950b375a5f31f33b70aa8"
+		}
+	],
+	"checks": 38,
+	"failures": [],
+	"worker_disabled": true
+}

@@ -1,0 +1,390 @@
+{
+	"captures": [
+		{
+			"label": "decorated-room",
+			"path": "res://tests/output/furnishing-runtime/decorated-room.png",
+			"sha256": "4659d204b19b5443647879f62cbb93aea7725de7046a6ce5fa5983c67f220cf1"
+		},
+		{
+			"label": "north-mira-approach",
+			"path": "res://tests/output/furnishing-runtime/north-mira-approach.png",
+			"sha256": "509603747d34f647e3a277564a51b6c152484c627e3fb7ee12668c03ac4fae8f"
+		},
+		{
+			"label": "north-mira-thinking",
+			"path": "res://tests/output/furnishing-runtime/north-mira-thinking.png",
+			"sha256": "13665b3eee35800405a3d155ca890694a5072828a6972d4310c7d9574df14554"
+		},
+		{
+			"label": "north-mira-typing",
+			"path": "res://tests/output/furnishing-runtime/north-mira-typing.png",
+			"sha256": "73c87b2b7baed25052e7c43b4857d134b739a6c6de5ff1cd0e724e0113db7c90"
+		},
+		{
+			"label": "north-mira-research",
+			"path": "res://tests/output/furnishing-runtime/north-mira-research.png",
+			"sha256": "2ccf971fd723dc9a6c11545acdbfbf871b74aca262c748349a24b17d76553fc8"
+		},
+		{
+			"label": "north-mira-approval",
+			"path": "res://tests/output/furnishing-runtime/north-mira-approval.png",
+			"sha256": "f5d2ae33da090b73f98a07d136e59e0df54317fcb9658f2d3df66cf96a44664a"
+		},
+		{
+			"label": "north-mira-delivery",
+			"path": "res://tests/output/furnishing-runtime/north-mira-delivery.png",
+			"sha256": "6076d1c06bede8a83ebeb9cde25a807d7edaa4bee0341db38cd3ae6c63adef8b"
+		},
+		{
+			"label": "north-mira-failed-rest",
+			"path": "res://tests/output/furnishing-runtime/north-mira-failed-rest.png",
+			"sha256": "e50c678fa9863f91fe74f89b02fe58bbb00c2ed5dffcb0ead03c4e90c8008af6"
+		},
+		{
+			"label": "north-mira-lunch",
+			"path": "res://tests/output/furnishing-runtime/north-mira-lunch.png",
+			"sha256": "1273cdaf43fd3365f244e412756b8de18ef4a7085bd02accea1fddfd75029a31"
+		},
+		{
+			"label": "north-mira-return",
+			"path": "res://tests/output/furnishing-runtime/north-mira-return.png",
+			"sha256": "705f5cfd4ab410a78ce9acddcecae7f6835c91575ddc8188deac2426f53a822f"
+		},
+		{
+			"label": "north-theo-approach",
+			"path": "res://tests/output/furnishing-runtime/north-theo-approach.png",
+			"sha256": "9eca71d9f5450f4491286a2c2a7a1b4d80d3d0ee647818069c09f47f783dd6b8"
+		},
+		{
+			"label": "north-theo-thinking",
+			"path": "res://tests/output/furnishing-runtime/north-theo-thinking.png",
+			"sha256": "1de49504d5cc3dbf8f060f36ac0bbb14a5cf5d2ef51589ed5900828ffa08a214"
+		},
+		{
+			"label": "north-theo-typing",
+			"path": "res://tests/output/furnishing-runtime/north-theo-typing.png",
+			"sha256": "b84a6ed2076ebeb8789e59b43bcc4b58ff145032978a90dc62094d1416485d60"
+		},
+		{
+			"label": "north-theo-research",
+			"path": "res://tests/output/furnishing-runtime/north-theo-research.png",
+			"sha256": "fc579d48bf5d04f14f0e251a6975b2ac7845a7ce0ac58e475399a64f02c1b5a3"
+		},
+		{
+			"label": "north-theo-approval",
+			"path": "res://tests/output/furnishing-runtime/north-theo-approval.png",
+			"sha256": "7ed4f9f5ae5f396d6b892e9c087df25fa1d4433feb87051054178daedfd3c201"
+		},
+		{
+			"label": "north-theo-delivery",
+			"path": "res://tests/output/furnishing-runtime/north-theo-delivery.png",
+			"sha256": "9113a7d38e9eca572e9b2376c4a88e9f7d690e44d488c5215000a8dc771b77d4"
+		},
+		{
+			"label": "north-theo-failed-rest",
+			"path": "res://tests/output/furnishing-runtime/north-theo-failed-rest.png",
+			"sha256": "4d6f7bb7a2f33acb9366305d3d15e84c9f3220140d33233a80c6ffc56154d224"
+		},
+		{
+			"label": "north-theo-lunch",
+			"path": "res://tests/output/furnishing-runtime/north-theo-lunch.png",
+			"sha256": "61664f5b11b0b4ae3d1c55134ad5d07c65a7e78eed4591f35a7e6bc7685539ee"
+		},
+		{
+			"label": "north-theo-return",
+			"path": "res://tests/output/furnishing-runtime/north-theo-return.png",
+			"sha256": "c40267d57919f88ebe469c1238f4c3c8b034a5bd5f1e9ff32ea7c235f2441c6d"
+		},
+		{
+			"label": "east-mira-approach",
+			"path": "res://tests/output/furnishing-runtime/east-mira-approach.png",
+			"sha256": "abf0826e383dabffc9ed95005832d40dc25602882bd91aa76fa8a73956b296f5"
+		},
+		{
+			"label": "east-mira-thinking",
+			"path": "res://tests/output/furnishing-runtime/east-mira-thinking.png",
+			"sha256": "290ea5a1863dc06010e975b09a23dca10b5c2c74d4e588c287f364a9cff38ee2"
+		},
+		{
+			"label": "east-mira-typing",
+			"path": "res://tests/output/furnishing-runtime/east-mira-typing.png",
+			"sha256": "9de7b18917d1e436bb9344bae44eb00479ff0001d80b7304d89b0f11ddafbf5d"
+		},
+		{
+			"label": "east-mira-research",
+			"path": "res://tests/output/furnishing-runtime/east-mira-research.png",
+			"sha256": "092d2cb93ec33d8ee078313138bd4f204d6f65e24092b1de1d45aa5bd295183b"
+		},
+		{
+			"label": "east-mira-approval",
+			"path": "res://tests/output/furnishing-runtime/east-mira-approval.png",
+			"sha256": "913aa3842f7e4c92f22e977d07647e1e4476e85a3ef9002dca8d2107b0d24675"
+		},
+		{
+			"label": "east-mira-delivery",
+			"path": "res://tests/output/furnishing-runtime/east-mira-delivery.png",
+			"sha256": "1907f48035bfc56dea55db5b9d524601d46cebb5d8365f8ff60d41cf47683fc1"
+		},
+		{
+			"label": "east-mira-failed-rest",
+			"path": "res://tests/output/furnishing-runtime/east-mira-failed-rest.png",
+			"sha256": "45f3f991c398943e891dbbb26a0041ecaeb2f10127a68b48117bc7df78bfadb2"
+		},
+		{
+			"label": "east-mira-lunch",
+			"path": "res://tests/output/furnishing-runtime/east-mira-lunch.png",
+			"sha256": "12b16f621cbfc7588015a9f8953a7570caf882aba77a1ca61a043625782845c6"
+		},
+		{
+			"label": "east-mira-return",
+			"path": "res://tests/output/furnishing-runtime/east-mira-return.png",
+			"sha256": "aa34cf5b8e045e4c3108318e075e48527c06f71a068f9a9fea3c0b3777015ccc"
+		},
+		{
+			"label": "east-theo-approach",
+			"path": "res://tests/output/furnishing-runtime/east-theo-approach.png",
+			"sha256": "729f77e8e51715da7fd9e61122ea0942d899863cde0d51bd308ec111b437f9bd"
+		},
+		{
+			"label": "east-theo-thinking",
+			"path": "res://tests/output/furnishing-runtime/east-theo-thinking.png",
+			"sha256": "95d8331d1ee9aa416dc5bfdbadf0811bfd9ca4c657fea4cb9c0cacfe2bc8dc3e"
+		},
+		{
+			"label": "east-theo-typing",
+			"path": "res://tests/output/furnishing-runtime/east-theo-typing.png",
+			"sha256": "55b51ddef2e34e2ec7b1974fb484e3200e6276760bad078edcb7fe32263f84d7"
+		},
+		{
+			"label": "east-theo-research",
+			"path": "res://tests/output/furnishing-runtime/east-theo-research.png",
+			"sha256": "cc3394ee777b9639deef156a0e32c3aa05bcaada5d1462f1ad597cdd9e2cda1c"
+		},
+		{
+			"label": "east-theo-approval",
+			"path": "res://tests/output/furnishing-runtime/east-theo-approval.png",
+			"sha256": "2bc7ccc9d20ce71c2de04f03459200717ec1832ab8eebc82ef47eb50bd4f7aaa"
+		},
+		{
+			"label": "east-theo-delivery",
+			"path": "res://tests/output/furnishing-runtime/east-theo-delivery.png",
+			"sha256": "217f9948ff4787de9de8664aab3ad5363d4515f3007a9bd20a53b5c3e9c7a9b2"
+		},
+		{
+			"label": "east-theo-failed-rest",
+			"path": "res://tests/output/furnishing-runtime/east-theo-failed-rest.png",
+			"sha256": "ff2ff36e2cd39c9c97944cedd9c2a71ab25077d2f9839344f12730d0ad7b98be"
+		},
+		{
+			"label": "east-theo-lunch",
+			"path": "res://tests/output/furnishing-runtime/east-theo-lunch.png",
+			"sha256": "d4708781fe8a6acd5742510f21bda125cf2f69f6c7338391b2e2a5f2715706b7"
+		},
+		{
+			"label": "east-theo-return",
+			"path": "res://tests/output/furnishing-runtime/east-theo-return.png",
+			"sha256": "70a63bc3b507f1d4af846e2f337b8c948c1465a31daa6a3235371834c22a4312"
+		},
+		{
+			"label": "south-mira-approach",
+			"path": "res://tests/output/furnishing-runtime/south-mira-approach.png",
+			"sha256": "d09f847f67b4ed26c1a9709cc1d4f7381dab573e1f735c9217dab882068edf0e"
+		},
+		{
+			"label": "south-mira-thinking",
+			"path": "res://tests/output/furnishing-runtime/south-mira-thinking.png",
+			"sha256": "06c0b19003a9cb3e8c6619f7e09a0e8fce6e74217ae7f1700c99987540619a48"
+		},
+		{
+			"label": "south-mira-typing",
+			"path": "res://tests/output/furnishing-runtime/south-mira-typing.png",
+			"sha256": "34c192a8782161d71e184dec53498cff0e3e1efc07b12a02c44053782d5abb4f"
+		},
+		{
+			"label": "south-mira-research",
+			"path": "res://tests/output/furnishing-runtime/south-mira-research.png",
+			"sha256": "75edf3658c63cd366e56f76e97d9af65d142f2b056eda2459af4734f0616aeb2"
+		},
+		{
+			"label": "south-mira-approval",
+			"path": "res://tests/output/furnishing-runtime/south-mira-approval.png",
+			"sha256": "041562791688d1a0d47cfc01dff3f3fc2326bcedc29f7e7d86f7f3694e404a07"
+		},
+		{
+			"label": "south-mira-delivery",
+			"path": "res://tests/output/furnishing-runtime/south-mira-delivery.png",
+			"sha256": "bbf725b3cbbe2e15ef5b5b41b3aedde1632f8bc6ec0663ea388f015bc4f636bf"
+		},
+		{
+			"label": "south-mira-failed-rest",
+			"path": "res://tests/output/furnishing-runtime/south-mira-failed-rest.png",
+			"sha256": "6dd5747f49087516eef706d07aa5701fc5daf57b5a2a37c0c7da15239fe50908"
+		},
+		{
+			"label": "south-mira-lunch",
+			"path": "res://tests/output/furnishing-runtime/south-mira-lunch.png",
+			"sha256": "ae4ea5468b40cd4469941d949ab5f8c85eeada382932897a3800de9548047295"
+		},
+		{
+			"label": "south-mira-return",
+			"path": "res://tests/output/furnishing-runtime/south-mira-return.png",
+			"sha256": "c4597a88f3244e82916fc057b2d75694ec9ca1cd39cac512eb6053416665e677"
+		},
+		{
+			"label": "south-theo-approach",
+			"path": "res://tests/output/furnishing-runtime/south-theo-approach.png",
+			"sha256": "d9a2e5cf60fd25f14c2b5facffbe60e18b3de85d335f4cb4339a2b5349608011"
+		},
+		{
+			"label": "south-theo-thinking",
+			"path": "res://tests/output/furnishing-runtime/south-theo-thinking.png",
+			"sha256": "10ae460e4b1ad59db8c195ee7fb5a36284036d3e0728984fff67ba935da87d42"
+		},
+		{
+			"label": "south-theo-typing",
+			"path": "res://tests/output/furnishing-runtime/south-theo-typing.png",
+			"sha256": "413edb375fce0cb2774424be8b7b9aa03599382a9981f563001baa1a6ca8edb7"
+		},
+		{
+			"label": "south-theo-research",
+			"path": "res://tests/output/furnishing-runtime/south-theo-research.png",
+			"sha256": "100fa6377b16b4a8aef3b9c555c5d4f301d5c6d1caabadca656df0db7d7ae36f"
+		},
+		{
+			"label": "south-theo-approval",
+			"path": "res://tests/output/furnishing-runtime/south-theo-approval.png",
+			"sha256": "65073d1057f50e9a0ab93f8fcb7e7fc712df81536ee4b6e370a0e7008492edf4"
+		},
+		{
+			"label": "south-theo-delivery",
+			"path": "res://tests/output/furnishing-runtime/south-theo-delivery.png",
+			"sha256": "f28ac045a8b68d487a2e5d8735a58af1d77169df05336feaae85a61f0cd4fd87"
+		},
+		{
+			"label": "south-theo-failed-rest",
+			"path": "res://tests/output/furnishing-runtime/south-theo-failed-rest.png",
+			"sha256": "090d3260c5248a25dc2b48410379a7e5bc0e311ac568d5356de7ec6d9050b745"
+		},
+		{
+			"label": "south-theo-lunch",
+			"path": "res://tests/output/furnishing-runtime/south-theo-lunch.png",
+			"sha256": "40ef0613fa82867d1bd76e7cafad48f35cb1d4f448cefdf4be4881a8de441228"
+		},
+		{
+			"label": "south-theo-return",
+			"path": "res://tests/output/furnishing-runtime/south-theo-return.png",
+			"sha256": "8c9a7b3ebe6a87c6cb791c29d94c1103c39cf1bdfbf19b2ad0632850637195fa"
+		},
+		{
+			"label": "west-mira-approach",
+			"path": "res://tests/output/furnishing-runtime/west-mira-approach.png",
+			"sha256": "4bcf48ec95f9b19f0f464398d5becf06193107de15e8736ccd61898f5fca99ec"
+		},
+		{
+			"label": "west-mira-thinking",
+			"path": "res://tests/output/furnishing-runtime/west-mira-thinking.png",
+			"sha256": "c1556f8398242d233c2ddca4a53ecda9a3a0fbba86720179df5464d007fe0ab6"
+		},
+		{
+			"label": "west-mira-typing",
+			"path": "res://tests/output/furnishing-runtime/west-mira-typing.png",
+			"sha256": "790c4d4d0b3e71e884835c982574f3d8ca208de1d53a79cd8bcde784e22baf25"
+		},
+		{
+			"label": "west-mira-research",
+			"path": "res://tests/output/furnishing-runtime/west-mira-research.png",
+			"sha256": "728f953c2d6a486f3998498e28b601b7bed46c2eca90c439ea838a6fa90f2341"
+		},
+		{
+			"label": "west-mira-approval",
+			"path": "res://tests/output/furnishing-runtime/west-mira-approval.png",
+			"sha256": "e0ddc71f218aa3c44399442606d4fd088f59c5d9de1c743bf96b9a17115ee743"
+		},
+		{
+			"label": "west-mira-delivery",
+			"path": "res://tests/output/furnishing-runtime/west-mira-delivery.png",
+			"sha256": "0e126c8177108cc056e92a69fcf575b88b7cb481b3303af7a39fc8f6c7710b71"
+		},
+		{
+			"label": "west-mira-failed-rest",
+			"path": "res://tests/output/furnishing-runtime/west-mira-failed-rest.png",
+			"sha256": "75dda913dc83a8c0ec0c8571523c1719f997fd7e7d23fb199afa63d1cdb77377"
+		},
+		{
+			"label": "west-mira-lunch",
+			"path": "res://tests/output/furnishing-runtime/west-mira-lunch.png",
+			"sha256": "ebe2a4574cf141e0fc69b0448b0fe15dddccbea38aba01fa15a2caf78752fd79"
+		},
+		{
+			"label": "west-mira-return",
+			"path": "res://tests/output/furnishing-runtime/west-mira-return.png",
+			"sha256": "b86f6c733564185eae35a5593a2267b2a4c0537499cb32efe47352f37368ca2b"
+		},
+		{
+			"label": "west-theo-approach",
+			"path": "res://tests/output/furnishing-runtime/west-theo-approach.png",
+			"sha256": "fc26a9702450acaaa0caa6facefe4c437a4a13581462c01ccf36a732abf2278d"
+		},
+		{
+			"label": "west-theo-thinking",
+			"path": "res://tests/output/furnishing-runtime/west-theo-thinking.png",
+			"sha256": "d23e7af01b1d581e38b8fca3a649bad388247929f0303619817d6a3ffe82a591"
+		},
+		{
+			"label": "west-theo-typing",
+			"path": "res://tests/output/furnishing-runtime/west-theo-typing.png",
+			"sha256": "7f9cc10601113041bf1ce9e0388fcd24d6cc07e34c7b49b8cfbd063932c94171"
+		},
+		{
+			"label": "west-theo-research",
+			"path": "res://tests/output/furnishing-runtime/west-theo-research.png",
+			"sha256": "0b4c332ab1678c97f8b55c30e22c6d029f7126acee500953e4482abbcc0d7b1b"
+		},
+		{
+			"label": "west-theo-approval",
+			"path": "res://tests/output/furnishing-runtime/west-theo-approval.png",
+			"sha256": "d2f539e0db14b83004d4a450fa63b914bc7d3ca171b9c94412084340df45dcd5"
+		},
+		{
+			"label": "west-theo-delivery",
+			"path": "res://tests/output/furnishing-runtime/west-theo-delivery.png",
+			"sha256": "95ae514d25bb5fb70e85b8349fe246e2386cd5f48fa660c5c7548decd492c579"
+		},
+		{
+			"label": "west-theo-failed-rest",
+			"path": "res://tests/output/furnishing-runtime/west-theo-failed-rest.png",
+			"sha256": "ecdda009aca141ba94a61a690076068bb4e12e4bbe2d36d57bffce69b226268d"
+		},
+		{
+			"label": "west-theo-lunch",
+			"path": "res://tests/output/furnishing-runtime/west-theo-lunch.png",
+			"sha256": "a7513c4dad16653bbf71e33f049f3c365e7bca796c9534feaabfe48b7670e39d"
+		},
+		{
+			"label": "west-theo-return",
+			"path": "res://tests/output/furnishing-runtime/west-theo-return.png",
+			"sha256": "10005811c604fcbe08f24dca84e66b7ae2e48b8607ca794898e78050790fcabc"
+		}
+	],
+	"checks": 12934,
+	"contact_sheet": "res://tests/output/furnishing-runtime/role-lifecycle-contact-native.png",
+	"directions": [
+		"north",
+		"east",
+		"south",
+		"west"
+	],
+	"failures": [],
+	"sequence": [
+		"approach",
+		"thinking",
+		"typing",
+		"research",
+		"approval",
+		"delivery",
+		"failed-rest",
+		"lunch",
+		"return"
+	],
+	"worker_disabled": true
+}
