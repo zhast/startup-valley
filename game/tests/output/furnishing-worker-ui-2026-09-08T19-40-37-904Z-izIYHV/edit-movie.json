@@ -1,0 +1,15 @@
+{
+  "programs": [],
+  "stream_groups": [],
+  "streams": [
+    {
+      "codec_name": "mjpeg",
+      "width": 1280,
+      "height": 720,
+      "r_frame_rate": "30/1",
+      "avg_frame_rate": "30/1",
+      "nb_frames": "437",
+      "nb_read_frames": "437"
+    }
+  ]
+}

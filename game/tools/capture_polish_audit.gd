@@ -45,6 +45,10 @@ var _architecture_specs: Dictionary[String, Dictionary] = {}
 var _ui_dispatches: Array[Dictionary] = []
 
 func _initialize() -> void:
+	# This native-GPU capture owns only its injected InputEvent stream. Do not
+	# capture focus or move the user's pointer while they use another app.
+	root.unfocusable = true
+	root.mouse_passthrough = true
 	if not preload("res://tools/audit_output_scope.gd").valid(OS.get_environment("STARTUP_VALLEY_AUDIT_OUTPUT_ROOT")):
 		push_error("Audit output override must be a strict res://tests/output/ descendant")
 		quit(2)
@@ -64,9 +68,13 @@ func _parse_suite() -> String:
 	return ""
 
 func _run() -> void:
-	root.always_on_top = true
+	# Godot applies project window flags after SceneTree._initialize. Reapply
+	# after startup so the native window actually has these capture-only flags.
+	root.unfocusable = true
+	root.mouse_passthrough = true
+	root.always_on_top = false
 	root.gui_embed_subwindows = true
-	root.grab_focus()
+	_check(root.unfocusable and root.mouse_passthrough, "native-input-stream-isolated")
 	if not _prepare_output_directories():
 		quit(1)
 		return
@@ -547,7 +555,7 @@ func _capture_delivery_studio_reader() -> void:
 		_main.artifact_viewer.show_artifact(path, _reader_document(), "Shared Studio")
 	)
 	await _press_control(_button_named(_main.job_panel._artifact_list, "Open"))
-	_check(_ui_dispatches.back().method == "studio.read", "studio-file-selection")
+	_check(not _ui_dispatches.is_empty() and _ui_dispatches.back().method == "studio.read", "studio-file-selection")
 	await _frames(18)
 	_check(document.get_parsed_text().contains("Help a first-time creator") and document.get_content_height() > document.size.y, "studio-reader-retains-document")
 	await _end_scenario()
@@ -678,6 +686,15 @@ func _write_manifest() -> void:
 		"viewport": {"width": VIEWPORT_SIZE.x, "height": VIEWPORT_SIZE.y},
 		"fps": AUDIT_FPS,
 		"networkDisabled": true,
+		"inputDriver": {
+			"method": "Input.parse_input_event through normal GUI hit-testing",
+			"nativeGpu": DisplayServer.get_name() != "headless",
+			"nativeWindowUnfocusable": root.unfocusable,
+			"nativeMousePassthrough": root.mouse_passthrough,
+			"embeddedPopups": root.gui_embed_subwindows,
+			"osPointerWarped": false,
+			"actionRetries": 0,
+		},
 		"frameOrigin": "Engine process frame; movie writer may include a short startup lead-in",
 		"passThreshold": {"minimumCategory": 2, "minimumMean": 2.5},
 		"reviewRubric": {
@@ -1054,12 +1071,13 @@ func _check_actor_cells() -> void:
 
 func _move_mouse_to(control: Control) -> void:
 	var point := control.get_global_rect().get_center()
-	# Inject one deterministic pointer stream. Warping the native macOS cursor
-	# races Retina/window-coordinate mouse events against these viewport events.
+	# Input.parse_input_event updates held-button state as well as GUI
+	# hit-testing. The native window ignores physical input; no OS warp occurs.
 	var motion := InputEventMouseMotion.new()
-	motion.position = point
-	motion.global_position = point
-	root.push_input(motion, true)
+	motion.position = root.get_final_transform() * point
+	motion.global_position = motion.position
+	Input.parse_input_event(motion)
+	Input.flush_buffered_events()
 
 func _press_control(control: Control, allow_disabled: bool = false) -> void:
 	if not _control_visible(control):
@@ -1068,23 +1086,51 @@ func _press_control(control: Control, allow_disabled: bool = false) -> void:
 	if control is BaseButton and (control as BaseButton).disabled and not allow_disabled:
 		_check(false, "input-target-enabled: %s" % control.name)
 		return
+	var trace := not OS.get_environment("STARTUP_VALLEY_AUDIT_INPUT_TRACE").is_empty()
+	var observer := func(event: InputEvent) -> void:
+		if event is InputEventMouse:
+			_trace_pointer(control, "gui: " + event.as_text())
+	if trace: control.gui_input.connect(observer)
+	_trace_pointer(control, "before-hover")
 	_move_mouse_to(control)
 	await _frames(8)
-	var point := control.get_global_rect().get_center()
+	_move_mouse_to(control)
+	var hovered := root.gui_get_hovered_control()
+	_check(hovered == control or (hovered != null and control.is_ancestor_of(hovered)), "pointer-target-hit: " + str(control.name))
+	_check(not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT), "pointer-up-before-down: " + str(control.name))
+	_trace_pointer(control, "before-down")
+	var point := root.get_final_transform() * control.get_global_rect().get_center()
 	var press := InputEventMouseButton.new()
 	press.position = point
 	press.global_position = point
 	press.button_index = MOUSE_BUTTON_LEFT
 	press.pressed = true
-	root.push_input(press, true)
+	press.button_mask = MOUSE_BUTTON_MASK_LEFT
+	Input.parse_input_event(press)
+	Input.flush_buffered_events()
+	_check(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT), "pointer-down-state: " + str(control.name))
+	_trace_pointer(control, "after-down")
 	await _frames(5)
+	_trace_pointer(control, "before-up")
 	var release := InputEventMouseButton.new()
 	release.position = point
 	release.global_position = point
 	release.button_index = MOUSE_BUTTON_LEFT
 	release.pressed = false
-	root.push_input(release, true)
+	release.button_mask = 0
+	Input.parse_input_event(release)
+	Input.flush_buffered_events()
+	_check(not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT), "pointer-up-state: " + str(control.name))
+	_trace_pointer(control, "after-up")
 	await _frames(5)
+	_trace_pointer(control, "after-settle")
+	if trace and is_instance_valid(control): control.gui_input.disconnect(observer)
+
+func _trace_pointer(control: Control, phase: String) -> void:
+	if OS.get_environment("STARTUP_VALLEY_AUDIT_INPUT_TRACE").is_empty(): return
+	var hovered := root.gui_get_hovered_control()
+	var focused := root.gui_get_focus_owner()
+	print("POINTER ", JSON.stringify({"frame": Engine.get_process_frames(), "phase": phase, "target": str(control.get_path()), "text": control.text if control is Button else "", "rect": str(control.get_global_rect()), "localMouse": str(root.get_mouse_position()), "osMouse": str(DisplayServer.mouse_get_position()), "window": str(root.position), "hovered": str(hovered.get_path()) if hovered != null else "", "focused": str(focused.get_path()) if focused != null else "", "held": Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT), "pressed": control.is_pressed() if control is BaseButton else false}))
 
 func _control_visible(control: Control) -> bool:
 	if control == null or not control.is_visible_in_tree(): return false
@@ -1115,7 +1161,12 @@ func _type_into(control: LineEdit, text: String) -> void:
 		var key_event := InputEventKey.new()
 		key_event.unicode = character.unicode_at(0)
 		key_event.pressed = true
-		root.push_input(key_event, true)
+		Input.parse_input_event(key_event)
+		Input.flush_buffered_events()
+		var release := key_event.duplicate() as InputEventKey
+		release.pressed = false
+		Input.parse_input_event(release)
+		Input.flush_buffered_events()
 		await _frames(1)
 	_check(control.text == text, "real-keyboard-text-entry")
 
@@ -1126,13 +1177,15 @@ func _wheel(control: Control, direction: MouseButton) -> void:
 	_move_mouse_to(control)
 	var event := InputEventMouseButton.new()
 	event.button_index = direction
-	event.position = control.get_global_rect().get_center()
+	event.position = root.get_final_transform() * control.get_global_rect().get_center()
 	event.global_position = event.position
 	event.pressed = true
-	root.push_input(event, true)
+	Input.parse_input_event(event)
+	Input.flush_buffered_events()
 	var release := event.duplicate() as InputEventMouseButton
 	release.pressed = false
-	root.push_input(release, true)
+	Input.parse_input_event(release)
+	Input.flush_buffered_events()
 	await _frames(2)
 
 func _button_named(parent: Node, text: String) -> Button:
@@ -1181,7 +1234,8 @@ func _press_key(code: Key) -> void:
 		key.keycode = code
 		key.physical_keycode = code
 		key.pressed = pressed
-		root.push_input(key, true)
+		Input.parse_input_event(key)
+		Input.flush_buffered_events()
 		await _frames(1)
 
 func _event(type_value: StringName) -> WorkerEventRecord:

@@ -1,0 +1,862 @@
+{
+	"captures": [
+		{
+			"engine_process_frame": 7,
+			"label": "decorated-room",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/decorated-room.png",
+			"physics_frame": 4,
+			"sha256": "4659d204b19b5443647879f62cbb93aea7725de7046a6ce5fa5983c67f220cf1"
+		},
+		{
+			"engine_process_frame": 11,
+			"label": "north-mira-approach",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/north-mira-approach.png",
+			"physics_frame": 8,
+			"sha256": "509603747d34f647e3a277564a51b6c152484c627e3fb7ee12668c03ac4fae8f"
+		},
+		{
+			"engine_process_frame": 126,
+			"label": "north-mira-thinking",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/north-mira-thinking.png",
+			"physics_frame": 123,
+			"sha256": "13665b3eee35800405a3d155ca890694a5072828a6972d4310c7d9574df14554"
+		},
+		{
+			"engine_process_frame": 133,
+			"label": "north-mira-typing",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/north-mira-typing.png",
+			"physics_frame": 130,
+			"sha256": "73c87b2b7baed25052e7c43b4857d134b739a6c6de5ff1cd0e724e0113db7c90"
+		},
+		{
+			"engine_process_frame": 328,
+			"label": "north-mira-research",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/north-mira-research.png",
+			"physics_frame": 325,
+			"sha256": "2ccf971fd723dc9a6c11545acdbfbf871b74aca262c748349a24b17d76553fc8"
+		},
+		{
+			"engine_process_frame": 532,
+			"label": "north-mira-approval",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/north-mira-approval.png",
+			"physics_frame": 529,
+			"sha256": "f5d2ae33da090b73f98a07d136e59e0df54317fcb9658f2d3df66cf96a44664a"
+		},
+		{
+			"engine_process_frame": 539,
+			"label": "north-mira-delivery",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/north-mira-delivery.png",
+			"physics_frame": 536,
+			"sha256": "6076d1c06bede8a83ebeb9cde25a807d7edaa4bee0341db38cd3ae6c63adef8b"
+		},
+		{
+			"engine_process_frame": 708,
+			"label": "north-mira-failed-rest",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/north-mira-failed-rest.png",
+			"physics_frame": 705,
+			"sha256": "e50c678fa9863f91fe74f89b02fe58bbb00c2ed5dffcb0ead03c4e90c8008af6"
+		},
+		{
+			"engine_process_frame": 764,
+			"label": "north-mira-lunch",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/north-mira-lunch.png",
+			"physics_frame": 761,
+			"sha256": "1273cdaf43fd3365f244e412756b8de18ef4a7085bd02accea1fddfd75029a31"
+		},
+		{
+			"engine_process_frame": 820,
+			"label": "north-mira-return",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/north-mira-return.png",
+			"physics_frame": 817,
+			"sha256": "705f5cfd4ab410a78ce9acddcecae7f6835c91575ddc8188deac2426f53a822f"
+		},
+		{
+			"engine_process_frame": 824,
+			"label": "north-theo-approach",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/north-theo-approach.png",
+			"physics_frame": 821,
+			"sha256": "9eca71d9f5450f4491286a2c2a7a1b4d80d3d0ee647818069c09f47f783dd6b8"
+		},
+		{
+			"engine_process_frame": 939,
+			"label": "north-theo-thinking",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/north-theo-thinking.png",
+			"physics_frame": 936,
+			"sha256": "1de49504d5cc3dbf8f060f36ac0bbb14a5cf5d2ef51589ed5900828ffa08a214"
+		},
+		{
+			"engine_process_frame": 946,
+			"label": "north-theo-typing",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/north-theo-typing.png",
+			"physics_frame": 943,
+			"sha256": "b84a6ed2076ebeb8789e59b43bcc4b58ff145032978a90dc62094d1416485d60"
+		},
+		{
+			"engine_process_frame": 1051,
+			"label": "north-theo-research",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/north-theo-research.png",
+			"physics_frame": 1048,
+			"sha256": "fc579d48bf5d04f14f0e251a6975b2ac7845a7ce0ac58e475399a64f02c1b5a3"
+		},
+		{
+			"engine_process_frame": 1255,
+			"label": "north-theo-approval",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/north-theo-approval.png",
+			"physics_frame": 1252,
+			"sha256": "7ed4f9f5ae5f396d6b892e9c087df25fa1d4433feb87051054178daedfd3c201"
+		},
+		{
+			"engine_process_frame": 1262,
+			"label": "north-theo-delivery",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/north-theo-delivery.png",
+			"physics_frame": 1259,
+			"sha256": "9113a7d38e9eca572e9b2376c4a88e9f7d690e44d488c5215000a8dc771b77d4"
+		},
+		{
+			"engine_process_frame": 1377,
+			"label": "north-theo-failed-rest",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/north-theo-failed-rest.png",
+			"physics_frame": 1374,
+			"sha256": "4d6f7bb7a2f33acb9366305d3d15e84c9f3220140d33233a80c6ffc56154d224"
+		},
+		{
+			"engine_process_frame": 1514,
+			"label": "north-theo-lunch",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/north-theo-lunch.png",
+			"physics_frame": 1511,
+			"sha256": "61664f5b11b0b4ae3d1c55134ad5d07c65a7e78eed4591f35a7e6bc7685539ee"
+		},
+		{
+			"engine_process_frame": 1651,
+			"label": "north-theo-return",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/north-theo-return.png",
+			"physics_frame": 1648,
+			"sha256": "c40267d57919f88ebe469c1238f4c3c8b034a5bd5f1e9ff32ea7c235f2441c6d"
+		},
+		{
+			"engine_process_frame": 1655,
+			"label": "east-mira-approach",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/east-mira-approach.png",
+			"physics_frame": 1652,
+			"sha256": "abf0826e383dabffc9ed95005832d40dc25602882bd91aa76fa8a73956b296f5"
+		},
+		{
+			"engine_process_frame": 1698,
+			"label": "east-mira-thinking",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/east-mira-thinking.png",
+			"physics_frame": 1695,
+			"sha256": "290ea5a1863dc06010e975b09a23dca10b5c2c74d4e588c287f364a9cff38ee2"
+		},
+		{
+			"engine_process_frame": 1705,
+			"label": "east-mira-typing",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/east-mira-typing.png",
+			"physics_frame": 1702,
+			"sha256": "9de7b18917d1e436bb9344bae44eb00479ff0001d80b7304d89b0f11ddafbf5d"
+		},
+		{
+			"engine_process_frame": 1918,
+			"label": "east-mira-research",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/east-mira-research.png",
+			"physics_frame": 1915,
+			"sha256": "092d2cb93ec33d8ee078313138bd4f204d6f65e24092b1de1d45aa5bd295183b"
+		},
+		{
+			"engine_process_frame": 2122,
+			"label": "east-mira-approval",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/east-mira-approval.png",
+			"physics_frame": 2119,
+			"sha256": "913aa3842f7e4c92f22e977d07647e1e4476e85a3ef9002dca8d2107b0d24675"
+		},
+		{
+			"engine_process_frame": 2129,
+			"label": "east-mira-delivery",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/east-mira-delivery.png",
+			"physics_frame": 2126,
+			"sha256": "1907f48035bfc56dea55db5b9d524601d46cebb5d8365f8ff60d41cf47683fc1"
+		},
+		{
+			"engine_process_frame": 2316,
+			"label": "east-mira-failed-rest",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/east-mira-failed-rest.png",
+			"physics_frame": 2313,
+			"sha256": "45f3f991c398943e891dbbb26a0041ecaeb2f10127a68b48117bc7df78bfadb2"
+		},
+		{
+			"engine_process_frame": 2390,
+			"label": "east-mira-lunch",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/east-mira-lunch.png",
+			"physics_frame": 2387,
+			"sha256": "12b16f621cbfc7588015a9f8953a7570caf882aba77a1ca61a043625782845c6"
+		},
+		{
+			"engine_process_frame": 2464,
+			"label": "east-mira-return",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/east-mira-return.png",
+			"physics_frame": 2461,
+			"sha256": "aa34cf5b8e045e4c3108318e075e48527c06f71a068f9a9fea3c0b3777015ccc"
+		},
+		{
+			"engine_process_frame": 2468,
+			"label": "east-theo-approach",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/east-theo-approach.png",
+			"physics_frame": 2465,
+			"sha256": "729f77e8e51715da7fd9e61122ea0942d899863cde0d51bd308ec111b437f9bd"
+		},
+		{
+			"engine_process_frame": 2520,
+			"label": "east-theo-thinking",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/east-theo-thinking.png",
+			"physics_frame": 2517,
+			"sha256": "95d8331d1ee9aa416dc5bfdbadf0811bfd9ca4c657fea4cb9c0cacfe2bc8dc3e"
+		},
+		{
+			"engine_process_frame": 2527,
+			"label": "east-theo-typing",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/east-theo-typing.png",
+			"physics_frame": 2524,
+			"sha256": "55b51ddef2e34e2ec7b1974fb484e3200e6276760bad078edcb7fe32263f84d7"
+		},
+		{
+			"engine_process_frame": 2650,
+			"label": "east-theo-research",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/east-theo-research.png",
+			"physics_frame": 2647,
+			"sha256": "cc3394ee777b9639deef156a0e32c3aa05bcaada5d1462f1ad597cdd9e2cda1c"
+		},
+		{
+			"engine_process_frame": 2854,
+			"label": "east-theo-approval",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/east-theo-approval.png",
+			"physics_frame": 2851,
+			"sha256": "2bc7ccc9d20ce71c2de04f03459200717ec1832ab8eebc82ef47eb50bd4f7aaa"
+		},
+		{
+			"engine_process_frame": 2861,
+			"label": "east-theo-delivery",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/east-theo-delivery.png",
+			"physics_frame": 2858,
+			"sha256": "217f9948ff4787de9de8664aab3ad5363d4515f3007a9bd20a53b5c3e9c7a9b2"
+		},
+		{
+			"engine_process_frame": 2976,
+			"label": "east-theo-failed-rest",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/east-theo-failed-rest.png",
+			"physics_frame": 2973,
+			"sha256": "ff2ff36e2cd39c9c97944cedd9c2a71ab25077d2f9839344f12730d0ad7b98be"
+		},
+		{
+			"engine_process_frame": 3113,
+			"label": "east-theo-lunch",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/east-theo-lunch.png",
+			"physics_frame": 3110,
+			"sha256": "d4708781fe8a6acd5742510f21bda125cf2f69f6c7338391b2e2a5f2715706b7"
+		},
+		{
+			"engine_process_frame": 3250,
+			"label": "east-theo-return",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/east-theo-return.png",
+			"physics_frame": 3247,
+			"sha256": "70a63bc3b507f1d4af846e2f337b8c948c1465a31daa6a3235371834c22a4312"
+		},
+		{
+			"engine_process_frame": 3254,
+			"label": "south-mira-approach",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/south-mira-approach.png",
+			"physics_frame": 3251,
+			"sha256": "d09f847f67b4ed26c1a9709cc1d4f7381dab573e1f735c9217dab882068edf0e"
+		},
+		{
+			"engine_process_frame": 3297,
+			"label": "south-mira-thinking",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/south-mira-thinking.png",
+			"physics_frame": 3294,
+			"sha256": "06c0b19003a9cb3e8c6619f7e09a0e8fce6e74217ae7f1700c99987540619a48"
+		},
+		{
+			"engine_process_frame": 3304,
+			"label": "south-mira-typing",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/south-mira-typing.png",
+			"physics_frame": 3301,
+			"sha256": "34c192a8782161d71e184dec53498cff0e3e1efc07b12a02c44053782d5abb4f"
+		},
+		{
+			"engine_process_frame": 3499,
+			"label": "south-mira-research",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/south-mira-research.png",
+			"physics_frame": 3496,
+			"sha256": "75edf3658c63cd366e56f76e97d9af65d142f2b056eda2459af4734f0616aeb2"
+		},
+		{
+			"engine_process_frame": 3703,
+			"label": "south-mira-approval",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/south-mira-approval.png",
+			"physics_frame": 3700,
+			"sha256": "041562791688d1a0d47cfc01dff3f3fc2326bcedc29f7e7d86f7f3694e404a07"
+		},
+		{
+			"engine_process_frame": 3710,
+			"label": "south-mira-delivery",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/south-mira-delivery.png",
+			"physics_frame": 3707,
+			"sha256": "bbf725b3cbbe2e15ef5b5b41b3aedde1632f8bc6ec0663ea388f015bc4f636bf"
+		},
+		{
+			"engine_process_frame": 3897,
+			"label": "south-mira-failed-rest",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/south-mira-failed-rest.png",
+			"physics_frame": 3894,
+			"sha256": "6dd5747f49087516eef706d07aa5701fc5daf57b5a2a37c0c7da15239fe50908"
+		},
+		{
+			"engine_process_frame": 3989,
+			"label": "south-mira-lunch",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/south-mira-lunch.png",
+			"physics_frame": 3986,
+			"sha256": "ae4ea5468b40cd4469941d949ab5f8c85eeada382932897a3800de9548047295"
+		},
+		{
+			"engine_process_frame": 4081,
+			"label": "south-mira-return",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/south-mira-return.png",
+			"physics_frame": 4078,
+			"sha256": "c4597a88f3244e82916fc057b2d75694ec9ca1cd39cac512eb6053416665e677"
+		},
+		{
+			"engine_process_frame": 4085,
+			"label": "south-theo-approach",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/south-theo-approach.png",
+			"physics_frame": 4082,
+			"sha256": "d9a2e5cf60fd25f14c2b5facffbe60e18b3de85d335f4cb4339a2b5349608011"
+		},
+		{
+			"engine_process_frame": 4119,
+			"label": "south-theo-thinking",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/south-theo-thinking.png",
+			"physics_frame": 4116,
+			"sha256": "10ae460e4b1ad59db8c195ee7fb5a36284036d3e0728984fff67ba935da87d42"
+		},
+		{
+			"engine_process_frame": 4126,
+			"label": "south-theo-typing",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/south-theo-typing.png",
+			"physics_frame": 4123,
+			"sha256": "413edb375fce0cb2774424be8b7b9aa03599382a9981f563001baa1a6ca8edb7"
+		},
+		{
+			"engine_process_frame": 4213,
+			"label": "south-theo-research",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/south-theo-research.png",
+			"physics_frame": 4210,
+			"sha256": "100fa6377b16b4a8aef3b9c555c5d4f301d5c6d1caabadca656df0db7d7ae36f"
+		},
+		{
+			"engine_process_frame": 4417,
+			"label": "south-theo-approval",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/south-theo-approval.png",
+			"physics_frame": 4414,
+			"sha256": "65073d1057f50e9a0ab93f8fcb7e7fc712df81536ee4b6e370a0e7008492edf4"
+		},
+		{
+			"engine_process_frame": 4424,
+			"label": "south-theo-delivery",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/south-theo-delivery.png",
+			"physics_frame": 4421,
+			"sha256": "f28ac045a8b68d487a2e5d8735a58af1d77169df05336feaae85a61f0cd4fd87"
+		},
+		{
+			"engine_process_frame": 4557,
+			"label": "south-theo-failed-rest",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/south-theo-failed-rest.png",
+			"physics_frame": 4554,
+			"sha256": "090d3260c5248a25dc2b48410379a7e5bc0e311ac568d5356de7ec6d9050b745"
+		},
+		{
+			"engine_process_frame": 4712,
+			"label": "south-theo-lunch",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/south-theo-lunch.png",
+			"physics_frame": 4709,
+			"sha256": "40ef0613fa82867d1bd76e7cafad48f35cb1d4f448cefdf4be4881a8de441228"
+		},
+		{
+			"engine_process_frame": 4867,
+			"label": "south-theo-return",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/south-theo-return.png",
+			"physics_frame": 4864,
+			"sha256": "8c9a7b3ebe6a87c6cb791c29d94c1103c39cf1bdfbf19b2ad0632850637195fa"
+		},
+		{
+			"engine_process_frame": 4871,
+			"label": "west-mira-approach",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/west-mira-approach.png",
+			"physics_frame": 4868,
+			"sha256": "4bcf48ec95f9b19f0f464398d5becf06193107de15e8736ccd61898f5fca99ec"
+		},
+		{
+			"engine_process_frame": 4887,
+			"label": "west-mira-thinking",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/west-mira-thinking.png",
+			"physics_frame": 4884,
+			"sha256": "c1556f8398242d233c2ddca4a53ecda9a3a0fbba86720179df5464d007fe0ab6"
+		},
+		{
+			"engine_process_frame": 4894,
+			"label": "west-mira-typing",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/west-mira-typing.png",
+			"physics_frame": 4891,
+			"sha256": "790c4d4d0b3e71e884835c982574f3d8ca208de1d53a79cd8bcde784e22baf25"
+		},
+		{
+			"engine_process_frame": 5089,
+			"label": "west-mira-research",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/west-mira-research.png",
+			"physics_frame": 5086,
+			"sha256": "728f953c2d6a486f3998498e28b601b7bed46c2eca90c439ea838a6fa90f2341"
+		},
+		{
+			"engine_process_frame": 5293,
+			"label": "west-mira-approval",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/west-mira-approval.png",
+			"physics_frame": 5290,
+			"sha256": "e0ddc71f218aa3c44399442606d4fd088f59c5d9de1c743bf96b9a17115ee743"
+		},
+		{
+			"engine_process_frame": 5300,
+			"label": "west-mira-delivery",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/west-mira-delivery.png",
+			"physics_frame": 5297,
+			"sha256": "0e126c8177108cc056e92a69fcf575b88b7cb481b3303af7a39fc8f6c7710b71"
+		},
+		{
+			"engine_process_frame": 5469,
+			"label": "west-mira-failed-rest",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/west-mira-failed-rest.png",
+			"physics_frame": 5466,
+			"sha256": "75dda913dc83a8c0ec0c8571523c1719f997fd7e7d23fb199afa63d1cdb77377"
+		},
+		{
+			"engine_process_frame": 5525,
+			"label": "west-mira-lunch",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/west-mira-lunch.png",
+			"physics_frame": 5522,
+			"sha256": "ebe2a4574cf141e0fc69b0448b0fe15dddccbea38aba01fa15a2caf78752fd79"
+		},
+		{
+			"engine_process_frame": 5581,
+			"label": "west-mira-return",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/west-mira-return.png",
+			"physics_frame": 5578,
+			"sha256": "b86f6c733564185eae35a5593a2267b2a4c0537499cb32efe47352f37368ca2b"
+		},
+		{
+			"engine_process_frame": 5585,
+			"label": "west-theo-approach",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/west-theo-approach.png",
+			"physics_frame": 5582,
+			"sha256": "fc26a9702450acaaa0caa6facefe4c437a4a13581462c01ccf36a732abf2278d"
+		},
+		{
+			"engine_process_frame": 5610,
+			"label": "west-theo-thinking",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/west-theo-thinking.png",
+			"physics_frame": 5607,
+			"sha256": "d23e7af01b1d581e38b8fca3a649bad388247929f0303619817d6a3ffe82a591"
+		},
+		{
+			"engine_process_frame": 5617,
+			"label": "west-theo-typing",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/west-theo-typing.png",
+			"physics_frame": 5614,
+			"sha256": "7f9cc10601113041bf1ce9e0388fcd24d6cc07e34c7b49b8cfbd063932c94171"
+		},
+		{
+			"engine_process_frame": 5704,
+			"label": "west-theo-research",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/west-theo-research.png",
+			"physics_frame": 5701,
+			"sha256": "0b4c332ab1678c97f8b55c30e22c6d029f7126acee500953e4482abbcc0d7b1b"
+		},
+		{
+			"engine_process_frame": 5908,
+			"label": "west-theo-approval",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/west-theo-approval.png",
+			"physics_frame": 5905,
+			"sha256": "d2f539e0db14b83004d4a450fa63b914bc7d3ca171b9c94412084340df45dcd5"
+		},
+		{
+			"engine_process_frame": 5915,
+			"label": "west-theo-delivery",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/west-theo-delivery.png",
+			"physics_frame": 5912,
+			"sha256": "95ae514d25bb5fb70e85b8349fe246e2386cd5f48fa660c5c7548decd492c579"
+		},
+		{
+			"engine_process_frame": 6048,
+			"label": "west-theo-failed-rest",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/west-theo-failed-rest.png",
+			"physics_frame": 6045,
+			"sha256": "ecdda009aca141ba94a61a690076068bb4e12e4bbe2d36d57bffce69b226268d"
+		},
+		{
+			"engine_process_frame": 6203,
+			"label": "west-theo-lunch",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/west-theo-lunch.png",
+			"physics_frame": 6200,
+			"sha256": "a7513c4dad16653bbf71e33f049f3c365e7bca796c9534feaabfe48b7670e39d"
+		},
+		{
+			"engine_process_frame": 6358,
+			"label": "west-theo-return",
+			"path": "res://tests/output/furnishing-runtime-motion-20260908-check1/west-theo-return.png",
+			"physics_frame": 6355,
+			"sha256": "10005811c604fcbe08f24dca84e66b7ae2e48b8607ca794898e78050790fcabc"
+		}
+	],
+	"checks": 25709,
+	"contact_sheet": "res://tests/output/furnishing-runtime-motion-20260908-check1/role-lifecycle-contact-native.png",
+	"directions": [
+		"north",
+		"east",
+		"south",
+		"west"
+	],
+	"engine_process_frames": 6358,
+	"failures": [],
+	"fps": 30,
+	"movie_path": "",
+	"physics_frames": 6355,
+	"scenarios": [
+		{
+			"actual_end_state": "SITTING",
+			"actual_position": [
+				336.0,
+				304.0
+			],
+			"expected_end_state": "SITTING",
+			"expected_position": [
+				336.0,
+				304.0
+			],
+			"first_engine_frame": 7,
+			"last_engine_frame": 820,
+			"name": "north-mira"
+		},
+		{
+			"actual_end_state": "SITTING",
+			"actual_position": [
+				656.0,
+				304.0
+			],
+			"expected_end_state": "SITTING",
+			"expected_position": [
+				656.0,
+				304.0
+			],
+			"first_engine_frame": 820,
+			"last_engine_frame": 1651,
+			"name": "north-theo"
+		},
+		{
+			"actual_end_state": "SITTING",
+			"actual_position": [
+				304.0,
+				272.0
+			],
+			"expected_end_state": "SITTING",
+			"expected_position": [
+				304.0,
+				272.0
+			],
+			"first_engine_frame": 1651,
+			"last_engine_frame": 2464,
+			"name": "east-mira"
+		},
+		{
+			"actual_end_state": "SITTING",
+			"actual_position": [
+				624.0,
+				272.0
+			],
+			"expected_end_state": "SITTING",
+			"expected_position": [
+				624.0,
+				272.0
+			],
+			"first_engine_frame": 2464,
+			"last_engine_frame": 3250,
+			"name": "east-theo"
+		},
+		{
+			"actual_end_state": "SITTING",
+			"actual_position": [
+				336.0,
+				240.0
+			],
+			"expected_end_state": "SITTING",
+			"expected_position": [
+				336.0,
+				240.0
+			],
+			"first_engine_frame": 3250,
+			"last_engine_frame": 4081,
+			"name": "south-mira"
+		},
+		{
+			"actual_end_state": "SITTING",
+			"actual_position": [
+				656.0,
+				240.0
+			],
+			"expected_end_state": "SITTING",
+			"expected_position": [
+				656.0,
+				240.0
+			],
+			"first_engine_frame": 4081,
+			"last_engine_frame": 4867,
+			"name": "south-theo"
+		},
+		{
+			"actual_end_state": "SITTING",
+			"actual_position": [
+				368.0,
+				272.0
+			],
+			"expected_end_state": "SITTING",
+			"expected_position": [
+				368.0,
+				272.0
+			],
+			"first_engine_frame": 4867,
+			"last_engine_frame": 5581,
+			"name": "west-mira"
+		},
+		{
+			"actual_end_state": "SITTING",
+			"actual_position": [
+				688.0,
+				272.0
+			],
+			"expected_end_state": "SITTING",
+			"expected_position": [
+				688.0,
+				272.0
+			],
+			"first_engine_frame": 5581,
+			"last_engine_frame": 6358,
+			"name": "west-theo"
+		}
+	],
+	"sequence": [
+		"approach",
+		"thinking",
+		"typing",
+		"research",
+		"approval",
+		"delivery",
+		"failed-rest",
+		"lunch",
+		"return"
+	],
+	"source_hashes_after": {
+		"res://actors/employee_avatar.gd": "7e1c97a24acfc1cb6da9195f39c99c607e3d1201084d4ade19ffd9c18219ac41",
+		"res://actors/player_avatar.gd": "b767e2689bfaee52be9fac7742b97bd93ba80e780b6edadfbc6c91affc6f8a06",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/east-floor_shadow.png": "ed3ce3509b9614ef922e148e0e0b20bd83d0569496d5026d498da3eec534fbf7",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/east-front_structure.png": "ad16dbcc01c2cd0674955a7668098fdac822da72730bb60fb363e5a744154961",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/east-rear_structure.png": "31ff4a571c6249a863e894f78ab6de3ce444021720251626c953706f508d59d3",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/east-whole.png": "6ac077fff317af1383b49b2985a4dd20a37cb0debae97c4d6fcb81845039e5b5",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/north-floor_shadow.png": "1a97fd0e5360de859beafecefc445fec5571bab1e303591c2f339e0cdc65e8bd",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/north-front_structure.png": "c963d5f23e71039f6640f2dc520286c835bb4132473b065566ceecfd36881a8e",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/north-rear_structure.png": "c1cfc47685207d0802fab394625027b86b8267bacbdbebe8bbe3edb11c70bd31",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/north-whole.png": "6382c863a2556b98b1efbbd42006209cdd1a08461d28b9e53e28820d77112e5e",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/south-floor_shadow.png": "5d4eb1f7c844c2970e86567fa8faa9c78ecd7e0dfa73f5922aa6873a911f1760",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/south-front_structure.png": "80ae6b917f73b6b906304227f7fdd78d53854a654efbcf8522ab9b024c8ad5f4",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/south-rear_structure.png": "bdab83ac3749500f71bf27bdcc5b18d636ca818af2a3f55814be820640752553",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/south-whole.png": "308a0796b912a2fb3a30d624c42cc3919b353701dfa4c3b1d180cb32e3e4a487",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/west-floor_shadow.png": "1a97fd0e5360de859beafecefc445fec5571bab1e303591c2f339e0cdc65e8bd",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/west-front_structure.png": "487f6f231c9b7186bcd7ab6d7747034d6aa36b779f99bdfd2119eaaf06b3962e",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/west-rear_structure.png": "7784117cdc943927fe44417b6f4bbb0ad03055b869496aaef982e69a72287681",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/west-whole.png": "fe65387f3a74732be5e56d2b042c3f9e0710dfd0243cf1b33346c98f4bf39458",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/east-surface_decor_front.png": "e73ef048854be23d098e2313d35add3b198169b7b7b7a7a9b3457ccf27bef920",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/east-surface_decor_rear.png": "fdb86faa227ba9d1caeadb4f0a5d66e218d9ce0fb6468824827428a65b7abef1",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/east-whole.png": "728d088856bfb92590c83285c7e8c09703d8ceb03f871133c6bd7f10590d29c3",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/north-surface_decor_front.png": "6d80c7371e41db86e6fa1fa444581e63387bb3f6d25ea89bc0b46702f2fd4529",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/north-surface_decor_rear.png": "c6924d424d6dfadbf93e315032e6186d6cd7e85a50b0b1189aa3071e9d6022bc",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/north-whole.png": "f0e83acbd86028ec6db2e4ab1205c82120104a7b2059936c2a20e8b61e23f454",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/south-surface_decor_front.png": "e21405993b8f80bbef35da6b88bdf73c9dbfcaaba24ad3adfe5b3b1f22c46218",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/south-surface_decor_rear.png": "2774ad5b0ce94a0d03041d57258e499b5a3be6709f30305ce7f3cfd5836b67ae",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/south-whole.png": "275c36869b46be897b2cf8e7855a3d50d892efd68ca868cb02021d3d0813fce7",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/west-surface_decor_front.png": "17c9336b899491e5998245784841023efdb8b8bc12a2732a56b532c84cefa3b8",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/west-surface_decor_rear.png": "4ab3da33944847fb28c3db307edca35ba5f175054c09f32e13aa333549008925",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/west-whole.png": "cf04f0011eddf73c15013458dfa17a818ba3ec135030e327ffb6ac30d4fd1ac4",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-carcass.png": "36f0ae7b2515965f88219b46e4868ea58325737da01ddbd4f7aef44dd00d7610",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-caster_front.png": "7b715c38947bdd6796410ebcfb959205734e08ccfb3ff5300cc776c43ccf346a",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-caster_rear.png": "755190c48d6c66ec0ea4372ccd746d6c097ca4b8181256ce39b8dc1b0ef7b0dd",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-face_insert.png": "e34c07f1be1c44ff795871d03356bc7013286a92279d998b9891e580608bca8e",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-near_face.png": "15899c6052c5de1b21059cf2e7457f15894210264e5d442426422ee8ec867f6a",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-top.png": "13f35795b9e5e5bb4e11f16ead27f43a81a65ede096f4f83448ce745b78b47c9",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-whole.png": "046eb49f5935bb11346fd9d8f868b3914bec2c2baf48d77cb5c7082e67e0ce62",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-carcass.png": "8e5d49dc67b2f1cb8a519710c421c0d31b69821accd9454d5b72a7c258c06c9c",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-caster_front.png": "8fb162185c927074ae63cd6a2bc954ea5ee6c03d7ec0d294b3fb767c36c90754",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-caster_rear.png": "bcf6def714054b402f0ef90d43313ec63f4de82e29b22478ed6a0149ea7f0eb7",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-face_insert.png": "e34c07f1be1c44ff795871d03356bc7013286a92279d998b9891e580608bca8e",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-near_face.png": "f406bf8ba4d0dcfe9b4d5df9851e407204e790fe7d1a239045afafd7d49fc418",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-top.png": "65bb34be2e7b0c9961448a6d08b81af3988b3fc27a6555c9d4dc5f7fca4727ad",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-whole.png": "162d1b766e39a5072b39ff32b2fd36aaac7d09da68bd9b5b070dae949f5fdd9d",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-carcass.png": "8e5d49dc67b2f1cb8a519710c421c0d31b69821accd9454d5b72a7c258c06c9c",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-caster_front.png": "8fb162185c927074ae63cd6a2bc954ea5ee6c03d7ec0d294b3fb767c36c90754",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-caster_rear.png": "bcf6def714054b402f0ef90d43313ec63f4de82e29b22478ed6a0149ea7f0eb7",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-face_insert.png": "1a5165d980da8fb331cdb074cd485afe86466ce5ed47f797f4e6cb9a6b081faa",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-near_face.png": "1abd368dab3375dee1d435b29ab69e4bd3e38cd3deece1361e4bdff235d16db4",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-top.png": "65bb34be2e7b0c9961448a6d08b81af3988b3fc27a6555c9d4dc5f7fca4727ad",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-whole.png": "5dd1c36d8be3e96f7f3f7ab30a3ee00595aa46546b081a5af717525f4f6a94e1",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-carcass.png": "36f0ae7b2515965f88219b46e4868ea58325737da01ddbd4f7aef44dd00d7610",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-caster_front.png": "7b715c38947bdd6796410ebcfb959205734e08ccfb3ff5300cc776c43ccf346a",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-caster_rear.png": "755190c48d6c66ec0ea4372ccd746d6c097ca4b8181256ce39b8dc1b0ef7b0dd",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-face_insert.png": "e34c07f1be1c44ff795871d03356bc7013286a92279d998b9891e580608bca8e",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-near_face.png": "d0f2cba4642f941698f45f47301f13cdd24780e049d42b225e0c645b6b717238",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-top.png": "13f35795b9e5e5bb4e11f16ead27f43a81a65ede096f4f83448ce745b78b47c9",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-whole.png": "76abef0cd0b8dc7c84242af9aebd2ab7649941cdac6a263764955f7e9e6ea4bb",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/east-floor_shadow.png": "9a8abe32fd685e2f46c5e4dc78a849472614d793e503ccd2c9d51d7df6ed2223",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/east-front_structure.png": "f4c884070a64730e3fb05677241e586067a616cab08d5a79966e1c663ac8315d",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/east-rear_structure.png": "6deaa08ea40591f158efd3b19eecf254cef744ba417822b6436947987df19817",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/east-whole.png": "946ef94553d05056d86e08a45e5a303b45119ad667892aded38d378303a3227d",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/north-floor_shadow.png": "c76de8bbbb953034ff6d70d2fbb5c44e0468cf4109390929b75fef39ff732681",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/north-front_structure.png": "d42d5f2cfe8d076ceef95ca13b0c34b88b07db4fe408fdef11e4083bd01d6a60",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/north-rear_structure.png": "5d0966effa581113f71f5943ac4d0cba9d4e0d2cd449806a45bb43ca3c410b9e",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/north-whole.png": "abcf81e7bc4f4b27096902b6f5e0234c8c21b8ade83a7e98945cf35659ef07d2",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/south-floor_shadow.png": "c76de8bbbb953034ff6d70d2fbb5c44e0468cf4109390929b75fef39ff732681",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/south-front_structure.png": "a3c5f90267806222ab6fb28e49138bdce6735dc479ac42e5819ff04a0c7927fb",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/south-rear_structure.png": "1f2058dfe1ac4c65e3d3731b34b756729d59e4ff09edfa9f4b2c31c714a37626",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/south-whole.png": "74bff8ac13ddff1542f4903643a83ffe77ec6c2d8a4d111042e618e77144e581",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/west-floor_shadow.png": "15b716d52cc53312cb20e31c7341dcc9f171289e564acd0ac929d4ae8398dae1",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/west-front_structure.png": "25db01bc76ff4c7d2dec0f7d0e8c66e59c77ba9b9c86208c66ec1d8cdc60d851",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/west-rear_structure.png": "4404269d4e4d1afb8e50ff9115af00362eb781b12e487724fa2cb7e54e274db0",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/west-whole.png": "466e5596d425be7d0514dde9208bcf6f790daaba01299b1da18d900179105821",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/east-surface_decor_front.png": "efb2ad6ba4f2e9677b269a0749b2e8511cba45908c14647c9163343e8577b3b0",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/east-surface_decor_rear.png": "2e16b63c74fa288dfed156c6d0b3b22fb886f3af0f70a8b4121635bc15b6ee1f",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/east-whole.png": "7f70e8380dbfbb6cd36e02860ed8fb2f5d976ff0b1c5c06cb1f6a91d163bdf8b",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/north-surface_decor_front.png": "e5b0269c40ed2d83bf7119c7abc76cfa582edde3cc3cdeee120725308c4bdf55",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/north-surface_decor_rear.png": "0b6e903285a988e6fd12f05e6f586b7e07f98396c8496b18d47fcbdf8fd622e6",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/north-whole.png": "58dee10d5016eb62c45075a29073e152f42a589ae47550ea37d07b78a0097aa7",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/south-surface_decor_front.png": "ce57315993400e56ace9e81d68012a30e69c8fdc6e39ef05f000202252911f4d",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/south-surface_decor_rear.png": "963840a976a31869603853b39fd5974ffe4798a44060c547724cfa3cb82816dc",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/south-whole.png": "b788d64eb81338c99750b8e429aef7f73a0aa6aeeb9d5a3ce370175a66e44344",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/west-surface_decor_front.png": "eb616e7cc1543d2fdbd2838ada99c6f48d906c687b813179eeff172a7836762e",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/west-surface_decor_rear.png": "5cc9543b8af9c25d8801d499f13dd444506000a4ec35206db503c7a35b415df9",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/west-whole.png": "45c64fc7fd65dfc1083824460124eda4950f919391c3ff5d247be6db7ab84173",
+		"res://data/furnishing_catalog.json": "01e51a3550b52e165892019f9ca446199b27c2a66694d806cad3f8f712aaf0d5",
+		"res://data/furniture_catalog.json": "36f81e5d20ee0894e66657bcfcdb275c69266bd48116f3d324c8df37f484b883",
+		"res://data/office_layout.json": "820d4e7cfe206d8f7543ab421c437de2a5037299f707e5602f6a6faf299078eb",
+		"res://tools/capture_furnishing_runtime.gd": "122fa53854ae47c05f15d0333c1c2a5e6ed1fd1a46b08ef6e2aebcf816147a34",
+		"res://ui/cozy_ui.gd": "624fffebc76fa5320d7c79608ac31cc0ed2262ca63168d49e053b763d0afbe9c",
+		"res://ui/game_fonts.gd": "ac7e68313ff717bb3ca1de8d57478dbfece1fb794ee76da57398f6072dcda8a5",
+		"res://ui/office_renovation.gd": "545b7a855cac4858109cc7d86f4f7678977ab9475fed53546ce9ccd09180c891",
+		"res://worker_client.gd": "dbf2ecbb7f13ab86236a365056354bf297180306dd6c0d1fb4ee31f9872beef0",
+		"res://world/main.gd": "e387b46543162d6d27cb7f703d91728a53e642503be313ed9d6812b747d9fa8a",
+		"res://world/office_layout.gd": "86fc4891b128e61f6c7e0493f61034465d937536b4a6d30f8e802a9b7f3a7042",
+		"res://world/office_navigation.gd": "7889f1e6984df0822b10b6a1bc38e5449f354c4afb0f1f83fe6db769c5888909",
+		"res://world/town_room.gd": "0403f9e739b528f62b9667715ab63926f6951c9b6531d86ea1749c7631bfba5c"
+	},
+	"source_hashes_before": {
+		"res://actors/employee_avatar.gd": "7e1c97a24acfc1cb6da9195f39c99c607e3d1201084d4ade19ffd9c18219ac41",
+		"res://actors/player_avatar.gd": "b767e2689bfaee52be9fac7742b97bd93ba80e780b6edadfbc6c91affc6f8a06",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/east-floor_shadow.png": "ed3ce3509b9614ef922e148e0e0b20bd83d0569496d5026d498da3eec534fbf7",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/east-front_structure.png": "ad16dbcc01c2cd0674955a7668098fdac822da72730bb60fb363e5a744154961",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/east-rear_structure.png": "31ff4a571c6249a863e894f78ab6de3ce444021720251626c953706f508d59d3",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/east-whole.png": "6ac077fff317af1383b49b2985a4dd20a37cb0debae97c4d6fcb81845039e5b5",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/north-floor_shadow.png": "1a97fd0e5360de859beafecefc445fec5571bab1e303591c2f339e0cdc65e8bd",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/north-front_structure.png": "c963d5f23e71039f6640f2dc520286c835bb4132473b065566ceecfd36881a8e",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/north-rear_structure.png": "c1cfc47685207d0802fab394625027b86b8267bacbdbebe8bbe3edb11c70bd31",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/north-whole.png": "6382c863a2556b98b1efbbd42006209cdd1a08461d28b9e53e28820d77112e5e",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/south-floor_shadow.png": "5d4eb1f7c844c2970e86567fa8faa9c78ecd7e0dfa73f5922aa6873a911f1760",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/south-front_structure.png": "80ae6b917f73b6b906304227f7fdd78d53854a654efbcf8522ab9b024c8ad5f4",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/south-rear_structure.png": "bdab83ac3749500f71bf27bdcc5b18d636ca818af2a3f55814be820640752553",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/south-whole.png": "308a0796b912a2fb3a30d624c42cc3919b353701dfa4c3b1d180cb32e3e4a487",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/west-floor_shadow.png": "1a97fd0e5360de859beafecefc445fec5571bab1e303591c2f339e0cdc65e8bd",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/west-front_structure.png": "487f6f231c9b7186bcd7ab6d7747034d6aa36b779f99bdfd2119eaaf06b3962e",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/west-rear_structure.png": "7784117cdc943927fe44417b6f4bbb0ad03055b869496aaef982e69a72287681",
+		"res://assets/runtime/office/furnishing-library/broadleaf_planter/west-whole.png": "fe65387f3a74732be5e56d2b042c3f9e0710dfd0243cf1b33346c98f4bf39458",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/east-surface_decor_front.png": "e73ef048854be23d098e2313d35add3b198169b7b7b7a7a9b3457ccf27bef920",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/east-surface_decor_rear.png": "fdb86faa227ba9d1caeadb4f0a5d66e218d9ce0fb6468824827428a65b7abef1",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/east-whole.png": "728d088856bfb92590c83285c7e8c09703d8ceb03f871133c6bd7f10590d29c3",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/north-surface_decor_front.png": "6d80c7371e41db86e6fa1fa444581e63387bb3f6d25ea89bc0b46702f2fd4529",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/north-surface_decor_rear.png": "c6924d424d6dfadbf93e315032e6186d6cd7e85a50b0b1189aa3071e9d6022bc",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/north-whole.png": "f0e83acbd86028ec6db2e4ab1205c82120104a7b2059936c2a20e8b61e23f454",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/south-surface_decor_front.png": "e21405993b8f80bbef35da6b88bdf73c9dbfcaaba24ad3adfe5b3b1f22c46218",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/south-surface_decor_rear.png": "2774ad5b0ce94a0d03041d57258e499b5a3be6709f30305ce7f3cfd5836b67ae",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/south-whole.png": "275c36869b46be897b2cf8e7855a3d50d892efd68ca868cb02021d3d0813fce7",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/west-surface_decor_front.png": "17c9336b899491e5998245784841023efdb8b8bc12a2732a56b532c84cefa3b8",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/west-surface_decor_rear.png": "4ab3da33944847fb28c3db307edca35ba5f175054c09f32e13aa333549008925",
+		"res://assets/runtime/office/furnishing-library/mina_discovery_kit/west-whole.png": "cf04f0011eddf73c15013458dfa17a818ba3ec135030e327ffb6ac30d4fd1ac4",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-carcass.png": "36f0ae7b2515965f88219b46e4868ea58325737da01ddbd4f7aef44dd00d7610",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-caster_front.png": "7b715c38947bdd6796410ebcfb959205734e08ccfb3ff5300cc776c43ccf346a",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-caster_rear.png": "755190c48d6c66ec0ea4372ccd746d6c097ca4b8181256ce39b8dc1b0ef7b0dd",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-face_insert.png": "e34c07f1be1c44ff795871d03356bc7013286a92279d998b9891e580608bca8e",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-near_face.png": "15899c6052c5de1b21059cf2e7457f15894210264e5d442426422ee8ec867f6a",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-top.png": "13f35795b9e5e5bb4e11f16ead27f43a81a65ede096f4f83448ce745b78b47c9",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/east-whole.png": "046eb49f5935bb11346fd9d8f868b3914bec2c2baf48d77cb5c7082e67e0ce62",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-carcass.png": "8e5d49dc67b2f1cb8a519710c421c0d31b69821accd9454d5b72a7c258c06c9c",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-caster_front.png": "8fb162185c927074ae63cd6a2bc954ea5ee6c03d7ec0d294b3fb767c36c90754",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-caster_rear.png": "bcf6def714054b402f0ef90d43313ec63f4de82e29b22478ed6a0149ea7f0eb7",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-face_insert.png": "e34c07f1be1c44ff795871d03356bc7013286a92279d998b9891e580608bca8e",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-near_face.png": "f406bf8ba4d0dcfe9b4d5df9851e407204e790fe7d1a239045afafd7d49fc418",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-top.png": "65bb34be2e7b0c9961448a6d08b81af3988b3fc27a6555c9d4dc5f7fca4727ad",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/north-whole.png": "162d1b766e39a5072b39ff32b2fd36aaac7d09da68bd9b5b070dae949f5fdd9d",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-carcass.png": "8e5d49dc67b2f1cb8a519710c421c0d31b69821accd9454d5b72a7c258c06c9c",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-caster_front.png": "8fb162185c927074ae63cd6a2bc954ea5ee6c03d7ec0d294b3fb767c36c90754",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-caster_rear.png": "bcf6def714054b402f0ef90d43313ec63f4de82e29b22478ed6a0149ea7f0eb7",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-face_insert.png": "1a5165d980da8fb331cdb074cd485afe86466ce5ed47f797f4e6cb9a6b081faa",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-near_face.png": "1abd368dab3375dee1d435b29ab69e4bd3e38cd3deece1361e4bdff235d16db4",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-top.png": "65bb34be2e7b0c9961448a6d08b81af3988b3fc27a6555c9d4dc5f7fca4727ad",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/south-whole.png": "5dd1c36d8be3e96f7f3f7ab30a3ee00595aa46546b081a5af717525f4f6a94e1",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-carcass.png": "36f0ae7b2515965f88219b46e4868ea58325737da01ddbd4f7aef44dd00d7610",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-caster_front.png": "7b715c38947bdd6796410ebcfb959205734e08ccfb3ff5300cc776c43ccf346a",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-caster_rear.png": "755190c48d6c66ec0ea4372ccd746d6c097ca4b8181256ce39b8dc1b0ef7b0dd",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-face_insert.png": "e34c07f1be1c44ff795871d03356bc7013286a92279d998b9891e580608bca8e",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-near_face.png": "d0f2cba4642f941698f45f47301f13cdd24780e049d42b225e0c645b6b717238",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-top.png": "13f35795b9e5e5bb4e11f16ead27f43a81a65ede096f4f83448ce745b78b47c9",
+		"res://assets/runtime/office/furnishing-library/rolling_storage_pedestal/west-whole.png": "76abef0cd0b8dc7c84242af9aebd2ab7649941cdac6a263764955f7e9e6ea4bb",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/east-floor_shadow.png": "9a8abe32fd685e2f46c5e4dc78a849472614d793e503ccd2c9d51d7df6ed2223",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/east-front_structure.png": "f4c884070a64730e3fb05677241e586067a616cab08d5a79966e1c663ac8315d",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/east-rear_structure.png": "6deaa08ea40591f158efd3b19eecf254cef744ba417822b6436947987df19817",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/east-whole.png": "946ef94553d05056d86e08a45e5a303b45119ad667892aded38d378303a3227d",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/north-floor_shadow.png": "c76de8bbbb953034ff6d70d2fbb5c44e0468cf4109390929b75fef39ff732681",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/north-front_structure.png": "d42d5f2cfe8d076ceef95ca13b0c34b88b07db4fe408fdef11e4083bd01d6a60",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/north-rear_structure.png": "5d0966effa581113f71f5943ac4d0cba9d4e0d2cd449806a45bb43ca3c410b9e",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/north-whole.png": "abcf81e7bc4f4b27096902b6f5e0234c8c21b8ade83a7e98945cf35659ef07d2",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/south-floor_shadow.png": "c76de8bbbb953034ff6d70d2fbb5c44e0468cf4109390929b75fef39ff732681",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/south-front_structure.png": "a3c5f90267806222ab6fb28e49138bdce6735dc479ac42e5819ff04a0c7927fb",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/south-rear_structure.png": "1f2058dfe1ac4c65e3d3731b34b756729d59e4ff09edfa9f4b2c31c714a37626",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/south-whole.png": "74bff8ac13ddff1542f4903643a83ffe77ec6c2d8a4d111042e618e77144e581",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/west-floor_shadow.png": "15b716d52cc53312cb20e31c7341dcc9f171289e564acd0ac929d4ae8398dae1",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/west-front_structure.png": "25db01bc76ff4c7d2dec0f7d0e8c66e59c77ba9b9c86208c66ec1d8cdc60d851",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/west-rear_structure.png": "4404269d4e4d1afb8e50ff9115af00362eb781b12e487724fa2cb7e54e274db0",
+		"res://assets/runtime/office/furnishing-library/task_floor_lamp/west-whole.png": "466e5596d425be7d0514dde9208bcf6f790daaba01299b1da18d900179105821",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/east-surface_decor_front.png": "efb2ad6ba4f2e9677b269a0749b2e8511cba45908c14647c9163343e8577b3b0",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/east-surface_decor_rear.png": "2e16b63c74fa288dfed156c6d0b3b22fb886f3af0f70a8b4121635bc15b6ee1f",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/east-whole.png": "7f70e8380dbfbb6cd36e02860ed8fb2f5d976ff0b1c5c06cb1f6a91d163bdf8b",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/north-surface_decor_front.png": "e5b0269c40ed2d83bf7119c7abc76cfa582edde3cc3cdeee120725308c4bdf55",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/north-surface_decor_rear.png": "0b6e903285a988e6fd12f05e6f586b7e07f98396c8496b18d47fcbdf8fd622e6",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/north-whole.png": "58dee10d5016eb62c45075a29073e152f42a589ae47550ea37d07b78a0097aa7",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/south-surface_decor_front.png": "ce57315993400e56ace9e81d68012a30e69c8fdc6e39ef05f000202252911f4d",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/south-surface_decor_rear.png": "963840a976a31869603853b39fd5974ffe4798a44060c547724cfa3cb82816dc",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/south-whole.png": "b788d64eb81338c99750b8e429aef7f73a0aa6aeeb9d5a3ce370175a66e44344",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/west-surface_decor_front.png": "eb616e7cc1543d2fdbd2838ada99c6f48d906c687b813179eeff172a7836762e",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/west-surface_decor_rear.png": "5cc9543b8af9c25d8801d499f13dd444506000a4ec35206db503c7a35b415df9",
+		"res://assets/runtime/office/furnishing-library/theo_campaign_kit/west-whole.png": "45c64fc7fd65dfc1083824460124eda4950f919391c3ff5d247be6db7ab84173",
+		"res://data/furnishing_catalog.json": "01e51a3550b52e165892019f9ca446199b27c2a66694d806cad3f8f712aaf0d5",
+		"res://data/furniture_catalog.json": "36f81e5d20ee0894e66657bcfcdb275c69266bd48116f3d324c8df37f484b883",
+		"res://data/office_layout.json": "820d4e7cfe206d8f7543ab421c437de2a5037299f707e5602f6a6faf299078eb",
+		"res://tools/capture_furnishing_runtime.gd": "122fa53854ae47c05f15d0333c1c2a5e6ed1fd1a46b08ef6e2aebcf816147a34",
+		"res://ui/cozy_ui.gd": "624fffebc76fa5320d7c79608ac31cc0ed2262ca63168d49e053b763d0afbe9c",
+		"res://ui/game_fonts.gd": "ac7e68313ff717bb3ca1de8d57478dbfece1fb794ee76da57398f6072dcda8a5",
+		"res://ui/office_renovation.gd": "545b7a855cac4858109cc7d86f4f7678977ab9475fed53546ce9ccd09180c891",
+		"res://worker_client.gd": "dbf2ecbb7f13ab86236a365056354bf297180306dd6c0d1fb4ee31f9872beef0",
+		"res://world/main.gd": "e387b46543162d6d27cb7f703d91728a53e642503be313ed9d6812b747d9fa8a",
+		"res://world/office_layout.gd": "86fc4891b128e61f6c7e0493f61034465d937536b4a6d30f8e802a9b7f3a7042",
+		"res://world/office_navigation.gd": "7889f1e6984df0822b10b6a1bc38e5449f354c4afb0f1f83fe6db769c5888909",
+		"res://world/town_room.gd": "0403f9e739b528f62b9667715ab63926f6951c9b6531d86ea1749c7631bfba5c"
+	},
+	"worker_disabled": true
+}

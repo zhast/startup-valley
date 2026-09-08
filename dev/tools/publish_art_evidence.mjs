@@ -16,6 +16,23 @@ const MANIFEST = 'dev/art-catalogue/publish-evidence.json';
 const RETAIN_ROOTS = [
   'game/tests/output/art-completion-20260906-final-fit',
   'game/tests/output/art-catalogue-browser-final-20260906-v2',
+  'game/tests/output/furnishing-runtime',
+  'game/tests/output/furnishing-runtime-motion-20260908-check1',
+  'game/tests/output/furnishing-mature-ui-20260908-check1',
+  'game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV',
+  'game/tests/output/art-completion-furnishing-20260908-final3',
+  'game/tests/output/furnishing-window-poll-20260908-check2',
+  'game/tests/output/art-completion-furnishing-push-20260908',
+];
+// Keep the evidence actually cited by the furnishing handoff, without collecting
+// every failed/repeated render or the disposable worker's raw transport stream.
+const RETAIN_FILES = [
+  'game/tests/output/art-completion-furnishing-20260908-final2/headless-results.json',
+  'game/tests/output/art-completion-furnishing-20260908-final/furnishing-parity/godot-results.json',
+  'game/tests/output/furnishing-parity/godot-results.json',
+  'game/tests/output/furnishing-runtime/decor-manifest.json',
+  'game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/manifest.json',
+  'game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/manifest.json',
 ];
 const ALLOWED = new Set(['.png', '.json', '.log']);
 const SKIP_DIRECTORIES = new Set(['.git', '.godot', 'node_modules', '.startup-valley-data']);
@@ -130,6 +147,7 @@ export function collectEvidence() {
     }
   }
   for (const directory of RETAIN_ROOTS) tree(path.resolve(ROOT, directory));
+  for (const file of RETAIN_FILES) retain(repositoryReference(file));
   // These are already tracked import guards; keep them in the portable inventory.
   retain(repositoryReference('game/tests/output/.gdignore'));
   retain(repositoryReference('game/tests/output/polish-audit/.gdignore'));
@@ -154,8 +172,9 @@ export function collectEvidence() {
       allowed_extensions: [...ALLOWED].sort(),
       allowed_exact_basename: '.gdignore',
       additional_complete_roots: RETAIN_ROOTS,
+      additional_report_files: RETAIN_FILES,
       closure: 'Actual validator files, local HTML targets, recursive existing local JSON file references',
-      excluded: ['raw movies', 'SQLite databases and sidecars', 'caches', 'unreferenced historical captures'],
+      excluded: ['raw movies', 'raw JSONL transport', 'SQLite databases and sidecars', 'caches', 'unreferenced historical captures'],
       symlinks: 'forbidden',
     },
     validation: { checks: validation.checks, catalogue_files: checked.size, direct_evidence_files: directEvidenceFiles },

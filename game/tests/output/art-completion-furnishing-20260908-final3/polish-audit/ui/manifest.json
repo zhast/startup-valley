@@ -1,0 +1,2961 @@
+{
+	"failures": [],
+	"fps": 30,
+	"frameOrigin": "Engine process frame; movie writer may include a short startup lead-in",
+	"inputDriver": {
+		"actionRetries": 0,
+		"embeddedPopups": true,
+		"method": "Input.parse_input_event through normal GUI hit-testing",
+		"nativeGpu": true,
+		"nativeMousePassthrough": true,
+		"nativeWindowUnfocusable": true,
+		"osPointerWarped": false
+	},
+	"networkDisabled": true,
+	"passThreshold": {
+		"minimumCategory": 2,
+		"minimumMean": 2.5
+	},
+	"reviewRubric": {
+		"categories": [
+			"pixel",
+			"motion",
+			"continuity",
+			"layering",
+			"text",
+			"feedback"
+		],
+		"reviewer": "Human or visual-review agent; capture validation does not assign aesthetic scores",
+		"scoreRange": {
+			"maximum": 3,
+			"minimum": 0
+		}
+	},
+	"scenarios": [
+		{
+			"actorCellsChecked": 234,
+			"checkpoints": {},
+			"checks": [
+				{
+					"frame": 37,
+					"label": "pointer-target-hit: @Button@1204",
+					"passed": true
+				},
+				{
+					"frame": 37,
+					"label": "pointer-up-before-down: @Button@1204",
+					"passed": true
+				},
+				{
+					"frame": 37,
+					"label": "pointer-down-state: @Button@1204",
+					"passed": true
+				},
+				{
+					"frame": 42,
+					"label": "pointer-up-state: @Button@1204",
+					"passed": true
+				},
+				{
+					"frame": 47,
+					"label": "mina-rail-selection",
+					"passed": true
+				},
+				{
+					"frame": 68,
+					"label": "pointer-target-hit: @Button@1208",
+					"passed": true
+				},
+				{
+					"frame": 68,
+					"label": "pointer-up-before-down: @Button@1208",
+					"passed": true
+				},
+				{
+					"frame": 68,
+					"label": "pointer-down-state: @Button@1208",
+					"passed": true
+				},
+				{
+					"frame": 73,
+					"label": "pointer-up-state: @Button@1208",
+					"passed": true
+				},
+				{
+					"frame": 78,
+					"label": "theo-rail-selection",
+					"passed": true
+				}
+			],
+			"contactSheet": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/team-drawer-controls-contact-sheet.png",
+			"dispatches": [],
+			"endFrame": 98,
+			"expectedState": "Portrait focus, hover, selection, drawer travel, employee switching, and close feedback remain coherent.",
+			"frameHashes": [
+				"4123303277",
+				"1998869084",
+				"3474924937"
+			],
+			"keyframeState": {
+				"end": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							10,
+							16
+						],
+						"hasTarget": true,
+						"position": [
+							340.499847412109,
+							528.0
+						],
+						"walkable": true,
+						"workState": "IDLE_WALKING"
+					},
+					"theo": {
+						"cell": [
+							23,
+							15
+						],
+						"hasTarget": true,
+						"position": [
+							752.0,
+							500.500091552734
+						],
+						"walkable": true,
+						"workState": "IDLE_WALKING"
+					}
+				},
+				"middle": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							16
+						],
+						"hasTarget": true,
+						"position": [
+							368.0,
+							536.166931152344
+						],
+						"walkable": true,
+						"workState": "IDLE_WALKING"
+					},
+					"theo": {
+						"cell": [
+							23,
+							16
+						],
+						"hasTarget": true,
+						"position": [
+							752.0,
+							536.166931152344
+						],
+						"walkable": true,
+						"workState": "IDLE_WALKING"
+					}
+				},
+				"start": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							368.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					},
+					"theo": {
+						"cell": [
+							23,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							752.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					}
+				}
+			},
+			"keyframes": {
+				"end": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/team-drawer-controls-end.png",
+				"middle": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/team-drawer-controls-middle.png",
+				"start": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/team-drawer-controls-start.png"
+			},
+			"markers": [],
+			"name": "team-drawer-controls",
+			"sampledFramesDistinct": true,
+			"startFrame": 20,
+			"uiKeyframeState": {
+				"end": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": false,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "theo",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				},
+				"middle": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": false,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": true,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				},
+				"start": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": false,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				}
+			}
+		},
+		{
+			"actorCellsChecked": 423,
+			"checkpoints": {
+				"chat-waiting": {
+					"frame": 193,
+					"path": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/chat-and-work-order-chat-waiting.png",
+					"uiState": {
+						"activeJobId": "",
+						"approvalVisible": false,
+						"assignmentDisabled": false,
+						"chatPending": true,
+						"connectionVisible": false,
+						"drawerOpen": true,
+						"employeeId": "mira",
+						"notificationVisible": false,
+						"readerScroll": 0.0,
+						"readerTextLength": 0,
+						"readerVisible": false,
+						"tab": 0,
+						"workerConnected": true
+					}
+				}
+			},
+			"checks": [
+				{
+					"frame": 135,
+					"label": "pointer-target-hit: @LineEdit@1426",
+					"passed": true
+				},
+				{
+					"frame": 135,
+					"label": "pointer-up-before-down: @LineEdit@1426",
+					"passed": true
+				},
+				{
+					"frame": 135,
+					"label": "pointer-down-state: @LineEdit@1426",
+					"passed": true
+				},
+				{
+					"frame": 140,
+					"label": "pointer-up-state: @LineEdit@1426",
+					"passed": true
+				},
+				{
+					"frame": 145,
+					"label": "visible-editable-text-focus",
+					"passed": true
+				},
+				{
+					"frame": 173,
+					"label": "real-keyboard-text-entry",
+					"passed": true
+				},
+				{
+					"frame": 181,
+					"label": "pointer-target-hit: @Button@1427",
+					"passed": true
+				},
+				{
+					"frame": 181,
+					"label": "pointer-up-before-down: @Button@1427",
+					"passed": true
+				},
+				{
+					"frame": 181,
+					"label": "pointer-down-state: @Button@1427",
+					"passed": true
+				},
+				{
+					"frame": 186,
+					"label": "pointer-up-state: @Button@1427",
+					"passed": true
+				},
+				{
+					"frame": 191,
+					"label": "chat-only-dispatch",
+					"passed": true
+				},
+				{
+					"frame": 191,
+					"label": "chat-waiting-disabled",
+					"passed": true
+				},
+				{
+					"frame": 193,
+					"label": "checkpoint-saved: chat-waiting",
+					"passed": true
+				},
+				{
+					"frame": 241,
+					"label": "pointer-target-hit: @Button@1429",
+					"passed": true
+				},
+				{
+					"frame": 241,
+					"label": "pointer-up-before-down: @Button@1429",
+					"passed": true
+				},
+				{
+					"frame": 241,
+					"label": "pointer-down-state: @Button@1429",
+					"passed": true
+				},
+				{
+					"frame": 246,
+					"label": "pointer-up-state: @Button@1429",
+					"passed": true
+				},
+				{
+					"frame": 251,
+					"label": "chat-to-editable-work-draft",
+					"passed": true
+				}
+			],
+			"contactSheet": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/chat-and-work-order-contact-sheet.png",
+			"dispatches": [
+				{
+					"employeeId": "mira",
+					"message": "Make a one-week launch plan.",
+					"method": "chat.send"
+				}
+			],
+			"endFrame": 263,
+			"expectedState": "Long chat scrolls cleanly, send/wait/reply states are legible, and Create work order carries the bounded discussion forward.",
+			"frameHashes": [
+				"3591840799",
+				"3773176984",
+				"3613650378"
+			],
+			"keyframeState": {
+				"end": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							368.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					},
+					"theo": {
+						"cell": [
+							23,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							752.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					}
+				},
+				"middle": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							368.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					},
+					"theo": {
+						"cell": [
+							23,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							752.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					}
+				},
+				"start": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							368.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					},
+					"theo": {
+						"cell": [
+							23,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							752.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					}
+				}
+			},
+			"keyframes": {
+				"end": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/chat-and-work-order-end.png",
+				"middle": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/chat-and-work-order-middle.png",
+				"start": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/chat-and-work-order-start.png"
+			},
+			"markers": [
+				{
+					"frame": 193,
+					"label": "chat-waiting",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						},
+						"mira": {
+							"cell": [
+								11,
+								18
+							],
+							"hasTarget": false,
+							"position": [
+								368.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "IDLE"
+						},
+						"theo": {
+							"cell": [
+								23,
+								18
+							],
+							"hasTarget": false,
+							"position": [
+								752.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "IDLE"
+						}
+					}
+				}
+			],
+			"name": "chat-and-work-order",
+			"sampledFramesDistinct": true,
+			"startFrame": 122,
+			"uiKeyframeState": {
+				"end": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": false,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": true,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 1,
+					"workerConnected": true
+				},
+				"middle": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": false,
+					"chatPending": true,
+					"connectionVisible": false,
+					"drawerOpen": true,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				},
+				"start": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": false,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": true,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				}
+			}
+		},
+		{
+			"actorCellsChecked": 474,
+			"checkpoints": {
+				"assignment-disabled": {
+					"frame": 437,
+					"path": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/work-controls-assignment-disabled.png",
+					"uiState": {
+						"activeJobId": "submitted-polish",
+						"approvalVisible": false,
+						"assignmentDisabled": true,
+						"chatPending": false,
+						"connectionVisible": false,
+						"drawerOpen": true,
+						"employeeId": "mira",
+						"notificationVisible": false,
+						"readerScroll": 0.0,
+						"readerTextLength": 0,
+						"readerVisible": false,
+						"tab": 1,
+						"workerConnected": true
+					}
+				},
+				"dropdown-selected": {
+					"frame": 332,
+					"path": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/work-controls-dropdown-selected.png",
+					"uiState": {
+						"activeJobId": "",
+						"approvalVisible": false,
+						"assignmentDisabled": false,
+						"chatPending": false,
+						"connectionVisible": false,
+						"drawerOpen": true,
+						"employeeId": "mira",
+						"notificationVisible": false,
+						"readerScroll": 0.0,
+						"readerTextLength": 0,
+						"readerVisible": false,
+						"tab": 1,
+						"workerConnected": true
+					}
+				},
+				"visible-title-focus": {
+					"frame": 399,
+					"path": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/work-controls-visible-title-focus.png",
+					"uiState": {
+						"activeJobId": "",
+						"approvalVisible": false,
+						"assignmentDisabled": false,
+						"chatPending": false,
+						"connectionVisible": false,
+						"drawerOpen": true,
+						"employeeId": "mira",
+						"notificationVisible": false,
+						"readerScroll": 0.0,
+						"readerTextLength": 0,
+						"readerVisible": false,
+						"tab": 1,
+						"workerConnected": true
+					}
+				}
+			},
+			"checks": [
+				{
+					"frame": 296,
+					"label": "pointer-target-hit: @OptionButton@2269",
+					"passed": true
+				},
+				{
+					"frame": 296,
+					"label": "pointer-up-before-down: @OptionButton@2269",
+					"passed": true
+				},
+				{
+					"frame": 296,
+					"label": "pointer-down-state: @OptionButton@2269",
+					"passed": true
+				},
+				{
+					"frame": 301,
+					"label": "pointer-up-state: @OptionButton@2269",
+					"passed": true
+				},
+				{
+					"frame": 330,
+					"label": "dropdown-selection-changed",
+					"passed": true
+				},
+				{
+					"frame": 332,
+					"label": "checkpoint-saved: dropdown-selected",
+					"passed": true
+				},
+				{
+					"frame": 340,
+					"label": "pointer-target-hit: @OptionButton@2269",
+					"passed": true
+				},
+				{
+					"frame": 340,
+					"label": "pointer-up-before-down: @OptionButton@2269",
+					"passed": true
+				},
+				{
+					"frame": 340,
+					"label": "pointer-down-state: @OptionButton@2269",
+					"passed": true
+				},
+				{
+					"frame": 345,
+					"label": "pointer-up-state: @OptionButton@2269",
+					"passed": true
+				},
+				{
+					"frame": 366,
+					"label": "pointer-target-hit: @LineEdit@2311",
+					"passed": true
+				},
+				{
+					"frame": 366,
+					"label": "pointer-up-before-down: @LineEdit@2311",
+					"passed": true
+				},
+				{
+					"frame": 366,
+					"label": "pointer-down-state: @LineEdit@2311",
+					"passed": true
+				},
+				{
+					"frame": 371,
+					"label": "pointer-up-state: @LineEdit@2311",
+					"passed": true
+				},
+				{
+					"frame": 376,
+					"label": "visible-editable-text-focus",
+					"passed": true
+				},
+				{
+					"frame": 397,
+					"label": "real-keyboard-text-entry",
+					"passed": true
+				},
+				{
+					"frame": 399,
+					"label": "checkpoint-saved: visible-title-focus",
+					"passed": true
+				},
+				{
+					"frame": 407,
+					"label": "pointer-target-hit: @Button@2378",
+					"passed": true
+				},
+				{
+					"frame": 407,
+					"label": "pointer-up-before-down: @Button@2378",
+					"passed": true
+				},
+				{
+					"frame": 407,
+					"label": "pointer-down-state: @Button@2378",
+					"passed": true
+				},
+				{
+					"frame": 412,
+					"label": "pointer-up-state: @Button@2378",
+					"passed": true
+				},
+				{
+					"frame": 417,
+					"label": "confirmed-assignment-dispatch",
+					"passed": true
+				},
+				{
+					"frame": 417,
+					"label": "assignment-pending-disabled",
+					"passed": true
+				},
+				{
+					"frame": 425,
+					"label": "pointer-target-hit: @Button@2378",
+					"passed": true
+				},
+				{
+					"frame": 425,
+					"label": "pointer-up-before-down: @Button@2378",
+					"passed": true
+				},
+				{
+					"frame": 425,
+					"label": "pointer-down-state: @Button@2378",
+					"passed": true
+				},
+				{
+					"frame": 430,
+					"label": "pointer-up-state: @Button@2378",
+					"passed": true
+				},
+				{
+					"frame": 435,
+					"label": "disabled-assignment-no-double-dispatch",
+					"passed": true
+				},
+				{
+					"frame": 437,
+					"label": "checkpoint-saved: assignment-disabled",
+					"passed": true
+				}
+			],
+			"contactSheet": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/work-controls-contact-sheet.png",
+			"dispatches": [
+				{
+					"employeeId": "mira",
+					"method": "job.start",
+					"title": "A focused launch plan"
+				}
+			],
+			"endFrame": 445,
+			"expectedState": "Dropdown, popup selection, focus, hover, press, disabled, and text-entry states use the same custom control language.",
+			"frameHashes": [
+				"647825768",
+				"1511921842",
+				"3699192995"
+			],
+			"keyframeState": {
+				"end": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							368.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					},
+					"theo": {
+						"cell": [
+							23,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							752.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					}
+				},
+				"middle": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							368.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					},
+					"theo": {
+						"cell": [
+							23,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							752.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					}
+				},
+				"start": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							368.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					},
+					"theo": {
+						"cell": [
+							23,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							752.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					}
+				}
+			},
+			"keyframes": {
+				"end": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/work-controls-end.png",
+				"middle": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/work-controls-middle.png",
+				"start": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/work-controls-start.png"
+			},
+			"markers": [
+				{
+					"frame": 332,
+					"label": "dropdown-selected",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						},
+						"mira": {
+							"cell": [
+								11,
+								18
+							],
+							"hasTarget": false,
+							"position": [
+								368.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "IDLE"
+						},
+						"theo": {
+							"cell": [
+								23,
+								18
+							],
+							"hasTarget": false,
+							"position": [
+								752.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "IDLE"
+						}
+					}
+				},
+				{
+					"frame": 399,
+					"label": "visible-title-focus",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						},
+						"mira": {
+							"cell": [
+								11,
+								18
+							],
+							"hasTarget": false,
+							"position": [
+								368.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "IDLE"
+						},
+						"theo": {
+							"cell": [
+								23,
+								18
+							],
+							"hasTarget": false,
+							"position": [
+								752.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "IDLE"
+						}
+					}
+				},
+				{
+					"frame": 437,
+					"label": "assignment-disabled",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						},
+						"mira": {
+							"cell": [
+								11,
+								18
+							],
+							"hasTarget": false,
+							"position": [
+								368.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "IDLE"
+						},
+						"theo": {
+							"cell": [
+								23,
+								18
+							],
+							"hasTarget": false,
+							"position": [
+								752.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "IDLE"
+						}
+					}
+				}
+			],
+			"name": "work-controls",
+			"sampledFramesDistinct": true,
+			"startFrame": 287,
+			"uiKeyframeState": {
+				"end": {
+					"activeJobId": "submitted-polish",
+					"approvalVisible": false,
+					"assignmentDisabled": true,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": true,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 1,
+					"workerConnected": true
+				},
+				"middle": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": false,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": true,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 1,
+					"workerConnected": true
+				},
+				"start": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": false,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": true,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 1,
+					"workerConnected": true
+				}
+			}
+		},
+		{
+			"actorCellsChecked": 747,
+			"checkpoints": {
+				"approval-answered": {
+					"frame": 718,
+					"path": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/journal-and-approval-approval-answered.png",
+					"uiState": {
+						"activeJobId": "journal-polish",
+						"approvalVisible": false,
+						"assignmentDisabled": true,
+						"chatPending": false,
+						"connectionVisible": false,
+						"drawerOpen": true,
+						"employeeId": "mira",
+						"notificationVisible": false,
+						"readerScroll": 0.0,
+						"readerTextLength": 0,
+						"readerVisible": false,
+						"tab": 2,
+						"workerConnected": true
+					}
+				},
+				"approval-ledger": {
+					"frame": 612,
+					"path": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/journal-and-approval-approval-ledger.png",
+					"uiState": {
+						"activeJobId": "journal-polish",
+						"approvalVisible": false,
+						"assignmentDisabled": true,
+						"chatPending": false,
+						"connectionVisible": false,
+						"drawerOpen": true,
+						"employeeId": "mira",
+						"notificationVisible": false,
+						"readerScroll": 0.0,
+						"readerTextLength": 0,
+						"readerVisible": false,
+						"tab": 2,
+						"workerConnected": true
+					}
+				},
+				"approval-visible": {
+					"frame": 592,
+					"path": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/journal-and-approval-approval-visible.png",
+					"uiState": {
+						"activeJobId": "journal-polish",
+						"approvalVisible": true,
+						"assignmentDisabled": true,
+						"chatPending": false,
+						"connectionVisible": false,
+						"drawerOpen": true,
+						"employeeId": "mira",
+						"notificationVisible": false,
+						"readerScroll": 0.0,
+						"readerTextLength": 0,
+						"readerVisible": false,
+						"tab": 2,
+						"workerConnected": true
+					}
+				},
+				"work-details-restored": {
+					"frame": 692,
+					"path": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/journal-and-approval-work-details-restored.png",
+					"uiState": {
+						"activeJobId": "journal-polish",
+						"approvalVisible": true,
+						"assignmentDisabled": true,
+						"chatPending": false,
+						"connectionVisible": false,
+						"drawerOpen": true,
+						"employeeId": "mira",
+						"notificationVisible": false,
+						"readerScroll": 0.0,
+						"readerTextLength": 0,
+						"readerVisible": false,
+						"tab": 2,
+						"workerConnected": true
+					}
+				},
+				"work-details-revealed": {
+					"frame": 654,
+					"path": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/journal-and-approval-work-details-revealed.png",
+					"uiState": {
+						"activeJobId": "journal-polish",
+						"approvalVisible": true,
+						"assignmentDisabled": true,
+						"chatPending": false,
+						"connectionVisible": false,
+						"drawerOpen": true,
+						"employeeId": "mira",
+						"notificationVisible": false,
+						"readerScroll": 0.0,
+						"readerTextLength": 0,
+						"readerVisible": false,
+						"tab": 2,
+						"workerConnected": true
+					}
+				}
+			},
+			"checks": [
+				{
+					"frame": 506,
+					"label": "pointer-target-hit: @LineEdit@3112",
+					"passed": true
+				},
+				{
+					"frame": 506,
+					"label": "pointer-up-before-down: @LineEdit@3112",
+					"passed": true
+				},
+				{
+					"frame": 506,
+					"label": "pointer-down-state: @LineEdit@3112",
+					"passed": true
+				},
+				{
+					"frame": 511,
+					"label": "pointer-up-state: @LineEdit@3112",
+					"passed": true
+				},
+				{
+					"frame": 516,
+					"label": "visible-editable-text-focus",
+					"passed": true
+				},
+				{
+					"frame": 540,
+					"label": "real-keyboard-text-entry",
+					"passed": true
+				},
+				{
+					"frame": 552,
+					"label": "pointer-target-hit: @Button@3113",
+					"passed": true
+				},
+				{
+					"frame": 552,
+					"label": "pointer-up-before-down: @Button@3113",
+					"passed": true
+				},
+				{
+					"frame": 552,
+					"label": "pointer-down-state: @Button@3113",
+					"passed": true
+				},
+				{
+					"frame": 557,
+					"label": "pointer-up-state: @Button@3113",
+					"passed": true
+				},
+				{
+					"frame": 562,
+					"label": "activity-only-steering-dispatch",
+					"passed": true
+				},
+				{
+					"frame": 562,
+					"label": "steering-pending-disabled",
+					"passed": true
+				},
+				{
+					"frame": 592,
+					"label": "checkpoint-saved: approval-visible",
+					"passed": true
+				},
+				{
+					"frame": 600,
+					"label": "pointer-target-hit: @Button@3151",
+					"passed": true
+				},
+				{
+					"frame": 600,
+					"label": "pointer-up-before-down: @Button@3151",
+					"passed": true
+				},
+				{
+					"frame": 600,
+					"label": "pointer-down-state: @Button@3151",
+					"passed": true
+				},
+				{
+					"frame": 605,
+					"label": "pointer-up-state: @Button@3151",
+					"passed": true
+				},
+				{
+					"frame": 610,
+					"label": "approval-ledger-keeps-footer-footprint",
+					"passed": true
+				},
+				{
+					"frame": 612,
+					"label": "checkpoint-saved: approval-ledger",
+					"passed": true
+				},
+				{
+					"frame": 620,
+					"label": "pointer-target-hit: @Button@3147",
+					"passed": true
+				},
+				{
+					"frame": 620,
+					"label": "pointer-up-before-down: @Button@3147",
+					"passed": true
+				},
+				{
+					"frame": 620,
+					"label": "pointer-down-state: @Button@3147",
+					"passed": true
+				},
+				{
+					"frame": 625,
+					"label": "pointer-up-state: @Button@3147",
+					"passed": true
+				},
+				{
+					"frame": 630,
+					"label": "ledger-back-restores-approval",
+					"passed": true
+				},
+				{
+					"frame": 642,
+					"label": "pointer-target-hit: @Button@3116",
+					"passed": true
+				},
+				{
+					"frame": 642,
+					"label": "pointer-up-before-down: @Button@3116",
+					"passed": true
+				},
+				{
+					"frame": 642,
+					"label": "pointer-down-state: @Button@3116",
+					"passed": true
+				},
+				{
+					"frame": 647,
+					"label": "pointer-up-state: @Button@3116",
+					"passed": true
+				},
+				{
+					"frame": 654,
+					"label": "checkpoint-saved: work-details-revealed",
+					"passed": true
+				},
+				{
+					"frame": 662,
+					"label": "pointer-target-hit: @Button@3151",
+					"passed": true
+				},
+				{
+					"frame": 662,
+					"label": "pointer-up-before-down: @Button@3151",
+					"passed": true
+				},
+				{
+					"frame": 662,
+					"label": "pointer-down-state: @Button@3151",
+					"passed": true
+				},
+				{
+					"frame": 667,
+					"label": "pointer-up-state: @Button@3151",
+					"passed": true
+				},
+				{
+					"frame": 680,
+					"label": "pointer-target-hit: @Button@3147",
+					"passed": true
+				},
+				{
+					"frame": 680,
+					"label": "pointer-up-before-down: @Button@3147",
+					"passed": true
+				},
+				{
+					"frame": 680,
+					"label": "pointer-down-state: @Button@3147",
+					"passed": true
+				},
+				{
+					"frame": 685,
+					"label": "pointer-up-state: @Button@3147",
+					"passed": true
+				},
+				{
+					"frame": 690,
+					"label": "combined-disclosures-restore-work-context",
+					"passed": true
+				},
+				{
+					"frame": 690,
+					"label": "combined-disclosures-no-partial-action-controls",
+					"passed": true
+				},
+				{
+					"frame": 692,
+					"label": "checkpoint-saved: work-details-restored",
+					"passed": true
+				},
+				{
+					"frame": 704,
+					"label": "pointer-target-hit: @Button@3072",
+					"passed": true
+				},
+				{
+					"frame": 704,
+					"label": "pointer-up-before-down: @Button@3072",
+					"passed": true
+				},
+				{
+					"frame": 704,
+					"label": "pointer-down-state: @Button@3072",
+					"passed": true
+				},
+				{
+					"frame": 709,
+					"label": "pointer-up-state: @Button@3072",
+					"passed": true
+				},
+				{
+					"frame": 714,
+					"label": "approval-click-dispatch",
+					"passed": true
+				},
+				{
+					"frame": 716,
+					"label": "answered-approval-clears-stale-world-cue",
+					"passed": true
+				},
+				{
+					"frame": 716,
+					"label": "answered-approval-reveals-result",
+					"passed": true
+				},
+				{
+					"frame": 718,
+					"label": "checkpoint-saved: approval-answered",
+					"passed": true
+				}
+			],
+			"contactSheet": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/journal-and-approval-contact-sheet.png",
+			"dispatches": [
+				{
+					"jobId": "journal-polish",
+					"message": "Keep the offer specific.",
+					"method": "job.steer"
+				},
+				{
+					"approvalId": "journal-approval",
+					"approved": true,
+					"jobId": "journal-polish",
+					"method": "approval"
+				}
+			],
+			"endFrame": 718,
+			"expectedState": "Activity, spend at zero/half/full, steering, approval attention, and decision controls communicate one live job.",
+			"frameHashes": [
+				"3228268377",
+				"2783137134",
+				"2488544170"
+			],
+			"keyframeState": {
+				"end": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							18
+						],
+						"hasTarget": true,
+						"position": [
+							368.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "WAITING_APPROVAL"
+					},
+					"theo": {
+						"cell": [
+							23,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							752.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					}
+				},
+				"middle": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							18
+						],
+						"hasTarget": true,
+						"position": [
+							368.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "WALKING_TO_DESK"
+					},
+					"theo": {
+						"cell": [
+							23,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							752.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					}
+				},
+				"start": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							18
+						],
+						"hasTarget": true,
+						"position": [
+							368.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "WALKING_TO_DESK"
+					},
+					"theo": {
+						"cell": [
+							23,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							752.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					}
+				}
+			},
+			"keyframes": {
+				"end": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/journal-and-approval-end.png",
+				"middle": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/journal-and-approval-middle.png",
+				"start": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/journal-and-approval-start.png"
+			},
+			"markers": [
+				{
+					"frame": 592,
+					"label": "approval-visible",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						},
+						"mira": {
+							"cell": [
+								11,
+								18
+							],
+							"hasTarget": true,
+							"position": [
+								368.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "WAITING_APPROVAL"
+						},
+						"theo": {
+							"cell": [
+								23,
+								18
+							],
+							"hasTarget": false,
+							"position": [
+								752.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "IDLE"
+						}
+					}
+				},
+				{
+					"frame": 612,
+					"label": "approval-ledger",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						},
+						"mira": {
+							"cell": [
+								11,
+								18
+							],
+							"hasTarget": true,
+							"position": [
+								368.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "WAITING_APPROVAL"
+						},
+						"theo": {
+							"cell": [
+								23,
+								18
+							],
+							"hasTarget": false,
+							"position": [
+								752.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "IDLE"
+						}
+					}
+				},
+				{
+					"frame": 654,
+					"label": "work-details-revealed",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						},
+						"mira": {
+							"cell": [
+								11,
+								18
+							],
+							"hasTarget": true,
+							"position": [
+								368.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "WAITING_APPROVAL"
+						},
+						"theo": {
+							"cell": [
+								23,
+								18
+							],
+							"hasTarget": false,
+							"position": [
+								752.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "IDLE"
+						}
+					}
+				},
+				{
+					"frame": 692,
+					"label": "work-details-restored",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						},
+						"mira": {
+							"cell": [
+								11,
+								18
+							],
+							"hasTarget": true,
+							"position": [
+								368.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "WAITING_APPROVAL"
+						},
+						"theo": {
+							"cell": [
+								23,
+								18
+							],
+							"hasTarget": false,
+							"position": [
+								752.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "IDLE"
+						}
+					}
+				},
+				{
+					"frame": 718,
+					"label": "approval-answered",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						},
+						"mira": {
+							"cell": [
+								11,
+								18
+							],
+							"hasTarget": true,
+							"position": [
+								368.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "WAITING_APPROVAL"
+						},
+						"theo": {
+							"cell": [
+								23,
+								18
+							],
+							"hasTarget": false,
+							"position": [
+								752.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "IDLE"
+						}
+					}
+				}
+			],
+			"name": "journal-and-approval",
+			"sampledFramesDistinct": true,
+			"startFrame": 469,
+			"uiKeyframeState": {
+				"end": {
+					"activeJobId": "journal-polish",
+					"approvalVisible": false,
+					"assignmentDisabled": true,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": true,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 2,
+					"workerConnected": true
+				},
+				"middle": {
+					"activeJobId": "journal-polish",
+					"approvalVisible": false,
+					"assignmentDisabled": true,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": true,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 2,
+					"workerConnected": true
+				},
+				"start": {
+					"activeJobId": "journal-polish",
+					"approvalVisible": false,
+					"assignmentDisabled": true,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": true,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 2,
+					"workerConnected": true
+				}
+			}
+		},
+		{
+			"actorCellsChecked": 783,
+			"checkpoints": {
+				"delivery-promoted": {
+					"frame": 915,
+					"path": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/delivery-studio-reader-delivery-promoted.png",
+					"uiState": {
+						"activeJobId": "",
+						"approvalVisible": false,
+						"assignmentDisabled": false,
+						"chatPending": false,
+						"connectionVisible": false,
+						"drawerOpen": true,
+						"employeeId": "mira",
+						"notificationVisible": false,
+						"readerScroll": 0.0,
+						"readerTextLength": 2170,
+						"readerVisible": false,
+						"tab": 2,
+						"workerConnected": true
+					}
+				},
+				"reader-scrolled": {
+					"frame": 827,
+					"path": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/delivery-studio-reader-reader-scrolled.png",
+					"uiState": {
+						"activeJobId": "",
+						"approvalVisible": false,
+						"assignmentDisabled": false,
+						"chatPending": false,
+						"connectionVisible": false,
+						"drawerOpen": true,
+						"employeeId": "mira",
+						"notificationVisible": false,
+						"readerScroll": 416.0,
+						"readerTextLength": 2170,
+						"readerVisible": true,
+						"tab": 2,
+						"workerConnected": true
+					}
+				},
+				"studio-empty": {
+					"frame": 951,
+					"path": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/delivery-studio-reader-studio-empty.png",
+					"uiState": {
+						"activeJobId": "",
+						"approvalVisible": false,
+						"assignmentDisabled": false,
+						"chatPending": false,
+						"connectionVisible": false,
+						"drawerOpen": true,
+						"employeeId": "mira",
+						"notificationVisible": false,
+						"readerScroll": 0.0,
+						"readerTextLength": 2170,
+						"readerVisible": false,
+						"tab": 3,
+						"workerConnected": true
+					}
+				}
+			},
+			"checks": [
+				{
+					"frame": 751,
+					"label": "pointer-target-hit: ViewDelivery",
+					"passed": true
+				},
+				{
+					"frame": 751,
+					"label": "pointer-up-before-down: ViewDelivery",
+					"passed": true
+				},
+				{
+					"frame": 751,
+					"label": "pointer-down-state: ViewDelivery",
+					"passed": true
+				},
+				{
+					"frame": 756,
+					"label": "pointer-up-state: ViewDelivery",
+					"passed": true
+				},
+				{
+					"frame": 779,
+					"label": "delivery-preview-in-first-view",
+					"passed": true
+				},
+				{
+					"frame": 787,
+					"label": "pointer-target-hit: Preview",
+					"passed": true
+				},
+				{
+					"frame": 787,
+					"label": "pointer-up-before-down: Preview",
+					"passed": true
+				},
+				{
+					"frame": 787,
+					"label": "pointer-down-state: Preview",
+					"passed": true
+				},
+				{
+					"frame": 792,
+					"label": "pointer-up-state: Preview",
+					"passed": true
+				},
+				{
+					"frame": 797,
+					"label": "preview-opens-reader-before-decision",
+					"passed": true
+				},
+				{
+					"frame": 825,
+					"label": "reader-wheel-scroll",
+					"passed": true
+				},
+				{
+					"frame": 827,
+					"label": "checkpoint-saved: reader-scrolled",
+					"passed": true
+				},
+				{
+					"frame": 835,
+					"label": "pointer-target-hit: @Button@3872",
+					"passed": true
+				},
+				{
+					"frame": 835,
+					"label": "pointer-up-before-down: @Button@3872",
+					"passed": true
+				},
+				{
+					"frame": 835,
+					"label": "pointer-down-state: @Button@3872",
+					"passed": true
+				},
+				{
+					"frame": 840,
+					"label": "pointer-up-state: @Button@3872",
+					"passed": true
+				},
+				{
+					"frame": 853,
+					"label": "reader-close-button-pressed",
+					"passed": true
+				},
+				{
+					"frame": 853,
+					"label": "reader-click-close",
+					"passed": true
+				},
+				{
+					"frame": 861,
+					"label": "pointer-target-hit: Preview",
+					"passed": true
+				},
+				{
+					"frame": 861,
+					"label": "pointer-up-before-down: Preview",
+					"passed": true
+				},
+				{
+					"frame": 861,
+					"label": "pointer-down-state: Preview",
+					"passed": true
+				},
+				{
+					"frame": 866,
+					"label": "pointer-up-state: Preview",
+					"passed": true
+				},
+				{
+					"frame": 881,
+					"label": "reader-reopen-reset",
+					"passed": true
+				},
+				{
+					"frame": 881,
+					"label": "reader-reopen-retains-document",
+					"passed": true
+				},
+				{
+					"frame": 891,
+					"label": "reader-escape-close",
+					"passed": true
+				},
+				{
+					"frame": 903,
+					"label": "pointer-target-hit: @Button@3732",
+					"passed": true
+				},
+				{
+					"frame": 903,
+					"label": "pointer-up-before-down: @Button@3732",
+					"passed": true
+				},
+				{
+					"frame": 903,
+					"label": "pointer-down-state: @Button@3732",
+					"passed": true
+				},
+				{
+					"frame": 908,
+					"label": "pointer-up-state: @Button@3732",
+					"passed": true
+				},
+				{
+					"frame": 913,
+					"label": "preview-before-promotion-dispatch-order",
+					"passed": true
+				},
+				{
+					"frame": 915,
+					"label": "checkpoint-saved: delivery-promoted",
+					"passed": true
+				},
+				{
+					"frame": 923,
+					"label": "pointer-target-hit: @Button@3525",
+					"passed": true
+				},
+				{
+					"frame": 923,
+					"label": "pointer-up-before-down: @Button@3525",
+					"passed": true
+				},
+				{
+					"frame": 923,
+					"label": "pointer-down-state: @Button@3525",
+					"passed": true
+				},
+				{
+					"frame": 928,
+					"label": "pointer-up-state: @Button@3525",
+					"passed": true
+				},
+				{
+					"frame": 951,
+					"label": "checkpoint-saved: studio-empty",
+					"passed": true
+				},
+				{
+					"frame": 975,
+					"label": "pointer-target-hit: Preview",
+					"passed": true
+				},
+				{
+					"frame": 975,
+					"label": "pointer-up-before-down: Preview",
+					"passed": true
+				},
+				{
+					"frame": 975,
+					"label": "pointer-down-state: Preview",
+					"passed": true
+				},
+				{
+					"frame": 980,
+					"label": "pointer-up-state: Preview",
+					"passed": true
+				},
+				{
+					"frame": 985,
+					"label": "studio-file-selection",
+					"passed": true
+				},
+				{
+					"frame": 1003,
+					"label": "studio-reader-retains-document",
+					"passed": true
+				}
+			],
+			"contactSheet": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/delivery-studio-reader-contact-sheet.png",
+			"dispatches": [
+				{
+					"jobId": "delivery-polish",
+					"method": "artifact.read",
+					"path": "launch-brief.md"
+				},
+				{
+					"jobId": "delivery-polish",
+					"method": "artifact.read",
+					"path": "launch-brief.md"
+				},
+				{
+					"approved": true,
+					"jobId": "delivery-polish",
+					"method": "promotion"
+				},
+				{
+					"method": "studio.read",
+					"path": "launch-brief.md"
+				}
+			],
+			"endFrame": 1003,
+			"expectedState": "Delivery View opens inspectable files; Preview is exercised before promotion, followed by Studio selection and actual reader scroll/close/reopen input.",
+			"frameHashes": [
+				"1627298962",
+				"2342646270",
+				"1497339229"
+			],
+			"keyframeState": {
+				"end": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							17
+						],
+						"hasTarget": true,
+						"position": [
+							368.0,
+							564.500305175781
+						],
+						"walkable": true,
+						"workState": "IDLE_WALKING"
+					},
+					"theo": {
+						"cell": [
+							23,
+							17
+						],
+						"hasTarget": true,
+						"position": [
+							752.0,
+							564.500305175781
+						],
+						"walkable": true,
+						"workState": "IDLE_WALKING"
+					}
+				},
+				"middle": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							17
+						],
+						"hasTarget": true,
+						"position": [
+							368.0,
+							564.500305175781
+						],
+						"walkable": true,
+						"workState": "IDLE_WALKING"
+					},
+					"theo": {
+						"cell": [
+							23,
+							17
+						],
+						"hasTarget": true,
+						"position": [
+							752.0,
+							564.500305175781
+						],
+						"walkable": true,
+						"workState": "IDLE_WALKING"
+					}
+				},
+				"start": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							368.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					},
+					"theo": {
+						"cell": [
+							23,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							752.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					}
+				}
+			},
+			"keyframes": {
+				"end": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/delivery-studio-reader-end.png",
+				"middle": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/delivery-studio-reader-middle.png",
+				"start": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/delivery-studio-reader-start.png"
+			},
+			"markers": [
+				{
+					"frame": 827,
+					"label": "reader-scrolled",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						},
+						"mira": {
+							"cell": [
+								11,
+								17
+							],
+							"hasTarget": true,
+							"position": [
+								368.0,
+								564.500305175781
+							],
+							"walkable": true,
+							"workState": "IDLE_WALKING"
+						},
+						"theo": {
+							"cell": [
+								23,
+								17
+							],
+							"hasTarget": true,
+							"position": [
+								752.0,
+								564.500305175781
+							],
+							"walkable": true,
+							"workState": "IDLE_WALKING"
+						}
+					}
+				},
+				{
+					"frame": 915,
+					"label": "delivery-promoted",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						},
+						"mira": {
+							"cell": [
+								11,
+								17
+							],
+							"hasTarget": true,
+							"position": [
+								368.0,
+								564.500305175781
+							],
+							"walkable": true,
+							"workState": "IDLE_WALKING"
+						},
+						"theo": {
+							"cell": [
+								23,
+								17
+							],
+							"hasTarget": true,
+							"position": [
+								752.0,
+								564.500305175781
+							],
+							"walkable": true,
+							"workState": "IDLE_WALKING"
+						}
+					}
+				},
+				{
+					"frame": 951,
+					"label": "studio-empty",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						},
+						"mira": {
+							"cell": [
+								11,
+								17
+							],
+							"hasTarget": true,
+							"position": [
+								368.0,
+								564.500305175781
+							],
+							"walkable": true,
+							"workState": "IDLE_WALKING"
+						},
+						"theo": {
+							"cell": [
+								23,
+								17
+							],
+							"hasTarget": true,
+							"position": [
+								752.0,
+								564.500305175781
+							],
+							"walkable": true,
+							"workState": "IDLE_WALKING"
+						}
+					}
+				}
+			],
+			"name": "delivery-studio-reader",
+			"sampledFramesDistinct": true,
+			"startFrame": 742,
+			"uiKeyframeState": {
+				"end": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": false,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": true,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 2170,
+					"readerVisible": true,
+					"tab": 3,
+					"workerConnected": true
+				},
+				"middle": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": false,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": true,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 2170,
+					"readerVisible": true,
+					"tab": 2,
+					"workerConnected": true
+				},
+				"start": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": false,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "mira",
+					"notificationVisible": true,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				}
+			}
+		},
+		{
+			"actorCellsChecked": 261,
+			"checkpoints": {
+				"worker-error": {
+					"frame": 1074,
+					"path": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/queued-errors-and-overflow-worker-error.png",
+					"uiState": {
+						"activeJobId": "queued-polish",
+						"approvalVisible": false,
+						"assignmentDisabled": true,
+						"chatPending": false,
+						"connectionVisible": true,
+						"drawerOpen": true,
+						"employeeId": "theo",
+						"notificationVisible": false,
+						"readerScroll": 0.0,
+						"readerTextLength": 0,
+						"readerVisible": false,
+						"tab": 2,
+						"workerConnected": false
+					}
+				},
+				"worker-reconnecting": {
+					"frame": 1094,
+					"path": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/queued-errors-and-overflow-worker-reconnecting.png",
+					"uiState": {
+						"activeJobId": "queued-polish",
+						"approvalVisible": false,
+						"assignmentDisabled": true,
+						"chatPending": false,
+						"connectionVisible": true,
+						"drawerOpen": true,
+						"employeeId": "theo",
+						"notificationVisible": false,
+						"readerScroll": 0.0,
+						"readerTextLength": 0,
+						"readerVisible": false,
+						"tab": 2,
+						"workerConnected": false
+					}
+				},
+				"worker-recovered": {
+					"frame": 1114,
+					"path": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/queued-errors-and-overflow-worker-recovered.png",
+					"uiState": {
+						"activeJobId": "queued-polish",
+						"approvalVisible": false,
+						"assignmentDisabled": true,
+						"chatPending": false,
+						"connectionVisible": false,
+						"drawerOpen": true,
+						"employeeId": "theo",
+						"notificationVisible": false,
+						"readerScroll": 0.0,
+						"readerTextLength": 0,
+						"readerVisible": false,
+						"tab": 2,
+						"workerConnected": true
+					}
+				}
+			},
+			"checks": [
+				{
+					"frame": 1072,
+					"label": "worker-error-retry-visible",
+					"passed": true
+				},
+				{
+					"frame": 1074,
+					"label": "checkpoint-saved: worker-error",
+					"passed": true
+				},
+				{
+					"frame": 1082,
+					"label": "pointer-target-hit: @Button@4551",
+					"passed": true
+				},
+				{
+					"frame": 1082,
+					"label": "pointer-up-before-down: @Button@4551",
+					"passed": true
+				},
+				{
+					"frame": 1082,
+					"label": "pointer-down-state: @Button@4551",
+					"passed": true
+				},
+				{
+					"frame": 1087,
+					"label": "pointer-up-state: @Button@4551",
+					"passed": true
+				},
+				{
+					"frame": 1092,
+					"label": "worker-retry-click-dispatch",
+					"passed": true
+				},
+				{
+					"frame": 1092,
+					"label": "worker-reconnecting-player-copy",
+					"passed": true
+				},
+				{
+					"frame": 1092,
+					"label": "worker-reconnecting-rail-consistent",
+					"passed": true
+				},
+				{
+					"frame": 1094,
+					"label": "checkpoint-saved: worker-reconnecting",
+					"passed": true
+				},
+				{
+					"frame": 1112,
+					"label": "worker-recovery-distinct",
+					"passed": true
+				},
+				{
+					"frame": 1114,
+					"label": "checkpoint-saved: worker-recovered",
+					"passed": true
+				}
+			],
+			"contactSheet": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/queued-errors-and-overflow-contact-sheet.png",
+			"dispatches": [],
+			"endFrame": 1114,
+			"expectedState": "Off-hours, queued work, long copy, keyboard focus, error, and recovery remain bounded and unmistakable.",
+			"frameHashes": [
+				"4182437952",
+				"1038176957",
+				"1382604026"
+			],
+			"keyframeState": {
+				"end": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							368.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "OFF_SHIFT"
+					},
+					"theo": {
+						"cell": [
+							23,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							752.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "OFF_SHIFT"
+					}
+				},
+				"middle": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							368.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "OFF_SHIFT"
+					},
+					"theo": {
+						"cell": [
+							23,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							752.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "OFF_SHIFT"
+					}
+				},
+				"start": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							368.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "OFF_SHIFT"
+					},
+					"theo": {
+						"cell": [
+							23,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							752.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "OFF_SHIFT"
+					}
+				}
+			},
+			"keyframes": {
+				"end": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/queued-errors-and-overflow-end.png",
+				"middle": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/queued-errors-and-overflow-middle.png",
+				"start": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/queued-errors-and-overflow-start.png"
+			},
+			"markers": [
+				{
+					"frame": 1074,
+					"label": "worker-error",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						},
+						"mira": {
+							"cell": [
+								11,
+								18
+							],
+							"hasTarget": false,
+							"position": [
+								368.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "OFF_SHIFT"
+						},
+						"theo": {
+							"cell": [
+								23,
+								18
+							],
+							"hasTarget": false,
+							"position": [
+								752.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "OFF_SHIFT"
+						}
+					}
+				},
+				{
+					"frame": 1094,
+					"label": "worker-reconnecting",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						},
+						"mira": {
+							"cell": [
+								11,
+								18
+							],
+							"hasTarget": false,
+							"position": [
+								368.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "OFF_SHIFT"
+						},
+						"theo": {
+							"cell": [
+								23,
+								18
+							],
+							"hasTarget": false,
+							"position": [
+								752.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "OFF_SHIFT"
+						}
+					}
+				},
+				{
+					"frame": 1114,
+					"label": "worker-recovered",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						},
+						"mira": {
+							"cell": [
+								11,
+								18
+							],
+							"hasTarget": false,
+							"position": [
+								368.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "OFF_SHIFT"
+						},
+						"theo": {
+							"cell": [
+								23,
+								18
+							],
+							"hasTarget": false,
+							"position": [
+								752.0,
+								592.0
+							],
+							"walkable": true,
+							"workState": "OFF_SHIFT"
+						}
+					}
+				}
+			],
+			"name": "queued-errors-and-overflow",
+			"sampledFramesDistinct": true,
+			"startFrame": 1027,
+			"uiKeyframeState": {
+				"end": {
+					"activeJobId": "queued-polish",
+					"approvalVisible": false,
+					"assignmentDisabled": true,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": true,
+					"employeeId": "theo",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 2,
+					"workerConnected": true
+				},
+				"middle": {
+					"activeJobId": "queued-polish",
+					"approvalVisible": false,
+					"assignmentDisabled": true,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": true,
+					"employeeId": "theo",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 2,
+					"workerConnected": true
+				},
+				"start": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": false,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": true,
+					"employeeId": "theo",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 1,
+					"workerConnected": true
+				}
+			}
+		}
+	],
+	"schemaVersion": 1,
+	"suite": "ui",
+	"viewport": {
+		"height": 720,
+		"width": 1280
+	}
+}

@@ -1,0 +1,1148 @@
+{
+	"failures": [],
+	"fps": 30,
+	"frameOrigin": "Engine process frame; movie writer may include a short startup lead-in",
+	"inputDriver": {
+		"actionRetries": 0,
+		"embeddedPopups": true,
+		"method": "Input.parse_input_event through normal GUI hit-testing",
+		"nativeGpu": true,
+		"nativeMousePassthrough": true,
+		"nativeWindowUnfocusable": true,
+		"osPointerWarped": false
+	},
+	"networkDisabled": true,
+	"passThreshold": {
+		"minimumCategory": 2,
+		"minimumMean": 2.5
+	},
+	"reviewRubric": {
+		"categories": [
+			"pixel",
+			"motion",
+			"continuity",
+			"layering",
+			"text",
+			"feedback"
+		],
+		"reviewer": "Human or visual-review agent; capture validation does not assign aesthetic scores",
+		"scoreRange": {
+			"maximum": 3,
+			"minimum": 0
+		}
+	},
+	"scenarios": [
+		{
+			"actorCellsChecked": 93,
+			"checkpoints": {},
+			"checks": [],
+			"contactSheet": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/founder-locomotion-contact-sheet.png",
+			"dispatches": [],
+			"endFrame": 113,
+			"expectedState": "Founder starts and stops cleanly while walking in all four directions and returns near the origin.",
+			"frameHashes": [
+				"3628582989",
+				"223791469",
+				"2137489189"
+			],
+			"keyframeState": {
+				"end": {
+					"founder": {
+						"cell": [
+							18,
+							15
+						],
+						"position": [
+							592.0,
+							496.0
+						],
+						"walkable": true
+					}
+				},
+				"middle": {
+					"founder": {
+						"cell": [
+							18,
+							15
+						],
+						"position": [
+							592.0,
+							496.0
+						],
+						"walkable": true
+					}
+				},
+				"start": {
+					"founder": {
+						"cell": [
+							18,
+							15
+						],
+						"position": [
+							592.0,
+							496.0
+						],
+						"walkable": true
+					}
+				}
+			},
+			"keyframes": {
+				"end": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/founder-locomotion-end.png",
+				"middle": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/founder-locomotion-middle.png",
+				"start": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/founder-locomotion-start.png"
+			},
+			"markers": [],
+			"name": "founder-locomotion",
+			"sampledFramesDistinct": true,
+			"startFrame": 20,
+			"uiKeyframeState": {
+				"end": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": true,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				},
+				"middle": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": true,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				},
+				"start": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": true,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				}
+			}
+		},
+		{
+			"actorCellsChecked": 522,
+			"checkpoints": {},
+			"checks": [],
+			"contactSheet": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/employee-idle-cycle-contact-sheet.png",
+			"dispatches": [],
+			"endFrame": 311,
+			"expectedState": "Mina moves from her spawn to her desk, sits, surfaces a memory, and begins a short wander.",
+			"frameHashes": [
+				"3436333832",
+				"3315674457",
+				"1293992033"
+			],
+			"keyframeState": {
+				"end": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							12,
+							8
+						],
+						"hasTarget": true,
+						"position": [
+							400.0,
+							256.499969482422
+						],
+						"walkable": true,
+						"workState": "WANDERING"
+					},
+					"theo": {
+						"cell": [
+							20,
+							7
+						],
+						"hasTarget": false,
+						"position": [
+							656.0,
+							240.0
+						],
+						"walkable": true,
+						"workState": "SITTING"
+					}
+				},
+				"middle": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							10,
+							7
+						],
+						"hasTarget": false,
+						"position": [
+							336.0,
+							240.0
+						],
+						"walkable": true,
+						"workState": "SITTING"
+					},
+					"theo": {
+						"cell": [
+							20,
+							7
+						],
+						"hasTarget": false,
+						"position": [
+							656.0,
+							240.0
+						],
+						"walkable": true,
+						"workState": "SITTING"
+					}
+				},
+				"start": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							18
+						],
+						"hasTarget": true,
+						"position": [
+							368.0,
+							590.166687011719
+						],
+						"walkable": true,
+						"workState": "IDLE_WALKING"
+					},
+					"theo": {
+						"cell": [
+							23,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							752.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					}
+				}
+			},
+			"keyframes": {
+				"end": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/employee-idle-cycle-end.png",
+				"middle": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/employee-idle-cycle-middle.png",
+				"start": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/employee-idle-cycle-start.png"
+			},
+			"markers": [],
+			"name": "employee-idle-cycle",
+			"sampledFramesDistinct": true,
+			"startFrame": 137,
+			"uiKeyframeState": {
+				"end": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": false,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				},
+				"middle": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": false,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				},
+				"start": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": false,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				}
+			}
+		},
+		{
+			"actorCellsChecked": 2061,
+			"checkpoints": {},
+			"checks": [],
+			"contactSheet": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/job-state-cycle-contact-sheet.png",
+			"dispatches": [],
+			"endFrame": 1022,
+			"expectedState": "Mina visibly distinguishes walking, thinking, typing, research, approval, delivery, and failure recovery.",
+			"frameHashes": [
+				"2995956391",
+				"1937307480",
+				"2214712664"
+			],
+			"keyframeState": {
+				"end": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							18,
+							19
+						],
+						"hasTarget": false,
+						"position": [
+							592.0,
+							614.833435058594
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					},
+					"theo": {
+						"cell": [
+							20,
+							7
+						],
+						"hasTarget": true,
+						"position": [
+							644.166442871094,
+							240.0
+						],
+						"walkable": true,
+						"workState": "IDLE_WALKING"
+					}
+				},
+				"middle": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							10,
+							7
+						],
+						"hasTarget": false,
+						"position": [
+							336.0,
+							240.0
+						],
+						"walkable": true,
+						"workState": "TYPING"
+					},
+					"theo": {
+						"cell": [
+							20,
+							7
+						],
+						"hasTarget": false,
+						"position": [
+							656.0,
+							240.0
+						],
+						"walkable": true,
+						"workState": "SITTING"
+					}
+				},
+				"start": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							368.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					},
+					"theo": {
+						"cell": [
+							23,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							752.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					}
+				}
+			},
+			"keyframes": {
+				"end": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/job-state-cycle-end.png",
+				"middle": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/job-state-cycle-middle.png",
+				"start": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/job-state-cycle-start.png"
+			},
+			"markers": [],
+			"name": "job-state-cycle",
+			"sampledFramesDistinct": true,
+			"startFrame": 335,
+			"uiKeyframeState": {
+				"end": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": false,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "mira",
+					"notificationVisible": true,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				},
+				"middle": {
+					"activeJobId": "polish-job",
+					"approvalVisible": false,
+					"assignmentDisabled": true,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				},
+				"start": {
+					"activeJobId": "polish-job",
+					"approvalVisible": false,
+					"assignmentDisabled": true,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				}
+			}
+		},
+		{
+			"actorCellsChecked": 1311,
+			"checkpoints": {},
+			"checks": [],
+			"contactSheet": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/schedule-cycle-contact-sheet.png",
+			"dispatches": [],
+			"endFrame": 1483,
+			"expectedState": "Both employees transition from work to lunch, off shift, and back to the work window.",
+			"frameHashes": [
+				"3080826369",
+				"2147082285",
+				"1701122384"
+			],
+			"keyframeState": {
+				"end": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							10,
+							7
+						],
+						"hasTarget": false,
+						"position": [
+							336.0,
+							240.0
+						],
+						"walkable": true,
+						"workState": "SITTING"
+					},
+					"theo": {
+						"cell": [
+							20,
+							7
+						],
+						"hasTarget": false,
+						"position": [
+							656.0,
+							240.0
+						],
+						"walkable": true,
+						"workState": "SITTING"
+					}
+				},
+				"middle": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							13
+						],
+						"hasTarget": false,
+						"position": [
+							368.0,
+							432.0
+						],
+						"walkable": true,
+						"workState": "LUNCH"
+					},
+					"theo": {
+						"cell": [
+							13,
+							16
+						],
+						"hasTarget": false,
+						"position": [
+							432.0,
+							528.0
+						],
+						"walkable": true,
+						"workState": "LUNCH"
+					}
+				},
+				"start": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					},
+					"mira": {
+						"cell": [
+							11,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							368.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					},
+					"theo": {
+						"cell": [
+							23,
+							18
+						],
+						"hasTarget": false,
+						"position": [
+							752.0,
+							592.0
+						],
+						"walkable": true,
+						"workState": "IDLE"
+					}
+				}
+			},
+			"keyframes": {
+				"end": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/schedule-cycle-end.png",
+				"middle": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/schedule-cycle-middle.png",
+				"start": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/schedule-cycle-start.png"
+			},
+			"markers": [],
+			"name": "schedule-cycle",
+			"sampledFramesDistinct": true,
+			"startFrame": 1046,
+			"uiKeyframeState": {
+				"end": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": false,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				},
+				"middle": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": false,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				},
+				"start": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": false,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "mira",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				}
+			}
+		},
+		{
+			"actorCellsChecked": 626,
+			"checkpoints": {},
+			"checks": [],
+			"contactSheet": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/depth-and-occlusion-contact-sheet.png",
+			"dispatches": [],
+			"endFrame": 2133,
+			"expectedState": "The founder reads behind and in front of furniture using ground-contact Y sorting without sprite rotation.",
+			"frameHashes": [
+				"2183365247",
+				"2863591873",
+				"510935523"
+			],
+			"keyframeState": {
+				"end": {
+					"founder": {
+						"cell": [
+							29,
+							19
+						],
+						"position": [
+							944.0,
+							624.0
+						],
+						"walkable": true
+					}
+				},
+				"middle": {
+					"founder": {
+						"cell": [
+							29,
+							10
+						],
+						"position": [
+							944.0,
+							336.0
+						],
+						"walkable": true
+					}
+				},
+				"start": {
+					"founder": {
+						"cell": [
+							10,
+							7
+						],
+						"position": [
+							336.0,
+							240.0
+						],
+						"walkable": true
+					}
+				}
+			},
+			"keyframes": {
+				"end": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/depth-and-occlusion-end.png",
+				"middle": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/depth-and-occlusion-middle.png",
+				"start": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/depth-and-occlusion-start.png"
+			},
+			"markers": [
+				{
+					"frame": 1557,
+					"label": "desk front",
+					"state": {
+						"founder": {
+							"cell": [
+								10,
+								9
+							],
+							"position": [
+								336.0,
+								304.0
+							],
+							"walkable": true
+						}
+					}
+				},
+				{
+					"frame": 1696,
+					"label": "research bench rear",
+					"state": {
+						"founder": {
+							"cell": [
+								29,
+								7
+							],
+							"position": [
+								944.0,
+								240.0
+							],
+							"walkable": true
+						}
+					}
+				},
+				{
+					"frame": 1751,
+					"label": "research bench front",
+					"state": {
+						"founder": {
+							"cell": [
+								29,
+								10
+							],
+							"position": [
+								944.0,
+								336.0
+							],
+							"walkable": true
+						}
+					}
+				},
+				{
+					"frame": 1884,
+					"label": "collaboration-cluster rear",
+					"state": {
+						"founder": {
+							"cell": [
+								12,
+								13
+							],
+							"position": [
+								400.0,
+								432.0
+							],
+							"walkable": true
+						}
+					}
+				},
+				{
+					"frame": 1951,
+					"label": "collaboration-cluster front",
+					"state": {
+						"founder": {
+							"cell": [
+								12,
+								16
+							],
+							"position": [
+								400.0,
+								528.0
+							],
+							"walkable": true
+						}
+					}
+				},
+				{
+					"frame": 2066,
+					"label": "prototype-bench rear",
+					"state": {
+						"founder": {
+							"cell": [
+								29,
+								16
+							],
+							"position": [
+								944.0,
+								528.0
+							],
+							"walkable": true
+						}
+					}
+				},
+				{
+					"frame": 2121,
+					"label": "prototype-bench front",
+					"state": {
+						"founder": {
+							"cell": [
+								29,
+								19
+							],
+							"position": [
+								944.0,
+								624.0
+							],
+							"walkable": true
+						}
+					}
+				}
+			],
+			"name": "depth-and-occlusion",
+			"sampledFramesDistinct": true,
+			"startFrame": 1507,
+			"uiKeyframeState": {
+				"end": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": true,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				},
+				"middle": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": true,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				},
+				"start": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": true,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				}
+			}
+		},
+		{
+			"actorCellsChecked": 151,
+			"checkpoints": {},
+			"checks": [],
+			"contactSheet": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/office-growth-contact-sheet.png",
+			"dispatches": [],
+			"endFrame": 2308,
+			"expectedState": "The office progresses from founder-only to two hires and then the mature four-hire prop layout.",
+			"frameHashes": [
+				"89208158",
+				"3371951684",
+				"687670077"
+			],
+			"keyframeState": {
+				"end": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					}
+				},
+				"middle": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					}
+				},
+				"start": {
+					"founder": {
+						"cell": [
+							17,
+							19
+						],
+						"position": [
+							560.0,
+							624.0
+						],
+						"walkable": true
+					}
+				}
+			},
+			"keyframes": {
+				"end": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/office-growth-end.png",
+				"middle": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/office-growth-middle.png",
+				"start": "res://tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/office-growth-start.png"
+			},
+			"markers": [
+				{
+					"frame": 2158,
+					"label": "office-stage-0",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						}
+					}
+				},
+				{
+					"frame": 2218,
+					"label": "office-stage-1",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						}
+					}
+				},
+				{
+					"frame": 2248,
+					"label": "office-stage-2",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						}
+					}
+				},
+				{
+					"frame": 2278,
+					"label": "office-stage-3",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						}
+					}
+				},
+				{
+					"frame": 2308,
+					"label": "office-stage-4",
+					"state": {
+						"founder": {
+							"cell": [
+								17,
+								19
+							],
+							"position": [
+								560.0,
+								624.0
+							],
+							"walkable": true
+						}
+					}
+				}
+			],
+			"name": "office-growth",
+			"sampledFramesDistinct": true,
+			"startFrame": 2157,
+			"uiKeyframeState": {
+				"end": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": true,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				},
+				"middle": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": true,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				},
+				"start": {
+					"activeJobId": "",
+					"approvalVisible": false,
+					"assignmentDisabled": true,
+					"chatPending": false,
+					"connectionVisible": false,
+					"drawerOpen": false,
+					"employeeId": "",
+					"notificationVisible": false,
+					"readerScroll": 0.0,
+					"readerTextLength": 0,
+					"readerVisible": false,
+					"tab": 0,
+					"workerConnected": true
+				}
+			}
+		}
+	],
+	"schemaVersion": 1,
+	"suite": "world",
+	"viewport": {
+		"height": 720,
+		"width": 1280
+	}
+}

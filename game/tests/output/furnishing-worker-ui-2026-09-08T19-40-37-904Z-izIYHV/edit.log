@@ -1,0 +1,13 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 90.5 - Compatibility - Using Device: Apple - Apple M5 Max
+
+Movie Maker mode enabled, recording movie in 1280×720 @ 30 FPS...
+FURNISHING_SNAPSHOT {"inventory":[{"essential":false,"grant":"starter-decor-v1","id":"decor-broadleaf_planter","kind":"broadleaf_planter","ownerId":"","roleKit":""},{"essential":false,"grant":"starter-decor-v1","id":"decor-rolling_storage_pedestal","kind":"rolling_storage_pedestal","ownerId":"","roleKit":""},{"essential":false,"grant":"starter-decor-v1","id":"decor-task_floor_lamp","kind":"task_floor_lamp","ownerId":"","roleKit":""},{"essential":true,"grant":"office-stage:0","id":"founder-workstation","kind":"desk","ownerId":"founder","roleKit":""}],"placements":{"decor-broadleaf_planter":{"facing":"east","grid":[23.0,14.0]},"founder-workstation":{"facing":"south","grid":[8.0,16.0]}},"recovery":"","revision":7.0,"version":1.0}
+FURNISHING WORKER UI PASS: edit, 96 checks
+--------------------------------------------------------------------------------
+Done recording movie at path: /var/folders/fs/l6nxrkrd0vj5yq8rcl6wd4b80000gp/T/startup-valley-furnishing-game-Ppd0F1/edit.avi
+437 frames at 30 FPS (movie length: 00:00:14:17), recorded in 00:00:08 (175% of real-time speed).
+CPU render time: 0.15 seconds (average: 0.35 ms/frame)
+GPU render time: 0.00 seconds (average: 0.00 ms/frame)
+Encoding time: 1.71 seconds (average: 3.91 ms/frame)
+--------------------------------------------------------------------------------

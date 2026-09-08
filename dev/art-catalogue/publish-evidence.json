@@ -3,11 +3,11 @@
   "purpose": "Portable retained art evidence; no game state or raw movies",
   "catalogue": {
     "path": "dev/art-catalogue/furniture.json",
-    "sha256": "ea1c950e82025a935ecf536c9d7b0514289797065b936e66dd0d9c7844285c65"
+    "sha256": "6de983570a595813991ad186be6714a378c0f171ed72c7ac00d6aac7ab292555"
   },
   "html": {
     "path": "dev/art-catalogue/index.html",
-    "sha256": "4abf4d778b03b35f64d56671532a08650575f0d513feaee76dd182a143c0a1d2"
+    "sha256": "99cc0927b4576387a4aa59eda4d1ce41820e41c854ad33e164d896593f7f10a5"
   },
   "policy": {
     "root": "game/tests/output",
@@ -19,11 +19,27 @@
     "allowed_exact_basename": ".gdignore",
     "additional_complete_roots": [
       "game/tests/output/art-completion-20260906-final-fit",
-      "game/tests/output/art-catalogue-browser-final-20260906-v2"
+      "game/tests/output/art-catalogue-browser-final-20260906-v2",
+      "game/tests/output/furnishing-runtime",
+      "game/tests/output/furnishing-runtime-motion-20260908-check1",
+      "game/tests/output/furnishing-mature-ui-20260908-check1",
+      "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV",
+      "game/tests/output/art-completion-furnishing-20260908-final3",
+      "game/tests/output/furnishing-window-poll-20260908-check2",
+      "game/tests/output/art-completion-furnishing-push-20260908"
+    ],
+    "additional_report_files": [
+      "game/tests/output/art-completion-furnishing-20260908-final2/headless-results.json",
+      "game/tests/output/art-completion-furnishing-20260908-final/furnishing-parity/godot-results.json",
+      "game/tests/output/furnishing-parity/godot-results.json",
+      "game/tests/output/furnishing-runtime/decor-manifest.json",
+      "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/manifest.json",
+      "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/manifest.json"
     ],
     "closure": "Actual validator files, local HTML targets, recursive existing local JSON file references",
     "excluded": [
       "raw movies",
+      "raw JSONL transport",
       "SQLite databases and sidecars",
       "caches",
       "unreferenced historical captures"
@@ -31,12 +47,12 @@
     "symlinks": "forbidden"
   },
   "validation": {
-    "checks": 30626,
-    "catalogue_files": 2124,
-    "direct_evidence_files": 490
+    "checks": 32525,
+    "catalogue_files": 2224,
+    "direct_evidence_files": 503
   },
-  "total_files": 3320,
-  "total_bytes": 640957430,
+  "total_files": 3812,
+  "total_bytes": 786993521,
   "files": [
     {
       "path": "game/tests/output/.gdignore",
@@ -1997,6 +2013,956 @@
       "path": "game/tests/output/art-completion-20260906-final-fit/visual-review/ui-world-speech.png",
       "bytes": 347336,
       "sha256": "2e14901c60f67b71099e54f9939103a76ccfa86cc28c01a1cdde0c3e48f0bc72"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final/furnishing-parity/godot-results.json",
+      "bytes": 36,
+      "sha256": "274d9c0b7964886d44ffa8a39892dd55befdba773f1cd058a6619635a424ee26"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/headless-results.json",
+      "bytes": 170935,
+      "sha256": "e44a43ecb9bc19c8c05ca01f983665577bf9d26ef7c67fa070449e46024b8e4b"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-import.log",
+      "bytes": 1017,
+      "sha256": "f15ffd4c558b01611d562c8c257508942bdc2dc542124f423ae2a592a46edfa6"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-run_all.log",
+      "bytes": 107,
+      "sha256": "3279f306235ae2a49534e90fa28717f7476fb021d291a93705d579f617489d12"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_approval_console_production.log",
+      "bytes": 124,
+      "sha256": "2ef00759bdaac6e80ca82d1852e553b13cd7df1705e69eafa19aac7b92c4eecd"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_archive_production.log",
+      "bytes": 157,
+      "sha256": "901e474d673e33558793627cc61ff2015cefeaa21764b708fe5289cf39adbbfe"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_audit_output_scope.log",
+      "bytes": 115,
+      "sha256": "c7a6fc48cbbc353aed66ce7a2b00253bb661a06b4fb316e9955dba5f7a2b515d"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_click_feedback_presentation.log",
+      "bytes": 124,
+      "sha256": "f56dbae23e0c39fd6909feb45fd41ace3df9715fc54eff0e0710115aa5a56dc8"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_coffee_station_production.log",
+      "bytes": 160,
+      "sha256": "b816bd642ee7c92a90b058fde204c60bc8f7c94f9a26a3cf58c1e26325e027e0"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_collaboration_production.log",
+      "bytes": 1231,
+      "sha256": "b0f3ece908e6eb4a691419a68893284a76b80867974ada809841c26df30237d9"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_complete_game.log",
+      "bytes": 112,
+      "sha256": "ba3ac06b0dc31f01b196a51bcb7f0373c668def4a3fe1555ab086f71a4da5c29"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_connection_retry_guard.log",
+      "bytes": 119,
+      "sha256": "0276a1ed82990ac57345355d472ce8bcb2c68d0656ca8624b32d568d3999185e"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_directional_input.log",
+      "bytes": 115,
+      "sha256": "f6787012b686e23bddf490e692dcd57009a83b0d25deee0df9d5634344904758"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_furniture_directions.log",
+      "bytes": 174,
+      "sha256": "62ff7fb97605ee458f99b5534708672d3dd275409f3291d55186d2e8e6be164e"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_graphics_regressions.log",
+      "bytes": 180,
+      "sha256": "3200547ac505ebf62ddc512642c6994bc7a5a816845cb43d6d4ef443da7c2ca7"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_grounded_shadow_x_follow.log",
+      "bytes": 126,
+      "sha256": "9a6e784b36bd93361b40c178410f347a100dc51e9b047fbbc43e06fb9fbbf945"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_grounded_work_shadow.log",
+      "bytes": 120,
+      "sha256": "0d1f5cdff0ffabc8bfe6daff339181aa0d083d2aca4a8ae0549f638470e30de6"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_locomotion_export.log",
+      "bytes": 115,
+      "sha256": "93ac347679d74895d56fce87ded3e3ed2f9f64efe53886ce20fe2fc56aa0fba7"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_lunch_standing.log",
+      "bytes": 135,
+      "sha256": "a246ebd4c754dc23aa6162ac3213a9df2bd73c687f34f8640ab7e364fd83774a"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_modular_office.log",
+      "bytes": 141,
+      "sha256": "9312bab2459e69e18cf891331fba4ce77c853d8660e2dc0a20907ad152cdee58"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_office_architecture.log",
+      "bytes": 112,
+      "sha256": "2a52686e05da8d24976cfdfbc7d6c4b33ca80a8f2d5f5454527f955d956fec3d"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_office_layout.log",
+      "bytes": 106,
+      "sha256": "6543f79eb6ef2d28da576a187fb664361d5673dbbfcf906090ca41b1449d3abe"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_office_layout_editor.log",
+      "bytes": 169,
+      "sha256": "fc85a864b99cddac29567148db3088a3b865bf65ad2665307972416b8d2d8608"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_office_migration.log",
+      "bytes": 110,
+      "sha256": "62f7399085780f2b1d1a4a38c2177468bc72888deebe2ddaedd118a601505da1"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_prototype_bench_production.log",
+      "bytes": 123,
+      "sha256": "278a92c703f85fe6c335f41e1eff14e2f245dc1817a014f2521282fa758f819a"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_reader_hud_redesign.log",
+      "bytes": 117,
+      "sha256": "1dfcec97f883e4de70246c7a256720a917b2d8223346348fc0fd6695adca975a"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_research_bench_production.log",
+      "bytes": 122,
+      "sha256": "b8a34e8d7d4d4f572ab9b4b19ba82258e7da7afcf8dae367453820255a64b361"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_reviewed_workstation_production.log",
+      "bytes": 129,
+      "sha256": "352f5e6a5f02740f0803ec9b197dc2f1055eac071adeb7466cb249ac6d35f496"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_ui_company_redesign.log",
+      "bytes": 130,
+      "sha256": "e770a310fc98ec1aa8d66f53fc6f63591efb41c90cc80e77972ba649000872d3"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_ui_drawer_redesign.log",
+      "bytes": 117,
+      "sha256": "71fdd2e2cef1296f95e38a7890cd36f3007ba4e73a10e7b149c6952ad313b65d"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_ui_flow_regressions.log",
+      "bytes": 101,
+      "sha256": "3da2bf1d2ae7e488a4594c5e50f0d72ce396fc5df92194d0d1569151b3989a75"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_visible_surface_picking.log",
+      "bytes": 1976,
+      "sha256": "f2f01cd02f0fe6fff3da76cc3b5e9f5338f4bc170aa8e2e87d757e6b246037ec"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_window_presentation.log",
+      "bytes": 111,
+      "sha256": "b264db9fc7c5ee8235b7ee48fbae51ba3e7893bfe4eed1243a7a2e84efa3135f"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-test_world_ui_presentation.log",
+      "bytes": 119,
+      "sha256": "636259b60d3b0be0ec405da70300fe3da943ffdba893d816cdb261fa237269cf"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final2/logs/headless-validate_project.log",
+      "bytes": 152,
+      "sha256": "b5d3e0ef23253c3abb950f228c7009a766ce522696be714246c2bd8bc5c05cc1"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/logs/render-ffprobe-ui.log",
+      "bytes": 263,
+      "sha256": "09ddcf9f61fa19b51df43ef0d6e08e1c3e979f247443f08d903869f71663dfad"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/logs/render-ffprobe-world.log",
+      "bytes": 263,
+      "sha256": "1fa55b15fa6c79e1017494e2b18b48bd88b9b22380076c5a603704989d62458b"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/logs/render-motion-ui.log",
+      "bytes": 796,
+      "sha256": "f247e89997509e113a30e2cf4a3938163d89e994b4a85ebaef987e07c5fc01ab"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/logs/render-motion-world.log",
+      "bytes": 802,
+      "sha256": "8fe81c89af5eb4ac18cf14b783307b4e34d056b5d0c5b2da8d3a397cb4732cd9"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/logs/render-static.log",
+      "bytes": 1267,
+      "sha256": "dd12035f650c24e6dddacc16ca8c797e4940653ba15c46e60476c04b977b61e3"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/logs/render-validate_polish.log",
+      "bytes": 131,
+      "sha256": "689e6e7e9dfa824ad338ae8ac07d80d43cece2b7d768a13e37220ce8e0d9f2cc"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/logs/render-windows.log",
+      "bytes": 13497,
+      "sha256": "7542c5f08d776fc5a8511ff990b03f8ce16faf4ce1417d78ff161dd1e6b3be75"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/asset-inventory.json",
+      "bytes": 204607,
+      "sha256": "6983ecc7c332582e7adec3a91e1cfd04136ccd9c64da3cf42ee5ea537b199fdb"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/chat-and-work-order-chat-waiting.png",
+      "bytes": 467289,
+      "sha256": "03122102cca38f53f65f19711bf36f63430e11dde43e5579c15e5c3294a4fecc"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/chat-and-work-order-contact-sheet.png",
+      "bytes": 272384,
+      "sha256": "dd522da50924ae8758a12a20972805a8122cd85fafdc413702ddcebeb39e4bdf"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/chat-and-work-order-end.png",
+      "bytes": 480936,
+      "sha256": "f1e6d9e41f0386d1283b6a0ce4b8431a5d8329d85a8846a7b9567fd9f0e3d946"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/chat-and-work-order-middle.png",
+      "bytes": 466985,
+      "sha256": "fbd9df045e3c8d608f8b2d6bc2e551b1b3b539f595261929a8d2777d94a22c54"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/chat-and-work-order-start.png",
+      "bytes": 485110,
+      "sha256": "f9c7aea7ef82ef13d88546cc100d06ea20937509b38fafd267555127cdb9308f"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/delivery-studio-reader-contact-sheet.png",
+      "bytes": 297160,
+      "sha256": "79c4c5f11552d2f9cd7ecf6ebc0e4770241dffcf788529e81fe7b373dc8c8c34"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/delivery-studio-reader-delivery-promoted.png",
+      "bytes": 447899,
+      "sha256": "30f59e4ebf98d1721717903603b762225130b1c1a7b348186f2fd338b8203b67"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/delivery-studio-reader-end.png",
+      "bytes": 338462,
+      "sha256": "9465c74e1fcaceaa4f9679efef4451ea661d36cca21320c34652c8e2092336a4"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/delivery-studio-reader-middle.png",
+      "bytes": 354349,
+      "sha256": "12b50fcfbfa55c3543692ce72cab9a2c07fb7f218975fdb2ab5c3648303dc5fc"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/delivery-studio-reader-reader-scrolled.png",
+      "bytes": 354994,
+      "sha256": "f8611a03dabebbd3274229b3cfa1f44bc8c1e90fd23a3395b4408f5b5082dba2"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/delivery-studio-reader-start.png",
+      "bytes": 383017,
+      "sha256": "8dea401f325e720b0895bb5c5646010843b75457c6f36f63e5f7066ba4d8d102"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/delivery-studio-reader-studio-empty.png",
+      "bytes": 418530,
+      "sha256": "a36d5634d7b5bba74863a77682a2d25a52e37d553b69458adc31ddc3e295dc2d"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/journal-and-approval-approval-answered.png",
+      "bytes": 461026,
+      "sha256": "2362e044ca3cada209eefe62a8af34e4360347ab5bb45d1f5630ef34f8ae1f89"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/journal-and-approval-approval-ledger.png",
+      "bytes": 458518,
+      "sha256": "484ad6aabc7209c8a219a0100da292f4fd41664c9f2f3834cac5b0a44addcfdd"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/journal-and-approval-approval-visible.png",
+      "bytes": 463553,
+      "sha256": "b316e87fde2f7f72fee9aa5dbf0d3127a6888329a202c94b1bb4f22d831f0959"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/journal-and-approval-contact-sheet.png",
+      "bytes": 244031,
+      "sha256": "c01c7cdc6e4dd3c26bebdae2446aff1fcdbb8164ea9683069332fd49fef34028"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/journal-and-approval-end.png",
+      "bytes": 461026,
+      "sha256": "2362e044ca3cada209eefe62a8af34e4360347ab5bb45d1f5630ef34f8ae1f89"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/journal-and-approval-middle.png",
+      "bytes": 461054,
+      "sha256": "377a1c6eb9bc5df5c30e4d36d49ced1d622a630598bc9601ab174e81686aeff0"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/journal-and-approval-start.png",
+      "bytes": 468598,
+      "sha256": "d469d8ac1cf06f53cab12ea9a1eae506873f8af88c3a6c83241194105053c1ec"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/journal-and-approval-work-details-restored.png",
+      "bytes": 445986,
+      "sha256": "b657547e9639a686234ae71f5b7b9bcd97c52e8451b7ff1ceb4945353bb5bba8"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/journal-and-approval-work-details-revealed.png",
+      "bytes": 446783,
+      "sha256": "9b97a52f547662c30e2df070750ec78418a481a44d89847b41f1ddeaf73f85f4"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/manifest.json",
+      "bytes": 61021,
+      "sha256": "70e40eab94ab6f0d201099308cee93ec757c56e95beac584d645ea3278b36c23"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/queued-errors-and-overflow-contact-sheet.png",
+      "bytes": 239581,
+      "sha256": "e304ecb8d0e010c5622e2bc5139dbb339ff40af5139bd90542c2318dbd262a39"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/queued-errors-and-overflow-end.png",
+      "bytes": 453700,
+      "sha256": "ea8d839f3162dd5f79810b8e25159abb9563e5b9e9ebf5c36dd0e19776d3feac"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/queued-errors-and-overflow-middle.png",
+      "bytes": 457598,
+      "sha256": "56cc43543eaa87d4cbca7e83e135f604dc44cd010209bfb8f3afcd57262402c7"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/queued-errors-and-overflow-start.png",
+      "bytes": 482875,
+      "sha256": "bcf13176c2dc4b44c72379808605fc5000042cdbfa03e669e9c2beb8dff304e0"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/queued-errors-and-overflow-worker-error.png",
+      "bytes": 389814,
+      "sha256": "582771d1c948f91387c69d40fb4d681be3e6e7b122ae66995a7da86874c1b684"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/queued-errors-and-overflow-worker-reconnecting.png",
+      "bytes": 392297,
+      "sha256": "f8dbfc66c429d2422ba94cd4a52110544eb45e25a6072fd109d3fbb8f078ef5e"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/queued-errors-and-overflow-worker-recovered.png",
+      "bytes": 453700,
+      "sha256": "ea8d839f3162dd5f79810b8e25159abb9563e5b9e9ebf5c36dd0e19776d3feac"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/team-drawer-controls-contact-sheet.png",
+      "bytes": 213650,
+      "sha256": "89240d920ec2dca1c82899fe6bc22cbead418c46b3aeaca6442683e2a9df6e33"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/team-drawer-controls-end.png",
+      "bytes": 341675,
+      "sha256": "4162fd309065a8ac3993e9bd1a780a83c9cda458f37a2f5b583826c2415d3a3d"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/team-drawer-controls-middle.png",
+      "bytes": 450961,
+      "sha256": "37d294fa911153f3a19adb64f27d943c5673ce9062f070b310dda34a83c77ef6"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/team-drawer-controls-start.png",
+      "bytes": 342646,
+      "sha256": "f0ac1fd0f15b9bbdee797b6029a7d7244d7e1d22adda535c04e89e746c0e3eee"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/work-controls-assignment-disabled.png",
+      "bytes": 471422,
+      "sha256": "1af12fe1748e3ba24ad3c71f4946dabf24a3c550ef7115896c376fb6436ac51d"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/work-controls-contact-sheet.png",
+      "bytes": 239571,
+      "sha256": "47b43ade617b33379a6442777e08ea890c49ab022e8580fb5a46620c8681dad2"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/work-controls-dropdown-selected.png",
+      "bytes": 478683,
+      "sha256": "9385c59dd6dc6de9e9541603e63b9dc2afb67d363e4486e60bd572ebcd9f1125"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/work-controls-end.png",
+      "bytes": 471332,
+      "sha256": "565e59960b0a44c465bb7e63a86e73bcdccecd43564af2cf57bc7e9cd68eb89d"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/work-controls-middle.png",
+      "bytes": 467649,
+      "sha256": "4afb1aec2812e9fc7c0ef89bd0f9a74af48b44d02a666e02114604fcd068bf87"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/work-controls-start.png",
+      "bytes": 489267,
+      "sha256": "9a33e89e08e93fe51ee2d26257ff83652bd690c39ad8eb64e902484e3e90c3aa"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/ui/work-controls-visible-title-focus.png",
+      "bytes": 470993,
+      "sha256": "264698172a733906e7d92c59bdcdbfc537cd69cfd2b4b24dc4b8882b83404274"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/depth-and-occlusion-contact-sheet.png",
+      "bytes": 125813,
+      "sha256": "10b494594a7e868d57abddedd5f5bf783bb3772c2e28815b8bc4f6c74afd1350"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/depth-and-occlusion-end.png",
+      "bytes": 283809,
+      "sha256": "3ebb18b56a568e4ac8c00793da3da1381d09bb9e4263a50316b944c8c65d7fa2"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/depth-and-occlusion-middle.png",
+      "bytes": 283647,
+      "sha256": "de9119a308fec3b4209b3a3691d77378f46cf4af1c64c153493771ba64a5ff37"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/depth-and-occlusion-start.png",
+      "bytes": 284061,
+      "sha256": "89f708843e20c81eedbb5a907f1c9b21687dca9fd55aedbb10e6db544898865f"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/employee-idle-cycle-contact-sheet.png",
+      "bytes": 144552,
+      "sha256": "013c6d457564643921fb24c7598e2c9ca9abc1aca21429bfb70b2e0a9ded2cc5"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/employee-idle-cycle-end.png",
+      "bytes": 341533,
+      "sha256": "4a053af1afdef7c704ae10efc0ada0fb72589c4a3ef8067d5190ff4baef9853e"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/employee-idle-cycle-middle.png",
+      "bytes": 343219,
+      "sha256": "27df824293ef9f94a762aa94989cb1d8ec6977168f4d7538eb907a1f65547add"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/employee-idle-cycle-start.png",
+      "bytes": 344349,
+      "sha256": "5724e94514163d18231b212ee4d89fa34c76ca6a798ceffc572e5af6364b563c"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/founder-locomotion-contact-sheet.png",
+      "bytes": 125401,
+      "sha256": "7b1b9682c11575f5ed4b4e2d4b147f80ac27bc34ba144663c71fbdbf1c79d890"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/founder-locomotion-end.png",
+      "bytes": 283676,
+      "sha256": "19925b9f9373cb39300e3f9ec3142ab23e7d54937da1115ce82d337a8900a3ac"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/founder-locomotion-middle.png",
+      "bytes": 283063,
+      "sha256": "116bcc0bdbf47615f75fdfb840850e8fb4d622b3ea4ced51890cd922ad9962ba"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/founder-locomotion-start.png",
+      "bytes": 284388,
+      "sha256": "1e8561e29380465a370bfda11ce498134ae3de51bb3c090677f069cd3e0c20d9"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/job-state-cycle-contact-sheet.png",
+      "bytes": 157374,
+      "sha256": "14bdb3c29b9c1f5ed5441ab5ccad3f414a7f6a3fa1d96617653563dc064676d3"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/job-state-cycle-end.png",
+      "bytes": 378273,
+      "sha256": "0ece5e3d68bfaf35bcb0438b1bbab2b02759466d68f80489a325d571f7b862f8"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/job-state-cycle-middle.png",
+      "bytes": 339940,
+      "sha256": "71719b486c38f9f40e7f75bf3aa8745dd530971bfdfeb358878950bc2c83fc6a"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/job-state-cycle-start.png",
+      "bytes": 344524,
+      "sha256": "8e5cab289c831ac4beb2ff9bfbeefb493aa10175bdbe02977d37bb7bbe85c2cb"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/manifest.json",
+      "bytes": 23639,
+      "sha256": "ce70a5c15a331b758246709dba677217e4af24bd404270f745121ee82c697129"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/office-growth-contact-sheet.png",
+      "bytes": 123333,
+      "sha256": "51b91c4f6ac6d7cea74dd7479ba51e2a609e26596b93dacd54d63d0707b863ec"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/office-growth-end.png",
+      "bytes": 284302,
+      "sha256": "0f9436f6d5996af21dde1bf6bc96cdc3749aa018ab1d33ea56a371b60211f206"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/office-growth-middle.png",
+      "bytes": 283424,
+      "sha256": "7cca9def66166bf458ade767e8006715866f4b7c9c5084d6f2b9edb003e914b7"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/office-growth-start.png",
+      "bytes": 263333,
+      "sha256": "08ddf64c0cdd446e9f866eb97f53af5577cd9681334436b833a242e3a8ff204a"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/schedule-cycle-contact-sheet.png",
+      "bytes": 143481,
+      "sha256": "bbff7e71fe313bd82f8c7cd7d72e12de482aa34ca3105812fab17f0dedba070a"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/schedule-cycle-end.png",
+      "bytes": 339022,
+      "sha256": "0ab33c7f6df1c1cf5582de5b6a8547ff4e9e8027689398560824a523928e9c23"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/schedule-cycle-middle.png",
+      "bytes": 340786,
+      "sha256": "7e9cac08a22a2e51ac56f46050ab878782fa9716994fd55f7c9cf95979f6b921"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/polish-audit/world/schedule-cycle-start.png",
+      "bytes": 344221,
+      "sha256": "7ce0b36ad53cfa482a5c3445c2a2fba56b5b17920622b31dd943bb6e9deb21f7"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/render-results.json",
+      "bytes": 156729,
+      "sha256": "19ed1f4c341621c21b0eecdc8d1dd6e7d69127f90117ad7ac58c9fe2b2d67d66"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/runtime-window-review/integer2x-drawer-detail.png",
+      "bytes": 410091,
+      "sha256": "4f2f8782f6a30bf234d4846bcf9f082c91561d3f49ae6e6caef49112752d91b4"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/runtime-window-review/integer2x-drawer.png",
+      "bytes": 714712,
+      "sha256": "16499f2f524137746d4820771e8fcdaa5cb6fca63f8cd86ef016c403e716e8f2"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/runtime-window-review/integer2x-reader-detail.png",
+      "bytes": 173164,
+      "sha256": "2fb7ac63ba5ddc216fefe6da9feda629386f6e20ac902c6f6a34014096ad0f2c"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/runtime-window-review/integer2x-reader.png",
+      "bytes": 569528,
+      "sha256": "6d7581e51afc8bd9301d7aa550129c3703a4c6151a5bf99d02062ec0b5568036"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/runtime-window-review/integer2x-world-hover-detail.png",
+      "bytes": 35628,
+      "sha256": "9a4090f0a30a97e98e16dcf9121540e0b8a78f5d0fd2dc73bb143b025ca2f794"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/runtime-window-review/integer2x-world-hover.png",
+      "bytes": 525822,
+      "sha256": "3ac7d69746dfb9a4e0c66fcba5619e6ddae4923c029d3b2a48a383e5bdf0bfb4"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/runtime-window-review/letterbox-drawer-detail.png",
+      "bytes": 288992,
+      "sha256": "4764b072a7d2218784527b00ebcc4f83c91c04fc0f57d25e7968efd3417d65cc"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/runtime-window-review/letterbox-drawer.png",
+      "bytes": 545689,
+      "sha256": "82b7a3bfa601ad9d14b9d94ab5a7f14a77cfe8644de9e5213f6d764d508dd940"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/runtime-window-review/letterbox-reader-detail.png",
+      "bytes": 119335,
+      "sha256": "8bc16845f7f4b63950cf34c76ce24ebd6c00e35549ad085eaa716d78ab5775c4"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/runtime-window-review/letterbox-reader.png",
+      "bytes": 429827,
+      "sha256": "448b75be11889dda8474ce8fe364783dabc868e1895e380a9b2e1e224ac48723"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/runtime-window-review/letterbox-world-hover-detail.png",
+      "bytes": 32176,
+      "sha256": "ea5d07c480e8d982af5f99834793b869fb49652d05df0d7743aa22c8426daaca"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/runtime-window-review/letterbox-world-hover.png",
+      "bytes": 410863,
+      "sha256": "15fd6cb1e1509edd2b3ef455579324bce8022c542efb103bebc88f6f96b747ef"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/runtime-window-review/manifest.json",
+      "bytes": 24606,
+      "sha256": "55b237c7b514bd9c693d24bdf35b1173f1590b1046634c72729a79741562da4b"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/runtime-window-review/native-drawer-detail.png",
+      "bytes": 239736,
+      "sha256": "b1b2f9672174744d76a15f8795024ec0390bce7343b1c5a487a3eca6c188955f"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/runtime-window-review/native-drawer.png",
+      "bytes": 458034,
+      "sha256": "ed5965c65c400021c7a7509affd69cb047531aafad7c0f478b4e87c4b4e947d1"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/runtime-window-review/native-reader-detail.png",
+      "bytes": 103405,
+      "sha256": "68aa14f459e321e254a09b942a3ca0f1160962214722fa9971056e1be922770d"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/runtime-window-review/native-reader.png",
+      "bytes": 363678,
+      "sha256": "0ee67cea5a41419e0ebc1f036ff29f7f94cf2ddbb867d98e844243b341571d74"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/runtime-window-review/native-world-hover-detail.png",
+      "bytes": 28481,
+      "sha256": "581a2b4586f80f6ff6ede7459b02c99033689f04d08cae41d163683a8c3180a6"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/runtime-window-review/native-world-hover.png",
+      "bytes": 343798,
+      "sha256": "d6ed9765d87d7eae64a89c83d52f0625ccf2df7f74826730ee2e7137a2e60d3e"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/office-hires-0.png",
+      "bytes": 176409,
+      "sha256": "5406f77e2c0c91cb6fb23bb263b3fe6945b6ef1e1dfc6f2555267d8f70921816"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/office-hires-1.png",
+      "bytes": 198401,
+      "sha256": "a892df71da79b3707f939a668728e6c7b0a658ad6367590ba32b0d7fc0ca73be"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/office-hires-2.png",
+      "bytes": 205912,
+      "sha256": "4be0a5636d8bf65f80c4792a5574aebe790d7d0c6de5c0fb7a62baa9a2f73164"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/office-hires-3.png",
+      "bytes": 205912,
+      "sha256": "4be0a5636d8bf65f80c4792a5574aebe790d7d0c6de5c0fb7a62baa9a2f73164"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/office-hires-4.png",
+      "bytes": 206663,
+      "sha256": "d78949e10841c119ddae73dd873ef4a84dbe0beb56abd384507a07c180a80a79"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-artifact.png",
+      "bytes": 332523,
+      "sha256": "e3a7714ef5e10b7b336e544d91cd84f8b0c1e9878b8721ab9d12c7eec05c66ba"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-chat-active-readonly.png",
+      "bytes": 463193,
+      "sha256": "308392c1f0d0f393eed1b2f2a53ca1c77d674c68547a8f85b8e4747daddb6e47"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-chat-long.png",
+      "bytes": 460141,
+      "sha256": "05717f4a0c1769d8fc4424c0a91485c2d0b591ec5a5be6b0a538018f787a194f"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-chat-to-assignment.png",
+      "bytes": 482028,
+      "sha256": "e746efef59b3b1a09429a9fae399a048507cf245d69e3ada9bb00c7817f10a58"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-chat.png",
+      "bytes": 460991,
+      "sha256": "44eaddb2b344629cfa8b84115a4224fa1394a3db4ac6f33b598872048d18724f"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-completion-memo.png",
+      "bytes": 375480,
+      "sha256": "70380f85bce8a168285a010326543c3ed6bdc79ada467d5bd964c15c5ca62cd9"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-connect.png",
+      "bytes": 405272,
+      "sha256": "b32c381fd48bf5d7158098853dc33bc98234d950f1a59497c4cfb9c77ad46d36"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-empty-team.png",
+      "bytes": 310760,
+      "sha256": "5de177eae0e01707a2fb61330f54c9f077a9d123e61f060a998b5f979b07f4e2"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-error.png",
+      "bytes": 390596,
+      "sha256": "b312fb1af0530b001378af57ca5c810a9f3410f8fb5dc6f96a7f40571bde4333"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-founder-hud.png",
+      "bytes": 365046,
+      "sha256": "943bc8f68a1f4dfb4cfe1a6b8d829d6236a68a84c2da5818cc3702b5fbf2b221"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-journal-active.png",
+      "bytes": 460948,
+      "sha256": "c3651ff6338b0bbbdd125a518adb31a2f9a58535c849d7b6e8fb57d047295f8c"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-journal-approval.png",
+      "bytes": 466217,
+      "sha256": "f3c997cee7ce61e4cd9c4b8553c3a244c0821c8aa744de2d6a9e9e150a8537e5"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-journal-promotion.png",
+      "bytes": 455611,
+      "sha256": "64b2f99d9985971f34db8050674bb35d81c30aa9fedb7cacff05a8b32e1873d6"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-journal-queued.png",
+      "bytes": 460765,
+      "sha256": "9388af9eb5fb5743225e8f1632d1ee89ba9fc916aa998b22bb670fa189dc8f55"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-keyboard-focus.png",
+      "bytes": 472624,
+      "sha256": "c81bca10188237e9afe306414a1c10db418d296de1ab8c816534020b269a1bbb"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-notification-dismissed.png",
+      "bytes": 343576,
+      "sha256": "4fc2f217ab266a00825fb8f579cd7adb757ddd818893ffad08c721bac5c1990f"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-off-hours.png",
+      "bytes": 469050,
+      "sha256": "3d6b36d79e1a7718fa39ec08cfae34abeaac7ba5c89b2e099e5169effec44cec"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-studio-empty.png",
+      "bytes": 420448,
+      "sha256": "976c9d4c9eae68921270740a4721ececf5f1e6d9a310eebc9e816c27b6002d08"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-studio.png",
+      "bytes": 415440,
+      "sha256": "183f7ea7120b5ea3f54eb97bc24e51346417154653bbe4d9b36d477f2d366ec8"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-team-rail.png",
+      "bytes": 344221,
+      "sha256": "7ce0b36ad53cfa482a5c3445c2a2fba56b5b17920622b31dd943bb6e9deb21f7"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-work.png",
+      "bytes": 469282,
+      "sha256": "3f7dc1d3f8a173c16db6701812cb5d2676d3c0e007d66575b19c44fc43dc74b1"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-20260908-final3/visual-review/ui-world-speech.png",
+      "bytes": 347336,
+      "sha256": "2e14901c60f67b71099e54f9939103a76ccfa86cc28c01a1cdde0c3e48f0bc72"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/directional-input/after-headless.json",
+      "bytes": 1670,
+      "sha256": "d845f8096eb60ab2fff7e37f37552c0636045d830a40f3cf1bdb55c97b91ce4c"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/headless-results.json",
+      "bytes": 170872,
+      "sha256": "f3ee170b9213ad682dfb76c2e5176882ff12313ae5e22af2c97df46ef7b9699d"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-import.log",
+      "bytes": 1352,
+      "sha256": "bd175cdf7c9db6376ff16d7e39ebc7f084e899ed5358467e834bf6e8bdbe9165"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-run_all.log",
+      "bytes": 107,
+      "sha256": "3279f306235ae2a49534e90fa28717f7476fb021d291a93705d579f617489d12"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_approval_console_production.log",
+      "bytes": 124,
+      "sha256": "2ef00759bdaac6e80ca82d1852e553b13cd7df1705e69eafa19aac7b92c4eecd"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_archive_production.log",
+      "bytes": 157,
+      "sha256": "901e474d673e33558793627cc61ff2015cefeaa21764b708fe5289cf39adbbfe"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_audit_output_scope.log",
+      "bytes": 115,
+      "sha256": "c7a6fc48cbbc353aed66ce7a2b00253bb661a06b4fb316e9955dba5f7a2b515d"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_click_feedback_presentation.log",
+      "bytes": 124,
+      "sha256": "f56dbae23e0c39fd6909feb45fd41ace3df9715fc54eff0e0710115aa5a56dc8"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_coffee_station_production.log",
+      "bytes": 160,
+      "sha256": "b816bd642ee7c92a90b058fde204c60bc8f7c94f9a26a3cf58c1e26325e027e0"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_collaboration_production.log",
+      "bytes": 1231,
+      "sha256": "b0f3ece908e6eb4a691419a68893284a76b80867974ada809841c26df30237d9"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_complete_game.log",
+      "bytes": 112,
+      "sha256": "ba3ac06b0dc31f01b196a51bcb7f0373c668def4a3fe1555ab086f71a4da5c29"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_connection_retry_guard.log",
+      "bytes": 119,
+      "sha256": "0276a1ed82990ac57345355d472ce8bcb2c68d0656ca8624b32d568d3999185e"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_directional_input.log",
+      "bytes": 115,
+      "sha256": "f6787012b686e23bddf490e692dcd57009a83b0d25deee0df9d5634344904758"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_furniture_directions.log",
+      "bytes": 174,
+      "sha256": "62ff7fb97605ee458f99b5534708672d3dd275409f3291d55186d2e8e6be164e"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_graphics_regressions.log",
+      "bytes": 180,
+      "sha256": "3200547ac505ebf62ddc512642c6994bc7a5a816845cb43d6d4ef443da7c2ca7"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_grounded_shadow_x_follow.log",
+      "bytes": 126,
+      "sha256": "9a6e784b36bd93361b40c178410f347a100dc51e9b047fbbc43e06fb9fbbf945"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_grounded_work_shadow.log",
+      "bytes": 120,
+      "sha256": "0d1f5cdff0ffabc8bfe6daff339181aa0d083d2aca4a8ae0549f638470e30de6"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_locomotion_export.log",
+      "bytes": 115,
+      "sha256": "93ac347679d74895d56fce87ded3e3ed2f9f64efe53886ce20fe2fc56aa0fba7"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_lunch_standing.log",
+      "bytes": 135,
+      "sha256": "a246ebd4c754dc23aa6162ac3213a9df2bd73c687f34f8640ab7e364fd83774a"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_modular_office.log",
+      "bytes": 141,
+      "sha256": "9312bab2459e69e18cf891331fba4ce77c853d8660e2dc0a20907ad152cdee58"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_office_architecture.log",
+      "bytes": 112,
+      "sha256": "2a52686e05da8d24976cfdfbc7d6c4b33ca80a8f2d5f5454527f955d956fec3d"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_office_layout.log",
+      "bytes": 106,
+      "sha256": "6543f79eb6ef2d28da576a187fb664361d5673dbbfcf906090ca41b1449d3abe"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_office_layout_editor.log",
+      "bytes": 169,
+      "sha256": "fc85a864b99cddac29567148db3088a3b865bf65ad2665307972416b8d2d8608"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_office_migration.log",
+      "bytes": 110,
+      "sha256": "62f7399085780f2b1d1a4a38c2177468bc72888deebe2ddaedd118a601505da1"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_prototype_bench_production.log",
+      "bytes": 123,
+      "sha256": "278a92c703f85fe6c335f41e1eff14e2f245dc1817a014f2521282fa758f819a"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_reader_hud_redesign.log",
+      "bytes": 117,
+      "sha256": "1dfcec97f883e4de70246c7a256720a917b2d8223346348fc0fd6695adca975a"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_research_bench_production.log",
+      "bytes": 122,
+      "sha256": "b8a34e8d7d4d4f572ab9b4b19ba82258e7da7afcf8dae367453820255a64b361"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_reviewed_workstation_production.log",
+      "bytes": 129,
+      "sha256": "352f5e6a5f02740f0803ec9b197dc2f1055eac071adeb7466cb249ac6d35f496"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_ui_company_redesign.log",
+      "bytes": 130,
+      "sha256": "e770a310fc98ec1aa8d66f53fc6f63591efb41c90cc80e77972ba649000872d3"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_ui_drawer_redesign.log",
+      "bytes": 117,
+      "sha256": "71fdd2e2cef1296f95e38a7890cd36f3007ba4e73a10e7b149c6952ad313b65d"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_ui_flow_regressions.log",
+      "bytes": 101,
+      "sha256": "3da2bf1d2ae7e488a4594c5e50f0d72ce396fc5df92194d0d1569151b3989a75"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_visible_surface_picking.log",
+      "bytes": 1976,
+      "sha256": "f2f01cd02f0fe6fff3da76cc3b5e9f5338f4bc170aa8e2e87d757e6b246037ec"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_window_presentation.log",
+      "bytes": 111,
+      "sha256": "b264db9fc7c5ee8235b7ee48fbae51ba3e7893bfe4eed1243a7a2e84efa3135f"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-test_world_ui_presentation.log",
+      "bytes": 119,
+      "sha256": "636259b60d3b0be0ec405da70300fe3da943ffdba893d816cdb261fa237269cf"
+    },
+    {
+      "path": "game/tests/output/art-completion-furnishing-push-20260908/logs/headless-validate_project.log",
+      "bytes": 152,
+      "sha256": "b5d3e0ef23253c3abb950f228c7009a766ce522696be714246c2bd8bc5c05cc1"
     },
     {
       "path": "game/tests/output/base-furniture-review-2026-09-06/actual-room-results.json",
@@ -5255,8 +6221,8 @@
     },
     {
       "path": "game/tests/output/collaboration-production/results-headless.json",
-      "bytes": 14749,
-      "sha256": "008271be0ab4db6736914292bfb0e8fc8ca5e2750822db2669e8c579ee253649"
+      "bytes": 14761,
+      "sha256": "76573a9a9bd340ed57d0f52220f065607848253a03b15a6eba4b23aadcaf6404"
     },
     {
       "path": "game/tests/output/collaboration-production/rotation-contact-sheet-native.png",
@@ -7392,6 +8358,1116 @@
       "path": "game/tests/output/founder-strategy-kit/structural-results.json",
       "bytes": 387,
       "sha256": "88d603cd4d66970a7c5f412ecd6ef37efbcc9f9df50163ebb4d6b24f43e7eba5"
+    },
+    {
+      "path": "game/tests/output/furnishing-mature-ui-20260908-check1/mature-mina-kit-preview.png",
+      "bytes": 461425,
+      "sha256": "ff04e64e858c5e561d9b66a4808c13fc1decbed5d6309eb296ca8ff4f3c7fe32"
+    },
+    {
+      "path": "game/tests/output/furnishing-mature-ui-20260908-check1/mature-renovate-dropdown.png",
+      "bytes": 437446,
+      "sha256": "8a6a8673e637ced2ac652dfc1aeea24ad3897b6dd42c8b8e825da7912140be05"
+    },
+    {
+      "path": "game/tests/output/furnishing-mature-ui-20260908-check1/mature-renovate-open.png",
+      "bytes": 460416,
+      "sha256": "931b7720d9ff9cd34e10825f191bec7323f7bb11595fdfeda80af88fdc38d87f"
+    },
+    {
+      "path": "game/tests/output/furnishing-mature-ui-20260908-check1/mature-ui-manifest.json",
+      "bytes": 31108,
+      "sha256": "bf62586834dfd876e7c3acc083b5306c1aeb7e289347f24fa503f9e883ca01ef"
+    },
+    {
+      "path": "game/tests/output/furnishing-parity/godot-results.json",
+      "bytes": 36,
+      "sha256": "274d9c0b7964886d44ffa8a39892dd55befdba773f1cd058a6619635a424ee26"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/decorated-room.png",
+      "bytes": 353092,
+      "sha256": "4659d204b19b5443647879f62cbb93aea7725de7046a6ce5fa5983c67f220cf1"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/east-mira-approach.png",
+      "bytes": 354657,
+      "sha256": "abf0826e383dabffc9ed95005832d40dc25602882bd91aa76fa8a73956b296f5"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/east-mira-approval.png",
+      "bytes": 356437,
+      "sha256": "913aa3842f7e4c92f22e977d07647e1e4476e85a3ef9002dca8d2107b0d24675"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/east-mira-delivery.png",
+      "bytes": 354795,
+      "sha256": "1907f48035bfc56dea55db5b9d524601d46cebb5d8365f8ff60d41cf47683fc1"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/east-mira-failed-rest.png",
+      "bytes": 355718,
+      "sha256": "45f3f991c398943e891dbbb26a0041ecaeb2f10127a68b48117bc7df78bfadb2"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/east-mira-lunch.png",
+      "bytes": 353243,
+      "sha256": "12b16f621cbfc7588015a9f8953a7570caf882aba77a1ca61a043625782845c6"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/east-mira-research.png",
+      "bytes": 355003,
+      "sha256": "092d2cb93ec33d8ee078313138bd4f204d6f65e24092b1de1d45aa5bd295183b"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/east-mira-return.png",
+      "bytes": 352635,
+      "sha256": "aa34cf5b8e045e4c3108318e075e48527c06f71a068f9a9fea3c0b3777015ccc"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/east-mira-thinking.png",
+      "bytes": 350959,
+      "sha256": "290ea5a1863dc06010e975b09a23dca10b5c2c74d4e588c287f364a9cff38ee2"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/east-mira-typing.png",
+      "bytes": 350915,
+      "sha256": "9de7b18917d1e436bb9344bae44eb00479ff0001d80b7304d89b0f11ddafbf5d"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/east-theo-approach.png",
+      "bytes": 354214,
+      "sha256": "729f77e8e51715da7fd9e61122ea0942d899863cde0d51bd308ec111b437f9bd"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/east-theo-approval.png",
+      "bytes": 355883,
+      "sha256": "2bc7ccc9d20ce71c2de04f03459200717ec1832ab8eebc82ef47eb50bd4f7aaa"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/east-theo-delivery.png",
+      "bytes": 354288,
+      "sha256": "217f9948ff4787de9de8664aab3ad5363d4515f3007a9bd20a53b5c3e9c7a9b2"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/east-theo-failed-rest.png",
+      "bytes": 354854,
+      "sha256": "ff2ff36e2cd39c9c97944cedd9c2a71ab25077d2f9839344f12730d0ad7b98be"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/east-theo-lunch.png",
+      "bytes": 353496,
+      "sha256": "d4708781fe8a6acd5742510f21bda125cf2f69f6c7338391b2e2a5f2715706b7"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/east-theo-research.png",
+      "bytes": 352300,
+      "sha256": "cc3394ee777b9639deef156a0e32c3aa05bcaada5d1462f1ad597cdd9e2cda1c"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/east-theo-return.png",
+      "bytes": 351846,
+      "sha256": "70a63bc3b507f1d4af846e2f337b8c948c1465a31daa6a3235371834c22a4312"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/east-theo-thinking.png",
+      "bytes": 350842,
+      "sha256": "95d8331d1ee9aa416dc5bfdbadf0811bfd9ca4c657fea4cb9c0cacfe2bc8dc3e"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/east-theo-typing.png",
+      "bytes": 350803,
+      "sha256": "55b51ddef2e34e2ec7b1974fb484e3200e6276760bad078edcb7fe32263f84d7"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/manifest.json",
+      "bytes": 53135,
+      "sha256": "c029a727b11192694757f6bc24deb671a2694aa8c2d11e831992d0495f810d91"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/movie-north-mina-route-contact.png",
+      "bytes": 817864,
+      "sha256": "39c42b1ac4b2e4a2045605822b2adafac8d16bc35a4db16f52d400b6c69ac8dd"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/movie-typing-contact.png",
+      "bytes": 759218,
+      "sha256": "121896a1462b640cad6b197784a74ae5d767aa913132575c007b6c7f7b215a09"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/north-mira-approach.png",
+      "bytes": 356093,
+      "sha256": "509603747d34f647e3a277564a51b6c152484c627e3fb7ee12668c03ac4fae8f"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/north-mira-approval.png",
+      "bytes": 357233,
+      "sha256": "f5d2ae33da090b73f98a07d136e59e0df54317fcb9658f2d3df66cf96a44664a"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/north-mira-delivery.png",
+      "bytes": 355602,
+      "sha256": "6076d1c06bede8a83ebeb9cde25a807d7edaa4bee0341db38cd3ae6c63adef8b"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/north-mira-failed-rest.png",
+      "bytes": 357672,
+      "sha256": "e50c678fa9863f91fe74f89b02fe58bbb00c2ed5dffcb0ead03c4e90c8008af6"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/north-mira-lunch.png",
+      "bytes": 354260,
+      "sha256": "1273cdaf43fd3365f244e412756b8de18ef4a7085bd02accea1fddfd75029a31"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/north-mira-research.png",
+      "bytes": 354898,
+      "sha256": "2ccf971fd723dc9a6c11545acdbfbf871b74aca262c748349a24b17d76553fc8"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/north-mira-return.png",
+      "bytes": 354802,
+      "sha256": "705f5cfd4ab410a78ce9acddcecae7f6835c91575ddc8188deac2426f53a822f"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/north-mira-thinking.png",
+      "bytes": 355284,
+      "sha256": "13665b3eee35800405a3d155ca890694a5072828a6972d4310c7d9574df14554"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/north-mira-typing.png",
+      "bytes": 355221,
+      "sha256": "73c87b2b7baed25052e7c43b4857d134b739a6c6de5ff1cd0e724e0113db7c90"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/north-theo-approach.png",
+      "bytes": 355356,
+      "sha256": "9eca71d9f5450f4491286a2c2a7a1b4d80d3d0ee647818069c09f47f783dd6b8"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/north-theo-approval.png",
+      "bytes": 357179,
+      "sha256": "7ed4f9f5ae5f396d6b892e9c087df25fa1d4433feb87051054178daedfd3c201"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/north-theo-delivery.png",
+      "bytes": 355528,
+      "sha256": "9113a7d38e9eca572e9b2376c4a88e9f7d690e44d488c5215000a8dc771b77d4"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/north-theo-failed-rest.png",
+      "bytes": 357264,
+      "sha256": "4d6f7bb7a2f33acb9366305d3d15e84c9f3220140d33233a80c6ffc56154d224"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/north-theo-lunch.png",
+      "bytes": 354602,
+      "sha256": "61664f5b11b0b4ae3d1c55134ad5d07c65a7e78eed4591f35a7e6bc7685539ee"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/north-theo-research.png",
+      "bytes": 355893,
+      "sha256": "fc579d48bf5d04f14f0e251a6975b2ac7845a7ce0ac58e475399a64f02c1b5a3"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/north-theo-return.png",
+      "bytes": 354363,
+      "sha256": "c40267d57919f88ebe469c1238f4c3c8b034a5bd5f1e9ff32ea7c235f2441c6d"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/north-theo-thinking.png",
+      "bytes": 353514,
+      "sha256": "1de49504d5cc3dbf8f060f36ac0bbb14a5cf5d2ef51589ed5900828ffa08a214"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/north-theo-typing.png",
+      "bytes": 353492,
+      "sha256": "b84a6ed2076ebeb8789e59b43bcc4b58ff145032978a90dc62094d1416485d60"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/role-lifecycle-contact-native.png",
+      "bytes": 452995,
+      "sha256": "ab18dd9d30bae1af175c684016ff3fb2f65d1723bf8b68c411543809b851cfec"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/south-mira-approach.png",
+      "bytes": 352734,
+      "sha256": "d09f847f67b4ed26c1a9709cc1d4f7381dab573e1f735c9217dab882068edf0e"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/south-mira-approval.png",
+      "bytes": 354657,
+      "sha256": "041562791688d1a0d47cfc01dff3f3fc2326bcedc29f7e7d86f7f3694e404a07"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/south-mira-delivery.png",
+      "bytes": 352982,
+      "sha256": "bbf725b3cbbe2e15ef5b5b41b3aedde1632f8bc6ec0663ea388f015bc4f636bf"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/south-mira-failed-rest.png",
+      "bytes": 354037,
+      "sha256": "6dd5747f49087516eef706d07aa5701fc5daf57b5a2a37c0c7da15239fe50908"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/south-mira-lunch.png",
+      "bytes": 351588,
+      "sha256": "ae4ea5468b40cd4469941d949ab5f8c85eeada382932897a3800de9548047295"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/south-mira-research.png",
+      "bytes": 353435,
+      "sha256": "75edf3658c63cd366e56f76e97d9af65d142f2b056eda2459af4734f0616aeb2"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/south-mira-return.png",
+      "bytes": 351099,
+      "sha256": "c4597a88f3244e82916fc057b2d75694ec9ca1cd39cac512eb6053416665e677"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/south-mira-thinking.png",
+      "bytes": 348687,
+      "sha256": "06c0b19003a9cb3e8c6619f7e09a0e8fce6e74217ae7f1700c99987540619a48"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/south-mira-typing.png",
+      "bytes": 348707,
+      "sha256": "34c192a8782161d71e184dec53498cff0e3e1efc07b12a02c44053782d5abb4f"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/south-theo-approach.png",
+      "bytes": 351845,
+      "sha256": "d9a2e5cf60fd25f14c2b5facffbe60e18b3de85d335f4cb4339a2b5349608011"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/south-theo-approval.png",
+      "bytes": 354349,
+      "sha256": "65073d1057f50e9a0ab93f8fcb7e7fc712df81536ee4b6e370a0e7008492edf4"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/south-theo-delivery.png",
+      "bytes": 352715,
+      "sha256": "f28ac045a8b68d487a2e5d8735a58af1d77169df05336feaae85a61f0cd4fd87"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/south-theo-failed-rest.png",
+      "bytes": 353601,
+      "sha256": "090d3260c5248a25dc2b48410379a7e5bc0e311ac568d5356de7ec6d9050b745"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/south-theo-lunch.png",
+      "bytes": 351888,
+      "sha256": "40ef0613fa82867d1bd76e7cafad48f35cb1d4f448cefdf4be4881a8de441228"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/south-theo-research.png",
+      "bytes": 350390,
+      "sha256": "100fa6377b16b4a8aef3b9c555c5d4f301d5c6d1caabadca656df0db7d7ae36f"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/south-theo-return.png",
+      "bytes": 350599,
+      "sha256": "8c9a7b3ebe6a87c6cb791c29d94c1103c39cf1bdfbf19b2ad0632850637195fa"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/south-theo-thinking.png",
+      "bytes": 348821,
+      "sha256": "10ae460e4b1ad59db8c195ee7fb5a36284036d3e0728984fff67ba935da87d42"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/south-theo-typing.png",
+      "bytes": 348778,
+      "sha256": "413edb375fce0cb2774424be8b7b9aa03599382a9981f563001baa1a6ca8edb7"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/verification.json",
+      "bytes": 988,
+      "sha256": "09d8ca3065ea9345e6e1055bbb79b694eeb87f13f98fb9ed72b9465ef3eac436"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/west-mira-approach.png",
+      "bytes": 354661,
+      "sha256": "4bcf48ec95f9b19f0f464398d5becf06193107de15e8736ccd61898f5fca99ec"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/west-mira-approval.png",
+      "bytes": 356325,
+      "sha256": "e0ddc71f218aa3c44399442606d4fd088f59c5d9de1c743bf96b9a17115ee743"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/west-mira-delivery.png",
+      "bytes": 354682,
+      "sha256": "0e126c8177108cc056e92a69fcf575b88b7cb481b3303af7a39fc8f6c7710b71"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/west-mira-failed-rest.png",
+      "bytes": 355454,
+      "sha256": "75dda913dc83a8c0ec0c8571523c1719f997fd7e7d23fb199afa63d1cdb77377"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/west-mira-lunch.png",
+      "bytes": 353226,
+      "sha256": "ebe2a4574cf141e0fc69b0448b0fe15dddccbea38aba01fa15a2caf78752fd79"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/west-mira-research.png",
+      "bytes": 351669,
+      "sha256": "728f953c2d6a486f3998498e28b601b7bed46c2eca90c439ea838a6fa90f2341"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/west-mira-return.png",
+      "bytes": 352370,
+      "sha256": "b86f6c733564185eae35a5593a2267b2a4c0537499cb32efe47352f37368ca2b"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/west-mira-thinking.png",
+      "bytes": 352644,
+      "sha256": "c1556f8398242d233c2ddca4a53ecda9a3a0fbba86720179df5464d007fe0ab6"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/west-mira-typing.png",
+      "bytes": 351517,
+      "sha256": "790c4d4d0b3e71e884835c982574f3d8ca208de1d53a79cd8bcde784e22baf25"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/west-theo-approach.png",
+      "bytes": 353386,
+      "sha256": "fc26a9702450acaaa0caa6facefe4c437a4a13581462c01ccf36a732abf2278d"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/west-theo-approval.png",
+      "bytes": 356028,
+      "sha256": "d2f539e0db14b83004d4a450fa63b914bc7d3ca171b9c94412084340df45dcd5"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/west-theo-delivery.png",
+      "bytes": 354428,
+      "sha256": "95ae514d25bb5fb70e85b8349fe246e2386cd5f48fa660c5c7548decd492c579"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/west-theo-failed-rest.png",
+      "bytes": 354882,
+      "sha256": "ecdda009aca141ba94a61a690076068bb4e12e4bbe2d36d57bffce69b226268d"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/west-theo-lunch.png",
+      "bytes": 353514,
+      "sha256": "a7513c4dad16653bbf71e33f049f3c365e7bca796c9534feaabfe48b7670e39d"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/west-theo-research.png",
+      "bytes": 352031,
+      "sha256": "0b4c332ab1678c97f8b55c30e22c6d029f7126acee500953e4482abbcc0d7b1b"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/west-theo-return.png",
+      "bytes": 351931,
+      "sha256": "10005811c604fcbe08f24dca84e66b7ae2e48b8607ca794898e78050790fcabc"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/west-theo-thinking.png",
+      "bytes": 350769,
+      "sha256": "d23e7af01b1d581e38b8fca3a649bad388247929f0303619817d6a3ffe82a591"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime-motion-20260908-check1/west-theo-typing.png",
+      "bytes": 350333,
+      "sha256": "7f9cc10601113041bf1ce9e0388fcd24d6cc07e34c7b49b8cfbd063932c94171"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/decor-east.png",
+      "bytes": 352870,
+      "sha256": "61f636285d1ff24af46512f445f3eeee158f33b523ff048a4a031080ccc10971"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/decor-manifest.json",
+      "bytes": 810,
+      "sha256": "52fb6e141defa6063164c0bf7c211ea34fa9b726ca1f057e5389a3fed41f5538"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/decor-north.png",
+      "bytes": 352828,
+      "sha256": "e3995ef535c4edbc1d326a0a65901445b251a10414f50bc86beae47da012ab53"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/decor-south.png",
+      "bytes": 353092,
+      "sha256": "4659d204b19b5443647879f62cbb93aea7725de7046a6ce5fa5983c67f220cf1"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/decor-west.png",
+      "bytes": 353145,
+      "sha256": "d3172915440bc764eb9ef577faf16fcfb2538b0fdc9950b375a5f31f33b70aa8"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/decorated-room.png",
+      "bytes": 353092,
+      "sha256": "4659d204b19b5443647879f62cbb93aea7725de7046a6ce5fa5983c67f220cf1"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/east-mira-approach.png",
+      "bytes": 354657,
+      "sha256": "abf0826e383dabffc9ed95005832d40dc25602882bd91aa76fa8a73956b296f5"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/east-mira-approval.png",
+      "bytes": 356437,
+      "sha256": "913aa3842f7e4c92f22e977d07647e1e4476e85a3ef9002dca8d2107b0d24675"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/east-mira-delivery.png",
+      "bytes": 354795,
+      "sha256": "1907f48035bfc56dea55db5b9d524601d46cebb5d8365f8ff60d41cf47683fc1"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/east-mira-failed-rest.png",
+      "bytes": 355718,
+      "sha256": "45f3f991c398943e891dbbb26a0041ecaeb2f10127a68b48117bc7df78bfadb2"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/east-mira-lunch.png",
+      "bytes": 353243,
+      "sha256": "12b16f621cbfc7588015a9f8953a7570caf882aba77a1ca61a043625782845c6"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/east-mira-research.png",
+      "bytes": 355003,
+      "sha256": "092d2cb93ec33d8ee078313138bd4f204d6f65e24092b1de1d45aa5bd295183b"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/east-mira-return.png",
+      "bytes": 352635,
+      "sha256": "aa34cf5b8e045e4c3108318e075e48527c06f71a068f9a9fea3c0b3777015ccc"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/east-mira-thinking.png",
+      "bytes": 350959,
+      "sha256": "290ea5a1863dc06010e975b09a23dca10b5c2c74d4e588c287f364a9cff38ee2"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/east-mira-typing.png",
+      "bytes": 350915,
+      "sha256": "9de7b18917d1e436bb9344bae44eb00479ff0001d80b7304d89b0f11ddafbf5d"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/east-theo-approach.png",
+      "bytes": 354214,
+      "sha256": "729f77e8e51715da7fd9e61122ea0942d899863cde0d51bd308ec111b437f9bd"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/east-theo-approval.png",
+      "bytes": 355883,
+      "sha256": "2bc7ccc9d20ce71c2de04f03459200717ec1832ab8eebc82ef47eb50bd4f7aaa"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/east-theo-delivery.png",
+      "bytes": 354288,
+      "sha256": "217f9948ff4787de9de8664aab3ad5363d4515f3007a9bd20a53b5c3e9c7a9b2"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/east-theo-failed-rest.png",
+      "bytes": 354854,
+      "sha256": "ff2ff36e2cd39c9c97944cedd9c2a71ab25077d2f9839344f12730d0ad7b98be"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/east-theo-lunch.png",
+      "bytes": 353496,
+      "sha256": "d4708781fe8a6acd5742510f21bda125cf2f69f6c7338391b2e2a5f2715706b7"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/east-theo-research.png",
+      "bytes": 352300,
+      "sha256": "cc3394ee777b9639deef156a0e32c3aa05bcaada5d1462f1ad597cdd9e2cda1c"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/east-theo-return.png",
+      "bytes": 351846,
+      "sha256": "70a63bc3b507f1d4af846e2f337b8c948c1465a31daa6a3235371834c22a4312"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/east-theo-thinking.png",
+      "bytes": 350842,
+      "sha256": "95d8331d1ee9aa416dc5bfdbadf0811bfd9ca4c657fea4cb9c0cacfe2bc8dc3e"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/east-theo-typing.png",
+      "bytes": 350803,
+      "sha256": "55b51ddef2e34e2ec7b1974fb484e3200e6276760bad078edcb7fe32263f84d7"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/manifest.json",
+      "bytes": 14830,
+      "sha256": "b48890a61df0170768df13cb4e4b77b65fe524f3f2a1e8489e248328179344ac"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/north-mira-approach.png",
+      "bytes": 356093,
+      "sha256": "509603747d34f647e3a277564a51b6c152484c627e3fb7ee12668c03ac4fae8f"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/north-mira-approval.png",
+      "bytes": 357233,
+      "sha256": "f5d2ae33da090b73f98a07d136e59e0df54317fcb9658f2d3df66cf96a44664a"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/north-mira-delivery.png",
+      "bytes": 355602,
+      "sha256": "6076d1c06bede8a83ebeb9cde25a807d7edaa4bee0341db38cd3ae6c63adef8b"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/north-mira-failed-rest.png",
+      "bytes": 357672,
+      "sha256": "e50c678fa9863f91fe74f89b02fe58bbb00c2ed5dffcb0ead03c4e90c8008af6"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/north-mira-lunch.png",
+      "bytes": 354260,
+      "sha256": "1273cdaf43fd3365f244e412756b8de18ef4a7085bd02accea1fddfd75029a31"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/north-mira-research.png",
+      "bytes": 354898,
+      "sha256": "2ccf971fd723dc9a6c11545acdbfbf871b74aca262c748349a24b17d76553fc8"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/north-mira-return.png",
+      "bytes": 354802,
+      "sha256": "705f5cfd4ab410a78ce9acddcecae7f6835c91575ddc8188deac2426f53a822f"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/north-mira-thinking.png",
+      "bytes": 355284,
+      "sha256": "13665b3eee35800405a3d155ca890694a5072828a6972d4310c7d9574df14554"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/north-mira-typing.png",
+      "bytes": 355221,
+      "sha256": "73c87b2b7baed25052e7c43b4857d134b739a6c6de5ff1cd0e724e0113db7c90"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/north-theo-approach.png",
+      "bytes": 355356,
+      "sha256": "9eca71d9f5450f4491286a2c2a7a1b4d80d3d0ee647818069c09f47f783dd6b8"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/north-theo-approval.png",
+      "bytes": 357179,
+      "sha256": "7ed4f9f5ae5f396d6b892e9c087df25fa1d4433feb87051054178daedfd3c201"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/north-theo-delivery.png",
+      "bytes": 355528,
+      "sha256": "9113a7d38e9eca572e9b2376c4a88e9f7d690e44d488c5215000a8dc771b77d4"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/north-theo-failed-rest.png",
+      "bytes": 357264,
+      "sha256": "4d6f7bb7a2f33acb9366305d3d15e84c9f3220140d33233a80c6ffc56154d224"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/north-theo-lunch.png",
+      "bytes": 354602,
+      "sha256": "61664f5b11b0b4ae3d1c55134ad5d07c65a7e78eed4591f35a7e6bc7685539ee"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/north-theo-research.png",
+      "bytes": 355893,
+      "sha256": "fc579d48bf5d04f14f0e251a6975b2ac7845a7ce0ac58e475399a64f02c1b5a3"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/north-theo-return.png",
+      "bytes": 354363,
+      "sha256": "c40267d57919f88ebe469c1238f4c3c8b034a5bd5f1e9ff32ea7c235f2441c6d"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/north-theo-thinking.png",
+      "bytes": 353514,
+      "sha256": "1de49504d5cc3dbf8f060f36ac0bbb14a5cf5d2ef51589ed5900828ffa08a214"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/north-theo-typing.png",
+      "bytes": 353492,
+      "sha256": "b84a6ed2076ebeb8789e59b43bcc4b58ff145032978a90dc62094d1416485d60"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/role-lifecycle-contact-native.png",
+      "bytes": 452995,
+      "sha256": "ab18dd9d30bae1af175c684016ff3fb2f65d1723bf8b68c411543809b851cfec"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/south-mira-approach.png",
+      "bytes": 352734,
+      "sha256": "d09f847f67b4ed26c1a9709cc1d4f7381dab573e1f735c9217dab882068edf0e"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/south-mira-approval.png",
+      "bytes": 354657,
+      "sha256": "041562791688d1a0d47cfc01dff3f3fc2326bcedc29f7e7d86f7f3694e404a07"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/south-mira-delivery.png",
+      "bytes": 352982,
+      "sha256": "bbf725b3cbbe2e15ef5b5b41b3aedde1632f8bc6ec0663ea388f015bc4f636bf"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/south-mira-failed-rest.png",
+      "bytes": 354037,
+      "sha256": "6dd5747f49087516eef706d07aa5701fc5daf57b5a2a37c0c7da15239fe50908"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/south-mira-lunch.png",
+      "bytes": 351588,
+      "sha256": "ae4ea5468b40cd4469941d949ab5f8c85eeada382932897a3800de9548047295"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/south-mira-research.png",
+      "bytes": 353435,
+      "sha256": "75edf3658c63cd366e56f76e97d9af65d142f2b056eda2459af4734f0616aeb2"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/south-mira-return.png",
+      "bytes": 351099,
+      "sha256": "c4597a88f3244e82916fc057b2d75694ec9ca1cd39cac512eb6053416665e677"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/south-mira-thinking.png",
+      "bytes": 348687,
+      "sha256": "06c0b19003a9cb3e8c6619f7e09a0e8fce6e74217ae7f1700c99987540619a48"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/south-mira-typing.png",
+      "bytes": 348707,
+      "sha256": "34c192a8782161d71e184dec53498cff0e3e1efc07b12a02c44053782d5abb4f"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/south-theo-approach.png",
+      "bytes": 351845,
+      "sha256": "d9a2e5cf60fd25f14c2b5facffbe60e18b3de85d335f4cb4339a2b5349608011"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/south-theo-approval.png",
+      "bytes": 354349,
+      "sha256": "65073d1057f50e9a0ab93f8fcb7e7fc712df81536ee4b6e370a0e7008492edf4"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/south-theo-delivery.png",
+      "bytes": 352715,
+      "sha256": "f28ac045a8b68d487a2e5d8735a58af1d77169df05336feaae85a61f0cd4fd87"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/south-theo-failed-rest.png",
+      "bytes": 353601,
+      "sha256": "090d3260c5248a25dc2b48410379a7e5bc0e311ac568d5356de7ec6d9050b745"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/south-theo-lunch.png",
+      "bytes": 351888,
+      "sha256": "40ef0613fa82867d1bd76e7cafad48f35cb1d4f448cefdf4be4881a8de441228"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/south-theo-research.png",
+      "bytes": 350390,
+      "sha256": "100fa6377b16b4a8aef3b9c555c5d4f301d5c6d1caabadca656df0db7d7ae36f"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/south-theo-return.png",
+      "bytes": 350599,
+      "sha256": "8c9a7b3ebe6a87c6cb791c29d94c1103c39cf1bdfbf19b2ad0632850637195fa"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/south-theo-thinking.png",
+      "bytes": 348821,
+      "sha256": "10ae460e4b1ad59db8c195ee7fb5a36284036d3e0728984fff67ba935da87d42"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/south-theo-typing.png",
+      "bytes": 348778,
+      "sha256": "413edb375fce0cb2774424be8b7b9aa03599382a9981f563001baa1a6ca8edb7"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/west-mira-approach.png",
+      "bytes": 354661,
+      "sha256": "4bcf48ec95f9b19f0f464398d5becf06193107de15e8736ccd61898f5fca99ec"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/west-mira-approval.png",
+      "bytes": 356325,
+      "sha256": "e0ddc71f218aa3c44399442606d4fd088f59c5d9de1c743bf96b9a17115ee743"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/west-mira-delivery.png",
+      "bytes": 354682,
+      "sha256": "0e126c8177108cc056e92a69fcf575b88b7cb481b3303af7a39fc8f6c7710b71"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/west-mira-failed-rest.png",
+      "bytes": 355454,
+      "sha256": "75dda913dc83a8c0ec0c8571523c1719f997fd7e7d23fb199afa63d1cdb77377"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/west-mira-lunch.png",
+      "bytes": 353226,
+      "sha256": "ebe2a4574cf141e0fc69b0448b0fe15dddccbea38aba01fa15a2caf78752fd79"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/west-mira-research.png",
+      "bytes": 351669,
+      "sha256": "728f953c2d6a486f3998498e28b601b7bed46c2eca90c439ea838a6fa90f2341"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/west-mira-return.png",
+      "bytes": 352370,
+      "sha256": "b86f6c733564185eae35a5593a2267b2a4c0537499cb32efe47352f37368ca2b"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/west-mira-thinking.png",
+      "bytes": 352644,
+      "sha256": "c1556f8398242d233c2ddca4a53ecda9a3a0fbba86720179df5464d007fe0ab6"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/west-mira-typing.png",
+      "bytes": 351517,
+      "sha256": "790c4d4d0b3e71e884835c982574f3d8ca208de1d53a79cd8bcde784e22baf25"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/west-theo-approach.png",
+      "bytes": 353386,
+      "sha256": "fc26a9702450acaaa0caa6facefe4c437a4a13581462c01ccf36a732abf2278d"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/west-theo-approval.png",
+      "bytes": 356028,
+      "sha256": "d2f539e0db14b83004d4a450fa63b914bc7d3ca171b9c94412084340df45dcd5"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/west-theo-delivery.png",
+      "bytes": 354428,
+      "sha256": "95ae514d25bb5fb70e85b8349fe246e2386cd5f48fa660c5c7548decd492c579"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/west-theo-failed-rest.png",
+      "bytes": 354882,
+      "sha256": "ecdda009aca141ba94a61a690076068bb4e12e4bbe2d36d57bffce69b226268d"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/west-theo-lunch.png",
+      "bytes": 353514,
+      "sha256": "a7513c4dad16653bbf71e33f049f3c365e7bca796c9534feaabfe48b7670e39d"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/west-theo-research.png",
+      "bytes": 352031,
+      "sha256": "0b4c332ab1678c97f8b55c30e22c6d029f7126acee500953e4482abbcc0d7b1b"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/west-theo-return.png",
+      "bytes": 351931,
+      "sha256": "10005811c604fcbe08f24dca84e66b7ae2e48b8607ca794898e78050790fcabc"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/west-theo-thinking.png",
+      "bytes": 350769,
+      "sha256": "d23e7af01b1d581e38b8fca3a649bad388247929f0303619817d6a3ffe82a591"
+    },
+    {
+      "path": "game/tests/output/furnishing-runtime/west-theo-typing.png",
+      "bytes": 350333,
+      "sha256": "7f9cc10601113041bf1ce9e0388fcd24d6cc07e34c7b49b8cfbd063932c94171"
+    },
+    {
+      "path": "game/tests/output/furnishing-window-poll-20260908-check2/runtime-window-review/integer2x-drawer-detail.png",
+      "bytes": 410091,
+      "sha256": "4f2f8782f6a30bf234d4846bcf9f082c91561d3f49ae6e6caef49112752d91b4"
+    },
+    {
+      "path": "game/tests/output/furnishing-window-poll-20260908-check2/runtime-window-review/integer2x-drawer.png",
+      "bytes": 714712,
+      "sha256": "16499f2f524137746d4820771e8fcdaa5cb6fca63f8cd86ef016c403e716e8f2"
+    },
+    {
+      "path": "game/tests/output/furnishing-window-poll-20260908-check2/runtime-window-review/integer2x-reader-detail.png",
+      "bytes": 173164,
+      "sha256": "2fb7ac63ba5ddc216fefe6da9feda629386f6e20ac902c6f6a34014096ad0f2c"
+    },
+    {
+      "path": "game/tests/output/furnishing-window-poll-20260908-check2/runtime-window-review/integer2x-reader.png",
+      "bytes": 569528,
+      "sha256": "6d7581e51afc8bd9301d7aa550129c3703a4c6151a5bf99d02062ec0b5568036"
+    },
+    {
+      "path": "game/tests/output/furnishing-window-poll-20260908-check2/runtime-window-review/integer2x-world-hover-detail.png",
+      "bytes": 37931,
+      "sha256": "5b23ee728c4e6e6594889e435b1f822dd36fb88f1b7f749241b5b21f43ab6fea"
+    },
+    {
+      "path": "game/tests/output/furnishing-window-poll-20260908-check2/runtime-window-review/integer2x-world-hover.png",
+      "bytes": 528980,
+      "sha256": "a26b5b69d3eea516dd0efed6f96c400c7b8b6a2f35f777f846b625397633cd57"
+    },
+    {
+      "path": "game/tests/output/furnishing-window-poll-20260908-check2/runtime-window-review/letterbox-drawer-detail.png",
+      "bytes": 288992,
+      "sha256": "4764b072a7d2218784527b00ebcc4f83c91c04fc0f57d25e7968efd3417d65cc"
+    },
+    {
+      "path": "game/tests/output/furnishing-window-poll-20260908-check2/runtime-window-review/letterbox-drawer.png",
+      "bytes": 545689,
+      "sha256": "82b7a3bfa601ad9d14b9d94ab5a7f14a77cfe8644de9e5213f6d764d508dd940"
+    },
+    {
+      "path": "game/tests/output/furnishing-window-poll-20260908-check2/runtime-window-review/letterbox-reader-detail.png",
+      "bytes": 119335,
+      "sha256": "8bc16845f7f4b63950cf34c76ce24ebd6c00e35549ad085eaa716d78ab5775c4"
+    },
+    {
+      "path": "game/tests/output/furnishing-window-poll-20260908-check2/runtime-window-review/letterbox-reader.png",
+      "bytes": 429827,
+      "sha256": "448b75be11889dda8474ce8fe364783dabc868e1895e380a9b2e1e224ac48723"
+    },
+    {
+      "path": "game/tests/output/furnishing-window-poll-20260908-check2/runtime-window-review/letterbox-world-hover-detail.png",
+      "bytes": 33679,
+      "sha256": "42c2c74b117a0a3712f50c00a0b45c6621d25b134e892d851ed7efce61c52f34"
+    },
+    {
+      "path": "game/tests/output/furnishing-window-poll-20260908-check2/runtime-window-review/letterbox-world-hover.png",
+      "bytes": 413092,
+      "sha256": "d1f6709b919ecb2cf6f64f7b08aa1bf6fe5999bdac09a4f2d698a8f7e06cf71b"
+    },
+    {
+      "path": "game/tests/output/furnishing-window-poll-20260908-check2/runtime-window-review/manifest.json",
+      "bytes": 24406,
+      "sha256": "b5bc89a0a20f01a5321a835631cf38978c0e219d8583d37443137149d5b1cddb"
+    },
+    {
+      "path": "game/tests/output/furnishing-window-poll-20260908-check2/runtime-window-review/native-drawer-detail.png",
+      "bytes": 239736,
+      "sha256": "b1b2f9672174744d76a15f8795024ec0390bce7343b1c5a487a3eca6c188955f"
+    },
+    {
+      "path": "game/tests/output/furnishing-window-poll-20260908-check2/runtime-window-review/native-drawer.png",
+      "bytes": 458034,
+      "sha256": "ed5965c65c400021c7a7509affd69cb047531aafad7c0f478b4e87c4b4e947d1"
+    },
+    {
+      "path": "game/tests/output/furnishing-window-poll-20260908-check2/runtime-window-review/native-reader-detail.png",
+      "bytes": 103405,
+      "sha256": "68aa14f459e321e254a09b942a3ca0f1160962214722fa9971056e1be922770d"
+    },
+    {
+      "path": "game/tests/output/furnishing-window-poll-20260908-check2/runtime-window-review/native-reader.png",
+      "bytes": 363678,
+      "sha256": "0ee67cea5a41419e0ebc1f036ff29f7f94cf2ddbb867d98e844243b341571d74"
+    },
+    {
+      "path": "game/tests/output/furnishing-window-poll-20260908-check2/runtime-window-review/native-world-hover-detail.png",
+      "bytes": 29810,
+      "sha256": "36a8ce51d4c7b8d3bc94895a7daef5cd1595c28997e9604aeaf5dc37dda4d7e3"
+    },
+    {
+      "path": "game/tests/output/furnishing-window-poll-20260908-check2/runtime-window-review/native-world-hover.png",
+      "bytes": 345781,
+      "sha256": "e8e1bd172f3d2e9b9f9c57368cb56dc0ba8cebde115516f69da5e98db61d1ca7"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/acceptance.json",
+      "bytes": 51297,
+      "sha256": "19e895ee32723ac86b99e78258a68bf5086e0b349016dcd8f1c1473b50d89c36"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/edit-dropdown-open.png",
+      "bytes": 358348,
+      "sha256": "5334e0286d2dc34698874e7e37dfd5e3a42bef5b42bd2d149d5335ab94911e83"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/edit-four-directions-saved.png",
+      "bytes": 382206,
+      "sha256": "2064907221b29b4eeea8182c46cea13530addfd7cf6a0a85095b6c72d3f3eda6"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/edit-invalid-wall-preview.png",
+      "bytes": 328858,
+      "sha256": "440674636c0edd058092f72a58e70f8b76067d56aca39bb631e5e0ac5a0e1c2b"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/edit-motion-contact.png",
+      "bytes": 278387,
+      "sha256": "876d13b1bf9f024c66bdb4f3c42a0b2bb94f75370407fbf69245d408a3424353"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/edit-movie.json",
+      "bytes": 265,
+      "sha256": "496047019da72049908329bea8ffc50f525e6221c6eed236ae5badb0c122925c"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/edit-open.png",
+      "bytes": 379238,
+      "sha256": "c8639e2474f88f51953cba730f1c76a7925374c07039d0aff2833b979e9bef2b"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/edit-pending-confirmation.png",
+      "bytes": 327678,
+      "sha256": "9145653436b522794727df9c7339124da6078822f5b041a4892df02a24b1e874"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/edit-saved-east.png",
+      "bytes": 382206,
+      "sha256": "2064907221b29b4eeea8182c46cea13530addfd7cf6a0a85095b6c72d3f3eda6"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/edit-saved-north.png",
+      "bytes": 382430,
+      "sha256": "a2b13f0bf542a1292864fe33c1a5bce03b467a878438e507bf57c6952eb3b100"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/edit-saved-south.png",
+      "bytes": 383050,
+      "sha256": "9e00c98b0746214e7e8eb510df29b7eb2ae49eaddc089961c328b008016681af"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/edit-saved-west.png",
+      "bytes": 383007,
+      "sha256": "e75197247e1bfdba221eeb6e0c02c223ace56cb5810b7210d79d589ffaed6575"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/edit-state.json",
+      "bytes": 717,
+      "sha256": "aa153a6b382638fc20d56db26bea106d023e3bceee5804acafc7a8fbd9135156"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/edit-stored-again.png",
+      "bytes": 378193,
+      "sha256": "0997e99fa14ddc4c38446d76f8987977a01b8f861f020d924d41d78d9b77bf12"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/edit-stored-picker.png",
+      "bytes": 380895,
+      "sha256": "59f2bee6f1f98159075fb18fe1697ad388cf6414cb42924756353a77d305dcc2"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/edit-valid-preview.png",
+      "bytes": 339279,
+      "sha256": "9dbd1b49205ea8c685a4dad801713ac2138756291a49e258037255df3b0b2e68"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/edit.log",
+      "bytes": 1550,
+      "sha256": "a20246b428dfdccd71ebce15193d338cdf96aef13d51fc37c2a7f64d3f931d85"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/final_restart-dropdown-open.png",
+      "bytes": 363960,
+      "sha256": "4eb3c4d44268c22822f447fcb7ad2048bc6a16ca8e1473b4ef84d023b94fa565"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/final_restart-open.png",
+      "bytes": 384555,
+      "sha256": "d3fd043a9acf1f845ae075a80ae6d838cae8983827b8f06d933abf4852cb0922"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/final_restart-scale-1280x720-open.png",
+      "bytes": 385273,
+      "sha256": "dbef85ea8e586feffddb6c309595a33bfa99719f68a948919b658e15caa08094"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/final_restart-scale-1280x720-popup.png",
+      "bytes": 363960,
+      "sha256": "4eb3c4d44268c22822f447fcb7ad2048bc6a16ca8e1473b4ef84d023b94fa565"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/final_restart-scale-1280x720-preview.png",
+      "bytes": 337243,
+      "sha256": "d5b57acb1c16e64e415c25d9de18ee4cfe329d8a93f870488b79578587cb22a2"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/final_restart-scale-1600x1000-open.png",
+      "bytes": 490091,
+      "sha256": "3b5c4a19759ee581e7b3aa90c6154526f0832c17fc18545ff388245a17f760e6"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/final_restart-scale-1600x1000-popup.png",
+      "bytes": 464511,
+      "sha256": "65db2803bd1cb8c872ba103a38f52664cf443c3025f137052353dd7432d6afbc"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/final_restart-scale-1600x1000-preview.png",
+      "bytes": 426177,
+      "sha256": "56da736c3ca1cba59b421ef452c74da182b0c3149c5029530bbd7ca42e4befe2"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/final_restart-scale-2560x1440-open.png",
+      "bytes": 743438,
+      "sha256": "71c3560139e0c435ca0a7b7da3ca56ad45443b3ab7b61105a259a2f5209b61d3"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/final_restart-scale-2560x1440-popup.png",
+      "bytes": 697483,
+      "sha256": "27456b60039c384efd56bd38eeabd89408ddc4efc2b49eedeef12818496b2c84"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/final_restart-scale-2560x1440-preview.png",
+      "bytes": 605011,
+      "sha256": "9f2a84903aebf5389bad7d06dfddefbf6e71a2fedb15bee07850bf05025793c5"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/final_restart-scaling.json",
+      "bytes": 4619,
+      "sha256": "c67d6ad9e703eed939f9be8373e671df87dc4850f86d3ab22fc8411ee9bd335f"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/final_restart-state.json",
+      "bytes": 717,
+      "sha256": "3f65d4215e9d3524061bdc901e9390281b0b4b2ddb3cc11c690527c3b11cd254"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/final_restart.log",
+      "bytes": 943,
+      "sha256": "2abf6a4c7d6063ef5bb381e7760e503bf0cdbe8a7fb6dc1b673fcf74050cad6f"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/lost_ack-dropdown-open.png",
+      "bytes": 364129,
+      "sha256": "0e995ff456e4a249cb855cdb11ce4395ab84d0a0decf16e096235ee14d1ad784"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/lost_ack-lost-ack-recovered.png",
+      "bytes": 382543,
+      "sha256": "ac8a8c0c72c32f5b7eb17d25085d23f1ac486ed074f9a89ba4bb25475bc4a9e6"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/lost_ack-open.png",
+      "bytes": 384673,
+      "sha256": "d696e955e46d4b5c8bceb1f9614bb473398480fd805ef977b6d77fec51d1e080"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/lost_ack-state.json",
+      "bytes": 717,
+      "sha256": "3f65d4215e9d3524061bdc901e9390281b0b4b2ddb3cc11c690527c3b11cd254"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/lost_ack.log",
+      "bytes": 938,
+      "sha256": "6b5aaffe52a8f944a213369f51359ae99e91b3388dc0d3ecc45c1b4fc110c808"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/restart-dropdown-open.png",
+      "bytes": 364129,
+      "sha256": "0e995ff456e4a249cb855cdb11ce4395ab84d0a0decf16e096235ee14d1ad784"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/restart-open.png",
+      "bytes": 384673,
+      "sha256": "d696e955e46d4b5c8bceb1f9614bb473398480fd805ef977b6d77fec51d1e080"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/restart-state.json",
+      "bytes": 717,
+      "sha256": "aa153a6b382638fc20d56db26bea106d023e3bceee5804acafc7a8fbd9135156"
+    },
+    {
+      "path": "game/tests/output/furnishing-worker-ui-2026-09-08T19-40-37-904Z-izIYHV/restart.log",
+      "bytes": 937,
+      "sha256": "35f8f4f3eb2a1bf9b8d89ae53b6848801f62b1e1a005f6bc800af436e1cabb17"
     },
     {
       "path": "game/tests/output/furniture-catalogue/acoustic_divider-east.png",
@@ -13132,6 +15208,406 @@
       "path": "game/tests/output/polish-audit/world/schedule-cycle-start.png",
       "bytes": 379276,
       "sha256": "ce6e06ea699931449ead76ab483463761a49e5af5d5686979d7452a2e2890733"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/chat-and-work-order-chat-waiting.png",
+      "bytes": 467289,
+      "sha256": "03122102cca38f53f65f19711bf36f63430e11dde43e5579c15e5c3294a4fecc"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/chat-and-work-order-contact-sheet.png",
+      "bytes": 272384,
+      "sha256": "dd522da50924ae8758a12a20972805a8122cd85fafdc413702ddcebeb39e4bdf"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/chat-and-work-order-end.png",
+      "bytes": 480936,
+      "sha256": "f1e6d9e41f0386d1283b6a0ce4b8431a5d8329d85a8846a7b9567fd9f0e3d946"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/chat-and-work-order-middle.png",
+      "bytes": 466985,
+      "sha256": "fbd9df045e3c8d608f8b2d6bc2e551b1b3b539f595261929a8d2777d94a22c54"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/chat-and-work-order-start.png",
+      "bytes": 485110,
+      "sha256": "f9c7aea7ef82ef13d88546cc100d06ea20937509b38fafd267555127cdb9308f"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/delivery-studio-reader-contact-sheet.png",
+      "bytes": 297160,
+      "sha256": "79c4c5f11552d2f9cd7ecf6ebc0e4770241dffcf788529e81fe7b373dc8c8c34"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/delivery-studio-reader-delivery-promoted.png",
+      "bytes": 447899,
+      "sha256": "30f59e4ebf98d1721717903603b762225130b1c1a7b348186f2fd338b8203b67"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/delivery-studio-reader-end.png",
+      "bytes": 338462,
+      "sha256": "9465c74e1fcaceaa4f9679efef4451ea661d36cca21320c34652c8e2092336a4"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/delivery-studio-reader-middle.png",
+      "bytes": 354349,
+      "sha256": "12b50fcfbfa55c3543692ce72cab9a2c07fb7f218975fdb2ab5c3648303dc5fc"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/delivery-studio-reader-reader-scrolled.png",
+      "bytes": 354994,
+      "sha256": "f8611a03dabebbd3274229b3cfa1f44bc8c1e90fd23a3395b4408f5b5082dba2"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/delivery-studio-reader-start.png",
+      "bytes": 383017,
+      "sha256": "8dea401f325e720b0895bb5c5646010843b75457c6f36f63e5f7066ba4d8d102"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/delivery-studio-reader-studio-empty.png",
+      "bytes": 418530,
+      "sha256": "a36d5634d7b5bba74863a77682a2d25a52e37d553b69458adc31ddc3e295dc2d"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/journal-and-approval-approval-answered.png",
+      "bytes": 461026,
+      "sha256": "2362e044ca3cada209eefe62a8af34e4360347ab5bb45d1f5630ef34f8ae1f89"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/journal-and-approval-approval-ledger.png",
+      "bytes": 458518,
+      "sha256": "484ad6aabc7209c8a219a0100da292f4fd41664c9f2f3834cac5b0a44addcfdd"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/journal-and-approval-approval-visible.png",
+      "bytes": 463553,
+      "sha256": "b316e87fde2f7f72fee9aa5dbf0d3127a6888329a202c94b1bb4f22d831f0959"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/journal-and-approval-contact-sheet.png",
+      "bytes": 244031,
+      "sha256": "c01c7cdc6e4dd3c26bebdae2446aff1fcdbb8164ea9683069332fd49fef34028"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/journal-and-approval-end.png",
+      "bytes": 461026,
+      "sha256": "2362e044ca3cada209eefe62a8af34e4360347ab5bb45d1f5630ef34f8ae1f89"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/journal-and-approval-middle.png",
+      "bytes": 461054,
+      "sha256": "377a1c6eb9bc5df5c30e4d36d49ced1d622a630598bc9601ab174e81686aeff0"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/journal-and-approval-start.png",
+      "bytes": 468598,
+      "sha256": "d469d8ac1cf06f53cab12ea9a1eae506873f8af88c3a6c83241194105053c1ec"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/journal-and-approval-work-details-restored.png",
+      "bytes": 445986,
+      "sha256": "b657547e9639a686234ae71f5b7b9bcd97c52e8451b7ff1ceb4945353bb5bba8"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/journal-and-approval-work-details-revealed.png",
+      "bytes": 446783,
+      "sha256": "9b97a52f547662c30e2df070750ec78418a481a44d89847b41f1ddeaf73f85f4"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/manifest.json",
+      "bytes": 60865,
+      "sha256": "ccce087e4ff55a1f7e9a8bf596f7b6c094bc8e450328007da11f1cef27271cf8"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/queued-errors-and-overflow-contact-sheet.png",
+      "bytes": 239581,
+      "sha256": "e304ecb8d0e010c5622e2bc5139dbb339ff40af5139bd90542c2318dbd262a39"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/queued-errors-and-overflow-end.png",
+      "bytes": 453700,
+      "sha256": "ea8d839f3162dd5f79810b8e25159abb9563e5b9e9ebf5c36dd0e19776d3feac"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/queued-errors-and-overflow-middle.png",
+      "bytes": 457598,
+      "sha256": "56cc43543eaa87d4cbca7e83e135f604dc44cd010209bfb8f3afcd57262402c7"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/queued-errors-and-overflow-start.png",
+      "bytes": 482875,
+      "sha256": "bcf13176c2dc4b44c72379808605fc5000042cdbfa03e669e9c2beb8dff304e0"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/queued-errors-and-overflow-worker-error.png",
+      "bytes": 389814,
+      "sha256": "582771d1c948f91387c69d40fb4d681be3e6e7b122ae66995a7da86874c1b684"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/queued-errors-and-overflow-worker-reconnecting.png",
+      "bytes": 392297,
+      "sha256": "f8dbfc66c429d2422ba94cd4a52110544eb45e25a6072fd109d3fbb8f078ef5e"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/queued-errors-and-overflow-worker-recovered.png",
+      "bytes": 453700,
+      "sha256": "ea8d839f3162dd5f79810b8e25159abb9563e5b9e9ebf5c36dd0e19776d3feac"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/team-drawer-controls-contact-sheet.png",
+      "bytes": 213650,
+      "sha256": "89240d920ec2dca1c82899fe6bc22cbead418c46b3aeaca6442683e2a9df6e33"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/team-drawer-controls-end.png",
+      "bytes": 341675,
+      "sha256": "4162fd309065a8ac3993e9bd1a780a83c9cda458f37a2f5b583826c2415d3a3d"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/team-drawer-controls-middle.png",
+      "bytes": 450961,
+      "sha256": "37d294fa911153f3a19adb64f27d943c5673ce9062f070b310dda34a83c77ef6"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/team-drawer-controls-start.png",
+      "bytes": 342646,
+      "sha256": "f0ac1fd0f15b9bbdee797b6029a7d7244d7e1d22adda535c04e89e746c0e3eee"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/work-controls-assignment-disabled.png",
+      "bytes": 471422,
+      "sha256": "1af12fe1748e3ba24ad3c71f4946dabf24a3c550ef7115896c376fb6436ac51d"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/work-controls-contact-sheet.png",
+      "bytes": 239571,
+      "sha256": "47b43ade617b33379a6442777e08ea890c49ab022e8580fb5a46620c8681dad2"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/work-controls-dropdown-selected.png",
+      "bytes": 478683,
+      "sha256": "9385c59dd6dc6de9e9541603e63b9dc2afb67d363e4486e60bd572ebcd9f1125"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/work-controls-end.png",
+      "bytes": 471332,
+      "sha256": "565e59960b0a44c465bb7e63a86e73bcdccecd43564af2cf57bc7e9cd68eb89d"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/work-controls-middle.png",
+      "bytes": 467649,
+      "sha256": "4afb1aec2812e9fc7c0ef89bd0f9a74af48b44d02a666e02114604fcd068bf87"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/work-controls-start.png",
+      "bytes": 489267,
+      "sha256": "9a33e89e08e93fe51ee2d26257ff83652bd690c39ad8eb64e902484e3e90c3aa"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-4/polish-audit/ui/work-controls-visible-title-focus.png",
+      "bytes": 470993,
+      "sha256": "264698172a733906e7d92c59bdcdbfc537cd69cfd2b4b24dc4b8882b83404274"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/chat-and-work-order-chat-waiting.png",
+      "bytes": 467289,
+      "sha256": "03122102cca38f53f65f19711bf36f63430e11dde43e5579c15e5c3294a4fecc"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/chat-and-work-order-contact-sheet.png",
+      "bytes": 272384,
+      "sha256": "dd522da50924ae8758a12a20972805a8122cd85fafdc413702ddcebeb39e4bdf"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/chat-and-work-order-end.png",
+      "bytes": 480936,
+      "sha256": "f1e6d9e41f0386d1283b6a0ce4b8431a5d8329d85a8846a7b9567fd9f0e3d946"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/chat-and-work-order-middle.png",
+      "bytes": 466985,
+      "sha256": "fbd9df045e3c8d608f8b2d6bc2e551b1b3b539f595261929a8d2777d94a22c54"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/chat-and-work-order-start.png",
+      "bytes": 485110,
+      "sha256": "f9c7aea7ef82ef13d88546cc100d06ea20937509b38fafd267555127cdb9308f"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/delivery-studio-reader-contact-sheet.png",
+      "bytes": 297160,
+      "sha256": "79c4c5f11552d2f9cd7ecf6ebc0e4770241dffcf788529e81fe7b373dc8c8c34"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/delivery-studio-reader-delivery-promoted.png",
+      "bytes": 447899,
+      "sha256": "30f59e4ebf98d1721717903603b762225130b1c1a7b348186f2fd338b8203b67"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/delivery-studio-reader-end.png",
+      "bytes": 338462,
+      "sha256": "9465c74e1fcaceaa4f9679efef4451ea661d36cca21320c34652c8e2092336a4"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/delivery-studio-reader-middle.png",
+      "bytes": 354349,
+      "sha256": "12b50fcfbfa55c3543692ce72cab9a2c07fb7f218975fdb2ab5c3648303dc5fc"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/delivery-studio-reader-reader-scrolled.png",
+      "bytes": 354994,
+      "sha256": "f8611a03dabebbd3274229b3cfa1f44bc8c1e90fd23a3395b4408f5b5082dba2"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/delivery-studio-reader-start.png",
+      "bytes": 383017,
+      "sha256": "8dea401f325e720b0895bb5c5646010843b75457c6f36f63e5f7066ba4d8d102"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/delivery-studio-reader-studio-empty.png",
+      "bytes": 418530,
+      "sha256": "a36d5634d7b5bba74863a77682a2d25a52e37d553b69458adc31ddc3e295dc2d"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/journal-and-approval-approval-answered.png",
+      "bytes": 461026,
+      "sha256": "2362e044ca3cada209eefe62a8af34e4360347ab5bb45d1f5630ef34f8ae1f89"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/journal-and-approval-approval-ledger.png",
+      "bytes": 458518,
+      "sha256": "484ad6aabc7209c8a219a0100da292f4fd41664c9f2f3834cac5b0a44addcfdd"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/journal-and-approval-approval-visible.png",
+      "bytes": 463553,
+      "sha256": "b316e87fde2f7f72fee9aa5dbf0d3127a6888329a202c94b1bb4f22d831f0959"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/journal-and-approval-contact-sheet.png",
+      "bytes": 244031,
+      "sha256": "c01c7cdc6e4dd3c26bebdae2446aff1fcdbb8164ea9683069332fd49fef34028"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/journal-and-approval-end.png",
+      "bytes": 461026,
+      "sha256": "2362e044ca3cada209eefe62a8af34e4360347ab5bb45d1f5630ef34f8ae1f89"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/journal-and-approval-middle.png",
+      "bytes": 461054,
+      "sha256": "377a1c6eb9bc5df5c30e4d36d49ced1d622a630598bc9601ab174e81686aeff0"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/journal-and-approval-start.png",
+      "bytes": 468598,
+      "sha256": "d469d8ac1cf06f53cab12ea9a1eae506873f8af88c3a6c83241194105053c1ec"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/journal-and-approval-work-details-restored.png",
+      "bytes": 445986,
+      "sha256": "b657547e9639a686234ae71f5b7b9bcd97c52e8451b7ff1ceb4945353bb5bba8"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/journal-and-approval-work-details-revealed.png",
+      "bytes": 446783,
+      "sha256": "9b97a52f547662c30e2df070750ec78418a481a44d89847b41f1ddeaf73f85f4"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/manifest.json",
+      "bytes": 60865,
+      "sha256": "58ac4bf93e5006c4a254659c684728dac20fa9015fd4815b0e047f4f79d4d1ae"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/queued-errors-and-overflow-contact-sheet.png",
+      "bytes": 239581,
+      "sha256": "e304ecb8d0e010c5622e2bc5139dbb339ff40af5139bd90542c2318dbd262a39"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/queued-errors-and-overflow-end.png",
+      "bytes": 453700,
+      "sha256": "ea8d839f3162dd5f79810b8e25159abb9563e5b9e9ebf5c36dd0e19776d3feac"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/queued-errors-and-overflow-middle.png",
+      "bytes": 457598,
+      "sha256": "56cc43543eaa87d4cbca7e83e135f604dc44cd010209bfb8f3afcd57262402c7"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/queued-errors-and-overflow-start.png",
+      "bytes": 482875,
+      "sha256": "bcf13176c2dc4b44c72379808605fc5000042cdbfa03e669e9c2beb8dff304e0"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/queued-errors-and-overflow-worker-error.png",
+      "bytes": 389814,
+      "sha256": "582771d1c948f91387c69d40fb4d681be3e6e7b122ae66995a7da86874c1b684"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/queued-errors-and-overflow-worker-reconnecting.png",
+      "bytes": 392297,
+      "sha256": "f8dbfc66c429d2422ba94cd4a52110544eb45e25a6072fd109d3fbb8f078ef5e"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/queued-errors-and-overflow-worker-recovered.png",
+      "bytes": 453700,
+      "sha256": "ea8d839f3162dd5f79810b8e25159abb9563e5b9e9ebf5c36dd0e19776d3feac"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/team-drawer-controls-contact-sheet.png",
+      "bytes": 213650,
+      "sha256": "89240d920ec2dca1c82899fe6bc22cbead418c46b3aeaca6442683e2a9df6e33"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/team-drawer-controls-end.png",
+      "bytes": 341675,
+      "sha256": "4162fd309065a8ac3993e9bd1a780a83c9cda458f37a2f5b583826c2415d3a3d"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/team-drawer-controls-middle.png",
+      "bytes": 450961,
+      "sha256": "37d294fa911153f3a19adb64f27d943c5673ce9062f070b310dda34a83c77ef6"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/team-drawer-controls-start.png",
+      "bytes": 342646,
+      "sha256": "f0ac1fd0f15b9bbdee797b6029a7d7244d7e1d22adda535c04e89e746c0e3eee"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/work-controls-assignment-disabled.png",
+      "bytes": 471422,
+      "sha256": "1af12fe1748e3ba24ad3c71f4946dabf24a3c550ef7115896c376fb6436ac51d"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/work-controls-contact-sheet.png",
+      "bytes": 239571,
+      "sha256": "47b43ade617b33379a6442777e08ea890c49ab022e8580fb5a46620c8681dad2"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/work-controls-dropdown-selected.png",
+      "bytes": 478683,
+      "sha256": "9385c59dd6dc6de9e9541603e63b9dc2afb67d363e4486e60bd572ebcd9f1125"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/work-controls-end.png",
+      "bytes": 471332,
+      "sha256": "565e59960b0a44c465bb7e63a86e73bcdccecd43564af2cf57bc7e9cd68eb89d"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/work-controls-middle.png",
+      "bytes": 467649,
+      "sha256": "4afb1aec2812e9fc7c0ef89bd0f9a74af48b44d02a666e02114604fcd068bf87"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/work-controls-start.png",
+      "bytes": 489267,
+      "sha256": "9a33e89e08e93fe51ee2d26257ff83652bd690c39ad8eb64e902484e3e90c3aa"
+    },
+    {
+      "path": "game/tests/output/polish-ui-pointer-isolated-20260908-5/polish-audit/ui/work-controls-visible-title-focus.png",
+      "bytes": 470993,
+      "sha256": "264698172a733906e7d92c59bdcdbfc537cd69cfd2b4b24dc4b8882b83404274"
     },
     {
       "path": "game/tests/output/printer-scanner-station-v1/actual-room-approach-contact-sheet-4x.png",

@@ -1,0 +1,38 @@
+{
+  "ok": true,
+  "checks": 437,
+  "failures": [],
+  "fixture_scope": "Provider-free native art/behavior evidence; not worker durability or interactive performance certification",
+  "manifest_sha256": "c029a727b11192694757f6bc24deb671a2694aa8c2d11e831992d0495f810d91",
+  "movie_path": "game/tests/output/furnishing-runtime-motion-20260908-check1/world.avi",
+  "movie_sha256": "1e57e68a319ace1f054a2fc6c35ce78a124fda3bca473c732fa1ee52ebe44e28",
+  "source_count": 98,
+  "decoded": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "30/1",
+        "duration": "211.966667",
+        "nb_frames": "6359",
+        "nb_read_frames": "6359"
+      }
+    ],
+    "format": {
+      "duration": "211.966667",
+      "size": "1192184670"
+    }
+  },
+  "scenarios": [
+    "north-mira",
+    "north-theo",
+    "east-mira",
+    "east-theo",
+    "south-mira",
+    "south-theo",
+    "west-mira",
+    "west-theo"
+  ]
+}

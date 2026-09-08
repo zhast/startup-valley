@@ -1,0 +1,5 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 90.5 - Compatibility - Using Device: Apple - Apple M5 Max
+
+FURNISHING_SNAPSHOT {"inventory":[{"essential":false,"grant":"starter-decor-v1","id":"decor-broadleaf_planter","kind":"broadleaf_planter","ownerId":"","roleKit":""},{"essential":false,"grant":"starter-decor-v1","id":"decor-rolling_storage_pedestal","kind":"rolling_storage_pedestal","ownerId":"","roleKit":""},{"essential":false,"grant":"starter-decor-v1","id":"decor-task_floor_lamp","kind":"task_floor_lamp","ownerId":"","roleKit":""},{"essential":true,"grant":"office-stage:0","id":"founder-workstation","kind":"desk","ownerId":"founder","roleKit":""}],"placements":{"decor-broadleaf_planter":{"facing":"east","grid":[24.0,14.0]},"founder-workstation":{"facing":"south","grid":[8.0,16.0]}},"recovery":"","revision":8.0,"version":1.0}
+FURNISHING WORKER UI PASS: lost_ack, 25 checks

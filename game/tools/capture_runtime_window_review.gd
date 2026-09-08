@@ -11,6 +11,10 @@ var current_results: Array[Dictionary] = []
 var reference_rects := {}
 
 func _run() -> void:
+	# Isolate this dev-only event stream from the user's physical pointer.
+	# Native rendering and ordinary GUI hit-testing remain enabled.
+	root.unfocusable = true
+	root.mouse_passthrough = true
 	if DisplayServer.get_name() == "headless":
 		_validate_math()
 		print("Runtime window math: %d checks, %d failures; rendered evidence not run" % [_checks, _failures.size()])
@@ -31,7 +35,7 @@ func _run() -> void:
 	root.size = original_size
 	root.position = original_position
 	_check(current_results.size() == 3, "Every requested window case completed")
-	var result := {"checks": _checks, "failures": _failures, "cases": current_results, "fullscreen_used": false, "worker_or_save_access": false, "production_changes": false}
+	var result := {"checks": _checks, "failures": _failures, "cases": current_results, "fullscreen_used": false, "worker_or_save_access": false, "production_changes": false, "input_isolation": "Unfocusable mouse-passthrough native window and injected GUI InputEvents; three bounded world-hover polling probes temporarily position and immediately restore the physical cursor, without physical clicks"}
 	var file := FileAccess.open(CURRENT_OUTPUT.path_join("manifest.json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify(result, "  "))
 	print(JSON.stringify(result))
@@ -59,13 +63,36 @@ func current_fixture() -> void:
 	_check(_main.worker_client._stdio == null and _main.worker_client._process_id == -1 and not _main._state_loaded, "Disposable native fixture has no worker or save state")
 
 func pointer(logical: Vector2) -> void:
-	root.warp_mouse(logical)
 	var motion := InputEventMouseMotion.new()
 	motion.position = root.get_final_transform() * logical
 	motion.global_position = motion.position
-	root.push_input(motion, false)
+	Input.parse_input_event(motion)
+	Input.flush_buffered_events()
 	await _settle(2)
 	_main._process(0)
+
+func polled_world_pointer(logical: Vector2) -> Vector2:
+	# Top-level Viewport.get_mouse_position polls DisplayServer, unlike GUI
+	# hit-testing. Preserve that actual production check without pretending an
+	# injected motion updates the physical cursor. Never warp during a drag.
+	for tick: int in range(60):
+		if DisplayServer.mouse_get_button_state() == 0: break
+		await _settle(1)
+	if DisplayServer.mouse_get_button_state() != 0:
+		_check(false, "World cursor probe needs released physical mouse buttons")
+		return root.get_mouse_position()
+	var previous_screen := DisplayServer.mouse_get_position()
+	root.warp_mouse(logical)
+	await _settle(2)
+	_main._process(0)
+	var observed := root.get_mouse_position()
+	_check(observed.distance_to(logical) < 1.0, "World cursor probe reaches the requested logical position")
+	# The scene is frozen: its real computed hover remains available to inspect
+	# after returning the user's cursor. No synthetic world-hover handler call.
+	Input.warp_mouse(previous_screen)
+	await _settle(2)
+	_check(DisplayServer.mouse_get_position().distance_to(previous_screen) < 2.0, "World cursor probe restores the original screen position")
+	return observed
 
 func physical_click(logical: Vector2, button: MouseButton = MOUSE_BUTTON_LEFT) -> void:
 	await pointer(logical)
@@ -76,7 +103,9 @@ func physical_click(logical: Vector2, button: MouseButton = MOUSE_BUTTON_LEFT) -
 		event.global_position = point
 		event.button_index = button
 		event.pressed = pressed
-		root.push_input(event, false)
+		event.button_mask = MOUSE_BUTTON_MASK_LEFT if button == MOUSE_BUTTON_LEFT and pressed else 0
+		Input.parse_input_event(event)
+		Input.flush_buffered_events()
 	await _settle(2)
 
 func save(name_value: String) -> String:
@@ -109,14 +138,15 @@ func current_geometry() -> Dictionary:
 
 func current_case(spec: Dictionary) -> void:
 	var id := str(spec.id)
+	_check(root.unfocusable and root.mouse_passthrough, id + ": native audit window retains isolated input after resizing")
 	var transform := root.get_final_transform()
 	var content := transform * Rect2(Vector2.ZERO, Vector2(LOGICAL_SIZE))
 	_check(root.size == Vector2i(spec.size), id + ": actual controlled window accepted requested size")
 	_check(is_equal_approx(transform.x.length(), transform.y.length()), id + ": scale remains aspect-preserving")
 	_check(root.get_visible_rect().size == Vector2(LOGICAL_SIZE), id + ": logical composition remains1280×720")
-	await pointer(Vector2(128, 400))
+	var polled_cursor := await polled_world_pointer(Vector2(128, 400))
 	_check(_main.founder_hud.station_hover_target_id() == "artifact-archive", id + ": actual window cursor reaches native archive hover")
-	var result := {"id": id, "window": _v2(root.size), "content_window_rect": _rect(content), "transform": {"x": _v2(transform.x), "y": _v2(transform.y), "origin": _v2(transform.origin)}, "actual_station_cursor": _v2(root.get_mouse_position()), "captures": []}
+	var result := {"id": id, "window": _v2(root.size), "content_window_rect": _rect(content), "transform": {"x": _v2(transform.x), "y": _v2(transform.y), "origin": _v2(transform.origin)}, "actual_station_cursor": _v2(polled_cursor), "captures": []}
 	var geometry := current_geometry()
 	if reference_rects.is_empty(): reference_rects = geometry.duplicate(true)
 	_check(geometry == reference_rects, id + ": current HUD/rail/drawer logical rectangles are identical across window sizes")
