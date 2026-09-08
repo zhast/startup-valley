@@ -4,6 +4,7 @@ import { createInterface } from "node:readline";
 
 import { KeychainCredentialStore } from "./credential-store.js";
 import { GameDatabase } from "./database.js";
+import type { FurnishingUpdate } from "./furnishing.js";
 import { PiWorkerAdapter } from "./pi-worker-adapter.js";
 import type { ApprovalDecision, ProtocolEvent, ProtocolRequest, ProtocolResponse } from "./types.js";
 import { parseJobSpec, parseRequest } from "./validation.js";
@@ -70,6 +71,8 @@ function ensureEventPump(jobId: string): void {
 async function dispatch(request: ProtocolRequest): Promise<unknown> {
   if (resetting) throw new Error("New company is being prepared");
   switch (request.method) {
+    case "furnishing.update":
+      return database.furnishing.update(request.params as unknown as FurnishingUpdate);
     case "hiring.complete":
       database.journey.hire(stringParameter(request, "employeeId", 64), database.clockState().day);
       return database.bootstrap();

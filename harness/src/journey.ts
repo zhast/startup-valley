@@ -52,7 +52,7 @@ export function parseEvaluation(text: string, definition: MilestoneDefinition): 
 }
 
 export class JourneyStore {
-  constructor(readonly db: DatabaseSync) {
+  constructor(readonly db: DatabaseSync, readonly onHire: () => void = () => {}) {
     for (const item of MILESTONES) db.prepare("INSERT OR IGNORE INTO milestone_progress(id) VALUES (?)").run(item.id);
     db.prepare("UPDATE milestone_evaluations SET status = 'failed', error = 'Evaluation interrupted. Retry when ready.' WHERE status = 'evaluating'").run();
   }
@@ -94,6 +94,7 @@ export class JourneyStore {
       if (!candidate?.available) throw new Error("Candidate is not available yet");
       this.charge(`hire:${id}`, day, -candidate.costCents, 0, 0, `Hired ${candidate.name}`);
       this.db.prepare("UPDATE employees SET employment_status = 'hired', hired_day = ? WHERE id = ?").run(day, id);
+      this.onHire();
       return this.state();
     });
   }

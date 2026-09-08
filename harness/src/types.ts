@@ -160,6 +160,7 @@ export interface WorkerAdapter {
 export type ProtocolMethod =
   | "health"
   | "bootstrap"
+  | "furnishing.update"
   | "credential.status"
   | "credential.set"
   | "chat.history"
@@ -201,6 +202,7 @@ export interface ProtocolEvent {
 }
 
 export interface BootstrapState {
+  furnishing: import("./furnishing.js").FurnishingState;
   journey: ReturnType<JourneyStore["state"]> & { daySummary?: ReturnType<JourneyStore["daySummary"]> };
   employees: Employee[];
   project: { id: string; name: string; rootPath: string };

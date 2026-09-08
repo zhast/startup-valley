@@ -19,6 +19,7 @@
           "enum": [
             "health",
             "bootstrap",
+            "furnishing.update",
             "credential.status",
             "credential.set",
             "chat.history",
@@ -42,6 +43,7 @@
         "params": { "type": "object" }
       },
       "allOf": [
+        { "if": { "properties": { "method": { "const": "furnishing.update" } } }, "then": { "properties": { "params": { "$ref": "furnishing.schema.json#/$defs/update" } } } },
         { "if": { "properties": { "method": { "const": "hiring.complete" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["employeeId"], "properties": { "employeeId": { "enum": ["mira", "theo"] } } } } } },
         { "if": { "properties": { "method": { "enum": ["milestone.evaluate", "milestone.complete", "milestone.override"] } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["jobId"], "properties": { "jobId": { "type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[A-Za-z0-9_-]+$" } } } } } },
         { "if": { "properties": { "method": { "const": "day.end" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["day"], "properties": { "day": { "type": "integer", "minimum": 1 } } } } } },

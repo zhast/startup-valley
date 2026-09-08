@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 
 import { normalizeClock, phaseForMinute } from "./day-clock.js";
 import { JourneyStore } from "./journey.js";
+import { FurnishingStore } from "./furnishing.js";
 import type {
   Artifact,
   BootstrapState,
@@ -104,6 +105,7 @@ function parseObject<T>(value: string): T {
 
 export class GameDatabase {
   readonly journey: JourneyStore;
+  readonly furnishing: FurnishingStore;
   readonly #database: DatabaseSync;
   readonly #projectRoot: string;
 
@@ -120,6 +122,7 @@ export class GameDatabase {
       [4, "004_work_order_handoff.sql"],
       [5, "005_employee_chat.sql"],
       [6, "006_company_journey.sql"],
+      [7, "007_furnishing.sql"],
     ] as const) {
       const applied = this.#database.prepare("SELECT version FROM schema_migrations WHERE version = ?").get(version);
       if (applied) continue;
@@ -134,7 +137,8 @@ export class GameDatabase {
       }
     }
     this.#seed();
-    this.journey = new JourneyStore(this.#database);
+    this.furnishing = new FurnishingStore(this.#database);
+    this.journey = new JourneyStore(this.#database, () => this.furnishing.sync());
     this.recoverInterruptedJobs();
   }
 
@@ -190,6 +194,7 @@ export class GameDatabase {
   }
 
   bootstrap(): BootstrapState {
+    const furnishing = this.furnishing.state();
     const rows = this.#database.prepare("SELECT * FROM employees WHERE employment_status='hired' ORDER BY name").all() as unknown as EmployeeRow[];
     const memories: Record<string, EmployeeMemory[]> = {};
     for (const row of rows) memories[row.id] = this.employeeMemories(row.id);
@@ -204,6 +209,7 @@ export class GameDatabase {
       pendingPromotions: this.pendingPromotions(),
       recentJobs: this.recentWorkOrders(),
       memories,
+      furnishing,
       journey: { ...this.journey.state(), daySummary: this.journey.daySummary(this.clockState().day, this.dailySpend()) },
     };
   }

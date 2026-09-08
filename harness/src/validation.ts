@@ -7,6 +7,7 @@ import { Ajv2020, type ValidateFunction } from "ajv/dist/2020.js";
 import type { FormatsPlugin } from "ajv-formats";
 
 import type { JobSpec, ProtocolRequest } from "./types.js";
+import type { FurnishingState } from "./furnishing.js";
 
 function readSchema(name: string): object {
   const moduleDirectory = dirname(fileURLToPath(import.meta.url));
@@ -29,7 +30,9 @@ const protocolSchema = readSchema("protocol.schema.json");
 ajv.addSchema(eventSchema);
 ajv.addSchema(artifactSchema);
 ajv.addSchema(jobSchema);
+ajv.addSchema(readSchema("furnishing.schema.json"));
 const validateProtocol = ajv.compile(protocolSchema);
+const validateFurnishing = ajv.getSchema("https://startup-valley.local/contracts/furnishing.schema.json")!;
 const registeredJobValidator = ajv.getSchema("https://startup-valley.local/contracts/job.schema.json");
 if (!registeredJobValidator) throw new Error("Job schema failed to register");
 const validateJob: ValidateFunction = registeredJobValidator;
@@ -44,4 +47,9 @@ export function parseRequest(value: unknown): ProtocolRequest {
 export function parseJobSpec(value: unknown): JobSpec {
   if (!validateJob(value)) throw new Error(`Invalid job specification: ${validationMessage(validateJob)}`);
   return value as JobSpec;
+}
+
+export function parseFurnishingState(value: unknown): FurnishingState {
+  if (!validateFurnishing(value)) throw new Error(`Invalid furnishing state: ${validationMessage(validateFurnishing)}`);
+  return value as FurnishingState;
 }

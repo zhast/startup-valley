@@ -1,8 +1,11 @@
 import assert from "node:assert/strict";
+import { spawn } from "node:child_process";
+import { once } from "node:events";
 import { mkdtemp, mkdir, writeFile, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { DatabaseSync } from "node:sqlite";
+import { createInterface } from "node:readline";
 import test from "node:test";
 import { Ajv2020 } from "ajv/dist/2020.js";
 import { GameDatabase } from "../src/database.js";
@@ -12,11 +15,11 @@ import type { JobSpec } from "../src/types.js";
 
 const credentials = { async hasOpenRouterKey() { return false; }, async getOpenRouterKey() { return undefined; }, async setOpenRouterKey() {} };
 const review = (id: string, score = 3) => JSON.stringify({ criteria: milestone(id).criteria.map((name) => ({ name, score, evidence: "Specific artifact evidence." })), summary: "Useful deliverable.", revisionBrief: "Clarify the offer and complete all required files." });
-async function setup() {
+async function setup(filename = "game.sqlite") {
   const root = await mkdtemp(join(tmpdir(), "startup-valley-journey-"));
   const project = join(root, "company-project");
   await mkdir(project);
-  const db = new GameDatabase(join(root, "game.sqlite"), project);
+  const db = new GameDatabase(join(root, filename), project);
   return { root, project, db };
 }
 async function deliver(db: GameDatabase, root: string, id: string, jobId = id, revisionOfJobId?: string) {
@@ -81,7 +84,11 @@ test("shutdown waits for bounded chat cleanup before the database can close", as
 });
 
 test("full three-day journey awards money once, charges hiring/filing, and survives restart", async () => {
-  const { db, root, project } = await setup();
+  const { db, root, project } = await setup("startup-valley.sqlite");
+  const initialRoom = db.bootstrap().furnishing;
+  db.furnishing.update({ operationId: "journey-plant", expectedRevision: initialRoom.revision, placements: {
+    ...initialRoom.placements, "decor-broadleaf_planter": { grid: [22, 16], facing: "west" },
+  } });
   let calls = 0;
   const adapter = new PiWorkerAdapter(db, credentials, root, async (def) => { calls++; return { text: review(def.id), inputTokens: 600, outputTokens: 300, cost: 0.002 }; });
   db.journey.hire("mira", 1);
@@ -91,6 +98,9 @@ test("full three-day journey awards money once, charges hiring/filing, and survi
   assert.equal(calls, 1);
   db.journey.complete("website", false, 1); db.journey.complete("website", false, 1);
   db.journey.hire("theo", 1); db.journey.hire("theo", 1);
+  const hiredRoom = db.bootstrap().furnishing;
+  assert.deepEqual(hiredRoom.placements["decor-broadleaf_planter"], { grid: [22, 16], facing: "west" });
+  assert.deepEqual(hiredRoom.inventory.filter((item) => item.roleKit).map((item) => item.roleKit).sort(), ["mina_discovery_kit", "theo_campaign_kit"]);
   assert.equal(db.journey.state().company.cashCents, 30000);
   db.endDay(1); assert.equal(db.endDay(1).clock.day, 2);
   await deliver(db, root, "ads"); await adapter.evaluateMilestone("ads"); db.journey.complete("ads", false, 2);
@@ -102,23 +112,58 @@ test("full three-day journey awards money once, charges hiring/filing, and survi
   assert.equal(db.endDay(1).summary.aiSpend, 0.002);
   assert.equal(db.endDay(2).summary.aiSpend, 0.002);
   db.close();
-  const restored = new GameDatabase(join(root, "game.sqlite"), project);
+  const restored = new GameDatabase(join(root, "startup-valley.sqlite"), project);
   assert.equal(restored.journey.state().company.chapter, 2);
   assert.equal(restored.journey.state().player.x, 420);
   assert.equal(restored.clockState().day, 3);
+  assert.deepEqual(restored.bootstrap().furnishing, hiredRoom, "full chapter and restart preserve the player room and grants");
   restored.journey.complete("incorporate", false, 3);
   assert.equal(restored.journey.state().company.cashCents, 100000);
   restored.close();
+  // The chapter uses deterministic local deliverables and injected evaluation,
+  // not a paid provider replay. Now load that exact database through production
+  // stdio, replay completion/day messages, and restart the actual worker again.
+  for (let pass = 0; pass < 2; pass++) {
+    const child = spawn(process.execPath, ["dist/main.js", "--data-dir", root], { cwd: new URL("..", import.meta.url), stdio: ["pipe", "pipe", "pipe"] });
+    const lines = createInterface({ input: child.stdout });
+    const pending = new Map<string, (value: any) => void>();
+    let stderr = ""; child.stderr.on("data", (value) => { stderr += String(value); });
+    lines.on("line", (line) => { const value = JSON.parse(line); pending.get(value.id)?.(value); });
+    const request = (id: string, method: string, params = {}) => new Promise<any>((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error(`Chapter protocol ${method}: ${stderr}`)), 5000);
+      pending.set(id, (value) => { clearTimeout(timer); pending.delete(id); resolve(value); });
+      child.stdin.write(JSON.stringify({ kind: "request", id, method, params }) + "\n");
+    });
+    try {
+      const bootstrap = await request("boot", "bootstrap"); assert.equal(bootstrap.ok, true);
+      assert.deepEqual(bootstrap.result.furnishing, hiredRoom);
+      assert.equal(bootstrap.result.clock.day, pass === 0 ? 3 : 4);
+      assert.equal(bootstrap.result.journey.company.chapter, 2);
+      assert.ok(bootstrap.result.journey.milestones.every((item: any) => item.state === "completed"));
+      const repeated = await request("complete-again", "milestone.complete", { jobId: "incorporate" });
+      assert.equal(repeated.ok, true); assert.equal(repeated.result.journey.company.cashCents, 100000);
+      assert.equal((await request("end-three", "day.end", { day: 3 })).result.clock.day, 4);
+      assert.equal((await request("repeat-end-three", "day.end", { day: 3 })).result.clock.day, 4);
+      assert.deepEqual((await request("after-duplicates", "bootstrap")).result.furnishing, hiredRoom);
+    } finally {
+      const stopped = once(child, "exit"); child.stdin.end(); await stopped; lines.close();
+    }
+  }
 });
 
 test("evaluation failure is retryable; revisions and reduced-reward override cannot deadlock", async () => {
   const { db, root } = await setup(); db.journey.hire("mira", 1);
+  const initialRoom = db.bootstrap().furnishing;
+  const revisionRoom = db.furnishing.update({ operationId: "revision-room", expectedRevision: initialRoom.revision, placements: {
+    ...initialRoom.placements, "decor-broadleaf_planter": { grid: [22, 16], facing: "north" },
+  } }).furnishing;
   await deliver(db, root, "website", "first");
   let output = "invalid JSON";
   const adapter = new PiWorkerAdapter(db, credentials, root, async () => ({ text: output, inputTokens: 100, outputTokens: 80, cost: 0.001 }));
   await assert.rejects(adapter.evaluateMilestone("first"));
   assert.equal(db.journey.state().company.cashCents, 0);
   assert.equal(db.workOrder("first")?.status, "completed");
+  assert.deepEqual(db.bootstrap().furnishing, revisionRoom);
   output = review("website", 1); await adapter.evaluateMilestone("first");
   assert.throws(() => db.journey.complete("first", false, 1), /Evaluate/u);
   const revision = await deliver(db, root, "website", "revision", "first");
@@ -128,8 +173,10 @@ test("evaluation failure is retryable; revisions and reduced-reward override can
   db.journey.complete("revision", true, 1);
   assert.equal(db.journey.state().company.cashCents, 30000);
   assert.equal(db.journey.state().company.reputation, 0);
+  assert.deepEqual(db.bootstrap().furnishing, revisionRoom, "revision and reduced reward do not rewrite the player room");
   db.journey.hire("theo", 1);
   assert.equal(db.journey.state().company.cashCents, 0);
+  assert.deepEqual(db.bootstrap().furnishing.placements["decor-broadleaf_planter"], revisionRoom.placements["decor-broadleaf_planter"]);
   db.close();
 });
 

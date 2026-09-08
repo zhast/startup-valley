@@ -148,6 +148,10 @@ test("an attached missing studio path fails closed before a work order is stored
 test("off-hours work queues, starts at the work window, and shutdown blocks fake in-flight work", async () => {
   const root = await mkdtemp(join(tmpdir(), "startup-valley-schedule-"));
   const database = new GameDatabase(join(root, "game.sqlite"), join(root, "company-project"));
+  const initialRoom = database.bootstrap().furnishing;
+  const savedRoom = database.furnishing.update({ operationId: "queue-room", expectedRevision: initialRoom.revision, placements: {
+    ...initialRoom.placements, "decor-task_floor_lamp": { grid: [22, 16], facing: "north" },
+  } }).furnishing;
   database.setClock(1, 18 * 60, 1);
   const credentials = new DeferredCredentialStore();
   const adapter = new PiWorkerAdapter(database, credentials, root);
@@ -155,14 +159,17 @@ test("off-hours work queues, starts at the work window, and shutdown blocks fake
   const iterator = adapter.events("morning-job")[Symbol.asyncIterator]();
   assert.equal((await iterator.next()).value?.type, "job.queued");
   assert.equal(database.workOrder("morning-job")?.status, "queued");
+  assert.deepEqual(database.bootstrap().furnishing, savedRoom);
 
   database.setClock(2, 8 * 60, 1);
   assert.equal(await adapter.startNextQueuedJob(), "morning-job");
   assert.equal((await iterator.next()).value?.type, "job.started");
   assert.equal(database.workOrder("morning-job")?.status, "running");
+  assert.deepEqual(database.bootstrap().furnishing, savedRoom);
   await adapter.shutdown();
   assert.equal(database.workOrder("morning-job")?.status, "blocked");
   credentials.key.resolve(undefined);
   while (!(await iterator.next()).done) {}
+  assert.deepEqual(database.bootstrap().furnishing, savedRoom);
   database.close();
 });

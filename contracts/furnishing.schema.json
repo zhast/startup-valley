@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://startup-valley.local/contracts/furnishing.schema.json",
+  "title": "Worker-owned furnishing projection and update",
+  "$ref": "#/$defs/state",
+  "$defs": {
+    "cell": {
+      "type": "array", "minItems": 2, "maxItems": 2,
+      "items": { "type": "integer", "minimum": 0, "maximum": 255 }
+    },
+    "placement": {
+      "type": "object", "additionalProperties": false, "required": ["grid", "facing"],
+      "properties": {
+        "grid": { "$ref": "#/$defs/cell" },
+        "facing": { "enum": ["north", "east", "south", "west"] }
+      }
+    },
+    "placements": {
+      "type": "object", "maxProperties": 32,
+      "propertyNames": { "pattern": "^[a-z0-9_-]{1,100}$" },
+      "additionalProperties": { "$ref": "#/$defs/placement" }
+    },
+    "inventoryItem": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "ownerId", "essential", "grant", "roleKit"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9_-]{1,100}$" },
+        "kind": { "type": "string", "pattern": "^[a-z0-9_-]{1,100}$" },
+        "ownerId": { "enum": ["", "founder", "mira", "theo"] },
+        "essential": { "type": "boolean" },
+        "grant": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "roleKit": { "enum": ["", "mina_discovery_kit", "theo_campaign_kit"] }
+      }
+    },
+    "state": {
+      "type": "object", "additionalProperties": false,
+      "required": ["version", "revision", "inventory", "placements", "recovery"],
+      "properties": {
+        "version": { "const": 1 },
+        "revision": { "type": "integer", "minimum": 0 },
+        "inventory": { "type": "array", "maxItems": 32, "items": { "$ref": "#/$defs/inventoryItem" } },
+        "placements": { "$ref": "#/$defs/placements" },
+        "recovery": { "type": "string", "maxLength": 1000 }
+      }
+    },
+    "update": {
+      "type": "object", "additionalProperties": false,
+      "required": ["operationId", "expectedRevision", "placements"],
+      "properties": {
+        "operationId": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,100}$" },
+        "expectedRevision": { "type": "integer", "minimum": 0 },
+        "placements": { "$ref": "#/$defs/placements" },
+        "actorCells": {
+          "type": "array", "maxItems": 3,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["id", "grid"],
+            "properties": {
+              "id": { "enum": ["founder", "mira", "theo"] },
+              "grid": { "$ref": "#/$defs/cell" },
+              "position": {
+                "type": "array", "minItems": 2, "maxItems": 2,
+                "prefixItems": [
+                  { "type": "number", "minimum": 0, "maximum": 1280 },
+                  { "type": "number", "minimum": 0, "maximum": 720 }
+                ],
+                "items": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "result": {
+      "type": "object", "additionalProperties": false, "required": ["furnishing", "replayed"],
+      "properties": {
+        "furnishing": { "$ref": "#/$defs/state" },
+        "replayed": { "type": "boolean" }
+      }
+    }
+  }
+}

@@ -34,15 +34,22 @@ test("approval tool retains pending SQLite decision, live assignment and End Day
   assert.equal(db.journey.db.prepare("SELECT finished_at FROM work_orders WHERE id=?").get(job.jobId)!.finished_at, null);
   assert.ok(db.employee("mira")!.assignment);
   assert.equal(db.journey.db.prepare("SELECT status FROM approvals WHERE id=?").get(approvalId)!.status, "pending");
+  const room = db.bootstrap().furnishing;
+  const approvalRoom = db.furnishing.update({ operationId: "approval-room", expectedRevision: room.revision, placements: {
+    ...room.placements, "decor-rolling_storage_pedestal": { grid: [22, 16], facing: "east" },
+  }, actorCells: [{ id: "founder", grid: [17, 19] }, { id: "mira", grid: [10, 7] }] }).furnishing;
+  assert.equal(db.journey.db.prepare("SELECT status FROM approvals WHERE id=?").get(approvalId)!.status, "pending", "furnishing cannot dismiss approval or finish real work");
   assert.throws(() => db.endDay(1), /Finish or cancel/u);
   broker.decide(job.jobId, { approvalId, approved: true });
   db.decideApproval(approvalId, true);
   await waiting;
   db.decideApproval(approvalId, false); // a repeated stale decision cannot rewrite history
   assert.equal(db.journey.db.prepare("SELECT status FROM approvals WHERE id=?").get(approvalId)!.status, "approved");
+  assert.deepEqual(db.bootstrap().furnishing, approvalRoom);
   db.close();
   const recovered = new GameDatabase(join(root, "game.sqlite"), project);
   assert.equal(recovered.workOrder(job.jobId)?.status, "failed");
+  assert.deepEqual(recovered.bootstrap().furnishing, approvalRoom);
   recovered.close();
 });
 
