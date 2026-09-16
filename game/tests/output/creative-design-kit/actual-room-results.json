@@ -2,7 +2,7 @@
 	"actor_overlay_occlusion_policy": "Measured honestly and allowed to remain zero: these passive edge tools correctly clear both actors. Acceptance requires exact work-point contact plus visible ordered rear/front host contribution, not manufactured pixel intersection.",
 	"actor_overlay_occlusion_totals": {
 		"mira": 0,
-		"theo": 0
+		"theo": 1
 	},
 	"actor_presentation": "Mina and Theo use only their existing accepted directional seated typing presentations at authored desk work points as scale/contact/gaze/occlusion proxies.",
 	"candidate_revision_registered": false,
@@ -43,14 +43,19 @@
 	"default_layout_sha256": "820d4e7cfe206d8f7543ab421c437de2a5037299f707e5602f6a6faf299078eb",
 	"dev_catalogue_family": "creative_design_kit",
 	"dev_catalogue_mutated": false,
-	"dev_catalogue_sha256": "ff924c58ad887510b35f482b80b5bff74c1ddfff2753f4baf369a60c21eff42b",
+	"dev_catalogue_sha256": "6de983570a595813991ad186be6714a378c0f171ed72c7ac00d6aac7ab292555",
 	"facings": [
 		"north",
 		"east",
 		"south",
 		"west"
 	],
-	"failures": [],
+	"failures": [
+		"Actual GameMain capture stays native 1280x720",
+		"Actual GameMain capture stays native 1280x720",
+		"Actual GameMain capture stays native 1280x720",
+		"Actual GameMain capture stays native 1280x720"
+	],
 	"image_generation_used": false,
 	"observations": {
 		"east": {
@@ -59,18 +64,18 @@
 					"surface_decor_front": 0,
 					"surface_decor_rear": 0
 				},
-				"actor_pixel_delta": 900,
+				"actor_pixel_delta": 860,
 				"collision_shapes": 3,
 				"desk_asset_revision": "workstations-v2",
 				"layer_visibility": {
 					"surface_decor_front": {
-						"changed": 256,
-						"covered_by_existing_workstation_or_actor": 0,
+						"changed": 225,
+						"covered_by_existing_workstation_or_actor": 31,
 						"source_opaque": 256
 					},
 					"surface_decor_rear": {
-						"changed": 372,
-						"covered_by_existing_workstation_or_actor": 0,
+						"changed": 342,
+						"covered_by_existing_workstation_or_actor": 30,
 						"source_opaque": 372
 					}
 				},
@@ -94,13 +99,13 @@
 				"desk_asset_revision": "workstations-v2",
 				"layer_visibility": {
 					"surface_decor_front": {
-						"changed": 256,
-						"covered_by_existing_workstation_or_actor": 0,
+						"changed": 225,
+						"covered_by_existing_workstation_or_actor": 31,
 						"source_opaque": 256
 					},
 					"surface_decor_rear": {
-						"changed": 372,
-						"covered_by_existing_workstation_or_actor": 0,
+						"changed": 342,
+						"covered_by_existing_workstation_or_actor": 30,
 						"source_opaque": 372
 					}
 				},
@@ -121,18 +126,18 @@
 					"surface_decor_front": 0,
 					"surface_decor_rear": 0
 				},
-				"actor_pixel_delta": 1603,
+				"actor_pixel_delta": 1591,
 				"collision_shapes": 3,
 				"desk_asset_revision": "workstations-v2",
 				"layer_visibility": {
 					"surface_decor_front": {
-						"changed": 576,
-						"covered_by_existing_workstation_or_actor": 0,
+						"changed": 569,
+						"covered_by_existing_workstation_or_actor": 7,
 						"source_opaque": 576
 					},
 					"surface_decor_rear": {
-						"changed": 144,
-						"covered_by_existing_workstation_or_actor": 0,
+						"changed": 132,
+						"covered_by_existing_workstation_or_actor": 12,
 						"source_opaque": 144
 					}
 				},
@@ -148,7 +153,7 @@
 			},
 			"theo": {
 				"actor_overlay_occlusion": {
-					"surface_decor_front": 0,
+					"surface_decor_front": 1,
 					"surface_decor_rear": 0
 				},
 				"actor_pixel_delta": 1773,
@@ -156,13 +161,13 @@
 				"desk_asset_revision": "workstations-v2",
 				"layer_visibility": {
 					"surface_decor_front": {
-						"changed": 576,
-						"covered_by_existing_workstation_or_actor": 0,
+						"changed": 552,
+						"covered_by_existing_workstation_or_actor": 24,
 						"source_opaque": 576
 					},
 					"surface_decor_rear": {
-						"changed": 144,
-						"covered_by_existing_workstation_or_actor": 0,
+						"changed": 132,
+						"covered_by_existing_workstation_or_actor": 12,
 						"source_opaque": 144
 					}
 				},
@@ -193,8 +198,8 @@
 						"source_opaque": 154
 					},
 					"surface_decor_rear": {
-						"changed": 576,
-						"covered_by_existing_workstation_or_actor": 0,
+						"changed": 558,
+						"covered_by_existing_workstation_or_actor": 18,
 						"source_opaque": 576
 					}
 				},
@@ -218,13 +223,13 @@
 				"desk_asset_revision": "workstations-v2",
 				"layer_visibility": {
 					"surface_decor_front": {
-						"changed": 154,
-						"covered_by_existing_workstation_or_actor": 0,
+						"changed": 147,
+						"covered_by_existing_workstation_or_actor": 7,
 						"source_opaque": 154
 					},
 					"surface_decor_rear": {
-						"changed": 576,
-						"covered_by_existing_workstation_or_actor": 0,
+						"changed": 546,
+						"covered_by_existing_workstation_or_actor": 30,
 						"source_opaque": 576
 					}
 				},
@@ -250,13 +255,13 @@
 				"desk_asset_revision": "workstations-v2",
 				"layer_visibility": {
 					"surface_decor_front": {
-						"changed": 366,
-						"covered_by_existing_workstation_or_actor": 0,
+						"changed": 336,
+						"covered_by_existing_workstation_or_actor": 30,
 						"source_opaque": 366
 					},
 					"surface_decor_rear": {
-						"changed": 251,
-						"covered_by_existing_workstation_or_actor": 15,
+						"changed": 235,
+						"covered_by_existing_workstation_or_actor": 31,
 						"source_opaque": 266
 					}
 				},
@@ -280,13 +285,13 @@
 				"desk_asset_revision": "workstations-v2",
 				"layer_visibility": {
 					"surface_decor_front": {
-						"changed": 366,
-						"covered_by_existing_workstation_or_actor": 0,
+						"changed": 336,
+						"covered_by_existing_workstation_or_actor": 30,
 						"source_opaque": 366
 					},
 					"surface_decor_rear": {
-						"changed": 251,
-						"covered_by_existing_workstation_or_actor": 15,
+						"changed": 235,
+						"covered_by_existing_workstation_or_actor": 31,
 						"source_opaque": 266
 					}
 				},
@@ -311,7 +316,7 @@
 	"production_catalog_mutated": false,
 	"production_catalog_sha256": "36f81e5d20ee0894e66657bcfcdb275c69266bd48116f3d324c8df37f484b883",
 	"production_catalogue_registered": false,
-	"renderer": "macOS",
+	"renderer": "X11",
 	"runtime_registered": false,
 	"save_access": false,
 	"scene": "actual GameMain and production TownRoom; fixture-only two-layer creative overlays on mira-workstation and theo-workstation",

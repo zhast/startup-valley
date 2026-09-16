@@ -157,6 +157,9 @@ func _handle_line(line: String) -> void:
 			job_steer_failed.emit(job_id, error)
 		elif method == "chat.send":
 			chat_failed.emit(job_id, error)
+		elif method == "studio.read" and job_id == "studio-preview-css":
+			artifact_content_received.emit(job_id, "", "")
+			return
 		request_failed.emit(error)
 		return
 	_handle_response(method, job_id, message.get("result"))
@@ -251,9 +254,9 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 		"studio.files":
 			studio_files_received.emit(_studio_files_from_value(result_value))
 		"artifact.read":
-			artifact_content_received.emit(job_id, str(result.get("name", "Artifact")), str(result.get("content", "")))
+			artifact_content_received.emit(job_id, str(result.get("relativePath", result.get("name", "Artifact"))), str(result.get("content", "")))
 		"studio.read":
-			artifact_content_received.emit("", str(result.get("name", "Studio file")), str(result.get("content", "")))
+			artifact_content_received.emit(job_id, str(result.get("relativePath", result.get("name", "Studio file"))), str(result.get("content", "")))
 
 func _studio_files_from_value(value: Variant) -> Array[StudioFileRecord]:
 	var files: Array[StudioFileRecord] = []
@@ -352,8 +355,8 @@ func promote_job(job_id: String, approved: bool) -> void:
 func request_studio_files() -> void:
 	_send_request("studio.files", {})
 
-func read_studio_file(relative_path: String) -> void:
-	_send_request("studio.read", {"relativePath": relative_path})
+func read_studio_file(relative_path: String, job_id: String = "") -> void:
+	_send_request("studio.read", {"relativePath": relative_path}, job_id)
 
 func set_clock(day: int, minute_of_day: int, speed: float) -> void:
 	_send_request("clock.set", {"day": day, "minuteOfDay": minute_of_day, "speed": speed})

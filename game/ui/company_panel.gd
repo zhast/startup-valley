@@ -266,7 +266,8 @@ func _hired_screen() -> void:
 	var person_name := str(hired.get("name", "Your teammate"))
 	_heading("Welcome, " + person_name, "A new desk is ready in your office.")
 	_person(hired, false)
-	_label("Click %s in the office to walk over and talk. Their desk opens work orders and Activity." % person_name)
+	_label(_next_step().trim_prefix("NEXT · "))
+	_label("Walk to %s or use the team rail. Their desk opens Assign with the current Journey goal ready." % person_name)
 	_actions("Meet " + person_name, hide, true, "Company Journey", func() -> void: present("journey"))
 
 func _settings_screen() -> void:
@@ -515,32 +516,71 @@ func _milestone_status(definition: Dictionary) -> String:
 	return status.replace("_", " ").capitalize()
 
 func _current_milestone() -> Dictionary:
+	return open_milestone(state)
+
+func _available_candidate() -> Dictionary:
+	return available_candidate(state)
+
+func _next_step() -> String:
+	return next_step_line(state, busy, _pending_method, _pending_job_id)
+
+static func next_step_line(state: Dictionary, busy: bool = false, pending_method: String = "", pending_job_id: String = "") -> String:
+	if state.is_empty() or ((state.get("milestones", []) as Array).is_empty() and (state.get("candidates", []) as Array).is_empty()):
+		return ""
+	var definition := open_milestone(state)
+	if not definition.is_empty():
+		var evaluation: Dictionary = definition.get("evaluation", {}) if definition.get("evaluation") is Dictionary else {}
+		if definition.get("state") == "evaluating" or (busy and pending_method == "milestone.evaluate" and pending_job_id == str(definition.get("jobId", ""))):
+			return "NEXT · Your completed files are saved. You can close this notebook and return to the office."
+		if evaluation.get("verdict") == "ready": return "NEXT · Your review passed. Complete the milestone to claim its reward."
+		if not evaluation.is_empty() or definition.get("state") == "revision_required": return "NEXT · Revise the work using the review below, then evaluate the new result."
+		if definition.get("jobStatus") == "completed": return "NEXT · Preview the files in Activity, Add to Studio, then evaluate the result."
+		if definition.get("jobStatus") == "queued": return "NEXT · Your work order is queued. It will start during office work hours."
+		if definition.get("jobStatus") == "running": return "NEXT · Follow work, give direction, or answer an approval in your teammate’s Activity."
+		if str(definition.get("id", "")) == "website":
+			return "NEXT · Open Assign and choose Journey · Build a website, then send the work order."
+		return "NEXT · %s. Prepare a work order for your teammate." % definition.get("title", "Build your company")
+	var candidate := available_candidate(state)
+	if not candidate.is_empty(): return "NEXT · Hire %s from Company Journey, then meet them at their new desk." % candidate.get("name", "your teammate")
+	for item: Dictionary in state.get("milestones", []):
+		if item.get("state") == "locked": return "NEXT · Today’s goal is complete. Review your files, then end the day when ready."
+	return "NEXT · Your chapter is complete. Keep building with ordinary work orders and the shared Studio."
+
+static func open_milestone(state: Dictionary) -> Dictionary:
 	for definition: Dictionary in state.get("milestones", []):
 		if str(definition.get("state", "locked")) not in ["locked", "completed"]: return definition
 	return {}
 
-func _available_candidate() -> Dictionary:
+static func available_candidate(state: Dictionary) -> Dictionary:
 	for candidate: Dictionary in state.get("candidates", []):
 		if bool(candidate.get("available", false)) and not bool(candidate.get("hired", false)): return candidate
 	return {}
 
-func _next_step() -> String:
-	var definition := _current_milestone()
-	if not definition.is_empty():
-		var evaluation := _evaluation(definition)
-		if definition.get("state") == "evaluating" or (busy and _pending_method == "milestone.evaluate" and _pending_job_id == str(definition.get("jobId", ""))):
-			return "NEXT · Your completed files are saved. You can close this notebook and return to the office."
-		if evaluation.get("verdict") == "ready": return "NEXT · Your review passed. Complete the milestone to claim its reward."
-		if not evaluation.is_empty() or definition.get("state") == "revision_required": return "NEXT · Revise the work using the review below, then evaluate the new result."
-		if definition.get("jobStatus") == "completed": return "NEXT · Review your teammate’s files in Activity, then evaluate the result."
-		if definition.get("jobStatus") == "queued": return "NEXT · Your work order is queued. It will start during office work hours."
-		if definition.get("jobStatus") == "running": return "NEXT · Follow work, give direction, or answer an approval in your teammate’s Activity."
-		return "NEXT · %s. Prepare a work order for your teammate." % definition.get("title", "Build your company")
-	var candidate := _available_candidate()
-	if not candidate.is_empty(): return "NEXT · Hire %s, then meet them at their new desk." % candidate.get("name", "your teammate")
-	for item: Dictionary in state.get("milestones", []):
-		if item.get("state") == "locked": return "NEXT · Today’s goal is complete. Review your files, then end the day when ready."
-	return "NEXT · Your chapter is complete. Keep building with ordinary work orders and the shared Studio."
+static func station_caption(state: Dictionary, station_id: String, kind: String, owner_id: String, has_active_job: bool, has_approval: bool, has_delivery: bool) -> String:
+	match station_id:
+		"founder-workstation":
+			if not available_candidate(state).is_empty(): return "Hire Mina"
+			var milestone := open_milestone(state)
+			if milestone.is_empty(): return "Company Journey"
+			var evaluation: Dictionary = milestone.get("evaluation", {}) if milestone.get("evaluation") is Dictionary else {}
+			if evaluation.get("verdict") == "ready": return "Claim reward"
+			if not evaluation.is_empty() or str(milestone.get("state", "")) == "revision_required": return "Revise work"
+			if str(milestone.get("jobStatus", "")) == "completed": return "Evaluate result"
+			if str(milestone.get("id", "")) == "website" and str(milestone.get("jobStatus", "")) not in ["running", "queued"]: return "Assign website"
+			return "Company Journey"
+		"artifact-archive":
+			return "Studio"
+		"approval-console":
+			return "Review approval" if has_approval else "Activity"
+		_:
+			if kind != "desk" or owner_id.is_empty(): return ""
+			if has_approval: return "Review approval"
+			if has_delivery: return "Add to Studio"
+			if has_active_job: return "Activity"
+			var milestone := open_milestone(state)
+			if str(milestone.get("employeeId", "")) == owner_id and str(milestone.get("id", "")) == "website" and str(milestone.get("state", "")) in ["available", "revision_required"] and str(milestone.get("jobStatus", "")) not in ["running", "queued", "completed"]:
+				return "Assign website"
+			return "Assign"
 
 func _configure_focus() -> void:
 	if not visible: return

@@ -36,6 +36,10 @@ var _quitting := false
 var _save_acknowledged := false
 var _was_drawer_open := false
 var _updating_roster := false
+var _studio_paths: PackedStringArray = []
+var _pending_preview_html := ""
+var _pending_preview_html_content := ""
+var _pending_preview_css_path := ""
 
 func _ready() -> void:
 	_apply_initial_window_presentation.call_deferred()
@@ -140,6 +144,10 @@ func _process(delta: float) -> void:
 	station_obstacles.append(WorldCalloutSkin.actor_rect(player.position))
 	for employee: EmployeeAvatar in _employees.values(): station_obstacles.append(WorldCalloutSkin.actor_rect(employee.render_position()))
 	founder_hud.update_station_hover(str(station.get("id", "")), str(station.get("caption", "")), station.get("bounds", Rect2()), not paused and not player.input_blocked, station_obstacles)
+	if company_panel != null and company_panel.visible:
+		founder_hud.hide_next_step()
+	else:
+		founder_hud.set_next_step(CompanyPanel.next_step_line(_journey, company_panel.busy if company_panel != null else false, company_panel._pending_method if company_panel != null else "", company_panel._pending_job_id if company_panel != null else ""))
 	for employee_id: String in _employees:
 		var employee := _employees[employee_id]
 		employee.set_ui_presentation_state(job_panel._employee_ui_state(employee_id))
@@ -156,14 +164,16 @@ func _station_hover_details(hover: Dictionary) -> Dictionary:
 	var id := str(hover.get("id", ""))
 	var placement := room.placement_by_id(id)
 	if placement.is_empty(): return {}
-	var caption := ""
-	match id:
-		"founder-workstation": caption = "Company Journey"
-		"artifact-archive": caption = "Studio"
-		"approval-console": caption = "Review approval" if not job_panel._approval_id.is_empty() else "Activity"
-		_:
-			if str(placement.kind) == "desk" and _employees.has(str(placement.owner_id)):
-				caption = "Activity" if not job_panel.active_job_id().is_empty() else "Assign"
+	var owner_id := str(placement.get("owner_id", ""))
+	var caption := CompanyPanel.station_caption(
+		_journey,
+		id,
+		str(placement.kind),
+		owner_id,
+		not job_panel.active_job_id().is_empty() and (owner_id.is_empty() or job_panel._active_employee_id == owner_id),
+		not job_panel._approval_id.is_empty(),
+		job_panel._has_pending_delivery(owner_id)
+	)
 	var bounds: Rect2 = placement.world_visual_bounds
 	bounds.position += room.global_position
 	return {"id": id, "caption": caption, "bounds": bounds} if not caption.is_empty() else {}
@@ -218,7 +228,7 @@ func _connect_signals() -> void:
 	worker_client.job_steer_failed.connect(job_panel.set_steer_failed)
 	worker_client.artifact_content_received.connect(_on_artifact_content)
 	worker_client.worker_crashed.connect(_on_worker_crashed)
-	worker_client.request_failed.connect(job_panel.set_error)
+	worker_client.request_failed.connect(_on_worker_request_failed)
 	job_panel.key_submitted.connect(worker_client.save_openrouter_key)
 	job_panel.chat_history_requested.connect(worker_client.request_chat_history)
 	job_panel.chat_submitted.connect(worker_client.send_chat)
@@ -260,6 +270,7 @@ func _on_bootstrap(
 	_apply_memories(records, memories)
 	_spawn_employees(records)
 	job_panel.set_spend(daily_spend, daily_spend_warning)
+	_remember_studio_paths(studio_files)
 	job_panel.show_studio_files(studio_files)
 	# Hydration restores durable rail attention, never announces an old delivery.
 	job_panel.show_recent_jobs(recent_jobs)
@@ -453,13 +464,44 @@ func _on_job_event(job_id: String, event: WorkerEventRecord) -> void:
 		job_panel.offer_promotion(job_id, employee_id)
 
 func _on_artifact_content(job_id: String, name: String, content: String) -> void:
+	if job_id == "studio-preview-css":
+		var html_path := _pending_preview_html
+		var html := _pending_preview_html_content
+		_clear_pending_preview()
+		if SitePreview.is_html_path(html_path):
+			artifact_viewer.show_artifact(html_path, html, "Shared Studio", {"css": content, "studio": true})
+		return
+	if job_id.is_empty() and SitePreview.is_html_path(name):
+		var css_path := SitePreview.companion_stylesheet(name, content, _studio_paths)
+		if not css_path.is_empty():
+			_pending_preview_html = name
+			_pending_preview_html_content = content
+			_pending_preview_css_path = css_path
+			worker_client.read_studio_file(css_path, "studio-preview-css")
+			return
 	artifact_viewer.show_artifact(name, content, "Shared Studio" if job_id.is_empty() else "Job delivery")
 
+func _clear_pending_preview() -> void:
+	_pending_preview_html = ""
+	_pending_preview_html_content = ""
+	_pending_preview_css_path = ""
+
+func _on_worker_request_failed(message: String) -> void:
+	job_panel.set_error(message)
+
+func _remember_studio_paths(files: Array[StudioFileRecord]) -> void:
+	_studio_paths.clear()
+	for file: StudioFileRecord in files:
+		if not file.relative_path.is_empty():
+			_studio_paths.append(file.relative_path)
+
 func _on_studio_files(files: Array[StudioFileRecord]) -> void:
+	_remember_studio_paths(files)
 	job_panel.show_studio_files(files)
 	job_panel.set_info("Durable studio updated. Files remain after restart.")
 
 func _on_promotion_state(files: Array[StudioFileRecord], pending_promotions: Array) -> void:
+	_remember_studio_paths(files)
 	job_panel.show_studio_files(files)
 	job_panel.show_pending_promotions(pending_promotions)
 	founder_hud.hide_delivery()
@@ -519,6 +561,7 @@ func _on_journey(value: Dictionary) -> void:
 	job_panel.set_journey_state(value)
 	var company: Dictionary = value.get("company", {})
 	clock_panel.show_money_earned(float(company.get("earnedCents", 0)) / 100.0)
+	founder_hud.set_next_step(CompanyPanel.next_step_line(value, company_panel.busy, company_panel._pending_method, company_panel._pending_job_id))
 
 func _restore_player() -> void:
 	_restored_player = true
@@ -734,6 +777,8 @@ func _world_ui_obstacles() -> Array[Rect2]:
 		placed.append(get_viewport().get_visible_rect())
 	if founder_hud.delivery_visible(): placed.append(founder_hud._notification.get_global_rect())
 	if founder_hud._movement_hint.visible: placed.append(founder_hud._movement_hint.get_global_rect())
+	var next_step := founder_hud.next_step_rect()
+	if next_step.has_area(): placed.append(next_step)
 	return placed
 
 func _update_label_visibility(priority_id: String) -> void:

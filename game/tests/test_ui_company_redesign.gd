@@ -283,6 +283,7 @@ func _hire_input() -> void:
 	value["candidates"][1]["hired"] = true
 	await _present("hired", value)
 	_check(_text().contains("Welcome, Mina") and _button("Meet Mina") != null, "Hire confirmation preserves requested identity even with two hired candidates")
+	_check(_text().contains("website") or _text().contains("Assign"), "Hire confirmation points at the website work order instead of only chatting")
 	await _capture("named-hire")
 	_actions.clear()
 

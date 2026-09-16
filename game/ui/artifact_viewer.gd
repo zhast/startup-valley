@@ -7,11 +7,22 @@ const MUTED_INK := Color("725b46")
 
 var _title_label: Label
 var _content: RichTextLabel
+var _preview: RichTextLabel
 var _close_button: Button
 var _caption_label: Label
+var _mode_row: HBoxContainer
+var _source_button: Button
+var _preview_button: Button
+var _mobile_button: Button
+var _preview_notice: Label
 var _modal: PanelContainer
 var _transition: Tween
 var _return_focus: WeakRef
+var _source_text := ""
+var _source_path := ""
+var _preview_css := ""
+var _reader_mode := "source"
+var _mobile_preview := false
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -70,6 +81,40 @@ func _build_interface() -> void:
 	_caption_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_caption_label.mouse_filter = Control.MOUSE_FILTER_PASS
 	column.add_child(_caption_label)
+	_mode_row = HBoxContainer.new()
+	_mode_row.name = "ReaderMode"
+	_mode_row.add_theme_constant_override("separation", 8)
+	column.add_child(_mode_row)
+	_source_button = Button.new()
+	_source_button.name = "SourceMode"
+	_source_button.text = "Source"
+	_source_button.custom_minimum_size.y = 40
+	_source_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	CozyUI.button(_source_button, "secondary")
+	_source_button.pressed.connect(_set_reader_mode.bind("source"))
+	_mode_row.add_child(_source_button)
+	_preview_button = Button.new()
+	_preview_button.name = "PreviewMode"
+	_preview_button.text = "Preview"
+	_preview_button.custom_minimum_size.y = 40
+	_preview_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	CozyUI.button(_preview_button, "quiet")
+	_preview_button.pressed.connect(_set_reader_mode.bind("preview"))
+	_mode_row.add_child(_preview_button)
+	_mobile_button = Button.new()
+	_mobile_button.name = "MobilePreview"
+	_mobile_button.text = "Mobile"
+	_mobile_button.custom_minimum_size.y = 40
+	_mobile_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	CozyUI.button(_mobile_button, "quiet")
+	_mobile_button.pressed.connect(_toggle_mobile_preview)
+	_mode_row.add_child(_mobile_button)
+	_preview_notice = Label.new()
+	_preview_notice.name = "PreviewNotice"
+	_preview_notice.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	CozyUI.label(_preview_notice, "meta")
+	_preview_notice.visible = false
+	column.add_child(_preview_notice)
 	var divider := HSeparator.new()
 	var divider_style := StyleBoxLine.new()
 	divider_style.color = Color("cbb998")
@@ -104,17 +149,39 @@ func _build_interface() -> void:
 	_content.add_theme_stylebox_override("normal", reading_inset)
 	_content.add_theme_stylebox_override("focus", CozyUI.focus())
 	column.add_child(_content)
+	_preview = RichTextLabel.new()
+	_preview.name = "WebsitePreview"
+	_preview.bbcode_enabled = true
+	_preview.fit_content = false
+	_preview.scroll_active = true
+	_preview.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_preview.selection_enabled = true
+	_preview.focus_mode = Control.FOCUS_ALL
+	_preview.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_preview.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	CozyUI.rich_text(_preview, GameFonts.DOCUMENT)
+	_preview.add_theme_font_size_override("normal_font_size", GameFonts.DOCUMENT)
+	_preview.add_theme_constant_override("line_separation", 6)
+	_preview.add_theme_stylebox_override("normal", reading_inset)
+	_preview.add_theme_stylebox_override("focus", CozyUI.focus())
+	_preview.visible = false
+	column.add_child(_preview)
+	_mode_row.visible = false
 	_close_button.focus_next = _close_button.get_path_to(_content)
 	_close_button.focus_previous = _close_button.get_path_to(_content)
 	_content.focus_next = _content.get_path_to(_close_button)
 	_content.focus_previous = _content.get_path_to(_close_button)
 
-func show_artifact(name: String, content: String, provenance: String = "Job delivery") -> void:
+func show_artifact(name: String, content: String, provenance: String = "Job delivery", extras: Dictionary = {}) -> void:
 	# Replacing the open document must retain the original Preview/Studio action,
 	# rather than capturing the reader's own Close button as the return target.
 	if not visible:
 		var previous := get_viewport().gui_get_focus_owner()
 		_return_focus = weakref(previous) if previous != null and not is_ancestor_of(previous) else null
+	_source_path = name
+	_source_text = content
+	_preview_css = str(extras.get("css", ""))
+	_mobile_preview = false
 	_title_label.text = name.get_file()
 	_title_label.tooltip_text = name
 	_caption_label.text = "%s · Read only" % provenance
@@ -133,6 +200,8 @@ func show_artifact(name: String, content: String, provenance: String = "Job deli
 		# Never interpret source syntax (CSS '*', HTML tags, brackets) as Markdown.
 		_content.add_text(content)
 	_content.scroll_to_line(0)
+	_configure_preview_surface()
+	_set_reader_mode("source")
 	visible = true
 	move_to_front()
 	if _transition != null and _transition.is_valid():
@@ -147,6 +216,72 @@ func show_artifact(name: String, content: String, provenance: String = "Job deli
 	_transition.tween_property($Scrim, "modulate:a", 1.0, 0.16)
 	_transition.tween_property(_modal, "modulate:a", 1.0, 0.16)
 	_close_button.grab_focus()
+
+func _configure_preview_surface() -> void:
+	var can_preview := SitePreview.is_html_path(_source_path)
+	_mode_row.visible = can_preview
+	_preview_notice.visible = false
+	_mobile_button.visible = can_preview
+	if not can_preview:
+		_preview.clear()
+		_preview.text = ""
+		return
+	var rendered: Dictionary = SitePreview.render(_source_text, _preview_css)
+	_preview.clear()
+	_preview.text = ""
+	if bool(rendered.get("ok", false)):
+		_preview_notice.text = str(rendered.get("notice", "Local Studio preview · no network, no scripts."))
+		_preview.add_theme_font_override("normal_font", GameFonts.BODY)
+		_preview.add_theme_font_size_override("normal_font_size", GameFonts.DOCUMENT)
+		_preview.text = str(rendered.get("bbcode", ""))
+	else:
+		_preview_notice.text = str(rendered.get("reason", "Preview is unavailable."))
+		_preview.add_theme_font_override("normal_font", GameFonts.BODY)
+		_preview.text = _preview_notice.text
+
+
+func _set_reader_mode(mode: String) -> void:
+	_reader_mode = mode if _mode_row.visible else "source"
+	var previewing := _reader_mode == "preview"
+	_content.visible = not previewing
+	_preview.visible = previewing
+	_preview_notice.visible = previewing and _mode_row.visible
+	_mobile_button.visible = previewing and _mode_row.visible
+	if previewing:
+		_preview.scroll_to_line(0)
+		_apply_preview_width()
+	CozyUI.button(_source_button, "secondary" if not previewing else "quiet")
+	CozyUI.button(_preview_button, "secondary" if previewing else "quiet")
+	_configure_reader_focus()
+
+
+func _toggle_mobile_preview() -> void:
+	_mobile_preview = not _mobile_preview
+	_apply_preview_width()
+	CozyUI.button(_mobile_button, "secondary" if _mobile_preview else "quiet")
+
+
+func _apply_preview_width() -> void:
+	# Desktop uses the full reader; mobile is a 360px column. No network layout.
+	_preview.size_flags_horizontal = Control.SIZE_SHRINK_CENTER if _mobile_preview else Control.SIZE_EXPAND_FILL
+	_preview.custom_minimum_size.x = 360.0 if _mobile_preview else 0.0
+	_mobile_button.text = "Desktop" if _mobile_preview else "Mobile"
+
+
+func _configure_reader_focus() -> void:
+	var document := _preview if _preview.visible else _content
+	_close_button.focus_next = _close_button.get_path_to(_source_button if _mode_row.visible else document)
+	_close_button.focus_previous = _close_button.get_path_to(document)
+	document.focus_next = document.get_path_to(_close_button)
+	document.focus_previous = document.get_path_to(_preview_button if _mode_row.visible else _close_button)
+	if _mode_row.visible:
+		_source_button.focus_next = _source_button.get_path_to(_preview_button)
+		_source_button.focus_previous = _source_button.get_path_to(_close_button)
+		_preview_button.focus_next = _preview_button.get_path_to(_mobile_button if _mobile_button.visible else document)
+		_preview_button.focus_previous = _preview_button.get_path_to(_source_button)
+		_mobile_button.focus_next = _mobile_button.get_path_to(document)
+		_mobile_button.focus_previous = _mobile_button.get_path_to(_preview_button)
+
 
 func close_viewer() -> void:
 	if not visible:

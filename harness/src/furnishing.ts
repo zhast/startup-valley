@@ -224,6 +224,18 @@ export class FurnishingStore {
     const owned = new Set(inventory.map((item) => item.id));
     return Object.fromEntries(this.geometry.room.props.filter((prop) => owned.has(prop.id)).map((prop) => [prop.id, { grid: prop.grid, facing: prop.facing }]));
   }
+  /** First-run lounge only. Recovery still stores décor; never occupies the [22,16] test bay. */
+  private starterLounge(inventory: FurnitureItem[], base: FurniturePlacements): FurniturePlacements {
+    const owned = new Set(inventory.map((item) => item.id));
+    if (!owned.has("decor-phone_booth") || Object.hasOwn(base, "decor-phone_booth")) return base;
+    const candidate: FurniturePlacements = { ...base, "decor-phone_booth": { grid: [3, 18], facing: "south" } };
+    try {
+      this.geometry.validate(candidate, inventory);
+      return candidate;
+    } catch {
+      return base;
+    }
+  }
   private syncEmployeeDesks(placements: FurniturePlacements, inventory: FurnitureItem[]): void {
     const save = this.db.prepare("UPDATE employees SET desk_x=?,desk_y=? WHERE id=?");
     for (const item of inventory) {
@@ -247,7 +259,7 @@ export class FurnishingStore {
     const inventory = this.inventory();
     const row = this.db.prepare("SELECT * FROM furnishing_state WHERE id=1").get();
     if (!row) {
-      let placements = this.defaults(inventory);
+      let placements = this.starterLounge(inventory, this.defaults(inventory));
       let recovery = "";
       // Pre-furnishing companies can carry authored/custom workstation cells in
       // employee rows. Preserve every compatible location rather than silently

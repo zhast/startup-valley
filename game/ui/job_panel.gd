@@ -8,7 +8,12 @@ var requested_token_budget := 12000
 var _chat_follow_tail := true
 
 func prepare_milestone(definition: Dictionary) -> void:
+	_purpose_chosen_by_player = false
 	select_employee(str(definition.get("employeeId", "mira")))
+	_apply_milestone_draft(definition)
+	_tabs.current_tab = 1
+
+func _apply_milestone_draft(definition: Dictionary) -> void:
 	_job_picker.select(CANNED_JOBS.size())
 	_on_job_selected(CANNED_JOBS.size())
 	_custom_title_input.text = str(definition.get("title", "Company milestone"))
@@ -28,7 +33,7 @@ func prepare_milestone(definition: Dictionary) -> void:
 		_budget_picker.select(1)
 	_draft_label.text = "Journey · " + str(definition.get("title", ""))
 	_refresh_work_purposes()
-	_tabs.current_tab = 1
+	_update_assign_copy()
 
 signal key_submitted(key: String)
 signal settings_requested
@@ -167,6 +172,8 @@ var _submission_pending := false
 var _submitted_job_id := ""
 var _journey_state: Dictionary = {}
 var _purpose_picker: OptionButton
+var _purpose_chosen_by_player := false
+var _next_step_label: Label
 var _draft_discussion := ""
 var _header_shell: Control
 var _empty_team_panel: PanelContainer
@@ -318,6 +325,16 @@ func _build_team_rail() -> Control:
 	)
 	_style_action_button(_settings_button, INDIGO, false)
 	rail.add_child(_settings_button)
+	_next_step_label = Label.new()
+	_next_step_label.name = "RailNextStep"
+	_next_step_label.position = Vector2(15.0, 548.0)
+	_next_step_label.size = Vector2(100.0, 100.0)
+	_next_step_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_next_step_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_next_step_label.max_lines_visible = 4
+	CozyUI.label(_next_step_label, "meta")
+	_next_step_label.add_theme_color_override("font_color", OFF_WHITE)
+	rail.add_child(_next_step_label)
 	_connection_badge = Label.new()
 	_connection_badge.text = "!"
 	_connection_badge.visible = false
@@ -625,7 +642,7 @@ func _build_employee_drawer() -> VBoxContainer:
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	empty.add_child(title)
 	var hint := Label.new()
-	hint.text = "Hire Mina to turn your first idea into something real."
+	hint.text = "Hire Mina, then assign the website from her desk."
 	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	CozyUI.label(hint)
@@ -785,6 +802,7 @@ func _build_work_tab() -> VBoxContainer:
 	_draft_reset_button.text = "New side project"
 	_style_action_button(_draft_reset_button, INDIGO, false)
 	_draft_reset_button.pressed.connect(func() -> void:
+		_purpose_chosen_by_player = true
 		_job_picker.select(CANNED_JOBS.size())
 		_on_job_selected(CANNED_JOBS.size())
 	)
@@ -1377,6 +1395,7 @@ func configure_employees(records: Array[EmployeeRecord]) -> void:
 		_team_buttons[record.id] = button
 	_refresh_team_statuses()
 	_refresh_operation_availability()
+	_refresh_rail_next_step()
 	if records.is_empty():
 		_selected_employee_id = ""
 		_refresh_employee_header()
@@ -1409,6 +1428,7 @@ func _select_employee(employee_id: String) -> void:
 	if not _team_buttons.has(employee_id):
 		return
 	if _selected_employee_id != employee_id:
+		_purpose_chosen_by_player = false
 		_set_attachment_expanded(false)
 		_set_usage_expanded(false, false, false)
 	if _selected_employee_id != employee_id and not milestone_id.is_empty():
@@ -1419,7 +1439,10 @@ func _select_employee(employee_id: String) -> void:
 	_activity_job_id = ""
 	_refresh_work_purposes()
 	_refresh_team_card_styles()
-	if not _custom_mode and _job_picker != null:
+	var journey_draft := _available_milestone_for(employee_id)
+	if not _purpose_chosen_by_player and not journey_draft.is_empty():
+		_apply_milestone_draft(journey_draft)
+	elif not _custom_mode and _job_picker != null:
 		for index: int in range(CANNED_JOBS.size()):
 			var job: Dictionary = CANNED_JOBS[index]
 			if str(job.get("employee_id", "")) == employee_id:
@@ -1585,6 +1608,9 @@ func _show_empty_chat() -> void:
 		_show_chat_hint("Hire your first teammate from Company Journey.")
 		return
 	var greeting := "What are we building? We can shape the idea before creating a work order." if employee.id == "mira" else "What should we test or grow? We can sharpen it before creating a work order."
+	var milestone := _available_milestone_for(employee.id)
+	if str(milestone.get("id", "")) == "website":
+		greeting = "Chat is optional. Open Assign and choose Journey · Build a website to finish Day 1."
 	_append_chat_line("employee", employee.display_name, greeting)
 
 func _append_chat_line(sender: String, name_value: String, content: String) -> void:
@@ -1814,6 +1840,24 @@ func _discussion_context() -> String:
 func set_journey_state(value: Dictionary) -> void:
 	_journey_state = value
 	_refresh_work_purposes()
+	_refresh_rail_next_step()
+
+func _available_milestone_for(employee_id: String) -> Dictionary:
+	for definition: Dictionary in _journey_state.get("milestones", []):
+		if str(definition.get("employeeId", "")) != employee_id: continue
+		if str(definition.get("state", "")) in ["available", "revision_required"]: return definition
+	return {}
+
+func _refresh_rail_next_step() -> void:
+	if _next_step_label == null: return
+	if _employees.is_empty():
+		_next_step_label.text = ""
+		_next_step_label.visible = false
+		return
+	var line := CompanyPanel.next_step_line(_journey_state).trim_prefix("NEXT · ")
+	_next_step_label.text = line
+	_next_step_label.tooltip_text = line
+	_next_step_label.visible = not line.is_empty()
 
 func _refresh_work_purposes() -> void:
 	if _purpose_picker == null: return
@@ -1833,6 +1877,7 @@ func _refresh_work_purposes() -> void:
 		if str(definition.get("id", "")) == milestone_id: _purpose_picker.select(index)
 
 func _choose_work_purpose(index: int) -> void:
+	_purpose_chosen_by_player = true
 	var definition: Dictionary = _purpose_picker.get_item_metadata(index)
 	var discussion := _draft_discussion
 	if definition.has("cannedIndex"):
@@ -2067,7 +2112,9 @@ func reset_company() -> void:
 	_custom_title_input.clear()
 	_on_job_selected(CANNED_JOBS.size())
 	_refresh_operation_availability()
+	_purpose_chosen_by_player = false
 	_set_status("Hire Mina from Company Journey to get started.", CHARCOAL)
+	_refresh_rail_next_step()
 
 func mark_job_queued(job_id: String) -> void:
 	if job_id != _active_job_id:
@@ -2199,7 +2246,7 @@ func _update_assign_copy() -> void:
 	if not _active_job_id.is_empty():
 		return
 	if _clock_phase == "work":
-		_assign_button.text = "Start work order"
+		_assign_button.text = "Start website work order" if milestone_id == "website" else "Start work order"
 	elif _clock_phase == "lunch":
 		_assign_button.text = "Queue for 13:30"
 	else:
@@ -2464,7 +2511,7 @@ func _refresh_selected_activity() -> void:
 		if _attention_employee_id.is_empty(): _attention_employee_id = _delivery_employee(candidate)
 		if str(candidate.get("jobId", "")) == _activity_job_id and not is_active:
 			_promotion_job_id = _activity_job_id
-			_promotion_label.text = "Preview the files above, then choose where to keep them."
+			_promotion_label.text = "Add to Studio so the team can use these files. Keep with job leaves them on this work order only."
 	_promotion_box.visible = not _promotion_job_id.is_empty()
 	# A decision already carries its current state and explanation. The longer
 	# work summary stays available through details without pushing actions down.
