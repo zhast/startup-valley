@@ -6,8 +6,10 @@ bottom-center foot anchor at `(24, 72)`.
 - `founder-locomotion.png`, `mira-locomotion.png`, and
   `theo-locomotion.png`: 6 columns × 4 rows. Rows are front, back, left, right;
   columns 0–1 are idle and columns 2–5 are walking.
-- `mira-seated.png` and `theo-seated.png`: 6 columns × 1 row. Columns 0–1
-  are chair-seated idle/blink; 2–5 are typing. No baked furniture or laptop.
+- `mira-seated.png`, `theo-seated.png`, and `founder-seated.png`: 6 columns × 1
+  row. Columns 0–1 are chair-seated idle/blink; 2–5 are typing. No baked
+  furniture or laptop. Founder south is bound; east/N/W workstation founder
+  sheets stay unbound.
 - `mira-work.png` and `theo-work.png`: 8 columns × 4 rows. Row 0 columns
   0–1 remain lunch poses and 6–7 approval; row 1 is research and thinking;
   rows 2–3 are delivery. The old cross-legged typing cells 2–5 are superseded.

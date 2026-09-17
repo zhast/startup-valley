@@ -9,6 +9,11 @@ const MIRA_WORK: Texture2D = preload("res://assets/runtime/characters/mira-work.
 const THEO_WORK: Texture2D = preload("res://assets/runtime/characters/theo-work.png")
 const MIRA_SEATED: Texture2D = preload("res://assets/runtime/characters/mira-seated.png")
 const THEO_SEATED: Texture2D = preload("res://assets/runtime/characters/theo-seated.png")
+const FOUNDER_SEATED_PATH := "res://assets/runtime/characters/founder-seated.png"
+# PASS south-v9 (md5_8 9c1611b5). Load at init so a missing sidecar cannot take
+# down CharacterArt parse; drop the tracked PNG in place to activate the bind.
+# East/N/W founder workstation sheets stay unbound in this slice.
+static var FOUNDER_SEATED: Texture2D = null
 const MIRA_WORKSTATIONS_V2_NORTH: Texture2D = preload("res://assets/runtime/characters/workstations-v2/mira-north.png")
 const THEO_WORKSTATIONS_V2_NORTH: Texture2D = preload("res://assets/runtime/characters/workstations-v2/theo-north.png")
 const MIRA_WORKSTATIONS_V2_EAST: Texture2D = preload("res://assets/runtime/characters/workstations-v2/mira-east.png")
@@ -207,6 +212,16 @@ const REVIEWED_COLLABORATION_CAPABILITIES: Dictionary = {
 static var _calibration_pose_sets: Dictionary[String, Dictionary] = {}
 static var _calibration_pose_owners: Dictionary[String, int] = {}
 
+static func _static_init() -> void:
+	if ResourceLoader.exists(FOUNDER_SEATED_PATH):
+		FOUNDER_SEATED = load(FOUNDER_SEATED_PATH) as Texture2D
+	var characters: Dictionary = WORK_POSE_SETS[LEGACY_WORK_POSE_SET]["characters"]
+	if FOUNDER_SEATED != null:
+		# South seated/typing only. East remains unbound.
+		characters["founder"] = {"seated": FOUNDER_SEATED}
+	else:
+		characters.erase("founder")
+
 static func register_calibration_pose_set(id: String, definition: Dictionary, owner: Object) -> bool:
 	if not OS.has_feature("editor") or owner == null or not is_instance_valid(owner): return false
 	if not id.begins_with("dev-calibration-") or WORK_POSE_SETS.has(id) or _calibration_pose_sets.has(id): return false
@@ -313,7 +328,12 @@ static func work_sheet(character_id: String) -> Texture2D:
 	return THEO_WORK if character_id == "theo" else MIRA_WORK
 
 static func seated_sheet(character_id: String) -> Texture2D:
-	return THEO_SEATED if character_id == "theo" else MIRA_SEATED
+	match character_id:
+		"theo":
+			return THEO_SEATED
+		"founder":
+			return FOUNDER_SEATED
+	return MIRA_SEATED
 
 static func supports_work_pose(character_id: String, pose_set: String, facing: String, pose: String = "seated") -> bool:
 	return not work_pose_frame(character_id, pose_set, facing, pose, 0).is_empty()

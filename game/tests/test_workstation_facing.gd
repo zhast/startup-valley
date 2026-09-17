@@ -41,7 +41,14 @@ func check_pose_registry() -> void:
 			check(typing.texture == CharacterArt.seated_sheet(character_id) and typing.region == Rect2(Vector2((2 + frame % 4) * 48, 0), CharacterArt.FRAME_SIZE), "Legacy typing pixels/cadence unchanged")
 		check(CharacterArt.supported_work_facings(character_id, "missing-set").is_empty(), "An absent set cannot inherit legacy poses")
 		check(not CharacterArt.supports_work_pose(character_id, CharacterArt.LEGACY_WORK_POSE_SET, "south", "missing-pose"), "An absent action cannot inherit seated art")
-	check(CharacterArt.supported_work_facings("founder").is_empty(), "Founder has no employee work sheet implicitly assigned")
+	check(CharacterArt.seated_sheet("founder") == CharacterArt.FOUNDER_SEATED, "Founder seated sheet is not Mina's fallback")
+	check(CharacterArt.seated_sheet("founder") != CharacterArt.MIRA_SEATED, "Founder does not reuse Mina seated art")
+	if CharacterArt.FOUNDER_SEATED != null:
+		check(CharacterArt.supported_work_facings("founder") == ["south"], "Founder south seated/typing uses the PASS sheet")
+	else:
+		check(CharacterArt.supported_work_facings("founder").is_empty(), "Founder south bind waits for the tracked PASS sheet")
+	check(not CharacterArt.supports_work_pose("founder", CharacterArt.LEGACY_WORK_POSE_SET, "east", "seated"), "Founder east seated remains unbound")
+	check(CharacterArt.supported_work_facings("founder", CharacterArt.REVIEWED_WORKSTATION_POSE_SET).is_empty(), "Founder is not in the reviewed workstation pose set")
 	check(CharacterArt.supported_work_facings("future-lawyer").is_empty(), "Future roles cannot silently borrow Mina's poses")
 	check(CharacterArt.supported_work_facings("mira", CharacterArt.LEGACY_WORK_POSE_SET, []).is_empty(), "Empty requirements are not proof of supported directions")
 

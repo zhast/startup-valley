@@ -67,9 +67,16 @@ test("starter inventory, four-facing placement, move, store and Undo survive res
   const initial = db.bootstrap().furnishing;
   assert.equal(initial.inventory.length, founderInventory); assert.equal(initial.revision, 0);
   assert.equal(initial.inventory.filter((item) => !item.essential).length, starterCount);
-  assert.deepEqual(Object.keys(initial.placements), ["founder-workstation", "decor-phone_booth"]);
+  assert.deepEqual(Object.keys(initial.placements), ["founder-workstation", "decor-phone_booth", "decor-cafe_table", "decor-cafe_chair"]);
   assert.deepEqual(initial.placements["decor-phone_booth"], { grid: [3, 18], facing: "south" });
-  assert.notDeepEqual(initial.placements["decor-phone_booth"]?.grid, [22, 16]);
+  assert.deepEqual(initial.placements["decor-cafe_table"], { grid: [15, 9], facing: "south" });
+  assert.deepEqual(initial.placements["decor-cafe_chair"], { grid: [24, 9], facing: "south" });
+  assert.equal(Object.values(initial.placements).some((placement) => placement.grid[0] === 22 && placement.grid[1] === 16), false);
+  assert.equal(initial.placements["decor-lounge_sofa"], undefined);
+  assert.equal(initial.inventory.some((item) => item.id === "decor-desk_lamp_kit" && item.kind === "desk_lamp_kit"), true);
+  assert.equal(initial.inventory.some((item) => item.id === "decor-creative_design_kit" && item.kind === "creative_design_kit"), true);
+  assert.equal(initial.placements["decor-desk_lamp_kit"], undefined);
+  assert.equal(initial.placements["decor-creative_design_kit"], undefined);
   for (const item of initial.inventory.filter((entry) => !entry.essential)) {
     const facings = furnishingCatalog.furniture[item.kind]?.facings ?? ["south"];
     for (const facing of facings) {

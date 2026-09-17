@@ -21,6 +21,7 @@ const IMPORTANT_TEXTURES: PackedStringArray = [
 	"res://assets/runtime/office/south-workstation.png",
 	"res://assets/runtime/characters/mira-seated.png",
 	"res://assets/runtime/characters/theo-seated.png",
+	"res://assets/runtime/characters/founder-seated.png",
 	"res://assets/runtime/office/collaboration-cluster.png",
 	"res://assets/runtime/office/coffee-station.png",
 	"res://assets/runtime/office/approval-console.png",
@@ -68,6 +69,7 @@ const EXACT_TEXTURE_SIZES: Dictionary = {
 	"res://assets/runtime/characters/mira-work.png": Vector2i(384, 320),
 	"res://assets/runtime/characters/mira-seated.png": Vector2i(288, 80),
 	"res://assets/runtime/characters/theo-seated.png": Vector2i(288, 80),
+	"res://assets/runtime/characters/founder-seated.png": Vector2i(288, 80),
 	"res://assets/runtime/office/south-workstation.png": Vector2i(256, 112),
 	"res://assets/runtime/characters/theo-work.png": Vector2i(384, 320),
 	"res://assets/runtime/office/layered-furniture.png": Vector2i(256, 192),
@@ -157,6 +159,8 @@ func _validate() -> void:
 		instance.free()
 
 	for path: String in IMPORTANT_TEXTURES:
+		if path == "res://assets/runtime/characters/founder-seated.png" and not FileAccess.file_exists(path):
+			continue
 		var texture: Resource = load(path)
 		if texture == null or not texture is Texture2D:
 			_fail("Could not load important texture: %s" % path)

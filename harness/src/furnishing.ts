@@ -224,17 +224,33 @@ export class FurnishingStore {
     const owned = new Set(inventory.map((item) => item.id));
     return Object.fromEntries(this.geometry.room.props.filter((prop) => owned.has(prop.id)).map((prop) => [prop.id, { grid: prop.grid, facing: prop.facing }]));
   }
-  /** First-run lounge only. Recovery still stores décor; never occupies the [22,16] test bay. */
+  /**
+   * First-run lounge only. Recovery still stores décor; never occupies the [22,16] planter test bay.
+   * Phone booth stays southwest. Café table/chair sit across the aisle because table artwork cannot
+   * legally sit beside the booth, and sofa/whiteboard/bookshelf art overlaps the reserved planter bay.
+   * desk_lamp_kit and creative_design_kit are starter-decor placeables (inventory-only here), not
+   * employee_role_kits — Mina/Theo keep mina_discovery_kit / theo_campaign_kit.
+   */
   private starterLounge(inventory: FurnitureItem[], base: FurniturePlacements): FurniturePlacements {
     const owned = new Set(inventory.map((item) => item.id));
-    if (!owned.has("decor-phone_booth") || Object.hasOwn(base, "decor-phone_booth")) return base;
-    const candidate: FurniturePlacements = { ...base, "decor-phone_booth": { grid: [3, 18], facing: "south" } };
-    try {
-      this.geometry.validate(candidate, inventory);
-      return candidate;
-    } catch {
-      return base;
+    const seeds: Array<{ id: string; grid: Cell; facing: Facing }> = [
+      { id: "decor-phone_booth", grid: [3, 18], facing: "south" },
+      { id: "decor-cafe_table", grid: [15, 9], facing: "south" },
+      { id: "decor-cafe_chair", grid: [24, 9], facing: "south" },
+    ];
+    let placements = base;
+    for (const piece of seeds) {
+      if (!owned.has(piece.id) || Object.hasOwn(placements, piece.id)) continue;
+      if (piece.grid[0] === 22 && piece.grid[1] === 16) continue;
+      const candidate: FurniturePlacements = { ...placements, [piece.id]: { grid: piece.grid, facing: piece.facing } };
+      try {
+        this.geometry.validate(candidate, inventory);
+        placements = candidate;
+      } catch {
+        // Keep already-accepted seeds if a later piece cannot land in this room.
+      }
     }
+    return placements;
   }
   private syncEmployeeDesks(placements: FurniturePlacements, inventory: FurnitureItem[]): void {
     const save = this.db.prepare("UPDATE employees SET desk_x=?,desk_y=? WHERE id=?");

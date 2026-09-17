@@ -37,6 +37,14 @@
     {
       "id": "decor-bookshelf",
       "kind": "bookshelf"
+    },
+    {
+      "id": "decor-desk_lamp_kit",
+      "kind": "desk_lamp_kit"
+    },
+    {
+      "id": "decor-creative_design_kit",
+      "kind": "creative_design_kit"
     }
   ],
   "employee_role_kits": {
@@ -3029,6 +3037,806 @@
         }
       },
       "interaction_kind": "none"
+    },
+    "desk_lamp_kit": {
+      "display_name": "Desk task lamp",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Supreme Leader PASS 2026-09-16 ~14:30 PT (desk_lamp_kit)",
+          "preview_art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/north-whole.png",
+          "visual_bounds": [
+            17,
+            -46,
+            29,
+            27
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/north-surface_decor_rear.png",
+              "name": "DeskLampKitSurfaceDecorRear",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 2,
+              "content_bounds": [
+                113,
+                114,
+                23,
+                23
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/north-surface_decor_front.png",
+              "name": "DeskLampKitSurfaceDecorFront",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 4,
+              "content_bounds": [
+                113,
+                116,
+                29,
+                25
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            17,
+            -46,
+            29,
+            27
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Supreme Leader PASS 2026-09-16 ~14:30 PT (desk_lamp_kit)",
+          "preview_art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/east-whole.png",
+          "visual_bounds": [
+            -5,
+            -9,
+            20,
+            18
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/east-surface_decor_rear.png",
+              "name": "DeskLampKitSurfaceDecorRear",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 2,
+              "content_bounds": [
+                95,
+                151,
+                13,
+                16
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/east-surface_decor_front.png",
+              "name": "DeskLampKitSurfaceDecorFront",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 4,
+              "content_bounds": [
+                91,
+                161,
+                20,
+                8
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -5,
+            -9,
+            20,
+            18
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Supreme Leader PASS 2026-09-16 ~14:30 PT (desk_lamp_kit)",
+          "preview_art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/south-whole.png",
+          "visual_bounds": [
+            22,
+            -47,
+            24,
+            28
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/south-surface_decor_rear.png",
+              "name": "DeskLampKitSurfaceDecorRear",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 2,
+              "content_bounds": [
+                118,
+                113,
+                19,
+                24
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/south-surface_decor_front.png",
+              "name": "DeskLampKitSurfaceDecorFront",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 4,
+              "content_bounds": [
+                120,
+                124,
+                22,
+                17
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            22,
+            -47,
+            24,
+            28
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Supreme Leader PASS 2026-09-16 ~14:30 PT (desk_lamp_kit)",
+          "preview_art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/west-whole.png",
+          "visual_bounds": [
+            -15,
+            -73,
+            20,
+            21
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/west-surface_decor_rear.png",
+              "name": "DeskLampKitSurfaceDecorRear",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 2,
+              "content_bounds": [
+                82,
+                87,
+                14,
+                21
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/west-surface_decor_front.png",
+              "name": "DeskLampKitSurfaceDecorFront",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 4,
+              "content_bounds": [
+                81,
+                87,
+                20,
+                19
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -15,
+            -73,
+            20,
+            21
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
+    "creative_design_kit": {
+      "display_name": "Creative design kit",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Supreme Leader measured+in-game PASS 2026-09-11 (creative_design_kit A2)",
+          "preview_art": "res://assets/runtime/office/furnishing-library/creative_design_kit/north-whole.png",
+          "visual_bounds": [
+            -46,
+            -45,
+            91,
+            26
+          ],
+          "render_layers": [
+            {
+              "name": "creative_design_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/creative_design_kit/north-surface_decor_rear.png",
+              "content_bounds": [
+                122,
+                115,
+                15,
+                12
+              ]
+            },
+            {
+              "name": "creative_design_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 2,
+              "art": "res://assets/runtime/office/furnishing-library/creative_design_kit/north-surface_decor_front.png",
+              "content_bounds": [
+                50,
+                124,
+                91,
+                17
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -46,
+            -45,
+            91,
+            26
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Supreme Leader measured+in-game PASS 2026-09-11 (creative_design_kit A2)",
+          "preview_art": "res://assets/runtime/office/furnishing-library/creative_design_kit/east-whole.png",
+          "visual_bounds": [
+            -13,
+            -78,
+            26,
+            91
+          ],
+          "render_layers": [
+            {
+              "name": "creative_design_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/creative_design_kit/east-surface_decor_rear.png",
+              "content_bounds": [
+                89,
+                82,
+                18,
+                24
+              ]
+            },
+            {
+              "name": "creative_design_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 3,
+              "art": "res://assets/runtime/office/furnishing-library/creative_design_kit/east-surface_decor_front.png",
+              "content_bounds": [
+                83,
+                148,
+                26,
+                25
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -13,
+            -78,
+            26,
+            91
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Supreme Leader measured+in-game PASS 2026-09-11 (creative_design_kit A2)",
+          "preview_art": "res://assets/runtime/office/furnishing-library/creative_design_kit/south-whole.png",
+          "visual_bounds": [
+            -46,
+            -45,
+            92,
+            26
+          ],
+          "render_layers": [
+            {
+              "name": "creative_design_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 2,
+              "art": "res://assets/runtime/office/furnishing-library/creative_design_kit/south-surface_decor_rear.png",
+              "content_bounds": [
+                50,
+                115,
+                92,
+                24
+              ]
+            },
+            {
+              "name": "creative_design_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 4,
+              "art": "res://assets/runtime/office/furnishing-library/creative_design_kit/south-surface_decor_front.png",
+              "content_bounds": [
+                50,
+                134,
+                22,
+                7
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -46,
+            -45,
+            92,
+            26
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Supreme Leader measured+in-game PASS 2026-09-11 (creative_design_kit A2)",
+          "preview_art": "res://assets/runtime/office/furnishing-library/creative_design_kit/west-whole.png",
+          "visual_bounds": [
+            -14,
+            -77,
+            27,
+            89
+          ],
+          "render_layers": [
+            {
+              "name": "creative_design_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/creative_design_kit/west-surface_decor_rear.png",
+              "content_bounds": [
+                83,
+                83,
+                26,
+                16
+              ]
+            },
+            {
+              "name": "creative_design_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 3,
+              "art": "res://assets/runtime/office/furnishing-library/creative_design_kit/west-surface_decor_front.png",
+              "content_bounds": [
+                82,
+                148,
+                17,
+                24
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -14,
+            -77,
+            27,
+            89
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
     }
   },
   "source_copies": [
@@ -3451,6 +4259,126 @@
       "source": "game/tests/fixtures/furniture-calibration/theo-campaign-kit-v1/west-whole.png",
       "destination": "game/assets/runtime/office/furnishing-library/theo_campaign_kit/west-whole.png",
       "sha256": "45c64fc7fd65dfc1083824460124eda4950f919391c3ff5d247be6db7ab84173"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/north-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/north-surface_decor_rear.png",
+      "sha256": "58f1bb024ca0b58a3efce2847eb421b129292f4438159590cfe3107be32ac3f1"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/north-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/north-surface_decor_front.png",
+      "sha256": "4c7f98653ebb1badfcd8c36ffded8a6bab80fc0c252874ee32b0d0a34c3fbf40"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/north-whole.png",
+      "sha256": "550a287fe77487cd751d46fdf17fe171eea8a5041ecd3ab4dce1b96076089311"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/east-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/east-surface_decor_rear.png",
+      "sha256": "4903c80f1cfe92c3c1836f961af5963780b0fb4570ab32fed3744f6f1c72f383"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/east-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/east-surface_decor_front.png",
+      "sha256": "a8acefe6b1cf5bc7a1fad7a28d658315cb2f5337afb053fd943a7e81a60b0426"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/east-whole.png",
+      "sha256": "e20bdde0f78f2e3f2f9238e0ebab2ed0432375b380b967eff7c0c6a33351d08a"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/south-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/south-surface_decor_rear.png",
+      "sha256": "28357f06ab4ffe2f5bd7e596a1cec69e7d8fe87b0acb55eee0af7b8b37bf7c2c"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/south-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/south-surface_decor_front.png",
+      "sha256": "6756842251b8c1e5e305765733456deae9443238d2875378bb477775b6110245"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/south-whole.png",
+      "sha256": "81b6588fd6a4e3e408e333d163c44a9a3ac7a052d7463113b4a4af887d374c1c"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/west-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/west-surface_decor_rear.png",
+      "sha256": "00ca738ba4be0c4fd4627d0d9a75e90913c5f88c45ed44ff92774f2ee97b3b1f"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/west-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/west-surface_decor_front.png",
+      "sha256": "423719f2042c28eca3d32d29e995f3590ae3e613f9d06ff820bddabc26cd628d"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/west-whole.png",
+      "sha256": "7b5fcdb43bf23e2a939e4895db0edfb1d1714170415f09719663f2686840bb80"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/north-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/creative_design_kit/north-surface_decor_rear.png",
+      "sha256": "c189934e0685082a78df4bad26eb9aa77a95e87b773310171b9dc599c197c74c"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/north-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/creative_design_kit/north-surface_decor_front.png",
+      "sha256": "1ca509454a04158e6acc72100d9229398272826c11188da6e09a1ef7cf8c4124"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/creative_design_kit/north-whole.png",
+      "sha256": "438df4652d2aa7fda8f3dc2c6a68f538bd9da2e81383900c6f0166be4e8f23b5"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/east-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/creative_design_kit/east-surface_decor_rear.png",
+      "sha256": "1e55ada82aa3f4ffac95f254ce01682c3844f7fb528b65a3cc872111ef1ba316"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/east-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/creative_design_kit/east-surface_decor_front.png",
+      "sha256": "53d2b6af7e4de9065a8e0a72119d6bdc466b8518d77ed7840e6a3a3f66b2e2db"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/creative_design_kit/east-whole.png",
+      "sha256": "30965f9151e8a756d66da2a2a19c8473c2e2f084c7e6e8df1b3e0e66e261ed90"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/south-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/creative_design_kit/south-surface_decor_rear.png",
+      "sha256": "732b61e978a9c8ee2d8cbd68a0f0f55a367704f15f122ec16fa6c1f0321eaaec"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/south-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/creative_design_kit/south-surface_decor_front.png",
+      "sha256": "105dc5b780b196be1f04b12382cb8023d71da33e850a5285a042d031bdbaf23c"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/creative_design_kit/south-whole.png",
+      "sha256": "dc93bada4ab7aa5e8c2f6814f865d5b9a0c6f6836a99377b2abd9bf73b5d3270"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/west-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/creative_design_kit/west-surface_decor_rear.png",
+      "sha256": "ea7e3c28bbc8a9e9be81fc48c3a24d004687218233eb4cb65c10e39303c3a400"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/west-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/creative_design_kit/west-surface_decor_front.png",
+      "sha256": "b85fff8927e09d59aea63fc770c69c7193ac0c92c080afc576d624d614bc53d7"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/creative-design-kit-v1/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/creative_design_kit/west-whole.png",
+      "sha256": "3fce88d55d27d128932fe11faea0a4eb61af56481fd4a8206df271236e91857e"
     }
   ]
 }
