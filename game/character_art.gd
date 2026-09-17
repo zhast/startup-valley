@@ -13,7 +13,7 @@ const FOUNDER_SEATED_PATH := "res://assets/runtime/characters/founder-seated.png
 # PASS south-v9 (md5_8 9c1611b5). Load at init so a missing sidecar cannot take
 # down CharacterArt parse; drop the tracked PNG in place to activate the bind.
 # East/N/W founder workstation sheets stay unbound in this slice.
-static var FOUNDER_SEATED: Texture2D = null
+static var FOUNDER_SEATED: Texture2D = load(FOUNDER_SEATED_PATH) as Texture2D if ResourceLoader.exists(FOUNDER_SEATED_PATH) else null
 const MIRA_WORKSTATIONS_V2_NORTH: Texture2D = preload("res://assets/runtime/characters/workstations-v2/mira-north.png")
 const THEO_WORKSTATIONS_V2_NORTH: Texture2D = preload("res://assets/runtime/characters/workstations-v2/theo-north.png")
 const MIRA_WORKSTATIONS_V2_EAST: Texture2D = preload("res://assets/runtime/characters/workstations-v2/mira-east.png")
@@ -45,9 +45,11 @@ const REVIEWED_CAPABILITY_FIELDS: Array[String] = [
 # directions does not grant those directions seated/typing/research support.
 # Future sets add explicit per-facing regions and character sheets; no raster
 # rotation, mirroring, or fallback to another person's poses is permitted.
-const WORK_POSE_SETS: Dictionary = {
+static var WORK_POSE_SETS: Dictionary = {
 	LEGACY_WORK_POSE_SET: {
 		"characters": {
+			# South seated/typing only. East/N/W founder workstation sheets stay unbound.
+			"founder": {"seated": FOUNDER_SEATED},
 			"mira": {"seated": MIRA_SEATED, "work": MIRA_WORK},
 			"theo": {"seated": THEO_SEATED, "work": THEO_WORK},
 		},
@@ -211,16 +213,6 @@ const REVIEWED_COLLABORATION_CAPABILITIES: Dictionary = {
 # No production resource references staged art and legacy names cannot be replaced.
 static var _calibration_pose_sets: Dictionary[String, Dictionary] = {}
 static var _calibration_pose_owners: Dictionary[String, int] = {}
-
-static func _static_init() -> void:
-	if ResourceLoader.exists(FOUNDER_SEATED_PATH):
-		FOUNDER_SEATED = load(FOUNDER_SEATED_PATH) as Texture2D
-	var characters: Dictionary = WORK_POSE_SETS[LEGACY_WORK_POSE_SET]["characters"]
-	if FOUNDER_SEATED != null:
-		# South seated/typing only. East remains unbound.
-		characters["founder"] = {"seated": FOUNDER_SEATED}
-	else:
-		characters.erase("founder")
 
 static func register_calibration_pose_set(id: String, definition: Dictionary, owner: Object) -> bool:
 	if not OS.has_feature("editor") or owner == null or not is_instance_valid(owner): return false
