@@ -152,6 +152,10 @@ func _run() -> void:
 	check(CompanyPanel.station_caption(journey, "founder-workstation", "desk", "founder", false, false, false) == "Assign website", "Founder desk names the website assignment")
 	check(CompanyPanel.station_caption(journey, "mira-workstation", "desk", "mira", false, false, false) == "Assign website", "Mina's desk names the website assignment")
 	check(CompanyPanel.station_caption({}, "founder-workstation", "desk", "founder", false, false, false) == "Company Journey", "Empty journey keeps the generic desk caption")
+	var theo_ready := {"milestones": [{"id": "ads", "state": "locked", "employeeId": "theo"}], "candidates": [{"id": "theo", "name": "Theo", "hired": false, "available": true}]}
+	check(CompanyPanel.station_caption(theo_ready, "founder-workstation", "desk", "founder", false, false, false) == "Hire Theo", "Founder desk names the actual available hire")
+	var website_and_hire := {"milestones": [definition], "candidates": [{"id": "creative", "name": "Creative", "hired": false, "available": true}]}
+	check(CompanyPanel.station_caption(website_and_hire, "founder-workstation", "desk", "founder", false, false, false) == "Assign website", "An open website assignment outranks an optional hire")
 	check(CompanyPanel.next_step_line(journey).contains("Build a website"), "Journey next-step names the website work order")
 	panel._purpose_chosen_by_player = false
 	panel.select_employee("mira")

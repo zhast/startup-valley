@@ -559,14 +559,18 @@ static func available_candidate(state: Dictionary) -> Dictionary:
 static func station_caption(state: Dictionary, station_id: String, kind: String, owner_id: String, has_active_job: bool, has_approval: bool, has_delivery: bool) -> String:
 	match station_id:
 		"founder-workstation":
-			if not available_candidate(state).is_empty(): return "Hire Mina"
 			var milestone := open_milestone(state)
-			if milestone.is_empty(): return "Company Journey"
 			var evaluation: Dictionary = milestone.get("evaluation", {}) if milestone.get("evaluation") is Dictionary else {}
 			if evaluation.get("verdict") == "ready": return "Claim reward"
 			if not evaluation.is_empty() or str(milestone.get("state", "")) == "revision_required": return "Revise work"
 			if str(milestone.get("jobStatus", "")) == "completed": return "Evaluate result"
+			# The website work order is the day-1 goal. An optional later hire must not replace it.
 			if str(milestone.get("id", "")) == "website" and str(milestone.get("jobStatus", "")) not in ["running", "queued"]: return "Assign website"
+			var candidate := available_candidate(state)
+			if not candidate.is_empty():
+				var hire_name := str(candidate.get("name", "")).strip_edges()
+				return "Hire %s" % hire_name if not hire_name.is_empty() else "Company Journey"
+			if milestone.is_empty(): return "Company Journey"
 			return "Company Journey"
 		"artifact-archive":
 			return "Studio"

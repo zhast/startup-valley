@@ -417,10 +417,12 @@ func _open_connection_settings() -> void:
 	_connection_panel.move_to_front()
 	_rail_panel.move_to_front()
 	_refresh_connection_surface()
+	_refresh_operation_availability()
 	_configure_connection_focus()
 
 func _close_connection_settings() -> void:
 	_connection_panel.visible = false
+	_refresh_operation_availability()
 	if _drawer_open:
 		_drawer_panel.move_to_front()
 		_rail_panel.move_to_front()
@@ -1229,6 +1231,9 @@ func close_drawer(animated: bool = true) -> void:
 	if _connection_panel != null:
 		_connection_panel.visible = false
 	_set_drawer_open(false, animated)
+	# Roster hydration closes this drawer and used to leave Start disabled with
+	# Connect already dismissed. Re-enable the work action so it can reopen Connect.
+	_refresh_operation_availability()
 	if connection_was_open:
 		_connection_focus_return = null
 		_settings_button.grab_focus()
@@ -2299,7 +2304,17 @@ func _set_status(message: String, color: Color = CHARCOAL) -> void:
 
 func _refresh_operation_availability() -> void:
 	if _assign_button != null:
-		_assign_button.disabled = _employees.is_empty() or not _active_job_id.is_empty() or not _credential_configured or not _worker_connected
+		# A missing key must not dead-end the button. While Connect is closed, Start
+		# stays pressable and _submit_assignment opens Connect instead of sending work.
+		# While Connect is open, Start stays disabled so the two actions stay separate.
+		var connect_prompt_open := _connection_panel != null and _connection_panel.visible and not _credential_configured
+		_assign_button.disabled = _employees.is_empty() or not _active_job_id.is_empty() or not _worker_connected or connect_prompt_open
+		if _active_job_id.is_empty() and not _credential_configured:
+			_assign_button.tooltip_text = "Connect AI before this work order can start."
+		elif _active_job_id.is_empty() and not _worker_connected:
+			_assign_button.tooltip_text = "Reconnect before this work order can start."
+		else:
+			_assign_button.tooltip_text = _assign_button.text
 	_refresh_chat_mode()
 
 func on_job_event(job_id: String, event: WorkerEventRecord) -> void:

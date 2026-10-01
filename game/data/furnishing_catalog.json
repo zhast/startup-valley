@@ -41,7 +41,8 @@
   ],
   "employee_role_kits": {
     "mira": "mina_discovery_kit",
-    "theo": "theo_campaign_kit"
+    "theo": "theo_campaign_kit",
+    "creative": "creative_design_kit"
   },
   "role_kits": {
     "mina_discovery_kit": {
@@ -788,7 +789,8 @@
           ]
         }
       },
-      "host_kind": "desk"
+      "host_kind": "desk",
+      "owner_id": "creative"
     }
   },
   "furniture": {

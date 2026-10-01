@@ -29,6 +29,7 @@ const IMPORTANT_TEXTURES: PackedStringArray = [
 	"res://assets/runtime/characters/founder-locomotion.png",
 	"res://assets/runtime/characters/mira-locomotion.png",
 	"res://assets/runtime/characters/theo-locomotion.png",
+	"res://assets/runtime/characters/creative-locomotion.png",
 	"res://assets/runtime/characters/mira-work.png",
 	"res://assets/runtime/characters/theo-work.png",
 	"res://assets/runtime/effects/world-state-vfx.png",
@@ -65,6 +66,7 @@ const EXACT_TEXTURE_SIZES: Dictionary = {
 	"res://assets/runtime/characters/founder-locomotion.png": Vector2i(288, 320),
 	"res://assets/runtime/characters/mira-locomotion.png": Vector2i(288, 320),
 	"res://assets/runtime/characters/theo-locomotion.png": Vector2i(288, 320),
+	"res://assets/runtime/characters/creative-locomotion.png": Vector2i(288, 320),
 	"res://assets/runtime/characters/mira-work.png": Vector2i(384, 320),
 	"res://assets/runtime/characters/mira-seated.png": Vector2i(288, 80),
 	"res://assets/runtime/characters/theo-seated.png": Vector2i(288, 80),
@@ -94,6 +96,11 @@ const RUNTIME_ATLASES: Array[Dictionary] = [
 	},
 	{
 		"path": "res://assets/runtime/characters/theo-locomotion.png",
+		"cell": Vector2i(48, 80), "columns": 6, "rows": 4,
+		"spans": [[0, 0, 2], [0, 2, 4], [1, 0, 2], [1, 2, 4], [2, 0, 2], [2, 2, 4], [3, 0, 2], [3, 2, 4]],
+	},
+	{
+		"path": "res://assets/runtime/characters/creative-locomotion.png",
 		"cell": Vector2i(48, 80), "columns": 6, "rows": 4,
 		"spans": [[0, 0, 2], [0, 2, 4], [1, 0, 2], [1, 2, 4], [2, 0, 2], [2, 2, 4], [3, 0, 2], [3, 2, 4]],
 	},
