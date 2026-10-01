@@ -39,11 +39,15 @@ The founder desk caption always said "Hire Mina" if any candidate was available,
 
 ## Cafe architecture
 
-`cafe-floor.png`, `cafe-wall.png`, `cafe-window.png`, `cafe-trim.png`, and `cafe-door.png` are on disk next to the base architecture sheets. `OfficeArchitecture` only loads `floor.png`, `wall.png`, `trim.png`, `window.png`, and `door.png`. There is no loft/studio/evening/cafe selector. No theme picker was added, and the base floor and wall were not overwritten.
+The oak office is still the day-1 room. Base `floor.png`, `wall.png`, `trim.png`, `window.png`, and `door.png` are unchanged.
+
+The PASS cafe kit is registered beside it. `OfficeArchitecture` knows two themes: `office` (unprefixed oak files) and `cafe` (`cafe-floor.png`, `cafe-wall.png`, `cafe-window.png`, `cafe-trim.png`, `cafe-door.png`). Settings → Office look lists both. Choosing Cafe redraws the floor, walls, windows, trim, and doorway and saves `architectureTheme` with the company. It does not add a hire, a desk, or a journey step. A new company starts on oak again. `architecture_theme` in `office_layout.json` can spawn a theme at load; the authored layout leaves it unset.
+
+Loft, studio, and evening sheets are still not registered. Their PNGs are not part of this commit.
 
 ## Remaining gaps
 
 - Chapter 1 work orders still need an OpenRouter key. Connect is the path; this pass does not call a model, run ads, or incorporate.
 - Creative is registered art plus a kit binding, not a hire you can make on day 1.
-- No windowed play. Checks are headless input (click, WASD, J, end day), not a watched pixel frame.
-- Other unbound art (founder seated sheets, extra role kits, outdoor and theme sheets) was left untracked.
+- No windowed play. Checks are headless input (click, WASD, J, end day, Settings office look), not a watched pixel frame.
+- Other unbound art (founder seated sheets, extra role kits, outdoor sheets, loft/studio/evening architecture) was left untracked.

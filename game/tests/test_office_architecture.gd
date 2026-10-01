@@ -59,6 +59,7 @@ func run_checks(completed: Array[bool]) -> void:
 		check(trim.get_pixel(32 + x, 0) == trim.get_pixel(32 + x, 31), "East cap vertical repeat")
 	for y: int in range(32):
 		check(trim.get_pixel(64, y) == trim.get_pixel(95, y), "South cap horizontal repeat")
+	check_theme_kit("cafe-")
 	var model := OfficeLayout.new()
 	check(model.load_files(), "Load authoritative architecture model")
 	var architecture := OfficeArchitecture.new()
@@ -67,7 +68,12 @@ func run_checks(completed: Array[bool]) -> void:
 	root.add_child(architecture)
 	architecture.configure(model)
 	check(not architecture.blockout and architecture.floor_art != null, "Game uses generated modular art, not blockout")
+	check(architecture.theme_id == OfficeArchitecture.DEFAULT_THEME, "Authored room spawns the oak office theme")
 	check(architecture.texture_filter == CanvasItem.TEXTURE_FILTER_NEAREST, "Architecture uses nearest sampling")
+	var cafe_floor := load(OfficeArchitecture.theme_path("cafe", "floor")) as Texture2D
+	check(architecture.apply_theme("cafe") and architecture.floor_art == cafe_floor and architecture.wall_art == load(OfficeArchitecture.theme_path("cafe", "wall")) and architecture.theme_id == "cafe", "Cafe theme is spawnable without replacing the oak files")
+	check(not architecture.apply_theme("loft") and architecture.theme_id == "cafe", "Unregistered themes do not swap the room")
+	check(architecture.apply_theme(OfficeArchitecture.DEFAULT_THEME) and architecture.floor_art == load(ART + "floor.png"), "Oak office theme restores the base kit")
 	if DisplayServer.get_name() != "headless":
 		for index: int in range(4): await process_frame
 		RenderingServer.force_draw(false)
@@ -85,6 +91,39 @@ func run_checks(completed: Array[bool]) -> void:
 	architecture.free()
 	check(check_catalog_rendering(), "Catalog authority check reaches its completion sentinel")
 	completed[0] = true
+
+func check_theme_kit(prefix: String) -> void:
+	var dimensions := {"floor": Vector2i(128, 128), "wall": Vector2i(128, 96), "trim": Vector2i(128, 64), "window": Vector2i(160, 96), "door": Vector2i(64, 32)}
+	var images: Dictionary[String, Image] = {}
+	for name: String in dimensions:
+		var file := prefix + name
+		var texture := load(ART + file + ".png") as Texture2D
+		check(texture != null, "Theme texture exists: " + file)
+		if texture == null: continue
+		var image := texture.get_image()
+		images[name] = image
+		check(image.get_size() == dimensions[name], "Theme module dimensions: " + file)
+		var imported := FileAccess.get_file_as_string(ART + file + ".png.import")
+		check(imported.contains("mipmaps/generate=false") and imported.contains("compress/mode=0"), "Lossless, non-mipmapped theme: " + file)
+		if name in ["floor", "wall", "trim", "door"]:
+			check(image.detect_alpha() == Image.ALPHA_NONE, "Opaque theme surface has no transparent pinholes: " + file)
+		else:
+			check(image.get_pixel(0, 0).a == 0 and image.get_pixel(159, 95).a == 0, "Theme window corners are clean alpha: " + file)
+	if images.size() != 5: return
+	var floor_image := images["floor"]
+	for y: int in range(128):
+		check(floor_image.get_pixel(0, y) == floor_image.get_pixel(127, y), prefix + "floor horizontal wrap is exact at row %d" % y)
+	for x: int in range(128):
+		check(floor_image.get_pixel(x, 0) == floor_image.get_pixel(x, 127), prefix + "floor vertical wrap is exact at column %d" % x)
+	var wall_image := images["wall"]
+	for y: int in range(96):
+		check(wall_image.get_pixel(0, y) == wall_image.get_pixel(127, y), prefix + "wall horizontal wrap is exact at row %d" % y)
+	var trim := images["trim"]
+	for x: int in range(32):
+		check(trim.get_pixel(x, 0) == trim.get_pixel(x, 31), prefix + "west cap vertical repeat")
+		check(trim.get_pixel(32 + x, 0) == trim.get_pixel(32 + x, 31), prefix + "east cap vertical repeat")
+	for y: int in range(32):
+		check(trim.get_pixel(64, y) == trim.get_pixel(95, y), prefix + "south cap horizontal repeat")
 
 func ambient_overlays(prop: Node2D) -> Array[OfficeAmbientOverlay]:
 	var result: Array[OfficeAmbientOverlay] = []

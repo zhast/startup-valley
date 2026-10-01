@@ -87,6 +87,8 @@ func _run() -> void:
 	check(main.company_panel.visible and main.company_panel.screen == "title", "Fresh company opens on the title screen")
 	check(main._employees.is_empty(), "Founder starts alone")
 	check(main.room.architecture.floor_art != null and main.room.architecture.wall_art != null, "Office architecture art is bound")
+	check(main.room.architecture.theme_id == "office" and main.room.architecture.floor_art == load("res://assets/runtime/office/architecture/floor.png"), "Day 1 still spawns the oak office, not the cafe kit")
+	check(OfficeArchitecture.theme_available("cafe") and not OfficeArchitecture.theme_available("loft"), "Cafe architecture is registered; loft stays unregistered")
 	main.day_clock.set_speed(0)
 	var start := button_named("Start company")
 	await click(start)

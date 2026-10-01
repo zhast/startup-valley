@@ -11,16 +11,55 @@ var trim_art: Texture2D
 var window_art: Texture2D
 var door_art: Texture2D
 const ART_ROOT := "res://assets/runtime/office/architecture/"
+const DEFAULT_THEME := "office"
+const PARTS: PackedStringArray = ["floor", "wall", "trim", "window", "door"]
+## Unprefixed files are the shipped oak office. A named theme uses "{id}-".
+## Only registered, on-disk kits are offered. Loft, studio, and evening stay out
+## until their runtime PNGs are committed and admitted the same way.
+const THEME_ORDER: PackedStringArray = ["office", "cafe"]
+const THEME_LABELS: Dictionary = {"office": "Oak office", "cafe": "Cafe"}
+const THEME_PREFIXES: Dictionary = {"office": "", "cafe": "cafe-"}
+var theme_id := DEFAULT_THEME
+
+static func theme_label(theme: String) -> String:
+	return str(THEME_LABELS.get(theme, theme))
+
+static func theme_path(theme: String, part: String) -> String:
+	if not THEME_PREFIXES.has(theme) or not PARTS.has(part): return ""
+	return ART_ROOT + str(THEME_PREFIXES[theme]) + part + ".png"
+
+static func theme_available(theme: String) -> bool:
+	if not THEME_PREFIXES.has(theme): return false
+	for part: String in PARTS:
+		if not ResourceLoader.exists(theme_path(theme, part)): return false
+	return true
+
+func apply_theme(theme: String) -> bool:
+	if not theme_available(theme): return false
+	var loaded: Dictionary = {}
+	for part: String in PARTS:
+		var texture := load(theme_path(theme, part)) as Texture2D
+		if texture == null: return false
+		loaded[part] = texture
+	floor_art = loaded["floor"]
+	wall_art = loaded["wall"]
+	trim_art = loaded["trim"]
+	window_art = loaded["window"]
+	door_art = loaded["door"]
+	theme_id = theme
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	queue_redraw()
+	return true
 
 func configure(model: OfficeLayout) -> void:
 	layout = model
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	if ResourceLoader.exists(ART_ROOT + "floor.png"):
-		floor_art = load(ART_ROOT + "floor.png") as Texture2D
-		wall_art = load(ART_ROOT + "wall.png") as Texture2D
-		trim_art = load(ART_ROOT + "trim.png") as Texture2D
-		window_art = load(ART_ROOT + "window.png") as Texture2D
-		door_art = load(ART_ROOT + "door.png") as Texture2D
+	var requested := DEFAULT_THEME
+	if model != null:
+		var authored := str(model.data.get("architecture_theme", "")).strip_edges()
+		if not authored.is_empty(): requested = authored
+	if not apply_theme(requested) and requested != DEFAULT_THEME:
+		apply_theme(DEFAULT_THEME)
 	queue_redraw()
 
 func _draw() -> void:

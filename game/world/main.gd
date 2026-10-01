@@ -64,6 +64,8 @@ func _ready() -> void:
 	company_panel.milestone_requested.connect(job_panel.prepare_milestone)
 	company_panel.connection_requested.connect(job_panel._open_connection_settings)
 	company_panel.renovation_requested.connect(_open_office_renovation)
+	company_panel.architecture_theme = room.architecture.theme_id
+	company_panel.architecture_theme_requested.connect(_on_architecture_theme)
 	job_panel.settings_requested.connect(func() -> void: company_panel.present("settings"))
 	job_panel.journey_requested.connect(func() -> void:
 		job_panel.close_drawer()
@@ -598,6 +600,9 @@ func _restore_player() -> void:
 	company_panel.effects_volume = float(saved.get("effectsVolume", 0.5))
 	company_panel.ambience_volume = float(saved.get("ambienceVolume", 0.2))
 	game_audio.set_volumes(company_panel.effects_volume, company_panel.ambience_volume)
+	var saved_theme := str(saved.get("architectureTheme", "")).strip_edges()
+	if not saved_theme.is_empty() and room.architecture.apply_theme(saved_theme):
+		company_panel.set_architecture_theme(room.architecture.theme_id)
 	var attention := str(saved.get("attentionEmployeeId", ""))
 	if _employees.has(attention):
 		job_panel._attention_employee_id = attention
@@ -623,6 +628,8 @@ func _on_company_action(method: String, result: Dictionary) -> void:
 			if founder_hud._movement_hint_tween != null and founder_hud._movement_hint_tween.is_valid(): founder_hud._movement_hint_tween.kill()
 			founder_hud._movement_hint.modulate.a = 1.0
 			founder_hud._movement_hint.show()
+			room.architecture.apply_theme(OfficeArchitecture.DEFAULT_THEME)
+			company_panel.set_architecture_theme(OfficeArchitecture.DEFAULT_THEME)
 			company_panel.present("journey")
 			company_panel._notice.text = "Previous company backed up to: " + str(result.get("backupPath", ""))
 		"hiring.complete":
@@ -651,7 +658,16 @@ func _save_game() -> void:
 		"movementSeen": founder_hud._movement_seen,
 		"effectsVolume": game_audio.effects_volume, "ambienceVolume": game_audio.ambience_volume,
 		"attentionEmployeeId": job_panel._attention_employee_id,
+		"architectureTheme": room.architecture.theme_id if room != null and room.architecture != null else OfficeArchitecture.DEFAULT_THEME,
 	})
+
+func _on_architecture_theme(theme_id: String) -> void:
+	if room == null or room.architecture == null: return
+	if not room.architecture.apply_theme(theme_id):
+		company_panel.set_architecture_theme(room.architecture.theme_id)
+		return
+	company_panel.set_architecture_theme(room.architecture.theme_id)
+	_save_game()
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Renovation owns its keys and its full-screen pointer surface. Do not let a

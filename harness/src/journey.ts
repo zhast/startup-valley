@@ -168,7 +168,8 @@ export class JourneyStore {
     const x = Number(value.x), y = Number(value.y);
     if (!Number.isFinite(x) || !Number.isFinite(y) || x < 0 || x > 1280 || y < 0 || y > 720) throw new Error("Invalid saved player position");
     const unit = (key: string, fallback: number) => typeof value[key] === "number" ? Math.max(0, Math.min(1, Number(value[key]))) : fallback;
-    this.db.prepare("UPDATE company_state SET player_json=? WHERE id=1").run(JSON.stringify({ x, y, movementSeen: value.movementSeen === true, effectsVolume: unit("effectsVolume", 0.5), ambienceVolume: unit("ambienceVolume", 0.2), attentionEmployeeId: ["mira", "theo"].includes(String(value.attentionEmployeeId)) ? value.attentionEmployeeId : "" }));
+    const architectureTheme = value.architectureTheme === "cafe" ? "cafe" : "office";
+    this.db.prepare("UPDATE company_state SET player_json=? WHERE id=1").run(JSON.stringify({ x, y, movementSeen: value.movementSeen === true, effectsVolume: unit("effectsVolume", 0.5), ambienceVolume: unit("ambienceVolume", 0.2), attentionEmployeeId: ["mira", "theo"].includes(String(value.attentionEmployeeId)) ? value.attentionEmployeeId : "", architectureTheme }));
   }
   daySummary(day: number, spend: number) {
     const rows = this.db.prepare("SELECT label,cash_delta,earned_delta,reputation_delta FROM company_transactions WHERE day=?").all(day);

@@ -71,6 +71,12 @@
             "mira",
             "theo"
           ]
+        },
+        "architectureTheme": {
+          "enum": [
+            "office",
+            "cafe"
+          ]
         }
       },
       "additionalProperties": false

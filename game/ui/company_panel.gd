@@ -6,11 +6,13 @@ signal milestone_requested(definition: Dictionary)
 signal connection_requested
 signal renovation_requested
 signal volume_changed(effects: float, ambience: float)
+signal architecture_theme_requested(theme_id: String)
 
 var state: Dictionary = {}
 var day := 1
 var effects_volume := 0.5
 var ambience_volume := 0.2
+var architecture_theme := OfficeArchitecture.DEFAULT_THEME
 var screen := "journey"
 var busy := false
 var _content: VBoxContainer
@@ -287,8 +289,43 @@ func _settings_screen() -> void:
 	_content.add_child(display)
 	_label("Display", true, display)
 	_button("Switch to window" if get_window().mode == Window.MODE_FULLSCREEN else "Switch to fullscreen", _toggle_fullscreen, false, true, display)
+	var look := HBoxContainer.new()
+	look.add_theme_constant_override("separation", 12)
+	_content.add_child(look)
+	var look_label := _label("Office look", true, look)
+	look_label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	look_label.custom_minimum_size.x = 148
+	var picker := OptionButton.new()
+	picker.name = "ArchitectureTheme"
+	picker.custom_minimum_size = Vector2(240, 44)
+	picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	picker.tooltip_text = "Oak office is the day-1 room. Cafe swaps the floor, walls, windows, trim, and doorway. It does not hire anyone or change the journey."
+	CozyUI.dropdown(picker)
+	var selected := -1
+	for theme_id: String in OfficeArchitecture.THEME_ORDER:
+		if not OfficeArchitecture.theme_available(theme_id): continue
+		picker.add_item(OfficeArchitecture.theme_label(theme_id))
+		picker.set_item_metadata(picker.item_count - 1, theme_id)
+		if theme_id == architecture_theme: selected = picker.item_count - 1
+	if picker.item_count == 0:
+		picker.queue_free()
+	else:
+		picker.select(maxi(selected, 0))
+		picker.item_selected.connect(func(index: int) -> void:
+			architecture_theme_requested.emit(str(picker.get_item_metadata(index)))
+		)
+		look.add_child(picker)
 	_label("Explore: WASD, arrows, or click the floor · E chat · J Journey.\nRenovate: M move · R rotate · U undo · Esc cancel or back.")
 	_actions("Resume", hide, true, "Title screen", func() -> void: present("title"))
+
+func set_architecture_theme(theme_id: String) -> void:
+	architecture_theme = theme_id
+	var picker := find_child("ArchitectureTheme", true, false) as OptionButton
+	if picker == null: return
+	for index: int in range(picker.item_count):
+		if str(picker.get_item_metadata(index)) == theme_id:
+			picker.select(index)
+			return
 
 func _slider(value: float, effects: bool, parent: Control = null) -> void:
 	var row := HBoxContainer.new()
