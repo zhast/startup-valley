@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, rename } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { createInterface } from "node:readline";
 
-import { KeychainCredentialStore } from "./credential-store.js";
+import { credentialStoreFromEnvironment } from "./credential-store.js";
 import { GameDatabase } from "./database.js";
 import type { FurnishingUpdate } from "./furnishing.js";
 import { PiWorkerAdapter } from "./pi-worker-adapter.js";
@@ -45,7 +45,7 @@ const dataRoot = resolve(argument("--data-dir") ?? join(process.cwd(), ".startup
 const projectRoot = join(dataRoot, "company-project");
 await mkdir(projectRoot, { recursive: true });
 let database = new GameDatabase(join(dataRoot, "startup-valley.sqlite"), projectRoot);
-const credentials = new KeychainCredentialStore();
+const credentials = credentialStoreFromEnvironment();
 let adapter = new PiWorkerAdapter(database, credentials, dataRoot);
 let resetting = false;
 let shuttingDown = false;
@@ -130,14 +130,27 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
       } finally { resetting = false; }
     }
     case "health":
-      return { status: "ok", protocolVersion: 1, workerVersion: "0.0.1", provider: "openrouter", maxConcurrentJobs: 1 };
+      return { status: "ok", protocolVersion: 1, workerVersion: "0.0.1", provider: await credentials.peekProvider(), maxConcurrentJobs: 1 };
     case "bootstrap":
       return database.bootstrap();
     case "credential.status":
-      return { configured: await credentials.hasOpenRouterKey() };
+      return credentials.status();
     case "credential.set":
       await credentials.setOpenRouterKey(stringParameter(request, "key", 512));
-      return { configured: true };
+      return credentials.status();
+    case "credential.grok.login.start":
+      return credentials.startGrokLogin();
+    case "credential.grok.login.poll":
+      return credentials.pollGrokLogin();
+    case "credential.grok.login.cancel":
+      await credentials.cancelGrokLogin();
+      return credentials.status();
+    case "credential.grok.logout":
+      await credentials.logoutGrok();
+      return credentials.status();
+    case "credential.grok.use_local":
+      await credentials.useLocalGrok();
+      return credentials.status();
     case "chat.history":
       return adapter.chatHistory(stringParameter(request, "employeeId", 64));
     case "chat.send":

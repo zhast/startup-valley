@@ -45,9 +45,25 @@ The PASS cafe kit is registered beside it. `OfficeArchitecture` knows two themes
 
 Loft, studio, and evening sheets are still not registered. Their PNGs are not part of this commit.
 
+## Grok login
+
+Connect AI signs in with Grok first. Work uses the Pi provider `xai` and model `grok-4.6`, billed to Grok / xAI credits. If this machine already has `~/.grok/auth.json`, the worker reuses that login and does not copy the tokens into the game keychain. Disconnect stops the game from using it and does not delete the Grok CLI file. Sign in with Grok uses the xAI device code for other machines. Pasting an OpenRouter key stays available as a fallback when Grok is not signed in. Tokens and keys are not printed.
+
+Chapter 1 sets `STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS=1` before the worker starts, so the headless pass stops at Connect and does not spend credits even when this computer is already signed in.
+
+## 2026-10-01
+
+Headless. Godot 4.7.2 (`/home/box/.local/bin/godot`). Node 22.19 (`/home/box/.local/node/node-v22.19.0-linux-x64/bin/node`). Chapter 1 used an isolated company and ignored host credentials. No paid model call.
+
+- `godot --headless --path game --script res://tools/validate_project.gd` — pass.
+- `godot --headless --path game --script res://tests/test_chapter1_first_player.gd` — `CHAPTER1 PASS`. Day 1 stays oak, cafe is registered, Connect offers Sign in with Grok, and no work order is submitted.
+- `godot --headless --path game --script res://tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`).
+- `godot --headless --path game --script res://tests/test_ui_drawer_redesign.gd` — pass (2561 checks, 0 failures).
+- `cd harness && npm test` — 66 pass, 0 fail, 2 skipped. The skips are the existing live Godot cases that require `GODOT_BINARY`.
+
 ## Remaining gaps
 
-- Chapter 1 work orders still need an OpenRouter key. Connect is the path; this pass does not call a model, run ads, or incorporate.
+- The Chapter 1 script still stops at Connect. A signed-in playtest can assign the website; this headless pass does not call a model, run ads, or incorporate.
 - Creative is registered art plus a kit binding, not a hire you can make on day 1.
 - No windowed play. Checks are headless input (click, WASD, J, end day, Settings office look), not a watched pixel frame.
 - Other unbound art (founder seated sheets, extra role kits, outdoor sheets, loft/studio/evening architecture) was left untracked.

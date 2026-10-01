@@ -36,6 +36,11 @@ func _apply_milestone_draft(definition: Dictionary) -> void:
 	_update_assign_copy()
 
 signal key_submitted(key: String)
+signal grok_login_start_requested
+signal grok_login_poll_requested
+signal grok_login_cancel_requested
+signal grok_logout_requested
+signal grok_use_local_requested
 signal settings_requested
 signal journey_requested
 signal worker_retry_requested
@@ -184,9 +189,22 @@ var _chat_activity_button: Button
 var _latest_reply_content: VBoxContainer
 var _connection_title: Label
 var _connection_description: Label
+var _grok_login_button: Button
+var _grok_use_local_button: Button
+var _grok_disconnect_button: Button
+var _grok_code_input: LineEdit
+var _grok_open_button: Button
+var _grok_cancel_button: Button
+var _openrouter_label: Label
 var _connection_save_button: Button
 var _connection_retry_button: Button
 var _connection_back_button: Button
+var _grok_signed_in := false
+var _grok_cli_available := false
+var _grok_login_pending := false
+var _grok_verification_uri := ""
+var _grok_poll_wait := 5
+var _grok_poll_timer: Timer
 var _connection_focus_return: Control
 var _attachment_toggle: Button
 var _attachment_expanded := false
@@ -371,10 +389,55 @@ func _build_connection_panel() -> void:
 	CozyUI.label(_connection_title, "display")
 	content.add_child(_connection_title)
 	_connection_description = Label.new()
-	_connection_description.text = "Add one OpenRouter key for conversations and work orders. Your key stays in the OS keychain."
+	_connection_description.text = "Sign in with Grok to use your Grok / xAI credits for conversations and work orders. An OpenRouter key still works as a fallback and stays in the OS keychain."
 	_connection_description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	CozyUI.label(_connection_description)
 	content.add_child(_connection_description)
+	_grok_login_button = Button.new()
+	_grok_login_button.text = "Sign in with Grok"
+	_grok_login_button.custom_minimum_size.y = 44.0
+	_grok_login_button.pressed.connect(_start_grok_login)
+	_style_action_button(_grok_login_button, VERMILION, true)
+	content.add_child(_grok_login_button)
+	_grok_use_local_button = Button.new()
+	_grok_use_local_button.text = "Use saved Grok login"
+	_grok_use_local_button.custom_minimum_size.y = 44.0
+	_grok_use_local_button.pressed.connect(func() -> void: grok_use_local_requested.emit())
+	_style_action_button(_grok_use_local_button, INDIGO, false)
+	content.add_child(_grok_use_local_button)
+	_grok_use_local_button.hide()
+	_grok_code_input = LineEdit.new()
+	_grok_code_input.placeholder_text = "Grok device code"
+	_grok_code_input.custom_minimum_size.y = 48.0
+	_grok_code_input.editable = true
+	_style_text_input(_grok_code_input)
+	content.add_child(_grok_code_input)
+	_grok_code_input.hide()
+	_grok_open_button = Button.new()
+	_grok_open_button.text = "Open verification page"
+	_grok_open_button.custom_minimum_size.y = 44.0
+	_grok_open_button.pressed.connect(_open_grok_verification)
+	_style_action_button(_grok_open_button, VERMILION, true)
+	content.add_child(_grok_open_button)
+	_grok_open_button.hide()
+	_grok_cancel_button = Button.new()
+	_grok_cancel_button.text = "Cancel sign-in"
+	_grok_cancel_button.custom_minimum_size.y = 44.0
+	_grok_cancel_button.pressed.connect(_cancel_grok_login)
+	_style_action_button(_grok_cancel_button, INDIGO, false)
+	content.add_child(_grok_cancel_button)
+	_grok_cancel_button.hide()
+	_grok_disconnect_button = Button.new()
+	_grok_disconnect_button.text = "Disconnect Grok"
+	_grok_disconnect_button.custom_minimum_size.y = 44.0
+	_grok_disconnect_button.pressed.connect(func() -> void: grok_logout_requested.emit())
+	_style_action_button(_grok_disconnect_button, INDIGO, false)
+	content.add_child(_grok_disconnect_button)
+	_grok_disconnect_button.hide()
+	_openrouter_label = Label.new()
+	_openrouter_label.text = "OpenRouter fallback"
+	CozyUI.label(_openrouter_label, "meta")
+	content.add_child(_openrouter_label)
 	_key_input = LineEdit.new()
 	_key_input.secret = true
 	_key_input.placeholder_text = "Paste OpenRouter key"
@@ -421,6 +484,7 @@ func _open_connection_settings() -> void:
 	_configure_connection_focus()
 
 func _close_connection_settings() -> void:
+	_cancel_grok_login_if_pending()
 	_connection_panel.visible = false
 	_refresh_operation_availability()
 	if _drawer_open:
@@ -435,12 +499,30 @@ func _close_connection_settings() -> void:
 func _refresh_connection_surface() -> void:
 	if _connection_title == null: return
 	var unavailable := not _worker_connected and not _worker_error.is_empty()
+	var show_grok_flow := not unavailable and _grok_login_pending
+	var show_openrouter := not unavailable and not _grok_login_pending
 	_connection_title.text = "Connection lost" if unavailable else "AI connection" if _credential_configured else "Connect AI"
-	_connection_description.text = ("Reconnect to resume chat and work. Your saved key does not need to change." if _credential_configured else "Reconnect first, then add your OpenRouter key.") if unavailable else "A key is already saved in your OS keychain. Paste a new key only if you want to replace it." if _credential_configured else "Add one OpenRouter key for conversations and work orders. Your key stays in the OS keychain."
+	if unavailable:
+		_connection_description.text = "Reconnect to resume chat and work. Your saved Grok login or OpenRouter key does not need to change." if _credential_configured else "Reconnect first, then sign in with Grok or add an OpenRouter key."
+	elif _grok_login_pending:
+		_connection_description.text = "Enter this code on the Grok page. Work will use your Grok / xAI credits when sign-in finishes. Back cancels sign-in."
+	elif _grok_signed_in:
+		_connection_description.text = "Signed in with Grok. Conversations and work orders use your Grok / xAI credits. The login is already saved in the OS keychain."
+	elif _credential_configured:
+		_connection_description.text = "A Grok login or OpenRouter key is already saved. Work uses your Grok / xAI credits when you are signed in with Grok. Paste a new OpenRouter key only to replace that fallback."
+	else:
+		_connection_description.text = "Sign in with Grok to use your Grok / xAI credits for conversations and work orders. An OpenRouter key still works as a fallback and stays in the OS keychain."
 	_connection_save_button.text = "Replace saved key" if _credential_configured else "Save connection"
 	_key_input.placeholder_text = "Paste replacement key (optional)" if _credential_configured else "Paste OpenRouter key"
-	_key_input.visible = not unavailable
-	_connection_save_button.visible = not unavailable
+	_grok_login_button.visible = not unavailable and not _credential_configured and not _grok_login_pending
+	_grok_use_local_button.visible = not unavailable and not _grok_signed_in and _grok_cli_available and not _grok_login_pending
+	_grok_code_input.visible = show_grok_flow
+	_grok_open_button.visible = show_grok_flow
+	_grok_cancel_button.visible = show_grok_flow
+	_grok_disconnect_button.visible = not unavailable and _grok_signed_in and not _grok_login_pending
+	_openrouter_label.visible = show_openrouter
+	_key_input.visible = show_openrouter
+	_connection_save_button.visible = show_openrouter
 	_connection_retry_button.visible = unavailable
 	_connection_retry_button.disabled = _connection_retry_pending
 	if unavailable:
@@ -450,6 +532,9 @@ func _refresh_connection_surface() -> void:
 		_key_status.tooltip_text = _worker_error
 		_connection_retry_button.tooltip_text = _worker_error
 		_key_status.add_theme_color_override("font_color", ALERT_INK)
+	elif _grok_signed_in:
+		_key_status.text = "Signed in with Grok. Work uses your Grok / xAI credits."
+		_key_status.add_theme_color_override("font_color", CHARCOAL)
 	elif _credential_configured:
 		_key_status.text = "Your saved key stays active until you save a replacement."
 		_key_status.add_theme_color_override("font_color", CHARCOAL)
@@ -490,7 +575,7 @@ func _refresh_connection_save_state() -> void:
 
 func _connection_focus_controls() -> Array[Control]:
 	var controls: Array[Control] = []
-	for control: Control in [_key_input, _connection_save_button, _connection_retry_button, _connection_back_button]:
+	for control: Control in [_grok_login_button, _grok_use_local_button, _grok_code_input, _grok_open_button, _grok_cancel_button, _grok_disconnect_button, _key_input, _connection_save_button, _connection_retry_button, _connection_back_button]:
 		if control == null or not control.is_visible_in_tree(): continue
 		if control is BaseButton and (control as BaseButton).disabled: continue
 		if control is LineEdit and not (control as LineEdit).editable: continue
@@ -1228,6 +1313,7 @@ func _set_drawer_open(open: bool, animated: bool = true) -> void:
 
 func close_drawer(animated: bool = true) -> void:
 	var connection_was_open := _connection_panel != null and _connection_panel.visible
+	_cancel_grok_login_if_pending()
 	if _connection_panel != null:
 		_connection_panel.visible = false
 	_set_drawer_open(false, animated)
@@ -1907,6 +1993,54 @@ func _active_employee_name() -> String:
 			return employee.display_name
 	return "A teammate"
 
+func _safe_grok_code(user_code: String) -> bool:
+	if user_code.length() < 4 or user_code.length() > 64: return false
+	var pattern := RegEx.new()
+	pattern.compile("^[A-Za-z0-9-]+$")
+	return pattern.search(user_code) != null
+
+func _safe_grok_uri(uri: String) -> bool:
+	if not uri.begins_with("https://"): return false
+	var host := uri.trim_prefix("https://").split("/")[0].split(":")[0].to_lower()
+	return host == "x.ai" or host.ends_with(".x.ai")
+
+func _start_grok_login() -> void:
+	if not _worker_connected:
+		set_worker_connection_error("Worker is not connected")
+		return
+	_key_status.text = "Starting Grok sign-in…"
+	_key_status.add_theme_color_override("font_color", CHARCOAL)
+	grok_login_start_requested.emit()
+
+func _open_grok_verification() -> void:
+	if _safe_grok_uri(_grok_verification_uri):
+		OS.shell_open(_grok_verification_uri)
+
+func _cancel_grok_login() -> void:
+	_cancel_grok_login_if_pending()
+	_refresh_connection_surface()
+
+func _cancel_grok_login_if_pending() -> void:
+	if not _grok_login_pending and (_grok_poll_timer == null or _grok_poll_timer.is_stopped()):
+		return
+	_grok_login_pending = false
+	_stop_grok_poll()
+	_grok_code_input.clear()
+	_grok_verification_uri = ""
+	grok_login_cancel_requested.emit()
+
+func _start_grok_poll(interval_seconds: int) -> void:
+	if _grok_poll_timer == null:
+		_grok_poll_timer = Timer.new()
+		_grok_poll_timer.one_shot = true
+		_grok_poll_timer.timeout.connect(func() -> void: grok_login_poll_requested.emit())
+		add_child(_grok_poll_timer)
+	_grok_poll_timer.start(float(maxi(interval_seconds, 1)))
+
+func _stop_grok_poll() -> void:
+	if _grok_poll_timer != null:
+		_grok_poll_timer.stop()
+
 func _submit_key() -> void:
 	var key := _key_input.text.strip_edges()
 	_key_input.clear()
@@ -2259,7 +2393,10 @@ func _update_assign_copy() -> void:
 
 func set_credential_status(configured: bool) -> void:
 	_credential_configured = configured
-	_key_status.text = "Connected. Key stored in the OS keychain." if configured else "Connection required before chat or work can start."
+	if configured:
+		_grok_login_pending = false
+		_stop_grok_poll()
+	_key_status.text = "Signed in with Grok. Work uses your Grok / xAI credits." if _grok_signed_in else "Connected. Key stored in the OS keychain." if configured else "Connection required before chat or work can start."
 	_key_status.add_theme_color_override("font_color", CHARCOAL if configured else ALERT_INK)
 	_refresh_rail_connection_action()
 	_refresh_operation_availability()
@@ -2267,10 +2404,61 @@ func set_credential_status(configured: bool) -> void:
 	if not configured:
 		call_deferred("_open_connection_settings")
 
+func set_credential_detail(detail: Dictionary) -> void:
+	_grok_signed_in = bool(detail.get("grokSignedIn", false))
+	_grok_cli_available = bool(detail.get("grokCliAvailable", false))
+	if not bool(detail.get("loginPending", false)):
+		_grok_login_pending = false
+	set_credential_status(bool(detail.get("configured", false)))
+
 func set_credential_saved() -> void:
 	set_credential_status(true)
 	_close_connection_settings()
 	_set_status("OpenRouter key saved.", INDIGO)
+
+func show_grok_login_challenge(user_code: String, verification_uri: String, interval_seconds: int) -> void:
+	if not _safe_grok_code(user_code) or not _safe_grok_uri(verification_uri):
+		show_grok_login_failed("Grok sign-in returned an unusable code. Try again.")
+		return
+	_grok_login_pending = true
+	_grok_verification_uri = verification_uri
+	_grok_poll_wait = maxi(interval_seconds, 1)
+	_grok_code_input.text = user_code
+	_key_status.text = "Waiting for Grok. Enter the code on the verification page."
+	_key_status.add_theme_color_override("font_color", CHARCOAL)
+	_refresh_connection_surface()
+	_start_grok_poll(_grok_poll_wait)
+
+func show_grok_login_poll(result: Dictionary) -> void:
+	var status := str(result.get("status", ""))
+	if status == "pending":
+		_grok_login_pending = true
+		_start_grok_poll(maxi(int(result.get("intervalSeconds", _grok_poll_wait)), 1))
+		return
+	if status == "complete":
+		_grok_login_pending = false
+		_stop_grok_poll()
+		_grok_code_input.clear()
+		_grok_verification_uri = ""
+		set_credential_detail(result)
+		_close_connection_settings()
+		_set_status("Signed in with Grok. Work uses your Grok / xAI credits.", INDIGO)
+		return
+	if status == "failed":
+		show_grok_login_failed(str(result.get("message", "Grok sign-in did not finish.")))
+		return
+	_grok_login_pending = false
+	_stop_grok_poll()
+	_refresh_connection_surface()
+
+func show_grok_login_failed(message: String) -> void:
+	_grok_login_pending = false
+	_stop_grok_poll()
+	_grok_code_input.clear()
+	_grok_verification_uri = ""
+	_key_status.text = message if not message.is_empty() else "Grok sign-in did not finish."
+	_key_status.add_theme_color_override("font_color", ALERT_INK)
+	_refresh_connection_surface()
 
 func set_spend(daily_spend: float, warning: float) -> void:
 	_daily_ai_spend = daily_spend

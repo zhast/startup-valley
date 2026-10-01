@@ -11,6 +11,7 @@ var failures: Array[String] = []
 
 func _initialize() -> void:
 	OS.unset_environment("STARTUP_VALLEY_NO_WORKER")
+	OS.set_environment("STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS", "1")
 	call_deferred("_run")
 
 func check(ok: bool, message: String) -> void:
@@ -132,6 +133,9 @@ func _run() -> void:
 	await click(main.job_panel._assign_button)
 	await frames(12)
 	check(main.job_panel._connection_panel.visible, "Starting work without an API key opens Connect instead of crashing")
+	check(not main.job_panel._credential_configured, "Chapter 1 ignores host Grok and OpenRouter credentials")
+	check(main.job_panel._grok_login_button.visible and main.job_panel._grok_login_button.text.contains("Grok"), "Connect offers Sign in with Grok")
+	check(main.job_panel._connection_description.text.contains("xAI"), "Connect copy names Grok / xAI credits")
 	check(main.job_panel.active_job_id().is_empty(), "No work order is submitted without a key")
 	main.job_panel._close_connection_settings()
 	main.job_panel.close_drawer(false)

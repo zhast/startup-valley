@@ -17,7 +17,11 @@ signal bootstrap_received(
 	memories: Dictionary
 )
 signal credential_status_received(configured: bool)
+signal credential_detail_received(detail: Dictionary)
 signal credential_saved
+signal grok_login_challenge(user_code: String, verification_uri: String, interval_seconds: int)
+signal grok_login_poll_received(result: Dictionary)
+signal grok_login_failed(message: String)
 signal chat_history_received(employee_id: String, messages: Array)
 signal chat_reply_received(employee_id: String, message: Dictionary, daily_spend: float)
 signal chat_failed(employee_id: String, message: String)
@@ -151,6 +155,9 @@ func _handle_line(line: String) -> void:
 		if method.begins_with("milestone.") or method.begins_with("hiring.") or method.begins_with("game.") or method == "day.end":
 			company_action_failed.emit(method, error)
 			return
+		if method.begins_with("credential.grok."):
+			grok_login_failed.emit(error)
+			return
 		if method == "job.start":
 			job_submission_failed.emit(job_id, error)
 		elif method == "job.steer":
@@ -225,10 +232,18 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 				recent_jobs,
 				memories
 			)
-		"credential.status":
+		"credential.status", "credential.set", "credential.grok.login.cancel", "credential.grok.logout", "credential.grok.use_local":
 			credential_status_received.emit(bool(result.get("configured", false)))
-		"credential.set":
-			credential_saved.emit()
+			credential_detail_received.emit(result)
+			if method == "credential.set":
+				credential_saved.emit()
+		"credential.grok.login.start":
+			grok_login_challenge.emit(str(result.get("userCode", "")), str(result.get("verificationUri", "")), int(result.get("intervalSeconds", 5)))
+		"credential.grok.login.poll":
+			grok_login_poll_received.emit(result)
+			if str(result.get("status", "")) == "complete":
+				credential_status_received.emit(bool(result.get("configured", false)))
+				credential_detail_received.emit(result)
 		"chat.history":
 			var messages: Array = result_value as Array if result_value is Array else []
 			chat_history_received.emit(job_id, messages)
@@ -281,6 +296,21 @@ func _send_request(method: String, parameters: Dictionary, job_id: String = "") 
 
 func save_openrouter_key(key: String) -> void:
 	_send_request("credential.set", {"key": key})
+
+func start_grok_login() -> void:
+	_send_request("credential.grok.login.start", {})
+
+func poll_grok_login() -> void:
+	_send_request("credential.grok.login.poll", {})
+
+func cancel_grok_login() -> void:
+	_send_request("credential.grok.login.cancel", {})
+
+func logout_grok() -> void:
+	_send_request("credential.grok.logout", {})
+
+func use_local_grok() -> void:
+	_send_request("credential.grok.use_local", {})
 
 func update_furnishing(operation_id: String, expected_revision: int, placements: Dictionary, actor_cells: Array) -> void:
 	if _stdio == null:
