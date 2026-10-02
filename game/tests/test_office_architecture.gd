@@ -60,6 +60,9 @@ func run_checks(completed: Array[bool]) -> void:
 	for y: int in range(32):
 		check(trim.get_pixel(64, y) == trim.get_pixel(95, y), "South cap horizontal repeat")
 	check_theme_kit("cafe-")
+	check_theme_kit("loft-")
+	check_theme_kit("studio-")
+	check_theme_kit("evening-")
 	var model := OfficeLayout.new()
 	check(model.load_files(), "Load authoritative architecture model")
 	var architecture := OfficeArchitecture.new()
@@ -69,11 +72,16 @@ func run_checks(completed: Array[bool]) -> void:
 	architecture.configure(model)
 	check(not architecture.blockout and architecture.floor_art != null, "Game uses generated modular art, not blockout")
 	check(architecture.theme_id == OfficeArchitecture.DEFAULT_THEME, "Authored room spawns the oak office theme")
+	check(OfficeArchitecture.DEFAULT_THEME == "office", "Oak remains the day-1 default theme")
+	check(OfficeArchitecture.THEME_ORDER == PackedStringArray(["office", "cafe", "loft", "studio", "evening"]), "Registered looks are oak, cafe, loft, studio, and evening")
+	check(OfficeArchitecture.theme_label("office") == "Oak office" and OfficeArchitecture.theme_label("cafe") == "Cafe" and OfficeArchitecture.theme_label("loft") == "Loft" and OfficeArchitecture.theme_label("studio") == "Studio" and OfficeArchitecture.theme_label("evening") == "Evening", "Settings labels name Oak office, Cafe, Loft, Studio, and Evening")
 	check(architecture.texture_filter == CanvasItem.TEXTURE_FILTER_NEAREST, "Architecture uses nearest sampling")
-	var cafe_floor := load(OfficeArchitecture.theme_path("cafe", "floor")) as Texture2D
-	check(architecture.apply_theme("cafe") and architecture.floor_art == cafe_floor and architecture.wall_art == load(OfficeArchitecture.theme_path("cafe", "wall")) and architecture.theme_id == "cafe", "Cafe theme is spawnable without replacing the oak files")
-	check(not architecture.apply_theme("loft") and architecture.theme_id == "cafe", "Unregistered themes do not swap the room")
-	check(architecture.apply_theme(OfficeArchitecture.DEFAULT_THEME) and architecture.floor_art == load(ART + "floor.png"), "Oak office theme restores the base kit")
+	for theme_id: String in ["cafe", "loft", "studio", "evening"]:
+		var theme_floor := load(OfficeArchitecture.theme_path(theme_id, "floor")) as Texture2D
+		var theme_wall := load(OfficeArchitecture.theme_path(theme_id, "wall")) as Texture2D
+		check(OfficeArchitecture.theme_available(theme_id) and architecture.apply_theme(theme_id) and architecture.floor_art == theme_floor and architecture.wall_art == theme_wall and architecture.theme_id == theme_id, theme_id.capitalize() + " theme is spawnable without replacing the oak files")
+	check(not architecture.apply_theme("warehouse") and architecture.theme_id == "evening", "Unknown themes do not swap the room")
+	check(architecture.apply_theme(OfficeArchitecture.DEFAULT_THEME) and architecture.floor_art == load(ART + "floor.png") and architecture.theme_id == "office", "Oak office theme restores the base kit")
 	if DisplayServer.get_name() != "headless":
 		for index: int in range(4): await process_frame
 		RenderingServer.force_draw(false)

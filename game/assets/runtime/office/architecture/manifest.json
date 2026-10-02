@@ -27,6 +27,27 @@
       "prefix": "cafe-",
       "default": false,
       "parts": ["floor", "wall", "trim", "window", "door"]
+    },
+    {
+      "id": "loft",
+      "label": "Loft",
+      "prefix": "loft-",
+      "default": false,
+      "parts": ["floor", "wall", "trim", "window", "door"]
+    },
+    {
+      "id": "studio",
+      "label": "Studio",
+      "prefix": "studio-",
+      "default": false,
+      "parts": ["floor", "wall", "trim", "window", "door"]
+    },
+    {
+      "id": "evening",
+      "label": "Evening",
+      "prefix": "evening-",
+      "default": false,
+      "parts": ["floor", "wall", "trim", "window", "door"]
     }
   ],
   "verified": {

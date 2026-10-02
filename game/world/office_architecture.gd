@@ -14,11 +14,11 @@ const ART_ROOT := "res://assets/runtime/office/architecture/"
 const DEFAULT_THEME := "office"
 const PARTS: PackedStringArray = ["floor", "wall", "trim", "window", "door"]
 ## Unprefixed files are the shipped oak office. A named theme uses "{id}-".
-## Only registered, on-disk kits are offered. Loft, studio, and evening stay out
-## until their runtime PNGs are committed and admitted the same way.
-const THEME_ORDER: PackedStringArray = ["office", "cafe"]
-const THEME_LABELS: Dictionary = {"office": "Oak office", "cafe": "Cafe"}
-const THEME_PREFIXES: Dictionary = {"office": "", "cafe": "cafe-"}
+## Registered Settings looks are oak, cafe, loft, studio, and evening. Oak stays
+## the day-1 default. These looks are not journey steps.
+const THEME_ORDER: PackedStringArray = ["office", "cafe", "loft", "studio", "evening"]
+const THEME_LABELS: Dictionary = {"office": "Oak office", "cafe": "Cafe", "loft": "Loft", "studio": "Studio", "evening": "Evening"}
+const THEME_PREFIXES: Dictionary = {"office": "", "cafe": "cafe-", "loft": "loft-", "studio": "studio-", "evening": "evening-"}
 var theme_id := DEFAULT_THEME
 
 static func theme_label(theme: String) -> String:

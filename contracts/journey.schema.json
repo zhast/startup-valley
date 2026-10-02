@@ -75,7 +75,10 @@
         "architectureTheme": {
           "enum": [
             "office",
-            "cafe"
+            "cafe",
+            "loft",
+            "studio",
+            "evening"
           ]
         }
       },

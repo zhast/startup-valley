@@ -108,9 +108,11 @@ test("full three-day journey awards money once, charges hiring/filing, and survi
   await deliver(db, root, "incorporate"); await adapter.evaluateMilestone("incorporate"); db.journey.complete("incorporate", false, 3);
   db.journey.savePlayer({ x: 420, y: 550, movementSeen: true, effectsVolume: 0.2, ambienceVolume: 0 });
   assert.equal(db.journey.state().player.architectureTheme, "office");
-  db.journey.savePlayer({ x: 420, y: 550, movementSeen: true, effectsVolume: 0.2, ambienceVolume: 0, architectureTheme: "cafe" });
-  assert.equal(db.journey.state().player.architectureTheme, "cafe");
-  db.journey.savePlayer({ x: 420, y: 550, movementSeen: true, effectsVolume: 0.2, ambienceVolume: 0, architectureTheme: "loft" });
+  for (const theme of ["cafe", "loft", "studio", "evening"]) {
+    db.journey.savePlayer({ x: 420, y: 550, movementSeen: true, effectsVolume: 0.2, ambienceVolume: 0, architectureTheme: theme });
+    assert.equal(db.journey.state().player.architectureTheme, theme);
+  }
+  db.journey.savePlayer({ x: 420, y: 550, movementSeen: true, effectsVolume: 0.2, ambienceVolume: 0, architectureTheme: "warehouse" });
   assert.equal(db.journey.state().player.architectureTheme, "office");
   assert.equal(db.journey.state().player.x, 420);
   assert.deepEqual(db.journey.state().company, { cashCents: 100000, earnedCents: 180000, reputation: 45, chapter: 2 });

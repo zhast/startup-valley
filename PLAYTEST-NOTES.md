@@ -37,13 +37,11 @@ The founder desk caption always said "Hire Mina" if any candidate was available,
 
 `furnishing_catalog.json` maps `creative` → `creative_design_kit`, and that kit's `owner_id` is `creative` with `host_kind` `desk`. That is the same pairing Mina and Theo use. There is still no Creative employee in the journey contract (`candidates` is only `mira` and `theo`, max 2) and no Creative desk in `office_layout.json`, so the kit does not appear in a Chapter 1 room. Creative has no seated sheet; a future hire would stand at a desk. Bust portraits for unknown ids still use the founder concept crop. Chat faces already sample the locomotion sheet, so Creative's chat face follows the new sheet.
 
-## Cafe architecture
+## Office looks
 
 The oak office is still the day-1 room. Base `floor.png`, `wall.png`, `trim.png`, `window.png`, and `door.png` are unchanged.
 
-The PASS cafe kit is registered beside it. `OfficeArchitecture` knows two themes: `office` (unprefixed oak files) and `cafe` (`cafe-floor.png`, `cafe-wall.png`, `cafe-window.png`, `cafe-trim.png`, `cafe-door.png`). Settings → Office look lists both. Choosing Cafe redraws the floor, walls, windows, trim, and doorway and saves `architectureTheme` with the company. It does not add a hire, a desk, or a journey step. A new company starts on oak again. `architecture_theme` in `office_layout.json` can spawn a theme at load; the authored layout leaves it unset.
-
-Loft, studio, and evening sheets are still not registered. Their PNGs are not part of this commit.
+`OfficeArchitecture` registers five Settings looks: `office` (unprefixed oak files), `cafe`, `loft`, `studio`, and `evening`. Each named look is a five-part kit (`{id}-floor.png`, `{id}-wall.png`, `{id}-window.png`, `{id}-trim.png`, `{id}-door.png`). Settings → Office look lists all five. Choosing one redraws the floor, walls, windows, trim, and doorway and saves `architectureTheme` with the company. These looks do not add a hire, a desk, or a journey step. A new company starts on oak again. `architecture_theme` in `office_layout.json` can spawn a theme at load; the authored layout leaves it unset.
 
 ## Grok login
 
@@ -66,4 +64,4 @@ Headless. Godot 4.7.2 (`/home/box/.local/bin/godot`). Node 22.19 (`/home/box/.lo
 - The Chapter 1 script still stops at Connect. A signed-in playtest can assign the website; this headless pass does not call a model, run ads, or incorporate.
 - Creative is registered art plus a kit binding, not a hire you can make on day 1.
 - No windowed play. Checks are headless input (click, WASD, J, end day, Settings office look), not a watched pixel frame.
-- Other unbound art (founder seated sheets, extra role kits, outdoor sheets, loft/studio/evening architecture) was left untracked.
+- Other unbound art (founder seated sheets, extra role kits, outdoor sheets) was left untracked. Loft, studio, and evening architecture are registered Settings looks, not journey steps.

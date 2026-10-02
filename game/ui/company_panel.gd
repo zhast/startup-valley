@@ -299,7 +299,7 @@ func _settings_screen() -> void:
 	picker.name = "ArchitectureTheme"
 	picker.custom_minimum_size = Vector2(240, 44)
 	picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	picker.tooltip_text = "Oak office is the day-1 room. Cafe swaps the floor, walls, windows, trim, and doorway. It does not hire anyone or change the journey."
+	picker.tooltip_text = "Oak office is the day-1 room. Cafe, Loft, Studio, and Evening swap the floor, walls, windows, trim, and doorway. They do not hire anyone or change the journey."
 	CozyUI.dropdown(picker)
 	var selected := -1
 	for theme_id: String in OfficeArchitecture.THEME_ORDER:

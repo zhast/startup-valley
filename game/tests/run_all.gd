@@ -458,23 +458,29 @@ func _assert_modular_room(main: GameMain) -> void:
 		return
 	if room.architecture.theme_id != OfficeArchitecture.DEFAULT_THEME:
 		_fail("test_modular_office: a fresh office must spawn the oak architecture theme")
-	var cafe_floor := load(OfficeArchitecture.theme_path("cafe", "floor")) as Texture2D
 	main.company_panel.present("settings")
 	var theme_picker := main.company_panel.find_child("ArchitectureTheme", true, false) as OptionButton
-	var cafe_index := -1
+	var look_order: PackedStringArray = ["office", "cafe", "loft", "studio", "evening"]
 	if theme_picker == null:
 		_fail("test_modular_office: Settings does not offer an office look")
+	elif theme_picker.item_count != look_order.size():
+		_fail("test_modular_office: Settings office look does not list oak, cafe, loft, studio, and evening")
 	else:
-		for index: int in range(theme_picker.item_count):
-			if str(theme_picker.get_item_metadata(index)) == "cafe": cafe_index = index
-		if cafe_index < 0:
-			_fail("test_modular_office: Cafe is not a selectable office look")
-		else:
-			theme_picker.item_selected.emit(cafe_index)
-	if room.architecture.theme_id != "cafe" or room.architecture.floor_art != cafe_floor:
-		_fail("test_modular_office: choosing Cafe did not spawn the cafe architecture kit")
-	if room.architecture.apply_theme("loft") or room.architecture.apply_theme("studio") or room.architecture.apply_theme("evening"):
-		_fail("test_modular_office: unbound architecture themes must not replace the office")
+		for index: int in range(look_order.size()):
+			var theme_id := look_order[index]
+			if str(theme_picker.get_item_metadata(index)) != theme_id:
+				_fail("test_modular_office: office look order is not oak, cafe, loft, studio, evening")
+				break
+			if theme_id == OfficeArchitecture.DEFAULT_THEME: continue
+			var theme_floor := load(OfficeArchitecture.theme_path(theme_id, "floor")) as Texture2D
+			theme_picker.item_selected.emit(index)
+			if room.architecture.theme_id != theme_id or room.architecture.floor_art != theme_floor:
+				_fail("test_modular_office: choosing %s did not spawn that architecture kit" % theme_id)
+		theme_picker.item_selected.emit(0)
+		if room.architecture.theme_id != OfficeArchitecture.DEFAULT_THEME or room.architecture.floor_art != load(OfficeArchitecture.theme_path("office", "floor")):
+			_fail("test_modular_office: choosing Oak office did not restore the base kit")
+	if room.architecture.apply_theme("warehouse"):
+		_fail("test_modular_office: unknown architecture themes must not replace the office")
 	if not room.architecture.apply_theme(OfficeArchitecture.DEFAULT_THEME):
 		_fail("test_modular_office: oak office theme did not restore")
 	main.company_panel.set_architecture_theme(room.architecture.theme_id)
