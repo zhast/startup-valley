@@ -65,7 +65,10 @@ func start() -> void:
 	var node_path := OS.get_environment("STARTUP_VALLEY_NODE")
 	if node_path.is_empty():
 		node_path = "node"
-	var arguments := PackedStringArray([worker_script, "--data-dir", OS.get_user_data_dir()])
+	var data_dir := OS.get_environment("STARTUP_VALLEY_DATA_DIR")
+	if data_dir.is_empty():
+		data_dir = OS.get_user_data_dir()
+	var arguments := PackedStringArray([worker_script, "--data-dir", data_dir])
 	var process: Dictionary = OS.execute_with_pipe(node_path, arguments, false)
 	if process.is_empty():
 		request_failed.emit("Could not start Node worker. Install Node 22.19+ or set STARTUP_VALLEY_NODE.")

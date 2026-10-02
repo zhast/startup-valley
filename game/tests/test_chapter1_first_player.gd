@@ -12,6 +12,10 @@ var failures: Array[String] = []
 func _initialize() -> void:
 	OS.unset_environment("STARTUP_VALLEY_NO_WORKER")
 	OS.set_environment("STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS", "1")
+	if OS.get_environment("STARTUP_VALLEY_DATA_DIR").is_empty():
+		var data_dir := OS.get_temp_dir().path_join("startup-valley-chapter1-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+		DirAccess.make_dir_recursive_absolute(data_dir)
+		OS.set_environment("STARTUP_VALLEY_DATA_DIR", data_dir)
 	call_deferred("_run")
 
 func check(ok: bool, message: String) -> void:

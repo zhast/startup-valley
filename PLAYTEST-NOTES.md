@@ -10,7 +10,7 @@ Headless first-player pass on 2026-09-30. Godot 4.7.2 (`/home/box/.local/bin/god
 - `godot --headless --path game --script res://tests/test_chapter1_first_player.gd` with `STARTUP_VALLEY_NODE` pointing at Node 22.19 and a temp data dir — `CHAPTER1 PASS`.
 - `cd harness && npm test` (Node 22.19) — 60 pass, 0 fail, 2 skipped. The skips are the existing live Godot cases that require `GODOT_BINARY`; they were not set in that process.
 
-The chapter 1 script is `game/tests/test_chapter1_first_player.gd`. It is not part of `run_all.gd`. It boots `main.tscn` in a 1280×720 subviewport, uses the real worker, and stops before any model call.
+The chapter 1 script is `game/tests/test_chapter1_first_player.gd`. It is not part of `run_all.gd`. It boots `main.tscn` in a 1280×720 subviewport, uses the real worker, and stops before any model call. Chapter 1 auto-uses an isolated company data dir (override with `STARTUP_VALLEY_DATA_DIR`).
 
 ## What the fresh company does
 
@@ -51,7 +51,7 @@ Chapter 1 sets `STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS=1` before the worker star
 
 ## 2026-10-01
 
-Headless. Godot 4.7.2 (`/home/box/.local/bin/godot`). Node 22.19 (`/home/box/.local/node/node-v22.19.0-linux-x64/bin/node`). Chapter 1 used an isolated company and ignored host credentials. No paid model call.
+Headless. Godot 4.7.2 (`/home/box/.local/bin/godot`). Node 22.19 (`/home/box/.local/node/node-v22.19.0-linux-x64/bin/node`). Chapter 1 auto-uses an isolated company data dir (override with `STARTUP_VALLEY_DATA_DIR`) and ignores host credentials. No paid model call.
 
 - `godot --headless --path game --script res://tools/validate_project.gd` — pass.
 - `godot --headless --path game --script res://tests/test_chapter1_first_player.gd` — `CHAPTER1 PASS`. Day 1 stays oak, cafe is registered, Connect offers Sign in with Grok, and no work order is submitted.
