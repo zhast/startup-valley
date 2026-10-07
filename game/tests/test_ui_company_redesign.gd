@@ -162,6 +162,7 @@ func _bounds() -> void:
 	_check(_panel._header.get_global_rect().end.y <= _panel._scroll.get_global_rect().position.y, "Header stays outside scrolled content")
 	_check(_panel._scroll.get_global_rect().end.y <= _panel._footer.get_global_rect().position.y, "Footer stays outside scrolled content")
 	for node: Node in _panel._content.find_children("*", "PanelContainer", true, false):
+		if _menu_chrome(node): continue
 		_material((node as PanelContainer).get_theme_stylebox("panel"), "card", "Company reading card")
 	var bar := _panel._scroll.get_v_scroll_bar()
 	_material(bar.get_theme_stylebox("scroll"), "track", "Company scroll well")
@@ -212,6 +213,14 @@ func _bounds() -> void:
 func _material(style: StyleBox, kind: String, context: String) -> void:
 	_check(style.get_meta("cozy_family", "") == CozyUI.MATERIAL_FAMILY, context + " belongs to the shared notebook material family")
 	_check(style.get_meta("cozy_material", "") == kind, context + " retains its semantic material role")
+
+func _menu_chrome(node: Node) -> bool:
+	# OptionButton / PopupMenu internals are popup and focus surfaces, not reading cards.
+	var current := node
+	while current != null and current != _panel._content:
+		if current is OptionButton or current is PopupMenu: return true
+		current = current.get_parent()
+	return false
 
 func _has_no_expansion(style: StyleBox) -> bool:
 	for property: Dictionary in style.get_property_list():
@@ -361,6 +370,13 @@ func _settings_input() -> void:
 	_check(_visible(slider), "Volume slider is visible before input")
 	_material(slider.get_theme_stylebox("slider"), "track-horizontal", "Volume track")
 	_material(slider.get_theme_stylebox("grabber_area"), "track-filled", "Volume fill")
+	var picker := _panel.find_child("ArchitectureTheme", true, false) as OptionButton
+	_check(picker != null and picker.item_count >= 2, "Settings office look lists the registered architecture kits")
+	if picker != null:
+		_material(picker.get_popup().get_theme_stylebox("panel"), "popup", "Office look menu")
+		for node: Node in picker.get_popup().find_children("*", "PanelContainer", true, false):
+			var kind := "focus" if str(node.name) == "_focus" else "popup"
+			_material((node as PanelContainer).get_theme_stylebox("panel"), kind, "Office look menu " + kind)
 	slider.grab_focus()
 	await _key(KEY_RIGHT)
 	_check(is_equal_approx(_panel.effects_volume, 0.55) and percent.text == "55%", "Keyboard volume change updates live percentage")

@@ -165,6 +165,23 @@ static func popup(menu: PopupMenu) -> void:
 		menu.add_theme_icon_override(prefix + "checked_disabled", icon("checked-disabled"))
 		menu.add_theme_icon_override(prefix + "unchecked_disabled", icon("unchecked"))
 	menu.add_theme_constant_override("v_separation", 18)
+	# Godot 4.7 PopupMenu embeds PanelContainer chrome (paper panel + _focus).
+	# Stamp it so ancestor audits see notebook materials, not default flats.
+	_stamp_popup_chrome(menu)
+	if not menu.has_meta("cozy_chrome_bound"):
+		menu.set_meta("cozy_chrome_bound", true)
+		menu.about_to_popup.connect(_stamp_popup_chrome.bind(menu))
+		menu.child_entered_tree.connect(func(_node: Node) -> void: _stamp_popup_chrome(menu))
+		if not menu.is_inside_tree():
+			menu.tree_entered.connect(_stamp_popup_chrome.bind(menu), CONNECT_ONE_SHOT)
+
+static func _stamp_popup_chrome(menu: PopupMenu) -> void:
+	if not is_instance_valid(menu): return
+	for node: Node in menu.find_children("*", "PanelContainer", true, false):
+		var panel := node as PanelContainer
+		var kind := "focus" if str(panel.name) == "_focus" else "popup"
+		if str(panel.get_theme_stylebox("panel").get_meta("cozy_material", "")) == kind: continue
+		panel.add_theme_stylebox_override("panel", focus() if kind == "focus" else surface("popup", Vector4(8, 8, 8, 8)))
 
 static func close(control: Button) -> void:
 	button(control, "quiet")
