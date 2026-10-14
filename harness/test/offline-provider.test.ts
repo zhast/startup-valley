@@ -111,8 +111,15 @@ test("offline fake provider walks the three-day chapter without a paid model", a
     await drain(worker, "brand");
     const identity = await readFile(join(root, "company-project", "jobs", "brand", "brand", "identity.md"), "utf8");
     assert.match(identity, /DeskBloom/u);
+    const palette = await readFile(join(root, "company-project", "jobs", "brand", "brand", "palette.md"), "utf8");
+    assert.match(palette, /#F6F1E7/u);
     const checklist = await readFile(join(root, "company-project", "jobs", "incorporate", "company", "incorporation-checklist.md"), "utf8");
     assert.match(checklist, /must not be treated as legal advice/iu);
+    await worker.evaluateMilestone("brand");
+    assert.equal(database.journey.evaluationFor("brand")?.verdict, "ready");
+    database.journey.complete("brand", false, 3);
+    assert.equal(database.journey.state().milestones.find((item) => item.id === "brand")?.state, "completed");
+    assert.deepEqual(database.journey.state().company, { cashCents: 180000, earnedCents: 260000, reputation: 57, chapter: 2 });
     database.close();
 });
 

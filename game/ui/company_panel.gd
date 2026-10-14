@@ -283,6 +283,14 @@ func _hired_screen() -> void:
 	_actions("Meet " + person_name, hide, true, "Company Journey", func() -> void: present("journey"))
 
 func _complete_screen() -> void:
+	if chapter_two_finished(state):
+		_heading("Chapter 2 complete", "More is coming.")
+		var finished := _card()
+		_label("The brand is in the studio", true, finished)
+		_label("Identity and palette are saved. This build stops here. Further chapters are not in the office yet.", false, finished)
+		_label(_next_step().trim_prefix("NEXT · "))
+		_actions("Back to office", hide, true, "")
+		return
 	_heading("Chapter complete", "Your first company chapter is finished.")
 	var complete := _card()
 	_label("Your company is ready", true, complete)
@@ -297,6 +305,12 @@ static func chapter_is_complete(state: Dictionary) -> bool:
 	if state.is_empty(): return false
 	if int((state.get("company", {}) as Dictionary).get("chapter", 1)) <= 1: return false
 	return open_milestone(state).is_empty() and available_candidate(state).is_empty()
+
+static func chapter_two_finished(state: Dictionary) -> bool:
+	for item: Dictionary in state.get("milestones", []):
+		if str(item.get("id", "")) == "brand" and str(item.get("state", "")) == "completed":
+			return true
+	return false
 
 func _settings_screen() -> void:
 	_heading("Settings", "The office clock is paused. Real AI work can still finish.")
@@ -605,6 +619,8 @@ static func next_step_line(state: Dictionary, busy: bool = false, pending_method
 		if str(candidate.get("id", "")) == "creative":
 			return "NEXT · Chapter 2 · Give the company a look. Hire Creative, then prepare the brand identity work order."
 		return "NEXT · Hire %s from Company Journey, then meet them at their new desk." % candidate.get("name", "your teammate")
+	if chapter_two_finished(state):
+		return "NEXT · Chapter 2 is complete. More is coming. Keep building with ordinary work orders and the shared Studio."
 	if chapter_is_complete(state):
 		return "NEXT · Your chapter is complete. Keep building with ordinary work orders and the shared Studio."
 	for item: Dictionary in state.get("milestones", []):

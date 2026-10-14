@@ -1,7 +1,7 @@
 extends SceneTree
 ## DEV ONLY. Actual GameMain/TownRoom review of disposable creative-design
-## overlays on the two accepted employee workstations. Mina and Theo remain
-## existing seat/contact/occlusion proxies; no creative employee or role exists.
+## overlays on the accepted employee workstations. Mina and Theo remain the
+## seat/contact/occlusion proxies. Creative may stand in the authored roster.
 
 const KIT := preload("res://tools/creative_design_kit_geometry.gd")
 const OUTPUT := "res://tests/output/creative-design-kit"
@@ -18,6 +18,13 @@ var actor_occlusion_totals := {"mira": 0, "theo": 0}
 func _initialize() -> void:
 	OS.set_environment("STARTUP_VALLEY_NO_WORKER", "1")
 	call_deferred("run")
+
+func _authored_office_roster(game: GameMain) -> bool:
+	if not game._employees.has("mira") or not game._employees.has("theo"):
+		return false
+	if game._employees.size() == 2:
+		return true
+	return game._employees.size() == 3 and game._employees.has("creative")
 
 func check(ok: bool, message: String) -> void:
 	checks += 1
@@ -299,8 +306,11 @@ func run() -> void:
 	main.player.hide()
 	check(main.worker_client._stdio == null and main.worker_client._process_id == -1, "Actual GameMain starts no worker")
 	check(main.room.layout_model.available_facings("desk") == KIT.SIDES, "Production room exposes all accepted desk facings")
-	check(main._employees.has("mira") and main._employees.has("theo") and main._employees.size() == 2, "GameMain roster remains the two existing employees")
-	check(not main._employees.has("creative") and not main._employees.has("designer"), "No creative employee is created for proxy review")
+	check(_authored_office_roster(main), "GameMain roster is Mina, Theo, and optionally Creative")
+	check(not main._employees.has("designer"), "No designer stand-in is created for proxy review")
+	for employee: EmployeeAvatar in main._employees.values():
+		if employee.employee_id not in ["mira", "theo"]:
+			employee.hide()
 	var mira_details: Dictionary[String, Image] = {}
 	var theo_details: Dictionary[String, Image] = {}
 	var mira_empty: Dictionary[String, Image] = {}
