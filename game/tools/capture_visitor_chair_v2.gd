@@ -22,6 +22,13 @@ func _initialize() -> void:
 	OS.set_environment("STARTUP_VALLEY_NO_WORKER", "1")
 	call_deferred("run")
 
+func _authored_office_roster(game: GameMain) -> bool:
+	if not game._employees.has("mira") or not game._employees.has("theo"):
+		return false
+	if game._employees.size() == 2:
+		return true
+	return game._employees.size() == 3 and game._employees.has("creative")
+
 func check(ok: bool, message: String) -> void:
 	checks += 1
 	if not ok:
@@ -364,13 +371,15 @@ func run() -> void:
 	main.player.set_physics_process(false)
 	var actor := main.get_employee("mira")
 	var theo := main.get_employee("theo")
-	check(actor != null and theo != null and main._employees.size() == 2, "Actual GameMain supplies only its two existing employees")
+	check(actor != null and theo != null and _authored_office_roster(main), "Actual GameMain roster is Mina, Theo, and optionally Creative")
 	if actor == null:
 		quit(1)
 		return
-	if theo != null:
-		theo.hide()
-		theo.set_physics_process(false)
+	for employee: EmployeeAvatar in main._employees.values():
+		if employee.employee_id == "mira":
+			continue
+		employee.hide()
+		employee.set_physics_process(false)
 	actor.set_physics_process(false)
 	check(main.worker_client._stdio == null and main.worker_client._process_id == -1, "Actual GameMain starts no worker transport")
 	production_catalogue = main.room.layout_model.catalog.duplicate(true)

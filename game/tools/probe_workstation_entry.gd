@@ -64,7 +64,8 @@ func run() -> void:
 	await snapshot("initial")
 	await frames(12)
 	await snapshot("settled")
-	check(fixture.main._employees.size() == 2, "Real entry two-employee argument applied")
+	var roster_size := fixture.main._employees.size()
+	check(roster_size >= 2 and roster_size <= 3 and fixture.main._employees.has("mira") and fixture.main._employees.has("theo") and (roster_size == 2 or fixture.main._employees.has("creative")), "Real entry roster is two or three authored employees")
 	check(fixture.main.worker_client._stdio == null and fixture.main.worker_client._process_id == -1 and not fixture.main._state_loaded and not fixture.main._worker_ready, "Null transport, no process, no personal state")
 	for actor: EmployeeAvatar in fixture.main._employees.values(): actor._idle_cooldown = 999
 	var mina: EmployeeAvatar = fixture.main.get_employee("mira")

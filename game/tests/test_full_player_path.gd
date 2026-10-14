@@ -1,6 +1,6 @@
 extends SceneTree
 
-## Title → Chapter 1 website → Theo / ads → incorporate → chapter-complete.
+## Title → Chapter 1 complete → Chapter 2 brand work → Chapter 2 end state.
 ## Uses the worker offline/fake provider. No paid model call.
 
 const MAIN := preload("res://world/main.tscn")
@@ -83,6 +83,23 @@ func key(code: Key, pressed: bool) -> void:
 	event.pressed = pressed
 	viewport.push_input(event, true)
 	await frames(1)
+
+func display_heading() -> String:
+	if main == null or main.company_panel == null:
+		return ""
+	for node: Node in main.company_panel._header.find_children("*", "Label", true, false):
+		var label := node as Label
+		if str(label.get_meta("cozy_text_role", "")) == "display":
+			return label.text
+	return ""
+
+func panel_text() -> String:
+	if main == null or main.company_panel == null:
+		return ""
+	var values := PackedStringArray()
+	for node: Node in main.company_panel.find_children("*", "Label", true, false):
+		values.append((node as Label).text)
+	return "\n".join(values)
 
 func milestone(id: String) -> Dictionary:
 	for item: Dictionary in main._journey.get("milestones", []):
@@ -211,12 +228,7 @@ func _run() -> void:
 	await resolve_work_order("mira", "incorporate")
 	await wait_until(func() -> bool: return main.company_panel.visible and main.company_panel.screen == "complete", "Chapter-complete screen is presented")
 	check(int((main._journey.get("company", {}) as Dictionary).get("chapter", 1)) == 2, "Company chapter advances after incorporation")
-	var heading := ""
-	for node: Node in main.company_panel._header.find_children("*", "Label", true, false):
-		var label := node as Label
-		if str(label.get_meta("cozy_text_role", "")) == "display":
-			heading = label.text
-			break
+	var heading := display_heading()
 	check(heading.to_lower().contains("chapter complete"), "Win state heading names Chapter complete: " + heading)
 	check(button_named("Back to office") != null, "Chapter-complete screen can return to the office")
 	check(CompanyPanel.next_step_line(main._journey).to_lower().contains("chapter is complete"), "Guidance reports the chapter is complete")
@@ -244,6 +256,33 @@ func _run() -> void:
 		next_step = main.founder_hud._next_step_label.text
 	check(next_step.contains("Design the brand"), "Office hint names the brand work order: " + next_step)
 	check(int((main._journey.get("company", {}) as Dictionary).get("cashCents", 0)) == 100000, "The free Creative hire does not change chapter cash")
+	main.day_clock.set_speed(0)
+	await assign_current_milestone("brand")
+	await resolve_work_order("creative", "brand")
+	await wait_until(func() -> bool: return main.company_panel.visible and main.company_panel.screen == "complete", "Chapter 2 end state is presented")
+	var company: Dictionary = main._journey.get("company", {})
+	check(str(milestone("brand").get("state", "")) == "completed", "Design the brand is completed")
+	check(int(company.get("cashCents", 0)) == 180000, "Brand reward is paid")
+	check(int(company.get("reputation", 0)) == 57, "Brand reputation is paid")
+	check(int(company.get("chapter", 1)) == 2, "Finishing the brand stays in Chapter 2")
+	heading = display_heading()
+	check(heading.to_lower().contains("chapter 2 complete"), "Chapter 2 end heading names the chapter: " + heading)
+	var finished_copy := panel_text().to_lower()
+	check(finished_copy.contains("more is coming"), "Chapter 2 end state says more is coming")
+	check(button_named("Begin Chapter 2") == null, "Chapter 2 end state does not restart Chapter 2")
+	check(button_named("Back to office") != null, "Chapter 2 end state can return to the office")
+	await click(button_named("Back to office"))
+	await frames(8)
+	check(not main.company_panel.visible, "Back to office leaves the Chapter 2 end screen")
+	if main.founder_hud._next_step_label != null:
+		next_step = main.founder_hud._next_step_label.text
+	check(next_step.contains("Chapter 2 is complete") and next_step.contains("More is coming"), "Office hint names the Chapter 2 end: " + next_step)
+	await open_journey()
+	check(main.company_panel.visible and main.company_panel.screen == "complete", "Journey reopens on the Chapter 2 end state")
+	check(display_heading().to_lower().contains("chapter 2 complete"), "Reopened Journey keeps the Chapter 2 end heading")
+	await click(button_named("Back to office"))
+	await frames(8)
+	check(not main.company_panel.visible, "The Chapter 2 end state can be closed again")
 	print("FULLPATH ", "PASS" if failures.is_empty() else "FAIL %d" % failures.size())
 	for failure: String in failures:
 		print("FAILURE ", failure)

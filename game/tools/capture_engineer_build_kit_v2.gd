@@ -33,6 +33,13 @@ func _initialize() -> void:
 	OS.set_environment("STARTUP_VALLEY_NO_WORKER", "1")
 	call_deferred("run")
 
+func _authored_office_roster(game: GameMain) -> bool:
+	if not game._employees.has("mira") or not game._employees.has("theo"):
+		return false
+	if game._employees.size() == 2:
+		return true
+	return game._employees.size() == 3 and game._employees.has("creative")
+
 func check(ok: bool, message: String) -> void:
 	checks += 1
 	if not ok:
@@ -226,7 +233,7 @@ func run() -> void:
 			employee.hide()
 	check(main.worker_client._stdio == null and main.worker_client._process_id == -1, "Actual GameMain starts no worker")
 	check(main.room.layout_model.available_facings("desk") == KIT.SIDES, "Actual production room exposes four accepted desk facings")
-	check(main._employees.has("mira") and main._employees.has("theo") and main._employees.size() == 2, "Actual GameMain contains only its two existing employees")
+	check(_authored_office_roster(main), "Actual GameMain roster is Mina, Theo, and optionally Creative")
 	check(not main._employees.has("engineer"), "Capture creates no engineer employee or hire")
 	var occupied_details: Dictionary[String, Image] = {}
 	var unoccupied_details: Dictionary[String, Image] = {}
