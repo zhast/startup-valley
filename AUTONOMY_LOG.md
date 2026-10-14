@@ -107,3 +107,5 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 4. Unbound seated, outdoor, and unused furnishing-kit art stays untracked.
 5. The live path is still a harness driver, not a watched windowed playtest.
 6. A cheap reviewer can still sit just under the 2.5 ready line. Round 2's passing ads score was 2.60.
+
+- 01:55 PT Oct 14: Merged PR #4 (OpenRouter env key preferred; live Chapter 1 PASS on openai/gpt-4o-mini, passing run $0.002178 / 8463 tok, all 3 attempts $0.006274) and PR #5 (Chapter 2 opening + Creative hire/desk). Verified harness 72/0, validate, run_all, full_player_path green. Requested scope done; credits not exhausted.
