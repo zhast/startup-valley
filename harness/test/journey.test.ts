@@ -147,7 +147,12 @@ test("full three-day journey awards money once, charges hiring/filing, and survi
       assert.deepEqual(bootstrap.result.furnishing, hiredRoom);
       assert.equal(bootstrap.result.clock.day, pass === 0 ? 3 : 4);
       assert.equal(bootstrap.result.journey.company.chapter, 2);
-      assert.ok(bootstrap.result.journey.milestones.every((item: any) => item.state === "completed"));
+      const milestoneStates = Object.fromEntries(bootstrap.result.journey.milestones.map((item: { id: string; state: string }) => [item.id, item.state]));
+      assert.equal(milestoneStates.website, "completed");
+      assert.equal(milestoneStates.ads, "completed");
+      assert.equal(milestoneStates.incorporate, "completed");
+      assert.equal(milestoneStates.brand, "locked");
+      assert.equal(bootstrap.result.journey.candidates.find((item: { id: string }) => item.id === "creative")?.available, false);
       const repeated = await request("complete-again", "milestone.complete", { jobId: "incorporate" });
       assert.equal(repeated.ok, true); assert.equal(repeated.result.journey.company.cashCents, 100000);
       assert.equal((await request("end-three", "day.end", { day: 3 })).result.clock.day, 4);
@@ -157,6 +162,52 @@ test("full three-day journey awards money once, charges hiring/filing, and survi
       const stopped = once(child, "exit"); child.stdin.end(); await stopped; lines.close();
     }
   }
+});
+
+test("chapter continue unlocks Creative and the brand desk without paying out the milestone", async () => {
+  const { db, root, project } = await setup("startup-valley.sqlite");
+  assert.throws(() => db.journey.continueChapter(), /Finish the current chapter/u);
+  db.journey.hire("mira", 1);
+  await deliver(db, root, "website");
+  db.journey.beginEvaluation("website");
+  db.journey.finishEvaluation("website", parseEvaluation(review("website"), milestone("website")));
+  db.journey.complete("website", false, 1);
+  db.journey.hire("theo", 2);
+  db.endDay(1);
+  await deliver(db, root, "ads");
+  db.journey.beginEvaluation("ads");
+  db.journey.finishEvaluation("ads", parseEvaluation(review("ads"), milestone("ads")));
+  db.journey.complete("ads", false, 2);
+  db.endDay(2);
+  await deliver(db, root, "incorporate");
+  db.journey.beginEvaluation("incorporate");
+  db.journey.finishEvaluation("incorporate", parseEvaluation(review("incorporate"), milestone("incorporate")));
+  db.journey.complete("incorporate", false, 3);
+  assert.equal(db.journey.state().company.chapter, 2);
+  assert.equal(db.journey.state().candidates.find((item) => item.id === "creative")?.available, false);
+  assert.equal(db.journey.state().milestones.find((item) => item.id === "brand")?.state, "locked");
+  const opened = db.journey.continueChapter();
+  assert.equal(opened.candidates.find((item) => item.id === "creative")?.available, true);
+  assert.equal(opened.milestones.find((item) => item.id === "brand")?.state, "locked");
+  assert.equal(db.journey.continueChapter().company.cashCents, opened.company.cashCents);
+  db.journey.hire("creative", 3);
+  const hired = db.bootstrap();
+  assert.equal(hired.journey.company.cashCents, 100000);
+  assert.equal(hired.journey.milestones.find((item) => item.id === "brand")?.state, "available");
+  const desk = hired.furnishing.inventory.find((item) => item.id === "creative-workstation");
+  assert.equal(desk?.ownerId, "creative");
+  assert.equal(desk?.grant, "hire:creative");
+  assert.equal(desk?.roleKit, "creative_design_kit");
+  assert.deepEqual(hired.furnishing.placements["creative-workstation"], { grid: [14, 8], facing: "south" });
+  assert.equal(hired.employees.find((employee) => employee.id === "creative")?.deskX, 14);
+  assert.equal(hired.employees.find((employee) => employee.id === "creative")?.deskY, 8);
+  db.journey.savePlayer({ x: 40, y: 40, attentionEmployeeId: "creative" });
+  assert.equal(db.journey.state().player.attentionEmployeeId, "creative");
+  db.close();
+  const restored = new GameDatabase(join(root, "startup-valley.sqlite"), project);
+  assert.equal(restored.journey.state().milestones.find((item) => item.id === "brand")?.state, "available");
+  assert.equal(restored.bootstrap().furnishing.inventory.find((item) => item.id === "creative-workstation")?.roleKit, "creative_design_kit");
+  restored.close();
 });
 
 test("evaluation failure is retryable; revisions and reduced-reward override cannot deadlock", async () => {

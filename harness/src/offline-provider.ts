@@ -220,4 +220,28 @@ Planning checklist only. None of these steps have been completed. This is not a 
 Limitations: this checklist cannot incorporate a business and must not be treated as legal advice.
 `,
   },
+  brand: {
+    "brand/identity.md": `# Brand identity
+
+Name: DeskBloom.
+
+DeskBloom is a calm local office for a first-time founder. The identity is honest, warm, and clearly a prototype. This is an internal design plan, not a filed trademark or a launched rebrand.
+
+## Application plan
+Use the name on the website header, the planned ad headlines, and the office name plaque. Do not claim legal protection or live customer research.
+`,
+    "brand/palette.md": `# Palette
+
+## Roles
+- Background: warm paper \`#F6F1E7\`
+- Ink: charcoal \`#2C2825\`
+- Accent: indigo \`#354B98\`
+
+## Use
+Background fills pages and office plaques. Ink is body text. Accent is the primary action only. The three roles stay distinct at small sizes and in the existing office art.
+
+## Application plan
+Apply this palette to the website, the advertising drafts, and the office plaques. This plan does not launch a rebrand.
+`,
+  },
 };

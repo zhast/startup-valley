@@ -123,6 +123,7 @@ export class GameDatabase {
       [5, "005_employee_chat.sql"],
       [6, "006_company_journey.sql"],
       [7, "007_furnishing.sql"],
+      [8, "008_company_journey_opening.sql"],
     ] as const) {
       const applied = this.#database.prepare("SELECT version FROM schema_migrations WHERE version = ?").get(version);
       if (applied) continue;
@@ -178,6 +179,17 @@ export class GameDatabase {
       JSON.stringify({ weekday: "08:00-17:30", lunch: "12:30-13:30" }),
       JSON.stringify({ mira: 12 }),
       76,
+      timestamp,
+      timestamp,
+    );
+    insertEmployee.run(
+      "creative",
+      "Creative",
+      14,
+      8,
+      JSON.stringify({ weekday: "08:00-17:30", lunch: "12:30-13:30" }),
+      JSON.stringify({ mira: 8, theo: 8 }),
+      80,
       timestamp,
       timestamp,
     );

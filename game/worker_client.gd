@@ -192,7 +192,7 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 		"hiring.complete", "game.new":
 			_handle_response("bootstrap", "", result)
 			company_action_completed.emit(method, result)
-		"milestone.evaluate", "milestone.complete", "milestone.override", "day.end":
+		"milestone.evaluate", "milestone.complete", "milestone.override", "chapter.continue", "day.end":
 			journey_received.emit(result.get("journey", {}))
 			company_action_completed.emit(method, result)
 		"game.save":

@@ -347,7 +347,11 @@ func surface_at(point: Vector2) -> Dictionary:
 
 func placeholder_records() -> Array[EmployeeRecord]:
 	var records: Array[EmployeeRecord] = []
-	for employee_id: String in _employee_names:
+	if layout_model == null: return records
+	# Layout order keeps Mina first. Alphabetical order would select Creative.
+	for employee: Dictionary in layout_model.data.get("employees", []):
+		var employee_id := str(employee.get("id", ""))
+		if employee_id.is_empty() or not _employee_names.has(employee_id): continue
 		var record := EmployeeRecord.new()
 		record.id = employee_id
 		record.display_name = _employee_names[employee_id]
@@ -355,7 +359,6 @@ func placeholder_records() -> Array[EmployeeRecord]:
 		record.desk_grid = placement.get("grid", Vector2i.ZERO)
 		record.morale = 75
 		records.append(record)
-	records.sort_custom(func(a: EmployeeRecord, b: EmployeeRecord) -> bool: return a.id < b.id)
 	return records
 
 func grid_to_local_position(grid: Vector2i) -> Vector2:

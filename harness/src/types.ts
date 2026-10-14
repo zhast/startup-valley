@@ -183,6 +183,7 @@ export type ProtocolMethod =
   | "studio.read"
   | "clock.set"
   | "hiring.complete" | "milestone.evaluate" | "milestone.complete" | "milestone.override"
+  | "chapter.continue"
   | "day.end" | "game.save" | "game.new";
 
 export interface ProtocolRequest {

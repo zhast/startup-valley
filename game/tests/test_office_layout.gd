@@ -40,7 +40,7 @@ func run() -> void:
 		var placements := layout.resolve_placements(stage)
 		var validation := layout.validate_placements(placements)
 		check(validation.valid, "Hire stage %d validates: %s" % [stage, validation.errors])
-		check(placements.size() == [1, 5, 8, 8, 9][stage], "Hire stage %d resolves the intended furniture" % stage)
+		check(placements.size() == [1, 5, 8, 9, 10][stage], "Hire stage %d resolves the intended furniture" % stage)
 		var reached := layout.reachable_cells(placements)
 		check(reached.size() == layout.walkable_cells(placements).size(), "All free floor remains connected at stage %d" % stage)
 		for placement: Dictionary in placements:

@@ -77,3 +77,33 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 2. Creative remains registered art/kit, not a hire. Unbound seated/outdoor art stays untracked.
 3. The live path is a harness driver, not a watched windowed playtest.
 4. A cheap reviewer can still sit just under the 2.5 ready line; the passing ads score was 2.60.
+
+### Round 3 — 2026-10-14
+
+**What changed**
+- Chapter complete is no longer a dead end. `chapter.continue` sets `company_state.opened_chapter` (migration 008, default 1) without putting that flag on the projected company object. The complete screen's primary action is Begin Chapter 2. Incorporation still shows that screen first; Creative and the brand work order stay locked until the player continues.
+- Chapter 2 opening copy: hire Creative, then assign Journey · Design the brand (`brand/identity.md`, `brand/palette.md`). Reward $800, reputation 12, available from day 3 after incorporation. The offline provider can write those files; the full-path test stops at the hire and the desk.
+- Creative is a free journey candidate (`Design + brand`) once chapter 2 is opened. Desk `creative-workstation` is south at [14, 8], `required_hires` 3, grant `hire:creative`, role kit `creative_design_kit`. Locomotion uses the existing `creative-locomotion.png`. No new art was added. Layout roster order stays Mina, Theo, Creative.
+- Hire-stage furniture counts are now 1, 5, 8, 9, 10. The team rail fits three people. Furnishing actors allow four ids, including creative.
+- The all-stage Mina desk-move fixture moved from [12, 7] to [24, 8]. [12, 7] south overlaps Creative's clearance once that desk exists. `test_office_layout` still accepts [12, 7] at hire stage 2 only.
+
+**Test results** (no paid live evals)
+- `cd harness && npm test` — 72 pass, 0 fail, 2 skipped
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass
+- `test_chapter1_first_player.gd` — CHAPTER1 PASS (still stops at Connect; host credentials ignored)
+- `test_full_player_path.gd` — FULLPATH PASS (offline provider, through Creative hire and desk)
+- `test_ui_drawer_redesign.gd` — 2685 checks, 0 failures
+- `test_ui_flow_regressions.gd` — pass
+- `test_ui_company_redesign.gd` — 3880 checks, 0 failures, 0 captures
+- `test_office_migration.gd` — 2631 checks passed
+
+**Remaining gaps (ranked)**
+1. The brand work order is authored, and the offline provider can complete it, but the headless full path does not finish that milestone or present a Chapter 2 end state.
+2. Creative has a locomotion sheet and stands at the desk. There is no seated sheet, and none was invented.
+3. Dev capture tools that assume a two-person layout roster (`capture_creative_design_kit.gd` and the other kit captures, plus `play_furniture_catalogue.gd` and `probe_workstation_entry.gd`) still expect `_employees.size() == 2`. They are outside the required suites.
+4. Unbound seated, outdoor, and unused furnishing-kit art stays untracked.
+5. The live path is still a harness driver, not a watched windowed playtest.
+6. A cheap reviewer can still sit just under the 2.5 ready line. Round 2's passing ads score was 2.60.
