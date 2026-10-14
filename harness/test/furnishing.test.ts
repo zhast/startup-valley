@@ -67,6 +67,7 @@ test("starter inventory, four-facing placement, move, store and Undo survive res
   const initial = db.bootstrap().furnishing;
   assert.equal(initial.inventory.length, founderInventory); assert.equal(initial.revision, 0);
   assert.equal(initial.inventory.filter((item) => !item.essential).length, starterCount);
+  assert.equal(initial.inventory.find((item) => item.id === "founder-workstation")?.roleKit, "founder_strategy_kit");
   assert.deepEqual(Object.keys(initial.placements), ["founder-workstation", "decor-phone_booth"]);
   assert.deepEqual(initial.placements["decor-phone_booth"], { grid: [3, 18], facing: "south" });
   assert.notDeepEqual(initial.placements["decor-phone_booth"]?.grid, [22, 16]);
@@ -204,7 +205,7 @@ test("version-six migration preserves existing company and grants the two role k
   assert.match(state.furnishing.recovery, /previous workstation locations/u);
   assert.equal(state.employees.find((employee) => employee.id === "mira")?.deskX, 8);
   assert.equal(state.employees.find((employee) => employee.id === "theo")?.deskX, 20);
-  assert.deepEqual(state.furnishing.inventory.filter((item) => item.roleKit).map((item) => item.roleKit).sort(), ["mina_discovery_kit", "theo_campaign_kit"]);
+  assert.deepEqual(state.furnishing.inventory.filter((item) => item.roleKit).map((item) => item.roleKit).sort(), ["founder_strategy_kit", "mina_discovery_kit", "theo_campaign_kit"]);
   assert.deepEqual(migrated.bootstrap().furnishing, state.furnishing);
   migrated.close();
 });

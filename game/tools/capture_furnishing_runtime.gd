@@ -105,6 +105,7 @@ func state_for(hires: int) -> Dictionary:
 	for original: Dictionary in main.room.layout_model.data.props:
 		if int(original.required_hires) > hires: continue
 		var item := {"id": original.id, "kind": original.kind, "ownerId": str(original.get("owner_id", "")), "essential": true, "grant": "test"}
+		if original.id == "founder-workstation": item["roleKit"] = "founder_strategy_kit"
 		if original.id == "mira-workstation": item["roleKit"] = "mina_discovery_kit"
 		if original.id == "theo-workstation": item["roleKit"] = "theo_campaign_kit"
 		result.inventory.append(item)

@@ -40,6 +40,7 @@
     }
   ],
   "employee_role_kits": {
+    "founder": "founder_strategy_kit",
     "mira": "mina_discovery_kit",
     "theo": "theo_campaign_kit",
     "creative": "creative_design_kit"
@@ -791,6 +792,255 @@
       },
       "host_kind": "desk",
       "owner_id": "creative"
+    },
+    "founder_strategy_kit": {
+      "display_name": "Founder strategy kit",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/ROLE_LIBRARY_ACCEPTANCE_20260906.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/founder_strategy_kit/north-whole.png",
+          "visual_bounds": [
+            -46,
+            -43,
+            79,
+            25
+          ],
+          "render_layers": [
+            {
+              "name": "founder_strategy_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/founder_strategy_kit/north-surface_decor_rear.png",
+              "content_bounds": [
+                50,
+                117,
+                79,
+                10
+              ]
+            },
+            {
+              "name": "founder_strategy_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 2,
+              "art": "res://assets/runtime/office/furnishing-library/founder_strategy_kit/north-surface_decor_front.png",
+              "content_bounds": [
+                50,
+                131,
+                23,
+                11
+              ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/ROLE_LIBRARY_ACCEPTANCE_20260906.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/founder_strategy_kit/east-whole.png",
+          "visual_bounds": [
+            -14,
+            -78,
+            28,
+            91
+          ],
+          "render_layers": [
+            {
+              "name": "founder_strategy_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/founder_strategy_kit/east-surface_decor_rear.png",
+              "content_bounds": [
+                82,
+                82,
+                28,
+                23
+              ]
+            },
+            {
+              "name": "founder_strategy_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 3,
+              "art": "res://assets/runtime/office/furnishing-library/founder_strategy_kit/east-surface_decor_front.png",
+              "content_bounds": [
+                100,
+                158,
+                9,
+                15
+              ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/ROLE_LIBRARY_ACCEPTANCE_20260906.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/founder_strategy_kit/south-whole.png",
+          "visual_bounds": [
+            -44,
+            -43,
+            90,
+            25
+          ],
+          "render_layers": [
+            {
+              "name": "founder_strategy_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 2,
+              "art": "res://assets/runtime/office/furnishing-library/founder_strategy_kit/south-surface_decor_rear.png",
+              "content_bounds": [
+                52,
+                117,
+                88,
+                10
+              ]
+            },
+            {
+              "name": "founder_strategy_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 4,
+              "art": "res://assets/runtime/office/furnishing-library/founder_strategy_kit/south-surface_decor_front.png",
+              "content_bounds": [
+                119,
+                131,
+                23,
+                11
+              ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/ROLE_LIBRARY_ACCEPTANCE_20260906.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/founder_strategy_kit/west-whole.png",
+          "visual_bounds": [
+            -14,
+            -78,
+            28,
+            92
+          ],
+          "render_layers": [
+            {
+              "name": "founder_strategy_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/founder_strategy_kit/west-surface_decor_rear.png",
+              "content_bounds": [
+                82,
+                82,
+                27,
+                23
+              ]
+            },
+            {
+              "name": "founder_strategy_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 3,
+              "art": "res://assets/runtime/office/furnishing-library/founder_strategy_kit/west-surface_decor_front.png",
+              "content_bounds": [
+                100,
+                156,
+                10,
+                18
+              ]
+            }
+          ]
+        }
+      },
+      "host_kind": "desk",
+      "owner_id": "founder"
     }
   },
   "furniture": {

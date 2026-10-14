@@ -192,6 +192,8 @@ func _run() -> void:
 	await click(button_named("Meet Mina"))
 	await frames(12)
 	check(not main.company_panel.visible, "Meet Mina returns to the office")
+	var founder_desk := main.room.placement_by_id("founder-workstation")
+	check(str(founder_desk.get("role_kit", "")) == "founder_strategy_kit", "The founder desk wears the strategy kit")
 	if main.founder_hud._next_step_label != null:
 		next_step = main.founder_hud._next_step_label.text
 	check(main.founder_hud._next_step_hint.visible and next_step.to_lower().contains("website"), "Office hint names the website work order: " + next_step)

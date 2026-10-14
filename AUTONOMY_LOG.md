@@ -141,3 +141,40 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming, with Back to office and no dead end, verified headless with the offline provider and no paid model call.
 
 - 13:35 PT Oct 14: Merged PR #6 (Chapter 2 brand work order finishes on a Chapter 2 complete / more coming screen). Verified harness 72/0, eval:offline 8/8, validate, run_all, chapter1, full_player_path, drawer, flow, company, and office migration green.
+
+### Round 5 — 2026-10-14
+
+**What changed**
+- Bound the already-accepted `founder_strategy_kit` to `founder-workstation`. GALLERY and `ROLE_LIBRARY_ACCEPTANCE_20260906.md` mark the four facings approved (mean 2.67, min 2). The runtime PNGs are byte-exact copies of the reviewed `founder-strategy-kit-v1` fixtures. The founder desk already exists from day 1 (`owner_id` founder, south at `[8, 17]`).
+- `furnishing_catalog.json` maps `founder` → `founder_strategy_kit`. New companies grant the kit on first insert; existing saves with an empty founder `role_kit` are backfilled. The furnishing schema enum now includes the kit.
+- Chapter 1, the full player path, and furnishing projection tests assert the founder desk wears the two native overlay layers. No new art was generated, edited, or invented.
+
+**Art left untracked (no safe bind)**
+- `founder-seated.png` and `workstations-v2/founder-{east,north,west}.png`: QA captures call them measured PASS candidates and explicitly not bind-approved. The player still uses locomotion only; sitting would be new gameplay.
+- `characters/waiting-lunch/`: no PASS record and no code path. Lunch already uses standing locomotion idle.
+- `customer_success_kit` and the other unused furnishing-library kits (`engineer_build_kit`, `finance_accounts_kit`, `growth_analytics_kit`, `lawyer_contract_kit`, `product_prototype_kit`): library-approved or still candidate, but no matching hire/desk in the current chapters. `test_customer_success_kit.gd` keeps that kit fixture-scoped.
+- Outdoor campus tiles and leftover `desk_lamp_kit` import sidecars: no playable outdoor scene.
+
+**Test results** (no paid live evals)
+- `cd harness && npm test` — 72 pass, 0 fail, 2 skipped
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass
+- `test_chapter1_first_player.gd` — CHAPTER1 PASS (still stops at Connect; host credentials ignored)
+- `test_full_player_path.gd` — FULLPATH PASS (offline provider, through brand completion and the Chapter 2 end screen; founder desk wears the strategy kit)
+- `test_ui_drawer_redesign.gd` — 2685 checks, 0 failures
+- `test_ui_flow_regressions.gd` — pass
+- `test_ui_company_redesign.gd` — 3965 checks, 0 failures, 0 captures
+- `test_office_migration.gd` — 2631 checks passed
+- `test_founder_strategy_kit.gd` — 120 checks, 0 failures
+- `test_furnishing_projection.gd` — 192 checks, 0 failures
+
+**Remaining gaps (ranked)**
+1. Creative has a locomotion sheet and stands at the desk. There is no seated sheet, and none was invented.
+2. Unbound seated, outdoor, waiting-lunch, and unused furnishing-kit art stays untracked. Founder seated/N/E/W workstation poses are QA-only, not bind-approved.
+3. The live path is still a harness driver, not a watched windowed playtest.
+4. A cheap reviewer can still sit just under the 2.5 ready line. Round 2's passing ads score was 2.60.
+5. After the Chapter 2 end screen, ordinary work orders continue. No Chapter 3 content is authored.
+
+**CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The founder desk now shows the accepted strategy kit from day 1.
