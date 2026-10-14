@@ -43,3 +43,37 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 **PLAYABLE: yes** — title → goal guidance → Chapter 1 website resolve → Theo/ads → incorporate → chapter-complete screen, verified headless with the offline provider and no paid model call.
 
 - 23:45 PT: Verified PR #3 locally (harness 70 pass/0 fail; validate, run_all, chapter1, full_player_path all exit 0). Merged PR #3. Playable bar met (headless, offline fake provider). Stopped: bar met, not credits.
+
+### Round 2 — 2026-10-14
+
+**What changed**
+- `OPENROUTER_API_KEY` resolves to the OpenRouter provider and wins over a Grok login and a keychain OpenRouter key. `STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS=1` still suppresses that key, so Chapter 1 and the full-player path stay unpaid.
+- Default OpenRouter model is `openai/gpt-4o-mini` (Pi catalog, no reasoning tax). Override with `STARTUP_VALLEY_OPENROUTER_MODEL`.
+- Connect shows "Connected with OpenRouter." when the key comes from the environment, including when a Grok login is also present.
+- Stub credential stores do not inherit the host key. Only `KeychainCredentialStore` applies the environment key.
+- Review prompt: an on-page prototype link that says signup is not open scores as a usable call to action, and a specific internal plan can score 3 without being launched.
+- `npm run live:chapter` walks website → promote → evaluate → Theo → ads → incorporate against the live provider, with job budgets 10000 / 8000 / 8000.
+
+**Live result: PASS** (attempt 3 of 3). Model `openai/gpt-4o-mini`. Chapter advanced to 2.
+- Passing playthrough: 6444 input + 2019 output = 8463 tokens, usage-derived catalog cost **$0.002178**. This is Pi catalog rates times provider usage tokens, not OpenRouter's raw `usage.cost` field.
+- Website ready 2.75, ads ready 2.60, incorporate ready 2.50. No revision was required on the passing run.
+- Attempt 1 failed: website revise 2.00. The reviewer treated an honest "signup is not open" note as a broken signup. Spend 5536 tokens, $0.001654.
+- Attempt 2 failed: website ready 2.50, ads revise 2.40 (every criterion ≥ 2, average under 2.5). Spend 9076 tokens, $0.002442.
+- Three attempts together: 23075 tokens, **$0.006274**.
+
+**Test results**
+- `cd harness && npm test` — 71 pass, 0 fail, 2 skipped
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass
+- `test_chapter1_first_player.gd` — pass (still stops at Connect; host credentials ignored)
+- `test_full_player_path.gd` — pass (offline provider)
+- `test_ui_drawer_redesign.gd` — pass
+- `test_ui_flow_regressions.gd` — pass
+
+**Remaining gaps (ranked)**
+1. After chapter complete there is still no authored Chapter 2 loop.
+2. Creative remains registered art/kit, not a hire. Unbound seated/outdoor art stays untracked.
+3. The live path is a harness driver, not a watched windowed playtest.
+4. A cheap reviewer can still sit just under the 2.5 ready line; the passing ads score was 2.60.

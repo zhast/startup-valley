@@ -7,7 +7,9 @@ import { AsyncEntry } from "@napi-rs/keyring";
 import {
   DeviceLogin,
   accessTokenFresh,
+  environmentOpenRouterKey,
   grokCliAuthWithSecrets,
+  openRouterModelFromEnvironment,
   parseGrokCliAuth,
   refreshXaiTokens,
   selectModelCredential,
@@ -36,6 +38,7 @@ export interface CredentialStatus {
   grokSource: "keychain" | "grok-cli" | "none";
   grokCliAvailable: boolean;
   openRouterConfigured: boolean;
+  openRouterSource: "environment" | "keychain" | "none";
   loginPending: boolean;
 }
 
@@ -49,6 +52,7 @@ export function normalizeKeychainValue(value: unknown): string | undefined {
   return typeof value === "string" && value.length > 0 ? value : undefined;
 }
 
+/** Stub stores only see the key they store. Host OpenRouter keys are applied by KeychainCredentialStore.resolveModelCredential. */
 export function resolveStoredModelCredential(store: CredentialStore): Promise<ModelCredential | undefined> {
   if (store.resolveModelCredential) return store.resolveModelCredential();
   return store.getOpenRouterKey().then((openRouterKey) => selectModelCredential(openRouterKey ? { openRouterKey } : {}));
@@ -146,6 +150,7 @@ export interface CredentialStoreOptions {
   grokAuthPath?: string | null;
   fetchImpl?: typeof fetch;
   now?: () => number;
+  env?: NodeJS.ProcessEnv;
 }
 
 interface StoredXai {
@@ -159,6 +164,7 @@ export class KeychainCredentialStore implements CredentialStore {
   readonly #grokAuthPath: string | null;
   readonly #fetchImpl: typeof fetch;
   readonly #now: () => number;
+  readonly #env: NodeJS.ProcessEnv;
   readonly #device = new DeviceLogin();
   #chain: Promise<unknown> = Promise.resolve();
 
@@ -167,6 +173,8 @@ export class KeychainCredentialStore implements CredentialStore {
     this.#grokAuthPath = options.grokAuthPath === undefined ? join(homedir(), ".grok", "auth.json") : options.grokAuthPath;
     this.#fetchImpl = options.fetchImpl ?? fetch;
     this.#now = options.now ?? Date.now;
+    // Default to an empty env so unit tests do not inherit a host key. The process factory passes the real env.
+    this.#env = options.env ?? {};
   }
 
   async hasOpenRouterKey(): Promise<boolean> {
@@ -199,10 +207,13 @@ export class KeychainCredentialStore implements CredentialStore {
 
   async resolveModelCredential(): Promise<ModelCredential | undefined> {
     return this.#exclusive(async () => {
+      const modelId = openRouterModelFromEnvironment(this.#env);
+      const fromEnvironment = environmentOpenRouterKey(this.#env);
+      if (fromEnvironment) return selectModelCredential({ environmentOpenRouterKey: fromEnvironment, openRouterModelId: modelId });
       const xai = await this.#usableXai(true);
       if (xai.access) return selectModelCredential({ xaiAccessToken: xai.access });
       const openRouterKey = await this.#backend.get(OPENROUTER_ACCOUNT);
-      if (openRouterKey) return selectModelCredential({ openRouterKey });
+      if (openRouterKey) return selectModelCredential({ openRouterKey, openRouterModelId: modelId });
       if (xai.expired) throw new Error("Grok login expired. Sign in with Grok again.");
       return undefined;
     });
@@ -250,18 +261,20 @@ export class KeychainCredentialStore implements CredentialStore {
   }
 
   async #status(refresh: boolean): Promise<CredentialStatus> {
+    const fromEnvironment = environmentOpenRouterKey(this.#env) !== undefined;
     const xai = await this.#usableXai(refresh);
     const openRouterKey = await this.#backend.get(OPENROUTER_ACCOUNT);
-    const openRouterConfigured = openRouterKey !== undefined;
+    const openRouterConfigured = fromEnvironment || openRouterKey !== undefined;
     const grokSignedIn = xai.access !== undefined;
-    const provider = grokSignedIn ? "xai" : openRouterConfigured ? "openrouter" : "none";
+    const provider = fromEnvironment ? "openrouter" : grokSignedIn ? "xai" : openRouterConfigured ? "openrouter" : "none";
     return {
-      configured: grokSignedIn || openRouterConfigured,
+      configured: fromEnvironment || grokSignedIn || openRouterConfigured,
       provider,
       grokSignedIn,
       grokSource: xai.source,
       grokCliAvailable: xai.cliAvailable,
       openRouterConfigured,
+      openRouterSource: fromEnvironment ? "environment" : openRouterKey !== undefined ? "keychain" : "none",
       loginPending: this.#device.pending(),
     };
   }
@@ -357,15 +370,16 @@ export class KeychainCredentialStore implements CredentialStore {
   }
 }
 
-export function credentialStoreFromEnvironment(): KeychainCredentialStore {
-  if (process.env.STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS === "1") {
-    return new KeychainCredentialStore({ backend: new MemorySecretBackend(), grokAuthPath: null });
+export function credentialStoreFromEnvironment(env: NodeJS.ProcessEnv = process.env): KeychainCredentialStore {
+  if (env.STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS === "1") {
+    return new KeychainCredentialStore({ backend: new MemorySecretBackend(), grokAuthPath: null, env });
   }
-  const secretFile = process.env.STARTUP_VALLEY_SECRET_FILE;
-  const grokAuthFile = process.env.STARTUP_VALLEY_GROK_AUTH_FILE;
+  const secretFile = env.STARTUP_VALLEY_SECRET_FILE;
+  const grokAuthFile = env.STARTUP_VALLEY_GROK_AUTH_FILE;
   const grokAuthPath = grokAuthFile === "" ? null : grokAuthFile;
   return new KeychainCredentialStore({
     ...(secretFile ? { backend: new FileSecretBackend(secretFile) } : {}),
     ...(grokAuthPath !== undefined ? { grokAuthPath } : {}),
+    env,
   });
 }

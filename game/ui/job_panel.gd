@@ -203,6 +203,7 @@ var _connection_back_button: Button
 var _grok_signed_in := false
 var _grok_cli_available := false
 var _grok_login_pending := false
+var _openrouter_from_environment := false
 var _grok_verification_uri := ""
 var _grok_poll_wait := 5
 var _grok_poll_timer: Timer
@@ -507,6 +508,8 @@ func _refresh_connection_surface() -> void:
 		_connection_description.text = "Reconnect to resume chat and work. Your saved Grok login or OpenRouter key does not need to change." if _credential_configured else "Reconnect first, then sign in with Grok or add an OpenRouter key."
 	elif _offline_provider:
 		_connection_description.text = "Offline test provider is active. Work orders complete with local files and no paid model call."
+	elif _openrouter_from_environment and _credential_configured:
+		_connection_description.text = "Connected with OpenRouter. Work orders use the OpenRouter key from the environment. A Grok login or saved keychain key is not used while that key is set."
 	elif _grok_login_pending:
 		_connection_description.text = "Enter this code on the Grok page. Work will use your Grok / xAI credits when sign-in finishes. Back cancels sign-in."
 	elif _grok_signed_in:
@@ -537,6 +540,9 @@ func _refresh_connection_surface() -> void:
 		_key_status.add_theme_color_override("font_color", ALERT_INK)
 	elif _offline_provider:
 		_key_status.text = "Offline test provider. Jobs complete without a model call."
+		_key_status.add_theme_color_override("font_color", CHARCOAL)
+	elif _openrouter_from_environment and _credential_configured:
+		_key_status.text = "Connected with OpenRouter."
 		_key_status.add_theme_color_override("font_color", CHARCOAL)
 	elif _grok_signed_in:
 		_key_status.text = "Signed in with Grok. Work uses your Grok / xAI credits."
@@ -2358,11 +2364,7 @@ func set_worker_ready() -> void:
 		_connection_badge.visible = false
 	_refresh_rail_connection_action()
 	if _key_status != null:
-		if _offline_provider:
-			_key_status.text = "Offline test provider. Jobs complete without a model call."
-		else:
-			_key_status.text = "Connected. Key stored in the OS keychain." if _credential_configured else "Connection required before chat or work can start."
-		_key_status.add_theme_color_override("font_color", CHARCOAL if _credential_configured else ALERT_INK)
+		_apply_key_status()
 	_refresh_operation_availability()
 	_refresh_connection_surface()
 	if _credential_configured and _connection_panel.visible:
@@ -2402,18 +2404,12 @@ func _update_assign_copy() -> void:
 
 func set_credential_status(configured: bool) -> void:
 	_credential_configured = configured
+	if not configured:
+		_openrouter_from_environment = false
 	if configured:
 		_grok_login_pending = false
 		_stop_grok_poll()
-	if _offline_provider:
-		_key_status.text = "Offline test provider. Jobs complete without a model call."
-	elif _grok_signed_in:
-		_key_status.text = "Signed in with Grok. Work uses your Grok / xAI credits."
-	elif configured:
-		_key_status.text = "Connected. Key stored in the OS keychain."
-	else:
-		_key_status.text = "Connection required before chat or work can start."
-	_key_status.add_theme_color_override("font_color", CHARCOAL if configured else ALERT_INK)
+	_apply_key_status()
 	_refresh_rail_connection_action()
 	_refresh_operation_availability()
 	_refresh_connection_surface()
@@ -2426,9 +2422,25 @@ func set_credential_detail(detail: Dictionary) -> void:
 	_offline_provider = bool(detail.get("offline", false))
 	_grok_signed_in = bool(detail.get("grokSignedIn", false))
 	_grok_cli_available = bool(detail.get("grokCliAvailable", false))
+	_openrouter_from_environment = str(detail.get("openRouterSource", "")) == "environment"
 	if not bool(detail.get("loginPending", false)):
 		_grok_login_pending = false
 	set_credential_status(bool(detail.get("configured", false)))
+
+func _apply_key_status() -> void:
+	if _key_status == null:
+		return
+	if _offline_provider:
+		_key_status.text = "Offline test provider. Jobs complete without a model call."
+	elif _openrouter_from_environment and _credential_configured:
+		_key_status.text = "Connected with OpenRouter."
+	elif _grok_signed_in:
+		_key_status.text = "Signed in with Grok. Work uses your Grok / xAI credits."
+	elif _credential_configured:
+		_key_status.text = "Connected. Key stored in the OS keychain."
+	else:
+		_key_status.text = "Connection required before chat or work can start."
+	_key_status.add_theme_color_override("font_color", CHARCOAL if _credential_configured else ALERT_INK)
 
 func set_credential_saved() -> void:
 	set_credential_status(true)

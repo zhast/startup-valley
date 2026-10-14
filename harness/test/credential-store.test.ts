@@ -6,12 +6,14 @@ import { join } from "node:path";
 import { createInterface } from "node:readline";
 import test from "node:test";
 
-import { KeychainCredentialStore, MemorySecretBackend, normalizeKeychainValue } from "../src/credential-store.js";
+import { KeychainCredentialStore, MemorySecretBackend, credentialStoreFromEnvironment, normalizeKeychainValue } from "../src/credential-store.js";
 import {
   OPENROUTER_MODEL_ID,
   XAI_CLIENT_ID,
   XAI_MODEL_ID,
+  environmentOpenRouterKey,
   oauthFailureMessage,
+  openRouterModelFromEnvironment,
   parseGrokCliAuth,
   redactSecret,
   selectModelCredential,
@@ -22,6 +24,8 @@ const REFRESH = "test-refresh-token-bbbb";
 const NEXT_ACCESS = "test-access-token-cccc";
 const NEXT_REFRESH = "test-refresh-token-dddd";
 const OPENROUTER = "sk-or-test-key-0000000000";
+const KEYCHAIN_OPENROUTER = "sk-or-keychain-key-000000";
+const CUSTOM_MODEL = "openai/gpt-4.1-nano";
 
 test("missing keychain values never appear configured", () => {
   assert.equal(normalizeKeychainValue(null), undefined);
@@ -30,8 +34,9 @@ test("missing keychain values never appear configured", () => {
   assert.equal(normalizeKeychainValue("sk-or-example"), "sk-or-example");
 });
 
-test("provider selection prefers Grok grok-4.6 and falls back to OpenRouter", () => {
+test("provider selection prefers an environment OpenRouter key, then Grok, then the keychain", () => {
   assert.equal(selectModelCredential({}), undefined);
+  assert.equal(OPENROUTER_MODEL_ID, "openai/gpt-4o-mini");
   const grok = selectModelCredential({ xaiAccessToken: ACCESS, openRouterKey: OPENROUTER });
   assert.equal(grok?.provider, "xai");
   assert.equal(grok?.modelId, XAI_MODEL_ID);
@@ -39,6 +44,23 @@ test("provider selection prefers Grok grok-4.6 and falls back to OpenRouter", ()
   const openrouter = selectModelCredential({ openRouterKey: OPENROUTER });
   assert.equal(openrouter?.provider, "openrouter");
   assert.equal(openrouter?.modelId, OPENROUTER_MODEL_ID);
+  const fromEnvironment = selectModelCredential({
+    environmentOpenRouterKey: OPENROUTER,
+    xaiAccessToken: ACCESS,
+    openRouterKey: KEYCHAIN_OPENROUTER,
+    openRouterModelId: CUSTOM_MODEL,
+  });
+  assert.equal(fromEnvironment?.provider, "openrouter");
+  assert.equal(fromEnvironment?.modelId, CUSTOM_MODEL);
+  assert.equal(fromEnvironment?.apiKey === OPENROUTER, true);
+  assert.equal(fromEnvironment?.apiKey === KEYCHAIN_OPENROUTER, false);
+  assert.equal(fromEnvironment?.apiKey === ACCESS, false);
+  assert.equal(openRouterModelFromEnvironment({ STARTUP_VALLEY_OPENROUTER_MODEL: CUSTOM_MODEL }), CUSTOM_MODEL);
+  assert.equal(openRouterModelFromEnvironment({ STARTUP_VALLEY_OPENROUTER_MODEL: "not a model" }), OPENROUTER_MODEL_ID);
+  assert.equal(openRouterModelFromEnvironment({}), OPENROUTER_MODEL_ID);
+  assert.equal(environmentOpenRouterKey({ OPENROUTER_API_KEY: OPENROUTER }), OPENROUTER);
+  assert.equal(environmentOpenRouterKey({ OPENROUTER_API_KEY: "short" }), undefined);
+  assert.equal(environmentOpenRouterKey({ OPENROUTER_API_KEY: OPENROUTER, STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS: "1" }), undefined);
   assert.equal(redactSecret(`bearer ${ACCESS}`, ACCESS).includes(ACCESS), false);
 });
 
@@ -109,8 +131,56 @@ test("stored Grok login configures xAI and device-code completion never returns 
   const afterLogout = await store.status();
   assert.equal(afterLogout.grokSignedIn, false);
   assert.equal(afterLogout.openRouterConfigured, true);
+  assert.equal(afterLogout.openRouterSource, "keychain");
   assert.equal(afterLogout.provider, "openrouter");
-  assert.equal((await store.resolveModelCredential())?.provider, "openrouter");
+  const keychainCredential = await store.resolveModelCredential();
+  assert.equal(keychainCredential?.provider, "openrouter");
+  assert.equal(keychainCredential?.modelId, OPENROUTER_MODEL_ID);
+});
+
+test("environment OpenRouter key is preferred over Grok login and the keychain", async () => {
+  const root = await mkdtemp(join(tmpdir(), "startup-valley-openrouter-env-"));
+  const authPath = join(root, "auth.json");
+  await writeCliAuth(authPath, ACCESS, REFRESH, Date.now() + 3_600_000);
+  const backend = new MemorySecretBackend();
+  await backend.set("openrouter", KEYCHAIN_OPENROUTER);
+  const env = {
+    OPENROUTER_API_KEY: OPENROUTER,
+    STARTUP_VALLEY_OPENROUTER_MODEL: CUSTOM_MODEL,
+  };
+  const store = new KeychainCredentialStore({
+    backend,
+    grokAuthPath: authPath,
+    env,
+    fetchImpl: async () => {
+      throw new Error("host credentials must not be refreshed when the environment key wins");
+    },
+  });
+  const status = await store.status();
+  assert.equal(status.configured, true);
+  assert.equal(status.provider, "openrouter");
+  assert.equal(status.openRouterSource, "environment");
+  assert.equal(status.openRouterConfigured, true);
+  assert.equal(status.grokSignedIn, true);
+  assert.equal(JSON.stringify(status).includes(OPENROUTER), false);
+  assert.equal(JSON.stringify(status).includes(KEYCHAIN_OPENROUTER), false);
+  assert.equal(JSON.stringify(status).includes(ACCESS), false);
+  const resolved = await store.resolveModelCredential();
+  assert.equal(resolved?.provider, "openrouter");
+  assert.equal(resolved?.modelId, CUSTOM_MODEL);
+  assert.equal(resolved?.apiKey === OPENROUTER, true);
+  assert.equal(resolved?.apiKey === KEYCHAIN_OPENROUTER, false);
+  assert.equal(resolved?.apiKey === ACCESS, false);
+  const ignored = credentialStoreFromEnvironment({
+    ...env,
+    STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS: "1",
+    STARTUP_VALLEY_GROK_AUTH_FILE: authPath,
+  });
+  const hidden = await ignored.status();
+  assert.equal(hidden.configured, false);
+  assert.equal(hidden.provider, "none");
+  assert.equal(hidden.openRouterSource, "none");
+  assert.equal(await ignored.resolveModelCredential(), undefined);
 });
 
 test("this computer's Grok login is reused until disconnect suppresses it", async () => {
@@ -189,12 +259,28 @@ test("credential protocol configures Grok from a local file and can ignore host 
   assert.equal(loggedOut.grokCliAvailable, true);
   const ignored = await requestCredentialStatus({
     ...cleanEnv(),
+    OPENROUTER_API_KEY: OPENROUTER,
+    STARTUP_VALLEY_OPENROUTER_MODEL: CUSTOM_MODEL,
     STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS: "1",
     STARTUP_VALLEY_GROK_AUTH_FILE: authPath,
     STARTUP_VALLEY_SECRET_FILE: secretPath,
   }, root);
   assert.equal(ignored.configured, false);
   assert.equal(ignored.provider, "none");
+  assert.equal(ignored.openRouterSource, "none");
+  const fromEnvironment = await requestCredentialStatus({
+    ...cleanEnv(),
+    OPENROUTER_API_KEY: OPENROUTER,
+    STARTUP_VALLEY_OPENROUTER_MODEL: CUSTOM_MODEL,
+    STARTUP_VALLEY_GROK_AUTH_FILE: authPath,
+    STARTUP_VALLEY_SECRET_FILE: join(root, "fresh-secrets.json"),
+  }, root);
+  assert.equal(fromEnvironment.configured, true);
+  assert.equal(fromEnvironment.provider, "openrouter");
+  assert.equal(fromEnvironment.openRouterSource, "environment");
+  assert.equal(fromEnvironment.grokSignedIn, true);
+  assert.equal(JSON.stringify(fromEnvironment).includes(OPENROUTER), false);
+  assert.equal(JSON.stringify(fromEnvironment).includes(ACCESS), false);
 });
 
 function jsonResponse(body: unknown, status = 200): Response {
@@ -217,6 +303,9 @@ function cleanEnv(): NodeJS.ProcessEnv {
   delete env.STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS;
   delete env.STARTUP_VALLEY_GROK_AUTH_FILE;
   delete env.STARTUP_VALLEY_SECRET_FILE;
+  delete env.STARTUP_VALLEY_OPENROUTER_MODEL;
+  delete env.STARTUP_VALLEY_FAKE_PROVIDER;
+  delete env.OPENROUTER_API_KEY;
   return env;
 }
 
@@ -254,6 +343,8 @@ async function requestCredentialMethod(method: string, env: NodeJS.ProcessEnv, d
     assert.equal(combined.includes(REFRESH), false);
     assert.equal(combined.includes(NEXT_ACCESS), false);
     assert.equal(combined.includes(NEXT_REFRESH), false);
+    assert.equal(combined.includes(OPENROUTER), false);
+    assert.equal(combined.includes(KEYCHAIN_OPENROUTER), false);
     return result;
   } finally {
     child.stdin.end();
