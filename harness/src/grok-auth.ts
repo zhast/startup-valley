@@ -8,7 +8,10 @@ export const XAI_CLIENT_ID = "b1a00492-073a-47ea-816f-4c329264a828";
 export const XAI_PROVIDER_ID = "xai" as const;
 export const XAI_MODEL_ID = "grok-4.6";
 export const OPENROUTER_PROVIDER_ID = "openrouter" as const;
-export const OPENROUTER_MODEL_ID = "~openai/gpt-mini-latest";
+/** Cheap mini tier in the Pi OpenRouter catalog. Override with STARTUP_VALLEY_OPENROUTER_MODEL. */
+export const OPENROUTER_MODEL_ID = "openai/gpt-4o-mini";
+export const OPENROUTER_API_KEY_ENV = "OPENROUTER_API_KEY";
+export const OPENROUTER_MODEL_ENV = "STARTUP_VALLEY_OPENROUTER_MODEL";
 export const XAI_SCOPE = "openid profile email offline_access grok-cli:access api:access";
 export const XAI_DEVICE_CODE_URL = "https://auth.x.ai/oauth2/device/code";
 export const XAI_TOKEN_URL = "https://auth.x.ai/oauth2/token";
@@ -67,12 +70,38 @@ export function redactSecret(message: string, secret: string | undefined): strin
   return message.split(secret).join("[redacted]");
 }
 
-export function selectModelCredential(input: { xaiAccessToken?: string; openRouterKey?: string }): ModelCredential | undefined {
+const MODEL_ID_PATTERN = /^[A-Za-z0-9._~:/+-]{1,80}$/u;
+
+export function openRouterModelFromEnvironment(env: NodeJS.ProcessEnv = process.env): string {
+  const configured = env[OPENROUTER_MODEL_ENV]?.trim() ?? "";
+  if (MODEL_ID_PATTERN.test(configured) && configured.includes("/")) return configured;
+  return OPENROUTER_MODEL_ID;
+}
+
+/** Host OpenRouter key. Ignored with the other host credentials when the playtest isolation flag is set. */
+export function environmentOpenRouterKey(env: NodeJS.ProcessEnv = process.env): string | undefined {
+  if (env.STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS === "1") return undefined;
+  const key = env[OPENROUTER_API_KEY_ENV]?.trim() ?? "";
+  return isSecret(key) ? key : undefined;
+}
+
+export function selectModelCredential(input: {
+  xaiAccessToken?: string | undefined;
+  openRouterKey?: string | undefined;
+  environmentOpenRouterKey?: string | undefined;
+  openRouterModelId?: string | undefined;
+}): ModelCredential | undefined {
+  const openRouterModelId = input.openRouterModelId && input.openRouterModelId.length > 0
+    ? input.openRouterModelId
+    : OPENROUTER_MODEL_ID;
+  if (input.environmentOpenRouterKey && input.environmentOpenRouterKey.length > 0) {
+    return { provider: OPENROUTER_PROVIDER_ID, apiKey: input.environmentOpenRouterKey, modelId: openRouterModelId };
+  }
   if (input.xaiAccessToken && input.xaiAccessToken.length > 0) {
     return { provider: XAI_PROVIDER_ID, apiKey: input.xaiAccessToken, modelId: XAI_MODEL_ID };
   }
   if (input.openRouterKey && input.openRouterKey.length > 0) {
-    return { provider: OPENROUTER_PROVIDER_ID, apiKey: input.openRouterKey, modelId: OPENROUTER_MODEL_ID };
+    return { provider: OPENROUTER_PROVIDER_ID, apiKey: input.openRouterKey, modelId: openRouterModelId };
   }
   return undefined;
 }
