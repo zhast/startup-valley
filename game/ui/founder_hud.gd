@@ -44,6 +44,8 @@ var _notification_rest_position: Vector2
 var _movement_hint: Control
 var _movement_hint_tween: Tween
 var _movement_seen: bool = false
+var _next_step_hint: Control
+var _next_step_label: Label
 var _station_callout: StationCallout
 var _station_target_id := ""
 var station_input_enabled: Callable
@@ -62,6 +64,7 @@ func _ready() -> void:
 	add_child(_station_callout)
 	_station_callout.hide()
 	_build_movement_hint()
+	_build_next_step_hint()
 
 func _process(_delta: float) -> void:
 	# Editor placement can disable world input while GameMain processing itself
@@ -151,6 +154,42 @@ func _build_movement_hint() -> void:
 	label.size = Vector2(204.0, 30.0)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_movement_hint.add_child(label)
+
+func _build_next_step_hint() -> void:
+	var plaque := Panel.new()
+	plaque.name = "NextStepPlaque"
+	plaque.position = Vector2(24.0, 108.0)
+	plaque.size = Vector2(320.0, 56.0)
+	plaque.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	plaque.add_theme_stylebox_override("panel", CozyUI.paper(Vector4(12, 8, 12, 8)))
+	add_child(plaque)
+	_next_step_hint = plaque
+	_next_step_hint.visible = false
+	_next_step_label = _label("Next · Hire Mina", GameFonts.BODY_DEFAULT, CHARCOAL)
+	CozyUI.label(_next_step_label, "action")
+	_next_step_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_next_step_label.max_lines_visible = 2
+	_next_step_label.position = Vector2(12.0, 6.0)
+	_next_step_label.size = Vector2(296.0, 44.0)
+	_next_step_hint.add_child(_next_step_label)
+
+func set_next_step(text: String) -> void:
+	var line := text.trim_prefix("NEXT · ").strip_edges()
+	if line.is_empty():
+		hide_next_step()
+		return
+	_next_step_label.text = "Next · " + line
+	_next_step_label.tooltip_text = line
+	_next_step_hint.visible = true
+
+func hide_next_step() -> void:
+	if _next_step_hint != null:
+		_next_step_hint.visible = false
+
+func next_step_rect() -> Rect2:
+	if _next_step_hint == null or not _next_step_hint.visible:
+		return Rect2()
+	return _next_step_hint.get_global_rect()
 
 func _texture_control(name_value: String, texture_value: Texture2D, rect: Rect2) -> TextureRect:
 	var texture_rect := TextureRect.new()

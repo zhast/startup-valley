@@ -1,7 +1,7 @@
 import { mkdir, readFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 
-import { KeychainCredentialStore } from "./credential-store.js";
+import { credentialStoreFromEnvironment } from "./credential-store.js";
 import { GameDatabase } from "./database.js";
 import { auditLiveEvents } from "./live-event-audit.js";
 import { PiWorkerAdapter } from "./pi-worker-adapter.js";
@@ -24,11 +24,11 @@ const jobId = `live_${Date.now()}`;
 await mkdir(projectRoot, { recursive: true });
 const database = new GameDatabase(join(dataRoot, "startup-valley.sqlite"), projectRoot);
 database.journey.hire("mira", database.clockState().day);
-const credentials = new KeychainCredentialStore();
+const credentials = credentialStoreFromEnvironment();
 const adapter = new PiWorkerAdapter(database, credentials, dataRoot);
 
 try {
-  assert(await credentials.hasOpenRouterKey(), "No Startup Valley OpenRouter credential is stored in the OS keychain. Save it from the game first.");
+  assert((await credentials.status()).configured, "Sign in with Grok or save an OpenRouter key from the game first.");
   await adapter.startJob({
     jobId,
     employeeId: "mira",

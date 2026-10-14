@@ -18,7 +18,8 @@ import {
 } from "@earendil-works/pi-coding-agent";
 
 import { ApprovalBroker } from "./approval-broker.js";
-import type { CredentialStore } from "./credential-store.js";
+import { resolveStoredModelCredential, type CredentialStore } from "./credential-store.js";
+import { redactSecret, type ModelCredential } from "./grok-auth.js";
 import type { GameDatabase } from "./database.js";
 import { EventStream } from "./event-stream.js";
 import { JobPathGuard } from "./path-guard.js";
@@ -38,7 +39,6 @@ import type {
   WorkerEvent,
 } from "./types.js";
 
-const DEFAULT_MODEL_ID = "~openai/gpt-mini-latest";
 const MAX_ATTACHED_CONTEXT_CHARACTERS = 16_000;
 const CHAT_RESPONSE_TOKEN_CAP = 700;
 export type EvaluationRunner = (definition: MilestoneDefinition, artifacts: readonly string[], input: EvaluationInput) => Promise<{ text: string; inputTokens: number; outputTokens: number; cost: number }>;
@@ -73,6 +73,25 @@ function bounded(value: string, limit: number): string {
   return value.length <= limit ? value : `${value.slice(0, limit - 1)}…`;
 }
 
+const MISSING_CHAT_CREDENTIAL = "Sign in with Grok or add an OpenRouter key before chatting with an employee";
+const MISSING_WORK_CREDENTIAL = "Sign in with Grok or add an OpenRouter key before assigning work";
+const MISSING_EVALUATION_CREDENTIAL = "Sign in with Grok or add an OpenRouter key before evaluating this result";
+
+function credentialFailure(error: unknown, fallback: string): Error {
+  if (error instanceof Error && error.message.startsWith("Grok login expired")) return new Error(error.message);
+  return new Error(fallback);
+}
+
+async function requireModelCredential(credentials: CredentialStore, fallback: string): Promise<ModelCredential> {
+  try {
+    const resolved = await resolveStoredModelCredential(credentials);
+    if (!resolved) throw new Error(fallback);
+    return resolved;
+  } catch (error) {
+    throw credentialFailure(error, fallback);
+  }
+}
+
 export class PiWorkerAdapter implements WorkerAdapter {
   readonly #database: GameDatabase;
   readonly #credentials: CredentialStore;
@@ -84,6 +103,10 @@ export class PiWorkerAdapter implements WorkerAdapter {
   readonly #sessions = new LiveSessionRegistry<AgentSession>();
   readonly #approvals = new ApprovalBroker();
   readonly #cancelledJobs = new Set<string>();
+  // Cancel with no live session finishes the stream immediately, before a
+  // credential read can settle. Remember that so the late read does not write
+  // a second outcome into a database the caller may already have closed.
+  readonly #finishedJobs = new Set<string>();
   #activeJobId: string | undefined;
   #acceptingJob = false;
   #chatting = false;
@@ -248,10 +271,17 @@ export class PiWorkerAdapter implements WorkerAdapter {
     this.#chatting = true;
     this.#auxiliaryIdle = new Promise((resolve) => { this.#resolveAuxiliaryIdle = resolve; });
     let session: AgentSession | undefined;
+    let chatSecret = "";
     try {
-      const apiKey = await this.#credentials.getOpenRouterKey();
+      let credential: ModelCredential;
+      try {
+        credential = await requireModelCredential(this.#credentials, MISSING_CHAT_CREDENTIAL);
+      } catch (error) {
+        if (this.#shuttingDown) throw new Error("Worker is shutting down");
+        throw error;
+      }
+      chatSecret = credential.apiKey;
       if (this.#shuttingDown) throw new Error("Worker is shutting down");
-      if (!apiKey) throw new Error("Add an OpenRouter key before chatting with an employee");
       const previousMessages = this.#database.chatMessages(employeeId, 10);
       this.#database.createChatMessage(employeeId, "player", cleanMessage);
 
@@ -263,9 +293,11 @@ export class PiWorkerAdapter implements WorkerAdapter {
         modelsPath: null,
         refreshOnCreate: false,
       });
-      await modelRuntime.setRuntimeApiKey("openrouter", apiKey);
-      const model = modelRuntime.getModel("openrouter", DEFAULT_MODEL_ID);
-      if (!model) throw new Error(`Pi does not provide the configured OpenRouter model: ${DEFAULT_MODEL_ID}`);
+      await modelRuntime.setRuntimeApiKey(credential.provider, credential.apiKey);
+      const model = modelRuntime.getModel(credential.provider, credential.modelId);
+      if (!model) throw new Error(credential.provider === "xai"
+        ? "Pi does not provide the configured xAI model grok-4.6"
+        : `Pi does not provide the configured OpenRouter model: ${credential.modelId}`);
       const cappedModel: Model<any> = { ...model, maxTokens: Math.min(model.maxTokens, CHAT_RESPONSE_TOKEN_CAP) };
       const transcript = previousMessages.length > 0
         ? previousMessages.map((entry) => `${entry.sender === "player" ? "Founder" : employee.name}: ${bounded(entry.content, 700)}`).join("\n")
@@ -318,7 +350,7 @@ ${transcript}`;
       await session.prompt(cleanMessage);
       const lastMessage = session.state.messages.at(-1);
       if (lastMessage?.role === "assistant" && lastMessage.stopReason === "error") {
-        throw new Error(lastMessage.errorMessage ?? "OpenRouter chat request failed");
+        throw new Error(redactSecret(lastMessage.errorMessage ?? "The model request failed", credential.apiKey));
       }
       const reply = bounded(session.getLastAssistantText()?.trim() ?? "", 4000);
       if (!reply) throw new Error("The employee did not return a chat reply");
@@ -329,6 +361,8 @@ ${transcript}`;
         cost: Math.max(0, stats.cost),
       });
       return { message: saved, dailySpend: this.#database.dailySpend() };
+    } catch (error) {
+      throw new Error(redactSecret(error instanceof Error ? error.message : String(error), chatSecret));
     } finally {
       session?.dispose();
       this.#chatting = false;
@@ -374,6 +408,7 @@ ${transcript}`;
     this.#evaluating = true;
     this.#auxiliaryIdle = new Promise((resolve) => { this.#resolveAuxiliaryIdle = resolve; });
     let session: AgentSession | undefined;
+    let evaluationSecret = "";
     let usageRecorded = false;
     const attemptId = randomUUID();
     const recordUsage = () => {
@@ -395,14 +430,16 @@ ${transcript}`;
         this.#database.journey.finishEvaluation(jobId, parseEvaluation(result.text, definition));
         return { journey: this.#database.journey.state(), dailySpend: this.#database.dailySpend() };
       }
-      const key = await this.#credentials.getOpenRouterKey();
-      if (!key) throw new Error("Connect AI before evaluating this result");
+      const credential = await requireModelCredential(this.#credentials, MISSING_EVALUATION_CREDENTIAL);
+      evaluationSecret = credential.apiKey;
       const root = join(this.#runtimeRoot, "evaluation");
       await mkdir(root, { recursive: true });
       const runtime = await ModelRuntime.create({ credentials: new EmptyPiCredentialStore(), modelsPath: null, refreshOnCreate: false });
-      await runtime.setRuntimeApiKey("openrouter", key);
-      const model = runtime.getModel("openrouter", DEFAULT_MODEL_ID);
-      if (!model) throw new Error("Configured evaluation model is unavailable");
+      await runtime.setRuntimeApiKey(credential.provider, credential.apiKey);
+      const model = runtime.getModel(credential.provider, credential.modelId);
+      if (!model) throw new Error(credential.provider === "xai"
+        ? "Pi does not provide the configured xAI model grok-4.6"
+        : "Configured evaluation model is unavailable");
       const systemPrompt = input.systemPrompt;
       const settings = SettingsManager.inMemory();
       const loader = new DefaultResourceLoader({ cwd: root, agentDir: root, settingsManager: settings, noExtensions: true, noSkills: true, noPromptTemplates: true, noThemes: true, noContextFiles: true, systemPrompt });
@@ -415,13 +452,14 @@ ${transcript}`;
       const stats = session.getSessionStats();
       if (stats.tokens.input + stats.tokens.output > 3000) throw new Error("Evaluation exceeded its 3,000-token budget");
       const last = session.state.messages.at(-1);
-      if (last?.role === "assistant" && last.stopReason === "error") throw new Error(last.errorMessage ?? "Evaluation provider failed");
+      if (last?.role === "assistant" && last.stopReason === "error") throw new Error(redactSecret(last.errorMessage ?? "Evaluation provider failed", credential.apiKey));
       this.#database.journey.finishEvaluation(jobId, parseEvaluation(session.getLastAssistantText() ?? "", definition));
       return { journey: this.#database.journey.state(), dailySpend: this.#database.dailySpend() };
     } catch (error) {
       recordUsage();
-      this.#database.journey.failEvaluation(jobId, error instanceof Error ? error.message : String(error));
-      throw error;
+      const message = redactSecret(error instanceof Error ? error.message : String(error), evaluationSecret);
+      this.#database.journey.failEvaluation(jobId, message);
+      throw new Error(message);
     } finally {
       session?.dispose();
       this.#evaluationSession = undefined;
@@ -469,10 +507,15 @@ ${transcript}`;
   }
 
   #finish(jobId: string): void {
+    this.#finishedJobs.add(jobId);
     this.#sessions.delete(jobId);
     this.#cancelledJobs.delete(jobId);
     this.#streams.get(jobId)?.close();
     if (this.#activeJobId === jobId) this.#activeJobId = undefined;
+  }
+
+  #jobFinished(jobId: string): boolean {
+    return this.#finishedJobs.has(jobId) || this.#cancelledJobs.has(jobId);
   }
 
   systemPromptFor(spec: JobSpec, attachedStudioContent?: string): string {
@@ -531,14 +574,19 @@ When the requested work is complete, give a concise delivery summary. The game r
     let session: AgentSession | undefined;
     let unsubscribe: (() => void) | undefined;
     let exceededBudget = false;
+    let jobSecret = "";
     try {
-      const apiKey = await this.#credentials.getOpenRouterKey();
-      if (this.#cancelledJobs.has(spec.jobId)) return;
-      if (!apiKey) {
+      let credential: ModelCredential;
+      try {
+        credential = await requireModelCredential(this.#credentials, MISSING_WORK_CREDENTIAL);
+      } catch (error) {
+        if (this.#jobFinished(spec.jobId)) return;
         this.#database.setWorkOrderStatus(spec.jobId, "blocked");
-        this.#emit(spec.jobId, { type: "job.blocked", reason: "Add an OpenRouter key before assigning work" });
+        this.#emit(spec.jobId, { type: "job.blocked", reason: error instanceof Error ? error.message : MISSING_WORK_CREDENTIAL });
         return;
       }
+      jobSecret = credential.apiKey;
+      if (this.#jobFinished(spec.jobId)) return;
 
       const attachedStudioContent = spec.attachedStudioPath
         ? (await this.readStudioFile(spec.attachedStudioPath)).content
@@ -560,9 +608,11 @@ When the requested work is complete, give a concise delivery summary. The game r
         modelsPath: null,
         refreshOnCreate: false,
       });
-      await modelRuntime.setRuntimeApiKey("openrouter", apiKey);
-      const model = modelRuntime.getModel("openrouter", DEFAULT_MODEL_ID);
-      if (!model) throw new Error(`Pi does not provide the configured OpenRouter model: ${DEFAULT_MODEL_ID}`);
+      await modelRuntime.setRuntimeApiKey(credential.provider, credential.apiKey);
+      const model = modelRuntime.getModel(credential.provider, credential.modelId);
+      if (!model) throw new Error(credential.provider === "xai"
+        ? "Pi does not provide the configured xAI model grok-4.6"
+        : `Pi does not provide the configured OpenRouter model: ${credential.modelId}`);
       const cappedModel: Model<any> = { ...model, maxTokens: Math.min(model.maxTokens, spec.tokenBudget) };
 
       const tools = await createJobTools({
@@ -623,7 +673,7 @@ When the requested work is complete, give a concise delivery summary. The game r
       }
       const lastMessage = session.state.messages.at(-1);
       if (lastMessage?.role === "assistant" && lastMessage.stopReason === "error") {
-        throw new Error(lastMessage.errorMessage ?? "OpenRouter request failed");
+        throw new Error(redactSecret(lastMessage.errorMessage ?? "The model request failed", credential.apiKey));
       }
       if (this.#database.artifacts(spec.jobId).length === 0) {
         throw new Error("The agent finished without creating a deliverable artifact");
@@ -633,7 +683,7 @@ When the requested work is complete, give a concise delivery summary. The game r
       this.#emit(spec.jobId, { type: "job.completed", summary });
     } catch (error) {
       if (this.#cancelledJobs.has(spec.jobId)) return;
-      const message = bounded(error instanceof Error ? error.message : String(error), 4000);
+      const message = bounded(redactSecret(error instanceof Error ? error.message : String(error), jobSecret), 4000);
       this.#database.setWorkOrderStatus(spec.jobId, "failed");
       this.#emit(spec.jobId, { type: "job.failed", error: message });
     } finally {

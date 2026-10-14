@@ -71,6 +71,15 @@
             "mira",
             "theo"
           ]
+        },
+        "architectureTheme": {
+          "enum": [
+            "office",
+            "cafe",
+            "loft",
+            "studio",
+            "evening"
+          ]
         }
       },
       "additionalProperties": false

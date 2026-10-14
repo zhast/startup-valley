@@ -8,7 +8,12 @@ var requested_token_budget := 12000
 var _chat_follow_tail := true
 
 func prepare_milestone(definition: Dictionary) -> void:
+	_purpose_chosen_by_player = false
 	select_employee(str(definition.get("employeeId", "mira")))
+	_apply_milestone_draft(definition)
+	_tabs.current_tab = 1
+
+func _apply_milestone_draft(definition: Dictionary) -> void:
 	_job_picker.select(CANNED_JOBS.size())
 	_on_job_selected(CANNED_JOBS.size())
 	_custom_title_input.text = str(definition.get("title", "Company milestone"))
@@ -28,9 +33,14 @@ func prepare_milestone(definition: Dictionary) -> void:
 		_budget_picker.select(1)
 	_draft_label.text = "Journey · " + str(definition.get("title", ""))
 	_refresh_work_purposes()
-	_tabs.current_tab = 1
+	_update_assign_copy()
 
 signal key_submitted(key: String)
+signal grok_login_start_requested
+signal grok_login_poll_requested
+signal grok_login_cancel_requested
+signal grok_logout_requested
+signal grok_use_local_requested
 signal settings_requested
 signal journey_requested
 signal worker_retry_requested
@@ -167,6 +177,8 @@ var _submission_pending := false
 var _submitted_job_id := ""
 var _journey_state: Dictionary = {}
 var _purpose_picker: OptionButton
+var _purpose_chosen_by_player := false
+var _next_step_label: Label
 var _draft_discussion := ""
 var _header_shell: Control
 var _empty_team_panel: PanelContainer
@@ -177,9 +189,22 @@ var _chat_activity_button: Button
 var _latest_reply_content: VBoxContainer
 var _connection_title: Label
 var _connection_description: Label
+var _grok_login_button: Button
+var _grok_use_local_button: Button
+var _grok_disconnect_button: Button
+var _grok_code_input: LineEdit
+var _grok_open_button: Button
+var _grok_cancel_button: Button
+var _openrouter_label: Label
 var _connection_save_button: Button
 var _connection_retry_button: Button
 var _connection_back_button: Button
+var _grok_signed_in := false
+var _grok_cli_available := false
+var _grok_login_pending := false
+var _grok_verification_uri := ""
+var _grok_poll_wait := 5
+var _grok_poll_timer: Timer
 var _connection_focus_return: Control
 var _attachment_toggle: Button
 var _attachment_expanded := false
@@ -318,6 +343,16 @@ func _build_team_rail() -> Control:
 	)
 	_style_action_button(_settings_button, INDIGO, false)
 	rail.add_child(_settings_button)
+	_next_step_label = Label.new()
+	_next_step_label.name = "RailNextStep"
+	_next_step_label.position = Vector2(15.0, 548.0)
+	_next_step_label.size = Vector2(100.0, 100.0)
+	_next_step_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_next_step_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_next_step_label.max_lines_visible = 4
+	CozyUI.label(_next_step_label, "meta")
+	_next_step_label.add_theme_color_override("font_color", OFF_WHITE)
+	rail.add_child(_next_step_label)
 	_connection_badge = Label.new()
 	_connection_badge.text = "!"
 	_connection_badge.visible = false
@@ -354,10 +389,55 @@ func _build_connection_panel() -> void:
 	CozyUI.label(_connection_title, "display")
 	content.add_child(_connection_title)
 	_connection_description = Label.new()
-	_connection_description.text = "Add one OpenRouter key for conversations and work orders. Your key stays in the OS keychain."
+	_connection_description.text = "Sign in with Grok to use your Grok / xAI credits for conversations and work orders. An OpenRouter key still works as a fallback and stays in the OS keychain."
 	_connection_description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	CozyUI.label(_connection_description)
 	content.add_child(_connection_description)
+	_grok_login_button = Button.new()
+	_grok_login_button.text = "Sign in with Grok"
+	_grok_login_button.custom_minimum_size.y = 44.0
+	_grok_login_button.pressed.connect(_start_grok_login)
+	_style_action_button(_grok_login_button, VERMILION, true)
+	content.add_child(_grok_login_button)
+	_grok_use_local_button = Button.new()
+	_grok_use_local_button.text = "Use saved Grok login"
+	_grok_use_local_button.custom_minimum_size.y = 44.0
+	_grok_use_local_button.pressed.connect(func() -> void: grok_use_local_requested.emit())
+	_style_action_button(_grok_use_local_button, INDIGO, false)
+	content.add_child(_grok_use_local_button)
+	_grok_use_local_button.hide()
+	_grok_code_input = LineEdit.new()
+	_grok_code_input.placeholder_text = "Grok device code"
+	_grok_code_input.custom_minimum_size.y = 48.0
+	_grok_code_input.editable = true
+	_style_text_input(_grok_code_input)
+	content.add_child(_grok_code_input)
+	_grok_code_input.hide()
+	_grok_open_button = Button.new()
+	_grok_open_button.text = "Open verification page"
+	_grok_open_button.custom_minimum_size.y = 44.0
+	_grok_open_button.pressed.connect(_open_grok_verification)
+	_style_action_button(_grok_open_button, VERMILION, true)
+	content.add_child(_grok_open_button)
+	_grok_open_button.hide()
+	_grok_cancel_button = Button.new()
+	_grok_cancel_button.text = "Cancel sign-in"
+	_grok_cancel_button.custom_minimum_size.y = 44.0
+	_grok_cancel_button.pressed.connect(_cancel_grok_login)
+	_style_action_button(_grok_cancel_button, INDIGO, false)
+	content.add_child(_grok_cancel_button)
+	_grok_cancel_button.hide()
+	_grok_disconnect_button = Button.new()
+	_grok_disconnect_button.text = "Disconnect Grok"
+	_grok_disconnect_button.custom_minimum_size.y = 44.0
+	_grok_disconnect_button.pressed.connect(func() -> void: grok_logout_requested.emit())
+	_style_action_button(_grok_disconnect_button, INDIGO, false)
+	content.add_child(_grok_disconnect_button)
+	_grok_disconnect_button.hide()
+	_openrouter_label = Label.new()
+	_openrouter_label.text = "OpenRouter fallback"
+	CozyUI.label(_openrouter_label, "meta")
+	content.add_child(_openrouter_label)
 	_key_input = LineEdit.new()
 	_key_input.secret = true
 	_key_input.placeholder_text = "Paste OpenRouter key"
@@ -400,10 +480,13 @@ func _open_connection_settings() -> void:
 	_connection_panel.move_to_front()
 	_rail_panel.move_to_front()
 	_refresh_connection_surface()
+	_refresh_operation_availability()
 	_configure_connection_focus()
 
 func _close_connection_settings() -> void:
+	_cancel_grok_login_if_pending()
 	_connection_panel.visible = false
+	_refresh_operation_availability()
 	if _drawer_open:
 		_drawer_panel.move_to_front()
 		_rail_panel.move_to_front()
@@ -416,12 +499,30 @@ func _close_connection_settings() -> void:
 func _refresh_connection_surface() -> void:
 	if _connection_title == null: return
 	var unavailable := not _worker_connected and not _worker_error.is_empty()
+	var show_grok_flow := not unavailable and _grok_login_pending
+	var show_openrouter := not unavailable and not _grok_login_pending
 	_connection_title.text = "Connection lost" if unavailable else "AI connection" if _credential_configured else "Connect AI"
-	_connection_description.text = ("Reconnect to resume chat and work. Your saved key does not need to change." if _credential_configured else "Reconnect first, then add your OpenRouter key.") if unavailable else "A key is already saved in your OS keychain. Paste a new key only if you want to replace it." if _credential_configured else "Add one OpenRouter key for conversations and work orders. Your key stays in the OS keychain."
+	if unavailable:
+		_connection_description.text = "Reconnect to resume chat and work. Your saved Grok login or OpenRouter key does not need to change." if _credential_configured else "Reconnect first, then sign in with Grok or add an OpenRouter key."
+	elif _grok_login_pending:
+		_connection_description.text = "Enter this code on the Grok page. Work will use your Grok / xAI credits when sign-in finishes. Back cancels sign-in."
+	elif _grok_signed_in:
+		_connection_description.text = "Signed in with Grok. Conversations and work orders use your Grok / xAI credits. The login is already saved in the OS keychain."
+	elif _credential_configured:
+		_connection_description.text = "A Grok login or OpenRouter key is already saved. Work uses your Grok / xAI credits when you are signed in with Grok. Paste a new OpenRouter key only to replace that fallback."
+	else:
+		_connection_description.text = "Sign in with Grok to use your Grok / xAI credits for conversations and work orders. An OpenRouter key still works as a fallback and stays in the OS keychain."
 	_connection_save_button.text = "Replace saved key" if _credential_configured else "Save connection"
 	_key_input.placeholder_text = "Paste replacement key (optional)" if _credential_configured else "Paste OpenRouter key"
-	_key_input.visible = not unavailable
-	_connection_save_button.visible = not unavailable
+	_grok_login_button.visible = not unavailable and not _credential_configured and not _grok_login_pending
+	_grok_use_local_button.visible = not unavailable and not _grok_signed_in and _grok_cli_available and not _grok_login_pending
+	_grok_code_input.visible = show_grok_flow
+	_grok_open_button.visible = show_grok_flow
+	_grok_cancel_button.visible = show_grok_flow
+	_grok_disconnect_button.visible = not unavailable and _grok_signed_in and not _grok_login_pending
+	_openrouter_label.visible = show_openrouter
+	_key_input.visible = show_openrouter
+	_connection_save_button.visible = show_openrouter
 	_connection_retry_button.visible = unavailable
 	_connection_retry_button.disabled = _connection_retry_pending
 	if unavailable:
@@ -431,6 +532,9 @@ func _refresh_connection_surface() -> void:
 		_key_status.tooltip_text = _worker_error
 		_connection_retry_button.tooltip_text = _worker_error
 		_key_status.add_theme_color_override("font_color", ALERT_INK)
+	elif _grok_signed_in:
+		_key_status.text = "Signed in with Grok. Work uses your Grok / xAI credits."
+		_key_status.add_theme_color_override("font_color", CHARCOAL)
 	elif _credential_configured:
 		_key_status.text = "Your saved key stays active until you save a replacement."
 		_key_status.add_theme_color_override("font_color", CHARCOAL)
@@ -471,7 +575,7 @@ func _refresh_connection_save_state() -> void:
 
 func _connection_focus_controls() -> Array[Control]:
 	var controls: Array[Control] = []
-	for control: Control in [_key_input, _connection_save_button, _connection_retry_button, _connection_back_button]:
+	for control: Control in [_grok_login_button, _grok_use_local_button, _grok_code_input, _grok_open_button, _grok_cancel_button, _grok_disconnect_button, _key_input, _connection_save_button, _connection_retry_button, _connection_back_button]:
 		if control == null or not control.is_visible_in_tree(): continue
 		if control is BaseButton and (control as BaseButton).disabled: continue
 		if control is LineEdit and not (control as LineEdit).editable: continue
@@ -625,7 +729,7 @@ func _build_employee_drawer() -> VBoxContainer:
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	empty.add_child(title)
 	var hint := Label.new()
-	hint.text = "Hire Mina to turn your first idea into something real."
+	hint.text = "Hire Mina, then assign the website from her desk."
 	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	CozyUI.label(hint)
@@ -785,6 +889,7 @@ func _build_work_tab() -> VBoxContainer:
 	_draft_reset_button.text = "New side project"
 	_style_action_button(_draft_reset_button, INDIGO, false)
 	_draft_reset_button.pressed.connect(func() -> void:
+		_purpose_chosen_by_player = true
 		_job_picker.select(CANNED_JOBS.size())
 		_on_job_selected(CANNED_JOBS.size())
 	)
@@ -1208,9 +1313,13 @@ func _set_drawer_open(open: bool, animated: bool = true) -> void:
 
 func close_drawer(animated: bool = true) -> void:
 	var connection_was_open := _connection_panel != null and _connection_panel.visible
+	_cancel_grok_login_if_pending()
 	if _connection_panel != null:
 		_connection_panel.visible = false
 	_set_drawer_open(false, animated)
+	# Roster hydration closes this drawer and used to leave Start disabled with
+	# Connect already dismissed. Re-enable the work action so it can reopen Connect.
+	_refresh_operation_availability()
 	if connection_was_open:
 		_connection_focus_return = null
 		_settings_button.grab_focus()
@@ -1377,6 +1486,7 @@ func configure_employees(records: Array[EmployeeRecord]) -> void:
 		_team_buttons[record.id] = button
 	_refresh_team_statuses()
 	_refresh_operation_availability()
+	_refresh_rail_next_step()
 	if records.is_empty():
 		_selected_employee_id = ""
 		_refresh_employee_header()
@@ -1409,6 +1519,7 @@ func _select_employee(employee_id: String) -> void:
 	if not _team_buttons.has(employee_id):
 		return
 	if _selected_employee_id != employee_id:
+		_purpose_chosen_by_player = false
 		_set_attachment_expanded(false)
 		_set_usage_expanded(false, false, false)
 	if _selected_employee_id != employee_id and not milestone_id.is_empty():
@@ -1419,7 +1530,10 @@ func _select_employee(employee_id: String) -> void:
 	_activity_job_id = ""
 	_refresh_work_purposes()
 	_refresh_team_card_styles()
-	if not _custom_mode and _job_picker != null:
+	var journey_draft := _available_milestone_for(employee_id)
+	if not _purpose_chosen_by_player and not journey_draft.is_empty():
+		_apply_milestone_draft(journey_draft)
+	elif not _custom_mode and _job_picker != null:
 		for index: int in range(CANNED_JOBS.size()):
 			var job: Dictionary = CANNED_JOBS[index]
 			if str(job.get("employee_id", "")) == employee_id:
@@ -1585,6 +1699,9 @@ func _show_empty_chat() -> void:
 		_show_chat_hint("Hire your first teammate from Company Journey.")
 		return
 	var greeting := "What are we building? We can shape the idea before creating a work order." if employee.id == "mira" else "What should we test or grow? We can sharpen it before creating a work order."
+	var milestone := _available_milestone_for(employee.id)
+	if str(milestone.get("id", "")) == "website":
+		greeting = "Chat is optional. Open Assign and choose Journey · Build a website to finish Day 1."
 	_append_chat_line("employee", employee.display_name, greeting)
 
 func _append_chat_line(sender: String, name_value: String, content: String) -> void:
@@ -1814,6 +1931,24 @@ func _discussion_context() -> String:
 func set_journey_state(value: Dictionary) -> void:
 	_journey_state = value
 	_refresh_work_purposes()
+	_refresh_rail_next_step()
+
+func _available_milestone_for(employee_id: String) -> Dictionary:
+	for definition: Dictionary in _journey_state.get("milestones", []):
+		if str(definition.get("employeeId", "")) != employee_id: continue
+		if str(definition.get("state", "")) in ["available", "revision_required"]: return definition
+	return {}
+
+func _refresh_rail_next_step() -> void:
+	if _next_step_label == null: return
+	if _employees.is_empty():
+		_next_step_label.text = ""
+		_next_step_label.visible = false
+		return
+	var line := CompanyPanel.next_step_line(_journey_state).trim_prefix("NEXT · ")
+	_next_step_label.text = line
+	_next_step_label.tooltip_text = line
+	_next_step_label.visible = not line.is_empty()
 
 func _refresh_work_purposes() -> void:
 	if _purpose_picker == null: return
@@ -1833,6 +1968,7 @@ func _refresh_work_purposes() -> void:
 		if str(definition.get("id", "")) == milestone_id: _purpose_picker.select(index)
 
 func _choose_work_purpose(index: int) -> void:
+	_purpose_chosen_by_player = true
 	var definition: Dictionary = _purpose_picker.get_item_metadata(index)
 	var discussion := _draft_discussion
 	if definition.has("cannedIndex"):
@@ -1856,6 +1992,54 @@ func _active_employee_name() -> String:
 		if employee.id == _active_employee_id:
 			return employee.display_name
 	return "A teammate"
+
+func _safe_grok_code(user_code: String) -> bool:
+	if user_code.length() < 4 or user_code.length() > 64: return false
+	var pattern := RegEx.new()
+	pattern.compile("^[A-Za-z0-9-]+$")
+	return pattern.search(user_code) != null
+
+func _safe_grok_uri(uri: String) -> bool:
+	if not uri.begins_with("https://"): return false
+	var host := uri.trim_prefix("https://").split("/")[0].split(":")[0].to_lower()
+	return host == "x.ai" or host.ends_with(".x.ai")
+
+func _start_grok_login() -> void:
+	if not _worker_connected:
+		set_worker_connection_error("Worker is not connected")
+		return
+	_key_status.text = "Starting Grok sign-in…"
+	_key_status.add_theme_color_override("font_color", CHARCOAL)
+	grok_login_start_requested.emit()
+
+func _open_grok_verification() -> void:
+	if _safe_grok_uri(_grok_verification_uri):
+		OS.shell_open(_grok_verification_uri)
+
+func _cancel_grok_login() -> void:
+	_cancel_grok_login_if_pending()
+	_refresh_connection_surface()
+
+func _cancel_grok_login_if_pending() -> void:
+	if not _grok_login_pending and (_grok_poll_timer == null or _grok_poll_timer.is_stopped()):
+		return
+	_grok_login_pending = false
+	_stop_grok_poll()
+	_grok_code_input.clear()
+	_grok_verification_uri = ""
+	grok_login_cancel_requested.emit()
+
+func _start_grok_poll(interval_seconds: int) -> void:
+	if _grok_poll_timer == null:
+		_grok_poll_timer = Timer.new()
+		_grok_poll_timer.one_shot = true
+		_grok_poll_timer.timeout.connect(func() -> void: grok_login_poll_requested.emit())
+		add_child(_grok_poll_timer)
+	_grok_poll_timer.start(float(maxi(interval_seconds, 1)))
+
+func _stop_grok_poll() -> void:
+	if _grok_poll_timer != null:
+		_grok_poll_timer.stop()
 
 func _submit_key() -> void:
 	var key := _key_input.text.strip_edges()
@@ -2067,7 +2251,9 @@ func reset_company() -> void:
 	_custom_title_input.clear()
 	_on_job_selected(CANNED_JOBS.size())
 	_refresh_operation_availability()
+	_purpose_chosen_by_player = false
 	_set_status("Hire Mina from Company Journey to get started.", CHARCOAL)
+	_refresh_rail_next_step()
 
 func mark_job_queued(job_id: String) -> void:
 	if job_id != _active_job_id:
@@ -2199,7 +2385,7 @@ func _update_assign_copy() -> void:
 	if not _active_job_id.is_empty():
 		return
 	if _clock_phase == "work":
-		_assign_button.text = "Start work order"
+		_assign_button.text = "Start website work order" if milestone_id == "website" else "Start work order"
 	elif _clock_phase == "lunch":
 		_assign_button.text = "Queue for 13:30"
 	else:
@@ -2207,7 +2393,10 @@ func _update_assign_copy() -> void:
 
 func set_credential_status(configured: bool) -> void:
 	_credential_configured = configured
-	_key_status.text = "Connected. Key stored in the OS keychain." if configured else "Connection required before chat or work can start."
+	if configured:
+		_grok_login_pending = false
+		_stop_grok_poll()
+	_key_status.text = "Signed in with Grok. Work uses your Grok / xAI credits." if _grok_signed_in else "Connected. Key stored in the OS keychain." if configured else "Connection required before chat or work can start."
 	_key_status.add_theme_color_override("font_color", CHARCOAL if configured else ALERT_INK)
 	_refresh_rail_connection_action()
 	_refresh_operation_availability()
@@ -2215,10 +2404,61 @@ func set_credential_status(configured: bool) -> void:
 	if not configured:
 		call_deferred("_open_connection_settings")
 
+func set_credential_detail(detail: Dictionary) -> void:
+	_grok_signed_in = bool(detail.get("grokSignedIn", false))
+	_grok_cli_available = bool(detail.get("grokCliAvailable", false))
+	if not bool(detail.get("loginPending", false)):
+		_grok_login_pending = false
+	set_credential_status(bool(detail.get("configured", false)))
+
 func set_credential_saved() -> void:
 	set_credential_status(true)
 	_close_connection_settings()
 	_set_status("OpenRouter key saved.", INDIGO)
+
+func show_grok_login_challenge(user_code: String, verification_uri: String, interval_seconds: int) -> void:
+	if not _safe_grok_code(user_code) or not _safe_grok_uri(verification_uri):
+		show_grok_login_failed("Grok sign-in returned an unusable code. Try again.")
+		return
+	_grok_login_pending = true
+	_grok_verification_uri = verification_uri
+	_grok_poll_wait = maxi(interval_seconds, 1)
+	_grok_code_input.text = user_code
+	_key_status.text = "Waiting for Grok. Enter the code on the verification page."
+	_key_status.add_theme_color_override("font_color", CHARCOAL)
+	_refresh_connection_surface()
+	_start_grok_poll(_grok_poll_wait)
+
+func show_grok_login_poll(result: Dictionary) -> void:
+	var status := str(result.get("status", ""))
+	if status == "pending":
+		_grok_login_pending = true
+		_start_grok_poll(maxi(int(result.get("intervalSeconds", _grok_poll_wait)), 1))
+		return
+	if status == "complete":
+		_grok_login_pending = false
+		_stop_grok_poll()
+		_grok_code_input.clear()
+		_grok_verification_uri = ""
+		set_credential_detail(result)
+		_close_connection_settings()
+		_set_status("Signed in with Grok. Work uses your Grok / xAI credits.", INDIGO)
+		return
+	if status == "failed":
+		show_grok_login_failed(str(result.get("message", "Grok sign-in did not finish.")))
+		return
+	_grok_login_pending = false
+	_stop_grok_poll()
+	_refresh_connection_surface()
+
+func show_grok_login_failed(message: String) -> void:
+	_grok_login_pending = false
+	_stop_grok_poll()
+	_grok_code_input.clear()
+	_grok_verification_uri = ""
+	_key_status.text = message if not message.is_empty() else "Grok sign-in did not finish."
+	_key_status.add_theme_color_override("font_color", ALERT_INK)
+	_refresh_connection_surface()
 
 func set_spend(daily_spend: float, warning: float) -> void:
 	_daily_ai_spend = daily_spend
@@ -2252,7 +2492,17 @@ func _set_status(message: String, color: Color = CHARCOAL) -> void:
 
 func _refresh_operation_availability() -> void:
 	if _assign_button != null:
-		_assign_button.disabled = _employees.is_empty() or not _active_job_id.is_empty() or not _credential_configured or not _worker_connected
+		# A missing key must not dead-end the button. While Connect is closed, Start
+		# stays pressable and _submit_assignment opens Connect instead of sending work.
+		# While Connect is open, Start stays disabled so the two actions stay separate.
+		var connect_prompt_open := _connection_panel != null and _connection_panel.visible and not _credential_configured
+		_assign_button.disabled = _employees.is_empty() or not _active_job_id.is_empty() or not _worker_connected or connect_prompt_open
+		if _active_job_id.is_empty() and not _credential_configured:
+			_assign_button.tooltip_text = "Connect AI before this work order can start."
+		elif _active_job_id.is_empty() and not _worker_connected:
+			_assign_button.tooltip_text = "Reconnect before this work order can start."
+		else:
+			_assign_button.tooltip_text = _assign_button.text
 	_refresh_chat_mode()
 
 func on_job_event(job_id: String, event: WorkerEventRecord) -> void:
@@ -2464,7 +2714,7 @@ func _refresh_selected_activity() -> void:
 		if _attention_employee_id.is_empty(): _attention_employee_id = _delivery_employee(candidate)
 		if str(candidate.get("jobId", "")) == _activity_job_id and not is_active:
 			_promotion_job_id = _activity_job_id
-			_promotion_label.text = "Preview the files above, then choose where to keep them."
+			_promotion_label.text = "Add to Studio so the team can use these files. Keep with job leaves them on this work order only."
 	_promotion_box.visible = not _promotion_job_id.is_empty()
 	# A decision already carries its current state and explanation. The longer
 	# work summary stays available through details without pushing actions down.

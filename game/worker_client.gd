@@ -17,7 +17,11 @@ signal bootstrap_received(
 	memories: Dictionary
 )
 signal credential_status_received(configured: bool)
+signal credential_detail_received(detail: Dictionary)
 signal credential_saved
+signal grok_login_challenge(user_code: String, verification_uri: String, interval_seconds: int)
+signal grok_login_poll_received(result: Dictionary)
+signal grok_login_failed(message: String)
 signal chat_history_received(employee_id: String, messages: Array)
 signal chat_reply_received(employee_id: String, message: Dictionary, daily_spend: float)
 signal chat_failed(employee_id: String, message: String)
@@ -61,7 +65,10 @@ func start() -> void:
 	var node_path := OS.get_environment("STARTUP_VALLEY_NODE")
 	if node_path.is_empty():
 		node_path = "node"
-	var arguments := PackedStringArray([worker_script, "--data-dir", OS.get_user_data_dir()])
+	var data_dir := OS.get_environment("STARTUP_VALLEY_DATA_DIR")
+	if data_dir.is_empty():
+		data_dir = OS.get_user_data_dir()
+	var arguments := PackedStringArray([worker_script, "--data-dir", data_dir])
 	var process: Dictionary = OS.execute_with_pipe(node_path, arguments, false)
 	if process.is_empty():
 		request_failed.emit("Could not start Node worker. Install Node 22.19+ or set STARTUP_VALLEY_NODE.")
@@ -151,12 +158,18 @@ func _handle_line(line: String) -> void:
 		if method.begins_with("milestone.") or method.begins_with("hiring.") or method.begins_with("game.") or method == "day.end":
 			company_action_failed.emit(method, error)
 			return
+		if method.begins_with("credential.grok."):
+			grok_login_failed.emit(error)
+			return
 		if method == "job.start":
 			job_submission_failed.emit(job_id, error)
 		elif method == "job.steer":
 			job_steer_failed.emit(job_id, error)
 		elif method == "chat.send":
 			chat_failed.emit(job_id, error)
+		elif method == "studio.read" and job_id == "studio-preview-css":
+			artifact_content_received.emit(job_id, "", "")
+			return
 		request_failed.emit(error)
 		return
 	_handle_response(method, job_id, message.get("result"))
@@ -222,10 +235,18 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 				recent_jobs,
 				memories
 			)
-		"credential.status":
+		"credential.status", "credential.set", "credential.grok.login.cancel", "credential.grok.logout", "credential.grok.use_local":
 			credential_status_received.emit(bool(result.get("configured", false)))
-		"credential.set":
-			credential_saved.emit()
+			credential_detail_received.emit(result)
+			if method == "credential.set":
+				credential_saved.emit()
+		"credential.grok.login.start":
+			grok_login_challenge.emit(str(result.get("userCode", "")), str(result.get("verificationUri", "")), int(result.get("intervalSeconds", 5)))
+		"credential.grok.login.poll":
+			grok_login_poll_received.emit(result)
+			if str(result.get("status", "")) == "complete":
+				credential_status_received.emit(bool(result.get("configured", false)))
+				credential_detail_received.emit(result)
 		"chat.history":
 			var messages: Array = result_value as Array if result_value is Array else []
 			chat_history_received.emit(job_id, messages)
@@ -251,9 +272,9 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 		"studio.files":
 			studio_files_received.emit(_studio_files_from_value(result_value))
 		"artifact.read":
-			artifact_content_received.emit(job_id, str(result.get("name", "Artifact")), str(result.get("content", "")))
+			artifact_content_received.emit(job_id, str(result.get("relativePath", result.get("name", "Artifact"))), str(result.get("content", "")))
 		"studio.read":
-			artifact_content_received.emit("", str(result.get("name", "Studio file")), str(result.get("content", "")))
+			artifact_content_received.emit(job_id, str(result.get("relativePath", result.get("name", "Studio file"))), str(result.get("content", "")))
 
 func _studio_files_from_value(value: Variant) -> Array[StudioFileRecord]:
 	var files: Array[StudioFileRecord] = []
@@ -278,6 +299,21 @@ func _send_request(method: String, parameters: Dictionary, job_id: String = "") 
 
 func save_openrouter_key(key: String) -> void:
 	_send_request("credential.set", {"key": key})
+
+func start_grok_login() -> void:
+	_send_request("credential.grok.login.start", {})
+
+func poll_grok_login() -> void:
+	_send_request("credential.grok.login.poll", {})
+
+func cancel_grok_login() -> void:
+	_send_request("credential.grok.login.cancel", {})
+
+func logout_grok() -> void:
+	_send_request("credential.grok.logout", {})
+
+func use_local_grok() -> void:
+	_send_request("credential.grok.use_local", {})
 
 func update_furnishing(operation_id: String, expected_revision: int, placements: Dictionary, actor_cells: Array) -> void:
 	if _stdio == null:
@@ -352,8 +388,8 @@ func promote_job(job_id: String, approved: bool) -> void:
 func request_studio_files() -> void:
 	_send_request("studio.files", {})
 
-func read_studio_file(relative_path: String) -> void:
-	_send_request("studio.read", {"relativePath": relative_path})
+func read_studio_file(relative_path: String, job_id: String = "") -> void:
+	_send_request("studio.read", {"relativePath": relative_path}, job_id)
 
 func set_clock(day: int, minute_of_day: int, speed: float) -> void:
 	_send_request("clock.set", {"day": day, "minuteOfDay": minute_of_day, "speed": speed})

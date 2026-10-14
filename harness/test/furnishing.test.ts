@@ -1,15 +1,25 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { once } from "node:events";
+import { readFileSync } from "node:fs";
 import { mkdir, mkdtemp, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
 import { GameDatabase } from "../src/database.js";
 import type { Facing, FurniturePlacements, FurnishingState } from "../src/furnishing.js";
 import { parseFurnishingState, parseRequest } from "../src/validation.js";
+
+const furnishingCatalog = JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "..", "game", "data", "furnishing_catalog.json"), "utf8")) as {
+  starter_decor: Array<{ id: string; kind: string }>;
+  furniture: Record<string, { facings?: Facing[] }>;
+};
+const starterCount = furnishingCatalog.starter_decor.length;
+const founderInventory = 1 + starterCount;
+const hiredTwoInventory = 8 + starterCount;
 
 async function setup() {
   const root = await mkdtemp(join(tmpdir(), "startup-valley-furnishing-"));
@@ -55,11 +65,14 @@ test("furnishing schema rejects forged inventory, decimal cells, duplicate actor
 test("starter inventory, four-facing placement, move, store and Undo survive restart without duplicate grants", async () => {
   const { db, path, project } = await setup();
   const initial = db.bootstrap().furnishing;
-  assert.equal(initial.inventory.length, 4); assert.equal(initial.revision, 0);
-  assert.equal(initial.inventory.filter((item) => !item.essential).length, 3);
-  assert.deepEqual(Object.keys(initial.placements), ["founder-workstation"]);
+  assert.equal(initial.inventory.length, founderInventory); assert.equal(initial.revision, 0);
+  assert.equal(initial.inventory.filter((item) => !item.essential).length, starterCount);
+  assert.deepEqual(Object.keys(initial.placements), ["founder-workstation", "decor-phone_booth"]);
+  assert.deepEqual(initial.placements["decor-phone_booth"], { grid: [3, 18], facing: "south" });
+  assert.notDeepEqual(initial.placements["decor-phone_booth"]?.grid, [22, 16]);
   for (const item of initial.inventory.filter((entry) => !entry.essential)) {
-    for (const facing of ["north", "east", "south", "west"] as Facing[]) {
+    const facings = furnishingCatalog.furniture[item.kind]?.facings ?? ["south"];
+    for (const facing of facings) {
       const placed = apply(db, `${item.kind}-${facing}`, { ...initial.placements, [item.id]: { grid: [22, 16], facing } }).furnishing;
       assert.deepEqual(placed.placements[item.id], { grid: [22, 16], facing });
     }
@@ -173,7 +186,7 @@ test("corrupt/incompatible layouts recover the last valid room or safely store d
   recovered.journey.db.exec("UPDATE furnishing_state SET placements_json='[]',last_valid_json='invalid'"); recovered.close();
   recovered = new GameDatabase(path, project);
   assert.deepEqual(Object.keys(recovered.furnishing.state().placements), ["founder-workstation"]);
-  assert.equal(recovered.furnishing.state().inventory.length, 4);
+  assert.equal(recovered.furnishing.state().inventory.length, founderInventory);
   assert.match(recovered.furnishing.state().recovery, /decorations are in storage/u);
   const clean = apply(recovered, "ack-recovery", recovered.furnishing.state().placements).furnishing;
   assert.equal(clean.recovery, ""); recovered.close();
@@ -185,7 +198,7 @@ test("version-six migration preserves existing company and grants the two role k
   const state = migrated.bootstrap();
   assert.equal(state.employees.length, 2); assert.equal(state.journey.company.cashCents, 12500);
   assert.equal(state.journey.company.earnedCents, 90000); assert.equal(state.journey.company.reputation, 13);
-  assert.equal(state.journey.player.x, 550); assert.equal(state.furnishing.inventory.length, 11);
+  assert.equal(state.journey.player.x, 550); assert.equal(state.furnishing.inventory.length, hiredTwoInventory);
   assert.deepEqual(state.furnishing.placements["mira-workstation"]?.grid, [8, 5], "compatible legacy desk coordinates are preserved");
   assert.deepEqual(state.furnishing.placements["theo-workstation"]?.grid, [20, 8], "colliding legacy station alone falls back to safe default");
   assert.match(state.furnishing.recovery, /previous workstation locations/u);

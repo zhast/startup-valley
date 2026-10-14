@@ -148,6 +148,20 @@ func _run() -> void:
 	await click_control(panel._team_buttons["mira"])
 	var definition := {"id": "website", "employeeId": "mira", "title": "Build a website", "assignment": "Create the site files.", "criteria": ["Complete site"], "files": ["site/index.html", "site/styles.css"], "state": "available"}
 	panel.set_journey_state({"milestones": [definition]})
+	var journey := {"milestones": [definition], "candidates": [{"id": "mira", "name": "Mina", "hired": true, "available": false}]}
+	check(CompanyPanel.station_caption(journey, "founder-workstation", "desk", "founder", false, false, false) == "Assign website", "Founder desk names the website assignment")
+	check(CompanyPanel.station_caption(journey, "mira-workstation", "desk", "mira", false, false, false) == "Assign website", "Mina's desk names the website assignment")
+	check(CompanyPanel.station_caption({}, "founder-workstation", "desk", "founder", false, false, false) == "Company Journey", "Empty journey keeps the generic desk caption")
+	var theo_ready := {"milestones": [{"id": "ads", "state": "locked", "employeeId": "theo"}], "candidates": [{"id": "theo", "name": "Theo", "hired": false, "available": true}]}
+	check(CompanyPanel.station_caption(theo_ready, "founder-workstation", "desk", "founder", false, false, false) == "Hire Theo", "Founder desk names the actual available hire")
+	var website_and_hire := {"milestones": [definition], "candidates": [{"id": "creative", "name": "Creative", "hired": false, "available": true}]}
+	check(CompanyPanel.station_caption(website_and_hire, "founder-workstation", "desk", "founder", false, false, false) == "Assign website", "An open website assignment outranks an optional hire")
+	check(CompanyPanel.next_step_line(journey).contains("Build a website"), "Journey next-step names the website work order")
+	panel._purpose_chosen_by_player = false
+	panel.select_employee("mira")
+	check(panel.milestone_id == "website", "Selecting Mina auto-fills the website Journey work order")
+	check(panel._assign_button.text.contains("website"), "Assign names the website work order")
+	check(panel._purpose_picker.get_item_text(panel._purpose_picker.selected).contains("Build a website"), "Purpose picker highlights the website milestone")
 	panel.prepare_milestone(definition)
 	panel.begin_job("accepted", "mira")
 	panel.accept_submission("accepted")
@@ -200,6 +214,21 @@ func _run() -> void:
 	main.artifact_viewer.show_artifact("styles.css", "* { box-sizing: border-box; }\n[x] { color: red; }")
 	check(main.artifact_viewer._content.get_parsed_text().begins_with("* {"), "CSS universal selector is source, not a Markdown bullet")
 	check(main.artifact_viewer._content.get_parsed_text().contains("[x]"), "Source brackets must be preserved exactly")
+	check(not main.artifact_viewer._mode_row.visible, "CSS has no website Preview toggle")
+	var html := "<!doctype html><html><head><link rel='stylesheet' href='https://localhost/x.css'><script>alert(1)</script></head><body><h1>DeskBloom</h1><p>A local prototype.</p><a href='http://127.0.0.1/secret'>Join</a></body></html>"
+	main.artifact_viewer.show_artifact("site/index.html", html, "Shared Studio", {"css": "body { color: #151515; } h1 { color: #354b98; }"})
+	check(main.artifact_viewer._content.get_parsed_text().contains("<script>alert(1)</script>"), "HTML source view keeps the original file")
+	check(main.artifact_viewer._mode_row.visible and main.artifact_viewer._content.visible, "HTML keeps Source as the default reader")
+	await click_control(main.artifact_viewer._preview_button)
+	check(main.artifact_viewer._preview.visible and not main.artifact_viewer._content.visible, "Preview is additive to Source")
+	var preview_text := main.artifact_viewer._preview.get_parsed_text()
+	check(preview_text.contains("DeskBloom") and preview_text.contains("local prototype"), "Preview shows the page text")
+	check(not preview_text.contains("alert(1)") and not preview_text.contains("127.0.0.1"), "Preview strips scripts and private URLs")
+	check(main.artifact_viewer._preview_notice.text.contains("no network"), "Preview states it is local and offline")
+	check(not SitePreview.is_html_path("../studio/index.html") and not SitePreview.is_html_path("/tmp/index.html") and SitePreview.companion_stylesheet("site/index.html", "<link rel='stylesheet' href='http://localhost/styles.css'>", PackedStringArray(["site/styles.css"])) == "site/styles.css", "Companion CSS uses studio paths only; remote hrefs are ignored")
+	await click_control(main.artifact_viewer._source_button)
+	check(main.artifact_viewer._content.visible and main.artifact_viewer._content.get_parsed_text().contains("<script>"), "Source remains available after Preview")
+	main.artifact_viewer.hide()
 	check(main.artifact_viewer.z_index > panel.z_index + 1 and main.company_panel.z_index > panel.z_index + 1, "Modal layers must cover drawer ornamentation")
 	main.company_panel.update_state({"company": {}, "milestones": [{"id": "website", "title": "Build a website", "state": "revision_required", "jobId": "accepted", "evaluation": {"verdict": "revise", "summary": "Long review. ".repeat(100), "criteria": [{"name": "Completeness", "score": 1, "evidence": "Specific review evidence. ".repeat(80)}]}}]})
 	main.company_panel.present("journey")

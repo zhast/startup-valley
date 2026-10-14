@@ -5,6 +5,7 @@ const CHARACTER_SHEET: Texture2D = preload("res://assets/concepts/office-town-ch
 const FOUNDER_LOCOMOTION: Texture2D = preload("res://assets/runtime/characters/founder-locomotion.png")
 const MIRA_LOCOMOTION: Texture2D = preload("res://assets/runtime/characters/mira-locomotion.png")
 const THEO_LOCOMOTION: Texture2D = preload("res://assets/runtime/characters/theo-locomotion.png")
+const CREATIVE_LOCOMOTION: Texture2D = preload("res://assets/runtime/characters/creative-locomotion.png")
 const MIRA_WORK: Texture2D = preload("res://assets/runtime/characters/mira-work.png")
 const THEO_WORK: Texture2D = preload("res://assets/runtime/characters/theo-work.png")
 const MIRA_SEATED: Texture2D = preload("res://assets/runtime/characters/mira-seated.png")
@@ -307,6 +308,8 @@ static func locomotion_sheet(character_id: String) -> Texture2D:
 			return MIRA_LOCOMOTION
 		"theo":
 			return THEO_LOCOMOTION
+		"creative":
+			return CREATIVE_LOCOMOTION
 	return FOUNDER_LOCOMOTION
 
 static func work_sheet(character_id: String) -> Texture2D:

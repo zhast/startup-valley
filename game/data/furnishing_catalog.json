@@ -13,11 +13,36 @@
     {
       "id": "decor-rolling_storage_pedestal",
       "kind": "rolling_storage_pedestal"
+    },
+    {
+      "id": "decor-cafe_table",
+      "kind": "cafe_table"
+    },
+    {
+      "id": "decor-cafe_chair",
+      "kind": "cafe_chair"
+    },
+    {
+      "id": "decor-phone_booth",
+      "kind": "phone_booth"
+    },
+    {
+      "id": "decor-whiteboard",
+      "kind": "whiteboard"
+    },
+    {
+      "id": "decor-lounge_sofa",
+      "kind": "lounge_sofa"
+    },
+    {
+      "id": "decor-bookshelf",
+      "kind": "bookshelf"
     }
   ],
   "employee_role_kits": {
     "mira": "mina_discovery_kit",
-    "theo": "theo_campaign_kit"
+    "theo": "theo_campaign_kit",
+    "creative": "creative_design_kit"
   },
   "role_kits": {
     "mina_discovery_kit": {
@@ -517,6 +542,255 @@
       },
       "host_kind": "desk",
       "owner_id": "theo"
+    },
+    "creative_design_kit": {
+      "display_name": "Creative design kit",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Supreme Leader measured+in-game PASS 2026-09-11 (creative_design_kit A2)",
+          "preview_art": "res://assets/runtime/office/furnishing-library/creative_design_kit/north-whole.png",
+          "visual_bounds": [
+            -46,
+            -45,
+            91,
+            26
+          ],
+          "render_layers": [
+            {
+              "name": "creative_design_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/creative_design_kit/north-surface_decor_rear.png",
+              "content_bounds": [
+                122,
+                115,
+                15,
+                12
+              ]
+            },
+            {
+              "name": "creative_design_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 2,
+              "art": "res://assets/runtime/office/furnishing-library/creative_design_kit/north-surface_decor_front.png",
+              "content_bounds": [
+                50,
+                124,
+                91,
+                17
+              ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Supreme Leader measured+in-game PASS 2026-09-11 (creative_design_kit A2)",
+          "preview_art": "res://assets/runtime/office/furnishing-library/creative_design_kit/east-whole.png",
+          "visual_bounds": [
+            -13,
+            -78,
+            26,
+            91
+          ],
+          "render_layers": [
+            {
+              "name": "creative_design_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/creative_design_kit/east-surface_decor_rear.png",
+              "content_bounds": [
+                89,
+                82,
+                18,
+                24
+              ]
+            },
+            {
+              "name": "creative_design_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 3,
+              "art": "res://assets/runtime/office/furnishing-library/creative_design_kit/east-surface_decor_front.png",
+              "content_bounds": [
+                83,
+                148,
+                26,
+                25
+              ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Supreme Leader measured+in-game PASS 2026-09-11 (creative_design_kit A2)",
+          "preview_art": "res://assets/runtime/office/furnishing-library/creative_design_kit/south-whole.png",
+          "visual_bounds": [
+            -46,
+            -45,
+            92,
+            26
+          ],
+          "render_layers": [
+            {
+              "name": "creative_design_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 2,
+              "art": "res://assets/runtime/office/furnishing-library/creative_design_kit/south-surface_decor_rear.png",
+              "content_bounds": [
+                50,
+                115,
+                92,
+                24
+              ]
+            },
+            {
+              "name": "creative_design_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 4,
+              "art": "res://assets/runtime/office/furnishing-library/creative_design_kit/south-surface_decor_front.png",
+              "content_bounds": [
+                50,
+                134,
+                22,
+                7
+              ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Supreme Leader measured+in-game PASS 2026-09-11 (creative_design_kit A2)",
+          "preview_art": "res://assets/runtime/office/furnishing-library/creative_design_kit/west-whole.png",
+          "visual_bounds": [
+            -14,
+            -77,
+            27,
+            89
+          ],
+          "render_layers": [
+            {
+              "name": "creative_design_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 0,
+              "art": "res://assets/runtime/office/furnishing-library/creative_design_kit/west-surface_decor_rear.png",
+              "content_bounds": [
+                83,
+                83,
+                26,
+                16
+              ]
+            },
+            {
+              "name": "creative_design_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 3,
+              "art": "res://assets/runtime/office/furnishing-library/creative_design_kit/west-surface_decor_front.png",
+              "content_bounds": [
+                82,
+                148,
+                17,
+                24
+              ]
+            }
+          ]
+        }
+      },
+      "host_kind": "desk",
+      "owner_id": "creative"
     }
   },
   "furniture": {
@@ -2211,6 +2485,540 @@
               "cell": [
                 -1,
                 0
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
+    "cafe_table": {
+      "display_name": "Cafe table",
+      "facings": [
+        "south"
+      ],
+      "facing_profiles": {
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Phase 1 PASS runtime south bind 2026-09-16",
+          "preview_art": "res://assets/runtime/office/cafe-table-south.png",
+          "visual_bounds": [
+            -96,
+            -134,
+            192,
+            190
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/cafe-table-south.png",
+              "name": "CafeTableBody",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                0,
+                26,
+                192,
+                190
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -96,
+            -134,
+            192,
+            190
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
+    "cafe_chair": {
+      "display_name": "Cafe chair",
+      "facings": [
+        "south"
+      ],
+      "facing_profiles": {
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Phase 1 PASS runtime south bind 2026-09-16",
+          "preview_art": "res://assets/runtime/office/cafe-chair-south.png",
+          "visual_bounds": [
+            -60,
+            -112,
+            120,
+            168
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/cafe-chair-south.png",
+              "name": "CafeChairBody",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                36,
+                48,
+                120,
+                168
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -60,
+            -112,
+            120,
+            168
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
+    "phone_booth": {
+      "display_name": "Phone booth",
+      "facings": [
+        "south"
+      ],
+      "facing_profiles": {
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Phase 1 PASS runtime south bind 2026-09-16",
+          "preview_art": "res://assets/runtime/office/phone-booth-south.png",
+          "visual_bounds": [
+            -56,
+            -119,
+            111,
+            175
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/phone-booth-south.png",
+              "name": "PhoneBoothBody",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                40,
+                41,
+                111,
+                175
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -56,
+            -119,
+            111,
+            175
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
+    "whiteboard": {
+      "display_name": "Whiteboard",
+      "facings": [
+        "south"
+      ],
+      "facing_profiles": {
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Phase 1 PASS runtime south bind 2026-09-16",
+          "preview_art": "res://assets/runtime/office/whiteboard-south.png",
+          "visual_bounds": [
+            -94,
+            -117,
+            188,
+            173
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/whiteboard-south.png",
+              "name": "WhiteboardBody",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                2,
+                43,
+                188,
+                173
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -94,
+            -117,
+            188,
+            173
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
+    "lounge_sofa": {
+      "display_name": "Lounge sofa",
+      "facings": [
+        "south"
+      ],
+      "facing_profiles": {
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Phase 1 PASS runtime south bind 2026-09-16",
+          "preview_art": "res://assets/runtime/office/lounge-sofa-south.png",
+          "visual_bounds": [
+            -94,
+            -83,
+            188,
+            139
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/lounge-sofa-south.png",
+              "name": "LoungeSofaBody",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                2,
+                77,
+                188,
+                139
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -94,
+            -83,
+            188,
+            139
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
+    "bookshelf": {
+      "display_name": "Bookshelf",
+      "facings": [
+        "south"
+      ],
+      "facing_profiles": {
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Phase 1 PASS runtime south bind 2026-09-16",
+          "preview_art": "res://assets/runtime/office/bookshelf-south.png",
+          "visual_bounds": [
+            -94,
+            -115,
+            188,
+            171
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/bookshelf-south.png",
+              "name": "BookshelfBody",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                2,
+                45,
+                188,
+                171
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -94,
+            -115,
+            188,
+            171
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
               ],
               "visual_bounds": [
                 -24,

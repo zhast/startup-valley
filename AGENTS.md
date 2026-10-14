@@ -32,7 +32,7 @@ godot --path game
 ## Required boundaries
 
 - The game communicates with the worker only over stdio JSONL for v0. Do not add an unauthenticated HTTP listener.
-- OpenRouter is the only provider in v0. Put its key in the OS keychain/Credential Manager and inject it with Pi `setRuntimeApiKey` only.
+- Grok / xAI is the primary provider. Sign in with Grok (or reuse `~/.grok/auth.json`) and inject the access token with Pi `setRuntimeApiKey("xai", …)` for `grok-4.6`. An OpenRouter key in the OS keychain remains a fallback. Never log or print tokens.
 - Create a bounded Pi session for each substantial work order and dispose it at job end. Do not create an immortal employee conversation.
 - Active-job steering is bounded to 2,000 characters and must call `steer()` on that work order's existing live Pi session. It must not create a replacement session or a second job.
 - Freeform and canned assignments use the same `JobSpec`, SQLite work-order row, queue, event stream, token cap, and fresh Pi session. A freeform job may attach one studio-relative text file; validate and read it through the studio path guard, persist its path, and bound its context before prompting.

@@ -40,9 +40,9 @@ cd ..
 godot --path game
 ```
 
-In the game, paste an OpenRouter API key and choose **Save securely**. The local worker stores it under the `dev.startup-valley.game` service in the OS keychain/Credential Manager. The key is never printed, written to SQLite or a job workspace, or saved in Pi session files.
+In the game, choose **Sign in with Grok**. Work then uses your Grok / xAI credits through Pi's `xai` provider and `grok-4.6`. A Grok CLI login already stored in `~/.grok/auth.json` is picked up automatically. Disconnect stops that reuse without deleting the CLI login. Pasting an OpenRouter key is still available as a fallback. Tokens stay in the OS keychain (`dev.startup-valley.game`) or the CLI auth file. They are never printed, written to SQLite or a job workspace, or saved in Pi session files.
 
-The credential service is namespaced to Startup Valley, so the key must be saved once for this game.
+The credential service is namespaced to Startup Valley. Chapter 1's automated playtest sets `STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS=1` so it still stops at Connect instead of calling a model.
 
 New assignments start during 08:00–12:30 and 13:30–17:30. Lunch and off-hours
 assignments remain visibly queued until the next work window. The HUD clock is
