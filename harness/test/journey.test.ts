@@ -100,7 +100,7 @@ test("full three-day journey awards money once, charges hiring/filing, and survi
   db.journey.hire("theo", 1); db.journey.hire("theo", 1);
   const hiredRoom = db.bootstrap().furnishing;
   assert.deepEqual(hiredRoom.placements["decor-broadleaf_planter"], { grid: [22, 16], facing: "west" });
-  assert.deepEqual(hiredRoom.inventory.filter((item) => item.roleKit).map((item) => item.roleKit).sort(), ["mina_discovery_kit", "theo_campaign_kit"]);
+  assert.deepEqual(hiredRoom.inventory.filter((item) => item.roleKit).map((item) => item.roleKit).sort(), ["founder_strategy_kit", "mina_discovery_kit", "theo_campaign_kit"]);
   assert.equal(db.journey.state().company.cashCents, 30000);
   db.endDay(1); assert.equal(db.endDay(1).clock.day, 2);
   await deliver(db, root, "ads"); await adapter.evaluateMilestone("ads"); db.journey.complete("ads", false, 2);

@@ -108,6 +108,8 @@ func _run() -> void:
 	check(main.room.prop_node("mira-workstation") != null, "Mina's workstation is in the room")
 	var mira_desk := main.room.placement_by_id("mira-workstation")
 	check(str(mira_desk.get("role_kit", "")) == "mina_discovery_kit", "Mina's desk wears the discovery kit")
+	var founder_desk := main.room.placement_by_id("founder-workstation")
+	check(str(founder_desk.get("role_kit", "")) == "founder_strategy_kit", "The founder desk wears the strategy kit")
 	var meet := button_named("Meet Mina")
 	await click(meet)
 	await frames(12)
@@ -164,8 +166,12 @@ func _run() -> void:
 	var kits: Dictionary = kits_value if kits_value is Dictionary else {}
 	var kit_value: Variant = kits.get("creative_design_kit", {})
 	var creative_kit: Dictionary = kit_value if kit_value is Dictionary else {}
+	check(str(role_map.get("founder", "")) == "founder_strategy_kit", "Founder maps to founder_strategy_kit")
 	check(str(role_map.get("creative", "")) == "creative_design_kit", "Creative hire maps to creative_design_kit")
 	check(str(creative_kit.get("owner_id", "")) == "creative" and str(creative_kit.get("host_kind", "")) == "desk", "Creative design kit is bound to a creative-owned desk")
+	var founder_kit_value: Variant = kits.get("founder_strategy_kit", {})
+	var founder_kit: Dictionary = founder_kit_value if founder_kit_value is Dictionary else {}
+	check(str(founder_kit.get("owner_id", "")) == "founder" and str(founder_kit.get("host_kind", "")) == "desk", "Founder strategy kit is bound to the founder-owned desk")
 	print("CHAPTER1 ", "PASS" if failures.is_empty() else "FAIL %d" % failures.size())
 	for failure: String in failures:
 		print("FAILURE ", failure)

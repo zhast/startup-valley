@@ -29,7 +29,7 @@
         "ownerId": { "enum": ["", "founder", "mira", "theo", "creative"] },
         "essential": { "type": "boolean" },
         "grant": { "type": "string", "minLength": 1, "maxLength": 100 },
-        "roleKit": { "enum": ["", "mina_discovery_kit", "theo_campaign_kit", "creative_design_kit"] }
+        "roleKit": { "enum": ["", "mina_discovery_kit", "theo_campaign_kit", "creative_design_kit", "founder_strategy_kit"] }
       }
     },
     "state": {

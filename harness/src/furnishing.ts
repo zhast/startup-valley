@@ -257,6 +257,10 @@ export class FurnishingStore {
       if (added) addedStations[prop.id] = { grid: prop.grid, facing: prop.facing };
     }
     for (const { id, kind } of this.geometry.starterDecor) grants += Number(insert.run(id, kind, "", 0, "starter-decor-v1", "").changes);
+    const founderKit = this.geometry.employeeRoleKits["founder"] ?? "";
+    if (founderKit) {
+      grants += Number(this.db.prepare("UPDATE furnishing_inventory SET role_kit=? WHERE id='founder-workstation' AND role_kit=''").run(founderKit).changes);
+    }
     const inventory = this.inventory();
     const row = this.db.prepare("SELECT * FROM furnishing_state WHERE id=1").get();
     if (!row) {

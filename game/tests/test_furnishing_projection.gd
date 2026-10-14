@@ -19,6 +19,7 @@ func state_for(room: TownRoom, hires: int) -> Dictionary:
 	for original: Dictionary in room.layout_model.data.props:
 		if int(original.required_hires) > hires: continue
 		var item := {"id": original.id, "kind": original.kind, "ownerId": str(original.get("owner_id", "")), "essential": true, "grant": "test"}
+		if original.id == "founder-workstation": item["roleKit"] = "founder_strategy_kit"
 		if original.id == "mira-workstation": item["roleKit"] = "mina_discovery_kit"
 		if original.id == "theo-workstation": item["roleKit"] = "theo_campaign_kit"
 		result.inventory.append(item)
@@ -37,13 +38,19 @@ func run() -> void:
 	var state := state_for(room, 0)
 	check(room.apply_furnishing_state(state), "Founder-only authoritative inventory applies")
 	check(room.visible_prop_count() == 1, "Starter decorations stay stored until explicitly placed")
+	var founder_desk := room.placement_by_id("founder-workstation")
+	check(str(founder_desk.get("role_kit", "")) == "founder_strategy_kit", "Founder desk wears the strategy kit")
+	var founder_kit_layers := 0
+	for layer: Dictionary in founder_desk.render_layers:
+		if str(layer.art).contains("founder_strategy_kit"): founder_kit_layers += 1
+	check(founder_kit_layers == 2, "Founder strategy kit adds two native desk overlays")
 	state = state_for(room, 2)
 	check(room.apply_furnishing_state(state), "Existing Mina and Theo gain their exact role kits")
 	for side: String in OfficeLayout.FACINGS:
-		for owner: String in ["mira", "theo"]:
+		for owner: String in ["founder", "mira", "theo"]:
 			state.placements[owner + "-workstation"].facing = side
 		check(room.apply_furnishing_state(state), side + " host/kit room validates")
-		for owner: String in ["mira", "theo"]:
+		for owner: String in ["founder", "mira", "theo"]:
 			var placement := room.placement_by_id(owner + "-workstation")
 			var prop := room.prop_node(owner + "-workstation")
 			var kit_count := 0
