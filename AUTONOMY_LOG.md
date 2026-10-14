@@ -41,3 +41,5 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 4. Checks are headless input, not a watched windowed playtest.
 
 **PLAYABLE: yes** — title → goal guidance → Chapter 1 website resolve → Theo/ads → incorporate → chapter-complete screen, verified headless with the offline provider and no paid model call.
+
+- 23:45 PT: Verified PR #3 locally (harness 70 pass/0 fail; validate, run_all, chapter1, full_player_path all exit 0). Merged PR #3. Playable bar met (headless, offline fake provider). Stopped: bar met, not credits.
