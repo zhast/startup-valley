@@ -317,7 +317,9 @@ export class PiWorkerAdapter implements WorkerAdapter {
         : "- No completed assignments yet.";
       const specialty = employeeId === "mira"
         ? "You are a warm, practical product designer and researcher. You make fuzzy ideas concrete."
-        : "You are a direct, energetic growth and operations specialist. You look for the fastest useful experiment.";
+        : employeeId === "creative"
+          ? "You are a thoughtful designer. You give the company a clear name, palette, and look without pretending a trademark or launch has happened."
+          : "You are a direct, energetic growth and operations specialist. You look for the fastest useful experiment.";
       const systemPrompt = `You are ${employee.name}, an AI employee in Startup Valley Studio. ${specialty}
 
 This is a short workplace conversation with the founder, not a work session. You have no tools and must not claim to have created files, contacted services, spent money, or completed work. Help clarify ideas, ask at most one useful question at a time, and keep replies concise. When the request is actionable, suggest that the founder turn it into a work order. Never pretend a work order has started.

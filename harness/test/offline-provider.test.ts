@@ -27,6 +27,7 @@ function milestoneSpec(id: string, jobId = id): JobSpec {
     website: { employeeId: "mira", title: "Build a website", assignment: "Create site/index.html and site/styles.css" },
     ads: { employeeId: "theo", title: "Run ads", assignment: "Create ads/campaign-plan.md and ads/creative.md" },
     incorporate: { employeeId: "mira", title: "Incorporate", assignment: "Create company incorporation planning files" },
+    brand: { employeeId: "creative", title: "Design the brand", assignment: "Create brand/identity.md and brand/palette.md" },
   };
   const item = titles[id]!;
   return {
@@ -96,7 +97,20 @@ test("offline fake provider walks the three-day chapter without a paid model", a
     await worker.evaluateMilestone("incorporate");
     database.journey.complete("incorporate", false, 3);
     assert.deepEqual(database.journey.state().company, { cashCents: 100000, earnedCents: 180000, reputation: 45, chapter: 2 });
-    assert.ok(database.journey.state().milestones.every((item) => item.state === "completed"));
+    const milestoneStates = Object.fromEntries(database.journey.state().milestones.map((item) => [item.id, item.state]));
+    assert.equal(milestoneStates.website, "completed");
+    assert.equal(milestoneStates.ads, "completed");
+    assert.equal(milestoneStates.incorporate, "completed");
+    assert.equal(milestoneStates.brand, "locked");
+    assert.equal(database.journey.state().candidates.find((candidate) => candidate.id === "creative")?.available, false);
+    assert.equal(database.journey.continueChapter().candidates.find((candidate) => candidate.id === "creative")?.available, true);
+    database.journey.hire("creative", 3);
+    assert.equal(database.journey.state().milestones.find((item) => item.id === "brand")?.state, "available");
+    assert.equal(database.journey.state().company.cashCents, 100000);
+    await worker.startJob(milestoneSpec("brand"));
+    await drain(worker, "brand");
+    const identity = await readFile(join(root, "company-project", "jobs", "brand", "brand", "identity.md"), "utf8");
+    assert.match(identity, /DeskBloom/u);
     const checklist = await readFile(join(root, "company-project", "jobs", "incorporate", "company", "incorporation-checklist.md"), "utf8");
     assert.match(checklist, /must not be treated as legal advice/iu);
     database.close();

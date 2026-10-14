@@ -69,7 +69,8 @@
           "enum": [
             "",
             "mira",
-            "theo"
+            "theo",
+            "creative"
           ]
         },
         "architectureTheme": {
@@ -86,7 +87,7 @@
     },
     "milestones": {
       "type": "array",
-      "maxItems": 3,
+      "maxItems": 4,
       "items": {
         "type": "object",
         "required": [
@@ -113,7 +114,8 @@
             "enum": [
               "website",
               "ads",
-              "incorporate"
+              "incorporate",
+              "brand"
             ]
           },
           "title": {
@@ -122,13 +124,15 @@
           "employeeId": {
             "enum": [
               "mira",
-              "theo"
+              "theo",
+              "creative"
             ]
           },
           "prerequisite": {
             "enum": [
               "website",
-              "ads"
+              "ads",
+              "incorporate"
             ]
           },
           "state": {
@@ -199,7 +203,7 @@
     },
     "candidates": {
       "type": "array",
-      "maxItems": 2,
+      "maxItems": 3,
       "items": {
         "type": "object",
         "required": [
@@ -215,7 +219,8 @@
           "id": {
             "enum": [
               "mira",
-              "theo"
+              "theo",
+              "creative"
             ]
           },
           "name": {

@@ -172,10 +172,10 @@ func _run() -> void:
 	main.job_panel._job_picker.select(0)
 	main.job_panel._on_job_selected(0)
 	main.job_panel.select_employee("mira")
-	if main.room.unlocked_hires != 2:
-		_fail("test_office_growth: the two-person roster did not restore its furniture stage")
-	if main.room.visible_prop_count() != 8:
-		_fail("test_modular_office: the two-person stage did not show the founder, collaboration, and research props")
+	if main.room.unlocked_hires != 3:
+		_fail("test_office_growth: the starting roster did not restore its furniture stage")
+	if main.room.visible_prop_count() != 9:
+		_fail("test_modular_office: the starting stage did not show the founder, collaboration, research, and Creative desk")
 	main.room.set_hire_count(0)
 	if main.room.find_child("LockedSections", true, false) != null:
 		_fail("test_office_growth: an empty office stage still created blocked expansion areas")
@@ -196,7 +196,7 @@ func _run() -> void:
 	elif staged_desk_rear.z_index >= staged_desk_front.z_index:
 		_fail("test_modular_office: the workstation occlusion layers were reversed")
 	main.room.set_hire_count(4)
-	if main.room.visible_prop_count() != 9:
+	if main.room.visible_prop_count() != 10:
 		_fail("test_modular_office: the mature office did not include every staged prop")
 	if main.room.prop_node("approval-console") == null or main.room.prop_node("artifact-archive") == null or main.room.prop_node("prototype-bench") == null:
 		_fail("test_modular_office: the mature office was missing its operations or artifact prop")

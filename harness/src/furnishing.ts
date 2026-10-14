@@ -188,7 +188,7 @@ export class FurnishingGeometry {
     const liveReached = actors.length ? flood(new Set(resolved.filter((item) => items.has(item.id)).flatMap((item) => item.occupied.map(key)))) : reached;
     const actorIds = new Set<string>();
     for (const actor of actors) {
-      if (!actor || !["founder", "mira", "theo"].includes(actor.id) || actorIds.has(actor.id) || !cell(actor.grid) || !this.floor.has(key(actor.grid))) throw new Error("Invalid live actor cells");
+      if (!actor || !["founder", "mira", "theo", "creative"].includes(actor.id) || actorIds.has(actor.id) || !cell(actor.grid) || !this.floor.has(key(actor.grid))) throw new Error("Invalid live actor cells");
       if (actor.position !== undefined && (!Array.isArray(actor.position) || actor.position.length !== 2 || !actor.position.every(Number.isFinite) || actor.position[0] < 0 || actor.position[0] > 1280 || actor.position[1] < 0 || actor.position[1] > 720 || Math.floor(actor.position[0] / 32) !== actor.grid[0] || Math.floor(actor.position[1] / 32) !== actor.grid[1])) throw new Error("Actor position must be finite world pixels matching its declared cell");
       actorIds.add(actor.id);
       if (!liveReached.has(key(actor.grid))) throw new Error(`${actor.id}: placement blocks or traps an actor`);
@@ -240,7 +240,7 @@ export class FurnishingStore {
     const save = this.db.prepare("UPDATE employees SET desk_x=?,desk_y=? WHERE id=?");
     for (const item of inventory) {
       const placed = placements[item.id];
-      if (placed && ["mira", "theo"].includes(item.ownerId)) save.run(...placed.grid, item.ownerId);
+      if (placed && item.ownerId && item.ownerId !== "founder") save.run(...placed.grid, item.ownerId);
     }
   }
   /** Caller may use this inside the hiring transaction. */
@@ -251,7 +251,8 @@ export class FurnishingStore {
     const addedStations: FurniturePlacements = {};
     for (const prop of this.geometry.room.props) {
       if (prop.required_hires > hired.length || (prop.owner_id && prop.owner_id !== "founder" && !hired.includes(prop.owner_id))) continue;
-      const added = Number(insert.run(prop.id, prop.kind, prop.owner_id ?? "", 1, prop.owner_id === "mira" || prop.owner_id === "theo" ? `hire:${prop.owner_id}` : `office-stage:${prop.required_hires}`, this.geometry.employeeRoleKits[prop.owner_id ?? ""] ?? "").changes);
+      const owner = prop.owner_id ?? "";
+      const added = Number(insert.run(prop.id, prop.kind, owner, 1, owner !== "" && owner !== "founder" ? `hire:${owner}` : `office-stage:${prop.required_hires}`, this.geometry.employeeRoleKits[owner] ?? "").changes);
       grants += added;
       if (added) addedStations[prop.id] = { grid: prop.grid, facing: prop.facing };
     }

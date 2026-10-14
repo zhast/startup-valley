@@ -87,6 +87,8 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
     case "milestone.complete":
     case "milestone.override":
       return { journey: database.journey.complete(stringParameter(request, "jobId", 64), request.method === "milestone.override", database.clockState().day), dailySpend: database.dailySpend() };
+    case "chapter.continue":
+      return { journey: database.journey.continueChapter(), dailySpend: database.dailySpend() };
     case "game.save":
       database.journey.savePlayer(request.params);
       return { saved: true };

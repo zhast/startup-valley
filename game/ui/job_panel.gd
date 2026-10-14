@@ -329,7 +329,7 @@ func _build_team_rail() -> Control:
 	team_list.offset_left = 15.0
 	team_list.offset_top = 82.0
 	team_list.offset_right = -15.0
-	team_list.offset_bottom = 366.0
+	team_list.offset_bottom = 530.0
 	rail.add_child(team_list)
 	_settings_button = Button.new()
 	_settings_button.text = "Settings"

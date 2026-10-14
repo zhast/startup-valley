@@ -644,7 +644,7 @@ func _on_company_action(method: String, result: Dictionary) -> void:
 		"hiring.complete":
 			game_audio.play("reward")
 			company_panel.present("hired")
-		"milestone.complete", "milestone.override":
+		"milestone.complete", "milestone.override", "chapter.continue":
 			game_audio.play("reward")
 			company_panel.present("journey")
 		"day.end":
