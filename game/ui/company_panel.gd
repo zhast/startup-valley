@@ -67,6 +67,8 @@ func _ready() -> void:
 	hide()
 
 func present(mode: String = "journey") -> void:
+	if mode == "journey" and _is_chapter_complete():
+		mode = "complete"
 	screen = mode
 	_details_open = false
 	_future_open = false
@@ -81,7 +83,10 @@ func present(mode: String = "journey") -> void:
 func update_state(value: Dictionary) -> void:
 	state = value
 	busy = false
-	if visible and screen in ["journey", "title", "closing"]: _render()
+	if visible and screen == "journey" and _is_chapter_complete():
+		present("complete")
+		return
+	if visible and screen in ["journey", "title", "closing", "complete"]: _render()
 
 func show_error(message: String) -> void:
 	busy = false
@@ -179,11 +184,14 @@ func _request(method: String, params: Dictionary) -> void:
 func _render() -> void:
 	_render_generation += 1
 	_clear()
+	if screen == "journey" and _is_chapter_complete():
+		screen = "complete"
 	var panel_size := Vector2(744, 608)
 	match screen:
 		"title": panel_size = Vector2(624, 408)
 		"confirm": panel_size = Vector2(616, 364)
 		"hired": panel_size = Vector2(648, 424)
+		"complete": panel_size = Vector2(664, 448)
 		"settings": panel_size = Vector2(704, 592)
 		"closing", "summary": panel_size = Vector2(744, 584)
 		"journey":
@@ -196,6 +204,7 @@ func _render() -> void:
 		"title": _title_screen()
 		"confirm": _confirm_screen()
 		"hired": _hired_screen()
+		"complete": _complete_screen()
 		"settings": _settings_screen()
 		"closing", "summary": _day_screen()
 		_: _journey_screen()
@@ -223,6 +232,7 @@ func _fit_sparse_height(generation: int) -> void:
 	match screen:
 		"confirm": minimum_height = 340.0
 		"hired": minimum_height = 400.0
+		"complete": minimum_height = 400.0
 		"settings": minimum_height = 480.0
 		"journey": minimum_height = 456.0
 		"closing", "summary": minimum_height = 456.0
@@ -271,6 +281,19 @@ func _hired_screen() -> void:
 	_label(_next_step().trim_prefix("NEXT · "))
 	_label("Walk to %s or use the team rail. Their desk opens Assign with the current Journey goal ready." % person_name)
 	_actions("Meet " + person_name, hide, true, "Company Journey", func() -> void: present("journey"))
+
+func _complete_screen() -> void:
+	_heading("Chapter complete", "Your first company chapter is finished.")
+	var complete := _card()
+	_label("Your company is ready", true, complete)
+	_label("Website built. Launch planned. Incorporation prepared. Keep creating with your team and shared Studio.", false, complete)
+	_label(_next_step().trim_prefix("NEXT · "))
+	_actions("Back to office", hide, true, "")
+
+func _is_chapter_complete() -> bool:
+	if state.is_empty(): return false
+	if int((state.get("company", {}) as Dictionary).get("chapter", 1)) <= 1: return false
+	return open_milestone(state).is_empty() and available_candidate(state).is_empty()
 
 func _settings_screen() -> void:
 	_heading("Settings", "The office clock is paused. Real AI work can still finish.")
@@ -414,11 +437,6 @@ func _journey_screen() -> void:
 		var candidate_id := str(candidate.get("id", ""))
 		var affordable := int(company.get("cashCents", 0)) >= int(candidate.get("costCents", 0))
 		_actions("Hire %s · %s" % [candidate.get("name", "teammate"), "free" if int(candidate.get("costCents", 0)) == 0 else "$" + _money(int(candidate.get("costCents", 0)))], func() -> void: _request("hiring.complete", {"employeeId": candidate_id}), affordable)
-	elif int(company.get("chapter", 1)) > 1:
-		var complete := _card()
-		_label("Your company is ready", true, complete)
-		_label("Website built. Launch planned. Incorporation prepared. Keep creating with your team and shared Studio.", false, complete)
-		_actions("Back to office", hide, true, "")
 	else:
 		var ready := _card()
 		_label("A good place to pause", true, ready)
