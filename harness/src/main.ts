@@ -5,9 +5,15 @@ import { createInterface } from "node:readline";
 import { credentialStoreFromEnvironment } from "./credential-store.js";
 import { GameDatabase } from "./database.js";
 import type { FurnishingUpdate } from "./furnishing.js";
+import { offlineProviderEnabled } from "./offline-provider.js";
 import { PiWorkerAdapter } from "./pi-worker-adapter.js";
 import type { ApprovalDecision, ProtocolEvent, ProtocolRequest, ProtocolResponse } from "./types.js";
 import { parseJobSpec, parseRequest } from "./validation.js";
+
+function withOfflineCredentialStatus<T extends { configured: boolean }>(status: T): T & { offline?: boolean } {
+  if (!offlineProviderEnabled()) return status;
+  return { ...status, configured: true, offline: true };
+}
 
 const MAX_LINE_LENGTH = 1_000_000;
 
@@ -130,27 +136,27 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
       } finally { resetting = false; }
     }
     case "health":
-      return { status: "ok", protocolVersion: 1, workerVersion: "0.0.1", provider: await credentials.peekProvider(), maxConcurrentJobs: 1 };
+      return { status: "ok", protocolVersion: 1, workerVersion: "0.0.1", provider: await credentials.peekProvider(), maxConcurrentJobs: 1, offline: offlineProviderEnabled() || undefined };
     case "bootstrap":
       return database.bootstrap();
     case "credential.status":
-      return credentials.status();
+      return withOfflineCredentialStatus(await credentials.status());
     case "credential.set":
       await credentials.setOpenRouterKey(stringParameter(request, "key", 512));
-      return credentials.status();
+      return withOfflineCredentialStatus(await credentials.status());
     case "credential.grok.login.start":
       return credentials.startGrokLogin();
     case "credential.grok.login.poll":
       return credentials.pollGrokLogin();
     case "credential.grok.login.cancel":
       await credentials.cancelGrokLogin();
-      return credentials.status();
+      return withOfflineCredentialStatus(await credentials.status());
     case "credential.grok.logout":
       await credentials.logoutGrok();
-      return credentials.status();
+      return withOfflineCredentialStatus(await credentials.status());
     case "credential.grok.use_local":
       await credentials.useLocalGrok();
-      return credentials.status();
+      return withOfflineCredentialStatus(await credentials.status());
     case "chat.history":
       return adapter.chatHistory(stringParameter(request, "employeeId", 64));
     case "chat.send":

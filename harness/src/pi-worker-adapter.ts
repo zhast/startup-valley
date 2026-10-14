@@ -24,6 +24,7 @@ import type { GameDatabase } from "./database.js";
 import { EventStream } from "./event-stream.js";
 import { JobPathGuard } from "./path-guard.js";
 import { LiveSessionRegistry } from "./live-session-registry.js";
+import { offlineEvaluationRunner, offlineProviderEnabled, runOfflineJob } from "./offline-provider.js";
 import { createJobTools } from "./tools.js";
 import type {
   ApprovalDecision,
@@ -99,6 +100,7 @@ export class PiWorkerAdapter implements WorkerAdapter {
   readonly #studioRoot: string;
   readonly #runtimeRoot: string;
   readonly #evaluationRunner: EvaluationRunner | undefined;
+  readonly #offline: boolean;
   readonly #streams = new Map<string, EventStream<WorkerEvent>>();
   readonly #sessions = new LiveSessionRegistry<AgentSession>();
   readonly #approvals = new ApprovalBroker();
@@ -119,13 +121,14 @@ export class PiWorkerAdapter implements WorkerAdapter {
 
   isBusy(): boolean { return this.#chatting || this.#evaluating || this.#acceptingJob || Boolean(this.#activeJobId); }
 
-  constructor(database: GameDatabase, credentials: CredentialStore, dataRoot: string, evaluationRunner?: EvaluationRunner) {
+  constructor(database: GameDatabase, credentials: CredentialStore, dataRoot: string, evaluationRunner?: EvaluationRunner, offline = offlineProviderEnabled()) {
     this.#database = database;
     this.#credentials = credentials;
     this.#jobsRoot = join(dataRoot, "company-project", "jobs");
     this.#studioRoot = join(dataRoot, "company-project", "studio");
     this.#runtimeRoot = join(dataRoot, "runtime");
     this.#evaluationRunner = evaluationRunner;
+    this.#offline = offline;
   }
 
   async startJob(spec: JobSpec): Promise<void> {
@@ -273,6 +276,12 @@ export class PiWorkerAdapter implements WorkerAdapter {
     let session: AgentSession | undefined;
     let chatSecret = "";
     try {
+      if (this.#offline) {
+        this.#database.createChatMessage(employeeId, "player", cleanMessage);
+        const reply = bounded("Let's turn that into a work order when you're ready. I can talk it through, but files only change after you start a work order.", 4000);
+        const saved = this.#database.createChatMessage(employeeId, "employee", reply, { inputTokens: 0, outputTokens: 0, cost: 0 });
+        return { message: saved, dailySpend: this.#database.dailySpend() };
+      }
       let credential: ModelCredential;
       try {
         credential = await requireModelCredential(this.#credentials, MISSING_CHAT_CREDENTIAL);
@@ -422,8 +431,9 @@ ${transcript}`;
       const evidence = await new ArtifactMilestoneAdapter().collect(definition, (path) => this.readArtifact(jobId, path));
       const contents = evidence.documents.map((document) => `${document.path}\n${document.content}`);
       const input = prepareEvaluationInput(definition, evidence);
-      if (this.#evaluationRunner) {
-        const result = await this.#evaluationRunner(definition, contents, input);
+      const evaluationRunner = this.#evaluationRunner ?? (this.#offline ? offlineEvaluationRunner : undefined);
+      if (evaluationRunner) {
+        const result = await evaluationRunner(definition, contents, input);
         this.#database.journey.db.prepare("INSERT INTO evaluation_usage VALUES (?,?,?,?,?,?,?)").run(attemptId, jobId, result.inputTokens, result.outputTokens, result.cost, new Date().toISOString(), this.#database.clockState().day);
         usageRecorded = true;
         if (result.inputTokens + result.outputTokens > 3000) throw new Error("Evaluation exceeded its 3,000-token budget");
@@ -576,6 +586,16 @@ When the requested work is complete, give a concise delivery summary. The game r
     let exceededBudget = false;
     let jobSecret = "";
     try {
+      if (this.#offline) {
+        await runOfflineJob(spec, {
+          database: this.#database,
+          jobsRoot: this.#jobsRoot,
+          studioRoot: this.#studioRoot,
+          emit: (event) => this.#emit(spec.jobId, event),
+          finished: () => this.#jobFinished(spec.jobId),
+        });
+        return;
+      }
       let credential: ModelCredential;
       try {
         credential = await requireModelCredential(this.#credentials, MISSING_WORK_CREDENTIAL);

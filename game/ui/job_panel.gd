@@ -160,6 +160,7 @@ var _spend_warning: float = 5.0
 var _daily_ai_spend := 0.0
 var _active_job_running: bool = false
 var _credential_configured: bool = false
+var _offline_provider: bool = false
 var _worker_connected: bool = false
 var _connection_panel: Panel
 var _settings_button: Button
@@ -504,6 +505,8 @@ func _refresh_connection_surface() -> void:
 	_connection_title.text = "Connection lost" if unavailable else "AI connection" if _credential_configured else "Connect AI"
 	if unavailable:
 		_connection_description.text = "Reconnect to resume chat and work. Your saved Grok login or OpenRouter key does not need to change." if _credential_configured else "Reconnect first, then sign in with Grok or add an OpenRouter key."
+	elif _offline_provider:
+		_connection_description.text = "Offline test provider is active. Work orders complete with local files and no paid model call."
 	elif _grok_login_pending:
 		_connection_description.text = "Enter this code on the Grok page. Work will use your Grok / xAI credits when sign-in finishes. Back cancels sign-in."
 	elif _grok_signed_in:
@@ -532,6 +535,9 @@ func _refresh_connection_surface() -> void:
 		_key_status.tooltip_text = _worker_error
 		_connection_retry_button.tooltip_text = _worker_error
 		_key_status.add_theme_color_override("font_color", ALERT_INK)
+	elif _offline_provider:
+		_key_status.text = "Offline test provider. Jobs complete without a model call."
+		_key_status.add_theme_color_override("font_color", CHARCOAL)
 	elif _grok_signed_in:
 		_key_status.text = "Signed in with Grok. Work uses your Grok / xAI credits."
 		_key_status.add_theme_color_override("font_color", CHARCOAL)
@@ -2352,7 +2358,10 @@ func set_worker_ready() -> void:
 		_connection_badge.visible = false
 	_refresh_rail_connection_action()
 	if _key_status != null:
-		_key_status.text = "Connected. Key stored in the OS keychain." if _credential_configured else "Connection required before chat or work can start."
+		if _offline_provider:
+			_key_status.text = "Offline test provider. Jobs complete without a model call."
+		else:
+			_key_status.text = "Connected. Key stored in the OS keychain." if _credential_configured else "Connection required before chat or work can start."
 		_key_status.add_theme_color_override("font_color", CHARCOAL if _credential_configured else ALERT_INK)
 	_refresh_operation_availability()
 	_refresh_connection_surface()
@@ -2396,15 +2405,25 @@ func set_credential_status(configured: bool) -> void:
 	if configured:
 		_grok_login_pending = false
 		_stop_grok_poll()
-	_key_status.text = "Signed in with Grok. Work uses your Grok / xAI credits." if _grok_signed_in else "Connected. Key stored in the OS keychain." if configured else "Connection required before chat or work can start."
+	if _offline_provider:
+		_key_status.text = "Offline test provider. Jobs complete without a model call."
+	elif _grok_signed_in:
+		_key_status.text = "Signed in with Grok. Work uses your Grok / xAI credits."
+	elif configured:
+		_key_status.text = "Connected. Key stored in the OS keychain."
+	else:
+		_key_status.text = "Connection required before chat or work can start."
 	_key_status.add_theme_color_override("font_color", CHARCOAL if configured else ALERT_INK)
 	_refresh_rail_connection_action()
 	_refresh_operation_availability()
 	_refresh_connection_surface()
-	if not configured:
+	if configured and _offline_provider and _connection_panel != null and _connection_panel.visible:
+		_close_connection_settings()
+	elif not configured:
 		call_deferred("_open_connection_settings")
 
 func set_credential_detail(detail: Dictionary) -> void:
+	_offline_provider = bool(detail.get("offline", false))
 	_grok_signed_in = bool(detail.get("grokSignedIn", false))
 	_grok_cli_available = bool(detail.get("grokCliAvailable", false))
 	if not bool(detail.get("loginPending", false)):

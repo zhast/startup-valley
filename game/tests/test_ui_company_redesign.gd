@@ -42,6 +42,7 @@ func _run() -> void:
 	await _collapsed_review_fit()
 	await _sparse_layouts()
 	await _disabled_hire()
+	await _chapter_complete()
 	var file := FileAccess.open(OUTPUT + ("/manifest-headless.json" if DisplayServer.get_name() == "headless" else "/manifest.json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify({"checks": _checks, "failures": _failures, "captures": _captures, "layouts": _layouts,
 		"workerDisabled": true, "transactions": "Signal-only spy. No worker, database or real save.",
@@ -476,3 +477,17 @@ func _disabled_hire() -> void:
 	await _click(hire)
 	_check(_actions.size() == before, "Disabled hiring cannot dispatch a transaction")
 	await _capture("disabled-hire")
+
+func _chapter_complete() -> void:
+	var value := _fixture()
+	value["company"]["chapter"] = 2
+	value["milestones"][0]["state"] = "completed"
+	value["milestones"][1]["state"] = "completed"
+	value["candidates"][0]["hired"] = true
+	value["candidates"][1].merge({"hired": true, "available": false}, true)
+	await _present("journey", value)
+	_check(_panel.screen == "complete", "Finished chapter presents the chapter-complete screen")
+	_check(_text().contains("Chapter complete") and _visible(_button("Back to office")), "Chapter-complete screen names the win state and keeps an office exit")
+	await _capture("chapter-complete")
+	await _click(_button("Back to office"))
+	_check(not _panel.visible, "Chapter-complete Back to office closes the notebook")
