@@ -40,10 +40,19 @@ func run() -> void:
 	check(room.visible_prop_count() == 1, "Starter decorations stay stored until explicitly placed")
 	var founder_desk := room.placement_by_id("founder-workstation")
 	check(str(founder_desk.get("role_kit", "")) == "founder_strategy_kit", "Founder desk wears the strategy kit")
+	check(str(founder_desk.get("decor_kit", "")) == "desk_lamp_kit", "Founder desk stacks the desk lamp kit")
 	var founder_kit_layers := 0
+	var founder_lamp_layers := 0
 	for layer: Dictionary in founder_desk.render_layers:
 		if str(layer.art).contains("founder_strategy_kit"): founder_kit_layers += 1
+		if str(layer.art).contains("desk_lamp_kit"): founder_lamp_layers += 1
 	check(founder_kit_layers == 2, "Founder strategy kit adds two native desk overlays")
+	check(founder_lamp_layers == 2, "Desk lamp kit adds two native overlays after the strategy kit")
+	var library_arts: Array[String] = []
+	for layer: Dictionary in founder_desk.render_layers:
+		var art := str(layer.art)
+		if art.contains("furnishing-library"): library_arts.append(art)
+	check(library_arts.size() == 4 and library_arts[0].contains("founder_strategy_kit") and library_arts[1].contains("founder_strategy_kit") and library_arts[2].contains("desk_lamp_kit") and library_arts[3].contains("desk_lamp_kit"), "Lamp overlays follow the strategy kit layers")
 	state = state_for(room, 2)
 	check(room.apply_furnishing_state(state), "Existing Mina and Theo gain their exact role kits")
 	for side: String in OfficeLayout.FACINGS:
@@ -54,14 +63,20 @@ func run() -> void:
 			var placement := room.placement_by_id(owner + "-workstation")
 			var prop := room.prop_node(owner + "-workstation")
 			var kit_count := 0
+			var role_layers := 0
+			var lamp_layers := 0
 			for layer: Dictionary in placement.render_layers:
 				if not str(layer.art).contains("furnishing-library"): continue
 				kit_count += 1
+				if str(layer.art).contains("desk_lamp_kit"): lamp_layers += 1
+				else: role_layers += 1
 				var sprite := prop.get_node(str(layer.name)) as Sprite2D
 				check(sprite != null and sprite.texture.get_size() == Vector2(192, 224), owner + "/" + side + " keeps full native kit canvas")
 				check(sprite.position == Vector2(0, -48) and sprite.scale == Vector2.ONE and sprite.rotation == 0.0 and not sprite.flip_h and not sprite.flip_v, owner + "/" + side + " shares original host anchor with no raster transform")
 				check(sprite.z_index == prop.z_index + int(layer.z_offset), owner + "/" + side + " preserves authored separate layer depth")
-			check(kit_count == 2 and placement.occupied.size() == 3, owner + "/" + side + " adds two distinct role layers and zero floor collision")
+			var expected_kits := 4 if owner == "founder" else 2
+			var expected_lamps := 2 if owner == "founder" else 0
+			check(kit_count == expected_kits and role_layers == 2 and lamp_layers == expected_lamps and placement.occupied.size() == 3, owner + "/" + side + " keeps " + str(expected_kits) + " furnishing-library kit layers and zero extra floor collision")
 	var saved := room.placement_overrides.duplicate(true)
 	var records := room.placeholder_records()
 	for record: EmployeeRecord in records: record.desk_grid = Vector2i(2, 2)

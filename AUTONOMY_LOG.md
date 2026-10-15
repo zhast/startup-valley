@@ -213,3 +213,34 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The coat stand is owned starter décor and stays in storage until placed.
 
 - 17:20 PT Oct 14: Merged PR #8 (coat bag stand registered as starter décor). Verified harness 72/0, eval:offline 8/8, validate, run_all, chapter1, full_player_path, and furnishing projection green.
+
+### Round 7 — 2026-10-15
+
+**What changed**
+- Bound the GALLERY-approved `desk_lamp_kit` (`desk-lamp-kit-v2`, mean 2.67 / min 2 in `dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md`) to the founder desk as a host-surface decor kit. It is not freestanding furniture: zero occupied cells, Kit → desk. It does not replace `founder_strategy_kit`. Lamp overlays are appended after the role-kit layers.
+- `furnishing_catalog.json` adds `decor_kits.desk_lamp_kit`, `employee_decor_kits.founder = desk_lamp_kit`, and the fragment's `source_copies`. Runtime PNGs were already tracked and match those SHA-256 hashes. Godot `.import` sidecars for those PNGs are now tracked. No inventory column or furnishing-schema enum was added; the catalog map is enough.
+- `office_layout.gd` loads `decor_kits` and `employee_decor_kits`. A placement uses `decor_kit` / `decorKit` when that field is non-empty, otherwise the owner map. Host kind and owner must match. Render layers append and visual bounds union. A mismatch records a direction error, the same way a role kit does.
+- The harness unions the decor kit's `visual_bounds` with the desk and the role kit when `employee_decor_kits` names one for that `ownerId` and `host_kind` matches. It still adds no cells.
+- Chapter 1, the full player path, and furnishing projection assert the founder desk wears both kits: two strategy layers, then two lamp layers (four furnishing-library kit layers). Mina and Theo stay at two. The dev capture tool checks the same stack on the founder desk.
+
+**Art HOLD**
+- No new art was generated or edited. The lamp layers are the already-copied byte-exact v2 PNGs. No sitting, outdoor scene, new hire, Chapter 3, founder-seated pose, or unused role kit was added.
+
+**Remaining gaps (ranked)**
+1. Creative has a locomotion sheet and stands at the desk. There is no seated sheet, and none was invented.
+2. Unbound seated, outdoor, waiting-lunch, and unused furnishing-kit art stays untracked. Founder seated/N/E/W workstation poses are QA-only, not bind-approved. `customer_success_kit`, `engineer_build_kit`, `finance_accounts_kit`, `growth_analytics_kit`, `lawyer_contract_kit`, and `product_prototype_kit` stay unbound.
+3. The live path is still a harness driver, not a watched windowed playtest.
+4. A cheap reviewer can still sit just under the 2.5 ready line. Round 2's passing ads score was 2.60.
+5. After the Chapter 2 end screen, ordinary work orders continue. No Chapter 3 content is authored.
+
+**Test results** (no paid live evals; Node 22 / unpaid fake provider)
+- `cd harness && npm test` — 72 pass, 0 fail, 2 skipped
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass
+- `test_furnishing_projection.gd` — 246 checks, 0 failures (founder desk: 2 strategy + 2 lamp layers on every facing; Mina and Theo stay at 2)
+- `test_chapter1_first_player.gd` — CHAPTER1 PASS (stops at Connect; host credentials ignored; founder desk stacks the lamp on the strategy kit)
+- `test_full_player_path.gd` — FULLPATH PASS (offline provider, through brand completion and the Chapter 2 end screen; founder desk stacks the lamp on the strategy kit)
+
+**CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The founder desk shows the strategy kit and the desk lamp from day 1.

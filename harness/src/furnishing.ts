@@ -43,6 +43,7 @@ interface Resolved {
   id: string; occupied: Cell[]; clearance: Cell[]; targets: Cell[]; bounds: Rect; headroom: Rect[];
 }
 interface RoleKit { host_kind: string; owner_id: string; facing_profiles: Record<Facing, { visual_bounds: Rect }> }
+interface DecorKit { host_kind: string; owner_id: string; facing_profiles: Record<Facing, { visual_bounds: Rect }> }
 const FACINGS = ["north", "east", "south", "west"];
 const key = (cell: Cell): string => `${cell[0]},${cell[1]}`;
 const plus = (left: Cell, right: Cell): Cell => [left[0] + right[0], left[1] + right[1]];
@@ -66,6 +67,8 @@ export class FurnishingGeometry {
   readonly starterDecor: Array<{ id: string; kind: string }>;
   readonly employeeRoleKits: Record<string, string>;
   readonly roleKits: Record<string, RoleKit>;
+  readonly employeeDecorKits: Record<string, string>;
+  readonly decorKits: Record<string, DecorKit>;
   readonly floor = new Set<string>();
   readonly circulation = new Set<string>();
   readonly entrances = new Set<string>();
@@ -74,11 +77,13 @@ export class FurnishingGeometry {
     const data = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "game", "data");
     this.room = JSON.parse(readFileSync(join(data, "office_layout.json"), "utf8")) as Room;
     this.catalog = (JSON.parse(readFileSync(join(data, "furniture_catalog.json"), "utf8")) as { furniture: Record<string, Profile> }).furniture;
-    const additions = JSON.parse(readFileSync(join(data, "furnishing_catalog.json"), "utf8")) as { furniture: Record<string, Profile>; starter_decor: Array<{ id: string; kind: string }>; employee_role_kits: Record<string, string>; role_kits: Record<string, RoleKit> };
+    const additions = JSON.parse(readFileSync(join(data, "furnishing_catalog.json"), "utf8")) as { furniture: Record<string, Profile>; starter_decor: Array<{ id: string; kind: string }>; employee_role_kits: Record<string, string>; role_kits: Record<string, RoleKit>; employee_decor_kits?: Record<string, string>; decor_kits?: Record<string, DecorKit> };
     Object.assign(this.catalog, additions.furniture);
     this.starterDecor = additions.starter_decor;
     this.employeeRoleKits = additions.employee_role_kits;
     this.roleKits = additions.role_kits;
+    this.employeeDecorKits = additions.employee_decor_kits ?? {};
+    this.decorKits = additions.decor_kits ?? {};
     for (const rect of this.room.floor_rects) addRectangle(this.floor, rect);
     for (const rect of this.room.wall_rects) addRectangle(this.floor, rect, false);
     for (const rect of this.room.circulation_rects) addRectangle(this.circulation, rect);
@@ -92,7 +97,12 @@ export class FurnishingGeometry {
 
   #boundsAt(bounds: Rect, anchor: Cell): Rect { return [anchor[0] + bounds[0], anchor[1] + bounds[1], bounds[2], bounds[3]]; }
   #world(grid: Cell): Cell { return [grid[0] * 32 + 16, grid[1] * 32 + 16]; }
-  #resolve(id: string, kind: string, placement: FurniturePlacement, roleKit = ""): Resolved {
+  #unionBounds(left: Rect, right: Rect): Rect {
+    const x = Math.min(left[0], right[0]);
+    const y = Math.min(left[1], right[1]);
+    return [x, y, Math.max(left[0] + left[2], right[0] + right[2]) - x, Math.max(left[1] + left[3], right[1] + right[3]) - y];
+  }
+  #resolve(id: string, kind: string, placement: FurniturePlacement, roleKit = "", ownerId = ""): Resolved {
     const base = this.catalog[kind];
     const direction = base?.facing_profiles?.[placement.facing];
     if (!base || !direction || direction.status !== "runtime_ready") throw new Error(`${id}: facing has no approved runtime profile`);
@@ -104,8 +114,15 @@ export class FurnishingGeometry {
       const kit = this.roleKits[roleKit];
       const kitBounds = kit?.facing_profiles?.[placement.facing]?.visual_bounds;
       if (!kit || kit.host_kind !== kind || !kitBounds) throw new Error(`${id}: incompatible workstation role kit`);
-      const x = Math.min(nativeBounds[0], kitBounds[0]), y = Math.min(nativeBounds[1], kitBounds[1]);
-      nativeBounds = [x, y, Math.max(nativeBounds[0] + nativeBounds[2], kitBounds[0] + kitBounds[2]) - x, Math.max(nativeBounds[1] + nativeBounds[3], kitBounds[1] + kitBounds[3]) - y];
+      nativeBounds = this.#unionBounds(nativeBounds, kitBounds);
+    }
+    // Catalog decor kits share the host footprint. Union ink with the role kit; add no cells.
+    const decorId = this.employeeDecorKits[ownerId] ?? "";
+    if (decorId) {
+      const decor = this.decorKits[decorId];
+      const decorBounds = decor?.facing_profiles?.[placement.facing]?.visual_bounds;
+      if (!decor || decor.host_kind !== kind || decor.owner_id !== ownerId || !decorBounds) throw new Error(`${id}: incompatible workstation decor kit`);
+      nativeBounds = this.#unionBounds(nativeBounds, decorBounds);
     }
     const bounds = this.#boundsAt(nativeBounds, plus(this.#world(origin), profile.anchor_offset));
     const targets: Cell[] = [];
@@ -139,11 +156,11 @@ export class FurnishingGeometry {
       const item = items.get(id);
       if (!item) throw new Error(`Furniture is not owned: ${id}`);
       if (!placement || Object.keys(placement).some((field) => !["grid", "facing"].includes(field)) || !cell(placement.grid) || !FACINGS.includes(placement.facing)) throw new Error(`${id}: invalid integer grid or facing`);
-      resolved.push(this.#resolve(id, item.kind, placement, item.roleKit));
+      resolved.push(this.#resolve(id, item.kind, placement, item.roleKit, item.ownerId));
     }
     // Reserve every future station in its authored position. This is the same
     // all-stage gate used by the game, so a later hire never evicts player decor.
-    for (const prop of this.room.props) if (!items.has(prop.id)) resolved.push(this.#resolve(prop.id, prop.kind, prop, this.employeeRoleKits[prop.owner_id ?? ""] ?? ""));
+    for (const prop of this.room.props) if (!items.has(prop.id)) resolved.push(this.#resolve(prop.id, prop.kind, prop, this.employeeRoleKits[prop.owner_id ?? ""] ?? "", prop.owner_id ?? ""));
     const occupied = new Map<string, string>();
     for (const item of resolved) {
       for (const grid of item.occupied) {
@@ -198,7 +215,7 @@ export class FurnishingGeometry {
       for (const item of inventory) {
         const previous = current[item.id];
         if (!previous || canonical(previous) === canonical(placements[item.id])) continue;
-        const old = this.#resolve(item.id, item.kind, previous, item.roleKit);
+        const old = this.#resolve(item.id, item.kind, previous, item.roleKit, item.ownerId);
         if ([...old.occupied, ...old.clearance].some((grid) => key(grid) === key(actor.grid))) throw new Error(`${item.id}: wait for the actor to leave before moving this furniture`);
       }
     }
