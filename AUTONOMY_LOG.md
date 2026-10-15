@@ -211,3 +211,5 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - `test_full_player_path.gd` — FULLPATH PASS
 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The coat stand is owned starter décor and stays in storage until placed.
+
+- 17:20 PT Oct 14: Merged PR #8 (coat bag stand registered as starter décor). Verified harness 72/0, eval:offline 8/8, validate, run_all, chapter1, full_player_path, and furnishing projection green.
