@@ -278,3 +278,5 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - `capture_furnishing_runtime.gd --diagnose --decor-only` — 79 checks, 0 failures (five native décor rotate through all facings)
 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The water station is owned starter décor and stays in storage until placed.
+
+- 11:39 PT Oct 15: Merged PR #10 (water_station registered as two-cell starter décor). Verified harness 72/0, eval:offline 8/8, validate, run_all, chapter1, full_player_path, furnishing projection, furniture directions, archive production, and decor capture green.
