@@ -68,6 +68,9 @@ test("starter inventory, four-facing placement, move, store and Undo survive res
   assert.equal(initial.inventory.length, founderInventory); assert.equal(initial.revision, 0);
   assert.equal(initial.inventory.filter((item) => !item.essential).length, starterCount);
   assert.equal(initial.inventory.find((item) => item.id === "founder-workstation")?.roleKit, "founder_strategy_kit");
+  assert.equal(db.furnishing.geometry.employeeDecorKits.founder, "desk_lamp_kit");
+  assert.equal(db.furnishing.geometry.decorKits.desk_lamp_kit?.host_kind, "desk");
+  assert.equal(db.furnishing.geometry.decorKits.desk_lamp_kit?.owner_id, "founder");
   assert.deepEqual(Object.keys(initial.placements), ["founder-workstation", "decor-phone_booth"]);
   assert.deepEqual(initial.placements["decor-phone_booth"], { grid: [3, 18], facing: "south" });
   assert.notDeepEqual(initial.placements["decor-phone_booth"]?.grid, [22, 16]);

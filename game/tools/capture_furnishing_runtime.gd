@@ -150,6 +150,13 @@ func run() -> void:
 	state.placements["decor-coat_bag_stand"] = {"grid": [19, 18], "facing": "south"}
 	state.placements["decor-rolling_storage_pedestal"] = {"grid": [7, 13], "facing": "south"}
 	check(main.room.apply_furnishing_state(state), "Four native starter decorations fit beside production stations")
+	var founder_lamp_layers := 0
+	var founder_strategy_layers := 0
+	for layer: Dictionary in main.room.placement_by_id("founder-workstation").render_layers:
+		var art := str(layer.get("art", ""))
+		if art.contains("desk_lamp_kit"): founder_lamp_layers += 1
+		if art.contains("founder_strategy_kit"): founder_strategy_layers += 1
+	check(founder_strategy_layers == 2 and founder_lamp_layers == 2, "Founder desk stacks desk_lamp_kit after founder_strategy_kit")
 	main._on_room_placements_changed()
 	for actor: EmployeeAvatar in main._employees.values(): actor.set_physics_process(false)
 	await step(4)

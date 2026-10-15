@@ -110,6 +110,13 @@ func _run() -> void:
 	check(str(mira_desk.get("role_kit", "")) == "mina_discovery_kit", "Mina's desk wears the discovery kit")
 	var founder_desk := main.room.placement_by_id("founder-workstation")
 	check(str(founder_desk.get("role_kit", "")) == "founder_strategy_kit", "The founder desk wears the strategy kit")
+	var founder_strategy_layers := 0
+	var founder_lamp_layers := 0
+	for layer: Dictionary in founder_desk.render_layers:
+		var art := str(layer.get("art", ""))
+		if art.contains("founder_strategy_kit"): founder_strategy_layers += 1
+		if art.contains("desk_lamp_kit"): founder_lamp_layers += 1
+	check(founder_strategy_layers == 2 and founder_lamp_layers == 2, "The founder desk stacks the desk lamp kit on the strategy kit")
 	var meet := button_named("Meet Mina")
 	await click(meet)
 	await frames(12)
@@ -172,6 +179,14 @@ func _run() -> void:
 	var founder_kit_value: Variant = kits.get("founder_strategy_kit", {})
 	var founder_kit: Dictionary = founder_kit_value if founder_kit_value is Dictionary else {}
 	check(str(founder_kit.get("owner_id", "")) == "founder" and str(founder_kit.get("host_kind", "")) == "desk", "Founder strategy kit is bound to the founder-owned desk")
+	var decor_map_value: Variant = catalog.get("employee_decor_kits", {})
+	var decor_kits_value: Variant = catalog.get("decor_kits", {})
+	var decor_map: Dictionary = decor_map_value if decor_map_value is Dictionary else {}
+	var decor_kits: Dictionary = decor_kits_value if decor_kits_value is Dictionary else {}
+	var lamp_value: Variant = decor_kits.get("desk_lamp_kit", {})
+	var lamp_kit: Dictionary = lamp_value if lamp_value is Dictionary else {}
+	check(str(decor_map.get("founder", "")) == "desk_lamp_kit", "Founder maps to desk_lamp_kit")
+	check(str(lamp_kit.get("owner_id", "")) == "founder" and str(lamp_kit.get("host_kind", "")) == "desk", "Desk lamp kit is a founder desk host-surface decor kit")
 	print("CHAPTER1 ", "PASS" if failures.is_empty() else "FAIL %d" % failures.size())
 	for failure: String in failures:
 		print("FAILURE ", failure)

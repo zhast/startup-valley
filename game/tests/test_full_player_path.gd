@@ -194,6 +194,13 @@ func _run() -> void:
 	check(not main.company_panel.visible, "Meet Mina returns to the office")
 	var founder_desk := main.room.placement_by_id("founder-workstation")
 	check(str(founder_desk.get("role_kit", "")) == "founder_strategy_kit", "The founder desk wears the strategy kit")
+	var founder_strategy_layers := 0
+	var founder_lamp_layers := 0
+	for layer: Dictionary in founder_desk.render_layers:
+		var art := str(layer.get("art", ""))
+		if art.contains("founder_strategy_kit"): founder_strategy_layers += 1
+		if art.contains("desk_lamp_kit"): founder_lamp_layers += 1
+	check(founder_strategy_layers == 2 and founder_lamp_layers == 2, "The founder desk stacks the desk lamp kit on the strategy kit")
 	if main.founder_hud._next_step_label != null:
 		next_step = main.founder_hud._next_step_label.text
 	check(main.founder_hud._next_step_hint.visible and next_step.to_lower().contains("website"), "Office hint names the website work order: " + next_step)

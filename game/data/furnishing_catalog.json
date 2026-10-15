@@ -49,6 +49,9 @@
     "theo": "theo_campaign_kit",
     "creative": "creative_design_kit"
   },
+  "employee_decor_kits": {
+    "founder": "desk_lamp_kit"
+  },
   "role_kits": {
     "mina_discovery_kit": {
       "display_name": "Mina discovery kit",
@@ -1045,6 +1048,257 @@
       },
       "host_kind": "desk",
       "owner_id": "founder"
+    }
+  },
+  "decor_kits": {
+    "desk_lamp_kit": {
+      "display_name": "Desk task-light kit",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "host_kind": "desk",
+      "owner_id": "founder",
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/north-whole.png",
+          "visual_bounds": [
+            17,
+            -46,
+            29,
+            27
+          ],
+          "render_layers": [
+            {
+              "name": "desk_lamp_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 2,
+              "art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/north-surface_decor_rear.png",
+              "content_bounds": [
+                113,
+                114,
+                23,
+                23
+              ]
+            },
+            {
+              "name": "desk_lamp_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 4,
+              "art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/north-surface_decor_front.png",
+              "content_bounds": [
+                113,
+                116,
+                29,
+                25
+              ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/east-whole.png",
+          "visual_bounds": [
+            -5,
+            -9,
+            20,
+            18
+          ],
+          "render_layers": [
+            {
+              "name": "desk_lamp_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 2,
+              "art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/east-surface_decor_rear.png",
+              "content_bounds": [
+                95,
+                151,
+                13,
+                16
+              ]
+            },
+            {
+              "name": "desk_lamp_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 4,
+              "art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/east-surface_decor_front.png",
+              "content_bounds": [
+                91,
+                161,
+                20,
+                8
+              ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/south-whole.png",
+          "visual_bounds": [
+            22,
+            -47,
+            24,
+            28
+          ],
+          "render_layers": [
+            {
+              "name": "desk_lamp_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 2,
+              "art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/south-surface_decor_rear.png",
+              "content_bounds": [
+                118,
+                113,
+                19,
+                24
+              ]
+            },
+            {
+              "name": "desk_lamp_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 4,
+              "art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/south-surface_decor_front.png",
+              "content_bounds": [
+                120,
+                124,
+                22,
+                17
+              ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/west-whole.png",
+          "visual_bounds": [
+            -15,
+            -73,
+            20,
+            21
+          ],
+          "render_layers": [
+            {
+              "name": "desk_lamp_kit_surface_decor_rear",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 2,
+              "art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/west-surface_decor_rear.png",
+              "content_bounds": [
+                82,
+                87,
+                14,
+                21
+              ]
+            },
+            {
+              "name": "desk_lamp_kit_surface_decor_front",
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "z_offset": 4,
+              "art": "res://assets/runtime/office/furnishing-library/desk_lamp_kit/west-surface_decor_front.png",
+              "content_bounds": [
+                81,
+                87,
+                20,
+                19
+              ]
+            }
+          ]
+        }
+      }
     }
   },
   "furniture": {
@@ -4271,6 +4525,66 @@
       "source": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/west-whole.png",
       "destination": "game/assets/runtime/office/furnishing-library/coat_bag_stand/west-whole.png",
       "sha256": "1782b045b8c67d695c3c9ce525f67ca40d80e9c30458a1641f65fbc9ae4d08e9"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/north-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/north-surface_decor_rear.png",
+      "sha256": "58f1bb024ca0b58a3efce2847eb421b129292f4438159590cfe3107be32ac3f1"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/north-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/north-surface_decor_front.png",
+      "sha256": "4c7f98653ebb1badfcd8c36ffded8a6bab80fc0c252874ee32b0d0a34c3fbf40"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/north-whole.png",
+      "sha256": "550a287fe77487cd751d46fdf17fe171eea8a5041ecd3ab4dce1b96076089311"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/east-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/east-surface_decor_rear.png",
+      "sha256": "4903c80f1cfe92c3c1836f961af5963780b0fb4570ab32fed3744f6f1c72f383"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/east-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/east-surface_decor_front.png",
+      "sha256": "a8acefe6b1cf5bc7a1fad7a28d658315cb2f5337afb053fd943a7e81a60b0426"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/east-whole.png",
+      "sha256": "e20bdde0f78f2e3f2f9238e0ebab2ed0432375b380b967eff7c0c6a33351d08a"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/south-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/south-surface_decor_rear.png",
+      "sha256": "28357f06ab4ffe2f5bd7e596a1cec69e7d8fe87b0acb55eee0af7b8b37bf7c2c"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/south-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/south-surface_decor_front.png",
+      "sha256": "6756842251b8c1e5e305765733456deae9443238d2875378bb477775b6110245"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/south-whole.png",
+      "sha256": "81b6588fd6a4e3e408e333d163c44a9a3ac7a052d7463113b4a4af887d374c1c"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/west-surface_decor_rear.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/west-surface_decor_rear.png",
+      "sha256": "00ca738ba4be0c4fd4627d0d9a75e90913c5f88c45ed44ff92774f2ee97b3b1f"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/west-surface_decor_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/west-surface_decor_front.png",
+      "sha256": "423719f2042c28eca3d32d29e995f3590ae3e613f9d06ff820bddabc26cd628d"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/west-whole.png",
+      "sha256": "7b5fcdb43bf23e2a939e4895db0edfb1d1714170415f09719663f2686840bb80"
     }
   ]
 }
