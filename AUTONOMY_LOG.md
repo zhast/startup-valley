@@ -244,3 +244,5 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - `test_full_player_path.gd` — FULLPATH PASS (offline provider, through brand completion and the Chapter 2 end screen; founder desk stacks the lamp on the strategy kit)
 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The founder desk shows the strategy kit and the desk lamp from day 1.
+
+- 09:22 PT Oct 15: Merged PR #9 (desk_lamp_kit bound to the founder desk as stacked decor). Verified harness 72/0, eval:offline 8/8, validate, run_all, chapter1, full_player_path, and furnishing projection green.
