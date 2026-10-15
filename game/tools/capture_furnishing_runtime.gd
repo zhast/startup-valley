@@ -147,8 +147,9 @@ func run() -> void:
 	var state := state_for(2)
 	state.placements["decor-broadleaf_planter"] = {"grid": [22, 16], "facing": "south"}
 	state.placements["decor-task_floor_lamp"] = {"grid": [25, 18], "facing": "south"}
+	state.placements["decor-coat_bag_stand"] = {"grid": [19, 18], "facing": "south"}
 	state.placements["decor-rolling_storage_pedestal"] = {"grid": [7, 13], "facing": "south"}
-	check(main.room.apply_furnishing_state(state), "Three native starter decorations fit beside production stations")
+	check(main.room.apply_furnishing_state(state), "Four native starter decorations fit beside production stations")
 	main._on_room_placements_changed()
 	for actor: EmployeeAvatar in main._employees.values(): actor.set_physics_process(false)
 	await step(4)
@@ -179,8 +180,8 @@ func run() -> void:
 		return
 	if OS.get_cmdline_user_args().has("--decor-only"):
 		for side: String in OfficeLayout.FACINGS:
-			for id: String in ["decor-broadleaf_planter", "decor-task_floor_lamp", "decor-rolling_storage_pedestal"]: state.placements[id].facing = side
-			check(main.room.apply_furnishing_state(state), side + " three native decorations retain valid clearance/layer geometry")
+			for id: String in ["decor-broadleaf_planter", "decor-task_floor_lamp", "decor-coat_bag_stand", "decor-rolling_storage_pedestal"]: state.placements[id].facing = side
+			check(main.room.apply_furnishing_state(state), side + " four native decorations retain valid clearance/layer geometry")
 			main._on_room_placements_changed()
 			await step(2)
 			await capture("decor-" + side)

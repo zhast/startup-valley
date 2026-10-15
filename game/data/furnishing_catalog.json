@@ -11,6 +11,10 @@
       "kind": "task_floor_lamp"
     },
     {
+      "id": "decor-coat_bag_stand",
+      "kind": "coat_bag_stand"
+    },
+    {
       "id": "decor-rolling_storage_pedestal",
       "kind": "rolling_storage_pedestal"
     },
@@ -2012,6 +2016,490 @@
       },
       "interaction_kind": "none"
     },
+    "coat_bag_stand": {
+      "display_name": "Coat and bag stand",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/coat_bag_stand/north-whole.png",
+          "visual_bounds": [
+            -30,
+            -157,
+            60,
+            162
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/coat_bag_stand/north-floor_shadow.png",
+              "name": "CoatBagStandFloorShadow",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                37,
+                199,
+                54,
+                14
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/coat_bag_stand/north-rear_structure.png",
+              "name": "CoatBagStandRearStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": -4,
+              "content_bounds": [
+                35,
+                51,
+                59,
+                154
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/coat_bag_stand/north-front_structure.png",
+              "name": "CoatBagStandFrontStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                34,
+                77,
+                58,
+                135
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              -1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -30,
+            -157,
+            60,
+            162
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                -1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/coat_bag_stand/east-whole.png",
+          "visual_bounds": [
+            -26,
+            -155,
+            54,
+            160
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/coat_bag_stand/east-floor_shadow.png",
+              "name": "CoatBagStandFloorShadow",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                38,
+                199,
+                54,
+                14
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/coat_bag_stand/east-rear_structure.png",
+              "name": "CoatBagStandRearStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": -4,
+              "content_bounds": [
+                48,
+                53,
+                34,
+                152
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/coat_bag_stand/east-front_structure.png",
+              "name": "CoatBagStandFrontStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                45,
+                79,
+                40,
+                133
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -26,
+            -155,
+            54,
+            160
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/coat_bag_stand/south-whole.png",
+          "visual_bounds": [
+            -31,
+            -158,
+            61,
+            163
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/coat_bag_stand/south-floor_shadow.png",
+              "name": "CoatBagStandFloorShadow",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                36,
+                199,
+                54,
+                14
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/coat_bag_stand/south-rear_structure.png",
+              "name": "CoatBagStandRearStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": -4,
+              "content_bounds": [
+                33,
+                50,
+                60,
+                155
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/coat_bag_stand/south-front_structure.png",
+              "name": "CoatBagStandFrontStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                36,
+                78,
+                58,
+                134
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -31,
+            -158,
+            61,
+            163
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/coat_bag_stand/west-whole.png",
+          "visual_bounds": [
+            -29,
+            -156,
+            54,
+            161
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/coat_bag_stand/west-floor_shadow.png",
+              "name": "CoatBagStandFloorShadow",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                35,
+                199,
+                54,
+                14
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/coat_bag_stand/west-rear_structure.png",
+              "name": "CoatBagStandRearStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": -4,
+              "content_bounds": [
+                45,
+                52,
+                36,
+                153
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/coat_bag_stand/west-front_structure.png",
+              "name": "CoatBagStandFrontStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                256
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                42,
+                80,
+                40,
+                132
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              -1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -29,
+            -156,
+            54,
+            161
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                -1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
     "rolling_storage_pedestal": {
       "display_name": "Rolling storage pedestal",
       "facings": [
@@ -3703,6 +4191,86 @@
       "source": "game/tests/fixtures/furniture-calibration/theo-campaign-kit-v1/west-whole.png",
       "destination": "game/assets/runtime/office/furnishing-library/theo_campaign_kit/west-whole.png",
       "sha256": "45c64fc7fd65dfc1083824460124eda4950f919391c3ff5d247be6db7ab84173"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/north-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/coat_bag_stand/north-floor_shadow.png",
+      "sha256": "e93a9e9e024bb0039176ccc367579148cdc2594b8bbbeff4e11549c2bc22e521"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/north-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/coat_bag_stand/north-rear_structure.png",
+      "sha256": "d234fa68af5e006fac8e1edf0e61ff8b23841826b576e4ca3ca10f4c68dc1cde"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/north-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/coat_bag_stand/north-front_structure.png",
+      "sha256": "54a1993426c9031e4f808ed43e81f22eec19ededd86c379ada67138f64acb12c"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/coat_bag_stand/north-whole.png",
+      "sha256": "f98302d672dc43d23f1a5dddb20c798d2eda629b8ee171ba80e03b0975c0322a"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/east-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/coat_bag_stand/east-floor_shadow.png",
+      "sha256": "53de8fa48ff74879aa4f3ab96efa5e31dc240a9d6cbe4ed2fe3c9b070f5c1e76"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/east-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/coat_bag_stand/east-rear_structure.png",
+      "sha256": "8cfed3264d95a26bb50a8bb15f9362353866e1902345c6b733dc6b19b6afa3bf"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/east-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/coat_bag_stand/east-front_structure.png",
+      "sha256": "1587e472b98ccdeac6b0e2aeebc645b4820f5ea3b1816a6581b18115de359842"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/coat_bag_stand/east-whole.png",
+      "sha256": "ffd2a1adb9a5a49aa01a5bd09228d3ad225fb7c37c0bb8f840cc800337603bcf"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/south-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/coat_bag_stand/south-floor_shadow.png",
+      "sha256": "a1283b03dce71d23cd446e629bf9a9a49fb36189c7caf5ea8d432ea6a9da2714"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/south-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/coat_bag_stand/south-rear_structure.png",
+      "sha256": "c5754150994cf6eb4b5675cd5117e9b9601e7d67d1c78df859b00dcf8bdc10a0"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/south-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/coat_bag_stand/south-front_structure.png",
+      "sha256": "e0316698ab337d07bf4efa58607ba23fa10341cf475e0374b44b7c3c60cb079f"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/coat_bag_stand/south-whole.png",
+      "sha256": "6952d38731e7c5dcdb19a09c6a4383cebbb512b06489ed3e5e79cef576b1ab63"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/west-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/coat_bag_stand/west-floor_shadow.png",
+      "sha256": "2796936cc6a36c922fb5dabd0f76273bcc44629a07fbc351728509b92e85c584"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/west-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/coat_bag_stand/west-rear_structure.png",
+      "sha256": "54c4a0641bc51cb432ab9d403652f379d7a3a790d5e1206c81248e7119dc763d"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/west-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/coat_bag_stand/west-front_structure.png",
+      "sha256": "14b52a5e65274225a5c680db5d793b0b1ae65a5a0a7b669be5f3f01503a64f91"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/coat-bag-stand-v3/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/coat_bag_stand/west-whole.png",
+      "sha256": "1782b045b8c67d695c3c9ce525f67ca40d80e9c30458a1641f65fbc9ae4d08e9"
     }
   ]
 }
