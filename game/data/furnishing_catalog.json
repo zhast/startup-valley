@@ -23,6 +23,10 @@
       "kind": "resource_cart"
     },
     {
+      "id": "decor-printer_scanner_station",
+      "kind": "printer_scanner_station"
+    },
+    {
       "id": "decor-rolling_storage_pedestal",
       "kind": "rolling_storage_pedestal"
     },
@@ -3762,6 +3766,506 @@
       },
       "interaction_kind": "none"
     },
+    "printer_scanner_station": {
+      "display_name": "Printer station",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/printer_scanner_station/north-whole.png",
+          "visual_bounds": [
+            -21,
+            -70,
+            74,
+            86
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/printer_scanner_station/north-floor_shadow.png",
+              "name": "PrinterScannerStationV1NorthFloorShadow",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                59,
+                155,
+                74,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/printer_scanner_station/north-rear_structure.png",
+              "name": "PrinterScannerStationV1NorthRearStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                64,
+                74,
+                64,
+                86
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/printer_scanner_station/north-front_structure.png",
+              "name": "PrinterScannerStationV1NorthFrontStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                69,
+                99,
+                54,
+                56
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              -1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -21,
+            -70,
+            74,
+            86
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              0,
+              -1
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/printer_scanner_station/east-whole.png",
+          "visual_bounds": [
+            -21,
+            -70,
+            42,
+            118
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/printer_scanner_station/east-floor_shadow.png",
+              "name": "PrinterScannerStationV1EastFloorShadow",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                59,
+                187,
+                42,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/printer_scanner_station/east-rear_structure.png",
+              "name": "PrinterScannerStationV1EastRearStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                64,
+                74,
+                32,
+                118
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/printer_scanner_station/east-front_structure.png",
+              "name": "PrinterScannerStationV1EastFrontStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                69,
+                119,
+                22,
+                68
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -21,
+            -70,
+            42,
+            118
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              1,
+              0
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/printer_scanner_station/south-whole.png",
+          "visual_bounds": [
+            -53,
+            -70,
+            74,
+            86
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/printer_scanner_station/south-floor_shadow.png",
+              "name": "PrinterScannerStationV1SouthFloorShadow",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                27,
+                155,
+                74,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/printer_scanner_station/south-rear_structure.png",
+              "name": "PrinterScannerStationV1SouthRearStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                32,
+                74,
+                64,
+                86
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/printer_scanner_station/south-front_structure.png",
+              "name": "PrinterScannerStationV1SouthFrontStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                37,
+                99,
+                54,
+                56
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -53,
+            -70,
+            74,
+            86
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              0,
+              1
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/printer_scanner_station/west-whole.png",
+          "visual_bounds": [
+            -21,
+            -102,
+            42,
+            118
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/printer_scanner_station/west-floor_shadow.png",
+              "name": "PrinterScannerStationV1WestFloorShadow",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                59,
+                155,
+                42,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/printer_scanner_station/west-rear_structure.png",
+              "name": "PrinterScannerStationV1WestRearStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                64,
+                42,
+                32,
+                118
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/printer_scanner_station/west-front_structure.png",
+              "name": "PrinterScannerStationV1WestFrontStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                69,
+                87,
+                22,
+                68
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              -1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -21,
+            -102,
+            42,
+            118
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              -1,
+              0
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
     "rolling_storage_pedestal": {
       "display_name": "Rolling storage pedestal",
       "facings": [
@@ -5753,6 +6257,86 @@
       "source": "game/tests/fixtures/furniture-calibration/resource-cart-v1/west-whole.png",
       "destination": "game/assets/runtime/office/furnishing-library/resource_cart/west-whole.png",
       "sha256": "270b00831e12525979c37eec7ce2a8843c2cb473b6e5e204e98b838274eb221d"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/printer-scanner-station-v1/north-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/printer_scanner_station/north-floor_shadow.png",
+      "sha256": "128137f308d737b443b706069b5525c7cd01858fb420a38525cb5cada6ee91b8"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/printer-scanner-station-v1/north-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/printer_scanner_station/north-rear_structure.png",
+      "sha256": "fef103572db495173d3822b18f12eeea3548c53f4097435f6435d05253b8603f"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/printer-scanner-station-v1/north-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/printer_scanner_station/north-front_structure.png",
+      "sha256": "d519dcd0cc67b4a02962f3258fa27c4fae98aa695f8a031b8ee877d79c4f17e1"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/printer-scanner-station-v1/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/printer_scanner_station/north-whole.png",
+      "sha256": "a8b41fc397129879e16386459e97b7060507aaffa3c567c07ac3f736f6ba3372"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/printer-scanner-station-v1/east-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/printer_scanner_station/east-floor_shadow.png",
+      "sha256": "723b1d16e9f8987d37b1f7d6cc447b3a791766dacebaf9cf5a0c72f8ba14a244"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/printer-scanner-station-v1/east-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/printer_scanner_station/east-rear_structure.png",
+      "sha256": "a55a29877ca6d840a61123854c0d3d15bf5ce79ea1abab53975805010eaa61fb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/printer-scanner-station-v1/east-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/printer_scanner_station/east-front_structure.png",
+      "sha256": "bea9f38b0ce1afd8eca530d648d197c8e479a6f26b5f59dfd20c0328f4d27b3f"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/printer-scanner-station-v1/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/printer_scanner_station/east-whole.png",
+      "sha256": "f68e61ddbf13948832f33ea72dedfe8fb4c38010fc33f2f4f5659aa149e34a6c"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/printer-scanner-station-v1/south-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/printer_scanner_station/south-floor_shadow.png",
+      "sha256": "d6a0380bde710f7c8ec3b4d947f7178b0784099d931c302130abcaefa42784d7"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/printer-scanner-station-v1/south-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/printer_scanner_station/south-rear_structure.png",
+      "sha256": "c7745faf8bb71f22a75bdaa6320cd1198b4d33a69a958abc146b5b0924b767e9"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/printer-scanner-station-v1/south-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/printer_scanner_station/south-front_structure.png",
+      "sha256": "cb23d0beb4658f48732b1c947de58e11d92c7595cdae9da3df101dec144a373a"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/printer-scanner-station-v1/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/printer_scanner_station/south-whole.png",
+      "sha256": "eb2bc832b000459204484b0ad6637db27843007c0eeaeb92ff0a40334e29421e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/printer-scanner-station-v1/west-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/printer_scanner_station/west-floor_shadow.png",
+      "sha256": "7191add134e3972d6fe6fb0f87700b94d99d375dc5c9682a97964eff6760bde7"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/printer-scanner-station-v1/west-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/printer_scanner_station/west-rear_structure.png",
+      "sha256": "a4a0f7e4ad40200c3c5d628f3effe0f9c8d5b3b62883aa77a2c8570e017c9049"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/printer-scanner-station-v1/west-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/printer_scanner_station/west-front_structure.png",
+      "sha256": "9e1951ab7ae9d776345db5143577b527659e2e29d4d8fbe26b2b28412886c45e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/printer-scanner-station-v1/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/printer_scanner_station/west-whole.png",
+      "sha256": "591e3be55f17595111ada70bb972a2c0296da4ea38be6f2b8f334bc97c83b374"
     }
   ]
 }
