@@ -19,6 +19,10 @@
       "kind": "water_station"
     },
     {
+      "id": "decor-resource_cart",
+      "kind": "resource_cart"
+    },
+    {
       "id": "decor-rolling_storage_pedestal",
       "kind": "rolling_storage_pedestal"
     },
@@ -3258,6 +3262,506 @@
       },
       "interaction_kind": "none"
     },
+    "resource_cart": {
+      "display_name": "Supply cart",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/resource_cart/north-whole.png",
+          "visual_bounds": [
+            -21,
+            -104,
+            74,
+            120
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/resource_cart/north-floor_shadow.png",
+              "name": "ResourceCartV1NorthFloorShadow",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                59,
+                155,
+                74,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/resource_cart/north-rear_structure.png",
+              "name": "ResourceCartV1NorthRearStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                64,
+                40,
+                64,
+                118
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/resource_cart/north-front_structure.png",
+              "name": "ResourceCartV1NorthFrontStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                64,
+                63,
+                64,
+                97
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              -1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -21,
+            -104,
+            74,
+            120
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              0,
+              -1
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/resource_cart/east-whole.png",
+          "visual_bounds": [
+            -21,
+            -88,
+            57,
+            136
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/resource_cart/east-floor_shadow.png",
+              "name": "ResourceCartV1EastFloorShadow",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                59,
+                187,
+                42,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/resource_cart/east-rear_structure.png",
+              "name": "ResourceCartV1EastRearStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                64,
+                56,
+                52,
+                134
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/resource_cart/east-front_structure.png",
+              "name": "ResourceCartV1EastFrontStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                64,
+                65,
+                32,
+                127
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -21,
+            -88,
+            57,
+            136
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              1,
+              0
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/resource_cart/south-whole.png",
+          "visual_bounds": [
+            -53,
+            -88,
+            74,
+            104
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/resource_cart/south-floor_shadow.png",
+              "name": "ResourceCartV1SouthFloorShadow",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                27,
+                155,
+                74,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/resource_cart/south-rear_structure.png",
+              "name": "ResourceCartV1SouthRearStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                32,
+                56,
+                64,
+                102
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/resource_cart/south-front_structure.png",
+              "name": "ResourceCartV1SouthFrontStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                32,
+                63,
+                64,
+                97
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -53,
+            -88,
+            74,
+            104
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              0,
+              1
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/resource_cart/west-whole.png",
+          "visual_bounds": [
+            -36,
+            -120,
+            57,
+            136
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/resource_cart/west-floor_shadow.png",
+              "name": "ResourceCartV1WestFloorShadow",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                59,
+                155,
+                42,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/resource_cart/west-rear_structure.png",
+              "name": "ResourceCartV1WestRearStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                44,
+                24,
+                52,
+                134
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/resource_cart/west-front_structure.png",
+              "name": "ResourceCartV1WestFrontStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                64,
+                33,
+                32,
+                127
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              -1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -36,
+            -120,
+            57,
+            136
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              -1,
+              0
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
     "rolling_storage_pedestal": {
       "display_name": "Rolling storage pedestal",
       "facings": [
@@ -5169,6 +5673,86 @@
       "source": "game/tests/fixtures/furniture-calibration/water-station-v2/west-whole.png",
       "destination": "game/assets/runtime/office/furnishing-library/water_station/west-whole.png",
       "sha256": "9bd97b2c3206491af625aa9bc03584464187c03751f5beb597aa7f0f678571a1"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/resource-cart-v1/north-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/resource_cart/north-floor_shadow.png",
+      "sha256": "128137f308d737b443b706069b5525c7cd01858fb420a38525cb5cada6ee91b8"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/resource-cart-v1/north-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/resource_cart/north-rear_structure.png",
+      "sha256": "3675f618d116edbf740dc1a1233c3b6c3142ced523498bc51f8784e32996ad27"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/resource-cart-v1/north-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/resource_cart/north-front_structure.png",
+      "sha256": "e7dfd9d60296e52a013bb4b1fbbb0164e874c4ccf227964a3e0f911005c30ae9"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/resource-cart-v1/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/resource_cart/north-whole.png",
+      "sha256": "033f65a81deee313abc54d2ec5cdf0a5000e0059e4068439e0bd96f5d3248858"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/resource-cart-v1/east-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/resource_cart/east-floor_shadow.png",
+      "sha256": "723b1d16e9f8987d37b1f7d6cc447b3a791766dacebaf9cf5a0c72f8ba14a244"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/resource-cart-v1/east-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/resource_cart/east-rear_structure.png",
+      "sha256": "fa7b1479d625c6be06a4fe9658d37954d44ccb6236c117e84dca2e4f34c049d7"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/resource-cart-v1/east-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/resource_cart/east-front_structure.png",
+      "sha256": "afc8496e293d612ebbc463edd4c8476f4ae2759b8a92c527b271d8b650828311"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/resource-cart-v1/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/resource_cart/east-whole.png",
+      "sha256": "42cec387a3f94d233addbf07df114a420f096c19557d443ce8df48902540dac8"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/resource-cart-v1/south-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/resource_cart/south-floor_shadow.png",
+      "sha256": "d6a0380bde710f7c8ec3b4d947f7178b0784099d931c302130abcaefa42784d7"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/resource-cart-v1/south-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/resource_cart/south-rear_structure.png",
+      "sha256": "286c64f69edf86d0709e240b2c2100eed7b539e79e566b7274a07b8ce73b27c4"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/resource-cart-v1/south-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/resource_cart/south-front_structure.png",
+      "sha256": "c836f7a749d73e1a61ab57b0cebbab76cad631f3ddc98be5a0f81cd479c2dfe6"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/resource-cart-v1/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/resource_cart/south-whole.png",
+      "sha256": "4fc41442952fdbf4a6136006907b64e4f135cc9ed98990fd9cf617f747a10c65"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/resource-cart-v1/west-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/resource_cart/west-floor_shadow.png",
+      "sha256": "7191add134e3972d6fe6fb0f87700b94d99d375dc5c9682a97964eff6760bde7"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/resource-cart-v1/west-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/resource_cart/west-rear_structure.png",
+      "sha256": "5bce98529f4bc048c0d50bfa63d55df026c910923b481fd8ce28273fabc7cbdb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/resource-cart-v1/west-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/resource_cart/west-front_structure.png",
+      "sha256": "c4bebd07becaf367835f00e9de9ecf008d51d649eeca5c0c8a47bbd632cb981e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/resource-cart-v1/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/resource_cart/west-whole.png",
+      "sha256": "270b00831e12525979c37eec7ce2a8843c2cb473b6e5e204e98b838274eb221d"
     }
   ]
 }
