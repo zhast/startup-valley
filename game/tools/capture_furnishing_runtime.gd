@@ -151,8 +151,12 @@ func run() -> void:
 	# Two-cell footprint. The south décor cluster collides once those pieces rotate;
 	# [24, 8] stays clear of Theo, the research bench, and the other native décor.
 	state.placements["decor-water_station"] = {"grid": [24, 8], "facing": "south"}
+	# Two-cell footprint. [24, 8] is the water station. The south cluster and the
+	# cells beside Theo and the research bench overlap this cart once décor rotates.
+	# [4, 18] stays valid for every facing in the southwest lounge.
+	state.placements["decor-resource_cart"] = {"grid": [4, 18], "facing": "south"}
 	state.placements["decor-rolling_storage_pedestal"] = {"grid": [7, 13], "facing": "south"}
-	check(main.room.apply_furnishing_state(state), "Five native starter decorations fit beside production stations")
+	check(main.room.apply_furnishing_state(state), "Six native starter decorations fit beside production stations")
 	var founder_lamp_layers := 0
 	var founder_strategy_layers := 0
 	for layer: Dictionary in main.room.placement_by_id("founder-workstation").render_layers:
@@ -190,8 +194,8 @@ func run() -> void:
 		return
 	if OS.get_cmdline_user_args().has("--decor-only"):
 		for side: String in OfficeLayout.FACINGS:
-			for id: String in ["decor-broadleaf_planter", "decor-task_floor_lamp", "decor-coat_bag_stand", "decor-water_station", "decor-rolling_storage_pedestal"]: state.placements[id].facing = side
-			check(main.room.apply_furnishing_state(state), side + " five native decorations retain valid clearance/layer geometry")
+			for id: String in ["decor-broadleaf_planter", "decor-task_floor_lamp", "decor-coat_bag_stand", "decor-water_station", "decor-resource_cart", "decor-rolling_storage_pedestal"]: state.placements[id].facing = side
+			check(main.room.apply_furnishing_state(state), side + " six native decorations retain valid clearance/layer geometry")
 			main._on_room_placements_changed()
 			await step(2)
 			await capture("decor-" + side)
