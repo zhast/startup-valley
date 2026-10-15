@@ -106,6 +106,39 @@ func run() -> void:
 					check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, kind + "/" + side + " keeps native separate layers")
 		check(room.apply_furnishing_state(state), kind + " returns to storage")
 		check(room.prop_node(id) == null, kind + " storage removes scene/collision but not ownership")
+	# Two cells, so this stays out of the one-cell loop above. [23, 17] is free
+	# for every facing: footprint, clearance, artwork, and standing headroom.
+	var water_id := "decor-water_station"
+	var water_grid := Vector2i(23, 17)
+	var water_offsets := {
+		"north": [Vector2i(1, 0), Vector2i(0, 0)],
+		"east": [Vector2i(0, 1), Vector2i(0, 0)],
+		"south": [Vector2i(-1, 0), Vector2i(0, 0)],
+		"west": [Vector2i(0, -1), Vector2i(0, 0)],
+	}
+	check(room.layout_model.available_facings("water_station").size() == 4, "water_station has four production-ready authored views")
+	for side: String in OfficeLayout.FACINGS:
+		var candidate := room.layout_model.validate_candidate(water_id, water_grid, side, 2, saved)
+		check(candidate.valid, "water_station/" + side + " can be placed from storage in the room")
+		var next := state.duplicate(true)
+		next.placements[water_id] = {"grid": [water_grid.x, water_grid.y], "facing": side}
+		check(room.apply_furnishing_state(next), "water_station/" + side + " projects into actual TownRoom")
+		var prop := room.prop_node(water_id)
+		var expected: Array[Vector2i] = []
+		for offset: Vector2i in water_offsets[side]:
+			expected.append(water_grid + offset)
+		var placement := room.placement_by_id(water_id)
+		check(prop != null and placement.occupied == expected, "water_station/" + side + " occupies exactly its two footprint cells")
+		var library_layers := 0
+		for layer: Dictionary in placement.render_layers:
+			if str(layer.art).contains("furnishing-library/water_station"):
+				library_layers += 1
+		check(library_layers == 3, "water_station/" + side + " has 3 furnishing-library layers")
+		for child: Node in prop.get_children():
+			if child is Sprite2D:
+				check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, "water_station/" + side + " keeps native separate layers")
+	check(room.apply_furnishing_state(state), "water_station returns to storage")
+	check(room.prop_node(water_id) == null, "water_station storage removes scene/collision but not ownership")
 	var old_seat := room.employee_workstation("mira").work_position as Vector2
 	room.navigation.actors["mira"] = old_seat
 	var moved := saved.duplicate(true)

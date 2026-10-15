@@ -15,6 +15,10 @@
       "kind": "coat_bag_stand"
     },
     {
+      "id": "decor-water_station",
+      "kind": "water_station"
+    },
+    {
       "id": "decor-rolling_storage_pedestal",
       "kind": "rolling_storage_pedestal"
     },
@@ -2754,6 +2758,506 @@
       },
       "interaction_kind": "none"
     },
+    "water_station": {
+      "display_name": "Water and tea station",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/water_station/north-whole.png",
+          "visual_bounds": [
+            -21,
+            -95,
+            74,
+            111
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/water_station/north-floor_shadow.png",
+              "name": "WaterStationV2NorthFloorShadow",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                59,
+                187,
+                74,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/water_station/north-rear_structure.png",
+              "name": "WaterStationV2NorthRearStructure",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                64,
+                81,
+                64,
+                111
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/water_station/north-front_structure.png",
+              "name": "WaterStationV2NorthFrontStructure",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                69,
+                124,
+                54,
+                63
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              -1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -21,
+            -95,
+            74,
+            111
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                -1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/water_station/east-whole.png",
+          "visual_bounds": [
+            -21,
+            -95,
+            42,
+            143
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/water_station/east-floor_shadow.png",
+              "name": "WaterStationV2EastFloorShadow",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                59,
+                219,
+                42,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/water_station/east-rear_structure.png",
+              "name": "WaterStationV2EastRearStructure",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                64,
+                81,
+                32,
+                143
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/water_station/east-front_structure.png",
+              "name": "WaterStationV2EastFrontStructure",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                69,
+                155,
+                25,
+                64
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -21,
+            -95,
+            42,
+            143
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/water_station/south-whole.png",
+          "visual_bounds": [
+            -53,
+            -95,
+            74,
+            111
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/water_station/south-floor_shadow.png",
+              "name": "WaterStationV2SouthFloorShadow",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                27,
+                187,
+                74,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/water_station/south-rear_structure.png",
+              "name": "WaterStationV2SouthRearStructure",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                32,
+                81,
+                64,
+                111
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/water_station/south-front_structure.png",
+              "name": "WaterStationV2SouthFrontStructure",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                37,
+                129,
+                54,
+                58
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -53,
+            -95,
+            74,
+            111
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_SERVICE_LIBRARY_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/water_station/west-whole.png",
+          "visual_bounds": [
+            -21,
+            -127,
+            42,
+            143
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/water_station/west-floor_shadow.png",
+              "name": "WaterStationV2WestFloorShadow",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                59,
+                187,
+                42,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/water_station/west-rear_structure.png",
+              "name": "WaterStationV2WestRearStructure",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                64,
+                49,
+                32,
+                143
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/water_station/west-front_structure.png",
+              "name": "WaterStationV2WestFrontStructure",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                67,
+                123,
+                24,
+                64
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              -1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -21,
+            -127,
+            42,
+            143
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                -1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
     "rolling_storage_pedestal": {
       "display_name": "Rolling storage pedestal",
       "facings": [
@@ -4585,6 +5089,86 @@
       "source": "game/tests/fixtures/furniture-calibration/desk-lamp-kit-v2/west-whole.png",
       "destination": "game/assets/runtime/office/furnishing-library/desk_lamp_kit/west-whole.png",
       "sha256": "7b5fcdb43bf23e2a939e4895db0edfb1d1714170415f09719663f2686840bb80"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/water-station-v2/north-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/water_station/north-floor_shadow.png",
+      "sha256": "3dd018cb9af50be2d8ae36843cfd02f1a65ac70f3ee1f40c89f0a8f519994698"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/water-station-v2/north-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/water_station/north-rear_structure.png",
+      "sha256": "b3a2e07a54fb46ec1d116701c5cc59ba2272bf138df5546925cd6721824aad20"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/water-station-v2/north-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/water_station/north-front_structure.png",
+      "sha256": "905f78435c878ec7a2bc8e8833b4573f56d42a1eea3c0fc07f561040e4e65136"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/water-station-v2/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/water_station/north-whole.png",
+      "sha256": "f0c1c8746c953a14ef600270556c82ed0f4947c0eb41eaf993a68052569175b2"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/water-station-v2/east-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/water_station/east-floor_shadow.png",
+      "sha256": "84fa086f790b16c746e59af3a46d53f1b1d3e936d3cbf2f98a0042d07cedfeb2"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/water-station-v2/east-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/water_station/east-rear_structure.png",
+      "sha256": "538a7763a5651aead312b6590ecd4bc7bb46f573ea9cfd00d58a9cfd608f9689"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/water-station-v2/east-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/water_station/east-front_structure.png",
+      "sha256": "23a491d59f6c095189a072e89933b10a3f608943be013d9f752a4e1c249afdc9"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/water-station-v2/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/water_station/east-whole.png",
+      "sha256": "b6ddc3bc5a048f46b371e96318ec646e1a175fea0d6225e499e5542e912d60dc"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/water-station-v2/south-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/water_station/south-floor_shadow.png",
+      "sha256": "0796117769a6c6b7b330b3a470f0b5f8ee4a1b5af9451c8af7db3e0e22996331"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/water-station-v2/south-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/water_station/south-rear_structure.png",
+      "sha256": "eaac6b57525ef97cc6a84bccc6d7093e198c219e8b8ecefec7d4cd9cd220eb67"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/water-station-v2/south-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/water_station/south-front_structure.png",
+      "sha256": "b99e5466cfa4ac2b931f977ed3b5f14ebf5a5624b2ec3dbdb0b0f358d4136c47"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/water-station-v2/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/water_station/south-whole.png",
+      "sha256": "49c2628c0bd9674497b2eb30b4022503fc213968d403da0780c42855f9cbed0f"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/water-station-v2/west-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/water_station/west-floor_shadow.png",
+      "sha256": "629ee770e6384296dd682b51d408cc491051fe983113d199c35fc7630f3e298c"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/water-station-v2/west-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/water_station/west-rear_structure.png",
+      "sha256": "355c99ddd7e11a23c1388cdf6c1b4c097c514d749f128aedfef3536faef2c09b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/water-station-v2/west-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/water_station/west-front_structure.png",
+      "sha256": "01cb55e416e1df90aacf201483cf35e70d4c561ab3451edd081cd7b8ec61336f"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/water-station-v2/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/water_station/west-whole.png",
+      "sha256": "9bd97b2c3206491af625aa9bc03584464187c03751f5beb597aa7f0f678571a1"
     }
   ]
 }
