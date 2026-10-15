@@ -75,7 +75,7 @@ func run() -> void:
 	invalid = state.duplicate(true)
 	invalid.placements["decor-broadleaf_planter"] = {"grid": [1, 3], "facing": "north"}
 	check(not room.apply_furnishing_state(invalid), "Planter canopy may not overlap architecture")
-	for kind: String in ["broadleaf_planter", "task_floor_lamp", "rolling_storage_pedestal"]:
+	for kind: String in ["broadleaf_planter", "task_floor_lamp", "coat_bag_stand", "rolling_storage_pedestal"]:
 		check(room.layout_model.available_facings(kind).size() == 4, kind + " has four production-ready authored views")
 		var id := "decor-" + kind
 		for side: String in OfficeLayout.FACINGS:

@@ -180,3 +180,34 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The founder desk now shows the accepted strategy kit from day 1.
 
 - 15:45 PT Oct 14: Merged PR #7 (founder strategy kit bound to the founder desk). Verified harness 72/0, eval:offline 8/8, validate, run_all, chapter1, full_player_path, founder kit and furnishing projection green.
+
+### Round 6 — 2026-10-14
+
+**What changed**
+- Registered the GALLERY-approved `coat_bag_stand` (`coat-bag-stand-v3`, mean 2.83 / min 2 in `PASSIVE_LIGHTING_ENTRY_NATIVE_REVIEW.md`) into the playable furnishing catalog, mirroring `task_floor_lamp`. All four facings are `runtime_ready`. `interaction_kind` is `none`. The profile is decorative, occupies `[[0,0]]`, and uses the authored interaction cell for clearance and the standing viewpoint: north `[0,-1]`, east `[1,0]`, south `[0,1]`, west `[-1,0]`.
+- `decor-coat_bag_stand` is a starter inventory grant. New companies and existing saves receive it through the same `starter-decor-v1` insert as the other starter décor. It is not auto-placed. The phone booth remains the only first-run lounge placement. The coat stand stays in storage until the player places it.
+- Runtime layers are the already-copied byte-exact v3 PNGs under `game/assets/runtime/office/furnishing-library/coat_bag_stand/`. The dev capture tool lists `decor-coat_bag_stand` at `[19, 18]` facing south and rotates it with the other native décor.
+
+**Art HOLD**
+- No new art was generated or edited. `desk_lamp_kit` stays library-approved and unbound. No sitting, outdoor scene, new hire, Chapter 3, founder-seated pose, or unused role kit was added.
+
+**Remaining gaps (ranked)**
+1. Creative has a locomotion sheet and stands at the desk. There is no seated sheet, and none was invented.
+2. Unbound seated, outdoor, waiting-lunch, and unused furnishing-kit art stays untracked. Founder seated/N/E/W workstation poses are QA-only, not bind-approved. `desk_lamp_kit` is reviewed and not registered in the playable office.
+3. The live path is still a harness driver, not a watched windowed playtest.
+4. A cheap reviewer can still sit just under the 2.5 ready line. Round 2's passing ads score was 2.60.
+5. After the Chapter 2 end screen, ordinary work orders continue. No Chapter 3 content is authored.
+
+**Test results** (no paid live evals; Node 22 / unpaid fake provider)
+- `cd harness && npm test` — 72 pass, 0 fail, 2 skipped
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass
+- `test_furnishing_projection.gd` — 219 checks, 0 failures (includes `coat_bag_stand` at `[23, 17]` all facings)
+- `test_furniture_directions.gd` — 461 checks, 0 failures
+- `test_archive_production.gd` — 3307 checks, 0 failures
+- `test_chapter1_first_player.gd` — CHAPTER1 PASS (stops at Connect; host credentials ignored)
+- `test_full_player_path.gd` — FULLPATH PASS
+
+**CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The coat stand is owned starter décor and stays in storage until placed.
