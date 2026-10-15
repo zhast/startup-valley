@@ -145,7 +145,10 @@ func run() -> void:
 	main.room.navigation.actors["founder"] = main.player.position
 	check(main.worker_client._stdio == null and main.worker_client._process_id == -1, "No worker or personal company opened")
 	var state := state_for(2)
-	state.placements["decor-broadleaf_planter"] = {"grid": [22, 16], "facing": "south"}
+	# One-cell. The planter's former south-cluster cell [22, 16] is the last
+	# remaining four-facing two-cell pocket after the cart and water station.
+	# [32, 13] stays valid for every facing in the east bay beside approval.
+	state.placements["decor-broadleaf_planter"] = {"grid": [32, 13], "facing": "south"}
 	state.placements["decor-task_floor_lamp"] = {"grid": [25, 18], "facing": "south"}
 	state.placements["decor-coat_bag_stand"] = {"grid": [19, 18], "facing": "south"}
 	# Two-cell footprint. The south décor cluster collides once those pieces rotate;
@@ -155,8 +158,12 @@ func run() -> void:
 	# cells beside Theo and the research bench overlap this cart once décor rotates.
 	# [4, 18] stays valid for every facing in the southwest lounge.
 	state.placements["decor-resource_cart"] = {"grid": [4, 18], "facing": "south"}
+	# Two-cell footprint. [4, 18] is the supply cart, [24, 8] is the water station,
+	# and one-cell décor still occupy the other south-cluster cells. [22, 16] is
+	# the last four-facing pocket; the planter relocates to [32, 13].
+	state.placements["decor-printer_scanner_station"] = {"grid": [22, 16], "facing": "south"}
 	state.placements["decor-rolling_storage_pedestal"] = {"grid": [7, 13], "facing": "south"}
-	check(main.room.apply_furnishing_state(state), "Six native starter decorations fit beside production stations")
+	check(main.room.apply_furnishing_state(state), "Seven native starter decorations fit beside production stations")
 	var founder_lamp_layers := 0
 	var founder_strategy_layers := 0
 	for layer: Dictionary in main.room.placement_by_id("founder-workstation").render_layers:
@@ -194,8 +201,8 @@ func run() -> void:
 		return
 	if OS.get_cmdline_user_args().has("--decor-only"):
 		for side: String in OfficeLayout.FACINGS:
-			for id: String in ["decor-broadleaf_planter", "decor-task_floor_lamp", "decor-coat_bag_stand", "decor-water_station", "decor-resource_cart", "decor-rolling_storage_pedestal"]: state.placements[id].facing = side
-			check(main.room.apply_furnishing_state(state), side + " six native decorations retain valid clearance/layer geometry")
+			for id: String in ["decor-broadleaf_planter", "decor-task_floor_lamp", "decor-coat_bag_stand", "decor-water_station", "decor-resource_cart", "decor-printer_scanner_station", "decor-rolling_storage_pedestal"]: state.placements[id].facing = side
+			check(main.room.apply_furnishing_state(state), side + " seven native decorations retain valid clearance/layer geometry")
 			main._on_room_placements_changed()
 			await step(2)
 			await capture("decor-" + side)
