@@ -149,7 +149,10 @@ func run() -> void:
 	# remaining four-facing two-cell pocket after the cart and water station.
 	# [32, 13] stays valid for every facing in the east bay beside approval.
 	state.placements["decor-broadleaf_planter"] = {"grid": [32, 13], "facing": "south"}
-	state.placements["decor-task_floor_lamp"] = {"grid": [25, 18], "facing": "south"}
+	# One-cell. The tall supply cabinet needs the south-east column this lamp
+	# occupied. [7, 9] stays valid for every facing in the coffee bay, clear of
+	# Mina's work cell [10, 7] and the circulation aisle on y=10.
+	state.placements["decor-task_floor_lamp"] = {"grid": [7, 9], "facing": "south"}
 	state.placements["decor-coat_bag_stand"] = {"grid": [19, 18], "facing": "south"}
 	# Two-cell footprint. The south décor cluster collides once those pieces rotate;
 	# [24, 8] stays clear of Theo, the research bench, and the other native décor.
@@ -169,8 +172,17 @@ func run() -> void:
 	# occupies [13, 18], which is clear of Mina [11, 18], Creative [14, 18],
 	# Theo [23, 18], and the founder capture cell [17, 18].
 	state.placements["decor-recycling_sorter"] = {"grid": [13, 19], "facing": "south"}
+	# Two-cell footprint, same shape as the recycling sorter. The sprite is tall
+	# (canvas [160, 288], pivot [80, 224], offset [0, -80]). The other eight
+	# décor already hold every shared four-facing pocket, and the cabinet's art
+	# overlaps the lamp at [25, 18] once both rotate. Moving that lamp to [7, 9]
+	# leaves [25, 19] inside artwork and standing headroom for every facing.
+	# West occupies [25, 18], clear of Theo [23, 18], Creative [14, 18], Mina
+	# [11, 18], and the founder capture cell [17, 18]. The tall sprite stays
+	# south of the desk row, so it does not cover an employee work cell.
+	state.placements["decor-tall_storage_cabinet"] = {"grid": [25, 19], "facing": "south"}
 	state.placements["decor-rolling_storage_pedestal"] = {"grid": [7, 13], "facing": "south"}
-	check(main.room.apply_furnishing_state(state), "Eight native starter decorations fit beside production stations")
+	check(main.room.apply_furnishing_state(state), "Nine native starter decorations fit beside production stations")
 	var founder_lamp_layers := 0
 	var founder_strategy_layers := 0
 	for layer: Dictionary in main.room.placement_by_id("founder-workstation").render_layers:
@@ -208,8 +220,8 @@ func run() -> void:
 		return
 	if OS.get_cmdline_user_args().has("--decor-only"):
 		for side: String in OfficeLayout.FACINGS:
-			for id: String in ["decor-broadleaf_planter", "decor-task_floor_lamp", "decor-coat_bag_stand", "decor-water_station", "decor-resource_cart", "decor-printer_scanner_station", "decor-recycling_sorter", "decor-rolling_storage_pedestal"]: state.placements[id].facing = side
-			check(main.room.apply_furnishing_state(state), side + " eight native decorations retain valid clearance/layer geometry")
+			for id: String in ["decor-broadleaf_planter", "decor-task_floor_lamp", "decor-coat_bag_stand", "decor-water_station", "decor-resource_cart", "decor-printer_scanner_station", "decor-recycling_sorter", "decor-tall_storage_cabinet", "decor-rolling_storage_pedestal"]: state.placements[id].facing = side
+			check(main.room.apply_furnishing_state(state), side + " nine native decorations retain valid clearance/layer geometry")
 			main._on_room_placements_changed()
 			await step(2)
 			await capture("decor-" + side)
