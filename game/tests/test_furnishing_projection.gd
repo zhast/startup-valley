@@ -239,6 +239,41 @@ func run() -> void:
 				check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, "recycling_sorter/" + side + " keeps native separate layers")
 	check(room.apply_furnishing_state(state), "recycling_sorter returns to storage")
 	check(room.prop_node(sorter_id) == null, "recycling_sorter storage removes scene/collision but not ownership")
+	# Two cells, same footprint shape as recycling_sorter. That block returns
+	# the sorter to storage first, so [23, 17] is free again for every supply
+	# cabinet facing. The sprite is taller than the sorter; this pocket still
+	# clears artwork and standing headroom without covering a work cell.
+	var cabinet_id := "decor-tall_storage_cabinet"
+	var cabinet_grid := Vector2i(23, 17)
+	var cabinet_offsets := {
+		"north": [Vector2i(1, 0), Vector2i(0, 0)],
+		"east": [Vector2i(0, 1), Vector2i(0, 0)],
+		"south": [Vector2i(-1, 0), Vector2i(0, 0)],
+		"west": [Vector2i(0, -1), Vector2i(0, 0)],
+	}
+	check(room.layout_model.available_facings("tall_storage_cabinet").size() == 4, "tall_storage_cabinet has four production-ready authored views")
+	for side: String in OfficeLayout.FACINGS:
+		var candidate := room.layout_model.validate_candidate(cabinet_id, cabinet_grid, side, 2, saved)
+		check(candidate.valid, "tall_storage_cabinet/" + side + " can be placed from storage in the room")
+		var next := state.duplicate(true)
+		next.placements[cabinet_id] = {"grid": [cabinet_grid.x, cabinet_grid.y], "facing": side}
+		check(room.apply_furnishing_state(next), "tall_storage_cabinet/" + side + " projects into actual TownRoom")
+		var prop := room.prop_node(cabinet_id)
+		var expected: Array[Vector2i] = []
+		for offset: Vector2i in cabinet_offsets[side]:
+			expected.append(cabinet_grid + offset)
+		var placement := room.placement_by_id(cabinet_id)
+		check(prop != null and placement.occupied == expected, "tall_storage_cabinet/" + side + " occupies exactly its two footprint cells")
+		var library_layers := 0
+		for layer: Dictionary in placement.render_layers:
+			if str(layer.art).contains("furnishing-library/tall_storage_cabinet"):
+				library_layers += 1
+		check(library_layers == 3, "tall_storage_cabinet/" + side + " has 3 furnishing-library layers")
+		for child: Node in prop.get_children():
+			if child is Sprite2D:
+				check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, "tall_storage_cabinet/" + side + " keeps native separate layers")
+	check(room.apply_furnishing_state(state), "tall_storage_cabinet returns to storage")
+	check(room.prop_node(cabinet_id) == null, "tall_storage_cabinet storage removes scene/collision but not ownership")
 	var old_seat := room.employee_workstation("mira").work_position as Vector2
 	room.navigation.actors["mira"] = old_seat
 	var moved := saved.duplicate(true)

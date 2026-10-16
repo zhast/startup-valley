@@ -31,6 +31,10 @@
       "kind": "recycling_sorter"
     },
     {
+      "id": "decor-tall_storage_cabinet",
+      "kind": "tall_storage_cabinet"
+    },
+    {
       "id": "decor-rolling_storage_pedestal",
       "kind": "rolling_storage_pedestal"
     },
@@ -4770,6 +4774,506 @@
       },
       "interaction_kind": "none"
     },
+    "tall_storage_cabinet": {
+      "display_name": "Supply cabinet",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_UTILITY_LIBRARY_V2_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/tall_storage_cabinet/north-whole.png",
+          "visual_bounds": [
+            -21,
+            -96,
+            74,
+            112
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/tall_storage_cabinet/north-floor_shadow.png",
+              "name": "TallStorageCabinetV2NorthFloorShadow",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                288
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                59,
+                235,
+                74,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/tall_storage_cabinet/north-rear_structure.png",
+              "name": "TallStorageCabinetV2NorthRearStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                288
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                64,
+                128,
+                64,
+                112
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/tall_storage_cabinet/north-front_structure.png",
+              "name": "TallStorageCabinetV2NorthFrontStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                288
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                69,
+                144,
+                54,
+                91
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              -1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -21,
+            -96,
+            74,
+            112
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              0,
+              -1
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_UTILITY_LIBRARY_V2_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/tall_storage_cabinet/east-whole.png",
+          "visual_bounds": [
+            -21,
+            -96,
+            42,
+            144
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/tall_storage_cabinet/east-floor_shadow.png",
+              "name": "TallStorageCabinetV2EastFloorShadow",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                288
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                59,
+                267,
+                42,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/tall_storage_cabinet/east-rear_structure.png",
+              "name": "TallStorageCabinetV2EastRearStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                288
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                64,
+                128,
+                32,
+                144
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/tall_storage_cabinet/east-front_structure.png",
+              "name": "TallStorageCabinetV2EastFrontStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                288
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                69,
+                160,
+                22,
+                107
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -21,
+            -96,
+            42,
+            144
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              1,
+              0
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_UTILITY_LIBRARY_V2_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/tall_storage_cabinet/south-whole.png",
+          "visual_bounds": [
+            -53,
+            -96,
+            74,
+            112
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/tall_storage_cabinet/south-floor_shadow.png",
+              "name": "TallStorageCabinetV2SouthFloorShadow",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                288
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                27,
+                235,
+                74,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/tall_storage_cabinet/south-rear_structure.png",
+              "name": "TallStorageCabinetV2SouthRearStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                288
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                32,
+                128,
+                64,
+                112
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/tall_storage_cabinet/south-front_structure.png",
+              "name": "TallStorageCabinetV2SouthFrontStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                288
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                37,
+                144,
+                54,
+                91
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -53,
+            -96,
+            74,
+            112
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              0,
+              1
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_UTILITY_LIBRARY_V2_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/tall_storage_cabinet/west-whole.png",
+          "visual_bounds": [
+            -21,
+            -128,
+            42,
+            144
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/tall_storage_cabinet/west-floor_shadow.png",
+              "name": "TallStorageCabinetV2WestFloorShadow",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                288
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                59,
+                235,
+                42,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/tall_storage_cabinet/west-rear_structure.png",
+              "name": "TallStorageCabinetV2WestRearStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                288
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                64,
+                96,
+                32,
+                144
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/tall_storage_cabinet/west-front_structure.png",
+              "name": "TallStorageCabinetV2WestFrontStructure",
+              "offset": [
+                0,
+                -80
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                288
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                69,
+                128,
+                22,
+                107
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              -1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -21,
+            -128,
+            42,
+            144
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              -1,
+              0
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
     "rolling_storage_pedestal": {
       "display_name": "Rolling storage pedestal",
       "facings": [
@@ -6921,6 +7425,86 @@
       "source": "game/tests/fixtures/furniture-calibration/recycling-sorter-v2/west-whole.png",
       "destination": "game/assets/runtime/office/furnishing-library/recycling_sorter/west-whole.png",
       "sha256": "f7d2baae871e588209313db40074a2fb32ab802bad3482d1638904a9daedebcc"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/north-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/tall_storage_cabinet/north-floor_shadow.png",
+      "sha256": "6cc2a907e602dffd6b813f7da0cf374fec0d2574e0a0f9ce18414f9922aa1883"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/north-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/tall_storage_cabinet/north-rear_structure.png",
+      "sha256": "eb1e13da2dae44780f7f3c5447a509b47dfcd70b05b78849e6f88bd4a0418a03"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/north-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/tall_storage_cabinet/north-front_structure.png",
+      "sha256": "1f30aa4cf0da5d8f2ba84eee51480c969b5ce01b23685073bb6363c63cea73c3"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/tall_storage_cabinet/north-whole.png",
+      "sha256": "f3d9264182a035d990fda03241dd4334d767527c08d8f84741b07853db548b33"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/east-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/tall_storage_cabinet/east-floor_shadow.png",
+      "sha256": "6a429e60e874d2c439bae80d592fb6ad5177dc51f3f9c5582d6610a616b613ec"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/east-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/tall_storage_cabinet/east-rear_structure.png",
+      "sha256": "cbb73d049c5a7d80887b7c0192bfa9581a1abc5fc29f34c349f5efbe1f774b7e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/east-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/tall_storage_cabinet/east-front_structure.png",
+      "sha256": "d604fe58c0e527ce2e553c091053e7112d9dfa60c7b8e8264ec3010a4f6139d6"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/tall_storage_cabinet/east-whole.png",
+      "sha256": "c482f94c0f4667a0f449286ec7676b5fd7bbfff7cab8f54e665757a4b1079d1d"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/south-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/tall_storage_cabinet/south-floor_shadow.png",
+      "sha256": "009a9bddfd72dd8dadb87cb5e4c5cc4da9717712478b33808bc33bbf3ba7238e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/south-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/tall_storage_cabinet/south-rear_structure.png",
+      "sha256": "07945515de4a6a55c075e52d39500cd7a9ed2f6c819737f051aa91510d99bcba"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/south-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/tall_storage_cabinet/south-front_structure.png",
+      "sha256": "ef4cfb897675c92cb765049a7e2c0075f5d38f6393cb18b3228b05fd5f19e867"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/tall_storage_cabinet/south-whole.png",
+      "sha256": "79f27b68276e6000e4ea80c50b05bcd857bade79029bc70f201b15bbdde31199"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/west-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/tall_storage_cabinet/west-floor_shadow.png",
+      "sha256": "c1637997a45b1fc72d17e410dc8fa8ebb6a15f59e47c5d2c6fce7ec9e0bc9c9a"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/west-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/tall_storage_cabinet/west-rear_structure.png",
+      "sha256": "85c21e361995ff2211782d2ceb65ac00ceb7c7bfbd2526849feb2c9e16968d97"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/west-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/tall_storage_cabinet/west-front_structure.png",
+      "sha256": "d3127fc47470db8e13c07184c905752fabbd89c54f7955f1769c784101d007bb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/tall-storage-cabinet-v2/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/tall_storage_cabinet/west-whole.png",
+      "sha256": "8c1406b6ff2feef38675353caff5a65d07044c4dd11a0bd59e5cb06bd8b7327d"
     }
   ]
 }

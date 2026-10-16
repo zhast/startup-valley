@@ -75,7 +75,7 @@ func _variant(facing: String) -> Dictionary:
 func _test_legacy(source: OfficeLayout) -> void:
 	for kind: String in source.catalog:
 		var expected: Array[String] = []
-		expected.assign(OfficeLayout.FACINGS if kind in ["artifact_archive", "approval_console", "coffee_station", "collaboration_cluster", "desk", "prototype_bench", "research_table", "broadleaf_planter", "task_floor_lamp", "coat_bag_stand", "water_station", "resource_cart", "printer_scanner_station", "recycling_sorter", "rolling_storage_pedestal"] else ["south"])
+		expected.assign(OfficeLayout.FACINGS if kind in ["artifact_archive", "approval_console", "coffee_station", "collaboration_cluster", "desk", "prototype_bench", "research_table", "broadleaf_planter", "task_floor_lamp", "coat_bag_stand", "water_station", "resource_cart", "printer_scanner_station", "recycling_sorter", "tall_storage_cabinet", "rolling_storage_pedestal"] else ["south"])
 		check(source.available_facings(kind) == expected, "%s exposes only its genuinely reviewed shipped art" % kind)
 	for stage: int in range(5):
 		var placements := source.resolve_placements(stage)
