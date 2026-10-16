@@ -205,6 +205,40 @@ func run() -> void:
 				check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, "printer_scanner_station/" + side + " keeps native separate layers")
 	check(room.apply_furnishing_state(state), "printer_scanner_station returns to storage")
 	check(room.prop_node(printer_id) == null, "printer_scanner_station storage removes scene/collision but not ownership")
+	# Two cells, same footprint shape as printer_scanner_station. That block
+	# returns the printer to storage first, so [23, 17] is free again for every
+	# recycling sorter facing.
+	var sorter_id := "decor-recycling_sorter"
+	var sorter_grid := Vector2i(23, 17)
+	var sorter_offsets := {
+		"north": [Vector2i(1, 0), Vector2i(0, 0)],
+		"east": [Vector2i(0, 1), Vector2i(0, 0)],
+		"south": [Vector2i(-1, 0), Vector2i(0, 0)],
+		"west": [Vector2i(0, -1), Vector2i(0, 0)],
+	}
+	check(room.layout_model.available_facings("recycling_sorter").size() == 4, "recycling_sorter has four production-ready authored views")
+	for side: String in OfficeLayout.FACINGS:
+		var candidate := room.layout_model.validate_candidate(sorter_id, sorter_grid, side, 2, saved)
+		check(candidate.valid, "recycling_sorter/" + side + " can be placed from storage in the room")
+		var next := state.duplicate(true)
+		next.placements[sorter_id] = {"grid": [sorter_grid.x, sorter_grid.y], "facing": side}
+		check(room.apply_furnishing_state(next), "recycling_sorter/" + side + " projects into actual TownRoom")
+		var prop := room.prop_node(sorter_id)
+		var expected: Array[Vector2i] = []
+		for offset: Vector2i in sorter_offsets[side]:
+			expected.append(sorter_grid + offset)
+		var placement := room.placement_by_id(sorter_id)
+		check(prop != null and placement.occupied == expected, "recycling_sorter/" + side + " occupies exactly its two footprint cells")
+		var library_layers := 0
+		for layer: Dictionary in placement.render_layers:
+			if str(layer.art).contains("furnishing-library/recycling_sorter"):
+				library_layers += 1
+		check(library_layers == 3, "recycling_sorter/" + side + " has 3 furnishing-library layers")
+		for child: Node in prop.get_children():
+			if child is Sprite2D:
+				check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, "recycling_sorter/" + side + " keeps native separate layers")
+	check(room.apply_furnishing_state(state), "recycling_sorter returns to storage")
+	check(room.prop_node(sorter_id) == null, "recycling_sorter storage removes scene/collision but not ownership")
 	var old_seat := room.employee_workstation("mira").work_position as Vector2
 	room.navigation.actors["mira"] = old_seat
 	var moved := saved.duplicate(true)
