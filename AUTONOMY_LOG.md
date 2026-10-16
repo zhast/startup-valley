@@ -523,3 +523,5 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - `capture_furnishing_runtime.gd --diagnose --decor-only` — 79 checks, 0 failures (twelve native décor rotate through all facings; table at `[7, 7]`, lamp at `[19, 14]`)
 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The meeting table is owned starter décor and stays in storage until placed.
+
+- 15:43 PT Oct 16: Merged PR #17 (round_meeting_table registered as 3x3 starter décor). Verified harness 72/0, eval:offline 8/8, validate, run_all, chapter1, full_player_path, furnishing projection 494/0, furniture directions 469/0, archive production 3315/0, passive tables 628/0, and decor capture 79/0 green.
