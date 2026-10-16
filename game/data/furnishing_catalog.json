@@ -39,6 +39,10 @@
       "kind": "server_cabinet"
     },
     {
+      "id": "decor-low_coffee_table",
+      "kind": "low_coffee_table"
+    },
+    {
       "id": "decor-rolling_storage_pedestal",
       "kind": "rolling_storage_pedestal"
     },
@@ -5778,6 +5782,506 @@
       },
       "interaction_kind": "none"
     },
+    "low_coffee_table": {
+      "display_name": "Low lounge table",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/low_coffee_table/north-whole.png",
+          "visual_bounds": [
+            -44,
+            -32,
+            57,
+            45
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_coffee_table/north-floor_shadow.png",
+              "name": "LowCoffeeTableV1NorthFloorShadow",
+              "offset": [
+                0,
+                -16
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                160
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                41,
+                87,
+                52,
+                22
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_coffee_table/north-rear_structure.png",
+              "name": "LowCoffeeTableV1NorthRearStructure",
+              "offset": [
+                0,
+                -16
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                160
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                36,
+                64,
+                56,
+                25
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_coffee_table/north-front_structure.png",
+              "name": "LowCoffeeTableV1NorthFrontStructure",
+              "offset": [
+                0,
+                -16
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                160
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                37,
+                84,
+                54,
+                25
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              -1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -44,
+            -32,
+            57,
+            45
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              0,
+              -1
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/low_coffee_table/east-whole.png",
+          "visual_bounds": [
+            -12,
+            -64,
+            25,
+            77
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_coffee_table/east-floor_shadow.png",
+              "name": "LowCoffeeTableV1EastFloorShadow",
+              "offset": [
+                0,
+                -16
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                160
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                73,
+                55,
+                20,
+                54
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_coffee_table/east-rear_structure.png",
+              "name": "LowCoffeeTableV1EastRearStructure",
+              "offset": [
+                0,
+                -16
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                160
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                68,
+                32,
+                24,
+                56
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_coffee_table/east-front_structure.png",
+              "name": "LowCoffeeTableV1EastFrontStructure",
+              "offset": [
+                0,
+                -16
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                160
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                69,
+                84,
+                22,
+                25
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -12,
+            -64,
+            25,
+            77
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              1,
+              0
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/low_coffee_table/south-whole.png",
+          "visual_bounds": [
+            -12,
+            -32,
+            57,
+            45
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_coffee_table/south-floor_shadow.png",
+              "name": "LowCoffeeTableV1SouthFloorShadow",
+              "offset": [
+                0,
+                -16
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                160
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                73,
+                87,
+                52,
+                22
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_coffee_table/south-rear_structure.png",
+              "name": "LowCoffeeTableV1SouthRearStructure",
+              "offset": [
+                0,
+                -16
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                160
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                68,
+                64,
+                56,
+                25
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_coffee_table/south-front_structure.png",
+              "name": "LowCoffeeTableV1SouthFrontStructure",
+              "offset": [
+                0,
+                -16
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                160
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                69,
+                84,
+                54,
+                25
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -12,
+            -32,
+            57,
+            45
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              0,
+              1
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/low_coffee_table/west-whole.png",
+          "visual_bounds": [
+            -12,
+            -32,
+            25,
+            77
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_coffee_table/west-floor_shadow.png",
+              "name": "LowCoffeeTableV1WestFloorShadow",
+              "offset": [
+                0,
+                -16
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                160
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                73,
+                87,
+                20,
+                54
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_coffee_table/west-rear_structure.png",
+              "name": "LowCoffeeTableV1WestRearStructure",
+              "offset": [
+                0,
+                -16
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                160
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                68,
+                64,
+                24,
+                56
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_coffee_table/west-front_structure.png",
+              "name": "LowCoffeeTableV1WestFrontStructure",
+              "offset": [
+                0,
+                -16
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                160
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                69,
+                116,
+                22,
+                25
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "clearance": [
+            [
+              -1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -12,
+            -32,
+            25,
+            77
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              -1,
+              0
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
     "rolling_storage_pedestal": {
       "display_name": "Rolling storage pedestal",
       "facings": [
@@ -8089,6 +8593,86 @@
       "source": "game/tests/fixtures/furniture-calibration/server-cabinet-v2/west-whole.png",
       "destination": "game/assets/runtime/office/furnishing-library/server_cabinet/west-whole.png",
       "sha256": "35678456dfa7df0cab4f93a73de252784ac3f5dc8b1fb7d82538a6d034f35203"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/north-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_coffee_table/north-floor_shadow.png",
+      "sha256": "4402814001c14f31f25639e907e0c41a1aa27c7db3527f8403ed68972a4713fb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/north-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_coffee_table/north-rear_structure.png",
+      "sha256": "40c032f06b780d432f90fac7227f427c0d51f4729d1d9fa4f92be11b8ff39086"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/north-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_coffee_table/north-front_structure.png",
+      "sha256": "13acdc3896e92b589f788e1df18b1b20a38e14412ebf615ddeaea08185df1587"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_coffee_table/north-whole.png",
+      "sha256": "f693e36362ff742af7e0a02014e9f8e5543296cdfe669809e5d3c7e987092b53"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/east-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_coffee_table/east-floor_shadow.png",
+      "sha256": "67a1bf3b61bf883c4509cf8c7fc709e153f2652c0e5edede731f72cd7debc5bb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/east-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_coffee_table/east-rear_structure.png",
+      "sha256": "6e1b7e84e5221c8a52e907c08d5cab8764c021b9d98bd0e079d9368de3db711c"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/east-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_coffee_table/east-front_structure.png",
+      "sha256": "5e997cff1d7a56e9139cf3583c2d0d25111afaa0480a4fd49b44487d4f329cbb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_coffee_table/east-whole.png",
+      "sha256": "0f917d017c14c01919de53c4b00be626bf8dd41fcf976201317b3397fc3edf7e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/south-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_coffee_table/south-floor_shadow.png",
+      "sha256": "334ce951535e6444eddb47a8d075b17753a944ac81f06c3c35ae94ca6647fb80"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/south-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_coffee_table/south-rear_structure.png",
+      "sha256": "b12a235d565b818a32f4e80a3676101ca6d90cfa2056ab7347ec4ccba3d36609"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/south-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_coffee_table/south-front_structure.png",
+      "sha256": "271bc65410e0bfca24a15dae4a7f19c550ab87d267a3e5f67a0d9e184166938a"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_coffee_table/south-whole.png",
+      "sha256": "0d3f583c9a22b5fce144f4c540c433506e6d50d49ef7af968629102b0fe2fbe3"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/west-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_coffee_table/west-floor_shadow.png",
+      "sha256": "83303a0d94fa126db382f365ac5999f8af65d178ca36bd8de78a49d9be7d3b25"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/west-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_coffee_table/west-rear_structure.png",
+      "sha256": "649f8e93bbc12e21188a4894c3bc3ae2aebf3d7b706a64b1ef2d8f01fc3566a2"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/west-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_coffee_table/west-front_structure.png",
+      "sha256": "47f8b701288afa2df3ab3f0b77f50ef60f4ca915ff7311b9f55a4f414691959a"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_coffee_table/west-whole.png",
+      "sha256": "4293bb0e476d5296e0b2d27644b3f1720169c3b2e7035430f363bfe216cafce4"
     }
   ]
 }

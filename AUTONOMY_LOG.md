@@ -453,3 +453,37 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The server cabinet is owned starter décor and stays in storage until placed.
 
 - 11:37 PT Oct 16: Merged PR #15 (server_cabinet registered as two-cell starter décor). Verified harness 72/0, eval:offline 8/8, validate, run_all, chapter1, full_player_path, furnishing projection, furniture directions, archive production, and decor capture green.
+
+### Round 14 — 2026-10-16
+
+**What changed**
+- Registered the art-approved `low_coffee_table` (`low-coffee-table-v1`, mean 2.83 / min 2 in `dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md`, display name "Low lounge table") into the playable furnishing catalog, mirroring `server_cabinet`. All four facings are `runtime_ready`. `interaction_kind` is `none` (no seat, service, or work). The profile is decorative and occupies two cells per facing, in manifest order: north `[[-1,0],[0,0]]`, east `[[0,-1],[0,0]]`, south `[[0,0],[1,0]]`, west `[[0,0],[0,1]]`. The manifest and `passive_table_geometry.gd` leave clearance empty and define no standing cell, so clearance and the standing viewpoint use the same front approach cell as `server_cabinet` and `tall_storage_cabinet`: north `[0,-1]`, east `[1,0]`, south `[0,1]`, west `[-1,0]`. The standing envelope is `[-24,-76,48,84]`, the same rectangle every other decorative profile uses.
+- `decor-low_coffee_table` is a starter inventory grant. New companies and existing saves receive it through the same `starter-decor-v1` insert as the other starter décor. It is not auto-placed. The phone booth remains the only first-run lounge placement. The low lounge table stays in storage until the player places it.
+- Runtime layers are byte-exact copies of the low-coffee-table-v1 PNGs under `game/assets/runtime/office/furnishing-library/low_coffee_table/`. Canvas is `[160,160]`, pivot `[80,96]`, sprite offset `[0,-16]`. Render regions are the full canvas and layer offsets are that sprite offset, matching how `server_cabinet` maps its manifest. Layer names are `LowCoffeeTableV1` plus facing plus layer, because this manifest has no layer-name field. The dev capture tool lists `decor-low_coffee_table` at `[20, 19]` facing south and rotates it with the other native décor. No four-facing cell stayed free while the previous ten décor kept their cells, so the one-cell coat stand moved from `[19, 18]` to `[32, 19]`. `[20, 19]` then stays valid for every facing; west occupies `[20, 20]`, clear of Mina `[11, 18]`, Creative `[14, 18]`, Theo `[23, 18]`, and the founder capture cell `[17, 18]`. The projection test places the table at `[23, 17]` after the server cabinet returns to storage.
+
+**Art HOLD**
+- No new art was generated or edited. No sitting, outdoor scene, new hire, Chapter 3, founder-seated pose, or unused role kit was added.
+
+**Remaining gaps (ranked)**
+1. Creative has a locomotion sheet and stands at the desk. There is no seated sheet, and none was invented.
+2. Unbound seated, outdoor, waiting-lunch, and unused furnishing-kit art stays untracked. Founder seated/N/E/W workstation poses are QA-only, not bind-approved. `customer_success_kit`, `engineer_build_kit`, `finance_accounts_kit`, `growth_analytics_kit`, `lawyer_contract_kit`, and `product_prototype_kit` stay unbound.
+3. The live path is still a harness driver, not a watched windowed playtest.
+4. A cheap reviewer can still sit just under the 2.5 ready line. Round 2's passing ads score was 2.60.
+5. After the Chapter 2 end screen, ordinary work orders continue. No Chapter 3 content is authored.
+6. `low_coffee_table` is now registered. From the same passive-tables review, `cafe_table` (v2) and `round_meeting_table` remain passed but unregistered. The catalogue already uses the kind name `cafe_table` for an older one-cell south prop (`res://assets/runtime/office/cafe-table-south.png`); the passed cafe-table-v2 library is still unregistered. Reviews still pass unregistered `visitor_chair`, `mobile_whiteboard`, `low_bookshelf`, and `acoustic_divider` (`dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md`), and `two_seat_sofa` and `lounge_armchair` (`dev/art-catalogue/LOUNGE_SEATING_REVIEW_2026-09-06.md`). None of those reviews names a registration order.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored; fake provider not set)
+- `cd harness && npm test` — 72 pass, 0 fail, 2 skipped
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass
+- `test_furnishing_projection.gd` — 463 checks, 0 failures (includes `low_coffee_table` at `[23, 17]` all facings, exact two-cell footprint, 3 native layers)
+- `test_furniture_directions.gd` — 468 checks, 0 failures
+- `test_archive_production.gd` — 3314 checks, 0 failures
+- `test_chapter1_first_player.gd` — CHAPTER1 PASS (stops at Connect; host credentials ignored)
+- `test_full_player_path.gd` — FULLPATH PASS
+- `test_passive_tables.gd` — 628 checks, 0 failures (low lounge table is in the ordinary catalogue; round meeting table stays out; the older cafe prop is unchanged)
+- `capture_furnishing_runtime.gd --diagnose --decor-only` — 79 checks, 0 failures (eleven native décor rotate through all facings; table at `[20, 19]`, coat stand at `[32, 19]`)
+
+**CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The low lounge table is owned starter décor and stays in storage until placed.

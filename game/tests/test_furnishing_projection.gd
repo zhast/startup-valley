@@ -309,6 +309,41 @@ func run() -> void:
 				check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, "server_cabinet/" + side + " keeps native separate layers")
 	check(room.apply_furnishing_state(state), "server_cabinet returns to storage")
 	check(room.prop_node(server_id) == null, "server_cabinet storage removes scene/collision but not ownership")
+	# Two cells, mirrored from the server cabinet: the anchor is the east or
+	# south end. That block returns the cabinet to storage first, so [23, 17]
+	# is free again. Each facing uses the cells the server cabinet's opposite
+	# facing already cleared here. The sprite is low (canvas [160, 160]).
+	var table_id := "decor-low_coffee_table"
+	var table_grid := Vector2i(23, 17)
+	var table_offsets := {
+		"north": [Vector2i(-1, 0), Vector2i(0, 0)],
+		"east": [Vector2i(0, -1), Vector2i(0, 0)],
+		"south": [Vector2i(0, 0), Vector2i(1, 0)],
+		"west": [Vector2i(0, 0), Vector2i(0, 1)],
+	}
+	check(room.layout_model.available_facings("low_coffee_table").size() == 4, "low_coffee_table has four production-ready authored views")
+	for side: String in OfficeLayout.FACINGS:
+		var candidate := room.layout_model.validate_candidate(table_id, table_grid, side, 2, saved)
+		check(candidate.valid, "low_coffee_table/" + side + " can be placed from storage in the room")
+		var next := state.duplicate(true)
+		next.placements[table_id] = {"grid": [table_grid.x, table_grid.y], "facing": side}
+		check(room.apply_furnishing_state(next), "low_coffee_table/" + side + " projects into actual TownRoom")
+		var prop := room.prop_node(table_id)
+		var expected: Array[Vector2i] = []
+		for offset: Vector2i in table_offsets[side]:
+			expected.append(table_grid + offset)
+		var placement := room.placement_by_id(table_id)
+		check(prop != null and placement.occupied == expected, "low_coffee_table/" + side + " occupies exactly its two footprint cells")
+		var library_layers := 0
+		for layer: Dictionary in placement.render_layers:
+			if str(layer.art).contains("furnishing-library/low_coffee_table"):
+				library_layers += 1
+		check(library_layers == 3, "low_coffee_table/" + side + " has 3 furnishing-library layers")
+		for child: Node in prop.get_children():
+			if child is Sprite2D:
+				check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, "low_coffee_table/" + side + " keeps native separate layers")
+	check(room.apply_furnishing_state(state), "low_coffee_table returns to storage")
+	check(room.prop_node(table_id) == null, "low_coffee_table storage removes scene/collision but not ownership")
 	var old_seat := room.employee_workstation("mira").work_position as Vector2
 	room.navigation.actors["mira"] = old_seat
 	var moved := saved.duplicate(true)
