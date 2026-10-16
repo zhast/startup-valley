@@ -27,6 +27,10 @@
       "kind": "printer_scanner_station"
     },
     {
+      "id": "decor-recycling_sorter",
+      "kind": "recycling_sorter"
+    },
+    {
       "id": "decor-rolling_storage_pedestal",
       "kind": "rolling_storage_pedestal"
     },
@@ -4266,6 +4270,506 @@
       },
       "interaction_kind": "none"
     },
+    "recycling_sorter": {
+      "display_name": "Recycling sorter",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_UTILITY_LIBRARY_V2_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/recycling_sorter/north-whole.png",
+          "visual_bounds": [
+            -21,
+            -48,
+            74,
+            64
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/recycling_sorter/north-floor_shadow.png",
+              "name": "RecyclingSorterV2NorthFloorShadow",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                176
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                59,
+                123,
+                74,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/recycling_sorter/north-rear_structure.png",
+              "name": "RecyclingSorterV2NorthRearStructure",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                176
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                64,
+                64,
+                64,
+                64
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/recycling_sorter/north-front_structure.png",
+              "name": "RecyclingSorterV2NorthFrontStructure",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                176
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                69,
+                69,
+                54,
+                54
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              -1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -21,
+            -48,
+            74,
+            64
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              0,
+              -1
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_UTILITY_LIBRARY_V2_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/recycling_sorter/east-whole.png",
+          "visual_bounds": [
+            -21,
+            -48,
+            42,
+            96
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/recycling_sorter/east-floor_shadow.png",
+              "name": "RecyclingSorterV2EastFloorShadow",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                176
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                59,
+                155,
+                42,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/recycling_sorter/east-rear_structure.png",
+              "name": "RecyclingSorterV2EastRearStructure",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                176
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                64,
+                64,
+                32,
+                96
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/recycling_sorter/east-front_structure.png",
+              "name": "RecyclingSorterV2EastFrontStructure",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                176
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                69,
+                70,
+                24,
+                85
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -21,
+            -48,
+            42,
+            96
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              1,
+              0
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_UTILITY_LIBRARY_V2_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/recycling_sorter/south-whole.png",
+          "visual_bounds": [
+            -53,
+            -48,
+            74,
+            64
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/recycling_sorter/south-floor_shadow.png",
+              "name": "RecyclingSorterV2SouthFloorShadow",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                176
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                27,
+                123,
+                74,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/recycling_sorter/south-rear_structure.png",
+              "name": "RecyclingSorterV2SouthRearStructure",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                176
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                32,
+                64,
+                64,
+                64
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/recycling_sorter/south-front_structure.png",
+              "name": "RecyclingSorterV2SouthFrontStructure",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                176
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                37,
+                86,
+                54,
+                37
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -53,
+            -48,
+            74,
+            64
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              0,
+              1
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/PASSIVE_UTILITY_LIBRARY_V2_NATIVE_REVIEW.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/recycling_sorter/west-whole.png",
+          "visual_bounds": [
+            -21,
+            -80,
+            42,
+            96
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/recycling_sorter/west-floor_shadow.png",
+              "name": "RecyclingSorterV2WestFloorShadow",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                176
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                59,
+                123,
+                42,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/recycling_sorter/west-rear_structure.png",
+              "name": "RecyclingSorterV2WestRearStructure",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                176
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                64,
+                32,
+                32,
+                96
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/recycling_sorter/west-front_structure.png",
+              "name": "RecyclingSorterV2WestFrontStructure",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                176
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                69,
+                38,
+                22,
+                85
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              -1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -21,
+            -80,
+            42,
+            96
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              -1,
+              0
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
     "rolling_storage_pedestal": {
       "display_name": "Rolling storage pedestal",
       "facings": [
@@ -6337,6 +6841,86 @@
       "source": "game/tests/fixtures/furniture-calibration/printer-scanner-station-v1/west-whole.png",
       "destination": "game/assets/runtime/office/furnishing-library/printer_scanner_station/west-whole.png",
       "sha256": "591e3be55f17595111ada70bb972a2c0296da4ea38be6f2b8f334bc97c83b374"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/recycling-sorter-v2/north-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/recycling_sorter/north-floor_shadow.png",
+      "sha256": "a5d2e1e36a3d10dab297297bb985dc7f0731d3b6525436fd1b3557acb7db060f"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/recycling-sorter-v2/north-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/recycling_sorter/north-rear_structure.png",
+      "sha256": "9920366cb5e5440849bced9d5f21998ead739573fca6ad8991b7f6da2668bba3"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/recycling-sorter-v2/north-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/recycling_sorter/north-front_structure.png",
+      "sha256": "a227f17fb7d05d1a0e27b77a85c3b4b2989db478306399e4bcc40c6f08c35dc9"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/recycling-sorter-v2/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/recycling_sorter/north-whole.png",
+      "sha256": "14f32eb7177698927e9a825166d13c95c94d02d9b2aecf30fefbab5f84d07638"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/recycling-sorter-v2/east-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/recycling_sorter/east-floor_shadow.png",
+      "sha256": "47f8b70aeeeae1d817f32e542431b8fbeab5abd283c1e489664d1f1b8ca880a9"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/recycling-sorter-v2/east-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/recycling_sorter/east-rear_structure.png",
+      "sha256": "42a64e3a618f45ea59d945dfd3da5464a14c6b3f3b3cb3946bc4fffa72d9a12c"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/recycling-sorter-v2/east-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/recycling_sorter/east-front_structure.png",
+      "sha256": "61eafc3762c19da26d4487124f9f4366a376bb36de2f1f608523cca366ddf08e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/recycling-sorter-v2/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/recycling_sorter/east-whole.png",
+      "sha256": "b746130085dad974f077706935954bc7c4dba9a5129927e898121bac083523c4"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/recycling-sorter-v2/south-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/recycling_sorter/south-floor_shadow.png",
+      "sha256": "37ba7ed553c6c831d5912e5ef201ee8c20c2665957c40ff8067ff46d65cc9482"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/recycling-sorter-v2/south-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/recycling_sorter/south-rear_structure.png",
+      "sha256": "fb93a0e46f14447842d7c1e377d8ae8fbf35c96e9ee4ab8a9dfbf0b009dbb08c"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/recycling-sorter-v2/south-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/recycling_sorter/south-front_structure.png",
+      "sha256": "0c7c9d77e57c1a48fd5b85e1663c95fbd233c4a0031e28d14b0ce2d2695c5ec3"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/recycling-sorter-v2/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/recycling_sorter/south-whole.png",
+      "sha256": "341a6c6366810483053bb3880f7b0b30a403b4cf9c66dffb569d7adf0a4efe33"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/recycling-sorter-v2/west-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/recycling_sorter/west-floor_shadow.png",
+      "sha256": "6359bc222c4d0ae25ca38e91976105e0b5a322047de47af421bed61fa20201b9"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/recycling-sorter-v2/west-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/recycling_sorter/west-rear_structure.png",
+      "sha256": "dcd9e1dd048694331fcc07dbd8f708105ce92344309731cbbb3f463d9ac96890"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/recycling-sorter-v2/west-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/recycling_sorter/west-front_structure.png",
+      "sha256": "2371d58423723a0449273da7b282b5eba151035ee120d16e367fce3f595f0ad6"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/recycling-sorter-v2/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/recycling_sorter/west-whole.png",
+      "sha256": "f7d2baae871e588209313db40074a2fb32ab802bad3482d1638904a9daedebcc"
     }
   ]
 }

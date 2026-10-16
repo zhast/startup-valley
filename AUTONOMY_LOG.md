@@ -348,3 +348,36 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The printer station is owned starter décor and stays in storage until placed.
 
 - 15:38 PT Oct 15: Merged PR #12 (printer_scanner_station registered as two-cell starter décor). Verified harness 72/0, eval:offline 8/8, validate, run_all, chapter1, full_player_path, furnishing projection, furniture directions, archive production, and decor capture green.
+
+### Round 11 — 2026-10-15
+
+**What changed**
+- Registered the art-approved `recycling_sorter` (`recycling-sorter-v2`, mean 2.67 / min 2 in `dev/PASSIVE_UTILITY_LIBRARY_V2_NATIVE_REVIEW.md`) into the playable furnishing catalog, mirroring `printer_scanner_station`. All four facings are `runtime_ready`. `interaction_kind` is `none` (no sorting, waste, or service). The profile is decorative and occupies two cells per facing, in manifest order: north `[[1,0],[0,0]]`, east `[[0,1],[0,0]]`, south `[[-1,0],[0,0]]`, west `[[0,-1],[0,0]]`. Clearance and the standing viewpoint use the authored approach cell: north `[0,-1]`, east `[1,0]`, south `[0,1]`, west `[-1,0]`.
+- `decor-recycling_sorter` is a starter inventory grant. New companies and existing saves receive it through the same `starter-decor-v1` insert as the other starter décor. It is not auto-placed. The phone booth remains the only first-run lounge placement. The recycling sorter stays in storage until the player places it.
+- Runtime layers are byte-exact copies of the recycling-sorter-v2 PNGs under `game/assets/runtime/office/furnishing-library/recycling_sorter/`. Canvas is `[160,176]`, pivot `[80,112]`, sprite offset `[0,-24]`. The dev capture tool lists `decor-recycling_sorter` at `[13, 19]` facing south and rotates it with the other native décor. The cart stays at `[4, 18]`, the water station at `[24, 8]`, and the printer at `[22, 16]`. `[13, 19]` is an open south-floor pocket that stays valid for every facing; west occupies `[13, 18]`, clear of Mina `[11, 18]`, Creative `[14, 18]`, Theo `[23, 18]`, and the founder capture cell `[17, 18]`. The projection test places it at `[23, 17]` after the printer returns to storage.
+
+**Art HOLD**
+- No new art was generated or edited. No sitting, outdoor scene, new hire, Chapter 3, founder-seated pose, or unused role kit was added.
+
+**Remaining gaps (ranked)**
+1. Creative has a locomotion sheet and stands at the desk. There is no seated sheet, and none was invented.
+2. Unbound seated, outdoor, waiting-lunch, and unused furnishing-kit art stays untracked. Founder seated/N/E/W workstation poses are QA-only, not bind-approved. `customer_success_kit`, `engineer_build_kit`, `finance_accounts_kit`, `growth_analytics_kit`, `lawyer_contract_kit`, and `product_prototype_kit` stay unbound.
+3. The live path is still a harness driver, not a watched windowed playtest.
+4. A cheap reviewer can still sit just under the 2.5 ready line. Round 2's passing ads score was 2.60.
+5. After the Chapter 2 end screen, ordinary work orders continue. No Chapter 3 content is authored.
+6. `tall_storage_cabinet` and `server_cabinet` (passive utility v2, art-approved, mean 2.67 / min 2) are the next registration candidates. They stay out of the playable catalog.
+
+**Test results** (no paid live evals; Node 22 / unpaid fake provider)
+- `cd harness && npm test` — 72 pass, 0 fail, 2 skipped
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass
+- `test_furnishing_projection.gd` — 370 checks, 0 failures (includes `recycling_sorter` at `[23, 17]` all facings, exact two-cell footprint, 3 native layers)
+- `test_furniture_directions.gd` — 465 checks, 0 failures
+- `test_archive_production.gd` — 3311 checks, 0 failures
+- `test_chapter1_first_player.gd` — CHAPTER1 PASS (stops at Connect; host credentials ignored)
+- `test_full_player_path.gd` — FULLPATH PASS
+- `capture_furnishing_runtime.gd --diagnose --decor-only` — 79 checks, 0 failures (eight native décor rotate through all facings)
+
+**CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The recycling sorter is owned starter décor and stays in storage until placed.
