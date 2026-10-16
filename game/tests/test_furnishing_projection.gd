@@ -344,6 +344,39 @@ func run() -> void:
 				check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, "low_coffee_table/" + side + " keeps native separate layers")
 	check(room.apply_furnishing_state(state), "low_coffee_table returns to storage")
 	check(room.prop_node(table_id) == null, "low_coffee_table storage removes scene/collision but not ownership")
+	# Nine cells, 3x3 around the pivot in every facing. The coffee table block
+	# returns that piece to storage first, so [23, 17] is free again. The
+	# footprint is the same for all four facings; clearance sits one cell
+	# outside that square. Native layers stay three.
+	var meeting_id := "decor-round_meeting_table"
+	var meeting_grid := Vector2i(23, 17)
+	var meeting_offsets: Array[Vector2i] = []
+	for y: int in range(-1, 2):
+		for x: int in range(-1, 2):
+			meeting_offsets.append(Vector2i(x, y))
+	check(room.layout_model.available_facings("round_meeting_table").size() == 4, "round_meeting_table has four production-ready authored views")
+	for side: String in OfficeLayout.FACINGS:
+		var candidate := room.layout_model.validate_candidate(meeting_id, meeting_grid, side, 2, saved)
+		check(candidate.valid, "round_meeting_table/" + side + " can be placed from storage in the room")
+		var next := state.duplicate(true)
+		next.placements[meeting_id] = {"grid": [meeting_grid.x, meeting_grid.y], "facing": side}
+		check(room.apply_furnishing_state(next), "round_meeting_table/" + side + " projects into actual TownRoom")
+		var prop := room.prop_node(meeting_id)
+		var expected: Array[Vector2i] = []
+		for offset: Vector2i in meeting_offsets:
+			expected.append(meeting_grid + offset)
+		var placement := room.placement_by_id(meeting_id)
+		check(prop != null and placement.occupied == expected, "round_meeting_table/" + side + " occupies exactly its nine footprint cells")
+		var library_layers := 0
+		for layer: Dictionary in placement.render_layers:
+			if str(layer.art).contains("furnishing-library/round_meeting_table"):
+				library_layers += 1
+		check(library_layers == 3, "round_meeting_table/" + side + " has 3 furnishing-library layers")
+		for child: Node in prop.get_children():
+			if child is Sprite2D:
+				check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, "round_meeting_table/" + side + " keeps native separate layers")
+	check(room.apply_furnishing_state(state), "round_meeting_table returns to storage")
+	check(room.prop_node(meeting_id) == null, "round_meeting_table storage removes scene/collision but not ownership")
 	var old_seat := room.employee_workstation("mira").work_position as Vector2
 	room.navigation.actors["mira"] = old_seat
 	var moved := saved.duplicate(true)
