@@ -43,6 +43,10 @@
       "kind": "low_coffee_table"
     },
     {
+      "id": "decor-round_meeting_table",
+      "kind": "round_meeting_table"
+    },
+    {
       "id": "decor-rolling_storage_pedestal",
       "kind": "rolling_storage_pedestal"
     },
@@ -6282,6 +6286,618 @@
       },
       "interaction_kind": "none"
     },
+    "round_meeting_table": {
+      "display_name": "Meeting table",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/round_meeting_table/north-whole.png",
+          "visual_bounds": [
+            -42,
+            -78,
+            84,
+            118
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/round_meeting_table/north-floor_shadow.png",
+              "name": "RoundMeetingTableV1NorthFloorShadow",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                224,
+                288
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                93,
+                201,
+                44,
+                15
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/round_meeting_table/north-rear_structure.png",
+              "name": "RoundMeetingTableV1NorthRearStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                224,
+                288
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                70,
+                98,
+                84,
+                113
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/round_meeting_table/north-front_structure.png",
+              "name": "RoundMeetingTableV1NorthFrontStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                224,
+                288
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                84,
+                147,
+                56,
+                68
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              -1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              -2
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -42,
+            -78,
+            84,
+            118
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              0,
+              -2
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/round_meeting_table/east-whole.png",
+          "visual_bounds": [
+            -42,
+            -78,
+            84,
+            118
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/round_meeting_table/east-floor_shadow.png",
+              "name": "RoundMeetingTableV1EastFloorShadow",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                224,
+                288
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                93,
+                201,
+                44,
+                15
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/round_meeting_table/east-rear_structure.png",
+              "name": "RoundMeetingTableV1EastRearStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                224,
+                288
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                70,
+                98,
+                84,
+                113
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/round_meeting_table/east-front_structure.png",
+              "name": "RoundMeetingTableV1EastFrontStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                224,
+                288
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                84,
+                147,
+                56,
+                68
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              -1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "clearance": [
+            [
+              2,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -42,
+            -78,
+            84,
+            118
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              2,
+              0
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/round_meeting_table/south-whole.png",
+          "visual_bounds": [
+            -42,
+            -78,
+            84,
+            118
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/round_meeting_table/south-floor_shadow.png",
+              "name": "RoundMeetingTableV1SouthFloorShadow",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                224,
+                288
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                93,
+                201,
+                44,
+                15
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/round_meeting_table/south-rear_structure.png",
+              "name": "RoundMeetingTableV1SouthRearStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                224,
+                288
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                70,
+                98,
+                84,
+                113
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/round_meeting_table/south-front_structure.png",
+              "name": "RoundMeetingTableV1SouthFrontStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                224,
+                288
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                84,
+                147,
+                56,
+                68
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              -1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              2
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -42,
+            -78,
+            84,
+            118
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              0,
+              2
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/round_meeting_table/west-whole.png",
+          "visual_bounds": [
+            -42,
+            -78,
+            84,
+            118
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/round_meeting_table/west-floor_shadow.png",
+              "name": "RoundMeetingTableV1WestFloorShadow",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                224,
+                288
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                93,
+                201,
+                44,
+                15
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/round_meeting_table/west-rear_structure.png",
+              "name": "RoundMeetingTableV1WestRearStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                224,
+                288
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                70,
+                98,
+                84,
+                113
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/round_meeting_table/west-front_structure.png",
+              "name": "RoundMeetingTableV1WestFrontStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                224,
+                288
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                84,
+                147,
+                56,
+                68
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              -1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "clearance": [
+            [
+              -2,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -42,
+            -78,
+            84,
+            118
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+              -2,
+              0
+            ],
+              "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
     "rolling_storage_pedestal": {
       "display_name": "Rolling storage pedestal",
       "facings": [
@@ -8673,6 +9289,86 @@
       "source": "game/tests/fixtures/furniture-calibration/low-coffee-table-v1/west-whole.png",
       "destination": "game/assets/runtime/office/furnishing-library/low_coffee_table/west-whole.png",
       "sha256": "4293bb0e476d5296e0b2d27644b3f1720169c3b2e7035430f363bfe216cafce4"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/north-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/round_meeting_table/north-floor_shadow.png",
+      "sha256": "d28da9f2797781285196b1b8c47fad7ece4fe9d57d070bb93a54145a919e0645"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/north-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/round_meeting_table/north-rear_structure.png",
+      "sha256": "cd30a75e0220be2eb01174050d241db380fe018db7bd674f294632c10ac2bba8"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/north-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/round_meeting_table/north-front_structure.png",
+      "sha256": "4853f88f783e27684bbc67e2bc07458c1ac1d8d12fad55f21e69b403792ce1eb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/round_meeting_table/north-whole.png",
+      "sha256": "ffed2973897c23a0eb17017dfc7e53a2bc6c2b653d774d9f791910428c4d3bfb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/east-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/round_meeting_table/east-floor_shadow.png",
+      "sha256": "d28da9f2797781285196b1b8c47fad7ece4fe9d57d070bb93a54145a919e0645"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/east-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/round_meeting_table/east-rear_structure.png",
+      "sha256": "cd30a75e0220be2eb01174050d241db380fe018db7bd674f294632c10ac2bba8"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/east-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/round_meeting_table/east-front_structure.png",
+      "sha256": "4853f88f783e27684bbc67e2bc07458c1ac1d8d12fad55f21e69b403792ce1eb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/round_meeting_table/east-whole.png",
+      "sha256": "ffed2973897c23a0eb17017dfc7e53a2bc6c2b653d774d9f791910428c4d3bfb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/south-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/round_meeting_table/south-floor_shadow.png",
+      "sha256": "d28da9f2797781285196b1b8c47fad7ece4fe9d57d070bb93a54145a919e0645"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/south-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/round_meeting_table/south-rear_structure.png",
+      "sha256": "cd30a75e0220be2eb01174050d241db380fe018db7bd674f294632c10ac2bba8"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/south-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/round_meeting_table/south-front_structure.png",
+      "sha256": "4853f88f783e27684bbc67e2bc07458c1ac1d8d12fad55f21e69b403792ce1eb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/round_meeting_table/south-whole.png",
+      "sha256": "ffed2973897c23a0eb17017dfc7e53a2bc6c2b653d774d9f791910428c4d3bfb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/west-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/round_meeting_table/west-floor_shadow.png",
+      "sha256": "d28da9f2797781285196b1b8c47fad7ece4fe9d57d070bb93a54145a919e0645"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/west-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/round_meeting_table/west-rear_structure.png",
+      "sha256": "cd30a75e0220be2eb01174050d241db380fe018db7bd674f294632c10ac2bba8"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/west-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/round_meeting_table/west-front_structure.png",
+      "sha256": "4853f88f783e27684bbc67e2bc07458c1ac1d8d12fad55f21e69b403792ce1eb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/round_meeting_table/west-whole.png",
+      "sha256": "ffed2973897c23a0eb17017dfc7e53a2bc6c2b653d774d9f791910428c4d3bfb"
     }
   ]
 }

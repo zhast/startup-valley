@@ -117,7 +117,7 @@ func run() -> void:
 		check(not model.resolve_profile(family, "north").errors.is_empty(), family + " admission revoked with owner")
 		owner.queue_free()
 		await process_frame
-	check(ordinary.catalog.has("low_coffee_table") and not ordinary.catalog.has("round_meeting_table") and str(ordinary.catalog["cafe_table"]["facing_profiles"]["south"]["preview_art"]) == "res://assets/runtime/office/cafe-table-south.png", "Low lounge table is registered; round meeting table stays out; the older one-cell cafe prop is unchanged")
+	check(ordinary.catalog.has("low_coffee_table") and ordinary.catalog.has("round_meeting_table") and str(ordinary.catalog["cafe_table"]["facing_profiles"]["south"]["preview_art"]) == "res://assets/runtime/office/cafe-table-south.png", "Low lounge table and round meeting table are registered; the older one-cell cafe prop is unchanged")
 	for path: String in preserved:
 		check(FileAccess.get_sha256(path) == preserved[path], "Test leaves " + path + " byte-identical")
 	print("Passive tables: %d checks, %d failures" % [checks, failures.size()])
