@@ -269,7 +269,7 @@ func run() -> void:
 	check(not model.resolve_profile("low_bookshelf", "south").errors.is_empty(), "Candidate permits revoked with fixture owner")
 	var ordinary := OfficeLayout.new()
 	ordinary.load_files()
-	check(not ordinary.catalog.has("low_bookshelf"), "Ordinary production catalogue has no candidate leakage")
+	check(ordinary.catalog.has("low_bookshelf"), "Low resource shelf is registered in the ordinary production catalogue")
 	var file := FileAccess.open(OUTPUT.path_join("manifest.json" if rendered else "headless.json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify({"checks": checks, "failures": failures, "captures": captures, "walks": walks, "runtime_approved": false, "source_status": "One generated South open-bay insert; code-native shelf with unchanged axis oak tiles", "limitations": ["Only South exposes generated open-bay content; closed E/W ends are equivalent.", "No new gameplay action, seat, shadow, production family or saving.", "Recorded visual review is required separately from these geometry checks."]}, "\t"))
 	print("Low bookshelf: %d checks, %d failures, %d captures" % [checks, failures.size(), captures.size()])

@@ -377,6 +377,40 @@ func run() -> void:
 				check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, "round_meeting_table/" + side + " keeps native separate layers")
 	check(room.apply_furnishing_state(state), "round_meeting_table returns to storage")
 	check(room.prop_node(meeting_id) == null, "round_meeting_table storage removes scene/collision but not ownership")
+	# Three cells. North and south are a 3x1 strip; east and west are a 1x3
+	# strip. The meeting-table block returns that piece to storage first, so
+	# [23, 17] is free again. Clearance is the front cell just outside the strip.
+	var shelf_id := "decor-low_bookshelf"
+	var shelf_grid := Vector2i(23, 17)
+	var shelf_offsets := {
+		"north": [Vector2i(1, 0), Vector2i(0, 0), Vector2i(-1, 0)],
+		"east": [Vector2i(0, 1), Vector2i(0, 0), Vector2i(0, -1)],
+		"south": [Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0)],
+		"west": [Vector2i(0, -1), Vector2i(0, 0), Vector2i(0, 1)],
+	}
+	check(room.layout_model.available_facings("low_bookshelf").size() == 4, "low_bookshelf has four production-ready authored views")
+	for side: String in OfficeLayout.FACINGS:
+		var candidate := room.layout_model.validate_candidate(shelf_id, shelf_grid, side, 2, saved)
+		check(candidate.valid, "low_bookshelf/" + side + " can be placed from storage in the room")
+		var next := state.duplicate(true)
+		next.placements[shelf_id] = {"grid": [shelf_grid.x, shelf_grid.y], "facing": side}
+		check(room.apply_furnishing_state(next), "low_bookshelf/" + side + " projects into actual TownRoom")
+		var prop := room.prop_node(shelf_id)
+		var expected: Array[Vector2i] = []
+		for offset: Vector2i in shelf_offsets[side]:
+			expected.append(shelf_grid + offset)
+		var placement := room.placement_by_id(shelf_id)
+		check(prop != null and placement.occupied == expected, "low_bookshelf/" + side + " occupies exactly its three footprint cells")
+		var library_layers := 0
+		for layer: Dictionary in placement.render_layers:
+			if str(layer.art).contains("furnishing-library/low_bookshelf"):
+				library_layers += 1
+		check(library_layers == 5, "low_bookshelf/" + side + " has 5 furnishing-library layers")
+		for child: Node in prop.get_children():
+			if child is Sprite2D:
+				check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, "low_bookshelf/" + side + " keeps native separate layers")
+	check(room.apply_furnishing_state(state), "low_bookshelf returns to storage")
+	check(room.prop_node(shelf_id) == null, "low_bookshelf storage removes scene/collision but not ownership")
 	var old_seat := room.employee_workstation("mira").work_position as Vector2
 	room.navigation.actors["mira"] = old_seat
 	var moved := saved.duplicate(true)

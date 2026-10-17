@@ -215,8 +215,26 @@ func run() -> void:
 	# west clearance is [5, 7]. Clear of Mina [11, 18], Creative [14, 18],
 	# Theo [23, 18], and the founder capture cell [17, 18].
 	state.placements["decor-round_meeting_table"] = {"grid": [7, 7], "facing": "south"}
-	state.placements["decor-rolling_storage_pedestal"] = {"grid": [7, 13], "facing": "south"}
-	check(main.room.apply_furnishing_state(state), "Twelve native starter decorations fit beside production stations")
+	# One-cell. The low bookshelf needs the four-facing plus this pedestal held
+	# just south of the aisle. [32, 6] stays valid for every facing on the east
+	# edge, north of the research bench and the planter at [32, 13], clear of
+	# Mina [11, 18], Creative [14, 18], Theo [23, 18], and the founder capture
+	# cell [17, 18].
+	state.placements["decor-rolling_storage_pedestal"] = {"grid": [32, 6], "facing": "south"}
+	# 3x1 when the shelf faces north or south, 1x3 when it faces east or west.
+	# Occupied cells are the registration order (the geometry tool lists the
+	# same cells): north [[1,0],[0,0],[-1,0]], east [[0,1],[0,0],[0,-1]],
+	# south [[-1,0],[0,0],[1,0]], west [[0,-1],[0,0],[0,1]]. Clearance is the
+	# front cell just outside that strip: north [0,-1], east [1,0], south
+	# [0,1], west [-1,0]. Canvas [192, 224], pivot [96, 160], offset [0, -48].
+	# No other shared four-facing pocket stayed free while the previous twelve
+	# décor kept their cells. Moving the pedestal to [32, 6] leaves [7, 13]
+	# inside artwork and standing headroom for every facing. North and south
+	# occupy [6, 13] through [8, 13]; east and west occupy [7, 12] through
+	# [7, 14]. West clearance is [6, 13]. Clear of Mina [11, 18], Creative
+	# [14, 18], Theo [23, 18], and the founder capture cell [17, 18].
+	state.placements["decor-low_bookshelf"] = {"grid": [7, 13], "facing": "south"}
+	check(main.room.apply_furnishing_state(state), "Thirteen native starter decorations fit beside production stations")
 	var founder_lamp_layers := 0
 	var founder_strategy_layers := 0
 	for layer: Dictionary in main.room.placement_by_id("founder-workstation").render_layers:
@@ -233,11 +251,11 @@ func run() -> void:
 		main.office_renovation.open()
 		for index: int in range(4): await process_frame
 		var picker := main.office_renovation._prop_picker
-		check(picker.item_count == 12, "Mature inventory presents all twelve currently owned furnishings")
+		check(picker.item_count == 13, "Mature inventory presents all thirteen currently owned furnishings")
 		await capture("mature-renovate-open")
 		await ui_click(picker.get_global_rect().get_center())
 		check(picker.get_popup().visible, "Actual pointer opens the mature inventory dropdown")
-		check(Rect2(Vector2.ZERO, Vector2(1280, 720)).encloses(Rect2(Vector2(picker.get_popup().position), Vector2(picker.get_popup().size))), "All twelve dropdown rows fit the native viewport")
+		check(Rect2(Vector2.ZERO, Vector2(1280, 720)).encloses(Rect2(Vector2(picker.get_popup().position), Vector2(picker.get_popup().size))), "All thirteen dropdown rows fit the native viewport")
 		await capture("mature-renovate-dropdown")
 		picker.get_popup().hide()
 		main.office_renovation.select_placement("mira-workstation")
@@ -254,8 +272,8 @@ func run() -> void:
 		return
 	if OS.get_cmdline_user_args().has("--decor-only"):
 		for side: String in OfficeLayout.FACINGS:
-			for id: String in ["decor-broadleaf_planter", "decor-task_floor_lamp", "decor-coat_bag_stand", "decor-water_station", "decor-resource_cart", "decor-printer_scanner_station", "decor-recycling_sorter", "decor-tall_storage_cabinet", "decor-server_cabinet", "decor-low_coffee_table", "decor-round_meeting_table", "decor-rolling_storage_pedestal"]: state.placements[id].facing = side
-			check(main.room.apply_furnishing_state(state), side + " twelve native decorations retain valid clearance/layer geometry")
+			for id: String in ["decor-broadleaf_planter", "decor-task_floor_lamp", "decor-coat_bag_stand", "decor-water_station", "decor-resource_cart", "decor-printer_scanner_station", "decor-recycling_sorter", "decor-tall_storage_cabinet", "decor-server_cabinet", "decor-low_coffee_table", "decor-round_meeting_table", "decor-rolling_storage_pedestal", "decor-low_bookshelf"]: state.placements[id].facing = side
+			check(main.room.apply_furnishing_state(state), side + " thirteen native decorations retain valid clearance/layer geometry")
 			main._on_room_placements_changed()
 			await step(2)
 			await capture("decor-" + side)
