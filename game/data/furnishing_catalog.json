@@ -47,6 +47,10 @@
       "kind": "round_meeting_table"
     },
     {
+      "id": "decor-low_bookshelf",
+      "kind": "low_bookshelf"
+    },
+    {
       "id": "decor-rolling_storage_pedestal",
       "kind": "rolling_storage_pedestal"
     },
@@ -6898,6 +6902,690 @@
       },
       "interaction_kind": "none"
     },
+    "low_bookshelf": {
+      "display_name": "Low resource shelf",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/low_bookshelf/north-whole.png",
+          "visual_bounds": [
+            -48,
+            -48,
+            96,
+            64
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/north-carcass.png",
+              "name": "LowBookshelfV1NorthCarcass",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                48,
+                144,
+                96,
+                32
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/north-top.png",
+              "name": "LowBookshelfV1NorthTop",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                48,
+                112,
+                96,
+                32
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/north-front.png",
+              "name": "LowBookshelfV1NorthFront",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                50,
+                144,
+                92,
+                28
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/north-plinth.png",
+              "name": "LowBookshelfV1NorthPlinth",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                48,
+                172,
+                96,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/north-insert.png",
+              "name": "LowBookshelfV1NorthInsert",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              -1,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              -1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -48,
+            -48,
+            96,
+            64
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                -1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/low_bookshelf/east-whole.png",
+          "visual_bounds": [
+            -16,
+            -80,
+            32,
+            128
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/east-carcass.png",
+              "name": "LowBookshelfV1EastCarcass",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                80,
+                176,
+                32,
+                32
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/east-top.png",
+              "name": "LowBookshelfV1EastTop",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                80,
+                80,
+                32,
+                96
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/east-front.png",
+              "name": "LowBookshelfV1EastFront",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                82,
+                176,
+                28,
+                28
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/east-plinth.png",
+              "name": "LowBookshelfV1EastPlinth",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                80,
+                204,
+                32,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/east-insert.png",
+              "name": "LowBookshelfV1EastInsert",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              -1
+            ]
+          ],
+          "clearance": [
+            [
+              1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -16,
+            -80,
+            32,
+            128
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/low_bookshelf/south-whole.png",
+          "visual_bounds": [
+            -48,
+            -48,
+            96,
+            64
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/south-carcass.png",
+              "name": "LowBookshelfV1SouthCarcass",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                48,
+                144,
+                96,
+                32
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/south-top.png",
+              "name": "LowBookshelfV1SouthTop",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                48,
+                112,
+                96,
+                32
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/south-front.png",
+              "name": "LowBookshelfV1SouthFront",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                50,
+                144,
+                92,
+                28
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/south-plinth.png",
+              "name": "LowBookshelfV1SouthPlinth",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                48,
+                172,
+                96,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/south-insert.png",
+              "name": "LowBookshelfV1SouthInsert",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                61,
+                148,
+                70,
+                24
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -48,
+            -48,
+            96,
+            64
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/low_bookshelf/west-whole.png",
+          "visual_bounds": [
+            -16,
+            -80,
+            32,
+            128
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/west-carcass.png",
+              "name": "LowBookshelfV1WestCarcass",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                80,
+                176,
+                32,
+                32
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/west-top.png",
+              "name": "LowBookshelfV1WestTop",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                80,
+                80,
+                32,
+                96
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/west-front.png",
+              "name": "LowBookshelfV1WestFront",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                82,
+                176,
+                28,
+                28
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/west-plinth.png",
+              "name": "LowBookshelfV1WestPlinth",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                80,
+                204,
+                32,
+                4
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/low_bookshelf/west-insert.png",
+              "name": "LowBookshelfV1WestInsert",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "clearance": [
+            [
+              -1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -16,
+            -80,
+            32,
+            128
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                -1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
     "rolling_storage_pedestal": {
       "display_name": "Rolling storage pedestal",
       "facings": [
@@ -9369,6 +10057,126 @@
       "source": "game/tests/fixtures/furniture-calibration/round-meeting-table-v1/west-whole.png",
       "destination": "game/assets/runtime/office/furnishing-library/round_meeting_table/west-whole.png",
       "sha256": "ffed2973897c23a0eb17017dfc7e53a2bc6c2b653d774d9f791910428c4d3bfb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/north-carcass.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/north-carcass.png",
+      "sha256": "bcac91d68f885105ee3a02b17076f01aa9166df4f3840ad32641434103edc94e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/north-top.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/north-top.png",
+      "sha256": "bae1dc8b8e65c2a7768761c22655f37abc87a86272f2ee1d531f1758b8583fd0"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/north-front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/north-front.png",
+      "sha256": "a7b7c3f211365def812c422f667d5adc891c24078e4fa2110c4c1a6f04886e1f"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/north-plinth.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/north-plinth.png",
+      "sha256": "c6f18ad4b0319fae26d3f56b86fa33cf5d16706fcb8d813db5a0ff39a0bb2c80"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/north-insert.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/north-insert.png",
+      "sha256": "c576ed0785a571dda316e0a0e1c57e23bfdabd13c2fcdc3323df660c5d58dd1b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/north-whole.png",
+      "sha256": "792a6a89343fe2f8583ac3aa9d0aec839402c68283c574890f413081851f5fbd"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/east-carcass.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/east-carcass.png",
+      "sha256": "459ea9c01944cf304766f42d071ffd63c38ddc1d17a061599ef3b404dd199f5b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/east-top.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/east-top.png",
+      "sha256": "a8f7bb9475f20ec83f7cf5d0896e90b5f646f7d15086f719bb89073a8aec9610"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/east-front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/east-front.png",
+      "sha256": "d2869c37e8cf905b2e11353863201d2913bb859b39614dc79c5d54b80f1bfc53"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/east-plinth.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/east-plinth.png",
+      "sha256": "39ae01644be9375803db7e2a8da9afab82593a997361ed2f2209d1061d2bb7d1"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/east-insert.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/east-insert.png",
+      "sha256": "c576ed0785a571dda316e0a0e1c57e23bfdabd13c2fcdc3323df660c5d58dd1b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/east-whole.png",
+      "sha256": "420f5b86491e93eb2a2dd28d5938b9b436db3b0ea5c1883afdb3fa2256417e88"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/south-carcass.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/south-carcass.png",
+      "sha256": "bcac91d68f885105ee3a02b17076f01aa9166df4f3840ad32641434103edc94e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/south-top.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/south-top.png",
+      "sha256": "bae1dc8b8e65c2a7768761c22655f37abc87a86272f2ee1d531f1758b8583fd0"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/south-front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/south-front.png",
+      "sha256": "292dc0ac9969874249fa258b51cb2d91eba25b4790754d763835b71fbad0f5cb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/south-plinth.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/south-plinth.png",
+      "sha256": "c6f18ad4b0319fae26d3f56b86fa33cf5d16706fcb8d813db5a0ff39a0bb2c80"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/south-insert.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/south-insert.png",
+      "sha256": "fd156b181e3184c3b4770bd4930fb13d3ea24a80ccc9afe456d68a41467d6f4a"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/south-whole.png",
+      "sha256": "e33c6e28532d6e221238513a24980364ac00e727fd3f7ee5f8cc78486306bbc4"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/west-carcass.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/west-carcass.png",
+      "sha256": "459ea9c01944cf304766f42d071ffd63c38ddc1d17a061599ef3b404dd199f5b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/west-top.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/west-top.png",
+      "sha256": "a8f7bb9475f20ec83f7cf5d0896e90b5f646f7d15086f719bb89073a8aec9610"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/west-front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/west-front.png",
+      "sha256": "d2869c37e8cf905b2e11353863201d2913bb859b39614dc79c5d54b80f1bfc53"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/west-plinth.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/west-plinth.png",
+      "sha256": "39ae01644be9375803db7e2a8da9afab82593a997361ed2f2209d1061d2bb7d1"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/west-insert.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/west-insert.png",
+      "sha256": "c576ed0785a571dda316e0a0e1c57e23bfdabd13c2fcdc3323df660c5d58dd1b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/west-whole.png",
+      "sha256": "420f5b86491e93eb2a2dd28d5938b9b436db3b0ea5c1883afdb3fa2256417e88"
     }
   ]
 }
