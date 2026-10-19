@@ -675,3 +675,5 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The visitor chair is owned starter décor and stays in storage until placed.
 
+
+- 13:35 PT Oct 19: Merged PR #21 (visitor_chair v2 registered as passive starter décor). Verified harness 72/0, eval:offline 8/8, import, validate, run_all, furnishing projection 642/0, furniture directions 473/0, archive production 3319/0, chapter1, full_player_path, passive tables, acoustic divider, mobile whiteboard, passive furniture, visitor chair v2 105/0, and decor capture green. test_visitor_chair.gd (v1) still has 1 pre-existing failure (dev catalogue production_status now approved).
