@@ -438,7 +438,7 @@ func run() -> void:
 	var ordinary := preload("res://tools/archive_production_fixture.gd").new()
 	root.add_child(ordinary)
 	await frames(3)
-	check(ordinary.ready_ok and not ordinary.main.room.layout_model.catalog.has("mobile_whiteboard"), "Second independent ordinary scene has no candidate family leak")
+	check(ordinary.ready_ok and ordinary.main.room.layout_model.catalog.has("mobile_whiteboard"), "Mobile whiteboard is registered in the ordinary production catalogue")
 	check(ordinary.main.room.prop_node("dev-whiteboard") == null and ordinary.main.room.prop_node("dev-pedestal") == null, "No generic prop/node leakage")
 	ordinary.queue_free()
 	await frames(3)

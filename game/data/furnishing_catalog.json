@@ -55,6 +55,10 @@
       "kind": "acoustic_divider"
     },
     {
+      "id": "decor-mobile_whiteboard",
+      "kind": "mobile_whiteboard"
+    },
+    {
       "id": "decor-rolling_storage_pedestal",
       "kind": "rolling_storage_pedestal"
     },
@@ -8106,6 +8110,858 @@
       },
       "interaction_kind": "none"
     },
+    "mobile_whiteboard": {
+      "display_name": "Mobile whiteboard",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/north-whole.png",
+          "visual_bounds": [
+            -48,
+            -82,
+            96,
+            98
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/north-ground_base.png",
+              "name": "MobileWhiteboardV1NorthGroundBase",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                48,
+                144,
+                96,
+                32
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/north-rear_supports.png",
+              "name": "MobileWhiteboardV1NorthRearSupports",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                52,
+                136,
+                88,
+                34
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/north-far_tray.png",
+              "name": "MobileWhiteboardV1NorthFarTray",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                56,
+                128,
+                80,
+                9
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/north-board_frame.png",
+              "name": "MobileWhiteboardV1NorthBoardFrame",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                52,
+                78,
+                88,
+                60
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/north-face_insert.png",
+              "name": "MobileWhiteboardV1NorthFaceInsert",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/north-near_tray.png",
+              "name": "MobileWhiteboardV1NorthNearTray",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/north-near_supports.png",
+              "name": "MobileWhiteboardV1NorthNearSupports",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              -1,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              -1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -48,
+            -82,
+            96,
+            98
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                -1
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/east-whole.png",
+          "visual_bounds": [
+            -16,
+            -124,
+            32,
+            172
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/east-ground_base.png",
+              "name": "MobileWhiteboardV1EastGroundBase",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                80,
+                112,
+                32,
+                96
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/east-rear_supports.png",
+              "name": "MobileWhiteboardV1EastRearSupports",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                94,
+                94,
+                4,
+                28
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/east-far_tray.png",
+              "name": "MobileWhiteboardV1EastFarTray",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/east-board_frame.png",
+              "name": "MobileWhiteboardV1EastBoardFrame",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                94,
+                36,
+                4,
+                144
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/east-face_insert.png",
+              "name": "MobileWhiteboardV1EastFaceInsert",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/east-near_tray.png",
+              "name": "MobileWhiteboardV1EastNearTray",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                98,
+                96,
+                8,
+                80
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/east-near_supports.png",
+              "name": "MobileWhiteboardV1EastNearSupports",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                94,
+                178,
+                4,
+                28
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              -1
+            ]
+          ],
+          "clearance": [
+            [
+              1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -16,
+            -124,
+            32,
+            172
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/south-whole.png",
+          "visual_bounds": [
+            -48,
+            -82,
+            96,
+            98
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/south-ground_base.png",
+              "name": "MobileWhiteboardV1SouthGroundBase",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                48,
+                144,
+                96,
+                32
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/south-rear_supports.png",
+              "name": "MobileWhiteboardV1SouthRearSupports",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                52,
+                136,
+                88,
+                34
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/south-far_tray.png",
+              "name": "MobileWhiteboardV1SouthFarTray",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/south-board_frame.png",
+              "name": "MobileWhiteboardV1SouthBoardFrame",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                52,
+                78,
+                88,
+                60
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/south-face_insert.png",
+              "name": "MobileWhiteboardV1SouthFaceInsert",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/south-near_tray.png",
+              "name": "MobileWhiteboardV1SouthNearTray",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                56,
+                138,
+                80,
+                9
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/south-near_supports.png",
+              "name": "MobileWhiteboardV1SouthNearSupports",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -48,
+            -82,
+            96,
+            98
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/west-whole.png",
+          "visual_bounds": [
+            -16,
+            -124,
+            32,
+            172
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/west-ground_base.png",
+              "name": "MobileWhiteboardV1WestGroundBase",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                80,
+                112,
+                32,
+                96
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/west-rear_supports.png",
+              "name": "MobileWhiteboardV1WestRearSupports",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                94,
+                94,
+                4,
+                28
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/west-far_tray.png",
+              "name": "MobileWhiteboardV1WestFarTray",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/west-board_frame.png",
+              "name": "MobileWhiteboardV1WestBoardFrame",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                94,
+                36,
+                4,
+                144
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/west-face_insert.png",
+              "name": "MobileWhiteboardV1WestFaceInsert",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/west-near_tray.png",
+              "name": "MobileWhiteboardV1WestNearTray",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                86,
+                96,
+                8,
+                80
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/mobile_whiteboard/west-near_supports.png",
+              "name": "MobileWhiteboardV1WestNearSupports",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                94,
+                178,
+                4,
+                28
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "clearance": [
+            [
+              -1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -16,
+            -124,
+            32,
+            172
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                -1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
     "rolling_storage_pedestal": {
       "display_name": "Rolling storage pedestal",
       "facings": [
@@ -10777,6 +11633,166 @@
       "source": "game/tests/fixtures/furniture-calibration/acoustic-divider-v1/west-whole.png",
       "destination": "game/assets/runtime/office/furnishing-library/acoustic_divider/west-whole.png",
       "sha256": "78f7711ce0a0221d6d7dcddd21ceb8ab26aa74016fecf30dc3d78f8d54f7f9e8"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/north-ground_base.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/north-ground_base.png",
+      "sha256": "b60111f6eacd449a71f94ae9dc54e8f80e60ed6b370df3736600b5cc4110650f"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/north-rear_supports.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/north-rear_supports.png",
+      "sha256": "2c3965f689fed08e535a7cfc856f81407403b74314179458f0833ca8d6534b14"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/north-far_tray.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/north-far_tray.png",
+      "sha256": "af4f0fd3cc9c5f61341187b94a9d16a8a41bf94251886613722191bec9168932"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/north-board_frame.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/north-board_frame.png",
+      "sha256": "3a40b8f8dc5b36449edf978c5de9099b4a42d6c978352a782056089ab0e3a7a8"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/north-face_insert.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/north-face_insert.png",
+      "sha256": "c576ed0785a571dda316e0a0e1c57e23bfdabd13c2fcdc3323df660c5d58dd1b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/north-near_tray.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/north-near_tray.png",
+      "sha256": "c576ed0785a571dda316e0a0e1c57e23bfdabd13c2fcdc3323df660c5d58dd1b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/north-near_supports.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/north-near_supports.png",
+      "sha256": "c576ed0785a571dda316e0a0e1c57e23bfdabd13c2fcdc3323df660c5d58dd1b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/north-whole.png",
+      "sha256": "508946dcf68b107acd27a7b560ccd155c6e6c6338cea8a677d0970e206c2ec11"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/east-ground_base.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/east-ground_base.png",
+      "sha256": "41a97d55fad1c16166ca4c1f3573eb03df38552a96487ea67bd9a1ea35905da2"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/east-rear_supports.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/east-rear_supports.png",
+      "sha256": "ed2c3da408e554ac5832e59cee41db4b1ae64d278b48f12d9d39ab2a7567f34d"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/east-far_tray.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/east-far_tray.png",
+      "sha256": "c576ed0785a571dda316e0a0e1c57e23bfdabd13c2fcdc3323df660c5d58dd1b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/east-board_frame.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/east-board_frame.png",
+      "sha256": "4fb33ac1d81220ba518fc93c7b666448cd01c0a24ecda31bdde6862ba1503b32"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/east-face_insert.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/east-face_insert.png",
+      "sha256": "c576ed0785a571dda316e0a0e1c57e23bfdabd13c2fcdc3323df660c5d58dd1b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/east-near_tray.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/east-near_tray.png",
+      "sha256": "a410c006a14864b2d758be0fbd5457250dc69cf5710427f1e618af22dd7d15d1"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/east-near_supports.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/east-near_supports.png",
+      "sha256": "a1c11f99c54950e19538f557840d2d66d9e389d2dd398fffd5a9f48591067f05"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/east-whole.png",
+      "sha256": "e22e23ed6c7fbc6aa682cd75313bbed74652618d89a0ed294e494a5f672fa02f"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/south-ground_base.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/south-ground_base.png",
+      "sha256": "b60111f6eacd449a71f94ae9dc54e8f80e60ed6b370df3736600b5cc4110650f"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/south-rear_supports.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/south-rear_supports.png",
+      "sha256": "2c3965f689fed08e535a7cfc856f81407403b74314179458f0833ca8d6534b14"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/south-far_tray.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/south-far_tray.png",
+      "sha256": "c576ed0785a571dda316e0a0e1c57e23bfdabd13c2fcdc3323df660c5d58dd1b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/south-board_frame.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/south-board_frame.png",
+      "sha256": "42d3b0d9a50b8a15c72cea1cf79efcf78730f4258d6f07d74bc3414497b2362d"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/south-face_insert.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/south-face_insert.png",
+      "sha256": "c576ed0785a571dda316e0a0e1c57e23bfdabd13c2fcdc3323df660c5d58dd1b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/south-near_tray.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/south-near_tray.png",
+      "sha256": "80883dd6fffe984e7099d831a1d559f47b85e2d4884384afea1bb92d3eca41b8"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/south-near_supports.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/south-near_supports.png",
+      "sha256": "c576ed0785a571dda316e0a0e1c57e23bfdabd13c2fcdc3323df660c5d58dd1b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/south-whole.png",
+      "sha256": "945a4494cf4f4cf352463fbe687116ae1d57bec87e592fe5e0dedc1e2bf18432"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/west-ground_base.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/west-ground_base.png",
+      "sha256": "41a97d55fad1c16166ca4c1f3573eb03df38552a96487ea67bd9a1ea35905da2"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/west-rear_supports.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/west-rear_supports.png",
+      "sha256": "ed2c3da408e554ac5832e59cee41db4b1ae64d278b48f12d9d39ab2a7567f34d"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/west-far_tray.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/west-far_tray.png",
+      "sha256": "c576ed0785a571dda316e0a0e1c57e23bfdabd13c2fcdc3323df660c5d58dd1b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/west-board_frame.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/west-board_frame.png",
+      "sha256": "4fb33ac1d81220ba518fc93c7b666448cd01c0a24ecda31bdde6862ba1503b32"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/west-face_insert.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/west-face_insert.png",
+      "sha256": "c576ed0785a571dda316e0a0e1c57e23bfdabd13c2fcdc3323df660c5d58dd1b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/west-near_tray.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/west-near_tray.png",
+      "sha256": "fe5d43b4337fe1932387fe5c378109e1b2d22fd90bad9ff76a34d810782f8214"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/west-near_supports.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/west-near_supports.png",
+      "sha256": "a1c11f99c54950e19538f557840d2d66d9e389d2dd398fffd5a9f48591067f05"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/west-whole.png",
+      "sha256": "aded6b7df9bbe3d5dccf41143acd20e473dcb0cd1f6772e7bf08c26e5e819c63"
     }
   ]
 }

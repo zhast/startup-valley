@@ -597,3 +597,39 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The acoustic divider is owned starter décor and stays in storage until placed.
 
 - 10:23 PT Oct 19: Merged PR #19 (acoustic_divider registered as starter décor). Verified harness 72/0, eval:offline 8/8, validate, run_all, chapter1, full_player_path, furnishing projection 564/0, furniture directions 471/0, archive production 3317/0, passive tables 628/0, acoustic divider 66/0, and decor capture 79/0 green.
+
+### Round 18 — 2026-10-19
+
+**What changed**
+- Registered the art-approved `mobile_whiteboard` (mobile-whiteboard-v1, mean 2.50 Pass in `dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md`, display name "Mobile whiteboard") into the playable furnishing catalog, mirroring `acoustic_divider`. The older unrelated `whiteboard` kind is unchanged. All four facings are `runtime_ready`. `interaction_kind` is `none` (no writing, service, work, or planning action). The profile is decorative. Native canvas is `[192, 224]`, floor pivot `[96, 160]`, sprite offset `[0, -48]` (`canvas / 2 - pivot`, also the geometry tool's sprite position). Layer order is GroundBase, RearSupports, FarTray, BoardFrame, FaceInsert, NearTray, NearSupports. `face_insert` is a registered blank layer of the base board in the output manifest and the proposal native exports (opaque pixels 0, bounds `[0, 0, 0, 0]` on every facing), so it is included. The optional South planning composite `south-planning-whole.png` and the `-4x` images are not registered. North and south wholes are not byte-identical. East and west wholes are not byte-identical. Occupied cells follow the registration proposal order (the same cells as `mobile_whiteboard_geometry.gd`; north and east reverse that tool's shared order): north `[[1,0],[0,0],[-1,0]]`, east `[[0,1],[0,0],[0,-1]]`, south `[[-1,0],[0,0],[1,0]]`, west `[[0,-1],[0,0],[0,1]]`. Clearance and the standing viewpoint use the proposal interaction cell, which matches the geometry tool's visitor offset: north `[0,-1]`, east `[1,0]`, south `[0,1]`, west `[-1,0]`. The geometry tool and contract author the standing envelope `[-24,-72,48,80]`, so that rectangle is used instead of the taller decorative pad. Visual and hit bounds are the proposal opaque-union bounds minus the floor pivot: north/south `[-48,-82,96,98]`, east/west `[-16,-124,32,172]`.
+- `decor-mobile_whiteboard` is a starter inventory grant. New companies and existing saves receive it through the same `starter-decor-v1` insert as the other starter décor. It is not auto-placed. The phone booth remains the only first-run lounge placement. The mobile whiteboard stays in storage until the player places it.
+- Runtime layers are byte-exact copies of the mobile-whiteboard-v1 blank-board layer and whole PNGs under `game/assets/runtime/office/furnishing-library/mobile_whiteboard/`. Render regions are the full canvas and every layer offset is `[0, -48]`. All layers use `z_offset` 0. Layer names are `MobileWhiteboardV1` plus facing plus layer. The dev capture tool lists `decor-mobile_whiteboard` at `[7, 13]` facing south and rotates it with the other native décor. No four-facing pocket stayed free while the previous fourteen décor kept their cells, and moving any one-cell piece left this board without a home. The low bookshelf moves from `[7, 13]` to `[25, 8]`, which leaves `[7, 13]` valid for every facing. North and south occupy `[6, 13]` through `[8, 13]`; east and west occupy `[7, 12]` through `[7, 14]`. West clearance is `[6, 13]`. Clear of Mina `[11, 18]`, Creative `[14, 18]`, Theo `[23, 18]`, and the founder capture cell `[17, 18]`. The projection test places the whiteboard at `[23, 17]` after the acoustic divider returns to storage.
+
+**Art HOLD**
+- No new art was generated or edited. No sitting, outdoor scene, new hire, Chapter 3, founder-seated pose, or unused role kit was added.
+
+**Remaining gaps (ranked)**
+1. Creative has a locomotion sheet and stands at the desk. There is no seated sheet, and none was invented.
+2. Unbound seated, outdoor, waiting-lunch, and unused furnishing-kit art stays untracked. Founder seated/N/E/W workstation poses are QA-only, not bind-approved. `customer_success_kit`, `engineer_build_kit`, `finance_accounts_kit`, `growth_analytics_kit`, `lawyer_contract_kit`, and `product_prototype_kit` stay unbound.
+3. The live path is still a harness driver, not a watched windowed playtest.
+4. A cheap reviewer can still sit just under the 2.5 ready line. Round 2's passing ads score was 2.60.
+5. After the Chapter 2 end screen, ordinary work orders continue. No Chapter 3 content is authored.
+6. `mobile_whiteboard` is now registered. From the passive furniture library review, `visitor_chair` remains passed but unregistered (`dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md`). From the passive-tables review, `cafe_table` (v2) remains passed but unregistered. The catalogue already uses the kind name `cafe_table` for an older one-cell south prop (`res://assets/runtime/office/cafe-table-south.png`); the passed cafe-table-v2 library is still unregistered. Reviews still pass unregistered `two_seat_sofa` and `lounge_armchair` (`dev/art-catalogue/LOUNGE_SEATING_REVIEW_2026-09-06.md`). None of those reviews names a registration order.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored; fake provider not set)
+- `cd harness && npm test` — 72 pass, 0 fail, 2 skipped
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass
+- `test_furnishing_projection.gd` — 611 checks, 0 failures (includes `mobile_whiteboard` at `[23, 17]` all facings, exact three-cell footprint, 7 native layers)
+- `test_furniture_directions.gd` — 472 checks, 0 failures
+- `test_archive_production.gd` — 3318 checks, 0 failures
+- `test_chapter1_first_player.gd` — CHAPTER1 PASS (stops at Connect; host credentials ignored)
+- `test_full_player_path.gd` — FULLPATH PASS
+- `test_passive_tables.gd` — 628 checks, 0 failures (low lounge table and round meeting table stay in the ordinary catalogue; the whiteboard is not a table)
+- `test_acoustic_divider.gd` — 66 checks, 0 failures
+- `test_mobile_whiteboard.gd` — 1628 checks, 0 failures
+- `capture_furnishing_runtime.gd --diagnose --decor-only` — 79 checks, 0 failures (fifteen native décor rotate through all facings; whiteboard at `[7, 13]`, low bookshelf moved to `[25, 8]`)
+
+**CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The mobile whiteboard is owned starter décor and stays in storage until placed.

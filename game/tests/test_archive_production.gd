@@ -159,7 +159,7 @@ func validate_assets_and_stages() -> void:
 	for kind: String in model.catalog:
 		if kind == "artifact_archive": continue
 		var expected: Array[String] = []
-		expected.assign(OfficeLayout.FACINGS if kind in ["desk", "approval_console", "coffee_station", "collaboration_cluster", "prototype_bench", "research_table", "broadleaf_planter", "task_floor_lamp", "coat_bag_stand", "water_station", "resource_cart", "printer_scanner_station", "recycling_sorter", "tall_storage_cabinet", "server_cabinet", "low_coffee_table", "round_meeting_table", "low_bookshelf", "acoustic_divider", "rolling_storage_pedestal"] else ["south"])
+		expected.assign(OfficeLayout.FACINGS if kind in ["desk", "approval_console", "coffee_station", "collaboration_cluster", "prototype_bench", "research_table", "broadleaf_planter", "task_floor_lamp", "coat_bag_stand", "water_station", "resource_cart", "printer_scanner_station", "recycling_sorter", "tall_storage_cabinet", "server_cabinet", "low_coffee_table", "round_meeting_table", "low_bookshelf", "acoustic_divider", "mobile_whiteboard", "rolling_storage_pedestal"] else ["south"])
 		check(model.available_facings(kind) == expected, kind + " exposes only its separately reviewed production views")
 	for side: String in OfficeLayout.FACINGS:
 		for part: String in ["carcass", "top", "front", "plinth", "insert", "whole"]:
