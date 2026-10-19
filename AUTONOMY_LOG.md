@@ -595,3 +595,5 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - `capture_furnishing_runtime.gd --diagnose --decor-only` — 79 checks, 0 failures (fourteen native décor rotate through all facings; divider at `[23, 6]`, water station moved to `[22, 13]`, printer moved to `[22, 17]`)
 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The acoustic divider is owned starter décor and stays in storage until placed.
+
+- 10:23 PT Oct 19: Merged PR #19 (acoustic_divider registered as starter décor). Verified harness 72/0, eval:offline 8/8, validate, run_all, chapter1, full_player_path, furnishing projection 564/0, furniture directions 471/0, archive production 3317/0, passive tables 628/0, acoustic divider 66/0, and decor capture 79/0 green.
