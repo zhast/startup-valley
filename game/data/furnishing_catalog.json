@@ -59,6 +59,10 @@
       "kind": "mobile_whiteboard"
     },
     {
+      "id": "decor-visitor_chair",
+      "kind": "visitor_chair"
+    },
+    {
       "id": "decor-rolling_storage_pedestal",
       "kind": "rolling_storage_pedestal"
     },
@@ -8962,6 +8966,490 @@
       },
       "interaction_kind": "none"
     },
+    "visitor_chair": {
+      "display_name": "Visitor chair",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/VISITOR_CHAIR_V2_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/visitor_chair/north-whole.png",
+          "visual_bounds": [
+            -16,
+            -48,
+            32,
+            64
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/visitor_chair/north-floor_shadow.png",
+              "name": "VisitorChairV2NorthFloorShadow",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                37,
+                87,
+                27,
+                25
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/visitor_chair/north-seat_back.png",
+              "name": "VisitorChairV2NorthSeatBack",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "z_offset": -6,
+              "content_bounds": [
+                32,
+                48,
+                32,
+                41
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/visitor_chair/north-seat_front.png",
+              "name": "VisitorChairV2NorthSeatFront",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                32,
+                85,
+                32,
+                27
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -16,
+            -48,
+            32,
+            64
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/VISITOR_CHAIR_V2_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/visitor_chair/east-whole.png",
+          "visual_bounds": [
+            -18,
+            -48,
+            36,
+            64
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/visitor_chair/east-floor_shadow.png",
+              "name": "VisitorChairV2EastFloorShadow",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                35,
+                89,
+                29,
+                23
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/visitor_chair/east-seat_back.png",
+              "name": "VisitorChairV2EastSeatBack",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "z_offset": -6,
+              "content_bounds": [
+                30,
+                48,
+                35,
+                60
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/visitor_chair/east-seat_front.png",
+              "name": "VisitorChairV2EastSeatFront",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                40,
+                83,
+                26,
+                29
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              -1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -18,
+            -48,
+            36,
+            64
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                -1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/VISITOR_CHAIR_V2_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/visitor_chair/south-whole.png",
+          "visual_bounds": [
+            -17,
+            -48,
+            34,
+            64
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/visitor_chair/south-floor_shadow.png",
+              "name": "VisitorChairV2SouthFloorShadow",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                37,
+                84,
+                27,
+                28
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/visitor_chair/south-seat_back.png",
+              "name": "VisitorChairV2SouthSeatBack",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "z_offset": -6,
+              "content_bounds": [
+                31,
+                48,
+                34,
+                41
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/visitor_chair/south-seat_front.png",
+              "name": "VisitorChairV2SouthSeatFront",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                32,
+                87,
+                32,
+                25
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              -1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -17,
+            -48,
+            34,
+            64
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                -1
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/VISITOR_CHAIR_V2_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/visitor_chair/west-whole.png",
+          "visual_bounds": [
+            -18,
+            -48,
+            36,
+            64
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/visitor_chair/west-floor_shadow.png",
+              "name": "VisitorChairV2WestFloorShadow",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                36,
+                89,
+                28,
+                23
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/visitor_chair/west-seat_back.png",
+              "name": "VisitorChairV2WestSeatBack",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "z_offset": -6,
+              "content_bounds": [
+                31,
+                48,
+                35,
+                60
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/visitor_chair/west-seat_front.png",
+              "name": "VisitorChairV2WestSeatFront",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                96,
+                144
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                30,
+                84,
+                26,
+                28
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -18,
+            -48,
+            36,
+            64
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
     "rolling_storage_pedestal": {
       "display_name": "Rolling storage pedestal",
       "facings": [
@@ -11793,6 +12281,86 @@
       "source": "game/tests/fixtures/furniture-calibration/mobile-whiteboard-v1/west-whole.png",
       "destination": "game/assets/runtime/office/furnishing-library/mobile_whiteboard/west-whole.png",
       "sha256": "aded6b7df9bbe3d5dccf41143acd20e473dcb0cd1f6772e7bf08c26e5e819c63"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/visitor-chair-v2/north-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/visitor_chair/north-floor_shadow.png",
+      "sha256": "023905a33e7f8a38726eb866f5ea9fcd2a7bd6f194c2c7af673ba25ac3840e89"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/visitor-chair-v2/north-seat_back.png",
+      "destination": "game/assets/runtime/office/furnishing-library/visitor_chair/north-seat_back.png",
+      "sha256": "7b33c334f10cff922dec4e4377ca01aacbedd9130151d6948af408a430c703bc"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/visitor-chair-v2/north-seat_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/visitor_chair/north-seat_front.png",
+      "sha256": "a5f3d917dc708ce149fe1d04fb54b390eb5fc8592eefa6ad6bf7d4b6483ef1c3"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/visitor-chair-v2/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/visitor_chair/north-whole.png",
+      "sha256": "e8bfbfa64636569274a81985d76facb886ec976f396948fffa98b25da45987fd"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/visitor-chair-v2/east-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/visitor_chair/east-floor_shadow.png",
+      "sha256": "520662c72f062c321e510c6e688d91bf435a7ded21db1ccb02d8e73e9278933d"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/visitor-chair-v2/east-seat_back.png",
+      "destination": "game/assets/runtime/office/furnishing-library/visitor_chair/east-seat_back.png",
+      "sha256": "1979899fca2e8b84260b76322d00a03ae00d0577fca7b5510a0e0ef3da212011"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/visitor-chair-v2/east-seat_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/visitor_chair/east-seat_front.png",
+      "sha256": "49321a0484a3c852985494cfdaab2de02d2b2745362a9442e927a791d3b6ae2d"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/visitor-chair-v2/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/visitor_chair/east-whole.png",
+      "sha256": "c4556c7d90752f6a2b4fd708300e2a2e5792717fcc035ec307d365272d9536d7"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/visitor-chair-v2/south-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/visitor_chair/south-floor_shadow.png",
+      "sha256": "0546c6a515666fcfff3656a638fdf85a53826bfd29d89c7179e1e41e477991d2"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/visitor-chair-v2/south-seat_back.png",
+      "destination": "game/assets/runtime/office/furnishing-library/visitor_chair/south-seat_back.png",
+      "sha256": "da7ef9847c4a1a85c32d35cd0e2309cc8e96bc08b77c48b8f4f7155b676677a3"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/visitor-chair-v2/south-seat_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/visitor_chair/south-seat_front.png",
+      "sha256": "131631b7153da3c29efab91a3e8a840d5413560adc20e16879eba1a9915cb61e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/visitor-chair-v2/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/visitor_chair/south-whole.png",
+      "sha256": "cba49082150d93734d10d80a2462d45adbc027defedcf3d825c0d01304d74ee4"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/visitor-chair-v2/west-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/visitor_chair/west-floor_shadow.png",
+      "sha256": "54c33ea8c8260077ad74c6d35e0a01eae33da69ae9ead969a0ebb83873647055"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/visitor-chair-v2/west-seat_back.png",
+      "destination": "game/assets/runtime/office/furnishing-library/visitor_chair/west-seat_back.png",
+      "sha256": "df660440defb0e210eba6ff2b5049dff48381af73a41a47031a308890156b6df"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/visitor-chair-v2/west-seat_front.png",
+      "destination": "game/assets/runtime/office/furnishing-library/visitor_chair/west-seat_front.png",
+      "sha256": "dd99f6882e1141746fc493c31df6cec985c377a74fdd141f2b38114728436e12"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/visitor-chair-v2/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/visitor_chair/west-whole.png",
+      "sha256": "e0c8ed0992b2b1e762d3169854cbf512cfe38a908928c309ca131eb80117fd5c"
     }
   ]
 }

@@ -273,7 +273,17 @@ func run() -> void:
 	# West clearance is [6, 13]. Clear of Mina [11, 18], Creative [14, 18],
 	# Theo [23, 18], and the founder capture cell [17, 18].
 	state.placements["decor-mobile_whiteboard"] = {"grid": [7, 13], "facing": "south"}
-	check(main.room.apply_furnishing_state(state), "Fifteen native starter decorations fit beside production stations")
+	# One-cell. Canvas [96, 144], pivot [48, 96], offset [0, -24]. Occupied is
+	# [[0, 0]] in every facing. Clearance is the geometry tool's interaction cell
+	# (the proposal contact cell, opposite the seated gaze): north [0, 1], east
+	# [-1, 0], south [0, -1], west [1, 0]. The other fifteen décor already hold
+	# their cells, and a four-facing pocket stayed free, so none of them move.
+	# [32, 8] stays inside artwork and standing headroom for every facing on the
+	# east edge, between the pedestal at [32, 6] and the planter at [32, 13].
+	# South clearance is [32, 7]. Clear of Mina [11, 18], Creative [14, 18],
+	# Theo [23, 18], and the founder capture cell [17, 18].
+	state.placements["decor-visitor_chair"] = {"grid": [32, 8], "facing": "south"}
+	check(main.room.apply_furnishing_state(state), "Sixteen native starter decorations fit beside production stations")
 	var founder_lamp_layers := 0
 	var founder_strategy_layers := 0
 	for layer: Dictionary in main.room.placement_by_id("founder-workstation").render_layers:
@@ -290,11 +300,11 @@ func run() -> void:
 		main.office_renovation.open()
 		for index: int in range(4): await process_frame
 		var picker := main.office_renovation._prop_picker
-		check(picker.item_count == 15, "Mature inventory presents all fifteen currently owned furnishings")
+		check(picker.item_count == 16, "Mature inventory presents all sixteen currently owned furnishings")
 		await capture("mature-renovate-open")
 		await ui_click(picker.get_global_rect().get_center())
 		check(picker.get_popup().visible, "Actual pointer opens the mature inventory dropdown")
-		check(Rect2(Vector2.ZERO, Vector2(1280, 720)).encloses(Rect2(Vector2(picker.get_popup().position), Vector2(picker.get_popup().size))), "All fifteen dropdown rows fit the native viewport")
+		check(Rect2(Vector2.ZERO, Vector2(1280, 720)).encloses(Rect2(Vector2(picker.get_popup().position), Vector2(picker.get_popup().size))), "All sixteen dropdown rows fit the native viewport")
 		await capture("mature-renovate-dropdown")
 		picker.get_popup().hide()
 		main.office_renovation.select_placement("mira-workstation")
@@ -311,8 +321,8 @@ func run() -> void:
 		return
 	if OS.get_cmdline_user_args().has("--decor-only"):
 		for side: String in OfficeLayout.FACINGS:
-			for id: String in ["decor-broadleaf_planter", "decor-task_floor_lamp", "decor-coat_bag_stand", "decor-water_station", "decor-resource_cart", "decor-printer_scanner_station", "decor-recycling_sorter", "decor-tall_storage_cabinet", "decor-server_cabinet", "decor-low_coffee_table", "decor-round_meeting_table", "decor-rolling_storage_pedestal", "decor-low_bookshelf", "decor-acoustic_divider", "decor-mobile_whiteboard"]: state.placements[id].facing = side
-			check(main.room.apply_furnishing_state(state), side + " fifteen native decorations retain valid clearance/layer geometry")
+			for id: String in ["decor-broadleaf_planter", "decor-task_floor_lamp", "decor-coat_bag_stand", "decor-water_station", "decor-resource_cart", "decor-printer_scanner_station", "decor-recycling_sorter", "decor-tall_storage_cabinet", "decor-server_cabinet", "decor-low_coffee_table", "decor-round_meeting_table", "decor-rolling_storage_pedestal", "decor-low_bookshelf", "decor-acoustic_divider", "decor-mobile_whiteboard", "decor-visitor_chair"]: state.placements[id].facing = side
+			check(main.room.apply_furnishing_state(state), side + " sixteen native decorations retain valid clearance/layer geometry")
 			main._on_room_placements_changed()
 			await step(2)
 			await capture("decor-" + side)

@@ -635,3 +635,43 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The mobile whiteboard is owned starter décor and stays in storage until placed.
 
 - 11:55 PT Oct 19: Merged PR #20 (mobile_whiteboard registered as starter décor). Verified harness 72/0, eval:offline 8/8, validate, run_all, furnishing projection 611/0, furniture directions 472/0, archive production 3318/0, chapter1, full_player_path, passive tables 628/0, acoustic divider 66/0, mobile whiteboard 0 failures (1628 and 2433 checks across two runs; count varies with physics steps), passive furniture 1219/0, and decor capture 79/0 green.
+
+### Round 19 — 2026-10-19
+
+**What changed**
+- Registered the art-approved `visitor_chair` (visitor-chair-v2, mean 2.83, "Pass after shadow-only correction" in `dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md` and `dev/art-catalogue/VISITOR_CHAIR_V2_REVIEW_2026-09-06.md`, display name "Visitor chair") into the playable furnishing catalog, mirroring `mobile_whiteboard`. Visitor-chair-v1 is not registered. All four facings are `runtime_ready`. `interaction_kind` is `none`. There is no Sit action, seat anchor, seated pose, reservation, or worker use. The optional contact socket and Mina seated probe stay out of the runtime profile. The profile is decorative. Native canvas is `[96, 144]`, floor pivot `[48, 96]`, sprite offset `[0, -24]`. Layer order is floor_shadow, seat_back, seat_front. `z_offset` values are `-8`, `-6`, and `5`. Occupied cells are `[[0, 0]]` on every facing. Clearance and the standing viewpoint use the geometry tool's interaction cell, which matches the proposal contact cell and is opposite the seated gaze: north `[0, 1]`, east `[-1, 0]`, south `[0, -1]`, west `[1, 0]`. The reference axis (screen_y for north/south, screen_x for east/west) is source context and is not a catalog key. The geometry tool authors the standing envelope `[-24, -72, 48, 80]`, which equals `OfficeLayout.STANDING_SOURCE_BOUNDS`, so that rectangle is used. Visual and hit bounds are the v2 composite opaque bounds minus the floor pivot: north `[-16, -48, 32, 64]`, east `[-18, -48, 36, 64]`, south `[-17, -48, 34, 64]`, west `[-18, -48, 36, 64]`. The `-4x` images are not registered.
+- `decor-visitor_chair` is a starter inventory grant. New companies and existing saves receive it through the same `starter-decor-v1` insert as the other starter décor. It is not auto-placed. The phone booth remains the only first-run lounge placement. The visitor chair stays in storage until the player places it.
+- Runtime layers are byte-exact copies of the visitor-chair-v2 layer and whole PNGs under `game/assets/runtime/office/furnishing-library/visitor_chair/`. Render regions are the full canvas and every layer offset is `[0, -24]`. Layer names are `VisitorChairV2` plus facing plus layer. The dev capture tool lists `decor-visitor_chair` at `[32, 8]` facing south and rotates it with the other native décor. A four-facing cell stayed free while the previous fifteen décor kept their cells, so none of them move. `[32, 8]` is on the east edge, between the pedestal at `[32, 6]` and the planter at `[32, 13]`. South clearance is `[32, 7]`. Clear of Mina `[11, 18]`, Creative `[14, 18]`, Theo `[23, 18]`, and the founder capture cell `[17, 18]`. The projection test places the chair at `[23, 17]` after the mobile whiteboard returns to storage.
+
+**Art HOLD**
+- No new art was generated or edited. No sitting, outdoor scene, new hire, Chapter 3, founder-seated pose, or unused role kit was added.
+
+**Remaining gaps (ranked)**
+1. Creative has a locomotion sheet and stands at the desk. There is no seated sheet, and none was invented.
+2. Unbound seated, outdoor, waiting-lunch, and unused furnishing-kit art stays untracked. Founder seated/N/E/W workstation poses are QA-only, not bind-approved. `customer_success_kit`, `engineer_build_kit`, `finance_accounts_kit`, `growth_analytics_kit`, `lawyer_contract_kit`, and `product_prototype_kit` stay unbound.
+3. The live path is still a harness driver, not a watched windowed playtest.
+4. A cheap reviewer can still sit just under the 2.5 ready line. Round 2's passing ads score was 2.60.
+5. After the Chapter 2 end screen, ordinary work orders continue. No Chapter 3 content is authored.
+6. `visitor_chair` (v2) is now registered as passive décor with no Sit action. From the passive-tables review, `cafe_table` (v2) remains passed but unregistered. The catalogue already uses the kind name `cafe_table` for an older one-cell south prop (`res://assets/runtime/office/cafe-table-south.png`); the passed cafe-table-v2 library is still unregistered. Reviews still pass unregistered `two_seat_sofa` and `lounge_armchair` (`dev/art-catalogue/LOUNGE_SEATING_REVIEW_2026-09-06.md`). None of those reviews names a registration order.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored; fake provider not set)
+- `cd harness && npm test` — 72 pass, 0 fail, 2 skipped
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass
+- `test_furnishing_projection.gd` — 642 checks, 0 failures (includes `visitor_chair` at `[23, 17]` all facings, exact one-cell footprint, 3 native layers)
+- `test_furniture_directions.gd` — 473 checks, 0 failures
+- `test_archive_production.gd` — 3319 checks, 0 failures
+- `test_chapter1_first_player.gd` — CHAPTER1 PASS (stops at Connect; host credentials ignored)
+- `test_full_player_path.gd` — FULLPATH PASS
+- `test_passive_tables.gd` — 628 checks, 0 failures (low lounge table and round meeting table stay in the ordinary catalogue; the chair is not a table)
+- `test_acoustic_divider.gd` — 66 checks, 0 failures
+- `test_mobile_whiteboard.gd` — 2353 checks, 0 failures
+- `test_passive_furniture.gd` — 1219 checks, 0 failures
+- `test_visitor_chair.gd` — 312 checks, 1 failure. The failure is the existing developer-catalogue assertion that `visitor_chair` `production_status` is `native_review_required`. `dev/art-catalogue/furniture.json` has said `approved` since c88ada6, and this round did not edit that file. The same run's checks that `furniture_catalog.json` and `office_layout.json` contain no `visitor_chair` passed.
+- `test_visitor_chair_v2.gd` — 105 checks, 0 failures
+- `capture_furnishing_runtime.gd --diagnose --decor-only` — 79 checks, 0 failures (sixteen native décor rotate through all facings; chair at `[32, 8]`; no other décor moved)
+
+**CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The visitor chair is owned starter décor and stays in storage until placed.
+
