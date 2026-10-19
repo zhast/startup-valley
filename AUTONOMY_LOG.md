@@ -677,3 +677,45 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 
 
 - 13:35 PT Oct 19: Merged PR #21 (visitor_chair v2 registered as passive starter décor). Verified harness 72/0, eval:offline 8/8, import, validate, run_all, furnishing projection 642/0, furniture directions 473/0, archive production 3319/0, chapter1, full_player_path, passive tables, acoustic divider, mobile whiteboard, passive furniture, visitor chair v2 105/0, and decor capture green. test_visitor_chair.gd (v1) still has 1 pre-existing failure (dev catalogue production_status now approved).
+
+### Round 20 — 2026-10-19
+
+**What changed**
+- Fixed the stale `test_visitor_chair.gd` developer-catalogue assertion. `dev/art-catalogue/furniture.json` records `visitor_chair` `production_status` `approved` (since c88ada6). The test now checks that approval and that the family still has no Sit action, seat anchor, or reservation (`art_library_approval.scope` is `passive_art_library`, `runtime_admission` is false, every variant has `seated_pose_needed` false, and any optional contact socket has `runtime_capability` false). `furniture_catalog.json` and `office_layout.json` still contain no `visitor_chair`. That file was not edited.
+- Registered the art-approved `two_seat_sofa` (two-seat-sofa-v3, mean 2.50, "Pass as passive art-library object" in `dev/art-catalogue/LOUNGE_SEATING_REVIEW_2026-09-06.md`, display name "Two-seat sofa") into the playable furnishing catalog, mirroring `visitor_chair`. V1 and v2 are not registered. `-4x` images are not registered. All four facings are `runtime_ready`. `interaction_kind` is `none`. There is no Sit action, seat anchor, seated pose, reservation, break behavior, or worker use. Native canvas is `[192, 224]`, floor pivot `[96, 144]`, sprite offset `[0, -32]`. Layer order is floor_shadow, rear_structure, front_structure. `z_offset` values are `-8`, `-6`, and `5`. Occupied cells are the v3 manifest / geometry tool order: north `[[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0]]`, east `[[0, -1], [1, -1], [0, 0], [1, 0], [0, 1], [1, 1]]`, south `[[-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1], [1, 1]]`, west `[[-1, -1], [0, -1], [-1, 0], [0, 0], [-1, 1], [0, 1]]`. The proposal interaction cell is null and `lounge_seating_geometry.gd` lists `clearance: []`, so clearance is empty and there is no standing viewpoint. Visual and hit bounds are the v3 composite opaque bounds minus the floor pivot: north `[-48, -54, 96, 77]`, east `[-14, -108, 58, 149]`, south `[-48, -60, 96, 101]`, west `[-44, -108, 58, 149]`. The older south-only `lounge_sofa` kind is unchanged.
+- `decor-two_seat_sofa` is a starter inventory grant. New companies and existing saves receive it through the same `starter-decor-v1` insert as the other starter décor. It is not auto-placed. The phone booth remains the only first-run lounge placement. The sofa stays in storage until the player places it.
+- Runtime layers are byte-exact copies of the two-seat-sofa-v3 layer and whole PNGs under `game/assets/runtime/office/furnishing-library/two_seat_sofa/`. Render regions are the full canvas and every layer offset is `[0, -32]`. Layer names are `TwoSeatSofaV3` plus facing plus layer. The dev capture tool lists `decor-two_seat_sofa` at `[33, 7]` facing south and rotates it with the other native décor. No four-facing 3x2 pocket stayed free while the previous sixteen décor kept their cells, so two one-cell pieces move: the rolling pedestal from `[32, 6]` to `[26, 6]`, and the visitor chair from `[32, 8]` to `[10, 19]`. Occupied union at `[33, 7]` is `[32, 6]` through `[34, 8]`. Clear of Mina `[11, 18]`, Creative `[14, 18]`, Theo `[23, 18]`, and the founder capture cell `[17, 18]`. The projection test places the sofa at `[23, 17]` after the visitor chair returns to storage.
+- `test_lounge_seating.gd` now expects `two_seat_sofa` in the ordinary production catalogue as passive décor (`interaction_kind` `none`, no Sit/seat_anchor). `lounge_armchair` stays absent. No-seating checks on the geometry-tool calibration copy are unchanged.
+
+**Art HOLD**
+- No new art was generated or edited. No sitting, outdoor scene, new hire, Chapter 3, founder-seated pose, or unused role kit was added.
+
+**Remaining gaps (ranked)**
+1. Creative has a locomotion sheet and stands at the desk. There is no seated sheet, and none was invented.
+2. Unbound seated, outdoor, waiting-lunch, and unused furnishing-kit art stays untracked. Founder seated/N/E/W workstation poses are QA-only, not bind-approved. `customer_success_kit`, `engineer_build_kit`, `finance_accounts_kit`, `growth_analytics_kit`, `lawyer_contract_kit`, and `product_prototype_kit` stay unbound.
+3. The live path is still a harness driver, not a watched windowed playtest.
+4. A cheap reviewer can still sit just under the 2.5 ready line. Round 2's passing ads score was 2.60.
+5. After the Chapter 2 end screen, ordinary work orders continue. No Chapter 3 content is authored.
+6. `two_seat_sofa` (v3) is now registered as passive décor with no Sit action. `lounge_armchair` and `cafe_table` (v2) remain passed-but-unregistered. The catalogue already uses the kind name `cafe_table` for an older one-cell south prop (`res://assets/runtime/office/cafe-table-south.png`); the passed cafe-table-v2 library is still unregistered. The older south-only `lounge_sofa` kind is separate from this v3 two-seat sofa.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored; fake provider not set)
+- `cd harness && npm test` — 72 pass, 0 fail, 2 skipped
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass
+- `test_furnishing_projection.gd` — 673 checks, 0 failures (includes `two_seat_sofa` at `[23, 17]` all facings, exact six-cell footprint, 3 native layers)
+- `test_furniture_directions.gd` — 474 checks, 0 failures
+- `test_archive_production.gd` — 3320 checks, 0 failures
+- `test_chapter1_first_player.gd` — CHAPTER1 PASS (stops at Connect; host credentials ignored)
+- `test_full_player_path.gd` — FULLPATH PASS
+- `test_passive_tables.gd` — 628 checks, 0 failures (low lounge table and round meeting table stay in the ordinary catalogue; the sofa is not a table)
+- `test_acoustic_divider.gd` — 66 checks, 0 failures
+- `test_mobile_whiteboard.gd` — 2443 checks, 0 failures
+- `test_passive_furniture.gd` — 1261 checks, 0 failures
+- `test_visitor_chair.gd` — 325 checks, 0 failures (stale `native_review_required` assertion updated to `approved` plus no-seating checks)
+- `test_visitor_chair_v2.gd` — 105 checks, 0 failures
+- `test_lounge_seating.gd` — 322 checks, 0 failures
+- `capture_furnishing_runtime.gd --diagnose --decor-only` — 79 checks, 0 failures (seventeen native décor rotate through all facings; sofa at `[33, 7]`; pedestal moved to `[26, 6]`; chair moved to `[10, 19]`)
+
+**CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The two-seat sofa is owned starter décor and stays in storage until placed.

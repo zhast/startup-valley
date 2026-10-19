@@ -74,7 +74,18 @@ func run() -> void:
 	check(FileAccess.get_file_as_string("res://data/furniture_catalog.json").find("visitor_chair") == -1, "Candidate has no production furniture registration")
 	check(FileAccess.get_file_as_string("res://data/office_layout.json").find("visitor_chair") == -1, "Candidate has no default-layout binding")
 	var registered := catalogue_family()
-	check(not registered.is_empty() and str(registered.get("production_status", "")) == "native_review_required", "Developer catalogue truth records only native review, not production admission")
+	check(not registered.is_empty() and str(registered.get("production_status", "")) == "approved", "Developer catalogue records visitor_chair art approval")
+	var approval: Dictionary = registered.get("art_library_approval", {})
+	check(str(approval.get("scope", "")) == "passive_art_library" and approval.get("runtime_admission", true) == false, "Developer catalogue approval does not admit seating")
+	for raw_variant: Variant in registered.get("variants", []):
+		if not raw_variant is Dictionary: continue
+		var variant: Dictionary = raw_variant
+		var facing := str(variant.get("facing", ""))
+		check(variant.get("seated_pose_needed", true) == false, facing + " records no seated pose")
+		check(not variant.has("action") and not variant.has("seat_anchor") and not variant.has("reservation"), facing + " has no Sit action, seat anchor, or reservation")
+		var socket: Variant = variant.get("optional_contact_socket", {})
+		if socket is Dictionary and not (socket as Dictionary).is_empty():
+			check((socket as Dictionary).get("runtime_capability", true) == false, facing + " contact socket is not seating admission")
 	var registered_geometry: Dictionary = registered.get("native_geometry", {})
 	check(OfficeLayout.vector(registered_geometry.get("canvas_size_px", [])) == CHAIR.CANVAS and OfficeLayout.vector(registered_geometry.get("floor_anchor_px", [])) == CHAIR.PIVOT, "Candidate preserves the registered shared canvas/anchor contract")
 	var wholes := {}
@@ -170,7 +181,7 @@ func run() -> void:
 	check(file != null, "Opened structural result")
 	if file != null:
 		file.store_string(JSON.stringify({
-			"status": "native_review_required_not_runtime_registered",
+			"status": "approved_passive_art_no_seating_admission",
 			"checks": checks,
 			"failures": failures,
 			"canvas": [96, 144],

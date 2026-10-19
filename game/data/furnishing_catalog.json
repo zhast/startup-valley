@@ -63,6 +63,10 @@
       "kind": "visitor_chair"
     },
     {
+      "id": "decor-two_seat_sofa",
+      "kind": "two_seat_sofa"
+    },
+    {
       "id": "decor-rolling_storage_pedestal",
       "kind": "rolling_storage_pedestal"
     },
@@ -9450,6 +9454,494 @@
       },
       "interaction_kind": "none"
     },
+    "two_seat_sofa": {
+      "display_name": "Two-seat sofa",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/LOUNGE_SEATING_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/two_seat_sofa/north-whole.png",
+          "visual_bounds": [
+            -48,
+            -54,
+            96,
+            77
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/two_seat_sofa/north-floor_shadow.png",
+              "name": "TwoSeatSofaV3NorthFloorShadow",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                59,
+                108,
+                81,
+                45
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/two_seat_sofa/north-rear_structure.png",
+              "name": "TwoSeatSofaV3NorthRearStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": -6,
+              "content_bounds": [
+                54,
+                90,
+                84,
+                9
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/two_seat_sofa/north-front_structure.png",
+              "name": "TwoSeatSofaV3NorthFrontStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                48,
+                97,
+                96,
+                70
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              -1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "clearance": [],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -48,
+            -54,
+            96,
+            77
+          ],
+          "ambient_overlays": []
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/LOUNGE_SEATING_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/two_seat_sofa/east-whole.png",
+          "visual_bounds": [
+            -14,
+            -108,
+            58,
+            149
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/two_seat_sofa/east-floor_shadow.png",
+              "name": "TwoSeatSofaV3EastFloorShadow",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                89,
+                106,
+                49,
+                79
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/two_seat_sofa/east-rear_structure.png",
+              "name": "TwoSeatSofaV3EastRearStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": -6,
+              "content_bounds": [
+                82,
+                36,
+                58,
+                147
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/two_seat_sofa/east-front_structure.png",
+              "name": "TwoSeatSofaV3EastFrontStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                84,
+                41,
+                56,
+                143
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              -1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "clearance": [],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -14,
+            -108,
+            58,
+            149
+          ],
+          "ambient_overlays": []
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/LOUNGE_SEATING_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/two_seat_sofa/south-whole.png",
+          "visual_bounds": [
+            -48,
+            -60,
+            96,
+            101
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/two_seat_sofa/south-floor_shadow.png",
+              "name": "TwoSeatSofaV3SouthFloorShadow",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                59,
+                140,
+                81,
+                45
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/two_seat_sofa/south-rear_structure.png",
+              "name": "TwoSeatSofaV3SouthRearStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": -6,
+              "content_bounds": [
+                49,
+                84,
+                94,
+                66
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/two_seat_sofa/south-front_structure.png",
+              "name": "TwoSeatSofaV3SouthFrontStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                48,
+                131,
+                96,
+                52
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "clearance": [],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -48,
+            -60,
+            96,
+            101
+          ],
+          "ambient_overlays": []
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/LOUNGE_SEATING_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/two_seat_sofa/west-whole.png",
+          "visual_bounds": [
+            -44,
+            -108,
+            58,
+            149
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/two_seat_sofa/west-floor_shadow.png",
+              "name": "TwoSeatSofaV3WestFloorShadow",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                57,
+                106,
+                49,
+                79
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/two_seat_sofa/west-rear_structure.png",
+              "name": "TwoSeatSofaV3WestRearStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": -6,
+              "content_bounds": [
+                52,
+                36,
+                58,
+                147
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/two_seat_sofa/west-front_structure.png",
+              "name": "TwoSeatSofaV3WestFrontStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                52,
+                41,
+                56,
+                143
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              -1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "clearance": [],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -44,
+            -108,
+            58,
+            149
+          ],
+          "ambient_overlays": []
+        }
+      },
+      "interaction_kind": "none"
+    },
     "rolling_storage_pedestal": {
       "display_name": "Rolling storage pedestal",
       "facings": [
@@ -12361,6 +12853,86 @@
       "source": "game/tests/fixtures/furniture-calibration/visitor-chair-v2/west-whole.png",
       "destination": "game/assets/runtime/office/furnishing-library/visitor_chair/west-whole.png",
       "sha256": "e0c8ed0992b2b1e762d3169854cbf512cfe38a908928c309ca131eb80117fd5c"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/two-seat-sofa-v3/north-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/two_seat_sofa/north-floor_shadow.png",
+      "sha256": "27540f6b888a9588ae3ce4295fd9ccb9a4c5f2631d58deee8403fb871c00c9b0"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/two-seat-sofa-v3/north-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/two_seat_sofa/north-rear_structure.png",
+      "sha256": "be7106dbfdb252244308dc7667b503eb94ea05c5e50a2cafe4f2b9202639915b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/two-seat-sofa-v3/north-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/two_seat_sofa/north-front_structure.png",
+      "sha256": "46523d9fc856b91e084e1299b529c7d6e94d6907883e699f19dbd50961d0ec35"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/two-seat-sofa-v3/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/two_seat_sofa/north-whole.png",
+      "sha256": "255d647870f72b2ebc1b31706c05d9a19284292cc48311441cf4f55d8b8d8101"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/two-seat-sofa-v3/east-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/two_seat_sofa/east-floor_shadow.png",
+      "sha256": "6178cf89fbb0b10618ff03037eaaa6c22536146b0c6e691f116a2eb9f23b22bb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/two-seat-sofa-v3/east-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/two_seat_sofa/east-rear_structure.png",
+      "sha256": "fb035201b8d23e3dd507fd1554620a41becd30d1b9baf2c7764bcded5ba34062"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/two-seat-sofa-v3/east-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/two_seat_sofa/east-front_structure.png",
+      "sha256": "00dd634ebc7e9bfbd4f7c62c3f5ec8063c1d4a61b3ad3e879015e7e9068d205b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/two-seat-sofa-v3/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/two_seat_sofa/east-whole.png",
+      "sha256": "b4b9095246e31f2e0336bb4eb6b210c5bc6ee02e8b11c17d226c38ba98ca0898"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/two-seat-sofa-v3/south-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/two_seat_sofa/south-floor_shadow.png",
+      "sha256": "aec30ee13e7137f69abc962bd30ed67389a498e8442c70f7223346784dbc834f"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/two-seat-sofa-v3/south-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/two_seat_sofa/south-rear_structure.png",
+      "sha256": "c21965ff96abb5dc504e5a3afa4975a5243a488388894dc54fa7771ede1ac180"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/two-seat-sofa-v3/south-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/two_seat_sofa/south-front_structure.png",
+      "sha256": "e242c4b06d7045f91e5502bf95a40e5f92da778c8160d1b49404b2d4936dd821"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/two-seat-sofa-v3/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/two_seat_sofa/south-whole.png",
+      "sha256": "4e80e6dae5fcd59da8378fae54277beb815bf5e9b17862392b0a4e56d8375a76"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/two-seat-sofa-v3/west-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/two_seat_sofa/west-floor_shadow.png",
+      "sha256": "5322e87a71e83bc118411bb077129f325c2dba5ca761c18d9527e7e8701565b9"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/two-seat-sofa-v3/west-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/two_seat_sofa/west-rear_structure.png",
+      "sha256": "796b0a52fed80dd5970e5a102a8579649b887c991aa6fd9fff54196b711ec26e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/two-seat-sofa-v3/west-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/two_seat_sofa/west-front_structure.png",
+      "sha256": "b6f34982361cb2a7aa3be9bca010de090d8e1666649414b715bb32213ccefecb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/two-seat-sofa-v3/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/two_seat_sofa/west-whole.png",
+      "sha256": "805fe5dca849a667f3e6e4ad8b292934bbc73067f08ee291b7838ffa54e72fb5"
     }
   ]
 }
