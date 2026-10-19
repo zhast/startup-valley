@@ -561,3 +561,37 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The low bookshelf is owned starter décor and stays in storage until placed.
 
 - 17:32 PT Oct 16: Merged PR #18 (low_bookshelf registered as starter décor). Verified harness 72/0, eval:offline 8/8, validate, run_all, chapter1, full_player_path, furnishing projection 533/0, furniture directions 470/0, archive production 3316/0, passive tables 628/0, and decor capture 79/0 green.
+
+### Round 17 — 2026-10-19
+
+**What changed**
+- Registered the art-approved `acoustic_divider` (acoustic-divider-v1, mean 2.50 Pass in `dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md`, display name "Acoustic divider") into the playable furnishing catalog, mirroring `low_bookshelf`. All four facings are `runtime_ready`. `interaction_kind` is `none` (no seat, service, work, or acoustic simulation). The profile is decorative. Native canvas is `[192, 224]`, floor pivot `[96, 160]`, sprite offset `[0, -48]` (`canvas / 2 - pivot`, also the geometry tool's catalog offset). Layer order is RearSupport, Panel, FrontFoot. North and south are byte-identical. East and west are byte-identical. Occupied cells follow the registration proposal order (the same cells as `acoustic_divider_geometry.gd`; south and west reverse that tool's shared order): north `[[-1,0],[0,0],[1,0]]`, east `[[0,-1],[0,0],[0,1]]`, south `[[1,0],[0,0],[-1,0]]`, west `[[0,1],[0,0],[0,-1]]`. The proposal leaves the interaction cell empty and the geometry tool's clearance list is empty, so clearance and the standing viewpoint use the reference-axis front cell: north `[0,-1]`, east `[1,0]`, south `[0,1]`, west `[-1,0]`. Neither source authors a standing envelope, so the viewpoint uses `[-24,-76,48,84]`, the same rectangle every other decorative profile uses. Visual and hit bounds are the proposal opaque bounds minus the floor pivot (the measured layer union): north/south `[-44,-67,88,83]`, east/west `[-16,-108,32,148]`.
+- `decor-acoustic_divider` is a starter inventory grant. New companies and existing saves receive it through the same `starter-decor-v1` insert as the other starter décor. It is not auto-placed. The phone booth remains the only first-run lounge placement. The acoustic divider stays in storage until the player places it.
+- Runtime layers are byte-exact copies of the acoustic-divider-v1 layer and whole PNGs under `game/assets/runtime/office/furnishing-library/acoustic_divider/`. Render regions are the full canvas and every layer offset is `[0, -48]`. All layers use `z_offset` 0. Layer names are `AcousticDividerV1` plus facing plus layer. The dev capture tool lists `decor-acoustic_divider` at `[23, 6]` facing south and rotates it with the other native décor. No four-facing pocket stayed free while the previous thirteen décor kept their cells, and moving any one of them left that piece without a home. The water station moves from `[24, 8]` to `[22, 13]` and the printer moves from `[22, 16]` to `[22, 17]`, which leaves `[23, 6]` valid for every facing. North and south occupy `[22, 6]` through `[24, 6]`; east and west occupy `[23, 5]` through `[23, 7]`. West clearance is `[22, 6]`. Clear of Mina `[11, 18]`, Creative `[14, 18]`, Theo `[23, 18]`, and the founder capture cell `[17, 18]`. The projection test places the divider at `[23, 17]` after the low bookshelf returns to storage.
+
+**Art HOLD**
+- No new art was generated or edited. No sitting, outdoor scene, new hire, Chapter 3, founder-seated pose, or unused role kit was added.
+
+**Remaining gaps (ranked)**
+1. Creative has a locomotion sheet and stands at the desk. There is no seated sheet, and none was invented.
+2. Unbound seated, outdoor, waiting-lunch, and unused furnishing-kit art stays untracked. Founder seated/N/E/W workstation poses are QA-only, not bind-approved. `customer_success_kit`, `engineer_build_kit`, `finance_accounts_kit`, `growth_analytics_kit`, `lawyer_contract_kit`, and `product_prototype_kit` stay unbound.
+3. The live path is still a harness driver, not a watched windowed playtest.
+4. A cheap reviewer can still sit just under the 2.5 ready line. Round 2's passing ads score was 2.60.
+5. After the Chapter 2 end screen, ordinary work orders continue. No Chapter 3 content is authored.
+6. `acoustic_divider` is now registered. From the passive furniture library review, `visitor_chair` and `mobile_whiteboard` remain passed but unregistered (`dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md`). From the passive-tables review, `cafe_table` (v2) remains passed but unregistered. The catalogue already uses the kind name `cafe_table` for an older one-cell south prop (`res://assets/runtime/office/cafe-table-south.png`); the passed cafe-table-v2 library is still unregistered. Reviews still pass unregistered `two_seat_sofa` and `lounge_armchair` (`dev/art-catalogue/LOUNGE_SEATING_REVIEW_2026-09-06.md`). None of those reviews names a registration order.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored; fake provider not set)
+- `cd harness && npm test` — 72 pass, 0 fail, 2 skipped
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass
+- `test_furnishing_projection.gd` — 564 checks, 0 failures (includes `acoustic_divider` at `[23, 17]` all facings, exact three-cell footprint, 3 native layers)
+- `test_furniture_directions.gd` — 471 checks, 0 failures
+- `test_archive_production.gd` — 3317 checks, 0 failures
+- `test_chapter1_first_player.gd` — CHAPTER1 PASS (stops at Connect; host credentials ignored)
+- `test_full_player_path.gd` — FULLPATH PASS
+- `test_passive_tables.gd` — 628 checks, 0 failures (low lounge table and round meeting table stay in the ordinary catalogue; the divider is not a table)
+- `capture_furnishing_runtime.gd --diagnose --decor-only` — 79 checks, 0 failures (fourteen native décor rotate through all facings; divider at `[23, 6]`, water station moved to `[22, 13]`, printer moved to `[22, 17]`)
+
+**CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The acoustic divider is owned starter décor and stays in storage until placed.
