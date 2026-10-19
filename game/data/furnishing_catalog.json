@@ -51,6 +51,10 @@
       "kind": "low_bookshelf"
     },
     {
+      "id": "decor-acoustic_divider",
+      "kind": "acoustic_divider"
+    },
+    {
       "id": "decor-rolling_storage_pedestal",
       "kind": "rolling_storage_pedestal"
     },
@@ -7586,6 +7590,522 @@
       },
       "interaction_kind": "none"
     },
+    "acoustic_divider": {
+      "display_name": "Acoustic divider",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/acoustic_divider/north-whole.png",
+          "visual_bounds": [
+            -44,
+            -67,
+            88,
+            83
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/acoustic_divider/north-rear_support.png",
+              "name": "AcousticDividerV1NorthRearSupport",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                56,
+                144,
+                80,
+                22
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/acoustic_divider/north-panel.png",
+              "name": "AcousticDividerV1NorthPanel",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                52,
+                93,
+                88,
+                62
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/acoustic_divider/north-front_foot.png",
+              "name": "AcousticDividerV1NorthFrontFoot",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                55,
+                162,
+                82,
+                14
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              -1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -44,
+            -67,
+            88,
+            83
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                -1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/acoustic_divider/east-whole.png",
+          "visual_bounds": [
+            -16,
+            -108,
+            32,
+            148
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/acoustic_divider/east-rear_support.png",
+              "name": "AcousticDividerV1EastRearSupport",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                80,
+                116,
+                32,
+                82
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/acoustic_divider/east-panel.png",
+              "name": "AcousticDividerV1EastPanel",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                93,
+                52,
+                6,
+                144
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/acoustic_divider/east-front_foot.png",
+              "name": "AcousticDividerV1EastFrontFoot",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                80,
+                192,
+                32,
+                8
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "clearance": [
+            [
+              1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -16,
+            -108,
+            32,
+            148
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/acoustic_divider/south-whole.png",
+          "visual_bounds": [
+            -44,
+            -67,
+            88,
+            83
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/acoustic_divider/south-rear_support.png",
+              "name": "AcousticDividerV1SouthRearSupport",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                56,
+                144,
+                80,
+                22
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/acoustic_divider/south-panel.png",
+              "name": "AcousticDividerV1SouthPanel",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                52,
+                93,
+                88,
+                62
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/acoustic_divider/south-front_foot.png",
+              "name": "AcousticDividerV1SouthFrontFoot",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                55,
+                162,
+                82,
+                14
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              -1,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -44,
+            -67,
+            88,
+            83
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_FURNITURE_LIBRARY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/acoustic_divider/west-whole.png",
+          "visual_bounds": [
+            -16,
+            -108,
+            32,
+            148
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/acoustic_divider/west-rear_support.png",
+              "name": "AcousticDividerV1WestRearSupport",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                80,
+                116,
+                32,
+                82
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/acoustic_divider/west-panel.png",
+              "name": "AcousticDividerV1WestPanel",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                93,
+                52,
+                6,
+                144
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/acoustic_divider/west-front_foot.png",
+              "name": "AcousticDividerV1WestFrontFoot",
+              "offset": [
+                0,
+                -48
+              ],
+              "region": [
+                0,
+                0,
+                192,
+                224
+              ],
+              "z_offset": 0,
+              "content_bounds": [
+                80,
+                192,
+                32,
+                8
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              -1
+            ]
+          ],
+          "clearance": [
+            [
+              -1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -16,
+            -108,
+            32,
+            148
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                -1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -76,
+                48,
+                84
+              ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
     "rolling_storage_pedestal": {
       "display_name": "Rolling storage pedestal",
       "facings": [
@@ -10177,6 +10697,86 @@
       "source": "game/tests/fixtures/furniture-calibration/low-bookshelf-v1/west-whole.png",
       "destination": "game/assets/runtime/office/furnishing-library/low_bookshelf/west-whole.png",
       "sha256": "420f5b86491e93eb2a2dd28d5938b9b436db3b0ea5c1883afdb3fa2256417e88"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/acoustic-divider-v1/north-rear_support.png",
+      "destination": "game/assets/runtime/office/furnishing-library/acoustic_divider/north-rear_support.png",
+      "sha256": "5cc8d73df61fcdf9d4288f9ebc4e073aa0c3e4b91a21a252f24ef598a340d91e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/acoustic-divider-v1/north-panel.png",
+      "destination": "game/assets/runtime/office/furnishing-library/acoustic_divider/north-panel.png",
+      "sha256": "656a8e00554085ccd4e333b890cb1ed4ebe8b568a04d3726342e481e0d11b87a"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/acoustic-divider-v1/north-front_foot.png",
+      "destination": "game/assets/runtime/office/furnishing-library/acoustic_divider/north-front_foot.png",
+      "sha256": "f760a97edccf1476b5552dcfe1c9c7ac8fbfe5e149cf884f0f39d00a7857f751"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/acoustic-divider-v1/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/acoustic_divider/north-whole.png",
+      "sha256": "3db9f25fb7eea7ed4d12f48124c3f1d02c91932681ce0160332cc93002b2795e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/acoustic-divider-v1/east-rear_support.png",
+      "destination": "game/assets/runtime/office/furnishing-library/acoustic_divider/east-rear_support.png",
+      "sha256": "2330a9c8aacef2479055ee73ce65d010d1182880a370da19c8e48c0bb9013f8e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/acoustic-divider-v1/east-panel.png",
+      "destination": "game/assets/runtime/office/furnishing-library/acoustic_divider/east-panel.png",
+      "sha256": "eb77ce3bc1baa6060a2cc56d355c2ec50ea47ae843e50538b2844f762ae34b3c"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/acoustic-divider-v1/east-front_foot.png",
+      "destination": "game/assets/runtime/office/furnishing-library/acoustic_divider/east-front_foot.png",
+      "sha256": "f6544f31d972442a2729d856ab58a3d59886627d24ae6a5710c86c26b0c0d822"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/acoustic-divider-v1/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/acoustic_divider/east-whole.png",
+      "sha256": "78f7711ce0a0221d6d7dcddd21ceb8ab26aa74016fecf30dc3d78f8d54f7f9e8"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/acoustic-divider-v1/south-rear_support.png",
+      "destination": "game/assets/runtime/office/furnishing-library/acoustic_divider/south-rear_support.png",
+      "sha256": "5cc8d73df61fcdf9d4288f9ebc4e073aa0c3e4b91a21a252f24ef598a340d91e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/acoustic-divider-v1/south-panel.png",
+      "destination": "game/assets/runtime/office/furnishing-library/acoustic_divider/south-panel.png",
+      "sha256": "656a8e00554085ccd4e333b890cb1ed4ebe8b568a04d3726342e481e0d11b87a"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/acoustic-divider-v1/south-front_foot.png",
+      "destination": "game/assets/runtime/office/furnishing-library/acoustic_divider/south-front_foot.png",
+      "sha256": "f760a97edccf1476b5552dcfe1c9c7ac8fbfe5e149cf884f0f39d00a7857f751"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/acoustic-divider-v1/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/acoustic_divider/south-whole.png",
+      "sha256": "3db9f25fb7eea7ed4d12f48124c3f1d02c91932681ce0160332cc93002b2795e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/acoustic-divider-v1/west-rear_support.png",
+      "destination": "game/assets/runtime/office/furnishing-library/acoustic_divider/west-rear_support.png",
+      "sha256": "2330a9c8aacef2479055ee73ce65d010d1182880a370da19c8e48c0bb9013f8e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/acoustic-divider-v1/west-panel.png",
+      "destination": "game/assets/runtime/office/furnishing-library/acoustic_divider/west-panel.png",
+      "sha256": "eb77ce3bc1baa6060a2cc56d355c2ec50ea47ae843e50538b2844f762ae34b3c"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/acoustic-divider-v1/west-front_foot.png",
+      "destination": "game/assets/runtime/office/furnishing-library/acoustic_divider/west-front_foot.png",
+      "sha256": "f6544f31d972442a2729d856ab58a3d59886627d24ae6a5710c86c26b0c0d822"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/acoustic-divider-v1/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/acoustic_divider/west-whole.png",
+      "sha256": "78f7711ce0a0221d6d7dcddd21ceb8ab26aa74016fecf30dc3d78f8d54f7f9e8"
     }
   ]
 }

@@ -411,6 +411,40 @@ func run() -> void:
 				check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, "low_bookshelf/" + side + " keeps native separate layers")
 	check(room.apply_furnishing_state(state), "low_bookshelf returns to storage")
 	check(room.prop_node(shelf_id) == null, "low_bookshelf storage removes scene/collision but not ownership")
+	# Three cells. North and south are a 3x1 strip; east and west are a 1x3
+	# strip. The shelf block returns that piece to storage first, so [23, 17]
+	# is free again. Clearance is the front cell just outside the strip.
+	var divider_id := "decor-acoustic_divider"
+	var divider_grid := Vector2i(23, 17)
+	var divider_offsets := {
+		"north": [Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0)],
+		"east": [Vector2i(0, -1), Vector2i(0, 0), Vector2i(0, 1)],
+		"south": [Vector2i(1, 0), Vector2i(0, 0), Vector2i(-1, 0)],
+		"west": [Vector2i(0, 1), Vector2i(0, 0), Vector2i(0, -1)],
+	}
+	check(room.layout_model.available_facings("acoustic_divider").size() == 4, "acoustic_divider has four production-ready authored views")
+	for side: String in OfficeLayout.FACINGS:
+		var candidate := room.layout_model.validate_candidate(divider_id, divider_grid, side, 2, saved)
+		check(candidate.valid, "acoustic_divider/" + side + " can be placed from storage in the room")
+		var next := state.duplicate(true)
+		next.placements[divider_id] = {"grid": [divider_grid.x, divider_grid.y], "facing": side}
+		check(room.apply_furnishing_state(next), "acoustic_divider/" + side + " projects into actual TownRoom")
+		var prop := room.prop_node(divider_id)
+		var expected: Array[Vector2i] = []
+		for offset: Vector2i in divider_offsets[side]:
+			expected.append(divider_grid + offset)
+		var placement := room.placement_by_id(divider_id)
+		check(prop != null and placement.occupied == expected, "acoustic_divider/" + side + " occupies exactly its three footprint cells")
+		var library_layers := 0
+		for layer: Dictionary in placement.render_layers:
+			if str(layer.art).contains("furnishing-library/acoustic_divider"):
+				library_layers += 1
+		check(library_layers == 3, "acoustic_divider/" + side + " has 3 furnishing-library layers")
+		for child: Node in prop.get_children():
+			if child is Sprite2D:
+				check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, "acoustic_divider/" + side + " keeps native separate layers")
+	check(room.apply_furnishing_state(state), "acoustic_divider returns to storage")
+	check(room.prop_node(divider_id) == null, "acoustic_divider storage removes scene/collision but not ownership")
 	var old_seat := room.employee_workstation("mira").work_position as Vector2
 	room.navigation.actors["mira"] = old_seat
 	var moved := saved.duplicate(true)

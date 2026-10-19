@@ -235,7 +235,7 @@ func run() -> void:
 	check(not model.resolve_profile("acoustic_divider", "south").errors.is_empty(), "Candidate permits revoked with fixture owner")
 	var ordinary := OfficeLayout.new()
 	ordinary.load_files()
-	check(not ordinary.catalog.has("acoustic_divider"), "Ordinary production catalogue has no candidate leakage")
+	check(ordinary.catalog.has("acoustic_divider"), "Acoustic divider is registered in the ordinary production catalogue")
 	var file := FileAccess.open(OUTPUT.path_join("manifest.json" if rendered else "headless.json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify({"checks": checks, "failures": failures, "captures": captures, "walks": walks, "runtime_approved": false, "source_status": "One generated felt tile; code-native symmetric divider", "limitations": ["Only N/S broad and E/W edge are geometrically distinct.", "No new gameplay action, seat, shadow, production family or saving.", "Recorded visual review is required separately from these geometry checks."]}, "\t"))
 	print("Acoustic divider: %d checks, %d failures, %d captures" % [checks, failures.size(), captures.size()])
