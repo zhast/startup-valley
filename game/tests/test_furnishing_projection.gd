@@ -445,6 +445,40 @@ func run() -> void:
 				check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, "acoustic_divider/" + side + " keeps native separate layers")
 	check(room.apply_furnishing_state(state), "acoustic_divider returns to storage")
 	check(room.prop_node(divider_id) == null, "acoustic_divider storage removes scene/collision but not ownership")
+	# Three cells. North and south are a 3x1 strip; east and west are a 1x3
+	# strip. The divider block returns that piece to storage first, so [23, 17]
+	# is free again. Clearance is the front cell just outside the strip.
+	var board_id := "decor-mobile_whiteboard"
+	var board_grid := Vector2i(23, 17)
+	var board_offsets := {
+		"north": [Vector2i(1, 0), Vector2i(0, 0), Vector2i(-1, 0)],
+		"east": [Vector2i(0, 1), Vector2i(0, 0), Vector2i(0, -1)],
+		"south": [Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0)],
+		"west": [Vector2i(0, -1), Vector2i(0, 0), Vector2i(0, 1)],
+	}
+	check(room.layout_model.available_facings("mobile_whiteboard").size() == 4, "mobile_whiteboard has four production-ready authored views")
+	for side: String in OfficeLayout.FACINGS:
+		var candidate := room.layout_model.validate_candidate(board_id, board_grid, side, 2, saved)
+		check(candidate.valid, "mobile_whiteboard/" + side + " can be placed from storage in the room")
+		var next := state.duplicate(true)
+		next.placements[board_id] = {"grid": [board_grid.x, board_grid.y], "facing": side}
+		check(room.apply_furnishing_state(next), "mobile_whiteboard/" + side + " projects into actual TownRoom")
+		var prop := room.prop_node(board_id)
+		var expected: Array[Vector2i] = []
+		for offset: Vector2i in board_offsets[side]:
+			expected.append(board_grid + offset)
+		var placement := room.placement_by_id(board_id)
+		check(prop != null and placement.occupied == expected, "mobile_whiteboard/" + side + " occupies exactly its three footprint cells")
+		var library_layers := 0
+		for layer: Dictionary in placement.render_layers:
+			if str(layer.art).contains("furnishing-library/mobile_whiteboard"):
+				library_layers += 1
+		check(library_layers == 7, "mobile_whiteboard/" + side + " has 7 furnishing-library layers")
+		for child: Node in prop.get_children():
+			if child is Sprite2D:
+				check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, "mobile_whiteboard/" + side + " keeps native separate layers")
+	check(room.apply_furnishing_state(state), "mobile_whiteboard returns to storage")
+	check(room.prop_node(board_id) == null, "mobile_whiteboard storage removes scene/collision but not ownership")
 	var old_seat := room.employee_workstation("mira").work_position as Vector2
 	room.navigation.actors["mira"] = old_seat
 	var moved := saved.duplicate(true)
