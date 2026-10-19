@@ -633,3 +633,5 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - `capture_furnishing_runtime.gd --diagnose --decor-only` — 79 checks, 0 failures (fifteen native décor rotate through all facings; whiteboard at `[7, 13]`, low bookshelf moved to `[25, 8]`)
 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The mobile whiteboard is owned starter décor and stays in storage until placed.
+
+- 11:55 PT Oct 19: Merged PR #20 (mobile_whiteboard registered as starter décor). Verified harness 72/0, eval:offline 8/8, validate, run_all, furnishing projection 611/0, furniture directions 472/0, archive production 3318/0, chapter1, full_player_path, passive tables 628/0, acoustic divider 66/0, mobile whiteboard 0 failures (1628 and 2433 checks across two runs; count varies with physics steps), passive furniture 1219/0, and decor capture 79/0 green.
