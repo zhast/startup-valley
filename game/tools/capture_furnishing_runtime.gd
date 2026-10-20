@@ -145,22 +145,22 @@ func run() -> void:
 	main.room.navigation.actors["founder"] = main.player.position
 	check(main.worker_client._stdio == null and main.worker_client._process_id == -1, "No worker or personal company opened")
 	var state := state_for(2)
-	# One-cell. The planter's former south-cluster cell [22, 16] is the last
-	# remaining four-facing two-cell pocket after the cart and water station.
-	# [32, 13] stays valid for every facing in the east bay beside approval.
-	state.placements["decor-broadleaf_planter"] = {"grid": [32, 13], "facing": "south"}
-	# One-cell. The round meeting table needs a four-facing 3x3 pocket this lamp
-	# covered in the coffee bay. [19, 14] stays valid for every facing east of
-	# the aisle, north of the printer, and south of Theo's desk, clear of Mina
-	# [11, 18], Creative [14, 18], Theo [23, 18], and the founder capture cell
-	# [17, 18].
-	state.placements["decor-task_floor_lamp"] = {"grid": [19, 14], "facing": "south"}
-	# One-cell. The low lounge table needs a four-facing pocket this stand's tall
-	# artwork covered on the south floor. [32, 19] stays valid for every facing
-	# on the east edge, clear of the planter at [32, 13], the prototype bench,
+	# One-cell. The lounge armchair needs the east-edge cells this planter shared
+	# with the coat stand. [19, 13] is the lamp's former column and stays valid
+	# for every facing, clear of Mina [11, 18], Creative [14, 18], Theo [23, 18],
+	# and the founder capture cell [17, 18].
+	state.placements["decor-broadleaf_planter"] = {"grid": [19, 13], "facing": "south"}
+	# One-cell. Moved from [19, 14] to the planter's former east-edge cell so the
+	# planter can leave that column for the lounge armchair. [32, 13] stays
+	# valid for every facing, north of the armchair at [33, 17] and clear of
 	# Mina [11, 18], Creative [14, 18], Theo [23, 18], and the founder capture
 	# cell [17, 18].
-	state.placements["decor-coat_bag_stand"] = {"grid": [32, 19], "facing": "south"}
+	state.placements["decor-task_floor_lamp"] = {"grid": [32, 13], "facing": "south"}
+	# One-cell. Moved from [32, 19] to [19, 19]. The armchair's four-facing
+	# union covers [32, 16] through [34, 18]. South clearance is [19, 20].
+	# Clear of Mina [11, 18], Creative [14, 18], Theo [23, 18], and the founder
+	# capture cell [17, 18].
+	state.placements["decor-coat_bag_stand"] = {"grid": [19, 19], "facing": "south"}
 	# Two-cell footprint. The acoustic divider needs the four-facing pocket this
 	# station held beside the research bench. No single décor piece could move
 	# without losing its own four-facing home, so this station moves to [22, 13]
@@ -169,18 +169,19 @@ func run() -> void:
 	# west occupies [22, 12] and [22, 13]. Clear of Mina [11, 18], Creative
 	# [14, 18], Theo [23, 18], and the founder capture cell [17, 18].
 	state.placements["decor-water_station"] = {"grid": [22, 13], "facing": "south"}
-	# Two-cell footprint. The south cluster and the cells beside Theo and the
-	# research bench overlap this cart once décor rotates. [4, 18] stays valid
-	# for every facing in the southwest lounge.
-	state.placements["decor-resource_cart"] = {"grid": [4, 18], "facing": "south"}
-	# Two-cell footprint. [22, 16] overlapped the water station once that station
-	# moved to [22, 13] to free the divider. [22, 17] stays valid for every
-	# facing one cell south of the old pocket. East occupies [22, 18], clear of
+	# Two-cell footprint. Moved from [4, 18] to [22, 19] so the printer can take
+	# the southwest pocket the lounge armchair's chain frees. [22, 19] stays
+	# valid for every facing. North occupies [22, 19] and [23, 19], clear of
 	# Theo [23, 18], Mina [11, 18], Creative [14, 18], and the founder capture
 	# cell [17, 18].
-	state.placements["decor-printer_scanner_station"] = {"grid": [22, 17], "facing": "south"}
-	# Two-cell footprint. The cart [4, 18], water station [22, 13], and printer
-	# [22, 17] already hold the other four-facing pockets. The sorter is shorter
+	state.placements["decor-resource_cart"] = {"grid": [22, 19], "facing": "south"}
+	# Two-cell footprint. Moved from [22, 17] to [4, 17] after the cart left the
+	# southwest lounge. [4, 17] stays valid for every facing, clear of Mina
+	# [11, 18], Creative [14, 18], Theo [23, 18], and the founder capture cell
+	# [17, 18].
+	state.placements["decor-printer_scanner_station"] = {"grid": [4, 17], "facing": "south"}
+	# Two-cell footprint. The cart [22, 19], water station [22, 13], and printer
+	# [4, 17] already hold the other four-facing pockets. The sorter is shorter
 	# than the printer, so [13, 19] on the open south floor stays inside artwork
 	# and standing headroom for every facing while the other décor rotate. West
 	# occupies [13, 18], which is clear of Mina [11, 18], Creative [14, 18],
@@ -205,13 +206,12 @@ func run() -> void:
 	state.placements["decor-server_cabinet"] = {"grid": [25, 14], "facing": "south"}
 	# Two-cell footprint, mirrored from the utility cabinets: north [[-1,0],[0,0]],
 	# east [[0,-1],[0,0]], south [[0,0],[1,0]], west [[0,0],[0,1]]. The sprite is
-	# low (canvas [160, 160], pivot [80, 96], offset [0, -16]). The other ten
-	# décor already hold every shared four-facing pocket, and the coat stand at
-	# [19, 18] overlapped this south-floor pocket once both rotated. Moving that
-	# coat stand to [32, 19] leaves [20, 19] inside artwork and standing headroom
-	# for every facing. West occupies [20, 20]. Clearance stays off Mina [11, 18],
-	# Creative [14, 18], Theo [23, 18], and the founder capture cell [17, 18].
-	state.placements["decor-low_coffee_table"] = {"grid": [20, 19], "facing": "south"}
+	# low (canvas [160, 160], pivot [80, 96], offset [0, -16]). Moved from
+	# [20, 19] to [6, 19] so the cart can sit at [22, 19] while the lounge
+	# armchair takes the east edge. [6, 19] stays inside artwork and standing
+	# headroom for every facing. Clear of Mina [11, 18], Creative [14, 18],
+	# Theo [23, 18], and the founder capture cell [17, 18].
+	state.placements["decor-low_coffee_table"] = {"grid": [6, 19], "facing": "south"}
 	# 3x3 footprint in every facing: occupied [[-1,-1]..[1,1]] in manifest
 	# order, clearance one cell outside that square (north [0,-2], east [2,0],
 	# south [0,2], west [-2,0]). Canvas [224, 288], pivot [112, 176], offset
@@ -292,11 +292,27 @@ func run() -> void:
 	# the previous sixteen décor kept their cells. Moving the one-cell rolling
 	# pedestal from [32, 6] to [26, 6] and the one-cell visitor chair from
 	# [32, 8] to [10, 19] leaves [33, 7] inside artwork and standing headroom
-	# for every facing on the far east edge, north of the planter at [32, 13].
+	# for every facing on the far east edge, north of the lamp at [32, 13].
 	# Occupied union is [32, 6] through [34, 8]. Clear of Mina [11, 18],
 	# Creative [14, 18], Theo [23, 18], and the founder capture cell [17, 18].
 	state.placements["decor-two_seat_sofa"] = {"grid": [33, 7], "facing": "south"}
-	check(main.room.apply_furnishing_state(state), "Seventeen native starter decorations fit beside production stations")
+	# 2x2 footprint. Occupied cells follow the v3 manifest / lounge geometry
+	# tool: north [[-1,-1],[0,-1],[-1,0],[0,0]], east [[0,-1],[1,-1],[0,0],[1,0]],
+	# south [[0,0],[1,0],[0,1],[1,1]], west [[-1,0],[0,0],[-1,1],[0,1]]. The
+	# proposal interaction cell is null and lounge_seating_geometry.gd lists
+	# clearance [], so clearance is empty and there is no standing viewpoint.
+	# Canvas [160, 208], pivot [80, 128], offset [0, -24]. No four-facing 2x2
+	# pocket stayed free while the previous seventeen décor kept their cells.
+	# The east-edge union at [33, 17] is [32, 16] through [34, 18]. That stays
+	# clear only if the coat stand leaves [32, 19] and the lamp, not the
+	# planter, occupies [32, 13]. The coat stand moves to [19, 19], the lamp
+	# moves from [19, 14] to [32, 13], and the planter moves from [32, 13] to
+	# [19, 13]. The cart then leaves [4, 18] for [22, 19], the printer leaves
+	# [22, 17] for [4, 17], and the low coffee table leaves [20, 19] for
+	# [6, 19]. Clear of Mina [11, 18], Creative [14, 18], Theo [23, 18], and
+	# the founder capture cell [17, 18].
+	state.placements["decor-lounge_armchair"] = {"grid": [33, 17], "facing": "south"}
+	check(main.room.apply_furnishing_state(state), "Eighteen native starter decorations fit beside production stations")
 	var founder_lamp_layers := 0
 	var founder_strategy_layers := 0
 	for layer: Dictionary in main.room.placement_by_id("founder-workstation").render_layers:
@@ -313,11 +329,11 @@ func run() -> void:
 		main.office_renovation.open()
 		for index: int in range(4): await process_frame
 		var picker := main.office_renovation._prop_picker
-		check(picker.item_count == 17, "Mature inventory presents all seventeen currently owned furnishings")
+		check(picker.item_count == 18, "Mature inventory presents all eighteen currently owned furnishings")
 		await capture("mature-renovate-open")
 		await ui_click(picker.get_global_rect().get_center())
 		check(picker.get_popup().visible, "Actual pointer opens the mature inventory dropdown")
-		check(Rect2(Vector2.ZERO, Vector2(1280, 720)).encloses(Rect2(Vector2(picker.get_popup().position), Vector2(picker.get_popup().size))), "All seventeen dropdown rows fit the native viewport")
+		check(Rect2(Vector2.ZERO, Vector2(1280, 720)).encloses(Rect2(Vector2(picker.get_popup().position), Vector2(picker.get_popup().size))), "All eighteen dropdown rows fit the native viewport")
 		await capture("mature-renovate-dropdown")
 		picker.get_popup().hide()
 		main.office_renovation.select_placement("mira-workstation")
@@ -334,8 +350,8 @@ func run() -> void:
 		return
 	if OS.get_cmdline_user_args().has("--decor-only"):
 		for side: String in OfficeLayout.FACINGS:
-			for id: String in ["decor-broadleaf_planter", "decor-task_floor_lamp", "decor-coat_bag_stand", "decor-water_station", "decor-resource_cart", "decor-printer_scanner_station", "decor-recycling_sorter", "decor-tall_storage_cabinet", "decor-server_cabinet", "decor-low_coffee_table", "decor-round_meeting_table", "decor-rolling_storage_pedestal", "decor-low_bookshelf", "decor-acoustic_divider", "decor-mobile_whiteboard", "decor-visitor_chair", "decor-two_seat_sofa"]: state.placements[id].facing = side
-			check(main.room.apply_furnishing_state(state), side + " seventeen native decorations retain valid clearance/layer geometry")
+			for id: String in ["decor-broadleaf_planter", "decor-task_floor_lamp", "decor-coat_bag_stand", "decor-water_station", "decor-resource_cart", "decor-printer_scanner_station", "decor-recycling_sorter", "decor-tall_storage_cabinet", "decor-server_cabinet", "decor-low_coffee_table", "decor-round_meeting_table", "decor-rolling_storage_pedestal", "decor-low_bookshelf", "decor-acoustic_divider", "decor-mobile_whiteboard", "decor-visitor_chair", "decor-two_seat_sofa", "decor-lounge_armchair"]: state.placements[id].facing = side
+			check(main.room.apply_furnishing_state(state), side + " eighteen native decorations retain valid clearance/layer geometry")
 			main._on_room_placements_changed()
 			await step(2)
 			await capture("decor-" + side)

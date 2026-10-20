@@ -67,6 +67,10 @@
       "kind": "two_seat_sofa"
     },
     {
+      "id": "decor-lounge_armchair",
+      "kind": "lounge_armchair"
+    },
+    {
       "id": "decor-rolling_storage_pedestal",
       "kind": "rolling_storage_pedestal"
     },
@@ -9942,6 +9946,462 @@
       },
       "interaction_kind": "none"
     },
+    "lounge_armchair": {
+      "display_name": "Lounge armchair",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/LOUNGE_SEATING_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/lounge_armchair/north-whole.png",
+          "visual_bounds": [
+            -48,
+            -52,
+            64,
+            63
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/lounge_armchair/north-floor_shadow.png",
+              "name": "LoungeArmchairV3NorthFloorShadow",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                42,
+                92,
+                51,
+                45
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/lounge_armchair/north-rear_structure.png",
+              "name": "LoungeArmchairV3NorthRearStructure",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -6,
+              "content_bounds": [
+                39,
+                76,
+                50,
+                9
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/lounge_armchair/north-front_structure.png",
+              "name": "LoungeArmchairV3NorthFrontStructure",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                32,
+                83,
+                64,
+                56
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              -1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -48,
+            -52,
+            64,
+            63
+          ],
+          "ambient_overlays": []
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/LOUNGE_SEATING_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/lounge_armchair/east-whole.png",
+          "visual_bounds": [
+            -13,
+            -100,
+            56,
+            110
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/lounge_armchair/east-floor_shadow.png",
+              "name": "LoungeArmchairV3EastFloorShadow",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                74,
+                90,
+                49,
+                48
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/lounge_armchair/east-rear_structure.png",
+              "name": "LoungeArmchairV3EastRearStructure",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -6,
+              "content_bounds": [
+                67,
+                28,
+                56,
+                108
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/lounge_armchair/east-front_structure.png",
+              "name": "LoungeArmchairV3EastFrontStructure",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                69,
+                32,
+                54,
+                105
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              -1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "clearance": [],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -13,
+            -100,
+            56,
+            110
+          ],
+          "ambient_overlays": []
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/LOUNGE_SEATING_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/lounge_armchair/south-whole.png",
+          "visual_bounds": [
+            -14,
+            -52,
+            60,
+            93
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/lounge_armchair/south-floor_shadow.png",
+              "name": "LoungeArmchairV3SouthFloorShadow",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                74,
+                124,
+                51,
+                45
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/lounge_armchair/south-rear_structure.png",
+              "name": "LoungeArmchairV3SouthRearStructure",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -6,
+              "content_bounds": [
+                66,
+                76,
+                60,
+                66
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/lounge_armchair/south-front_structure.png",
+              "name": "LoungeArmchairV3SouthFrontStructure",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                66,
+                122,
+                60,
+                45
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "clearance": [],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -14,
+            -52,
+            60,
+            93
+          ],
+          "ambient_overlays": []
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/LOUNGE_SEATING_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/lounge_armchair/west-whole.png",
+          "visual_bounds": [
+            -43,
+            -68,
+            57,
+            110
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/lounge_armchair/west-floor_shadow.png",
+              "name": "LoungeArmchairV3WestFloorShadow",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -8,
+              "content_bounds": [
+                42,
+                122,
+                49,
+                48
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/lounge_armchair/west-rear_structure.png",
+              "name": "LoungeArmchairV3WestRearStructure",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": -6,
+              "content_bounds": [
+                37,
+                60,
+                57,
+                108
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/lounge_armchair/west-front_structure.png",
+              "name": "LoungeArmchairV3WestFrontStructure",
+              "offset": [
+                0,
+                -24
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                208
+              ],
+              "z_offset": 5,
+              "content_bounds": [
+                37,
+                64,
+                54,
+                105
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "clearance": [],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -43,
+            -68,
+            57,
+            110
+          ],
+          "ambient_overlays": []
+        }
+      },
+      "interaction_kind": "none"
+    },
     "rolling_storage_pedestal": {
       "display_name": "Rolling storage pedestal",
       "facings": [
@@ -12933,6 +13393,86 @@
       "source": "game/tests/fixtures/furniture-calibration/two-seat-sofa-v3/west-whole.png",
       "destination": "game/assets/runtime/office/furnishing-library/two_seat_sofa/west-whole.png",
       "sha256": "805fe5dca849a667f3e6e4ad8b292934bbc73067f08ee291b7838ffa54e72fb5"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/lounge-armchair-v3/north-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/lounge_armchair/north-floor_shadow.png",
+      "sha256": "9225ff7d06ee92a31969052364aa41e1129b10fef02645a9793d3c9b2f896618"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/lounge-armchair-v3/north-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/lounge_armchair/north-rear_structure.png",
+      "sha256": "c095f78bc43fc1bbb13814ba0906b02ae0f7445fcd140f71f619e2a2ab321477"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/lounge-armchair-v3/north-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/lounge_armchair/north-front_structure.png",
+      "sha256": "545b06b5e874bf10e9944ac396d30b8cac9df3203a4da43e30f94eb1ae2692c2"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/lounge-armchair-v3/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/lounge_armchair/north-whole.png",
+      "sha256": "3915d22a51d89941a0696697f6e558873e6258be8be694ef1721586f1d039810"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/lounge-armchair-v3/east-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/lounge_armchair/east-floor_shadow.png",
+      "sha256": "05900ffcdb4ee8ecd5366c91e9f3180128f108958287fb8edc49c5c5b3ab7157"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/lounge-armchair-v3/east-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/lounge_armchair/east-rear_structure.png",
+      "sha256": "8e1650196a436fc76e7817f6295ba40fe757a34d5b488688568767e9a5317f03"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/lounge-armchair-v3/east-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/lounge_armchair/east-front_structure.png",
+      "sha256": "7d35618165f0950c6c64008518b1d19218c8f5a1005e63fb10c1645ae8eb1993"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/lounge-armchair-v3/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/lounge_armchair/east-whole.png",
+      "sha256": "ffee1571c1774031c6cb7cc595cb77b81762cb5ece5030acf32ff44ba21bcc04"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/lounge-armchair-v3/south-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/lounge_armchair/south-floor_shadow.png",
+      "sha256": "22c0bcc893d58d1048f33f4e093b3980b722bac1291cba0a3d96367eb93be55d"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/lounge-armchair-v3/south-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/lounge_armchair/south-rear_structure.png",
+      "sha256": "ea2b8b2d691a17e7f48521aea728a88470da78044e3027fa8092ce731fa1ebcf"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/lounge-armchair-v3/south-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/lounge_armchair/south-front_structure.png",
+      "sha256": "c26426923ad210cf846d45c87e5e96dfae56e7e1f9a536f3b425a35bd17a1562"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/lounge-armchair-v3/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/lounge_armchair/south-whole.png",
+      "sha256": "f710830c596dfb0209aeb668de48d95959e42db4be79b91c0e2eb62f5392e98a"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/lounge-armchair-v3/west-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/lounge_armchair/west-floor_shadow.png",
+      "sha256": "7a1860d51638eca96de4ae8ee839011b2f31ac87184cbe9cae54c80eef296077"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/lounge-armchair-v3/west-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/lounge_armchair/west-rear_structure.png",
+      "sha256": "79b836990bee16b511a6a8e70a517b9bcbd47091ced4d0809ab9e1867aa2c5c9"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/lounge-armchair-v3/west-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/lounge_armchair/west-front_structure.png",
+      "sha256": "30d9e3048b83f065e22a927fb0abdd2eda9d285267d07594a9009b9ba911e7c3"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/lounge-armchair-v3/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/lounge_armchair/west-whole.png",
+      "sha256": "94d62f67e45e406208a7ea1c0c69d03aa8f2ddb538dc06bd05d454bd57c076ae"
     }
   ]
 }
