@@ -38,7 +38,7 @@
       "properties": {
         "version": { "const": 1 },
         "revision": { "type": "integer", "minimum": 0 },
-        "inventory": { "type": "array", "maxItems": 32, "items": { "$ref": "#/$defs/inventoryItem" } },
+        "inventory": { "type": "array", "maxItems": 33, "items": { "$ref": "#/$defs/inventoryItem" } },
         "placements": { "$ref": "#/$defs/placements" },
         "recovery": { "type": "string", "maxLength": 1000 }
       }

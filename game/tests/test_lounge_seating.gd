@@ -135,12 +135,17 @@ func run() -> void:
 		owner.queue_free()
 		await process_frame
 	check(ordinary.catalog.has("two_seat_sofa") and str(ordinary.catalog["two_seat_sofa"].get("interaction_kind", "")) == "none", "two_seat_sofa is registered as passive décor")
-	check(not ordinary.catalog.has("lounge_armchair"), "lounge_armchair remains unregistered")
+	check(ordinary.catalog.has("lounge_armchair") and str(ordinary.catalog["lounge_armchair"].get("interaction_kind", "")) == "none", "lounge_armchair is registered as passive décor")
 	for side: String in SEATING.SIDES:
 		var production: Dictionary = ordinary.catalog["two_seat_sofa"]["facing_profiles"][side]
 		check(str(production.get("profile_kind", "")) == "decorative" and str(production.get("status", "")) == "runtime_ready", "two_seat_sofa " + side + " is decorative runtime_ready")
 		for forbidden: String in ["interaction", "service_side", "work_cell", "seat_anchor", "pose_set", "action"]:
 			check(not production.has(forbidden), "two_seat_sofa " + side + " production profile has no " + forbidden)
+	for side: String in SEATING.SIDES:
+		var production: Dictionary = ordinary.catalog["lounge_armchair"]["facing_profiles"][side]
+		check(str(production.get("profile_kind", "")) == "decorative" and str(production.get("status", "")) == "runtime_ready", "lounge_armchair " + side + " is decorative runtime_ready")
+		for forbidden: String in ["interaction", "service_side", "work_cell", "seat_anchor", "pose_set", "action"]:
+			check(not production.has(forbidden), "lounge_armchair " + side + " production profile has no " + forbidden)
 	# Intentionally no assertion about the dev catalogue lifecycle state: this
 	# structural suite remains valid if a later, explicit art-library review is applied.
 	for path: String in preserved: check(FileAccess.get_sha256(path) == preserved[path], "Test leaves " + path + " byte-identical")
