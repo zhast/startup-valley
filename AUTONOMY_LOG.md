@@ -807,3 +807,4 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - `capture_furnishing_runtime.gd --diagnose --decor-only` — 79 checks, 0 failures
 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The break table is owned starter décor and stays in storage until placed.
+- 11:11 PT Oct 20: Merged PR #24 (cafe-table-v2 registered as passive break_table starter décor; inventory cap 34). Verified harness 72/0, eval:offline 8/8, import, validate, run_all, furnishing projection 735/0, furniture directions 476/0, archive production 3322/0, chapter1, full_player_path, passive tables 656/0, acoustic divider, mobile whiteboard, passive furniture, visitor chair 325/0, visitor chair v2, lounge seating 350/0, and decor capture green.
