@@ -764,3 +764,46 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The armchair is owned starter décor and stays in storage until placed.
 - 09:07 PT Oct 20: Merged PR #23 (lounge_armchair v3 registered as passive starter décor; inventory cap 33). Verified harness 72/0, eval:offline 8/8, import, validate, run_all, furnishing projection 704/0, furniture directions 475/0, archive production 3321/0, chapter1, full_player_path, passive tables, acoustic divider, mobile whiteboard, passive furniture, visitor chair 325/0, visitor chair v2, lounge seating 350/0, and decor capture green.
+
+### Round 22 — 2026-10-20
+
+**What changed**
+- Registered the art-approved cafe-table-v2 ("Pass after support-contact correction", mean 2.83, in `dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md`) into the playable furnishing catalog as passive starter décor under a new kind, `break_table` (display name "Two-person break table", matching GALLERY.md). The older one-cell south-only `cafe_table` prop is untouched. All four facings are `runtime_ready` and `decorative`. `interaction_kind` is `none`. There are no chairs, seats, food, reservation, break behavior, or worker use. Native canvas is `[160, 240]`, floor pivot `[80, 160]`, sprite offset `[0, -40]`. Layer order is floor_shadow, rear_structure, front_structure, with `z_offset` `-2`, `-1`, `1`. Occupied cells follow the v2 manifest / passive table geometry tool: north `[[-1, -1], [0, -1], [-1, 0], [0, 0]]`, east `[[0, -1], [1, -1], [0, 0], [1, 0]]`, south `[[0, 0], [1, 0], [0, 1], [1, 1]]`, west `[[-1, 0], [0, 0], [-1, 1], [0, 1]]`. Clearance is empty (proposal interaction cell is null), so there is no standing viewpoint.
+- `decor-break_table` is a starter inventory grant after `decor-lounge_armchair`, delivered through the same `starter-decor-v1` insert. It is not auto-placed and stays in storage until the player places it.
+- Runtime layers and whole PNGs are byte-exact copies of the v2 fixtures under `game/assets/runtime/office/furnishing-library/break_table/`; `source_copies` records their sha256.
+- Hiring Creative now puts 9 stations plus 25 starter decorations in inventory (34 items), so `contracts/furnishing.schema.json` inventory `maxItems` goes from 33 to 34. The placement cap stays 32.
+- Dev capture places `decor-break_table` at `[2, 19]` facing south (four-facing union `[1, 18]` through `[3, 20]`), the only four-facing pocket that stayed free while the other eighteen décor kept their cells, so nothing else moved. Clear of Mina `[11, 18]`, Creative `[14, 18]`, Theo `[23, 18]`, and the founder capture cell `[17, 18]`. Capture strings now say nineteen native décor.
+- `test_passive_tables.gd` now expects `break_table` in the ordinary catalogue as decorative, runtime_ready, with no interaction, service side, work cell, seat anchor, pose set, or action. `test_furnishing_projection.gd`, `test_archive_production.gd`, and `test_furniture_directions.gd` include the break table.
+
+**Art HOLD**
+- No new art was generated or edited. No sitting, outdoor scene, new hire, Chapter 3, founder-seated pose, or unused role kit was added.
+
+**Remaining gaps (ranked)**
+1. Creative has a locomotion sheet and stands at the desk. There is no seated sheet, and none was invented.
+2. Unbound seated, outdoor, waiting-lunch, and unused furnishing-kit art stays untracked. Founder seated/N/E/W workstation poses are QA-only, not bind-approved. `customer_success_kit`, `engineer_build_kit`, `finance_accounts_kit`, `growth_analytics_kit`, `lawyer_contract_kit`, and `product_prototype_kit` stay unbound.
+3. The live path is still a harness driver, not a watched windowed playtest.
+4. A cheap reviewer can still sit just under the 2.5 ready line. Round 2's passing ads score was 2.60.
+5. After the Chapter 2 end screen, ordinary work orders continue. No Chapter 3 content is authored.
+6. All passed passive tables and lounge seating are now registered as passive décor with no Sit or use actions.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored; fake provider not set)
+- `cd harness && npm test` — 74 tests, 72 pass, 0 fail, 2 skipped
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass
+- `test_furnishing_projection.gd` — 735 checks, 0 failures
+- `test_furniture_directions.gd` — 476 checks, 0 failures
+- `test_archive_production.gd` — 3322 checks, 0 failures
+- `test_chapter1_first_player.gd` — CHAPTER1 PASS
+- `test_full_player_path.gd` — FULLPATH PASS
+- `test_passive_tables.gd` — 656 checks, 0 failures
+- `test_acoustic_divider.gd` — 66 checks, 0 failures
+- `test_mobile_whiteboard.gd` — 2433 checks, 0 failures
+- `test_passive_furniture.gd` — 1219 checks, 0 failures
+- `test_visitor_chair.gd` — 325 checks, 0 failures
+- `test_visitor_chair_v2.gd` — 105 checks, 0 failures
+- `test_lounge_seating.gd` — 350 checks, 0 failures
+- `capture_furnishing_runtime.gd --diagnose --decor-only` — 79 checks, 0 failures
+
+**CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The break table is owned starter décor and stays in storage until placed.
