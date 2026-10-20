@@ -312,7 +312,19 @@ func run() -> void:
 	# [6, 19]. Clear of Mina [11, 18], Creative [14, 18], Theo [23, 18], and
 	# the founder capture cell [17, 18].
 	state.placements["decor-lounge_armchair"] = {"grid": [33, 17], "facing": "south"}
-	check(main.room.apply_furnishing_state(state), "Eighteen native starter decorations fit beside production stations")
+	# 2x2 footprint. Occupied cells follow the cafe-table-v2 manifest /
+	# passive table geometry tool: north [[-1,-1],[0,-1],[-1,0],[0,0]], east
+	# [[0,-1],[1,-1],[0,0],[1,0]], south [[0,0],[1,0],[0,1],[1,1]], west
+	# [[-1,0],[0,0],[-1,1],[0,1]]. The proposal interaction cell is null and
+	# passive_table_geometry.gd lists clearance [], so clearance is empty and
+	# there is no standing viewpoint. Canvas [160, 240], pivot [80, 160],
+	# offset [0, -40]. [2, 19] is the only four-facing pocket that stayed free
+	# while the previous eighteen décor kept their cells, on the southwest
+	# floor west of the printer at [4, 17]. Occupied union is [1, 18] through
+	# [3, 20]. Clear of Mina [11, 18], Creative [14, 18], Theo [23, 18], and
+	# the founder capture cell [17, 18].
+	state.placements["decor-break_table"] = {"grid": [2, 19], "facing": "south"}
+	check(main.room.apply_furnishing_state(state), "Nineteen native starter decorations fit beside production stations")
 	var founder_lamp_layers := 0
 	var founder_strategy_layers := 0
 	for layer: Dictionary in main.room.placement_by_id("founder-workstation").render_layers:
@@ -329,11 +341,11 @@ func run() -> void:
 		main.office_renovation.open()
 		for index: int in range(4): await process_frame
 		var picker := main.office_renovation._prop_picker
-		check(picker.item_count == 18, "Mature inventory presents all eighteen currently owned furnishings")
+		check(picker.item_count == 19, "Mature inventory presents all nineteen currently owned furnishings")
 		await capture("mature-renovate-open")
 		await ui_click(picker.get_global_rect().get_center())
 		check(picker.get_popup().visible, "Actual pointer opens the mature inventory dropdown")
-		check(Rect2(Vector2.ZERO, Vector2(1280, 720)).encloses(Rect2(Vector2(picker.get_popup().position), Vector2(picker.get_popup().size))), "All eighteen dropdown rows fit the native viewport")
+		check(Rect2(Vector2.ZERO, Vector2(1280, 720)).encloses(Rect2(Vector2(picker.get_popup().position), Vector2(picker.get_popup().size))), "All nineteen dropdown rows fit the native viewport")
 		await capture("mature-renovate-dropdown")
 		picker.get_popup().hide()
 		main.office_renovation.select_placement("mira-workstation")
@@ -350,8 +362,8 @@ func run() -> void:
 		return
 	if OS.get_cmdline_user_args().has("--decor-only"):
 		for side: String in OfficeLayout.FACINGS:
-			for id: String in ["decor-broadleaf_planter", "decor-task_floor_lamp", "decor-coat_bag_stand", "decor-water_station", "decor-resource_cart", "decor-printer_scanner_station", "decor-recycling_sorter", "decor-tall_storage_cabinet", "decor-server_cabinet", "decor-low_coffee_table", "decor-round_meeting_table", "decor-rolling_storage_pedestal", "decor-low_bookshelf", "decor-acoustic_divider", "decor-mobile_whiteboard", "decor-visitor_chair", "decor-two_seat_sofa", "decor-lounge_armchair"]: state.placements[id].facing = side
-			check(main.room.apply_furnishing_state(state), side + " eighteen native decorations retain valid clearance/layer geometry")
+			for id: String in ["decor-broadleaf_planter", "decor-task_floor_lamp", "decor-coat_bag_stand", "decor-water_station", "decor-resource_cart", "decor-printer_scanner_station", "decor-recycling_sorter", "decor-tall_storage_cabinet", "decor-server_cabinet", "decor-low_coffee_table", "decor-round_meeting_table", "decor-rolling_storage_pedestal", "decor-low_bookshelf", "decor-acoustic_divider", "decor-mobile_whiteboard", "decor-visitor_chair", "decor-two_seat_sofa", "decor-lounge_armchair", "decor-break_table"]: state.placements[id].facing = side
+			check(main.room.apply_furnishing_state(state), side + " nineteen native decorations retain valid clearance/layer geometry")
 			main._on_room_placements_changed()
 			await step(2)
 			await capture("decor-" + side)

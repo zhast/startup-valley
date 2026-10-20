@@ -71,6 +71,10 @@
       "kind": "lounge_armchair"
     },
     {
+      "id": "decor-break_table",
+      "kind": "break_table"
+    },
+    {
       "id": "decor-rolling_storage_pedestal",
       "kind": "rolling_storage_pedestal"
     },
@@ -10402,6 +10406,462 @@
       },
       "interaction_kind": "none"
     },
+    "break_table": {
+      "display_name": "Two-person break table",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/break_table/north-whole.png",
+          "visual_bounds": [
+            -42,
+            -80,
+            52,
+            86
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/break_table/north-floor_shadow.png",
+              "name": "BreakTableV2NorthFloorShadow",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                55,
+                132,
+                22,
+                34
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/break_table/north-rear_structure.png",
+              "name": "BreakTableV2NorthRearStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                38,
+                80,
+                52,
+                78
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/break_table/north-front_structure.png",
+              "name": "BreakTableV2NorthFrontStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                42,
+                116,
+                44,
+                47
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              -1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -42,
+            -80,
+            52,
+            86
+          ],
+          "ambient_overlays": []
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/break_table/east-whole.png",
+          "visual_bounds": [
+            -10,
+            -80,
+            52,
+            86
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/break_table/east-floor_shadow.png",
+              "name": "BreakTableV2EastFloorShadow",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                87,
+                132,
+                22,
+                34
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/break_table/east-rear_structure.png",
+              "name": "BreakTableV2EastRearStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                70,
+                80,
+                52,
+                78
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/break_table/east-front_structure.png",
+              "name": "BreakTableV2EastFrontStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                74,
+                116,
+                44,
+                47
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              -1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "clearance": [],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -10,
+            -80,
+            52,
+            86
+          ],
+          "ambient_overlays": []
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/break_table/south-whole.png",
+          "visual_bounds": [
+            -10,
+            -48,
+            52,
+            86
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/break_table/south-floor_shadow.png",
+              "name": "BreakTableV2SouthFloorShadow",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                87,
+                164,
+                22,
+                34
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/break_table/south-rear_structure.png",
+              "name": "BreakTableV2SouthRearStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                70,
+                112,
+                52,
+                78
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/break_table/south-front_structure.png",
+              "name": "BreakTableV2SouthFrontStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                74,
+                148,
+                44,
+                47
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "clearance": [],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -10,
+            -48,
+            52,
+            86
+          ],
+          "ambient_overlays": []
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/PASSIVE_TABLES_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/break_table/west-whole.png",
+          "visual_bounds": [
+            -42,
+            -48,
+            52,
+            86
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/break_table/west-floor_shadow.png",
+              "name": "BreakTableV2WestFloorShadow",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                55,
+                164,
+                22,
+                34
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/break_table/west-rear_structure.png",
+              "name": "BreakTableV2WestRearStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                38,
+                112,
+                52,
+                78
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/break_table/west-front_structure.png",
+              "name": "BreakTableV2WestFrontStructure",
+              "offset": [
+                0,
+                -40
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                240
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                42,
+                148,
+                44,
+                47
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "clearance": [],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -42,
+            -48,
+            52,
+            86
+          ],
+          "ambient_overlays": []
+        }
+      },
+      "interaction_kind": "none"
+    },
     "rolling_storage_pedestal": {
       "display_name": "Rolling storage pedestal",
       "facings": [
@@ -13473,6 +13933,86 @@
       "source": "game/tests/fixtures/furniture-calibration/lounge-armchair-v3/west-whole.png",
       "destination": "game/assets/runtime/office/furnishing-library/lounge_armchair/west-whole.png",
       "sha256": "94d62f67e45e406208a7ea1c0c69d03aa8f2ddb538dc06bd05d454bd57c076ae"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/cafe-table-v2/north-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/break_table/north-floor_shadow.png",
+      "sha256": "56929ff3c15feb749cef0ed01b9c4e3a8bf3efd9be3a412d44c56099b980cd6a"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/cafe-table-v2/north-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/break_table/north-rear_structure.png",
+      "sha256": "b94960beff764694cac31d5676d83aadefc4c9e8635a6c87b5ec6f770cdb9ecb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/cafe-table-v2/north-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/break_table/north-front_structure.png",
+      "sha256": "d61428afc07934bc260dd73f6ae00b78581309fc1b082ae01fb12ffd6946e0e7"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/cafe-table-v2/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/break_table/north-whole.png",
+      "sha256": "4d1b7b2875e5de718a27fa77b8dd141def40c6d9fc09e4e80a9daf0d722b707b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/cafe-table-v2/east-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/break_table/east-floor_shadow.png",
+      "sha256": "fcb039b49d838b400e0bba30c96f8fb3f05b3197b87b26eb83534118ffe7b997"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/cafe-table-v2/east-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/break_table/east-rear_structure.png",
+      "sha256": "318ad2bfe956ea0c014e130b516e5fe015707db68099d7732bef50f20e3ac6b0"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/cafe-table-v2/east-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/break_table/east-front_structure.png",
+      "sha256": "cb490a6bef71319cea7b14d4d2fc37266e234a6341598e27600f3c42b0b29c2e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/cafe-table-v2/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/break_table/east-whole.png",
+      "sha256": "50b3a28ed75a7b4dbd58f8331ea7342cae7d7ddf8a1184b602b67d8c089d9306"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/cafe-table-v2/south-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/break_table/south-floor_shadow.png",
+      "sha256": "46dd28c3e6a6f75d43a6feb29c3366dd8d1aa837d6d72d812772a34aeed82788"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/cafe-table-v2/south-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/break_table/south-rear_structure.png",
+      "sha256": "e78e84f08d307bc514043bd70a0f2b4a576f556461d5ad654563fec86a046c83"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/cafe-table-v2/south-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/break_table/south-front_structure.png",
+      "sha256": "1e540206b1cb39c898c68e0b87a4d12b825a5e37a1ae447abdd694abc90580d7"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/cafe-table-v2/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/break_table/south-whole.png",
+      "sha256": "065fab4b9e1e28364244afc6045855eaaac2f77b990b770d65498837c8bd1c68"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/cafe-table-v2/west-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/break_table/west-floor_shadow.png",
+      "sha256": "c4c0c934192f8166e328dadf101440aa32375139fc20dbeed98565e90e758132"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/cafe-table-v2/west-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/break_table/west-rear_structure.png",
+      "sha256": "a89794c544e36635474648588e0db7557e1d73451c2fd0cf5b76458aab8bab07"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/cafe-table-v2/west-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/break_table/west-front_structure.png",
+      "sha256": "cb3b92fab7f943db6239adb9471464d03a4785cacc438788c6d71d5bde9eec8c"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/cafe-table-v2/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/break_table/west-whole.png",
+      "sha256": "da87ac9fdf5ad916cc335a987e046f70240651e607fa0675bb18f6faf1c255b3"
     }
   ]
 }

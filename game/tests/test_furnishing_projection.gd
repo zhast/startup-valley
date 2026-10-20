@@ -585,6 +585,41 @@ func run() -> void:
 				check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, "lounge_armchair/" + side + " keeps native separate layers")
 	check(room.apply_furnishing_state(state), "lounge_armchair returns to storage")
 	check(room.prop_node(arm_id) == null, "lounge_armchair storage removes scene/collision but not ownership")
+	# 2x2 in every facing. Occupied cells follow the cafe-table-v2 manifest /
+	# passive table geometry tool. The armchair block returns that piece to
+	# storage first, so [23, 17] is free again. Clearance is empty: the
+	# proposal interaction cell is null and the geometry tool lists no clearance.
+	var break_id := "decor-break_table"
+	var break_grid := Vector2i(23, 17)
+	var break_offsets := {
+		"north": [Vector2i(-1, -1), Vector2i(0, -1), Vector2i(-1, 0), Vector2i(0, 0)],
+		"east": [Vector2i(0, -1), Vector2i(1, -1), Vector2i(0, 0), Vector2i(1, 0)],
+		"south": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 1)],
+		"west": [Vector2i(-1, 0), Vector2i(0, 0), Vector2i(-1, 1), Vector2i(0, 1)],
+	}
+	check(room.layout_model.available_facings("break_table").size() == 4, "break_table has four production-ready authored views")
+	for side: String in OfficeLayout.FACINGS:
+		var candidate := room.layout_model.validate_candidate(break_id, break_grid, side, 2, saved)
+		check(candidate.valid, "break_table/" + side + " can be placed from storage in the room")
+		var next := state.duplicate(true)
+		next.placements[break_id] = {"grid": [break_grid.x, break_grid.y], "facing": side}
+		check(room.apply_furnishing_state(next), "break_table/" + side + " projects into actual TownRoom")
+		var prop := room.prop_node(break_id)
+		var expected: Array[Vector2i] = []
+		for offset: Vector2i in break_offsets[side]:
+			expected.append(break_grid + offset)
+		var placement := room.placement_by_id(break_id)
+		check(prop != null and placement.occupied == expected, "break_table/" + side + " occupies exactly its four footprint cells")
+		var library_layers := 0
+		for layer: Dictionary in placement.render_layers:
+			if str(layer.art).contains("furnishing-library/break_table"):
+				library_layers += 1
+		check(library_layers == 3, "break_table/" + side + " has 3 furnishing-library layers")
+		for child: Node in prop.get_children():
+			if child is Sprite2D:
+				check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, "break_table/" + side + " keeps native separate layers")
+	check(room.apply_furnishing_state(state), "break_table returns to storage")
+	check(room.prop_node(break_id) == null, "break_table storage removes scene/collision but not ownership")
 	var old_seat := room.employee_workstation("mira").work_position as Vector2
 	room.navigation.actors["mira"] = old_seat
 	var moved := saved.duplicate(true)
