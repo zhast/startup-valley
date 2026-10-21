@@ -899,3 +899,5 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - `capture_furnishing_runtime.gd --diagnose --decor-only` — 79 checks, 0 failures, 0 native captures (twenty décor; workbench not placed)
 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The two-person workbench is owned starter décor and stays in storage until placed.
+
+- PR #26 merged (Round 24, shared-workbench-v2 passive decor).
