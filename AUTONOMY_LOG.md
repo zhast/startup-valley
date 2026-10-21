@@ -808,3 +808,47 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The break table is owned starter décor and stays in storage until placed.
 - 11:11 PT Oct 20: Merged PR #24 (cafe-table-v2 registered as passive break_table starter décor; inventory cap 34). Verified harness 72/0, eval:offline 8/8, import, validate, run_all, furnishing projection 735/0, furniture directions 476/0, archive production 3322/0, chapter1, full_player_path, passive tables 656/0, acoustic divider, mobile whiteboard, passive furniture, visitor chair 325/0, visitor chair v2, lounge seating 350/0, and decor capture green.
+
+### Round 23 — 2026-10-20
+
+**What changed**
+- Registered the art-approved compact-desk-v2 ("Mean 2.67 / 3 — pass for reusable base-library art", in `dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md`; also `dev/COMPACT_DESK_NATIVE_REVIEW.md`) into the playable furnishing catalog as passive starter décor. Kind `compact_desk`, display name "Compact starter desk" (GALLERY.md / `dev/art-catalogue/furniture.json`). All four facings are `runtime_ready` and `decorative`, with `review` `{art: true, geometry: true}` and `source_review` that 2026-09-06 review. `interaction_kind` is `none`. It is not a workstation: no chair, devices, role tools, seat anchor, work cell, job, worker use, or hiring change. Native canvas is `[160, 192]`, floor pivot `[80, 128]`, sprite offset `[0, -32]`. Layer order is floor_shadow, rear_structure, front_structure, with `z_offset` `-2`, `-1`, `1`. Occupied cells follow the v2 manifest / `compact_desk_geometry.gd`: north `[[-1, 0], [0, 0]]`, east `[[0, -1], [0, 0]]`, south `[[1, 0], [0, 0]]`, west `[[0, 1], [0, 0]]`. Clearance is the manifest front cell: north `[[0, 1]]`, east `[[-1, 0]]`, south `[[0, -1]]`, west `[[1, 0]]`.
+- `visual_bounds` and `hit_bounds` have no authored catalogue numbers. They are the opaque union of the three layer content boxes shifted by the pivot (sprite dest position is offset minus region/2, which is `-pivot`): north `[-48, -48, 64, 64]`, east `[-16, -80, 32, 96]`, south `[-16, -48, 64, 64]`, west `[-16, -48, 32, 96]`. That union matches the whole-sprite opaque rect minus the pivot. Hit bounds equal visual bounds. Clearance is non-empty, so each facing keeps one standing viewpoint on the clearance cell with `OfficeLayout.STANDING_SOURCE_BOUNDS` `[-24, -72, 48, 80]`, the same envelope Rounds 20–22 used when clearance exists. Manifest layer names are not facing-qualified, so runtime layer names are `CompactDeskV2{Facing}{FloorShadow|RearStructure|FrontStructure}`, the same pattern as `BreakTableV2` and `VisitorChairV2`. `anchor_offset` is `[0, 0]`.
+- `decor-compact_desk` is a starter inventory grant immediately after `decor-break_table`, delivered through the same `starter-decor-v1` insert. It is not auto-placed and stays in storage until the player places it.
+- Runtime layers and whole PNGs are byte-exact copies of the v2 fixtures under `game/assets/runtime/office/furnishing-library/compact_desk/` (16 PNGs); `source_copies` records their sha256 (16 entries; catalogue `source_copies` length 392).
+- Hiring Creative now puts 9 stations plus 26 starter decorations in inventory (35 items), so `contracts/furnishing.schema.json` inventory `maxItems` goes from 34 to 35. The placement cap stays 32.
+- No four-facing cell stayed free while the previous nineteen décor kept their cells, and moving only one- and two-cell décor left the displaced piece without a home. Dev capture therefore moves four pieces and places the desk: `decor-low_bookshelf` `[25, 8]` → `[10, 19]`, `decor-recycling_sorter` `[13, 19]` → `[25, 8]`, `decor-visitor_chair` `[10, 19]` → `[3, 9]` (north clearance `[3, 10]` sits on the circulation aisle), `decor-rolling_storage_pedestal` `[26, 6]` → `[12, 6]` because west-facing recycling art at `[25, 8]` overlaps `[26, 6]`, and `decor-compact_desk` at `[13, 19]` facing south. At `[13, 19]`, north occupies `[12, 19]` and `[13, 19]`; east occupies `[13, 18]` and `[13, 19]` (`[13, 18]` sits between Mina and Creative); south occupies `[13, 19]` and `[14, 19]`; west occupies `[13, 19]` and `[13, 20]`. Clear of Mina `[11, 18]`, Creative `[14, 18]`, Theo `[23, 18]`, and the founder capture cell `[17, 18]`. The furnishing-projection check uses `[23, 17]` only; west there would occupy Theo, so capture does not. Capture strings now say twenty native décor.
+- `test_passive_tables.gd` now expects `compact_desk` in the ordinary catalogue as decorative, runtime_ready, with no interaction, service side, work cell, seat anchor, pose set, or action. `test_furnishing_projection.gd`, `test_archive_production.gd`, and `test_furniture_directions.gd` include the compact desk. Production-catalogue absence checks in `test_compact_desk.gd` and `test_base_furniture_review_v2.gd` now expect passive `compact_desk` in `furnishing_catalog.json`. `office_layout.json` and the dev calibration catalogue stay without it.
+
+**Art HOLD**
+- No new art was generated or edited. No sitting, outdoor scene, new hire, Chapter 3, founder-seated pose, or unused role kit was added.
+
+**Remaining gaps (ranked)**
+1. Creative has a locomotion sheet and stands at the desk. There is no seated sheet, and none was invented.
+2. Unbound seated, outdoor, waiting-lunch, and unused furnishing-kit art stays untracked. Founder seated/N/E/W workstation poses are QA-only, not bind-approved. `customer_success_kit`, `engineer_build_kit`, `finance_accounts_kit`, `growth_analytics_kit`, `lawyer_contract_kit`, and `product_prototype_kit` stay unbound.
+3. The live path is still a harness driver, not a watched windowed playtest.
+4. A cheap reviewer can still sit just under the 2.5 ready line. Round 2's passing ads score was 2.60.
+5. After the Chapter 2 end screen, ordinary work orders continue. No Chapter 3 content is authored.
+6. `compact_desk` (v2) is now registered as passive décor with no Sit or workstation use. `shared-workbench-v2` (mean 2.50 in the same base-only review) stays passed-but-unregistered.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored; fake provider not set)
+- `cd harness && npm test` — 74 tests, 72 pass, 0 fail, 2 skipped
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass
+- `test_furnishing_projection.gd` — 766 checks, 0 failures
+- `test_furniture_directions.gd` — 477 checks, 0 failures
+- `test_archive_production.gd` — 3323 checks, 0 failures
+- `test_chapter1_first_player.gd` — CHAPTER1 PASS
+- `test_full_player_path.gd` — FULLPATH PASS
+- `test_passive_tables.gd` — 684 checks, 0 failures
+- `test_acoustic_divider.gd` — 66 checks, 0 failures (one earlier full-suite process missed founder-front by about 20px at the 180-tick cap; two isolated reruns passed; the saved log is a pass; starter décor is not auto-placed in that room)
+- `test_mobile_whiteboard.gd` — 2443 checks, 0 failures
+- `test_passive_furniture.gd` — 1226 checks, 0 failures
+- `test_visitor_chair.gd` — 325 checks, 0 failures
+- `test_visitor_chair_v2.gd` — 105 checks, 0 failures
+- `test_lounge_seating.gd` — 350 checks, 0 failures
+- `capture_furnishing_runtime.gd --diagnose --decor-only` — 79 checks, 0 failures, 0 native captures
+
+**CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The compact desk is owned starter décor and stays in storage until placed.

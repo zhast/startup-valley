@@ -117,12 +117,16 @@ func run() -> void:
 		check(not model.resolve_profile(family, "north").errors.is_empty(), family + " admission revoked with owner")
 		owner.queue_free()
 		await process_frame
-	check(ordinary.catalog.has("low_coffee_table") and ordinary.catalog.has("round_meeting_table") and ordinary.catalog.has("break_table") and str(ordinary.catalog["break_table"].get("interaction_kind", "")) == "none" and str(ordinary.catalog["cafe_table"]["facing_profiles"]["south"]["preview_art"]) == "res://assets/runtime/office/cafe-table-south.png", "Low lounge table, round meeting table, and the two-person break table are registered; the older one-cell cafe prop is unchanged")
+	check(ordinary.catalog.has("low_coffee_table") and ordinary.catalog.has("round_meeting_table") and ordinary.catalog.has("break_table") and str(ordinary.catalog["break_table"].get("interaction_kind", "")) == "none" and ordinary.catalog.has("compact_desk") and str(ordinary.catalog["compact_desk"].get("interaction_kind", "")) == "none" and str(ordinary.catalog["cafe_table"]["facing_profiles"]["south"]["preview_art"]) == "res://assets/runtime/office/cafe-table-south.png", "Low lounge table, round meeting table, the two-person break table, and the compact starter desk are registered; the older one-cell cafe prop is unchanged")
 	for side: String in TABLES.SIDES:
 		var break_production: Dictionary = ordinary.catalog["break_table"]["facing_profiles"][side]
 		check(str(break_production.get("profile_kind", "")) == "decorative" and str(break_production.get("status", "")) == "runtime_ready", "break_table " + side + " is decorative runtime_ready")
 		for forbidden: String in ["interaction", "service_side", "work_cell", "seat_anchor", "pose_set", "action"]:
 			check(not break_production.has(forbidden), "break_table " + side + " production profile has no " + forbidden)
+		var compact_production: Dictionary = ordinary.catalog["compact_desk"]["facing_profiles"][side]
+		check(str(compact_production.get("profile_kind", "")) == "decorative" and str(compact_production.get("status", "")) == "runtime_ready", "compact_desk " + side + " is decorative runtime_ready")
+		for forbidden: String in ["interaction", "service_side", "work_cell", "seat_anchor", "pose_set", "action"]:
+			check(not compact_production.has(forbidden), "compact_desk " + side + " production profile has no " + forbidden)
 	for path: String in preserved:
 		check(FileAccess.get_sha256(path) == preserved[path], "Test leaves " + path + " byte-identical")
 	print("Passive tables: %d checks, %d failures" % [checks, failures.size()])
