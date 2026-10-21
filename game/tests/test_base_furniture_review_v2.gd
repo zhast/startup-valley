@@ -36,7 +36,13 @@ func occupied_rows(image: Image) -> Array[int]:
 	return result
 
 func run() -> void:
-	check(FileAccess.get_file_as_string(PRODUCTION_CATALOG).find("compact-desk-v2") == -1, "Compact review revision is absent from production catalogue")
+	var furnishing: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/furnishing_catalog.json"))
+	var compact_entry: Dictionary = furnishing["furniture"]["compact_desk"]
+	var compact_passive := str(compact_entry.get("interaction_kind", "")) == "none"
+	for side_name: String in ["north", "east", "south", "west"]:
+		var shipped: Dictionary = compact_entry["facing_profiles"][side_name]
+		compact_passive = compact_passive and str(shipped.get("profile_kind", "")) == "decorative" and str(shipped.get("status", "")) == "runtime_ready" and bool(shipped["review"]["art"]) and bool(shipped["review"]["geometry"])
+	check(compact_passive, "compact_desk is passive décor in the furnishing catalogue")
 	check(FileAccess.get_file_as_string(PRODUCTION_CATALOG).find("shared-workbench-v2") == -1, "Workbench review revision is absent from production catalogue")
 	check(FileAccess.get_file_as_string(DEFAULT_LAYOUT).find("compact_desk") == -1 and FileAccess.get_file_as_string(DEFAULT_LAYOUT).find("shared_workbench") == -1, "Neither base review enters the default layout")
 	for family: String in REVIEW.FAMILIES:

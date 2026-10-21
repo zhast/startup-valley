@@ -75,6 +75,10 @@
       "kind": "break_table"
     },
     {
+      "id": "decor-compact_desk",
+      "kind": "compact_desk"
+    },
+    {
       "id": "decor-rolling_storage_pedestal",
       "kind": "rolling_storage_pedestal"
     },
@@ -10862,6 +10866,506 @@
       },
       "interaction_kind": "none"
     },
+    "compact_desk": {
+      "display_name": "Compact starter desk",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/compact_desk/north-whole.png",
+          "visual_bounds": [
+            -48,
+            -48,
+            64,
+            64
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/compact_desk/north-floor_shadow.png",
+              "name": "CompactDeskV2NorthFloorShadow",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                192
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                40,
+                141,
+                56,
+                3
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/compact_desk/north-rear_structure.png",
+              "name": "CompactDeskV2NorthRearStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                192
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                32,
+                80,
+                64,
+                35
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/compact_desk/north-front_structure.png",
+              "name": "CompactDeskV2NorthFrontStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                192
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                32,
+                110,
+                64,
+                34
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -48,
+            -48,
+            64,
+            64
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/compact_desk/east-whole.png",
+          "visual_bounds": [
+            -16,
+            -80,
+            32,
+            96
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/compact_desk/east-floor_shadow.png",
+              "name": "CompactDeskV2EastFloorShadow",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                192
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                71,
+                141,
+                25,
+                3
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/compact_desk/east-rear_structure.png",
+              "name": "CompactDeskV2EastRearStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                192
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                64,
+                48,
+                30,
+                64
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/compact_desk/east-front_structure.png",
+              "name": "CompactDeskV2EastFrontStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                192
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                67,
+                48,
+                29,
+                96
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              -1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -16,
+            -80,
+            32,
+            96
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                -1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/compact_desk/south-whole.png",
+          "visual_bounds": [
+            -16,
+            -48,
+            64,
+            64
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/compact_desk/south-floor_shadow.png",
+              "name": "CompactDeskV2SouthFloorShadow",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                192
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                72,
+                141,
+                56,
+                3
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/compact_desk/south-rear_structure.png",
+              "name": "CompactDeskV2SouthRearStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                192
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                68,
+                84,
+                56,
+                39
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/compact_desk/south-front_structure.png",
+              "name": "CompactDeskV2SouthFrontStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                192
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                64,
+                80,
+                64,
+                64
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              0,
+              -1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -16,
+            -48,
+            64,
+            64
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                0,
+                -1
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/compact_desk/west-whole.png",
+          "visual_bounds": [
+            -16,
+            -48,
+            32,
+            96
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/compact_desk/west-floor_shadow.png",
+              "name": "CompactDeskV2WestFloorShadow",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                192
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                73,
+                173,
+                23,
+                3
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/compact_desk/west-rear_structure.png",
+              "name": "CompactDeskV2WestRearStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                192
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                66,
+                80,
+                30,
+                64
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/compact_desk/west-front_structure.png",
+              "name": "CompactDeskV2WestFrontStructure",
+              "offset": [
+                0,
+                -32
+              ],
+              "region": [
+                0,
+                0,
+                160,
+                192
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                64,
+                80,
+                30,
+                96
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              1,
+              0
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -16,
+            -48,
+            32,
+            96
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
     "rolling_storage_pedestal": {
       "display_name": "Rolling storage pedestal",
       "facings": [
@@ -14013,6 +14517,86 @@
       "source": "game/tests/fixtures/furniture-calibration/cafe-table-v2/west-whole.png",
       "destination": "game/assets/runtime/office/furnishing-library/break_table/west-whole.png",
       "sha256": "da87ac9fdf5ad916cc335a987e046f70240651e607fa0675bb18f6faf1c255b3"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/compact-desk-v2/north-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/compact_desk/north-floor_shadow.png",
+      "sha256": "ff4b59ae7430301fe05a50cdd49e1969731d0b0deed170240e5c80d5be6e962f"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/compact-desk-v2/north-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/compact_desk/north-rear_structure.png",
+      "sha256": "74d15753aeb0e9eb1289a59055784da0efeb6848ff9d38a5cbbdd8d4f35983e3"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/compact-desk-v2/north-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/compact_desk/north-front_structure.png",
+      "sha256": "caaaa76956de43086d9f5ad9b68e1d65aa78a99e34e7e0198c6bebb71b954f01"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/compact-desk-v2/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/compact_desk/north-whole.png",
+      "sha256": "edb7173482b71b8fefadd3e8d043030073d45cf59f5ed7d3b573ddbc224ce4d7"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/compact-desk-v2/east-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/compact_desk/east-floor_shadow.png",
+      "sha256": "74d52918b05311d46e94d8441900c275fc46c89be4a71f034859750cc466539c"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/compact-desk-v2/east-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/compact_desk/east-rear_structure.png",
+      "sha256": "5fb552cc9e0ade31aa956dde2f097a485b1b9a98ac70b7c3f5733d1b1baeaad9"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/compact-desk-v2/east-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/compact_desk/east-front_structure.png",
+      "sha256": "ca7ab3014827fd33b6b300d976ad379027abee96136639c5bc8813ca9070c959"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/compact-desk-v2/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/compact_desk/east-whole.png",
+      "sha256": "0be72dd38b56dab744702183225588b1de13309bf838377ac5e86b20d3feba63"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/compact-desk-v2/south-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/compact_desk/south-floor_shadow.png",
+      "sha256": "e34e6478327c8054457139179fd7c57897b9bb7fabbb13554c23d367cbd793ac"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/compact-desk-v2/south-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/compact_desk/south-rear_structure.png",
+      "sha256": "48adf9613d1a4d3baa363625b0effc2be0a33a808b2219eeaf8a000f3816d8e3"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/compact-desk-v2/south-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/compact_desk/south-front_structure.png",
+      "sha256": "89c4e6ebd9fe6b6a5cf3b5e247751be46d5fb3298d05b9772d8daa0f5057317f"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/compact-desk-v2/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/compact_desk/south-whole.png",
+      "sha256": "50eee6c5ff25ccb9890860fd7d94b88af30bfcd1b2450ffa123d857a15710a1e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/compact-desk-v2/west-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/compact_desk/west-floor_shadow.png",
+      "sha256": "7c0137bf0d8c01cbb7fcef1328b1734339f3a0a8696abf720f2325de9ff2a6b1"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/compact-desk-v2/west-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/compact_desk/west-rear_structure.png",
+      "sha256": "5723f1771d32ebe7d020e53be7e753c0f330a3aca40c3730943ac222481f0d1a"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/compact-desk-v2/west-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/compact_desk/west-front_structure.png",
+      "sha256": "8e5b8553843bd7741a437c4e682ad55b71e493524988c560cbb1c3cd7586739f"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/compact-desk-v2/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/compact_desk/west-whole.png",
+      "sha256": "4bcff6516a3a5cb8ec8692f561b81bc831f32242be56952442a1b1293696eafb"
     }
   ]
 }

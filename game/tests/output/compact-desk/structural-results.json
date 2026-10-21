@@ -11,6 +11,7 @@
 	"checks": 259,
 	"dev_catalogue_registered": false,
 	"failures": [],
+	"interaction_kind": "none",
 	"overlay_owners": [
 		"ergonomic_chair",
 		"computer_kit",
@@ -20,7 +21,7 @@
 		80,
 		128
 	],
-	"production_catalogue_registered": false,
-	"runtime_registered": false,
-	"status": "native_review_candidate_not_runtime_registered"
+	"production_catalogue_registered": true,
+	"runtime_registered": true,
+	"status": "passive_starter_decor_registered"
 }
