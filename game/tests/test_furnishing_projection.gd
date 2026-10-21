@@ -657,6 +657,48 @@ func run() -> void:
 				check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, "compact_desk/" + side + " keeps native separate layers")
 	check(room.apply_furnishing_state(state), "compact_desk returns to storage")
 	check(room.prop_node(desk_id) == null, "compact_desk storage removes scene/collision but not ownership")
+	# Five cells plus three clearance cells. Occupied cells follow the
+	# shared-workbench-v2 manifest / shared_workbench_geometry.gd: north
+	# [[-2,0],[-1,0],[0,0],[1,0],[2,0]], east [[0,-2],[0,-1],[0,0],[0,1],[0,2]],
+	# south [[2,0],[1,0],[0,0],[-1,0],[-2,0]], west [[0,2],[0,1],[0,0],[0,-1],[0,-2]].
+	# Clearance is the geometry tool's three front cells: north [[-1,1],[0,1],[1,1]],
+	# east [[-1,-1],[-1,0],[-1,1]], south [[1,-1],[0,-1],[-1,-1]], west
+	# [[1,1],[1,0],[1,-1]]. The compact desk returns to storage first. [24, 6]
+	# stays inside artwork, circulation, and standing headroom for every facing
+	# while hire-2 stations stay put and the founder, Mina, and Theo desks face
+	# west. North and south occupy [22, 6] through [26, 6]. East and west occupy
+	# [24, 4] through [24, 8].
+	var bench_id := "decor-shared_workbench"
+	var bench_grid := Vector2i(24, 6)
+	var bench_offsets := {
+		"north": [Vector2i(-2, 0), Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0)],
+		"east": [Vector2i(0, -2), Vector2i(0, -1), Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, 2)],
+		"south": [Vector2i(2, 0), Vector2i(1, 0), Vector2i(0, 0), Vector2i(-1, 0), Vector2i(-2, 0)],
+		"west": [Vector2i(0, 2), Vector2i(0, 1), Vector2i(0, 0), Vector2i(0, -1), Vector2i(0, -2)],
+	}
+	check(room.layout_model.available_facings("shared_workbench").size() == 4, "shared_workbench has four production-ready authored views")
+	for side: String in OfficeLayout.FACINGS:
+		var candidate := room.layout_model.validate_candidate(bench_id, bench_grid, side, 2, saved)
+		check(candidate.valid, "shared_workbench/" + side + " can be placed from storage in the room")
+		var next := state.duplicate(true)
+		next.placements[bench_id] = {"grid": [bench_grid.x, bench_grid.y], "facing": side}
+		check(room.apply_furnishing_state(next), "shared_workbench/" + side + " projects into actual TownRoom")
+		var prop := room.prop_node(bench_id)
+		var expected: Array[Vector2i] = []
+		for offset: Vector2i in bench_offsets[side]:
+			expected.append(bench_grid + offset)
+		var placement := room.placement_by_id(bench_id)
+		check(prop != null and placement.occupied == expected, "shared_workbench/" + side + " occupies exactly its five footprint cells")
+		var library_layers := 0
+		for layer: Dictionary in placement.render_layers:
+			if str(layer.art).contains("furnishing-library/shared_workbench"):
+				library_layers += 1
+		check(library_layers == 3, "shared_workbench/" + side + " has 3 furnishing-library layers")
+		for child: Node in prop.get_children():
+			if child is Sprite2D:
+				check(child.scale == Vector2.ONE and child.rotation == 0.0 and not child.flip_h and not child.flip_v, "shared_workbench/" + side + " keeps native separate layers")
+	check(room.apply_furnishing_state(state), "shared_workbench returns to storage")
+	check(room.prop_node(bench_id) == null, "shared_workbench storage removes scene/collision but not ownership")
 	var old_seat := room.employee_workstation("mira").work_position as Vector2
 	room.navigation.actors["mira"] = old_seat
 	var moved := saved.duplicate(true)

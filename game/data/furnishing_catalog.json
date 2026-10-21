@@ -79,6 +79,10 @@
       "kind": "compact_desk"
     },
     {
+      "id": "decor-shared_workbench",
+      "kind": "shared_workbench"
+    },
+    {
       "id": "decor-rolling_storage_pedestal",
       "kind": "rolling_storage_pedestal"
     },
@@ -11366,6 +11370,682 @@
       },
       "interaction_kind": "none"
     },
+    "shared_workbench": {
+      "display_name": "Two-person workbench",
+      "facings": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "facing_profiles": {
+        "north": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/shared_workbench/north-whole.png",
+          "visual_bounds": [
+            -77,
+            -54,
+            155,
+            70
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/shared_workbench/north-floor_shadow.png",
+              "name": "SharedWorkbenchV2NorthFloorShadow",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                256,
+                304
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                62,
+                221,
+                144,
+                3
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/shared_workbench/north-rear_structure.png",
+              "name": "SharedWorkbenchV2NorthRearStructure",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                256,
+                304
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                51,
+                154,
+                154,
+                41
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/shared_workbench/north-front_structure.png",
+              "name": "SharedWorkbenchV2NorthFrontStructure",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                256,
+                304
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                51,
+                186,
+                154,
+                38
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              -2,
+              0
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              -1,
+              1
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -77,
+            -54,
+            155,
+            70
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                -1,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            }
+          ]
+        },
+        "east": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/shared_workbench/east-whole.png",
+          "visual_bounds": [
+            -14,
+            -77,
+            30,
+            157
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/shared_workbench/east-floor_shadow.png",
+              "name": "SharedWorkbenchV2EastFloorShadow",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                256,
+                304
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                140,
+                139,
+                4,
+                149
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/shared_workbench/east-rear_structure.png",
+              "name": "SharedWorkbenchV2EastRearStructure",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                256,
+                304
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                114,
+                131,
+                28,
+                154
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/shared_workbench/east-front_structure.png",
+              "name": "SharedWorkbenchV2EastFrontStructure",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                256,
+                304
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                133,
+                131,
+                9,
+                157
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              2
+            ]
+          ],
+          "clearance": [
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -14,
+            -77,
+            30,
+            157
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                -1,
+                -1
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            },
+            {
+              "cell": [
+                -1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            },
+            {
+              "cell": [
+                -1,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            }
+          ]
+        },
+        "south": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/shared_workbench/south-whole.png",
+          "visual_bounds": [
+            -77,
+            -54,
+            154,
+            70
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/shared_workbench/south-floor_shadow.png",
+              "name": "SharedWorkbenchV2SouthFloorShadow",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                256,
+                304
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                64,
+                221,
+                140,
+                3
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/shared_workbench/south-rear_structure.png",
+              "name": "SharedWorkbenchV2SouthRearStructure",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                256,
+                304
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                59,
+                158,
+                138,
+                45
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/shared_workbench/south-front_structure.png",
+              "name": "SharedWorkbenchV2SouthFrontStructure",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                256,
+                304
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                51,
+                154,
+                154,
+                70
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              2,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -2,
+              0
+            ]
+          ],
+          "clearance": [
+            [
+              1,
+              -1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              -1,
+              -1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -77,
+            -54,
+            154,
+            70
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                1,
+                -1
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            },
+            {
+              "cell": [
+                0,
+                -1
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            },
+            {
+              "cell": [
+                -1,
+                -1
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            }
+          ]
+        },
+        "west": {
+          "status": "runtime_ready",
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "dev/art-catalogue/BASE_FURNITURE_BASE_ONLY_REVIEW_2026-09-06.md",
+          "preview_art": "res://assets/runtime/office/furnishing-library/shared_workbench/west-whole.png",
+          "visual_bounds": [
+            -14,
+            -77,
+            28,
+            157
+          ],
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/furnishing-library/shared_workbench/west-floor_shadow.png",
+              "name": "SharedWorkbenchV2WestFloorShadow",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                256,
+                304
+              ],
+              "z_offset": -2,
+              "content_bounds": [
+                122,
+                141,
+                8,
+                147
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/shared_workbench/west-rear_structure.png",
+              "name": "SharedWorkbenchV2WestRearStructure",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                256,
+                304
+              ],
+              "z_offset": -1,
+              "content_bounds": [
+                114,
+                131,
+                28,
+                154
+              ]
+            },
+            {
+              "art": "res://assets/runtime/office/furnishing-library/shared_workbench/west-front_structure.png",
+              "name": "SharedWorkbenchV2WestFrontStructure",
+              "offset": [
+                0,
+                -56
+              ],
+              "region": [
+                0,
+                0,
+                256,
+                304
+              ],
+              "z_offset": 1,
+              "content_bounds": [
+                114,
+                131,
+                9,
+                157
+              ]
+            }
+          ],
+          "profile_kind": "decorative",
+          "occupied": [
+            [
+              0,
+              2
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              -2
+            ]
+          ],
+          "clearance": [
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              -1
+            ]
+          ],
+          "anchor_offset": [
+            0,
+            0
+          ],
+          "hit_bounds": [
+            -14,
+            -77,
+            28,
+            157
+          ],
+          "ambient_overlays": [],
+          "standing_viewpoints": [
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            },
+            {
+              "cell": [
+                1,
+                -1
+              ],
+              "visual_bounds": [
+                -24,
+                -72,
+                48,
+                80
+              ]
+            }
+          ]
+        }
+      },
+      "interaction_kind": "none"
+    },
     "rolling_storage_pedestal": {
       "display_name": "Rolling storage pedestal",
       "facings": [
@@ -14597,6 +15277,86 @@
       "source": "game/tests/fixtures/furniture-calibration/compact-desk-v2/west-whole.png",
       "destination": "game/assets/runtime/office/furnishing-library/compact_desk/west-whole.png",
       "sha256": "4bcff6516a3a5cb8ec8692f561b81bc831f32242be56952442a1b1293696eafb"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/north-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/shared_workbench/north-floor_shadow.png",
+      "sha256": "047883824753aced2155611d9808fb29419aa0c7c76170e32c428946f9b0de0a"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/north-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/shared_workbench/north-rear_structure.png",
+      "sha256": "16bcee085f80132747d36f34d18e348c6503d50d45e5558a4a97e018dbb0610e"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/north-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/shared_workbench/north-front_structure.png",
+      "sha256": "4c9349c1fc5b667ae07b6250ca22457f25294dc082db62927dbaeee42c0b8b46"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/north-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/shared_workbench/north-whole.png",
+      "sha256": "f85701dba2091c890e261a435630ce91eaacce2de9db5da3076d8c2121bfa280"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/east-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/shared_workbench/east-floor_shadow.png",
+      "sha256": "2c221f6fb0f7c241ebd579ff88b69fbc113aaea065ee60205761859da43ba849"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/east-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/shared_workbench/east-rear_structure.png",
+      "sha256": "8229ac842726bff7f83d100305fdcfc980948ec5add92d83ff23ccc24c10f277"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/east-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/shared_workbench/east-front_structure.png",
+      "sha256": "3f8fbcc58627247e9f7021041418ba58056dc69d4d464bd558099fd3339c918a"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/east-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/shared_workbench/east-whole.png",
+      "sha256": "6bda2baba9daa5efa20aba6224919309abd65018d5e85c3dc3a53d5409472c8b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/south-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/shared_workbench/south-floor_shadow.png",
+      "sha256": "d50d4cfbc52c5aa2e5bc5f43dc263fa5ef156a7356995741a9c3514a8174e9f7"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/south-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/shared_workbench/south-rear_structure.png",
+      "sha256": "02c220c128640557fe98a8183e30cb9e3750f01c5736ce40f48add08de0edeff"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/south-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/shared_workbench/south-front_structure.png",
+      "sha256": "aa9603a2b0dce919931ec5297f83ca2927612d5d6bdb765221c40c6c4e2df13b"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/south-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/shared_workbench/south-whole.png",
+      "sha256": "c011c3485f5d0d2f71b40c2d47ed5fb63676740a8d8538e8555835a273eff7f4"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/west-floor_shadow.png",
+      "destination": "game/assets/runtime/office/furnishing-library/shared_workbench/west-floor_shadow.png",
+      "sha256": "c37bd27a4b4e90c98777d0b175a5e44d3724edd7c567dd6166247889fe3f5644"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/west-rear_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/shared_workbench/west-rear_structure.png",
+      "sha256": "8229ac842726bff7f83d100305fdcfc980948ec5add92d83ff23ccc24c10f277"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/west-front_structure.png",
+      "destination": "game/assets/runtime/office/furnishing-library/shared_workbench/west-front_structure.png",
+      "sha256": "6863c141c3af230f5f1e44185cc3b55b461bc08b1d150b65ae40611ce4553753"
+    },
+    {
+      "source": "game/tests/fixtures/furniture-calibration/shared-workbench-v2/west-whole.png",
+      "destination": "game/assets/runtime/office/furnishing-library/shared_workbench/west-whole.png",
+      "sha256": "8b8541fad71ea7e7f84dbd3b389e2eade2f1d47337902fbc4bdb44d426abb680"
     }
   ]
 }

@@ -43,7 +43,12 @@ func run() -> void:
 		var shipped: Dictionary = compact_entry["facing_profiles"][side_name]
 		compact_passive = compact_passive and str(shipped.get("profile_kind", "")) == "decorative" and str(shipped.get("status", "")) == "runtime_ready" and bool(shipped["review"]["art"]) and bool(shipped["review"]["geometry"])
 	check(compact_passive, "compact_desk is passive décor in the furnishing catalogue")
-	check(FileAccess.get_file_as_string(PRODUCTION_CATALOG).find("shared-workbench-v2") == -1, "Workbench review revision is absent from production catalogue")
+	var bench_entry: Dictionary = furnishing["furniture"]["shared_workbench"]
+	var bench_passive := str(bench_entry.get("interaction_kind", "")) == "none"
+	for side_name: String in ["north", "east", "south", "west"]:
+		var shipped_bench: Dictionary = bench_entry["facing_profiles"][side_name]
+		bench_passive = bench_passive and str(shipped_bench.get("profile_kind", "")) == "decorative" and str(shipped_bench.get("status", "")) == "runtime_ready" and bool(shipped_bench["review"]["art"]) and bool(shipped_bench["review"]["geometry"])
+	check(bench_passive, "shared_workbench is passive décor in the furnishing catalogue")
 	check(FileAccess.get_file_as_string(DEFAULT_LAYOUT).find("compact_desk") == -1 and FileAccess.get_file_as_string(DEFAULT_LAYOUT).find("shared_workbench") == -1, "Neither base review enters the default layout")
 	for family: String in REVIEW.FAMILIES:
 		var base: Variant = REVIEW.source(family)
