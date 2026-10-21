@@ -852,3 +852,5 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - `capture_furnishing_runtime.gd --diagnose --decor-only` — 79 checks, 0 failures, 0 native captures
 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The compact desk is owned starter décor and stays in storage until placed.
+
+- PR #25 merged (Round 23, compact-desk-v2 passive decor).
