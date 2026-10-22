@@ -28,6 +28,7 @@ function milestoneSpec(id: string, jobId = id): JobSpec {
     ads: { employeeId: "theo", title: "Run ads", assignment: "Create ads/campaign-plan.md and ads/creative.md" },
     incorporate: { employeeId: "mira", title: "Incorporate", assignment: "Create company incorporation planning files" },
     brand: { employeeId: "creative", title: "Design the brand", assignment: "Create brand/identity.md and brand/palette.md" },
+    apply: { employeeId: "creative", title: "Apply the brand", assignment: "Create brand/homepage.md and brand/application.md" },
   };
   const item = titles[id]!;
   return {
@@ -119,7 +120,26 @@ test("offline fake provider walks the three-day chapter without a paid model", a
     assert.equal(database.journey.evaluationFor("brand")?.verdict, "ready");
     database.journey.complete("brand", false, 3);
     assert.equal(database.journey.state().milestones.find((item) => item.id === "brand")?.state, "completed");
-    assert.deepEqual(database.journey.state().company, { cashCents: 180000, earnedCents: 260000, reputation: 57, chapter: 2 });
+    assert.equal(database.journey.state().milestones.find((item) => item.id === "apply")?.state, "locked");
+    assert.deepEqual(database.journey.state().company, { cashCents: 180000, earnedCents: 260000, reputation: 57, chapter: 3 });
+    // A save that finished the brand before Chapter 3 still opens on Begin Chapter 3.
+    database.journey.db.prepare("UPDATE company_state SET chapter = 2, opened_chapter = 2 WHERE id = 1").run();
+    const resumed = database.journey.continueChapter();
+    assert.equal(resumed.company.chapter, 3);
+    assert.equal(resumed.company.cashCents, 180000);
+    assert.equal(resumed.milestones.find((item) => item.id === "apply")?.state, "available");
+    await worker.startJob(milestoneSpec("apply"));
+    await drain(worker, "apply");
+    const homepage = await readFile(join(root, "company-project", "jobs", "apply", "brand", "homepage.md"), "utf8");
+    assert.match(homepage, /DeskBloom/u);
+    const application = await readFile(join(root, "company-project", "jobs", "apply", "brand", "application.md"), "utf8");
+    assert.match(application, /#F6F1E7/u);
+    assert.match(application, /not a launched redesign/iu);
+    await worker.evaluateMilestone("apply");
+    assert.equal(database.journey.evaluationFor("apply")?.verdict, "ready");
+    database.journey.complete("apply", false, 3);
+    assert.equal(database.journey.state().milestones.find((item) => item.id === "apply")?.state, "completed");
+    assert.deepEqual(database.journey.state().company, { cashCents: 220000, earnedCents: 300000, reputation: 65, chapter: 3 });
     database.close();
 });
 

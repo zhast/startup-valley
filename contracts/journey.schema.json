@@ -87,7 +87,7 @@
     },
     "milestones": {
       "type": "array",
-      "maxItems": 4,
+      "maxItems": 5,
       "items": {
         "type": "object",
         "required": [
@@ -115,7 +115,8 @@
               "website",
               "ads",
               "incorporate",
-              "brand"
+              "brand",
+              "apply"
             ]
           },
           "title": {
@@ -132,7 +133,8 @@
             "enum": [
               "website",
               "ads",
-              "incorporate"
+              "incorporate",
+              "brand"
             ]
           },
           "state": {

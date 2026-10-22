@@ -30,6 +30,10 @@ export const MILESTONES: readonly MilestoneDefinition[] = [
     criteria: ["Named identity", "Usable palette", "Application plan", "Completeness"],
     assignment: "Create brand/identity.md and brand/palette.md for the company's look. Name the identity, give a usable palette with background, ink, and accent roles, and list where it applies on the website, the ad plan, and the office. This is an internal design plan, not a filed trademark or a launched rebrand. Do not claim legal protection or live customer research.",
     rewardCents: 80000, feeCents: 0, reputation: 12, availableFromDay: 3 },
+  { id: "apply", title: "Apply the brand", employeeId: "creative", prerequisite: "brand", files: ["brand/homepage.md", "brand/application.md"],
+    criteria: ["Homepage use", "Palette application", "Honest limits", "Completeness"],
+    assignment: "Apply the saved DeskBloom identity and palette to the existing website. Create brand/homepage.md and brand/application.md. Name where the background, ink, and accent appear on the homepage, and say what stays a prototype. This is an internal application plan, not a launched redesign, a filed trademark, or live customer research.",
+    rewardCents: 40000, feeCents: 0, reputation: 8, availableFromDay: 3 },
 ];
 
 export function milestone(id: string): MilestoneDefinition {
@@ -124,11 +128,16 @@ export class JourneyStore {
   attachJob(spec: JobSpec): void {
     if (spec.milestoneId) this.db.prepare("UPDATE milestone_progress SET job_id = ? WHERE id = ? AND completed = 0").run(spec.jobId, spec.milestoneId);
   }
-  /** Chapter 2 content stays locked on the complete screen until the player continues. */
+  /** The next chapter's work stays locked on the complete screen until the player continues. */
   continueChapter() {
     return this.transaction(() => {
-      const chapter = Number(this.db.prepare("SELECT chapter FROM company_state WHERE id = 1").get()!.chapter);
+      let chapter = Number(this.db.prepare("SELECT chapter FROM company_state WHERE id = 1").get()!.chapter);
       if (chapter < 2) throw new Error("Finish the current chapter before continuing");
+      // Saves that finished the brand before Chapter 3 existed still have chapter 2.
+      if (chapter < 3 && this.completed("brand")) {
+        this.db.prepare("UPDATE company_state SET chapter = 3 WHERE id = 1").run();
+        chapter = 3;
+      }
       this.db.prepare("UPDATE company_state SET opened_chapter = ? WHERE id = 1").run(chapter);
       return this.state();
     });
@@ -137,7 +146,7 @@ export class JourneyStore {
     return Number(this.db.prepare("SELECT opened_chapter FROM company_state WHERE id = 1").get()!.opened_chapter);
   }
   private milestoneUnlocked(definition: MilestoneDefinition): boolean {
-    const opened = definition.id === "brand" ? 2 : 1;
+    const opened = definition.id === "apply" ? 3 : definition.id === "brand" ? 2 : 1;
     return this.day() >= definition.availableFromDay && this.hired(definition.employeeId) && (!definition.prerequisite || this.completed(definition.prerequisite)) && this.openedChapter() >= opened;
   }
   private day(): number {
@@ -176,6 +185,7 @@ export class JourneyStore {
       this.charge(`milestone:${definition.id}`, day, reward - definition.feeCents, reward, override ? 0 : definition.reputation, definition.title);
       this.db.prepare("UPDATE milestone_progress SET completed=1,overridden=?,completed_day=? WHERE id=?").run(override ? 1 : 0, day, definition.id);
       if (definition.id === "incorporate") this.db.prepare("UPDATE company_state SET chapter=2 WHERE id=1").run();
+      if (definition.id === "brand") this.db.prepare("UPDATE company_state SET chapter=3 WHERE id=1").run();
       return this.state();
     });
   }

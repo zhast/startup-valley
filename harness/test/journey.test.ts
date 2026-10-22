@@ -194,6 +194,7 @@ test("chapter continue unlocks Creative and the brand desk without paying out th
   const hired = db.bootstrap();
   assert.equal(hired.journey.company.cashCents, 100000);
   assert.equal(hired.journey.milestones.find((item) => item.id === "brand")?.state, "available");
+  assert.equal(hired.journey.milestones.find((item) => item.id === "apply")?.state, "locked");
   const desk = hired.furnishing.inventory.find((item) => item.id === "creative-workstation");
   assert.equal(desk?.ownerId, "creative");
   assert.equal(desk?.grant, "hire:creative");
