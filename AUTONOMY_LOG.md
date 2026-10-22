@@ -940,3 +940,5 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete, then Begin Chapter 3.
 
 **CHAPTER3 PLAYABLE: yes** — Begin Chapter 3 → assign and finish Apply the brand with Creative and `creative_design_kit` → Chapter 3 complete / more coming. Offline, no new art.
+
+- PR #27 merged (Round 25, Chapter 3 opening: Apply the brand).
