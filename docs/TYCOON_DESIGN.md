@@ -118,6 +118,32 @@ Older saves that predate this column load with every topic and type unlocked and
 
 Company Journey lists locked items on a Research card under New Product: the balance, the day's unlock line, and one secondary button per locked item ("Research Sneakers · 4 RP"). The button is disabled when the balance is short. The card hides once everything is unlocked. The product picker still lists locked choices, disabled, with "· locked". The release screen shows "+N research points".
 
+## Upgrades
+
+Spend game cash on office tools. Each tool is bought once and has one effect. The harness owns the catalog, the prices, and the effects. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential. This is not a real-money store.
+
+A company stores owned ids in `tycoon_meta.upgrades_json` (migration `012_tycoon_upgrades.sql`, `TEXT NOT NULL DEFAULT ''`). Each saved row is `{id, day}`. An empty string, corrupt JSON, a duplicate, or an unknown id loads as no upgrade. Older saves that predate the column load with none owned. Reopening a save keeps what was bought.
+
+| Id | Name | Price | Effect |
+| --- | --- | --- | --- |
+| `standing_desk` | Oak Standing Desk | $250 | +1 design per person per dev day |
+| `second_monitor` | Second Monitor | $360 | +1 tech per person per dev day |
+| `ring_light` | Ring Light | $400 | +1 hype per person per dev day |
+| `checkout_page` | Nicer Checkout Page | $560 | +10% price on later sales |
+
+Blurbs, in the same order: "Sketches land cleaner when you stand." "The build on one screen, the notes on the other." "Launch clips look like a real shop." "The buy button finally looks finished."
+
+`tycoon.buyUpgrade` takes `{id}`. An unknown id, a tool already in the office, and short cash fail with a clear error and spend nothing. A buy deducts the price and records the purchase day. The line "Bought Ring Light. −$400" shows only on that office day. Ending the day clears it. Ownership stays.
+
+An effect applies when the tool is already owned at the moment the tick or the sale is computed. Buy, then end that same day, and that `day.end` tick includes the boost. Days whose ticks already ran are not rewritten. Stored reviews, stored `sales_cents`, and the product's start-day staff snapshot stay as they were.
+
+- A point tool adds +1 of that stat for each person on the product who is not in training that day. Someone in training adds no personal points and no office bonus. The bonus stops on extra polish days, when craft points stop. Research points are unchanged.
+- Nicer Checkout Page raises the unit price by 10% on every sale computed after the purchase: `Math.round((priceCents * 110) / 100)`. A $9 newsletter becomes $9.90. Units and fans stay on the unboosted formula.
+
+Oak Standing Desk is the first tool one Crypto Alpha Newsletter can pay for. Launch is about $207. The second sales day reaches $333. Ring Light fits the third sales day ($414). Nicer Checkout Page ($560) waits for a second product. One newsletter cannot pay for both the first Tech lesson ($300) and a tool.
+
+Company Journey lists an Upgrades card under Research. It shows the heading, one line per owned tool ("Ring Light · +1 hype per person per dev day"), the day's purchase line, and one secondary button per unowned tool ("Buy Ring Light · $400"). Owned tools hide their button. A button is disabled when cash is short. Hire stays the one primary action. The build screen can add "Office bonus · …" for owned point tools. The release screen shows the price effect when the checkout tool is owned.
+
 ## Day and season calendar
 
 What ships now is the office day clock already in the game. Work is 08:00–12:30 and 13:30–17:30. Lunch is 12:30–13:30. Ending the day saves, writes the summary, and advances the tycoon by one day. The next morning is 08:00.
@@ -142,12 +168,11 @@ Shelf jokes stay in the reviewer blurbs (checkout links, lurkers, margins, welco
 
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, and research points. The entries are **New Product**, **Train staff**, and **Research** on Company Journey.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, and the upgrades shop. The entries are **New Product**, **Train staff**, **Research**, and **Upgrades** on Company Journey.
 
 Next slices, in order:
 
-1. **Upgrades shop.** Spend game cash on an office tool that boosts one stat or one price. No real-money store.
-2. **Office growth.** More desks and a second room when cash and headcount earn them. Use furniture that is already bound.
-3. **Seasons and events.** Turn on the 28-day calendar and one cozy event per season. Demand modifiers stay deterministic. A small fit bonus from research is still unbuilt.
+1. **Office growth.** More desks and a second room when cash and headcount earn them. Use furniture that is already bound.
+2. **Seasons and events.** Turn on the 28-day calendar and one cozy event per season. Demand modifiers stay deterministic. A small fit bonus from research is still unbuilt.
 
 Chapter work orders still ask for a key unless the dev-only fake provider is on. That path is not part of these slices. Do not fold it into the tycoon, and do not make it the default.
