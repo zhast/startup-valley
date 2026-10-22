@@ -1079,3 +1079,22 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Eight PNGs in `/workspace/sv-proof/round-28/`. Invocation: `SV_PROOF_DIR=/workspace/sv-proof/round-28 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → ship → Train staff → Research a locked topic → start that product. The lesson line and the unlock line last one office day. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_research.gd`.
+
+### Cozy v2 art bind — 2026-10-22
+
+**What changed**
+- Steven-approved style-gate redo bind. Bookshelf v2 low cabinet, sofa, whiteboard, cafe table, and cafe chair replaced the south runtime plates (still 192×224). Catalog `content_bounds` match each PNG's opaque bbox, and `visual_bounds` / `hit_bounds` are `[x-96, y-160, w, h]`. Occupied cells, clearance, offset, and standing viewpoints are unchanged. Phone booth bounds are unchanged.
+- Creative locomotion v2 (`288×320`). Rows are front / back / left / right, which is what `CharacterArt.locomotion_region` addresses. The old sheet was S/E/N/W. The approved back idle is a held pose (columns 0 and 1 match; front still blinks), so the runtime atlas check no longer treats that pair as a two-frame blink.
+- Mira and Theo work sheets v2 (`384×320`). Gate PASS, 48 and 47 colors. Theo work frames now h68 like his loco.
+- Removed four dead runtime sprites and their tracked `.import` files: `employee-workstation.png`, `research-bench.png`, `layered-furniture.png`, `collaboration-cluster.png`. Research draws `research-bench-v1/` layers. Collaboration draws `collaboration-cluster-v2/` layers. `TownRoom._apply_profile` replaces the scene sprites before a frame is drawn, so the layered sheet was never visible. Top-level catalog `art` now points at the south front layer that is actually rendered. The collaboration scene no longer references a texture (`static_office_prop.gd` accepts a null texture). Source masters under `game/assets/source/` stay.
+
+**Test results** (no paid live evals; Node 22.23.3; host credentials ignored on the playtests)
+- `cd harness && npm ci && npm run build && npm test && npm run eval:offline` — build pass; npm test 83 tests, 81 pass, 0 fail, 2 skipped; eval:offline 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (tracked `.import` sidecars for the eight bound PNGs were not rewritten)
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- Every `game/tests/test_*.gd` (117 scripts) — 98 pass, 19 fail
+- Passing playtests: `test_chapter1_first_player.gd` CHAPTER1 PASS; `test_full_player_path.gd` FULLPATH PASS; `test_tycoon_product.gd` TYCOON PASS; `test_tycoon_training.gd` TYCOON TRAIN PASS; `test_ui_company_redesign.gd` 4060 checks, 0 failures; `test_ui_drawer_redesign.gd` 2685 checks, 0 failures; `test_ui_flow_regressions.gd` passed; `test_furniture_directions.gd` 478 checks, 0 failures; `test_office_architecture.gd` 2369 checks passed; `test_passive_tables.gd` 712 checks, 0 failures
+- The 19 failures also fail on origin/main `1940e0e` (same checks and messages), re-run from a git archive of that commit: `test_chair_layer_export.gd` (missing untracked 4× export, then a null image), `test_collaboration_cluster_v2.gd` (526 checks, 27 failures), `test_collaboration_production.gd` (576 checks, 8 failures), `test_collaboration_table.gd` (278561 checks, 6 failures), `test_collaboration_table_room.gd`, `test_furnishing_parity.gd` (no `cases.json` in git), `test_furnishing_worker_ui.gd` and `test_live_startup.gd` (launcher guard), `test_furniture_catalogue.gd` (script parse), `test_locomotion_export.gd` (545 checks, 4 failures on unmodified founder/Mira sheets), `test_modular_desk_export.gd` (233 checks, 40 failures), `test_passive_service_library.gd` (719 checks, 3 failures), `test_passive_utility_library.gd` (552 checks, 1 failure), `test_passive_utility_library_v2.gd` (763 checks, 13 failures), `test_role_storage_variants.gd`, `test_supported_west_assembly.gd`, `test_terrazzo_floor_review.gd`, `test_west_supported_layers.gd`, `test_workstation_facing.gd` (249 checks, 1 failure)
+
+**TYCOON SLICE PLAYABLE: yes** — unchanged. The bound cozy plates are the south bookshelf, sofa, whiteboard, cafe table, and cafe chair.

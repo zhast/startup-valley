@@ -177,7 +177,7 @@ func check_catalog_rendering() -> bool:
 	var desk: Dictionary = room.layout_model.catalog.desk
 	desk.erase("facing_profiles")
 	desk.facings = ["south"]
-	desk.art = "res://assets/runtime/office/layered-furniture.png"
+	desk.art = "res://assets/runtime/office/collaboration-cluster-v2/south-table_front_structure.png"
 	desk.atlas_cell = [128, 96]
 	desk.atlas_row = 1
 	desk.visual_bounds = [-64, -88, 128, 96]

@@ -32,12 +32,11 @@ func _ready() -> void:
 	body.add_child(collision)
 	add_child(body)
 
-func _furniture_layer(node_name: String, column: int) -> Sprite2D:
+func _furniture_layer(node_name: String, _column: int) -> Sprite2D:
+	# Catalog render layers replace these nodes in TownRoom._apply_profile
+	# before a frame is drawn. No standalone texture is visible.
 	var sprite := Sprite2D.new()
 	sprite.name = node_name
-	sprite.texture = PolishArt.LAYERED_FURNITURE
-	sprite.region_enabled = true
-	sprite.region_rect = PolishArt.furniture_region(1, column)
 	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	sprite.position = SPRITE_OFFSET
 	return sprite

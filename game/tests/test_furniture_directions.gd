@@ -5,7 +5,7 @@ extends SceneTree
 
 const EDITOR: Script = preload("res://tools/office_layout_editor.gd")
 const TEST_POSES := "test-only-direction-geometry"
-const ART := "res://assets/runtime/office/layered-furniture.png"
+const ART := "res://assets/runtime/office/collaboration-cluster-v2/east-table_front_structure.png"
 const GRID := Vector2i(10, 8)
 var checks := 0
 var failures: Array[String] = []
@@ -63,7 +63,8 @@ func _variant(facing: String) -> Dictionary:
 		"occupied": occupied, "clearance": clearance,
 		"interaction": [gaze.x, gaze.y], "work_cell": [-gaze.x, -gaze.y],
 		"anchor_offset": [0, 0], "visual_bounds": [-64, -80, 128, 96],
-		"hit_bounds": [-48, -64, 96, 64], "work_facing": facing,
+		# Reused plate ink sits at cell (24, 64); center this rect there so picking hits paint.
+		"hit_bounds": [-48, -24, 16, 16], "work_facing": facing,
 		"seat_anchor": [2, -3], "seat_z_offset": -gaze.y * 32, "pose_set": TEST_POSES,
 		"render_layers": [
 			{"name": "FixtureRear", "art": ART, "region": [0, row * 96, 128, 96], "content_bounds": [0, 0, 128, 96], "offset": [0, -32], "z_offset": -64},
