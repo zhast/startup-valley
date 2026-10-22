@@ -87,11 +87,36 @@ From Company Journey, spend game cash to train a hired person, including the fou
 - One lesson raises Design, Tech, or Hype by 1.
 - Cost is $150 × the current level of that stat. Founder Tech at 2 costs $300. The same stat at 3 costs $450.
 - Each stat caps at 10.
-- A person can train once per office day. That day they are in training and add no points to a product being built.
+- A person can train once per office day. That day they are in training and add no points to a product being built. They also add no research points that day.
 - Short cash, an unhired id, a second lesson the same day, and a stat already at 10 fail with a clear error.
 - Older saves without stored stats load the starting table.
+- The lesson line ("Founder trained Tech to 3. −$300") shows only on that office day. Ending the day clears it.
 
 A newsletter launch pays about $200, then more on the next sales days, so the first founder lesson is one good launch plus a little leftover.
+
+## Research
+
+Research points unlock topics and product types. The harness owns the catalog, the prices, and the points. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential.
+
+A company stores `researchPoints` and the unlocked topic ids and type ids. New companies start at 0 points with this starter catalog:
+
+| Kind | Unlocked | Locked |
+| --- | --- | --- |
+| Topics | Fitness, Trading, Cooking, Gaming, Study Notes, Crypto Alpha | Sneakers, Reselling, Sports Betting Picks, Dating Advice |
+| Types | Course, Community, Template Pack, Newsletter | Coaching, Software Tool |
+
+Crypto Alpha × Newsletter stays unlocked so the first ship loop still works. A topic costs 4 research points. A type costs 6. Those prices live in `RESEARCH_COST`.
+
+Earning is deterministic:
+
+- At day end, each person on the product in development who is not in training that day adds 1 point. A polish day still pays the point after craft points stop. Ending the same day twice does not pay twice.
+- On release, add `floor(score / 2)`.
+
+`tycoon.research` takes `{kind: "topic"|"type", id}`. Unknown ids, an already unlocked id, and a short balance fail with a clear error and spend nothing. `tycoon.start` rejects a locked topic or type and names it.
+
+Older saves that predate this column load with every topic and type unlocked and 0 points, so an existing company does not lose a pairing. A fresh database gets the starter catalog. Reopening a save does not reset progress. The unlock line ("Unlocked Sneakers. −4 RP") shows only on that office day.
+
+Company Journey lists locked items on a Research card under New Product: the balance, the day's unlock line, and one secondary button per locked item ("Research Sneakers · 4 RP"). The button is disabled when the balance is short. The card hides once everything is unlocked. The product picker still lists locked choices, disabled, with "· locked". The release screen shows "+N research points".
 
 ## Day and season calendar
 
@@ -117,13 +142,12 @@ Shelf jokes stay in the reviewer blurbs (checkout links, lurkers, margins, welco
 
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, and staff training. The entries are **New Product** and **Train staff** on Company Journey.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, and research points. The entries are **New Product**, **Train staff**, and **Research** on Company Journey.
 
 Next slices, in order:
 
-1. **Research points.** Spend quiet days on research to unlock a topic, a type, or a small fit bonus.
-2. **Upgrades shop.** Spend game cash on an office tool that boosts one stat or one price. No real-money store.
-3. **Office growth.** More desks and a second room when cash and headcount earn them. Use furniture that is already bound.
-4. **Seasons and events.** Turn on the 28-day calendar and one cozy event per season. Demand modifiers stay deterministic.
+1. **Upgrades shop.** Spend game cash on an office tool that boosts one stat or one price. No real-money store.
+2. **Office growth.** More desks and a second room when cash and headcount earn them. Use furniture that is already bound.
+3. **Seasons and events.** Turn on the 28-day calendar and one cozy event per season. Demand modifiers stay deterministic. A small fit bonus from research is still unbuilt.
 
 Chapter work orders still ask for a key unless the dev-only fake provider is on. That path is not part of these slices. Do not fold it into the tycoon, and do not make it the default.

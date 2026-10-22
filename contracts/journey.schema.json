@@ -293,7 +293,7 @@
     "tycoon": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "developing", "history"],
+      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "developing", "history"],
       "properties": {
         "seed": { "type": "integer", "minimum": 1 },
         "salesWindowDays": { "type": "integer", "const": 4 },
@@ -302,6 +302,8 @@
         "fits": { "type": "array", "maxItems": 60, "items": { "$ref": "#/$defs/tycoonFit" } },
         "staff": { "type": "array", "maxItems": 4, "items": { "$ref": "#/$defs/tycoonStaff" } },
         "trainingNotice": { "type": "string" },
+        "researchPoints": { "type": "integer", "minimum": 0 },
+        "researchNotice": { "type": "string" },
         "developing": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/tycoonProduct" }] },
         "history": { "type": "array", "maxItems": 48, "items": { "$ref": "#/$defs/tycoonProduct" } }
       }
@@ -309,16 +311,18 @@
     "tycoonTopic": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "name"],
+      "required": ["id", "name", "unlocked", "researchCost"],
       "properties": {
         "id": { "enum": ["fitness", "trading", "sneakers", "reselling", "sports_betting", "cooking", "gaming", "dating", "study_notes", "crypto"] },
-        "name": { "type": "string", "minLength": 1 }
+        "name": { "type": "string", "minLength": 1 },
+        "unlocked": { "type": "boolean" },
+        "researchCost": { "type": "integer", "minimum": 0 }
       }
     },
     "tycoonType": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "name", "devDays", "priceCents", "design", "tech", "hype"],
+      "required": ["id", "name", "devDays", "priceCents", "design", "tech", "hype", "unlocked", "researchCost"],
       "properties": {
         "id": { "enum": ["course", "community", "template_pack", "coaching", "software", "newsletter"] },
         "name": { "type": "string", "minLength": 1 },
@@ -326,7 +330,9 @@
         "priceCents": { "type": "integer", "minimum": 0 },
         "design": { "type": "integer", "minimum": 0 },
         "tech": { "type": "integer", "minimum": 0 },
-        "hype": { "type": "integer", "minimum": 0 }
+        "hype": { "type": "integer", "minimum": 0 },
+        "unlocked": { "type": "boolean" },
+        "researchCost": { "type": "integer", "minimum": 0 }
       }
     },
     "tycoonFit": {
@@ -376,7 +382,7 @@
     "tycoonProduct": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "name", "topicId", "typeId", "topicName", "typeName", "fit", "status", "startedDay", "devDays", "devDaysRequired", "design", "tech", "hype", "progress", "ready", "staffIds", "releasedDay", "review", "salesDays", "salesDaysTotal", "salesCents", "fans"],
+      "required": ["id", "name", "topicId", "typeId", "topicName", "typeName", "fit", "status", "startedDay", "devDays", "devDaysRequired", "design", "tech", "hype", "progress", "ready", "staffIds", "releasedDay", "review", "salesDays", "salesDaysTotal", "salesCents", "fans", "researchPoints"],
       "properties": {
         "id": { "type": "string", "pattern": "^p[1-9][0-9]*$" },
         "name": { "type": "string", "minLength": 1 },
@@ -400,7 +406,8 @@
         "salesDays": { "type": "integer", "minimum": 0, "maximum": 4 },
         "salesDaysTotal": { "type": "integer", "const": 4 },
         "salesCents": { "type": "integer", "minimum": 0 },
-        "fans": { "type": "integer", "minimum": 0 }
+        "fans": { "type": "integer", "minimum": 0 },
+        "researchPoints": { "type": "integer", "minimum": 0 }
       }
     },
     "tycoonReview": {

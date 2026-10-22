@@ -14,6 +14,8 @@ export const EXTRA_POLISH_DAYS = 2;
 export const TRAIN_COST_PER_LEVEL_CENTS = 15000;
 export const STAT_CAP = 10;
 export const STATS = ["design", "tech", "hype"] as const;
+/** Research point prices. A topic is the cheaper unlock. A type costs more. */
+export const RESEARCH_COST = { topic: 4, type: 6 } as const;
 const IDEAL_POINTS_PER_DAY = 4;
 
 export const TOPICS = [
@@ -49,7 +51,12 @@ export type TopicId = (typeof TOPICS)[number]["id"];
 export type ProductTypeId = (typeof PRODUCT_TYPES)[number]["id"];
 export type StaffId = (typeof STAFF)[number]["id"];
 export type StatId = (typeof STATS)[number];
+export type ResearchKind = keyof typeof RESEARCH_COST;
 export type Fit = "great" | "good" | "okay" | "bad";
+
+/** New companies. Crypto Alpha × Newsletter stays in this set. */
+const STARTER_TOPIC_IDS: readonly TopicId[] = ["fitness", "trading", "cooking", "gaming", "study_notes", "crypto"];
+const STARTER_TYPE_IDS: readonly ProductTypeId[] = ["course", "community", "template_pack", "newsletter"];
 
 const FIT_NUMERATOR: Record<Fit, number> = { great: 112, good: 100, okay: 84, bad: 64 };
 const FIT_UNITS: Record<Fit, number> = { great: 12, good: 9, okay: 6, bad: 3 };
@@ -169,16 +176,19 @@ export interface TycoonProductView {
   salesDaysTotal: number;
   salesCents: number;
   fans: number;
+  researchPoints: number;
 }
 
 export interface TycoonSnapshot {
   seed: number;
   salesWindowDays: number;
-  topics: Array<{ id: TopicId; name: string }>;
-  types: Array<{ id: ProductTypeId; name: string; devDays: number; priceCents: number; design: number; tech: number; hype: number }>;
+  topics: Array<{ id: TopicId; name: string; unlocked: boolean; researchCost: number }>;
+  types: Array<{ id: ProductTypeId; name: string; devDays: number; priceCents: number; design: number; tech: number; hype: number; unlocked: boolean; researchCost: number }>;
   fits: Array<{ topicId: TopicId; typeId: ProductTypeId; fit: Fit }>;
   staff: TycoonStaffView[];
   trainingNotice: string;
+  researchPoints: number;
+  researchNotice: string;
   developing: TycoonProductView | null;
   history: TycoonProductView[];
 }
@@ -203,6 +213,7 @@ interface ProductRow {
   last_sales_day: number | null;
   sales_cents: number;
   fans: number;
+  release_research: number | null;
 }
 
 export function mixSeed(seed: number, ...parts: Array<string | number>): number {
@@ -249,6 +260,21 @@ export function trainCostCents(level: number): number {
   return TRAIN_COST_PER_LEVEL_CENTS * Math.max(1, level);
 }
 
+export function releaseResearchPoints(score: number): number {
+  return Math.floor(Math.max(0, score) / 2);
+}
+
+export function starterResearchJson(): string {
+  return JSON.stringify({ topics: STARTER_TOPIC_IDS, types: STARTER_TYPE_IDS });
+}
+
+export function legacyResearchJson(): string {
+  return JSON.stringify({
+    topics: TOPICS.map((topic) => topic.id),
+    types: PRODUCT_TYPES.map((type) => type.id),
+  });
+}
+
 export function statLabel(stat: StatId): string {
   if (stat === "design") return "Design";
   if (stat === "tech") return "Tech";
@@ -283,6 +309,11 @@ export function snapshotPoints(members: readonly CraftPoints[]): CraftPoints {
 function asStat(value: string): StatId {
   if (value === "design" || value === "tech" || value === "hype") return value;
   throw new Error("Train Design, Tech, or Hype.");
+}
+
+function asResearchKind(value: string): ResearchKind {
+  if (value === "topic" || value === "type") return value;
+  throw new Error("Research a topic or a product type.");
 }
 
 function clampStat(value: unknown, fallback: number): number {
@@ -419,8 +450,17 @@ function asFit(value: string): Fit {
   return value;
 }
 
+interface ResearchState {
+  points: number;
+  topics: Set<TopicId>;
+  types: Set<ProductTypeId>;
+}
+
 export class TycoonStore {
   private trainingNotice = "";
+  private trainingNoticeDay = 0;
+  private researchNotice = "";
+  private researchNoticeDay = 0;
 
   constructor(private readonly db: DatabaseSync, private readonly journey: JourneyStore) {}
 
@@ -432,15 +472,23 @@ export class TycoonStore {
       ORDER BY released_day DESC, id DESC LIMIT 48
     `).all() as unknown as ProductRow[]).map((row) => this.toView(row));
     const stats = this.loadStaffState();
+    const research = this.loadResearch();
     const day = this.day();
     const cash = this.cashCents();
     return {
       seed: this.seed(),
       salesWindowDays: SALES_WINDOW_DAYS,
-      topics: TOPICS.map((topic) => ({ id: topic.id, name: topic.name })),
+      topics: TOPICS.map((topic) => ({
+        id: topic.id,
+        name: topic.name,
+        unlocked: research.topics.has(topic.id),
+        researchCost: RESEARCH_COST.topic,
+      })),
       types: PRODUCT_TYPES.map((type) => ({
         id: type.id, name: type.name, devDays: type.devDays, priceCents: type.priceCents,
         design: type.design, tech: type.tech, hype: type.hype,
+        unlocked: research.types.has(type.id),
+        researchCost: RESEARCH_COST.type,
       })),
       fits: allFits(),
       staff: STAFF.map((person) => {
@@ -462,7 +510,9 @@ export class TycoonStore {
           },
         };
       }),
-      trainingNotice: this.trainingNotice,
+      trainingNotice: this.trainingNoticeDay === day ? this.trainingNotice : "",
+      researchPoints: research.points,
+      researchNotice: this.researchNoticeDay === day ? this.researchNotice : "",
       developing: developing ? this.toView(developing) : null,
       history,
     };
@@ -473,6 +523,11 @@ export class TycoonStore {
       if (this.developingRow()) throw new Error("A product is already on the bench. Ship it or keep building.");
       const topicId = asTopic(topicValue);
       const typeId = asType(typeValue);
+      const research = this.loadResearch();
+      const topic = topicById(topicId);
+      const type = typeById(typeId);
+      if (!topic || !research.topics.has(topicId)) throw new Error(`${topic?.name ?? "That topic"} is locked. Research it first.`);
+      if (!type || !research.types.has(typeId)) throw new Error(`${type?.name ?? "That product type"} is locked. Research it first.`);
       const staffIds = this.assignedStaff(requestedStaff);
       const stats = this.loadStaffState();
       const snapshot = staffIds.map((id) => ({
@@ -521,6 +576,26 @@ export class TycoonStore {
       state[person.id].trainedDay = day;
       this.saveStaffState(state);
       this.trainingNotice = `${person.name} trained ${statLabel(stat)} to ${current + 1}. −$${Math.floor(cost / 100)}`;
+      this.trainingNoticeDay = day;
+      return this.journey.state();
+    });
+  }
+
+  research(kindValue: string, idValue: string): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const kind = asResearchKind(kindValue);
+      const catalog = this.loadResearch();
+      if (kind === "topic") {
+        const topic = topicById(idValue);
+        if (!topic) throw new Error("Unknown topic");
+        if (catalog.topics.has(topic.id)) throw new Error(`${topic.name} is already unlocked.`);
+        this.spendResearch(catalog, kind, topic.id, topic.name);
+      } else {
+        const type = typeById(idValue);
+        if (!type) throw new Error("Unknown product type");
+        if (catalog.types.has(type.id)) throw new Error(`${type.name} is already unlocked.`);
+        this.spendResearch(catalog, kind, type.id, type.name);
+      }
       return this.journey.state();
     });
   }
@@ -550,8 +625,10 @@ export class TycoonStore {
         hype: Number(row.hype_points),
       });
       const day = this.day();
-      this.db.prepare("UPDATE tycoon_products SET status = 'released', released_day = ?, review_json = ? WHERE id = ?")
-        .run(day, JSON.stringify(review), row.id);
+      const bonus = releaseResearchPoints(review.score);
+      this.db.prepare("UPDATE tycoon_products SET status = 'released', released_day = ?, review_json = ?, release_research = ? WHERE id = ?")
+        .run(day, JSON.stringify(review), bonus, row.id);
+      this.addResearchPoints(bonus);
       this.applySale(this.row(row.id)!, day);
       return this.journey.state();
     });
@@ -559,6 +636,7 @@ export class TycoonStore {
 
   /** One office day of craft or of sales. Caller holds the company transaction. */
   tickDay(day: number): void {
+    this.expireNotices(day);
     const rows = this.db.prepare(`
       SELECT * FROM tycoon_products WHERE status IN ('developing', 'released') ORDER BY id
     `).all() as unknown as ProductRow[];
@@ -591,6 +669,7 @@ export class TycoonStore {
       day,
       row.id,
     );
+    this.addResearchPoints(working.length);
     this.journey.recordCompanyChange(`tycoon:build:${row.id}:${day}`, day, 0, 0, 0, `Building ${row.name}`);
   }
 
@@ -647,6 +726,69 @@ export class TycoonStore {
   private cashCents(): number {
     const row = this.db.prepare("SELECT cash_cents FROM company_state WHERE id = 1").get() as { cash_cents: number } | undefined;
     return Number(row?.cash_cents ?? 0);
+  }
+
+  private spendResearch(catalog: ResearchState, kind: ResearchKind, id: TopicId | ProductTypeId, name: string): void {
+    const cost = RESEARCH_COST[kind];
+    if (catalog.points < cost) throw new Error(`Not enough research points. ${name} costs ${cost} RP.`);
+    catalog.points -= cost;
+    if (kind === "topic") catalog.topics.add(id as TopicId);
+    else catalog.types.add(id as ProductTypeId);
+    this.saveResearch(catalog);
+    this.researchNotice = `Unlocked ${name}. −${cost} RP`;
+    this.researchNoticeDay = this.day();
+  }
+
+  private expireNotices(endedDay: number): void {
+    if (this.trainingNoticeDay !== 0 && this.trainingNoticeDay <= endedDay) {
+      this.trainingNotice = "";
+      this.trainingNoticeDay = 0;
+    }
+    if (this.researchNoticeDay !== 0 && this.researchNoticeDay <= endedDay) {
+      this.researchNotice = "";
+      this.researchNoticeDay = 0;
+    }
+  }
+
+  private addResearchPoints(amount: number): void {
+    if (amount <= 0) return;
+    const catalog = this.loadResearch();
+    catalog.points += amount;
+    this.saveResearch(catalog);
+  }
+
+  private loadResearch(): ResearchState {
+    const everyone: ResearchState = {
+      points: 0,
+      topics: new Set(TOPICS.map((topic) => topic.id)),
+      types: new Set(PRODUCT_TYPES.map((type) => type.id)),
+    };
+    const row = this.db.prepare("SELECT research_points, research_json FROM tycoon_meta WHERE id = 1").get() as { research_points?: number; research_json?: string } | undefined;
+    const points = Number(row?.research_points ?? 0);
+    everyone.points = Number.isInteger(points) && points > 0 ? points : 0;
+    const raw = row?.research_json?.trim() ?? "";
+    if (!raw) return everyone;
+    let parsed: unknown;
+    try { parsed = JSON.parse(raw); } catch { return everyone; }
+    if (!parsed || typeof parsed !== "object") return everyone;
+    const stored = parsed as { topics?: unknown; types?: unknown };
+    if (!Array.isArray(stored.topics) || !Array.isArray(stored.types)) return everyone;
+    const topics = new Set<TopicId>();
+    const types = new Set<ProductTypeId>();
+    for (const id of stored.topics) {
+      if (typeof id === "string" && topicById(id)) topics.add(id as TopicId);
+    }
+    for (const id of stored.types) {
+      if (typeof id === "string" && typeById(id)) types.add(id as ProductTypeId);
+    }
+    return { points: everyone.points, topics, types };
+  }
+
+  private saveResearch(state: ResearchState): void {
+    this.db.prepare("UPDATE tycoon_meta SET research_points = ?, research_json = ? WHERE id = 1").run(state.points, JSON.stringify({
+      topics: TOPICS.map((topic) => topic.id).filter((id) => state.topics.has(id)),
+      types: PRODUCT_TYPES.map((type) => type.id).filter((id) => state.types.has(id)),
+    }));
   }
 
   private trainOffer(level: number, hired: boolean, trainedToday: boolean, cash: number): TrainOffer {
@@ -742,6 +884,18 @@ export class TycoonStore {
       salesDaysTotal: SALES_WINDOW_DAYS,
       salesCents: Number(row.sales_cents),
       fans: Number(row.fans),
+      researchPoints: this.productResearchPoints(row),
     };
+  }
+
+  private productResearchPoints(row: ProductRow): number {
+    if (row.release_research !== null && row.release_research !== undefined) return Math.max(0, Number(row.release_research));
+    if (!row.review_json) return 0;
+    try {
+      const review = JSON.parse(row.review_json) as TycoonReview;
+      return releaseResearchPoints(review.score);
+    } catch {
+      return 0;
+    }
   }
 }

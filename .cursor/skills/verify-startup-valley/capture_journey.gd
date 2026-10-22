@@ -1,0 +1,250 @@
+extends SceneTree
+
+## Boot main.tscn with the real worker and shoot the Company Journey loop.
+## Output directory: SV_PROOF_DIR. Prints PROOF PASS or PROOF FAIL.
+
+const MAIN := preload("res://world/main.tscn")
+var main: GameMain
+var viewport: SubViewport
+var failures: Array[String] = []
+var proof_dir := ""
+
+func _initialize() -> void:
+	proof_dir = OS.get_environment("SV_PROOF_DIR").strip_edges()
+	OS.unset_environment("STARTUP_VALLEY_NO_WORKER")
+	OS.unset_environment("STARTUP_VALLEY_FAKE_PROVIDER")
+	OS.set_environment("STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS", "1")
+	if OS.get_environment("STARTUP_VALLEY_DATA_DIR").strip_edges().is_empty():
+		var data_dir := OS.get_temp_dir().path_join("startup-valley-proof-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+		DirAccess.make_dir_recursive_absolute(data_dir)
+		OS.set_environment("STARTUP_VALLEY_DATA_DIR", data_dir)
+	call_deferred("_run")
+
+func check(ok: bool, message: String) -> void:
+	if ok:
+		print("PASS ", message)
+	else:
+		failures.append(message)
+		push_error("FAIL " + message)
+
+func frames(count: int = 2) -> void:
+	for _index: int in range(count):
+		await process_frame
+
+func wait_until(predicate: Callable, message: String, timeout_ms: int = 20000) -> bool:
+	var deadline := Time.get_ticks_msec() + timeout_ms
+	while Time.get_ticks_msec() < deadline:
+		await frames(1)
+		if predicate.call():
+			return true
+	check(false, message)
+	return false
+
+func button_named(prefix: String) -> Button:
+	if main == null or main.company_panel == null:
+		return null
+	for node: Node in main.company_panel.find_children("*", "Button", true, false):
+		var button := node as Button
+		if button.is_visible_in_tree() and button.text.to_lower().begins_with(prefix.to_lower()):
+			return button
+	return null
+
+func label_named(node_name: String) -> Label:
+	if main == null or main.company_panel == null:
+		return null
+	return main.company_panel.find_child(node_name, true, false) as Label
+
+func label_contains(fragment: String) -> bool:
+	if main == null or main.company_panel == null:
+		return false
+	for node: Node in main.company_panel.find_children("*", "Label", true, false):
+		if (node as Label).text.contains(fragment):
+			return true
+	return false
+
+func reveal(control: Control) -> void:
+	if control == null or main == null or main.company_panel == null:
+		return
+	var content := main.company_panel._content
+	if content == null or not content.is_ancestor_of(control):
+		return
+	var top := control.position.y
+	var current := control.get_parent()
+	while current != null and current != content:
+		if current is Control:
+			top += (current as Control).position.y
+		current = current.get_parent()
+	main.company_panel._scroll.scroll_vertical = maxi(0, int(top) - 8)
+	await frames(3)
+
+func click(control: Control) -> void:
+	check(control != null and control.is_visible_in_tree() and not (control is BaseButton and (control as BaseButton).disabled), "Click target is visible and enabled: " + (str(control.name) if control != null else "missing") + ((" / " + (control as Button).text) if control is Button else ""))
+	if control == null:
+		return
+	await reveal(control)
+	var point := control.get_global_rect().get_center()
+	var motion := InputEventMouseMotion.new()
+	motion.position = point
+	motion.global_position = point
+	viewport.push_input(motion, true)
+	await frames(1)
+	for pressed: bool in [true, false]:
+		var event := InputEventMouseButton.new()
+		event.position = point
+		event.global_position = point
+		event.button_index = MOUSE_BUTTON_LEFT
+		event.button_mask = MOUSE_BUTTON_MASK_LEFT if pressed else 0
+		event.pressed = pressed
+		viewport.push_input(event, true)
+		await frames(1)
+	await frames(8)
+
+func key(code: Key, pressed: bool) -> void:
+	var event := InputEventKey.new()
+	event.keycode = code
+	event.physical_keycode = code
+	event.pressed = pressed
+	viewport.push_input(event, true)
+	await frames(1)
+
+func company_cash() -> int:
+	var company: Dictionary = main.company_panel.state.get("company", {})
+	return int(company.get("cashCents", 0))
+
+func tycoon_state() -> Dictionary:
+	var value: Variant = main.company_panel.state.get("tycoon", {})
+	return value as Dictionary if value is Dictionary else {}
+
+func research_points() -> int:
+	return int(tycoon_state().get("researchPoints", -1))
+
+func developing() -> Dictionary:
+	var value: Variant = tycoon_state().get("developing", {})
+	return value as Dictionary if value is Dictionary else {}
+
+func open_journey() -> void:
+	if main.company_panel.visible and main.company_panel.screen == "journey":
+		return
+	if main.company_panel.visible:
+		var back := button_named("Back to office")
+		if back != null:
+			await click(back)
+			await frames(8)
+	await key(KEY_J, true)
+	await key(KEY_J, false)
+	await wait_until(func() -> bool: return main.company_panel.visible and main.company_panel.screen == "journey", "J opens Company Journey")
+
+func open_product() -> void:
+	await open_journey()
+	if main.company_panel.screen != "product":
+		await click(button_named("New Product"))
+		await wait_until(func() -> bool: return main.company_panel.screen == "product" and not main.company_panel.busy, "New Product opens the ship screen")
+
+func end_office_day() -> void:
+	await click(button_named("End day"))
+	await wait_until(func() -> bool: return main.company_panel.screen == "summary", "Ending the day opens the summary")
+	await click(button_named("Begin next day"))
+	await wait_until(func() -> bool: return not main.company_panel.visible, "Begin next day returns to the office")
+	main.day_clock.set_speed(0)
+
+func snap(name: String, focus: Control = null) -> void:
+	if focus != null:
+		await reveal(focus)
+	await frames(6)
+	await RenderingServer.frame_post_draw
+	var image := viewport.get_texture().get_image()
+	var path := proof_dir.path_join(name + ".png")
+	var err := image.save_png(path)
+	check(err == OK and FileAccess.file_exists(path), "Saved " + path)
+	print("SNAP ", path)
+
+func _run() -> void:
+	if proof_dir.is_empty():
+		check(false, "SV_PROOF_DIR is required")
+		print("PROOF FAIL")
+		quit(1)
+		return
+	DirAccess.make_dir_recursive_absolute(proof_dir)
+	root.content_scale_size = Vector2i(1280, 720)
+	root.size = Vector2i(1280, 720)
+	viewport = SubViewport.new()
+	viewport.size = Vector2i(1280, 720)
+	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	root.add_child(viewport)
+	viewport.notify_mouse_entered()
+	main = MAIN.instantiate()
+	viewport.add_child(main)
+	var ready := await wait_until(func() -> bool:
+		return main._state_loaded and main._worker_ready and main.company_panel != null and main.company_panel.visible and not main.company_panel.state.is_empty()
+	, "Worker bootstrap loads a fresh company")
+	if not ready:
+		_finish()
+		return
+	main.day_clock.set_speed(0)
+	await click(button_named("Start company"))
+	await wait_until(func() -> bool: return main.company_panel.screen == "journey", "Start company opens Journey")
+	main.company_panel._scroll.scroll_vertical = 0
+	await snap("01-journey")
+	await snap("02-research-card", main.company_panel.find_child("ResearchCard", true, false) as Control)
+	await open_product()
+	check(not main.job_panel._connection_panel.visible, "Connect stays closed on the product picker")
+	var sneakers_locked := button_named("Sneakers")
+	check(sneakers_locked != null and sneakers_locked.disabled and sneakers_locked.text.contains("· locked"), "Sneakers starts locked")
+	await snap("03-picker-locked", sneakers_locked)
+	await click(button_named("Crypto Alpha"))
+	await frames(4)
+	await click(button_named("Newsletter"))
+	await frames(4)
+	await click(button_named("Start development"))
+	await wait_until(func() -> bool: return developing().get("name", "") == "Crypto Alpha Newsletter" and not main.company_panel.busy, "Development starts on Crypto Alpha Newsletter")
+	await end_office_day()
+	await open_product()
+	await end_office_day()
+	await open_product()
+	check(bool(developing().get("ready", false)), "Two office days make the newsletter ready")
+	await click(button_named("Release"))
+	await wait_until(func() -> bool: return main.company_panel.screen == "release" and label_contains("+3 research points"), "Release shows +3 research points")
+	await snap("04-release-research", label_named("ReleaseResearch"))
+	await open_journey()
+	await end_office_day()
+	await open_journey()
+	await end_office_day()
+	await open_journey()
+	check(company_cash() >= 30000, "Second sales day covers a $300 Tech lesson")
+	var train := button_named("Train Tech")
+	check(train != null and not train.disabled, "Train Tech is enabled")
+	await click(train)
+	await wait_until(func() -> bool: return not main.company_panel.busy and label_contains("Founder trained Tech to 3"), "Training notice names the new Tech level")
+	await snap("05-trained-notice", label_named("TrainingNotice"))
+	await end_office_day()
+	await open_journey()
+	check(label_named("TrainingNotice") == null, "Training notice is gone after End day")
+	await snap("06-notice-gone", main.company_panel.find_child("TrainStaff", true, false) as Control)
+	check(research_points() >= 4, "The shipped newsletter earned enough points to research a topic")
+	var research := button_named("Research Sneakers")
+	check(research != null and not research.disabled, "Research Sneakers is enabled")
+	await click(research)
+	await wait_until(func() -> bool: return not main.company_panel.busy and label_contains("Unlocked Sneakers. −4 RP"), "Research notice names Sneakers")
+	await snap("07-research-unlocked", label_named("ResearchNotice"))
+	await open_product()
+	var sneakers := button_named("Sneakers")
+	check(sneakers != null and not sneakers.disabled and not sneakers.text.contains("locked"), "Sneakers is selectable after research")
+	await click(sneakers)
+	await frames(4)
+	await click(button_named("Newsletter"))
+	await frames(4)
+	await click(button_named("Start development"))
+	await wait_until(func() -> bool: return developing().get("name", "") == "Sneakers Newsletter" and not main.company_panel.busy, "Sneakers Newsletter starts")
+	await snap("08-sneakers-started")
+	check(not main.job_panel._connection_panel.visible, "The loop never opens Connect")
+	_finish()
+
+func _finish() -> void:
+	print("PROOF ", "PASS" if failures.is_empty() else "FAIL %d" % failures.size())
+	for failure: String in failures:
+		print("FAILURE ", failure)
+	var exit_code := 0 if failures.is_empty() else 1
+	if main != null:
+		main.notification(Node.NOTIFICATION_WM_CLOSE_REQUEST)
+		await create_timer(1.2).timeout
+	quit(exit_code)
