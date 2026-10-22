@@ -60,7 +60,16 @@ func run() -> void:
 		var base := RESEARCH.layers(side)
 		var support := KIT.binary_over(base.RearStructure, base.FrontStructure)
 		var runtime_tool := Image.load_from_file(ProjectSettings.globalize_path(RUNTIME_BASE.path_join(side + "-tool_overlay.png")))
-		check(not runtime_tool.is_empty() and runtime_tool.get_data() == (base.ToolOverlay as Image).get_data(), side + " checks the accepted runtime tool layout")
+		var reviewed_tool := Image.load_from_file(ProjectSettings.globalize_path("res://tests/fixtures/furniture-calibration/research-bench-v1".path_join(side + "-tool_overlay.png")))
+		var procedural_tool := base.ToolOverlay as Image
+		var alpha_mismatch := 0
+		if not runtime_tool.is_empty() and not procedural_tool.is_empty() and runtime_tool.get_size() == procedural_tool.get_size():
+			for y: int in range(runtime_tool.get_height()):
+				for x: int in range(runtime_tool.get_width()):
+					if runtime_tool.get_pixel(x, y).a != procedural_tool.get_pixel(x, y).a:
+						alpha_mismatch += 1
+		check(not runtime_tool.is_empty() and not reviewed_tool.is_empty() and runtime_tool.get_data() == reviewed_tool.get_data(), side + " runtime tool overlay matches the warm reviewed source")
+		check(alpha_mismatch == 0, side + " warm tool overlay keeps the accepted research-bench layout alpha")
 		var object_union := Image.create(KIT.CANVAS.x, KIT.CANVAS.y, false, Image.FORMAT_RGBA8)
 		object_union.fill(Color(0, 0, 0, 0))
 		var seen: Array[Image] = []
