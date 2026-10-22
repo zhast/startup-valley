@@ -57,7 +57,31 @@ func run() -> void:
 	var desk := layout.placement_by_id("mira-workstation", 2)
 	check(desk.work_cell == Vector2i(10, 7) and desk.interaction == Vector2i(10, 9), "Seat and founder approach are separate authored cells")
 	check(desk.profile.layers.shared_origin and desk.profile.layers.rear_z_offset < -32 and desk.profile.layers.front_z_offset > -32, "Layer metadata places seated actor between complementary images")
-	check(desk.visual_bounds == Rect2(-48, -64, 96, 80), "Reviewed South assembly uses its measured native ink bounds")
+	check(desk.visual_bounds == Rect2(-48, -80, 96, 96) and desk.hit_bounds == Rect2(-48, -80, 96, 96), "Reviewed South assembly uses its measured native ink bounds")
+	var chair_depth := 0
+	var desk_front_depth := 0
+	var saw_chair := false
+	for layer: Dictionary in desk.render_layers:
+		if str(layer.name) == "ChairWhole":
+			saw_chair = true
+			chair_depth = int(layer.z_offset)
+			check(Vector2(OfficeLayout.vector(layer.offset)) == Vector2(0, -76), "South desk chair is tucked north of the desktop")
+		elif str(layer.name) == "DeskFront":
+			desk_front_depth = int(layer.z_offset)
+	var standing_feet_y := int(layout.world(desk.work_cell).y)
+	var prop_depth := roundi(desk.anchor.y)
+	check(saw_chair and prop_depth + chair_depth < standing_feet_y and prop_depth + desk_front_depth > prop_depth + chair_depth, "South desk chair draws below a standing worker at the work cell and under DeskFront")
+	var cluster := layout.placement_by_id("collaboration-cluster", 2)
+	check(cluster.visual_bounds == Rect2(-80, -80, 161, 148) and cluster.hit_bounds == Rect2(-80, -80, 161, 148), "South collaboration cluster includes the north chairs behind the table")
+	var north_chairs := 0
+	for layer: Dictionary in cluster.render_layers:
+		var layer_name := str(layer.name)
+		if layer_name == "NorthChair0Whole" or layer_name == "NorthChair1Whole":
+			north_chairs += 1
+			check(Vector2(OfficeLayout.vector(layer.offset)) == Vector2(0, -56) and int(layer.z_offset) == -9, layer_name + " is behind the tabletop at its original depth")
+		elif layer_name.begins_with("SouthChair") or layer_name.begins_with("Table"):
+			check(Vector2(OfficeLayout.vector(layer.offset)) == Vector2(0, -40), layer_name + " keeps the shared south cluster offset")
+	check(north_chairs == 2, "South collaboration cluster still has both far chairs")
 	check(layout.validate_candidate("mira-workstation", Vector2i(10, 8), "south", 2).valid, "Existing workstation position is valid")
 	check(layout.validate_candidate("mira-workstation", Vector2i(12, 7), "south", 2).valid, "Free workstation bay can be reauthored")
 	check(layout.validate_candidate("mira-workstation", Vector2i(10, 8), "east", 2).valid, "Reviewed East orientation resolves without rotating South art")
