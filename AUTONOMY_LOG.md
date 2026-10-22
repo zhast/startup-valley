@@ -1016,3 +1016,26 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - `test_tycoon_training.gd` — TYCOON TRAIN PASS (ship newsletter, train Founder Tech to 3 for $300, next product uses Tech 3)
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → ship → Train staff → next product uses the new stats. Connect stays closed on the picker, bench, and release card. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_training.gd`.
+
+### Booth v5 bind — 2026-10-22
+
+**What changed**
+- Steven flagged the v4 phone booth as off-brand on 2026-10-21. Bound the approved v5 warm oak booth over `game/assets/runtime/office/phone-booth-south.png` (md5 `e2e4cb1906e54233f09139d01d8093ca`, 192×224 RGBA, 14 colors). Style gate PASS (colors=14 pal=0.94 smooth=0.00 outline=1.00 cool=0.00 detail=0.55). Approved by Steven 2026-10-21 (steven_ok).
+- Opaque bbox is still (40,41)-(151,216), the same as v4, so `furnishing_catalog.json` content_bounds `[40, 41, 111, 175]` and visual_bounds `[-56, -119, 111, 175]` are unchanged. Godot reimport did not modify the tracked `.import` sidecar.
+- Bookshelf redo is pending Steven lineup approval and is not bound.
+- A fresh company still places `decor-phone_booth` at grid [3, 18] south. The office proof shows the warm oak booth in the lounge.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the playtests)
+- `cd harness && npm run build && npm test && npm run eval:offline` — build pass; npm test 83 tests, 81 pass, 0 fail, 2 skipped; eval:offline 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS (40 checks, 0 failures; Crypto Alpha Newsletter, founder only; launch $207.00 and 5 fans, next office day $333.00 and 8 fans)
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS (41 checks, 0 failures; train Founder Tech to 3, next product uses Tech 3)
+- `test_ui_company_redesign.gd` — 4060 checks, 0 failures, 0 captures
+- `test_ui_flow_regressions.gd` — passed
+- `test_chapter1_first_player.gd` — CHAPTER1 PASS (43 checks, 0 failures)
+- `test_full_player_path.gd` — FULLPATH PASS (125 checks, 0 failures)
+- No `game/tests` script asserts `phone-booth-south.png` by md5. Nothing extra to run.
+
+**TYCOON SLICE PLAYABLE: yes** — unchanged. The bound booth is the warm oak v5 in the first-run lounge.
