@@ -7,6 +7,7 @@ signal connection_requested
 signal renovation_requested
 signal volume_changed(effects: float, ambience: float)
 signal architecture_theme_requested(theme_id: String)
+signal presented(mode: String)
 
 var state: Dictionary = {}
 var day := 1
@@ -83,6 +84,7 @@ func present(mode: String = "journey") -> void:
 	modulate.a = 0.0
 	_transition = create_tween()
 	_transition.tween_property(self, "modulate:a", 1.0, 0.14)
+	presented.emit(screen)
 
 func update_state(value: Dictionary) -> void:
 	state = value
@@ -300,6 +302,7 @@ func _complete_screen() -> void:
 		_label("Homepage notes are saved. This build stops here. Further chapters are not in the office yet.", false, finished)
 		_label(_next_step().trim_prefix("NEXT · "))
 		_product_shortcut()
+		_train_staff()
 		_actions("Back to office", hide, true, "")
 		return
 	if chapter_two_finished(state):
@@ -309,6 +312,7 @@ func _complete_screen() -> void:
 		_label("Chapter 3 starts when Creative applies that look to the website.", false, ready)
 		_label(_next_step().trim_prefix("NEXT · "))
 		_product_shortcut()
+		_train_staff()
 		_actions("Begin Chapter 3", func() -> void: _request("chapter.continue", {}), true, "Back to office")
 		return
 	_heading("Chapter complete", "Your first company chapter is finished.")
@@ -317,6 +321,7 @@ func _complete_screen() -> void:
 	_label("Website built. Ads planned. Incorporation prepared. Chapter 2 starts when you give the company a look.", false, complete)
 	_label(_next_step().trim_prefix("NEXT · "))
 	_product_shortcut()
+	_train_staff()
 	_actions("Begin Chapter 2", func() -> void: _request("chapter.continue", {}), true, "Back to office")
 
 func _is_chapter_complete() -> bool:
@@ -432,7 +437,9 @@ func _day_screen() -> void:
 	_content.add_child(metrics)
 	_metric(metrics, "Game revenue", "$%s" % _money(int(summary.get("earnedCents", 0))), "virtual company funds")
 	_metric(metrics, "Reputation", "+%d" % int(summary.get("reputation", 0)), "company progress")
-	_metric(metrics, "Real AI spend", "$%.4f" % float(summary.get("aiSpend", 0)), "real money (USD)")
+	var ai_spend := float(summary.get("aiSpend", 0))
+	if ai_spend > 0.0:
+		_metric(metrics, "Optional AI spend", "$%.4f" % ai_spend, "real money (USD)")
 	var activity := _card()
 	_label("Today’s work", true, activity)
 	var seen := PackedStringArray()
@@ -500,7 +507,8 @@ func _journey_screen() -> void:
 	if not definition.is_empty() or not candidate.is_empty():
 		_button("End day + save", func() -> void: _request("day.end", {"day": day}), false, true, utilities, "secondary")
 	_product_shortcut()
-	var money_note := _label("Game cash is virtual; AI spend is real money (USD). Ads and incorporation create planning files only.")
+	_train_staff()
+	var money_note := _label("Game cash is virtual. Shipping products is fully offline. Ads and incorporation create planning files only.")
 	money_note.name = "MoneyExplanation"
 
 func _tycoon() -> Dictionary:
@@ -510,6 +518,55 @@ func _tycoon() -> Dictionary:
 func _product_shortcut() -> void:
 	if _tycoon().is_empty(): return
 	_button("New Product", func() -> void: present("product"), false, true)
+
+func _train_staff() -> void:
+	var tycoon := _tycoon()
+	if tycoon.is_empty(): return
+	var staff: Array = tycoon.get("staff", []) as Array
+	var hired := false
+	for item: Variant in staff:
+		if item is Dictionary and bool((item as Dictionary).get("hired", false)):
+			hired = true
+			break
+	if not hired: return
+	var card := _card()
+	card.name = "TrainStaff"
+	_label("Train staff", true, card)
+	var notice := str(tycoon.get("trainingNotice", ""))
+	if not notice.is_empty():
+		var line := _label(notice, false, card, "action")
+		line.name = "TrainingNotice"
+	for item: Variant in staff:
+		if not item is Dictionary: continue
+		var person := item as Dictionary
+		if not bool(person.get("hired", false)): continue
+		var person_id := str(person.get("id", ""))
+		_label("%s · D %d · T %d · H %d" % [person.get("name", "Teammate"), int(person.get("design", 0)), int(person.get("tech", 0)), int(person.get("hype", 0))], false, card)
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 8)
+		card.add_child(row)
+		var offers: Dictionary = person.get("training", {}) if person.get("training") is Dictionary else {}
+		for stat: String in ["design", "tech", "hype"]:
+			var offer: Dictionary = offers.get(stat, {}) if offers.get(stat) is Dictionary else {}
+			var cost := int(offer.get("costCents", 0))
+			var enabled := bool(offer.get("enabled", false))
+			var label := "Train %s · $%s" % [_stat_word(stat), _money(cost)] if cost > 0 else "Train %s" % _stat_word(stat)
+			var button := _button(label, _train_person.bind(person_id, stat), false, enabled, row)
+			button.name = "Train_%s_%s" % [person_id, stat]
+			button.clip_text = true
+			button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		if bool(person.get("trainedToday", false)):
+			_label("In training today.", false, card, "meta")
+
+func _train_person(staff_id: String, stat: String) -> void:
+	_request("tycoon.train", {"staffId": staff_id, "stat": stat})
+
+func _stat_word(stat: String) -> String:
+	match stat:
+		"design": return "Design"
+		"tech": return "Tech"
+		"hype": return "Hype"
+		_: return stat.capitalize()
 
 func _product_screen() -> void:
 	var tycoon := _tycoon()

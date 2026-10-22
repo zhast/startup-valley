@@ -11,6 +11,9 @@ import { JourneyStore } from "./journey.js";
 export const DEFAULT_TYCOON_SEED = 26021;
 export const SALES_WINDOW_DAYS = 4;
 export const EXTRA_POLISH_DAYS = 2;
+export const TRAIN_COST_PER_LEVEL_CENTS = 15000;
+export const STAT_CAP = 10;
+export const STATS = ["design", "tech", "hype"] as const;
 const IDEAL_POINTS_PER_DAY = 4;
 
 export const TOPICS = [
@@ -45,6 +48,7 @@ export const STAFF = [
 export type TopicId = (typeof TOPICS)[number]["id"];
 export type ProductTypeId = (typeof PRODUCT_TYPES)[number]["id"];
 export type StaffId = (typeof STAFF)[number]["id"];
+export type StatId = (typeof STATS)[number];
 export type Fit = "great" | "good" | "okay" | "bad";
 
 const FIT_NUMERATOR: Record<Fit, number> = { great: 112, good: 100, okay: 84, bad: 64 };
@@ -106,6 +110,30 @@ export interface CraftPoints {
   hype: number;
 }
 
+export interface TrainOffer {
+  costCents: number;
+  enabled: boolean;
+}
+
+export interface TycoonStaffView {
+  id: StaffId;
+  name: string;
+  design: number;
+  tech: number;
+  hype: number;
+  hired: boolean;
+  trainedToday: boolean;
+  training: { design: TrainOffer; tech: TrainOffer; hype: TrainOffer };
+}
+
+interface StaffState extends CraftPoints {
+  trainedDay: number | null;
+}
+
+interface StaffSnapshot extends CraftPoints {
+  id: StaffId;
+}
+
 export interface TycoonReview {
   score: number;
   reviewers: Array<{ name: string; score: number; blurb: string }>;
@@ -149,7 +177,8 @@ export interface TycoonSnapshot {
   topics: Array<{ id: TopicId; name: string }>;
   types: Array<{ id: ProductTypeId; name: string; devDays: number; priceCents: number; design: number; tech: number; hype: number }>;
   fits: Array<{ topicId: TopicId; typeId: ProductTypeId; fit: Fit }>;
-  staff: Array<{ id: StaffId; name: string; design: number; tech: number; hype: number; hired: boolean }>;
+  staff: TycoonStaffView[];
+  trainingNotice: string;
   developing: TycoonProductView | null;
   history: TycoonProductView[];
 }
@@ -216,19 +245,80 @@ export function productTitle(topicId: TopicId, typeId: ProductTypeId): string {
   return `${topic.name} ${type.name}`;
 }
 
-export function staffPoints(staffIds: readonly string[]): CraftPoints {
+export function trainCostCents(level: number): number {
+  return TRAIN_COST_PER_LEVEL_CENTS * Math.max(1, level);
+}
+
+export function statLabel(stat: StatId): string {
+  if (stat === "design") return "Design";
+  if (stat === "tech") return "Tech";
+  return "Hype";
+}
+
+export function staffPoints(staffIds: readonly string[], stats?: Readonly<Record<string, CraftPoints>>): CraftPoints {
   const totals: CraftPoints = { design: 0, tech: 0, hype: 0 };
   const seen = new Set<string>();
   for (const id of staffIds) {
     if (seen.has(id)) continue;
     seen.add(id);
-    const person = STAFF.find((member) => member.id === id);
+    const person = stats?.[id] ?? STAFF.find((member) => member.id === id);
     if (!person) continue;
     totals.design += person.design;
     totals.tech += person.tech;
     totals.hype += person.hype;
   }
   return totals;
+}
+
+export function snapshotPoints(members: readonly CraftPoints[]): CraftPoints {
+  const totals: CraftPoints = { design: 0, tech: 0, hype: 0 };
+  for (const person of members) {
+    totals.design += person.design;
+    totals.tech += person.tech;
+    totals.hype += person.hype;
+  }
+  return totals;
+}
+
+function asStat(value: string): StatId {
+  if (value === "design" || value === "tech" || value === "hype") return value;
+  throw new Error("Train Design, Tech, or Hype.");
+}
+
+function clampStat(value: unknown, fallback: number): number {
+  const amount = Number(value);
+  if (!Number.isInteger(amount)) return fallback;
+  return Math.max(0, Math.min(STAT_CAP, amount));
+}
+
+function parseStaffSnapshot(raw: string): StaffSnapshot[] {
+  let parsed: unknown;
+  try { parsed = JSON.parse(raw); } catch { return []; }
+  if (!Array.isArray(parsed)) return [];
+  const result: StaffSnapshot[] = [];
+  const seen = new Set<string>();
+  for (const item of parsed) {
+    if (typeof item === "string") {
+      const person = STAFF.find((member) => member.id === item);
+      if (!person || seen.has(person.id)) continue;
+      seen.add(person.id);
+      result.push({ id: person.id, design: person.design, tech: person.tech, hype: person.hype });
+      continue;
+    }
+    if (!item || typeof item !== "object" || !("id" in item)) continue;
+    const id = String((item as { id: unknown }).id);
+    const person = STAFF.find((member) => member.id === id);
+    if (!person || seen.has(person.id)) continue;
+    seen.add(person.id);
+    const row = item as { design?: unknown; tech?: unknown; hype?: unknown };
+    result.push({
+      id: person.id,
+      design: clampStat(row.design, person.design),
+      tech: clampStat(row.tech, person.tech),
+      hype: clampStat(row.hype, person.hype),
+    });
+  }
+  return result;
 }
 
 /** 0..1000. Matching the ideal is full credit. A little extra holds. A lot extra dulls the work. */
@@ -330,6 +420,8 @@ function asFit(value: string): Fit {
 }
 
 export class TycoonStore {
+  private trainingNotice = "";
+
   constructor(private readonly db: DatabaseSync, private readonly journey: JourneyStore) {}
 
   view(): TycoonSnapshot {
@@ -339,6 +431,9 @@ export class TycoonStore {
       SELECT * FROM tycoon_products WHERE status != 'developing'
       ORDER BY released_day DESC, id DESC LIMIT 48
     `).all() as unknown as ProductRow[]).map((row) => this.toView(row));
+    const stats = this.loadStaffState();
+    const day = this.day();
+    const cash = this.cashCents();
     return {
       seed: this.seed(),
       salesWindowDays: SALES_WINDOW_DAYS,
@@ -348,10 +443,26 @@ export class TycoonStore {
         design: type.design, tech: type.tech, hype: type.hype,
       })),
       fits: allFits(),
-      staff: STAFF.map((person) => ({
-        id: person.id, name: person.name, design: person.design, tech: person.tech, hype: person.hype,
-        hired: person.id === "founder" || hired.has(person.id),
-      })),
+      staff: STAFF.map((person) => {
+        const current = stats[person.id];
+        const isHired = person.id === "founder" || hired.has(person.id);
+        const trainedToday = current.trainedDay === day;
+        return {
+          id: person.id,
+          name: person.name,
+          design: current.design,
+          tech: current.tech,
+          hype: current.hype,
+          hired: isHired,
+          trainedToday,
+          training: {
+            design: this.trainOffer(current.design, isHired, trainedToday, cash),
+            tech: this.trainOffer(current.tech, isHired, trainedToday, cash),
+            hype: this.trainOffer(current.hype, isHired, trainedToday, cash),
+          },
+        };
+      }),
+      trainingNotice: this.trainingNotice,
       developing: developing ? this.toView(developing) : null,
       history,
     };
@@ -363,6 +474,10 @@ export class TycoonStore {
       const topicId = asTopic(topicValue);
       const typeId = asType(typeValue);
       const staffIds = this.assignedStaff(requestedStaff);
+      const stats = this.loadStaffState();
+      const snapshot = staffIds.map((id) => ({
+        id, design: stats[id].design, tech: stats[id].tech, hype: stats[id].hype,
+      }));
       const count = Number((this.db.prepare("SELECT COUNT(*) AS n FROM tycoon_products").get() as { n: number }).n);
       const id = `p${count + 1}`;
       this.db.prepare(`
@@ -371,7 +486,41 @@ export class TycoonStore {
           design_points, tech_points, hype_points, staff_json, last_dev_day,
           released_day, review_json, sales_applied, last_sales_day, sales_cents, fans
         ) VALUES (?, ?, ?, ?, ?, 'developing', ?, 0, 0, 0, 0, ?, NULL, NULL, NULL, 0, NULL, 0, 0)
-      `).run(id, topicId, typeId, productTitle(topicId, typeId), fitFor(topicId, typeId), this.day(), JSON.stringify(staffIds));
+      `).run(id, topicId, typeId, productTitle(topicId, typeId), fitFor(topicId, typeId), this.day(), JSON.stringify(snapshot));
+      return this.journey.state();
+    });
+  }
+
+  train(staffValue: string, statValue: string): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const person = STAFF.find((member) => member.id === staffValue);
+      if (!person) throw new Error("Unknown teammate");
+      if (person.id !== "founder" && !this.hiredIds().has(person.id)) {
+        throw new Error(`${person.name} is not on the team yet.`);
+      }
+      const stat = asStat(statValue);
+      const state = this.loadStaffState();
+      const current = state[person.id][stat];
+      if (current >= STAT_CAP) throw new Error(`${person.name}'s ${statLabel(stat)} is already at ${STAT_CAP}.`);
+      const day = this.day();
+      if (state[person.id].trainedDay === day) throw new Error(`${person.name} is already in training today.`);
+      const cost = trainCostCents(current);
+      const cash = this.cashCents();
+      if (cash < cost) {
+        throw new Error(`Not enough game cash. Training ${statLabel(stat)} costs $${Math.floor(cost / 100)}.`);
+      }
+      this.journey.recordCompanyChange(
+        `tycoon:train:${person.id}:${stat}:${day}`,
+        day,
+        -cost,
+        0,
+        0,
+        `Training · ${person.name} ${statLabel(stat)}`,
+      );
+      state[person.id][stat] = current + 1;
+      state[person.id].trainedDay = day;
+      this.saveStaffState(state);
+      this.trainingNotice = `${person.name} trained ${statLabel(stat)} to ${current + 1}. −$${Math.floor(cost / 100)}`;
       return this.journey.state();
     });
   }
@@ -423,8 +572,12 @@ export class TycoonStore {
     if (row.last_dev_day !== null && Number(row.last_dev_day) === day) return;
     const type = typeById(row.type_id);
     if (!type) throw new Error("Unknown product type");
-    const staffIds = JSON.parse(row.staff_json) as string[];
-    const gain = pointsStillAccrue(Number(row.dev_days), type.devDays) ? staffPoints(staffIds) : { design: 0, tech: 0, hype: 0 };
+    const snapshot = parseStaffSnapshot(row.staff_json);
+    const trainedToday = this.trainedIdsOn(day);
+    const working = snapshot.filter((person) => !trainedToday.has(person.id));
+    const gain = pointsStillAccrue(Number(row.dev_days), type.devDays)
+      ? snapshotPoints(working)
+      : { design: 0, tech: 0, hype: 0 };
     const devDays = Number(row.dev_days) + 1;
     this.db.prepare(`
       UPDATE tycoon_products
@@ -491,6 +644,51 @@ export class TycoonStore {
     return new Set(rows.map((row) => row.id));
   }
 
+  private cashCents(): number {
+    const row = this.db.prepare("SELECT cash_cents FROM company_state WHERE id = 1").get() as { cash_cents: number } | undefined;
+    return Number(row?.cash_cents ?? 0);
+  }
+
+  private trainOffer(level: number, hired: boolean, trainedToday: boolean, cash: number): TrainOffer {
+    if (level >= STAT_CAP) return { costCents: 0, enabled: false };
+    const costCents = trainCostCents(level);
+    return { costCents, enabled: hired && !trainedToday && cash >= costCents };
+  }
+
+  private trainedIdsOn(day: number): Set<string> {
+    const stats = this.loadStaffState();
+    return new Set(STAFF.filter((person) => stats[person.id].trainedDay === day).map((person) => person.id));
+  }
+
+  private loadStaffState(): Record<StaffId, StaffState> {
+    const defaults = Object.fromEntries(STAFF.map((person) => [person.id, {
+      design: person.design, tech: person.tech, hype: person.hype, trainedDay: null as number | null,
+    }])) as Record<StaffId, StaffState>;
+    const row = this.db.prepare("SELECT staff_json FROM tycoon_meta WHERE id = 1").get() as { staff_json?: string } | undefined;
+    const raw = row?.staff_json?.trim();
+    if (!raw) return defaults;
+    let parsed: unknown;
+    try { parsed = JSON.parse(raw); } catch { return defaults; }
+    if (!parsed || typeof parsed !== "object") return defaults;
+    const stored = parsed as Record<string, { design?: unknown; tech?: unknown; hype?: unknown; trainedDay?: unknown }>;
+    for (const person of STAFF) {
+      const item = stored[person.id];
+      if (!item || typeof item !== "object") continue;
+      const trainedDay = Number(item.trainedDay);
+      defaults[person.id] = {
+        design: clampStat(item.design, person.design),
+        tech: clampStat(item.tech, person.tech),
+        hype: clampStat(item.hype, person.hype),
+        trainedDay: Number.isInteger(trainedDay) && trainedDay > 0 ? trainedDay : null,
+      };
+    }
+    return defaults;
+  }
+
+  private saveStaffState(state: Record<StaffId, StaffState>): void {
+    this.db.prepare("UPDATE tycoon_meta SET staff_json = ? WHERE id = 1").run(JSON.stringify(state));
+  }
+
   private seed(): number {
     const row = this.db.prepare("SELECT seed FROM tycoon_meta WHERE id = 1").get() as { seed: number } | undefined;
     if (!row) throw new Error("Tycoon seed is missing");
@@ -519,7 +717,7 @@ export class TycoonStore {
     const topic = topicById(topicId)!;
     const devDays = Number(row.dev_days);
     const progress = Math.min(100, Math.round((devDays * 100) / type.devDays));
-    const staffIds = JSON.parse(row.staff_json) as StaffId[];
+    const staffIds = parseStaffSnapshot(row.staff_json).map((person) => person.id);
     return {
       id: row.id,
       name: row.name,

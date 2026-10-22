@@ -165,6 +165,7 @@ func _run() -> void:
 	await click(button_named("Start company"))
 	await wait_until(func() -> bool: return main.company_panel.screen == "journey", "Start company opens Journey")
 	await open_product()
+	check(not main.job_panel._connection_panel.visible, "Connect stays closed on the product picker")
 	var fit := label_named("ProductFit")
 	check(fit != null and fit.text.contains("Bad"), "Fitness × Software Tool starts as a bad fit")
 	await click(button_named("Crypto Alpha"))

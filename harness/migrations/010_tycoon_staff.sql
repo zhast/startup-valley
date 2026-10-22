@@ -1,0 +1,1 @@
+ALTER TABLE tycoon_meta ADD COLUMN staff_json TEXT NOT NULL DEFAULT '';
