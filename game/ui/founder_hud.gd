@@ -146,7 +146,7 @@ func _build_interaction_prompt() -> void:
 	_interaction_prompt.add_child(button)
 
 func _build_movement_hint() -> void:
-	_movement_hint = _texture_control("MovementPlaque", MOVEMENT_TEXTURE, Rect2(455.0, 660.0, 240.0, 48.0))
+	_movement_hint = _texture_control("MovementPlaque", MOVEMENT_TEXTURE, Rect2(455.0, 672.0, 240.0, 48.0))
 	var label := _label("Click / WASD to move", GameFonts.BODY_DEFAULT, CHARCOAL)
 	CozyUI.label(label, "action")
 	label.text = "Click / WASD to move"
@@ -158,7 +158,7 @@ func _build_movement_hint() -> void:
 func _build_next_step_hint() -> void:
 	var plaque := Panel.new()
 	plaque.name = "NextStepPlaque"
-	plaque.position = Vector2(24.0, 108.0)
+	plaque.position = Vector2(800.0, 16.0)
 	plaque.size = Vector2(320.0, 56.0)
 	plaque.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	plaque.add_theme_stylebox_override("panel", CozyUI.paper(Vector4(12, 8, 12, 8)))

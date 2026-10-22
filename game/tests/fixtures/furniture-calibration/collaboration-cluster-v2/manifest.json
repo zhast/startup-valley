@@ -90,7 +90,7 @@
 					},
 					"name": "NorthChair0Whole",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/north-north_chair_0_whole.png",
-					"sha256": "ff9edf1b9a8048e334106fb829e050be51966ad83fcf755f4cd3925177389754",
+					"sha256": "c48ca7ecfaec8198306b7ee086e3cba896b254fb03a28a70caa6ba85fc1e2945",
 					"z_offset": -9
 				},
 				{
@@ -107,7 +107,7 @@
 					},
 					"name": "SouthChair0Whole",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/north-south_chair_0_whole.png",
-					"sha256": "253a5182911342c12552cc6701b82a276e5e3f726aa62db5b7ec98cf8d9ccf74",
+					"sha256": "04c7f46d7a5dfdd8c09a8dcdcd517a5446ddcf990f050b006d2139502ffbd170",
 					"z_offset": 5
 				},
 				{
@@ -124,7 +124,7 @@
 					},
 					"name": "NorthChair1Whole",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/north-north_chair_1_whole.png",
-					"sha256": "1c08982655dc8670fb75473ee361603c2ecdcf7ecfa31df9615d3518449957d0",
+					"sha256": "92d413ca2398dddbef2ccb9fe0543d8752772f320f1d3ad8d91f596a39632476",
 					"z_offset": -9
 				},
 				{
@@ -141,7 +141,7 @@
 					},
 					"name": "SouthChair1Whole",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/north-south_chair_1_whole.png",
-					"sha256": "1e4774ac272233177fab52ecea888292123c65cfe8c979543b7785d222482ca7",
+					"sha256": "43bcbd0fd3e7b95d4cb73e3b85c73708acb741017a9e635c0f35f2237c5579b7",
 					"z_offset": 5
 				}
 			],
@@ -749,7 +749,7 @@
 					"partial_alpha": 0
 				},
 				"path": "res://tests/fixtures/furniture-calibration/collaboration-cluster-v2/north-whole.png",
-				"sha256": "2e2e057170473116d1a8578be13279e6257b7de7267518b9792f8098206ea7a1"
+				"sha256": "e7bd1865038d820c82c825ed0144b1a631f1ca1814876b65e0f346bcdc0fe60f"
 			}
 		},
 		{
@@ -820,7 +820,7 @@
 					},
 					"name": "WestChair0Rear",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/east-west_chair_0_rear.png",
-					"sha256": "9bfe8fb368184446b363bf0e13f2f131c8c7946b351b42565c72c1569634cbfd",
+					"sha256": "c8b67f2958ee10125cf23b1621c038f53d3cd34ef237d5c26eff4d1d116181c0",
 					"z_offset": -10
 				},
 				{
@@ -837,7 +837,7 @@
 					},
 					"name": "WestChair0Front",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/east-west_chair_0_front.png",
-					"sha256": "15d3594681d65858de20f262ca7ea8ffe2b404245bb9417d82bb30f236ff5538",
+					"sha256": "54d98c5f5f56af92916b6ea8b16efb0b3b355360739bfd34048762b8a054effc",
 					"z_offset": -8
 				},
 				{
@@ -854,7 +854,7 @@
 					},
 					"name": "EastChair0Rear",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/east-east_chair_0_rear.png",
-					"sha256": "3f39a0076852564a07b90720cbc986ef6bed59edded7656c0cfb7b70acd53a3b",
+					"sha256": "918f906bb3d8a9c903efbd939b997ec648406644ae3ab74f385e1e089bd635ab",
 					"z_offset": -10
 				},
 				{
@@ -871,7 +871,7 @@
 					},
 					"name": "EastChair0Front",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/east-east_chair_0_front.png",
-					"sha256": "b2f9a0b5406a0da463bb1ff2374f883e54810d41e3907d438bb228a6db99aae5",
+					"sha256": "642ccd14edafc4cf1e7a60a3ac71189cf2ba243a5926af13beb0eb18c1dc1ede",
 					"z_offset": -8
 				},
 				{
@@ -888,7 +888,7 @@
 					},
 					"name": "WestChair1Rear",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/east-west_chair_1_rear.png",
-					"sha256": "a54fbe48234f7f3fe808bdb8483de933bbc7cd0e51bac536fd0792ddffe9d713",
+					"sha256": "37fd57b3806f40c48bb5db8685ca5292c088ec51189879f70ba324b7e2c06cfa",
 					"z_offset": 4
 				},
 				{
@@ -905,7 +905,7 @@
 					},
 					"name": "WestChair1Front",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/east-west_chair_1_front.png",
-					"sha256": "ae17283290dd7b6b5faa23035063823e0a417800c48c36cdac6847432bc3c1e1",
+					"sha256": "d0d4aeb8aaf0c546732cdfc21d809ba4bd2b9042a07bade34f0146153ff520dc",
 					"z_offset": 6
 				},
 				{
@@ -922,7 +922,7 @@
 					},
 					"name": "EastChair1Rear",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/east-east_chair_1_rear.png",
-					"sha256": "41c1923b4d32630916f30400292d743a9468e8da7291c5df75f9246715b82000",
+					"sha256": "5ff7ae039f3704af67090c74b89821f870dfc75a00c77558132ceba7c65418d4",
 					"z_offset": 4
 				},
 				{
@@ -939,7 +939,7 @@
 					},
 					"name": "EastChair1Front",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/east-east_chair_1_front.png",
-					"sha256": "41f65073dba7ed49d6d4d5c9156fda8ace8e8e8c9750188c480f3982f4720878",
+					"sha256": "aa248826a60b6a06a90f49bf14fbd3916b250ecbb00c836547dafd084cf775dd",
 					"z_offset": 6
 				}
 			],
@@ -1607,7 +1607,7 @@
 					"partial_alpha": 0
 				},
 				"path": "res://tests/fixtures/furniture-calibration/collaboration-cluster-v2/east-whole.png",
-				"sha256": "b2439b34bc93436fcd794c20187923c274341fc74da907b50edb17b5b24765a9"
+				"sha256": "3384cc04039b03b31f1f1066ef7c3bceac261e307310a3c0bf53ef60c64f5d35"
 			}
 		},
 		{
@@ -1678,7 +1678,7 @@
 					},
 					"name": "NorthChair0Whole",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/south-north_chair_0_whole.png",
-					"sha256": "303ef78656efc64554ab389e2f0972705b48c51c9e4b4c1679cb8bef4e49512e",
+					"sha256": "1af41be07a20103ed1511bd7317ed4b4537060bcd224fb017e8019b995a9eb23",
 					"z_offset": -9
 				},
 				{
@@ -1695,7 +1695,7 @@
 					},
 					"name": "SouthChair0Whole",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/south-south_chair_0_whole.png",
-					"sha256": "cb295e05aae625e3fcbfe9b90b14687bc1ef376eca605a157297d87b13c8a4e8",
+					"sha256": "d13067d8dd62c11216c07c17a683734f19eaee6411527d97581b3c08e61db791",
 					"z_offset": 5
 				},
 				{
@@ -1712,7 +1712,7 @@
 					},
 					"name": "NorthChair1Whole",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/south-north_chair_1_whole.png",
-					"sha256": "e5bed4b66d15c5f0b568f5b3b67db2678257004dbf05ca50c688b90e2b20f471",
+					"sha256": "e785ff2b2e71e1414ec2abe88ab3b791b0436256fc4d03e42de6c4546f9ea955",
 					"z_offset": -9
 				},
 				{
@@ -1729,7 +1729,7 @@
 					},
 					"name": "SouthChair1Whole",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/south-south_chair_1_whole.png",
-					"sha256": "0cfcee3b592497a623cd4210892b2c68874875ce40b0054d54782c442b632ee7",
+					"sha256": "2f770eac0788640b475561164c802168cf94c1dd99c2f3ca15b76147160c5769",
 					"z_offset": 5
 				}
 			],
@@ -2337,7 +2337,7 @@
 					"partial_alpha": 0
 				},
 				"path": "res://tests/fixtures/furniture-calibration/collaboration-cluster-v2/south-whole.png",
-				"sha256": "cda88a7467d1cb1228a2bba0756787659be0be0ce1e43fc83fb934bd57fbd0fb"
+				"sha256": "d6a3eb2499bc96471394600e055a5dfac3e2b53e5e0bc6c899b47f161157cb24"
 			}
 		},
 		{
@@ -2408,7 +2408,7 @@
 					},
 					"name": "WestChair0Rear",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/west-west_chair_0_rear.png",
-					"sha256": "69e2f2ae30c576fe3c5dc84e2df4cda712f5a01af30cacf5b4bac0dde9794499",
+					"sha256": "e55182015d8a93459d0bbac2e3af522e56819fa2e67e2901e6b5f5747c383739",
 					"z_offset": -10
 				},
 				{
@@ -2425,7 +2425,7 @@
 					},
 					"name": "WestChair0Front",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/west-west_chair_0_front.png",
-					"sha256": "761db580722c31afa042efdb4947e785c24436f48ea9207132ed3f7d378924a8",
+					"sha256": "3a4752a9536a3ae658b2fcfdcb5d8d680f99304986a1e3dfb3b43e5728ec105e",
 					"z_offset": -8
 				},
 				{
@@ -2442,7 +2442,7 @@
 					},
 					"name": "EastChair0Rear",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/west-east_chair_0_rear.png",
-					"sha256": "13a65d6076f0c47fcbd88f02625f9407f1d3f64d247a9da86e644ff7a0808900",
+					"sha256": "cdf17941f6d8c58449f035a541a5958a54393956ce94f7477680d6c4834d56a1",
 					"z_offset": -10
 				},
 				{
@@ -2459,7 +2459,7 @@
 					},
 					"name": "EastChair0Front",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/west-east_chair_0_front.png",
-					"sha256": "047f68fffd27a907b010988d85cae5220720a6a3afe2b68d212530b4a0fee113",
+					"sha256": "9ab0f56be87aac5906860f77b6cd1b686e06fb1b2ccc5d86208c2b45b62b7d43",
 					"z_offset": -8
 				},
 				{
@@ -2476,7 +2476,7 @@
 					},
 					"name": "WestChair1Rear",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/west-west_chair_1_rear.png",
-					"sha256": "329f71deee2952528b503b8e8ae068556655318f7e43fdd9185338d96984c74a",
+					"sha256": "6257d63512a5216a43d47b6e2528002ed0689069f7d75701b3d2b236b68e3b10",
 					"z_offset": 4
 				},
 				{
@@ -2493,7 +2493,7 @@
 					},
 					"name": "WestChair1Front",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/west-west_chair_1_front.png",
-					"sha256": "91375b37e8a8e9debecd98d122d0b68c250ba482d3aabb6a1f141918f9138d3f",
+					"sha256": "b4682410fc301486c0084eef8c7fb6f96ee5a0da8316e5dfdceec7fcddb8d4bb",
 					"z_offset": 6
 				},
 				{
@@ -2510,7 +2510,7 @@
 					},
 					"name": "EastChair1Rear",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/west-east_chair_1_rear.png",
-					"sha256": "9396b606ba83948b12180de874a607ab2eab50db1091a2fe4be0caf026c14882",
+					"sha256": "9d57fe038087931a11e0457f0810a943ece78fc7a51aa11b7546b99829762e0a",
 					"z_offset": 4
 				},
 				{
@@ -2527,7 +2527,7 @@
 					},
 					"name": "EastChair1Front",
 					"runtime": "res://assets/runtime/office/collaboration-cluster-v2/west-east_chair_1_front.png",
-					"sha256": "ae289acf6af16935531b4b62283712472584663f602b0d18542073f6baa3cfe2",
+					"sha256": "2e347bf38cd509216e6538d01d7e72593bc0e167fa92d9b643aabc6b8bfbef53",
 					"z_offset": 6
 				}
 			],
@@ -3195,7 +3195,7 @@
 					"partial_alpha": 0
 				},
 				"path": "res://tests/fixtures/furniture-calibration/collaboration-cluster-v2/west-whole.png",
-				"sha256": "6f78ba22de7a3546d8102a7ccbcf3993974cbbdbebf44cd617597883049d45a3"
+				"sha256": "9e22c8f9f8b7339a7835c129ec29e7dd1bb8fea6239f6c6fa929346e5929f202"
 			}
 		}
 	],

@@ -315,6 +315,9 @@ static func locomotion_sheet(character_id: String) -> Texture2D:
 static func work_sheet(character_id: String) -> Texture2D:
 	return THEO_WORK if character_id == "theo" else MIRA_WORK
 
+static func has_work_sheet(character_id: String) -> bool:
+	return character_id == "mira" or character_id == "theo"
+
 static func seated_sheet(character_id: String) -> Texture2D:
 	return THEO_SEATED if character_id == "theo" else MIRA_SEATED
 
