@@ -184,7 +184,8 @@ export type ProtocolMethod =
   | "clock.set"
   | "hiring.complete" | "milestone.evaluate" | "milestone.complete" | "milestone.override"
   | "chapter.continue"
-  | "day.end" | "game.save" | "game.new";
+  | "day.end" | "game.save" | "game.new"
+  | "tycoon.start" | "tycoon.release";
 
 export interface ProtocolRequest {
   kind: "request";

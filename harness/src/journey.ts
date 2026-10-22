@@ -1,4 +1,5 @@
 import type { DatabaseSync } from "node:sqlite";
+import type { TycoonSnapshot } from "./tycoon.js";
 import type { JobSpec } from "./types.js";
 
 export interface MilestoneDefinition {
@@ -60,9 +61,14 @@ export function parseEvaluation(text: string, definition: MilestoneDefinition): 
 }
 
 export class JourneyStore {
+  private tycoonView: (() => TycoonSnapshot) | null = null;
+
   constructor(readonly db: DatabaseSync, readonly onHire: () => void = () => {}) {
     for (const item of MILESTONES) db.prepare("INSERT OR IGNORE INTO milestone_progress(id) VALUES (?)").run(item.id);
     db.prepare("UPDATE milestone_evaluations SET status = 'failed', error = 'Evaluation interrupted. Retry when ready.' WHERE status = 'evaluating'").run();
+  }
+  bindTycoon(view: () => TycoonSnapshot): void {
+    this.tycoonView = view;
   }
   transaction<T>(action: () => T): T {
     this.db.exec("BEGIN IMMEDIATE");
@@ -86,7 +92,7 @@ export class JourneyStore {
       const state = progress.completed ? "completed" : !available ? "locked" : evaluation?.status === "evaluating" ? "evaluating" : evaluation?.status === "done" && JSON.parse(String(evaluation.result_json)).verdict === "revise" ? "revision_required" : job && ["running", "queued", "completed"].includes(String(job.status)) ? "active" : "available";
       return { ...definition, state, jobId, jobStatus: job?.status ?? "", overridden: Boolean(progress.overridden), evaluation: evaluation?.result_json ? JSON.parse(String(evaluation.result_json)) as EvaluationResult : null, evaluationError: evaluation?.error ?? "" };
     });
-    return {
+    const body = {
       company: { cashCents: Number(company.cash_cents), earnedCents: Number(company.earned_cents), reputation: Number(company.reputation), chapter: Number(company.chapter) },
       player: JSON.parse(String(company.player_json)) as Record<string, unknown>, milestones,
       candidates: [
@@ -95,6 +101,7 @@ export class JourneyStore {
         { id: "creative", name: "Creative", costCents: 0, available: !this.hired("creative") && this.openedChapter() >= 2 && this.completed("incorporate"), hired: this.hired("creative"), role: "Design + brand" },
       ],
     };
+    return this.tycoonView ? { ...body, tycoon: this.tycoonView() } : body;
   }
   hire(id: string, day: number) {
     return this.transaction(() => {
@@ -188,6 +195,9 @@ export class JourneyStore {
       if (definition.id === "brand") this.db.prepare("UPDATE company_state SET chapter=3 WHERE id=1").run();
       return this.state();
     });
+  }
+  recordCompanyChange(id: string, day: number, cash: number, earned: number, reputation: number, label: string): void {
+    this.charge(id, day, cash, earned, reputation, label);
   }
   private charge(id: string, day: number, cash: number, earned: number, reputation: number, label: string): void {
     if (this.db.prepare("SELECT id FROM company_transactions WHERE id=?").get(id)) return;

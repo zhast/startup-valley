@@ -244,6 +244,7 @@
         }
       }
     },
+    "tycoon": { "$ref": "#/$defs/tycoon" },
     "daySummary": {
       "type": "object",
       "required": [
@@ -289,6 +290,120 @@
     }
   },
   "$defs": {
+    "tycoon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "developing", "history"],
+      "properties": {
+        "seed": { "type": "integer", "minimum": 1 },
+        "salesWindowDays": { "type": "integer", "const": 4 },
+        "topics": { "type": "array", "maxItems": 10, "items": { "$ref": "#/$defs/tycoonTopic" } },
+        "types": { "type": "array", "maxItems": 6, "items": { "$ref": "#/$defs/tycoonType" } },
+        "fits": { "type": "array", "maxItems": 60, "items": { "$ref": "#/$defs/tycoonFit" } },
+        "staff": { "type": "array", "maxItems": 4, "items": { "$ref": "#/$defs/tycoonStaff" } },
+        "developing": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/tycoonProduct" }] },
+        "history": { "type": "array", "maxItems": 48, "items": { "$ref": "#/$defs/tycoonProduct" } }
+      }
+    },
+    "tycoonTopic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name"],
+      "properties": {
+        "id": { "enum": ["fitness", "trading", "sneakers", "reselling", "sports_betting", "cooking", "gaming", "dating", "study_notes", "crypto"] },
+        "name": { "type": "string", "minLength": 1 }
+      }
+    },
+    "tycoonType": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "devDays", "priceCents", "design", "tech", "hype"],
+      "properties": {
+        "id": { "enum": ["course", "community", "template_pack", "coaching", "software", "newsletter"] },
+        "name": { "type": "string", "minLength": 1 },
+        "devDays": { "type": "integer", "minimum": 1 },
+        "priceCents": { "type": "integer", "minimum": 0 },
+        "design": { "type": "integer", "minimum": 0 },
+        "tech": { "type": "integer", "minimum": 0 },
+        "hype": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "tycoonFit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["topicId", "typeId", "fit"],
+      "properties": {
+        "topicId": { "enum": ["fitness", "trading", "sneakers", "reselling", "sports_betting", "cooking", "gaming", "dating", "study_notes", "crypto"] },
+        "typeId": { "enum": ["course", "community", "template_pack", "coaching", "software", "newsletter"] },
+        "fit": { "enum": ["great", "good", "okay", "bad"] }
+      }
+    },
+    "tycoonStaff": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "design", "tech", "hype", "hired"],
+      "properties": {
+        "id": { "enum": ["founder", "mira", "theo", "creative"] },
+        "name": { "type": "string", "minLength": 1 },
+        "design": { "type": "integer", "minimum": 0 },
+        "tech": { "type": "integer", "minimum": 0 },
+        "hype": { "type": "integer", "minimum": 0 },
+        "hired": { "type": "boolean" }
+      }
+    },
+    "tycoonProduct": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "topicId", "typeId", "topicName", "typeName", "fit", "status", "startedDay", "devDays", "devDaysRequired", "design", "tech", "hype", "progress", "ready", "staffIds", "releasedDay", "review", "salesDays", "salesDaysTotal", "salesCents", "fans"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^p[1-9][0-9]*$" },
+        "name": { "type": "string", "minLength": 1 },
+        "topicId": { "enum": ["fitness", "trading", "sneakers", "reselling", "sports_betting", "cooking", "gaming", "dating", "study_notes", "crypto"] },
+        "typeId": { "enum": ["course", "community", "template_pack", "coaching", "software", "newsletter"] },
+        "topicName": { "type": "string", "minLength": 1 },
+        "typeName": { "type": "string", "minLength": 1 },
+        "fit": { "enum": ["great", "good", "okay", "bad"] },
+        "status": { "enum": ["developing", "released", "complete"] },
+        "startedDay": { "type": "integer", "minimum": 1 },
+        "devDays": { "type": "integer", "minimum": 0 },
+        "devDaysRequired": { "type": "integer", "minimum": 1 },
+        "design": { "type": "integer", "minimum": 0 },
+        "tech": { "type": "integer", "minimum": 0 },
+        "hype": { "type": "integer", "minimum": 0 },
+        "progress": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "ready": { "type": "boolean" },
+        "staffIds": { "type": "array", "maxItems": 4, "items": { "enum": ["founder", "mira", "theo", "creative"] } },
+        "releasedDay": { "anyOf": [{ "type": "null" }, { "type": "integer", "minimum": 1 }] },
+        "review": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/tycoonReview" }] },
+        "salesDays": { "type": "integer", "minimum": 0, "maximum": 4 },
+        "salesDaysTotal": { "type": "integer", "const": 4 },
+        "salesCents": { "type": "integer", "minimum": 0 },
+        "fans": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "tycoonReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "reviewers"],
+      "properties": {
+        "score": { "type": "integer", "minimum": 1, "maximum": 10 },
+        "reviewers": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "score", "blurb"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "score": { "type": "integer", "minimum": 1, "maximum": 10 },
+              "blurb": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
     "evaluation": {
       "type": "object",
       "additionalProperties": false,

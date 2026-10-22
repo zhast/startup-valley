@@ -1,13 +1,15 @@
 # Startup Valley v0 agent guide
 
-Startup Valley v0 is a desktop office-town whose workers run real AI jobs. Keep the two-process boundary intact:
+Startup Valley v0 is an offline office tycoon with Whop flavor in the names only. It should feel like Game Dev Tycoon and Stardew Valley: hire staff, ship products, earn game cash and reputation, buy upgrades, and grow the office across days. Gameplay is a pure in-game simulation. It must start and play with no API key, no Whop call, and no network. See `docs/TYCOON_DESIGN.md`.
+
+Keep the two-process boundary intact:
 
 - `game/`: Godot 4.7.2, typed GDScript only. Rendering, input, animation, menus, interpolation, and cached read-only worker views.
-- `harness/`: Node.js 22.19+ and TypeScript. Pi sessions, SQLite, jobs, constrained tools, credentials, audit, token budgets, and artifacts.
+- `harness/`: Node.js 22.19+ and TypeScript. SQLite, the tycoon simulation, and optional Pi sessions for chapter work orders. Jobs, constrained tools, credentials, audit, token budgets, and artifacts stay here.
 - `contracts/`: JSON Schemas for every JSONL request, response, job, event, and artifact crossing the process boundary.
 - `dev/`: acceptance notes and developer-only artifacts.
 
-The worker is authoritative for employees, memories, relationships, schedules, projects, work orders, approvals, clock state, usage, studio files, and artifacts. SQLite is the game database. Pi session files are never the source of truth for people.
+The worker is authoritative for the tycoon (products, reviews, sales), employees, memories, relationships, schedules, projects, work orders, approvals, clock state, usage, studio files, and artifacts. SQLite is the game database. Pi session files are never the source of truth for people. Do not duplicate tycoon rules in GDScript.
 
 ## Exact commands
 
@@ -32,7 +34,8 @@ godot --path game
 ## Required boundaries
 
 - The game communicates with the worker only over stdio JSONL for v0. Do not add an unauthenticated HTTP listener.
-- Grok / xAI is the primary provider. Sign in with Grok (or reuse `~/.grok/auth.json`) and inject the access token with Pi `setRuntimeApiKey("xai", …)` for `grok-4.6`. An OpenRouter key in the OS keychain remains a fallback. Never log or print tokens.
+- The core loop is offline. `tycoon.start`, `tycoon.release`, and the `day.end` product tick must not read a credential, call a provider, or use the network. A missing key must never block shipping a product.
+- Model providers are optional and off the core path. They exist only for chapter work orders and chat when the player opts in. Grok / xAI is the primary optional provider. Sign in with Grok (or reuse `~/.grok/auth.json`) and inject the access token with Pi `setRuntimeApiKey("xai", …)` for `grok-4.6`. An OpenRouter key in the OS keychain remains a fallback. `STARTUP_VALLEY_FAKE_PROVIDER=1` is the dev-only offline stand-in for those jobs. It is not the default, and it is not the tycoon. Never log or print tokens.
 - Create a bounded Pi session for each substantial work order and dispose it at job end. Do not create an immortal employee conversation.
 - Active-job steering is bounded to 2,000 characters and must call `steer()` on that work order's existing live Pi session. It must not create a replacement session or a second job.
 - Freeform and canned assignments use the same `JobSpec`, SQLite work-order row, queue, event stream, token cap, and fresh Pi session. A freeform job may attach one studio-relative text file; validate and read it through the studio path guard, persist its path, and bound its context before prompting.
