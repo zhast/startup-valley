@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import { normalizeClock, phaseForMinute } from "./day-clock.js";
 import { JourneyStore } from "./journey.js";
 import { FurnishingStore } from "./furnishing.js";
+import { TycoonStore } from "./tycoon.js";
 import type {
   Artifact,
   BootstrapState,
@@ -106,6 +107,7 @@ function parseObject<T>(value: string): T {
 export class GameDatabase {
   readonly journey: JourneyStore;
   readonly furnishing: FurnishingStore;
+  readonly tycoon: TycoonStore;
   readonly #database: DatabaseSync;
   readonly #projectRoot: string;
 
@@ -124,6 +126,7 @@ export class GameDatabase {
       [6, "006_company_journey.sql"],
       [7, "007_furnishing.sql"],
       [8, "008_company_journey_opening.sql"],
+      [9, "009_tycoon_products.sql"],
     ] as const) {
       const applied = this.#database.prepare("SELECT version FROM schema_migrations WHERE version = ?").get(version);
       if (applied) continue;
@@ -140,6 +143,8 @@ export class GameDatabase {
     this.#seed();
     this.furnishing = new FurnishingStore(this.#database);
     this.journey = new JourneyStore(this.#database, () => this.furnishing.sync());
+    this.tycoon = new TycoonStore(this.#database, this.journey);
+    this.journey.bindTycoon(() => this.tycoon.view());
     this.recoverInterruptedJobs();
   }
 
@@ -342,6 +347,7 @@ export class GameDatabase {
       if (current.day !== expectedDay) throw new Error("Day changed; refresh before ending it");
       const active = this.#database.prepare("SELECT id FROM work_orders WHERE status='running' OR id IN (SELECT work_order_id FROM approvals WHERE status='pending')").get();
       if (active) throw new Error("Finish or cancel active work and approvals before ending the day");
+      this.tycoon.tickDay(current.day);
       const summary = this.journey.daySummary(current.day, this.dailySpend());
       this.#database.prepare("INSERT INTO day_summaries VALUES (?,?)").run(current.day, JSON.stringify(summary));
       return { summary, clock: this.setClock(current.day + 1, 480, 1) };

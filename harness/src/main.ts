@@ -28,6 +28,13 @@ function stringParameter(request: ProtocolRequest, name: string, maxLength = 400
   return value;
 }
 
+function staffParameter(request: ProtocolRequest): string[] {
+  const value = request.params.staffIds;
+  if (value === undefined) return [];
+  if (!Array.isArray(value) || value.some((item) => typeof item !== "string")) throw new Error("Parameter staffIds must be an array of strings");
+  return value;
+}
+
 function numberParameter(request: ProtocolRequest, name: string): number {
   const value = request.params[name];
   if (typeof value !== "number" || !Number.isFinite(value)) throw new Error(`Parameter ${name} must be a finite number`);
@@ -99,6 +106,17 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
       if (startedJobId) ensureEventPump(startedJobId);
       return { ...result, journey: database.journey.state(), dailySpend: database.dailySpend() };
     }
+    case "tycoon.start":
+      return {
+        journey: database.tycoon.start(
+          stringParameter(request, "topicId", 64),
+          stringParameter(request, "typeId", 64),
+          staffParameter(request),
+        ),
+        dailySpend: database.dailySpend(),
+      };
+    case "tycoon.release":
+      return { journey: database.tycoon.release(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
     case "game.new": {
       if (request.params.confirmed !== true) throw new Error("Confirm New Company first");
       if (adapter.isBusy() || database.hasOpenWorkOrder()) throw new Error("Finish or cancel open work before starting a new company");

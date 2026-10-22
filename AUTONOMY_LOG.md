@@ -942,3 +942,42 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 **CHAPTER3 PLAYABLE: yes** — Begin Chapter 3 → assign and finish Apply the brand with Creative and `creative_design_kit` → Chapter 3 complete / more coming. Offline, no new art.
 
 - PR #27 merged (Round 25, Chapter 3 opening: Apply the brand).
+
+### Round 26 — 2026-10-21
+
+**Direction change**
+- Steven, 2026-10-21: Startup Valley is not a literal Whop product and must not call Whop or any LLM during play. It is an offline tycoon in the Game Dev Tycoon and Stardew Valley sense, with Whop only in the names, product types, and jokes. Hire, build, ship, earn game cash and reputation, and grow the office. Any OpenRouter, Grok, Pi, or Whop API use stays optional and off the core path. The game plays with no credential and no network.
+- `AGENTS.md` now leads with that loop. Provider rules are optional chapter-job rules. `docs/GAME_ARCHITECTURE.md` has a Tycoon simulation section. `docs/TYCOON_DESIGN.md` holds the pillars, the topic × type matrix, the day clock, the design-only season calendar, the name list, and the next slices. `README.md` no longer says a key is required to play. Chapter security rules are unchanged.
+
+**What changed**
+- Authoritative rules live in `harness/src/tycoon.ts`, not a second GDScript simulation. Migration `009_tycoon_products.sql` stores seed `26021` and each product in the same SQLite save. `journey.tycoon` rides the existing company payload. Methods are `tycoon.start` and `tycoon.release`. `day.end` calls `tickDay` inside the day transaction, before the summary. A repeated end of the same day does not build or sell twice.
+- The player picks one of 10 topics and one of 6 types. Fit is Great, Good, Okay, or Bad. The founder always works the bench. Hired staff can join and add design, tech, and hype per office day. Release writes four reviews (Whop Weekly, Discord Dave, Margin Call Molly, Cohort Casey), pays launch sales immediately, then sells on the next three office days. Cash and fans (reputation) update. Shipped products stay on a history list.
+- `STARTUP_VALLEY_FAKE_PROVIDER` was not flipped on. Chapter work orders still need a credential or that dev-only flag. The ship-a-product loop never reads a provider, a socket, or a key.
+- Office UI: Company Journey shows **New Product** when `tycoon` is present. The picker, the build progress, and the release card use the existing company panel. No new art. Chapter 1 still opens Connect when a website work order starts without a key.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art, seated poses, workstation N/E/W sheets, waiting-lunch, and the unbound furnishing kits stay untracked.
+
+**Remaining gaps (ranked)**
+1. Staff stats and training. Today's points are fixed per person. A training day should raise design, tech, or hype, and the product should keep the snapshot from the day it started.
+2. Research points. Quiet days should unlock a topic, a type, or a small fit bonus.
+3. Upgrades shop. Spend game cash on an office tool. No real-money store.
+4. Office growth. More desks and a second room from cash and headcount, using furniture that is already bound.
+5. Seasons and events. The 28-day Spring / Summer / Fall / Winter calendar is design-only. Turn it on with one deterministic event per season.
+6. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+7. Carried from Round 25: Creative has no seated sheet. Unbound art stays untracked. The live path is still a harness driver. A cheap reviewer can still sit just under the 2.5 ready line. Chapter 3 ends at "More is coming." `shared_workbench` stays in storage.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon and Chapter 1 playtests; fake provider only inside the full-path and offline-provider tests)
+- `cd harness && npm test` — 80 tests, 78 pass, 0 fail, 2 skipped
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass
+- `test_chapter1_first_player.gd` — CHAPTER1 PASS
+- `test_full_player_path.gd` — FULLPATH PASS
+- `test_ui_flow_regressions.gd` — passed
+- `test_ui_company_redesign.gd` — 4071 checks, 0 failures, 0 captures
+- `test_furnishing_projection.gd` — 797 checks, 0 failures
+- `test_tycoon_product.gd` — TYCOON PASS (Crypto Alpha Newsletter, founder only, no fake provider; launch $207.00 and 5 fans, next office day $333.00 and 8 fans)
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → pick a topic and a type → End day until Ready to ship → Release. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_product.gd`.

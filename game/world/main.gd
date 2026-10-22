@@ -647,6 +647,11 @@ func _on_company_action(method: String, result: Dictionary) -> void:
 		"milestone.complete", "milestone.override", "chapter.continue":
 			game_audio.play("reward")
 			company_panel.present("journey")
+		"tycoon.start":
+			company_panel.present("product")
+		"tycoon.release":
+			game_audio.play("reward")
+			company_panel.present("release")
 		"day.end":
 			job_panel.close_drawer(false)
 			artifact_viewer.hide()

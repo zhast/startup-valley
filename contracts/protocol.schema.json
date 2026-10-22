@@ -43,7 +43,8 @@
             "clock.set",
             "hiring.complete", "milestone.evaluate", "milestone.complete", "milestone.override",
             "chapter.continue",
-            "day.end", "game.save", "game.new"
+            "day.end", "game.save", "game.new",
+            "tycoon.start", "tycoon.release"
           ]
         },
         "params": { "type": "object" }
@@ -55,6 +56,12 @@
         { "if": { "properties": { "method": { "enum": ["milestone.evaluate", "milestone.complete", "milestone.override"] } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["jobId"], "properties": { "jobId": { "type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[A-Za-z0-9_-]+$" } } } } } },
         { "if": { "properties": { "method": { "const": "day.end" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["day"], "properties": { "day": { "type": "integer", "minimum": 1 } } } } } },
         { "if": { "properties": { "method": { "const": "game.new" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["confirmed"], "properties": { "confirmed": { "type": "boolean" } } } } } },
+        { "if": { "properties": { "method": { "const": "tycoon.start" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["topicId", "typeId"], "properties": {
+          "topicId": { "enum": ["fitness", "trading", "sneakers", "reselling", "sports_betting", "cooking", "gaming", "dating", "study_notes", "crypto"] },
+          "typeId": { "enum": ["course", "community", "template_pack", "coaching", "software", "newsletter"] },
+          "staffIds": { "type": "array", "maxItems": 4, "uniqueItems": true, "items": { "enum": ["founder", "mira", "theo", "creative"] } }
+        } } } } },
+        { "if": { "properties": { "method": { "const": "tycoon.release" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["productId"], "properties": { "productId": { "type": "string", "minLength": 2, "maxLength": 32, "pattern": "^p[1-9][0-9]*$" } } } } } },
         { "if": { "properties": { "method": { "const": "game.save" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["x", "y"], "properties": { "x": { "type": "number", "minimum": 0, "maximum": 1280 }, "y": { "type": "number", "minimum": 0, "maximum": 720 }, "movementSeen": { "type": "boolean" }, "effectsVolume": { "type": "number", "minimum": 0, "maximum": 1 }, "ambienceVolume": { "type": "number", "minimum": 0, "maximum": 1 }, "attentionEmployeeId": { "enum": ["", "mira", "theo", "creative"] }, "architectureTheme": { "enum": ["office", "cafe", "loft", "studio", "evening"] } } } } } }
       ]
     },

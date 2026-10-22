@@ -6,11 +6,11 @@ Startup Valley v0 has exactly two processes:
 
 ```text
 Godot 4.7.2 game  <— stdio JSONL —>  Node/TypeScript worker
-  render/input                         SQLite + Pi + keychain
-  animation/UI                         SQLite/studio/jobs/tools/audit
+  render/input                         SQLite tycoon simulation
+  animation/UI                         optional Pi for chapter jobs
 ```
 
-Godot owns presentation and short-lived read-only projections. The worker owns durable people and work state. SQLite is authoritative for employees, memories, schedules, relationships, morale, clock state, projects, work orders, studio-file provenance, approvals, event history, usage, and scratch artifacts. A Pi session is in-memory, scoped to one running work order, and disposed at its end.
+Godot owns presentation and short-lived read-only projections. The worker owns durable people, products, and work state. SQLite is authoritative for the tycoon, employees, memories, schedules, relationships, morale, clock state, projects, work orders, studio-file provenance, approvals, event history, usage, and scratch artifacts. A Pi session is in-memory, scoped to one running work order, and disposed at its end. Chapter jobs are the only path that can open one, and only when a credential or the dev-only fake provider is present. The ship-a-product loop never does.
 
 Employee chat follows the same ownership rule without becoming another work runtime. SQLite stores bounded player/employee messages and their usage. Each reply creates a fresh tool-free Pi session from recent messages and structured memories, then disposes it. Chat can clarify intent and seed a work-order draft; only an explicit work order receives tools.
 
@@ -27,6 +27,16 @@ The worker is a child process connected through `OS.execute_with_pipe`. There is
 7. Writes create durable artifact rows and `artifact.created` events. Usage totals and cost estimates create `usage.updated` events.
 8. The session is disposed. The completed job remains pending for an Approve or Discard promotion decision across restart. Approval moves guarded copies from `company-project/jobs/<job id>/` scratch into canonical `company-project/studio/` paths and records provenance; discard resolves the pending decision without copying.
 9. Later jobs can read the studio through an independently guarded, read-only `studio/` tool namespace. They cannot mutate it without another completed-artifact promotion.
+
+## Tycoon simulation
+
+The playable core is an offline tycoon. Rules live in `harness/src/tycoon.ts`. Migration `009_tycoon_products.sql` stores the seed and each product. `JourneyStore` attaches `journey.tycoon` on every company payload, so the Godot company panel can present it without a second simulation or a second save file.
+
+`tycoon.start` puts one product on the bench (topic, type, fit, and the staff snapshot). Each `day.end` calls `TycoonStore.tickDay` inside the existing day transaction, before the day summary. That tick adds design, tech, and hype while the product is in development, or applies the next sales day after release. Ending a day that already has a summary does not tick again. `tycoon.release` writes the four reviews and pays launch-day sales immediately. Later `day.end` calls pay the rest of the four-day curve. The release day does not pay twice.
+
+Reviews and sales are pure functions of the saved seed (`26021` on a new company), the fit, the points, and the staff. No provider, socket, or credential is consulted. `STARTUP_VALLEY_FAKE_PROVIDER` remains an opt-in switch for chapter work orders only. It stays off unless that env var is `1`.
+
+Player-facing topics, the fit table, the day loop, and the slices not built yet are in `docs/TYCOON_DESIGN.md`.
 
 ## Security levels
 
