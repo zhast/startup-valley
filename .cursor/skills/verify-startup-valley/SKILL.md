@@ -7,7 +7,7 @@ description: Drive the Startup Valley Godot game through a headless SubViewport 
 
 The Godot game presents `journey.tycoon`. The harness in `harness/` is authoritative. This skill boots `game/world/main.tscn` inside a SubViewport, clicks the real buttons, and writes PNGs. It does not call a model, the network, or a credential.
 
-Rules and prices live in `docs/TYCOON_DESIGN.md`. Player steps live in `features/`. Do not restate them here.
+Rules and prices live in `docs/TYCOON_DESIGN.md`. Player steps live in `features/` beside this file. Do not restate them here.
 
 ## Launch
 
