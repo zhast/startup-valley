@@ -1165,6 +1165,10 @@ func _set_seated_frame(column: int) -> void:
 	_character_sprite.region_rect = Rect2(Vector2(column * 48, 0), CharacterArt.FRAME_SIZE)
 
 func _set_delivery_frame(frame: int) -> void:
+	if not CharacterArt.has_work_sheet(employee_id):
+		_character_sprite.texture = CharacterArt.locomotion_sheet(employee_id)
+		_character_sprite.region_rect = CharacterArt.locomotion_region(_facing, 2 + frame)
+		return
 	var row := 2
 	var column := frame
 	match _facing:
