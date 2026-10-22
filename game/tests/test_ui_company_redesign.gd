@@ -395,7 +395,7 @@ func _summary_layout() -> void:
 	await _frames(15)
 	_bounds()
 	_check(_text().contains("$9,876,543.21"), "Large in-game revenue is grouped and retains cents")
-	_check(_text().contains("Game revenue") and _text().contains("virtual company funds") and _text().contains("Real AI spend") and _text().contains("real money (USD)"), "Day results distinguish virtual company funds from real AI costs in USD")
+	_check(_text().contains("Game revenue") and _text().contains("virtual company funds") and _text().contains("Optional AI spend") and _text().contains("real money (USD)"), "Day results distinguish virtual company funds from optional real AI costs in USD")
 	var numeric_count := 0
 	for node: Node in _panel.find_children("*", "Label", true, false):
 		var label := node as Label
@@ -405,6 +405,10 @@ func _summary_layout() -> void:
 	_check(numeric_count == 3, "All three summary values have explicit numeric roles")
 	_check(_visible(_button("Begin next day")), "Next day action remains visible with large metrics and long work titles")
 	await _capture("day-summary-large-values")
+	_panel.show_summary({"day": 3, "earnedCents": 60000, "reputation": 10, "aiSpend": 0, "completedWork": ["Ship a product"], "entries": [], "nextMilestone": "Your next chapter"})
+	await _frames(15)
+	_check(not _text().contains("Optional AI spend") and not _text().contains("Real AI spend"), "A day with no AI work hides the optional spend metric")
+	_check(_text().contains("Game revenue") and _text().contains("virtual company funds"), "Virtual game revenue remains when optional AI spend is hidden")
 
 func _closing_layout() -> void:
 	var value := _fixture()
@@ -444,7 +448,7 @@ func _collapsed_review_fit() -> void:
 	_check(not _panel._scroll.get_v_scroll_bar().visible, "Collapsed revision needs no scrollbar")
 	var money_note := _panel.find_child("MoneyExplanation", true, false) as Label
 	_check(money_note != null and _visible(money_note), "The entire money and planning-files explanation is visible at rest")
-	_check(money_note != null and money_note.text.contains("Game cash is virtual") and money_note.text.contains("AI spend is real money (USD)") and money_note.text.contains("planning files only"), "Journey keeps both currencies and planning-only consequences explicit")
+	_check(money_note != null and money_note.text.contains("Game cash is virtual") and money_note.text.contains("Shipping products is fully offline") and money_note.text.contains("planning files only"), "Journey keeps virtual cash, offline shipping, and planning-only consequences explicit")
 	_check(not _panel._notice.visible, "An empty notice never reserves a footer line")
 	await _capture("collapsed-revision-fit")
 	_panel.show_error("Evaluation could not finish because the provider returned an incomplete response. Your files are saved. Retry when your connection is restored; no milestone reward has been claimed.")

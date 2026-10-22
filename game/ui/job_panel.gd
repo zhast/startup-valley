@@ -230,6 +230,7 @@ var _status_card: PanelContainer
 var _activity_heading: Label
 var _worker_error := ""
 var _connection_retry_pending := false
+var connect_allowed: Callable
 var _tab_strip: HBoxContainer
 var _tab_buttons: Array[Button] = []
 var _promotion_actions: Array[Button] = []
@@ -475,6 +476,8 @@ func _build_connection_panel() -> void:
 	content.add_child(close_button)
 
 func _open_connection_settings() -> void:
+	if connect_allowed.is_valid() and not connect_allowed.call():
+		return
 	if not _connection_panel.visible:
 		_connection_focus_return = get_viewport().gui_get_focus_owner()
 	open_drawer(false)

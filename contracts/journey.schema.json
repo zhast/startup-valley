@@ -293,7 +293,7 @@
     "tycoon": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "developing", "history"],
+      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "developing", "history"],
       "properties": {
         "seed": { "type": "integer", "minimum": 1 },
         "salesWindowDays": { "type": "integer", "const": 4 },
@@ -301,6 +301,7 @@
         "types": { "type": "array", "maxItems": 6, "items": { "$ref": "#/$defs/tycoonType" } },
         "fits": { "type": "array", "maxItems": 60, "items": { "$ref": "#/$defs/tycoonFit" } },
         "staff": { "type": "array", "maxItems": 4, "items": { "$ref": "#/$defs/tycoonStaff" } },
+        "trainingNotice": { "type": "string" },
         "developing": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/tycoonProduct" }] },
         "history": { "type": "array", "maxItems": 48, "items": { "$ref": "#/$defs/tycoonProduct" } }
       }
@@ -341,14 +342,35 @@
     "tycoonStaff": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "name", "design", "tech", "hype", "hired"],
+      "required": ["id", "name", "design", "tech", "hype", "hired", "trainedToday", "training"],
       "properties": {
         "id": { "enum": ["founder", "mira", "theo", "creative"] },
         "name": { "type": "string", "minLength": 1 },
-        "design": { "type": "integer", "minimum": 0 },
-        "tech": { "type": "integer", "minimum": 0 },
-        "hype": { "type": "integer", "minimum": 0 },
-        "hired": { "type": "boolean" }
+        "design": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "tech": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "hype": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "hired": { "type": "boolean" },
+        "trainedToday": { "type": "boolean" },
+        "training": { "$ref": "#/$defs/tycoonTraining" }
+      }
+    },
+    "tycoonTraining": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["design", "tech", "hype"],
+      "properties": {
+        "design": { "$ref": "#/$defs/tycoonTrainOffer" },
+        "tech": { "$ref": "#/$defs/tycoonTrainOffer" },
+        "hype": { "$ref": "#/$defs/tycoonTrainOffer" }
+      }
+    },
+    "tycoonTrainOffer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["costCents", "enabled"],
+      "properties": {
+        "costCents": { "type": "integer", "minimum": 0 },
+        "enabled": { "type": "boolean" }
       }
     },
     "tycoonProduct": {

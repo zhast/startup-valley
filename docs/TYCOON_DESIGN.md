@@ -48,7 +48,7 @@ The in-game type name for `community` is **Community**. It is the Discord-style 
 
 ## Points, reviews, sales
 
-Each assigned person adds design / tech / hype once per development day:
+Each assigned person adds their current design / tech / hype once per development day. A new company starts from this table:
 
 | Person | Id | Design | Tech | Hype |
 | --- | --- | --- | --- | --- |
@@ -57,7 +57,7 @@ Each assigned person adds design / tech / hype once per development day:
 | Theo | theo | 1 | 2 | 3 |
 | Creative | creative | 4 | 1 | 2 |
 
-Only hired people can be assigned. The founder is always included. Unhired ids are rejected. Duplicates count once.
+Those numbers are starting stats. Training raises them. Only hired people can be assigned. The founder is always included. Unhired ids are rejected. Duplicates count once. The product stores the assigned people's stats on the day development starts. Later training does not change that snapshot.
 
 Each type weights those three stats and has a price:
 
@@ -79,6 +79,19 @@ Reviewers: **Whop Weekly**, **Discord Dave**, **Margin Call Molly**, **Cohort Ca
 Sales run for 4 days at 100%, 70%, 45%, then 25% of the opening demand. Opening demand is the fit's base units, plus a term from the score, plus a small term from current reputation. A seeded swing of about ±10% lands on each day. Units are at least 1. Cash is units times the type price. Fans are a fraction of units: 0.4 at score 8+, 0.2 at 5–7, 0.1 below that, and at least 1. Fans add to company reputation.
 
 A new company uses seed `26021`, stored in `tycoon_meta`. Product ids are `p1`, `p2`, and so on.
+
+## Training
+
+From Company Journey, spend game cash to train a hired person, including the founder.
+
+- One lesson raises Design, Tech, or Hype by 1.
+- Cost is $150 × the current level of that stat. Founder Tech at 2 costs $300. The same stat at 3 costs $450.
+- Each stat caps at 10.
+- A person can train once per office day. That day they are in training and add no points to a product being built.
+- Short cash, an unhired id, a second lesson the same day, and a stat already at 10 fail with a clear error.
+- Older saves without stored stats load the starting table.
+
+A newsletter launch pays about $200, then more on the next sales days, so the first founder lesson is one good launch plus a little leftover.
 
 ## Day and season calendar
 
@@ -104,14 +117,13 @@ Shelf jokes stay in the reviewer blurbs (checkout links, lurkers, margins, welco
 
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, and a product history list. The entry is **New Product** on Company Journey.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, and staff training. The entries are **New Product** and **Train staff** on Company Journey.
 
 Next slices, in order:
 
-1. **Staff stats and training.** Let training days raise one person's design, tech, or hype. The snapshot on a product stays fixed at start.
-2. **Research points.** Spend quiet days on research to unlock a topic, a type, or a small fit bonus.
-3. **Upgrades shop.** Spend game cash on an office tool that boosts one stat or one price. No real-money store.
-4. **Office growth.** More desks and a second room when cash and headcount earn them. Use furniture that is already bound.
-5. **Seasons and events.** Turn on the 28-day calendar and one cozy event per season. Demand modifiers stay deterministic.
+1. **Research points.** Spend quiet days on research to unlock a topic, a type, or a small fit bonus.
+2. **Upgrades shop.** Spend game cash on an office tool that boosts one stat or one price. No real-money store.
+3. **Office growth.** More desks and a second room when cash and headcount earn them. Use furniture that is already bound.
+4. **Seasons and events.** Turn on the 28-day calendar and one cozy event per season. Demand modifiers stay deterministic.
 
 Chapter work orders still ask for a key unless the dev-only fake provider is on. That path is not part of these slices. Do not fold it into the tycoon, and do not make it the default.

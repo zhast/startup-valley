@@ -117,6 +117,11 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
       };
     case "tycoon.release":
       return { journey: database.tycoon.release(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
+    case "tycoon.train":
+      return {
+        journey: database.tycoon.train(stringParameter(request, "staffId", 32), stringParameter(request, "stat", 16)),
+        dailySpend: database.dailySpend(),
+      };
     case "game.new": {
       if (request.params.confirmed !== true) throw new Error("Confirm New Company first");
       if (adapter.isBusy() || database.hasOpenWorkOrder()) throw new Error("Finish or cancel open work before starting a new company");

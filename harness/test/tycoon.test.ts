@@ -10,8 +10,11 @@ import { Ajv2020 } from "ajv/dist/2020.js";
 import { readFileSync } from "node:fs";
 
 import { GameDatabase } from "../src/database.js";
+import { DatabaseSync } from "node:sqlite";
+
 import {
   PRODUCT_TYPES,
+  STAT_CAP,
   TOPICS,
   allFits,
   baseScore,
@@ -19,6 +22,7 @@ import {
   reviewProduct,
   salesForDay,
   staffPoints,
+  trainCostCents,
 } from "../src/tycoon.js";
 
 async function setup() {
@@ -200,4 +204,98 @@ test("stdio tycoon start, days, and release need no credential", async (t) => {
   child.stdin.end();
   await once(child, "exit");
   lines.close();
+});
+
+test("training costs cash, caps, and rejects unhired or a second lesson the same day", async () => {
+  const { db } = await setup();
+  const founder = db.tycoon.view().staff.find((person) => person.id === "founder");
+  assert.equal(founder?.design, 2);
+  assert.equal(founder?.training.tech.costCents, trainCostCents(2));
+  assert.equal(founder?.training.tech.enabled, false);
+  assert.throws(() => db.tycoon.train("founder", "tech"), /Not enough game cash/u);
+  assert.throws(() => db.tycoon.train("mira", "tech"), /not on the team/u);
+
+  db.journey.recordCompanyChange("test-cash", 1, 1_000_000, 0, 0, "Test cash");
+  const afterGift = db.tycoon.view().staff.find((person) => person.id === "founder");
+  assert.equal(afterGift?.training.tech.enabled, true);
+  db.tycoon.train("founder", "tech");
+  const trained = db.tycoon.view();
+  const founderNow = trained.staff.find((person) => person.id === "founder");
+  assert.equal(founderNow?.tech, 3);
+  assert.equal(founderNow?.trainedToday, true);
+  assert.equal(founderNow?.training.tech.enabled, false);
+  assert.equal(trained.trainingNotice, "Founder trained Tech to 3. −$300");
+  assert.equal(db.journey.state().company.cashCents, 1_000_000 - trainCostCents(2));
+  assert.throws(() => db.tycoon.train("founder", "design"), /already in training today/u);
+  assert.throws(() => db.tycoon.train("founder", "tech"), /already in training today/u);
+
+  db.endDay(1);
+  for (let level = 3; level < STAT_CAP; level += 1) {
+    db.tycoon.train("founder", "tech");
+    db.endDay(db.clockState().day);
+  }
+  const capped = db.tycoon.view().staff.find((person) => person.id === "founder");
+  assert.equal(capped?.tech, STAT_CAP);
+  assert.equal(capped?.training.tech.enabled, false);
+  assert.equal(capped?.training.tech.costCents, 0);
+  assert.throws(() => db.tycoon.train("founder", "tech"), /already at 10/u);
+  db.close();
+});
+
+test("a product keeps the staff snapshot from the day it started", async () => {
+  const { db } = await setup();
+  db.journey.recordCompanyChange("test-cash", 1, 1_000_000, 0, 0, "Test cash");
+  db.tycoon.start("crypto", "newsletter", []);
+  db.endDay(1);
+  assert.equal(db.tycoon.view().developing?.design, 2);
+  assert.equal(db.tycoon.view().developing?.tech, 2);
+  db.tycoon.train("founder", "tech");
+  assert.equal(db.tycoon.view().staff.find((person) => person.id === "founder")?.tech, 3);
+  db.endDay(2);
+  const mid = db.tycoon.view().developing;
+  assert.equal(mid?.devDays, 2);
+  assert.equal(mid?.design, 2, "a person in training adds no points that office day");
+  assert.equal(mid?.tech, 2, "training mid-build does not raise the current product");
+  db.endDay(3);
+  const polished = db.tycoon.view().developing;
+  assert.equal(polished?.design, 4);
+  assert.equal(polished?.tech, 4, "later days still use the start-day snapshot");
+  db.tycoon.release("p1");
+
+  db.tycoon.start("crypto", "newsletter", []);
+  db.endDay(4);
+  const next = db.tycoon.view().developing;
+  assert.equal(next?.design, 2);
+  assert.equal(next?.tech, 3, "the next product uses the trained stats");
+  db.close();
+});
+
+test("older saves without staff stats load starting values", async () => {
+  const first = await setup();
+  const file = join(first.root, "game.sqlite");
+  const project = join(first.root, "company-project");
+  first.db.close();
+  const raw = new DatabaseSync(file);
+  raw.exec("UPDATE tycoon_meta SET staff_json = ''");
+  raw.prepare(`
+    INSERT INTO tycoon_products (
+      id, topic_id, type_id, name, fit, status, started_day, dev_days,
+      design_points, tech_points, hype_points, staff_json, last_dev_day,
+      released_day, review_json, sales_applied, last_sales_day, sales_cents, fans
+    ) VALUES ('p1', 'crypto', 'newsletter', 'Crypto Alpha Newsletter', 'great', 'developing', 1, 0, 0, 0, 0, ?, NULL, NULL, NULL, 0, NULL, 0, 0)
+  `).run(JSON.stringify(["founder"]));
+  raw.close();
+
+  const restored = new GameDatabase(file, project);
+  const founder = restored.tycoon.view().staff.find((person) => person.id === "founder");
+  assert.equal(founder?.design, 2);
+  assert.equal(founder?.tech, 2);
+  assert.equal(founder?.hype, 2);
+  assert.equal(founder?.trainedToday, false);
+  restored.endDay(1);
+  const developing = restored.tycoon.view().developing;
+  assert.equal(developing?.design, 2);
+  assert.equal(developing?.tech, 2);
+  assert.equal(developing?.hype, 2);
+  restored.close();
 });

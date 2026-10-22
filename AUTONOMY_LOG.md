@@ -981,3 +981,38 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - `test_tycoon_product.gd` — TYCOON PASS (Crypto Alpha Newsletter, founder only, no fake provider; launch $207.00 and 5 fans, next office day $333.00 and 8 fans)
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → pick a topic and a type → End day until Ready to ship → Release. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_product.gd`.
+
+- PR #28 merged (Round 26, offline ship-a-product tycoon loop).
+
+### Round 27 — 2026-10-21
+
+**What changed**
+- Connect AI no longer sits behind the New Product picker, the build bench, or the release card. Those screens close the Connect drawer and refuse to reopen it. Starting a chapter website work order without a key still opens Connect.
+- Company Journey copy now fits the offline tycoon: "Game cash is virtual. Shipping products is fully offline. Ads and incorporation create planning files only." The day summary shows Optional AI spend only when `aiSpend > 0`.
+- Staff training. Per-person design / tech / hype persist on `tycoon_meta.staff_json`, seeded from the starting STAFF table. `tycoon.train` spends `$150 × current level` of game cash, raises one hired person's stat by 1, caps at 10, and allows one lesson per person per office day. Short cash, an unhired id, a second lesson the same day, and a maxed stat fail with a clear error. A person in training that day adds no points to the product on the bench. The product keeps the staff snapshot from the day development started, so a lesson mid-build changes the next product. Older saves without stats load the starting table. Company Journey lists hired people with Train buttons from `journey.tycoon`. Fully offline and deterministic.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art, seated poses, workstation N/E/W sheets, waiting-lunch, and the unbound furnishing kits stay untracked.
+
+**Remaining gaps (ranked)**
+1. Research points. Quiet days should unlock a topic, a type, or a small fit bonus.
+2. Upgrades shop. Spend game cash on an office tool. No real-money store.
+3. Office growth. More desks and a second room from cash and headcount, using furniture that is already bound.
+4. Seasons and events. The 28-day Spring / Summer / Fall / Winter calendar is design-only. Turn it on with one deterministic event per season.
+5. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+6. Carried from Round 25: Creative has no seated sheet. Unbound art stays untracked. The live path is still a harness driver. A cheap reviewer can still sit just under the 2.5 ready line. Chapter 3 ends at "More is coming." `shared_workbench` stays in storage.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon and Chapter 1 playtests; fake provider only inside the full-path and offline-provider tests)
+- `cd harness && npm test` — 83 tests, 81 pass, 0 fail, 2 skipped
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass
+- `test_chapter1_first_player.gd` — CHAPTER1 PASS
+- `test_full_player_path.gd` — FULLPATH PASS
+- `test_ui_flow_regressions.gd` — passed
+- `test_ui_company_redesign.gd` — 4060 checks, 0 failures, 0 captures
+- `test_tycoon_product.gd` — TYCOON PASS (Connect stays closed on the picker; Crypto Alpha Newsletter, founder only; launch $207.00 and 5 fans, next office day $333.00 and 8 fans)
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS (ship newsletter, train Founder Tech to 3 for $300, next product uses Tech 3)
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → ship → Train staff → next product uses the new stats. Connect stays closed on the picker, bench, and release card. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_training.gd`.

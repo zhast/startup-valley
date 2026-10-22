@@ -63,6 +63,12 @@ func _ready() -> void:
 	company_panel.action_requested.connect(worker_client.company_request)
 	company_panel.milestone_requested.connect(job_panel.prepare_milestone)
 	company_panel.connection_requested.connect(job_panel._open_connection_settings)
+	job_panel.connect_allowed = func() -> bool:
+		return company_panel == null or not company_panel.visible or company_panel.screen not in ["product", "release"]
+	company_panel.presented.connect(func(mode: String) -> void:
+		if mode in ["product", "release"]:
+			job_panel.close_drawer(false)
+	)
 	company_panel.renovation_requested.connect(_open_office_renovation)
 	company_panel.architecture_theme = room.architecture.theme_id
 	company_panel.architecture_theme_requested.connect(_on_architecture_theme)
@@ -652,6 +658,8 @@ func _on_company_action(method: String, result: Dictionary) -> void:
 		"tycoon.release":
 			game_audio.play("reward")
 			company_panel.present("release")
+		"tycoon.train":
+			company_panel.present("journey")
 		"day.end":
 			job_panel.close_drawer(false)
 			artifact_viewer.hide()
