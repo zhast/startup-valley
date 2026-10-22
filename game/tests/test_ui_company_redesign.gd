@@ -44,6 +44,7 @@ func _run() -> void:
 	await _disabled_hire()
 	await _chapter_complete()
 	await _chapter_two_end()
+	await _chapter_three_end()
 	var file := FileAccess.open(OUTPUT + ("/manifest-headless.json" if DisplayServer.get_name() == "headless" else "/manifest.json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify({"checks": _checks, "failures": _failures, "captures": _captures, "layouts": _layouts,
 		"workerDisabled": true, "transactions": "Signal-only spy. No worker, database or real save.",
@@ -503,11 +504,32 @@ func _chapter_two_end() -> void:
 	value["candidates"][0]["hired"] = true
 	value["candidates"][1].merge({"hired": true, "available": false}, true)
 	value["candidates"].append({"id": "creative", "name": "Creative", "role": "Design + brand", "hired": true, "available": false, "costCents": 0})
+	value["milestones"].append({"id": "apply", "title": "Apply the brand", "state": "locked", "employeeId": "creative"})
 	await _present("journey", value)
 	_check(_panel.screen == "complete", "Finished brand presents the Chapter 2 end screen")
-	_check(_text().contains("Chapter 2 complete") and _text().to_lower().contains("more is coming"), "Chapter 2 end state names the chapter and says more is coming")
+	_check(_text().contains("Chapter 2 complete") and _visible(_button("Begin Chapter 3")), "Chapter 2 end state names the chapter and offers Chapter 3")
 	_check(_button("Begin Chapter 2") == null, "Chapter 2 end state does not offer to begin Chapter 2 again")
 	_check(_visible(_button("Back to office")), "Chapter 2 end state can return to the office")
 	await _capture("chapter-two-complete")
 	await _click(_button("Back to office"))
 	_check(not _panel.visible, "Chapter 2 Back to office closes the notebook")
+
+func _chapter_three_end() -> void:
+	var value := _fixture()
+	value["company"]["chapter"] = 3
+	value["company"]["cashCents"] = 220000
+	value["milestones"][0]["state"] = "completed"
+	value["milestones"][1]["state"] = "completed"
+	value["milestones"].append({"id": "brand", "title": "Design the brand", "state": "completed", "employeeId": "creative"})
+	value["milestones"].append({"id": "apply", "title": "Apply the brand", "state": "completed", "employeeId": "creative"})
+	value["candidates"][0]["hired"] = true
+	value["candidates"][1].merge({"hired": true, "available": false}, true)
+	value["candidates"].append({"id": "creative", "name": "Creative", "role": "Design + brand", "hired": true, "available": false, "costCents": 0})
+	await _present("journey", value)
+	_check(_panel.screen == "complete", "Finished application presents the Chapter 3 end screen")
+	_check(_text().contains("Chapter 3 complete") and _text().to_lower().contains("more is coming"), "Chapter 3 end state names the chapter and says more is coming")
+	_check(_button("Begin Chapter 3") == null, "Chapter 3 end state does not offer to begin Chapter 3 again")
+	_check(_visible(_button("Back to office")), "Chapter 3 end state can return to the office")
+	await _capture("chapter-three-complete")
+	await _click(_button("Back to office"))
+	_check(not _panel.visible, "Chapter 3 Back to office closes the notebook")

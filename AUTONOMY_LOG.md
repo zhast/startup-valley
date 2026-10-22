@@ -901,3 +901,42 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 **CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete / more coming. The two-person workbench is owned starter décor and stays in storage until placed.
 
 - PR #26 merged (Round 24, shared-workbench-v2 passive decor).
+
+### Round 25 — 2026-10-21
+
+**What changed**
+- Skipped binding untracked runtime art. `customer_success_kit`, `engineer_build_kit`, `finance_accounts_kit`, `growth_analytics_kit`, `lawyer_contract_kit`, and `product_prototype_kit` are art-library approvals whose GALLERY notes say approval creates no runtime binding. `dev/art-catalogue/furniture.json` keeps them at `reviewed_code_native_library_not_runtime_admission` with `runtime_admission` false. Founder seated, founder workstation N/E/W, and waiting-lunch stay QA-only. Nothing in that set is bind-approved for the current office.
+- Authored a minimal Chapter 3 opening on the Chapter 2 pattern, using Creative and the already-bound `creative_design_kit`. No new hire, furniture, inventory change, or art.
+- Completing "Design the brand" sets `company_state.chapter` to 3 and leaves `opened_chapter` at 2, so the brand reward screen stays up. Cash becomes 180000 cents, earned 260000, reputation 57. The screen heading is "Chapter 2 complete", subtitle "The brand is in the studio.", and the primary action is "Begin Chapter 3" (`chapter.continue`). "Back to office" remains.
+- `continueChapter` copies `chapter` into `opened_chapter`. A save that finished the brand while `chapter` was still 2 is raised to chapter 3 in that same transaction before the copy, so "Apply the brand" can unlock. Begin Chapter 2 while the brand is still incomplete does not raise the chapter.
+- The new milestone is `apply`, "Apply the brand", employee `creative`, prerequisite `brand`, files `brand/homepage.md` and `brand/application.md`, criteria Homepage use / Palette application / Honest limits / Completeness, reward 40000 cents, fee 0, reputation 8, `availableFromDay` 3. It stays locked until `opened_chapter` is at least 3. The offline provider writes those two files (DeskBloom homepage application, palette `#F6F1E7` / `#2C2825` / `#354B98`, prototype limits) and auto-scores every criterion at 3.
+- Completing `apply` pays the reward and leaves the chapter at 3. Cash becomes 220000 cents, earned 300000, reputation 65. The screen is "Chapter 3 complete" / "More is coming." with only "Back to office". Journey reopens on that screen. Founder and Creative desks caption the open order as "Apply brand".
+- Journey schema `milestones.maxItems` is 5. Milestone id enum includes `apply`. Prerequisite enum includes `brand`. Job `milestoneId` enum includes `apply`. Existing databases pick up the row through the journey store `INSERT OR IGNORE` on startup. No SQL migration.
+- `test_full_player_path.gd` now runs title → Chapter 1 → Begin Chapter 2 → brand → Begin Chapter 3 → apply → Chapter 3 complete. `test_ui_company_redesign.gd` covers the Chapter 2 and Chapter 3 end screens. Harness journey and offline-provider tests cover the lock, the legacy chapter-2 continue, and the apply payout.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Option A stayed closed. The unbound kits, founder seated poses, workstation N/E/W sheets, and waiting-lunch art remain untracked.
+
+**Remaining gaps (ranked)**
+1. Creative has a locomotion sheet and stands at the desk. There is no seated sheet, and none was invented.
+2. Unbound seated, outdoor, waiting-lunch, and unused furnishing-kit art stays untracked. Founder seated/N/E/W workstation poses are QA-only. `customer_success_kit`, `engineer_build_kit`, `finance_accounts_kit`, `growth_analytics_kit`, `lawyer_contract_kit`, and `product_prototype_kit` stay unbound because catalogue approval does not admit them to runtime.
+3. The live path is still a harness driver, not a watched windowed playtest.
+4. A cheap reviewer can still sit just under the 2.5 ready line. Round 2's passing ads score was 2.60.
+5. Chapter 3 is one work order, then "More is coming." No later chapter is authored.
+6. `shared_workbench` (v2, mean 2.50) is registered as passive décor and stays in storage until placed. Decor-only capture still cannot place it on a four-facing cell without moving a workstation or an actor.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored; fake provider only inside the playable-path and offline-provider tests)
+- `cd harness && npm test` — 74 tests, 72 pass, 0 fail, 2 skipped
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass
+- `test_chapter1_first_player.gd` — CHAPTER1 PASS
+- `test_full_player_path.gd` — FULLPATH PASS
+- `test_ui_flow_regressions.gd` — passed
+- `test_ui_company_redesign.gd` — 4071 checks, 0 failures, 0 captures
+- `test_furnishing_projection.gd` — 797 checks, 0 failures
+
+**CHAPTER2 PLAYABLE: yes** — title → Chapter 1 complete → Begin Chapter 2 → hire Creative → assign and finish Design the brand → Chapter 2 complete, then Begin Chapter 3.
+
+**CHAPTER3 PLAYABLE: yes** — Begin Chapter 3 → assign and finish Apply the brand with Creative and `creative_design_kit` → Chapter 3 complete / more coming. Offline, no new art.

@@ -244,4 +244,24 @@ Background fills pages and office plaques. Ink is body text. Accent is the prima
 Apply this palette to the website, the advertising drafts, and the office plaques. This plan does not launch a rebrand.
 `,
   },
+  apply: {
+    "brand/homepage.md": `# Homepage application
+
+Name: DeskBloom.
+
+Use the saved identity on the existing prototype homepage. The header keeps the name DeskBloom. The page background uses the warm paper role. Body text uses the ink role. The primary action uses the accent role only.
+
+This is an internal application plan for the prototype page. It does not launch a redesign.
+`,
+    "brand/application.md": `# Application notes
+
+## Palette on the homepage
+- Background \`#F6F1E7\` fills the page.
+- Ink \`#2C2825\` is the body text.
+- Accent \`#354B98\` is the primary action only.
+
+## What stays a prototype
+Signup stays closed. The page still explains that this is a prototype and does not collect data. This is not a launched redesign, a filed trademark, or live customer research.
+`,
+  },
 };

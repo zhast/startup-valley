@@ -283,13 +283,21 @@ func _hired_screen() -> void:
 	_actions("Meet " + person_name, hide, true, "Company Journey", func() -> void: present("journey"))
 
 func _complete_screen() -> void:
-	if chapter_two_finished(state):
-		_heading("Chapter 2 complete", "More is coming.")
+	if chapter_three_finished(state):
+		_heading("Chapter 3 complete", "More is coming.")
 		var finished := _card()
-		_label("The brand is in the studio", true, finished)
-		_label("Identity and palette are saved. This build stops here. Further chapters are not in the office yet.", false, finished)
+		_label("The brand is applied", true, finished)
+		_label("Homepage notes are saved. This build stops here. Further chapters are not in the office yet.", false, finished)
 		_label(_next_step().trim_prefix("NEXT · "))
 		_actions("Back to office", hide, true, "")
+		return
+	if chapter_two_finished(state):
+		_heading("Chapter 2 complete", "The brand is in the studio.")
+		var ready := _card()
+		_label("Identity and palette are saved", true, ready)
+		_label("Chapter 3 starts when Creative applies that look to the website.", false, ready)
+		_label(_next_step().trim_prefix("NEXT · "))
+		_actions("Begin Chapter 3", func() -> void: _request("chapter.continue", {}), true, "Back to office")
 		return
 	_heading("Chapter complete", "Your first company chapter is finished.")
 	var complete := _card()
@@ -309,6 +317,12 @@ static func chapter_is_complete(state: Dictionary) -> bool:
 static func chapter_two_finished(state: Dictionary) -> bool:
 	for item: Dictionary in state.get("milestones", []):
 		if str(item.get("id", "")) == "brand" and str(item.get("state", "")) == "completed":
+			return true
+	return false
+
+static func chapter_three_finished(state: Dictionary) -> bool:
+	for item: Dictionary in state.get("milestones", []):
+		if str(item.get("id", "")) == "apply" and str(item.get("state", "")) == "completed":
 			return true
 	return false
 
@@ -613,14 +627,18 @@ static func next_step_line(state: Dictionary, busy: bool = false, pending_method
 			return "NEXT · Open Assign and choose Journey · Build a website, then send the work order."
 		if str(definition.get("id", "")) == "brand":
 			return "NEXT · Chapter 2 · Open Assign and choose Journey · Design the brand, then send the work order."
+		if str(definition.get("id", "")) == "apply":
+			return "NEXT · Chapter 3 · Open Assign and choose Journey · Apply the brand, then send the work order."
 		return "NEXT · %s. Prepare a work order for your teammate." % definition.get("title", "Build your company")
 	var candidate := available_candidate(state)
 	if not candidate.is_empty():
 		if str(candidate.get("id", "")) == "creative":
 			return "NEXT · Chapter 2 · Give the company a look. Hire Creative, then prepare the brand identity work order."
 		return "NEXT · Hire %s from Company Journey, then meet them at their new desk." % candidate.get("name", "your teammate")
+	if chapter_three_finished(state):
+		return "NEXT · Chapter 3 is complete. More is coming. Keep building with ordinary work orders and the shared Studio."
 	if chapter_two_finished(state):
-		return "NEXT · Chapter 2 is complete. More is coming. Keep building with ordinary work orders and the shared Studio."
+		return "NEXT · Chapter 2 is complete. Begin Chapter 3 to apply the brand."
 	if chapter_is_complete(state):
 		return "NEXT · Your chapter is complete. Keep building with ordinary work orders and the shared Studio."
 	for item: Dictionary in state.get("milestones", []):
@@ -648,6 +666,7 @@ static func station_caption(state: Dictionary, station_id: String, kind: String,
 			# The website work order is the day-1 goal. An optional later hire must not replace it.
 			if str(milestone.get("id", "")) == "website" and str(milestone.get("jobStatus", "")) not in ["running", "queued"]: return "Assign website"
 			if str(milestone.get("id", "")) == "brand" and str(milestone.get("jobStatus", "")) not in ["running", "queued", "completed"]: return "Assign brand"
+			if str(milestone.get("id", "")) == "apply" and str(milestone.get("jobStatus", "")) not in ["running", "queued", "completed"]: return "Apply brand"
 			var candidate := available_candidate(state)
 			if not candidate.is_empty():
 				var hire_name := str(candidate.get("name", "")).strip_edges()
@@ -667,6 +686,7 @@ static func station_caption(state: Dictionary, station_id: String, kind: String,
 			if str(milestone.get("employeeId", "")) == owner_id and str(milestone.get("state", "")) in ["available", "revision_required"] and str(milestone.get("jobStatus", "")) not in ["running", "queued", "completed"]:
 				if str(milestone.get("id", "")) == "website": return "Assign website"
 				if str(milestone.get("id", "")) == "brand": return "Assign brand"
+				if str(milestone.get("id", "")) == "apply": return "Apply brand"
 			return "Assign"
 
 func _configure_focus() -> void:
