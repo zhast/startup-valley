@@ -1136,3 +1136,27 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Known failures, same counts as the previous round on origin/main: `test_collaboration_cluster_v2.gd` 526/27, `test_collaboration_production.gd` 576/8, `test_collaboration_table.gd` 278561/6, `test_collaboration_table_room.gd` (candidate rejected, not runtime_ready), `test_locomotion_export.gd` 545/4 on unmodified founder/Mira sheets, `test_role_storage_variants.gd` (2 failures: missing `--legal` and `--creative` paths, before any archive pixel compare)
 
 **TYCOON SLICE PLAYABLE: yes** — unchanged. This round recolours furniture and fixes who is drawn while delivering.
+
+### Office readability fixes: desk/collab chair depth, HUD off the floor — 2026-10-22
+
+**What changed**
+- South desk `ChairWhole` offset `[0, -76]`, `z_offset` `-33`, and visual/hit bounds `[-48, -80, 96, 96]`. The seat and base clear `DeskFront`, and the chair sorts under a standing worker at the work cell. Other desk facings stay as they were.
+- South collaboration `NorthChair0Whole` and `NorthChair1Whole` offset `[0, -56]`. Their `z_offset` stays `-9`. Visual/hit bounds are `[-80, -80, 161, 148]`. Other collaboration facings stay as they were.
+- Next-step plaque moved to `(800, 16)`, still `320×56`, on the top wall strip. Movement hint moved to `(455, 672)`, still `240×48`, in the bottom trim. Banner art and size are unchanged.
+
+**Test results** (no paid live evals; Node 22 already installed, no `npm ci`; host credentials ignored; isolated data dirs)
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_office_layout.gd` — 873 checks, 0 failures
+- `test_graphics_regressions.gd` — passed
+- `test_furniture_directions.gd` — 478 checks, 0 failures
+- `test_reviewed_workstation_production.gd` — 273 checks, 0 failures
+- `test_complete_south_workstation.gd` — 4043 checks, 0 failures
+- `test_modular_office.gd` — 7474 checks, 0 failures
+- `test_calibrated_workstation.gd` — 6684 checks, 0 failures
+- `test_workstation_facing.gd` — 317 checks, 1 failure. Same pre-existing "Placement rebuild refreshes metadata on an existing employee".
+- `test_collaboration_production.gd` — 576 checks, 8 failures. Same count as the branch baseline. The 8 are the existing per-facing lunch socket checks.
+- `test_collaboration_cluster_v2.gd` — 526 checks, 27 failures. Same count as the branch baseline.
+
+**TYCOON SLICE PLAYABLE: yes** — unchanged. This round only moves south chair depth and two HUD plaques. The journey playtests were not re-run.
