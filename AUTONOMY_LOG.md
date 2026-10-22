@@ -1098,3 +1098,41 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - The 19 failures also fail on origin/main `1940e0e` (same checks and messages), re-run from a git archive of that commit: `test_chair_layer_export.gd` (missing untracked 4× export, then a null image), `test_collaboration_cluster_v2.gd` (526 checks, 27 failures), `test_collaboration_production.gd` (576 checks, 8 failures), `test_collaboration_table.gd` (278561 checks, 6 failures), `test_collaboration_table_room.gd`, `test_furnishing_parity.gd` (no `cases.json` in git), `test_furnishing_worker_ui.gd` and `test_live_startup.gd` (launcher guard), `test_furniture_catalogue.gd` (script parse), `test_locomotion_export.gd` (545 checks, 4 failures on unmodified founder/Mira sheets), `test_modular_desk_export.gd` (233 checks, 40 failures), `test_passive_service_library.gd` (719 checks, 3 failures), `test_passive_utility_library.gd` (552 checks, 1 failure), `test_passive_utility_library_v2.gd` (763 checks, 13 failures), `test_role_storage_variants.gd`, `test_supported_west_assembly.gd`, `test_terrazzo_floor_review.gd`, `test_west_supported_layers.gd`, `test_workstation_facing.gd` (249 checks, 1 failure)
 
 **TYCOON SLICE PLAYABLE: yes** — unchanged. The bound cozy plates are the south bookshelf, sofa, whiteboard, cafe table, and cafe chair.
+
+### Cozy v2 re-skins + delivery sprite fix — 2026-10-22
+
+**What changed**
+- Gate-passed recolours copied into runtime (78 PNGs, md5-matched to the handoff). Research bench, approval console, and archive layers, plus workstation chairs and collaboration-cluster chair layers. Floor shadows and collaboration table layers were not in the handoff and stayed. Legacy `approval-console.png` and `artifact-archive.png` stayed. Catalog bounds, offsets, and anchors stayed: every recolour has the same canvas and the same alpha mask.
+- Reviewed-source fixtures now hold those bytes. Research `*-whole.png` files were recomposed with source-over in layer order (FloorShadow, RearStructure, FrontStructure, ToolOverlay) after the previous wholes matched that stack. Collaboration cluster wholes were recomposed the same way in the exporter's z-then-name order, and the fixture plus runtime manifest sha256 locks were updated. Archive wholes were copied from the handoff, not regenerated. Decision-console wholes and that manifest were left alone because `test_decision_console.gd` pins them to `GEOMETRY.whole(GEOMETRY.layers())`. The six workstation chair sha256 locks in `test_reviewed_workstation_production.gd` and `workstations-v2/manifest.json` follow the new chairs. Procedural exporters were not run; they would repaint the old indigo geometry over the recolour. `test_product_prototype_kit.gd` now requires the warm reviewed tool overlay, and still requires that overlay's alpha to match the procedural layout.
+- The handoff south archive whole differs from a source-over stack of its five layers by 4 pixels (max channel delta 32). Runtime and the fixture both keep the handoff bytes. Headless archive production compares file hashes, which match.
+- Delivery: `CharacterArt.has_work_sheet` is true only for mira and theo. `work_sheet()` is unchanged. Creative and founder in `WorkState.DELIVERING` use their own locomotion sheet and the walk-cycle region (`locomotion_region(facing, 2 + frame)`). Mira and Theo still use their work sheets and the old regions.
+
+**Seated finding**
+- `seated_sheet()` is not reachable at runtime, so it was left unchanged. Its only caller is `EmployeeAvatar._set_seated_frame`, and that function has no callers. SITTING and TYPING go through `_set_directional_work_pose` → `work_pose_frame`. Both pose sets list only mira and theo; a missing character gets `{}` and the avatar paints its own locomotion idle. `configure_workstation_visual` rejects creative because `supports_work_pose` is false. The founder is a `PlayerAvatar` and only uses `locomotion_sheet("founder")`. This worktree has no `founder-seated.png` and no `FOUNDER_SEATED` preload (only an `.import` for a missing source).
+
+**Test results** (no paid live evals; Node 22.23.3; host credentials ignored; isolated data dirs)
+- `cd harness && npm ci && npm run build && npm test && npm run eval:offline` — build pass; npm test 87 tests, 85 pass, 0 fail, 2 skipped; eval:offline 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (no tracked `.import` sidecars rewritten)
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_research_bench_production.gd` — 69 checks, 0 failures
+- `test_approval_console_production.gd` — 71 checks, 0 failures
+- `test_archive_production.gd` — 3324 checks, 0 failures
+- `test_archive_assembly.gd` — 120 checks, 0 failures
+- `test_reviewed_workstation_production.gd` — 273 checks, 0 failures
+- `test_product_prototype_kit.gd` — 175 checks, 0 failures
+- `test_decision_console.gd` — 221213 checks, 0 failures
+- `test_visitor_chair.gd` — 325 checks, 0 failures
+- `test_calibrated_thinking.gd` — 8519 checks, 0 failures
+- `test_calibrated_workstation.gd` — 6684 checks, 0 failures
+- `test_graphics_regressions.gd` — passed
+- `test_modular_office.gd` — 7474 checks, 0 failures
+- `test_office_migration.gd` — 2631 checks, 0 failures
+- `test_furniture_directions.gd` — 478 checks, 0 failures
+- `test_office_architecture.gd` — 2369 checks, 0 failures
+- `test_workstation_facing.gd` — 317 checks, 1 failure. The failure is the pre-existing "Placement rebuild refreshes metadata on an existing employee". The new delivery checks are in the 317 (was 249/1 before them).
+- `test_chapter1_first_player.gd` — CHAPTER1 PASS (43 checks). The first run used system Node 20 and failed worker bootstrap (`node:sqlite`); the Node 22 rerun passed.
+- `test_full_player_path.gd` — FULLPATH PASS (125 checks), Node 22
+- Known failures, same counts as the previous round on origin/main: `test_collaboration_cluster_v2.gd` 526/27, `test_collaboration_production.gd` 576/8, `test_collaboration_table.gd` 278561/6, `test_collaboration_table_room.gd` (candidate rejected, not runtime_ready), `test_locomotion_export.gd` 545/4 on unmodified founder/Mira sheets, `test_role_storage_variants.gd` (2 failures: missing `--legal` and `--creative` paths, before any archive pixel compare)
+
+**TYCOON SLICE PLAYABLE: yes** — unchanged. This round recolours furniture and fixes who is drawn while delivering.
