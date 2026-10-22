@@ -68,9 +68,9 @@ The modular room is already active; retired whole-room backdrops and old worksta
 
 - Native captures: `game/tests/output/ui-material-audit-after/office-hires-2.png` and `office-hires-4.png` (1280×720).
 - Runtime inventory: `game/data/furniture_catalog.json`; placements: `game/data/office_layout.json`.
-- Active workstation: `game/assets/runtime/office/south-workstation.png`, two registered 128×112 layer cells. Research uses row 1 of `layered-furniture.png`, 128×96 cells.
-- Initial standalone props: coffee142×94, collaboration138×92, archive136×90, approval132×88, prototype140×140; scenes use runtime scale1.0. Archive now uses registered192×288 layers from `runtime/office/archive-v1`; its original136×90 source remains preserved, not active.
-- Retired/not rendered: `employee-workstation.png`, `research-bench.png`, old office shell/campus/backgrounds and desk row 0 of `layered-furniture.png`.
+- Active workstation: `game/assets/runtime/office/south-workstation.png`, two registered 128×112 layer cells. Research uses the registered `research-bench-v1/` layers.
+- Initial standalone props: coffee142×94, archive136×90, approval132×88, prototype140×140; scenes use runtime scale1.0. Archive now uses registered192×288 layers from `runtime/office/archive-v1`; its original136×90 source remains preserved, not active. The collaboration table uses registered `collaboration-cluster-v2/` layers.
+- Retired/not rendered: old office shell, campus, and background plates. The unused standalone workstation, research, furniture-sheet, and collaboration plates were removed from `runtime/office/`.
 
 ## Historical discovery ledger
 

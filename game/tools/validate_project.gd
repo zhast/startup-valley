@@ -37,11 +37,9 @@ const IMPORTANT_TEXTURES: PackedStringArray = [
 	"res://assets/runtime/office/architecture/evening-trim.png",
 	"res://assets/runtime/office/architecture/evening-window.png",
 	"res://assets/runtime/office/architecture/evening-door.png",
-	"res://assets/runtime/office/layered-furniture.png",
 	"res://assets/runtime/office/south-workstation.png",
 	"res://assets/runtime/characters/mira-seated.png",
 	"res://assets/runtime/characters/theo-seated.png",
-	"res://assets/runtime/office/collaboration-cluster.png",
 	"res://assets/runtime/office/coffee-station.png",
 	"res://assets/runtime/office/approval-console.png",
 	"res://assets/runtime/office/artifact-archive.png",
@@ -112,8 +110,6 @@ const EXACT_TEXTURE_SIZES: Dictionary = {
 	"res://assets/runtime/characters/theo-seated.png": Vector2i(288, 80),
 	"res://assets/runtime/office/south-workstation.png": Vector2i(256, 112),
 	"res://assets/runtime/characters/theo-work.png": Vector2i(384, 320),
-	"res://assets/runtime/office/layered-furniture.png": Vector2i(256, 192),
-	"res://assets/runtime/office/collaboration-cluster.png": Vector2i(138, 92),
 	"res://assets/runtime/office/coffee-station.png": Vector2i(142, 94),
 	"res://assets/runtime/office/approval-console.png": Vector2i(132, 88),
 	"res://assets/runtime/office/prototype-bench.png": Vector2i(140, 140),
@@ -142,7 +138,8 @@ const RUNTIME_ATLASES: Array[Dictionary] = [
 	{
 		"path": "res://assets/runtime/characters/creative-locomotion.png",
 		"cell": Vector2i(48, 80), "columns": 6, "rows": 4,
-		"spans": [[0, 0, 2], [0, 2, 4], [1, 0, 2], [1, 2, 4], [2, 0, 2], [2, 2, 4], [3, 0, 2], [3, 2, 4]],
+		# Cozy v2 back idle is a held pose: columns 0 and 1 match (front still blinks).
+		"spans": [[0, 0, 2], [0, 2, 4], [1, 2, 4], [2, 0, 2], [2, 2, 4], [3, 0, 2], [3, 2, 4]],
 	},
 	{
 		"path": "res://assets/runtime/characters/mira-work.png",

@@ -12797,10 +12797,10 @@
           "source_review": "Phase 1 PASS runtime south bind 2026-09-16",
           "preview_art": "res://assets/runtime/office/cafe-table-south.png",
           "visual_bounds": [
-            -96,
-            -134,
-            192,
-            190
+            -30,
+            -16,
+            60,
+            72
           ],
           "render_layers": [
             {
@@ -12818,10 +12818,10 @@
               ],
               "z_offset": 0,
               "content_bounds": [
-                0,
-                26,
-                192,
-                190
+                66,
+                144,
+                60,
+                72
               ]
             }
           ],
@@ -12843,10 +12843,10 @@
             0
           ],
           "hit_bounds": [
-            -96,
-            -134,
-            192,
-            190
+            -30,
+            -16,
+            60,
+            72
           ],
           "ambient_overlays": [],
           "standing_viewpoints": [
@@ -12882,10 +12882,10 @@
           "source_review": "Phase 1 PASS runtime south bind 2026-09-16",
           "preview_art": "res://assets/runtime/office/cafe-chair-south.png",
           "visual_bounds": [
-            -60,
-            -112,
-            120,
-            168
+            -19,
+            -20,
+            38,
+            76
           ],
           "render_layers": [
             {
@@ -12903,10 +12903,10 @@
               ],
               "z_offset": 0,
               "content_bounds": [
-                36,
-                48,
-                120,
-                168
+                77,
+                140,
+                38,
+                76
               ]
             }
           ],
@@ -12928,10 +12928,10 @@
             0
           ],
           "hit_bounds": [
-            -60,
-            -112,
-            120,
-            168
+            -19,
+            -20,
+            38,
+            76
           ],
           "ambient_overlays": [],
           "standing_viewpoints": [
@@ -13052,10 +13052,10 @@
           "source_review": "Phase 1 PASS runtime south bind 2026-09-16",
           "preview_art": "res://assets/runtime/office/whiteboard-south.png",
           "visual_bounds": [
-            -94,
-            -117,
-            188,
-            173
+            -45,
+            -48,
+            90,
+            104
           ],
           "render_layers": [
             {
@@ -13073,10 +13073,10 @@
               ],
               "z_offset": 0,
               "content_bounds": [
-                2,
-                43,
-                188,
-                173
+                51,
+                112,
+                90,
+                104
               ]
             }
           ],
@@ -13106,10 +13106,10 @@
             0
           ],
           "hit_bounds": [
-            -94,
-            -117,
-            188,
-            173
+            -45,
+            -48,
+            90,
+            104
           ],
           "ambient_overlays": [],
           "standing_viewpoints": [
@@ -13145,10 +13145,10 @@
           "source_review": "Phase 1 PASS runtime south bind 2026-09-16",
           "preview_art": "res://assets/runtime/office/lounge-sofa-south.png",
           "visual_bounds": [
-            -94,
-            -83,
-            188,
-            139
+            -93,
+            -28,
+            186,
+            84
           ],
           "render_layers": [
             {
@@ -13166,10 +13166,10 @@
               ],
               "z_offset": 0,
               "content_bounds": [
-                2,
-                77,
-                188,
-                139
+                3,
+                132,
+                186,
+                84
               ]
             }
           ],
@@ -13199,10 +13199,10 @@
             0
           ],
           "hit_bounds": [
-            -94,
-            -83,
-            188,
-            139
+            -93,
+            -28,
+            186,
+            84
           ],
           "ambient_overlays": [],
           "standing_viewpoints": [
@@ -13238,10 +13238,10 @@
           "source_review": "Phase 1 PASS runtime south bind 2026-09-16",
           "preview_art": "res://assets/runtime/office/bookshelf-south.png",
           "visual_bounds": [
-            -94,
-            -115,
-            188,
-            171
+            -75,
+            -56,
+            150,
+            112
           ],
           "render_layers": [
             {
@@ -13259,10 +13259,10 @@
               ],
               "z_offset": 0,
               "content_bounds": [
-                2,
-                45,
-                188,
-                171
+                21,
+                104,
+                150,
+                112
               ]
             }
           ],
@@ -13292,10 +13292,10 @@
             0
           ],
           "hit_bounds": [
-            -94,
-            -115,
-            188,
-            171
+            -75,
+            -56,
+            150,
+            112
           ],
           "ambient_overlays": [],
           "standing_viewpoints": [

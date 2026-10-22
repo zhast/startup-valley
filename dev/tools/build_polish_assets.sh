@@ -129,15 +129,11 @@ bash "$project_root/dev/tools/build_locomotion_assets.sh"
 build_grid "$polish_source/mira-work-master.png" "$character_output/mira-work.png" 8 4 48 80 44 68 72 yes
 build_grid "$polish_source/theo-work-master.png" "$character_output/theo-work.png" 8 4 48 80 44 68 72 yes
 
-build_grid "$polish_source/layered-furniture-master.png" "$office_output/layered-furniture.png" 2 2 128 96 122 88 88 yes
 build_grid "$polish_source/world-vfx-master.png" "$effect_output/world-state-vfx.png" 4 6 24 24 22 20 22 no
 build_grid "$polish_source/ambient-overlays-master.png" "$effect_output/ambient-office.png" 4 5 32 32 28 28 30 no
 build_grid "$polish_source/office-unlock-master.png" "$effect_output/office-unlock.png" 6 1 64 64 58 54 58 no
 build_grid "$polish_source/character-shadows-master.png" "$effect_output/character-shadows.png" 3 1 32 16 28 10 13 no
 
-normalize_prop "$office_source/employee-workstation-master.png" "$office_output/employee-workstation.png" 132 88 128 84
-normalize_prop "$office_source/research-bench-master.png" "$office_output/research-bench.png" 138 92 134 88
-normalize_prop "$office_source/collaboration-cluster-master.png" "$office_output/collaboration-cluster.png" 138 92 134 88
 normalize_prop "$office_source/coffee-station-master.png" "$office_output/coffee-station.png" 142 94 138 90
 normalize_prop "$office_source/approval-console-master.png" "$office_output/approval-console.png" 132 88 128 84
 normalize_prop "$office_source/prototype-bench-master.png" "$office_output/prototype-bench.png" 140 140 136 136

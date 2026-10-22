@@ -10,11 +10,8 @@ The runtime office is assembled in layers so moving characters can sort correctl
 - `south-workstation.png` is the active founder/employee workstation: two
   registered 128×112 cells, chair/far tabletop then desk/monitor front. We see the
   monitor's back; the seated employee faces it from the north side.
-- `layered-furniture.png` row 1 provides the active research bench layers.
-  Its old workstation row 0 is superseded.
-- `employee-workstation.png` and `research-bench.png` are retained older
-  standalone plates, not rendered by the current prop scenes.
-- `collaboration-cluster.png` is the first-hire informal meeting area.
+- Research benches render the registered `research-bench-v1/` layers.
+- The collaboration table renders the registered `collaboration-cluster-v2/` layers.
 - `coffee-station.png` is the first-hire shared coffee counter.
 - `approval-console.png` is the second-hire operations review desk.
 - `artifact-archive.png` is the first-hire completed-work display.
