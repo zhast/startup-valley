@@ -1017,6 +1017,8 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → ship → Train staff → next product uses the new stats. Connect stays closed on the picker, bench, and release card. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_training.gd`.
 
+- PR #29 merged (Round 27, Connect drawer + offline copy fixes, staff training).
+
 ### Booth v5 bind — 2026-10-22
 
 **What changed**
@@ -1039,3 +1041,5 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - No `game/tests` script asserts `phone-booth-south.png` by md5. Nothing extra to run.
 
 **TYCOON SLICE PLAYABLE: yes** — unchanged. The bound booth is the warm oak v5 in the first-run lounge.
+
+- PR #30 merged (phone booth v5 warm oak bind).
