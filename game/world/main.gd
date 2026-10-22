@@ -658,7 +658,7 @@ func _on_company_action(method: String, result: Dictionary) -> void:
 		"tycoon.release":
 			game_audio.play("reward")
 			company_panel.present("release")
-		"tycoon.train", "tycoon.research":
+		"tycoon.train", "tycoon.research", "tycoon.buyUpgrade":
 			company_panel.present("journey")
 		"day.end":
 			job_panel.close_drawer(false)

@@ -293,7 +293,7 @@
     "tycoon": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "developing", "history"],
+      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "upgradeNotice", "upgrades", "developing", "history"],
       "properties": {
         "seed": { "type": "integer", "minimum": 1 },
         "salesWindowDays": { "type": "integer", "const": 4 },
@@ -304,8 +304,25 @@
         "trainingNotice": { "type": "string" },
         "researchPoints": { "type": "integer", "minimum": 0 },
         "researchNotice": { "type": "string" },
+        "upgradeNotice": { "type": "string" },
+        "upgrades": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "$ref": "#/$defs/tycoonUpgrade" } },
         "developing": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/tycoonProduct" }] },
         "history": { "type": "array", "maxItems": 48, "items": { "$ref": "#/$defs/tycoonProduct" } }
+      }
+    },
+    "tycoonUpgrade": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "blurb", "priceCents", "kind", "effect", "owned", "affordable"],
+      "properties": {
+        "id": { "enum": ["standing_desk", "second_monitor", "ring_light", "checkout_page"] },
+        "name": { "type": "string", "minLength": 1 },
+        "blurb": { "type": "string", "minLength": 1 },
+        "priceCents": { "type": "integer", "minimum": 1 },
+        "kind": { "enum": ["design", "tech", "hype", "price"] },
+        "effect": { "type": "string", "minLength": 1 },
+        "owned": { "type": "boolean" },
+        "affordable": { "type": "boolean" }
       }
     },
     "tycoonTopic": {

@@ -4,7 +4,7 @@
 
 - End day + save from Company Journey, or from the product bench.
 - Read the day summary, then press Begin next day.
-- Clear the training lesson line and the research unlock line.
+- Clear the training lesson line, the research unlock line, and the upgrade purchase line.
 - Award one research point for each person on the build who is not in training.
 
 ## How to get to it (user POV)
