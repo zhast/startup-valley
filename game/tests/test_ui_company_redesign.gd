@@ -550,6 +550,11 @@ func _tycoon_secondary_actions() -> void:
 		"researchPoints": 0,
 		"researchNotice": "",
 		"trainingNotice": "",
+		"upgradeNotice": "",
+		"upgrades": [
+			{"id": "standing_desk", "name": "Oak Standing Desk", "blurb": "Stand for the sketches.", "priceCents": 25000, "kind": "design", "effect": "+1 design per person per dev day", "owned": false, "affordable": false},
+			{"id": "ring_light", "name": "Ring Light", "blurb": "Warmer clips.", "priceCents": 40000, "kind": "hype", "effect": "+1 hype per person per dev day", "owned": true, "affordable": false},
+		],
 		"topics": [
 			{"id": "fitness", "name": "Fitness", "unlocked": true, "researchCost": 4},
 			{"id": "sneakers", "name": "Sneakers", "unlocked": false, "researchCost": 4},
@@ -585,8 +590,14 @@ func _tycoon_secondary_actions() -> void:
 	_check(train_tech != null and str(train_tech.get_meta("cozy_variant", "")) == "secondary", "Train Tech reads as secondary")
 	_check(research_sneakers != null and str(research_sneakers.get_meta("cozy_variant", "")) == "secondary", "Research Sneakers reads as secondary")
 	_check(research_coaching != null and research_coaching.disabled, "Research Coaching stays disabled without enough points")
-	_check(train_card != null and research_card != null and new_product.get_global_rect().position.y < train_card.get_global_rect().position.y and train_card.get_global_rect().position.y < research_card.get_global_rect().position.y, "Train staff and Research sit below New Product")
+	var upgrades_card := _panel.find_child("UpgradesCard", true, false) as Control
+	var buy_desk := _panel.find_child("Buy_standing_desk", true, false) as Button
+	var owned_light := _panel.find_child("Owned_ring_light", true, false) as Label
+	_check(train_card != null and research_card != null and upgrades_card != null and new_product.get_global_rect().position.y < train_card.get_global_rect().position.y and train_card.get_global_rect().position.y < research_card.get_global_rect().position.y and research_card.get_global_rect().position.y < upgrades_card.get_global_rect().position.y, "Train staff, Research, and Upgrades sit below New Product")
 	_check(_text().contains("0 research points"), "Research card shows the point balance")
+	_check(buy_desk != null and buy_desk.disabled and str(buy_desk.get_meta("cozy_variant", "")) == "secondary" and buy_desk.text == "Buy Oak Standing Desk · $250", "Buy Oak Standing Desk is a disabled secondary action")
+	_check(owned_light != null and owned_light.text.contains("Ring Light"), "An owned upgrade shows one line")
+	_check(_panel.find_child("Buy_ring_light", true, false) == null, "An owned upgrade hides its buy button")
 	var tycoon: Dictionary = value["tycoon"]
 	for topic: Dictionary in tycoon["topics"]:
 		topic["unlocked"] = true
@@ -595,3 +606,4 @@ func _tycoon_secondary_actions() -> void:
 	tycoon["researchPoints"] = 20
 	await _present("journey", value)
 	_check(_panel.find_child("ResearchCard", true, false) == null, "Research card hides once every topic and type is unlocked")
+	_check(_panel.find_child("UpgradesCard", true, false) != null, "Upgrades stay when research is finished")

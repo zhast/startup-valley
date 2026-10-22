@@ -509,6 +509,7 @@ func _journey_screen() -> void:
 	_product_shortcut()
 	_train_staff()
 	_research_card()
+	_upgrades_card()
 	var money_note := _label("Game cash is virtual. Shipping products is fully offline. Ads and incorporation create planning files only.")
 	money_note.name = "MoneyExplanation"
 
@@ -592,6 +593,48 @@ func _research_card() -> void:
 func _research_item(kind: String, id: String) -> void:
 	_request("tycoon.research", {"kind": kind, "id": id})
 
+func _upgrades_card() -> void:
+	var tycoon := _tycoon()
+	if tycoon.is_empty(): return
+	var items: Array = tycoon.get("upgrades", []) as Array
+	if items.is_empty(): return
+	var card := _card()
+	card.name = "UpgradesCard"
+	_label("Upgrades", true, card)
+	var notice := str(tycoon.get("upgradeNotice", ""))
+	if not notice.is_empty():
+		var line := _label(notice, false, card, "action")
+		line.name = "UpgradeNotice"
+	var owned_rows: Array[Dictionary] = []
+	var shop_rows: Array[Dictionary] = []
+	for item: Variant in items:
+		if not item is Dictionary: continue
+		var upgrade := item as Dictionary
+		if bool(upgrade.get("owned", false)): owned_rows.append(upgrade)
+		else: shop_rows.append(upgrade)
+	for upgrade: Dictionary in owned_rows:
+		var owned := _label("%s · %s" % [str(upgrade.get("name", "Upgrade")), str(upgrade.get("effect", ""))], false, card)
+		owned.name = "Owned_%s" % str(upgrade.get("id", ""))
+	for upgrade: Dictionary in shop_rows:
+		var effect := str(upgrade.get("effect", ""))
+		if not effect.is_empty(): _label(effect, false, card, "meta")
+		var cents := int(upgrade.get("priceCents", 0))
+		var button := _button("Buy %s · $%d" % [str(upgrade.get("name", "Upgrade")), int(cents / 100)], _buy_upgrade.bind(str(upgrade.get("id", ""))), false, bool(upgrade.get("affordable", false)), card, "secondary")
+		button.name = "Buy_%s" % str(upgrade.get("id", ""))
+
+func _buy_upgrade(upgrade_id: String) -> void:
+	_request("tycoon.buyUpgrade", {"id": upgrade_id})
+
+func _upgrade_effect(kind: String) -> String:
+	var parts: PackedStringArray = []
+	for item: Variant in _tycoon().get("upgrades", []) as Array:
+		if not item is Dictionary: continue
+		var upgrade := item as Dictionary
+		if bool(upgrade.get("owned", false)) and str(upgrade.get("kind", "")) == kind:
+			var effect := str(upgrade.get("effect", ""))
+			if not effect.is_empty(): parts.append(effect)
+	return ", ".join(parts)
+
 func _stat_word(stat: String) -> String:
 	match stat:
 		"design": return "Design"
@@ -671,6 +714,13 @@ func _product_progress(product: Dictionary) -> void:
 	var progress := _label("Ready to ship" if ready else "Building · day %d of %d" % [dev_days, required], false, null, "action")
 	progress.name = "ProductProgress"
 	_label("Design %d · Tech %d · Hype %d" % [int(product.get("design", 0)), int(product.get("tech", 0)), int(product.get("hype", 0))], false, null, "meta")
+	var bonus_parts: PackedStringArray = []
+	for kind: String in ["design", "tech", "hype"]:
+		var effect := _upgrade_effect(kind)
+		if not effect.is_empty(): bonus_parts.append(effect)
+	if not bonus_parts.is_empty():
+		var bonus := _label("Office bonus · %s" % ", ".join(bonus_parts), false, null, "meta")
+		bonus.name = "OfficeBonus"
 	_label("Progress · %d%%" % int(product.get("progress", 0)))
 	if dev_days > required:
 		_label("Extra office days still add a little craft, then they stop.", false, null, "meta")
@@ -702,6 +752,10 @@ func _release_screen() -> void:
 	_label("Launch sales · $%s · +%d fans" % [_money(int(product.get("salesCents", 0))), int(product.get("fans", 0))], false, null, "action")
 	var research_line := _label("+%d research points" % int(product.get("researchPoints", 0)), false, null, "action")
 	research_line.name = "ReleaseResearch"
+	var price_boost := _upgrade_effect("price")
+	if not price_boost.is_empty():
+		var boost := _label(price_boost, false, null, "meta")
+		boost.name = "ReleasePriceBoost"
 	_label("Sales keep coming for a few office days.", false, null, "meta")
 	_label("Company · $%s game cash · %d reputation" % [_money(int(company.get("cashCents", 0))), int(company.get("reputation", 0))])
 	_actions("Back to office", hide, true, "Ship another", func() -> void: present("product"))

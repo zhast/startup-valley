@@ -1160,3 +1160,35 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - `test_collaboration_cluster_v2.gd` — 526 checks, 27 failures. Same count as the branch baseline.
 
 **TYCOON SLICE PLAYABLE: yes** — unchanged. This round only moves south chair depth and two HUD plaques. The journey playtests were not re-run.
+
+### Round 29 — 2026-10-22
+
+**What changed**
+- Upgrades shop. A company spends game cash, once each, on four office tools. The catalog lives in `harness/src/tycoon.ts`: Oak Standing Desk $250 (+1 design per person per dev day), Second Monitor $360 (+1 tech), Ring Light $400 (+1 hype), Nicer Checkout Page $560 (+10% price on later sales). Migration `012_tycoon_upgrades.sql` adds `tycoon_meta.upgrades_json`. Older saves load with none owned. `tycoon.buyUpgrade` fails cleanly for an unknown id, a tool already in the office, or short cash. A buy deducts cash and records the purchase day.
+- Effects apply when the tool is already owned at the tick or the sale. Buy, then end that same day, and that tick includes the boost. Stored points, stored sales, stored reviews, and the product's start-day staff snapshot are not rewritten. A person in training that day adds no points and no office bonus. The price boost is `Math.round((priceCents * 110) / 100)`. Units and fans stay on the unboosted formula. Fully offline. No provider and no credential.
+- Company Journey has an Upgrades card in the same style as Train staff and Research. Owned tools show one line. The purchase line ("Bought Ring Light. −$400") lasts that office day. Unowned tools get one secondary button ("Buy Ring Light · $400"), disabled when cash is short, hidden once owned. Hire stays the one primary action. The build screen can show "Office bonus · …". The release screen shows the price effect when the checkout tool is owned.
+- `journey.tycoon` exposes the four catalog rows with `owned`, `priceCents`, `affordable`, and `effect`, plus `upgradeNotice`. The player-driving skill now buys Oak Standing Desk after the second product and snaps `09-upgrades-card.png` and `10-upgrade-owned.png`.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art, seated poses, workstation sheets, and the unbound furnishing kits stay untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Office growth. More desks and a second room from cash and headcount, using furniture that is already bound.
+2. Seasons and events. The 28-day calendar is design-only. A research fit bonus is still unbuilt.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. Carried from Round 28: Creative has no seated sheet. Unbound art stays untracked. The live path is still a harness driver. A cheap reviewer can still sit just under the 2.5 ready line. Chapter 3 ends at "More is coming." `shared_workbench` stays in storage.
+
+**Test results** (no paid live evals; Node 22.23.3; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 93 tests, 91 pass, 0 fail, 2 skipped
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS (47 checks, 0 failures). The first run used system Node 20 and failed worker bootstrap (`node:sqlite`). The Node 22 rerun shipped Crypto Alpha Newsletter, bought Ring Light at $414, and cleared the purchase line on End day.
+- `test_tycoon_product.gd` — TYCOON PASS (40 checks, 0 failures)
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS (50 checks, 0 failures)
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS (40 checks, 0 failures)
+- `test_ui_company_redesign.gd` — 4777 checks, 0 failures, 0 captures
+- Proof capture — PROOF PASS. Ten PNGs in `/workspace/sv-proof/round-29/`. After the second launch, cash was 28500 cents. Buy Oak Standing Desk was enabled; the purchase line and the owned desk were on screen. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-29 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → ship → Train staff → Research a locked topic → buy an office tool. The lesson line, the unlock line, and the purchase line last one office day. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_upgrades.gd`.

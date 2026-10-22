@@ -16,8 +16,10 @@ import {
   PRODUCT_TYPES,
   STAT_CAP,
   TOPICS,
+  UPGRADES,
   allFits,
   baseScore,
+  boostedPriceCents,
   fitFor,
   reviewProduct,
   salesForDay,
@@ -213,6 +215,21 @@ test("stdio tycoon start, days, and release need no credential", async (t) => {
   const short = await request("short", "tycoon.research", { kind: "type", id: "coaching" });
   assert.equal(short.ok, false);
   assert.match(short.error ?? "", /Not enough research points/u);
+  const unknownUpgrade = await request("unknown-upgrade", "tycoon.buyUpgrade", { id: "lava_lamp" });
+  assert.equal(unknownUpgrade.ok, false);
+  assert.match(unknownUpgrade.error ?? "", /Unknown upgrade/u);
+  assert.equal((await request("day3", "day.end", { day: 3 })).result.clock.day, 4);
+  const funded = await request("day4", "day.end", { day: 4 });
+  assert.equal(funded.result.journey.company.cashCents, 33300);
+  const bought = await request("buy", "tycoon.buyUpgrade", { id: "standing_desk" });
+  assert.equal(bought.ok, true, bought.error);
+  assert.equal(bought.result.journey.company.cashCents, 8300);
+  assert.equal(bought.result.journey.tycoon.upgradeNotice, "Bought Oak Standing Desk. −$250");
+  assert.equal(bought.result.journey.tycoon.upgrades.find((item: { id: string }) => item.id === "standing_desk").owned, true);
+  const ownedAgain = await request("owned", "tycoon.buyUpgrade", { id: "standing_desk" });
+  assert.equal(ownedAgain.ok, false);
+  assert.match(ownedAgain.error ?? "", /already in the office/u);
+  assert.equal((await request("day5", "day.end", { day: 5 })).result.journey.tycoon.upgradeNotice, "");
   assert.equal(stderr.includes("sk-"), false);
   child.stdin.end();
   await once(child, "exit");
@@ -362,6 +379,7 @@ test("older saves that predate research load with everything unlocked", async ()
   assert.equal(view.researchPoints, 0);
   assert.ok(view.topics.every((topic) => topic.unlocked));
   assert.ok(view.types.every((type) => type.unlocked));
+  assert.ok(view.upgrades.every((item) => item.owned === false));
   restored.tycoon.start("sneakers", "software", []);
   assert.equal(restored.tycoon.view().developing?.name, "Sneakers Software Tool");
   restored.close();
@@ -431,4 +449,199 @@ test("research spends points and start rejects a locked topic or type", async ()
   assert.equal(restored.tycoon.view().types.find((type) => type.id === "software")?.unlocked, false);
   assert.equal(restored.tycoon.view().developing?.name, "Sneakers Newsletter");
   restored.close();
+});
+
+test("a new company lists the upgrade catalog and nothing is owned yet", async () => {
+  const { db } = await setup();
+  const view = db.tycoon.view();
+  assert.equal(view.upgradeNotice, "");
+  assert.deepEqual(view.upgrades.map((item) => item.id), UPGRADES.map((item) => item.id));
+  assert.deepEqual(view.upgrades.map((item) => item.priceCents), [25000, 36000, 40000, 56000]);
+  assert.ok(view.upgrades.every((item) => item.owned === false && item.affordable === false && item.effect.length > 0 && item.blurb.length > 0));
+  assert.equal(view.upgrades.find((item) => item.id === "standing_desk")?.kind, "design");
+  assert.equal(view.upgrades.find((item) => item.id === "checkout_page")?.kind, "price");
+  assert.equal(boostedPriceCents(900, 10), 990);
+  assert.equal(boostedPriceCents(5, 10), 6);
+  assert.equal(boostedPriceCents(900, 0), 900);
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  assert.equal(validate(db.journey.state()), true, JSON.stringify(validate.errors));
+  db.close();
+});
+
+test("older saves that predate the upgrades column load with none", async () => {
+  const root = await mkdtemp(join(tmpdir(), "startup-valley-tycoon-preupgrade-"));
+  const file = join(root, "game.sqlite");
+  const project = join(root, "company-project");
+  await mkdir(project);
+  const old = new DatabaseSync(file);
+  for (const name of [
+    "001_initial.sql", "002_product_layer.sql", "003_persistent_studio.sql", "004_work_order_handoff.sql",
+    "005_employee_chat.sql", "006_company_journey.sql", "007_furnishing.sql", "008_company_journey_opening.sql",
+    "009_tycoon_products.sql", "010_tycoon_staff.sql", "011_tycoon_research.sql",
+  ]) old.exec(readFileSync(new URL(`../migrations/${name}`, import.meta.url), "utf8"));
+  old.exec("CREATE TABLE schema_migrations (version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL)");
+  for (const version of [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) old.prepare("INSERT INTO schema_migrations VALUES (?, 'old')").run(version);
+  old.close();
+
+  const restored = new GameDatabase(file, project);
+  const view = restored.tycoon.view();
+  assert.equal(view.upgrades.length, 4);
+  assert.ok(view.upgrades.every((item) => item.owned === false));
+  assert.equal(view.upgradeNotice, "");
+  const row = (restored as unknown as { journey: { db: DatabaseSync } }).journey.db
+    .prepare("SELECT upgrades_json FROM tycoon_meta WHERE id = 1").get() as { upgrades_json: string };
+  assert.equal(row.upgrades_json, "");
+  restored.close();
+});
+
+test("buying an upgrade spends cash once and rejects unknown, owned, or broke", async () => {
+  const { db, root } = await setup();
+  assert.throws(() => db.tycoon.buyUpgrade("lava_lamp"), /Unknown upgrade/u);
+  assert.throws(() => db.tycoon.buyUpgrade("standing_desk"), /Not enough game cash\. Oak Standing Desk costs \$250/u);
+  assert.equal(db.journey.state().company.cashCents, 0);
+  db.journey.recordCompanyChange("short", 1, 24_999, 0, 0, "Short cash");
+  assert.throws(() => db.tycoon.buyUpgrade("standing_desk"), /Not enough game cash/u);
+  assert.equal(db.journey.state().company.cashCents, 24_999);
+  assert.ok(db.tycoon.view().upgrades.every((item) => item.owned === false));
+
+  db.journey.recordCompanyChange("enough", 1, 1, 0, 0, "One more cent");
+  const desk = db.tycoon.view().upgrades.find((item) => item.id === "standing_desk");
+  assert.equal(desk?.affordable, true);
+  db.tycoon.buyUpgrade("standing_desk");
+  const bought = db.tycoon.view();
+  assert.equal(db.journey.state().company.cashCents, 0);
+  assert.equal(bought.upgradeNotice, "Bought Oak Standing Desk. −$250");
+  assert.equal(bought.upgrades.find((item) => item.id === "standing_desk")?.owned, true);
+  assert.equal(bought.upgrades.find((item) => item.id === "standing_desk")?.affordable, false);
+  assert.equal(bought.upgrades.find((item) => item.id === "ring_light")?.affordable, false);
+  assert.throws(() => db.tycoon.buyUpgrade("standing_desk"), /already in the office/u);
+  assert.equal(db.journey.state().company.cashCents, 0);
+  db.endDay(1);
+  assert.equal(db.tycoon.view().upgradeNotice, "");
+  assert.equal(db.tycoon.view().upgrades.find((item) => item.id === "standing_desk")?.owned, true);
+  db.close();
+
+  const restored = new GameDatabase(join(root, "game.sqlite"), join(root, "company-project"));
+  assert.equal(restored.tycoon.view().upgradeNotice, "");
+  assert.equal(restored.tycoon.view().upgrades.find((item) => item.id === "standing_desk")?.owned, true);
+  assert.equal(restored.tycoon.view().upgrades.find((item) => item.id === "second_monitor")?.owned, false);
+  restored.close();
+});
+
+test("point boosts apply on dev days after the purchase and leave the staff snapshot alone", async () => {
+  const { db } = await setup();
+  db.journey.recordCompanyChange("test-cash", 1, 1_000_000, 0, 0, "Test cash");
+  db.tycoon.start("crypto", "newsletter", []);
+  db.endDay(1);
+  assert.equal(db.tycoon.view().developing?.design, 2);
+  db.tycoon.buyUpgrade("standing_desk");
+  assert.equal(db.tycoon.view().developing?.design, 2, "buying does not rewrite points already stored");
+  assert.equal(db.tycoon.view().staff.find((person) => person.id === "founder")?.design, 2);
+  db.endDay(2);
+  const boosted = db.tycoon.view().developing;
+  assert.equal(boosted?.devDays, 2);
+  assert.equal(boosted?.design, 5, "the day that ends after the purchase adds founder 2 plus the desk");
+  assert.equal(boosted?.tech, 4);
+  assert.equal(boosted?.hype, 4);
+  db.tycoon.train("founder", "tech");
+  db.endDay(3);
+  const trained = db.tycoon.view().developing;
+  assert.equal(trained?.devDays, 3);
+  assert.equal(trained?.design, 5, "a person in training adds no office bonus that day");
+  assert.equal(trained?.tech, 4);
+  db.tycoon.release("p1");
+
+  db.journey.hire("mira", 4);
+  db.tycoon.start("crypto", "newsletter", ["mira"]);
+  db.endDay(4);
+  const pair = db.tycoon.view().developing;
+  assert.equal(pair?.design, 7, "founder 2 + Mina 3 + one desk point each");
+  assert.equal(pair?.tech, 5, "the next product snapshots trained Tech 3 plus Mina's Tech 2");
+  assert.equal(pair?.hype, 3);
+  assert.equal(db.tycoon.view().staff.find((person) => person.id === "founder")?.design, 2);
+  assert.equal(db.tycoon.view().staff.find((person) => person.id === "mira")?.design, 3);
+  db.endDay(5);
+  assert.equal(db.tycoon.view().developing?.design, 14, "the next day adds the same bonus and does not bake it into the snapshot");
+  db.close();
+});
+
+test("the checkout upgrade raises later sales and does not rewrite a stored review", async () => {
+  const { db } = await setup();
+  db.tycoon.start("crypto", "newsletter", []);
+  db.endDay(1);
+  db.endDay(2);
+  db.tycoon.release("p1");
+  const shipped = db.tycoon.view().history[0];
+  assert.ok(shipped);
+  const launch = shipped.salesCents;
+  const review = structuredClone(shipped.review);
+  assert.equal(launch, 20700);
+  db.journey.recordCompanyChange("test-cash", 3, 1_000_000, 0, 0, "Test cash");
+  db.tycoon.buyUpgrade("checkout_page");
+  assert.deepEqual(db.tycoon.view().history[0]?.review, review);
+  assert.equal(db.tycoon.view().history[0]?.salesCents, launch);
+  db.endDay(3);
+  assert.equal(db.tycoon.view().history[0]?.salesCents, launch, "the release day does not sell again");
+  db.endDay(4);
+  const second = db.tycoon.view().history[0];
+  assert.equal(second?.salesCents, launch + 14 * 990);
+  assert.deepEqual(second?.review, review);
+
+  db.tycoon.start("crypto", "newsletter", []);
+  db.endDay(5);
+  db.endDay(6);
+  const before = db.journey.state().company.reputation;
+  db.tycoon.release("p2");
+  const next = db.tycoon.view().history.find((item) => item.id === "p2");
+  assert.ok(next?.review);
+  const expected = salesForDay({
+    seed: 26021,
+    productId: "p2",
+    typeId: "newsletter",
+    fit: "great",
+    score: next.review.score,
+    dayIndex: 0,
+    reputation: before,
+    priceBoostPercent: 10,
+  });
+  const plain = salesForDay({
+    seed: 26021,
+    productId: "p2",
+    typeId: "newsletter",
+    fit: "great",
+    score: next.review.score,
+    dayIndex: 0,
+    reputation: before,
+  });
+  assert.equal(next.salesCents, expected.cents);
+  assert.equal(next.salesCents, expected.units * 990);
+  assert.ok(next.salesCents > plain.cents);
+  assert.equal(next.fans, plain.fans);
+  db.close();
+});
+
+test("the same upgrades and the same days pay the same cash", async () => {
+  async function play() {
+    const ctx = await setup();
+    ctx.db.journey.recordCompanyChange("cash", 1, 500_000, 0, 0, "Cash");
+    ctx.db.tycoon.buyUpgrade("ring_light");
+    ctx.db.tycoon.buyUpgrade("checkout_page");
+    ctx.db.tycoon.start("crypto", "newsletter", []);
+    ctx.db.endDay(1);
+    ctx.db.endDay(2);
+    ctx.db.tycoon.release("p1");
+    ctx.db.endDay(3);
+    ctx.db.endDay(4);
+    const view = ctx.db.tycoon.view();
+    const company = ctx.db.journey.state().company;
+    ctx.db.close();
+    return {
+      history: view.history,
+      cash: company.cashCents,
+      reputation: company.reputation,
+      owned: view.upgrades.filter((item) => item.owned).map((item) => item.id),
+    };
+  }
+  assert.deepEqual(await play(), await play());
 });

@@ -16,6 +16,8 @@ export const STAT_CAP = 10;
 export const STATS = ["design", "tech", "hype"] as const;
 /** Research point prices. A topic is the cheaper unlock. A type costs more. */
 export const RESEARCH_COST = { topic: 4, type: 6 } as const;
+/** Percent added to the type price by the checkout upgrade. Half rounds away from zero. */
+export const PRICE_BOOST_PERCENT = 10;
 const IDEAL_POINTS_PER_DAY = 4;
 
 export const TOPICS = [
@@ -47,11 +49,21 @@ export const STAFF = [
   { id: "creative", name: "Creative", design: 4, tech: 1, hype: 2 },
 ] as const;
 
+/** Office tools. Each row is bought once and has one effect. */
+export const UPGRADES = [
+  { id: "standing_desk", name: "Oak Standing Desk", blurb: "Sketches land cleaner when you stand.", priceCents: 25_000, kind: "design", effect: "+1 design per person per dev day" },
+  { id: "second_monitor", name: "Second Monitor", blurb: "The build on one screen, the notes on the other.", priceCents: 36_000, kind: "tech", effect: "+1 tech per person per dev day" },
+  { id: "ring_light", name: "Ring Light", blurb: "Launch clips look like a real shop.", priceCents: 40_000, kind: "hype", effect: "+1 hype per person per dev day" },
+  { id: "checkout_page", name: "Nicer Checkout Page", blurb: "The buy button finally looks finished.", priceCents: 56_000, kind: "price", effect: "+10% price on later sales" },
+] as const;
+
 export type TopicId = (typeof TOPICS)[number]["id"];
 export type ProductTypeId = (typeof PRODUCT_TYPES)[number]["id"];
 export type StaffId = (typeof STAFF)[number]["id"];
 export type StatId = (typeof STATS)[number];
 export type ResearchKind = keyof typeof RESEARCH_COST;
+export type UpgradeId = (typeof UPGRADES)[number]["id"];
+export type UpgradeKind = (typeof UPGRADES)[number]["kind"];
 export type Fit = "great" | "good" | "okay" | "bad";
 
 /** New companies. Crypto Alpha × Newsletter stays in this set. */
@@ -179,6 +191,17 @@ export interface TycoonProductView {
   researchPoints: number;
 }
 
+export interface TycoonUpgradeView {
+  id: UpgradeId;
+  name: string;
+  blurb: string;
+  priceCents: number;
+  kind: UpgradeKind;
+  effect: string;
+  owned: boolean;
+  affordable: boolean;
+}
+
 export interface TycoonSnapshot {
   seed: number;
   salesWindowDays: number;
@@ -189,6 +212,8 @@ export interface TycoonSnapshot {
   trainingNotice: string;
   researchPoints: number;
   researchNotice: string;
+  upgradeNotice: string;
+  upgrades: TycoonUpgradeView[];
   developing: TycoonProductView | null;
   history: TycoonProductView[];
 }
@@ -258,6 +283,21 @@ export function productTitle(topicId: TopicId, typeId: ProductTypeId): string {
 
 export function trainCostCents(level: number): number {
   return TRAIN_COST_PER_LEVEL_CENTS * Math.max(1, level);
+}
+
+export function upgradeById(id: string): (typeof UPGRADES)[number] | undefined {
+  return UPGRADES.find((item) => item.id === id);
+}
+
+/** Whole dollars for player-facing cash lines. Catalog prices are multiples of $1. */
+export function wholeDollars(cents: number): string {
+  return `$${Math.floor(cents / 100)}`;
+}
+
+/** Unit price after a percent boost. Half rounds away from zero via Math.round. */
+export function boostedPriceCents(priceCents: number, boostPercent: number): number {
+  if (!Number.isInteger(boostPercent) || boostPercent <= 0) return priceCents;
+  return Math.round((priceCents * (100 + boostPercent)) / 100);
 }
 
 export function releaseResearchPoints(score: number): number {
@@ -419,6 +459,7 @@ export function salesForDay(input: {
   score: number;
   dayIndex: number;
   reputation: number;
+  priceBoostPercent?: number;
 }): TycoonSales {
   const curve = SALES_CURVE[input.dayIndex];
   const type = typeById(input.typeId);
@@ -428,7 +469,8 @@ export function salesForDay(input: {
   const units = Math.max(1, Math.round((baseUnits * curve * (100 + swing)) / 10000));
   const fanPermille = input.score >= 8 ? 400 : input.score >= 5 ? 200 : 100;
   const fans = Math.max(1, Math.round((units * fanPermille) / 1000));
-  return { units, cents: units * type.priceCents, fans };
+  const price = boostedPriceCents(type.priceCents, input.priceBoostPercent ?? 0);
+  return { units, cents: units * price, fans };
 }
 
 export function pointsStillAccrue(devDaysAlready: number, required: number): boolean {
@@ -456,11 +498,22 @@ interface ResearchState {
   types: Set<ProductTypeId>;
 }
 
+interface OwnedUpgrade {
+  id: UpgradeId;
+  day: number;
+}
+
+function isPointKind(kind: UpgradeKind): kind is StatId {
+  return kind === "design" || kind === "tech" || kind === "hype";
+}
+
 export class TycoonStore {
   private trainingNotice = "";
   private trainingNoticeDay = 0;
   private researchNotice = "";
   private researchNoticeDay = 0;
+  private upgradeNotice = "";
+  private upgradeNoticeDay = 0;
 
   constructor(private readonly db: DatabaseSync, private readonly journey: JourneyStore) {}
 
@@ -473,6 +526,8 @@ export class TycoonStore {
     `).all() as unknown as ProductRow[]).map((row) => this.toView(row));
     const stats = this.loadStaffState();
     const research = this.loadResearch();
+    const owned = this.loadUpgrades();
+    const ownedIds = new Set(owned.map((entry) => entry.id));
     const day = this.day();
     const cash = this.cashCents();
     return {
@@ -513,6 +568,20 @@ export class TycoonStore {
       trainingNotice: this.trainingNoticeDay === day ? this.trainingNotice : "",
       researchPoints: research.points,
       researchNotice: this.researchNoticeDay === day ? this.researchNotice : "",
+      upgradeNotice: this.upgradeNoticeDay === day ? this.upgradeNotice : "",
+      upgrades: UPGRADES.map((item) => {
+        const isOwned = ownedIds.has(item.id);
+        return {
+          id: item.id,
+          name: item.name,
+          blurb: item.blurb,
+          priceCents: item.priceCents,
+          kind: item.kind,
+          effect: item.effect,
+          owned: isOwned,
+          affordable: !isOwned && cash >= item.priceCents,
+        };
+      }),
       developing: developing ? this.toView(developing) : null,
       history,
     };
@@ -600,6 +669,34 @@ export class TycoonStore {
     });
   }
 
+  buyUpgrade(idValue: string): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const upgrade = upgradeById(idValue);
+      if (!upgrade) throw new Error("Unknown upgrade.");
+      const owned = this.loadUpgrades();
+      if (owned.some((entry) => entry.id === upgrade.id)) {
+        throw new Error(`${upgrade.name} is already in the office.`);
+      }
+      if (this.cashCents() < upgrade.priceCents) {
+        throw new Error(`Not enough game cash. ${upgrade.name} costs ${wholeDollars(upgrade.priceCents)}.`);
+      }
+      const day = this.day();
+      this.journey.recordCompanyChange(
+        `tycoon:upgrade:${upgrade.id}`,
+        day,
+        -upgrade.priceCents,
+        0,
+        0,
+        `Upgrade · ${upgrade.name}`,
+      );
+      owned.push({ id: upgrade.id, day });
+      this.saveUpgrades(owned);
+      this.upgradeNotice = `Bought ${upgrade.name}. −${wholeDollars(upgrade.priceCents)}`;
+      this.upgradeNoticeDay = day;
+      return this.journey.state();
+    });
+  }
+
   release(productId: string): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
       const row = this.row(productId);
@@ -653,9 +750,15 @@ export class TycoonStore {
     const snapshot = parseStaffSnapshot(row.staff_json);
     const trainedToday = this.trainedIdsOn(day);
     const working = snapshot.filter((person) => !trainedToday.has(person.id));
-    const gain = pointsStillAccrue(Number(row.dev_days), type.devDays)
-      ? snapshotPoints(working)
-      : { design: 0, tech: 0, hype: 0 };
+    const accrue = pointsStillAccrue(Number(row.dev_days), type.devDays);
+    const personal = accrue ? snapshotPoints(working) : { design: 0, tech: 0, hype: 0 };
+    const bonus = accrue ? this.pointBonus() : { design: 0, tech: 0, hype: 0 };
+    const people = accrue ? working.length : 0;
+    const gain = {
+      design: personal.design + bonus.design * people,
+      tech: personal.tech + bonus.tech * people,
+      hype: personal.hype + bonus.hype * people,
+    };
     const devDays = Number(row.dev_days) + 1;
     this.db.prepare(`
       UPDATE tycoon_products
@@ -688,6 +791,7 @@ export class TycoonStore {
       score: review.score,
       dayIndex: applied,
       reputation,
+      priceBoostPercent: this.priceBoostPercent(),
     });
     this.journey.recordCompanyChange(`tycoon:${row.id}:${applied}`, day, payout.cents, payout.cents, payout.fans, `Sales · ${row.name}`);
     const salesDays = applied + 1;
@@ -748,6 +852,53 @@ export class TycoonStore {
       this.researchNotice = "";
       this.researchNoticeDay = 0;
     }
+    if (this.upgradeNoticeDay !== 0 && this.upgradeNoticeDay <= endedDay) {
+      this.upgradeNotice = "";
+      this.upgradeNoticeDay = 0;
+    }
+  }
+
+  private pointBonus(): CraftPoints {
+    const bonus: CraftPoints = { design: 0, tech: 0, hype: 0 };
+    for (const entry of this.loadUpgrades()) {
+      const upgrade = upgradeById(entry.id);
+      if (!upgrade || !isPointKind(upgrade.kind)) continue;
+      bonus[upgrade.kind] += 1;
+    }
+    return bonus;
+  }
+
+  private priceBoostPercent(): number {
+    return this.loadUpgrades().some((entry) => upgradeById(entry.id)?.kind === "price") ? PRICE_BOOST_PERCENT : 0;
+  }
+
+  private loadUpgrades(): OwnedUpgrade[] {
+    const row = this.db.prepare("SELECT upgrades_json FROM tycoon_meta WHERE id = 1").get() as { upgrades_json?: string } | undefined;
+    const raw = row?.upgrades_json?.trim() ?? "";
+    if (!raw) return [];
+    let parsed: unknown;
+    try { parsed = JSON.parse(raw); } catch { return []; }
+    if (!Array.isArray(parsed)) return [];
+    const owned: OwnedUpgrade[] = [];
+    const seen = new Set<string>();
+    for (const item of parsed) {
+      if (!item || typeof item !== "object" || !("id" in item)) continue;
+      const id = String((item as { id: unknown }).id);
+      const upgrade = upgradeById(id);
+      if (!upgrade || seen.has(upgrade.id)) continue;
+      seen.add(upgrade.id);
+      const day = Number((item as { day?: unknown }).day);
+      owned.push({ id: upgrade.id, day: Number.isInteger(day) && day > 0 ? day : 1 });
+    }
+    return owned;
+  }
+
+  private saveUpgrades(owned: readonly OwnedUpgrade[]): void {
+    const ordered = UPGRADES.flatMap((item) => {
+      const entry = owned.find((candidate) => candidate.id === item.id);
+      return entry ? [entry] : [];
+    });
+    this.db.prepare("UPDATE tycoon_meta SET upgrades_json = ? WHERE id = 1").run(JSON.stringify(ordered));
   }
 
   private addResearchPoints(amount: number): void {

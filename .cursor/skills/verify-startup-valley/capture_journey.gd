@@ -236,6 +236,28 @@ func _run() -> void:
 	await click(button_named("Start development"))
 	await wait_until(func() -> bool: return developing().get("name", "") == "Sneakers Newsletter" and not main.company_panel.busy, "Sneakers Newsletter starts")
 	await snap("08-sneakers-started")
+	await end_office_day()
+	await open_product()
+	await end_office_day()
+	await open_product()
+	check(bool(developing().get("ready", false)), "Two office days make Sneakers Newsletter ready")
+	await click(button_named("Release"))
+	await wait_until(func() -> bool: return main.company_panel.screen == "release", "The second product opens the release card")
+	await open_journey()
+	var waits := 0
+	while company_cash() < 25000 and waits < 4:
+		await end_office_day()
+		await open_journey()
+		waits += 1
+	check(company_cash() >= 25000, "Cash covers Oak Standing Desk (%d cents)" % company_cash())
+	var buy := button_named("Buy Oak Standing Desk")
+	check(buy != null and not buy.disabled and str(buy.get_meta("cozy_variant", "")) == "secondary", "Buy Oak Standing Desk is an enabled secondary action")
+	await snap("09-upgrades-card", main.company_panel.find_child("UpgradesCard", true, false) as Control)
+	await click(buy)
+	await wait_until(func() -> bool: return not main.company_panel.busy and label_contains("Bought Oak Standing Desk. −$250"), "Purchase notice names the desk")
+	await snap("10-upgrade-owned", label_named("UpgradeNotice"))
+	check(label_named("Owned_standing_desk") != null, "The owned line names the desk")
+	check(button_named("Buy Oak Standing Desk") == null, "The desk buy button hides once it is owned")
 	check(not main.job_panel._connection_panel.visible, "The loop never opens Connect")
 	_finish()
 
