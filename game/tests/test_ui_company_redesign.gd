@@ -45,6 +45,7 @@ func _run() -> void:
 	await _chapter_complete()
 	await _chapter_two_end()
 	await _chapter_three_end()
+	await _tycoon_secondary_actions()
 	var file := FileAccess.open(OUTPUT + ("/manifest-headless.json" if DisplayServer.get_name() == "headless" else "/manifest.json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify({"checks": _checks, "failures": _failures, "captures": _captures, "layouts": _layouts,
 		"workerDisabled": true, "transactions": "Signal-only spy. No worker, database or real save.",
@@ -537,3 +538,60 @@ func _chapter_three_end() -> void:
 	await _capture("chapter-three-complete")
 	await _click(_button("Back to office"))
 	_check(not _panel.visible, "Chapter 3 Back to office closes the notebook")
+
+func _tycoon_secondary_actions() -> void:
+	var value := _fixture()
+	value["milestones"][0]["state"] = "locked"
+	value["milestones"][1]["state"] = "locked"
+	value["candidates"][0]["hired"] = false
+	value["candidates"][0]["available"] = true
+	value["company"]["cashCents"] = 0
+	value["tycoon"] = {
+		"researchPoints": 0,
+		"researchNotice": "",
+		"trainingNotice": "",
+		"topics": [
+			{"id": "fitness", "name": "Fitness", "unlocked": true, "researchCost": 4},
+			{"id": "sneakers", "name": "Sneakers", "unlocked": false, "researchCost": 4},
+			{"id": "reselling", "name": "Reselling", "unlocked": false, "researchCost": 4},
+			{"id": "sports_betting", "name": "Sports Betting Picks", "unlocked": false, "researchCost": 4},
+			{"id": "dating", "name": "Dating Advice", "unlocked": false, "researchCost": 4},
+		],
+		"types": [
+			{"id": "newsletter", "name": "Newsletter", "unlocked": true, "researchCost": 6},
+			{"id": "coaching", "name": "Coaching", "unlocked": false, "researchCost": 6},
+			{"id": "software", "name": "Software Tool", "unlocked": false, "researchCost": 6},
+		],
+		"staff": [{
+			"id": "founder", "name": "Founder", "hired": true,
+			"design": 2, "tech": 2, "hype": 2, "trainedToday": false,
+			"training": {
+				"design": {"costCents": 30000, "enabled": false},
+				"tech": {"costCents": 30000, "enabled": false},
+				"hype": {"costCents": 30000, "enabled": false},
+			},
+		}],
+	}
+	await _present("journey", value)
+	var hire := _button("Hire Mina")
+	_check(hire != null and str(hire.get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the single primary action")
+	var new_product := _panel.find_child("NewProduct", true, false) as Button
+	var train_card := _panel.find_child("TrainStaff", true, false) as Control
+	var research_card := _panel.find_child("ResearchCard", true, false) as Control
+	var train_tech := _panel.find_child("Train_founder_tech", true, false) as Button
+	var research_sneakers := _panel.find_child("Research_sneakers", true, false) as Button
+	var research_coaching := _panel.find_child("Research_coaching", true, false) as Button
+	_check(new_product != null and str(new_product.get_meta("cozy_variant", "")) == "secondary", "New Product reads as secondary")
+	_check(train_tech != null and str(train_tech.get_meta("cozy_variant", "")) == "secondary", "Train Tech reads as secondary")
+	_check(research_sneakers != null and str(research_sneakers.get_meta("cozy_variant", "")) == "secondary", "Research Sneakers reads as secondary")
+	_check(research_coaching != null and research_coaching.disabled, "Research Coaching stays disabled without enough points")
+	_check(train_card != null and research_card != null and new_product.get_global_rect().position.y < train_card.get_global_rect().position.y and train_card.get_global_rect().position.y < research_card.get_global_rect().position.y, "Train staff and Research sit below New Product")
+	_check(_text().contains("0 research points"), "Research card shows the point balance")
+	var tycoon: Dictionary = value["tycoon"]
+	for topic: Dictionary in tycoon["topics"]:
+		topic["unlocked"] = true
+	for kind: Dictionary in tycoon["types"]:
+		kind["unlocked"] = true
+	tycoon["researchPoints"] = 20
+	await _present("journey", value)
+	_check(_panel.find_child("ResearchCard", true, false) == null, "Research card hides once every topic and type is unlocked")

@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { normalizeClock, phaseForMinute } from "./day-clock.js";
 import { JourneyStore } from "./journey.js";
 import { FurnishingStore } from "./furnishing.js";
-import { TycoonStore } from "./tycoon.js";
+import { legacyResearchJson, starterResearchJson, TycoonStore } from "./tycoon.js";
 import type {
   Artifact,
   BootstrapState,
@@ -118,6 +118,8 @@ export class GameDatabase {
     const migrationsDirectory = join(moduleDirectory, "..", "migrations");
     this.#database.exec(readFileSync(join(migrationsDirectory, "001_initial.sql"), "utf8"));
     this.#database.exec("CREATE TABLE IF NOT EXISTS schema_migrations (version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL)");
+    // A save that already recorded a schema version predates research and keeps the full catalog.
+    const researchPredates = this.#database.prepare("SELECT version FROM schema_migrations WHERE version < 11 LIMIT 1").get() !== undefined;
     for (const [version, name] of [
       [2, "002_product_layer.sql"],
       [3, "003_persistent_studio.sql"],
@@ -128,12 +130,18 @@ export class GameDatabase {
       [8, "008_company_journey_opening.sql"],
       [9, "009_tycoon_products.sql"],
       [10, "010_tycoon_staff.sql"],
+      [11, "011_tycoon_research.sql"],
     ] as const) {
       const applied = this.#database.prepare("SELECT version FROM schema_migrations WHERE version = ?").get(version);
       if (applied) continue;
       this.#database.exec("BEGIN IMMEDIATE");
       try {
         this.#database.exec(readFileSync(join(migrationsDirectory, name), "utf8"));
+        if (version === 11) {
+          this.#database.prepare("UPDATE tycoon_meta SET research_points = 0, research_json = ? WHERE id = 1").run(
+            researchPredates ? legacyResearchJson() : starterResearchJson(),
+          );
+        }
         this.#database.prepare("INSERT INTO schema_migrations (version, applied_at) VALUES (?, ?)").run(version, now());
         this.#database.exec("COMMIT");
       } catch (error) {

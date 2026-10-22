@@ -508,6 +508,7 @@ func _journey_screen() -> void:
 		_button("End day + save", func() -> void: _request("day.end", {"day": day}), false, true, utilities, "secondary")
 	_product_shortcut()
 	_train_staff()
+	_research_card()
 	var money_note := _label("Game cash is virtual. Shipping products is fully offline. Ads and incorporation create planning files only.")
 	money_note.name = "MoneyExplanation"
 
@@ -517,7 +518,8 @@ func _tycoon() -> Dictionary:
 
 func _product_shortcut() -> void:
 	if _tycoon().is_empty(): return
-	_button("New Product", func() -> void: present("product"), false, true)
+	var button := _button("New Product", func() -> void: present("product"), false, true, null, "secondary")
+	button.name = "NewProduct"
 
 func _train_staff() -> void:
 	var tycoon := _tycoon()
@@ -542,24 +544,53 @@ func _train_staff() -> void:
 		if not bool(person.get("hired", false)): continue
 		var person_id := str(person.get("id", ""))
 		_label("%s · D %d · T %d · H %d" % [person.get("name", "Teammate"), int(person.get("design", 0)), int(person.get("tech", 0)), int(person.get("hype", 0))], false, card)
-		var row := HBoxContainer.new()
-		row.add_theme_constant_override("separation", 8)
-		card.add_child(row)
 		var offers: Dictionary = person.get("training", {}) if person.get("training") is Dictionary else {}
 		for stat: String in ["design", "tech", "hype"]:
 			var offer: Dictionary = offers.get(stat, {}) if offers.get(stat) is Dictionary else {}
 			var cost := int(offer.get("costCents", 0))
 			var enabled := bool(offer.get("enabled", false))
 			var label := "Train %s · $%s" % [_stat_word(stat), _money(cost)] if cost > 0 else "Train %s" % _stat_word(stat)
-			var button := _button(label, _train_person.bind(person_id, stat), false, enabled, row)
+			var button := _button(label, _train_person.bind(person_id, stat), false, enabled, card, "secondary")
 			button.name = "Train_%s_%s" % [person_id, stat]
-			button.clip_text = true
-			button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		if bool(person.get("trainedToday", false)):
 			_label("In training today.", false, card, "meta")
 
 func _train_person(staff_id: String, stat: String) -> void:
 	_request("tycoon.train", {"staffId": staff_id, "stat": stat})
+
+func _research_card() -> void:
+	var tycoon := _tycoon()
+	if tycoon.is_empty(): return
+	var locked: Array[Dictionary] = []
+	for item: Variant in tycoon.get("topics", []) as Array:
+		if item is Dictionary and not bool((item as Dictionary).get("unlocked", true)):
+			var topic := (item as Dictionary).duplicate()
+			topic["kind"] = "topic"
+			locked.append(topic)
+	for item: Variant in tycoon.get("types", []) as Array:
+		if item is Dictionary and not bool((item as Dictionary).get("unlocked", true)):
+			var kind := (item as Dictionary).duplicate()
+			kind["kind"] = "type"
+			locked.append(kind)
+	if locked.is_empty(): return
+	var card := _card()
+	card.name = "ResearchCard"
+	_label("Research", true, card)
+	var points := int(tycoon.get("researchPoints", 0))
+	var points_label := _label("%d research points" % points, false, card)
+	points_label.name = "ResearchPoints"
+	var notice := str(tycoon.get("researchNotice", ""))
+	if not notice.is_empty():
+		var line := _label(notice, false, card, "action")
+		line.name = "ResearchNotice"
+	for item: Dictionary in locked:
+		var cost := int(item.get("researchCost", 0))
+		var enabled := cost > 0 and points >= cost
+		var button := _button("Research %s · %d RP" % [item.get("name", "Topic"), cost], _research_item.bind(str(item.get("kind", "")), str(item.get("id", ""))), false, enabled, card, "secondary")
+		button.name = "Research_%s" % str(item.get("id", ""))
+
+func _research_item(kind: String, id: String) -> void:
+	_request("tycoon.research", {"kind": kind, "id": id})
 
 func _stat_word(stat: String) -> String:
 	match stat:
@@ -591,7 +622,9 @@ func _product_picker(tycoon: Dictionary) -> void:
 		if not item is Dictionary: continue
 		var topic := item as Dictionary
 		var topic_id := str(topic.get("id", ""))
-		_choice_button(str(topic.get("name", "Topic")), topic_id == _topic_id, topics, _choose_topic.bind(topic_id))
+		var topic_open := bool(topic.get("unlocked", true))
+		var topic_name := str(topic.get("name", "Topic"))
+		_choice_button(topic_name if topic_open else "%s · locked" % topic_name, topic_open and topic_id == _topic_id, topics, _choose_topic.bind(topic_id), topic_open)
 	_label("Product type", true)
 	var types := GridContainer.new()
 	types.columns = 2
@@ -603,7 +636,9 @@ func _product_picker(tycoon: Dictionary) -> void:
 		if not item is Dictionary: continue
 		var kind := item as Dictionary
 		var type_id := str(kind.get("id", ""))
-		_choice_button(str(kind.get("name", "Type")), type_id == _type_id, types, _choose_type.bind(type_id))
+		var type_open := bool(kind.get("unlocked", true))
+		var type_name := str(kind.get("name", "Type"))
+		_choice_button(type_name if type_open else "%s · locked" % type_name, type_open and type_id == _type_id, types, _choose_type.bind(type_id), type_open)
 	var fit := _pair_fit(_topic_id, _type_id)
 	var fit_label := _label("Fit · %s. %s" % [_fit_word(fit), _fit_hint(fit)], false, null, "action")
 	fit_label.name = "ProductFit"
@@ -625,7 +660,8 @@ func _product_picker(tycoon: Dictionary) -> void:
 	var staff_ids: Array[String] = ["founder"]
 	for person_id: String in _staff_ids:
 		staff_ids.append(person_id)
-	_actions("Start development", func() -> void: _request("tycoon.start", {"topicId": _topic_id, "typeId": _type_id, "staffIds": staff_ids}), not fit.is_empty(), "Back to office", func() -> void: present("journey"))
+	var pair_open := _entry_unlocked("topics", _topic_id) and _entry_unlocked("types", _type_id)
+	_actions("Start development", func() -> void: _request("tycoon.start", {"topicId": _topic_id, "typeId": _type_id, "staffIds": staff_ids}), not fit.is_empty() and pair_open, "Back to office", func() -> void: present("journey"))
 
 func _product_progress(product: Dictionary) -> void:
 	var required := int(product.get("devDaysRequired", 1))
@@ -664,6 +700,8 @@ func _release_screen() -> void:
 		_label("%s · %d" % [reviewer.get("name", "Reviewer"), int(reviewer.get("score", 0))], false, null, "action")
 		_label(str(reviewer.get("blurb", "")), false, null, "meta")
 	_label("Launch sales · $%s · +%d fans" % [_money(int(product.get("salesCents", 0))), int(product.get("fans", 0))], false, null, "action")
+	var research_line := _label("+%d research points" % int(product.get("researchPoints", 0)), false, null, "action")
+	research_line.name = "ReleaseResearch"
 	_label("Sales keep coming for a few office days.", false, null, "meta")
 	_label("Company · $%s game cash · %d reputation" % [_money(int(company.get("cashCents", 0))), int(company.get("reputation", 0))])
 	_actions("Back to office", hide, true, "Ship another", func() -> void: present("product"))
@@ -690,8 +728,8 @@ func _released_focus() -> Dictionary:
 		return history[0] as Dictionary
 	return {}
 
-func _choice_button(label_text: String, selected: bool, grid: GridContainer, choose: Callable) -> void:
-	var button := _button(label_text, choose, selected, true, grid)
+func _choice_button(label_text: String, selected: bool, grid: GridContainer, choose: Callable, enabled: bool = true) -> void:
+	var button := _button(label_text, choose, selected, enabled, grid, "primary" if selected else "secondary")
 	button.clip_text = true
 	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 
@@ -711,6 +749,12 @@ func _toggle_staff(person_id: String) -> void:
 func _release_product(product_id: String) -> void:
 	_release_focus_id = product_id
 	_request("tycoon.release", {"productId": product_id})
+
+func _entry_unlocked(list_name: String, id: String) -> bool:
+	for item: Variant in _tycoon().get(list_name, []) as Array:
+		if item is Dictionary and str((item as Dictionary).get("id", "")) == id:
+			return bool((item as Dictionary).get("unlocked", true))
+	return true
 
 func _pair_fit(topic_id: String, type_id: String) -> String:
 	for item: Variant in _tycoon().get("fits", []) as Array:

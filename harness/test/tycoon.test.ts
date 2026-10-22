@@ -189,6 +189,9 @@ test("stdio tycoon start, days, and release need no credential", async (t) => {
     responses.set(id, (value) => { clearTimeout(timer); responses.delete(id); resolve(value); });
     child.stdin.write(`${JSON.stringify({ kind: "request", id, method, params })}\n`);
   });
+  const locked = await request("locked", "tycoon.start", { topicId: "sneakers", typeId: "newsletter", staffIds: ["founder"] });
+  assert.equal(locked.ok, false);
+  assert.match(locked.error ?? "", /locked/u);
   const started = await request("start", "tycoon.start", { topicId: "crypto", typeId: "newsletter", staffIds: ["founder"] });
   assert.equal(started.ok, true, started.error);
   assert.equal(started.result.journey.tycoon.developing.name, "Crypto Alpha Newsletter");
@@ -200,6 +203,16 @@ test("stdio tycoon start, days, and release need no credential", async (t) => {
   assert.ok(released.result.journey.company.cashCents > 0);
   assert.ok(released.result.journey.company.reputation > 0);
   assert.equal(released.result.journey.tycoon.history[0].review.reviewers.length, 4);
+  assert.equal(released.result.journey.tycoon.researchPoints, 5);
+  assert.equal(released.result.journey.tycoon.history[0].researchPoints, 3);
+  const researched = await request("research", "tycoon.research", { kind: "topic", id: "sneakers" });
+  assert.equal(researched.ok, true, researched.error);
+  assert.equal(researched.result.journey.tycoon.researchPoints, 1);
+  assert.equal(researched.result.journey.tycoon.researchNotice, "Unlocked Sneakers. −4 RP");
+  assert.equal(researched.result.journey.tycoon.topics.find((topic: { id: string }) => topic.id === "sneakers").unlocked, true);
+  const short = await request("short", "tycoon.research", { kind: "type", id: "coaching" });
+  assert.equal(short.ok, false);
+  assert.match(short.error ?? "", /Not enough research points/u);
   assert.equal(stderr.includes("sk-"), false);
   child.stdin.end();
   await once(child, "exit");
@@ -230,6 +243,7 @@ test("training costs cash, caps, and rejects unhired or a second lesson the same
   assert.throws(() => db.tycoon.train("founder", "tech"), /already in training today/u);
 
   db.endDay(1);
+  assert.equal(db.tycoon.view().trainingNotice, "");
   for (let level = 3; level < STAT_CAP; level += 1) {
     db.tycoon.train("founder", "tech");
     db.endDay(db.clockState().day);
@@ -297,5 +311,124 @@ test("older saves without staff stats load starting values", async () => {
   assert.equal(developing?.design, 2);
   assert.equal(developing?.tech, 2);
   assert.equal(developing?.hype, 2);
+  restored.close();
+});
+
+test("a new company starts with the starter research catalog", async () => {
+  const { db } = await setup();
+  const view = db.tycoon.view();
+  assert.equal(view.researchPoints, 0);
+  assert.equal(view.researchNotice, "");
+  assert.deepEqual(view.topics.filter((topic) => topic.unlocked).map((topic) => topic.id), [
+    "fitness", "trading", "cooking", "gaming", "study_notes", "crypto",
+  ]);
+  assert.deepEqual(view.topics.filter((topic) => !topic.unlocked).map((topic) => topic.id), [
+    "sneakers", "reselling", "sports_betting", "dating",
+  ]);
+  assert.deepEqual(view.types.filter((type) => type.unlocked).map((type) => type.id), [
+    "course", "community", "template_pack", "newsletter",
+  ]);
+  assert.deepEqual(view.types.filter((type) => !type.unlocked).map((type) => type.id), [
+    "coaching", "software",
+  ]);
+  assert.ok(view.topics.every((topic) => topic.researchCost === 4));
+  assert.ok(view.types.every((type) => type.researchCost === 6));
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  assert.equal(validate(db.journey.state()), true, JSON.stringify(validate.errors));
+  db.tycoon.start("crypto", "newsletter", []);
+  assert.equal(db.tycoon.view().developing?.name, "Crypto Alpha Newsletter");
+  assert.throws(() => db.tycoon.start("sneakers", "course", []), /already on the bench/u);
+  db.close();
+});
+
+test("older saves that predate research load with everything unlocked", async () => {
+  const root = await mkdtemp(join(tmpdir(), "startup-valley-tycoon-preresearch-"));
+  const file = join(root, "game.sqlite");
+  const project = join(root, "company-project");
+  await mkdir(project);
+  const old = new DatabaseSync(file);
+  for (const name of [
+    "001_initial.sql", "002_product_layer.sql", "003_persistent_studio.sql", "004_work_order_handoff.sql",
+    "005_employee_chat.sql", "006_company_journey.sql", "007_furnishing.sql", "008_company_journey_opening.sql",
+    "009_tycoon_products.sql", "010_tycoon_staff.sql",
+  ]) old.exec(readFileSync(new URL(`../migrations/${name}`, import.meta.url), "utf8"));
+  old.exec("CREATE TABLE schema_migrations (version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL)");
+  for (const version of [2, 3, 4, 5, 6, 7, 8, 9, 10]) old.prepare("INSERT INTO schema_migrations VALUES (?, 'old')").run(version);
+  old.close();
+
+  const restored = new GameDatabase(file, project);
+  const view = restored.tycoon.view();
+  assert.equal(view.researchPoints, 0);
+  assert.ok(view.topics.every((topic) => topic.unlocked));
+  assert.ok(view.types.every((type) => type.unlocked));
+  restored.tycoon.start("sneakers", "software", []);
+  assert.equal(restored.tycoon.view().developing?.name, "Sneakers Software Tool");
+  restored.close();
+});
+
+test("development days and release award research points, and a training day does not", async () => {
+  const { db } = await setup();
+  assert.equal(db.tycoon.view().researchPoints, 0);
+  db.tycoon.start("crypto", "newsletter", []);
+  db.endDay(1);
+  assert.equal(db.tycoon.view().researchPoints, 1);
+  db.journey.hire("mira", 2);
+  db.endDay(2);
+  assert.equal(db.tycoon.view().researchPoints, 2, "Mina was not on this build");
+  db.tycoon.release("p1");
+  const shipped = db.tycoon.view().history[0];
+  assert.equal(shipped?.review?.score, 6);
+  assert.equal(shipped?.researchPoints, 3);
+  assert.equal(db.tycoon.view().researchPoints, 5);
+
+  db.journey.recordCompanyChange("test-cash", 3, 1_000_000, 0, 0, "Test cash");
+  db.tycoon.start("crypto", "newsletter", ["mira"]);
+  db.tycoon.train("founder", "tech");
+  db.endDay(3);
+  const mid = db.tycoon.view().developing;
+  assert.equal(mid?.devDays, 1);
+  assert.equal(db.tycoon.view().researchPoints, 6, "only Mina earns a point while the founder is in training");
+  db.endDay(4);
+  assert.equal(db.tycoon.view().researchPoints, 8, "the next office day both people earn a point");
+  db.close();
+});
+
+test("research spends points and start rejects a locked topic or type", async () => {
+  const { db, root } = await setup();
+  assert.throws(() => db.tycoon.research("topic", "nope"), /Unknown topic/u);
+  assert.throws(() => db.tycoon.research("type", "nope"), /Unknown product type/u);
+  assert.throws(() => db.tycoon.research("fit", "sneakers"), /topic or a product type/u);
+  assert.throws(() => db.tycoon.research("topic", "fitness"), /already unlocked/u);
+  assert.throws(() => db.tycoon.research("type", "newsletter"), /already unlocked/u);
+  assert.throws(() => db.tycoon.research("topic", "sneakers"), /Not enough research points/u);
+  assert.throws(() => db.tycoon.start("sneakers", "newsletter", []), /Sneakers is locked/u);
+  assert.throws(() => db.tycoon.start("crypto", "software", []), /Software Tool is locked/u);
+  assert.throws(() => db.tycoon.start("dating", "coaching", []), /Dating Advice is locked/u);
+
+  db.tycoon.start("crypto", "newsletter", []);
+  db.endDay(1);
+  db.endDay(2);
+  db.tycoon.release("p1");
+  assert.equal(db.tycoon.view().researchPoints, 5);
+  db.tycoon.research("topic", "sneakers");
+  const unlocked = db.tycoon.view();
+  assert.equal(unlocked.researchPoints, 1);
+  assert.equal(unlocked.researchNotice, "Unlocked Sneakers. −4 RP");
+  assert.equal(unlocked.topics.find((topic) => topic.id === "sneakers")?.unlocked, true);
+  assert.throws(() => db.tycoon.research("topic", "sneakers"), /already unlocked/u);
+  assert.throws(() => db.tycoon.research("type", "coaching"), /Not enough research points/u);
+  db.tycoon.start("sneakers", "newsletter", []);
+  assert.equal(db.tycoon.view().developing?.name, "Sneakers Newsletter");
+  db.endDay(3);
+  assert.equal(db.tycoon.view().researchNotice, "");
+  assert.equal(db.tycoon.view().researchPoints, 2);
+  db.close();
+
+  const restored = new GameDatabase(join(root, "game.sqlite"), join(root, "company-project"));
+  assert.equal(restored.tycoon.view().researchPoints, 2);
+  assert.equal(restored.tycoon.view().topics.find((topic) => topic.id === "sneakers")?.unlocked, true);
+  assert.equal(restored.tycoon.view().types.find((type) => type.id === "software")?.unlocked, false);
+  assert.equal(restored.tycoon.view().developing?.name, "Sneakers Newsletter");
   restored.close();
 });

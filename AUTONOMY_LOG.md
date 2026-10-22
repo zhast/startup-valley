@@ -1017,6 +1017,8 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → ship → Train staff → next product uses the new stats. Connect stays closed on the picker, bench, and release card. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_training.gd`.
 
+- PR #29 merged (Round 27, Connect drawer + offline copy fixes, staff training).
+
 ### Booth v5 bind — 2026-10-22
 
 **What changed**
@@ -1039,3 +1041,41 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - No `game/tests` script asserts `phone-booth-south.png` by md5. Nothing extra to run.
 
 **TYCOON SLICE PLAYABLE: yes** — unchanged. The bound booth is the warm oak v5 in the first-run lounge.
+
+- PR #30 merged (phone booth v5 warm oak bind).
+
+### Round 28 — 2026-10-22
+
+**What changed**
+- Training notice is day-scoped. `trainingNotice` is kept with the office day it happened, `view()` returns it only on that day, and `tickDay` clears it when the day ends. The lesson line no longer sits on Company Journey the next morning.
+- The product picker already reads current staff stats from `journey.tycoon`. After Founder Tech is trained to 3, the On the build line shows "tech 3". The training test now asserts that, and that the TrainingNotice label is gone after End day.
+- Hire Mina stays the one primary action. New Product, Train staff, and Research use the existing secondary button variant. Train and Research cards sit under New Product. Train actions are full-width so the price stays inside the button.
+- Research points. A company stores `researchPoints` plus unlocked topic and type ids (migration 011). New companies start at 0 with Fitness, Trading, Cooking, Gaming, Study Notes, and Crypto Alpha unlocked, and Course, Community, Template Pack, and Newsletter unlocked. Sneakers, Reselling, Sports Betting Picks, Dating Advice, Coaching, and Software Tool start locked. Older saves that predate the column load with everything unlocked and 0 points. Each person on a build who is not in training adds 1 point at day end. Release adds `floor(score / 2)`. `tycoon.research` spends 4 for a topic and 6 for a type, and fails cleanly for an unknown id, an unlock that already happened, or a short balance. `tycoon.start` rejects a locked topic or type. The picker lists locked rows disabled with "· locked". Company Journey shows a Research card (balance, the day's unlock line, one secondary button per locked item) and hides it when nothing is locked. The release screen shows "+N research points". Fully offline.
+- Player-driving check: `.cursor/skills/verify-startup-valley/` plus `features/` for ship, train, research, and end day. `capture_journey.gd` boots `main.tscn` in a SubViewport with the real worker and an isolated data dir.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art, seated poses, workstation sheets, and the unbound furnishing kits stay untracked. The phone-booth and bookshelf art lane is unchanged.
+
+**Remaining gaps (ranked)**
+1. Upgrades shop. Spend game cash on an office tool. No real-money store.
+2. Office growth. More desks and a second room from cash and headcount, using furniture that is already bound.
+3. Seasons and events. The 28-day calendar is design-only. A research fit bonus is still unbuilt.
+4. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+5. Carried from Round 27: Creative has no seated sheet. Unbound art stays untracked. The live path is still a harness driver. A cheap reviewer can still sit just under the 2.5 ready line. Chapter 3 ends at "More is coming." `shared_workbench` stays in storage.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon and Chapter 1 playtests; fake provider only inside the full-path and offline-provider tests)
+- `cd harness && npm test` — 87 tests, 85 pass, 0 fail, 2 skipped
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_chapter1_first_player.gd` — CHAPTER1 PASS (43 checks, 0 failures)
+- `test_full_player_path.gd` — FULLPATH PASS (125 checks, 0 failures)
+- `test_ui_flow_regressions.gd` — passed
+- `test_ui_company_redesign.gd` — 4701 checks, 0 failures, 0 captures
+- `test_tycoon_product.gd` — TYCOON PASS (40 checks, 0 failures)
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS (50 checks, 0 failures; notice gone after End day; picker shows tech 3)
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS (40 checks, 0 failures; ship newsletter, Research Sneakers, start Sneakers Newsletter)
+- Proof capture — PROOF PASS. Eight PNGs in `/workspace/sv-proof/round-28/`. Invocation: `SV_PROOF_DIR=/workspace/sv-proof/round-28 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → ship → Train staff → Research a locked topic → start that product. The lesson line and the unlock line last one office day. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_research.gd`.
