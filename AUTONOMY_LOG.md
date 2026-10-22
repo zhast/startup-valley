@@ -981,3 +981,5 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - `test_tycoon_product.gd` — TYCOON PASS (Crypto Alpha Newsletter, founder only, no fake provider; launch $207.00 and 5 fans, next office day $333.00 and 8 fans)
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → pick a topic and a type → End day until Ready to ship → Release. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_product.gd`.
+
+- PR #28 merged (Round 26, offline ship-a-product tycoon loop).
