@@ -3,7 +3,7 @@ extends SceneTree
 ## hydrated from a fixture: every committed state comes from production JSONL.
 const MAIN := preload("res://world/main.tscn")
 const PLANT := "decor-broadleaf_planter"
-const CELL := Vector2i(23, 14)
+const CELL := Vector2i(7, 14)
 var game: GameMain
 var checks := 0
 var failures: Array[String] = []
@@ -49,7 +49,7 @@ func run() -> void:
 		check(game.worker_client.furnishing_state.inventory.size() == 1 + starter_count, "Founder station and owned starter decorations are bootstrapped")
 		check(game.room.visible_prop_count() == 2, "First-run lounge places the phone booth; other starter décor stays in storage")
 		check(game.room.prop_node("decor-phone_booth") != null, "Phone booth occupies the southwest lounge bay on a fresh company")
-		check(OfficeLayout.vector(game.worker_client.furnishing_state.placements["decor-phone_booth"].grid) != Vector2i(22, 16), "First-run lounge never occupies the planter test bay")
+		check(OfficeLayout.vector(game.worker_client.furnishing_state.placements["decor-phone_booth"].grid) != CELL, "First-run lounge never occupies the planter test bay")
 	await button_named("Continue" if game.company_panel._company_started() else "Start company", game.company_panel)
 	await key(KEY_ESCAPE)
 	if not game.company_panel.visible: await key(KEY_ESCAPE)
@@ -147,7 +147,7 @@ func lose_reply() -> void:
 	check(renovate.preview_grid == CELL + Vector2i.RIGHT and bool(renovate.preview_result.get("valid", false)), "Lost-ack scenario moves an owned decoration to a valid new cell")
 	await key(KEY_ENTER)
 	await until(func() -> bool: return game.worker_client._restart_count == 1 and game._worker_ready and int(game.worker_client.furnishing_state.get("revision", -1)) == int(before.revision) + 1 and not renovate._save_pending, "Actual worker exit after commit recovers through automatic restart/bootstrap")
-	check(OfficeLayout.vector(renovate._committed_state.placements[PLANT].grid) == Vector2i(24, 14), "Lost response never loses the already-committed placement")
+	check(OfficeLayout.vector(renovate._committed_state.placements[PLANT].grid) == CELL + Vector2i.RIGHT, "Lost response never loses the already-committed placement")
 	check(renovate._pending_mutation.is_empty(), "Authoritative matching bootstrap resolves an interrupted pending transaction")
 	check(renovate._committed_state.inventory == before.inventory, "Recovery neither duplicates nor loses owned items")
 	check(renovate._history.size() == 1, "Recovered commit has one local Undo step")
@@ -273,8 +273,8 @@ func scaled_views() -> void:
 		await key(KEY_ESCAPE)
 		check(renovate.active and not renovate._prop_picker.get_popup().visible, label + " Escape closes only the popup")
 		await key(KEY_M)
-		await motion(game.room.layout_model.world(Vector2i(25, 14)))
-		check(renovate.placement_active and renovate.preview_grid == Vector2i(25, 14) and bool(renovate.preview_result.get("valid", false)), label + " scaled world pointer reaches a valid placement cell")
+		await motion(game.room.layout_model.world(Vector2i(8, 14)))
+		check(renovate.placement_active and renovate.preview_grid == Vector2i(8, 14) and bool(renovate.preview_result.get("valid", false)), label + " scaled world pointer reaches a valid placement cell")
 		await capture(label + "-preview")
 		await key(KEY_ESCAPE)
 		check(not renovate.placement_active and renovate._committed_state == before, label + " cancel keeps durable layout untouched")

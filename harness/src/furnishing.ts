@@ -241,7 +241,7 @@ export class FurnishingStore {
     const owned = new Set(inventory.map((item) => item.id));
     return Object.fromEntries(this.geometry.room.props.filter((prop) => owned.has(prop.id)).map((prop) => [prop.id, { grid: prop.grid, facing: prop.facing }]));
   }
-  /** First-run lounge only. Recovery still stores décor; never occupies the [22,16] test bay. */
+  /** First-run lounge only. Recovery still stores décor; never occupies the [24,8] decor pocket. */
   private starterLounge(inventory: FurnitureItem[], base: FurniturePlacements): FurniturePlacements {
     const owned = new Set(inventory.map((item) => item.id));
     if (!owned.has("decor-phone_booth") || Object.hasOwn(base, "decor-phone_booth")) return base;

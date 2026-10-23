@@ -173,9 +173,9 @@ The three spare desks are props already in `office_layout.json`, gated by `requi
 
 | Id | Kind | Grid |
 | --- | --- | --- |
-| `spare-compact-a` | `compact_desk` | [6, 20] |
-| `spare-compact-b` | `compact_desk` | [8, 20] |
-| `spare-workbench` | `shared_workbench` | [12, 18] |
+| `spare-compact-a` | `compact_desk` | [20, 17] |
+| `spare-compact-b` | `compact_desk` | [25, 17] |
+| `spare-workbench` | `shared_workbench` | [23, 14] |
 
 They use the bound compact desk and shared workbench art. No new art and no separate chairs. The real game is furnishing-bound, so a layout gate alone does not draw them. `FurnishingStore.sync` grants them only when `office_level` is at least 2, as essential items with grant id `office-level:2`. That is separate from the starter decor ids `decor-compact_desk` and `decor-shared_workbench`, which stay in storage. The grant raises the furnishing inventory cap from 36 to 39 (9 story stations, 27 starter decorations, 3 spare desks). Placement slots stay capped at 32. Level 1 still hides the desks, including at hire stage 4, so the old hire-stage prop counts stay 1, 5, 9, and 10.
 

@@ -36,7 +36,7 @@ test("approval tool retains pending SQLite decision, live assignment and End Day
   assert.equal(db.journey.db.prepare("SELECT status FROM approvals WHERE id=?").get(approvalId)!.status, "pending");
   const room = db.bootstrap().furnishing;
   const approvalRoom = db.furnishing.update({ operationId: "approval-room", expectedRevision: room.revision, placements: {
-    ...room.placements, "decor-rolling_storage_pedestal": { grid: [22, 16], facing: "east" },
+    ...room.placements, "decor-rolling_storage_pedestal": { grid: [24, 8], facing: "east" },
   }, actorCells: [{ id: "founder", grid: [17, 19] }, { id: "mira", grid: [10, 7] }] }).furnishing;
   assert.equal(db.journey.db.prepare("SELECT status FROM approvals WHERE id=?").get(approvalId)!.status, "pending", "furnishing cannot dismiss approval or finish real work");
   assert.throws(() => db.endDay(1), /Finish or cancel/u);

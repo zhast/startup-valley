@@ -150,7 +150,7 @@ test("off-hours work queues, starts at the work window, and shutdown blocks fake
   const database = new GameDatabase(join(root, "game.sqlite"), join(root, "company-project"));
   const initialRoom = database.bootstrap().furnishing;
   const savedRoom = database.furnishing.update({ operationId: "queue-room", expectedRevision: initialRoom.revision, placements: {
-    ...initialRoom.placements, "decor-task_floor_lamp": { grid: [22, 16], facing: "north" },
+    ...initialRoom.placements, "decor-task_floor_lamp": { grid: [24, 8], facing: "north" },
   } }).furnishing;
   database.setClock(1, 18 * 60, 1);
   const credentials = new DeferredCredentialStore();

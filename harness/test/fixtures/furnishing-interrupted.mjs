@@ -13,6 +13,6 @@ db.journey.db.function("pause_furnishing_commit", () => {
 });
 db.journey.db.exec("CREATE TRIGGER furnishing_crash_probe BEFORE INSERT ON furnishing_operations BEGIN SELECT pause_furnishing_commit(); END");
 db.furnishing.update({ operationId: "interrupted-layout", expectedRevision: state.revision,
-  placements: { ...state.placements, "decor-broadleaf_planter": { grid: [22, 16], facing: "east" } },
+  placements: { ...state.placements, "decor-broadleaf_planter": { grid: [24, 8], facing: "east" } },
   actorCells: [{ id: "founder", grid: [17, 19], position: [569.25, 629.75] }] });
 throw new Error("The test parent should kill the worker before commit");

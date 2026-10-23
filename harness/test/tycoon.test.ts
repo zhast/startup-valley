@@ -1066,9 +1066,9 @@ test("expanding the office rejects a short team, short cash, and a second buy", 
   assert.equal(expanded.next, null);
   const room = db.furnishing.state();
   for (const [id, grid] of [
-    ["spare-compact-a", [6, 20]],
-    ["spare-compact-b", [8, 20]],
-    ["spare-workbench", [12, 18]],
+    ["spare-compact-a", [20, 17]],
+    ["spare-compact-b", [25, 17]],
+    ["spare-workbench", [23, 14]],
   ] as const) {
     const item = room.inventory.find((entry) => entry.id === id);
     assert.equal(item?.essential, true);
@@ -1084,7 +1084,7 @@ test("expanding the office rejects a short team, short cash, and a second buy", 
   const reopened = new GameDatabase(join(ready.root, "game.sqlite"), join(ready.root, "company-project"));
   assert.equal(reopened.tycoon.view().office.level, 2);
   assert.equal(reopened.tycoon.view().office.desks.total, 7);
-  assert.equal(reopened.furnishing.state().placements["spare-compact-a"]?.grid[0], 6);
+  assert.equal(reopened.furnishing.state().placements["spare-compact-a"]?.grid[0], 20);
   reopened.close();
 });
 

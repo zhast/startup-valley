@@ -284,7 +284,7 @@ func _run() -> void:
 	var compact_a := main.room.placement_by_id("spare-compact-a")
 	var compact_b := main.room.placement_by_id("spare-compact-b")
 	var bench := main.room.placement_by_id("spare-workbench")
-	check(compact_a.get("grid", Vector2i.ZERO) == Vector2i(6, 20) and compact_b.get("grid", Vector2i.ZERO) == Vector2i(8, 20) and bench.get("grid", Vector2i.ZERO) == Vector2i(12, 18), "Spare desks use the authored Open Floor cells")
+	check(compact_a.get("grid", Vector2i.ZERO) == Vector2i(20, 17) and compact_b.get("grid", Vector2i.ZERO) == Vector2i(25, 17) and bench.get("grid", Vector2i.ZERO) == Vector2i(23, 14), "Spare desks use the authored Open Floor cells")
 	check(not main.job_panel._connection_panel.visible, "Expanding the office never opens Connect")
 	print("TYCOON OFFICE ", "PASS" if failures.is_empty() else "FAIL %d" % failures.size())
 	for failure: String in failures:
