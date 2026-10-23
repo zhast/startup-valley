@@ -144,6 +144,41 @@ Oak Standing Desk is the first tool one Crypto Alpha Newsletter can pay for. Lau
 
 Company Journey lists an Upgrades card under Research. It shows the heading, one line per owned tool ("Ring Light · +1 hype per person per dev day"), the day's purchase line, and one secondary button per unowned tool ("Buy Ring Light · $400"). Owned tools hide their button. A button is disabled when cash is short. Hire stays the one primary action. The build screen can add "Office bonus · …" for owned point tools. The release screen shows the price effect when the checkout tool is owned.
 
+## Office growth
+
+A bigger office, inside the room that already exists. There is no second-room architecture art, so this slice does not add a room. It adds spare desks on the current floor. A second room is a later art ask.
+
+The harness owns the levels, the price, the hire gate, the desk counts, and the dev bonus. Godot only shows `journey.tycoon.office` and places furniture the harness has granted. Nothing on this path calls a model, the network, or a credential.
+
+`tycoon_meta.office_level` (migration `013_tycoon_office.sql`, `INTEGER NOT NULL DEFAULT 1`) stores the level. An older save loads at level 1. An unknown stored level also reads as level 1. Reopening a save keeps the level that was bought.
+
+| Level | Name | Desks | Cost | Gate | Dev bonus |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Garage Loft | 4 | start | — | none |
+| 2 | Open Floor | 7 | $600 | 2 hires besides the founder | +1 design and +1 tech per accruing dev day, once for the whole team |
+
+Blurbs: "A checkout link and one desk by the garage door." and "Spare desks for the next drop."
+
+Desk capacity is informational. `desks.used` is 1 (the founder, who is not an employees row) plus hired people. `desks.total` is 4 at level 1 and 7 at level 2. The story hires stay on chapter milestones. Mina, Theo, and Creative are not blocked when the count is full. The card says "Desks: 1/4" at the start and "Desks: 3/7" after Mina, Theo, and the expansion.
+
+`tycoon.expandOffice` takes `{}`. The harness checks the hire gate before cash, so the error stays stable. Already at the Open Floor: "The office is already as large as it gets." Fewer than 2 hires: "Hire 2 people before the Open Floor." Short cash: "Not enough game cash. Open Floor costs $600." A success deducts $600, sets level 2, and grants the spare desks. Buying again fails and spends nothing.
+
+The bonus is flat. It is not multiplied by headcount. It applies only while craft points still accrue and at least one assigned person is not in training. It stacks with the per-person upgrade bonuses. It does not apply at level 1, on polish days after the craft window, or when the whole assigned team is in training. It does not rewrite stored points or research points. A founder day at level 1 is still 2/2/2. The same day at level 2 is 3/3/2.
+
+`journey.tycoon.office` is `{level, name, blurb, desks: {used, total}, next}`. `next` is `{name, costCents, requiredHires, enabled, reason}` or null at the max level. The locked reasons on the card are "Hire 2 people first." and "Need $600 game cash." An enabled expansion has an empty reason.
+
+Company Journey lists an Office card under Upgrades and above Season. It shows the heading, the office name, the blurb, "Desks: used/total", and, until the max level, "Open Floor · $600" plus one secondary button, "Expand office". The button is disabled while `next.enabled` is false. At the Open Floor the next line and the button are gone. Hire stays the one primary action. A journey payload without `office` leaves the card out, so older UI fixtures still render.
+
+The three spare desks are props already in `office_layout.json`, gated by `required_office_level: 2`, facing south:
+
+| Id | Kind | Grid |
+| --- | --- | --- |
+| `spare-compact-a` | `compact_desk` | [20, 17] |
+| `spare-compact-b` | `compact_desk` | [25, 17] |
+| `spare-workbench` | `shared_workbench` | [23, 14] |
+
+They use the bound compact desk and shared workbench art. No new art and no separate chairs. The real game is furnishing-bound, so a layout gate alone does not draw them. `FurnishingStore.sync` grants them only when `office_level` is at least 2, as essential items with grant id `office-level:2`. That is separate from the starter decor ids `decor-compact_desk` and `decor-shared_workbench`, which stay in storage. The grant raises the furnishing inventory cap from 36 to 39 (9 story stations, 27 starter decorations, 3 spare desks). Placement slots stay capped at 32. Level 1 still hides the desks, including at hire stage 4, so the old hire-stage prop counts stay 1, 5, 9, and 10.
+
 ## Day and season calendar
 
 The office day clock is unchanged. Work is 08:00–12:30 and 13:30–17:30. Lunch is 12:30–13:30. Ending the day saves, writes the summary, and advances the tycoon by one day. The next morning is 08:00. The ledger still shows that day as a number.
@@ -172,7 +207,7 @@ Each event adds 2 fans to any product that sells that day. The line is "+2 fans 
 
 `journey.tycoon.calendar` carries `season`, `seasonName`, `dayOfSeason`, `year`, `label`, `favoredTopics` (`{id, name}`), `event` (or null), and `nextEvent` (the event fields plus `season`, `dayOfSeason`, and `daysUntil`). The day summary stores `dateLabel` for the day that just ended, so the complete screen does not jump to the next morning. Older summaries without that field still load.
 
-Company Journey shows the label on the heading ("Spring 2 · Year 1 · $0.00 game cash · 0 reputation"). The title continue line and the day complete screen use the same words. A Season card sits under Upgrades: "In season: Fitness, Dating Advice", and either "Creator Fair today. +2 fans on sales today" or "Creator Fair in 11 days". The product picker adds "· in season" on a favored topic, including a locked one. Hire stays the one primary action. No new button.
+Company Journey shows the label on the heading ("Spring 2 · Year 1 · $0.00 game cash · 0 reputation"). The title continue line and the day complete screen use the same words. A Season card sits under Office: "In season: Fitness, Dating Advice", and either "Creator Fair today. +2 fans on sales today" or "Creator Fair in 11 days". The product picker adds "· in season" on a favored topic, including a locked one. Hire stays the one primary action. No new button.
 
 ## Whop-themed names
 
@@ -188,12 +223,12 @@ Shelf jokes stay in the reviewer blurbs (checkout links, lurkers, margins, welco
 
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, the upgrades shop, and the season calendar. The entries are **New Product**, **Train staff**, **Research**, **Upgrades**, and **Season** on Company Journey.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, the upgrades shop, the season calendar, and office growth inside the current room. The entries are **New Product**, **Train staff**, **Research**, **Upgrades**, **Office**, and **Season** on Company Journey.
 
 Next slice:
 
-1. **Office growth.** More desks and a second room when cash and headcount earn them. Use furniture that is already bound.
+1. **Research fit bonus.** A small fit bonus from research is still unbuilt. It is not part of the season calendar or the office expansion.
 
-A small fit bonus from research is still unbuilt. It is not part of the season calendar.
+Later art ask: a second room. Office growth shipped as spare desks on the current floor (`compact_desk` and `shared_workbench`, already bound). There is no second-room architecture art, so that room waits.
 
 Chapter work orders still ask for a key unless the dev-only fake provider is on. That path is not part of these slices. Do not fold it into the tycoon, and do not make it the default.

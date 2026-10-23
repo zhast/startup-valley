@@ -22,6 +22,7 @@ var grid_width: int = 40
 var grid_height: int = 23
 var player_spawn := Vector2i(17, 19)
 var unlocked_hires: int = 0
+var unlocked_office_level: int = 1
 var navigation: OfficeNavigation
 var architecture: OfficeArchitecture
 var _employee_names: Dictionary[String, String] = {}
@@ -50,6 +51,7 @@ func load_layout(path: String = "res://data/office_layout.json") -> bool:
 	for stage: int in range(5):
 		if not bool(next_model.validate_placements(next_model.resolve_placements(stage)).valid): return false
 	layout_model = next_model
+	layout_model.office_level = maxi(1, unlocked_office_level)
 	placement_overrides.clear()
 	furnishing_revision = -1
 	migration_notes.clear()
@@ -196,6 +198,14 @@ func _station_facing(station_id: String, overrides: Dictionary) -> String:
 	# Old worker records own coordinates, not orientation. Preserve a validated
 	# local/exported facing instead of resetting every bootstrap to south.
 	return str(layout_model.placement_by_id(station_id, 4, overrides).get("facing", "south"))
+
+func set_office_level(level: int) -> void:
+	var next := maxi(1, level)
+	unlocked_office_level = next
+	if layout_model == null or layout_model.office_level == next:
+		return
+	layout_model.office_level = next
+	_rebuild_props()
 
 func set_hire_count(count: int) -> void:
 	var previous := unlocked_hires

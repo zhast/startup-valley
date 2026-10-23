@@ -132,6 +132,7 @@ export class GameDatabase {
       [10, "010_tycoon_staff.sql"],
       [11, "011_tycoon_research.sql"],
       [12, "012_tycoon_upgrades.sql"],
+      [13, "013_tycoon_office.sql"],
     ] as const) {
       const applied = this.#database.prepare("SELECT version FROM schema_migrations WHERE version = ?").get(version);
       if (applied) continue;
@@ -153,7 +154,7 @@ export class GameDatabase {
     this.#seed();
     this.furnishing = new FurnishingStore(this.#database);
     this.journey = new JourneyStore(this.#database, () => this.furnishing.sync());
-    this.tycoon = new TycoonStore(this.#database, this.journey);
+    this.tycoon = new TycoonStore(this.#database, this.journey, () => this.furnishing.sync());
     this.journey.bindTycoon(() => this.tycoon.view());
     this.recoverInterruptedJobs();
   }

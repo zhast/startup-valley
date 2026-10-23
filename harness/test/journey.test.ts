@@ -87,7 +87,7 @@ test("full three-day journey awards money once, charges hiring/filing, and survi
   const { db, root, project } = await setup("startup-valley.sqlite");
   const initialRoom = db.bootstrap().furnishing;
   db.furnishing.update({ operationId: "journey-plant", expectedRevision: initialRoom.revision, placements: {
-    ...initialRoom.placements, "decor-broadleaf_planter": { grid: [22, 16], facing: "west" },
+    ...initialRoom.placements, "decor-broadleaf_planter": { grid: [24, 8], facing: "west" },
   } });
   let calls = 0;
   const adapter = new PiWorkerAdapter(db, credentials, root, async (def) => { calls++; return { text: review(def.id), inputTokens: 600, outputTokens: 300, cost: 0.002 }; });
@@ -99,7 +99,7 @@ test("full three-day journey awards money once, charges hiring/filing, and survi
   db.journey.complete("website", false, 1); db.journey.complete("website", false, 1);
   db.journey.hire("theo", 1); db.journey.hire("theo", 1);
   const hiredRoom = db.bootstrap().furnishing;
-  assert.deepEqual(hiredRoom.placements["decor-broadleaf_planter"], { grid: [22, 16], facing: "west" });
+  assert.deepEqual(hiredRoom.placements["decor-broadleaf_planter"], { grid: [24, 8], facing: "west" });
   assert.deepEqual(hiredRoom.inventory.filter((item) => item.roleKit).map((item) => item.roleKit).sort(), ["founder_strategy_kit", "mina_discovery_kit", "theo_campaign_kit"]);
   assert.equal(db.journey.state().company.cashCents, 30000);
   db.endDay(1); assert.equal(db.endDay(1).clock.day, 2);
@@ -215,7 +215,7 @@ test("evaluation failure is retryable; revisions and reduced-reward override can
   const { db, root } = await setup(); db.journey.hire("mira", 1);
   const initialRoom = db.bootstrap().furnishing;
   const revisionRoom = db.furnishing.update({ operationId: "revision-room", expectedRevision: initialRoom.revision, placements: {
-    ...initialRoom.placements, "decor-broadleaf_planter": { grid: [22, 16], facing: "north" },
+    ...initialRoom.placements, "decor-broadleaf_planter": { grid: [24, 8], facing: "north" },
   } }).furnishing;
   await deliver(db, root, "website", "first");
   let output = "invalid JSON";

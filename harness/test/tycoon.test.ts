@@ -218,6 +218,9 @@ test("stdio tycoon start, days, and release need no credential", async (t) => {
   const short = await request("short", "tycoon.research", { kind: "type", id: "coaching" });
   assert.equal(short.ok, false);
   assert.match(short.error ?? "", /Not enough research points/u);
+  const earlyOffice = await request("office-early", "tycoon.expandOffice", {});
+  assert.equal(earlyOffice.ok, false);
+  assert.match(earlyOffice.error ?? "", /Hire 2 people before the Open Floor/u);
   const unknownUpgrade = await request("unknown-upgrade", "tycoon.buyUpgrade", { id: "lava_lamp" });
   assert.equal(unknownUpgrade.ok, false);
   assert.match(unknownUpgrade.error ?? "", /Unknown upgrade/u);
@@ -963,4 +966,185 @@ test("an older save loads and the calendar follows the clock day", async () => {
   assert.equal(again.tycoon.view().history[0]?.salesCents, 12345);
   assert.equal(again.tycoon.view().history[0]?.fans, 7);
   again.close();
+});
+
+async function teamOfThree(root: string, db: GameDatabase, cashCents: number): Promise<GameDatabase> {
+  db.journey.hire("mira", 1);
+  db.close();
+  const file = join(root, "game.sqlite");
+  const sql = new DatabaseSync(file);
+  sql.prepare("UPDATE milestone_progress SET completed = 1 WHERE id = 'website'").run();
+  sql.close();
+  const next = new GameDatabase(file, join(root, "company-project"));
+  next.journey.recordCompanyChange("office-team-cash", 1, cashCents, 0, 0, "Office team cash");
+  next.journey.hire("theo", 1);
+  return next;
+}
+
+test("a new company starts in the Garage Loft and an older save stays at level 1", async () => {
+  const { db } = await setup();
+  const office = db.tycoon.view().office;
+  assert.equal(office.level, 1);
+  assert.equal(office.name, "Garage Loft");
+  assert.equal(office.blurb, "A checkout link and one desk by the garage door.");
+  assert.deepEqual(office.desks, { used: 1, total: 4 });
+  assert.equal(office.next?.name, "Open Floor");
+  assert.equal(office.next?.costCents, 60_000);
+  assert.equal(office.next?.requiredHires, 2);
+  assert.equal(office.next?.enabled, false);
+  assert.equal(office.next?.reason, "Hire 2 people first.");
+  const before = db.furnishing.state();
+  assert.equal(before.inventory.some((item) => item.id.startsWith("spare-")), false);
+  assert.equal(before.placements["spare-compact-a"], undefined);
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  assert.equal(validate(db.journey.state()), true, JSON.stringify(validate.errors));
+  db.close();
+
+  const root = await mkdtemp(join(tmpdir(), "startup-valley-tycoon-preoffice-"));
+  const file = join(root, "game.sqlite");
+  const project = join(root, "company-project");
+  await mkdir(project);
+  const old = new DatabaseSync(file);
+  for (const name of [
+    "001_initial.sql", "002_product_layer.sql", "003_persistent_studio.sql", "004_work_order_handoff.sql",
+    "005_employee_chat.sql", "006_company_journey.sql", "007_furnishing.sql", "008_company_journey_opening.sql",
+    "009_tycoon_products.sql", "010_tycoon_staff.sql", "011_tycoon_research.sql", "012_tycoon_upgrades.sql",
+  ]) old.exec(readFileSync(new URL(`../migrations/${name}`, import.meta.url), "utf8"));
+  old.exec("CREATE TABLE schema_migrations (version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL)");
+  for (const version of [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]) old.prepare("INSERT INTO schema_migrations VALUES (?, 'old')").run(version);
+  old.close();
+  const restored = new GameDatabase(file, project);
+  const loaded = restored.tycoon.view().office;
+  assert.equal(loaded.level, 1);
+  assert.equal(loaded.name, "Garage Loft");
+  assert.deepEqual(loaded.desks, { used: 1, total: 4 });
+  assert.equal(loaded.next?.enabled, false);
+  const row = (restored as unknown as { journey: { db: DatabaseSync } }).journey.db
+    .prepare("SELECT office_level FROM tycoon_meta WHERE id = 1").get() as { office_level: number };
+  assert.equal(row.office_level, 1);
+  assert.equal(validate(restored.journey.state()), true, JSON.stringify(validate.errors));
+  restored.close();
+});
+
+test("expanding the office rejects a short team, short cash, and a second buy", async () => {
+  const fresh = await setup();
+  assert.throws(() => fresh.db.tycoon.expandOffice(), /Hire 2 people before the Open Floor/u);
+  assert.equal(fresh.db.journey.state().company.cashCents, 0);
+  assert.equal(fresh.db.tycoon.view().office.level, 1);
+  fresh.db.journey.recordCompanyChange("mira-cash", 1, 60_000, 0, 0, "Mina cash");
+  fresh.db.journey.hire("mira", 1);
+  assert.equal(fresh.db.tycoon.view().office.desks.used, 2);
+  assert.equal(fresh.db.tycoon.view().office.next?.reason, "Hire 2 people first.");
+  assert.throws(() => fresh.db.tycoon.expandOffice(), /Hire 2 people before the Open Floor/u);
+  assert.equal(fresh.db.journey.state().company.cashCents, 60_000);
+  fresh.db.close();
+
+  const broke = await setup();
+  const short = await teamOfThree(broke.root, broke.db, 89_999);
+  assert.equal(short.journey.state().company.cashCents, 59_999);
+  assert.deepEqual(short.tycoon.view().office.desks, { used: 3, total: 4 });
+  assert.equal(short.tycoon.view().office.next?.enabled, false);
+  assert.equal(short.tycoon.view().office.next?.reason, "Need $600 game cash.");
+  assert.throws(() => short.tycoon.expandOffice(), /Not enough game cash\. Open Floor costs \$600/u);
+  assert.equal(short.journey.state().company.cashCents, 59_999);
+  assert.equal(short.tycoon.view().office.level, 1);
+  short.close();
+
+  const ready = await setup();
+  const db = await teamOfThree(ready.root, ready.db, 90_000);
+  assert.equal(db.journey.state().company.cashCents, 60_000);
+  assert.equal(db.tycoon.view().office.next?.enabled, true);
+  assert.equal(db.tycoon.view().office.next?.reason, "");
+  db.tycoon.expandOffice();
+  const expanded = db.tycoon.view().office;
+  assert.equal(db.journey.state().company.cashCents, 0);
+  assert.equal(expanded.level, 2);
+  assert.equal(expanded.name, "Open Floor");
+  assert.equal(expanded.blurb, "Spare desks for the next drop.");
+  assert.deepEqual(expanded.desks, { used: 3, total: 7 });
+  assert.equal(expanded.next, null);
+  const room = db.furnishing.state();
+  for (const [id, grid] of [
+    ["spare-compact-a", [20, 17]],
+    ["spare-compact-b", [25, 17]],
+    ["spare-workbench", [23, 14]],
+  ] as const) {
+    const item = room.inventory.find((entry) => entry.id === id);
+    assert.equal(item?.essential, true);
+    assert.equal(item?.grant, "office-level:2");
+    assert.deepEqual(room.placements[id], { grid: [...grid], facing: "south" });
+  }
+  assert.equal(room.inventory.find((entry) => entry.id === "spare-workbench")?.kind, "shared_workbench");
+  assert.throws(() => db.tycoon.expandOffice(), /already as large as it gets/u);
+  assert.equal(db.journey.state().company.cashCents, 0);
+  assert.equal(db.tycoon.view().office.level, 2);
+  db.close();
+
+  const reopened = new GameDatabase(join(ready.root, "game.sqlite"), join(ready.root, "company-project"));
+  assert.equal(reopened.tycoon.view().office.level, 2);
+  assert.equal(reopened.tycoon.view().office.desks.total, 7);
+  assert.equal(reopened.furnishing.state().placements["spare-compact-a"]?.grid[0], 20);
+  reopened.close();
+});
+
+test("the Open Floor dev bonus is flat, stacks with upgrades, and skips training and polish days", async () => {
+  const play = async (expand: boolean) => {
+    const opened = await setup();
+    const db = await teamOfThree(opened.root, opened.db, 200_000);
+    if (expand) db.tycoon.expandOffice();
+    db.tycoon.start("crypto", "newsletter", ["founder"]);
+    db.endDay(1);
+    return db;
+  };
+  const loft = await play(false);
+  const floor = await play(true);
+  assert.equal(loft.tycoon.view().developing?.design, 2);
+  assert.equal(loft.tycoon.view().developing?.tech, 2);
+  assert.equal(loft.tycoon.view().developing?.hype, 2);
+  assert.equal(floor.tycoon.view().developing?.design, 3);
+  assert.equal(floor.tycoon.view().developing?.tech, 3);
+  assert.equal(floor.tycoon.view().developing?.hype, 2);
+  floor.tycoon.buyUpgrade("standing_desk");
+  assert.equal(floor.tycoon.view().developing?.design, 3, "buying a tool does not rewrite stored points");
+  floor.endDay(2);
+  assert.equal(floor.tycoon.view().developing?.design, 7, "founder 2, plus the desk, plus the flat office bonus");
+  assert.equal(floor.tycoon.view().developing?.tech, 6);
+  assert.equal(floor.tycoon.view().developing?.hype, 4);
+  loft.close();
+  floor.close();
+
+  const training = await setup();
+  const trained = await teamOfThree(training.root, training.db, 200_000);
+  trained.tycoon.expandOffice();
+  trained.tycoon.start("crypto", "newsletter", ["founder"]);
+  trained.endDay(1);
+  trained.tycoon.train("founder", "tech");
+  trained.endDay(2);
+  const paused = trained.tycoon.view().developing;
+  assert.equal(paused?.design, 3, "a training day adds no office bonus");
+  assert.equal(paused?.tech, 3);
+  assert.equal(paused?.hype, 2);
+  trained.close();
+
+  const run = async () => {
+    const opened = await setup();
+    const db = await teamOfThree(opened.root, opened.db, 90_000);
+    db.tycoon.expandOffice();
+    db.tycoon.start("crypto", "newsletter", ["founder"]);
+    for (let day = 1; day <= 5; day += 1) db.endDay(day);
+    const developing = db.tycoon.view().developing;
+    db.close();
+    return developing;
+  };
+  const first = await run();
+  const second = await run();
+  assert.deepEqual(
+    { design: first?.design, tech: first?.tech, hype: first?.hype, devDays: first?.devDays },
+    { design: second?.design, tech: second?.tech, hype: second?.hype, devDays: second?.devDays },
+  );
+  assert.equal(first?.devDays, 5);
+  assert.equal(first?.design, 12, "four accruing days add +1, and the polish day after that adds none");
+  assert.equal(first?.tech, 12);
+  assert.equal(first?.hype, 8);
 });

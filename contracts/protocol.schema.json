@@ -44,7 +44,7 @@
             "hiring.complete", "milestone.evaluate", "milestone.complete", "milestone.override",
             "chapter.continue",
             "day.end", "game.save", "game.new",
-            "tycoon.start", "tycoon.release", "tycoon.train", "tycoon.research", "tycoon.buyUpgrade"
+            "tycoon.start", "tycoon.release", "tycoon.train", "tycoon.research", "tycoon.buyUpgrade", "tycoon.expandOffice"
           ]
         },
         "params": { "type": "object" }
@@ -73,6 +73,7 @@
         { "if": { "properties": { "method": { "const": "tycoon.buyUpgrade" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["id"], "properties": {
           "id": { "type": "string", "minLength": 1, "maxLength": 64 }
         } } } } },
+        { "if": { "properties": { "method": { "const": "tycoon.expandOffice" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "properties": {} } } } },
         { "if": { "properties": { "method": { "const": "game.save" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["x", "y"], "properties": { "x": { "type": "number", "minimum": 0, "maximum": 1280 }, "y": { "type": "number", "minimum": 0, "maximum": 720 }, "movementSeen": { "type": "boolean" }, "effectsVolume": { "type": "number", "minimum": 0, "maximum": 1 }, "ambienceVolume": { "type": "number", "minimum": 0, "maximum": 1 }, "attentionEmployeeId": { "enum": ["", "mira", "theo", "creative"] }, "architectureTheme": { "enum": ["office", "cafe", "loft", "studio", "evening"] } } } } } }
       ]
     },

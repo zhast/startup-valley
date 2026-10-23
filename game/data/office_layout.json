@@ -31,6 +31,9 @@
     {"id": "creative-workstation", "kind": "desk", "grid": [14, 8], "facing": "south", "required_hires": 3, "owner_id": "creative"},
     {"id": "research-bench", "kind": "research_table", "grid": [29, 8], "facing": "south", "required_hires": 2},
     {"id": "approval-console", "kind": "approval_console", "grid": [29, 13], "facing": "south", "required_hires": 2},
-    {"id": "prototype-bench", "kind": "prototype_bench", "grid": [29, 18], "facing": "south", "required_hires": 4}
+    {"id": "prototype-bench", "kind": "prototype_bench", "grid": [29, 18], "facing": "south", "required_hires": 4},
+    {"id": "spare-compact-a", "kind": "compact_desk", "grid": [20, 17], "facing": "south", "required_hires": 0, "required_office_level": 2},
+    {"id": "spare-compact-b", "kind": "compact_desk", "grid": [25, 17], "facing": "south", "required_hires": 0, "required_office_level": 2},
+    {"id": "spare-workbench", "kind": "shared_workbench", "grid": [23, 14], "facing": "south", "required_hires": 0, "required_office_level": 2}
   ]
 }

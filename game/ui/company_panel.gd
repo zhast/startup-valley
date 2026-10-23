@@ -518,6 +518,7 @@ func _journey_screen() -> void:
 	_train_staff()
 	_research_card()
 	_upgrades_card()
+	_office_card()
 	_season_card()
 	var money_note := _label("Game cash is virtual. Shipping products is fully offline. Ads and incorporation create planning files only.")
 	money_note.name = "MoneyExplanation"
@@ -648,6 +649,37 @@ func _upgrades_card() -> void:
 
 func _buy_upgrade(upgrade_id: String) -> void:
 	_request("tycoon.buyUpgrade", {"id": upgrade_id})
+
+func _office_card() -> void:
+	var office: Variant = _tycoon().get("office", null)
+	if not office is Dictionary or (office as Dictionary).is_empty(): return
+	var current := office as Dictionary
+	var card := _card()
+	card.name = "OfficeCard"
+	_label("Office", true, card)
+	var name_label := _label(str(current.get("name", "Office")), false, card)
+	name_label.name = "OfficeName"
+	var blurb := str(current.get("blurb", "")).strip_edges()
+	if not blurb.is_empty():
+		var blurb_label := _label(blurb, false, card, "meta")
+		blurb_label.name = "OfficeBlurb"
+	var desks: Dictionary = current.get("desks", {}) if current.get("desks") is Dictionary else {}
+	var desks_label := _label("Desks: %d/%d" % [int(desks.get("used", 0)), int(desks.get("total", 0))], false, card)
+	desks_label.name = "OfficeDesks"
+	var next: Variant = current.get("next", null)
+	if not next is Dictionary: return
+	var expansion := next as Dictionary
+	var next_label := _label("%s · $%d" % [str(expansion.get("name", "Next office")), int(int(expansion.get("costCents", 0)) / 100)], false, card)
+	next_label.name = "OfficeNext"
+	var reason := str(expansion.get("reason", "")).strip_edges()
+	if not reason.is_empty():
+		var reason_label := _label(reason, false, card, "meta")
+		reason_label.name = "OfficeReason"
+	var button := _button("Expand office", _expand_office, false, bool(expansion.get("enabled", false)), card, "secondary")
+	button.name = "ExpandOffice"
+
+func _expand_office() -> void:
+	_request("tycoon.expandOffice", {})
 
 func _season_card() -> void:
 	var calendar := _calendar()
