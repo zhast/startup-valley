@@ -148,7 +148,7 @@ func _card(parent: Control = null) -> VBoxContainer:
 	panel.add_child(contents)
 	return contents
 
-func _heading(title: String, subtitle: String = "", subtitle_role: String = "body") -> void:
+func _heading(title: String, subtitle: String = "", subtitle_role: String = "body", subtitle_name: String = "") -> void:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 12)
 	_header.add_child(row)
@@ -159,7 +159,9 @@ func _heading(title: String, subtitle: String = "", subtitle_role: String = "bod
 	close_button.pressed.connect(_back)
 	close_button.visible = screen != "title"
 	row.add_child(close_button)
-	if not subtitle.is_empty(): _label(subtitle, false, _header, subtitle_role)
+	if not subtitle.is_empty():
+		var subtitle_label := _label(subtitle, false, _header, subtitle_role)
+		if not subtitle_name.is_empty(): subtitle_label.name = subtitle_name
 
 func _actions(primary_text: String, callback: Callable, enabled: bool = true, secondary_text: String = "Back to office", secondary_callback: Callable = Callable(), danger: bool = false) -> void:
 	var row := HBoxContainer.new()
@@ -267,7 +269,8 @@ func _title_screen() -> void:
 		var names := PackedStringArray()
 		for candidate: Dictionary in state.get("candidates", []):
 			if bool(candidate.get("hired", false)): names.append(str(candidate.get("name", "Teammate")))
-		_label("Day %d  ·  Chapter %d  ·  %s" % [day, int(company.get("chapter", 1)), ", ".join(names) if not names.is_empty() else "Founder"], false, card)
+		var date_line := _label("%s  ·  Chapter %d  ·  %s" % [_office_date(), int(company.get("chapter", 1)), ", ".join(names) if not names.is_empty() else "Founder"], false, card)
+		date_line.name = "OfficeDate"
 		_label(_next_step().trim_prefix("NEXT · "), false, card)
 		_label("Progress saves automatically.", false, card, "meta")
 	else:
@@ -431,7 +434,12 @@ func _slider(value: float, effects: bool, parent: Control = null) -> void:
 
 func _day_screen() -> void:
 	var summary: Dictionary = _summary if screen == "summary" else state.get("daySummary", {})
-	_heading("Day %d %s" % [int(summary.get("day", day)), "complete" if screen == "summary" else "wrap-up"], "Saved. Your team starts at 08:00." if screen == "summary" else "Take stock before the next office day.")
+	var ended := int(summary.get("day", day))
+	var phrase := str(summary.get("dateLabel", "")).strip_edges()
+	if phrase.is_empty() and screen != "summary":
+		phrase = str(_calendar().get("label", "")).strip_edges()
+	var when := phrase if not phrase.is_empty() else "Day %d" % ended
+	_heading("%s %s" % [when, "complete" if screen == "summary" else "wrap-up"], "Saved. Your team starts at 08:00." if screen == "summary" else "Take stock before the next office day.")
 	var metrics := HBoxContainer.new()
 	metrics.add_theme_constant_override("separation", 12)
 	_content.add_child(metrics)
@@ -475,7 +483,7 @@ func _money(cents: int) -> String:
 
 func _journey_screen() -> void:
 	var company: Dictionary = state.get("company", {})
-	_heading("Company Journey", "Day %d  ·  $%s game cash  ·  %d reputation" % [day, _money(int(company.get("cashCents", 0))), int(company.get("reputation", 0))], "meta")
+	_heading("Company Journey", "%s  ·  $%s game cash  ·  %d reputation" % [_office_date(), _money(int(company.get("cashCents", 0))), int(company.get("reputation", 0))], "meta", "OfficeDate")
 	var next := _label(_next_step().trim_prefix("NEXT · "), false, null, "action")
 	next.name = "NextStep"
 	var definition := _current_milestone()
@@ -510,12 +518,28 @@ func _journey_screen() -> void:
 	_train_staff()
 	_research_card()
 	_upgrades_card()
+	_season_card()
 	var money_note := _label("Game cash is virtual. Shipping products is fully offline. Ads and incorporation create planning files only.")
 	money_note.name = "MoneyExplanation"
 
 func _tycoon() -> Dictionary:
 	var value: Variant = state.get("tycoon", {})
 	return value as Dictionary if value is Dictionary else {}
+
+func _calendar() -> Dictionary:
+	var value: Variant = _tycoon().get("calendar", {})
+	return value as Dictionary if value is Dictionary else {}
+
+func _office_date() -> String:
+	var label := str(_calendar().get("label", "")).strip_edges()
+	if not label.is_empty(): return label
+	return "Day %d" % day
+
+func _topic_in_season(topic_id: String) -> bool:
+	for item: Variant in _calendar().get("favoredTopics", []) as Array:
+		if item is Dictionary and str((item as Dictionary).get("id", "")) == topic_id:
+			return true
+	return false
 
 func _product_shortcut() -> void:
 	if _tycoon().is_empty(): return
@@ -625,6 +649,36 @@ func _upgrades_card() -> void:
 func _buy_upgrade(upgrade_id: String) -> void:
 	_request("tycoon.buyUpgrade", {"id": upgrade_id})
 
+func _season_card() -> void:
+	var calendar := _calendar()
+	if calendar.is_empty(): return
+	var names := PackedStringArray()
+	for item: Variant in calendar.get("favoredTopics", []) as Array:
+		if not item is Dictionary: continue
+		var topic_name := str((item as Dictionary).get("name", "")).strip_edges()
+		if not topic_name.is_empty(): names.append(topic_name)
+	if names.is_empty(): return
+	var card := _card()
+	card.name = "SeasonCard"
+	_label("Season", true, card)
+	var topics := _label("In season: %s" % ", ".join(names), false, card)
+	topics.name = "SeasonTopics"
+	var event_line := _label(_season_event_line(calendar), false, card)
+	event_line.name = "SeasonEvent"
+
+func _season_event_line(calendar: Dictionary) -> String:
+	var today: Variant = calendar.get("event")
+	if today is Dictionary and not str((today as Dictionary).get("name", "")).strip_edges().is_empty():
+		var event := today as Dictionary
+		var effect := str(event.get("effect", "")).strip_edges()
+		if effect.is_empty(): return "%s today" % str(event.get("name", "Event"))
+		return "%s today. %s" % [str(event.get("name", "Event")), effect]
+	var next: Dictionary = calendar.get("nextEvent", {}) if calendar.get("nextEvent") is Dictionary else {}
+	var event_name := str(next.get("name", "The next fair"))
+	var days := int(next.get("daysUntil", 0))
+	if days == 1: return "%s in 1 day" % event_name
+	return "%s in %d days" % [event_name, days]
+
 func _upgrade_effect(kind: String) -> String:
 	var parts: PackedStringArray = []
 	for item: Variant in _tycoon().get("upgrades", []) as Array:
@@ -667,7 +721,9 @@ func _product_picker(tycoon: Dictionary) -> void:
 		var topic_id := str(topic.get("id", ""))
 		var topic_open := bool(topic.get("unlocked", true))
 		var topic_name := str(topic.get("name", "Topic"))
-		_choice_button(topic_name if topic_open else "%s · locked" % topic_name, topic_open and topic_id == _topic_id, topics, _choose_topic.bind(topic_id), topic_open)
+		var topic_label := topic_name if topic_open else "%s · locked" % topic_name
+		if _topic_in_season(topic_id): topic_label = "%s · in season" % topic_label
+		_choice_button(topic_label, topic_open and topic_id == _topic_id, topics, _choose_topic.bind(topic_id), topic_open)
 	_label("Product type", true)
 	var types := GridContainer.new()
 	types.columns = 2

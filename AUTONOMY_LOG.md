@@ -1192,3 +1192,37 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Ten PNGs in `/workspace/sv-proof/round-29/`. After the second launch, cash was 28500 cents. Buy Oak Standing Desk was enabled; the purchase line and the owned desk were on screen. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-29 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → ship → Train staff → Research a locked topic → buy an office tool. The lesson line, the unlock line, and the purchase line last one office day. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_upgrades.gd`.
+
+### Round 30 — 2026-10-22
+
+**What changed**
+- Seasons and events. The calendar is a pure function of the saved office day in `harness/src/tycoon.ts`. No new clock and no new migration. Four seasons of 28 days. A year is 112 days. Day 1 is Spring 1, Year 1. Day 29 is Summer 1. Day 113 is Spring 1, Year 2. The label is "Spring 3 · Year 1".
+- Each season favors two existing topics. Spring: Fitness, Dating Advice. Summer: Sneakers, Sports Betting Picks. Fall: Study Notes, Trading. Winter: Cooking, Gaming. A favored product gains 20 percent units on sales computed that day: `Math.max(1, Math.round((units * 120) / 100))`. Fans come from those units. Stored reviews and earlier sales are not rewritten. Crypto Alpha is not favored in Spring, so the first newsletter's cash stays $207, then $333, then $414.
+- One cozy event per season, that day only: Spring 13 Creator Fair, Summer 11 Drop Day, Fall 16 Cohort Kickoff, Winter 25 Cozy Gift Guide. Any product that sells that day gains 2 fans. Units, price, and the stored review stay put. If nothing sells, the event still shows and adds no fans. The next event wraps to next year's Creator Fair after Winter 25.
+- `journey.tycoon.calendar` carries the season, the day, the year, the label, the two favored topics, today's event or null, and the next event with `daysUntil`. The day summary stores `dateLabel` for the day that just ended. Older summaries without that field still load. An older save opened on day 1 shows Spring 1, Year 1, and a finished product's sales and review stay as stored.
+- Company Journey shows the date in the existing heading. A Season card sits under Upgrades: "In season: Fitness, Dating Advice" and "Creator Fair in 11 days" (or "Creator Fair today. +2 fans on sales today"). The product picker adds "· in season" on a favored topic. Hire stays the one primary action. The ledger day stays a number. The player-driving skill snaps `12-date-label.png` and `11-season-card.png` after the first build day.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art, seated poses, workstation sheets, and the unbound furnishing kits stay untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Office growth. More desks and a second room from cash and headcount, using furniture that is already bound.
+2. A research fit bonus is still unbuilt. It is not part of the season calendar.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. Carried from Round 29: Creative has no seated sheet. Unbound art stays untracked. The live path is still a harness driver. A cheap reviewer can still sit just under the 2.5 ready line. Chapter 3 ends at "More is coming." `shared_workbench` stays in storage.
+
+**Test results** (no paid live evals; Node 22.23.3; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 96 tests, 94 pass, 0 fail, 2 skipped. The three new tests cover day 28/29/112/113, the in-season unit boost, the event-day fan bonus, and an older save.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS (23 checks, 0 failures). Spring 1 shows the Season card and "Creator Fair in 12 days". After End day the summary stays Spring 1 and the next morning is Spring 2. Fitness is tagged in season. Crypto Alpha is not.
+- `test_tycoon_product.gd` — TYCOON PASS (40 checks, 0 failures). Launch sales stay 20700 cents and 5 fans.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS (50 checks, 0 failures)
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS (40 checks, 0 failures)
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS (47 checks, 0 failures)
+- `test_ui_company_redesign.gd` — 4777 checks, 0 failures, 0 captures
+- Proof capture — PROOF PASS. Twelve PNGs in `/workspace/sv-proof/round-30/`. After one office day the heading reads "Spring 2 · Year 1" and the Season card reads "In season: Fitness, Dating Advice" and "Creator Fair in 11 days". Hire Mina stays the primary action. Cash after the second launch was 28500 cents. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-30 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → ship → Train staff → Research a locked topic → buy an office tool, with the season and the next event on the same screen. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_seasons.gd`.

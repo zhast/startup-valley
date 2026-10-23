@@ -6,6 +6,7 @@ Player-facing flows for the offline tycoon. The harness owns the rules (`docs/TY
 - [Train staff](train-staff.md)
 - [Research](research.md)
 - [Upgrades](upgrades.md)
+- [Seasons](seasons.md)
 - [End day](end-day.md)
 
 Launch, display, and proof-file rules live in the verify-startup-valley skill. Do not copy them here.

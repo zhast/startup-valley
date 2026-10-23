@@ -1,5 +1,5 @@
 import type { DatabaseSync } from "node:sqlite";
-import type { TycoonSnapshot } from "./tycoon.js";
+import { calendarForDay, type TycoonSnapshot } from "./tycoon.js";
 import type { JobSpec } from "./types.js";
 
 export interface MilestoneDefinition {
@@ -217,6 +217,6 @@ export class JourneyStore {
   daySummary(day: number, spend: number) {
     const rows = this.db.prepare("SELECT label,cash_delta,earned_delta,reputation_delta FROM company_transactions WHERE day=?").all(day);
     const completedWork = this.db.prepare("SELECT title, revision_of_job_id FROM work_orders WHERE game_day=? AND status='completed'").all(day).map((row) => String(row.title) + (row.revision_of_job_id ? " (revision)" : ""));
-    return { day, entries: rows, completedWork, earnedCents: rows.reduce((n, row) => n + Number(row.earned_delta), 0), reputation: rows.reduce((n, row) => n + Number(row.reputation_delta), 0), aiSpend: spend, nextMilestone: this.state().milestones.find((item) => item.state !== "completed")?.title ?? "Your next chapter" };
+    return { day, dateLabel: calendarForDay(day).label, entries: rows, completedWork, earnedCents: rows.reduce((n, row) => n + Number(row.earned_delta), 0), reputation: rows.reduce((n, row) => n + Number(row.reputation_delta), 0), aiSpend: spend, nextMilestone: this.state().milestones.find((item) => item.state !== "completed")?.title ?? "Your next chapter" };
   }
 }
