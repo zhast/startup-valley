@@ -146,13 +146,33 @@ Company Journey lists an Upgrades card under Research. It shows the heading, one
 
 ## Day and season calendar
 
-What ships now is the office day clock already in the game. Work is 08:00–12:30 and 13:30–17:30. Lunch is 12:30–13:30. Ending the day saves, writes the summary, and advances the tycoon by one day. The next morning is 08:00.
+The office day clock is unchanged. Work is 08:00–12:30 and 13:30–17:30. Lunch is 12:30–13:30. Ending the day saves, writes the summary, and advances the tycoon by one day. The next morning is 08:00. The ledger still shows that day as a number.
 
-Seasons are design-only in this slice. The planned calendar is Stardew-shaped and not implemented:
+The season is a pure function of the saved day. There is no second clock and no new column. Day 1 is Spring 1, Year 1. A season is 28 office days. A year is 112 days. Day 29 is Summer 1. Day 112 is Winter 28, Year 1. Day 113 is Spring 1, Year 2. The label is `Spring 3 · Year 1`.
 
-- Four seasons of 28 office days: Spring, Summer, Fall, Winter. A year is 112 days.
-- The season is derived from the saved day number. It does not replace the clock.
-- A later slice can let the season nudge demand (a fitness course in Spring, a study pack in Fall) and host one small event per season. Events stay inside the simulation. They do not call out.
+| Season | Office days | Favored topics |
+| --- | --- | --- |
+| Spring | 1–28 | Fitness, Dating Advice |
+| Summer | 29–56 | Sneakers, Sports Betting Picks |
+| Fall | 57–84 | Study Notes, Trading |
+| Winter | 85–112 | Cooking, Gaming |
+
+A product whose topic is favored sells 20 percent more units on each sale computed that season: `Math.max(1, Math.round((units * 120) / 100))`. Fans are computed from those units. Cents are the boosted units times the price. A checkout-page price boost still changes only the price. Stored reviews and earlier sales are not rewritten. A topic outside the pair uses the old formula. Crypto Alpha is not favored in Spring, so the first newsletter's cash is unchanged.
+
+One cozy event per season, on a fixed day. The effect lasts that day only. Names stay inside the simulation.
+
+| Season | Day | Name | Blurb |
+| --- | --- | --- | --- |
+| Spring | 13 | Creator Fair | The floor is full of shops and first buyers. |
+| Summer | 11 | Drop Day | Everyone refreshes the page at the same minute. |
+| Fall | 16 | Cohort Kickoff | A new class shows up with notebooks open. |
+| Winter | 25 | Cozy Gift Guide | Whop Weekly lists the warm shops. |
+
+Each event adds 2 fans to any product that sells that day. The line is "+2 fans on sales today". Units, price, and the stored review do not change. If nothing sells, the event still shows and adds no fans. The next event is the next one after today. After Winter 25 it wraps to Creator Fair in the following year. `daysUntil` is at least 1.
+
+`journey.tycoon.calendar` carries `season`, `seasonName`, `dayOfSeason`, `year`, `label`, `favoredTopics` (`{id, name}`), `event` (or null), and `nextEvent` (the event fields plus `season`, `dayOfSeason`, and `daysUntil`). The day summary stores `dateLabel` for the day that just ended, so the complete screen does not jump to the next morning. Older summaries without that field still load.
+
+Company Journey shows the label on the heading ("Spring 2 · Year 1 · $0.00 game cash · 0 reputation"). The title continue line and the day complete screen use the same words. A Season card sits under Upgrades: "In season: Fitness, Dating Advice", and either "Creator Fair today. +2 fans on sales today" or "Creator Fair in 11 days". The product picker adds "· in season" on a favored topic, including a locked one. Hire stays the one primary action. No new button.
 
 ## Whop-themed names
 
@@ -168,11 +188,12 @@ Shelf jokes stay in the reviewer blurbs (checkout links, lurkers, margins, welco
 
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, and the upgrades shop. The entries are **New Product**, **Train staff**, **Research**, and **Upgrades** on Company Journey.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, the upgrades shop, and the season calendar. The entries are **New Product**, **Train staff**, **Research**, **Upgrades**, and **Season** on Company Journey.
 
-Next slices, in order:
+Next slice:
 
 1. **Office growth.** More desks and a second room when cash and headcount earn them. Use furniture that is already bound.
-2. **Seasons and events.** Turn on the 28-day calendar and one cozy event per season. Demand modifiers stay deterministic. A small fit bonus from research is still unbuilt.
+
+A small fit bonus from research is still unbuilt. It is not part of the season calendar.
 
 Chapter work orders still ask for a key unless the dev-only fake provider is on. That path is not part of these slices. Do not fold it into the tycoon, and do not make it the default.
