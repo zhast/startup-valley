@@ -1262,3 +1262,36 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Fifteen PNGs in `/workspace/sv-proof/round-31/`. `13-office-card.png` is Garage Loft, Desks 1/4, Expand office disabled, Hire Mina primary. `14-office-expanded-card.png` is Open Floor, Desks 3/7, no expand button. `15-office-new-desks.png` is the 1280×720 office with the new desks among the existing furniture. Cash after the second launch was 28500 cents. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-31 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → ship → Train staff → Research a locked topic → buy an office tool → Expand office to the Open Floor, with the season on the same screen. The spare desks appear in the current room. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_office.gd`.
+
+### Round 32 — 2026-10-23
+
+**What changed**
+- A topic or type is researched only when the player buys it with research points through `tycoon.research`. Starter topics and types are unlocked, and they are not researched. A legacy save that receives the full catalog for free is not researched either. `research_json` stores that list as `researched: {topics, types}`. `spendResearch` writes it. A save with no `researched` field loads as nothing researched. There is no new SQL migration.
+- Each researched part the product uses adds 6 to the fit numerator inside `baseScore`. The bonus is 0, 6, or 12. Development stores it on the product in `staff_json` as `{staff, researchBonus}`. Reviews use the stored number. Later research does not change a product already on the bench. An older row that is only a staff array scores as 0. Crypto Alpha × Newsletter stays at 0, so the first launch is still 20700 cents and 5 fans.
+- `journey.tycoon.fits` and each product carry `researchBonus` (0, 6, or 12). The New Product picker shows "Research bonus: +6 fit" when the chosen pair is above 0, and nothing at 0. Company Journey names that product above New Product, for example "Sneakers Newsletter · Research bonus +6 fit", on the product in development, or on the latest released product when the bench is empty. The product progress line and the shipped-history line stay "Research bonus +6 fit". Hire stays the one primary action on a fresh company.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Launch price is the next slice. The catalog price stays the default, so the first newsletter still pays the same cash. At release the player can nudge the price up or down. A higher price sells fewer units. A lower price sells more. The choice is stored on the product.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. Carried from Round 31: Creative has no seated sheet. Unbound art stays untracked. The live path is still a harness driver. A cheap reviewer can still sit just under the 2.5 ready line. Chapter 3 ends at "More is coming." The starter `shared_workbench` stays in storage. The one on the Open Floor is a separate grant.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 100 tests, 98 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test covers a starter bonus of 0, a bought topic at +6 with a strictly higher base score, topic and type at +12, a snapshotted bonus that later research does not change, and an older `research_json` with no `researched` field loading at 0.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS (40 checks, 0 failures). Launch sales stay 20700 cents and 5 fans. The next office day stays 33300 cents and 8 fans.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS (50 checks, 0 failures)
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS (50 checks, 0 failures). A starter combo shows no bonus line. After researching Sneakers the picker reads "Research bonus: +6 fit", and Company Journey reads "Sneakers Newsletter · Research bonus +6 fit" on the product that just started.
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS (47 checks, 0 failures). The second sales day is still $333.
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS (23 checks, 0 failures)
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS (25 checks, 0 failures)
+- `test_ui_company_redesign.gd` — 4777 checks, 0 failures, 0 captures
+- Proof capture — PROOF PASS. Seventeen PNGs in `/workspace/sv-proof/round-32/` (local, not committed). `16-research-fit-picker.png` is the picker after Sneakers is researched, with the helper checking "Research bonus: +6 fit". `17-research-fit-journey.png` is Company Journey after that product starts, with the helper checking "Sneakers Newsletter · Research bonus +6 fit". Cash after the second launch was 28500 cents. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-32 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → ship a starter product (no research bonus) → Research a locked topic → start that product and read the fit bonus on the picker and on the journey. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_research.gd`.

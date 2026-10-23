@@ -448,11 +448,12 @@
     "tycoonFit": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["topicId", "typeId", "fit"],
+      "required": ["topicId", "typeId", "fit", "researchBonus"],
       "properties": {
         "topicId": { "enum": ["fitness", "trading", "sneakers", "reselling", "sports_betting", "cooking", "gaming", "dating", "study_notes", "crypto"] },
         "typeId": { "enum": ["course", "community", "template_pack", "coaching", "software", "newsletter"] },
-        "fit": { "enum": ["great", "good", "okay", "bad"] }
+        "fit": { "enum": ["great", "good", "okay", "bad"] },
+        "researchBonus": { "type": "integer", "enum": [0, 6, 12] }
       }
     },
     "tycoonStaff": {
@@ -492,7 +493,7 @@
     "tycoonProduct": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "name", "topicId", "typeId", "topicName", "typeName", "fit", "status", "startedDay", "devDays", "devDaysRequired", "design", "tech", "hype", "progress", "ready", "staffIds", "releasedDay", "review", "salesDays", "salesDaysTotal", "salesCents", "fans", "researchPoints"],
+      "required": ["id", "name", "topicId", "typeId", "topicName", "typeName", "fit", "status", "startedDay", "devDays", "devDaysRequired", "design", "tech", "hype", "progress", "ready", "staffIds", "releasedDay", "review", "salesDays", "salesDaysTotal", "salesCents", "fans", "researchPoints", "researchBonus"],
       "properties": {
         "id": { "type": "string", "pattern": "^p[1-9][0-9]*$" },
         "name": { "type": "string", "minLength": 1 },
@@ -517,7 +518,8 @@
         "salesDaysTotal": { "type": "integer", "const": 4 },
         "salesCents": { "type": "integer", "minimum": 0 },
         "fans": { "type": "integer", "minimum": 0 },
-        "researchPoints": { "type": "integer", "minimum": 0 }
+        "researchPoints": { "type": "integer", "minimum": 0 },
+        "researchBonus": { "type": "integer", "enum": [0, 6, 12] }
       }
     },
     "tycoonReview": {

@@ -6,6 +6,7 @@
 - See one secondary button per locked topic and type, disabled when the balance is short.
 - Unlock one item. Read "Unlocked Sneakers. −4 RP" on that office day.
 - Start a product on the topic that just unlocked. The picker drops "· locked" for that row.
+- A topic bought with research points shows "Research bonus: +6 fit" on that pair in the picker. Company Journey shows "Sneakers Newsletter · Research bonus +6 fit" once that product is on the bench. A starter combo shows neither line. The product card keeps "Research bonus +6 fit".
 
 ## How to get to it (user POV)
 
@@ -15,7 +16,7 @@ Prices, the starter catalog, and what an old save unlocks are in `docs/TYCOON_DE
 
 ## Driving it with capture_journey.gd
 
-On the first journey the helper scrolls to the Research card and saves `02-research-card.png` (the balance is 0, so the buttons are disabled). After the newsletter ships it clicks Research Sneakers and saves `07-research-unlocked.png`. It then starts Sneakers Newsletter and saves `08-sneakers-started.png`.
+On the first journey the helper scrolls to the Research card and saves `02-research-card.png` (the balance is 0, so the buttons are disabled). After the newsletter ships it clicks Research Sneakers and saves `07-research-unlocked.png`. It then opens the picker on Sneakers Newsletter and saves `16-research-fit-picker.png`. It starts that product, saves `08-sneakers-started.png`, and saves `17-research-fit-journey.png` on Company Journey.
 
 ## Gotchas
 

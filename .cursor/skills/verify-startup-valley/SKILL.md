@@ -18,7 +18,7 @@ From the repo root, after the harness build in Doctor:
 ```bash
 export PATH=/home/box/.local/node22/bin:/home/box/.local/bin:$PATH
 export STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS=1
-SV_PROOF_DIR=/workspace/sv-proof/round-31 \
+SV_PROOF_DIR=/workspace/sv-proof/round-32 \
   xvfb-run -a -s "-screen 0 1280x720x24" \
   godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd
 ```
@@ -40,7 +40,7 @@ If Godot rejects the absolute script, copy the helper to `/tmp/capture_journey.g
 
 `capture_journey.gd` is a `SceneTree` script. It instances `main.tscn` in a 1280×720 SubViewport, sets the day clock speed to 0, and pushes mouse and key events at the live controls.
 
-The run ships Crypto Alpha Newsletter, trains Founder Tech, ends the day, researches Sneakers, starts Sneakers Newsletter, ships that second product, and buys Oak Standing Desk. After the first build day it checks the Season card and the date label. It snaps the locked Office card on the fresh company, then boots a seeded team, clicks Expand office, and snaps the Open Floor card and the new desks in the room. Button names and the order are in the feature files. Scroll the journey with the same reveal the tests use before clicking a card that sits below New Product.
+The run ships Crypto Alpha Newsletter, trains Founder Tech, ends the day, researches Sneakers, starts Sneakers Newsletter, ships that second product, and buys Oak Standing Desk. After the first build day it checks the Season card and the date label. It snaps the locked Office card on the fresh company, then boots a seeded team, clicks Expand office, and snaps the Open Floor card and the new desks in the room. After Sneakers is researched it snaps the picker bonus, starts that product, and snaps the journey bonus line. Button names and the order are in the feature files. Scroll the journey with the same reveal the tests use before clicking a card that sits below New Product.
 
 ## Evidence
 
@@ -61,6 +61,8 @@ The helper writes these PNGs into `SV_PROOF_DIR` and prints `SNAP` plus the file
 - `13-office-card.png` — Office card before the expansion, Garage Loft, desks 1/4, Expand office disabled
 - `14-office-expanded-card.png` — Office card after Expand office, Open Floor, desks 3/7
 - `15-office-new-desks.png` — the office at the normal game size, with the new desks among the existing furniture
+- `16-research-fit-picker.png` — the picker fit line with "Research bonus: +6 fit" after Sneakers is researched
+- `17-research-fit-journey.png` — Company Journey with "Sneakers Newsletter · Research bonus +6 fit" on the product that just started
 
 A finished run prints `PROOF PASS` or `PROOF FAIL` and a `FAILURE` line for each miss. Open the PNGs. A black frame means the display server did not render the SubViewport.
 
