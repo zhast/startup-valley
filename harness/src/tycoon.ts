@@ -16,6 +16,8 @@ export const STAT_CAP = 10;
 export const STATS = ["design", "tech", "hype"] as const;
 /** Research point prices. A topic is the cheaper unlock. A type costs more. */
 export const RESEARCH_COST = { topic: 4, type: 6 } as const;
+/** Added to the fit numerator for each part the player bought with research points. */
+export const RESEARCH_FIT_BONUS = 6;
 /** Percent added to the type price by the checkout upgrade. Half rounds away from zero. */
 export const PRICE_BOOST_PERCENT = 10;
 /** Stardew-shaped office calendar. Derived from the saved day. It does not replace the clock. */
@@ -235,6 +237,8 @@ export interface TycoonProductView {
   salesCents: number;
   fans: number;
   researchPoints: number;
+  /** Fit numerator bonus snapshotted when development started. 0, 6, or 12. */
+  researchBonus: number;
 }
 
 export interface TycoonUpgradeView {
@@ -294,7 +298,7 @@ export interface TycoonSnapshot {
   salesWindowDays: number;
   topics: Array<{ id: TopicId; name: string; unlocked: boolean; researchCost: number }>;
   types: Array<{ id: ProductTypeId; name: string; devDays: number; priceCents: number; design: number; tech: number; hype: number; unlocked: boolean; researchCost: number }>;
-  fits: Array<{ topicId: TopicId; typeId: ProductTypeId; fit: Fit }>;
+  fits: Array<{ topicId: TopicId; typeId: ProductTypeId; fit: Fit; researchBonus: number }>;
   staff: TycoonStaffView[];
   trainingNotice: string;
   researchPoints: number;
@@ -355,11 +359,22 @@ export function fitFor(topicId: TopicId, typeId: ProductTypeId): Fit {
   return fit;
 }
 
-export function allFits(): TycoonSnapshot["fits"] {
+/** 6 per researched part on the pairing, so 0, 6, or 12. Starters are not researched. */
+export function researchFitBonus(topicResearched: boolean, typeResearched: boolean): number {
+  return (topicResearched ? RESEARCH_FIT_BONUS : 0) + (typeResearched ? RESEARCH_FIT_BONUS : 0);
+}
+
+export function allFits(
+  researchedTopics?: ReadonlySet<TopicId>,
+  researchedTypes?: ReadonlySet<ProductTypeId>,
+): TycoonSnapshot["fits"] {
+  const topics = researchedTopics ?? new Set<TopicId>();
+  const types = researchedTypes ?? new Set<ProductTypeId>();
   return TOPICS.flatMap((topic) => PRODUCT_TYPES.map((type) => ({
     topicId: topic.id,
     typeId: type.id,
     fit: fitFor(topic.id, type.id),
+    researchBonus: researchFitBonus(topics.has(topic.id), types.has(type.id)),
   })));
 }
 
@@ -451,9 +466,7 @@ function clampStat(value: unknown, fallback: number): number {
   return Math.max(0, Math.min(STAT_CAP, amount));
 }
 
-function parseStaffSnapshot(raw: string): StaffSnapshot[] {
-  let parsed: unknown;
-  try { parsed = JSON.parse(raw); } catch { return []; }
+function parseStaffList(parsed: unknown): StaffSnapshot[] {
   if (!Array.isArray(parsed)) return [];
   const result: StaffSnapshot[] = [];
   const seen = new Set<string>();
@@ -481,6 +494,20 @@ function parseStaffSnapshot(raw: string): StaffSnapshot[] {
   return result;
 }
 
+/** Older rows are a staff array and count as no bonus. New rows are `{staff, researchBonus}`. */
+function parseProductSnapshot(raw: string): { staff: StaffSnapshot[]; researchBonus: number } {
+  let parsed: unknown;
+  try { parsed = JSON.parse(raw); } catch { return { staff: [], researchBonus: 0 }; }
+  if (Array.isArray(parsed)) return { staff: parseStaffList(parsed), researchBonus: 0 };
+  if (!parsed || typeof parsed !== "object" || !("staff" in parsed)) return { staff: [], researchBonus: 0 };
+  const body = parsed as { staff?: unknown; researchBonus?: unknown };
+  return { staff: parseStaffList(body.staff), researchBonus: normalizeResearchBonus(Number(body.researchBonus)) };
+}
+
+function parseStaffSnapshot(raw: string): StaffSnapshot[] {
+  return parseProductSnapshot(raw).staff;
+}
+
 /** 0..1000. Matching the ideal is full credit. A little extra holds. A lot extra dulls the work. */
 export function statRatioMilli(points: number, ideal: number): number {
   if (ideal <= 0) return 0;
@@ -505,8 +532,14 @@ function clampScore(score: number): number {
   return Math.max(1, Math.min(10, score));
 }
 
-export function baseScore(points: CraftPoints, topicId: TopicId, typeId: ProductTypeId): number {
-  const fitted = Math.floor((qualityMilli(points, typeId) * FIT_NUMERATOR[fitFor(topicId, typeId)]) / 100);
+function normalizeResearchBonus(value: number): number {
+  if (value === RESEARCH_FIT_BONUS || value === RESEARCH_FIT_BONUS * 2) return value;
+  return 0;
+}
+
+export function baseScore(points: CraftPoints, topicId: TopicId, typeId: ProductTypeId, researchBonus = 0): number {
+  const numerator = FIT_NUMERATOR[fitFor(topicId, typeId)] + normalizeResearchBonus(researchBonus);
+  const fitted = Math.floor((qualityMilli(points, typeId) * numerator) / 100);
   const used = Math.min(1000, fitted);
   return clampScore(Math.round((used * 9) / 1000 + 1));
 }
@@ -525,11 +558,14 @@ export function reviewProduct(input: {
   design: number;
   tech: number;
   hype: number;
+  /** Bonus stored on the product. Omitted scores as 0. */
+  researchBonus?: number;
 }): TycoonReview {
   const base = baseScore(
     { design: input.design, tech: input.tech, hype: input.hype },
     input.topicId,
     input.typeId,
+    input.researchBonus ?? 0,
   );
   const reviewers = REVIEWERS.map((reviewer, index) => {
     const jitter = (mixSeed(input.seed, input.productId, "review", index) % 3) - 1;
@@ -644,6 +680,8 @@ interface ResearchState {
   points: number;
   topics: Set<TopicId>;
   types: Set<ProductTypeId>;
+  researchedTopics: Set<TopicId>;
+  researchedTypes: Set<ProductTypeId>;
 }
 
 interface OwnedUpgrade {
@@ -697,7 +735,7 @@ export class TycoonStore {
         unlocked: research.types.has(type.id),
         researchCost: RESEARCH_COST.type,
       })),
-      fits: allFits(),
+      fits: allFits(research.researchedTopics, research.researchedTypes),
       staff: STAFF.map((person) => {
         const current = stats[person.id];
         const isHired = person.id === "founder" || hired.has(person.id);
@@ -753,9 +791,13 @@ export class TycoonStore {
       if (!type || !research.types.has(typeId)) throw new Error(`${type?.name ?? "That product type"} is locked. Research it first.`);
       const staffIds = this.assignedStaff(requestedStaff);
       const stats = this.loadStaffState();
-      const snapshot = staffIds.map((id) => ({
-        id, design: stats[id].design, tech: stats[id].tech, hype: stats[id].hype,
-      }));
+      const researchBonus = researchFitBonus(research.researchedTopics.has(topicId), research.researchedTypes.has(typeId));
+      const snapshot = {
+        staff: staffIds.map((id) => ({
+          id, design: stats[id].design, tech: stats[id].tech, hype: stats[id].hype,
+        })),
+        researchBonus,
+      };
       const count = Number((this.db.prepare("SELECT COUNT(*) AS n FROM tycoon_products").get() as { n: number }).n);
       const id = `p${count + 1}`;
       this.db.prepare(`
@@ -893,6 +935,7 @@ export class TycoonStore {
       }
       const topicId = asTopic(row.topic_id);
       const typeId = type.id;
+      const stored = parseProductSnapshot(row.staff_json);
       const review = reviewProduct({
         seed: this.seed(),
         productId: row.id,
@@ -901,6 +944,7 @@ export class TycoonStore {
         design: Number(row.design_points),
         tech: Number(row.tech_points),
         hype: Number(row.hype_points),
+        researchBonus: stored.researchBonus,
       });
       const day = this.day();
       const bonus = releaseResearchPoints(review.score);
@@ -1022,8 +1066,13 @@ export class TycoonStore {
     const cost = RESEARCH_COST[kind];
     if (catalog.points < cost) throw new Error(`Not enough research points. ${name} costs ${cost} RP.`);
     catalog.points -= cost;
-    if (kind === "topic") catalog.topics.add(id as TopicId);
-    else catalog.types.add(id as ProductTypeId);
+    if (kind === "topic") {
+      catalog.topics.add(id as TopicId);
+      catalog.researchedTopics.add(id as TopicId);
+    } else {
+      catalog.types.add(id as ProductTypeId);
+      catalog.researchedTypes.add(id as ProductTypeId);
+    }
     this.saveResearch(catalog);
     this.researchNotice = `Unlocked ${name}. −${cost} RP`;
     this.researchNoticeDay = this.day();
@@ -1130,11 +1179,35 @@ export class TycoonStore {
     this.saveResearch(catalog);
   }
 
+  private emptyResearched(): Pick<ResearchState, "researchedTopics" | "researchedTypes"> {
+    return { researchedTopics: new Set(), researchedTypes: new Set() };
+  }
+
+  /** Missing `researched` means nothing was bought. Starters and legacy unlocks stay at 0. */
+  private parseResearched(stored: { researched?: unknown }): Pick<ResearchState, "researchedTopics" | "researchedTypes"> {
+    const researched = this.emptyResearched();
+    const field = stored.researched;
+    if (!field || typeof field !== "object") return researched;
+    const body = field as { topics?: unknown; types?: unknown };
+    if (Array.isArray(body.topics)) {
+      for (const id of body.topics) {
+        if (typeof id === "string" && topicById(id)) researched.researchedTopics.add(id as TopicId);
+      }
+    }
+    if (Array.isArray(body.types)) {
+      for (const id of body.types) {
+        if (typeof id === "string" && typeById(id)) researched.researchedTypes.add(id as ProductTypeId);
+      }
+    }
+    return researched;
+  }
+
   private loadResearch(): ResearchState {
     const everyone: ResearchState = {
       points: 0,
       topics: new Set(TOPICS.map((topic) => topic.id)),
       types: new Set(PRODUCT_TYPES.map((type) => type.id)),
+      ...this.emptyResearched(),
     };
     const row = this.db.prepare("SELECT research_points, research_json FROM tycoon_meta WHERE id = 1").get() as { research_points?: number; research_json?: string } | undefined;
     const points = Number(row?.research_points ?? 0);
@@ -1144,7 +1217,7 @@ export class TycoonStore {
     let parsed: unknown;
     try { parsed = JSON.parse(raw); } catch { return everyone; }
     if (!parsed || typeof parsed !== "object") return everyone;
-    const stored = parsed as { topics?: unknown; types?: unknown };
+    const stored = parsed as { topics?: unknown; types?: unknown; researched?: unknown };
     if (!Array.isArray(stored.topics) || !Array.isArray(stored.types)) return everyone;
     const topics = new Set<TopicId>();
     const types = new Set<ProductTypeId>();
@@ -1154,13 +1227,17 @@ export class TycoonStore {
     for (const id of stored.types) {
       if (typeof id === "string" && typeById(id)) types.add(id as ProductTypeId);
     }
-    return { points: everyone.points, topics, types };
+    return { points: everyone.points, topics, types, ...this.parseResearched(stored) };
   }
 
   private saveResearch(state: ResearchState): void {
     this.db.prepare("UPDATE tycoon_meta SET research_points = ?, research_json = ? WHERE id = 1").run(state.points, JSON.stringify({
       topics: TOPICS.map((topic) => topic.id).filter((id) => state.topics.has(id)),
       types: PRODUCT_TYPES.map((type) => type.id).filter((id) => state.types.has(id)),
+      researched: {
+        topics: TOPICS.map((topic) => topic.id).filter((id) => state.researchedTopics.has(id)),
+        types: PRODUCT_TYPES.map((type) => type.id).filter((id) => state.researchedTypes.has(id)),
+      },
     }));
   }
 
@@ -1232,7 +1309,8 @@ export class TycoonStore {
     const topic = topicById(topicId)!;
     const devDays = Number(row.dev_days);
     const progress = Math.min(100, Math.round((devDays * 100) / type.devDays));
-    const staffIds = parseStaffSnapshot(row.staff_json).map((person) => person.id);
+    const snapshot = parseProductSnapshot(row.staff_json);
+    const staffIds = snapshot.staff.map((person) => person.id);
     return {
       id: row.id,
       name: row.name,
@@ -1258,6 +1336,7 @@ export class TycoonStore {
       salesCents: Number(row.sales_cents),
       fans: Number(row.fans),
       researchPoints: this.productResearchPoints(row),
+      researchBonus: snapshot.researchBonus,
     };
   }
 

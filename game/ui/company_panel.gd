@@ -544,8 +544,25 @@ func _topic_in_season(topic_id: String) -> bool:
 
 func _product_shortcut() -> void:
 	if _tycoon().is_empty(): return
+	_journey_research_line()
 	var button := _button("New Product", func() -> void: present("product"), false, true, null, "secondary")
 	button.name = "NewProduct"
+
+func _journey_research_line() -> void:
+	var tycoon := _tycoon()
+	var developing: Dictionary = tycoon.get("developing", {}) if tycoon.get("developing") is Dictionary else {}
+	if not developing.is_empty():
+		_show_research_fit(developing, "ResearchFitJourney")
+		return
+	var history: Array = tycoon.get("history", []) as Array
+	if not history.is_empty() and history[0] is Dictionary:
+		_show_research_fit(history[0] as Dictionary, "ResearchFitJourney")
+
+func _show_research_fit(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var bonus := int(product.get("researchBonus", 0))
+	if bonus <= 0: return
+	var line := _label("Research bonus +%d fit" % bonus, false, parent, "action")
+	line.name = node_name
 
 func _train_staff() -> void:
 	var tycoon := _tycoon()
@@ -773,6 +790,10 @@ func _product_picker(tycoon: Dictionary) -> void:
 	var fit := _pair_fit(_topic_id, _type_id)
 	var fit_label := _label("Fit · %s. %s" % [_fit_word(fit), _fit_hint(fit)], false, null, "action")
 	fit_label.name = "ProductFit"
+	var research_bonus := _pair_research_bonus(_topic_id, _type_id)
+	if research_bonus > 0:
+		var bonus_label := _label("Research bonus: +%d fit" % research_bonus, false, null, "action")
+		bonus_label.name = "ResearchFitBonus"
 	_label("On the build", true)
 	var staff: Array = tycoon.get("staff", []) as Array
 	for item: Variant in staff:
@@ -799,6 +820,7 @@ func _product_progress(product: Dictionary) -> void:
 	var dev_days := int(product.get("devDays", 0))
 	var ready := bool(product.get("ready", false))
 	_heading(str(product.get("name", "Product")), "Fit · %s" % _fit_word(str(product.get("fit", ""))))
+	_show_research_fit(product, "ResearchFitJourney")
 	var progress := _label("Ready to ship" if ready else "Building · day %d of %d" % [dev_days, required], false, null, "action")
 	progress.name = "ProductProgress"
 	_label("Design %d · Tech %d · Hype %d" % [int(product.get("design", 0)), int(product.get("tech", 0)), int(product.get("hype", 0))], false, null, "meta")
@@ -860,6 +882,7 @@ func _product_history(tycoon: Dictionary) -> void:
 		var product := item as Dictionary
 		var review: Dictionary = product.get("review", {}) if product.get("review") is Dictionary else {}
 		_label("%s · %d/10 · $%s · +%d fans" % [product.get("name", "Product"), int(review.get("score", 0)), _money(int(product.get("salesCents", 0))), int(product.get("fans", 0))], false, card)
+		_show_research_fit(product, "ResearchFitJourney", card)
 
 func _released_focus() -> Dictionary:
 	var history: Array = _tycoon().get("history", []) as Array
@@ -905,6 +928,14 @@ func _pair_fit(topic_id: String, type_id: String) -> String:
 		if str(row.get("topicId", "")) == topic_id and str(row.get("typeId", "")) == type_id:
 			return str(row.get("fit", ""))
 	return ""
+
+func _pair_research_bonus(topic_id: String, type_id: String) -> int:
+	for item: Variant in _tycoon().get("fits", []) as Array:
+		if not item is Dictionary: continue
+		var row := item as Dictionary
+		if str(row.get("topicId", "")) == topic_id and str(row.get("typeId", "")) == type_id:
+			return int(row.get("researchBonus", 0))
+	return 0
 
 func _fit_word(fit: String) -> String:
 	match fit:

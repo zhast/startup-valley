@@ -9,7 +9,7 @@ The rules in `harness/src/tycoon.ts` are authoritative. This document matches th
 1. **Offline.** A new company ships a product with no API key and no network. Providers stay optional, and only on chapter work orders and chat.
 2. **The pairing is the decision.** A topic and a product type fit together at Great, Good, Okay, or Bad, in the Game Dev Tycoon way. A bad pairing can still ship. It sells worse.
 3. **Days, not a progress bar you click.** Development and sales move when the office day ends. The room stays the cozy Stardew-style office already in the game.
-4. **Deterministic.** Reviews and sales are pure functions of the company seed, the product id, the fit, the points, and reputation. The same save replays the same launch.
+4. **Deterministic.** Reviews and sales are pure functions of the company seed, the product id, the fit, the points, the research bonus stored on the product, and reputation. The same save replays the same launch.
 5. **One product on the bench.** A second idea waits until the first one ships. A shipped product can still be selling while the next one starts.
 
 ## Core loop
@@ -17,7 +17,7 @@ The rules in `harness/src/tycoon.ts` are authoritative. This document matches th
 1. From Company Journey, choose **New Product**.
 2. Pick a topic and a product type. The panel shows the fit.
 3. The founder is always on the build. Hired teammates can join.
-4. **Start development.** The product stores the fit and the staff snapshot.
+4. **Start development.** The product stores the fit, the staff snapshot, and the research bonus.
 5. **End day + save** once for each office day of work. The team adds design, tech, and hype. Progress is `dev days / days required`.
 6. When the required days are done, **Release**. Four reviewers score it from 1 to 10. Launch-day sales pay game cash and fans immediately.
 7. The next three office days keep selling, once each, when the day ends. The release day does not sell twice.
@@ -70,7 +70,7 @@ Each type weights those three stats and has a price:
 | Software Tool | 4 | $39 | 1 | 3 | 1 |
 | Newsletter | 2 | $9 | 1 | 1 | 3 |
 
-The ideal for a stat is `days required × 4`. Matching the ideal is full credit. A little extra holds the credit. A large pile of one stat dulls it. Quality is the weighted blend. Fit scales that quality. The base score maps the result onto 1–10.
+The ideal for a stat is `days required × 4`. Matching the ideal is full credit. A little extra holds the credit. A large pile of one stat dulls it. Quality is the weighted blend. Fit scales that quality. A researched topic or type adds 6 to that fit's numerator, up to 12, from the bonus stored when development started. The base score maps the result onto 1–10.
 
 Four reviewers then each move that base by −1, 0, or +1. The jitter comes from the company seed and the product id. Scores clamp to 1–10. The headline is the rounded mean, clamped again. Blurbs follow the headline band: 8–10 high, 5–7 mid, 1–4 low. The review is stored on the product, so a later formula change does not rewrite a shipped score.
 
@@ -114,7 +114,13 @@ Earning is deterministic:
 
 `tycoon.research` takes `{kind: "topic"|"type", id}`. Unknown ids, an already unlocked id, and a short balance fail with a clear error and spend nothing. `tycoon.start` rejects a locked topic or type and names it.
 
-Older saves that predate this column load with every topic and type unlocked and 0 points, so an existing company does not lose a pairing. A fresh database gets the starter catalog. Reopening a save does not reset progress. The unlock line ("Unlocked Sneakers. −4 RP") shows only on that office day.
+A topic or type counts as researched only when the player buys it with `tycoon.research`. Starter topics and types are unlocked, and they are not researched. A legacy save that receives the full catalog for free is not researched either. `research_json` stores that list as `researched: {topics, types}`. `spendResearch` writes it. A save with no `researched` field has nothing researched, and it still loads.
+
+Each researched part the product uses adds 6 to the fit numerator inside `baseScore`. The bonus is 0, 6, or 12. Development stores it on the product, in `staff_json` as `{staff, researchBonus}`. Reviews use the stored number. Later research does not change a product already on the bench. An older row that is only a staff array scores as 0. Crypto Alpha × Newsletter stays at 0, so the first launch is still $207 and 5 fans.
+
+The New Product picker shows "Research bonus: +6 fit" on the chosen pair when that bonus is above 0, and nothing when it is 0. Company Journey shows "Research bonus +6 fit" on the product in development, or on the latest released product when nothing is on the bench. The same line sits on that product's card. Hire stays the one primary action.
+
+Older saves that predate the research column load with every topic and type unlocked and 0 points, so an existing company does not lose a pairing. Those free unlocks are not researched. A fresh database gets the starter catalog. Reopening a save does not reset progress. The unlock line ("Unlocked Sneakers. −4 RP") shows only on that office day.
 
 Company Journey lists locked items on a Research card under New Product: the balance, the day's unlock line, and one secondary button per locked item ("Research Sneakers · 4 RP"). The button is disabled when the balance is short. The card hides once everything is unlocked. The product picker still lists locked choices, disabled, with "· locked". The release screen shows "+N research points".
 
@@ -223,11 +229,11 @@ Shelf jokes stay in the reviewer blurbs (checkout links, lurkers, margins, welco
 
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, the upgrades shop, the season calendar, and office growth inside the current room. The entries are **New Product**, **Train staff**, **Research**, **Upgrades**, **Office**, and **Season** on Company Journey.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, and office growth inside the current room. The entries are **New Product**, **Train staff**, **Research**, **Upgrades**, **Office**, and **Season** on Company Journey.
 
 Next slice:
 
-1. **Research fit bonus.** A small fit bonus from research is still unbuilt. It is not part of the season calendar or the office expansion.
+1. **Launch price.** The catalog price stays the default, so the first newsletter still pays the same cash. At release the player can nudge the price up or down. A higher price sells fewer units. A lower price sells more. The choice is stored on the product.
 
 Later art ask: a second room. Office growth shipped as spare desks on the current floor (`compact_desk` and `shared_workbench`, already bound). There is no second-room architecture art, so that room waits.
 

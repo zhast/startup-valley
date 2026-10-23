@@ -388,6 +388,8 @@ test("older saves that predate research load with everything unlocked", async ()
   assert.ok(view.upgrades.every((item) => item.owned === false));
   restored.tycoon.start("sneakers", "software", []);
   assert.equal(restored.tycoon.view().developing?.name, "Sneakers Software Tool");
+  assert.equal(restored.tycoon.view().developing?.researchBonus, 0);
+  assert.ok(restored.tycoon.view().fits.every((fit) => fit.researchBonus === 0));
   restored.close();
 });
 
@@ -1147,4 +1149,84 @@ test("the Open Floor dev bonus is flat, stacks with upgrades, and skips training
   assert.equal(first?.design, 12, "four accruing days add +1, and the polish day after that adds none");
   assert.equal(first?.tech, 12);
   assert.equal(first?.hype, 8);
+});
+
+test("research fit bonus counts only parts bought with research points", async () => {
+  const starter = await setup();
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  assert.ok(starter.db.tycoon.view().fits.every((fit) => fit.researchBonus === 0));
+  starter.db.tycoon.start("crypto", "newsletter", []);
+  assert.equal(starter.db.tycoon.view().developing?.researchBonus, 0);
+  starter.db.endDay(1);
+  starter.db.endDay(2);
+  starter.db.tycoon.release("p1");
+  const launch = starter.db.tycoon.view().history[0];
+  assert.equal(launch?.researchBonus, 0);
+  assert.equal(launch?.salesCents, 20700);
+  assert.equal(launch?.fans, 5);
+
+  starter.db.journey.db.prepare("UPDATE tycoon_meta SET research_points = research_points + 20 WHERE id = 1").run();
+  starter.db.tycoon.research("topic", "sneakers");
+  const view = starter.db.tycoon.view();
+  assert.equal(view.fits.find((fit) => fit.topicId === "sneakers" && fit.typeId === "newsletter")?.researchBonus, 6);
+  assert.equal(view.fits.find((fit) => fit.topicId === "crypto" && fit.typeId === "newsletter")?.researchBonus, 0);
+  starter.db.tycoon.start("sneakers", "newsletter", []);
+  starter.db.endDay(3);
+  starter.db.endDay(4);
+  const built = starter.db.tycoon.view().developing;
+  assert.ok(built);
+  assert.equal(built.researchBonus, 6);
+  const earned = { design: built.design, tech: built.tech, hype: built.hype };
+  assert.ok(baseScore(earned, "sneakers", "newsletter", 6) >= baseScore(earned, "sneakers", "newsletter", 0));
+  const picked = { design: 5, tech: 5, hype: 6 };
+  assert.ok(baseScore(picked, "sneakers", "newsletter", 6) > baseScore(picked, "sneakers", "newsletter", 0));
+  const snapshot = () => JSON.parse(String((starter.db.journey.db.prepare("SELECT staff_json FROM tycoon_products WHERE id = 'p2'").get() as { staff_json: string }).staff_json)) as { researchBonus?: number };
+  assert.equal(snapshot().researchBonus, 6);
+
+  starter.db.tycoon.research("type", "coaching");
+  assert.equal(starter.db.tycoon.view().developing?.researchBonus, 6);
+  assert.equal(starter.db.tycoon.view().fits.find((fit) => fit.topicId === "sneakers" && fit.typeId === "coaching")?.researchBonus, 12);
+  assert.equal(snapshot().researchBonus, 6);
+
+  starter.db.tycoon.release("p2");
+  starter.db.tycoon.research("topic", "dating");
+  starter.db.tycoon.start("dating", "coaching", []);
+  assert.equal(starter.db.tycoon.view().developing?.researchBonus, 12);
+  starter.db.endDay(5);
+  starter.db.endDay(6);
+  starter.db.endDay(7);
+  const pair = starter.db.tycoon.view().developing;
+  assert.ok(pair);
+  assert.equal(pair.researchBonus, 12);
+  const pairPoints = { design: pair.design, tech: pair.tech, hype: pair.hype };
+  assert.ok(baseScore(pairPoints, "dating", "coaching", 12) > baseScore(pairPoints, "dating", "coaching", 0));
+  starter.db.tycoon.release("p3");
+  const shipped = starter.db.tycoon.view().history[0];
+  const reviewInput = {
+    seed: starter.db.tycoon.view().seed,
+    productId: "p3",
+    topicId: "dating" as const,
+    typeId: "coaching" as const,
+    ...pairPoints,
+  };
+  assert.deepEqual(shipped?.review, reviewProduct({ ...reviewInput, researchBonus: 12 }));
+  assert.notDeepEqual(shipped?.review, reviewProduct({ ...reviewInput, researchBonus: 0 }));
+  assert.equal(validate(starter.db.journey.state()), true, JSON.stringify(validate.errors));
+  starter.db.close();
+
+  const legacy = await setup();
+  legacy.db.journey.db.prepare("UPDATE tycoon_meta SET research_json = ? WHERE id = 1").run(JSON.stringify({
+    topics: ["fitness", "trading", "cooking", "gaming", "study_notes", "crypto", "sneakers"],
+    types: ["course", "community", "template_pack", "newsletter", "coaching"],
+  }));
+  assert.ok(legacy.db.tycoon.view().fits.every((fit) => fit.researchBonus === 0));
+  legacy.db.tycoon.start("sneakers", "coaching", []);
+  assert.equal(legacy.db.tycoon.view().developing?.researchBonus, 0);
+  assert.equal(baseScore({ design: 6, tech: 6, hype: 6 }, "sneakers", "coaching", 0), baseScore({ design: 6, tech: 6, hype: 6 }, "sneakers", "coaching"));
+  legacy.db.close();
+  const reopened = new GameDatabase(join(legacy.root, "game.sqlite"), join(legacy.root, "company-project"));
+  assert.equal(reopened.tycoon.view().developing?.researchBonus, 0);
+  assert.ok(reopened.tycoon.view().fits.every((fit) => fit.researchBonus === 0));
+  reopened.close();
 });
