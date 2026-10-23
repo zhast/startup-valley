@@ -41,6 +41,13 @@ function numberParameter(request: ProtocolRequest, name: string): number {
   return value;
 }
 
+function optionalIntegerParameter(request: ProtocolRequest, name: string): number | undefined {
+  const value = request.params[name];
+  if (value === undefined) return undefined;
+  if (typeof value !== "number" || !Number.isInteger(value)) throw new Error(`Parameter ${name} must be an integer`);
+  return value;
+}
+
 function write(message: ProtocolResponse | ProtocolEvent): void {
   process.stdout.write(`${JSON.stringify(message)}\n`);
 }
@@ -112,6 +119,7 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
           stringParameter(request, "topicId", 64),
           stringParameter(request, "typeId", 64),
           staffParameter(request),
+          optionalIntegerParameter(request, "pricePercent"),
         ),
         dailySpend: database.dailySpend(),
       };

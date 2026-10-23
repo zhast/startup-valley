@@ -20,6 +20,12 @@ export const RESEARCH_COST = { topic: 4, type: 6 } as const;
 export const RESEARCH_FIT_BONUS = 6;
 /** Percent added to the type price by the checkout upgrade. Half rounds away from zero. */
 export const PRICE_BOOST_PERCENT = 10;
+/** Catalog is 100. A nudge moves price and units the opposite way by 20. */
+export const LAUNCH_PRICES = [
+  { percent: 80, unitPercent: 120, label: "−20%" },
+  { percent: 100, unitPercent: 100, label: "Catalog" },
+  { percent: 120, unitPercent: 80, label: "+20%" },
+] as const;
 /** Stardew-shaped office calendar. Derived from the saved day. It does not replace the clock. */
 export const SEASON_LENGTH_DAYS = 28;
 export const YEAR_LENGTH_DAYS = 112;
@@ -90,6 +96,8 @@ export type UpgradeId = (typeof UPGRADES)[number]["id"];
 export type UpgradeKind = (typeof UPGRADES)[number]["kind"];
 export type Fit = "great" | "good" | "okay" | "bad";
 export type SeasonId = "spring" | "summer" | "fall" | "winter";
+export type LaunchPricePercent = (typeof LAUNCH_PRICES)[number]["percent"];
+export type LaunchPriceStep = (typeof LAUNCH_PRICES)[number];
 
 /** New companies. Crypto Alpha × Newsletter stays in this set. */
 const STARTER_TOPIC_IDS: readonly TopicId[] = ["fitness", "trading", "cooking", "gaming", "study_notes", "crypto"];
@@ -239,6 +247,10 @@ export interface TycoonProductView {
   researchPoints: number;
   /** Fit numerator bonus snapshotted when development started. 0, 6, or 12. */
   researchBonus: number;
+  /** Launch price as a percent of the catalog. Omitted rows read as 100. */
+  pricePercent: LaunchPricePercent;
+  /** Chosen unit price in cents, before the checkout boost. */
+  priceCents: number;
 }
 
 export interface TycoonUpgradeView {
@@ -307,6 +319,7 @@ export interface TycoonSnapshot {
   upgrades: TycoonUpgradeView[];
   calendar: TycoonCalendar;
   office: TycoonOffice;
+  priceSteps: LaunchPriceStep[];
   developing: TycoonProductView | null;
   history: TycoonProductView[];
 }
@@ -404,6 +417,41 @@ export function boostedPriceCents(priceCents: number, boostPercent: number): num
   return Math.round((priceCents * (100 + boostPercent)) / 100);
 }
 
+export function isLaunchPricePercent(value: number): value is LaunchPricePercent {
+  return LAUNCH_PRICES.some((step) => step.percent === value);
+}
+
+/** Unknown or omitted values are catalog. */
+export function normalizeLaunchPricePercent(value: unknown): LaunchPricePercent {
+  const amount = Number(value);
+  return isLaunchPricePercent(amount) ? amount : 100;
+}
+
+export function launchUnitPercent(pricePercent: number): number {
+  const percent = normalizeLaunchPricePercent(pricePercent);
+  const step = LAUNCH_PRICES.find((item) => item.percent === percent);
+  return step?.unitPercent ?? 100;
+}
+
+/** Catalog times the launch percent. Catalog (100) returns the catalog cents unchanged. */
+export function launchPriceCents(catalogCents: number, pricePercent: number): number {
+  const percent = normalizeLaunchPricePercent(pricePercent);
+  if (percent === 100) return catalogCents;
+  return Math.round((catalogCents * percent) / 100);
+}
+
+/** Units move the opposite way from the price. Catalog leaves units unchanged. Always at least 1. */
+export function applyLaunchPriceUnits(units: number, pricePercent: number): number {
+  const unitPercent = launchUnitPercent(pricePercent);
+  if (unitPercent === 100) return Math.max(1, units);
+  return Math.max(1, Math.round((units * unitPercent) / 100));
+}
+
+function asLaunchPrice(value: number): LaunchPricePercent {
+  if (isLaunchPricePercent(value)) return value;
+  throw new Error("Pick −20%, catalog, or +20%.");
+}
+
 export function releaseResearchPoints(score: number): number {
   return Math.floor(Math.max(0, score) / 2);
 }
@@ -494,14 +542,19 @@ function parseStaffList(parsed: unknown): StaffSnapshot[] {
   return result;
 }
 
-/** Older rows are a staff array and count as no bonus. New rows are `{staff, researchBonus}`. */
-function parseProductSnapshot(raw: string): { staff: StaffSnapshot[]; researchBonus: number } {
+/** Older rows are a staff array and count as catalog price, no bonus. New rows add `{researchBonus, pricePercent}`. */
+function parseProductSnapshot(raw: string): { staff: StaffSnapshot[]; researchBonus: number; pricePercent: LaunchPricePercent } {
+  const empty = { staff: [] as StaffSnapshot[], researchBonus: 0, pricePercent: 100 as LaunchPricePercent };
   let parsed: unknown;
-  try { parsed = JSON.parse(raw); } catch { return { staff: [], researchBonus: 0 }; }
-  if (Array.isArray(parsed)) return { staff: parseStaffList(parsed), researchBonus: 0 };
-  if (!parsed || typeof parsed !== "object" || !("staff" in parsed)) return { staff: [], researchBonus: 0 };
-  const body = parsed as { staff?: unknown; researchBonus?: unknown };
-  return { staff: parseStaffList(body.staff), researchBonus: normalizeResearchBonus(Number(body.researchBonus)) };
+  try { parsed = JSON.parse(raw); } catch { return empty; }
+  if (Array.isArray(parsed)) return { staff: parseStaffList(parsed), researchBonus: 0, pricePercent: 100 };
+  if (!parsed || typeof parsed !== "object" || !("staff" in parsed)) return empty;
+  const body = parsed as { staff?: unknown; researchBonus?: unknown; pricePercent?: unknown };
+  return {
+    staff: parseStaffList(body.staff),
+    researchBonus: normalizeResearchBonus(Number(body.researchBonus)),
+    pricePercent: normalizeLaunchPricePercent(body.pricePercent),
+  };
 }
 
 function parseStaffSnapshot(raw: string): StaffSnapshot[] {
@@ -589,6 +642,8 @@ export function salesForDay(input: {
   unitBoostPercent?: number;
   /** Extra fans from the event on this office day. Omitted leaves the base formula. */
   bonusFans?: number;
+  /** Launch price as a percent of the catalog. Omitted is catalog (100). */
+  pricePercent?: number;
 }): TycoonSales {
   const curve = SALES_CURVE[input.dayIndex];
   const type = typeById(input.typeId);
@@ -596,6 +651,8 @@ export function salesForDay(input: {
   const swing = (mixSeed(input.seed, input.productId, "sales", input.dayIndex) % 21) - 10;
   const baseUnits = FIT_UNITS[input.fit] + Math.floor((input.score * 3) / 2) + Math.floor(input.reputation / 10);
   let units = Math.max(1, Math.round((baseUnits * curve * (100 + swing)) / 10000));
+  const pricePercent = normalizeLaunchPricePercent(input.pricePercent);
+  units = applyLaunchPriceUnits(units, pricePercent);
   const unitBoost = input.unitBoostPercent ?? 0;
   if (Number.isInteger(unitBoost) && unitBoost > 0) {
     units = Math.max(1, Math.round((units * (100 + unitBoost)) / 100));
@@ -603,7 +660,8 @@ export function salesForDay(input: {
   const fanPermille = input.score >= 8 ? 400 : input.score >= 5 ? 200 : 100;
   const bonusFans = Number.isInteger(input.bonusFans) && (input.bonusFans ?? 0) > 0 ? (input.bonusFans as number) : 0;
   const fans = Math.max(1, Math.round((units * fanPermille) / 1000)) + bonusFans;
-  const price = boostedPriceCents(type.priceCents, input.priceBoostPercent ?? 0);
+  const chosen = launchPriceCents(type.priceCents, pricePercent);
+  const price = boostedPriceCents(chosen, input.priceBoostPercent ?? 0);
   return { units, cents: units * price, fans };
 }
 
@@ -774,12 +832,13 @@ export class TycoonStore {
       }),
       calendar: calendarForDay(day),
       office: this.officeView(this.officeLevel(), hired.size, cash),
+      priceSteps: [...LAUNCH_PRICES],
       developing: developing ? this.toView(developing) : null,
       history,
     };
   }
 
-  start(topicValue: string, typeValue: string, requestedStaff: readonly string[]): ReturnType<JourneyStore["state"]> {
+  start(topicValue: string, typeValue: string, requestedStaff: readonly string[], pricePercentValue?: number): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
       if (this.developingRow()) throw new Error("A product is already on the bench. Ship it or keep building.");
       const topicId = asTopic(topicValue);
@@ -789,6 +848,7 @@ export class TycoonStore {
       const type = typeById(typeId);
       if (!topic || !research.topics.has(topicId)) throw new Error(`${topic?.name ?? "That topic"} is locked. Research it first.`);
       if (!type || !research.types.has(typeId)) throw new Error(`${type?.name ?? "That product type"} is locked. Research it first.`);
+      const pricePercent = pricePercentValue === undefined ? 100 : asLaunchPrice(pricePercentValue);
       const staffIds = this.assignedStaff(requestedStaff);
       const stats = this.loadStaffState();
       const researchBonus = researchFitBonus(research.researchedTopics.has(topicId), research.researchedTypes.has(typeId));
@@ -797,6 +857,7 @@ export class TycoonStore {
           id, design: stats[id].design, tech: stats[id].tech, hype: stats[id].hype,
         })),
         researchBonus,
+        pricePercent,
       };
       const count = Number((this.db.prepare("SELECT COUNT(*) AS n FROM tycoon_products").get() as { n: number }).n);
       const id = `p${count + 1}`;
@@ -1011,6 +1072,7 @@ export class TycoonStore {
     const reputation = Number((this.db.prepare("SELECT reputation FROM company_state WHERE id = 1").get() as { reputation: number }).reputation);
     const calendar = calendarForDay(day);
     const topicId = asTopic(row.topic_id);
+    const stored = parseProductSnapshot(row.staff_json);
     const payout = salesForDay({
       seed: this.seed(),
       productId: row.id,
@@ -1019,6 +1081,7 @@ export class TycoonStore {
       score: review.score,
       dayIndex: applied,
       reputation,
+      pricePercent: stored.pricePercent,
       priceBoostPercent: this.priceBoostPercent(),
       unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === topicId) ? SEASON_UNIT_BOOST_PERCENT : 0,
       bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
@@ -1337,6 +1400,8 @@ export class TycoonStore {
       fans: Number(row.fans),
       researchPoints: this.productResearchPoints(row),
       researchBonus: snapshot.researchBonus,
+      pricePercent: snapshot.pricePercent,
+      priceCents: launchPriceCents(type.priceCents, snapshot.pricePercent),
     };
   }
 

@@ -607,3 +607,16 @@ func _tycoon_secondary_actions() -> void:
 	await _present("journey", value)
 	_check(_panel.find_child("ResearchCard", true, false) == null, "Research card hides once every topic and type is unlocked")
 	_check(_panel.find_child("UpgradesCard", true, false) != null, "Upgrades stay when research is finished")
+	tycoon["priceSteps"] = [
+		{"percent": 80, "unitPercent": 120, "label": "−20%"},
+		{"percent": 100, "unitPercent": 100, "label": "Catalog"},
+		{"percent": 120, "unitPercent": 80, "label": "+20%"},
+	]
+	await _present("product", value)
+	var price_low := _panel.find_child("Price_80", true, false) as Button
+	var price_catalog := _panel.find_child("Price_100", true, false) as Button
+	var price_high := _panel.find_child("Price_120", true, false) as Button
+	_check(price_low != null and str(price_low.get_meta("cozy_variant", "")) == "secondary", "−20% price reads as secondary")
+	_check(price_catalog != null and str(price_catalog.get_meta("cozy_variant", "")) == "secondary" and price_catalog.text == "Catalog", "Catalog price reads as secondary")
+	_check(price_high != null and str(price_high.get_meta("cozy_variant", "")) == "secondary", "+20% price reads as secondary")
+	_check(_panel.find_child("PriceEffect", true, false) != null, "The picker shows the price unit-effect line")

@@ -201,6 +201,9 @@ func _run() -> void:
 	await frames(4)
 	await click(button_named("Newsletter"))
 	await frames(4)
+	var catalog_price := main.company_panel.find_child("Price_100", true, false) as Button
+	check(catalog_price != null and str(catalog_price.get_meta("cozy_variant", "")) == "secondary" and catalog_price.text == "Catalog", "Catalog price is a secondary action")
+	check(label_named("PriceEffect") != null and label_named("PriceEffect").text == "$9.00 · catalog units", "Catalog shows $9.00 · catalog units")
 	await click(button_named("Start development"))
 	await wait_until(func() -> bool: return developing().get("name", "") == "Crypto Alpha Newsletter" and not main.company_panel.busy, "Development starts on Crypto Alpha Newsletter")
 	await end_office_day()
@@ -250,8 +253,15 @@ func _run() -> void:
 	var fit_bonus := label_named("ResearchFitBonus")
 	check(fit_bonus != null and fit_bonus.text == "Research bonus: +6 fit", "Picker shows the research fit bonus")
 	await snap("16-research-fit-picker", fit_bonus)
+	var cheap := main.company_panel.find_child("Price_80", true, false) as Button
+	check(cheap != null and str(cheap.get_meta("cozy_variant", "")) == "secondary", "−20% price is a secondary action")
+	await click(cheap)
+	await frames(4)
+	var price_effect := label_named("PriceEffect")
+	check(price_effect != null and price_effect.text == "$7.20 · +20% units", "−20% shows $7.20 · +20% units")
+	await snap("18-price-picker", price_effect)
 	await click(button_named("Start development"))
-	await wait_until(func() -> bool: return developing().get("name", "") == "Sneakers Newsletter" and not main.company_panel.busy, "Sneakers Newsletter starts")
+	await wait_until(func() -> bool: return developing().get("name", "") == "Sneakers Newsletter" and int(developing().get("pricePercent", -1)) == 80 and not main.company_panel.busy, "Sneakers Newsletter starts at −20%")
 	await snap("08-sneakers-started")
 	await open_journey()
 	var journey_bonus := label_named("ResearchFitJourney")
@@ -263,7 +273,9 @@ func _run() -> void:
 	await open_product()
 	check(bool(developing().get("ready", false)), "Two office days make Sneakers Newsletter ready")
 	await click(button_named("Release"))
-	await wait_until(func() -> bool: return main.company_panel.screen == "release", "The second product opens the release card")
+	await wait_until(func() -> bool: return main.company_panel.screen == "release" and label_named("ReleasePrice") != null, "The second product opens the release card")
+	check(label_named("ReleasePrice").text == "$7.20 · +20% units", "Release shows the chosen price and unit effect")
+	await snap("19-price-released", label_named("ReleasePrice"))
 	await open_journey()
 	var waits := 0
 	while company_cash() < 25000 and waits < 4:
