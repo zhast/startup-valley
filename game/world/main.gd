@@ -574,6 +574,11 @@ func _on_clock_changed(day: int, minute_of_day: int, phase: String, speed: float
 
 func _on_journey(value: Dictionary) -> void:
 	_journey = value
+	var tycoon: Variant = value.get("tycoon", {})
+	if room != null and tycoon is Dictionary:
+		var office: Variant = (tycoon as Dictionary).get("office", {})
+		if office is Dictionary and int((office as Dictionary).get("level", 0)) > 0:
+			room.set_office_level(int((office as Dictionary).get("level", 1)))
 	company_panel.update_state(value)
 	job_panel.set_journey_state(value)
 	var company: Dictionary = value.get("company", {})
@@ -658,7 +663,7 @@ func _on_company_action(method: String, result: Dictionary) -> void:
 		"tycoon.release":
 			game_audio.play("reward")
 			company_panel.present("release")
-		"tycoon.train", "tycoon.research", "tycoon.buyUpgrade":
+		"tycoon.train", "tycoon.research", "tycoon.buyUpgrade", "tycoon.expandOffice":
 			company_panel.present("journey")
 		"day.end":
 			job_panel.close_drawer(false)

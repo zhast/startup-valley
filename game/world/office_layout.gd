@@ -26,6 +26,8 @@ var employee_decor_kits: Dictionary = {}
 # This is a worker-supplied read-only projection, never a second inventory store.
 var furnishing_inventory: Dictionary = {}
 var furnishing_bound := false
+# Story desks stay at level 1. Open Floor desks use required_office_level.
+var office_level := 1
 # Dev-only geometry fixtures can register labeled synthetic pose capabilities on
 # their own model instance. Production readiness uses actual CharacterArt data.
 var test_pose_capabilities: Dictionary = {}
@@ -260,6 +262,7 @@ func resolve_placements(hire_count: int, overrides: Dictionary = {}, include_fut
 			placements.append(resolve(raw))
 		if include_future:
 			for original: Dictionary in data.get("props", []):
+				if _office_level_of(original) > office_level: continue
 				if not furnishing_inventory.has(str(original.id)) and int(original.get("required_hires", 0)) <= hire_count:
 					var future := original.duplicate(true)
 					for kit_id: String in role_kits:
@@ -268,6 +271,7 @@ func resolve_placements(hire_count: int, overrides: Dictionary = {}, include_fut
 					placements.append(resolve(future))
 		return placements
 	for original: Dictionary in data.get("props", []):
+		if _office_level_of(original) > office_level: continue
 		if int(original.get("required_hires", 0)) > maxi(0, hire_count): continue
 		var raw := original.duplicate(true)
 		var override: Variant = overrides.get(str(raw.get("id", "")), {})
@@ -279,6 +283,9 @@ func resolve_placements(hire_count: int, overrides: Dictionary = {}, include_fut
 			raw["grid"] = override
 		placements.append(resolve(raw))
 	return placements
+
+func _office_level_of(prop: Dictionary) -> int:
+	return maxi(1, int(prop.get("required_office_level", 1)))
 
 func resolve(raw: Dictionary) -> Dictionary:
 	var placement := raw.duplicate(true)

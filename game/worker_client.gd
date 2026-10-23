@@ -192,6 +192,13 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 		"hiring.complete", "game.new":
 			_handle_response("bootstrap", "", result)
 			company_action_completed.emit(method, result)
+		"tycoon.expandOffice":
+			journey_received.emit(result.get("journey", {}))
+			var office_furnishing: Variant = result.get("furnishing")
+			if office_furnishing is Dictionary and int((office_furnishing as Dictionary).get("version", 0)) == 1:
+				furnishing_state = (office_furnishing as Dictionary).duplicate(true)
+				furnishing_received.emit(furnishing_state.duplicate(true), "")
+			company_action_completed.emit(method, result)
 		"milestone.evaluate", "milestone.complete", "milestone.override", "chapter.continue", "day.end", "tycoon.start", "tycoon.release", "tycoon.train", "tycoon.research", "tycoon.buyUpgrade":
 			journey_received.emit(result.get("journey", {}))
 			company_action_completed.emit(method, result)

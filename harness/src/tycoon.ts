@@ -64,6 +64,21 @@ export const UPGRADES = [
   { id: "checkout_page", name: "Nicer Checkout Page", blurb: "The buy button finally looks finished.", priceCents: 56_000, kind: "price", effect: "+10% price on later sales" },
 ] as const;
 
+/** Founder plus the three story hires. Desk capacity is informational and does not block a hire. */
+export const STORY_DESK_COUNT = 4;
+/** One expansion inside the current room. Tuned just above Nicer Checkout Page. */
+export const OFFICE_EXPANSION_COST_CENTS = 60_000;
+/** Hires besides the founder. Mina alone is not enough. */
+export const OFFICE_EXPANSION_HIRES = 2;
+/**
+ * Level 1 is the room the company already has. Level 2 adds two compact desks
+ * and one shared workbench, plus a flat team bonus on accruing dev days.
+ */
+export const OFFICE_LEVELS = [
+  { level: 1, name: "Garage Loft", blurb: "A checkout link and one desk by the garage door.", spareDesks: 0, design: 0, tech: 0 },
+  { level: 2, name: "Open Floor", blurb: "Spare desks for the next drop.", spareDesks: 3, design: 1, tech: 1 },
+] as const;
+
 export type TopicId = (typeof TOPICS)[number]["id"];
 export type ProductTypeId = (typeof PRODUCT_TYPES)[number]["id"];
 export type StaffId = (typeof STAFF)[number]["id"];
@@ -253,6 +268,27 @@ export interface TycoonCalendar {
   nextEvent: TycoonEventView & { season: SeasonId; dayOfSeason: number; daysUntil: number };
 }
 
+export interface TycoonOfficeDesks {
+  used: number;
+  total: number;
+}
+
+export interface TycoonOfficeNext {
+  name: string;
+  costCents: number;
+  requiredHires: number;
+  enabled: boolean;
+  reason: string;
+}
+
+export interface TycoonOffice {
+  level: number;
+  name: string;
+  blurb: string;
+  desks: TycoonOfficeDesks;
+  next: TycoonOfficeNext | null;
+}
+
 export interface TycoonSnapshot {
   seed: number;
   salesWindowDays: number;
@@ -266,6 +302,7 @@ export interface TycoonSnapshot {
   upgradeNotice: string;
   upgrades: TycoonUpgradeView[];
   calendar: TycoonCalendar;
+  office: TycoonOffice;
   developing: TycoonProductView | null;
   history: TycoonProductView[];
 }
@@ -626,7 +663,11 @@ export class TycoonStore {
   private upgradeNotice = "";
   private upgradeNoticeDay = 0;
 
-  constructor(private readonly db: DatabaseSync, private readonly journey: JourneyStore) {}
+  constructor(
+    private readonly db: DatabaseSync,
+    private readonly journey: JourneyStore,
+    private readonly onOfficeChanged: () => void = () => {},
+  ) {}
 
   view(): TycoonSnapshot {
     const hired = this.hiredIds();
@@ -694,6 +735,7 @@ export class TycoonStore {
         };
       }),
       calendar: calendarForDay(day),
+      office: this.officeView(this.officeLevel(), hired.size, cash),
       developing: developing ? this.toView(developing) : null,
       history,
     };
@@ -809,6 +851,33 @@ export class TycoonStore {
     });
   }
 
+  expandOffice(): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const current = this.officeLevel();
+      const next = OFFICE_LEVELS.find((level) => level.level === current + 1);
+      if (!next) throw new Error("The office is already as large as it gets.");
+      const hires = this.hiredIds().size;
+      if (hires < OFFICE_EXPANSION_HIRES) {
+        throw new Error(`Hire ${OFFICE_EXPANSION_HIRES} people before the ${next.name}.`);
+      }
+      if (this.cashCents() < OFFICE_EXPANSION_COST_CENTS) {
+        throw new Error(`Not enough game cash. ${next.name} costs ${wholeDollars(OFFICE_EXPANSION_COST_CENTS)}.`);
+      }
+      const day = this.day();
+      this.journey.recordCompanyChange(
+        `tycoon:office:${next.level}`,
+        day,
+        -OFFICE_EXPANSION_COST_CENTS,
+        0,
+        0,
+        `Office · ${next.name}`,
+      );
+      this.db.prepare("UPDATE tycoon_meta SET office_level = ? WHERE id = 1").run(next.level);
+      this.onOfficeChanged();
+      return this.journey.state();
+    });
+  }
+
   release(productId: string): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
       const row = this.row(productId);
@@ -866,10 +935,11 @@ export class TycoonStore {
     const personal = accrue ? snapshotPoints(working) : { design: 0, tech: 0, hype: 0 };
     const bonus = accrue ? this.pointBonus() : { design: 0, tech: 0, hype: 0 };
     const people = accrue ? working.length : 0;
+    const office = accrue && people > 0 ? this.officeBonus() : { design: 0, tech: 0, hype: 0 };
     const gain = {
-      design: personal.design + bonus.design * people,
-      tech: personal.tech + bonus.tech * people,
-      hype: personal.hype + bonus.hype * people,
+      design: personal.design + bonus.design * people + office.design,
+      tech: personal.tech + bonus.tech * people + office.tech,
+      hype: personal.hype + bonus.hype * people + office.hype,
     };
     const devDays = Number(row.dev_days) + 1;
     this.db.prepare(`
@@ -972,6 +1042,42 @@ export class TycoonStore {
       this.upgradeNotice = "";
       this.upgradeNoticeDay = 0;
     }
+  }
+
+  private officeView(level: number, hires: number, cash: number): TycoonOffice {
+    const current = OFFICE_LEVELS.find((entry) => entry.level === level) ?? OFFICE_LEVELS[0];
+    const next = OFFICE_LEVELS.find((entry) => entry.level === current.level + 1);
+    const shortHires = hires < OFFICE_EXPANSION_HIRES;
+    const shortCash = cash < OFFICE_EXPANSION_COST_CENTS;
+    return {
+      level: current.level,
+      name: current.name,
+      blurb: current.blurb,
+      desks: { used: 1 + hires, total: STORY_DESK_COUNT + current.spareDesks },
+      next: next ? {
+        name: next.name,
+        costCents: OFFICE_EXPANSION_COST_CENTS,
+        requiredHires: OFFICE_EXPANSION_HIRES,
+        enabled: !shortHires && !shortCash,
+        reason: shortHires
+          ? `Hire ${OFFICE_EXPANSION_HIRES} people first.`
+          : shortCash
+            ? `Need ${wholeDollars(OFFICE_EXPANSION_COST_CENTS)} game cash.`
+            : "",
+      } : null,
+    };
+  }
+
+  /** Flat team bonus. Level 1 is zero. It is not multiplied by headcount. */
+  private officeBonus(): CraftPoints {
+    const level = OFFICE_LEVELS.find((entry) => entry.level === this.officeLevel()) ?? OFFICE_LEVELS[0];
+    return { design: level.design, tech: level.tech, hype: 0 };
+  }
+
+  private officeLevel(): number {
+    const row = this.db.prepare("SELECT office_level FROM tycoon_meta WHERE id = 1").get() as { office_level?: number } | undefined;
+    const level = Number(row?.office_level ?? 1);
+    return OFFICE_LEVELS.some((entry) => entry.level === level) ? level : 1;
   }
 
   private pointBonus(): CraftPoints {

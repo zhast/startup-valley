@@ -185,7 +185,7 @@ export type ProtocolMethod =
   | "hiring.complete" | "milestone.evaluate" | "milestone.complete" | "milestone.override"
   | "chapter.continue"
   | "day.end" | "game.save" | "game.new"
-  | "tycoon.start" | "tycoon.release" | "tycoon.train" | "tycoon.research" | "tycoon.buyUpgrade";
+  | "tycoon.start" | "tycoon.release" | "tycoon.train" | "tycoon.research" | "tycoon.buyUpgrade" | "tycoon.expandOffice";
 
 export interface ProtocolRequest {
   kind: "request";

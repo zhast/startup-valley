@@ -1,0 +1,1 @@
+ALTER TABLE tycoon_meta ADD COLUMN office_level INTEGER NOT NULL DEFAULT 1;

@@ -24,7 +24,7 @@ export interface FurnishingUpdate {
   operationId: string; expectedRevision: number; placements: FurniturePlacements;
   actorCells?: FurnitureActor[];
 }
-interface Prop { id: string; kind: string; grid: Cell; facing: Facing; required_hires: number; owner_id?: string }
+interface Prop { id: string; kind: string; grid: Cell; facing: Facing; required_hires: number; owner_id?: string; required_office_level?: number }
 type Rect = [number, number, number, number];
 interface Room {
   tile_size: number; width: number; height: number;
@@ -253,6 +253,15 @@ export class FurnishingStore {
       return base;
     }
   }
+  private officeLevel(): number {
+    try {
+      const row = this.db.prepare("SELECT office_level FROM tycoon_meta WHERE id = 1").get() as { office_level?: number } | undefined;
+      const level = Number(row?.office_level ?? 1);
+      return Number.isInteger(level) && level > 0 ? level : 1;
+    } catch {
+      return 1;
+    }
+  }
   private syncEmployeeDesks(placements: FurniturePlacements, inventory: FurnitureItem[]): void {
     const save = this.db.prepare("UPDATE employees SET desk_x=?,desk_y=? WHERE id=?");
     for (const item of inventory) {
@@ -263,13 +272,17 @@ export class FurnishingStore {
   /** Caller may use this inside the hiring transaction. */
   sync(): void {
     const hired = this.db.prepare("SELECT id FROM employees WHERE employment_status='hired'").all().map((row) => String(row.id));
+    const officeLevel = this.officeLevel();
     const insert = this.db.prepare("INSERT OR IGNORE INTO furnishing_inventory(id,kind,owner_id,essential,grant_id,role_kit) VALUES (?,?,?,?,?,?)");
     let grants = 0;
     const addedStations: FurniturePlacements = {};
     for (const prop of this.geometry.room.props) {
+      const neededLevel = prop.required_office_level ?? 1;
+      if (neededLevel > officeLevel) continue;
       if (prop.required_hires > hired.length || (prop.owner_id && prop.owner_id !== "founder" && !hired.includes(prop.owner_id))) continue;
       const owner = prop.owner_id ?? "";
-      const added = Number(insert.run(prop.id, prop.kind, owner, 1, owner !== "" && owner !== "founder" ? `hire:${owner}` : `office-stage:${prop.required_hires}`, this.geometry.employeeRoleKits[owner] ?? "").changes);
+      const grant = neededLevel > 1 ? `office-level:${neededLevel}` : owner !== "" && owner !== "founder" ? `hire:${owner}` : `office-stage:${prop.required_hires}`;
+      const added = Number(insert.run(prop.id, prop.kind, owner, 1, grant, this.geometry.employeeRoleKits[owner] ?? "").changes);
       grants += added;
       if (added) addedStations[prop.id] = { grid: prop.grid, facing: prop.facing };
     }

@@ -5,6 +5,7 @@ var id: String = ""
 var kind: String = ""
 var grid: Vector2i = Vector2i.ZERO
 var required_hires: int = 0
+var required_office_level: int = 1
 var owner_id: String = ""
 
 static func from_json(value: Dictionary) -> OfficePropPlacement:
@@ -12,6 +13,7 @@ static func from_json(value: Dictionary) -> OfficePropPlacement:
 	placement.id = str(value.get("id", ""))
 	placement.kind = str(value.get("kind", ""))
 	placement.required_hires = maxi(0, int(value.get("required_hires", 0)))
+	placement.required_office_level = maxi(1, int(value.get("required_office_level", 1)))
 	placement.owner_id = str(value.get("owner_id", ""))
 	var grid_value: Variant = value.get("grid", [])
 	if grid_value is Array:

@@ -17,6 +17,28 @@ func check(ok: bool, message: String) -> void:
 		failures.append(message)
 		push_error(message)
 
+func _spare_kind_waits(kind: String, expected: int) -> bool:
+	var layout := OfficeLayout.new()
+	if not layout.load_files("res://data/office_layout.json"): return false
+	var gated := 0
+	for prop: Variant in layout.data.get("props", []):
+		if not prop is Dictionary: continue
+		var row := prop as Dictionary
+		if str(row.get("kind", "")) != kind or not str(row.get("id", "")).begins_with("spare-"): continue
+		if int(row.get("required_office_level", 1)) < 2 or str(row.get("facing", "")) != "south": return false
+		gated += 1
+	if gated != expected: return false
+	layout.office_level = 1
+	for placement: Dictionary in layout.resolve_placements(4):
+		if str(placement.get("kind", "")) == kind and str(placement.get("id", "")).begins_with("spare-"):
+			return false
+	layout.office_level = 2
+	var seen := 0
+	for placement: Dictionary in layout.resolve_placements(0):
+		if str(placement.get("kind", "")) == kind and str(placement.get("id", "")).begins_with("spare-"):
+			seen += 1
+	return seen == expected
+
 static func expected_occupied(side: String) -> Array:
 	return {
 		"north": [[-1, 0], [0, 0]],
@@ -69,7 +91,7 @@ func run() -> void:
 		var shipped: Dictionary = compact_entry["facing_profiles"][side_name]
 		compact_passive = compact_passive and str(shipped.get("profile_kind", "")) == "decorative" and str(shipped.get("status", "")) == "runtime_ready"
 	check(compact_passive, "compact_desk is passive décor in the furnishing catalogue")
-	check(FileAccess.get_file_as_string("res://data/office_layout.json").find("compact_desk") == -1, "Candidate has no default-layout binding")
+	check(_spare_kind_waits("compact_desk", 2), "compact_desk stays off the floor until the office expands")
 	var source := FileAccess.get_file_as_string("res://tools/compact_desk_geometry.gd")
 	for forbidden: String in ["rotate_", ".rotated(", "flip_x(", "flip_y(", "scale =", "transform ="]:
 		check(source.find(forbidden) == -1, "Geometry source contains no raster transform: " + forbidden)

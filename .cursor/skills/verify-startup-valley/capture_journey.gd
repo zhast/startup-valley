@@ -186,6 +186,12 @@ func _run() -> void:
 	main.company_panel._scroll.scroll_vertical = 0
 	await snap("01-journey")
 	await snap("02-research-card", main.company_panel.find_child("ResearchCard", true, false) as Control)
+	var expand := button_named("Expand office")
+	check(expand != null and expand.disabled and expand.text == "Expand office", "Expand office starts disabled")
+	check(label_named("OfficeName") != null and label_named("OfficeName").text == "Garage Loft", "The fresh office is the Garage Loft")
+	check(label_named("OfficeDesks") != null and label_named("OfficeDesks").text == "Desks: 1/4", "The fresh desk line is 1/4")
+	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside the Office card")
+	await snap("13-office-card", main.company_panel.find_child("OfficeCard", true, false) as Control)
 	await open_product()
 	check(not main.job_panel._connection_panel.visible, "Connect stays closed on the product picker")
 	var sneakers_locked := button_named("Sneakers")
@@ -267,7 +273,102 @@ func _run() -> void:
 	check(label_named("Owned_standing_desk") != null, "The owned line names the desk")
 	check(button_named("Buy Oak Standing Desk") == null, "The desk buy button hides once it is owned")
 	check(not main.job_panel._connection_panel.visible, "The loop never opens Connect")
+	await _office_expansion_proof()
 	_finish()
+
+func release_company() -> void:
+	if main == null:
+		return
+	var leaving: Node = main
+	main = null
+	leaving.queue_free()
+	var closed := false
+	for _index: int in range(40):
+		await frames(1)
+		if not is_instance_valid(leaving):
+			closed = true
+			break
+	check(closed, "The previous company closed")
+	await frames(4)
+
+## Missing-key onboarding opens Connect over a hired company and blocks J.
+func dismiss_onboarding() -> void:
+	var quiet := 0
+	var deadline := Time.get_ticks_msec() + 3000
+	while Time.get_ticks_msec() < deadline and quiet < 4:
+		await frames(1)
+		if main.job_panel._connection_panel.visible or main.job_panel.drawer_is_open():
+			main.job_panel.close_drawer(false)
+			quiet = 0
+		else:
+			quiet += 1
+
+func boot_company() -> bool:
+	main = MAIN.instantiate()
+	viewport.add_child(main)
+	var ready := await wait_until(func() -> bool:
+		return main._state_loaded and main._worker_ready and main.company_panel != null and main.company_panel.visible and not main.company_panel.state.is_empty()
+	, "Worker bootstrap loads the company")
+	if ready:
+		main.day_clock.set_speed(0)
+	return ready
+
+func seed_team(data_dir: String) -> bool:
+	var database := ProjectSettings.globalize_path("res://../harness/src/database.ts")
+	var tsx := ProjectSettings.globalize_path("res://../harness/node_modules/tsx/dist/cli.mjs")
+	var node := OS.get_environment("STARTUP_VALLEY_NODE").strip_edges()
+	if node.is_empty():
+		for dir: String in OS.get_environment("PATH").split(":"):
+			if FileAccess.file_exists(dir.path_join("node")):
+				node = dir.path_join("node")
+				break
+	if node.is_empty():
+		node = "/home/box/.local/node22/bin/node"
+	var script_path := data_dir.path_join("seed-office.mjs")
+	var script := "import { mkdirSync } from 'node:fs';\nimport { DatabaseSync } from 'node:sqlite';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst file = root + '/startup-valley.sqlite';\nlet db = new GameDatabase(file, root + '/company-project');\ndb.journey.hire('mira', 1);\ndb.close();\nconst sql = new DatabaseSync(file);\nsql.prepare(\"UPDATE milestone_progress SET completed = 1 WHERE id = 'website'\").run();\nsql.close();\ndb = new GameDatabase(file, root + '/company-project');\ndb.journey.recordCompanyChange('office-test-cash', 1, 90000, 0, 0, 'Office test cash');\ndb.journey.hire('theo', 1);\nconst cash = db.journey.state().company.cashCents;\ndb.close();\nif (cash !== 60000) { console.error('expected 60000 cash, got ' + cash); process.exit(2); }\n" % JSON.stringify(database)
+	var file := FileAccess.open(script_path, FileAccess.WRITE)
+	if file == null:
+		check(false, "Could not write the office seed script")
+		return false
+	file.store_string(script)
+	file.close()
+	var output: Array = []
+	var code := OS.execute(node, PackedStringArray([tsx, script_path, data_dir]), output, true)
+	check(code == 0, "Seeded Mina, Theo, and $600 (%s)" % " ".join(output))
+	return code == 0
+
+func _office_expansion_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-office-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_team(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var continue_button := button_named("Continue")
+	if continue_button != null:
+		await click(continue_button)
+	await dismiss_onboarding()
+	await open_journey()
+	var expand := button_named("Expand office")
+	check(expand != null and not expand.disabled, "Expand office is enabled for the seeded team")
+	check(label_named("OfficeDesks") != null and label_named("OfficeDesks").text == "Desks: 3/4", "The seeded desk line is 3/4")
+	await click(expand)
+	await wait_until(func() -> bool:
+		return not main.company_panel.busy and label_named("OfficeName") != null and label_named("OfficeName").text == "Open Floor"
+	, "Expand office opens the Open Floor")
+	await snap("14-office-expanded-card", main.company_panel.find_child("OfficeCard", true, false) as Control)
+	main.company_panel.hide()
+	await frames(8)
+	var visible_spares := 0
+	for id: String in ["spare-compact-a", "spare-compact-b", "spare-workbench"]:
+		var node := main.room.prop_node(id)
+		if node != null and node.visible:
+			visible_spares += 1
+	check(visible_spares == 3, "The Open Floor shows the two compact desks and the shared workbench")
+	check(main.room.prop_node("founder-workstation") != null, "The founder desk stays beside the new desks")
+	await snap("15-office-new-desks")
 
 func _finish() -> void:
 	print("PROOF ", "PASS" if failures.is_empty() else "FAIL %d" % failures.size())

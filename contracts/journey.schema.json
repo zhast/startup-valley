@@ -297,7 +297,7 @@
     "tycoon": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "upgradeNotice", "upgrades", "calendar", "developing", "history"],
+      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "upgradeNotice", "upgrades", "calendar", "office", "developing", "history"],
       "properties": {
         "seed": { "type": "integer", "minimum": 1 },
         "salesWindowDays": { "type": "integer", "const": 4 },
@@ -311,6 +311,7 @@
         "upgradeNotice": { "type": "string" },
         "upgrades": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "$ref": "#/$defs/tycoonUpgrade" } },
         "calendar": { "$ref": "#/$defs/tycoonCalendar" },
+        "office": { "$ref": "#/$defs/tycoonOffice" },
         "developing": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/tycoonProduct" }] },
         "history": { "type": "array", "maxItems": 48, "items": { "$ref": "#/$defs/tycoonProduct" } }
       }
@@ -367,6 +368,39 @@
         "season": { "enum": ["spring", "summer", "fall", "winter"] },
         "dayOfSeason": { "type": "integer", "minimum": 1, "maximum": 28 },
         "daysUntil": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "tycoonOffice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "name", "blurb", "desks", "next"],
+      "properties": {
+        "level": { "type": "integer", "minimum": 1, "maximum": 2 },
+        "name": { "type": "string", "minLength": 1 },
+        "blurb": { "type": "string", "minLength": 1 },
+        "desks": { "$ref": "#/$defs/tycoonOfficeDesks" },
+        "next": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/tycoonOfficeNext" }] }
+      }
+    },
+    "tycoonOfficeDesks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["used", "total"],
+      "properties": {
+        "used": { "type": "integer", "minimum": 1 },
+        "total": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "tycoonOfficeNext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "costCents", "requiredHires", "enabled", "reason"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "costCents": { "type": "integer", "minimum": 1 },
+        "requiredHires": { "type": "integer", "minimum": 1 },
+        "enabled": { "type": "boolean" },
+        "reason": { "type": "string" }
       }
     },
     "tycoonUpgrade": {
