@@ -1226,3 +1226,39 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Twelve PNGs in `/workspace/sv-proof/round-30/`. After one office day the heading reads "Spring 2 · Year 1" and the Season card reads "In season: Fitness, Dating Advice" and "Creator Fair in 11 days". Hire Mina stays the primary action. Cash after the second launch was 28500 cents. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-30 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → ship → Train staff → Research a locked topic → buy an office tool, with the season and the next event on the same screen. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_seasons.gd`.
+
+### Round 31 — 2026-10-23
+
+**What changed**
+- Office growth inside the current room. There is no second-room architecture art, so this slice does not add a room. A second room stays a later art ask. The harness owns the levels in `harness/src/tycoon.ts`. `tycoon_meta.office_level` (migration `013_tycoon_office.sql`) stores the level. An older save loads at level 1.
+- Level 1 is Garage Loft. Desks total 4 (founder plus the three story desks). Level 2 is Open Floor. It costs $600 game cash and requires 2 hires besides the founder. It adds 2 `compact_desk` and 1 `shared_workbench` as spare seats, and a flat +1 design and +1 tech once per accruing dev day for the whole team. The bonus stacks with per-person upgrades. It does not apply at level 1, on polish days, or when everyone assigned is in training. It does not rewrite stored points.
+- Desk capacity is informational. `desks.used` is 1 plus hired people. Story hires (Mina, Theo, Creative) stay on chapter milestones and are not blocked. `tycoon.expandOffice` takes `{}`, checks hires before cash, and returns the journey plus furnishing. Errors: "Hire 2 people before the Open Floor.", "Not enough game cash. Open Floor costs $600.", "The office is already as large as it gets."
+- `journey.tycoon.office` carries level, name, blurb, desks `{used, total}`, and `next` (or null at the Open Floor). Company Journey shows an Office card under Upgrades and above Season: the name, "Desks: 1/4", "Open Floor · $600", and a disabled secondary "Expand office" until the gate is met. Hire stays the one primary action on a fresh company. At the Open Floor the card reads "Desks: 3/7" and the button is gone.
+- The spare desks sit on open floor, facing south: `spare-compact-a` at [6, 20], `spare-compact-b` at [8, 20], `spare-workbench` at [12, 18]. `required_office_level: 2` hides them at level 1, including hire stage 4, so the old prop counts stay 1, 5, 9, and 10. The bound game grants them as `office-level:2`, separate from the starter decor ids that stay in storage. The furnishing inventory cap is 39. Placement slots stay at 32.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art, seated poses, workstation sheets, and the unbound furnishing kits stay untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched. The placed desks use the already-bound `compact_desk` and `shared_workbench`. No separate chairs.
+
+**Remaining gaps (ranked)**
+1. A research fit bonus is still unbuilt. It is the next slice. It is not part of office growth or the season calendar.
+2. A second room needs architecture art. This slice only adds desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. Carried from Round 30: Creative has no seated sheet. Unbound art stays untracked. The live path is still a harness driver. A cheap reviewer can still sit just under the 2.5 ready line. Chapter 3 ends at "More is coming." The starter `shared_workbench` stays in storage. The one on the Open Floor is a separate grant.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 99 tests, 97 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The three new tests cover Garage Loft on an older save, rejected expansion, the $600 purchase, and the flat Open Floor bonus.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS (25 checks, 0 failures). Garage Loft shows Desks 1/4 and a disabled Expand office. After the seeded buy the card is Open Floor, Desks 3/7, cash 0, and the three spare desks are on the floor facing south.
+- `test_tycoon_product.gd` — TYCOON PASS (40 checks, 0 failures). Launch sales stay 20700 cents and 5 fans.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS (50 checks, 0 failures)
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS (40 checks, 0 failures)
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS (47 checks, 0 failures)
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS (23 checks, 0 failures)
+- `test_ui_company_redesign.gd` — 4777 checks, 0 failures, 0 captures
+- Layout assertions that used to require `compact_desk` and `shared_workbench` to be absent now require the level-2 gate. `test_compact_desk.gd` 259 checks, `test_shared_workbench.gd` 292 checks, `test_base_furniture_review_v2.gd` 161 checks, all 0 failures.
+- Proof capture — PROOF PASS. Fifteen PNGs in `/workspace/sv-proof/round-31/`. `13-office-card.png` is Garage Loft, Desks 1/4, Expand office disabled, Hire Mina primary. `14-office-expanded-card.png` is Open Floor, Desks 3/7, no expand button. `15-office-new-desks.png` is the 1280×720 office with the new desks among the existing furniture. Cash after the second launch was 28500 cents. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-31 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → ship → Train staff → Research a locked topic → buy an office tool → Expand office to the Open Floor, with the season on the same screen. The spare desks appear in the current room. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_office.gd`.
