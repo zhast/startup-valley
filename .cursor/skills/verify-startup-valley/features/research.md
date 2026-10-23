@@ -6,7 +6,7 @@
 - See one secondary button per locked topic and type, disabled when the balance is short.
 - Unlock one item. Read "Unlocked Sneakers. −4 RP" on that office day.
 - Start a product on the topic that just unlocked. The picker drops "· locked" for that row.
-- A topic bought with research points shows "Research bonus: +6 fit" on that pair in the picker. Company Journey shows "Research bonus +6 fit" once that product is on the bench. A starter combo shows neither line.
+- A topic bought with research points shows "Research bonus: +6 fit" on that pair in the picker. Company Journey shows "Sneakers Newsletter · Research bonus +6 fit" once that product is on the bench. A starter combo shows neither line. The product card keeps "Research bonus +6 fit".
 
 ## How to get to it (user POV)
 

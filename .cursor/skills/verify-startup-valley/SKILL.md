@@ -62,7 +62,7 @@ The helper writes these PNGs into `SV_PROOF_DIR` and prints `SNAP` plus the file
 - `14-office-expanded-card.png` — Office card after Expand office, Open Floor, desks 3/7
 - `15-office-new-desks.png` — the office at the normal game size, with the new desks among the existing furniture
 - `16-research-fit-picker.png` — the picker fit line with "Research bonus: +6 fit" after Sneakers is researched
-- `17-research-fit-journey.png` — Company Journey with "Research bonus +6 fit" on the Sneakers Newsletter that just started
+- `17-research-fit-journey.png` — Company Journey with "Sneakers Newsletter · Research bonus +6 fit" on the product that just started
 
 A finished run prints `PROOF PASS` or `PROOF FAIL` and a `FAILURE` line for each miss. Open the PNGs. A black frame means the display server did not render the SubViewport.
 

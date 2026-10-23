@@ -552,11 +552,17 @@ func _journey_research_line() -> void:
 	var tycoon := _tycoon()
 	var developing: Dictionary = tycoon.get("developing", {}) if tycoon.get("developing") is Dictionary else {}
 	if not developing.is_empty():
-		_show_research_fit(developing, "ResearchFitJourney")
+		_show_journey_research_fit(developing)
 		return
 	var history: Array = tycoon.get("history", []) as Array
 	if not history.is_empty() and history[0] is Dictionary:
-		_show_research_fit(history[0] as Dictionary, "ResearchFitJourney")
+		_show_journey_research_fit(history[0] as Dictionary)
+
+func _show_journey_research_fit(product: Dictionary) -> void:
+	var bonus := int(product.get("researchBonus", 0))
+	if bonus <= 0: return
+	var line := _label("%s · Research bonus +%d fit" % [str(product.get("name", "Product")), bonus], false, null, "action")
+	line.name = "ResearchFitJourney"
 
 func _show_research_fit(product: Dictionary, node_name: String, parent: Control = null) -> void:
 	var bonus := int(product.get("researchBonus", 0))

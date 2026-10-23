@@ -118,7 +118,7 @@ A topic or type counts as researched only when the player buys it with `tycoon.r
 
 Each researched part the product uses adds 6 to the fit numerator inside `baseScore`. The bonus is 0, 6, or 12. Development stores it on the product, in `staff_json` as `{staff, researchBonus}`. Reviews use the stored number. Later research does not change a product already on the bench. An older row that is only a staff array scores as 0. Crypto Alpha × Newsletter stays at 0, so the first launch is still $207 and 5 fans.
 
-The New Product picker shows "Research bonus: +6 fit" on the chosen pair when that bonus is above 0, and nothing when it is 0. Company Journey shows "Research bonus +6 fit" on the product in development, or on the latest released product when nothing is on the bench. The same line sits on that product's card. Hire stays the one primary action.
+The New Product picker shows "Research bonus: +6 fit" on the chosen pair when that bonus is above 0, and nothing when it is 0. Company Journey names that product above New Product, for example "Sneakers Newsletter · Research bonus +6 fit", on the product in development, or on the latest released product when nothing is on the bench. The product progress line and the shipped-history line stay "Research bonus +6 fit". Hire stays the one primary action.
 
 Older saves that predate the research column load with every topic and type unlocked and 0 points, so an existing company does not lose a pairing. Those free unlocks are not researched. A fresh database gets the starter catalog. Reopening a save does not reset progress. The unlock line ("Unlocked Sneakers. −4 RP") shows only on that office day.
 

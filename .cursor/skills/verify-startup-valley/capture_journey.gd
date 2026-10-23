@@ -255,7 +255,7 @@ func _run() -> void:
 	await snap("08-sneakers-started")
 	await open_journey()
 	var journey_bonus := label_named("ResearchFitJourney")
-	check(journey_bonus != null and journey_bonus.text == "Research bonus +6 fit", "Journey shows the research fit bonus")
+	check(journey_bonus != null and journey_bonus.text == "Sneakers Newsletter · Research bonus +6 fit", "Journey names the product on the research line")
 	await snap("17-research-fit-journey", journey_bonus)
 	await end_office_day()
 	await open_product()

@@ -222,7 +222,7 @@ func _run() -> void:
 	check(card_bonus != null and card_bonus.text == "Research bonus +6 fit", "The product card shows Research bonus +6 fit")
 	await open_journey()
 	var journey_bonus := label_named("ResearchFitJourney")
-	check(journey_bonus != null and journey_bonus.text == "Research bonus +6 fit", "Company Journey shows Research bonus +6 fit")
+	check(journey_bonus != null and journey_bonus.text == "Sneakers Newsletter · Research bonus +6 fit", "Company Journey names the product on the research line")
 	check(not main.job_panel._connection_panel.visible, "Research never opens Connect")
 	print("TYCOON RESEARCH ", "PASS" if failures.is_empty() else "FAIL %d" % failures.size())
 	for failure: String in failures:
