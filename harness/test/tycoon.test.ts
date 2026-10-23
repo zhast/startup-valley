@@ -13,13 +13,16 @@ import { GameDatabase } from "../src/database.js";
 import { DatabaseSync } from "node:sqlite";
 
 import {
+  EVENT_BONUS_FANS,
   PRODUCT_TYPES,
+  SEASON_UNIT_BOOST_PERCENT,
   STAT_CAP,
   TOPICS,
   UPGRADES,
   allFits,
   baseScore,
   boostedPriceCents,
+  calendarForDay,
   fitFor,
   reviewProduct,
   salesForDay,
@@ -644,4 +647,320 @@ test("the same upgrades and the same days pay the same cash", async () => {
     };
   }
   assert.deepEqual(await play(), await play());
+});
+
+test("the office calendar maps day boundaries and repeats every 112 days", () => {
+  const spring = calendarForDay(1);
+  assert.deepEqual(spring, calendarForDay(1));
+  assert.equal(spring.season, "spring");
+  assert.equal(spring.seasonName, "Spring");
+  assert.equal(spring.dayOfSeason, 1);
+  assert.equal(spring.year, 1);
+  assert.equal(spring.label, "Spring 1 · Year 1");
+  assert.deepEqual(spring.favoredTopics.map((topic) => topic.id), ["fitness", "dating"]);
+  assert.deepEqual(spring.favoredTopics.map((topic) => topic.name), ["Fitness", "Dating Advice"]);
+  assert.equal(spring.event, null);
+  assert.equal(spring.nextEvent.name, "Creator Fair");
+  assert.equal(spring.nextEvent.daysUntil, 12);
+
+  const springThird = calendarForDay(3);
+  assert.equal(springThird.label, "Spring 3 · Year 1");
+  assert.equal(springThird.event, null);
+  assert.equal(springThird.nextEvent.name, "Creator Fair");
+  assert.equal(springThird.nextEvent.daysUntil, 10);
+
+  const fair = calendarForDay(13);
+  assert.equal(fair.dayOfSeason, 13);
+  assert.equal(fair.event?.id, "creator_fair");
+  assert.equal(fair.event?.name, "Creator Fair");
+  assert.equal(fair.event?.effect, "+2 fans on sales today");
+  assert.equal(fair.nextEvent.name, "Drop Day");
+  assert.equal(fair.nextEvent.daysUntil, 26);
+
+  const springEnd = calendarForDay(28);
+  assert.equal(springEnd.season, "spring");
+  assert.equal(springEnd.dayOfSeason, 28);
+  assert.equal(springEnd.year, 1);
+  assert.equal(springEnd.event, null);
+  assert.deepEqual(springEnd.favoredTopics.map((topic) => topic.id), ["fitness", "dating"]);
+  assert.equal(springEnd.nextEvent.name, "Drop Day");
+  assert.equal(springEnd.nextEvent.daysUntil, 11);
+
+  const summer = calendarForDay(29);
+  assert.equal(summer.season, "summer");
+  assert.equal(summer.dayOfSeason, 1);
+  assert.equal(summer.year, 1);
+  assert.equal(summer.label, "Summer 1 · Year 1");
+  assert.deepEqual(summer.favoredTopics.map((topic) => topic.name), ["Sneakers", "Sports Betting Picks"]);
+  assert.equal(summer.event, null);
+  assert.equal(summer.nextEvent.name, "Drop Day");
+  assert.equal(summer.nextEvent.daysUntil, 10);
+
+  assert.equal(calendarForDay(39).event?.name, "Drop Day");
+  assert.equal(calendarForDay(57).season, "fall");
+  assert.equal(calendarForDay(57).dayOfSeason, 1);
+  assert.deepEqual(calendarForDay(57).favoredTopics.map((topic) => topic.name), ["Study Notes", "Trading"]);
+  assert.equal(calendarForDay(72).event?.name, "Cohort Kickoff");
+  assert.equal(calendarForDay(85).season, "winter");
+  assert.equal(calendarForDay(85).dayOfSeason, 1);
+  assert.deepEqual(calendarForDay(85).favoredTopics.map((topic) => topic.name), ["Cooking", "Gaming"]);
+  assert.equal(calendarForDay(109).event?.name, "Cozy Gift Guide");
+
+  const yearEnd = calendarForDay(112);
+  assert.equal(yearEnd.season, "winter");
+  assert.equal(yearEnd.dayOfSeason, 28);
+  assert.equal(yearEnd.year, 1);
+  assert.equal(yearEnd.label, "Winter 28 · Year 1");
+  assert.equal(yearEnd.event, null);
+  assert.equal(yearEnd.nextEvent.name, "Creator Fair");
+  assert.equal(yearEnd.nextEvent.daysUntil, 13);
+
+  const nextYear = calendarForDay(113);
+  assert.equal(nextYear.season, "spring");
+  assert.equal(nextYear.dayOfSeason, 1);
+  assert.equal(nextYear.year, 2);
+  assert.equal(nextYear.label, "Spring 1 · Year 2");
+  assert.deepEqual(nextYear.favoredTopics.map((topic) => topic.id), ["fitness", "dating"]);
+  assert.equal(nextYear.event, null);
+  assert.equal(nextYear.nextEvent.daysUntil, 12);
+  assert.deepEqual(calendarForDay(113), calendarForDay(113));
+
+  const eventDays = new Set([13, 39, 72, 109]);
+  for (let day = 1; day <= 113; day += 1) {
+    const dayOfYear = ((day - 1) % 112) + 1;
+    const calendar = calendarForDay(day);
+    assert.equal(calendar.event === null, !eventDays.has(dayOfYear), `day ${day}`);
+    assert.ok(calendar.nextEvent.daysUntil >= 1);
+    assert.equal(calendar.dayOfSeason >= 1 && calendar.dayOfSeason <= 28, true);
+  }
+});
+
+test("a favored topic gains 20 percent units, rounded, and an event adds fans only on its day", async () => {
+  const input = {
+    seed: 26021,
+    productId: "p9",
+    typeId: "newsletter" as const,
+    fit: "great" as const,
+    score: 8,
+    dayIndex: 0,
+    reputation: 0,
+  };
+  const plain = salesForDay(input);
+  const boosted = salesForDay({ ...input, unitBoostPercent: SEASON_UNIT_BOOST_PERCENT });
+  assert.equal(boosted.units, Math.max(1, Math.round((plain.units * 120) / 100)));
+  assert.ok(boosted.units > plain.units);
+  assert.equal(boosted.cents, boosted.units * 900);
+  assert.equal(boosted.fans, Math.max(1, Math.round((boosted.units * 400) / 1000)));
+  const withEvent = salesForDay({ ...input, bonusFans: EVENT_BONUS_FANS });
+  assert.equal(withEvent.units, plain.units);
+  assert.equal(withEvent.cents, plain.cents);
+  assert.equal(withEvent.fans, plain.fans + EVENT_BONUS_FANS);
+  const both = salesForDay({ ...input, unitBoostPercent: SEASON_UNIT_BOOST_PERCENT, bonusFans: EVENT_BONUS_FANS });
+  assert.equal(both.units, boosted.units);
+  assert.equal(both.cents, boosted.cents);
+  assert.equal(both.fans, boosted.fans + EVENT_BONUS_FANS);
+  assert.deepEqual(salesForDay({ ...input, unitBoostPercent: 0, bonusFans: 0 }), plain);
+  assert.deepEqual(salesForDay(input), plain);
+
+  const { db } = await setup();
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  assert.equal(db.tycoon.view().calendar.label, "Spring 1 · Year 1");
+  assert.equal(validate(db.journey.state()), true, JSON.stringify(validate.errors));
+
+  db.tycoon.start("fitness", "newsletter", []);
+  db.endDay(1);
+  db.endDay(2);
+  const before = db.journey.state().company.reputation;
+  db.tycoon.release("p1");
+  const launched = db.tycoon.view().history[0];
+  assert.ok(launched?.review);
+  const review = structuredClone(launched.review);
+  const favored = salesForDay({
+    seed: 26021,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: launched.fit,
+    score: launched.review.score,
+    dayIndex: 0,
+    reputation: before,
+    unitBoostPercent: SEASON_UNIT_BOOST_PERCENT,
+  });
+  const unfavored = salesForDay({
+    seed: 26021,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: launched.fit,
+    score: launched.review.score,
+    dayIndex: 0,
+    reputation: before,
+  });
+  assert.equal(launched.salesCents, favored.cents);
+  assert.equal(launched.fans, favored.fans);
+  assert.ok(favored.units > unfavored.units);
+  assert.equal(launched.salesCents, favored.units * 900);
+  db.endDay(3);
+  assert.equal(db.tycoon.view().history[0]?.salesCents, launched.salesCents, "the release day does not sell twice");
+  assert.deepEqual(db.tycoon.view().history[0]?.review, review);
+  db.endDay(4);
+  const second = db.tycoon.view().history[0];
+  assert.ok(second?.review);
+  const nextPayout = salesForDay({
+    seed: 26021,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: second.fit,
+    score: second.review.score,
+    dayIndex: 1,
+    reputation: launched.fans,
+    unitBoostPercent: SEASON_UNIT_BOOST_PERCENT,
+  });
+  assert.equal(second.salesCents - launched.salesCents, nextPayout.cents);
+  assert.equal(second.fans - launched.fans, nextPayout.fans);
+  assert.deepEqual(second.review, review, "a later season boost does not rewrite the stored review");
+  db.close();
+
+  const summer = await setup();
+  summer.db.setClock(29, 480, 0);
+  assert.equal(summer.db.tycoon.view().calendar.season, "summer");
+  summer.db.tycoon.start("fitness", "newsletter", []);
+  summer.db.endDay(29);
+  summer.db.endDay(30);
+  const summerBefore = summer.db.journey.state().company.reputation;
+  summer.db.tycoon.release("p1");
+  const summerLaunch = summer.db.tycoon.view().history[0];
+  assert.ok(summerLaunch?.review);
+  const summerPlain = salesForDay({
+    seed: 26021,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: summerLaunch.fit,
+    score: summerLaunch.review.score,
+    dayIndex: 0,
+    reputation: summerBefore,
+  });
+  assert.equal(summerLaunch.salesCents, summerPlain.cents, "Fitness is not favored in Summer");
+  assert.equal(summerLaunch.fans, summerPlain.fans);
+  summer.db.close();
+
+  const fair = await setup();
+  fair.db.setClock(11, 480, 0);
+  fair.db.tycoon.start("crypto", "newsletter", []);
+  fair.db.endDay(11);
+  fair.db.endDay(12);
+  assert.equal(fair.db.tycoon.view().calendar.event?.name, "Creator Fair");
+  const fairBefore = fair.db.journey.state().company.reputation;
+  fair.db.tycoon.release("p1");
+  const fairLaunch = fair.db.tycoon.view().history[0];
+  assert.ok(fairLaunch?.review);
+  const fairSale = salesForDay({
+    seed: 26021,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: fairLaunch.fit,
+    score: fairLaunch.review.score,
+    dayIndex: 0,
+    reputation: fairBefore,
+    bonusFans: EVENT_BONUS_FANS,
+  });
+  const fairPlain = salesForDay({
+    seed: 26021,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: fairLaunch.fit,
+    score: fairLaunch.review.score,
+    dayIndex: 0,
+    reputation: fairBefore,
+  });
+  assert.equal(fairLaunch.salesCents, fairSale.cents);
+  assert.equal(fairLaunch.salesCents, fairPlain.cents, "Creator Fair does not change units for Crypto Alpha");
+  assert.equal(fairLaunch.fans, fairPlain.fans + EVENT_BONUS_FANS);
+  const launchFans = fairLaunch.fans;
+  const launchCents = fairLaunch.salesCents;
+  fair.db.endDay(13);
+  assert.equal(fair.db.tycoon.view().history[0]?.fans, launchFans, "ending the event day does not sell twice");
+  fair.db.endDay(14);
+  const after = fair.db.tycoon.view().history[0];
+  assert.ok(after?.review);
+  const dayAfter = salesForDay({
+    seed: 26021,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: after.fit,
+    score: after.review.score,
+    dayIndex: 1,
+    reputation: launchFans,
+  });
+  assert.equal(after.salesCents - launchCents, dayAfter.cents);
+  assert.equal(after.fans - launchFans, dayAfter.fans, "the next office day does not keep the event fans");
+  assert.deepEqual(after.review, fairLaunch.review);
+  assert.equal(validate(fair.db.journey.state()), true, JSON.stringify(validate.errors));
+  fair.db.close();
+});
+
+test("an older save loads and the calendar follows the clock day", async () => {
+  const root = await mkdtemp(join(tmpdir(), "startup-valley-tycoon-preseason-"));
+  const file = join(root, "game.sqlite");
+  const project = join(root, "company-project");
+  await mkdir(project);
+  const old = new DatabaseSync(file);
+  for (const name of [
+    "001_initial.sql", "002_product_layer.sql", "003_persistent_studio.sql", "004_work_order_handoff.sql",
+    "005_employee_chat.sql", "006_company_journey.sql", "007_furnishing.sql", "008_company_journey_opening.sql",
+    "009_tycoon_products.sql", "010_tycoon_staff.sql", "011_tycoon_research.sql",
+  ]) old.exec(readFileSync(new URL(`../migrations/${name}`, import.meta.url), "utf8"));
+  old.exec("CREATE TABLE schema_migrations (version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL)");
+  for (const version of [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) old.prepare("INSERT INTO schema_migrations VALUES (?, 'old')").run(version);
+  const storedReview = JSON.stringify({
+    score: 6,
+    reviewers: [
+      { name: "Whop Weekly", score: 6, blurb: "Fine." },
+      { name: "Discord Dave", score: 6, blurb: "Fine." },
+      { name: "Margin Call Molly", score: 6, blurb: "Fine." },
+      { name: "Cohort Casey", score: 6, blurb: "Fine." },
+    ],
+  });
+  old.prepare(`
+    INSERT INTO tycoon_products (
+      id, topic_id, type_id, name, fit, status, started_day, dev_days,
+      design_points, tech_points, hype_points, staff_json, last_dev_day,
+      released_day, review_json, sales_applied, last_sales_day, sales_cents, fans, release_research
+    ) VALUES ('p1', 'crypto', 'newsletter', 'Crypto Alpha Newsletter', 'great', 'complete', 1, 2, 4, 4, 6, '[]', 2, 3, ?, 4, 6, 12345, 7, 3)
+  `).run(storedReview);
+  old.close();
+
+  const restored = new GameDatabase(file, project);
+  const loaded = restored.tycoon.view();
+  assert.equal(loaded.calendar.season, "spring");
+  assert.equal(loaded.calendar.dayOfSeason, 1);
+  assert.equal(loaded.calendar.year, 1);
+  assert.equal(loaded.calendar.label, "Spring 1 · Year 1");
+  assert.equal(loaded.history[0]?.salesCents, 12345);
+  assert.equal(loaded.history[0]?.fans, 7);
+  assert.equal(loaded.history[0]?.review?.score, 6);
+  restored.endDay(1);
+  const afterDay = restored.tycoon.view().history[0];
+  assert.equal(afterDay?.salesCents, 12345, "ending a day does not rewrite a finished product's sales");
+  assert.equal(afterDay?.fans, 7);
+  assert.deepEqual(afterDay?.review, JSON.parse(storedReview));
+  assert.equal(restored.tycoon.view().calendar.label, "Spring 2 · Year 1");
+  restored.setClock(28, 480, 0);
+  assert.equal(restored.tycoon.view().calendar.label, "Spring 28 · Year 1");
+  restored.setClock(29, 480, 0);
+  assert.equal(restored.tycoon.view().calendar.label, "Summer 1 · Year 1");
+  restored.setClock(112, 480, 0);
+  assert.equal(restored.tycoon.view().calendar.label, "Winter 28 · Year 1");
+  restored.setClock(113, 480, 0);
+  assert.equal(restored.tycoon.view().calendar.label, "Spring 1 · Year 2");
+  assert.equal(restored.tycoon.view().history[0]?.salesCents, 12345);
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  assert.equal(validate(restored.journey.state()), true, JSON.stringify(validate.errors));
+  restored.close();
+
+  const again = new GameDatabase(file, project);
+  assert.equal(again.tycoon.view().calendar.label, "Spring 1 · Year 2");
+  assert.equal(again.tycoon.view().history[0]?.salesCents, 12345);
+  assert.equal(again.tycoon.view().history[0]?.fans, 7);
+  again.close();
 });

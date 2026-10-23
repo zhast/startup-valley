@@ -18,6 +18,13 @@ export const STATS = ["design", "tech", "hype"] as const;
 export const RESEARCH_COST = { topic: 4, type: 6 } as const;
 /** Percent added to the type price by the checkout upgrade. Half rounds away from zero. */
 export const PRICE_BOOST_PERCENT = 10;
+/** Stardew-shaped office calendar. Derived from the saved day. It does not replace the clock. */
+export const SEASON_LENGTH_DAYS = 28;
+export const YEAR_LENGTH_DAYS = 112;
+/** Percent added to that day's units when the season favors the product topic. */
+export const SEASON_UNIT_BOOST_PERCENT = 20;
+/** Extra fans on any product that sells on an event day. */
+export const EVENT_BONUS_FANS = 2;
 const IDEAL_POINTS_PER_DAY = 4;
 
 export const TOPICS = [
@@ -65,6 +72,7 @@ export type ResearchKind = keyof typeof RESEARCH_COST;
 export type UpgradeId = (typeof UPGRADES)[number]["id"];
 export type UpgradeKind = (typeof UPGRADES)[number]["kind"];
 export type Fit = "great" | "good" | "okay" | "bad";
+export type SeasonId = "spring" | "summer" | "fall" | "winter";
 
 /** New companies. Crypto Alpha × Newsletter stays in this set. */
 const STARTER_TOPIC_IDS: readonly TopicId[] = ["fitness", "trading", "cooking", "gaming", "study_notes", "crypto"];
@@ -87,6 +95,29 @@ const FIT_ROWS: Record<TopicId, readonly Fit[]> = {
   study_notes: ["great", "okay", "great", "good", "okay", "good"],
   crypto: ["okay", "good", "okay", "good", "great", "great"],
 };
+
+export const SEASONS = [
+  { id: "spring", name: "Spring" },
+  { id: "summer", name: "Summer" },
+  { id: "fall", name: "Fall" },
+  { id: "winter", name: "Winter" },
+] as const;
+
+/** Two topics sell a little better for the whole season. Ids match TOPICS. */
+export const SEASON_FAVORED_TOPICS: Record<SeasonId, readonly TopicId[]> = {
+  spring: ["fitness", "dating"],
+  summer: ["sneakers", "sports_betting"],
+  fall: ["study_notes", "trading"],
+  winter: ["cooking", "gaming"],
+};
+
+/** One cozy event per season, on a fixed day of that season. The effect lasts that day only. */
+export const SEASON_EVENTS = [
+  { id: "creator_fair", season: "spring", dayOfSeason: 13, name: "Creator Fair", blurb: "The floor is full of shops and first buyers." },
+  { id: "drop_day", season: "summer", dayOfSeason: 11, name: "Drop Day", blurb: "Everyone refreshes the page at the same minute." },
+  { id: "cohort_kickoff", season: "fall", dayOfSeason: 16, name: "Cohort Kickoff", blurb: "A new class shows up with notebooks open." },
+  { id: "cozy_gift_guide", season: "winter", dayOfSeason: 25, name: "Cozy Gift Guide", blurb: "Whop Weekly lists the warm shops." },
+] as const;
 
 const REVIEWERS = [
   {
@@ -202,6 +233,26 @@ export interface TycoonUpgradeView {
   affordable: boolean;
 }
 
+export interface TycoonEventView {
+  id: (typeof SEASON_EVENTS)[number]["id"];
+  name: string;
+  blurb: string;
+  effect: string;
+}
+
+export interface TycoonCalendar {
+  season: SeasonId;
+  seasonName: string;
+  dayOfSeason: number;
+  year: number;
+  /** Player-facing date, for example "Spring 3 · Year 1". */
+  label: string;
+  favoredTopics: Array<{ id: TopicId; name: string }>;
+  /** The event on this office day, or null. */
+  event: TycoonEventView | null;
+  nextEvent: TycoonEventView & { season: SeasonId; dayOfSeason: number; daysUntil: number };
+}
+
 export interface TycoonSnapshot {
   seed: number;
   salesWindowDays: number;
@@ -214,6 +265,7 @@ export interface TycoonSnapshot {
   researchNotice: string;
   upgradeNotice: string;
   upgrades: TycoonUpgradeView[];
+  calendar: TycoonCalendar;
   developing: TycoonProductView | null;
   history: TycoonProductView[];
 }
@@ -460,17 +512,76 @@ export function salesForDay(input: {
   dayIndex: number;
   reputation: number;
   priceBoostPercent?: number;
+  /** Extra percent of units when the season favors this topic. Omitted leaves the base formula. */
+  unitBoostPercent?: number;
+  /** Extra fans from the event on this office day. Omitted leaves the base formula. */
+  bonusFans?: number;
 }): TycoonSales {
   const curve = SALES_CURVE[input.dayIndex];
   const type = typeById(input.typeId);
   if (curve === undefined || !type) throw new Error("Sales day is outside the window");
   const swing = (mixSeed(input.seed, input.productId, "sales", input.dayIndex) % 21) - 10;
   const baseUnits = FIT_UNITS[input.fit] + Math.floor((input.score * 3) / 2) + Math.floor(input.reputation / 10);
-  const units = Math.max(1, Math.round((baseUnits * curve * (100 + swing)) / 10000));
+  let units = Math.max(1, Math.round((baseUnits * curve * (100 + swing)) / 10000));
+  const unitBoost = input.unitBoostPercent ?? 0;
+  if (Number.isInteger(unitBoost) && unitBoost > 0) {
+    units = Math.max(1, Math.round((units * (100 + unitBoost)) / 100));
+  }
   const fanPermille = input.score >= 8 ? 400 : input.score >= 5 ? 200 : 100;
-  const fans = Math.max(1, Math.round((units * fanPermille) / 1000));
+  const bonusFans = Number.isInteger(input.bonusFans) && (input.bonusFans ?? 0) > 0 ? (input.bonusFans as number) : 0;
+  const fans = Math.max(1, Math.round((units * fanPermille) / 1000)) + bonusFans;
   const price = boostedPriceCents(type.priceCents, input.priceBoostPercent ?? 0);
   return { units, cents: units * price, fans };
+}
+
+/** Player-facing line for the event fan bonus. */
+export function eventEffectLabel(): string {
+  return `+${EVENT_BONUS_FANS} fans on sales today`;
+}
+
+function eventDayOfYear(season: SeasonId, dayOfSeason: number): number {
+  const index = SEASONS.findIndex((item) => item.id === season);
+  return index * SEASON_LENGTH_DAYS + dayOfSeason;
+}
+
+function eventView(event: (typeof SEASON_EVENTS)[number]): TycoonEventView {
+  return { id: event.id, name: event.name, blurb: event.blurb, effect: eventEffectLabel() };
+}
+
+/** Day 1 is Spring 1, Year 1. Day 29 is Summer 1. Day 113 is Spring 1, Year 2. */
+export function calendarForDay(day: number): TycoonCalendar {
+  const safe = Math.max(1, Math.trunc(Number.isFinite(day) ? day : 1));
+  const index = safe - 1;
+  const year = Math.floor(index / YEAR_LENGTH_DAYS) + 1;
+  const dayOfYear = index % YEAR_LENGTH_DAYS;
+  const season = SEASONS[Math.floor(dayOfYear / SEASON_LENGTH_DAYS)] ?? SEASONS[0];
+  const dayOfSeason = (dayOfYear % SEASON_LENGTH_DAYS) + 1;
+  const favoredTopics = SEASON_FAVORED_TOPICS[season.id].flatMap((id) => {
+    const topic = topicById(id);
+    return topic ? [{ id: topic.id, name: topic.name }] : [];
+  });
+  const today = SEASON_EVENTS.find((item) => item.season === season.id && item.dayOfSeason === dayOfSeason) ?? null;
+  const dayOfYearNumber = dayOfYear + 1;
+  const eventDays = SEASON_EVENTS.map((item) => eventDayOfYear(item.season, item.dayOfSeason));
+  let nextSlot = eventDays.findIndex((value) => value > dayOfYearNumber);
+  let daysUntil: number;
+  if (nextSlot < 0) {
+    nextSlot = 0;
+    daysUntil = YEAR_LENGTH_DAYS - dayOfYearNumber + (eventDays[0] ?? 1);
+  } else {
+    daysUntil = (eventDays[nextSlot] ?? dayOfYearNumber) - dayOfYearNumber;
+  }
+  const next = SEASON_EVENTS[nextSlot] ?? SEASON_EVENTS[0];
+  return {
+    season: season.id,
+    seasonName: season.name,
+    dayOfSeason,
+    year,
+    label: `${season.name} ${dayOfSeason} · Year ${year}`,
+    favoredTopics,
+    event: today ? eventView(today) : null,
+    nextEvent: { ...eventView(next), season: next.season, dayOfSeason: next.dayOfSeason, daysUntil },
+  };
 }
 
 export function pointsStillAccrue(devDaysAlready: number, required: number): boolean {
@@ -582,6 +693,7 @@ export class TycoonStore {
           affordable: !isOwned && cash >= item.priceCents,
         };
       }),
+      calendar: calendarForDay(day),
       developing: developing ? this.toView(developing) : null,
       history,
     };
@@ -783,6 +895,8 @@ export class TycoonStore {
     if (row.last_sales_day !== null && Number(row.last_sales_day) === day) return;
     const review = JSON.parse(String(row.review_json)) as TycoonReview;
     const reputation = Number((this.db.prepare("SELECT reputation FROM company_state WHERE id = 1").get() as { reputation: number }).reputation);
+    const calendar = calendarForDay(day);
+    const topicId = asTopic(row.topic_id);
     const payout = salesForDay({
       seed: this.seed(),
       productId: row.id,
@@ -792,6 +906,8 @@ export class TycoonStore {
       dayIndex: applied,
       reputation,
       priceBoostPercent: this.priceBoostPercent(),
+      unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === topicId) ? SEASON_UNIT_BOOST_PERCENT : 0,
+      bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
     });
     this.journey.recordCompanyChange(`tycoon:${row.id}:${applied}`, day, payout.cents, payout.cents, payout.fans, `Sales · ${row.name}`);
     const salesDays = applied + 1;

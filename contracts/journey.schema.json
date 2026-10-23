@@ -284,6 +284,10 @@
         },
         "nextMilestone": {
           "type": "string"
+        },
+        "dateLabel": {
+          "type": "string",
+          "minLength": 1
         }
       },
       "additionalProperties": false
@@ -293,7 +297,7 @@
     "tycoon": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "upgradeNotice", "upgrades", "developing", "history"],
+      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "upgradeNotice", "upgrades", "calendar", "developing", "history"],
       "properties": {
         "seed": { "type": "integer", "minimum": 1 },
         "salesWindowDays": { "type": "integer", "const": 4 },
@@ -306,8 +310,63 @@
         "researchNotice": { "type": "string" },
         "upgradeNotice": { "type": "string" },
         "upgrades": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "$ref": "#/$defs/tycoonUpgrade" } },
+        "calendar": { "$ref": "#/$defs/tycoonCalendar" },
         "developing": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/tycoonProduct" }] },
         "history": { "type": "array", "maxItems": 48, "items": { "$ref": "#/$defs/tycoonProduct" } }
+      }
+    },
+    "tycoonCalendar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["season", "seasonName", "dayOfSeason", "year", "label", "favoredTopics", "event", "nextEvent"],
+      "properties": {
+        "season": { "enum": ["spring", "summer", "fall", "winter"] },
+        "seasonName": { "enum": ["Spring", "Summer", "Fall", "Winter"] },
+        "dayOfSeason": { "type": "integer", "minimum": 1, "maximum": 28 },
+        "year": { "type": "integer", "minimum": 1 },
+        "label": { "type": "string", "minLength": 1 },
+        "favoredTopics": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": { "$ref": "#/$defs/tycoonFavoredTopic" }
+        },
+        "event": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/tycoonEvent" }] },
+        "nextEvent": { "$ref": "#/$defs/tycoonNextEvent" }
+      }
+    },
+    "tycoonFavoredTopic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name"],
+      "properties": {
+        "id": { "enum": ["fitness", "trading", "sneakers", "reselling", "sports_betting", "cooking", "gaming", "dating", "study_notes", "crypto"] },
+        "name": { "type": "string", "minLength": 1 }
+      }
+    },
+    "tycoonEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "blurb", "effect"],
+      "properties": {
+        "id": { "enum": ["creator_fair", "drop_day", "cohort_kickoff", "cozy_gift_guide"] },
+        "name": { "type": "string", "minLength": 1 },
+        "blurb": { "type": "string", "minLength": 1 },
+        "effect": { "type": "string", "minLength": 1 }
+      }
+    },
+    "tycoonNextEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "blurb", "effect", "season", "dayOfSeason", "daysUntil"],
+      "properties": {
+        "id": { "enum": ["creator_fair", "drop_day", "cohort_kickoff", "cozy_gift_guide"] },
+        "name": { "type": "string", "minLength": 1 },
+        "blurb": { "type": "string", "minLength": 1 },
+        "effect": { "type": "string", "minLength": 1 },
+        "season": { "enum": ["spring", "summer", "fall", "winter"] },
+        "dayOfSeason": { "type": "integer", "minimum": 1, "maximum": 28 },
+        "daysUntil": { "type": "integer", "minimum": 1 }
       }
     },
     "tycoonUpgrade": {
