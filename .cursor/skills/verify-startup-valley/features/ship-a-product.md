@@ -4,6 +4,7 @@
 
 - Pick a topic and a product type. Locked rows stay on the list with "· locked" and cannot be selected.
 - Read the fit line and who is on the build, including current design, tech, and hype.
+- Leave Price on Catalog, or nudge −20% / +20%. The line under the buttons names the unit price and the unit effect.
 - Start development, end office days until the bench says Ready to ship, then Release.
 - Read the score, launch sales, fans, and "+N research points".
 

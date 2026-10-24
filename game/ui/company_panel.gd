@@ -35,6 +35,7 @@ var _maximum_panel_size := Vector2(744, 608)
 var _topic_id := "fitness"
 var _type_id := "software"
 var _staff_ids: Array[String] = []
+var _price_percent := 100
 var _release_focus_id := ""
 
 func _ready() -> void:
@@ -800,6 +801,7 @@ func _product_picker(tycoon: Dictionary) -> void:
 	if research_bonus > 0:
 		var bonus_label := _label("Research bonus: +%d fit" % research_bonus, false, null, "action")
 		bonus_label.name = "ResearchFitBonus"
+	_price_picker(tycoon)
 	_label("On the build", true)
 	var staff: Array = tycoon.get("staff", []) as Array
 	for item: Variant in staff:
@@ -819,7 +821,7 @@ func _product_picker(tycoon: Dictionary) -> void:
 	for person_id: String in _staff_ids:
 		staff_ids.append(person_id)
 	var pair_open := _entry_unlocked("topics", _topic_id) and _entry_unlocked("types", _type_id)
-	_actions("Start development", func() -> void: _request("tycoon.start", {"topicId": _topic_id, "typeId": _type_id, "staffIds": staff_ids}), not fit.is_empty() and pair_open, "Back to office", func() -> void: present("journey"))
+	_actions("Start development", func() -> void: _request("tycoon.start", {"topicId": _topic_id, "typeId": _type_id, "staffIds": staff_ids, "pricePercent": _price_percent}), not fit.is_empty() and pair_open, "Back to office", func() -> void: present("journey"))
 
 func _product_progress(product: Dictionary) -> void:
 	var required := int(product.get("devDaysRequired", 1))
@@ -827,6 +829,7 @@ func _product_progress(product: Dictionary) -> void:
 	var ready := bool(product.get("ready", false))
 	_heading(str(product.get("name", "Product")), "Fit · %s" % _fit_word(str(product.get("fit", ""))))
 	_show_research_fit(product, "ResearchFitJourney")
+	_show_launch_price(product, "LaunchPrice")
 	var progress := _label("Ready to ship" if ready else "Building · day %d of %d" % [dev_days, required], false, null, "action")
 	progress.name = "ProductProgress"
 	_label("Design %d · Tech %d · Hype %d" % [int(product.get("design", 0)), int(product.get("tech", 0)), int(product.get("hype", 0))], false, null, "meta")
@@ -866,6 +869,7 @@ func _release_screen() -> void:
 		_label("%s · %d" % [reviewer.get("name", "Reviewer"), int(reviewer.get("score", 0))], false, null, "action")
 		_label(str(reviewer.get("blurb", "")), false, null, "meta")
 	_label("Launch sales · $%s · +%d fans" % [_money(int(product.get("salesCents", 0))), int(product.get("fans", 0))], false, null, "action")
+	_show_launch_price(product, "ReleasePrice")
 	var research_line := _label("+%d research points" % int(product.get("researchPoints", 0)), false, null, "action")
 	research_line.name = "ReleaseResearch"
 	var price_boost := _upgrade_effect("price")
@@ -889,6 +893,7 @@ func _product_history(tycoon: Dictionary) -> void:
 		var review: Dictionary = product.get("review", {}) if product.get("review") is Dictionary else {}
 		_label("%s · %d/10 · $%s · +%d fans" % [product.get("name", "Product"), int(review.get("score", 0)), _money(int(product.get("salesCents", 0))), int(product.get("fans", 0))], false, card)
 		_show_research_fit(product, "ResearchFitJourney", card)
+		_show_launch_price(product, "LaunchPrice", card)
 
 func _released_focus() -> Dictionary:
 	var history: Array = _tycoon().get("history", []) as Array
@@ -942,6 +947,71 @@ func _pair_research_bonus(topic_id: String, type_id: String) -> int:
 		if str(row.get("topicId", "")) == topic_id and str(row.get("typeId", "")) == type_id:
 			return int(row.get("researchBonus", 0))
 	return 0
+
+func _price_steps() -> Array:
+	return _tycoon().get("priceSteps", []) as Array
+
+func _catalog_price_cents(type_id: String) -> int:
+	for item: Variant in _tycoon().get("types", []) as Array:
+		if item is Dictionary and str((item as Dictionary).get("id", "")) == type_id:
+			return int((item as Dictionary).get("priceCents", 0))
+	return 0
+
+func _unit_percent_for(price_percent: int) -> int:
+	for item: Variant in _price_steps():
+		if item is Dictionary and int((item as Dictionary).get("percent", 0)) == price_percent:
+			return int((item as Dictionary).get("unitPercent", 100))
+	return 100
+
+func _launch_price_line(percent: int, cents: int) -> String:
+	var money := "$%s" % _money(cents)
+	var unit_percent := _unit_percent_for(percent)
+	if unit_percent == 100:
+		return "%s · catalog units" % money
+	if unit_percent > 100:
+		return "%s · +%d%% units" % [money, unit_percent - 100]
+	return "%s · −%d%% units" % [money, 100 - unit_percent]
+
+func _show_launch_price(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var percent := int(product.get("pricePercent", 100))
+	var cents := int(product.get("priceCents", 0))
+	if cents <= 0: return
+	var line := _label(_launch_price_line(percent, cents), false, parent, "action")
+	line.name = node_name
+
+func _price_picker(tycoon: Dictionary) -> void:
+	var steps: Array = tycoon.get("priceSteps", []) as Array
+	if steps.is_empty(): return
+	_label("Price", true)
+	var row := GridContainer.new()
+	row.columns = 3
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("h_separation", 8)
+	row.add_theme_constant_override("v_separation", 8)
+	_content.add_child(row)
+	var allowed: Array[int] = []
+	for item: Variant in steps:
+		if item is Dictionary: allowed.append(int((item as Dictionary).get("percent", 0)))
+	if not allowed.has(_price_percent): _price_percent = 100
+	for item: Variant in steps:
+		if not item is Dictionary: continue
+		var step := item as Dictionary
+		var percent := int(step.get("percent", 0))
+		var selected := percent == _price_percent
+		var button := _button(str(step.get("label", "")), _choose_price.bind(percent), false, true, row, "secondary")
+		button.name = "Price_%d" % percent
+		button.clip_text = true
+		if selected:
+			for state: String in ["normal", "hover", "pressed", "hover_pressed"]:
+				button.add_theme_stylebox_override(state, CozyUI.control_style("secondary", "pressed"))
+	var catalog := _catalog_price_cents(_type_id)
+	var cents := int(round(float(catalog * _price_percent) / 100.0))
+	var effect := _label(_launch_price_line(_price_percent, cents), false, null, "action")
+	effect.name = "PriceEffect"
+
+func _choose_price(percent: int) -> void:
+	_price_percent = percent
+	_render()
 
 func _fit_word(fit: String) -> String:
 	match fit:

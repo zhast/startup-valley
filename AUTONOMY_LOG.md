@@ -1295,3 +1295,41 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Seventeen PNGs in `/workspace/sv-proof/round-32/` (local, not committed). `16-research-fit-picker.png` is the picker after Sneakers is researched, with the helper checking "Research bonus: +6 fit". `17-research-fit-journey.png` is Company Journey after that product starts, with the helper checking "Sneakers Newsletter · Research bonus +6 fit". Cash after the second launch was 28500 cents. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-32 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → ship a starter product (no research bonus) → Research a locked topic → start that product and read the fit bonus on the picker and on the journey. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_research.gd`.
+
+### Round 33 — 2026-10-23
+
+**What changed**
+- Launch price on the New Product picker. Catalog is the default, so the first Crypto Alpha Newsletter still pays 20700 cents and 5 fans. Three fixed steps: −20%, Catalog, +20% (`pricePercent` 80 / 100 / 120). Units move the opposite way (120 / 100 / 80). Units after the nudge are `Math.max(1, Math.round((units * unitPercent) / 100))`. The unit price is `Math.round((catalogCents * pricePercent) / 100)`. `tycoon.start` takes optional `pricePercent`. Omitted is catalog. Anything else fails with "Pick −20%, catalog, or +20%." and starts nothing. There is no new SQL migration.
+- The choice is stored on the product in `staff_json` as `{staff, researchBonus, pricePercent}`. Sales use the stored number. An older row that is only a staff array, or a row with no `pricePercent`, sells at catalog. Stored `sales_cents` are not rewritten. Each product view carries `pricePercent` and `priceCents` (chosen unit price, before checkout).
+- Composition on every computed sale, in this order: base units; launch-price units; season +20% units; fans from those units, then the event fan bonus; launch price on the catalog cents; Nicer Checkout Page +10% on that unit price; cash is units times that price. A checkout boost still changes only the price. Season still changes only the units.
+- The picker lists Price under the fit line: three secondary buttons and one line, for example "$9.00 · catalog units" or "$7.20 · +20% units". The bench, the release card, and the shipped-history list repeat that line. Hire stays the one primary action. Start development stays the primary action on the picker.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Marketing is the next slice. A small game-cash spend at release for extra units that sales window. Catalog launch stays the default, so the first newsletter still pays the same cash. The spend is stored on the product.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. Carried from Round 32: Creative has no seated sheet. Unbound art stays untracked. The live path is still a harness driver. A cheap reviewer can still sit just under the 2.5 ready line. Chapter 3 ends at "More is coming." The starter `shared_workbench` stays in storage. The one on the Open Floor is a separate grant.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 101 tests, 99 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test covers catalog identity (23 units, 20700 cents, 5 fans), −20% / +20% unit and price math, units always at least 1, launch-price then season then checkout composition, a stored `pricePercent` snapshot, a rejected unknown percent, and an older staff-array row selling at catalog without rewriting `staff_json`.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS (40 checks, 0 failures). Launch sales stay 20700 cents and 5 fans. The next office day stays 33300 cents and 8 fans.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS (50 checks, 0 failures)
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS (50 checks, 0 failures)
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS (47 checks, 0 failures). The second sales day is still $333.
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS (23 checks, 0 failures)
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS (25 checks, 0 failures)
+- `test_tycoon_price.gd` — TYCOON PRICE PASS. Catalog launch is 20700 cents and 5 fans. −20% stores 80 / 720 on the product, the picker and release card read "$7.20 · +20% units", and Hire Mina stays the one primary action. Price buttons stay secondary.
+- `test_ui_company_redesign.gd` — 5143 checks, 0 failures, 0 captures. Catalog / −20% / +20% on the product picker read as secondary.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Nineteen PNGs in `/workspace/sv-proof/round-33/` (local, not committed). `18-price-picker.png` is the picker after −20% with "$7.20 · +20% units" and secondary price buttons. `19-price-released.png` is Sneakers Newsletter on the release card with the same line and launch sales $115.20. Hire Mina stays orange on the team rail. Cash after the cheaper second launch was 28320 cents. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-33 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → leave Catalog or nudge −20% / +20% → ship. The first newsletter at catalog is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_price.gd`.
+
