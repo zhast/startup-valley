@@ -62,6 +62,16 @@ func label_contains(fragment: String) -> bool:
 			return true
 	return false
 
+func label_text(text: String) -> Label:
+	var found: Label = null
+	if main == null or main.company_panel == null:
+		return null
+	for node: Node in main.company_panel.find_children("*", "Label", true, false):
+		var label := node as Label
+		if label.text == text and label.is_visible_in_tree():
+			found = label
+	return found
+
 func reveal(control: Control) -> void:
 	if control == null or main == null or main.company_panel == null:
 		return
@@ -212,7 +222,13 @@ func _run() -> void:
 	check(big_ad != null and big_ad.disabled and big_ad.text == "Big ad · Need $150", "Big ad shows Need $150")
 	var marketing_effect := label_named("MarketingEffect")
 	check(marketing_effect != null and marketing_effect.text == "None · $0 · no extra units", "No ad shows $0 and no extra units")
-	await snap("20-marketing-picker", marketing_effect)
+	var marketing_heading := label_text("Marketing")
+	await reveal(marketing_heading if marketing_heading != null else marketing_effect)
+	if marketing_heading != null:
+		main.company_panel._scroll.ensure_control_visible(marketing_heading)
+		main.company_panel._scroll.scroll_vertical = maxi(0, main.company_panel._scroll.scroll_vertical - 24)
+		await frames(3)
+	await snap("20-marketing-picker")
 	await click(button_named("Start development"))
 	await wait_until(func() -> bool: return developing().get("name", "") == "Crypto Alpha Newsletter" and not main.company_panel.busy, "Development starts on Crypto Alpha Newsletter")
 	await end_office_day()
