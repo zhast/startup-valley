@@ -9,7 +9,7 @@ The rules in `harness/src/tycoon.ts` are authoritative. This document matches th
 1. **Offline.** A new company ships a product with no API key and no network. Providers stay optional, and only on chapter work orders and chat.
 2. **The pairing is the decision.** A topic and a product type fit together at Great, Good, Okay, or Bad, in the Game Dev Tycoon way. A bad pairing can still ship. It sells worse.
 3. **Days, not a progress bar you click.** Development and sales move when the office day ends. The room stays the cozy Stardew-style office already in the game.
-4. **Deterministic.** Reviews and sales are pure functions of the company seed, the product id, the fit, the points, the research bonus stored on the product, the launch price stored on the product, the marketing choice stored on the product, and reputation. A contract bonus is a separate cash line. It is not one of those inputs. The same save replays the same launch.
+4. **Deterministic.** Reviews and sales are pure functions of the company seed, the product id, the fit, the points, the research bonus stored on the product, the launch price stored on the product, the marketing choice stored on the product, whether it was patched, and reputation. A contract bonus is a separate cash line. A patch cost is too. They are not those inputs. The same save replays the same launch.
 5. **One product on the bench.** A second idea waits until the first one ships. A shipped product can still be selling while the next one starts.
 
 ## Core loop
@@ -20,7 +20,7 @@ The rules in `harness/src/tycoon.ts` are authoritative. This document matches th
 4. **Start development.** The product stores the fit, the staff snapshot, the research bonus, the launch price, and the marketing choice. A paid ad spends game cash here. An accepted contract also stores the client and the bonus.
 5. **End day + save** once for each office day of work. The team adds design, tech, and hype. Progress is `dev days / days required`.
 6. When the required days are done, **Release**. Four reviewers score it from 1 to 10. Launch-day sales pay game cash and fans immediately. If the product was started under a contract, that release also pays the bonus as its own cash line.
-7. The next three office days keep selling, once each, when the day ends. The release day does not sell twice.
+7. The next three office days keep selling, once each, when the day ends. The release day does not sell twice. One optional patch can spend game cash and add 1 to the stored score for those remaining days.
 8. The product moves onto the shelf. Cash and reputation (fans) stay on the company. Ship another.
 
 A newsletter or template pack takes 2 office days. A course, community, or coaching offer takes 3. A software tool takes 4. Two extra office days can still add a little craft. After that, points stop.
@@ -80,11 +80,11 @@ Sales run for 4 days at 100%, 70%, 45%, then 25% of the opening demand. Opening 
 
 The catalog price is the default. At Start development the player can leave it, or nudge −20% or +20%. A cheaper price sells more units. A higher price sells fewer. The percents are fixed: 80 / 100 / 120 for price, and 120 / 100 / 80 for units. Units after the nudge are `Math.max(1, Math.round((units * unitPercent) / 100))`. The unit price is `Math.round((catalogCents * pricePercent) / 100)`. Catalog (100) leaves both unchanged, so the first newsletter still pays 20700 cents and 5 fans.
 
-The choice is stored on the product, in `staff_json` as `{staff, researchBonus, pricePercent, marketing}`. Sales use the stored price. An older row that is only a staff array, or a row with no `pricePercent`, sells at catalog. A row with no `marketing` sells with no ad. Stored `sales_cents` are not rewritten.
+The choice is stored on the product, in `staff_json` as `{staff, researchBonus, pricePercent, marketing}`. Sales use the stored price. An older row that is only a staff array, or a row with no `pricePercent`, sells at catalog. A row with no `marketing` sells with no ad. A row with no `patched` flag sells unpatched. Stored `sales_cents` are not rewritten.
 
 Composition, in this order, on every sale that is computed:
 
-1. Base units from fit, score, reputation, the sales curve, and the seeded swing. At least 1.
+1. Base units from fit, the sales score, reputation, the sales curve, and the seeded swing. At least 1. The sales score is the stored review score, plus 1 when the product is patched, capped at 10.
 2. Launch-price units.
 3. Season +20% units, when the topic is favored that day.
 4. Marketing units from the snapshot. None is an identity step. Otherwise `Math.max(1, Math.round((units * unitPercent) / 100))`.
@@ -297,13 +297,29 @@ No contract is the default. A product started while the offer is ignored stores 
 
 The Company Journey card is headed "Contract". The lines are the client, "Topic × Type", and "Bonus $80 on release" in whole dollars. Accept contract is a secondary button, and only while the status is `offered`. Hire stays the one primary action. The bench, the release card, and the shipped list show "Contract: Client · +$80" when the product has a contract.
 
+## Patches
+
+One optional patch per shipped product, while it still has remaining sales days. No patch is the default. The harness owns the cost, the score bump, and the refusals. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential.
+
+`tycoon.patch` takes `{productId}`. Cost is $100. The bump is +1 on the stored review score, capped at 10, and only for sales computed after the patch. Launch sales and any earlier sales day stay as they were. Stored `sales_cents` are not rewritten.
+
+The flag is `patched: true` on the product snapshot in `staff_json`. There is no new SQL column. An older row that is only a staff array, or a row that omits the field, is unpatched. Reads do not rewrite `staff_json`. A successful patch writes the flag and one ledger row: id `tycoon:patch:<productId>`, cash −$100, earned 0, reputation 0, label `Patch: <product>`. Patching twice fails with "Already patched." and charges nothing.
+
+Short cash, a product still on the bench, sales that have ended, and a second patch fail with a clear error and spend nothing. The locked reasons are "Need $100", "Ship this product first.", "Sales have ended.", and "Already patched." A missing id fails with "No product with that id."
+
+The first Crypto Alpha Newsletter still pays 20700 cents and 5 fans when left unpatched. $100 is less than the first Tech lesson and less than Oak Standing Desk, so one newsletter launch can pay for a patch and still have cash left.
+
+`journey.tycoon.patchNotice` is the day's line, "Patched Crypto Alpha Newsletter. −$100". Ending the day clears it. Each shipped product carries `patch` as null on the bench, or `{costCents, scoreBonus, applied, enabled, reason}` after release. A payload without `patch` on a product draws no button, so older UI fixtures still render.
+
+Company Journey shows one Selling card per product that is still selling. The lines are the name, score, cash, fans, and "Sales day 1 of 4". Patch · $100 is a secondary button. A disabled button reads the reason, for example "Patch · Need $100" or "Patch · Already patched." Hire stays the one primary action. After a patch the card adds "Patched · +1 score" and the cost line. The shipped list repeats "Patched · +1 score" when the flag is set.
+
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, and contracts. The entries are **New Product**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Office**, and **Season** on Company Journey. Price and marketing live on the New Product picker.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, and patches. The entries are **New Product**, **Selling**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Office**, and **Season** on Company Journey. Price and marketing live on the New Product picker.
 
 Next slice:
 
-1. **Patches.** One optional patch on a shipped product. It spends game cash and adds a little to the stored score for the remaining sales days. No patch leaves every sale on the old formula. The default is off, so the first newsletter still pays 20700 cents and 5 fans.
+1. **Sequels.** One optional sequel of a completed product. It starts faster and carries a little of the old score. No sequel leaves every new product on the old formula. The default is off, so the first newsletter still pays 20700 cents and 5 fans.
 
 Later art ask: a second room. Office growth shipped as spare desks on the current floor (`compact_desk` and `shared_workbench`, already bound). There is no second-room architecture art, so that room waits.
 
