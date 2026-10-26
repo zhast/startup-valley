@@ -13,6 +13,7 @@ import { GameDatabase } from "../src/database.js";
 import { DatabaseSync } from "node:sqlite";
 
 import {
+  CONTRACTS,
   EVENT_BONUS_FANS,
   LAUNCH_PRICES,
   MARKETING,
@@ -27,6 +28,7 @@ import {
   baseScore,
   boostedPriceCents,
   calendarForDay,
+  contractBySlot,
   fitFor,
   launchPriceCents,
   reviewProduct,
@@ -1509,5 +1511,161 @@ test("marketing buys extra units, charges at the start, and leaves old rows alon
   assert.equal(untouched, staffOnly);
   assert.equal(pricedJson, pricedOnly);
   assert.equal(restored.tycoon.view().developing?.marketing, "none");
+  restored.close();
+});
+
+test("contracts lock one offer and pay the bonus once", async () => {
+  const first = contractBySlot(26021, 0);
+  assert.deepEqual(contractBySlot(26021, 0), first);
+  assert.notEqual(contractBySlot(26021, 1).id, first.id);
+  assert.equal(CONTRACTS.length, 6);
+  assert.ok(CONTRACTS.every((item) => item.bonusCents > 0 && item.client.includes("Whop")));
+
+  const left = await setup();
+  const right = await setup();
+  assert.deepEqual(left.db.tycoon.view().contract, right.db.tycoon.view().contract);
+  assert.equal(left.db.tycoon.view().contract.id, first.id);
+  assert.equal(left.db.tycoon.view().contract.status, "offered");
+  assert.equal(left.db.tycoon.view().contract.enabled, true);
+  assert.equal(left.db.tycoon.view().contract.reason, "");
+  left.db.endDay(1);
+  assert.equal(left.db.tycoon.view().contract.id, first.id);
+  assert.equal(String((left.db.journey.db.prepare("SELECT contract_json FROM tycoon_meta WHERE id = 1").get() as { contract_json: string }).contract_json), "");
+  right.db.close();
+
+  left.db.tycoon.start("crypto", "newsletter", []);
+  assert.throws(() => left.db.tycoon.acceptContract(), /Ship the product on the bench first/u);
+  assert.equal(left.db.tycoon.view().contract.status, "offered");
+  assert.equal(left.db.tycoon.view().contract.enabled, false);
+  assert.equal(left.db.tycoon.view().contract.reason, "Ship the product on the bench first.");
+  assert.equal(left.db.tycoon.view().developing?.contract, null);
+  const ignored = JSON.parse(String((left.db.journey.db.prepare("SELECT staff_json FROM tycoon_products WHERE id = 'p1'").get() as { staff_json: string }).staff_json)) as { contract?: unknown };
+  assert.equal(ignored.contract, undefined);
+  left.db.endDay(2);
+  left.db.endDay(3);
+  left.db.tycoon.release("p1");
+  const plain = left.db.tycoon.view().history[0];
+  assert.equal(plain?.contract, null);
+  assert.equal(plain?.salesCents, 20700);
+  assert.equal(plain?.fans, 5);
+  assert.equal(left.db.journey.state().company.cashCents, 20700);
+  assert.equal(left.db.journey.state().company.reputation, 5);
+  const plainLabels = left.db.journey.db.prepare("SELECT label FROM company_transactions").all() as Array<{ label: string }>;
+  assert.equal(plainLabels.some((row) => row.label.startsWith("Contract:")), false);
+  assert.equal(left.db.tycoon.view().contract.id, first.id);
+  assert.equal(left.db.tycoon.view().contract.status, "offered");
+  left.db.close();
+
+  const { db, root } = await setup();
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  const offer = db.tycoon.view().contract;
+  assert.equal(offer.id, first.id);
+  const other = offer.topicId === "crypto" ? ["fitness", "course"] as const : ["crypto", "newsletter"] as const;
+  db.tycoon.acceptContract();
+  assert.equal(db.tycoon.view().contract.status, "accepted");
+  assert.equal(db.tycoon.view().contract.enabled, false);
+  assert.equal(db.tycoon.view().contract.reason, "Accepted. The next product uses this pair.");
+  assert.throws(() => db.tycoon.acceptContract(), /already accepted/u);
+  assert.throws(() => db.tycoon.start(other[0], other[1], []), new RegExp(`This contract is ${offer.topicName} × ${offer.typeName}\\.`));
+  assert.equal(db.tycoon.view().developing, null);
+  const file = join(root, "game.sqlite");
+  const project = join(root, "company-project");
+  db.close();
+  const reopened = new GameDatabase(file, project);
+  assert.equal(reopened.tycoon.view().contract.status, "accepted");
+  assert.equal(reopened.tycoon.view().contract.id, offer.id);
+  reopened.tycoon.start(offer.topicId, offer.typeId, []);
+  const built = reopened.tycoon.view().developing;
+  assert.equal(built?.topicId, offer.topicId);
+  assert.equal(built?.typeId, offer.typeId);
+  assert.equal(built?.contract?.client, offer.client);
+  assert.equal(built?.contract?.bonusCents, offer.bonusCents);
+  assert.equal(reopened.tycoon.view().contract.status, "building");
+  assert.equal(String((reopened.journey.db.prepare("SELECT contract_json FROM tycoon_meta WHERE id = 1").get() as { contract_json: string }).contract_json), "");
+  const required = PRODUCT_TYPES.find((item) => item.id === offer.typeId)?.devDays ?? 2;
+  let day = 1;
+  for (let index = 0; index < required; index += 1) {
+    reopened.endDay(day);
+    day += 1;
+  }
+  assert.equal(reopened.tycoon.view().developing?.ready, true);
+  const before = reopened.journey.state().company;
+  const favored = (officeDay: number) => calendarForDay(officeDay).favoredTopics.some((topic) => topic.id === offer.topicId);
+  reopened.tycoon.release("p1");
+  const launch = reopened.tycoon.view().history[0];
+  assert.ok(launch?.review);
+  const expected = salesForDay({
+    seed: 26021,
+    productId: "p1",
+    typeId: offer.typeId,
+    fit: launch.fit,
+    score: launch.review.score,
+    dayIndex: 0,
+    reputation: before.reputation,
+    unitBoostPercent: favored(day) ? SEASON_UNIT_BOOST_PERCENT : 0,
+  });
+  assert.equal(launch.salesCents, expected.cents);
+  assert.equal(launch.fans, expected.fans);
+  assert.equal(launch.contract?.client, offer.client);
+  assert.equal(launch.contract?.bonusCents, offer.bonusCents);
+  assert.equal(reopened.journey.state().company.cashCents, before.cashCents + expected.cents + offer.bonusCents);
+  assert.equal(reopened.journey.state().company.earnedCents, before.earnedCents + expected.cents + offer.bonusCents);
+  assert.equal(reopened.journey.state().company.reputation, before.reputation + expected.fans);
+  const paid = reopened.journey.db.prepare("SELECT label, cash_delta FROM company_transactions WHERE id = 'tycoon:contract:p1'").get() as { label: string; cash_delta: number };
+  assert.equal(paid.label, `Contract: ${offer.client}`);
+  assert.equal(paid.cash_delta, offer.bonusCents);
+  assert.throws(() => reopened.tycoon.release("p1"), /already shipped/u);
+  reopened.endDay(day);
+  assert.equal(reopened.tycoon.view().history[0]?.salesCents, launch.salesCents);
+  reopened.endDay(day + 1);
+  const later = reopened.tycoon.view().history[0];
+  const dayTwo = salesForDay({
+    seed: 26021,
+    productId: "p1",
+    typeId: offer.typeId,
+    fit: launch.fit,
+    score: launch.review.score,
+    dayIndex: 1,
+    reputation: before.reputation + expected.fans,
+    unitBoostPercent: favored(day + 1) ? SEASON_UNIT_BOOST_PERCENT : 0,
+  });
+  assert.equal((later?.salesCents ?? 0) - launch.salesCents, dayTwo.cents);
+  const bonusCount = Number((reopened.journey.db.prepare("SELECT COUNT(*) AS n FROM company_transactions WHERE label LIKE 'Contract:%'").get() as { n: number }).n);
+  assert.equal(bonusCount, 1);
+  const next = reopened.tycoon.view().contract;
+  assert.equal(next.status, "offered");
+  assert.equal(next.enabled, true);
+  assert.equal(next.id, contractBySlot(26021, 1).id);
+  assert.notEqual(next.id, offer.id);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+
+  const legacy = await setup();
+  const legacyFile = join(legacy.root, "game.sqlite");
+  const legacyProject = join(legacy.root, "company-project");
+  legacy.db.close();
+  const raw = new DatabaseSync(legacyFile);
+  const staffOnly = JSON.stringify(["founder"]);
+  raw.prepare(`
+    INSERT INTO tycoon_products (
+      id, topic_id, type_id, name, fit, status, started_day, dev_days,
+      design_points, tech_points, hype_points, staff_json, last_dev_day,
+      released_day, review_json, sales_applied, last_sales_day, sales_cents, fans
+    ) VALUES ('p1', 'crypto', 'newsletter', 'Crypto Alpha Newsletter', 'great', 'developing', 1, 2, 4, 4, 4, ?, NULL, NULL, NULL, 0, NULL, 0, 0)
+  `).run(staffOnly);
+  raw.close();
+  const restored = new GameDatabase(legacyFile, legacyProject);
+  assert.equal(restored.tycoon.view().developing?.contract, null);
+  restored.tycoon.release("p1");
+  const oldLaunch = restored.tycoon.view().history[0];
+  assert.equal(oldLaunch?.contract, null);
+  assert.equal(oldLaunch?.salesCents, 20700);
+  assert.equal(oldLaunch?.fans, 5);
+  assert.equal(restored.journey.state().company.cashCents, 20700);
+  const oldJson = String((restored.journey.db.prepare("SELECT staff_json FROM tycoon_products WHERE id = 'p1'").get() as { staff_json: string }).staff_json);
+  assert.equal(oldJson, staffOnly);
+  const oldLabels = restored.journey.db.prepare("SELECT label FROM company_transactions").all() as Array<{ label: string }>;
+  assert.equal(oldLabels.some((row) => row.label.startsWith("Contract:")), false);
   restored.close();
 });

@@ -132,6 +132,29 @@ func developing() -> Dictionary:
 	var value: Variant = tycoon_state().get("developing", {})
 	return value as Dictionary if value is Dictionary else {}
 
+func contract_state() -> Dictionary:
+	var value: Variant = tycoon_state().get("contract", {})
+	return value as Dictionary if value is Dictionary else {}
+
+func latest_shipped() -> Dictionary:
+	var history: Array = tycoon_state().get("history", []) as Array
+	if history.is_empty() or not history[0] is Dictionary:
+		return {}
+	return history[0] as Dictionary
+
+func company_reputation() -> int:
+	var company: Dictionary = main.company_panel.state.get("company", {})
+	return int(company.get("reputation", 0))
+
+func button_choice(title: String) -> Button:
+	if main == null or main.company_panel == null:
+		return null
+	for node: Node in main.company_panel.find_children("*", "Button", true, false):
+		var button := node as Button
+		if button.is_visible_in_tree() and (button.text == title or button.text.begins_with(title + " ·")):
+			return button
+	return null
+
 func open_journey() -> void:
 	if main.company_panel.visible and main.company_panel.screen == "journey":
 		return
@@ -195,6 +218,15 @@ func _run() -> void:
 	await wait_until(func() -> bool: return main.company_panel.screen == "journey", "Start company opens Journey")
 	main.company_panel._scroll.scroll_vertical = 0
 	await snap("01-journey")
+	var contract_card := main.company_panel.find_child("ContractCard", true, false) as Control
+	var accept := button_named("Accept contract")
+	check(contract_card != null, "Company Journey shows the contract card")
+	check(accept != null and not accept.disabled and str(accept.get_meta("cozy_variant", "")) == "secondary" and accept.text == "Accept contract", "Accept contract is a secondary action")
+	check(label_named("ContractClient") != null and not label_named("ContractClient").text.is_empty(), "The offer names a client")
+	check(label_named("ContractPair") != null and label_named("ContractPair").text.contains("×"), "The offer names topic × type")
+	check(label_named("ContractBonus") != null and label_named("ContractBonus").text.begins_with("Bonus $"), "The offer names the bonus")
+	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside the contract")
+	await snap("22-contract-offer", contract_card)
 	await snap("02-research-card", main.company_panel.find_child("ResearchCard", true, false) as Control)
 	var expand := button_named("Expand office")
 	check(expand != null and expand.disabled and expand.text == "Expand office", "Expand office starts disabled")
@@ -311,6 +343,7 @@ func _run() -> void:
 	check(label_named("ReleaseMarketing") != null and label_named("ReleaseMarketing").text == "Small ad · $50 · +20% units", "Release shows the small ad")
 	check(label_contains("Launch sales"), "Release shows launch sales next to the ad")
 	await snap("21-marketing-released", label_named("ReleaseMarketing"))
+	await _contract_release_proof()
 	await open_journey()
 	var waits := 0
 	while company_cash() < 25000 and waits < 4:
@@ -390,6 +423,59 @@ func seed_team(data_dir: String) -> bool:
 	var code := OS.execute(node, PackedStringArray([tsx, script_path, data_dir]), output, true)
 	check(code == 0, "Seeded Mina, Theo, and $600 (%s)" % " ".join(output))
 	return code == 0
+
+func _contract_release_proof() -> void:
+	await open_journey()
+	var offer := contract_state()
+	check(str(offer.get("status", "")) == "offered", "The offer is still open after the free launches")
+	await click(button_named("Accept contract"))
+	await wait_until(func() -> bool: return str(contract_state().get("status", "")) == "accepted" and not main.company_panel.busy, "The contract is accepted")
+	await open_product()
+	var topic_button := button_choice(str(offer.get("topicName", "")))
+	var type_button := button_choice(str(offer.get("typeName", "")))
+	check(topic_button != null and not topic_button.disabled, "The contract topic stays enabled")
+	check(type_button != null and not type_button.disabled, "The contract type stays enabled")
+	var other_disabled := false
+	for item: Variant in tycoon_state().get("topics", []) as Array:
+		if not item is Dictionary:
+			continue
+		var row := item as Dictionary
+		if str(row.get("id", "")) == str(offer.get("topicId", "")):
+			continue
+		if not bool(row.get("unlocked", false)):
+			continue
+		var other := button_choice(str(row.get("name", "")))
+		if other != null and other.disabled and other.text.contains("· contract"):
+			other_disabled = true
+			break
+	check(other_disabled, "Another topic is disabled for the contract")
+	await click(topic_button)
+	await frames(4)
+	type_button = button_choice(str(offer.get("typeName", "")))
+	check(type_button != null and not type_button.disabled, "The contract type is still enabled after the topic click")
+	await click(type_button)
+	await frames(4)
+	await click(button_named("Start development"))
+	await wait_until(func() -> bool: return str(developing().get("topicId", "")) == str(offer.get("topicId", "")) and not main.company_panel.busy, "The contracted product starts")
+	var guard := 0
+	while not bool(developing().get("ready", false)) and guard < 6:
+		await end_office_day()
+		await open_product()
+		guard += 1
+	check(bool(developing().get("ready", false)), "The contract product is ready to release")
+	var before := company_cash()
+	var fans_before := company_reputation()
+	await click(button_named("Release"))
+	await wait_until(func() -> bool: return main.company_panel.screen == "release" and label_named("ReleaseContract") != null, "Release shows the contract bonus")
+	var shipped := latest_shipped()
+	var deal: Dictionary = shipped.get("contract", {}) if shipped.get("contract") is Dictionary else {}
+	var bonus := int(deal.get("bonusCents", 0))
+	var client := str(deal.get("client", ""))
+	check(bonus > 0 and client == str(offer.get("client", "")), "The shipped product keeps the client and the bonus")
+	check(label_named("ReleaseContract").text == "Contract: %s · +$%d" % [client, int(bonus / 100)], "Release names the contract bonus")
+	check(int(shipped.get("salesCents", 0)) > 0 and company_cash() == before + int(shipped.get("salesCents", 0)) + bonus, "The bonus is paid once on top of launch sales")
+	check(company_reputation() == fans_before + int(shipped.get("fans", 0)), "The bonus does not add fans")
+	await snap("23-contract-released", label_named("ReleaseContract"))
 
 func _office_expansion_proof() -> void:
 	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-office-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])

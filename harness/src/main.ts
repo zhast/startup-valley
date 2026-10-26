@@ -133,6 +133,8 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
       };
     case "tycoon.release":
       return { journey: database.tycoon.release(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
+    case "tycoon.acceptContract":
+      return { journey: database.tycoon.acceptContract(), dailySpend: database.dailySpend() };
     case "tycoon.train":
       return {
         journey: database.tycoon.train(stringParameter(request, "staffId", 32), stringParameter(request, "stat", 16)),

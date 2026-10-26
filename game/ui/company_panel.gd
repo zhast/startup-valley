@@ -517,6 +517,7 @@ func _journey_screen() -> void:
 	if not definition.is_empty() or not candidate.is_empty():
 		_button("End day + save", func() -> void: _request("day.end", {"day": day}), false, true, utilities, "secondary")
 	_product_shortcut()
+	_contract_card()
 	_train_staff()
 	_research_card()
 	_upgrades_card()
@@ -570,6 +571,54 @@ func _show_research_fit(product: Dictionary, node_name: String, parent: Control 
 	var bonus := int(product.get("researchBonus", 0))
 	if bonus <= 0: return
 	var line := _label("Research bonus +%d fit" % bonus, false, parent, "action")
+	line.name = node_name
+
+func _contract_card() -> void:
+	var value: Variant = _tycoon().get("contract", null)
+	if not value is Dictionary or (value as Dictionary).is_empty(): return
+	var offer := value as Dictionary
+	var client := str(offer.get("client", "")).strip_edges()
+	if client.is_empty(): return
+	var card := _card()
+	card.name = "ContractCard"
+	_label("Contract", true, card)
+	var client_label := _label(client, false, card)
+	client_label.name = "ContractClient"
+	var pair := _label("%s × %s" % [str(offer.get("topicName", "")), str(offer.get("typeName", ""))], false, card)
+	pair.name = "ContractPair"
+	var bonus := _label("Bonus %s on release" % _contract_money(int(offer.get("bonusCents", 0))), false, card)
+	bonus.name = "ContractBonus"
+	var reason := str(offer.get("reason", "")).strip_edges()
+	if not reason.is_empty():
+		var reason_label := _label(reason, false, card, "meta")
+		reason_label.name = "ContractReason"
+	if str(offer.get("status", "")) != "offered": return
+	var button := _button("Accept contract", _accept_contract, false, bool(offer.get("enabled", false)), card, "secondary")
+	button.name = "AcceptContract"
+
+func _accept_contract() -> void:
+	_request("tycoon.acceptContract", {})
+
+func _contract_money(cents: int) -> String:
+	return "$%d" % int(cents / 100)
+
+func _locked_contract() -> Dictionary:
+	var value: Variant = _tycoon().get("contract", null)
+	if not value is Dictionary: return {}
+	var offer := value as Dictionary
+	var status := str(offer.get("status", ""))
+	if status != "accepted" and status != "building": return {}
+	if str(offer.get("topicId", "")).is_empty() or str(offer.get("typeId", "")).is_empty(): return {}
+	return offer
+
+func _show_contract(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var value: Variant = product.get("contract", null)
+	if not value is Dictionary: return
+	var deal := value as Dictionary
+	var client := str(deal.get("client", "")).strip_edges()
+	var cents := int(deal.get("bonusCents", 0))
+	if client.is_empty() or cents <= 0: return
+	var line := _label("Contract: %s · +%s" % [client, _contract_money(cents)], false, parent, "action")
 	line.name = node_name
 
 func _train_staff() -> void:
@@ -763,8 +812,18 @@ func _product_screen() -> void:
 	_product_history(tycoon)
 
 func _product_picker(tycoon: Dictionary) -> void:
+	var lock := _locked_contract()
+	if not lock.is_empty():
+		_topic_id = str(lock.get("topicId", _topic_id))
+		_type_id = str(lock.get("typeId", _type_id))
+	var contract_topic := str(lock.get("topicId", ""))
+	var contract_type := str(lock.get("typeId", ""))
+	var held := not lock.is_empty()
 	_heading("Ship a product", "Topic and format. The fit is the whole launch.")
 	_label("No API key and no network. The office simulates the launch.", false, null, "meta")
+	if held:
+		var lock_line := _label("Contract · %s · %s × %s" % [str(lock.get("client", "")), str(lock.get("topicName", "")), str(lock.get("typeName", ""))], false, null, "action")
+		lock_line.name = "ContractLock"
 	_label("Topic", true)
 	var topics := GridContainer.new()
 	topics.columns = 2
@@ -777,10 +836,13 @@ func _product_picker(tycoon: Dictionary) -> void:
 		var topic := item as Dictionary
 		var topic_id := str(topic.get("id", ""))
 		var topic_open := bool(topic.get("unlocked", true))
+		var topic_held := not held or topic_id == contract_topic
 		var topic_name := str(topic.get("name", "Topic"))
-		var topic_label := topic_name if topic_open else "%s · locked" % topic_name
+		var topic_label := topic_name
+		if not topic_open: topic_label = "%s · locked" % topic_name
+		elif not topic_held: topic_label = "%s · contract" % topic_name
 		if _topic_in_season(topic_id): topic_label = "%s · in season" % topic_label
-		_choice_button(topic_label, topic_open and topic_id == _topic_id, topics, _choose_topic.bind(topic_id), topic_open)
+		_choice_button(topic_label, topic_open and topic_held and topic_id == _topic_id, topics, _choose_topic.bind(topic_id), topic_open and topic_held)
 	_label("Product type", true)
 	var types := GridContainer.new()
 	types.columns = 2
@@ -793,8 +855,11 @@ func _product_picker(tycoon: Dictionary) -> void:
 		var kind := item as Dictionary
 		var type_id := str(kind.get("id", ""))
 		var type_open := bool(kind.get("unlocked", true))
+		var type_held := not held or type_id == contract_type
 		var type_name := str(kind.get("name", "Type"))
-		_choice_button(type_name if type_open else "%s · locked" % type_name, type_open and type_id == _type_id, types, _choose_type.bind(type_id), type_open)
+		var type_label := type_name if type_open else "%s · locked" % type_name
+		if type_open and not type_held: type_label = "%s · contract" % type_name
+		_choice_button(type_label, type_open and type_held and type_id == _type_id, types, _choose_type.bind(type_id), type_open and type_held)
 	var fit := _pair_fit(_topic_id, _type_id)
 	var fit_label := _label("Fit · %s. %s" % [_fit_word(fit), _fit_hint(fit)], false, null, "action")
 	fit_label.name = "ProductFit"
@@ -833,6 +898,7 @@ func _product_progress(product: Dictionary) -> void:
 	_show_research_fit(product, "ResearchFitJourney")
 	_show_launch_price(product, "LaunchPrice")
 	_show_marketing(product, "MarketingLine")
+	_show_contract(product, "ContractLine")
 	var progress := _label("Ready to ship" if ready else "Building · day %d of %d" % [dev_days, required], false, null, "action")
 	progress.name = "ProductProgress"
 	_label("Design %d · Tech %d · Hype %d" % [int(product.get("design", 0)), int(product.get("tech", 0)), int(product.get("hype", 0))], false, null, "meta")
@@ -872,6 +938,7 @@ func _release_screen() -> void:
 		_label("%s · %d" % [reviewer.get("name", "Reviewer"), int(reviewer.get("score", 0))], false, null, "action")
 		_label(str(reviewer.get("blurb", "")), false, null, "meta")
 	_label("Launch sales · $%s · +%d fans" % [_money(int(product.get("salesCents", 0))), int(product.get("fans", 0))], false, null, "action")
+	_show_contract(product, "ReleaseContract")
 	_show_launch_price(product, "ReleasePrice")
 	_show_marketing(product, "ReleaseMarketing")
 	var research_line := _label("+%d research points" % int(product.get("researchPoints", 0)), false, null, "action")
@@ -899,6 +966,7 @@ func _product_history(tycoon: Dictionary) -> void:
 		_show_research_fit(product, "ResearchFitJourney", card)
 		_show_launch_price(product, "LaunchPrice", card)
 		_show_marketing(product, "MarketingLine", card)
+		_show_contract(product, "ContractLine", card)
 
 func _released_focus() -> Dictionary:
 	var history: Array = _tycoon().get("history", []) as Array
