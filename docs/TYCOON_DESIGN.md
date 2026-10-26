@@ -9,7 +9,7 @@ The rules in `harness/src/tycoon.ts` are authoritative. This document matches th
 1. **Offline.** A new company ships a product with no API key and no network. Providers stay optional, and only on chapter work orders and chat.
 2. **The pairing is the decision.** A topic and a product type fit together at Great, Good, Okay, or Bad, in the Game Dev Tycoon way. A bad pairing can still ship. It sells worse.
 3. **Days, not a progress bar you click.** Development and sales move when the office day ends. The room stays the cozy Stardew-style office already in the game.
-4. **Deterministic.** Reviews and sales are pure functions of the company seed, the product id, the fit, the points, the research bonus stored on the product, the launch price stored on the product, the marketing choice stored on the product, and reputation. The same save replays the same launch.
+4. **Deterministic.** Reviews and sales are pure functions of the company seed, the product id, the fit, the points, the research bonus stored on the product, the launch price stored on the product, the marketing choice stored on the product, and reputation. A contract bonus is a separate cash line. It is not one of those inputs. The same save replays the same launch.
 5. **One product on the bench.** A second idea waits until the first one ships. A shipped product can still be selling while the next one starts.
 
 ## Core loop
@@ -17,9 +17,9 @@ The rules in `harness/src/tycoon.ts` are authoritative. This document matches th
 1. From Company Journey, choose **New Product**.
 2. Pick a topic and a product type. The panel shows the fit.
 3. The founder is always on the build. Hired teammates can join.
-4. **Start development.** The product stores the fit, the staff snapshot, the research bonus, the launch price, and the marketing choice. A paid ad spends game cash here.
+4. **Start development.** The product stores the fit, the staff snapshot, the research bonus, the launch price, and the marketing choice. A paid ad spends game cash here. An accepted contract also stores the client and the bonus.
 5. **End day + save** once for each office day of work. The team adds design, tech, and hype. Progress is `dev days / days required`.
-6. When the required days are done, **Release**. Four reviewers score it from 1 to 10. Launch-day sales pay game cash and fans immediately.
+6. When the required days are done, **Release**. Four reviewers score it from 1 to 10. Launch-day sales pay game cash and fans immediately. If the product was started under a contract, that release also pays the bonus as its own cash line.
 7. The next three office days keep selling, once each, when the day ends. The release day does not sell twice.
 8. The product moves onto the shelf. Cash and reputation (fans) stay on the company. Ship another.
 
@@ -270,13 +270,40 @@ Marketing is step 4 of the sale composition above. It runs after launch-price un
 
 `journey.tycoon.marketingOptions` is the three rows, each with `enabled` and `reason`. The New Product picker shows them under Price as secondary buttons, plus one line, for example "None · $0 · no extra units" or "Small ad · $50 · +20% units". A disabled button reads "Small ad · Need $50". The bench, the release card, and the shipped list repeat that line when an ad was bought. Hire stays the one primary action. A payload without `marketingOptions` leaves the control out, so older UI fixtures still render.
 
+## Contracts
+
+One client offer at a time, on Company Journey. The offer is `contractBySlot(seed, completed)`. `completed` is how many shipped products stored a contract. The office day is not in that formula, so the card does not change overnight. Ignoring the offer leaves it in place. Releasing a contracted product advances the slot immediately. The next offer does not wait out the four-day sales window.
+
+Every pair is in the starter catalog. There is no minimum review score. The bonus always pays once, on release.
+
+| Id | Client | Topic | Type | Bonus |
+| --- | --- | --- | --- | --- |
+| `nova` | Nova on Whop | Crypto Alpha | Newsletter | $80 |
+| `remy` | Remy on Whop | Fitness | Course | $120 |
+| `juniper` | Juniper on Whop | Cooking | Newsletter | $70 |
+| `pax` | Pax on Whop | Gaming | Community | $100 |
+| `kit` | Kit on Whop | Study Notes | Template Pack | $60 |
+| `lane` | Lane on Whop | Trading | Newsletter | $90 |
+
+Accept only while the bench is empty. Otherwise the card says "Ship the product on the bench first." and Accept stays disabled. A second accept fails with "A contract is already accepted." The pending accept is `{"id":"..."}` in `tycoon_meta.contract_json` (migration `014_tycoon_contracts.sql`). Empty or unknown means no pending accept.
+
+The next product must use that topic and type. A different pair fails with "This contract is Topic × Type.", starts nothing, and charges no ad. The picker locks to the pair. Other unlocked topics and types are disabled and read "· contract". A research lock still reads "· locked". On a matching start, the product snapshot gains `contract: {id, client, bonusCents}` and the pending accept is cleared. The card then says "On the bench."
+
+On release, one ledger row is written: id `tycoon:contract:<productId>`, cash and earned equal the bonus, reputation 0, label `Contract: <client>`. Sales units, price, fans, and `sales_cents` stay on the old formula. A later sales day does not pay the bonus again. Releasing twice fails because the product already shipped.
+
+No contract is the default. A product started while the offer is ignored stores no `contract` key. An older row that is only a staff array, or that omits the field, pays nothing and is not rewritten. An unknown id pays nothing. A known id with a non-positive stored bonus uses the catalog bonus. A blank client uses the catalog client. Reads do not rewrite `staff_json`.
+
+`journey.tycoon.contract` is always present: `id`, `client`, `topicId`, `typeId`, `topicName`, `typeName`, `bonusCents`, `status` (`offered`, `accepted`, or `building`), `enabled`, and `reason`. Each product carries `contract` as null or `{client, bonusCents}`. A payload without `tycoon.contract` draws no card and leaves the picker free, so older UI fixtures still render.
+
+The Company Journey card is headed "Contract". The lines are the client, "Topic × Type", and "Bonus $80 on release" in whole dollars. Accept contract is a secondary button, and only while the status is `offered`. Hire stays the one primary action. The bench, the release card, and the shipped list show "Contract: Client · +$80" when the product has a contract.
+
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, and marketing. The entries are **New Product**, **Train staff**, **Research**, **Upgrades**, **Office**, and **Season** on Company Journey. Price and marketing live on the New Product picker.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, and contracts. The entries are **New Product**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Office**, and **Season** on Company Journey. Price and marketing live on the New Product picker.
 
 Next slice:
 
-1. **Contracts.** One client offer on Company Journey. Accepting it locks the next product to that topic and type and pays a fixed bonus on release. Ignoring it leaves the free picker. No contract keeps the first newsletter at the same cash.
+1. **Patches.** One optional patch on a shipped product. It spends game cash and adds a little to the stored score for the remaining sales days. No patch leaves every sale on the old formula. The default is off, so the first newsletter still pays 20700 cents and 5 fans.
 
 Later art ask: a second room. Office growth shipped as spare desks on the current floor (`compact_desk` and `shared_workbench`, already bound). There is no second-room architecture art, so that room waits.
 

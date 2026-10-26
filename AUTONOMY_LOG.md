@@ -1371,3 +1371,43 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → leave None or buy Small ad / Big ad → ship. The first newsletter with no ad is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_marketing.gd`.
 
+### Round 35 — 2026-10-26
+
+**What changed**
+- Contracts on Company Journey. One offer at a time, from `contractBySlot(seed, completed)`. `completed` is how many shipped products stored a contract. The office day is not in the formula, so the card does not change overnight. Six starter pairs: Nova on Whop, Crypto Alpha × Newsletter, $80; Remy on Whop, Fitness × Course, $120; Juniper on Whop, Cooking × Newsletter, $70; Pax on Whop, Gaming × Community, $100; Kit on Whop, Study Notes × Template Pack, $60; Lane on Whop, Trading × Newsletter, $90. There is no minimum review score. Seed 26021 opens on Pax. Ignoring the offer leaves the free picker and the same client. Accept only while the bench is empty. A product on the bench disables Accept and says "Ship the product on the bench first." A second accept fails with "A contract is already accepted."
+- The pending accept is `{"id":"..."}` in `tycoon_meta.contract_json` (migration `014_tycoon_contracts.sql`). A matching start copies `{id, client, bonusCents}` onto the product `staff_json` and clears the pending accept. A different pair fails with "This contract is Topic × Type.", starts nothing, and charges no ad. The picker locks that pair. Other unlocked topics and types are disabled and read "· contract". A research lock still reads "· locked".
+- On release, one ledger row: id `tycoon:contract:<productId>`, cash and earned equal the bonus, reputation 0, label `Contract: <client>`. Sales units, price, fans, and `sales_cents` stay on the old formula. A later sales day does not pay the bonus again. The next offer is on the card as soon as that product ships. It does not wait out the four-day sales window.
+- No contract is the default. The first Crypto Alpha Newsletter still pays 20700 cents and 5 fans. A product started while the offer is ignored stores no `contract` key. An older row that is only a staff array, or a row that omits the field, pays nothing and is not rewritten. An unknown id pays nothing. A known id with a non-positive stored bonus uses the catalog bonus. Reads do not rewrite `staff_json`.
+- The Company Journey card sits between New Product and Train staff. The lines are the client, "Topic × Type", and "Bonus $100 on release" in whole dollars. Accept contract is secondary, and only while the status is offered. Hire stays the one primary action. The bench, the release card, and the shipped list show "Contract: Client · +$100" when the product has a contract. A payload without `tycoon.contract` draws no card and leaves the picker free.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Patches are the next slice. One optional patch on a shipped product. It spends game cash and adds a little to the stored score for the remaining sales days. No patch leaves every sale on the old formula. The default is off, so the first newsletter still pays 20700 cents and 5 fans.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. Carried from Round 34: Creative has no seated sheet. Unbound art stays untracked. The live path is still a harness driver. A cheap reviewer can still sit just under the 2.5 ready line. Chapter 3 ends at "More is coming." The starter `shared_workbench` stays in storage. The one on the Open Floor is a separate grant.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 103 tests, 101 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test covers a stable offer that does not move when the day ends, the next slot after one completion, accept locking the pair, a wrong pair refused before any start, the bonus paid once with label `Contract: <client>`, the ignore path still at 20700 cents and 5 fans with no contract label, and an older staff-array row paying nothing without rewriting `staff_json`.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS (40 checks, 0 failures). Launch sales stay 20700 cents and 5 fans. The next office day stays 33300 cents and 8 fans.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS (50 checks, 0 failures)
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS (50 checks, 0 failures)
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS (47 checks, 0 failures). The second sales day is still $333.
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS (23 checks, 0 failures)
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS (25 checks, 0 failures)
+- `test_tycoon_price.gd` — TYCOON PRICE PASS (49 checks, 0 failures). Catalog launch is 20700 cents and 5 fans.
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS (55 checks, 0 failures). No ad stays 20700 cents and 5 fans.
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS (60 checks, 0 failures). Ignoring the offer leaves Fitness and Crypto Alpha free. The newsletter still pays 20700 cents and 5 fans and hides the contract line. Accept then locks the offer pair. Other topics and types read "· contract". Release pays the bonus once on top of launch sales and adds no fans.
+- `test_ui_company_redesign.gd` — 5685 checks, 0 failures, 0 captures. The contract fixture reads "Nova on Whop", "Crypto Alpha × Newsletter", and "Bonus $80 on release". Accept contract is secondary. Hire Mina stays primary.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Twenty-three PNGs in `/workspace/sv-proof/round-35/` (local, not committed). `22-contract-offer.png` is Company Journey on the Contract card: Pax on Whop, Gaming × Community, Bonus $100 on release, and Accept contract as a secondary button. Hire Mina stays orange. The card sits above Train staff and does not collide with it. `23-contract-released.png` is Gaming Community on the release card with "Contract: Pax on Whop · +$100" under launch sales $835.20. That launch still carries the picker’s leftover −20% price and small ad from the earlier sneakers drop. The bonus is its own line. Company cash on that card is $1,298.40 and 27 reputation. Cash before the desk buy was 129840 cents. Text is readable and the lines do not overlap. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-35 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → read the offer or press Accept contract → the next product is locked to that pair → ship. Ignoring it leaves the free picker. The first newsletter with no contract is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_contracts.gd`.
+
