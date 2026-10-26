@@ -5,6 +5,7 @@ Player-facing flows for the offline tycoon. The harness owns the rules (`docs/TY
 - [Ship a product](ship-a-product.md)
 - [Launch price](launch-price.md)
 - [Marketing](marketing.md)
+- [Contracts](contracts.md)
 - [Train staff](train-staff.md)
 - [Research](research.md)
 - [Upgrades](upgrades.md)

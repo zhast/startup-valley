@@ -599,6 +599,29 @@ func _tycoon_secondary_actions() -> void:
 	_check(owned_light != null and owned_light.text.contains("Ring Light"), "An owned upgrade shows one line")
 	_check(_panel.find_child("Buy_ring_light", true, false) == null, "An owned upgrade hides its buy button")
 	var tycoon: Dictionary = value["tycoon"]
+	tycoon["contract"] = {
+		"id": "nova",
+		"client": "Nova on Whop",
+		"topicId": "crypto",
+		"typeId": "newsletter",
+		"topicName": "Crypto Alpha",
+		"typeName": "Newsletter",
+		"bonusCents": 8000,
+		"status": "offered",
+		"enabled": true,
+		"reason": "",
+	}
+	await _present("journey", value)
+	var accept := _panel.find_child("AcceptContract", true, false) as Button
+	var contract_client := _panel.find_child("ContractClient", true, false) as Label
+	var contract_pair := _panel.find_child("ContractPair", true, false) as Label
+	var contract_bonus := _panel.find_child("ContractBonus", true, false) as Label
+	_check(accept != null and not accept.disabled and str(accept.get_meta("cozy_variant", "")) == "secondary" and accept.text == "Accept contract", "Accept contract reads as secondary")
+	_check(contract_client != null and contract_client.text == "Nova on Whop", "The contract card names the client")
+	_check(contract_pair != null and contract_pair.text == "Crypto Alpha × Newsletter", "The contract card names the pair")
+	_check(contract_bonus != null and contract_bonus.text == "Bonus $80 on release", "The contract card names the bonus")
+	_check(_button("Hire Mina") != null and str(_button("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside the contract")
+	tycoon.erase("contract")
 	for topic: Dictionary in tycoon["topics"]:
 		topic["unlocked"] = true
 	for kind: Dictionary in tycoon["types"]:

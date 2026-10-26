@@ -133,6 +133,7 @@ export class GameDatabase {
       [11, "011_tycoon_research.sql"],
       [12, "012_tycoon_upgrades.sql"],
       [13, "013_tycoon_office.sql"],
+      [14, "014_tycoon_contracts.sql"],
     ] as const) {
       const applied = this.#database.prepare("SELECT version FROM schema_migrations WHERE version = ?").get(version);
       if (applied) continue;

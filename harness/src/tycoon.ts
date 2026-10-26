@@ -32,6 +32,18 @@ export const MARKETING = [
   { id: "small", label: "Small ad", costCents: 5_000, unitPercent: 120 },
   { id: "big", label: "Big ad", costCents: 15_000, unitPercent: 150 },
 ] as const;
+/**
+ * One client at a time. Every pair is in the starter catalog.
+ * The bonus is cash on release. It does not change units, price, or fans.
+ */
+export const CONTRACTS = [
+  { id: "nova", client: "Nova on Whop", topicId: "crypto", typeId: "newsletter", bonusCents: 8_000 },
+  { id: "remy", client: "Remy on Whop", topicId: "fitness", typeId: "course", bonusCents: 12_000 },
+  { id: "juniper", client: "Juniper on Whop", topicId: "cooking", typeId: "newsletter", bonusCents: 7_000 },
+  { id: "pax", client: "Pax on Whop", topicId: "gaming", typeId: "community", bonusCents: 10_000 },
+  { id: "kit", client: "Kit on Whop", topicId: "study_notes", typeId: "template_pack", bonusCents: 6_000 },
+  { id: "lane", client: "Lane on Whop", topicId: "trading", typeId: "newsletter", bonusCents: 9_000 },
+] as const;
 /** Stardew-shaped office calendar. Derived from the saved day. It does not replace the clock. */
 export const SEASON_LENGTH_DAYS = 28;
 export const YEAR_LENGTH_DAYS = 112;
@@ -106,6 +118,7 @@ export type LaunchPricePercent = (typeof LAUNCH_PRICES)[number]["percent"];
 export type LaunchPriceStep = (typeof LAUNCH_PRICES)[number];
 export type MarketingId = (typeof MARKETING)[number]["id"];
 export type MarketingOption = (typeof MARKETING)[number];
+export type ContractId = (typeof CONTRACTS)[number]["id"];
 
 /** New companies. Crypto Alpha × Newsletter stays in this set. */
 const STARTER_TOPIC_IDS: readonly TopicId[] = ["fitness", "trading", "cooking", "gaming", "study_notes", "crypto"];
@@ -261,6 +274,8 @@ export interface TycoonProductView {
   priceCents: number;
   /** Ad bought at the start. Omitted rows read as none. */
   marketing: MarketingId;
+  /** Client bonus snapshotted at the start. Omitted rows are no contract. */
+  contract: { client: string; bonusCents: number } | null;
 }
 
 export interface TycoonUpgradeView {
@@ -315,6 +330,20 @@ export interface TycoonOffice {
   next: TycoonOfficeNext | null;
 }
 
+export interface TycoonContractView {
+  id: ContractId;
+  client: string;
+  topicId: TopicId;
+  typeId: ProductTypeId;
+  topicName: string;
+  typeName: string;
+  bonusCents: number;
+  /** offered = free to ignore. accepted = locked, no product yet. building = on the bench. */
+  status: "offered" | "accepted" | "building";
+  enabled: boolean;
+  reason: string;
+}
+
 export interface TycoonSnapshot {
   seed: number;
   salesWindowDays: number;
@@ -331,6 +360,7 @@ export interface TycoonSnapshot {
   office: TycoonOffice;
   priceSteps: LaunchPriceStep[];
   marketingOptions: Array<MarketingOption & { enabled: boolean; reason: string }>;
+  contract: TycoonContractView;
   developing: TycoonProductView | null;
   history: TycoonProductView[];
 }
@@ -476,6 +506,63 @@ export function marketingUnitPercent(id: unknown): number {
   return marketingById(normalizeMarketing(id))?.unitPercent ?? 100;
 }
 
+export function contractById(id: string): (typeof CONTRACTS)[number] | undefined {
+  return CONTRACTS.find((item) => item.id === id);
+}
+
+/** Stable offer for this company. The day does not move it. Completing one advances the slot. */
+export function contractBySlot(seed: number, completed: number): (typeof CONTRACTS)[number] {
+  const start = mixSeed(seed, "contract") % CONTRACTS.length;
+  const index = (start + Math.max(0, completed)) % CONTRACTS.length;
+  return CONTRACTS[index] ?? CONTRACTS[0];
+}
+
+interface ProductContract {
+  id: ContractId;
+  client: string;
+  bonusCents: number;
+}
+
+/** A missing or unknown contract pays nothing. A stored bonus stays put. */
+function parseContract(value: unknown): ProductContract | null {
+  if (!value || typeof value !== "object") return null;
+  const body = value as { id?: unknown; client?: unknown; bonusCents?: unknown };
+  if (typeof body.id !== "string") return null;
+  const known = contractById(body.id);
+  if (!known) return null;
+  const bonus = Number(body.bonusCents);
+  const bonusCents = Number.isInteger(bonus) && bonus > 0 ? bonus : known.bonusCents;
+  const client = typeof body.client === "string" && body.client.trim() ? body.client : known.client;
+  return { id: known.id, client, bonusCents };
+}
+
+function contractView(
+  id: ContractId,
+  client: string,
+  topicId: TopicId,
+  typeId: ProductTypeId,
+  bonusCents: number,
+  status: TycoonContractView["status"],
+  enabled: boolean,
+  reason: string,
+): TycoonContractView {
+  const topic = topicById(topicId);
+  const type = typeById(typeId);
+  if (!topic || !type) throw new Error("Unknown topic or product type");
+  return {
+    id,
+    client,
+    topicId,
+    typeId,
+    topicName: topic.name,
+    typeName: type.name,
+    bonusCents,
+    status,
+    enabled,
+    reason,
+  };
+}
+
 /** Extra units for the whole sales window. None leaves units unchanged. Always at least 1. */
 export function applyMarketingUnits(units: number, id: unknown): number {
   const percent = marketingUnitPercent(id);
@@ -586,19 +673,20 @@ function parseStaffList(parsed: unknown): StaffSnapshot[] {
   return result;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, and no ad. New rows add `{researchBonus, pricePercent, marketing}`. */
-function parseProductSnapshot(raw: string): { staff: StaffSnapshot[]; researchBonus: number; pricePercent: LaunchPricePercent; marketing: MarketingId } {
-  const empty = { staff: [] as StaffSnapshot[], researchBonus: 0, pricePercent: 100 as LaunchPricePercent, marketing: "none" as MarketingId };
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, and no contract. */
+function parseProductSnapshot(raw: string): { staff: StaffSnapshot[]; researchBonus: number; pricePercent: LaunchPricePercent; marketing: MarketingId; contract: ProductContract | null } {
+  const empty = { staff: [] as StaffSnapshot[], researchBonus: 0, pricePercent: 100 as LaunchPricePercent, marketing: "none" as MarketingId, contract: null };
   let parsed: unknown;
   try { parsed = JSON.parse(raw); } catch { return empty; }
-  if (Array.isArray(parsed)) return { staff: parseStaffList(parsed), researchBonus: 0, pricePercent: 100, marketing: "none" };
+  if (Array.isArray(parsed)) return { staff: parseStaffList(parsed), researchBonus: 0, pricePercent: 100, marketing: "none", contract: null };
   if (!parsed || typeof parsed !== "object" || !("staff" in parsed)) return empty;
-  const body = parsed as { staff?: unknown; researchBonus?: unknown; pricePercent?: unknown; marketing?: unknown };
+  const body = parsed as { staff?: unknown; researchBonus?: unknown; pricePercent?: unknown; marketing?: unknown; contract?: unknown };
   return {
     staff: parseStaffList(body.staff),
     researchBonus: normalizeResearchBonus(Number(body.researchBonus)),
     pricePercent: normalizeLaunchPricePercent(body.pricePercent),
     marketing: normalizeMarketing(body.marketing),
+    contract: parseContract(body.contract),
   };
 }
 
@@ -884,6 +972,7 @@ export class TycoonStore {
       office: this.officeView(this.officeLevel(), hired.size, cash),
       priceSteps: [...LAUNCH_PRICES],
       marketingOptions: marketingOffer(cash),
+      contract: this.contractOffer(developing),
       developing: developing ? this.toView(developing) : null,
       history,
     };
@@ -901,6 +990,12 @@ export class TycoonStore {
       if (!type || !research.types.has(typeId)) throw new Error(`${type?.name ?? "That product type"} is locked. Research it first.`);
       const pricePercent = pricePercentValue === undefined ? 100 : asLaunchPrice(pricePercentValue);
       const marketing = marketingValue === undefined ? "none" : asMarketing(marketingValue);
+      const pending = this.loadPendingContract();
+      if (pending && (pending.topicId !== topicId || pending.typeId !== typeId)) {
+        const topicName = topicById(pending.topicId)?.name ?? pending.topicId;
+        const typeName = typeById(pending.typeId)?.name ?? pending.typeId;
+        throw new Error(`This contract is ${topicName} × ${typeName}.`);
+      }
       const staffIds = this.assignedStaff(requestedStaff);
       const option = marketingById(marketing);
       if (!option) throw new Error("Pick None, Small ad, or Big ad.");
@@ -912,7 +1007,13 @@ export class TycoonStore {
       if (option.costCents > 0) {
         this.journey.recordCompanyChange(`tycoon:marketing:${id}`, this.day(), -option.costCents, 0, 0, option.label);
       }
-      const snapshot = {
+      const snapshot: {
+        staff: StaffSnapshot[];
+        researchBonus: number;
+        pricePercent: LaunchPricePercent;
+        marketing: MarketingId;
+        contract?: ProductContract;
+      } = {
         staff: staffIds.map((memberId) => ({
           id: memberId, design: stats[memberId].design, tech: stats[memberId].tech, hype: stats[memberId].hype,
         })),
@@ -920,6 +1021,10 @@ export class TycoonStore {
         pricePercent,
         marketing,
       };
+      if (pending) {
+        snapshot.contract = { id: pending.id, client: pending.client, bonusCents: pending.bonusCents };
+        this.savePendingContract(null);
+      }
       this.db.prepare(`
         INSERT INTO tycoon_products (
           id, topic_id, type_id, name, fit, status, started_day, dev_days,
@@ -1072,6 +1177,26 @@ export class TycoonStore {
         .run(day, JSON.stringify(review), bonus, row.id);
       this.addResearchPoints(bonus);
       this.applySale(this.row(row.id)!, day);
+      if (stored.contract) {
+        this.journey.recordCompanyChange(
+          `tycoon:contract:${row.id}`,
+          day,
+          stored.contract.bonusCents,
+          stored.contract.bonusCents,
+          0,
+          `Contract: ${stored.contract.client}`,
+        );
+      }
+      return this.journey.state();
+    });
+  }
+
+  acceptContract(): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      if (this.developingRow()) throw new Error("Ship the product on the bench first.");
+      if (this.loadPendingContract()) throw new Error("A contract is already accepted.");
+      const offer = contractBySlot(this.seed(), this.completedContractCount());
+      this.savePendingContract(offer.id);
       return this.journey.state();
     });
   }
@@ -1404,6 +1529,65 @@ export class TycoonStore {
     this.db.prepare("UPDATE tycoon_meta SET staff_json = ? WHERE id = 1").run(JSON.stringify(state));
   }
 
+  private contractOffer(developing: ProductRow | undefined): TycoonContractView {
+    const onBench = developing !== undefined;
+    if (developing) {
+      const stored = parseProductSnapshot(developing.staff_json).contract;
+      if (stored) {
+        return contractView(stored.id, stored.client, asTopic(developing.topic_id), asType(developing.type_id), stored.bonusCents, "building", false, "On the bench.");
+      }
+    }
+    const pending = this.loadPendingContract();
+    if (pending) {
+      return contractView(
+        pending.id,
+        pending.client,
+        pending.topicId,
+        pending.typeId,
+        pending.bonusCents,
+        "accepted",
+        false,
+        onBench ? "Ship the product on the bench first." : "Accepted. The next product uses this pair.",
+      );
+    }
+    const offer = contractBySlot(this.seed(), this.completedContractCount());
+    return contractView(
+      offer.id,
+      offer.client,
+      offer.topicId,
+      offer.typeId,
+      offer.bonusCents,
+      "offered",
+      !onBench,
+      onBench ? "Ship the product on the bench first." : "",
+    );
+  }
+
+  private completedContractCount(): number {
+    const rows = this.db.prepare("SELECT status, staff_json FROM tycoon_products").all() as Array<{ status: string; staff_json: string }>;
+    let count = 0;
+    for (const row of rows) {
+      if (row.status === "developing") continue;
+      if (parseProductSnapshot(row.staff_json).contract) count += 1;
+    }
+    return count;
+  }
+
+  private loadPendingContract(): (typeof CONTRACTS)[number] | null {
+    const row = this.db.prepare("SELECT contract_json FROM tycoon_meta WHERE id = 1").get() as { contract_json?: string } | undefined;
+    const raw = row?.contract_json?.trim() ?? "";
+    if (!raw) return null;
+    let parsed: unknown;
+    try { parsed = JSON.parse(raw); } catch { return null; }
+    if (!parsed || typeof parsed !== "object" || !("id" in parsed)) return null;
+    const known = contractById(String((parsed as { id: unknown }).id));
+    return known ?? null;
+  }
+
+  private savePendingContract(id: ContractId | null): void {
+    this.db.prepare("UPDATE tycoon_meta SET contract_json = ? WHERE id = 1").run(id ? JSON.stringify({ id }) : "");
+  }
+
   private seed(): number {
     const row = this.db.prepare("SELECT seed FROM tycoon_meta WHERE id = 1").get() as { seed: number } | undefined;
     if (!row) throw new Error("Tycoon seed is missing");
@@ -1463,6 +1647,7 @@ export class TycoonStore {
       pricePercent: snapshot.pricePercent,
       priceCents: launchPriceCents(type.priceCents, snapshot.pricePercent),
       marketing: snapshot.marketing,
+      contract: snapshot.contract ? { client: snapshot.contract.client, bonusCents: snapshot.contract.bonusCents } : null,
     };
   }
 
