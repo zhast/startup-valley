@@ -26,6 +26,12 @@ export const LAUNCH_PRICES = [
   { percent: 100, unitPercent: 100, label: "Catalog" },
   { percent: 120, unitPercent: 80, label: "+20%" },
 ] as const;
+/** None is free and leaves units alone. A paid ad is cash at the start, then extra units all window. */
+export const MARKETING = [
+  { id: "none", label: "None", costCents: 0, unitPercent: 100 },
+  { id: "small", label: "Small ad", costCents: 5_000, unitPercent: 120 },
+  { id: "big", label: "Big ad", costCents: 15_000, unitPercent: 150 },
+] as const;
 /** Stardew-shaped office calendar. Derived from the saved day. It does not replace the clock. */
 export const SEASON_LENGTH_DAYS = 28;
 export const YEAR_LENGTH_DAYS = 112;
@@ -98,6 +104,8 @@ export type Fit = "great" | "good" | "okay" | "bad";
 export type SeasonId = "spring" | "summer" | "fall" | "winter";
 export type LaunchPricePercent = (typeof LAUNCH_PRICES)[number]["percent"];
 export type LaunchPriceStep = (typeof LAUNCH_PRICES)[number];
+export type MarketingId = (typeof MARKETING)[number]["id"];
+export type MarketingOption = (typeof MARKETING)[number];
 
 /** New companies. Crypto Alpha × Newsletter stays in this set. */
 const STARTER_TOPIC_IDS: readonly TopicId[] = ["fitness", "trading", "cooking", "gaming", "study_notes", "crypto"];
@@ -251,6 +259,8 @@ export interface TycoonProductView {
   pricePercent: LaunchPricePercent;
   /** Chosen unit price in cents, before the checkout boost. */
   priceCents: number;
+  /** Ad bought at the start. Omitted rows read as none. */
+  marketing: MarketingId;
 }
 
 export interface TycoonUpgradeView {
@@ -320,6 +330,7 @@ export interface TycoonSnapshot {
   calendar: TycoonCalendar;
   office: TycoonOffice;
   priceSteps: LaunchPriceStep[];
+  marketingOptions: Array<MarketingOption & { enabled: boolean; reason: string }>;
   developing: TycoonProductView | null;
   history: TycoonProductView[];
 }
@@ -452,6 +463,39 @@ function asLaunchPrice(value: number): LaunchPricePercent {
   throw new Error("Pick −20%, catalog, or +20%.");
 }
 
+export function marketingById(id: string): MarketingOption | undefined {
+  return MARKETING.find((item) => item.id === id);
+}
+
+/** Unknown or omitted values are no ad. */
+export function normalizeMarketing(value: unknown): MarketingId {
+  return typeof value === "string" && marketingById(value) ? value as MarketingId : "none";
+}
+
+export function marketingUnitPercent(id: unknown): number {
+  return marketingById(normalizeMarketing(id))?.unitPercent ?? 100;
+}
+
+/** Extra units for the whole sales window. None leaves units unchanged. Always at least 1. */
+export function applyMarketingUnits(units: number, id: unknown): number {
+  const percent = marketingUnitPercent(id);
+  if (percent === 100) return Math.max(1, units);
+  return Math.max(1, Math.round((units * percent) / 100));
+}
+
+function asMarketing(value: string): MarketingId {
+  const option = marketingById(value);
+  if (!option) throw new Error("Pick None, Small ad, or Big ad.");
+  return option.id;
+}
+
+function marketingOffer(cash: number): TycoonSnapshot["marketingOptions"] {
+  return MARKETING.map((item) => {
+    const short = item.costCents > 0 && cash < item.costCents;
+    return { ...item, enabled: !short, reason: short ? `Need ${wholeDollars(item.costCents)}` : "" };
+  });
+}
+
 export function releaseResearchPoints(score: number): number {
   return Math.floor(Math.max(0, score) / 2);
 }
@@ -542,18 +586,19 @@ function parseStaffList(parsed: unknown): StaffSnapshot[] {
   return result;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus. New rows add `{researchBonus, pricePercent}`. */
-function parseProductSnapshot(raw: string): { staff: StaffSnapshot[]; researchBonus: number; pricePercent: LaunchPricePercent } {
-  const empty = { staff: [] as StaffSnapshot[], researchBonus: 0, pricePercent: 100 as LaunchPricePercent };
+/** Older rows are a staff array and count as catalog price, no bonus, and no ad. New rows add `{researchBonus, pricePercent, marketing}`. */
+function parseProductSnapshot(raw: string): { staff: StaffSnapshot[]; researchBonus: number; pricePercent: LaunchPricePercent; marketing: MarketingId } {
+  const empty = { staff: [] as StaffSnapshot[], researchBonus: 0, pricePercent: 100 as LaunchPricePercent, marketing: "none" as MarketingId };
   let parsed: unknown;
   try { parsed = JSON.parse(raw); } catch { return empty; }
-  if (Array.isArray(parsed)) return { staff: parseStaffList(parsed), researchBonus: 0, pricePercent: 100 };
+  if (Array.isArray(parsed)) return { staff: parseStaffList(parsed), researchBonus: 0, pricePercent: 100, marketing: "none" };
   if (!parsed || typeof parsed !== "object" || !("staff" in parsed)) return empty;
-  const body = parsed as { staff?: unknown; researchBonus?: unknown; pricePercent?: unknown };
+  const body = parsed as { staff?: unknown; researchBonus?: unknown; pricePercent?: unknown; marketing?: unknown };
   return {
     staff: parseStaffList(body.staff),
     researchBonus: normalizeResearchBonus(Number(body.researchBonus)),
     pricePercent: normalizeLaunchPricePercent(body.pricePercent),
+    marketing: normalizeMarketing(body.marketing),
   };
 }
 
@@ -644,12 +689,16 @@ export function salesForDay(input: {
   bonusFans?: number;
   /** Launch price as a percent of the catalog. Omitted is catalog (100). */
   pricePercent?: number;
+  /** Ad id stored on the product. Omitted is no ad. */
+  marketing?: string;
 }): TycoonSales {
   const curve = SALES_CURVE[input.dayIndex];
   const type = typeById(input.typeId);
   if (curve === undefined || !type) throw new Error("Sales day is outside the window");
   const swing = (mixSeed(input.seed, input.productId, "sales", input.dayIndex) % 21) - 10;
   const baseUnits = FIT_UNITS[input.fit] + Math.floor((input.score * 3) / 2) + Math.floor(input.reputation / 10);
+  // Units: base, launch price, season, marketing. Fans follow those units.
+  // Price: launch price, then checkout. Cash is units times that price.
   let units = Math.max(1, Math.round((baseUnits * curve * (100 + swing)) / 10000));
   const pricePercent = normalizeLaunchPricePercent(input.pricePercent);
   units = applyLaunchPriceUnits(units, pricePercent);
@@ -657,6 +706,7 @@ export function salesForDay(input: {
   if (Number.isInteger(unitBoost) && unitBoost > 0) {
     units = Math.max(1, Math.round((units * (100 + unitBoost)) / 100));
   }
+  units = applyMarketingUnits(units, input.marketing);
   const fanPermille = input.score >= 8 ? 400 : input.score >= 5 ? 200 : 100;
   const bonusFans = Number.isInteger(input.bonusFans) && (input.bonusFans ?? 0) > 0 ? (input.bonusFans as number) : 0;
   const fans = Math.max(1, Math.round((units * fanPermille) / 1000)) + bonusFans;
@@ -833,12 +883,13 @@ export class TycoonStore {
       calendar: calendarForDay(day),
       office: this.officeView(this.officeLevel(), hired.size, cash),
       priceSteps: [...LAUNCH_PRICES],
+      marketingOptions: marketingOffer(cash),
       developing: developing ? this.toView(developing) : null,
       history,
     };
   }
 
-  start(topicValue: string, typeValue: string, requestedStaff: readonly string[], pricePercentValue?: number): ReturnType<JourneyStore["state"]> {
+  start(topicValue: string, typeValue: string, requestedStaff: readonly string[], pricePercentValue?: number, marketingValue?: string): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
       if (this.developingRow()) throw new Error("A product is already on the bench. Ship it or keep building.");
       const topicId = asTopic(topicValue);
@@ -849,18 +900,26 @@ export class TycoonStore {
       if (!topic || !research.topics.has(topicId)) throw new Error(`${topic?.name ?? "That topic"} is locked. Research it first.`);
       if (!type || !research.types.has(typeId)) throw new Error(`${type?.name ?? "That product type"} is locked. Research it first.`);
       const pricePercent = pricePercentValue === undefined ? 100 : asLaunchPrice(pricePercentValue);
+      const marketing = marketingValue === undefined ? "none" : asMarketing(marketingValue);
       const staffIds = this.assignedStaff(requestedStaff);
+      const option = marketingById(marketing);
+      if (!option) throw new Error("Pick None, Small ad, or Big ad.");
+      if (option.costCents > 0 && this.cashCents() < option.costCents) throw new Error(`Need ${wholeDollars(option.costCents)}`);
       const stats = this.loadStaffState();
       const researchBonus = researchFitBonus(research.researchedTopics.has(topicId), research.researchedTypes.has(typeId));
+      const count = Number((this.db.prepare("SELECT COUNT(*) AS n FROM tycoon_products").get() as { n: number }).n);
+      const id = `p${count + 1}`;
+      if (option.costCents > 0) {
+        this.journey.recordCompanyChange(`tycoon:marketing:${id}`, this.day(), -option.costCents, 0, 0, option.label);
+      }
       const snapshot = {
-        staff: staffIds.map((id) => ({
-          id, design: stats[id].design, tech: stats[id].tech, hype: stats[id].hype,
+        staff: staffIds.map((memberId) => ({
+          id: memberId, design: stats[memberId].design, tech: stats[memberId].tech, hype: stats[memberId].hype,
         })),
         researchBonus,
         pricePercent,
+        marketing,
       };
-      const count = Number((this.db.prepare("SELECT COUNT(*) AS n FROM tycoon_products").get() as { n: number }).n);
-      const id = `p${count + 1}`;
       this.db.prepare(`
         INSERT INTO tycoon_products (
           id, topic_id, type_id, name, fit, status, started_day, dev_days,
@@ -1082,6 +1141,7 @@ export class TycoonStore {
       dayIndex: applied,
       reputation,
       pricePercent: stored.pricePercent,
+      marketing: stored.marketing,
       priceBoostPercent: this.priceBoostPercent(),
       unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === topicId) ? SEASON_UNIT_BOOST_PERCENT : 0,
       bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
@@ -1402,6 +1462,7 @@ export class TycoonStore {
       researchBonus: snapshot.researchBonus,
       pricePercent: snapshot.pricePercent,
       priceCents: launchPriceCents(type.priceCents, snapshot.pricePercent),
+      marketing: snapshot.marketing,
     };
   }
 

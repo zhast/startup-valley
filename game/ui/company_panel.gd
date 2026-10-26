@@ -36,6 +36,7 @@ var _topic_id := "fitness"
 var _type_id := "software"
 var _staff_ids: Array[String] = []
 var _price_percent := 100
+var _marketing_id := "none"
 var _release_focus_id := ""
 
 func _ready() -> void:
@@ -802,6 +803,7 @@ func _product_picker(tycoon: Dictionary) -> void:
 		var bonus_label := _label("Research bonus: +%d fit" % research_bonus, false, null, "action")
 		bonus_label.name = "ResearchFitBonus"
 	_price_picker(tycoon)
+	_marketing_picker(tycoon)
 	_label("On the build", true)
 	var staff: Array = tycoon.get("staff", []) as Array
 	for item: Variant in staff:
@@ -821,7 +823,7 @@ func _product_picker(tycoon: Dictionary) -> void:
 	for person_id: String in _staff_ids:
 		staff_ids.append(person_id)
 	var pair_open := _entry_unlocked("topics", _topic_id) and _entry_unlocked("types", _type_id)
-	_actions("Start development", func() -> void: _request("tycoon.start", {"topicId": _topic_id, "typeId": _type_id, "staffIds": staff_ids, "pricePercent": _price_percent}), not fit.is_empty() and pair_open, "Back to office", func() -> void: present("journey"))
+	_actions("Start development", func() -> void: _request("tycoon.start", {"topicId": _topic_id, "typeId": _type_id, "staffIds": staff_ids, "pricePercent": _price_percent, "marketing": _marketing_id}), not fit.is_empty() and pair_open, "Back to office", func() -> void: present("journey"))
 
 func _product_progress(product: Dictionary) -> void:
 	var required := int(product.get("devDaysRequired", 1))
@@ -830,6 +832,7 @@ func _product_progress(product: Dictionary) -> void:
 	_heading(str(product.get("name", "Product")), "Fit · %s" % _fit_word(str(product.get("fit", ""))))
 	_show_research_fit(product, "ResearchFitJourney")
 	_show_launch_price(product, "LaunchPrice")
+	_show_marketing(product, "MarketingLine")
 	var progress := _label("Ready to ship" if ready else "Building · day %d of %d" % [dev_days, required], false, null, "action")
 	progress.name = "ProductProgress"
 	_label("Design %d · Tech %d · Hype %d" % [int(product.get("design", 0)), int(product.get("tech", 0)), int(product.get("hype", 0))], false, null, "meta")
@@ -870,6 +873,7 @@ func _release_screen() -> void:
 		_label(str(reviewer.get("blurb", "")), false, null, "meta")
 	_label("Launch sales · $%s · +%d fans" % [_money(int(product.get("salesCents", 0))), int(product.get("fans", 0))], false, null, "action")
 	_show_launch_price(product, "ReleasePrice")
+	_show_marketing(product, "ReleaseMarketing")
 	var research_line := _label("+%d research points" % int(product.get("researchPoints", 0)), false, null, "action")
 	research_line.name = "ReleaseResearch"
 	var price_boost := _upgrade_effect("price")
@@ -894,6 +898,7 @@ func _product_history(tycoon: Dictionary) -> void:
 		_label("%s · %d/10 · $%s · +%d fans" % [product.get("name", "Product"), int(review.get("score", 0)), _money(int(product.get("salesCents", 0))), int(product.get("fans", 0))], false, card)
 		_show_research_fit(product, "ResearchFitJourney", card)
 		_show_launch_price(product, "LaunchPrice", card)
+		_show_marketing(product, "MarketingLine", card)
 
 func _released_focus() -> Dictionary:
 	var history: Array = _tycoon().get("history", []) as Array
@@ -1011,6 +1016,60 @@ func _price_picker(tycoon: Dictionary) -> void:
 
 func _choose_price(percent: int) -> void:
 	_price_percent = percent
+	_render()
+
+func _marketing_options() -> Array:
+	return _tycoon().get("marketingOptions", []) as Array
+
+func _marketing_line(option: Dictionary) -> String:
+	var name := str(option.get("label", "None"))
+	var cost := "$%d" % int(int(option.get("costCents", 0)) / 100)
+	var unit_percent := int(option.get("unitPercent", 100))
+	if unit_percent <= 100:
+		return "%s · %s · no extra units" % [name, cost]
+	return "%s · %s · +%d%% units" % [name, cost, unit_percent - 100]
+
+func _show_marketing(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var id := str(product.get("marketing", "none"))
+	if id.is_empty() or id == "none": return
+	for item: Variant in _marketing_options():
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		if str(option.get("id", "")) != id: continue
+		var line := _label(_marketing_line(option), false, parent, "action")
+		line.name = node_name
+		return
+
+func _marketing_picker(tycoon: Dictionary) -> void:
+	var options: Array = tycoon.get("marketingOptions", []) as Array
+	if options.is_empty(): return
+	var enabled_ids: Array[String] = []
+	for item: Variant in options:
+		if item is Dictionary and bool((item as Dictionary).get("enabled", false)):
+			enabled_ids.append(str((item as Dictionary).get("id", "")))
+	if not enabled_ids.has(_marketing_id): _marketing_id = "none"
+	_label("Marketing", true)
+	var selected: Dictionary = {}
+	for item: Variant in options:
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		var id := str(option.get("id", ""))
+		var enabled := bool(option.get("enabled", false))
+		var text := str(option.get("label", ""))
+		var reason := str(option.get("reason", ""))
+		if not enabled and not reason.is_empty(): text = "%s · %s" % [text, reason]
+		var chosen := id == _marketing_id
+		if chosen: selected = option
+		var button := _button(text, _choose_marketing.bind(id), false, enabled, null, "secondary")
+		button.name = "Marketing_%s" % id
+		if chosen:
+			for state: String in ["normal", "hover", "pressed", "hover_pressed"]:
+				button.add_theme_stylebox_override(state, CozyUI.control_style("secondary", "pressed"))
+	var effect := _label(_marketing_line(selected), false, null, "action")
+	effect.name = "MarketingEffect"
+
+func _choose_marketing(id: String) -> void:
+	_marketing_id = id
 	_render()
 
 func _fit_word(fit: String) -> String:

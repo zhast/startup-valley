@@ -297,7 +297,7 @@
     "tycoon": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "upgradeNotice", "upgrades", "calendar", "office", "priceSteps", "developing", "history"],
+      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "upgradeNotice", "upgrades", "calendar", "office", "priceSteps", "marketingOptions", "developing", "history"],
       "properties": {
         "seed": { "type": "integer", "minimum": 1 },
         "salesWindowDays": { "type": "integer", "const": 4 },
@@ -313,6 +313,7 @@
         "calendar": { "$ref": "#/$defs/tycoonCalendar" },
         "office": { "$ref": "#/$defs/tycoonOffice" },
         "priceSteps": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/tycoonPriceStep" } },
+        "marketingOptions": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/tycoonMarketing" } },
         "developing": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/tycoonProduct" }] },
         "history": { "type": "array", "maxItems": 48, "items": { "$ref": "#/$defs/tycoonProduct" } }
       }
@@ -501,10 +502,23 @@
         "label": { "type": "string", "minLength": 1 }
       }
     },
+    "tycoonMarketing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "costCents", "unitPercent", "enabled", "reason"],
+      "properties": {
+        "id": { "enum": ["none", "small", "big"] },
+        "label": { "type": "string", "minLength": 1 },
+        "costCents": { "type": "integer", "minimum": 0 },
+        "unitPercent": { "type": "integer", "enum": [100, 120, 150] },
+        "enabled": { "type": "boolean" },
+        "reason": { "type": "string" }
+      }
+    },
     "tycoonProduct": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "name", "topicId", "typeId", "topicName", "typeName", "fit", "status", "startedDay", "devDays", "devDaysRequired", "design", "tech", "hype", "progress", "ready", "staffIds", "releasedDay", "review", "salesDays", "salesDaysTotal", "salesCents", "fans", "researchPoints", "researchBonus", "pricePercent", "priceCents"],
+      "required": ["id", "name", "topicId", "typeId", "topicName", "typeName", "fit", "status", "startedDay", "devDays", "devDaysRequired", "design", "tech", "hype", "progress", "ready", "staffIds", "releasedDay", "review", "salesDays", "salesDaysTotal", "salesCents", "fans", "researchPoints", "researchBonus", "pricePercent", "priceCents", "marketing"],
       "properties": {
         "id": { "type": "string", "pattern": "^p[1-9][0-9]*$" },
         "name": { "type": "string", "minLength": 1 },
@@ -532,7 +546,8 @@
         "researchPoints": { "type": "integer", "minimum": 0 },
         "researchBonus": { "type": "integer", "enum": [0, 6, 12] },
         "pricePercent": { "type": "integer", "enum": [80, 100, 120] },
-        "priceCents": { "type": "integer", "minimum": 0 }
+        "priceCents": { "type": "integer", "minimum": 0 },
+        "marketing": { "enum": ["none", "small", "big"] }
       }
     },
     "tycoonReview": {

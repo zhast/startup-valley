@@ -15,6 +15,7 @@ import { DatabaseSync } from "node:sqlite";
 import {
   EVENT_BONUS_FANS,
   LAUNCH_PRICES,
+  MARKETING,
   PRODUCT_TYPES,
   SEASON_UNIT_BOOST_PERCENT,
   STAT_CAP,
@@ -22,6 +23,7 @@ import {
   UPGRADES,
   allFits,
   applyLaunchPriceUnits,
+  applyMarketingUnits,
   baseScore,
   boostedPriceCents,
   calendarForDay,
@@ -1341,5 +1343,171 @@ test("launch price nudges units the other way and snapshots the choice", async (
   assert.equal(oldLaunch?.fans, 5);
   const oldJson = String((restored.journey.db.prepare("SELECT staff_json FROM tycoon_products WHERE id = 'p1'").get() as { staff_json: string }).staff_json);
   assert.equal(oldJson, JSON.stringify(["founder"]));
+  restored.close();
+});
+
+test("marketing buys extra units, charges at the start, and leaves old rows alone", async () => {
+  const catalog = { seed: 26021, productId: "p1", typeId: "newsletter" as const, fit: "great" as const, score: 6, dayIndex: 0, reputation: 0 };
+  const plain = salesForDay(catalog);
+  assert.equal(plain.units, 23);
+  assert.equal(plain.cents, 20700);
+  assert.equal(plain.fans, 5);
+  assert.deepEqual(salesForDay({ ...catalog, marketing: "none" }), plain);
+  assert.deepEqual(salesForDay(catalog), plain);
+
+  const small = salesForDay({ ...catalog, marketing: "small" });
+  assert.equal(small.units, applyMarketingUnits(plain.units, "small"));
+  assert.equal(small.units, Math.max(1, Math.round((plain.units * 120) / 100)));
+  assert.equal(small.cents, small.units * 900);
+  assert.equal(small.fans, Math.max(1, Math.round((small.units * 200) / 1000)));
+  assert.ok(small.units > plain.units);
+
+  const big = salesForDay({ ...catalog, marketing: "big" });
+  assert.equal(big.units, Math.max(1, Math.round((plain.units * 150) / 100)));
+  assert.equal(big.cents, big.units * 900);
+  assert.equal(applyMarketingUnits(1, "none"), 1);
+  assert.equal(applyMarketingUnits(0, "big"), 1);
+
+  const composed = salesForDay({
+    ...catalog,
+    pricePercent: 80,
+    unitBoostPercent: SEASON_UNIT_BOOST_PERCENT,
+    marketing: "small",
+    priceBoostPercent: 10,
+    bonusFans: 2,
+  });
+  let units = applyLaunchPriceUnits(plain.units, 80);
+  units = Math.max(1, Math.round((units * (100 + SEASON_UNIT_BOOST_PERCENT)) / 100));
+  units = applyMarketingUnits(units, "small");
+  const price = boostedPriceCents(launchPriceCents(900, 80), 10);
+  assert.equal(composed.units, units);
+  assert.equal(composed.cents, units * price);
+  assert.equal(composed.fans, Math.max(1, Math.round((units * 200) / 1000)) + 2);
+
+  const broke = await setup();
+  const products = () => Number((broke.db.journey.db.prepare("SELECT COUNT(*) AS n FROM tycoon_products").get() as { n: number }).n);
+  const transactions = () => Number((broke.db.journey.db.prepare("SELECT COUNT(*) AS n FROM company_transactions").get() as { n: number }).n);
+  assert.equal(broke.db.journey.state().company.cashCents, 0);
+  const offers = broke.db.tycoon.view().marketingOptions;
+  assert.deepEqual(offers.map((item) => ({ id: item.id, label: item.label, costCents: item.costCents, unitPercent: item.unitPercent })), MARKETING.map((item) => ({ ...item })));
+  assert.equal(offers.find((item) => item.id === "none")?.enabled, true);
+  assert.equal(offers.find((item) => item.id === "small")?.enabled, false);
+  assert.equal(offers.find((item) => item.id === "small")?.reason, "Need $50");
+  assert.equal(offers.find((item) => item.id === "big")?.reason, "Need $150");
+  assert.throws(() => broke.db.tycoon.start("crypto", "newsletter", [], 100, "small"), /Need \$50/u);
+  assert.throws(() => broke.db.tycoon.start("crypto", "newsletter", [], 100, "poster"), /Pick None, Small ad, or Big ad/u);
+  assert.equal(broke.db.journey.state().company.cashCents, 0);
+  assert.equal(broke.db.tycoon.view().developing, null);
+  assert.equal(products(), 0);
+  assert.equal(transactions(), 0);
+  broke.db.journey.recordCompanyChange("gift-cash", 1, 5000, 0, 0, "Gift");
+  assert.equal(broke.db.tycoon.view().marketingOptions.find((item) => item.id === "small")?.enabled, true);
+  assert.equal(broke.db.tycoon.view().marketingOptions.find((item) => item.id === "big")?.reason, "Need $150");
+  assert.throws(() => broke.db.tycoon.start("crypto", "newsletter", [], 100, "big"), /Need \$150/u);
+  assert.equal(broke.db.journey.state().company.cashCents, 5000);
+  assert.equal(products(), 0);
+  broke.db.tycoon.start("crypto", "newsletter", [], 100, "small");
+  assert.equal(broke.db.journey.state().company.cashCents, 0);
+  assert.equal(broke.db.tycoon.view().developing?.marketing, "small");
+  const charged = JSON.parse(String((broke.db.journey.db.prepare("SELECT staff_json FROM tycoon_products WHERE id = 'p1'").get() as { staff_json: string }).staff_json)) as { marketing?: string; pricePercent?: number };
+  assert.equal(charged.marketing, "small");
+  assert.equal(charged.pricePercent, 100);
+  assert.equal(transactions(), 2);
+  broke.db.close();
+
+  const { db } = await setup();
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  db.tycoon.start("crypto", "newsletter", []);
+  assert.equal(db.tycoon.view().developing?.marketing, "none");
+  assert.equal(db.journey.state().company.cashCents, 0);
+  const noneSnap = JSON.parse(String((db.journey.db.prepare("SELECT staff_json FROM tycoon_products WHERE id = 'p1'").get() as { staff_json: string }).staff_json)) as { marketing?: string };
+  assert.equal(noneSnap.marketing, "none");
+  db.endDay(1);
+  db.endDay(2);
+  db.tycoon.release("p1");
+  const catalogLaunch = db.tycoon.view().history[0];
+  assert.equal(catalogLaunch?.marketing, "none");
+  assert.equal(catalogLaunch?.salesCents, 20700);
+  assert.equal(catalogLaunch?.fans, 5);
+  assert.equal(db.journey.state().company.cashCents, 20700);
+  assert.equal(validate(db.journey.state()), true, JSON.stringify(validate.errors));
+  db.close();
+
+  const ad = await setup();
+  ad.db.journey.recordCompanyChange("gift-ad", 1, 5000, 0, 0, "Gift");
+  ad.db.tycoon.start("crypto", "newsletter", [], 100, "small");
+  assert.equal(ad.db.journey.state().company.cashCents, 0);
+  ad.db.endDay(1);
+  ad.db.endDay(2);
+  const before = ad.db.journey.state().company.reputation;
+  ad.db.tycoon.release("p1");
+  const adLaunch = ad.db.tycoon.view().history[0];
+  assert.ok(adLaunch?.review);
+  const expected = salesForDay({
+    seed: 26021,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: "great",
+    score: adLaunch.review.score,
+    dayIndex: 0,
+    reputation: before,
+    marketing: "small",
+  });
+  assert.equal(adLaunch.marketing, "small");
+  assert.equal(adLaunch.salesCents, expected.cents);
+  assert.equal(adLaunch.fans, expected.fans);
+  assert.ok(adLaunch.salesCents > 20700);
+  ad.db.endDay(3);
+  ad.db.endDay(4);
+  const later = ad.db.tycoon.view().history[0];
+  const dayTwo = salesForDay({
+    seed: 26021,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: "great",
+    score: adLaunch.review.score,
+    dayIndex: 1,
+    reputation: before + expected.fans,
+    marketing: "small",
+  });
+  assert.equal((later?.salesCents ?? 0) - adLaunch.salesCents, dayTwo.cents);
+  assert.equal(validate(ad.db.journey.state()), true, JSON.stringify(validate.errors));
+  ad.db.close();
+
+  const legacy = await setup();
+  const file = join(legacy.root, "game.sqlite");
+  const project = join(legacy.root, "company-project");
+  legacy.db.close();
+  const raw = new DatabaseSync(file);
+  const staffOnly = JSON.stringify(["founder"]);
+  const pricedOnly = JSON.stringify({ staff: [{ id: "founder", design: 2, tech: 2, hype: 2 }], researchBonus: 0, pricePercent: 100 });
+  raw.prepare(`
+    INSERT INTO tycoon_products (
+      id, topic_id, type_id, name, fit, status, started_day, dev_days,
+      design_points, tech_points, hype_points, staff_json, last_dev_day,
+      released_day, review_json, sales_applied, last_sales_day, sales_cents, fans
+    ) VALUES ('p1', 'crypto', 'newsletter', 'Crypto Alpha Newsletter', 'great', 'developing', 1, 2, 4, 4, 4, ?, NULL, NULL, NULL, 0, NULL, 0, 0)
+  `).run(staffOnly);
+  raw.prepare(`
+    INSERT INTO tycoon_products (
+      id, topic_id, type_id, name, fit, status, started_day, dev_days,
+      design_points, tech_points, hype_points, staff_json, last_dev_day,
+      released_day, review_json, sales_applied, last_sales_day, sales_cents, fans
+    ) VALUES ('p2', 'crypto', 'newsletter', 'Crypto Alpha Newsletter', 'great', 'developing', 1, 0, 0, 0, 0, ?, NULL, NULL, NULL, 0, NULL, 0, 0)
+  `).run(pricedOnly);
+  raw.close();
+  const restored = new GameDatabase(file, project);
+  assert.equal(restored.tycoon.view().developing?.marketing, "none");
+  restored.tycoon.release("p1");
+  const oldLaunch = restored.tycoon.view().history.find((item) => item.id === "p1");
+  assert.equal(oldLaunch?.marketing, "none");
+  assert.equal(oldLaunch?.salesCents, 20700);
+  assert.equal(oldLaunch?.fans, 5);
+  const untouched = String((restored.journey.db.prepare("SELECT staff_json FROM tycoon_products WHERE id = 'p1'").get() as { staff_json: string }).staff_json);
+  const pricedJson = String((restored.journey.db.prepare("SELECT staff_json FROM tycoon_products WHERE id = 'p2'").get() as { staff_json: string }).staff_json);
+  assert.equal(untouched, staffOnly);
+  assert.equal(pricedJson, pricedOnly);
+  assert.equal(restored.tycoon.view().developing?.marketing, "none");
   restored.close();
 });
