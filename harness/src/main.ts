@@ -48,6 +48,13 @@ function optionalIntegerParameter(request: ProtocolRequest, name: string): numbe
   return value;
 }
 
+function optionalStringParameter(request: ProtocolRequest, name: string, maxLength = 64): string | undefined {
+  const value = request.params[name];
+  if (value === undefined) return undefined;
+  if (typeof value !== "string" || value.length === 0 || value.length > maxLength) throw new Error(`Parameter ${name} must be a non-empty string`);
+  return value;
+}
+
 function write(message: ProtocolResponse | ProtocolEvent): void {
   process.stdout.write(`${JSON.stringify(message)}\n`);
 }
@@ -120,6 +127,7 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
           stringParameter(request, "typeId", 64),
           staffParameter(request),
           optionalIntegerParameter(request, "pricePercent"),
+          optionalStringParameter(request, "marketing"),
         ),
         dailySpend: database.dailySpend(),
       };

@@ -612,6 +612,11 @@ func _tycoon_secondary_actions() -> void:
 		{"percent": 100, "unitPercent": 100, "label": "Catalog"},
 		{"percent": 120, "unitPercent": 80, "label": "+20%"},
 	]
+	tycoon["marketingOptions"] = [
+		{"id": "none", "label": "None", "costCents": 0, "unitPercent": 100, "enabled": true, "reason": ""},
+		{"id": "small", "label": "Small ad", "costCents": 5000, "unitPercent": 120, "enabled": false, "reason": "Need $50"},
+		{"id": "big", "label": "Big ad", "costCents": 15000, "unitPercent": 150, "enabled": false, "reason": "Need $150"},
+	]
 	await _present("product", value)
 	var price_low := _panel.find_child("Price_80", true, false) as Button
 	var price_catalog := _panel.find_child("Price_100", true, false) as Button
@@ -620,3 +625,11 @@ func _tycoon_secondary_actions() -> void:
 	_check(price_catalog != null and str(price_catalog.get_meta("cozy_variant", "")) == "secondary" and price_catalog.text == "Catalog", "Catalog price reads as secondary")
 	_check(price_high != null and str(price_high.get_meta("cozy_variant", "")) == "secondary", "+20% price reads as secondary")
 	_check(_panel.find_child("PriceEffect", true, false) != null, "The picker shows the price unit-effect line")
+	var no_ad := _panel.find_child("Marketing_none", true, false) as Button
+	var small_ad := _panel.find_child("Marketing_small", true, false) as Button
+	var big_ad := _panel.find_child("Marketing_big", true, false) as Button
+	_check(no_ad != null and not no_ad.disabled and str(no_ad.get_meta("cozy_variant", "")) == "secondary", "None reads as secondary")
+	_check(small_ad != null and small_ad.disabled and str(small_ad.get_meta("cozy_variant", "")) == "secondary" and small_ad.text == "Small ad · Need $50", "Small ad is a disabled secondary action")
+	_check(big_ad != null and big_ad.disabled and big_ad.text == "Big ad · Need $150", "Big ad shows Need $150")
+	var marketing_line := _panel.find_child("MarketingEffect", true, false) as Label
+	_check(marketing_line != null and marketing_line.text == "None · $0 · no extra units", "The picker shows the marketing cost line")

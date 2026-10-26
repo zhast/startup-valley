@@ -62,6 +62,16 @@ func label_contains(fragment: String) -> bool:
 			return true
 	return false
 
+func label_text(text: String) -> Label:
+	var found: Label = null
+	if main == null or main.company_panel == null:
+		return null
+	for node: Node in main.company_panel.find_children("*", "Label", true, false):
+		var label := node as Label
+		if label.text == text and label.is_visible_in_tree():
+			found = label
+	return found
+
 func reveal(control: Control) -> void:
 	if control == null or main == null or main.company_panel == null:
 		return
@@ -204,6 +214,21 @@ func _run() -> void:
 	var catalog_price := main.company_panel.find_child("Price_100", true, false) as Button
 	check(catalog_price != null and str(catalog_price.get_meta("cozy_variant", "")) == "secondary" and catalog_price.text == "Catalog", "Catalog price is a secondary action")
 	check(label_named("PriceEffect") != null and label_named("PriceEffect").text == "$9.00 · catalog units", "Catalog shows $9.00 · catalog units")
+	var no_ad := main.company_panel.find_child("Marketing_none", true, false) as Button
+	var small_ad := main.company_panel.find_child("Marketing_small", true, false) as Button
+	var big_ad := main.company_panel.find_child("Marketing_big", true, false) as Button
+	check(no_ad != null and not no_ad.disabled and str(no_ad.get_meta("cozy_variant", "")) == "secondary" and no_ad.text == "None", "None is a secondary marketing action")
+	check(small_ad != null and small_ad.disabled and str(small_ad.get_meta("cozy_variant", "")) == "secondary" and small_ad.text == "Small ad · Need $50", "Small ad shows Need $50")
+	check(big_ad != null and big_ad.disabled and big_ad.text == "Big ad · Need $150", "Big ad shows Need $150")
+	var marketing_effect := label_named("MarketingEffect")
+	check(marketing_effect != null and marketing_effect.text == "None · $0 · no extra units", "No ad shows $0 and no extra units")
+	var marketing_heading := label_text("Marketing")
+	await reveal(marketing_heading if marketing_heading != null else marketing_effect)
+	if marketing_heading != null:
+		main.company_panel._scroll.ensure_control_visible(marketing_heading)
+		main.company_panel._scroll.scroll_vertical = maxi(0, main.company_panel._scroll.scroll_vertical - 24)
+		await frames(3)
+	await snap("20-marketing-picker")
 	await click(button_named("Start development"))
 	await wait_until(func() -> bool: return developing().get("name", "") == "Crypto Alpha Newsletter" and not main.company_panel.busy, "Development starts on Crypto Alpha Newsletter")
 	await end_office_day()
@@ -260,8 +285,15 @@ func _run() -> void:
 	var price_effect := label_named("PriceEffect")
 	check(price_effect != null and price_effect.text == "$7.20 · +20% units", "−20% shows $7.20 · +20% units")
 	await snap("18-price-picker", price_effect)
+	var small_later := main.company_panel.find_child("Marketing_small", true, false) as Button
+	check(small_later != null and not small_later.disabled and str(small_later.get_meta("cozy_variant", "")) == "secondary", "Small ad is an affordable secondary action")
+	var cash_before_ad := company_cash()
+	await click(small_later)
+	await frames(4)
+	check(label_named("MarketingEffect") != null and label_named("MarketingEffect").text == "Small ad · $50 · +20% units", "Small ad shows $50 and +20% units")
 	await click(button_named("Start development"))
-	await wait_until(func() -> bool: return developing().get("name", "") == "Sneakers Newsletter" and int(developing().get("pricePercent", -1)) == 80 and not main.company_panel.busy, "Sneakers Newsletter starts at −20%")
+	await wait_until(func() -> bool: return developing().get("name", "") == "Sneakers Newsletter" and int(developing().get("pricePercent", -1)) == 80 and str(developing().get("marketing", "")) == "small" and not main.company_panel.busy, "Sneakers Newsletter starts at −20% with a small ad")
+	check(company_cash() == cash_before_ad - 5000, "The small ad charges $50 at the start")
 	await snap("08-sneakers-started")
 	await open_journey()
 	var journey_bonus := label_named("ResearchFitJourney")
@@ -276,6 +308,9 @@ func _run() -> void:
 	await wait_until(func() -> bool: return main.company_panel.screen == "release" and label_named("ReleasePrice") != null, "The second product opens the release card")
 	check(label_named("ReleasePrice").text == "$7.20 · +20% units", "Release shows the chosen price and unit effect")
 	await snap("19-price-released", label_named("ReleasePrice"))
+	check(label_named("ReleaseMarketing") != null and label_named("ReleaseMarketing").text == "Small ad · $50 · +20% units", "Release shows the small ad")
+	check(label_contains("Launch sales"), "Release shows launch sales next to the ad")
+	await snap("21-marketing-released", label_named("ReleaseMarketing"))
 	await open_journey()
 	var waits := 0
 	while company_cash() < 25000 and waits < 4:

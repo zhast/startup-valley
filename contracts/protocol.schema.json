@@ -60,7 +60,8 @@
           "topicId": { "enum": ["fitness", "trading", "sneakers", "reselling", "sports_betting", "cooking", "gaming", "dating", "study_notes", "crypto"] },
           "typeId": { "enum": ["course", "community", "template_pack", "coaching", "software", "newsletter"] },
           "staffIds": { "type": "array", "maxItems": 4, "uniqueItems": true, "items": { "enum": ["founder", "mira", "theo", "creative"] } },
-          "pricePercent": { "type": "integer", "enum": [80, 100, 120] }
+          "pricePercent": { "type": "integer", "enum": [80, 100, 120] },
+          "marketing": { "enum": ["none", "small", "big"] }
         } } } } },
         { "if": { "properties": { "method": { "const": "tycoon.release" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["productId"], "properties": { "productId": { "type": "string", "minLength": 2, "maxLength": 32, "pattern": "^p[1-9][0-9]*$" } } } } } },
         { "if": { "properties": { "method": { "const": "tycoon.train" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["staffId", "stat"], "properties": {

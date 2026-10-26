@@ -9,7 +9,7 @@ The rules in `harness/src/tycoon.ts` are authoritative. This document matches th
 1. **Offline.** A new company ships a product with no API key and no network. Providers stay optional, and only on chapter work orders and chat.
 2. **The pairing is the decision.** A topic and a product type fit together at Great, Good, Okay, or Bad, in the Game Dev Tycoon way. A bad pairing can still ship. It sells worse.
 3. **Days, not a progress bar you click.** Development and sales move when the office day ends. The room stays the cozy Stardew-style office already in the game.
-4. **Deterministic.** Reviews and sales are pure functions of the company seed, the product id, the fit, the points, the research bonus stored on the product, the launch price stored on the product, and reputation. The same save replays the same launch.
+4. **Deterministic.** Reviews and sales are pure functions of the company seed, the product id, the fit, the points, the research bonus stored on the product, the launch price stored on the product, the marketing choice stored on the product, and reputation. The same save replays the same launch.
 5. **One product on the bench.** A second idea waits until the first one ships. A shipped product can still be selling while the next one starts.
 
 ## Core loop
@@ -17,7 +17,7 @@ The rules in `harness/src/tycoon.ts` are authoritative. This document matches th
 1. From Company Journey, choose **New Product**.
 2. Pick a topic and a product type. The panel shows the fit.
 3. The founder is always on the build. Hired teammates can join.
-4. **Start development.** The product stores the fit, the staff snapshot, the research bonus, and the launch price.
+4. **Start development.** The product stores the fit, the staff snapshot, the research bonus, the launch price, and the marketing choice. A paid ad spends game cash here.
 5. **End day + save** once for each office day of work. The team adds design, tech, and hype. Progress is `dev days / days required`.
 6. When the required days are done, **Release**. Four reviewers score it from 1 to 10. Launch-day sales pay game cash and fans immediately.
 7. The next three office days keep selling, once each, when the day ends. The release day does not sell twice.
@@ -80,17 +80,18 @@ Sales run for 4 days at 100%, 70%, 45%, then 25% of the opening demand. Opening 
 
 The catalog price is the default. At Start development the player can leave it, or nudge −20% or +20%. A cheaper price sells more units. A higher price sells fewer. The percents are fixed: 80 / 100 / 120 for price, and 120 / 100 / 80 for units. Units after the nudge are `Math.max(1, Math.round((units * unitPercent) / 100))`. The unit price is `Math.round((catalogCents * pricePercent) / 100)`. Catalog (100) leaves both unchanged, so the first newsletter still pays 20700 cents and 5 fans.
 
-The choice is stored on the product, in `staff_json` as `{staff, researchBonus, pricePercent}`. Sales use the stored number. An older row that is only a staff array, or a row with no `pricePercent`, sells at catalog. Stored `sales_cents` are not rewritten.
+The choice is stored on the product, in `staff_json` as `{staff, researchBonus, pricePercent, marketing}`. Sales use the stored price. An older row that is only a staff array, or a row with no `pricePercent`, sells at catalog. A row with no `marketing` sells with no ad. Stored `sales_cents` are not rewritten.
 
 Composition, in this order, on every sale that is computed:
 
 1. Base units from fit, score, reputation, the sales curve, and the seeded swing. At least 1.
 2. Launch-price units.
 3. Season +20% units, when the topic is favored that day.
-4. Fans from those units, then the event fan bonus if an event is on.
-5. Launch price on the catalog cents.
-6. Nicer Checkout Page +10% on that unit price, when the tool is already owned.
-7. Cash is units times that price.
+4. Marketing units from the snapshot. None is an identity step. Otherwise `Math.max(1, Math.round((units * unitPercent) / 100))`.
+5. Fans from those units, then the event fan bonus if an event is on.
+6. Launch price on the catalog cents.
+7. Nicer Checkout Page +10% on that unit price, when the tool is already owned.
+8. Cash is units times that price.
 
 A checkout-page boost still changes only the price. Season still changes only the units. Launch price changes both, from the snapshot.
 
@@ -162,7 +163,7 @@ Blurbs, in the same order: "Sketches land cleaner when you stand." "The build on
 An effect applies when the tool is already owned at the moment the tick or the sale is computed. Buy, then end that same day, and that `day.end` tick includes the boost. Days whose ticks already ran are not rewritten. Stored reviews, stored `sales_cents`, and the product's start-day staff snapshot stay as they were.
 
 - A point tool adds +1 of that stat for each person on the product who is not in training that day. Someone in training adds no personal points and no office bonus. The bonus stops on extra polish days, when craft points stop. Research points are unchanged.
-- Nicer Checkout Page raises the unit price by 10% on every sale computed after the purchase: `Math.round((priceCents * 110) / 100)`. That `priceCents` is the launch price already on the product, so a catalog $9 newsletter becomes $9.90, and a −20% newsletter becomes $7.92. Units and fans stay on the unboosted-by-checkout formula. Launch-price units have already run.
+- Nicer Checkout Page raises the unit price by 10% on every sale computed after the purchase: `Math.round((priceCents * 110) / 100)`. That `priceCents` is the launch price already on the product, so a catalog $9 newsletter becomes $9.90, and a −20% newsletter becomes $7.92. Units and fans stay on the unboosted-by-checkout formula. Launch-price units, the season boost, and marketing have already run.
 
 Oak Standing Desk is the first tool one Crypto Alpha Newsletter can pay for. Launch is about $207. The second sales day reaches $333. Ring Light fits the third sales day ($414). Nicer Checkout Page ($560) waits for a second product. One newsletter cannot pay for both the first Tech lesson ($300) and a tool.
 
@@ -216,7 +217,7 @@ The season is a pure function of the saved day. There is no second clock and no 
 | Fall | 57–84 | Study Notes, Trading |
 | Winter | 85–112 | Cooking, Gaming |
 
-A product whose topic is favored sells 20 percent more units on each sale computed that season: `Math.max(1, Math.round((units * 120) / 100))`. That `units` value already includes the launch-price unit effect. Fans are computed from those units. Cents are the boosted units times the price. A checkout-page price boost still changes only the price. Stored reviews and earlier sales are not rewritten. A topic outside the pair uses the old formula. Crypto Alpha is not favored in Spring, so the first newsletter's cash is unchanged.
+A product whose topic is favored sells 20 percent more units on each sale computed that season: `Math.max(1, Math.round((units * 120) / 100))`. That `units` value already includes the launch-price unit effect. Marketing, when the product bought an ad, runs after this step. Fans are computed from the units after marketing. Cents are the final units times the price. A checkout-page price boost still changes only the price. Stored reviews and earlier sales are not rewritten. A topic outside the pair uses the old formula. Crypto Alpha is not favored in Spring, so the first newsletter's cash is unchanged.
 
 One cozy event per season, on a fixed day. The effect lasts that day only. Names stay inside the simulation.
 
@@ -251,13 +252,31 @@ The catalog type price stays the default. `tycoon.start` takes an optional `pric
 
 `journey.tycoon.priceSteps` is the three rows. Each product carries `pricePercent` and `priceCents` (the chosen unit price, before checkout). The New Product picker shows them as secondary buttons plus the unit-effect line. A payload without `priceSteps` leaves the control out, so older UI fixtures still render.
 
+## Marketing
+
+No ad is the default. `tycoon.start` takes an optional `marketing` of `none`, `small`, or `big`. Omitted is `none`. Anything else fails with "Pick None, Small ad, or Big ad." and starts nothing. There is no new SQL column. The id is stored on the product snapshot.
+
+| Id | Label | Cost | Units |
+| --- | --- | --- | --- |
+| `none` | None | $0 | unchanged |
+| `small` | Small ad | $50 | +20% |
+| `big` | Big ad | $150 | +50% |
+
+The small ad is a Whop Weekly spot. The big ad is the louder buy. The cost is game cash, paid when development starts. Short cash fails with "Need $50" or "Need $150", starts nothing, and charges nothing. The unit boost uses the percents 100 / 120 / 150: `Math.max(1, Math.round((units * unitPercent) / 100))`. None leaves units unchanged, so the first newsletter still pays 20700 cents and 5 fans. Fans follow those units. The boost applies on every day of that product's sales window.
+
+The choice is stored in `staff_json` next to `pricePercent` and `researchBonus`. Sales use the stored id. An older row that is only a staff array, or a row with no `marketing`, sells with no ad. Stored `sales_cents` are not rewritten.
+
+Marketing is step 4 of the sale composition above. It runs after launch-price units and the season boost, and before fans. It does not change the unit price. Checkout still changes only the price. The spend is the cash paid at the start, not a cut of later sales.
+
+`journey.tycoon.marketingOptions` is the three rows, each with `enabled` and `reason`. The New Product picker shows them under Price as secondary buttons, plus one line, for example "None · $0 · no extra units" or "Small ad · $50 · +20% units". A disabled button reads "Small ad · Need $50". The bench, the release card, and the shipped list repeat that line when an ad was bought. Hire stays the one primary action. A payload without `marketingOptions` leaves the control out, so older UI fixtures still render.
+
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, and launch price. The entries are **New Product**, **Train staff**, **Research**, **Upgrades**, **Office**, and **Season** on Company Journey. Price lives on the New Product picker.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, and marketing. The entries are **New Product**, **Train staff**, **Research**, **Upgrades**, **Office**, and **Season** on Company Journey. Price and marketing live on the New Product picker.
 
 Next slice:
 
-1. **Marketing.** A small game-cash spend at release for extra units that sales window. Catalog launch stays the default, so the first newsletter still pays the same cash. The spend is stored on the product.
+1. **Contracts.** One client offer on Company Journey. Accepting it locks the next product to that topic and type and pays a fixed bonus on release. Ignoring it leaves the free picker. No contract keeps the first newsletter at the same cash.
 
 Later art ask: a second room. Office growth shipped as spare desks on the current floor (`compact_desk` and `shared_workbench`, already bound). There is no second-room architecture art, so that room waits.
 
