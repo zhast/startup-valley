@@ -1333,3 +1333,41 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → leave Catalog or nudge −20% / +20% → ship. The first newsletter at catalog is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_price.gd`.
 
+### Round 34 — 2026-10-26
+
+**What changed**
+- Marketing on the New Product picker. None is the default, so the first Crypto Alpha Newsletter still pays 20700 cents and 5 fans. Three fixed choices: None, Small ad, Big ad (`marketing` `none` / `small` / `big`). Costs are $0 / $50 / $150. Unit percents are 100 / 120 / 150. Units after the ad are `Math.max(1, Math.round((units * unitPercent) / 100))`. None leaves units unchanged. `tycoon.start` takes optional `marketing`. Omitted is none. Anything else fails with "Pick None, Small ad, or Big ad." and starts nothing. Short cash fails with "Need $50" or "Need $150", starts nothing, and charges nothing. There is no new SQL migration.
+- The choice is stored on the product in `staff_json` as `{staff, researchBonus, pricePercent, marketing}`. Sales use the stored id. An older row that is only a staff array, or a row with no `marketing`, sells with no ad. Stored `sales_cents` are not rewritten. A paid ad writes one cash charge at the start (`tycoon:marketing:pN`, label "Small ad" or "Big ad"). None writes no charge.
+- Composition on every computed sale, in this order: base units; launch-price units; season +20% units; marketing units (none is an identity step); fans from those units, then the event fan bonus; launch price on the catalog cents; Nicer Checkout Page +10% on that unit price; cash is units times that price. Marketing changes only units. Checkout still changes only the price. The spend is the cash paid at the start, not a cut of later sales. The boost applies on every day of that product's sales window.
+- The picker lists Marketing under Price: three secondary buttons and one line, for example "None · $0 · no extra units" or "Small ad · $50 · +20% units". A disabled button reads "Small ad · Need $50". The bench, the release card, and the shipped-history list repeat that line when an ad was bought. Hire stays the one primary action. Start development stays the primary action on the picker. Marketing buttons stay secondary.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Contracts are the next slice. One client offer on Company Journey. Accepting it locks the next product to that topic and type and pays a fixed bonus on release. Ignoring it leaves the free picker. No contract keeps the first newsletter at the same cash.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. Carried from Round 33: Creative has no seated sheet. Unbound art stays untracked. The live path is still a harness driver. A cheap reviewer can still sit just under the 2.5 ready line. Chapter 3 ends at "More is coming." The starter `shared_workbench` stays in storage. The one on the Open Floor is a separate grant.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 102 tests, 100 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test covers no-ad identity (23 units, 20700 cents, 5 fans), small and big unit math, units always at least 1, launch-price then season then marketing then checkout composition, a $50 charge at the start, "Need $50" and "Need $150" with nothing started and nothing charged, an unknown id rejected, a stored `marketing` snapshot, and an older staff-array row selling with no ad without rewriting `staff_json`.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS (40 checks, 0 failures). Launch sales stay 20700 cents and 5 fans. The next office day stays 33300 cents and 8 fans.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS (50 checks, 0 failures)
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS (50 checks, 0 failures)
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS (47 checks, 0 failures). The second sales day is still $333.
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS (23 checks, 0 failures)
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS (25 checks, 0 failures)
+- `test_tycoon_price.gd` — TYCOON PRICE PASS (49 checks, 0 failures). Catalog launch is 20700 cents and 5 fans.
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS (55 checks, 0 failures). No ad stays 20700 cents and 5 fans. At $0 cash the buttons read "Small ad · Need $50" and "Big ad · Need $150". After the newsletter, Big ad charges $150, stores `big`, and the launch pays 26100 cents and 6 fans. Marketing buttons stay secondary. Hire Mina stays the one primary action.
+- `test_ui_company_redesign.gd` — 5219 checks, 0 failures, 0 captures. None / Small ad / Big ad on the product picker read as secondary. The short-cash labels are "Small ad · Need $50" and "Big ad · Need $150".
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Twenty-one PNGs in `/workspace/sv-proof/round-34/` (local, not committed). `20-marketing-picker.png` is the first picker with "None · $0 · no extra units", "Small ad · Need $50", and "Big ad · Need $150". `21-marketing-released.png` is Sneakers Newsletter on the release card with "Small ad · $50 · +20% units" and launch sales $136.80. Hire Mina stays orange on the team rail. Cash after the small-ad launch was 25480 cents. Text is readable and nothing overlaps. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-34 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → leave None or buy Small ad / Big ad → ship. The first newsletter with no ad is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_marketing.gd`.
+
