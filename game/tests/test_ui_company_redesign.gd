@@ -621,7 +621,44 @@ func _tycoon_secondary_actions() -> void:
 	_check(contract_pair != null and contract_pair.text == "Crypto Alpha × Newsletter", "The contract card names the pair")
 	_check(contract_bonus != null and contract_bonus.text == "Bonus $80 on release", "The contract card names the bonus")
 	_check(_button("Hire Mina") != null and str(_button("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside the contract")
+	tycoon["history"] = [{
+		"id": "p1",
+		"name": "Crypto Alpha Newsletter",
+		"status": "released",
+		"salesDays": 1,
+		"salesDaysTotal": 4,
+		"salesCents": 20700,
+		"fans": 5,
+		"review": {"score": 7, "reviewers": []},
+		"patch": {
+			"costCents": 10000,
+			"scoreBonus": 1,
+			"applied": false,
+			"enabled": false,
+			"reason": "Need $100",
+		},
+	}]
+	await _present("journey", value)
+	var patch := _panel.find_child("Patch_p1", true, false) as Button
+	var selling := _panel.find_child("Selling_p1", true, false) as Control
+	_check(selling != null, "Company Journey shows the selling-product card")
+	_check(patch != null and patch.disabled and str(patch.get_meta("cozy_variant", "")) == "secondary" and patch.text == "Patch · Need $100", "Patch reads Need $100 when cash is short")
+	_check(_button("Hire Mina") != null and str(_button("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Patch")
+	var shipped: Dictionary = (tycoon["history"] as Array)[0]
+	var offer: Dictionary = shipped["patch"]
+	offer["applied"] = true
+	offer["reason"] = "Already patched."
+	tycoon["patchNotice"] = "Patched Crypto Alpha Newsletter. −$100"
+	await _present("journey", value)
+	var patched := _panel.find_child("SellingPatched_p1", true, false) as Label
+	var notice := _panel.find_child("PatchNotice", true, false) as Label
+	patch = _panel.find_child("Patch_p1", true, false) as Button
+	_check(patched != null and patched.text == "Patched · +1 score", "The selling card names the patched state")
+	_check(notice != null and notice.text == "Patched Crypto Alpha Newsletter. −$100", "The selling card names the patch cost")
+	_check(patch != null and patch.disabled and patch.text == "Patch · Already patched.", "A second patch stays disabled")
 	tycoon.erase("contract")
+	tycoon.erase("history")
+	tycoon.erase("patchNotice")
 	for topic: Dictionary in tycoon["topics"]:
 		topic["unlocked"] = true
 	for kind: Dictionary in tycoon["types"]:

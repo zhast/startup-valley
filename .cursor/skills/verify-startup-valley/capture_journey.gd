@@ -280,6 +280,12 @@ func _run() -> void:
 	await wait_until(func() -> bool: return main.company_panel.screen == "release" and label_contains("+3 research points"), "Release shows +3 research points")
 	await snap("04-release-research", label_named("ReleaseResearch"))
 	await open_journey()
+	var patch_offer := button_named("Patch")
+	var selling := main.company_panel.find_child("Selling_p1", true, false) as Control
+	check(selling != null, "Company Journey shows the selling-product card")
+	check(patch_offer != null and not patch_offer.disabled and str(patch_offer.get_meta("cozy_variant", "")) == "secondary" and patch_offer.text == "Patch · $100", "Patch · $100 is a secondary action")
+	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Patch")
+	await snap("24-patch-offer", selling)
 	await end_office_day()
 	await open_journey()
 	await end_office_day()
@@ -476,6 +482,21 @@ func _contract_release_proof() -> void:
 	check(int(shipped.get("salesCents", 0)) > 0 and company_cash() == before + int(shipped.get("salesCents", 0)) + bonus, "The bonus is paid once on top of launch sales")
 	check(company_reputation() == fans_before + int(shipped.get("fans", 0)), "The bonus does not add fans")
 	await snap("23-contract-released", label_named("ReleaseContract"))
+	await open_journey()
+	var patch := button_named("Patch")
+	check(patch != null and not patch.disabled and str(patch.get_meta("cozy_variant", "")) == "secondary", "Patch is available on the contracted product")
+	await click(patch)
+	await wait_until(func() -> bool: return not main.company_panel.busy and label_named("PatchNotice") != null, "Patch notice names the cost")
+	check(label_named("PatchNotice").text.contains("−$100"), "The patch cost line reads −$100")
+	check(label_contains("Patched · +1 score"), "The selling card shows the patched state")
+	var patched_button := button_named("Patch")
+	check(patched_button != null and patched_button.disabled and patched_button.text.contains("Already patched"), "Patch stays disabled after it applies")
+	var patched_card: Control = label_named("PatchNotice")
+	while patched_card != null and not str(patched_card.name).begins_with("Selling_"):
+		patched_card = patched_card.get_parent() as Control
+	if patched_card == null:
+		patched_card = label_named("PatchNotice")
+	await snap("25-patch-applied", patched_card)
 
 func _office_expansion_proof() -> void:
 	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-office-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
