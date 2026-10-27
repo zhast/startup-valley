@@ -1492,3 +1492,44 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → let a product finish selling → Sequel on the Shipped card, or leave it. The first newsletter with no sequel is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_sequels.gd`.
 
+### Round 38 — 2026-10-27
+
+**What changed**
+- One optional award show per finished product. `tycoon.award` takes `{productId}`. The show is Whop Creator Awards. The fee is $40. The result uses the stored review score. 8–10 wins and adds 12 fans. 5–7 is a nominee and adds 4 fans. 1–4 is entered and adds no fans. Sales cash and product fans stay on the old formula. No award is the default, so the first Crypto Alpha Newsletter still pays 20700 cents and 5 fans. That newsletter scores 6, so entering after sales finish is a nominee and adds 4 fans.
+- The field lives on the product snapshot in `staff_json`: `award: {outcome, fans}` after a successful entry. There is no new SQL column. An older row that is only a staff array, or a row that omits the field, has not entered. Reads do not rewrite `staff_json`. One ledger row: id `tycoon:award:<productId>`, cash −$40, earned 0, reputation equal to the fan bonus, label `Award: Whop Creator Awards`. Entering twice fails with "Already entered." and charges nothing. Fans add once. Other refusals: "Ship this product first.", "Still selling.", "Need $40", and "No product with that id."
+- Company Journey shows one Shipped card per product whose sales have finished. The card names "Whop Creator Awards · $40". Enter award is secondary. A selling card shows the same button after Sequel, disabled, for example "Enter award · Still selling." After entry the card adds "Award · Won · +12 fans", "Award · Nominated · +4 fans", or "Award · Entered". Hire stays the one primary action.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Ports are the next slice. One optional second shelf for a finished product. Spend a little game cash. It pays one extra sales day from the stored score. Skipping it leaves cash and fans on the old formula. The default is off, so the first newsletter still pays 20700 cents and 5 fans.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. Carried from Round 37: Creative has no seated sheet. Unbound art stays untracked. The live path is still a harness driver. A cheap reviewer can still sit just under the 2.5 ready line. Chapter 3 ends at "More is coming." The starter `shared_workbench` stays in storage. The one on the Open Floor is a separate grant.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 106 tests, 104 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test covers the fee and the score bands, a nominee on the first newsletter after 20700 cents and 5 fans, a win at score 8, an entry at score 4, a patch that lifts a stored 7 to a sales 8 and still nominates, refusals while developing / selling / twice / short of cash, one ledger row, and an older staff-array row staying without an award field.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS (40 checks, 0 failures). Launch sales stay 20700 cents and 5 fans. The next office day stays 33300 cents and 8 fans.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS (50 checks, 0 failures)
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS (50 checks, 0 failures)
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS (47 checks, 0 failures)
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS (23 checks, 0 failures)
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS (25 checks, 0 failures)
+- `test_tycoon_price.gd` — TYCOON PRICE PASS (49 checks, 0 failures). Catalog launch is 20700 cents and 5 fans.
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS (55 checks, 0 failures). No ad stays 20700 cents and 5 fans.
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS (60 checks, 0 failures). Ignoring the offer leaves Fitness and Crypto Alpha free. The newsletter still pays 20700 cents and 5 fans.
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS (37 checks, 0 failures). No patch still pays 20700 cents and 5 fans.
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS (49 checks, 0 failures). No sequel still pays 20700 cents and 5 fans.
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS (49 checks, 0 failures). No award still pays 20700 cents and 5 fans. Enter award stays "Enter award · Still selling." until sales finish, then Enter award is secondary and Hire Mina stays primary. The show line is "Whop Creator Awards · $40". A score of 6 reads "Award · Nominated · +4 fans". The fee is $40 once. Sales cash and product fans stay unchanged. A second press stays "Enter award · Already entered."
+- `test_ui_company_redesign.gd` — 10220 checks, 0 failures, 0 captures. The finished fixture reads "Enter award" and "Whop Creator Awards · $40", then "Award · Won · +12 fans", "Award · Nominated · +4 fans", "Award · Entered", and "Enter award · Need $40". Hire Mina stays primary.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Twenty-nine PNGs in `/workspace/sv-proof/round-38/` (local, not committed). `28-award-offer.png` is Company Journey on the Shipped card: Crypto Alpha Newsletter · 6/10 · $468.00 · +11 fans, "Sales finished.", Sequel, "Whop Creator Awards · $40", and Enter award as a secondary button. Hire Mina stays orange. The Contract card sits below it and does not collide with the button. Header reads Spring 7 · Year 1 · $168.00 game cash · 11 reputation. `29-award-result.png` reads "Award · Nominated · +4 fans" and "Enter award · Already entered." Header reads Spring 12 · Year 1 · $1,158.40 game cash · 31 reputation. Those lines are readable and do not overlap. `24-patch-offer.png` also shows "Sequel · Still selling." and "Enter award · Still selling." under Patch · $100. All three buttons fit on the Selling card. Cash before the desk buy was 115840 cents. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-38 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → let a product finish selling → Enter award on the Shipped card, or leave it. The first newsletter with no award is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_awards.gd`.
+
