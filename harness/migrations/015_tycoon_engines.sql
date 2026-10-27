@@ -1,0 +1,1 @@
+ALTER TABLE tycoon_meta ADD COLUMN engine_id TEXT NOT NULL DEFAULT '';

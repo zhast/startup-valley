@@ -128,6 +128,7 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
           staffParameter(request),
           optionalIntegerParameter(request, "pricePercent"),
           optionalStringParameter(request, "marketing"),
+          optionalStringParameter(request, "engine"),
         ),
         dailySpend: database.dailySpend(),
       };
@@ -156,6 +157,11 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
     case "tycoon.buyUpgrade":
       return {
         journey: database.tycoon.buyUpgrade(stringParameter(request, "id", 64)),
+        dailySpend: database.dailySpend(),
+      };
+    case "tycoon.buyEngine":
+      return {
+        journey: database.tycoon.buyEngine(stringParameter(request, "id", 64)),
         dailySpend: database.dailySpend(),
       };
     case "tycoon.expandOffice": {

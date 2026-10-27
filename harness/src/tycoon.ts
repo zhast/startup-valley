@@ -61,6 +61,12 @@ export const AWARD_NOMINEE_FANS = 4;
 /** One optional port. One extra sales day on a second shelf, after a small fee. */
 export const PORT_SHELF = "Whop Mobile";
 export const PORT_COST_CENTS = 8_000;
+/** One optional in-house engine. Bought once. A product started on it stores +1 score, capped at 10. */
+export const ENGINE_ID = "whop_kit";
+export const ENGINE_NAME = "Whop Kit Engine";
+export const ENGINE_BLURB = "One kit, used on the builds you choose.";
+export const ENGINE_COST_CENTS = 12_000;
+export const ENGINE_SCORE_BONUS = 1;
 /** Stardew-shaped office calendar. Derived from the saved day. It does not replace the clock. */
 export const SEASON_LENGTH_DAYS = 28;
 export const YEAR_LENGTH_DAYS = 112;
@@ -136,6 +142,7 @@ export type LaunchPriceStep = (typeof LAUNCH_PRICES)[number];
 export type MarketingId = (typeof MARKETING)[number]["id"];
 export type MarketingOption = (typeof MARKETING)[number];
 export type ContractId = (typeof CONTRACTS)[number]["id"];
+export type EngineId = typeof ENGINE_ID;
 
 /** New companies. Crypto Alpha × Newsletter stays in this set. */
 const STARTER_TOPIC_IDS: readonly TopicId[] = ["fitness", "trading", "cooking", "gaming", "study_notes", "crypto"];
@@ -301,6 +308,8 @@ export interface TycoonProductView {
   award: TycoonAwardView | null;
   /** Null while the product is on the bench. Omitted rows have not been ported. */
   port: TycoonPortView | null;
+  /** Null when the product started with no engine. Omitted rows are no engine. */
+  engine: TycoonProductEngine | null;
 }
 
 export interface TycoonUpgradeView {
@@ -412,6 +421,31 @@ export interface TycoonPortView {
   reason: string;
 }
 
+export interface TycoonEngineView {
+  id: EngineId;
+  name: string;
+  blurb: string;
+  priceCents: number;
+  scoreBonus: number;
+  owned: boolean;
+  enabled: boolean;
+  reason: string;
+}
+
+export interface TycoonEngineOption {
+  id: "none" | EngineId;
+  label: string;
+  scoreBonus: number;
+  enabled: boolean;
+  reason: string;
+}
+
+export interface TycoonProductEngine {
+  id: EngineId;
+  name: string;
+  scoreBonus: number;
+}
+
 export interface TycoonSnapshot {
   seed: number;
   salesWindowDays: number;
@@ -428,6 +462,9 @@ export interface TycoonSnapshot {
   office: TycoonOffice;
   priceSteps: LaunchPriceStep[];
   marketingOptions: Array<MarketingOption & { enabled: boolean; reason: string }>;
+  engineNotice: string;
+  engine: TycoonEngineView;
+  engineOptions: TycoonEngineOption[];
   contract: TycoonContractView;
   patchNotice: string;
   developing: TycoonProductView | null;
@@ -652,6 +689,40 @@ function marketingOffer(cash: number): TycoonSnapshot["marketingOptions"] {
   });
 }
 
+function asEngine(value: string): "none" | EngineId {
+  if (value === "none" || value === ENGINE_ID) return value;
+  throw new Error("Pick None or Whop Kit Engine.");
+}
+
+function engineOffer(owned: boolean, cash: number): TycoonEngineView {
+  let reason = "";
+  if (owned) reason = "Already owned.";
+  else if (cash < ENGINE_COST_CENTS) reason = `Need ${wholeDollars(ENGINE_COST_CENTS)}`;
+  return {
+    id: ENGINE_ID,
+    name: ENGINE_NAME,
+    blurb: ENGINE_BLURB,
+    priceCents: ENGINE_COST_CENTS,
+    scoreBonus: ENGINE_SCORE_BONUS,
+    owned,
+    enabled: reason === "",
+    reason,
+  };
+}
+
+function engineChoices(owned: boolean): TycoonEngineOption[] {
+  return [
+    { id: "none", label: "None", scoreBonus: 0, enabled: true, reason: "" },
+    {
+      id: ENGINE_ID,
+      label: ENGINE_NAME,
+      scoreBonus: ENGINE_SCORE_BONUS,
+      enabled: owned,
+      reason: owned ? "" : "Buy it first.",
+    },
+  ];
+}
+
 export function releaseResearchPoints(score: number): number {
   return Math.floor(Math.max(0, score) / 2);
 }
@@ -759,6 +830,8 @@ interface ProductSnapshot {
   award: ProductAward | null;
   /** Null until the product is ported to the second shelf. */
   port: ProductPort | null;
+  /** Null when development started with no engine. */
+  engine: EngineId | null;
 }
 
 interface ProductPort {
@@ -787,6 +860,7 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     scoreBonus: 0,
     award: null,
     port: null,
+    engine: null,
   };
 }
 
@@ -794,7 +868,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, and no port. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, and no engine. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -813,6 +887,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     scoreBonus?: unknown;
     award?: unknown;
     port?: unknown;
+    engine?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -826,6 +901,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     scoreBonus: body.scoreBonus === SEQUEL_SCORE_BONUS ? SEQUEL_SCORE_BONUS : 0,
     award: parseAward(body.award),
     port: parsePort(body.port),
+    engine: body.engine === ENGINE_ID ? ENGINE_ID : null,
   };
 }
 
@@ -881,6 +957,10 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
     body.port = stored.port.cents === null
       ? { shelf: stored.port.shelf, startedDay: stored.port.startedDay }
       : { shelf: stored.port.shelf, startedDay: stored.port.startedDay, cents: stored.port.cents, fans: stored.port.fans };
+  }
+  if (stored.engine === ENGINE_ID) {
+    body.engine = ENGINE_ID;
+    body.engineBonus = ENGINE_SCORE_BONUS;
   }
   return JSON.stringify(body);
 }
@@ -960,17 +1040,20 @@ export function reviewProduct(input: {
   researchBonus?: number;
   /** Carried score stored on a sequel. Omitted is 0. Added before reviewers move the base. */
   sequelBonus?: number;
+  /** Engine bump stored on the product. Omitted is 0. Added with the sequel bonus, then clamped to 1–10. */
+  engineBonus?: number;
   /** Days required for the ideal. Omitted uses the catalog length. */
   devDays?: number;
 }): TycoonReview {
   const carried = input.sequelBonus === SEQUEL_SCORE_BONUS ? SEQUEL_SCORE_BONUS : 0;
+  const engineBonus = input.engineBonus === ENGINE_SCORE_BONUS ? ENGINE_SCORE_BONUS : 0;
   const base = clampScore(baseScore(
     { design: input.design, tech: input.tech, hype: input.hype },
     input.topicId,
     input.typeId,
     input.researchBonus ?? 0,
     input.devDays ?? 0,
-  ) + carried);
+  ) + carried + engineBonus);
   const reviewers = REVIEWERS.map((reviewer, index) => {
     const jitter = (mixSeed(input.seed, input.productId, "review", index) % 3) - 1;
     const score = clampScore(base + jitter);
@@ -1122,6 +1205,8 @@ export class TycoonStore {
   private upgradeNoticeDay = 0;
   private patchNotice = "";
   private patchNoticeDay = 0;
+  private engineNotice = "";
+  private engineNoticeDay = 0;
 
   constructor(
     private readonly db: DatabaseSync,
@@ -1142,6 +1227,7 @@ export class TycoonStore {
     const ownedIds = new Set(owned.map((entry) => entry.id));
     const day = this.day();
     const cash = this.cashCents();
+    const engineOwned = this.loadEngineOwned();
     return {
       seed: this.seed(),
       salesWindowDays: SALES_WINDOW_DAYS,
@@ -1198,6 +1284,9 @@ export class TycoonStore {
       office: this.officeView(this.officeLevel(), hired.size, cash),
       priceSteps: [...LAUNCH_PRICES],
       marketingOptions: marketingOffer(cash),
+      engineNotice: this.engineNoticeDay === day ? this.engineNotice : "",
+      engine: engineOffer(engineOwned, cash),
+      engineOptions: engineChoices(engineOwned),
       contract: this.contractOffer(developing),
       patchNotice: this.patchNoticeDay === day ? this.patchNotice : "",
       developing: developing ? this.toView(developing) : null,
@@ -1205,7 +1294,7 @@ export class TycoonStore {
     };
   }
 
-  start(topicValue: string, typeValue: string, requestedStaff: readonly string[], pricePercentValue?: number, marketingValue?: string): ReturnType<JourneyStore["state"]> {
+  start(topicValue: string, typeValue: string, requestedStaff: readonly string[], pricePercentValue?: number, marketingValue?: string, engineValue?: string): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
       if (this.developingRow()) throw new Error("A product is already on the bench. Ship it or keep building.");
       const topicId = asTopic(topicValue);
@@ -1217,6 +1306,8 @@ export class TycoonStore {
       if (!type || !research.types.has(typeId)) throw new Error(`${type?.name ?? "That product type"} is locked. Research it first.`);
       const pricePercent = pricePercentValue === undefined ? 100 : asLaunchPrice(pricePercentValue);
       const marketing = marketingValue === undefined ? "none" : asMarketing(marketingValue);
+      const engine = engineValue === undefined ? "none" : asEngine(engineValue);
+      if (engine === ENGINE_ID && !this.loadEngineOwned()) throw new Error("Buy the engine first.");
       const pending = this.loadPendingContract();
       if (pending && (pending.topicId !== topicId || pending.typeId !== typeId)) {
         const topicName = topicById(pending.topicId)?.name ?? pending.topicId;
@@ -1240,6 +1331,8 @@ export class TycoonStore {
         pricePercent: LaunchPricePercent;
         marketing: MarketingId;
         contract?: ProductContract;
+        engine?: EngineId;
+        engineBonus?: number;
       } = {
         staff: staffIds.map((memberId) => ({
           id: memberId, design: stats[memberId].design, tech: stats[memberId].tech, hype: stats[memberId].hype,
@@ -1248,6 +1341,10 @@ export class TycoonStore {
         pricePercent,
         marketing,
       };
+      if (engine === ENGINE_ID) {
+        snapshot.engine = ENGINE_ID;
+        snapshot.engineBonus = ENGINE_SCORE_BONUS;
+      }
       if (pending) {
         snapshot.contract = { id: pending.id, client: pending.client, bonusCents: pending.bonusCents };
         this.savePendingContract(null);
@@ -1345,6 +1442,27 @@ export class TycoonStore {
     });
   }
 
+  buyEngine(idValue: string): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      if (idValue !== ENGINE_ID) throw new Error("Unknown engine.");
+      if (this.loadEngineOwned()) throw new Error("Already owned.");
+      if (this.cashCents() < ENGINE_COST_CENTS) throw new Error(`Need ${wholeDollars(ENGINE_COST_CENTS)}`);
+      const day = this.day();
+      this.journey.recordCompanyChange(
+        "tycoon:engine",
+        day,
+        -ENGINE_COST_CENTS,
+        0,
+        0,
+        `Engine: ${ENGINE_NAME}`,
+      );
+      this.saveEngineOwned();
+      this.engineNotice = `Bought ${ENGINE_NAME}. −${wholeDollars(ENGINE_COST_CENTS)}`;
+      this.engineNoticeDay = day;
+      return this.journey.state();
+    });
+  }
+
   expandOffice(): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
       const current = this.officeLevel();
@@ -1399,6 +1517,7 @@ export class TycoonStore {
         hype: Number(row.hype_points),
         researchBonus: stored.researchBonus,
         sequelBonus: stored.scoreBonus,
+        engineBonus: stored.engine === ENGINE_ID ? ENGINE_SCORE_BONUS : 0,
         devDays: required,
       });
       const day = this.day();
@@ -1467,6 +1586,7 @@ export class TycoonStore {
         scoreBonus: carry,
         award: null,
         port: null,
+        engine: null,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -1734,6 +1854,10 @@ export class TycoonStore {
       this.patchNotice = "";
       this.patchNoticeDay = 0;
     }
+    if (this.engineNoticeDay !== 0 && this.engineNoticeDay <= endedDay) {
+      this.engineNotice = "";
+      this.engineNoticeDay = 0;
+    }
   }
 
   private officeView(level: number, hires: number, cash: number): TycoonOffice {
@@ -1805,6 +1929,15 @@ export class TycoonStore {
       owned.push({ id: upgrade.id, day: Number.isInteger(day) && day > 0 ? day : 1 });
     }
     return owned;
+  }
+
+  private loadEngineOwned(): boolean {
+    const row = this.db.prepare("SELECT engine_id FROM tycoon_meta WHERE id = 1").get() as { engine_id?: string } | undefined;
+    return row?.engine_id === ENGINE_ID;
+  }
+
+  private saveEngineOwned(): void {
+    this.db.prepare("UPDATE tycoon_meta SET engine_id = ? WHERE id = 1").run(ENGINE_ID);
   }
 
   private saveUpgrades(owned: readonly OwnedUpgrade[]): void {
@@ -2048,6 +2181,9 @@ export class TycoonStore {
       sequel: this.sequelOffer(row, snapshot),
       award: this.awardOffer(row, snapshot),
       port: this.portOffer(row, snapshot),
+      engine: snapshot.engine === ENGINE_ID
+        ? { id: ENGINE_ID, name: ENGINE_NAME, scoreBonus: ENGINE_SCORE_BONUS }
+        : null,
     };
   }
 
