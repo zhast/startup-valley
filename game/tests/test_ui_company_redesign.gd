@@ -645,6 +645,7 @@ func _tycoon_secondary_actions() -> void:
 	_check(patch != null and patch.disabled and str(patch.get_meta("cozy_variant", "")) == "secondary" and patch.text == "Patch · Need $100", "Patch reads Need $100 when cash is short")
 	_check(_panel.find_child("Sequel_p1", true, false) == null, "A selling card without a sequel offer draws no Sequel button")
 	_check(_panel.find_child("Award_p1", true, false) == null, "A selling card without an award offer draws no Enter award button")
+	_check(_panel.find_child("Port_p1", true, false) == null, "A selling card without a port offer draws no Port button")
 	_check(_button("Hire Mina") != null and str(_button("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Patch")
 	var shipped: Dictionary = (tycoon["history"] as Array)[0]
 	var offer: Dictionary = shipped["patch"]
@@ -748,6 +749,96 @@ func _tycoon_secondary_actions() -> void:
 	award = _panel.find_child("Award_p1", true, false) as Button
 	_check(award != null and award.disabled and award.text == "Enter award · Need $40", "Short cash reads Need $40")
 	_check(_panel.find_child("AwardResult_p1", true, false) == null, "A refused entry draws no result line")
+	var port_state := {
+		"id": "p1",
+		"name": "Crypto Alpha Newsletter",
+		"status": "complete",
+		"salesDays": 4,
+		"salesDaysTotal": 4,
+		"salesCents": 46800,
+		"fans": 11,
+		"review": {"score": 6, "reviewers": []},
+		"sequel": {
+			"scoreBonus": 0,
+			"savedDays": 1,
+			"isSequel": false,
+			"started": false,
+			"enabled": true,
+			"reason": "",
+		},
+		"award": {
+			"show": "Whop Creator Awards",
+			"costCents": 4000,
+			"outcome": "",
+			"fans": 0,
+			"entered": false,
+			"enabled": true,
+			"reason": "",
+		},
+		"port": {
+			"shelf": "Whop Mobile",
+			"costCents": 8000,
+			"phase": "",
+			"cents": 0,
+			"fans": 0,
+			"enabled": true,
+			"reason": "",
+		},
+	}
+	var port_journey := sequel_state.duplicate(true)
+	(port_journey["tycoon"] as Dictionary)["history"] = [port_state]
+	await _present("journey", port_journey)
+	var port_button := _panel.find_child("Port_p1", true, false) as Button
+	var port_shelf := _panel.find_child("PortShelf_p1", true, false) as Label
+	var shelf_row := _panel.find_child("ShelfActions_p1", true, false) as Control
+	var sequel_row := _panel.find_child("Sequel_p1", true, false) as Button
+	var award_row := _panel.find_child("Award_p1", true, false) as Button
+	_check(port_button != null and not port_button.disabled and str(port_button.get_meta("cozy_variant", "")) == "secondary" and port_button.text == "Port", "Port reads as secondary")
+	_check(port_shelf != null and port_shelf.text == "Whop Mobile · $80", "The shipped card names the shelf and the fee")
+	_check(_panel.find_child("PortLine_p1", true, false) == null, "The port line waits until the port starts")
+	_check(shelf_row != null and sequel_row != null and award_row != null and sequel_row.get_parent() == shelf_row and award_row.get_parent() == shelf_row and port_button.get_parent() == shelf_row, "Sequel, Enter award, and Port share one row")
+	_check(_button("Hire Mina") != null and str(_button("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Port")
+	var port_offer: Dictionary = port_state["port"]
+	port_offer["phase"] = "selling"
+	port_offer["enabled"] = false
+	port_offer["reason"] = "Already ported."
+	await _present("journey", port_journey)
+	var port_line := _panel.find_child("PortLine_p1", true, false) as Label
+	port_button = _panel.find_child("Port_p1", true, false) as Button
+	_check(port_line != null and port_line.text == "Port · Whop Mobile · selling 1 day", "A started port reads selling 1 day")
+	_check(port_button != null and port_button.disabled and port_button.text == "Port · Already ported.", "A second port stays disabled")
+	_check(_panel.find_child("PortShelf_p1", true, false) == null, "The fee line hides once the port has started")
+	port_offer["phase"] = "sold"
+	port_offer["cents"] = 4500
+	port_offer["fans"] = 2
+	await _present("journey", port_journey)
+	port_line = _panel.find_child("PortLine_p1", true, false) as Label
+	_check(port_line != null and port_line.text == "Port · Whop Mobile · $45.00", "A finished port names the extra sales")
+	port_offer["phase"] = ""
+	port_offer["cents"] = 0
+	port_offer["fans"] = 0
+	port_offer["reason"] = "Need $80"
+	await _present("journey", port_journey)
+	port_button = _panel.find_child("Port_p1", true, false) as Button
+	_check(port_button != null and port_button.disabled and port_button.text == "Port · Need $80", "Short cash reads Need $80")
+	_check(_panel.find_child("PortLine_p1", true, false) == null, "A refused port draws no status line")
+	port_state["status"] = "released"
+	port_state["patch"] = {
+		"costCents": 10000,
+		"scoreBonus": 1,
+		"applied": false,
+		"enabled": false,
+		"reason": "Need $100",
+	}
+	port_offer["reason"] = "Still selling."
+	await _present("journey", port_journey)
+	port_button = _panel.find_child("Port_p1", true, false) as Button
+	_check(port_button != null and port_button.disabled and port_button.text == "Port · Still selling.", "Port stays disabled while the product is selling")
+	port_state["status"] = "complete"
+	port_offer["reason"] = "Another port is still selling."
+	await _present("journey", port_journey)
+	port_button = _panel.find_child("Port_p1", true, false) as Button
+	_check(port_button != null and port_button.disabled and port_button.text == "Port · Another port is still selling.", "Another selling port disables this one")
 	tycoon.erase("contract")
 	tycoon.erase("history")
 	tycoon.erase("patchNotice")

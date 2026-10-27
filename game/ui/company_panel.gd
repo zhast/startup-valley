@@ -605,8 +605,7 @@ func _selling_cards() -> void:
 		var text := "Patch · $%d" % int(cost / 100) if enabled or reason.is_empty() else "Patch · %s" % reason
 		var button := _button(text, _patch_product.bind(product_id), false, enabled, card, "secondary")
 		button.name = "Patch_%s" % product_id
-		_sequel_action(product, card)
-		_award_action(product, card)
+		_shelf_actions(product, card)
 
 func _finished_cards() -> void:
 	for item: Variant in _tycoon().get("history", []) as Array:
@@ -622,10 +621,23 @@ func _finished_cards() -> void:
 		title.name = "FinishedTitle_%s" % product_id
 		var done := _label("Sales finished.", false, card, "meta")
 		done.name = "FinishedDays_%s" % product_id
-		_sequel_action(product, card)
-		_award_action(product, card)
+		_shelf_actions(product, card)
 
-func _sequel_action(product: Dictionary, card: Control) -> void:
+func _shelf_actions(product: Dictionary, card: Control) -> void:
+	var row := HFlowContainer.new()
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("h_separation", 8)
+	row.add_theme_constant_override("v_separation", 8)
+	_sequel_action(product, card, row)
+	_award_action(product, card, row)
+	_port_action(product, card, row)
+	if row.get_child_count() == 0:
+		row.free()
+		return
+	row.name = "ShelfActions_%s" % str(product.get("id", ""))
+	card.add_child(row)
+
+func _sequel_action(product: Dictionary, card: Control, row: Control) -> void:
 	var value: Variant = product.get("sequel", null)
 	if not value is Dictionary: return
 	var offer := value as Dictionary
@@ -634,13 +646,13 @@ func _sequel_action(product: Dictionary, card: Control) -> void:
 	var enabled := bool(offer.get("enabled", false))
 	var reason := str(offer.get("reason", "")).strip_edges()
 	var text := "Sequel" if enabled or reason.is_empty() else "Sequel · %s" % reason
-	var button := _button(text, _start_sequel.bind(product_id), false, enabled, card, "secondary")
+	var button := _shelf_button(text, _start_sequel.bind(product_id), enabled, row)
 	button.name = "Sequel_%s" % product_id
 
 func _start_sequel(product_id: String) -> void:
 	_request("tycoon.sequel", {"productId": product_id})
 
-func _award_action(product: Dictionary, card: Control) -> void:
+func _award_action(product: Dictionary, card: Control, row: Control) -> void:
 	var value: Variant = product.get("award", null)
 	if not value is Dictionary: return
 	var offer := value as Dictionary
@@ -657,11 +669,58 @@ func _award_action(product: Dictionary, card: Control) -> void:
 	var enabled := bool(offer.get("enabled", false))
 	var reason := str(offer.get("reason", "")).strip_edges()
 	var text := "Enter award" if enabled or reason.is_empty() else "Enter award · %s" % reason
-	var button := _button(text, _enter_award.bind(product_id), false, enabled, card, "secondary")
+	var button := _shelf_button(text, _enter_award.bind(product_id), enabled, row)
 	button.name = "Award_%s" % product_id
 
 func _enter_award(product_id: String) -> void:
 	_request("tycoon.award", {"productId": product_id})
+
+func _port_action(product: Dictionary, card: Control, row: Control) -> void:
+	var value: Variant = product.get("port", null)
+	if not value is Dictionary: return
+	var offer := value as Dictionary
+	var product_id := str(product.get("id", ""))
+	var shelf := str(offer.get("shelf", "")).strip_edges()
+	var phase := str(offer.get("phase", ""))
+	if str(product.get("status", "")) == "complete" and phase.is_empty() and not shelf.is_empty():
+		var fee := _label("%s · $%d" % [shelf, int(int(offer.get("costCents", 0)) / 100)], false, card, "meta")
+		fee.name = "PortShelf_%s" % product_id
+	var status_line := _port_line(offer)
+	if not status_line.is_empty():
+		var line := _label(status_line, false, card, "action")
+		line.name = "PortLine_%s" % product_id
+	var enabled := bool(offer.get("enabled", false))
+	var reason := str(offer.get("reason", "")).strip_edges()
+	var text := "Port" if enabled or reason.is_empty() else "Port · %s" % reason
+	var button := _shelf_button(text, _port_product.bind(product_id), enabled, row)
+	button.name = "Port_%s" % product_id
+
+func _port_product(product_id: String) -> void:
+	_request("tycoon.port", {"productId": product_id})
+
+func _port_line(offer: Dictionary) -> String:
+	var shelf := str(offer.get("shelf", "")).strip_edges()
+	if shelf.is_empty(): return ""
+	match str(offer.get("phase", "")):
+		"selling":
+			return "Port · %s · selling 1 day" % shelf
+		"sold":
+			return "Port · %s · $%s" % [shelf, _money(int(offer.get("cents", 0)))]
+		_:
+			return ""
+
+func _shelf_button(value: String, callback: Callable, enabled: bool, row: Control) -> Button:
+	var button := _button(value, callback, false, enabled, row, "secondary")
+	button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	return button
+
+func _show_port(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var value: Variant = product.get("port", null)
+	if not value is Dictionary: return
+	var text := _port_line(value as Dictionary)
+	if text.is_empty(): return
+	var line := _label(text, false, parent, "action")
+	line.name = node_name
 
 func _award_result(offer: Dictionary) -> String:
 	if not bool(offer.get("entered", false)): return ""
@@ -1101,6 +1160,7 @@ func _product_history(tycoon: Dictionary) -> void:
 		_show_patch(product, "PatchLine", card)
 		_show_sequel(product, "SequelLine", card)
 		_show_award(product, "AwardLine", card)
+		_show_port(product, "PortLine", card)
 
 func _released_focus() -> Dictionary:
 	var history: Array = _tycoon().get("history", []) as Array
