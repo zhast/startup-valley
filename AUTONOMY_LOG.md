@@ -1576,3 +1576,47 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → let a product finish selling → Port on the Shipped card, or leave it. The first newsletter with no port is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_ports.gd`.
 
+### Round 40 — 2026-10-27
+
+**What changed**
+- One optional in-house engine. `tycoon.buyEngine` takes `{id}` and the only id is `whop_kit`. The engine is Whop Kit Engine. The price is $120. It is bought once for the company. A product started on it stores +1 on the base score, added with the sequel bonus, then clamped to 1–10. Sales still use the stored review score. No engine is the default, so the first Crypto Alpha Newsletter still pays 20700 cents and 5 fans and still scores 6. The same build on the engine scores 7. A score that is already 10 stays 10.
+- Ownership is `engine_id` on `tycoon_meta` (migration 015). Empty means not owned. The product snapshot in `staff_json` stores `engine` and `engineBonus` only when that product starts on the engine. An older row that is only a staff array, or a row that omits the fields, started with no engine. Reads do not rewrite `staff_json`. A sequel stores no engine. The buy is one ledger row: id `tycoon:engine`, cash −$120, earned 0, reputation 0, label `Engine: Whop Kit Engine`. Buying twice fails with "Already owned." and charges nothing. Other refusals: "Unknown engine.", "Need $120", "Buy the engine first.", and "Pick None or Whop Kit Engine." Starting on the engine before it is owned does not charge a marketing ad. The fee is paid at the buy, not again at Start development.
+- Company Journey shows an Engine card under Upgrades. The price line is "Whop Kit Engine · $120". Buy is secondary. Short cash reads "Buy Whop Kit Engine · Need $120". After the buy the notice reads "Bought Whop Kit Engine. −$120" until the day ends, and the button reads "Buy Whop Kit Engine · Already owned." Once it is owned, the New Product picker offers None and Whop Kit Engine. The effect line reads "None · no score bump" or "Whop Kit Engine · +1 score". The build line reads "On the build" or "On the build · Whop Kit Engine". A product on the engine shows "On the build · Whop Kit Engine · +1 score" on the journey, the bench, the release card, and the shipped list. The picker stays hidden until the engine is owned. Hire Mina stays the one primary action. Start development stays the primary action on the picker.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Focus is the next slice. One optional focus when a product starts: Balanced (the default), Design, Tech, or Hype. A lean stores a small point bump on that stat. Balanced leaves the first newsletter at 20700 cents and 5 fans.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. The tallest Shipped card still lets the contract card meet the footer. On the engine picker the shipped history is clipped at the footer the same way. The engine lines themselves sit above that clip.
+5. Carried from Round 39: Creative has no seated sheet. Unbound art stays untracked. The live path is still a harness driver. A cheap reviewer can still sit just under the 2.5 ready line. Chapter 3 ends at "More is coming." The starter `shared_workbench` stays in storage. The one on the Open Floor is a separate grant.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 108 tests, 106 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test covers the $120 fee, a score of 6 lifting to 7, the 1–10 cap, a later product whose launch cents beat the same sale without the bump, refusals for an unknown id / short cash / a second buy / an unowned start before any ad charge, one ledger row, omitted engine keys, a reopen, and an older staff-array row staying without an engine field.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS (40 checks, 0 failures). Launch sales stay 20700 cents and 5 fans. The next office day stays 33300 cents and 8 fans.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS (50 checks, 0 failures)
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS (50 checks, 0 failures)
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS (47 checks, 0 failures)
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS (23 checks, 0 failures)
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS (25 checks, 0 failures)
+- `test_tycoon_price.gd` — TYCOON PRICE PASS (49 checks, 0 failures). Catalog launch is 20700 cents and 5 fans.
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS (55 checks, 0 failures). No ad stays 20700 cents and 5 fans.
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS (60 checks, 0 failures). Ignoring the offer leaves Fitness and Crypto Alpha free. The newsletter still pays 20700 cents and 5 fans.
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS (37 checks, 0 failures). No patch still pays 20700 cents and 5 fans.
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS (49 checks, 0 failures). No sequel still pays 20700 cents and 5 fans.
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS (49 checks, 0 failures). No award still pays 20700 cents and 5 fans.
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS (65 checks, 0 failures). No port still pays 20700 cents and 5 fans.
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS (61 checks, 0 failures). No engine still pays 20700 cents and 5 fans. Buy stays "Buy Whop Kit Engine · Need $120" until the ship, then Buy is secondary and Hire Mina stays primary. The fee is $120 once. The notice reads "Bought Whop Kit Engine. −$120". A second press stays "Buy Whop Kit Engine · Already owned." The picker appears after the buy. None is the default. The chosen engine shows "+1 score" and "On the build · Whop Kit Engine". Start development does not charge again. The bench, the journey, and the release name the engine.
+- `test_ui_company_redesign.gd` — 13529 checks, 0 failures, 0 captures. A fixture without an engine draws no Engine card and no picker. Hire Mina stays primary.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Thirty-three PNGs in `/workspace/sv-proof/round-40/` (local, not committed). `32-engine-offer.png` is Company Journey on the Engine card: "Whop Kit Engine · $120", "One kit, used on the builds you choose.", "+1 score", and "Buy Whop Kit Engine · $120". Hire Mina · free stays orange and does not cover the card. The Office card starts below it. Header reads Spring 13 · Year 1 · $934.60 game cash · 33 reputation. `33-engine-picker.png` is the product picker scrolled to Engine: None, Whop Kit Engine selected, "Whop Kit Engine · +1 score", and "On the build · Whop Kit Engine". Start development stays orange. Those lines are readable and do not overlap. The shipped history below is clipped at the footer. Cash before the desk buy was 118460 cents. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-40 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → buy Whop Kit Engine once → New Product → choose the engine, or leave it on None. The first newsletter with no engine is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_engines.gd`.
+
