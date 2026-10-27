@@ -20,6 +20,9 @@ import {
   PATCH_COST_CENTS,
   PATCH_SCORE_BONUS,
   PRODUCT_TYPES,
+  SEQUEL_DAYS_SAVED,
+  SEQUEL_SCORE_BONUS,
+  SEQUEL_SCORE_MARK,
   SEASON_UNIT_BOOST_PERCENT,
   STAT_CAP,
   TOPICS,
@@ -34,8 +37,11 @@ import {
   fitFor,
   launchPriceCents,
   patchedScore,
+  requiredDevDays,
   reviewProduct,
   salesForDay,
+  sequelDevDays,
+  sequelScoreCarry,
   staffPoints,
   trainCostCents,
 } from "../src/tycoon.js";
@@ -1823,5 +1829,253 @@ test("a patch charges once and raises later sales only", async () => {
   assert.equal(oldLaunch?.fans, 5);
   const oldJson = String((restored.journey.db.prepare("SELECT staff_json FROM tycoon_products WHERE id = 'p1'").get() as { staff_json: string }).staff_json);
   assert.equal(oldJson, staffOnly);
+  restored.close();
+});
+
+function staffJson(db: GameDatabase, productId: string): string {
+  return String((db.journey.db.prepare("SELECT staff_json FROM tycoon_products WHERE id = ?").get(productId) as { staff_json: string }).staff_json);
+}
+
+function productCount(db: GameDatabase): number {
+  return Number((db.journey.db.prepare("SELECT COUNT(*) AS n FROM tycoon_products").get() as { n: number }).n);
+}
+
+function setReviewScore(db: GameDatabase, productId: string, score: number): void {
+  const row = db.journey.db.prepare("SELECT review_json FROM tycoon_products WHERE id = ?").get(productId) as { review_json: string };
+  const review = JSON.parse(row.review_json) as { score: number };
+  review.score = score;
+  db.journey.db.prepare("UPDATE tycoon_products SET review_json = ? WHERE id = ?").run(JSON.stringify(review), productId);
+}
+
+function finishNewsletter(db: GameDatabase): void {
+  db.tycoon.start("crypto", "newsletter", []);
+  db.endDay(1);
+  db.endDay(2);
+  db.tycoon.release("p1");
+  db.endDay(3);
+  db.endDay(4);
+  db.endDay(5);
+  db.endDay(6);
+}
+
+test("a sequel builds faster and carries a score", async () => {
+  assert.equal(SEQUEL_DAYS_SAVED, 1);
+  assert.equal(SEQUEL_SCORE_MARK, 6);
+  assert.equal(SEQUEL_SCORE_BONUS, 1);
+  assert.equal(sequelDevDays(2), 1);
+  assert.equal(sequelDevDays(1), 1);
+  assert.equal(sequelDevDays(4), 3);
+  assert.equal(requiredDevDays(2, false), 2);
+  assert.equal(requiredDevDays(2, true), 1);
+  assert.equal(sequelScoreCarry(5), 0);
+  assert.equal(sequelScoreCarry(6), 1);
+  assert.equal(sequelScoreCarry(10), 1);
+
+  const { db, root } = await setup();
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  db.tycoon.start("crypto", "newsletter", []);
+  assert.equal(db.tycoon.view().developing?.sequel, null);
+  assert.equal(db.tycoon.view().developing?.devDaysRequired, 2);
+  assert.throws(() => db.tycoon.sequel("p1"), /Ship this product first/u);
+  assert.throws(() => db.tycoon.sequel("p9"), /No product with that id/u);
+  db.endDay(1);
+  db.endDay(2);
+  db.tycoon.release("p1");
+  const plain = db.tycoon.view().history[0];
+  assert.equal(plain?.salesCents, 20700);
+  assert.equal(plain?.fans, 5);
+  assert.equal(plain?.sequel?.isSequel, false);
+  assert.equal(plain?.sequel?.started, false);
+  assert.equal(plain?.sequel?.enabled, false);
+  assert.equal(plain?.sequel?.reason, "Still selling.");
+  assert.equal(plain?.sequel?.scoreBonus, 0);
+  const ignored = JSON.parse(staffJson(db, "p1")) as { sequelOf?: unknown; sequelId?: unknown; scoreBonus?: unknown };
+  assert.equal(ignored.sequelOf, undefined);
+  assert.equal(ignored.sequelId, undefined);
+  assert.equal(ignored.scoreBonus, undefined);
+  const sellingCash = db.journey.state().company.cashCents;
+  assert.throws(() => db.tycoon.sequel("p1"), /Still selling/u);
+  assert.equal(productCount(db), 1);
+  assert.equal(db.journey.state().company.cashCents, sellingCash);
+  db.endDay(3);
+  db.endDay(4);
+  db.endDay(5);
+  db.endDay(6);
+  const finished = db.tycoon.view().history[0];
+  assert.equal(finished?.status, "complete");
+  assert.equal(finished?.salesDays, 4);
+  assert.equal(finished?.sequel?.enabled, true);
+  assert.equal(finished?.sequel?.reason, "");
+  const before = db.journey.state().company.cashCents;
+  db.tycoon.sequel("p1");
+  const started = db.tycoon.view().developing;
+  assert.equal(started?.name, "Crypto Alpha Newsletter 2");
+  assert.equal(started?.topicId, "crypto");
+  assert.equal(started?.typeId, "newsletter");
+  assert.equal(started?.devDays, 0);
+  assert.equal(started?.devDaysRequired, 1);
+  assert.equal(started?.ready, false);
+  assert.equal(started?.pricePercent, 100);
+  assert.equal(started?.marketing, "none");
+  assert.equal(started?.sequel?.isSequel, true);
+  assert.equal(started?.sequel?.scoreBonus, 1);
+  assert.equal(started?.sequel?.savedDays, 1);
+  assert.equal(started?.sequel?.reason, "This is a sequel.");
+  assert.equal(started?.sequel?.enabled, false);
+  const original = db.tycoon.view().history.find((item) => item.id === "p1");
+  assert.equal(original?.sequel?.started, true);
+  assert.equal(original?.sequel?.reason, "Already has a sequel.");
+  assert.equal(original?.salesCents, finished?.salesCents);
+  assert.equal(db.journey.state().company.cashCents, before);
+  const sequelStored = JSON.parse(staffJson(db, "p2")) as { sequelOf?: string; scoreBonus?: number; marketing?: string; pricePercent?: number };
+  assert.equal(sequelStored.sequelOf, "p1");
+  assert.equal(sequelStored.scoreBonus, 1);
+  assert.equal(sequelStored.marketing, "none");
+  assert.equal(sequelStored.pricePercent, 100);
+  const originalStored = JSON.parse(staffJson(db, "p1")) as { sequelId?: string; sequelOf?: string };
+  assert.equal(originalStored.sequelId, "p2");
+  assert.equal(originalStored.sequelOf, undefined);
+  assert.throws(() => db.tycoon.sequel("p1"), /Already has a sequel/u);
+  assert.throws(() => db.tycoon.sequel("p2"), /This is a sequel/u);
+  assert.equal(productCount(db), 2);
+  assert.equal(db.journey.state().company.cashCents, before);
+  assert.throws(() => db.tycoon.release("p2"), /1 more office day/u);
+  db.endDay(7);
+  const built = db.tycoon.view().developing;
+  assert.equal(built?.devDays, 1);
+  assert.equal(built?.ready, true);
+  assert.equal(built?.devDaysRequired, 1);
+  const carriedReview = reviewProduct({
+    seed: 26021,
+    productId: "p2",
+    topicId: "crypto",
+    typeId: "newsletter",
+    design: built?.design ?? 0,
+    tech: built?.tech ?? 0,
+    hype: built?.hype ?? 0,
+    sequelBonus: 1,
+    devDays: 1,
+  });
+  const plainReview = reviewProduct({
+    seed: 26021,
+    productId: "p2",
+    topicId: "crypto",
+    typeId: "newsletter",
+    design: built?.design ?? 0,
+    tech: built?.tech ?? 0,
+    hype: built?.hype ?? 0,
+    devDays: 1,
+  });
+  db.tycoon.release("p2");
+  const shipped = db.tycoon.view().history.find((item) => item.id === "p2");
+  assert.equal(shipped?.review?.score, carriedReview.score);
+  assert.equal(shipped?.review?.score, Math.min(10, plainReview.score + 1));
+  assert.ok((shipped?.review?.score ?? 0) > plainReview.score);
+  assert.equal(validate(db.journey.state()), true, JSON.stringify(validate.errors));
+  const file = join(root, "game.sqlite");
+  const project = join(root, "company-project");
+  db.close();
+  const reopened = new GameDatabase(file, project);
+  assert.equal(reopened.tycoon.view().history.find((item) => item.id === "p1")?.sequel?.started, true);
+  assert.equal(reopened.tycoon.view().history.find((item) => item.id === "p2")?.sequel?.isSequel, true);
+  assert.equal(reopened.tycoon.view().history.find((item) => item.id === "p2")?.sequel?.scoreBonus, 1);
+  reopened.close();
+
+  const low = await setup();
+  finishNewsletter(low.db);
+  setReviewScore(low.db, "p1", 5);
+  low.db.tycoon.sequel("p1");
+  const lowSequel = JSON.parse(staffJson(low.db, "p2")) as { scoreBonus?: number };
+  assert.equal(lowSequel.scoreBonus, undefined);
+  assert.equal(low.db.tycoon.view().developing?.sequel?.scoreBonus, 0);
+  low.db.close();
+
+  const patched = await setup();
+  patched.db.tycoon.start("crypto", "newsletter", []);
+  patched.db.endDay(1);
+  patched.db.endDay(2);
+  patched.db.tycoon.release("p1");
+  setReviewScore(patched.db, "p1", 5);
+  patched.db.tycoon.patch("p1");
+  patched.db.endDay(3);
+  patched.db.endDay(4);
+  patched.db.endDay(5);
+  patched.db.endDay(6);
+  patched.db.tycoon.sequel("p1");
+  const patchedSequel = JSON.parse(staffJson(patched.db, "p2")) as { scoreBonus?: number };
+  assert.equal(patchedSequel.scoreBonus, 1);
+  assert.equal(patched.db.tycoon.view().developing?.sequel?.scoreBonus, 1);
+  patched.db.close();
+
+  const locked = await setup();
+  finishNewsletter(locked.db);
+  locked.db.journey.db.prepare("UPDATE tycoon_meta SET contract_json = ? WHERE id = 1").run(JSON.stringify({ id: "remy" }));
+  const lockedCash = locked.db.journey.state().company.cashCents;
+  assert.throws(() => locked.db.tycoon.sequel("p1"), /This contract is Fitness × Course\./u);
+  assert.equal(locked.db.tycoon.view().developing, null);
+  assert.equal(productCount(locked.db), 1);
+  assert.equal(locked.db.journey.state().company.cashCents, lockedCash);
+  assert.equal(staffJson(locked.db, "p1").includes("sequelId"), false);
+  locked.db.close();
+
+  const matched = await setup();
+  finishNewsletter(matched.db);
+  matched.db.journey.db.prepare("UPDATE tycoon_meta SET contract_json = ? WHERE id = 1").run(JSON.stringify({ id: "nova" }));
+  const matchedCash = matched.db.journey.state().company.cashCents;
+  matched.db.tycoon.sequel("p1");
+  assert.equal(matched.db.tycoon.view().developing?.contract?.client, "Nova on Whop");
+  assert.equal(matched.db.tycoon.view().contract.status, "building");
+  assert.equal(String((matched.db.journey.db.prepare("SELECT contract_json FROM tycoon_meta WHERE id = 1").get() as { contract_json: string }).contract_json), "");
+  assert.equal(matched.db.journey.state().company.cashCents, matchedCash);
+  matched.db.close();
+
+  const crowded = await setup();
+  finishNewsletter(crowded.db);
+  crowded.db.tycoon.start("fitness", "newsletter", []);
+  const crowdedCash = crowded.db.journey.state().company.cashCents;
+  assert.throws(() => crowded.db.tycoon.sequel("p1"), /Ship the product on the bench first/u);
+  assert.equal(crowded.db.tycoon.view().developing?.name, "Fitness Newsletter");
+  assert.equal(productCount(crowded.db), 2);
+  assert.equal(crowded.db.journey.state().company.cashCents, crowdedCash);
+  crowded.db.close();
+
+  const legacy = await setup();
+  const legacyFile = join(legacy.root, "game.sqlite");
+  const legacyProject = join(legacy.root, "company-project");
+  legacy.db.close();
+  const raw = new DatabaseSync(legacyFile);
+  const staffOnly = JSON.stringify(["founder"]);
+  raw.prepare(`
+    INSERT INTO tycoon_products (
+      id, topic_id, type_id, name, fit, status, started_day, dev_days,
+      design_points, tech_points, hype_points, staff_json, last_dev_day,
+      released_day, review_json, sales_applied, last_sales_day, sales_cents, fans
+    ) VALUES ('p1', 'crypto', 'newsletter', 'Crypto Alpha Newsletter', 'great', 'developing', 1, 2, 4, 4, 4, ?, NULL, NULL, NULL, 0, NULL, 0, 0)
+  `).run(staffOnly);
+  raw.close();
+  const restored = new GameDatabase(legacyFile, legacyProject);
+  const legacySchema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validateLegacy = new Ajv2020({ strict: true, allErrors: true }).compile(legacySchema);
+  assert.equal(restored.tycoon.view().developing?.sequel, null);
+  assert.equal(staffJson(restored, "p1"), staffOnly);
+  const oldReview = JSON.stringify({
+    score: 6,
+    reviewers: ["Whop Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
+  });
+  restored.journey.db.prepare(`
+    UPDATE tycoon_products
+    SET status = 'complete', released_day = 3, review_json = ?, sales_applied = 4, last_sales_day = 5, sales_cents = 20700, fans = 5
+    WHERE id = 'p1'
+  `).run(oldReview);
+  const oldRow = restored.tycoon.view().history[0];
+  assert.equal(oldRow?.sequel?.isSequel, false);
+  assert.equal(oldRow?.sequel?.started, false);
+  assert.equal(oldRow?.sequel?.scoreBonus, 0);
+  assert.equal(oldRow?.sequel?.savedDays, 1);
+  assert.equal(oldRow?.sequel?.enabled, true);
+  assert.equal(oldRow?.sequel?.reason, "");
+  assert.equal(staffJson(restored, "p1"), staffOnly);
+  assert.equal(validateLegacy(restored.journey.state()), true, JSON.stringify(validateLegacy.errors));
   restored.close();
 });

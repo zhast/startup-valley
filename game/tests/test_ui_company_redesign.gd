@@ -643,6 +643,7 @@ func _tycoon_secondary_actions() -> void:
 	var selling := _panel.find_child("Selling_p1", true, false) as Control
 	_check(selling != null, "Company Journey shows the selling-product card")
 	_check(patch != null and patch.disabled and str(patch.get_meta("cozy_variant", "")) == "secondary" and patch.text == "Patch · Need $100", "Patch reads Need $100 when cash is short")
+	_check(_panel.find_child("Sequel_p1", true, false) == null, "A selling card without a sequel offer draws no Sequel button")
 	_check(_button("Hire Mina") != null and str(_button("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Patch")
 	var shipped: Dictionary = (tycoon["history"] as Array)[0]
 	var offer: Dictionary = shipped["patch"]
@@ -656,6 +657,40 @@ func _tycoon_secondary_actions() -> void:
 	_check(patched != null and patched.text == "Patched · +1 score", "The selling card names the patched state")
 	_check(notice != null and notice.text == "Patched Crypto Alpha Newsletter. −$100", "The selling card names the patch cost")
 	_check(patch != null and patch.disabled and patch.text == "Patch · Already patched.", "A second patch stays disabled")
+	var sequel_state := value.duplicate(true)
+	var sequel_tycoon: Dictionary = sequel_state["tycoon"]
+	sequel_tycoon["history"] = [{
+		"id": "p1",
+		"name": "Crypto Alpha Newsletter",
+		"status": "complete",
+		"salesDays": 4,
+		"salesDaysTotal": 4,
+		"salesCents": 20700,
+		"fans": 5,
+		"review": {"score": 6, "reviewers": []},
+		"sequel": {
+			"scoreBonus": 0,
+			"savedDays": 1,
+			"isSequel": false,
+			"started": false,
+			"enabled": true,
+			"reason": "",
+		},
+	}]
+	await _present("journey", sequel_state)
+	var finished := _panel.find_child("Finished_p1", true, false) as Control
+	var sequel := _panel.find_child("Sequel_p1", true, false) as Button
+	_check(finished != null, "Company Journey shows the finished-product card")
+	_check(sequel != null and not sequel.disabled and str(sequel.get_meta("cozy_variant", "")) == "secondary" and sequel.text == "Sequel", "Sequel reads as secondary")
+	_check(_button("Hire Mina") != null and str(_button("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Sequel")
+	var done: Dictionary = (sequel_tycoon["history"] as Array)[0]
+	var sequel_offer: Dictionary = done["sequel"]
+	sequel_offer["started"] = true
+	sequel_offer["enabled"] = false
+	sequel_offer["reason"] = "Already has a sequel."
+	await _present("journey", sequel_state)
+	sequel = _panel.find_child("Sequel_p1", true, false) as Button
+	_check(sequel != null and sequel.disabled and sequel.text == "Sequel · Already has a sequel.", "A second sequel stays disabled")
 	tycoon.erase("contract")
 	tycoon.erase("history")
 	tycoon.erase("patchNotice")

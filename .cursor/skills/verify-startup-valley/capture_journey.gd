@@ -306,6 +306,15 @@ func _run() -> void:
 	await click(research)
 	await wait_until(func() -> bool: return not main.company_panel.busy and label_contains("Unlocked Sneakers. −4 RP"), "Research notice names Sneakers")
 	await snap("07-research-unlocked", label_named("ResearchNotice"))
+	await end_office_day()
+	await open_journey()
+	var finished := main.company_panel.find_child("Finished_p1", true, false) as Control
+	var sequel_offer := main.company_panel.find_child("Sequel_p1", true, false) as Button
+	check(str(latest_shipped().get("status", "")) == "complete", "The first newsletter has finished selling")
+	check(finished != null, "Company Journey shows the finished product")
+	check(sequel_offer != null and not sequel_offer.disabled and str(sequel_offer.get_meta("cozy_variant", "")) == "secondary" and sequel_offer.text == "Sequel", "Sequel is a secondary action on the finished product")
+	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Sequel")
+	await snap("26-sequel-offer", finished)
 	await open_product()
 	var sneakers := button_named("Sneakers")
 	check(sneakers != null and not sneakers.disabled and not sneakers.text.contains("locked"), "Sneakers is selectable after research")
@@ -497,6 +506,16 @@ func _contract_release_proof() -> void:
 	if patched_card == null:
 		patched_card = label_named("PatchNotice")
 	await snap("25-patch-applied", patched_card)
+	var sequel_button := main.company_panel.find_child("Sequel_p1", true, false) as Button
+	check(sequel_button != null and not sequel_button.disabled and sequel_button.text == "Sequel", "Sequel is available on the finished newsletter")
+	await click(sequel_button)
+	await wait_until(func() -> bool:
+		return str(developing().get("name", "")) == "Crypto Alpha Newsletter 2" and int(developing().get("devDaysRequired", 0)) == 1 and not main.company_panel.busy
+	, "The sequel starts on a one-day build")
+	check(label_named("ProductProgress") != null and label_named("ProductProgress").text == "Building · day 0 of 1", "The build line shows the shorter day")
+	check(label_named("SequelBonus") != null and label_named("SequelBonus").text == "Sequel · +1 score", "The build line shows the carried score")
+	await snap("27-sequel-started", label_named("ProductProgress"))
+	await open_journey()
 
 func _office_expansion_proof() -> void:
 	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-office-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])

@@ -518,6 +518,7 @@ func _journey_screen() -> void:
 		_button("End day + save", func() -> void: _request("day.end", {"day": day}), false, true, utilities, "secondary")
 	_product_shortcut()
 	_selling_cards()
+	_finished_cards()
 	_contract_card()
 	_train_staff()
 	_research_card()
@@ -604,6 +605,46 @@ func _selling_cards() -> void:
 		var text := "Patch · $%d" % int(cost / 100) if enabled or reason.is_empty() else "Patch · %s" % reason
 		var button := _button(text, _patch_product.bind(product_id), false, enabled, card, "secondary")
 		button.name = "Patch_%s" % product_id
+		_sequel_action(product, card)
+
+func _finished_cards() -> void:
+	for item: Variant in _tycoon().get("history", []) as Array:
+		if not item is Dictionary: continue
+		var product := item as Dictionary
+		if str(product.get("status", "")) != "complete": continue
+		var card := _card()
+		var product_id := str(product.get("id", ""))
+		card.name = "Finished_%s" % product_id
+		_label("Shipped", true, card)
+		var review: Dictionary = product.get("review", {}) if product.get("review") is Dictionary else {}
+		var title := _label("%s · %d/10 · $%s · +%d fans" % [product.get("name", "Product"), int(review.get("score", 0)), _money(int(product.get("salesCents", 0))), int(product.get("fans", 0))], false, card)
+		title.name = "FinishedTitle_%s" % product_id
+		var done := _label("Sales finished.", false, card, "meta")
+		done.name = "FinishedDays_%s" % product_id
+		_sequel_action(product, card)
+
+func _sequel_action(product: Dictionary, card: Control) -> void:
+	var value: Variant = product.get("sequel", null)
+	if not value is Dictionary: return
+	var offer := value as Dictionary
+	var product_id := str(product.get("id", ""))
+	_show_sequel(product, "SequelBonus_%s" % product_id, card)
+	var enabled := bool(offer.get("enabled", false))
+	var reason := str(offer.get("reason", "")).strip_edges()
+	var text := "Sequel" if enabled or reason.is_empty() else "Sequel · %s" % reason
+	var button := _button(text, _start_sequel.bind(product_id), false, enabled, card, "secondary")
+	button.name = "Sequel_%s" % product_id
+
+func _start_sequel(product_id: String) -> void:
+	_request("tycoon.sequel", {"productId": product_id})
+
+func _show_sequel(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var value: Variant = product.get("sequel", null)
+	if not value is Dictionary: return
+	var offer := value as Dictionary
+	if not bool(offer.get("isSequel", false)) or int(offer.get("scoreBonus", 0)) <= 0: return
+	var line := _label("Sequel · +1 score", false, parent, "action")
+	line.name = node_name
 
 func _patch_product(product_id: String) -> void:
 	_request("tycoon.patch", {"productId": product_id})
@@ -944,6 +985,7 @@ func _product_progress(product: Dictionary) -> void:
 	_show_contract(product, "ContractLine")
 	var progress := _label("Ready to ship" if ready else "Building · day %d of %d" % [dev_days, required], false, null, "action")
 	progress.name = "ProductProgress"
+	_show_sequel(product, "SequelBonus")
 	_label("Design %d · Tech %d · Hype %d" % [int(product.get("design", 0)), int(product.get("tech", 0)), int(product.get("hype", 0))], false, null, "meta")
 	var bonus_parts: PackedStringArray = []
 	for kind: String in ["design", "tech", "hype"]:
@@ -984,6 +1026,7 @@ func _release_screen() -> void:
 	_show_contract(product, "ReleaseContract")
 	_show_launch_price(product, "ReleasePrice")
 	_show_marketing(product, "ReleaseMarketing")
+	_show_sequel(product, "ReleaseSequel")
 	var research_line := _label("+%d research points" % int(product.get("researchPoints", 0)), false, null, "action")
 	research_line.name = "ReleaseResearch"
 	var price_boost := _upgrade_effect("price")
@@ -1011,6 +1054,7 @@ func _product_history(tycoon: Dictionary) -> void:
 		_show_marketing(product, "MarketingLine", card)
 		_show_contract(product, "ContractLine", card)
 		_show_patch(product, "PatchLine", card)
+		_show_sequel(product, "SequelLine", card)
 
 func _released_focus() -> Dictionary:
 	var history: Array = _tycoon().get("history", []) as Array
