@@ -9,7 +9,7 @@ The rules in `harness/src/tycoon.ts` are authoritative. This document matches th
 1. **Offline.** A new company ships a product with no API key and no network. Providers stay optional, and only on chapter work orders and chat.
 2. **The pairing is the decision.** A topic and a product type fit together at Great, Good, Okay, or Bad, in the Game Dev Tycoon way. A bad pairing can still ship. It sells worse.
 3. **Days, not a progress bar you click.** Development and sales move when the office day ends. The room stays the cozy Stardew-style office already in the game.
-4. **Deterministic.** Reviews and sales are pure functions of the company seed, the product id, the fit, the points, the research bonus stored on the product, the launch price stored on the product, the marketing choice stored on the product, whether it was patched, the sequel bonus stored on the product, the shorter day count that follows from the sequel link, and reputation. A contract bonus is a separate cash line. A patch cost is too. An award fee is too, and its fans are not part of the sales formula. They are not those inputs. The same save replays the same launch.
+4. **Deterministic.** Reviews and sales are pure functions of the company seed, the product id, the fit, the points, the research bonus stored on the product, the launch price stored on the product, the marketing choice stored on the product, whether it was patched, the sequel bonus stored on the product, the shorter day count that follows from the sequel link, and reputation. A contract bonus is a separate cash line. A patch cost is too. An award fee is too, and its fans are not part of the sales formula. A port fee is a separate cash line. Its one extra sales day uses that same sales formula. They are not extra inputs beyond those. The same save replays the same launch.
 5. **One product on the bench.** A second idea waits until the first one ships. A shipped product can still be selling while the next one starts.
 
 ## Core loop
@@ -21,7 +21,7 @@ The rules in `harness/src/tycoon.ts` are authoritative. This document matches th
 5. **End day + save** once for each office day of work. The team adds design, tech, and hype. Progress is `dev days / days required`.
 6. When the required days are done, **Release**. Four reviewers score it from 1 to 10. Launch-day sales pay game cash and fans immediately. If the product was started under a contract, that release also pays the bonus as its own cash line.
 7. The next three office days keep selling, once each, when the day ends. The release day does not sell twice. One optional patch can spend game cash and add 1 to the stored score for those remaining days.
-8. The product moves onto the shelf. Cash and reputation (fans) stay on the company. One optional sequel can start from that finished product. One optional award show can spend a little game cash and add fans from the stored score. Ship another.
+8. The product moves onto the shelf. Cash and reputation (fans) stay on the company. One optional sequel can start from that finished product. One optional award show can spend a little game cash and add fans from the stored score. One optional port can spend a little game cash and pay one extra sales day from the stored score. Ship another.
 
 A newsletter or template pack takes 2 office days. A course, community, or coaching offer takes 3. A software tool takes 4. Two extra office days can still add a little craft. After that, points stop.
 
@@ -76,11 +76,11 @@ Four reviewers then each move that base by −1, 0, or +1. The jitter comes from
 
 Reviewers: **Whop Weekly**, **Discord Dave**, **Margin Call Molly**, **Cohort Casey**.
 
-Sales run for 4 days at 100%, 70%, 45%, then 25% of the opening demand. Opening demand is the fit's base units, plus a term from the score, plus a small term from current reputation. A seeded swing of about ±10% lands on each day. Units are at least 1. Cash is units times the unit price. Fans are a fraction of units: 0.4 at score 8+, 0.2 at 5–7, 0.1 below that, and at least 1. Fans add to company reputation.
+Sales run for 4 days at 100%, 70%, 45%, then 25% of the opening demand. Opening demand is the fit's base units, plus a term from the score, plus a small term from current reputation. A seeded swing of about ±10% lands on each day. Units are at least 1. Cash is units times the unit price. Fans are a fraction of units: 0.4 at score 8+, 0.2 at 5–7, 0.1 below that, and at least 1. Fans add to company reputation. A port does not open a fifth day inside that window. It pays one later day at the same 25% step, and `salesDays` stays 4.
 
 The catalog price is the default. At Start development the player can leave it, or nudge −20% or +20%. A cheaper price sells more units. A higher price sells fewer. The percents are fixed: 80 / 100 / 120 for price, and 120 / 100 / 80 for units. Units after the nudge are `Math.max(1, Math.round((units * unitPercent) / 100))`. The unit price is `Math.round((catalogCents * pricePercent) / 100)`. Catalog (100) leaves both unchanged, so the first newsletter still pays 20700 cents and 5 fans.
 
-The choice is stored on the product, in `staff_json` as `{staff, researchBonus, pricePercent, marketing}`. A sequel also stores `sequelOf`, and the original stores `sequelId` once that sequel starts. `scoreBonus` is 1 only when the carry applies. Sales use the stored price. An older row that is only a staff array, or a row with no `pricePercent`, sells at catalog. A row with no `marketing` sells with no ad. A row with no `patched` flag sells unpatched. A row with no sequel fields is not a sequel and has not started one. A row with no `award` field has not entered a show. Stored `sales_cents` are not rewritten. Reads do not rewrite `staff_json`.
+The choice is stored on the product, in `staff_json` as `{staff, researchBonus, pricePercent, marketing}`. A sequel also stores `sequelOf`, and the original stores `sequelId` once that sequel starts. `scoreBonus` is 1 only when the carry applies. Sales use the stored price. An older row that is only a staff array, or a row with no `pricePercent`, sells at catalog. A row with no `marketing` sells with no ad. A row with no `patched` flag sells unpatched. A row with no sequel fields is not a sequel and has not started one. A row with no `award` field has not entered a show. A row with no `port` field has not been ported. Stored `sales_cents` are not rewritten. Reads do not rewrite `staff_json`.
 
 Composition, in this order, on every sale that is computed:
 
@@ -351,13 +351,31 @@ Each shipped product carries `award` as null on the bench, or `{show, costCents,
 
 Company Journey shows one Shipped card per product whose sales have finished. The card names the show and the fee, "Whop Creator Awards · $40". Enter award is a secondary button. A selling card shows the same button after Sequel, disabled, for example "Enter award · Still selling." A disabled button reads the reason, for example "Enter award · Need $40" or "Enter award · Already entered." Hire stays the one primary action. After entry the card adds "Award · Won · +12 fans", "Award · Nominated · +4 fans", or "Award · Entered". The shipped list repeats that line.
 
+## Ports
+
+One optional port per finished product. No port is the default. The harness owns the fee, the extra sales day, and the refusals. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential.
+
+The shelf is **Whop Mobile**. `tycoon.port` takes `{productId}`. The fee is $80. The port pays exactly one extra sales day on the next day end, then it is done. That day uses the stored score after a patch, the same per-day formula as a normal sale, and the last curve step (25%). The seeded swing uses that extra index, so the day is not a copy of the fourth sales day. `salesDays` stays 4. The payout is added to `sales_cents` and to the product's fans. Price, marketing, season, event fans, reputation, and the checkout boost all apply as they do on a normal sales day.
+
+The field is `port: {shelf, startedDay}` on the product snapshot in `staff_json` while it is selling, and `port: {shelf, startedDay, cents, fans}` after it pays. `shelf` is Whop Mobile. There is no new SQL column. An older row that is only a staff array, or a row that omits the field, has not been ported. Reads do not rewrite `staff_json`. A successful port writes the field and one ledger row for the fee: id `tycoon:port:<productId>`, cash −$80, earned 0, reputation 0, label `Port: Whop Mobile`. The extra sale is a normal sales row: id `tycoon:<productId>:4`, cash and earned equal to that day's cents, reputation equal to that day's fans, label `Sales · <product>`. Fans add once, on that sales row. Porting twice fails with "Already ported." and charges nothing.
+
+A product still on the bench, a product that is still selling, short cash, a second port, and a port while another port is still unpaid fail with a clear error and spend nothing. The locked reasons are "Ship this product first.", "Still selling.", "Need $80", "Already ported.", and "Another port is still selling." A missing id fails with "No product with that id." Only one port can be selling at a time. After it pays, another finished product can port.
+
+The first Crypto Alpha Newsletter still pays 20700 cents and 5 fans when it skips the port. The fee waits until sales have finished, so the launch cash and fans do not change.
+
+Each shipped product carries `port` as null on the bench, or `{shelf, costCents, phase, cents, fans, enabled, reason}` after release. `shelf` is Whop Mobile. `costCents` is 8000. `phase` is empty until the port starts, `selling` until the next day end, then `sold`. A payload without `port` draws no button, so older UI fixtures still render.
+
+Company Journey shows one Shipped card per product whose sales have finished. The card names the shelf and the fee, "Whop Mobile · $80". Port is a secondary button. A selling card shows the same button, disabled, for example "Port · Still selling." A disabled button reads the reason, for example "Port · Need $80", "Port · Already ported.", or "Port · Another port is still selling." After the port starts the card adds "Port · Whop Mobile · selling 1 day". After the extra day it reads "Port · Whop Mobile · $X", where X is that day's cash. The shipped list repeats that line.
+
+Sequel, Enter award, and Port share one row on the card. Patch stays on its own line while the product is selling. Hire Mina stays the one primary action in the footer. That row is what keeps the orange Hire button from sitting on top of a stack of secondary buttons.
+
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, and awards. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Office**, and **Season** on Company Journey. Price and marketing live on the New Product picker. The award show lives on the Shipped card.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, awards, and ports. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Office**, and **Season** on Company Journey. Price and marketing live on the New Product picker. The award show and the port live on the Shipped card.
 
 Next slice:
 
-1. **Ports.** One optional second shelf for a finished product. Spend a little game cash. It pays one extra sales day from the stored score. Skipping it leaves cash and fans on the old formula. The default is off, so the first newsletter still pays 20700 cents and 5 fans.
+1. **Engines.** One optional engine, bought with game cash. A product started on it stores a small score bump. Skipping it leaves cash, fans, and the first newsletter on the old formula: 20700 cents and 5 fans. The default is off.
 
 Later art ask: a second room. Office growth shipped as spare desks on the current floor (`compact_desk` and `shared_workbench`, already bound). There is no second-room architecture art, so that room waits.
 

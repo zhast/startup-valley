@@ -537,7 +537,7 @@
     "tycoonProduct": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "name", "topicId", "typeId", "topicName", "typeName", "fit", "status", "startedDay", "devDays", "devDaysRequired", "design", "tech", "hype", "progress", "ready", "staffIds", "releasedDay", "review", "salesDays", "salesDaysTotal", "salesCents", "fans", "researchPoints", "researchBonus", "pricePercent", "priceCents", "marketing", "contract", "patch", "sequel", "award"],
+      "required": ["id", "name", "topicId", "typeId", "topicName", "typeName", "fit", "status", "startedDay", "devDays", "devDaysRequired", "design", "tech", "hype", "progress", "ready", "staffIds", "releasedDay", "review", "salesDays", "salesDaysTotal", "salesCents", "fans", "researchPoints", "researchBonus", "pricePercent", "priceCents", "marketing", "contract", "patch", "sequel", "award", "port"],
       "properties": {
         "id": { "type": "string", "pattern": "^p[1-9][0-9]*$" },
         "name": { "type": "string", "minLength": 1 },
@@ -629,6 +629,25 @@
                 "outcome": { "enum": ["", "won", "nominated", "entered"] },
                 "fans": { "enum": [0, 4, 12] },
                 "entered": { "type": "boolean" },
+                "enabled": { "type": "boolean" },
+                "reason": { "type": "string" }
+              }
+            }
+          ]
+        },
+        "port": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["shelf", "costCents", "phase", "cents", "fans", "enabled", "reason"],
+              "properties": {
+                "shelf": { "const": "Whop Mobile" },
+                "costCents": { "const": 8000 },
+                "phase": { "enum": ["", "selling", "sold"] },
+                "cents": { "type": "integer", "minimum": 0 },
+                "fans": { "type": "integer", "minimum": 0 },
                 "enabled": { "type": "boolean" },
                 "reason": { "type": "string" }
               }

@@ -321,6 +321,12 @@ func _run() -> void:
 	check(label_named("AwardResult_p1") == null, "The result line is hidden until the product enters")
 	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Enter award")
 	await snap("28-award-offer", finished)
+	var port_offer := main.company_panel.find_child("Port_p1", true, false) as Button
+	check(port_offer != null and not port_offer.disabled and str(port_offer.get_meta("cozy_variant", "")) == "secondary" and port_offer.text == "Port", "Port is a secondary action on the finished product")
+	check(label_named("PortShelf_p1") != null and label_named("PortShelf_p1").text == "Whop Mobile · $80", "The shipped card names the shelf and the fee")
+	check(label_named("PortLine_p1") == null, "The port line is hidden until the port starts")
+	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Port")
+	await snap("30-port-offer", finished)
 	await open_product()
 	var sneakers := button_named("Sneakers")
 	check(sneakers != null and not sneakers.disabled and not sneakers.text.contains("locked"), "Sneakers is selectable after research")
@@ -539,6 +545,27 @@ func _contract_release_proof() -> void:
 	if result_card == null:
 		result_card = label_named("AwardResult_p1")
 	await snap("29-award-result", result_card)
+	var port_button := main.company_panel.find_child("Port_p1", true, false) as Button
+	check(port_button != null and not port_button.disabled and port_button.text == "Port", "Port is available on the finished newsletter")
+	var cash_before_port := company_cash()
+	var fans_before_port := company_reputation()
+	await click(port_button)
+	await wait_until(func() -> bool: return not main.company_panel.busy and label_named("PortLine_p1") != null and label_named("PortLine_p1").text == "Port · Whop Mobile · selling 1 day", "The port line says it is selling for one day")
+	var port_again := main.company_panel.find_child("Port_p1", true, false) as Button
+	check(port_again != null and port_again.disabled and port_again.text == "Port · Already ported.", "A second port stays disabled")
+	check(company_cash() == cash_before_port - 8000, "The port charges $80")
+	check(company_reputation() == fans_before_port, "The port fee adds no fans")
+	await end_office_day()
+	await open_journey()
+	var port_line := label_named("PortLine_p1")
+	check(port_line != null and port_line.text.begins_with("Port · Whop Mobile · $"), "The extra sales day names its cash")
+	check(company_reputation() > fans_before_port, "The extra sales day adds fans once")
+	var port_card: Control = port_line
+	while port_card != null and not str(port_card.name).begins_with("Finished_"):
+		port_card = port_card.get_parent() as Control
+	if port_card == null:
+		port_card = port_line
+	await snap("31-port-result", port_card)
 
 func _office_expansion_proof() -> void:
 	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-office-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])

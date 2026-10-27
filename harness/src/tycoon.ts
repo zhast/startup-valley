@@ -58,6 +58,9 @@ export const AWARD_WIN_SCORE = 8;
 export const AWARD_NOMINEE_SCORE = 5;
 export const AWARD_WIN_FANS = 12;
 export const AWARD_NOMINEE_FANS = 4;
+/** One optional port. One extra sales day on a second shelf, after a small fee. */
+export const PORT_SHELF = "Whop Mobile";
+export const PORT_COST_CENTS = 8_000;
 /** Stardew-shaped office calendar. Derived from the saved day. It does not replace the clock. */
 export const SEASON_LENGTH_DAYS = 28;
 export const YEAR_LENGTH_DAYS = 112;
@@ -296,6 +299,8 @@ export interface TycoonProductView {
   sequel: TycoonSequelView | null;
   /** Null while the product is on the bench. Omitted rows have not entered. */
   award: TycoonAwardView | null;
+  /** Null while the product is on the bench. Omitted rows have not been ported. */
+  port: TycoonPortView | null;
 }
 
 export interface TycoonUpgradeView {
@@ -392,6 +397,17 @@ export interface TycoonAwardView {
   outcome: AwardOutcome | "";
   fans: number;
   entered: boolean;
+  enabled: boolean;
+  reason: string;
+}
+
+export interface TycoonPortView {
+  shelf: string;
+  costCents: number;
+  /** Empty until the port starts. Selling until the extra day pays, then sold. */
+  phase: "" | "selling" | "sold";
+  cents: number;
+  fans: number;
   enabled: boolean;
   reason: string;
 }
@@ -741,6 +757,16 @@ interface ProductSnapshot {
   scoreBonus: number;
   /** Null until the product enters one show. */
   award: ProductAward | null;
+  /** Null until the product is ported to the second shelf. */
+  port: ProductPort | null;
+}
+
+interface ProductPort {
+  shelf: string;
+  startedDay: number;
+  /** Null while the extra sales day has not paid. */
+  cents: number | null;
+  fans: number | null;
 }
 
 interface ProductAward {
@@ -760,6 +786,7 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     sequelId: null,
     scoreBonus: 0,
     award: null,
+    port: null,
   };
 }
 
@@ -767,7 +794,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, and no award. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, and no port. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -785,6 +812,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     sequelId?: unknown;
     scoreBonus?: unknown;
     award?: unknown;
+    port?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -797,6 +825,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     sequelId: parseProductId(body.sequelId),
     scoreBonus: body.scoreBonus === SEQUEL_SCORE_BONUS ? SEQUEL_SCORE_BONUS : 0,
     award: parseAward(body.award),
+    port: parsePort(body.port),
   };
 }
 
@@ -804,6 +833,19 @@ function awardFans(outcome: AwardOutcome): number {
   if (outcome === "won") return AWARD_WIN_FANS;
   if (outcome === "nominated") return AWARD_NOMINEE_FANS;
   return 0;
+}
+
+function parsePort(value: unknown): ProductPort | null {
+  if (!value || typeof value !== "object") return null;
+  const body = value as { shelf?: unknown; startedDay?: unknown; cents?: unknown; fans?: unknown };
+  if (body.shelf !== PORT_SHELF) return null;
+  const startedDay = Number(body.startedDay);
+  if (!Number.isInteger(startedDay) || startedDay < 1) return null;
+  if (body.cents === undefined && body.fans === undefined) return { shelf: PORT_SHELF, startedDay, cents: null, fans: null };
+  const cents = Number(body.cents);
+  const fans = Number(body.fans);
+  if (!Number.isInteger(cents) || cents < 0 || !Number.isInteger(fans) || fans < 0) return null;
+  return { shelf: PORT_SHELF, startedDay, cents, fans };
 }
 
 function parseAward(value: unknown): ProductAward | null {
@@ -835,6 +877,11 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
   if (stored.sequelId) body.sequelId = stored.sequelId;
   if (stored.scoreBonus === SEQUEL_SCORE_BONUS) body.scoreBonus = SEQUEL_SCORE_BONUS;
   if (stored.award) body.award = { outcome: stored.award.outcome, fans: stored.award.fans };
+  if (stored.port) {
+    body.port = stored.port.cents === null
+      ? { shelf: stored.port.shelf, startedDay: stored.port.startedDay }
+      : { shelf: stored.port.shelf, startedDay: stored.port.startedDay, cents: stored.port.cents, fans: stored.port.fans };
+  }
   return JSON.stringify(body);
 }
 
@@ -933,6 +980,12 @@ export function reviewProduct(input: {
   return { score, reviewers };
 }
 
+/** Indexes 0–3 are the four sales days. The port's extra day stays on the last step. */
+function curvePercent(dayIndex: number): number | undefined {
+  if (dayIndex === SALES_WINDOW_DAYS) return SALES_CURVE[SALES_CURVE.length - 1];
+  return SALES_CURVE[dayIndex];
+}
+
 export function salesForDay(input: {
   seed: number;
   productId: string;
@@ -951,7 +1004,7 @@ export function salesForDay(input: {
   /** Ad id stored on the product. Omitted is no ad. */
   marketing?: string;
 }): TycoonSales {
-  const curve = SALES_CURVE[input.dayIndex];
+  const curve = curvePercent(input.dayIndex);
   const type = typeById(input.typeId);
   if (curve === undefined || !type) throw new Error("Sales day is outside the window");
   const swing = (mixSeed(input.seed, input.productId, "sales", input.dayIndex) % 21) - 10;
@@ -1413,6 +1466,7 @@ export class TycoonStore {
         sequelId: null,
         scoreBonus: carry,
         award: null,
+        port: null,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -1447,6 +1501,28 @@ export class TycoonStore {
         `Award: ${AWARD_SHOW}`,
       );
       stored.award = result;
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      return this.journey.state();
+    });
+  }
+
+  port(productId: string): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.row(productId);
+      if (!row) throw new Error("No product with that id.");
+      const stored = parseProductSnapshot(row.staff_json);
+      const reason = this.portBlockReason(row, stored);
+      if (reason) throw new Error(reason);
+      const day = this.day();
+      this.journey.recordCompanyChange(
+        `tycoon:port:${row.id}`,
+        day,
+        -PORT_COST_CENTS,
+        0,
+        0,
+        `Port: ${PORT_SHELF}`,
+      );
+      stored.port = { shelf: PORT_SHELF, startedDay: day, cents: null, fans: null };
       this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
       return this.journey.state();
     });
@@ -1490,6 +1566,7 @@ export class TycoonStore {
       if (row.status === "developing") this.tickDevelopment(row, day);
       else this.applySale(row, day);
     }
+    this.payPorts(day);
   }
 
   private tickDevelopment(row: ProductRow, day: number): void {
@@ -1564,6 +1641,41 @@ export class TycoonStore {
       Number(row.fans) + payout.fans,
       row.id,
     );
+  }
+
+  /** One extra sales day for a port that is still selling. The fee was already charged. */
+  private payPorts(day: number): void {
+    const rows = this.db.prepare("SELECT * FROM tycoon_products WHERE status = 'complete' ORDER BY id").all() as unknown as ProductRow[];
+    for (const row of rows) {
+      const stored = parseProductSnapshot(row.staff_json);
+      if (!stored.port || stored.port.cents !== null || stored.port.startedDay > day) continue;
+      const review = JSON.parse(String(row.review_json)) as TycoonReview;
+      const reputation = Number((this.db.prepare("SELECT reputation FROM company_state WHERE id = 1").get() as { reputation: number }).reputation);
+      const calendar = calendarForDay(day);
+      const topicId = asTopic(row.topic_id);
+      const payout = salesForDay({
+        seed: this.seed(),
+        productId: row.id,
+        typeId: asType(row.type_id),
+        fit: asFit(row.fit),
+        score: patchedScore(review.score, stored.patched),
+        dayIndex: SALES_WINDOW_DAYS,
+        reputation,
+        pricePercent: stored.pricePercent,
+        marketing: stored.marketing,
+        priceBoostPercent: this.priceBoostPercent(),
+        unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === topicId) ? SEASON_UNIT_BOOST_PERCENT : 0,
+        bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
+      });
+      this.journey.recordCompanyChange(`tycoon:${row.id}:${SALES_WINDOW_DAYS}`, day, payout.cents, payout.cents, payout.fans, `Sales · ${row.name}`);
+      stored.port = { ...stored.port, cents: payout.cents, fans: payout.fans };
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ?, sales_cents = ?, fans = ? WHERE id = ?").run(
+        serializeProductSnapshot(stored),
+        Number(row.sales_cents) + payout.cents,
+        Number(row.fans) + payout.fans,
+        row.id,
+      );
+    }
   }
 
   private assignedStaff(requested: readonly string[]): StaffId[] {
@@ -1935,6 +2047,41 @@ export class TycoonStore {
       patch: this.patchOffer(row, snapshot),
       sequel: this.sequelOffer(row, snapshot),
       award: this.awardOffer(row, snapshot),
+      port: this.portOffer(row, snapshot),
+    };
+  }
+
+  /** Empty when the product can be ported. The same strings are the button reasons. */
+  private portBlockReason(row: ProductRow, snapshot: ProductSnapshot): string {
+    if (snapshot.port) return "Already ported.";
+    if (row.status === "developing") return "Ship this product first.";
+    if (row.status !== "complete") return "Still selling.";
+    if (this.portPendingId()) return "Another port is still selling.";
+    if (this.cashCents() < PORT_COST_CENTS) return `Need ${wholeDollars(PORT_COST_CENTS)}`;
+    return "";
+  }
+
+  private portPendingId(): string | null {
+    const rows = this.db.prepare("SELECT id, staff_json FROM tycoon_products").all() as Array<{ id: string; staff_json: string }>;
+    for (const row of rows) {
+      const port = parseProductSnapshot(row.staff_json).port;
+      if (port && port.cents === null) return row.id;
+    }
+    return null;
+  }
+
+  private portOffer(row: ProductRow, snapshot: ProductSnapshot): TycoonPortView | null {
+    if (row.status === "developing") return null;
+    const port = snapshot.port;
+    const reason = this.portBlockReason(row, snapshot);
+    return {
+      shelf: PORT_SHELF,
+      costCents: PORT_COST_CENTS,
+      phase: !port ? "" : port.cents === null ? "selling" : "sold",
+      cents: port?.cents ?? 0,
+      fans: port?.fans ?? 0,
+      enabled: reason === "",
+      reason,
     };
   }
 
