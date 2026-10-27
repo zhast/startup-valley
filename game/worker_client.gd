@@ -199,7 +199,7 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 				furnishing_state = (office_furnishing as Dictionary).duplicate(true)
 				furnishing_received.emit(furnishing_state.duplicate(true), "")
 			company_action_completed.emit(method, result)
-		"milestone.evaluate", "milestone.complete", "milestone.override", "chapter.continue", "day.end", "tycoon.start", "tycoon.release", "tycoon.train", "tycoon.research", "tycoon.buyUpgrade", "tycoon.acceptContract":
+		"milestone.evaluate", "milestone.complete", "milestone.override", "chapter.continue", "day.end", "tycoon.start", "tycoon.release", "tycoon.train", "tycoon.research", "tycoon.buyUpgrade", "tycoon.acceptContract", "tycoon.patch":
 			journey_received.emit(result.get("journey", {}))
 			company_action_completed.emit(method, result)
 		"game.save":

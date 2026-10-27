@@ -17,6 +17,8 @@ import {
   EVENT_BONUS_FANS,
   LAUNCH_PRICES,
   MARKETING,
+  PATCH_COST_CENTS,
+  PATCH_SCORE_BONUS,
   PRODUCT_TYPES,
   SEASON_UNIT_BOOST_PERCENT,
   STAT_CAP,
@@ -31,6 +33,7 @@ import {
   contractBySlot,
   fitFor,
   launchPriceCents,
+  patchedScore,
   reviewProduct,
   salesForDay,
   staffPoints,
@@ -1667,5 +1670,158 @@ test("contracts lock one offer and pay the bonus once", async () => {
   assert.equal(oldJson, staffOnly);
   const oldLabels = restored.journey.db.prepare("SELECT label FROM company_transactions").all() as Array<{ label: string }>;
   assert.equal(oldLabels.some((row) => row.label.startsWith("Contract:")), false);
+  restored.close();
+});
+
+test("a patch charges once and raises later sales only", async () => {
+  assert.equal(PATCH_COST_CENTS, 10_000);
+  assert.equal(PATCH_SCORE_BONUS, 1);
+  assert.equal(patchedScore(7, false), 7);
+  assert.equal(patchedScore(7, true), 8);
+  assert.equal(patchedScore(10, true), 10);
+
+  const left = await setup();
+  left.db.tycoon.start("crypto", "newsletter", []);
+  assert.equal(left.db.tycoon.view().developing?.patch, null);
+  assert.throws(() => left.db.tycoon.patch("p1"), /Ship this product first/u);
+  assert.throws(() => left.db.tycoon.patch("p9"), /No product with that id/u);
+  left.db.endDay(1);
+  left.db.endDay(2);
+  left.db.tycoon.release("p1");
+  const plain = left.db.tycoon.view().history[0];
+  assert.equal(plain?.salesCents, 20700);
+  assert.equal(plain?.fans, 5);
+  assert.equal(plain?.patch?.applied, false);
+  assert.equal(plain?.patch?.enabled, true);
+  assert.equal(plain?.patch?.reason, "");
+  assert.equal(plain?.patch?.costCents, PATCH_COST_CENTS);
+  assert.equal(left.db.journey.state().company.cashCents, 20700);
+  const ignored = JSON.parse(String((left.db.journey.db.prepare("SELECT staff_json FROM tycoon_products WHERE id = 'p1'").get() as { staff_json: string }).staff_json)) as { patched?: unknown };
+  assert.equal(ignored.patched, undefined);
+  left.db.close();
+
+  const { db, root } = await setup();
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  db.tycoon.start("crypto", "newsletter", []);
+  db.endDay(1);
+  db.endDay(2);
+  db.tycoon.release("p1");
+  const launch = db.tycoon.view().history[0];
+  assert.ok(launch?.review);
+  const launchScore = launch.review.score;
+  assert.equal(launch.salesCents, 20700);
+  assert.equal(db.journey.state().company.cashCents, 20700);
+  db.tycoon.patch("p1");
+  const patched = db.tycoon.view().history[0];
+  assert.equal(patched?.patch?.applied, true);
+  assert.equal(patched?.patch?.enabled, false);
+  assert.equal(patched?.patch?.reason, "Already patched.");
+  assert.equal(patched?.salesCents, 20700);
+  assert.equal(patched?.fans, 5);
+  assert.equal(db.journey.state().company.cashCents, 10700);
+  assert.equal(db.tycoon.view().patchNotice, "Patched Crypto Alpha Newsletter. −$100");
+  const paid = db.journey.db.prepare("SELECT label, cash_delta FROM company_transactions WHERE id = 'tycoon:patch:p1'").get() as { label: string; cash_delta: number };
+  assert.equal(paid.label, "Patch: Crypto Alpha Newsletter");
+  assert.equal(paid.cash_delta, -PATCH_COST_CENTS);
+  const stored = JSON.parse(String((db.journey.db.prepare("SELECT staff_json FROM tycoon_products WHERE id = 'p1'").get() as { staff_json: string }).staff_json)) as { patched?: boolean };
+  assert.equal(stored.patched, true);
+  assert.throws(() => db.tycoon.patch("p1"), /Already patched/u);
+  const patchCount = Number((db.journey.db.prepare("SELECT COUNT(*) AS n FROM company_transactions WHERE id LIKE 'tycoon:patch:%'").get() as { n: number }).n);
+  assert.equal(patchCount, 1);
+  assert.equal(db.journey.state().company.cashCents, 10700);
+  const file = join(root, "game.sqlite");
+  const project = join(root, "company-project");
+  db.close();
+  const reopened = new GameDatabase(file, project);
+  assert.equal(reopened.tycoon.view().history[0]?.patch?.applied, true);
+  assert.equal(reopened.tycoon.view().patchNotice, "");
+  reopened.endDay(3);
+  assert.equal(reopened.tycoon.view().history[0]?.salesCents, 20700, "release day does not sell twice");
+  const beforeDayTwo = reopened.journey.state().company.reputation;
+  reopened.endDay(4);
+  const later = reopened.tycoon.view().history[0];
+  const dayTwo = salesForDay({
+    seed: 26021,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: "great",
+    score: patchedScore(launchScore, true),
+    dayIndex: 1,
+    reputation: beforeDayTwo,
+  });
+  const unpatchedDayTwo = salesForDay({
+    seed: 26021,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: "great",
+    score: launchScore,
+    dayIndex: 1,
+    reputation: beforeDayTwo,
+  });
+  assert.equal((later?.salesCents ?? 0) - 20700, dayTwo.cents);
+  assert.equal(later?.salesCents, 20700 + dayTwo.cents);
+  assert.ok(dayTwo.cents >= unpatchedDayTwo.cents);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+
+  const broke = await setup();
+  broke.db.tycoon.start("crypto", "newsletter", []);
+  broke.db.endDay(1);
+  broke.db.endDay(2);
+  broke.db.tycoon.release("p1");
+  broke.db.journey.recordCompanyChange("drain", 3, -20700, 0, 0, "Drain");
+  assert.equal(broke.db.journey.state().company.cashCents, 0);
+  assert.equal(broke.db.tycoon.view().history[0]?.patch?.enabled, false);
+  assert.equal(broke.db.tycoon.view().history[0]?.patch?.reason, "Need $100");
+  const brokeJson = String((broke.db.journey.db.prepare("SELECT staff_json FROM tycoon_products WHERE id = 'p1'").get() as { staff_json: string }).staff_json);
+  assert.throws(() => broke.db.tycoon.patch("p1"), /Need \$100/u);
+  assert.equal(broke.db.journey.state().company.cashCents, 0);
+  assert.equal(String((broke.db.journey.db.prepare("SELECT staff_json FROM tycoon_products WHERE id = 'p1'").get() as { staff_json: string }).staff_json), brokeJson);
+  const brokeLabels = broke.db.journey.db.prepare("SELECT label FROM company_transactions").all() as Array<{ label: string }>;
+  assert.equal(brokeLabels.some((row) => row.label.startsWith("Patch:")), false);
+  broke.db.close();
+
+  const ended = await setup();
+  ended.db.tycoon.start("crypto", "newsletter", []);
+  ended.db.endDay(1);
+  ended.db.endDay(2);
+  ended.db.tycoon.release("p1");
+  ended.db.endDay(3);
+  ended.db.endDay(4);
+  ended.db.endDay(5);
+  ended.db.endDay(6);
+  assert.equal(ended.db.tycoon.view().history[0]?.status, "complete");
+  assert.equal(ended.db.tycoon.view().history[0]?.salesDays, 4);
+  assert.equal(ended.db.tycoon.view().history[0]?.patch?.enabled, false);
+  assert.equal(ended.db.tycoon.view().history[0]?.patch?.reason, "Sales have ended.");
+  const endedCash = ended.db.journey.state().company.cashCents;
+  assert.throws(() => ended.db.tycoon.patch("p1"), /Sales have ended/u);
+  assert.equal(ended.db.journey.state().company.cashCents, endedCash);
+  ended.db.close();
+
+  const legacy = await setup();
+  const legacyFile = join(legacy.root, "game.sqlite");
+  const legacyProject = join(legacy.root, "company-project");
+  legacy.db.close();
+  const raw = new DatabaseSync(legacyFile);
+  const staffOnly = JSON.stringify(["founder"]);
+  raw.prepare(`
+    INSERT INTO tycoon_products (
+      id, topic_id, type_id, name, fit, status, started_day, dev_days,
+      design_points, tech_points, hype_points, staff_json, last_dev_day,
+      released_day, review_json, sales_applied, last_sales_day, sales_cents, fans
+    ) VALUES ('p1', 'crypto', 'newsletter', 'Crypto Alpha Newsletter', 'great', 'developing', 1, 2, 4, 4, 4, ?, NULL, NULL, NULL, 0, NULL, 0, 0)
+  `).run(staffOnly);
+  raw.close();
+  const restored = new GameDatabase(legacyFile, legacyProject);
+  assert.equal(restored.tycoon.view().developing?.patch, null);
+  restored.tycoon.release("p1");
+  const oldLaunch = restored.tycoon.view().history[0];
+  assert.equal(oldLaunch?.patch?.applied, false);
+  assert.equal(oldLaunch?.salesCents, 20700);
+  assert.equal(oldLaunch?.fans, 5);
+  const oldJson = String((restored.journey.db.prepare("SELECT staff_json FROM tycoon_products WHERE id = 'p1'").get() as { staff_json: string }).staff_json);
+  assert.equal(oldJson, staffOnly);
   restored.close();
 });

@@ -517,6 +517,7 @@ func _journey_screen() -> void:
 	if not definition.is_empty() or not candidate.is_empty():
 		_button("End day + save", func() -> void: _request("day.end", {"day": day}), false, true, utilities, "secondary")
 	_product_shortcut()
+	_selling_cards()
 	_contract_card()
 	_train_staff()
 	_research_card()
@@ -573,6 +574,40 @@ func _show_research_fit(product: Dictionary, node_name: String, parent: Control 
 	var line := _label("Research bonus +%d fit" % bonus, false, parent, "action")
 	line.name = node_name
 
+func _selling_cards() -> void:
+	for item: Variant in _tycoon().get("history", []) as Array:
+		if not item is Dictionary: continue
+		var product := item as Dictionary
+		if str(product.get("status", "")) != "released": continue
+		var patch_value: Variant = product.get("patch", null)
+		if not patch_value is Dictionary: continue
+		var patch := patch_value as Dictionary
+		var card := _card()
+		var product_id := str(product.get("id", ""))
+		card.name = "Selling_%s" % product_id
+		_label("Selling", true, card)
+		var review: Dictionary = product.get("review", {}) if product.get("review") is Dictionary else {}
+		var title := _label("%s · %d/10 · $%s · +%d fans" % [product.get("name", "Product"), int(review.get("score", 0)), _money(int(product.get("salesCents", 0))), int(product.get("fans", 0))], false, card)
+		title.name = "SellingTitle_%s" % product_id
+		var days := _label("Sales day %d of %d" % [int(product.get("salesDays", 0)), int(product.get("salesDaysTotal", 4))], false, card, "meta")
+		days.name = "SellingDays_%s" % product_id
+		if bool(patch.get("applied", false)):
+			var patched := _label("Patched · +%d score" % int(patch.get("scoreBonus", 1)), false, card, "action")
+			patched.name = "SellingPatched_%s" % product_id
+			var notice := str(_tycoon().get("patchNotice", "")).strip_edges()
+			if not notice.is_empty() and notice.contains(str(product.get("name", ""))):
+				var line := _label(notice, false, card, "action")
+				line.name = "PatchNotice"
+		var enabled := bool(patch.get("enabled", false))
+		var reason := str(patch.get("reason", "")).strip_edges()
+		var cost := int(patch.get("costCents", 0))
+		var text := "Patch · $%d" % int(cost / 100) if enabled or reason.is_empty() else "Patch · %s" % reason
+		var button := _button(text, _patch_product.bind(product_id), false, enabled, card, "secondary")
+		button.name = "Patch_%s" % product_id
+
+func _patch_product(product_id: String) -> void:
+	_request("tycoon.patch", {"productId": product_id})
+
 func _contract_card() -> void:
 	var value: Variant = _tycoon().get("contract", null)
 	if not value is Dictionary or (value as Dictionary).is_empty(): return
@@ -619,6 +654,14 @@ func _show_contract(product: Dictionary, node_name: String, parent: Control = nu
 	var cents := int(deal.get("bonusCents", 0))
 	if client.is_empty() or cents <= 0: return
 	var line := _label("Contract: %s · +%s" % [client, _contract_money(cents)], false, parent, "action")
+	line.name = node_name
+
+func _show_patch(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var value: Variant = product.get("patch", null)
+	if not value is Dictionary: return
+	var patch := value as Dictionary
+	if not bool(patch.get("applied", false)): return
+	var line := _label("Patched · +%d score" % int(patch.get("scoreBonus", 1)), false, parent, "action")
 	line.name = node_name
 
 func _train_staff() -> void:
@@ -967,6 +1010,7 @@ func _product_history(tycoon: Dictionary) -> void:
 		_show_launch_price(product, "LaunchPrice", card)
 		_show_marketing(product, "MarketingLine", card)
 		_show_contract(product, "ContractLine", card)
+		_show_patch(product, "PatchLine", card)
 
 func _released_focus() -> Dictionary:
 	var history: Array = _tycoon().get("history", []) as Array

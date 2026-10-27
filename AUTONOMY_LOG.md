@@ -1411,3 +1411,43 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → read the offer or press Accept contract → the next product is locked to that pair → ship. Ignoring it leaves the free picker. The first newsletter with no contract is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_contracts.gd`.
 
+### Round 36 — 2026-10-26
+
+**What changed**
+- One optional patch per shipped product while it still has remaining sales days. Cost is $100. The bump is +1 on the stored review score, capped at 10, and only for sales computed after the patch. Launch sales and earlier days stay as they were. Stored `sales_cents` are not rewritten. No patch is the default, so the first Crypto Alpha Newsletter still pays 20700 cents and 5 fans.
+- The flag is `patched: true` on the product snapshot in `staff_json`. There is no new SQL column. An older row that is only a staff array, or a row that omits the field, is unpatched. Reads do not rewrite `staff_json`. A successful patch writes the flag and one ledger row: id `tycoon:patch:<productId>`, cash −$100, earned 0, reputation 0, label `Patch: <product>`. Patching twice fails with "Already patched." and charges nothing.
+- Short cash, a product still on the bench, sales that have ended, and a second patch fail with a clear error and spend nothing. The locked reasons are "Need $100", "Ship this product first.", "Sales have ended.", and "Already patched."
+- Company Journey shows one Selling card per product that is still selling. The lines are the name, score, cash, fans, and "Sales day 1 of 4". Patch · $100 is secondary. A disabled button reads the reason, for example "Patch · Need $100" or "Patch · Already patched." After a patch the card adds "Patched · +1 score" and "Patched Crypto Alpha Newsletter. −$100". Hire stays the one primary action. The shipped list repeats "Patched · +1 score" when the flag is set.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Sequels are the next slice. One optional sequel of a completed product. It starts faster and carries a little of the old score. No sequel leaves every new product on the old formula. The default is off, so the first newsletter still pays 20700 cents and 5 fans.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. Carried from Round 35: Creative has no seated sheet. Unbound art stays untracked. The live path is still a harness driver. A cheap reviewer can still sit just under the 2.5 ready line. Chapter 3 ends at "More is coming." The starter `shared_workbench` stays in storage. The one on the Open Floor is a separate grant.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 104 tests, 102 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test covers a $100 charge with label `Patch: <product>`, later sales using score +1 capped at 10, already-paid launch sales unchanged at 20700 cents and 5 fans, refusals when broke / sales over / already patched / still on the bench, and an older staff-array row staying unpatched without rewriting `staff_json`.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS (40 checks, 0 failures). Launch sales stay 20700 cents and 5 fans. The next office day stays 33300 cents and 8 fans.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS (50 checks, 0 failures)
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS (50 checks, 0 failures)
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS (47 checks, 0 failures). The second sales day is still $333.
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS (23 checks, 0 failures)
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS (25 checks, 0 failures)
+- `test_tycoon_price.gd` — TYCOON PRICE PASS (49 checks, 0 failures). Catalog launch is 20700 cents and 5 fans.
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS (55 checks, 0 failures). No ad stays 20700 cents and 5 fans.
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS (60 checks, 0 failures). Ignoring the offer leaves Fitness and Crypto Alpha free. The newsletter still pays 20700 cents and 5 fans.
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS (37 checks, 0 failures). No patch still pays 20700 cents and 5 fans. Patch · $100 is secondary. Hire Mina stays primary. The charge is $100 once, launch sales stay put, the card reads "Patched · +1 score" and "Patched Crypto Alpha Newsletter. −$100", and a second press stays "Patch · Already patched." Later sales still pay after the charge.
+- `test_ui_company_redesign.gd` — 6693 checks, 0 failures, 0 captures. The selling fixture reads "Patch · Need $100" when cash is short, then "Patched · +1 score" and "Patched Crypto Alpha Newsletter. −$100" after a patch. Hire Mina stays primary.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Twenty-five PNGs in `/workspace/sv-proof/round-36/` (local, not committed). `24-patch-offer.png` is Company Journey on the Selling card: Crypto Alpha Newsletter · 6/10 · $207.00 · +5 fans, Sales day 1 of 4, and Patch · $100 as a secondary button. Hire Mina stays orange. The card sits above Contract and does not collide with it. `25-patch-applied.png` is Gaming Community on the Selling card with "Patched · +1 score", "Patched Gaming Community. −$100", and "Patch · Already patched." The launch sales on that card stay $835.20. Company cash on that card is $1,198.40 and 27 reputation. Cash before the desk buy was 119840 cents. Text is readable and the lines do not overlap. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-36 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → ship a product → Patch · $100 on the Selling card, or leave it. The first newsletter with no patch is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_patches.gd`.
+

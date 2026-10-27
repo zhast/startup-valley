@@ -44,6 +44,9 @@ export const CONTRACTS = [
   { id: "kit", client: "Kit on Whop", topicId: "study_notes", typeId: "template_pack", bonusCents: 6_000 },
   { id: "lane", client: "Lane on Whop", topicId: "trading", typeId: "newsletter", bonusCents: 9_000 },
 ] as const;
+/** One optional patch per shipped product. Cash now, +1 score on remaining sales days. */
+export const PATCH_COST_CENTS = 10_000;
+export const PATCH_SCORE_BONUS = 1;
 /** Stardew-shaped office calendar. Derived from the saved day. It does not replace the clock. */
 export const SEASON_LENGTH_DAYS = 28;
 export const YEAR_LENGTH_DAYS = 112;
@@ -276,6 +279,8 @@ export interface TycoonProductView {
   marketing: MarketingId;
   /** Client bonus snapshotted at the start. Omitted rows are no contract. */
   contract: { client: string; bonusCents: number } | null;
+  /** Null while the product is on the bench. Omitted rows read as unpatched. */
+  patch: TycoonPatchView | null;
 }
 
 export interface TycoonUpgradeView {
@@ -344,6 +349,14 @@ export interface TycoonContractView {
   reason: string;
 }
 
+export interface TycoonPatchView {
+  costCents: number;
+  scoreBonus: number;
+  applied: boolean;
+  enabled: boolean;
+  reason: string;
+}
+
 export interface TycoonSnapshot {
   seed: number;
   salesWindowDays: number;
@@ -361,6 +374,7 @@ export interface TycoonSnapshot {
   priceSteps: LaunchPriceStep[];
   marketingOptions: Array<MarketingOption & { enabled: boolean; reason: string }>;
   contract: TycoonContractView;
+  patchNotice: string;
   developing: TycoonProductView | null;
   history: TycoonProductView[];
 }
@@ -673,21 +687,48 @@ function parseStaffList(parsed: unknown): StaffSnapshot[] {
   return result;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, and no contract. */
-function parseProductSnapshot(raw: string): { staff: StaffSnapshot[]; researchBonus: number; pricePercent: LaunchPricePercent; marketing: MarketingId; contract: ProductContract | null } {
-  const empty = { staff: [] as StaffSnapshot[], researchBonus: 0, pricePercent: 100 as LaunchPricePercent, marketing: "none" as MarketingId, contract: null };
+interface ProductSnapshot {
+  staff: StaffSnapshot[];
+  researchBonus: number;
+  pricePercent: LaunchPricePercent;
+  marketing: MarketingId;
+  contract: ProductContract | null;
+  patched: boolean;
+}
+
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, and unpatched. */
+function parseProductSnapshot(raw: string): ProductSnapshot {
+  const empty: ProductSnapshot = { staff: [], researchBonus: 0, pricePercent: 100, marketing: "none", contract: null, patched: false };
   let parsed: unknown;
   try { parsed = JSON.parse(raw); } catch { return empty; }
-  if (Array.isArray(parsed)) return { staff: parseStaffList(parsed), researchBonus: 0, pricePercent: 100, marketing: "none", contract: null };
+  if (Array.isArray(parsed)) return { staff: parseStaffList(parsed), researchBonus: 0, pricePercent: 100, marketing: "none", contract: null, patched: false };
   if (!parsed || typeof parsed !== "object" || !("staff" in parsed)) return empty;
-  const body = parsed as { staff?: unknown; researchBonus?: unknown; pricePercent?: unknown; marketing?: unknown; contract?: unknown };
+  const body = parsed as { staff?: unknown; researchBonus?: unknown; pricePercent?: unknown; marketing?: unknown; contract?: unknown; patched?: unknown };
   return {
     staff: parseStaffList(body.staff),
     researchBonus: normalizeResearchBonus(Number(body.researchBonus)),
     pricePercent: normalizeLaunchPricePercent(body.pricePercent),
     marketing: normalizeMarketing(body.marketing),
     contract: parseContract(body.contract),
+    patched: body.patched === true,
   };
+}
+
+function serializeProductSnapshot(stored: ProductSnapshot): string {
+  const body: Record<string, unknown> = {
+    staff: stored.staff,
+    researchBonus: stored.researchBonus,
+    pricePercent: stored.pricePercent,
+    marketing: stored.marketing,
+  };
+  if (stored.contract) body.contract = stored.contract;
+  if (stored.patched) body.patched = true;
+  return JSON.stringify(body);
+}
+
+/** A patch adds 1, then the score stays on 1–10. Unpatched leaves the stored review score. */
+export function patchedScore(score: number, patched: boolean): number {
+  return clampScore(score + (patched ? PATCH_SCORE_BONUS : 0));
 }
 
 function parseStaffSnapshot(raw: string): StaffSnapshot[] {
@@ -896,6 +937,8 @@ export class TycoonStore {
   private researchNoticeDay = 0;
   private upgradeNotice = "";
   private upgradeNoticeDay = 0;
+  private patchNotice = "";
+  private patchNoticeDay = 0;
 
   constructor(
     private readonly db: DatabaseSync,
@@ -973,6 +1016,7 @@ export class TycoonStore {
       priceSteps: [...LAUNCH_PRICES],
       marketingOptions: marketingOffer(cash),
       contract: this.contractOffer(developing),
+      patchNotice: this.patchNoticeDay === day ? this.patchNotice : "",
       developing: developing ? this.toView(developing) : null,
       history,
     };
@@ -1201,6 +1245,34 @@ export class TycoonStore {
     });
   }
 
+  patch(productId: string): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.row(productId);
+      if (!row) throw new Error("No product with that id.");
+      if (row.status === "developing") throw new Error("Ship this product first.");
+      const stored = parseProductSnapshot(row.staff_json);
+      if (stored.patched) throw new Error("Already patched.");
+      if (row.status !== "released" || Number(row.sales_applied) >= SALES_WINDOW_DAYS) {
+        throw new Error("Sales have ended.");
+      }
+      if (this.cashCents() < PATCH_COST_CENTS) throw new Error(`Need ${wholeDollars(PATCH_COST_CENTS)}`);
+      const day = this.day();
+      this.journey.recordCompanyChange(
+        `tycoon:patch:${row.id}`,
+        day,
+        -PATCH_COST_CENTS,
+        0,
+        0,
+        `Patch: ${row.name}`,
+      );
+      stored.patched = true;
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      this.patchNotice = `Patched ${row.name}. −${wholeDollars(PATCH_COST_CENTS)}`;
+      this.patchNoticeDay = day;
+      return this.journey.state();
+    });
+  }
+
   /** One office day of craft or of sales. Caller holds the company transaction. */
   tickDay(day: number): void {
     this.expireNotices(day);
@@ -1262,7 +1334,7 @@ export class TycoonStore {
       productId: row.id,
       typeId: asType(row.type_id),
       fit: asFit(row.fit),
-      score: review.score,
+      score: patchedScore(review.score, stored.patched),
       dayIndex: applied,
       reputation,
       pricePercent: stored.pricePercent,
@@ -1338,6 +1410,10 @@ export class TycoonStore {
     if (this.upgradeNoticeDay !== 0 && this.upgradeNoticeDay <= endedDay) {
       this.upgradeNotice = "";
       this.upgradeNoticeDay = 0;
+    }
+    if (this.patchNoticeDay !== 0 && this.patchNoticeDay <= endedDay) {
+      this.patchNotice = "";
+      this.patchNoticeDay = 0;
     }
   }
 
@@ -1648,6 +1724,26 @@ export class TycoonStore {
       priceCents: launchPriceCents(type.priceCents, snapshot.pricePercent),
       marketing: snapshot.marketing,
       contract: snapshot.contract ? { client: snapshot.contract.client, bonusCents: snapshot.contract.bonusCents } : null,
+      patch: this.patchOffer(row, snapshot),
+    };
+  }
+
+  private patchOffer(row: ProductRow, snapshot: ProductSnapshot): TycoonPatchView | null {
+    if (row.status === "developing") return null;
+    const applied = snapshot.patched;
+    const selling = row.status === "released" && Number(row.sales_applied) < SALES_WINDOW_DAYS;
+    let enabled = false;
+    let reason = "";
+    if (applied) reason = "Already patched.";
+    else if (!selling) reason = "Sales have ended.";
+    else if (this.cashCents() < PATCH_COST_CENTS) reason = `Need ${wholeDollars(PATCH_COST_CENTS)}`;
+    else enabled = true;
+    return {
+      costCents: PATCH_COST_CENTS,
+      scoreBonus: PATCH_SCORE_BONUS,
+      applied,
+      enabled,
+      reason,
     };
   }
 
