@@ -9,7 +9,7 @@ The rules in `harness/src/tycoon.ts` are authoritative. This document matches th
 1. **Offline.** A new company ships a product with no API key and no network. Providers stay optional, and only on chapter work orders and chat.
 2. **The pairing is the decision.** A topic and a product type fit together at Great, Good, Okay, or Bad, in the Game Dev Tycoon way. A bad pairing can still ship. It sells worse.
 3. **Days, not a progress bar you click.** Development and sales move when the office day ends. The room stays the cozy Stardew-style office already in the game.
-4. **Deterministic.** Reviews and sales are pure functions of the company seed, the product id, the fit, the points, the research bonus stored on the product, the launch price stored on the product, the marketing choice stored on the product, whether it was patched, and reputation. A contract bonus is a separate cash line. A patch cost is too. They are not those inputs. The same save replays the same launch.
+4. **Deterministic.** Reviews and sales are pure functions of the company seed, the product id, the fit, the points, the research bonus stored on the product, the launch price stored on the product, the marketing choice stored on the product, whether it was patched, the sequel bonus stored on the product, the shorter day count that follows from the sequel link, and reputation. A contract bonus is a separate cash line. A patch cost is too. They are not those inputs. The same save replays the same launch.
 5. **One product on the bench.** A second idea waits until the first one ships. A shipped product can still be selling while the next one starts.
 
 ## Core loop
@@ -21,7 +21,7 @@ The rules in `harness/src/tycoon.ts` are authoritative. This document matches th
 5. **End day + save** once for each office day of work. The team adds design, tech, and hype. Progress is `dev days / days required`.
 6. When the required days are done, **Release**. Four reviewers score it from 1 to 10. Launch-day sales pay game cash and fans immediately. If the product was started under a contract, that release also pays the bonus as its own cash line.
 7. The next three office days keep selling, once each, when the day ends. The release day does not sell twice. One optional patch can spend game cash and add 1 to the stored score for those remaining days.
-8. The product moves onto the shelf. Cash and reputation (fans) stay on the company. Ship another.
+8. The product moves onto the shelf. Cash and reputation (fans) stay on the company. One optional sequel can start from that finished product. Ship another.
 
 A newsletter or template pack takes 2 office days. A course, community, or coaching offer takes 3. A software tool takes 4. Two extra office days can still add a little craft. After that, points stop.
 
@@ -70,7 +70,7 @@ Each type weights those three stats and has a price:
 | Software Tool | 4 | $39 | 1 | 3 | 1 |
 | Newsletter | 2 | $9 | 1 | 1 | 3 |
 
-The ideal for a stat is `days required × 4`. Matching the ideal is full credit. A little extra holds the credit. A large pile of one stat dulls it. Quality is the weighted blend. Fit scales that quality. A researched topic or type adds 6 to that fit's numerator, up to 12, from the bonus stored when development started. The base score maps the result onto 1–10.
+The ideal for a stat is `days required × 4`. A sequel's required days are the catalog days minus 1, at least 1, so its ideal shrinks with the shorter build. Matching the ideal is full credit. A little extra holds the credit. A large pile of one stat dulls it. Quality is the weighted blend. Fit scales that quality. A researched topic or type adds 6 to that fit's numerator, up to 12, from the bonus stored when development started. The base score maps the result onto 1–10. A sequel adds its stored score bonus, 0 or 1, to that base before the reviewers move it.
 
 Four reviewers then each move that base by −1, 0, or +1. The jitter comes from the company seed and the product id. Scores clamp to 1–10. The headline is the rounded mean, clamped again. Blurbs follow the headline band: 8–10 high, 5–7 mid, 1–4 low. The review is stored on the product, so a later formula change does not rewrite a shipped score.
 
@@ -80,7 +80,7 @@ Sales run for 4 days at 100%, 70%, 45%, then 25% of the opening demand. Opening 
 
 The catalog price is the default. At Start development the player can leave it, or nudge −20% or +20%. A cheaper price sells more units. A higher price sells fewer. The percents are fixed: 80 / 100 / 120 for price, and 120 / 100 / 80 for units. Units after the nudge are `Math.max(1, Math.round((units * unitPercent) / 100))`. The unit price is `Math.round((catalogCents * pricePercent) / 100)`. Catalog (100) leaves both unchanged, so the first newsletter still pays 20700 cents and 5 fans.
 
-The choice is stored on the product, in `staff_json` as `{staff, researchBonus, pricePercent, marketing}`. Sales use the stored price. An older row that is only a staff array, or a row with no `pricePercent`, sells at catalog. A row with no `marketing` sells with no ad. A row with no `patched` flag sells unpatched. Stored `sales_cents` are not rewritten.
+The choice is stored on the product, in `staff_json` as `{staff, researchBonus, pricePercent, marketing}`. A sequel also stores `sequelOf`, and the original stores `sequelId` once that sequel starts. `scoreBonus` is 1 only when the carry applies. Sales use the stored price. An older row that is only a staff array, or a row with no `pricePercent`, sells at catalog. A row with no `marketing` sells with no ad. A row with no `patched` flag sells unpatched. A row with no sequel fields is not a sequel and has not started one. Stored `sales_cents` are not rewritten. Reads do not rewrite `staff_json`.
 
 Composition, in this order, on every sale that is computed:
 
@@ -313,13 +313,35 @@ The first Crypto Alpha Newsletter still pays 20700 cents and 5 fans when left un
 
 Company Journey shows one Selling card per product that is still selling. The lines are the name, score, cash, fans, and "Sales day 1 of 4". Patch · $100 is a secondary button. A disabled button reads the reason, for example "Patch · Need $100" or "Patch · Already patched." Hire stays the one primary action. After a patch the card adds "Patched · +1 score" and the cost line. The shipped list repeats "Patched · +1 score" when the flag is set.
 
+## Sequels
+
+One optional sequel per finished product. No sequel is the default. The harness owns the day cut, the score carry, and the refusals. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential.
+
+`tycoon.sequel` takes `{productId}`. It starts development immediately. The sequel keeps the original topic and type. The name is the original name plus " 2". The price is catalog. There is no ad. The start spends no cash.
+
+The crew is the founder plus anyone from the original snapshot who is still hired. Stats are snapshotted today. The research bonus is whatever is researched for that pair today. One product stays on the bench. An accepted contract for a different pair blocks the sequel with "This contract is Topic × Type." and starts nothing. A matching contract is copied onto the sequel and cleared, the same way a normal start consumes it.
+
+Build days are the format's days minus 1, at least 1. A newsletter sequel takes 1 office day. The ideal for a stat stays `days required × 4`, so the shorter build is not a quality penalty.
+
+The score carry is +1 on the base score, before reviewers move it, when the original's final score is 6 or more. Final score is the stored review, plus 1 if that product was patched, capped at 10. The carry is stored as `scoreBonus` on the sequel. It is 0 when the original finished under 6. The bonus is added, then the base is clamped to 1–10. Reviewers still jitter from the new product id.
+
+The fields live on the product snapshot in `staff_json`: `sequelOf` on the sequel, `sequelId` on the original, and `scoreBonus` when it is 1. There is no new SQL column. An older row that is only a staff array, or a row that omits the fields, is not a sequel and has not started one. Reads do not rewrite `staff_json`.
+
+A sequel can start only when the original has finished its sales days, it is not itself a sequel, it has no sequel yet, the bench is empty, and any accepted contract matches. The locked reasons are "Still selling.", "Already has a sequel.", "This is a sequel.", "Ship this product first.", "Ship the product on the bench first.", and "This contract is Topic × Type." A missing id fails with "No product with that id."
+
+The first Crypto Alpha Newsletter still pays 20700 cents and 5 fans when left without a sequel. That newsletter scores 6, so its sequel stores a carry of 1 and takes 1 office day.
+
+Each product carries `sequel` as null while it is on the bench and is not itself a sequel, or `{scoreBonus, savedDays, isSequel, started, enabled, reason}` after that. `savedDays` is 1. `scoreBonus` is the bonus stored on that product. A payload without `sequel` draws no button, so older UI fixtures still render.
+
+Company Journey shows one Shipped card per product whose sales have finished. The lines are the name, score, cash, fans, and "Sales finished." Sequel is a secondary button. A selling card shows the same button after Patch, disabled, for example "Sequel · Still selling." A disabled button reads the reason. Hire stays the one primary action. The build screen shows "Building · day 0 of 1" for a newsletter sequel, and "Sequel · +1 score" when the carry is 1. The release card and the shipped list repeat that score line.
+
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, and patches. The entries are **New Product**, **Selling**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Office**, and **Season** on Company Journey. Price and marketing live on the New Product picker.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, and sequels. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Office**, and **Season** on Company Journey. Price and marketing live on the New Product picker.
 
 Next slice:
 
-1. **Sequels.** One optional sequel of a completed product. It starts faster and carries a little of the old score. No sequel leaves every new product on the old formula. The default is off, so the first newsletter still pays 20700 cents and 5 fans.
+1. **Awards.** One optional award entry on a finished product. Spend a little game cash. A high score can add fans. Skipping it leaves cash and fans on the old formula. The default is off, so the first newsletter still pays 20700 cents and 5 fans.
 
 Later art ask: a second room. Office growth shipped as spare desks on the current floor (`compact_desk` and `shared_workbench`, already bound). There is no second-room architecture art, so that room waits.
 
