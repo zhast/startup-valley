@@ -17,6 +17,12 @@ import {
   EVENT_BONUS_FANS,
   LAUNCH_PRICES,
   MARKETING,
+  AWARD_COST_CENTS,
+  AWARD_NOMINEE_FANS,
+  AWARD_NOMINEE_SCORE,
+  AWARD_SHOW,
+  AWARD_WIN_FANS,
+  AWARD_WIN_SCORE,
   PATCH_COST_CENTS,
   PATCH_SCORE_BONUS,
   PRODUCT_TYPES,
@@ -36,6 +42,7 @@ import {
   contractBySlot,
   fitFor,
   launchPriceCents,
+  awardForScore,
   patchedScore,
   requiredDevDays,
   reviewProduct,
@@ -2075,6 +2082,205 @@ test("a sequel builds faster and carries a score", async () => {
   assert.equal(oldRow?.sequel?.savedDays, 1);
   assert.equal(oldRow?.sequel?.enabled, true);
   assert.equal(oldRow?.sequel?.reason, "");
+  assert.equal(staffJson(restored, "p1"), staffOnly);
+  assert.equal(validateLegacy(restored.journey.state()), true, JSON.stringify(validateLegacy.errors));
+  restored.close();
+});
+
+test("an award charges once and adds fans from the stored review score", async () => {
+  assert.equal(AWARD_SHOW, "Whop Creator Awards");
+  assert.equal(AWARD_COST_CENTS, 4_000);
+  assert.equal(AWARD_WIN_SCORE, 8);
+  assert.equal(AWARD_NOMINEE_SCORE, 5);
+  assert.equal(AWARD_WIN_FANS, 12);
+  assert.equal(AWARD_NOMINEE_FANS, 4);
+  assert.deepEqual(awardForScore(10), { outcome: "won", fans: 12 });
+  assert.deepEqual(awardForScore(8), { outcome: "won", fans: 12 });
+  assert.deepEqual(awardForScore(7), { outcome: "nominated", fans: 4 });
+  assert.deepEqual(awardForScore(5), { outcome: "nominated", fans: 4 });
+  assert.deepEqual(awardForScore(4), { outcome: "entered", fans: 0 });
+  assert.deepEqual(awardForScore(1), { outcome: "entered", fans: 0 });
+
+  const { db, root } = await setup();
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  db.tycoon.start("crypto", "newsletter", []);
+  assert.equal(db.tycoon.view().developing?.award, null);
+  assert.throws(() => db.tycoon.award("p1"), /Ship this product first/u);
+  assert.throws(() => db.tycoon.award("p9"), /No product with that id/u);
+  db.endDay(1);
+  db.endDay(2);
+  db.tycoon.release("p1");
+  const plain = db.tycoon.view().history[0];
+  assert.equal(plain?.salesCents, 20700);
+  assert.equal(plain?.fans, 5);
+  assert.equal(plain?.review?.score, 6);
+  assert.equal(plain?.award?.entered, false);
+  assert.equal(plain?.award?.enabled, false);
+  assert.equal(plain?.award?.reason, "Still selling.");
+  assert.equal(plain?.award?.outcome, "");
+  assert.equal(plain?.award?.fans, 0);
+  assert.equal(plain?.award?.show, AWARD_SHOW);
+  assert.equal(plain?.award?.costCents, AWARD_COST_CENTS);
+  const ignored = JSON.parse(staffJson(db, "p1")) as { award?: unknown };
+  assert.equal(ignored.award, undefined);
+  const sellingCash = db.journey.state().company.cashCents;
+  const sellingFans = db.journey.state().company.reputation;
+  assert.throws(() => db.tycoon.award("p1"), /Still selling/u);
+  assert.equal(db.journey.state().company.cashCents, sellingCash);
+  assert.equal(db.journey.state().company.reputation, sellingFans);
+  assert.equal(staffJson(db, "p1").includes("award"), false);
+  db.endDay(3);
+  db.endDay(4);
+  db.endDay(5);
+  db.endDay(6);
+  const finished = db.tycoon.view().history[0];
+  assert.equal(finished?.status, "complete");
+  assert.equal(finished?.award?.enabled, true);
+  assert.equal(finished?.award?.reason, "");
+  const beforeCash = db.journey.state().company.cashCents;
+  const beforeFans = db.journey.state().company.reputation;
+  const beforeSales = finished?.salesCents;
+  const beforeProductFans = finished?.fans;
+  db.tycoon.award("p1");
+  const entered = db.tycoon.view().history[0];
+  assert.equal(entered?.award?.entered, true);
+  assert.equal(entered?.award?.enabled, false);
+  assert.equal(entered?.award?.reason, "Already entered.");
+  assert.equal(entered?.award?.outcome, "nominated");
+  assert.equal(entered?.award?.fans, 4);
+  assert.equal(entered?.salesCents, beforeSales);
+  assert.equal(entered?.fans, beforeProductFans);
+  assert.equal(db.journey.state().company.cashCents, beforeCash - AWARD_COST_CENTS);
+  assert.equal(db.journey.state().company.reputation, beforeFans + 4);
+  const paid = db.journey.db.prepare("SELECT label, cash_delta, earned_delta, reputation_delta FROM company_transactions WHERE id = 'tycoon:award:p1'").get() as {
+    label: string;
+    cash_delta: number;
+    earned_delta: number;
+    reputation_delta: number;
+  };
+  assert.equal(paid.label, "Award: Whop Creator Awards");
+  assert.equal(paid.cash_delta, -AWARD_COST_CENTS);
+  assert.equal(paid.earned_delta, 0);
+  assert.equal(paid.reputation_delta, 4);
+  const stored = JSON.parse(staffJson(db, "p1")) as { award?: { outcome: string; fans: number } };
+  assert.deepEqual(stored.award, { outcome: "nominated", fans: 4 });
+  assert.throws(() => db.tycoon.award("p1"), /Already entered/u);
+  const awardCount = Number((db.journey.db.prepare("SELECT COUNT(*) AS n FROM company_transactions WHERE id LIKE 'tycoon:award:%'").get() as { n: number }).n);
+  assert.equal(awardCount, 1);
+  assert.equal(db.journey.state().company.cashCents, beforeCash - AWARD_COST_CENTS);
+  assert.equal(db.journey.state().company.reputation, beforeFans + 4);
+  assert.equal(validate(db.journey.state()), true, JSON.stringify(validate.errors));
+  const file = join(root, "game.sqlite");
+  const project = join(root, "company-project");
+  db.close();
+  const reopened = new GameDatabase(file, project);
+  assert.equal(reopened.tycoon.view().history[0]?.award?.outcome, "nominated");
+  assert.equal(reopened.tycoon.view().history[0]?.award?.fans, 4);
+  assert.equal(reopened.journey.state().company.reputation, beforeFans + 4);
+  reopened.close();
+
+  const won = await setup();
+  finishNewsletter(won.db);
+  setReviewScore(won.db, "p1", 8);
+  const wonCash = won.db.journey.state().company.cashCents;
+  const wonFans = won.db.journey.state().company.reputation;
+  const wonSales = won.db.tycoon.view().history[0]?.salesCents;
+  won.db.tycoon.award("p1");
+  assert.equal(won.db.tycoon.view().history[0]?.award?.outcome, "won");
+  assert.equal(won.db.tycoon.view().history[0]?.award?.fans, 12);
+  assert.equal(won.db.journey.state().company.cashCents, wonCash - AWARD_COST_CENTS);
+  assert.equal(won.db.journey.state().company.reputation, wonFans + 12);
+  assert.equal(won.db.tycoon.view().history[0]?.salesCents, wonSales);
+  const wonRow = won.db.journey.db.prepare("SELECT reputation_delta FROM company_transactions WHERE id = 'tycoon:award:p1'").get() as { reputation_delta: number };
+  assert.equal(wonRow.reputation_delta, 12);
+  won.db.close();
+
+  const low = await setup();
+  finishNewsletter(low.db);
+  setReviewScore(low.db, "p1", 4);
+  const lowCash = low.db.journey.state().company.cashCents;
+  const lowFans = low.db.journey.state().company.reputation;
+  low.db.tycoon.award("p1");
+  assert.equal(low.db.tycoon.view().history[0]?.award?.outcome, "entered");
+  assert.equal(low.db.tycoon.view().history[0]?.award?.fans, 0);
+  assert.equal(low.db.journey.state().company.cashCents, lowCash - AWARD_COST_CENTS);
+  assert.equal(low.db.journey.state().company.reputation, lowFans);
+  const lowRow = low.db.journey.db.prepare("SELECT reputation_delta, label FROM company_transactions WHERE id = 'tycoon:award:p1'").get() as { reputation_delta: number; label: string };
+  assert.equal(lowRow.reputation_delta, 0);
+  assert.equal(lowRow.label, "Award: Whop Creator Awards");
+  low.db.close();
+
+  const patched = await setup();
+  patched.db.tycoon.start("crypto", "newsletter", []);
+  patched.db.endDay(1);
+  patched.db.endDay(2);
+  patched.db.tycoon.release("p1");
+  setReviewScore(patched.db, "p1", 7);
+  patched.db.tycoon.patch("p1");
+  patched.db.endDay(3);
+  patched.db.endDay(4);
+  patched.db.endDay(5);
+  patched.db.endDay(6);
+  patched.db.tycoon.award("p1");
+  assert.equal(patched.db.tycoon.view().history[0]?.award?.outcome, "nominated");
+  assert.equal(patched.db.tycoon.view().history[0]?.award?.fans, 4);
+  patched.db.close();
+
+  const broke = await setup();
+  finishNewsletter(broke.db);
+  const brokeHave = broke.db.journey.state().company.cashCents;
+  broke.db.journey.recordCompanyChange("drain-award", 7, -brokeHave, 0, 0, "Drain");
+  assert.equal(broke.db.journey.state().company.cashCents, 0);
+  assert.equal(broke.db.tycoon.view().history[0]?.award?.enabled, false);
+  assert.equal(broke.db.tycoon.view().history[0]?.award?.reason, "Need $40");
+  const brokeJson = staffJson(broke.db, "p1");
+  const brokeFans = broke.db.journey.state().company.reputation;
+  assert.throws(() => broke.db.tycoon.award("p1"), /Need \$40/u);
+  assert.equal(broke.db.journey.state().company.cashCents, 0);
+  assert.equal(broke.db.journey.state().company.reputation, brokeFans);
+  assert.equal(staffJson(broke.db, "p1"), brokeJson);
+  const brokeLabels = broke.db.journey.db.prepare("SELECT label FROM company_transactions").all() as Array<{ label: string }>;
+  assert.equal(brokeLabels.some((row) => row.label.startsWith("Award:")), false);
+  broke.db.close();
+
+  const legacy = await setup();
+  const legacyFile = join(legacy.root, "game.sqlite");
+  const legacyProject = join(legacy.root, "company-project");
+  legacy.db.close();
+  const raw = new DatabaseSync(legacyFile);
+  const staffOnly = JSON.stringify(["founder"]);
+  raw.prepare(`
+    INSERT INTO tycoon_products (
+      id, topic_id, type_id, name, fit, status, started_day, dev_days,
+      design_points, tech_points, hype_points, staff_json, last_dev_day,
+      released_day, review_json, sales_applied, last_sales_day, sales_cents, fans
+    ) VALUES ('p1', 'crypto', 'newsletter', 'Crypto Alpha Newsletter', 'great', 'developing', 1, 2, 4, 4, 4, ?, NULL, NULL, NULL, 0, NULL, 0, 0)
+  `).run(staffOnly);
+  raw.close();
+  const restored = new GameDatabase(legacyFile, legacyProject);
+  const legacySchema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validateLegacy = new Ajv2020({ strict: true, allErrors: true }).compile(legacySchema);
+  assert.equal(restored.tycoon.view().developing?.award, null);
+  assert.equal(staffJson(restored, "p1"), staffOnly);
+  const oldReview = JSON.stringify({
+    score: 6,
+    reviewers: ["Whop Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
+  });
+  restored.journey.db.prepare(`
+    UPDATE tycoon_products
+    SET status = 'complete', released_day = 3, review_json = ?, sales_applied = 4, last_sales_day = 5, sales_cents = 20700, fans = 5
+    WHERE id = 'p1'
+  `).run(oldReview);
+  const oldRow = restored.tycoon.view().history[0];
+  assert.equal(oldRow?.award?.entered, false);
+  assert.equal(oldRow?.award?.outcome, "");
+  assert.equal(oldRow?.award?.fans, 0);
+  assert.equal(oldRow?.award?.enabled, false);
+  assert.equal(oldRow?.award?.reason, "Need $40");
+  assert.equal(staffJson(restored, "p1"), staffOnly);
+  restored.journey.recordCompanyChange("award-test-cash", 6, AWARD_COST_CENTS, 0, 0, "Award test cash");
+  assert.equal(restored.tycoon.view().history[0]?.award?.enabled, true);
   assert.equal(staffJson(restored, "p1"), staffOnly);
   assert.equal(validateLegacy(restored.journey.state()), true, JSON.stringify(validateLegacy.errors));
   restored.close();

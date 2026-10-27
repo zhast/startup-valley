@@ -644,6 +644,7 @@ func _tycoon_secondary_actions() -> void:
 	_check(selling != null, "Company Journey shows the selling-product card")
 	_check(patch != null and patch.disabled and str(patch.get_meta("cozy_variant", "")) == "secondary" and patch.text == "Patch · Need $100", "Patch reads Need $100 when cash is short")
 	_check(_panel.find_child("Sequel_p1", true, false) == null, "A selling card without a sequel offer draws no Sequel button")
+	_check(_panel.find_child("Award_p1", true, false) == null, "A selling card without an award offer draws no Enter award button")
 	_check(_button("Hire Mina") != null and str(_button("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Patch")
 	var shipped: Dictionary = (tycoon["history"] as Array)[0]
 	var offer: Dictionary = shipped["patch"]
@@ -691,6 +692,62 @@ func _tycoon_secondary_actions() -> void:
 	await _present("journey", sequel_state)
 	sequel = _panel.find_child("Sequel_p1", true, false) as Button
 	_check(sequel != null and sequel.disabled and sequel.text == "Sequel · Already has a sequel.", "A second sequel stays disabled")
+	var award_state := {
+		"id": "p1",
+		"name": "Crypto Alpha Newsletter",
+		"status": "complete",
+		"salesDays": 4,
+		"salesDaysTotal": 4,
+		"salesCents": 46800,
+		"fans": 11,
+		"review": {"score": 6, "reviewers": []},
+		"award": {
+			"show": "Whop Creator Awards",
+			"costCents": 4000,
+			"outcome": "",
+			"fans": 0,
+			"entered": false,
+			"enabled": true,
+			"reason": "",
+		},
+	}
+	var award_journey := sequel_state.duplicate(true)
+	(award_journey["tycoon"] as Dictionary)["history"] = [award_state]
+	await _present("journey", award_journey)
+	var award := _panel.find_child("Award_p1", true, false) as Button
+	var award_show := _panel.find_child("AwardShow_p1", true, false) as Label
+	_check(award != null and not award.disabled and str(award.get_meta("cozy_variant", "")) == "secondary" and award.text == "Enter award", "Enter award reads as secondary")
+	_check(award_show != null and award_show.text == "Whop Creator Awards · $40", "The shipped card names the show and the fee")
+	_check(_panel.find_child("AwardResult_p1", true, false) == null, "The result line waits until the product enters")
+	_check(_button("Hire Mina") != null and str(_button("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Enter award")
+	var award_offer: Dictionary = award_state["award"]
+	award_offer["entered"] = true
+	award_offer["enabled"] = false
+	award_offer["outcome"] = "won"
+	award_offer["fans"] = 12
+	award_offer["reason"] = "Already entered."
+	await _present("journey", award_journey)
+	award = _panel.find_child("Award_p1", true, false) as Button
+	var award_result := _panel.find_child("AwardResult_p1", true, false) as Label
+	_check(award_result != null and award_result.text == "Award · Won · +12 fans", "A win names the fan bonus")
+	_check(award != null and award.disabled and award.text == "Enter award · Already entered.", "A second entry stays disabled")
+	award_offer["outcome"] = "nominated"
+	award_offer["fans"] = 4
+	await _present("journey", award_journey)
+	award_result = _panel.find_child("AwardResult_p1", true, false) as Label
+	_check(award_result != null and award_result.text == "Award · Nominated · +4 fans", "A nominee names the smaller bonus")
+	award_offer["outcome"] = "entered"
+	award_offer["fans"] = 0
+	await _present("journey", award_journey)
+	award_result = _panel.find_child("AwardResult_p1", true, false) as Label
+	_check(award_result != null and award_result.text == "Award · Entered", "A low score reads Entered")
+	award_offer["entered"] = false
+	award_offer["outcome"] = ""
+	award_offer["reason"] = "Need $40"
+	await _present("journey", award_journey)
+	award = _panel.find_child("Award_p1", true, false) as Button
+	_check(award != null and award.disabled and award.text == "Enter award · Need $40", "Short cash reads Need $40")
+	_check(_panel.find_child("AwardResult_p1", true, false) == null, "A refused entry draws no result line")
 	tycoon.erase("contract")
 	tycoon.erase("history")
 	tycoon.erase("patchNotice")
