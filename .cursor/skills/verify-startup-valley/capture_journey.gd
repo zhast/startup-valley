@@ -315,6 +315,12 @@ func _run() -> void:
 	check(sequel_offer != null and not sequel_offer.disabled and str(sequel_offer.get_meta("cozy_variant", "")) == "secondary" and sequel_offer.text == "Sequel", "Sequel is a secondary action on the finished product")
 	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Sequel")
 	await snap("26-sequel-offer", finished)
+	var award_offer := main.company_panel.find_child("Award_p1", true, false) as Button
+	check(award_offer != null and not award_offer.disabled and str(award_offer.get_meta("cozy_variant", "")) == "secondary" and award_offer.text == "Enter award", "Enter award is a secondary action on the finished product")
+	check(label_named("AwardShow_p1") != null and label_named("AwardShow_p1").text == "Whop Creator Awards · $40", "The shipped card names the show and the fee")
+	check(label_named("AwardResult_p1") == null, "The result line is hidden until the product enters")
+	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Enter award")
+	await snap("28-award-offer", finished)
 	await open_product()
 	var sneakers := button_named("Sneakers")
 	check(sneakers != null and not sneakers.disabled and not sneakers.text.contains("locked"), "Sneakers is selectable after research")
@@ -516,6 +522,23 @@ func _contract_release_proof() -> void:
 	check(label_named("SequelBonus") != null and label_named("SequelBonus").text == "Sequel · +1 score", "The build line shows the carried score")
 	await snap("27-sequel-started", label_named("ProductProgress"))
 	await open_journey()
+	var award_button := main.company_panel.find_child("Award_p1", true, false) as Button
+	check(award_button != null and not award_button.disabled and award_button.text == "Enter award", "Enter award is available on the finished newsletter")
+	var cash_before_award := company_cash()
+	var fans_before_award := company_reputation()
+	await click(award_button)
+	await wait_until(func() -> bool: return not main.company_panel.busy and label_named("AwardResult_p1") != null, "The award result line appears")
+	check(label_named("AwardResult_p1").text == "Award · Nominated · +4 fans", "A score of 6 is a nominee with +4 fans")
+	var award_again := main.company_panel.find_child("Award_p1", true, false) as Button
+	check(award_again != null and award_again.disabled and award_again.text == "Enter award · Already entered.", "A second entry stays disabled")
+	check(company_cash() == cash_before_award - 4000, "The award charges $40")
+	check(company_reputation() == fans_before_award + 4, "The nominee bonus adds 4 fans once")
+	var result_card: Control = label_named("AwardResult_p1")
+	while result_card != null and not str(result_card.name).begins_with("Finished_"):
+		result_card = result_card.get_parent() as Control
+	if result_card == null:
+		result_card = label_named("AwardResult_p1")
+	await snap("29-award-result", result_card)
 
 func _office_expansion_proof() -> void:
 	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-office-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])

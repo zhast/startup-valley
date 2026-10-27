@@ -606,6 +606,7 @@ func _selling_cards() -> void:
 		var button := _button(text, _patch_product.bind(product_id), false, enabled, card, "secondary")
 		button.name = "Patch_%s" % product_id
 		_sequel_action(product, card)
+		_award_action(product, card)
 
 func _finished_cards() -> void:
 	for item: Variant in _tycoon().get("history", []) as Array:
@@ -622,6 +623,7 @@ func _finished_cards() -> void:
 		var done := _label("Sales finished.", false, card, "meta")
 		done.name = "FinishedDays_%s" % product_id
 		_sequel_action(product, card)
+		_award_action(product, card)
 
 func _sequel_action(product: Dictionary, card: Control) -> void:
 	var value: Variant = product.get("sequel", null)
@@ -637,6 +639,49 @@ func _sequel_action(product: Dictionary, card: Control) -> void:
 
 func _start_sequel(product_id: String) -> void:
 	_request("tycoon.sequel", {"productId": product_id})
+
+func _award_action(product: Dictionary, card: Control) -> void:
+	var value: Variant = product.get("award", null)
+	if not value is Dictionary: return
+	var offer := value as Dictionary
+	var product_id := str(product.get("id", ""))
+	if str(product.get("status", "")) == "complete":
+		var show := str(offer.get("show", "")).strip_edges()
+		if not show.is_empty():
+			var show_line := _label("%s · $%d" % [show, int(int(offer.get("costCents", 0)) / 100)], false, card, "meta")
+			show_line.name = "AwardShow_%s" % product_id
+	var result := _award_result(offer)
+	if not result.is_empty():
+		var line := _label(result, false, card, "action")
+		line.name = "AwardResult_%s" % product_id
+	var enabled := bool(offer.get("enabled", false))
+	var reason := str(offer.get("reason", "")).strip_edges()
+	var text := "Enter award" if enabled or reason.is_empty() else "Enter award · %s" % reason
+	var button := _button(text, _enter_award.bind(product_id), false, enabled, card, "secondary")
+	button.name = "Award_%s" % product_id
+
+func _enter_award(product_id: String) -> void:
+	_request("tycoon.award", {"productId": product_id})
+
+func _award_result(offer: Dictionary) -> String:
+	if not bool(offer.get("entered", false)): return ""
+	var word := ""
+	match str(offer.get("outcome", "")):
+		"won": word = "Won"
+		"nominated": word = "Nominated"
+		"entered": word = "Entered"
+		_: return ""
+	var fans := int(offer.get("fans", 0))
+	if fans > 0: return "Award · %s · +%d fans" % [word, fans]
+	return "Award · %s" % word
+
+func _show_award(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var value: Variant = product.get("award", null)
+	if not value is Dictionary: return
+	var result := _award_result(value as Dictionary)
+	if result.is_empty(): return
+	var line := _label(result, false, parent, "action")
+	line.name = node_name
 
 func _show_sequel(product: Dictionary, node_name: String, parent: Control = null) -> void:
 	var value: Variant = product.get("sequel", null)
@@ -1055,6 +1100,7 @@ func _product_history(tycoon: Dictionary) -> void:
 		_show_contract(product, "ContractLine", card)
 		_show_patch(product, "PatchLine", card)
 		_show_sequel(product, "SequelLine", card)
+		_show_award(product, "AwardLine", card)
 
 func _released_focus() -> Dictionary:
 	var history: Array = _tycoon().get("history", []) as Array

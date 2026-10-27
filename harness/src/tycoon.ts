@@ -51,6 +51,13 @@ export const PATCH_SCORE_BONUS = 1;
 export const SEQUEL_DAYS_SAVED = 1;
 export const SEQUEL_SCORE_MARK = 6;
 export const SEQUEL_SCORE_BONUS = 1;
+/** One optional show after sales finish. The fee is cash. Fans come from the stored review score, once. */
+export const AWARD_SHOW = "Whop Creator Awards";
+export const AWARD_COST_CENTS = 4_000;
+export const AWARD_WIN_SCORE = 8;
+export const AWARD_NOMINEE_SCORE = 5;
+export const AWARD_WIN_FANS = 12;
+export const AWARD_NOMINEE_FANS = 4;
 /** Stardew-shaped office calendar. Derived from the saved day. It does not replace the clock. */
 export const SEASON_LENGTH_DAYS = 28;
 export const YEAR_LENGTH_DAYS = 112;
@@ -287,6 +294,8 @@ export interface TycoonProductView {
   patch: TycoonPatchView | null;
   /** Null on the bench unless this product is itself a sequel. Omitted rows are not sequels. */
   sequel: TycoonSequelView | null;
+  /** Null while the product is on the bench. Omitted rows have not entered. */
+  award: TycoonAwardView | null;
 }
 
 export interface TycoonUpgradeView {
@@ -370,6 +379,19 @@ export interface TycoonSequelView {
   savedDays: number;
   isSequel: boolean;
   started: boolean;
+  enabled: boolean;
+  reason: string;
+}
+
+export type AwardOutcome = "won" | "nominated" | "entered";
+
+export interface TycoonAwardView {
+  show: string;
+  costCents: number;
+  /** Empty until the product enters. */
+  outcome: AwardOutcome | "";
+  fans: number;
+  entered: boolean;
   enabled: boolean;
   reason: string;
 }
@@ -717,6 +739,13 @@ interface ProductSnapshot {
   sequelId: string | null;
   /** 1 when the original's final score was 6 or more. Otherwise 0. */
   scoreBonus: number;
+  /** Null until the product enters one show. */
+  award: ProductAward | null;
+}
+
+interface ProductAward {
+  outcome: AwardOutcome;
+  fans: number;
 }
 
 function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
@@ -730,6 +759,7 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     sequelOf: null,
     sequelId: null,
     scoreBonus: 0,
+    award: null,
   };
 }
 
@@ -737,7 +767,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, and no sequel. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, and no award. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -754,6 +784,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     sequelOf?: unknown;
     sequelId?: unknown;
     scoreBonus?: unknown;
+    award?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -765,7 +796,30 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     sequelOf: parseProductId(body.sequelOf),
     sequelId: parseProductId(body.sequelId),
     scoreBonus: body.scoreBonus === SEQUEL_SCORE_BONUS ? SEQUEL_SCORE_BONUS : 0,
+    award: parseAward(body.award),
   };
+}
+
+function awardFans(outcome: AwardOutcome): number {
+  if (outcome === "won") return AWARD_WIN_FANS;
+  if (outcome === "nominated") return AWARD_NOMINEE_FANS;
+  return 0;
+}
+
+function parseAward(value: unknown): ProductAward | null {
+  if (!value || typeof value !== "object") return null;
+  const outcome = (value as { outcome?: unknown }).outcome;
+  if (outcome !== "won" && outcome !== "nominated" && outcome !== "entered") return null;
+  const fans = Number((value as { fans?: unknown }).fans);
+  if (fans !== awardFans(outcome)) return null;
+  return { outcome, fans };
+}
+
+/** 8+ wins. 5–7 is a nominee. Below that the product only entered. The stored review score, not a patch. */
+export function awardForScore(score: number): { outcome: AwardOutcome; fans: number } {
+  if (score >= AWARD_WIN_SCORE) return { outcome: "won", fans: AWARD_WIN_FANS };
+  if (score >= AWARD_NOMINEE_SCORE) return { outcome: "nominated", fans: AWARD_NOMINEE_FANS };
+  return { outcome: "entered", fans: 0 };
 }
 
 function serializeProductSnapshot(stored: ProductSnapshot): string {
@@ -780,6 +834,7 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
   if (stored.sequelOf) body.sequelOf = stored.sequelOf;
   if (stored.sequelId) body.sequelId = stored.sequelId;
   if (stored.scoreBonus === SEQUEL_SCORE_BONUS) body.scoreBonus = SEQUEL_SCORE_BONUS;
+  if (stored.award) body.award = { outcome: stored.award.outcome, fans: stored.award.fans };
   return JSON.stringify(body);
 }
 
@@ -1357,6 +1412,7 @@ export class TycoonStore {
         sequelOf: row.id,
         sequelId: null,
         scoreBonus: carry,
+        award: null,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -1367,6 +1423,30 @@ export class TycoonStore {
         ) VALUES (?, ?, ?, ?, ?, 'developing', ?, 0, 0, 0, 0, ?, NULL, NULL, NULL, 0, NULL, 0, 0)
       `).run(id, topicId, typeId, `${row.name} 2`, fitFor(topicId, typeId), this.day(), serializeProductSnapshot(snapshot));
       stored.sequelId = id;
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      return this.journey.state();
+    });
+  }
+
+  award(productId: string): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.row(productId);
+      if (!row) throw new Error("No product with that id.");
+      if (row.status === "developing") throw new Error("Ship this product first.");
+      const stored = parseProductSnapshot(row.staff_json);
+      if (stored.award) throw new Error("Already entered.");
+      if (row.status !== "complete") throw new Error("Still selling.");
+      if (this.cashCents() < AWARD_COST_CENTS) throw new Error(`Need ${wholeDollars(AWARD_COST_CENTS)}`);
+      const result = awardForScore(this.storedReviewScore(row));
+      this.journey.recordCompanyChange(
+        `tycoon:award:${row.id}`,
+        this.day(),
+        -AWARD_COST_CENTS,
+        0,
+        result.fans,
+        `Award: ${AWARD_SHOW}`,
+      );
+      stored.award = result;
       this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
       return this.journey.state();
     });
@@ -1854,6 +1934,28 @@ export class TycoonStore {
       contract: snapshot.contract ? { client: snapshot.contract.client, bonusCents: snapshot.contract.bonusCents } : null,
       patch: this.patchOffer(row, snapshot),
       sequel: this.sequelOffer(row, snapshot),
+      award: this.awardOffer(row, snapshot),
+    };
+  }
+
+  /** Empty when the product can enter. The same strings are the button reasons. */
+  private awardOffer(row: ProductRow, snapshot: ProductSnapshot): TycoonAwardView | null {
+    if (row.status === "developing") return null;
+    const entered = snapshot.award;
+    let enabled = false;
+    let reason = "";
+    if (entered) reason = "Already entered.";
+    else if (row.status !== "complete") reason = "Still selling.";
+    else if (this.cashCents() < AWARD_COST_CENTS) reason = `Need ${wholeDollars(AWARD_COST_CENTS)}`;
+    else enabled = true;
+    return {
+      show: AWARD_SHOW,
+      costCents: AWARD_COST_CENTS,
+      outcome: entered?.outcome ?? "",
+      fans: entered?.fans ?? 0,
+      entered: entered !== null,
+      enabled,
+      reason,
     };
   }
 
