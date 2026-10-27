@@ -537,7 +537,7 @@
     "tycoonProduct": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "name", "topicId", "typeId", "topicName", "typeName", "fit", "status", "startedDay", "devDays", "devDaysRequired", "design", "tech", "hype", "progress", "ready", "staffIds", "releasedDay", "review", "salesDays", "salesDaysTotal", "salesCents", "fans", "researchPoints", "researchBonus", "pricePercent", "priceCents", "marketing", "contract", "patch"],
+      "required": ["id", "name", "topicId", "typeId", "topicName", "typeName", "fit", "status", "startedDay", "devDays", "devDaysRequired", "design", "tech", "hype", "progress", "ready", "staffIds", "releasedDay", "review", "salesDays", "salesDaysTotal", "salesCents", "fans", "researchPoints", "researchBonus", "pricePercent", "priceCents", "marketing", "contract", "patch", "sequel"],
       "properties": {
         "id": { "type": "string", "pattern": "^p[1-9][0-9]*$" },
         "name": { "type": "string", "minLength": 1 },
@@ -592,6 +592,24 @@
                 "costCents": { "type": "integer", "const": 10000 },
                 "scoreBonus": { "type": "integer", "const": 1 },
                 "applied": { "type": "boolean" },
+                "enabled": { "type": "boolean" },
+                "reason": { "type": "string" }
+              }
+            }
+          ]
+        },
+        "sequel": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["scoreBonus", "savedDays", "isSequel", "started", "enabled", "reason"],
+              "properties": {
+                "scoreBonus": { "type": "integer", "enum": [0, 1] },
+                "savedDays": { "type": "integer", "const": 1 },
+                "isSequel": { "type": "boolean" },
+                "started": { "type": "boolean" },
                 "enabled": { "type": "boolean" },
                 "reason": { "type": "string" }
               }

@@ -47,6 +47,10 @@ export const CONTRACTS = [
 /** One optional patch per shipped product. Cash now, +1 score on remaining sales days. */
 export const PATCH_COST_CENTS = 10_000;
 export const PATCH_SCORE_BONUS = 1;
+/** One optional sequel. One fewer build day, and +1 base score when the original finished at 6 or more. */
+export const SEQUEL_DAYS_SAVED = 1;
+export const SEQUEL_SCORE_MARK = 6;
+export const SEQUEL_SCORE_BONUS = 1;
 /** Stardew-shaped office calendar. Derived from the saved day. It does not replace the clock. */
 export const SEASON_LENGTH_DAYS = 28;
 export const YEAR_LENGTH_DAYS = 112;
@@ -281,6 +285,8 @@ export interface TycoonProductView {
   contract: { client: string; bonusCents: number } | null;
   /** Null while the product is on the bench. Omitted rows read as unpatched. */
   patch: TycoonPatchView | null;
+  /** Null on the bench unless this product is itself a sequel. Omitted rows are not sequels. */
+  sequel: TycoonSequelView | null;
 }
 
 export interface TycoonUpgradeView {
@@ -353,6 +359,17 @@ export interface TycoonPatchView {
   costCents: number;
   scoreBonus: number;
   applied: boolean;
+  enabled: boolean;
+  reason: string;
+}
+
+export interface TycoonSequelView {
+  /** 0, or 1 when this product carried a point from its original. */
+  scoreBonus: number;
+  /** Office days a sequel skips. The build uses catalog days minus this, at least 1. */
+  savedDays: number;
+  isSequel: boolean;
+  started: boolean;
   enabled: boolean;
   reason: string;
 }
@@ -694,16 +711,50 @@ interface ProductSnapshot {
   marketing: MarketingId;
   contract: ProductContract | null;
   patched: boolean;
+  /** Product id this one continues. Null means it is not a sequel. */
+  sequelOf: string | null;
+  /** Product id of the one sequel started from this row. Null means none. */
+  sequelId: string | null;
+  /** 1 when the original's final score was 6 or more. Otherwise 0. */
+  scoreBonus: number;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, and unpatched. */
+function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
+  return {
+    staff,
+    researchBonus: 0,
+    pricePercent: 100,
+    marketing: "none",
+    contract: null,
+    patched: false,
+    sequelOf: null,
+    sequelId: null,
+    scoreBonus: 0,
+  };
+}
+
+function parseProductId(value: unknown): string | null {
+  return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
+}
+
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, and no sequel. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
-  const empty: ProductSnapshot = { staff: [], researchBonus: 0, pricePercent: 100, marketing: "none", contract: null, patched: false };
+  const empty = emptyProductSnapshot();
   let parsed: unknown;
   try { parsed = JSON.parse(raw); } catch { return empty; }
-  if (Array.isArray(parsed)) return { staff: parseStaffList(parsed), researchBonus: 0, pricePercent: 100, marketing: "none", contract: null, patched: false };
+  if (Array.isArray(parsed)) return emptyProductSnapshot(parseStaffList(parsed));
   if (!parsed || typeof parsed !== "object" || !("staff" in parsed)) return empty;
-  const body = parsed as { staff?: unknown; researchBonus?: unknown; pricePercent?: unknown; marketing?: unknown; contract?: unknown; patched?: unknown };
+  const body = parsed as {
+    staff?: unknown;
+    researchBonus?: unknown;
+    pricePercent?: unknown;
+    marketing?: unknown;
+    contract?: unknown;
+    patched?: unknown;
+    sequelOf?: unknown;
+    sequelId?: unknown;
+    scoreBonus?: unknown;
+  };
   return {
     staff: parseStaffList(body.staff),
     researchBonus: normalizeResearchBonus(Number(body.researchBonus)),
@@ -711,6 +762,9 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     marketing: normalizeMarketing(body.marketing),
     contract: parseContract(body.contract),
     patched: body.patched === true,
+    sequelOf: parseProductId(body.sequelOf),
+    sequelId: parseProductId(body.sequelId),
+    scoreBonus: body.scoreBonus === SEQUEL_SCORE_BONUS ? SEQUEL_SCORE_BONUS : 0,
   };
 }
 
@@ -723,16 +777,30 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
   };
   if (stored.contract) body.contract = stored.contract;
   if (stored.patched) body.patched = true;
+  if (stored.sequelOf) body.sequelOf = stored.sequelOf;
+  if (stored.sequelId) body.sequelId = stored.sequelId;
+  if (stored.scoreBonus === SEQUEL_SCORE_BONUS) body.scoreBonus = SEQUEL_SCORE_BONUS;
   return JSON.stringify(body);
+}
+
+/** A sequel skips one office day and never drops below one. */
+export function sequelDevDays(catalogDays: number): number {
+  return Math.max(1, catalogDays - SEQUEL_DAYS_SAVED);
+}
+
+/** Catalog length, or the shorter sequel length when this product continues another. */
+export function requiredDevDays(catalogDays: number, isSequel: boolean): number {
+  return isSequel ? sequelDevDays(catalogDays) : catalogDays;
+}
+
+/** +1 when the original's final score is 6 or more. Otherwise none. */
+export function sequelScoreCarry(finalScore: number): number {
+  return finalScore >= SEQUEL_SCORE_MARK ? SEQUEL_SCORE_BONUS : 0;
 }
 
 /** A patch adds 1, then the score stays on 1–10. Unpatched leaves the stored review score. */
 export function patchedScore(score: number, patched: boolean): number {
   return clampScore(score + (patched ? PATCH_SCORE_BONUS : 0));
-}
-
-function parseStaffSnapshot(raw: string): StaffSnapshot[] {
-  return parseProductSnapshot(raw).staff;
 }
 
 /** 0..1000. Matching the ideal is full credit. A little extra holds. A lot extra dulls the work. */
@@ -745,10 +813,11 @@ export function statRatioMilli(points: number, ideal: number): number {
   return Math.max(700, 1000 - penalty);
 }
 
-export function qualityMilli(points: CraftPoints, typeId: ProductTypeId): number {
+export function qualityMilli(points: CraftPoints, typeId: ProductTypeId, devDays = 0): number {
   const type = typeById(typeId);
   if (!type) throw new Error("Unknown product type");
-  const ideal = type.devDays * IDEAL_POINTS_PER_DAY;
+  const days = devDays > 0 ? devDays : type.devDays;
+  const ideal = days * IDEAL_POINTS_PER_DAY;
   const weighted = statRatioMilli(points.design, ideal) * type.design
     + statRatioMilli(points.tech, ideal) * type.tech
     + statRatioMilli(points.hype, ideal) * type.hype;
@@ -764,9 +833,9 @@ function normalizeResearchBonus(value: number): number {
   return 0;
 }
 
-export function baseScore(points: CraftPoints, topicId: TopicId, typeId: ProductTypeId, researchBonus = 0): number {
+export function baseScore(points: CraftPoints, topicId: TopicId, typeId: ProductTypeId, researchBonus = 0, devDays = 0): number {
   const numerator = FIT_NUMERATOR[fitFor(topicId, typeId)] + normalizeResearchBonus(researchBonus);
-  const fitted = Math.floor((qualityMilli(points, typeId) * numerator) / 100);
+  const fitted = Math.floor((qualityMilli(points, typeId, devDays) * numerator) / 100);
   const used = Math.min(1000, fitted);
   return clampScore(Math.round((used * 9) / 1000 + 1));
 }
@@ -787,13 +856,19 @@ export function reviewProduct(input: {
   hype: number;
   /** Bonus stored on the product. Omitted scores as 0. */
   researchBonus?: number;
+  /** Carried score stored on a sequel. Omitted is 0. Added before reviewers move the base. */
+  sequelBonus?: number;
+  /** Days required for the ideal. Omitted uses the catalog length. */
+  devDays?: number;
 }): TycoonReview {
-  const base = baseScore(
+  const carried = input.sequelBonus === SEQUEL_SCORE_BONUS ? SEQUEL_SCORE_BONUS : 0;
+  const base = clampScore(baseScore(
     { design: input.design, tech: input.tech, hype: input.hype },
     input.topicId,
     input.typeId,
     input.researchBonus ?? 0,
-  );
+    input.devDays ?? 0,
+  ) + carried);
   const reviewers = REVIEWERS.map((reviewer, index) => {
     const jitter = (mixSeed(input.seed, input.productId, "review", index) % 3) - 1;
     const score = clampScore(base + jitter);
@@ -1196,7 +1271,9 @@ export class TycoonStore {
       if (row.status !== "developing") throw new Error("This product already shipped.");
       const type = typeById(row.type_id);
       if (!type) throw new Error("Unknown product type");
-      const remaining = type.devDays - Number(row.dev_days);
+      const stored = parseProductSnapshot(row.staff_json);
+      const required = requiredDevDays(type.devDays, stored.sequelOf !== null);
+      const remaining = required - Number(row.dev_days);
       if (remaining > 0) {
         throw new Error(remaining === 1
           ? "Keep building. This product needs 1 more office day."
@@ -1204,7 +1281,6 @@ export class TycoonStore {
       }
       const topicId = asTopic(row.topic_id);
       const typeId = type.id;
-      const stored = parseProductSnapshot(row.staff_json);
       const review = reviewProduct({
         seed: this.seed(),
         productId: row.id,
@@ -1214,6 +1290,8 @@ export class TycoonStore {
         tech: Number(row.tech_points),
         hype: Number(row.hype_points),
         researchBonus: stored.researchBonus,
+        sequelBonus: stored.scoreBonus,
+        devDays: required,
       });
       const day = this.day();
       const bonus = releaseResearchPoints(review.score);
@@ -1241,6 +1319,55 @@ export class TycoonStore {
       if (this.loadPendingContract()) throw new Error("A contract is already accepted.");
       const offer = contractBySlot(this.seed(), this.completedContractCount());
       this.savePendingContract(offer.id);
+      return this.journey.state();
+    });
+  }
+
+  sequel(productId: string): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.row(productId);
+      if (!row) throw new Error("No product with that id.");
+      const stored = parseProductSnapshot(row.staff_json);
+      const reason = this.sequelBlockReason(row, stored);
+      if (reason) throw new Error(reason);
+      const topicId = asTopic(row.topic_id);
+      const typeId = asType(row.type_id);
+      const research = this.loadResearch();
+      const topic = topicById(topicId);
+      const type = typeById(typeId);
+      if (!topic || !research.topics.has(topicId)) throw new Error(`${topic?.name ?? "That topic"} is locked. Research it first.`);
+      if (!type || !research.types.has(typeId)) throw new Error(`${type?.name ?? "That product type"} is locked. Research it first.`);
+      const pending = this.loadPendingContract();
+      const hired = this.hiredIds();
+      const staffIds = this.assignedStaff(stored.staff.map((person) => person.id).filter((id) => id !== "founder" && hired.has(id)));
+      const stats = this.loadStaffState();
+      const researchBonus = researchFitBonus(research.researchedTopics.has(topicId), research.researchedTypes.has(typeId));
+      const count = Number((this.db.prepare("SELECT COUNT(*) AS n FROM tycoon_products").get() as { n: number }).n);
+      const id = `p${count + 1}`;
+      const carry = sequelScoreCarry(patchedScore(this.storedReviewScore(row), stored.patched));
+      const snapshot: ProductSnapshot = {
+        staff: staffIds.map((memberId) => ({
+          id: memberId, design: stats[memberId].design, tech: stats[memberId].tech, hype: stats[memberId].hype,
+        })),
+        researchBonus,
+        pricePercent: 100,
+        marketing: "none",
+        contract: pending ? { id: pending.id, client: pending.client, bonusCents: pending.bonusCents } : null,
+        patched: false,
+        sequelOf: row.id,
+        sequelId: null,
+        scoreBonus: carry,
+      };
+      if (pending) this.savePendingContract(null);
+      this.db.prepare(`
+        INSERT INTO tycoon_products (
+          id, topic_id, type_id, name, fit, status, started_day, dev_days,
+          design_points, tech_points, hype_points, staff_json, last_dev_day,
+          released_day, review_json, sales_applied, last_sales_day, sales_cents, fans
+        ) VALUES (?, ?, ?, ?, ?, 'developing', ?, 0, 0, 0, 0, ?, NULL, NULL, NULL, 0, NULL, 0, 0)
+      `).run(id, topicId, typeId, `${row.name} 2`, fitFor(topicId, typeId), this.day(), serializeProductSnapshot(snapshot));
+      stored.sequelId = id;
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
       return this.journey.state();
     });
   }
@@ -1289,10 +1416,10 @@ export class TycoonStore {
     if (row.last_dev_day !== null && Number(row.last_dev_day) === day) return;
     const type = typeById(row.type_id);
     if (!type) throw new Error("Unknown product type");
-    const snapshot = parseStaffSnapshot(row.staff_json);
+    const snapshot = parseProductSnapshot(row.staff_json);
     const trainedToday = this.trainedIdsOn(day);
-    const working = snapshot.filter((person) => !trainedToday.has(person.id));
-    const accrue = pointsStillAccrue(Number(row.dev_days), type.devDays);
+    const working = snapshot.staff.filter((person) => !trainedToday.has(person.id));
+    const accrue = pointsStillAccrue(Number(row.dev_days), requiredDevDays(type.devDays, snapshot.sequelOf !== null));
     const personal = accrue ? snapshotPoints(working) : { design: 0, tech: 0, hype: 0 };
     const bonus = accrue ? this.pointBonus() : { design: 0, tech: 0, hype: 0 };
     const people = accrue ? working.length : 0;
@@ -1691,8 +1818,9 @@ export class TycoonStore {
     const type = typeById(typeId)!;
     const topic = topicById(topicId)!;
     const devDays = Number(row.dev_days);
-    const progress = Math.min(100, Math.round((devDays * 100) / type.devDays));
     const snapshot = parseProductSnapshot(row.staff_json);
+    const required = requiredDevDays(type.devDays, snapshot.sequelOf !== null);
+    const progress = Math.min(100, Math.round((devDays * 100) / required));
     const staffIds = snapshot.staff.map((person) => person.id);
     return {
       id: row.id,
@@ -1705,12 +1833,12 @@ export class TycoonStore {
       status: row.status as TycoonProductView["status"],
       startedDay: Number(row.started_day),
       devDays,
-      devDaysRequired: type.devDays,
+      devDaysRequired: required,
       design: Number(row.design_points),
       tech: Number(row.tech_points),
       hype: Number(row.hype_points),
       progress,
-      ready: row.status === "developing" && devDays >= type.devDays,
+      ready: row.status === "developing" && devDays >= required,
       staffIds,
       releasedDay: row.released_day === null ? null : Number(row.released_day),
       review: row.review_json ? JSON.parse(row.review_json) as TycoonReview : null,
@@ -1725,6 +1853,47 @@ export class TycoonStore {
       marketing: snapshot.marketing,
       contract: snapshot.contract ? { client: snapshot.contract.client, bonusCents: snapshot.contract.bonusCents } : null,
       patch: this.patchOffer(row, snapshot),
+      sequel: this.sequelOffer(row, snapshot),
+    };
+  }
+
+  /** Empty when a sequel can start. The same strings are the button reasons. */
+  private sequelBlockReason(row: ProductRow, snapshot: ProductSnapshot): string {
+    if (snapshot.sequelOf) return "This is a sequel.";
+    if (snapshot.sequelId) return "Already has a sequel.";
+    if (row.status === "developing") return "Ship this product first.";
+    if (row.status !== "complete") return "Still selling.";
+    if (this.developingRow()) return "Ship the product on the bench first.";
+    const pending = this.loadPendingContract();
+    if (pending && (pending.topicId !== row.topic_id || pending.typeId !== row.type_id)) {
+      const topicName = topicById(pending.topicId)?.name ?? pending.topicId;
+      const typeName = typeById(pending.typeId)?.name ?? pending.typeId;
+      return `This contract is ${topicName} × ${typeName}.`;
+    }
+    return "";
+  }
+
+  private storedReviewScore(row: ProductRow): number {
+    if (!row.review_json) return 0;
+    try {
+      const review = JSON.parse(String(row.review_json)) as TycoonReview;
+      const score = Number(review?.score);
+      return Number.isInteger(score) ? score : 0;
+    } catch {
+      return 0;
+    }
+  }
+
+  private sequelOffer(row: ProductRow, snapshot: ProductSnapshot): TycoonSequelView | null {
+    if (row.status === "developing" && !snapshot.sequelOf) return null;
+    const reason = this.sequelBlockReason(row, snapshot);
+    return {
+      scoreBonus: snapshot.scoreBonus,
+      savedDays: SEQUEL_DAYS_SAVED,
+      isSequel: snapshot.sequelOf !== null,
+      started: snapshot.sequelId !== null,
+      enabled: reason === "",
+      reason,
     };
   }
 

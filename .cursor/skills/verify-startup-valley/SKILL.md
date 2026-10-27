@@ -18,7 +18,7 @@ From the repo root, after the harness build in Doctor:
 ```bash
 export PATH=/home/box/.local/node22/bin:/home/box/.local/bin:$PATH
 export STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS=1
-SV_PROOF_DIR=/workspace/sv-proof/round-36 \
+SV_PROOF_DIR=/workspace/sv-proof/round-37 \
   xvfb-run -a -s "-screen 0 1280x720x24" \
   godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd
 ```
@@ -40,7 +40,7 @@ If Godot rejects the absolute script, copy the helper to `/tmp/capture_journey.g
 
 `capture_journey.gd` is a `SceneTree` script. It instances `main.tscn` in a 1280×720 SubViewport, sets the day clock speed to 0, and pushes mouse and key events at the live controls.
 
-The run ships Crypto Alpha Newsletter at catalog price with no ad, trains Founder Tech, ends the day, researches Sneakers, starts Sneakers Newsletter at −20% with a small ad, ships that second product, and buys Oak Standing Desk. After the first build day it checks the Season card and the date label. It snaps the locked Office card on the fresh company, then boots a seeded team, clicks Expand office, and snaps the Open Floor card and the new desks in the room. On the first picker it snaps the marketing control while both ads are short of cash. After Sneakers is researched it snaps the picker bonus, the price control, buys the small ad, starts that product, and snaps the journey bonus line. After the cheaper Sneakers release it snaps the chosen price line and the marketing line. After the first newsletter release it snaps the Patch button on the Selling card and leaves that product unpatched. After the contract launch it patches that selling product and snaps the cost line. Button names and the order are in the feature files. Scroll the journey with the same reveal the tests use before clicking a card that sits below New Product.
+The run ships Crypto Alpha Newsletter at catalog price with no ad, trains Founder Tech, ends the day, researches Sneakers, starts Sneakers Newsletter at −20% with a small ad, ships that second product, and buys Oak Standing Desk. After the first build day it checks the Season card and the date label. It snaps the locked Office card on the fresh company, then boots a seeded team, clicks Expand office, and snaps the Open Floor card and the new desks in the room. On the first picker it snaps the marketing control while both ads are short of cash. After Sneakers is researched it snaps the picker bonus, the price control, buys the small ad, starts that product, and snaps the journey bonus line. After the cheaper Sneakers release it snaps the chosen price line and the marketing line. After the first newsletter release it snaps the Patch button on the Selling card and leaves that product unpatched. After that newsletter finishes selling it snaps Sequel on the Shipped card and leaves it unpressed. After the contract launch it patches that selling product and snaps the cost line, then starts the newsletter sequel and snaps the shorter build. Button names and the order are in the feature files. Scroll the journey with the same reveal the tests use before clicking a card that sits below New Product.
 
 ## Evidence
 
@@ -71,6 +71,8 @@ The helper writes these PNGs into `SV_PROOF_DIR` and prints `SNAP` plus the file
 - `23-contract-released.png` — a released product showing the contract bonus line
 - `24-patch-offer.png` — Company Journey with Patch · $100 on a selling product
 - `25-patch-applied.png` — the patch cost line and the patched state on the Selling card
+- `26-sequel-offer.png` — Company Journey with Sequel on a finished product
+- `27-sequel-started.png` — the sequel building, with the shorter day line and the carried score
 
 A finished run prints `PROOF PASS` or `PROOF FAIL` and a `FAILURE` line for each miss. Open the PNGs. A black frame means the display server did not render the SubViewport.
 
