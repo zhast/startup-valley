@@ -1533,3 +1533,46 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → let a product finish selling → Enter award on the Shipped card, or leave it. The first newsletter with no award is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_awards.gd`.
 
+### Round 39 — 2026-10-27
+
+**What changed**
+- One optional port per finished product. `tycoon.port` takes `{productId}`. The shelf is Whop Mobile. The fee is $80. The next day end pays exactly one extra sales day from the stored score, using the normal per-day formula at the last curve step (25%). `salesDays` stays 4. The payout is added to `sales_cents` and to the product's fans. No port is the default, so the first Crypto Alpha Newsletter still pays 20700 cents and 5 fans.
+- The field lives on the product snapshot in `staff_json`: `port: {shelf, startedDay}` while it is selling, and `port: {shelf, startedDay, cents, fans}` after it pays. There is no new SQL column. An older row that is only a staff array, or a row that omits the field, has not been ported. Reads do not rewrite `staff_json`. The fee is one ledger row: id `tycoon:port:<productId>`, cash −$80, earned 0, reputation 0, label `Port: Whop Mobile`. The extra sale is the normal sales row `tycoon:<productId>:4`, label `Sales · <product>`. Fans add once, on that sales row. Porting twice fails with "Already ported." and charges nothing. Other refusals: "Ship this product first.", "Still selling.", "Need $80", "Another port is still selling.", and "No product with that id."
+- Company Journey shows Port on the Shipped card. The fee line is "Whop Mobile · $80". After the port starts the card reads "Port · Whop Mobile · selling 1 day". After the extra day it reads "Port · Whop Mobile · $X". A selling card shows "Port · Still selling." Sequel, Enter award, and Port share one row so they do not stack into the footer. Hire Mina stays the one primary action.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Engines are the next slice. One optional engine, bought with game cash. A product started on it stores a small score bump. Skipping it leaves the first newsletter at 20700 cents and 5 fans. The default is off.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. The tallest Shipped card still lets the contract card meet the footer. The shared button row clears Accept contract on the offer and on the Selling card. On the port result the contract pair line still touches Hire Mina. Growing the dialog would cover the clock or the movement hint.
+5. Carried from Round 38: Creative has no seated sheet. Unbound art stays untracked. The live path is still a harness driver. A cheap reviewer can still sit just under the 2.5 ready line. Chapter 3 ends at "More is coming." The starter `shared_workbench` stays in storage. The one on the Open Floor is a separate grant.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 107 tests, 105 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test covers the $80 fee, one extra sales day from `salesForDay` at the last curve step, a patched score of 5 selling as 6, refusals while developing / selling / twice / short of cash / while another port is selling, one fee row, one `tycoon:<id>:4` sales row, `salesDays` staying 4, and an older staff-array row staying without a port field.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS (40 checks, 0 failures). Launch sales stay 20700 cents and 5 fans. The next office day stays 33300 cents and 8 fans.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS (50 checks, 0 failures)
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS (50 checks, 0 failures)
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS (47 checks, 0 failures)
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS (23 checks, 0 failures)
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS (25 checks, 0 failures)
+- `test_tycoon_price.gd` — TYCOON PRICE PASS (49 checks, 0 failures). Catalog launch is 20700 cents and 5 fans.
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS (55 checks, 0 failures). No ad stays 20700 cents and 5 fans.
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS (60 checks, 0 failures). Ignoring the offer leaves Fitness and Crypto Alpha free. The newsletter still pays 20700 cents and 5 fans.
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS (37 checks, 0 failures). No patch still pays 20700 cents and 5 fans.
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS (49 checks, 0 failures). No sequel still pays 20700 cents and 5 fans.
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS (49 checks, 0 failures). No award still pays 20700 cents and 5 fans.
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS (65 checks, 0 failures). No port still pays 20700 cents and 5 fans. Port stays "Port · Still selling." until sales finish, then Port is secondary and Hire Mina stays primary. The shelf line is "Whop Mobile · $80". The fee is $80 once and adds no fans. The next day end pays one extra sales day, the line names that cash, and a later day does not pay again. A second press stays "Port · Already ported." `salesDays` stays 4.
+- `test_ui_company_redesign.gd` — 13529 checks, 0 failures, 0 captures. A fixture without a port draws no Port button. The finished fixture reads "Port" and "Whop Mobile · $80", then "Port · Whop Mobile · selling 1 day", "Port · Whop Mobile · $45.00", "Port · Need $80", "Port · Still selling.", and "Port · Another port is still selling." Sequel, Enter award, and Port share one row. Hire Mina stays primary.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Thirty-one PNGs in `/workspace/sv-proof/round-39/` (local, not committed). `30-port-offer.png` is Company Journey on the Shipped card: Crypto Alpha Newsletter · 6/10 · $468.00 · +11 fans, "Sales finished.", "Whop Creator Awards · $40", "Whop Mobile · $80", and Sequel, Enter award, and Port on one row. Hire Mina stays orange and does not cover those buttons. Accept contract is fully visible. Header reads Spring 7 · Year 1 · $168.00 game cash · 11 reputation. `31-port-result.png` reads "Award · Nominated · +4 fans" and "Port · Whop Mobile · $63.00". The product line is $531.00 · +12 fans. The buttons read "Sequel · Already has a sequel.", "Enter award · Already entered.", and "Port · Already ported." Those port lines are readable and do not overlap. Header reads Spring 13 · Year 1 · $1,184.60 game cash · 33 reputation. The contract pair line below still meets the footer. `24-patch-offer.png` shows "Sequel · Still selling.", "Enter award · Still selling.", and "Port · Still selling." on one row under Patch · $100. Accept contract is fully visible. Cash before the desk buy was 118460 cents. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-39 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → let a product finish selling → Port on the Shipped card, or leave it. The first newsletter with no port is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_ports.gd`.
+
