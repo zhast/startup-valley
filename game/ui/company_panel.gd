@@ -37,6 +37,7 @@ var _type_id := "software"
 var _staff_ids: Array[String] = []
 var _price_percent := 100
 var _marketing_id := "none"
+var _engine_id := "none"
 var _release_focus_id := ""
 
 func _ready() -> void:
@@ -523,6 +524,7 @@ func _journey_screen() -> void:
 	_train_staff()
 	_research_card()
 	_upgrades_card()
+	_engine_card()
 	_office_card()
 	_season_card()
 	var money_note := _label("Game cash is virtual. Shipping products is fully offline. Ads and incorporation create planning files only.")
@@ -550,6 +552,9 @@ func _topic_in_season(topic_id: String) -> bool:
 func _product_shortcut() -> void:
 	if _tycoon().is_empty(): return
 	_journey_research_line()
+	var developing: Dictionary = _tycoon().get("developing", {}) if _tycoon().get("developing") is Dictionary else {}
+	if not developing.is_empty():
+		_show_engine(developing, "EngineJourney")
 	var button := _button("New Product", func() -> void: present("product"), false, true, null, "secondary")
 	button.name = "NewProduct"
 
@@ -1057,7 +1062,9 @@ func _product_picker(tycoon: Dictionary) -> void:
 		bonus_label.name = "ResearchFitBonus"
 	_price_picker(tycoon)
 	_marketing_picker(tycoon)
-	_label("On the build", true)
+	_engine_picker(tycoon)
+	var build_line := _label(_on_the_build_text(), true)
+	build_line.name = "OnTheBuild"
 	var staff: Array = tycoon.get("staff", []) as Array
 	for item: Variant in staff:
 		if not item is Dictionary: continue
@@ -1076,7 +1083,7 @@ func _product_picker(tycoon: Dictionary) -> void:
 	for person_id: String in _staff_ids:
 		staff_ids.append(person_id)
 	var pair_open := _entry_unlocked("topics", _topic_id) and _entry_unlocked("types", _type_id)
-	_actions("Start development", func() -> void: _request("tycoon.start", {"topicId": _topic_id, "typeId": _type_id, "staffIds": staff_ids, "pricePercent": _price_percent, "marketing": _marketing_id}), not fit.is_empty() and pair_open, "Back to office", func() -> void: present("journey"))
+	_actions("Start development", func() -> void: _request("tycoon.start", {"topicId": _topic_id, "typeId": _type_id, "staffIds": staff_ids, "pricePercent": _price_percent, "marketing": _marketing_id, "engine": _engine_id}), not fit.is_empty() and pair_open, "Back to office", func() -> void: present("journey"))
 
 func _product_progress(product: Dictionary) -> void:
 	var required := int(product.get("devDaysRequired", 1))
@@ -1086,6 +1093,7 @@ func _product_progress(product: Dictionary) -> void:
 	_show_research_fit(product, "ResearchFitJourney")
 	_show_launch_price(product, "LaunchPrice")
 	_show_marketing(product, "MarketingLine")
+	_show_engine(product, "EngineLine")
 	_show_contract(product, "ContractLine")
 	var progress := _label("Ready to ship" if ready else "Building · day %d of %d" % [dev_days, required], false, null, "action")
 	progress.name = "ProductProgress"
@@ -1130,6 +1138,7 @@ func _release_screen() -> void:
 	_show_contract(product, "ReleaseContract")
 	_show_launch_price(product, "ReleasePrice")
 	_show_marketing(product, "ReleaseMarketing")
+	_show_engine(product, "ReleaseEngine")
 	_show_sequel(product, "ReleaseSequel")
 	var research_line := _label("+%d research points" % int(product.get("researchPoints", 0)), false, null, "action")
 	research_line.name = "ReleaseResearch"
@@ -1156,6 +1165,7 @@ func _product_history(tycoon: Dictionary) -> void:
 		_show_research_fit(product, "ResearchFitJourney", card)
 		_show_launch_price(product, "LaunchPrice", card)
 		_show_marketing(product, "MarketingLine", card)
+		_show_engine(product, "EngineLine", card)
 		_show_contract(product, "ContractLine", card)
 		_show_patch(product, "PatchLine", card)
 		_show_sequel(product, "SequelLine", card)
@@ -1332,6 +1342,108 @@ func _marketing_picker(tycoon: Dictionary) -> void:
 
 func _choose_marketing(id: String) -> void:
 	_marketing_id = id
+	_render()
+
+func _engine_card() -> void:
+	var offer: Variant = _tycoon().get("engine", null)
+	if not offer is Dictionary or (offer as Dictionary).is_empty(): return
+	var engine := offer as Dictionary
+	var card := _card()
+	card.name = "EngineCard"
+	_label("Engine", true, card)
+	var price := _label("%s · $%d" % [str(engine.get("name", "Engine")), int(int(engine.get("priceCents", 0)) / 100)], false, card)
+	price.name = "EnginePrice"
+	var blurb := str(engine.get("blurb", "")).strip_edges()
+	if not blurb.is_empty():
+		_label(blurb, false, card, "meta")
+	var bump := _label("+%d score" % int(engine.get("scoreBonus", 1)), false, card, "meta")
+	bump.name = "EngineBump"
+	var notice := str(_tycoon().get("engineNotice", "")).strip_edges()
+	if not notice.is_empty():
+		var line := _label(notice, false, card, "action")
+		line.name = "EngineNotice"
+	var enabled := bool(engine.get("enabled", false))
+	var reason := str(engine.get("reason", "")).strip_edges()
+	var text := "Buy %s · $%d" % [str(engine.get("name", "Engine")), int(int(engine.get("priceCents", 0)) / 100)]
+	if not enabled and not reason.is_empty():
+		text = "Buy %s · %s" % [str(engine.get("name", "Engine")), reason]
+	var button := _button(text, _buy_engine.bind(str(engine.get("id", ""))), false, enabled, card, "secondary")
+	button.name = "Buy_engine"
+
+func _buy_engine(engine_id: String) -> void:
+	_request("tycoon.buyEngine", {"id": engine_id})
+
+func _engine_line(product: Dictionary) -> String:
+	var value: Variant = product.get("engine", null)
+	if not value is Dictionary: return ""
+	var engine := value as Dictionary
+	var engine_name := str(engine.get("name", "")).strip_edges()
+	if engine_name.is_empty(): return ""
+	var bonus := int(engine.get("scoreBonus", 0))
+	if bonus > 0:
+		return "On the build · %s · +%d score" % [engine_name, bonus]
+	return "On the build · %s" % engine_name
+
+func _show_engine(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var text := _engine_line(product)
+	if text.is_empty(): return
+	var line := _label(text, false, parent, "action")
+	line.name = node_name
+
+func _on_the_build_text() -> String:
+	if _engine_id == "none": return "On the build"
+	for item: Variant in _tycoon().get("engineOptions", []) as Array:
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		if str(option.get("id", "")) != _engine_id: continue
+		var engine_name := str(option.get("label", "")).strip_edges()
+		if not engine_name.is_empty(): return "On the build · %s" % engine_name
+	return "On the build"
+
+func _engine_effect_line(option: Dictionary) -> String:
+	var engine_name := str(option.get("label", "None"))
+	var bonus := int(option.get("scoreBonus", 0))
+	if bonus <= 0:
+		return "%s · no score bump" % engine_name
+	return "%s · +%d score" % [engine_name, bonus]
+
+func _engine_picker(tycoon: Dictionary) -> void:
+	var offer: Variant = tycoon.get("engine", null)
+	if not offer is Dictionary or not bool((offer as Dictionary).get("owned", false)):
+		_engine_id = "none"
+		return
+	var options: Array = tycoon.get("engineOptions", []) as Array
+	if options.is_empty():
+		_engine_id = "none"
+		return
+	var enabled_ids: Array[String] = []
+	for item: Variant in options:
+		if item is Dictionary and bool((item as Dictionary).get("enabled", false)):
+			enabled_ids.append(str((item as Dictionary).get("id", "")))
+	if not enabled_ids.has(_engine_id): _engine_id = "none"
+	var heading := _label("Engine", true)
+	heading.name = "EngineHeading"
+	var selected: Dictionary = {}
+	for item: Variant in options:
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		var id := str(option.get("id", ""))
+		var enabled := bool(option.get("enabled", false))
+		var text := str(option.get("label", ""))
+		var reason := str(option.get("reason", ""))
+		if not enabled and not reason.is_empty(): text = "%s · %s" % [text, reason]
+		var chosen := id == _engine_id
+		if chosen: selected = option
+		var button := _button(text, _choose_engine.bind(id), false, enabled, null, "secondary")
+		button.name = "Engine_%s" % id
+		if chosen:
+			for state: String in ["normal", "hover", "pressed", "hover_pressed"]:
+				button.add_theme_stylebox_override(state, CozyUI.control_style("secondary", "pressed"))
+	var effect := _label(_engine_effect_line(selected), false, null, "action")
+	effect.name = "EngineEffect"
+
+func _choose_engine(id: String) -> void:
+	_engine_id = id
 	_render()
 
 func _fit_word(fit: String) -> String:

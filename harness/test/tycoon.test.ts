@@ -24,6 +24,10 @@ import {
   AWARD_WIN_FANS,
   AWARD_WIN_SCORE,
   PATCH_COST_CENTS,
+  ENGINE_COST_CENTS,
+  ENGINE_ID,
+  ENGINE_NAME,
+  ENGINE_SCORE_BONUS,
   PORT_COST_CENTS,
   PORT_SHELF,
   SALES_WINDOW_DAYS,
@@ -2563,5 +2567,190 @@ test("a port charges once and pays one extra sales day from the stored score", a
   assert.equal(restored.tycoon.view().history[0]?.port?.enabled, true);
   assert.equal(staffJson(restored, "p1"), staffOnly);
   assert.equal(validateLegacy(restored.journey.state()), true, JSON.stringify(validateLegacy.errors));
+  restored.close();
+});
+
+test("an engine is bought once and a product started on it stores a score bump", async () => {
+  assert.equal(ENGINE_ID, "whop_kit");
+  assert.equal(ENGINE_NAME, "Whop Kit Engine");
+  assert.equal(ENGINE_COST_CENTS, 12_000);
+  assert.equal(ENGINE_SCORE_BONUS, 1);
+  const points = { design: 4, tech: 4, hype: 4 };
+  const firstPlain = reviewProduct({ seed: 26021, productId: "p1", topicId: "crypto", typeId: "newsletter", ...points });
+  const firstLifted = reviewProduct({ seed: 26021, productId: "p1", topicId: "crypto", typeId: "newsletter", ...points, engineBonus: ENGINE_SCORE_BONUS });
+  assert.equal(firstPlain.score, 6);
+  assert.equal(firstLifted.score, 7);
+  const capped = reviewProduct({
+    seed: 26021, productId: "p1", topicId: "crypto", typeId: "newsletter",
+    design: 80, tech: 80, hype: 80, sequelBonus: SEQUEL_SCORE_BONUS, engineBonus: ENGINE_SCORE_BONUS,
+  });
+  assert.equal(capped.score, 10);
+  const secondPlain = reviewProduct({ seed: 26021, productId: "p2", topicId: "crypto", typeId: "newsletter", ...points });
+  const secondLifted = reviewProduct({ seed: 26021, productId: "p2", topicId: "crypto", typeId: "newsletter", ...points, engineBonus: ENGINE_SCORE_BONUS });
+  assert.ok(secondLifted.score <= 10);
+  assert.equal(secondLifted.score, Math.min(10, secondPlain.score + 1));
+
+  const broke = await setup();
+  const brokeView = broke.db.tycoon.view();
+  assert.equal(brokeView.engine.owned, false);
+  assert.equal(brokeView.engine.enabled, false);
+  assert.equal(brokeView.engine.reason, "Need $120");
+  assert.equal(brokeView.engine.priceCents, ENGINE_COST_CENTS);
+  assert.equal(brokeView.engineOptions.length, 2);
+  assert.equal(brokeView.engineOptions[0]?.id, "none");
+  assert.equal(brokeView.engineOptions[0]?.enabled, true);
+  assert.equal(brokeView.engineOptions[1]?.id, ENGINE_ID);
+  assert.equal(brokeView.engineOptions[1]?.enabled, false);
+  assert.equal(brokeView.engineOptions[1]?.reason, "Buy it first.");
+  assert.throws(() => broke.db.tycoon.buyEngine("lava_lamp"), /Unknown engine\./u);
+  assert.equal(broke.db.journey.state().company.cashCents, 0);
+  assert.throws(() => broke.db.tycoon.buyEngine(ENGINE_ID), /Need \$120/u);
+  assert.throws(() => broke.db.tycoon.start("crypto", "newsletter", [], 100, "none", ENGINE_ID), /Buy the engine first\./u);
+  assert.equal(broke.db.tycoon.view().developing, null);
+  assert.throws(() => broke.db.tycoon.start("crypto", "newsletter", [], 100, "none", "rocket"), /Pick None or Whop Kit Engine\./u);
+  broke.db.journey.recordCompanyChange("engine-short", 1, 11_900, 0, 0, "Engine short cash");
+  assert.equal(broke.db.tycoon.view().engine.reason, "Need $120");
+  assert.equal(broke.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id = 'tycoon:engine'").get(), undefined);
+  const shortCash = broke.db.journey.state().company.cashCents;
+  assert.throws(() => broke.db.tycoon.start("crypto", "newsletter", [], 100, "small", ENGINE_ID), /Buy the engine first\./u);
+  assert.equal(broke.db.journey.state().company.cashCents, shortCash);
+  assert.equal(broke.db.tycoon.view().developing, null);
+  const adRows = broke.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:marketing:%'").all();
+  assert.equal(adRows.length, 0);
+  broke.db.close();
+
+  const { db, root } = await setup();
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  db.tycoon.start("crypto", "newsletter", []);
+  assert.equal(db.tycoon.view().developing?.engine, null);
+  assert.equal(validate(db.journey.state()), true, JSON.stringify(validate.errors));
+  db.endDay(1);
+  db.endDay(2);
+  db.tycoon.release("p1");
+  const first = productById(db, "p1");
+  assert.equal(first?.salesCents, 20700);
+  assert.equal(first?.fans, 5);
+  assert.equal(first?.review?.score, 6);
+  assert.equal(first?.engine, null);
+  const firstJson = staffJson(db, "p1");
+  const firstBody = JSON.parse(firstJson) as Record<string, unknown>;
+  assert.equal("engine" in firstBody, false);
+  assert.equal("engineBonus" in firstBody, false);
+  const cashBefore = db.journey.state().company.cashCents;
+  db.tycoon.buyEngine(ENGINE_ID);
+  const fee = db.journey.db.prepare("SELECT id, label, cash_delta, earned_delta, reputation_delta FROM company_transactions WHERE id = 'tycoon:engine'").get() as {
+    id: string; label: string; cash_delta: number; earned_delta: number; reputation_delta: number;
+  };
+  assert.equal(fee.id, "tycoon:engine");
+  assert.equal(fee.label, "Engine: Whop Kit Engine");
+  assert.equal(fee.cash_delta, -ENGINE_COST_CENTS);
+  assert.equal(fee.earned_delta, 0);
+  assert.equal(fee.reputation_delta, 0);
+  assert.equal(db.journey.state().company.cashCents, cashBefore - ENGINE_COST_CENTS);
+  const owned = db.tycoon.view();
+  assert.equal(owned.engine.owned, true);
+  assert.equal(owned.engine.enabled, false);
+  assert.equal(owned.engine.reason, "Already owned.");
+  assert.equal(owned.engineNotice, "Bought Whop Kit Engine. −$120");
+  assert.equal(owned.engineOptions[1]?.enabled, true);
+  assert.equal(owned.engineOptions[1]?.reason, "");
+  const cashOwned = db.journey.state().company.cashCents;
+  assert.throws(() => db.tycoon.buyEngine(ENGINE_ID), /Already owned\./u);
+  assert.equal(Number((db.journey.db.prepare("SELECT COUNT(*) AS n FROM company_transactions WHERE id = 'tycoon:engine'").get() as { n: number }).n), 1);
+  assert.equal(db.journey.state().company.cashCents, cashOwned);
+  assert.equal(staffJson(db, "p1"), firstJson);
+
+  db.tycoon.start("crypto", "newsletter", [], 100, "none", ENGINE_ID);
+  const building = productById(db, "p2");
+  assert.deepEqual(building?.engine, { id: ENGINE_ID, name: ENGINE_NAME, scoreBonus: ENGINE_SCORE_BONUS });
+  const secondBody = JSON.parse(staffJson(db, "p2")) as { engine: string; engineBonus: number; marketing: string; pricePercent: number };
+  assert.equal(secondBody.engine, ENGINE_ID);
+  assert.equal(secondBody.engineBonus, ENGINE_SCORE_BONUS);
+  assert.equal(secondBody.marketing, "none");
+  assert.equal(secondBody.pricePercent, 100);
+  assert.equal(validate(db.journey.state()), true, JSON.stringify(validate.errors));
+  db.endDay(db.clockState().day);
+  assert.equal(db.tycoon.view().engineNotice, "");
+  assert.equal(db.tycoon.view().engine.owned, true);
+  db.endDay(db.clockState().day);
+  const releaseDay = db.clockState().day;
+  const reputation = db.journey.state().company.reputation;
+  const calendar = calendarForDay(releaseDay);
+  const favored = calendar.favoredTopics.some((topic) => topic.id === "crypto");
+  const saleInput = {
+    seed: 26021,
+    productId: "p2" as const,
+    typeId: "newsletter" as const,
+    fit: "great" as const,
+    dayIndex: 0,
+    reputation,
+    pricePercent: 100,
+    marketing: "none",
+    unitBoostPercent: favored ? SEASON_UNIT_BOOST_PERCENT : 0,
+    bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
+  };
+  const liftedSale = salesForDay({ ...saleInput, score: secondLifted.score });
+  const plainSale = salesForDay({ ...saleInput, score: secondPlain.score });
+  db.tycoon.release("p2");
+  const second = productById(db, "p2");
+  assert.deepEqual(second?.review, secondLifted);
+  assert.equal(second?.salesCents, liftedSale.cents);
+  assert.equal(second?.fans, liftedSale.fans);
+  assert.ok(liftedSale.cents > plainSale.cents);
+  assert.equal(productById(db, "p1")?.engine, null);
+  assert.equal(staffJson(db, "p1"), firstJson);
+
+  db.tycoon.start("fitness", "course", []);
+  assert.equal(productById(db, "p3")?.engine, null);
+  const thirdBody = JSON.parse(staffJson(db, "p3")) as Record<string, unknown>;
+  assert.equal("engine" in thirdBody, false);
+  assert.equal("engineBonus" in thirdBody, false);
+  const file = join(root, "game.sqlite");
+  const project = join(root, "company-project");
+  db.close();
+  const reopened = new GameDatabase(file, project);
+  assert.equal(reopened.tycoon.view().engine.owned, true);
+  assert.equal(productById(reopened, "p3")?.engine, null);
+  assert.equal(productById(reopened, "p2")?.engine?.scoreBonus, ENGINE_SCORE_BONUS);
+  assert.equal(staffJson(reopened, "p1"), firstJson);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+
+  const legacy = await setup();
+  const legacyFile = join(legacy.root, "game.sqlite");
+  const legacyProject = join(legacy.root, "company-project");
+  legacy.db.close();
+  const raw = new DatabaseSync(legacyFile);
+  const staffOnly = JSON.stringify(["founder"]);
+  raw.prepare(`
+    INSERT INTO tycoon_products (
+      id, topic_id, type_id, name, fit, status, started_day, dev_days,
+      design_points, tech_points, hype_points, staff_json, last_dev_day,
+      released_day, review_json, sales_applied, last_sales_day, sales_cents, fans
+    ) VALUES ('p1', 'crypto', 'newsletter', 'Crypto Alpha Newsletter', 'great', 'developing', 1, 2, 4, 4, 4, ?, NULL, NULL, NULL, 0, NULL, 0, 0)
+  `).run(staffOnly);
+  raw.close();
+  const restored = new GameDatabase(legacyFile, legacyProject);
+  assert.equal(restored.tycoon.view().developing?.engine, null);
+  assert.equal(staffJson(restored, "p1"), staffOnly);
+  const oldReview = JSON.stringify({
+    score: 6,
+    reviewers: ["Whop Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
+  });
+  restored.journey.db.prepare(`
+    UPDATE tycoon_products
+    SET status = 'complete', released_day = 3, review_json = ?, sales_applied = 4, last_sales_day = 5, sales_cents = 20700, fans = 5
+    WHERE id = 'p1'
+  `).run(oldReview);
+  assert.equal(restored.tycoon.view().history[0]?.engine, null);
+  assert.equal(restored.tycoon.view().history[0]?.salesCents, 20700);
+  assert.equal(restored.tycoon.view().history[0]?.fans, 5);
+  assert.equal(staffJson(restored, "p1"), staffOnly);
+  restored.journey.recordCompanyChange("engine-test-cash", 6, ENGINE_COST_CENTS, 0, 0, "Engine test cash");
+  restored.tycoon.buyEngine(ENGINE_ID);
+  assert.equal(restored.tycoon.view().engine.owned, true);
+  assert.equal(staffJson(restored, "p1"), staffOnly);
+  assert.equal(validate(restored.journey.state()), true, JSON.stringify(validate.errors));
   restored.close();
 });

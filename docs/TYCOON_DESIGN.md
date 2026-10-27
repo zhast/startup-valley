@@ -9,7 +9,7 @@ The rules in `harness/src/tycoon.ts` are authoritative. This document matches th
 1. **Offline.** A new company ships a product with no API key and no network. Providers stay optional, and only on chapter work orders and chat.
 2. **The pairing is the decision.** A topic and a product type fit together at Great, Good, Okay, or Bad, in the Game Dev Tycoon way. A bad pairing can still ship. It sells worse.
 3. **Days, not a progress bar you click.** Development and sales move when the office day ends. The room stays the cozy Stardew-style office already in the game.
-4. **Deterministic.** Reviews and sales are pure functions of the company seed, the product id, the fit, the points, the research bonus stored on the product, the launch price stored on the product, the marketing choice stored on the product, whether it was patched, the sequel bonus stored on the product, the shorter day count that follows from the sequel link, and reputation. A contract bonus is a separate cash line. A patch cost is too. An award fee is too, and its fans are not part of the sales formula. A port fee is a separate cash line. Its one extra sales day uses that same sales formula. They are not extra inputs beyond those. The same save replays the same launch.
+4. **Deterministic.** Reviews and sales are pure functions of the company seed, the product id, the fit, the points, the research bonus stored on the product, the launch price stored on the product, the marketing choice stored on the product, whether it was patched, the sequel bonus stored on the product, the engine score bump stored on the product, the shorter day count that follows from the sequel link, and reputation. A contract bonus is a separate cash line. A patch cost is too. An award fee is too, and its fans are not part of the sales formula. A port fee is a separate cash line. Its one extra sales day uses that same sales formula. An engine fee is a separate cash line, paid once when the engine is bought. They are not extra inputs beyond those. The same save replays the same launch.
 5. **One product on the bench.** A second idea waits until the first one ships. A shipped product can still be selling while the next one starts.
 
 ## Core loop
@@ -17,7 +17,7 @@ The rules in `harness/src/tycoon.ts` are authoritative. This document matches th
 1. From Company Journey, choose **New Product**.
 2. Pick a topic and a product type. The panel shows the fit.
 3. The founder is always on the build. Hired teammates can join.
-4. **Start development.** The product stores the fit, the staff snapshot, the research bonus, the launch price, and the marketing choice. A paid ad spends game cash here. An accepted contract also stores the client and the bonus.
+4. **Start development.** The product stores the fit, the staff snapshot, the research bonus, the launch price, the marketing choice, and the engine choice. A paid ad spends game cash here. The engine was already paid when it was bought. An accepted contract also stores the client and the bonus.
 5. **End day + save** once for each office day of work. The team adds design, tech, and hype. Progress is `dev days / days required`.
 6. When the required days are done, **Release**. Four reviewers score it from 1 to 10. Launch-day sales pay game cash and fans immediately. If the product was started under a contract, that release also pays the bonus as its own cash line.
 7. The next three office days keep selling, once each, when the day ends. The release day does not sell twice. One optional patch can spend game cash and add 1 to the stored score for those remaining days.
@@ -70,7 +70,7 @@ Each type weights those three stats and has a price:
 | Software Tool | 4 | $39 | 1 | 3 | 1 |
 | Newsletter | 2 | $9 | 1 | 1 | 3 |
 
-The ideal for a stat is `days required × 4`. A sequel's required days are the catalog days minus 1, at least 1, so its ideal shrinks with the shorter build. Matching the ideal is full credit. A little extra holds the credit. A large pile of one stat dulls it. Quality is the weighted blend. Fit scales that quality. A researched topic or type adds 6 to that fit's numerator, up to 12, from the bonus stored when development started. The base score maps the result onto 1–10. A sequel adds its stored score bonus, 0 or 1, to that base before the reviewers move it.
+The ideal for a stat is `days required × 4`. A sequel's required days are the catalog days minus 1, at least 1, so its ideal shrinks with the shorter build. Matching the ideal is full credit. A little extra holds the credit. A large pile of one stat dulls it. Quality is the weighted blend. Fit scales that quality. A researched topic or type adds 6 to that fit's numerator, up to 12, from the bonus stored when development started. The base score maps the result onto 1–10. A sequel adds its stored score bonus, 0 or 1, to that base. An engine adds its stored score bump, 0 or 1, with that sequel bonus. The sum clamps to 1–10 before the reviewers move it.
 
 Four reviewers then each move that base by −1, 0, or +1. The jitter comes from the company seed and the product id. Scores clamp to 1–10. The headline is the rounded mean, clamped again. Blurbs follow the headline band: 8–10 high, 5–7 mid, 1–4 low. The review is stored on the product, so a later formula change does not rewrite a shipped score.
 
@@ -80,7 +80,7 @@ Sales run for 4 days at 100%, 70%, 45%, then 25% of the opening demand. Opening 
 
 The catalog price is the default. At Start development the player can leave it, or nudge −20% or +20%. A cheaper price sells more units. A higher price sells fewer. The percents are fixed: 80 / 100 / 120 for price, and 120 / 100 / 80 for units. Units after the nudge are `Math.max(1, Math.round((units * unitPercent) / 100))`. The unit price is `Math.round((catalogCents * pricePercent) / 100)`. Catalog (100) leaves both unchanged, so the first newsletter still pays 20700 cents and 5 fans.
 
-The choice is stored on the product, in `staff_json` as `{staff, researchBonus, pricePercent, marketing}`. A sequel also stores `sequelOf`, and the original stores `sequelId` once that sequel starts. `scoreBonus` is 1 only when the carry applies. Sales use the stored price. An older row that is only a staff array, or a row with no `pricePercent`, sells at catalog. A row with no `marketing` sells with no ad. A row with no `patched` flag sells unpatched. A row with no sequel fields is not a sequel and has not started one. A row with no `award` field has not entered a show. A row with no `port` field has not been ported. Stored `sales_cents` are not rewritten. Reads do not rewrite `staff_json`.
+The choice is stored on the product, in `staff_json` as `{staff, researchBonus, pricePercent, marketing}`. When the product starts on the engine it also stores `engine` and `engineBonus`. A sequel also stores `sequelOf`, and the original stores `sequelId` once that sequel starts. `scoreBonus` is 1 only when the carry applies. `engineBonus` is 1 only when `engine` is set. Sales use the stored price. An older row that is only a staff array, or a row with no `pricePercent`, sells at catalog. A row with no `marketing` sells with no ad. A row with no `patched` flag sells unpatched. A row with no sequel fields is not a sequel and has not started one. A row with no `award` field has not entered a show. A row with no `port` field has not been ported. A row with no `engine` field started with no engine. Stored `sales_cents` are not rewritten. Reads do not rewrite `staff_json`.
 
 Composition, in this order, on every sale that is computed:
 
@@ -369,13 +369,31 @@ Company Journey shows one Shipped card per product whose sales have finished. Th
 
 Sequel, Enter award, and Port share one row on the card. Patch stays on its own line while the product is selling. Hire Mina stays the one primary action in the footer. That row is what keeps the orange Hire button from sitting on top of a stack of secondary buttons.
 
+## Engines
+
+One optional in-house engine. No engine is the default. The harness owns the price, the score bump, and the refusals. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential.
+
+The engine is **Whop Kit Engine**. `tycoon.buyEngine` takes `{id}` and the only id is `whop_kit`. The price is $120. It is bought once for the company. A product can then start on it. The bump is +1 to the base score, added with the sequel bonus, then the score clamps to 1–10. Sales still use the stored review score. The engine is not a new input to the per-day sales formula.
+
+Ownership is `engine_id` on `tycoon_meta`. Empty means not owned. The product snapshot in `staff_json` stores `engine` and `engineBonus` only when that product starts on the engine. `engine` is `whop_kit`. `engineBonus` is 1. An older row that is only a staff array, or a row that omits the fields, started with no engine. Reads do not rewrite `staff_json`. A sequel stores no engine, so its score stays on the sequel rules. The buy is one ledger row: id `tycoon:engine`, cash −$120, earned 0, reputation 0, label `Engine: Whop Kit Engine`. Buying twice fails with "Already owned." and charges nothing. An unknown id fails with "Unknown engine." Short cash fails with "Need $120".
+
+Starting on the engine before it is owned fails with "Buy the engine first." and does not charge a marketing ad. Any other id fails with "Pick None or Whop Kit Engine." The fee is paid at the buy, not again at Start development.
+
+The first Crypto Alpha Newsletter still pays 20700 cents and 5 fans when it starts with no engine. That newsletter scores 6. The same build on the engine scores 7 before the 1–10 cap. A score that is already 10 stays 10.
+
+`journey.tycoon.engine` is `{id, name, blurb, priceCents, scoreBonus, owned, enabled, reason}`. `priceCents` is 12000. `scoreBonus` is 1. The blurb is "One kit, used on the builds you choose." `engineOptions` is None, then Whop Kit Engine. None is always enabled and adds no bump. The kit is enabled only when it is owned. Otherwise its reason is "Buy it first." The buy button is enabled only when the company can pay and does not already own it. The reasons are "Need $120" and "Already owned."
+
+Company Journey shows an Engine card under Upgrades. The price line is "Whop Kit Engine · $120". Buy is a secondary button. After the buy the notice reads "Bought Whop Kit Engine. −$120" until the day ends, and the button reads "Buy Whop Kit Engine · Already owned." Hire stays the one primary action.
+
+Once the engine is owned, the New Product picker offers Engine under marketing, with the same choice-row pattern. The default is None. The effect line reads "None · no score bump" or "Whop Kit Engine · +1 score". The build line reads "On the build" or "On the build · Whop Kit Engine". A product on the engine shows "On the build · Whop Kit Engine · +1 score" on the journey, the build screen, the release card, and the shipped list. The picker stays hidden until the engine is owned, so a new company still starts the first newsletter with no engine. A payload without `engine` draws no card and no picker, so older UI fixtures still render.
+
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, awards, and ports. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Office**, and **Season** on Company Journey. Price and marketing live on the New Product picker. The award show and the port live on the Shipped card.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, awards, ports, and engines. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Engine**, **Office**, and **Season** on Company Journey. Price, marketing, and the engine choice live on the New Product picker. The engine buy lives on the Engine card. The award show and the port live on the Shipped card.
 
 Next slice:
 
-1. **Engines.** One optional engine, bought with game cash. A product started on it stores a small score bump. Skipping it leaves cash, fans, and the first newsletter on the old formula: 20700 cents and 5 fans. The default is off.
+1. **Focus.** One optional focus when a product starts: Balanced (the default), Design, Tech, or Hype. A lean stores a small point bump on that stat. Balanced leaves the first newsletter at 20700 cents and 5 fans.
 
 Later art ask: a second room. Office growth shipped as spare desks on the current floor (`compact_desk` and `shared_workbench`, already bound). There is no second-room architecture art, so that room waits.
 

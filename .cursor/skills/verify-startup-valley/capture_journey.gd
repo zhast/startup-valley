@@ -387,6 +387,7 @@ func _run() -> void:
 	check(label_named("Owned_standing_desk") != null, "The owned line names the desk")
 	check(button_named("Buy Oak Standing Desk") == null, "The desk buy button hides once it is owned")
 	check(not main.job_panel._connection_panel.visible, "The loop never opens Connect")
+	await _engine_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -566,6 +567,42 @@ func _contract_release_proof() -> void:
 	if port_card == null:
 		port_card = port_line
 	await snap("31-port-result", port_card)
+
+func _engine_proof() -> void:
+	await open_journey()
+	var price := label_named("EnginePrice")
+	check(price != null and price.text == "Whop Kit Engine · $120", "The engine card names Whop Kit Engine and $120")
+	var buy := main.company_panel.find_child("Buy_engine", true, false) as Button
+	check(buy != null and not buy.disabled and str(buy.get_meta("cozy_variant", "")) == "secondary" and buy.text == "Buy Whop Kit Engine · $120", "Buy Whop Kit Engine is an enabled secondary action")
+	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the engine")
+	await snap("32-engine-offer", main.company_panel.find_child("EngineCard", true, false) as Control)
+	var cash_before := company_cash()
+	await click(buy)
+	await wait_until(func() -> bool: return not main.company_panel.busy and label_named("EngineNotice") != null and label_named("EngineNotice").text == "Bought Whop Kit Engine. −$120", "Purchase notice names the engine")
+	check(company_cash() == cash_before - 12000, "The engine charges $120 once")
+	var again := main.company_panel.find_child("Buy_engine", true, false) as Button
+	check(again != null and again.disabled and again.text == "Buy Whop Kit Engine · Already owned.", "A second buy stays disabled")
+	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary after the engine is owned")
+	var guard := 0
+	while not developing().is_empty() and not bool(developing().get("ready", false)) and guard < 4:
+		await end_office_day()
+		await open_journey()
+		guard += 1
+	if not developing().is_empty() and bool(developing().get("ready", false)):
+		await open_product()
+		await click(button_named("Release"))
+		await wait_until(func() -> bool: return main.company_panel.screen == "release" and not main.company_panel.busy, "The product on the bench releases")
+	await open_product()
+	var none := main.company_panel.find_child("Engine_none", true, false) as Button
+	var kit := main.company_panel.find_child("Engine_whop_kit", true, false) as Button
+	check(none != null and not none.disabled and str(none.get_meta("cozy_variant", "")) == "secondary" and none.text == "None", "None is the default engine")
+	check(kit != null and not kit.disabled and str(kit.get_meta("cozy_variant", "")) == "secondary" and kit.text == "Whop Kit Engine", "Whop Kit Engine is a secondary choice")
+	check(button_named("Start development") != null and str(button_named("Start development").get_meta("cozy_variant", "")) == "primary", "Start development stays the primary action")
+	await click(kit)
+	await frames(4)
+	check(label_named("EngineEffect") != null and label_named("EngineEffect").text == "Whop Kit Engine · +1 score", "The engine shows +1 score")
+	check(label_named("OnTheBuild") != null and label_named("OnTheBuild").text == "On the build · Whop Kit Engine", "The build line names the engine")
+	await snap("33-engine-picker", label_named("EngineHeading"))
 
 func _office_expansion_proof() -> void:
 	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-office-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
