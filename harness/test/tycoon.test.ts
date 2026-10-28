@@ -36,6 +36,11 @@ import {
   AUDIENCES,
   applyAudienceUnits,
   audienceFansForSale,
+  SIZE_LONG_UNIT_PERCENT,
+  SIZE_SHORT_UNIT_PERCENT,
+  SIZES,
+  applySizeUnits,
+  sizedDevDays,
   PORT_COST_CENTS,
   PORT_SHELF,
   SALES_WINDOW_DAYS,
@@ -3152,6 +3157,175 @@ test("an audience stores a fan rule and Everyone leaves the first newsletter alo
     WHERE id = 'p1'
   `).run(oldReview);
   assert.equal(restored.tycoon.view().history[0]?.audience, null);
+  assert.equal(restored.tycoon.view().history[0]?.salesCents, 20700);
+  assert.equal(restored.tycoon.view().history[0]?.fans, 5);
+  assert.equal(staffJson(restored, "p1"), staffOnly);
+  assert.equal(validate(restored.journey.state()), true, JSON.stringify(validate.errors));
+  restored.close();
+});
+
+test("a size stores a length and Catalog leaves the first newsletter alone", async () => {
+  assert.equal(SIZE_SHORT_UNIT_PERCENT, 90);
+  assert.equal(SIZE_LONG_UNIT_PERCENT, 110);
+  assert.deepEqual(SIZES.map((item) => item.id), ["catalog", "short", "long"]);
+  assert.equal(sizedDevDays(2, "catalog"), 2);
+  assert.equal(sizedDevDays(2, undefined), 2);
+  assert.equal(sizedDevDays(2, "short"), 1);
+  assert.equal(sizedDevDays(1, "short"), 1);
+  assert.equal(sizedDevDays(4, "short"), 3);
+  assert.equal(sizedDevDays(2, "long"), 3);
+  assert.equal(sizedDevDays(4, "long"), 5);
+  assert.equal(requiredDevDays(2, false), 2);
+  assert.equal(requiredDevDays(2, false, "long"), 3);
+  assert.equal(requiredDevDays(2, true, "long"), 1);
+  assert.equal(requiredDevDays(2, true, "short"), 1);
+  assert.equal(applySizeUnits(23, "catalog"), 23);
+  assert.equal(applySizeUnits(23, undefined), 23);
+  assert.equal(applySizeUnits(23, "short"), 21);
+  assert.equal(applySizeUnits(23, "long"), 25);
+  const plainPort = salesForDay({
+    seed: 26021, productId: "p1", typeId: "newsletter", fit: "great", score: 6, dayIndex: SALES_WINDOW_DAYS, reputation: 0,
+  });
+  const shortPort = salesForDay({
+    seed: 26021, productId: "p1", typeId: "newsletter", fit: "great", score: 6, dayIndex: SALES_WINDOW_DAYS, reputation: 0, size: "short",
+  });
+  assert.equal(shortPort.units, applySizeUnits(plainPort.units, "short"));
+  assert.ok(shortPort.cents < plainPort.cents);
+
+  const catalog = await setup();
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  const options = catalog.db.tycoon.view().sizeOptions;
+  assert.equal(options.length, 3);
+  assert.equal(options[0]?.id, "catalog");
+  assert.equal(options[0]?.dayDelta, 0);
+  assert.equal(options[0]?.unitPercent, 100);
+  assert.equal(options[1]?.id, "short");
+  assert.equal(options[1]?.unitPercent, 90);
+  assert.equal(options[2]?.id, "long");
+  assert.equal(options[2]?.dayDelta, 1);
+  assert.equal(options[2]?.unitPercent, 110);
+  assert.throws(() => catalog.db.tycoon.start("crypto", "newsletter", [], 100, "none", "none", "balanced", "everyone", "huge"), /Pick Catalog, Short, or Long\./u);
+  assert.equal(catalog.db.tycoon.view().developing, null);
+  catalog.db.journey.recordCompanyChange("size-ad-cash", 1, 20_000, 0, 0, "Size ad cash");
+  const cashBeforeBad = catalog.db.journey.state().company.cashCents;
+  assert.throws(() => catalog.db.tycoon.start("crypto", "newsletter", [], 100, "small", "none", "balanced", "everyone", "huge"), /Pick Catalog, Short, or Long\./u);
+  assert.equal(catalog.db.journey.state().company.cashCents, cashBeforeBad);
+  assert.equal(catalog.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:marketing:%'").all().length, 0);
+  assert.equal(catalog.db.tycoon.view().developing, null);
+  catalog.db.tycoon.start("crypto", "newsletter", []);
+  assert.equal(catalog.db.tycoon.view().developing?.size, null);
+  assert.equal(catalog.db.tycoon.view().developing?.devDaysRequired, 2);
+  assert.equal(validate(catalog.db.journey.state()), true, JSON.stringify(validate.errors));
+  catalog.db.endDay(1);
+  catalog.db.endDay(2);
+  catalog.db.tycoon.release("p1");
+  const shipped = productById(catalog.db, "p1");
+  assert.equal(shipped?.salesCents, 20700);
+  assert.equal(shipped?.fans, 5);
+  assert.equal(shipped?.review?.score, 6);
+  assert.equal(shipped?.size, null);
+  const catalogBody = JSON.parse(staffJson(catalog.db, "p1")) as Record<string, unknown>;
+  assert.equal("size" in catalogBody, false);
+  assert.equal(catalog.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:size:%'").all().length, 0);
+  catalog.db.close();
+
+  const short = await setup();
+  short.db.tycoon.start("crypto", "newsletter", [], 100, "none", "none", "balanced", "everyone", "short");
+  const shortStarted = short.db.tycoon.view().developing;
+  assert.deepEqual(shortStarted?.size, { id: "short", label: "Short", dayDelta: -1, unitPercent: 90 });
+  assert.equal(shortStarted?.devDaysRequired, 1);
+  assert.equal(JSON.parse(staffJson(short.db, "p1")).size, "short");
+  assert.equal(short.db.journey.state().company.cashCents, 0);
+  assert.throws(() => short.db.tycoon.release("p1"), /1 more office day/u);
+  short.db.endDay(1);
+  assert.equal(short.db.tycoon.view().developing?.devDays, 1);
+  assert.equal(short.db.tycoon.view().developing?.design, 2);
+  assert.equal(short.db.tycoon.view().developing?.ready, true);
+  short.db.tycoon.release("p1");
+  const shortShip = productById(short.db, "p1");
+  assert.equal(shortShip?.review?.score, 6);
+  assert.equal(shortShip?.salesCents, 18900);
+  assert.equal(shortShip?.fans, 4);
+  assert.equal(shortShip?.size?.id, "short");
+  short.db.close();
+
+  const long = await setup();
+  long.db.tycoon.start("crypto", "newsletter", [], 100, "none", "none", "balanced", "everyone", "long");
+  assert.deepEqual(long.db.tycoon.view().developing?.size, { id: "long", label: "Long", dayDelta: 1, unitPercent: 110 });
+  assert.equal(long.db.tycoon.view().developing?.devDaysRequired, 3);
+  assert.equal(validate(long.db.journey.state()), true, JSON.stringify(validate.errors));
+  assert.throws(() => long.db.tycoon.release("p1"), /3 more office days/u);
+  long.db.endDay(1);
+  long.db.endDay(2);
+  assert.equal(long.db.tycoon.view().developing?.devDays, 2);
+  assert.equal(long.db.tycoon.view().developing?.ready, false);
+  assert.throws(() => long.db.tycoon.release("p1"), /1 more office day/u);
+  long.db.endDay(3);
+  assert.equal(long.db.tycoon.view().developing?.design, 6);
+  assert.equal(long.db.tycoon.view().developing?.ready, true);
+  long.db.tycoon.release("p1");
+  const longShip = productById(long.db, "p1");
+  assert.equal(longShip?.review?.score, 6);
+  assert.equal(longShip?.salesCents, 22500);
+  assert.equal(longShip?.fans, 5);
+  long.db.endDay(4);
+  long.db.endDay(5);
+  long.db.endDay(6);
+  long.db.endDay(7);
+  assert.equal(productById(long.db, "p1")?.status, "complete");
+  long.db.tycoon.sequel("p1");
+  const sequelBody = JSON.parse(staffJson(long.db, "p2")) as Record<string, unknown>;
+  assert.equal("size" in sequelBody, false);
+  assert.equal(productById(long.db, "p2")?.size, null);
+  assert.equal(productById(long.db, "p2")?.devDaysRequired, 1);
+  assert.equal(JSON.parse(staffJson(long.db, "p1")).size, "long");
+  const file = join(long.root, "game.sqlite");
+  const project = join(long.root, "company-project");
+  long.db.close();
+  const reopened = new GameDatabase(file, project);
+  assert.equal(productById(reopened, "p1")?.size?.id, "long");
+  assert.equal(productById(reopened, "p2")?.size, null);
+  assert.equal(productById(reopened, "p2")?.devDaysRequired, 1);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+
+  const legacy = await setup();
+  const legacyFile = join(legacy.root, "game.sqlite");
+  const legacyProject = join(legacy.root, "company-project");
+  legacy.db.close();
+  const raw = new DatabaseSync(legacyFile);
+  const staffOnly = JSON.stringify(["founder"]);
+  const objectWithoutSize = JSON.stringify({ staff: [{ id: "founder", design: 2, tech: 2, hype: 2 }], researchBonus: 0, pricePercent: 100, marketing: "none" });
+  raw.prepare(`
+    INSERT INTO tycoon_products (
+      id, topic_id, type_id, name, fit, status, started_day, dev_days,
+      design_points, tech_points, hype_points, staff_json, last_dev_day,
+      released_day, review_json, sales_applied, last_sales_day, sales_cents, fans
+    ) VALUES
+      ('p1', 'crypto', 'newsletter', 'Crypto Alpha Newsletter', 'great', 'developing', 1, 0, 0, 0, 0, ?, NULL, NULL, NULL, 0, NULL, 0, 0),
+      ('p2', 'crypto', 'newsletter', 'Older object', 'great', 'released', 1, 2, 4, 4, 4, ?, 2, 3, NULL, 0, NULL, 20700, 5)
+  `).run(staffOnly, objectWithoutSize);
+  raw.close();
+  const restored = new GameDatabase(legacyFile, legacyProject);
+  assert.equal(restored.tycoon.view().developing?.size, null);
+  assert.equal(restored.tycoon.view().developing?.devDaysRequired, 2);
+  assert.equal(staffJson(restored, "p1"), staffOnly);
+  assert.equal(restored.tycoon.view().history[0]?.size, null);
+  assert.equal(restored.tycoon.view().history[0]?.devDaysRequired, 2);
+  assert.equal(restored.tycoon.view().history[0]?.salesCents, 20700);
+  assert.equal(staffJson(restored, "p2"), objectWithoutSize);
+  const oldReview = JSON.stringify({
+    score: 6,
+    reviewers: ["Whop Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
+  });
+  restored.journey.db.prepare("DELETE FROM tycoon_products WHERE id = 'p2'").run();
+  restored.journey.db.prepare(`
+    UPDATE tycoon_products
+    SET status = 'complete', released_day = 3, review_json = ?, sales_applied = 4, last_sales_day = 5, sales_cents = 20700, fans = 5
+    WHERE id = 'p1'
+  `).run(oldReview);
+  assert.equal(restored.tycoon.view().history[0]?.size, null);
   assert.equal(restored.tycoon.view().history[0]?.salesCents, 20700);
   assert.equal(restored.tycoon.view().history[0]?.fans, 5);
   assert.equal(staffJson(restored, "p1"), staffOnly);

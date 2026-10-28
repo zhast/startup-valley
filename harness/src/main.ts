@@ -131,6 +131,7 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
           optionalStringParameter(request, "engine"),
           optionalStringParameter(request, "focus"),
           optionalStringParameter(request, "audience"),
+          optionalStringParameter(request, "size"),
         ),
         dailySpend: database.dailySpend(),
       };

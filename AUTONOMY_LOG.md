@@ -1711,4 +1711,51 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → Audience, or leave it on Everyone. The first newsletter on Everyone is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_audience.gd`.
 
+### Round 43 — 2026-10-28
+
+**What changed**
+- One optional size when a product starts. `tycoon.start` takes an optional `size`: `catalog`, `short`, or `long`. Omitted is Catalog. Short takes one fewer build day, never below one, and sells at 90% units. Long adds one build day and sells at 110% units. Catalog stores nothing and changes no numbers, so the first Crypto Alpha Newsletter still takes 2 office days, still scores 6, and still pays 20700 cents and 5 fans. That same build on Short takes 1 day and pays 18900 cents and 4 fans. On Long it takes 3 days and pays 22500 cents and 5 fans. The ideal moves with the required days, so the review score stays 6. A bad id fails with "Pick Catalog, Short, or Long." and starts nothing. It does not charge a marketing ad. The choice spends no cash.
+- The product snapshot in `staff_json` stores `size` only when the choice is not Catalog. There is no new SQL column and no ledger row. An older row that is only a staff array, or a row that omits the field, is Catalog. Reads do not rewrite `staff_json`. A sequel stores no size, so its days stay on the sequel rule.
+- The New Product picker offers Size under the audience row: Catalog, Short, Long on one compact three-button row. The effect line reads "Catalog · same length", "Short · −1 day · −10% units", or "Long · +1 day · +10% units". The shared build line reads "On the build" or "On the build · Long". A non-Catalog product shows "On the build · Long" on the journey, the bench, the release card, and the shipped list. Hire Mina stays the one primary action. Start development stays the primary action on the picker. A payload without `sizeOptions` draws no control.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Bugs is the next slice. One optional known bug when a product starts: Clean (the default), or Buggy. Buggy sells a little less until one cheap fix on the Selling card. Clean leaves the first newsletter at 20700 cents and 5 fans.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. The tallest Selling card still meets the footer. On the size picker the shipped history sits above the footer the same way as the audience picker. The size lines themselves sit above that clip.
+5. Carried from Round 40: Creative has no seated sheet. Unbound art stays untracked. The live path is still a harness driver. A cheap reviewer can still sit just under the 2.5 ready line. Chapter 3 ends at "More is coming." The starter `shared_workbench` stays in storage. The one on the Open Floor is a separate grant.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 111 tests, 109 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test covers the day and unit helpers, a one-day floor, a sequel that ignores size, refusals for a bad id before any ad charge, omitted size keys, Catalog leaving 20700 cents and 5 fans at score 6, Short paying 18900 cents and 4 fans, Long paying 22500 cents and 5 fans, a reopen, a sequel that stores no size, and an older staff-array row staying Catalog.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS (40 checks, 0 failures). Launch sales stay 20700 cents and 5 fans. The next office day stays 33300 cents and 8 fans.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS (50 checks, 0 failures)
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS (50 checks, 0 failures)
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS (47 checks, 0 failures)
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS (23 checks, 0 failures)
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS (25 checks, 0 failures)
+- `test_tycoon_price.gd` — TYCOON PRICE PASS (49 checks, 0 failures). Catalog launch is 20700 cents and 5 fans.
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS (55 checks, 0 failures). No ad stays 20700 cents and 5 fans.
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS (60 checks, 0 failures). Ignoring the offer leaves Fitness and Crypto Alpha free. The newsletter still pays 20700 cents and 5 fans.
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS (37 checks, 0 failures). No patch still pays 20700 cents and 5 fans.
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS (49 checks, 0 failures). No sequel still pays 20700 cents and 5 fans.
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS (49 checks, 0 failures). No award still pays 20700 cents and 5 fans.
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS (65 checks, 0 failures). No port still pays 20700 cents and 5 fans.
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS (61 checks, 0 failures). No engine still pays 20700 cents and 5 fans. The build line stays "On the build" until an engine is chosen, then "On the build · Whop Kit Engine".
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS (58 checks, 0 failures). Balanced still pays 20700 cents and 5 fans.
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS (54 checks, 0 failures). Everyone still pays 20700 cents and 5 fans.
+- `test_tycoon_size.gd` — TYCOON SIZE PASS (58 checks, 0 failures). Catalog still pays 5 fans and takes 2 office days. The picker starts on "Catalog · same length" and "On the build". Long shows "+1 day · +10% units" and "On the build · Long". Short shows "−1 day · −10% units" and "On the build · Short". The bench, the journey, and the release read "On the build · Short". Hire Mina stays primary. Start development stays primary. Choosing a size spends nothing. The later Short launch is not the catalog 20700 cents.
+- `test_ui_company_redesign.gd` — 15349 checks, 0 failures, 0 captures. A fixture without size options draws no size control. With the three options, Catalog, Short, and Long are secondary, the effect line reads "Catalog · same length", the build line stays "On the build", and Start development stays primary.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Thirty-nine PNGs in `/workspace/sv-proof/round-43/` (local, not committed). `38-size-picker.png` is the product picker scrolled to Size: Catalog, Short, and Long selected, with "Long · +1 day · +10% units" and "On the build · Long". The labels are fully readable and do not overlap. Start development stays orange. The shipped history below sits above the footer. `39-size-journey.png` reads "On the build · Long" above New Product. Hire Mina · free stays orange and does not cover that line. Header reads Spring 17 · Year 1 · $3,287.80 game cash · 100 reputation. Cash before the desk buy was 118460 cents. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-43 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → Size, or leave it on Catalog. The first newsletter on Catalog is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_size.gd`.
+
 
