@@ -391,6 +391,7 @@ func _run() -> void:
 	await _focus_proof()
 	await _audience_proof()
 	await _size_proof()
+	await _payroll_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -717,6 +718,65 @@ func _size_proof() -> void:
 	check(journey != null and journey.text == "On the build · Long", "Journey names the size")
 	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the size")
 	await snap("39-size-journey", journey)
+
+func seed_payroll(data_dir: String) -> bool:
+	var database := ProjectSettings.globalize_path("res://../harness/src/database.ts")
+	var tsx := ProjectSettings.globalize_path("res://../harness/node_modules/tsx/dist/cli.mjs")
+	var node := OS.get_environment("STARTUP_VALLEY_NODE").strip_edges()
+	if node.is_empty():
+		for dir: String in OS.get_environment("PATH").split(":"):
+			if FileAccess.file_exists(dir.path_join("node")):
+				node = dir.path_join("node")
+				break
+	if node.is_empty():
+		node = "/home/box/.local/node22/bin/node"
+	var script_path := data_dir.path_join("seed-payroll.mjs")
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst file = root + '/startup-valley.sqlite';\nconst db = new GameDatabase(file, root + '/company-project');\ndb.journey.hire('mira', 1);\ndb.setClock(28, 480, 0);\nconst payroll = db.tycoon.view().payroll;\nconst cash = db.journey.state().company.cashCents;\ndb.close();\nif (cash !== 0 || payroll.cents !== 8000 || payroll.payday !== 'Spring 28') { console.error(JSON.stringify({ cash: cash, payroll: payroll })); process.exit(2); }\n" % JSON.stringify(database)
+	var file := FileAccess.open(script_path, FileAccess.WRITE)
+	if file == null:
+		check(false, "Could not write the payroll seed script")
+		return false
+	file.store_string(script)
+	file.close()
+	var output: Array = []
+	var code := OS.execute(node, PackedStringArray([tsx, script_path, data_dir]), output, true)
+	check(code == 0, "Seeded Mina on Spring 28 with $0 (%s)" % " ".join(output))
+	return code == 0
+
+func _payroll_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-payroll-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_payroll(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var continue_button := button_named("Continue")
+	if continue_button != null:
+		await click(continue_button)
+	await dismiss_onboarding()
+	await open_journey()
+	var line := label_named("SeasonPayroll")
+	check(line != null and line.text == "Payroll · $80 on Spring 28", "The Season card names Mina's payday")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("Spring 28") and header.text.contains("$0.00"), "Spring 28 still shows $0 before payday")
+	check(button_named("Payroll") == null, "Payroll is not a new button")
+	await snap("40-payroll-season-card", main.company_panel.find_child("SeasonCard", true, false) as Control)
+	await click(button_named("End day"))
+	await wait_until(func() -> bool: return main.company_panel.screen == "summary", "Ending Spring 28 opens the summary")
+	check(label_contains("Payroll: Spring"), "The summary names the payroll row")
+	check(label_named("PayrollNotice") != null and label_named("PayrollNotice").text == "Paid payroll · −$80", "The payday notice names the amount")
+	await click(button_named("Begin next day"))
+	await wait_until(func() -> bool: return not main.company_panel.visible, "Begin next day returns to the office")
+	main.day_clock.set_speed(0)
+	await open_journey()
+	header = label_named("OfficeDate")
+	check(header != null and header.text.contains("cash is negative") and header.text.contains("−$80.00"), "The header says cash is negative")
+	check(label_named("SeasonPayroll") != null and label_named("SeasonPayroll").text == "Payroll · $80 on Summer 28", "The next payday is Summer 28")
+	check(label_named("PayrollNotice") != null and label_named("PayrollNotice").text == "Paid payroll · −$80", "The paid notice stays on the Season card")
+	check(label_named("CashNegative") != null, "The Season card says cash is negative")
+	await snap("41-payroll-paid", main.company_panel.find_child("SeasonCard", true, false) as Control)
 
 func _office_expansion_proof() -> void:
 	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-office-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])

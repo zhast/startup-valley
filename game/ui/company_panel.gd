@@ -465,6 +465,11 @@ func _day_screen() -> void:
 		if not seen.has(value): _label(value, false, activity)
 	if seen.is_empty() and (summary.get("entries", []) as Array).is_empty():
 		_label("A planning day. Your next step is ready for tomorrow.", false, activity)
+	var payroll: Dictionary = _tycoon().get("payroll", {}) if _tycoon().get("payroll") is Dictionary else {}
+	var payroll_notice := str(payroll.get("notice", "")).strip_edges()
+	if not payroll_notice.is_empty() and not seen.has(payroll_notice):
+		var notice_label := _label(payroll_notice, false, activity, "action")
+		notice_label.name = "PayrollNotice"
 	_label("Tomorrow · " + str(summary.get("nextMilestone", "Your next chapter")), true)
 	if screen == "summary":
 		_actions("Begin next day", hide, true, "")
@@ -487,9 +492,14 @@ func _money(cents: int) -> String:
 		grouped += integer[index]
 	return ("-" if cents < 0 else "") + grouped + ".%02d" % (absi(cents) % 100)
 
+func _cash_phrase(cents: int) -> String:
+	if cents < 0:
+		return "−$%s game cash · cash is negative" % _money(absi(cents))
+	return "$%s game cash" % _money(absi(cents))
+
 func _journey_screen() -> void:
 	var company: Dictionary = state.get("company", {})
-	_heading("Company Journey", "%s  ·  $%s game cash  ·  %d reputation" % [_office_date(), _money(int(company.get("cashCents", 0))), int(company.get("reputation", 0))], "meta", "OfficeDate")
+	_heading("Company Journey", "%s  ·  %s  ·  %d reputation" % [_office_date(), _cash_phrase(int(company.get("cashCents", 0))), int(company.get("reputation", 0))], "meta", "OfficeDate")
 	var next := _label(_next_step().trim_prefix("NEXT · "), false, null, "action")
 	next.name = "NextStep"
 	var definition := _current_milestone()
@@ -970,6 +980,21 @@ func _season_card() -> void:
 	topics.name = "SeasonTopics"
 	var event_line := _label(_season_event_line(calendar), false, card)
 	event_line.name = "SeasonEvent"
+	var payroll: Dictionary = _tycoon().get("payroll", {}) if _tycoon().get("payroll") is Dictionary else {}
+	if not payroll.is_empty():
+		var cents := int(payroll.get("cents", 0))
+		var payday := str(payroll.get("payday", "")).strip_edges()
+		var line := "No payroll yet" if cents <= 0 else "Payroll · $%d on %s" % [int(cents / 100), payday]
+		var payroll_label := _label(line, false, card)
+		payroll_label.name = "SeasonPayroll"
+		var notice := str(payroll.get("notice", "")).strip_edges()
+		if not notice.is_empty():
+			var notice_label := _label(notice, false, card, "action")
+			notice_label.name = "PayrollNotice"
+	var company: Dictionary = state.get("company", {}) if state.get("company") is Dictionary else {}
+	if int(company.get("cashCents", 0)) < 0:
+		var negative := _label("Cash is negative", false, card)
+		negative.name = "CashNegative"
 
 func _season_event_line(calendar: Dictionary) -> String:
 	var today: Variant = calendar.get("event")
@@ -1162,7 +1187,7 @@ func _release_screen() -> void:
 		var boost := _label(price_boost, false, null, "meta")
 		boost.name = "ReleasePriceBoost"
 	_label("Sales keep coming for a few office days.", false, null, "meta")
-	_label("Company · $%s game cash · %d reputation" % [_money(int(company.get("cashCents", 0))), int(company.get("reputation", 0))])
+	_label("Company · %s · %d reputation" % [_cash_phrase(int(company.get("cashCents", 0))), int(company.get("reputation", 0))])
 	_actions("Back to office", hide, true, "Ship another", func() -> void: present("product"))
 
 func _product_history(tycoon: Dictionary) -> void:

@@ -22,8 +22,7 @@
       ],
       "properties": {
         "cashCents": {
-          "type": "integer",
-          "minimum": 0
+          "type": "integer"
         },
         "earnedCents": {
           "type": "integer",
@@ -297,7 +296,7 @@
     "tycoon": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "upgradeNotice", "upgrades", "calendar", "office", "priceSteps", "marketingOptions", "engineNotice", "engine", "engineOptions", "focusOptions", "audienceOptions", "sizeOptions", "contract", "patchNotice", "developing", "history"],
+      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "upgradeNotice", "upgrades", "calendar", "payroll", "office", "priceSteps", "marketingOptions", "engineNotice", "engine", "engineOptions", "focusOptions", "audienceOptions", "sizeOptions", "contract", "patchNotice", "developing", "history"],
       "properties": {
         "seed": { "type": "integer", "minimum": 1 },
         "salesWindowDays": { "type": "integer", "const": 4 },
@@ -311,6 +310,7 @@
         "upgradeNotice": { "type": "string" },
         "upgrades": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "$ref": "#/$defs/tycoonUpgrade" } },
         "calendar": { "$ref": "#/$defs/tycoonCalendar" },
+        "payroll": { "$ref": "#/$defs/tycoonPayroll" },
         "office": { "$ref": "#/$defs/tycoonOffice" },
         "priceSteps": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/tycoonPriceStep" } },
         "marketingOptions": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/tycoonMarketing" } },
@@ -324,6 +324,16 @@
         "patchNotice": { "type": "string" },
         "developing": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/tycoonProduct" }] },
         "history": { "type": "array", "maxItems": 48, "items": { "$ref": "#/$defs/tycoonProduct" } }
+      }
+    },
+    "tycoonPayroll": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cents", "payday", "notice"],
+      "properties": {
+        "cents": { "type": "integer", "minimum": 0 },
+        "payday": { "type": "string", "minLength": 1 },
+        "notice": { "type": "string" }
       }
     },
     "tycoonCalendar": {

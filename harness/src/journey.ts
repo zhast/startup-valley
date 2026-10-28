@@ -196,12 +196,13 @@ export class JourneyStore {
       return this.state();
     });
   }
-  recordCompanyChange(id: string, day: number, cash: number, earned: number, reputation: number, label: string): void {
-    this.charge(id, day, cash, earned, reputation, label);
+  recordCompanyChange(id: string, day: number, cash: number, earned: number, reputation: number, label: string, allowNegative = false): void {
+    this.charge(id, day, cash, earned, reputation, label, allowNegative);
   }
-  private charge(id: string, day: number, cash: number, earned: number, reputation: number, label: string): void {
+  private charge(id: string, day: number, cash: number, earned: number, reputation: number, label: string, allowNegative = false): void {
     if (this.db.prepare("SELECT id FROM company_transactions WHERE id=?").get(id)) return;
-    if (this.state().company.cashCents + cash < 0) throw new Error("Not enough company cash");
+    // Payroll may cross below zero. A sale or a $0 build row still posts while cash is already negative.
+    if (!allowNegative && cash < 0 && this.state().company.cashCents + cash < 0) throw new Error("Not enough company cash");
     this.db.prepare("INSERT INTO company_transactions VALUES (?,?,?,?,?,?)").run(id, day, cash, earned, reputation, label);
     this.db.prepare("UPDATE company_state SET cash_cents=cash_cents+?,earned_cents=earned_cents+?,reputation=reputation+? WHERE id=1").run(cash, earned, reputation);
   }
