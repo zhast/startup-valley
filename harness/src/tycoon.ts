@@ -78,6 +78,18 @@ export const FOCUSES = [
   { id: "tech", label: "Tech", stat: "tech", bonus: 1 },
   { id: "hype", label: "Hype", stat: "hype", bonus: 1 },
 ] as const;
+/**
+ * One optional audience when a product starts. Everyone adds nothing.
+ * Regulars adds +2 fans on a sale when a past release used the same topic.
+ * Newcomers adds +2 fans and sells at 90% units.
+ */
+export const AUDIENCE_FANS = 2;
+export const AUDIENCE_NEWCOMER_UNIT_PERCENT = 90;
+export const AUDIENCES = [
+  { id: "everyone", label: "Everyone", fans: 0, unitPercent: 100 },
+  { id: "regulars", label: "Regulars", fans: 2, unitPercent: 100 },
+  { id: "newcomers", label: "Newcomers", fans: 2, unitPercent: 90 },
+] as const;
 /** Stardew-shaped office calendar. Derived from the saved day. It does not replace the clock. */
 export const SEASON_LENGTH_DAYS = 28;
 export const YEAR_LENGTH_DAYS = 112;
@@ -156,6 +168,9 @@ export type ContractId = (typeof CONTRACTS)[number]["id"];
 export type EngineId = typeof ENGINE_ID;
 export type FocusId = (typeof FOCUSES)[number]["id"];
 export type FocusStat = Exclude<(typeof FOCUSES)[number]["stat"], "">;
+export type AudienceId = (typeof AUDIENCES)[number]["id"];
+export type AudienceLean = Exclude<AudienceId, "everyone">;
+export type AudienceOption = (typeof AUDIENCES)[number];
 
 /** New companies. Crypto Alpha × Newsletter stays in this set. */
 const STARTER_TOPIC_IDS: readonly TopicId[] = ["fitness", "trading", "cooking", "gaming", "study_notes", "crypto"];
@@ -325,6 +340,8 @@ export interface TycoonProductView {
   engine: TycoonProductEngine | null;
   /** Null when the product started Balanced. Omitted rows are Balanced. */
   focus: TycoonProductFocus | null;
+  /** Null when the product started Everyone. Omitted rows are Everyone. */
+  audience: TycoonProductAudience | null;
 }
 
 export interface TycoonUpgradeView {
@@ -468,6 +485,13 @@ export interface TycoonProductFocus {
   bonus: number;
 }
 
+export interface TycoonProductAudience {
+  id: AudienceLean;
+  label: string;
+  fans: number;
+  unitPercent: number;
+}
+
 export interface TycoonSnapshot {
   seed: number;
   salesWindowDays: number;
@@ -488,6 +512,7 @@ export interface TycoonSnapshot {
   engine: TycoonEngineView;
   engineOptions: TycoonEngineOption[];
   focusOptions: Array<(typeof FOCUSES)[number]>;
+  audienceOptions: Array<(typeof AUDIENCES)[number]>;
   contract: TycoonContractView;
   patchNotice: string;
   developing: TycoonProductView | null;
@@ -775,6 +800,52 @@ function focusView(stat: FocusStat | null): TycoonProductFocus | null {
   return { id: stat, label: statLabel(stat), stat, bonus: FOCUS_BONUS };
 }
 
+export function audienceById(id: string): AudienceOption | undefined {
+  return AUDIENCES.find((item) => item.id === id);
+}
+
+/** Unknown or omitted values are Everyone. */
+export function normalizeAudience(value: unknown): AudienceId {
+  return typeof value === "string" && audienceById(value) ? value as AudienceId : "everyone";
+}
+
+function asAudience(value: string): AudienceId {
+  const option = audienceById(value);
+  if (!option) throw new Error("Pick Everyone, Regulars, or Newcomers.");
+  return option.id;
+}
+
+function parseAudience(value: unknown): AudienceLean | null {
+  if (value === "regulars" || value === "newcomers") return value;
+  return null;
+}
+
+function audienceView(id: AudienceLean | null): TycoonProductAudience | null {
+  if (!id) return null;
+  const option = audienceById(id);
+  if (!option || option.id === "everyone") return null;
+  return { id, label: option.label, fans: option.fans, unitPercent: option.unitPercent };
+}
+
+/** Newcomers sell at 90% units. Everyone and Regulars leave units unchanged. Always at least 1. */
+export function applyAudienceUnits(units: number, id: unknown): number {
+  const option = audienceById(normalizeAudience(id));
+  const percent = option?.unitPercent ?? 100;
+  if (percent === 100) return Math.max(1, units);
+  return Math.max(1, Math.round((units * percent) / 100));
+}
+
+/**
+ * Extra fans for one sale. Regulars only pay when a past release used the same topic.
+ * Newcomers always add the stored bump. Everyone adds nothing.
+ */
+export function audienceFansForSale(id: unknown, topicMatch: boolean): number {
+  const option = audienceById(normalizeAudience(id));
+  if (!option || option.fans <= 0) return 0;
+  if (option.id === "regulars" && !topicMatch) return 0;
+  return option.fans;
+}
+
 export function releaseResearchPoints(score: number): number {
   return Math.floor(Math.max(0, score) / 2);
 }
@@ -886,6 +957,8 @@ interface ProductSnapshot {
   engine: EngineId | null;
   /** Null when development started Balanced. */
   focus: FocusStat | null;
+  /** Null when development started Everyone. */
+  audience: AudienceLean | null;
 }
 
 interface ProductPort {
@@ -916,6 +989,7 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     port: null,
     engine: null,
     focus: null,
+    audience: null,
   };
 }
 
@@ -923,7 +997,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no engine, and Balanced. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no engine, Balanced, and Everyone. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -944,6 +1018,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     port?: unknown;
     engine?: unknown;
     focus?: unknown;
+    audience?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -959,6 +1034,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     port: parsePort(body.port),
     engine: body.engine === ENGINE_ID ? ENGINE_ID : null,
     focus: parseFocus(body.focus),
+    audience: parseAudience(body.audience),
   };
 }
 
@@ -1028,6 +1104,7 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
     body.focus = stored.focus;
     body.focusBonus = FOCUS_BONUS;
   }
+  if (stored.audience) body.audience = stored.audience;
   return JSON.stringify(body);
 }
 
@@ -1152,13 +1229,17 @@ export function salesForDay(input: {
   pricePercent?: number;
   /** Ad id stored on the product. Omitted is no ad. */
   marketing?: string;
+  /** Audience id stored on the product. Omitted is Everyone. */
+  audience?: string;
+  /** True when a past release used this product's topic. Regulars needs this. */
+  topicMatch?: boolean;
 }): TycoonSales {
   const curve = curvePercent(input.dayIndex);
   const type = typeById(input.typeId);
   if (curve === undefined || !type) throw new Error("Sales day is outside the window");
   const swing = (mixSeed(input.seed, input.productId, "sales", input.dayIndex) % 21) - 10;
   const baseUnits = FIT_UNITS[input.fit] + Math.floor((input.score * 3) / 2) + Math.floor(input.reputation / 10);
-  // Units: base, launch price, season, marketing. Fans follow those units.
+  // Units: base, launch price, season, marketing, audience. Fans follow those units.
   // Price: launch price, then checkout. Cash is units times that price.
   let units = Math.max(1, Math.round((baseUnits * curve * (100 + swing)) / 10000));
   const pricePercent = normalizeLaunchPricePercent(input.pricePercent);
@@ -1168,9 +1249,10 @@ export function salesForDay(input: {
     units = Math.max(1, Math.round((units * (100 + unitBoost)) / 100));
   }
   units = applyMarketingUnits(units, input.marketing);
+  units = applyAudienceUnits(units, input.audience);
   const fanPermille = input.score >= 8 ? 400 : input.score >= 5 ? 200 : 100;
   const bonusFans = Number.isInteger(input.bonusFans) && (input.bonusFans ?? 0) > 0 ? (input.bonusFans as number) : 0;
-  const fans = Math.max(1, Math.round((units * fanPermille) / 1000)) + bonusFans;
+  const fans = Math.max(1, Math.round((units * fanPermille) / 1000)) + bonusFans + audienceFansForSale(input.audience, input.topicMatch === true);
   const chosen = launchPriceCents(type.priceCents, pricePercent);
   const price = boostedPriceCents(chosen, input.priceBoostPercent ?? 0);
   return { units, cents: units * price, fans };
@@ -1354,6 +1436,7 @@ export class TycoonStore {
       engine: engineOffer(engineOwned, cash),
       engineOptions: engineChoices(engineOwned),
       focusOptions: [...FOCUSES],
+      audienceOptions: [...AUDIENCES],
       contract: this.contractOffer(developing),
       patchNotice: this.patchNoticeDay === day ? this.patchNotice : "",
       developing: developing ? this.toView(developing) : null,
@@ -1361,7 +1444,7 @@ export class TycoonStore {
     };
   }
 
-  start(topicValue: string, typeValue: string, requestedStaff: readonly string[], pricePercentValue?: number, marketingValue?: string, engineValue?: string, focusValue?: string): ReturnType<JourneyStore["state"]> {
+  start(topicValue: string, typeValue: string, requestedStaff: readonly string[], pricePercentValue?: number, marketingValue?: string, engineValue?: string, focusValue?: string, audienceValue?: string): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
       if (this.developingRow()) throw new Error("A product is already on the bench. Ship it or keep building.");
       const topicId = asTopic(topicValue);
@@ -1375,6 +1458,7 @@ export class TycoonStore {
       const marketing = marketingValue === undefined ? "none" : asMarketing(marketingValue);
       const engine = engineValue === undefined ? "none" : asEngine(engineValue);
       const focus = focusValue === undefined ? "balanced" : asFocus(focusValue);
+      const audience = audienceValue === undefined ? "everyone" : asAudience(audienceValue);
       if (engine === ENGINE_ID && !this.loadEngineOwned()) throw new Error("Buy the engine first.");
       const pending = this.loadPendingContract();
       if (pending && (pending.topicId !== topicId || pending.typeId !== typeId)) {
@@ -1403,6 +1487,7 @@ export class TycoonStore {
         engineBonus?: number;
         focus?: FocusStat;
         focusBonus?: number;
+        audience?: AudienceLean;
       } = {
         staff: staffIds.map((memberId) => ({
           id: memberId, design: stats[memberId].design, tech: stats[memberId].tech, hype: stats[memberId].hype,
@@ -1419,6 +1504,7 @@ export class TycoonStore {
         snapshot.focus = focus;
         snapshot.focusBonus = FOCUS_BONUS;
       }
+      if (audience !== "everyone") snapshot.audience = audience;
       if (pending) {
         snapshot.contract = { id: pending.id, client: pending.client, bonusCents: pending.bonusCents };
         this.savePendingContract(null);
@@ -1667,6 +1753,7 @@ export class TycoonStore {
         port: null,
         engine: null,
         focus: null,
+        audience: null,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -1823,6 +1910,8 @@ export class TycoonStore {
       reputation,
       pricePercent: stored.pricePercent,
       marketing: stored.marketing,
+      audience: stored.audience ?? "everyone",
+      topicMatch: this.topicHasPastRelease(topicId, row.id),
       priceBoostPercent: this.priceBoostPercent(),
       unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === topicId) ? SEASON_UNIT_BOOST_PERCENT : 0,
       bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
@@ -1863,6 +1952,8 @@ export class TycoonStore {
         reputation,
         pricePercent: stored.pricePercent,
         marketing: stored.marketing,
+        audience: stored.audience ?? "everyone",
+        topicMatch: this.topicHasPastRelease(topicId, row.id),
         priceBoostPercent: this.priceBoostPercent(),
         unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === topicId) ? SEASON_UNIT_BOOST_PERCENT : 0,
         bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
@@ -2270,7 +2361,16 @@ export class TycoonStore {
         ? { id: ENGINE_ID, name: ENGINE_NAME, scoreBonus: ENGINE_SCORE_BONUS }
         : null,
       focus: focusView(snapshot.focus),
+      audience: audienceView(snapshot.audience),
     };
+  }
+
+  /** Another shipped product already used this topic. Regulars reads this on each sale. */
+  private topicHasPastRelease(topicId: TopicId, exceptId: string): boolean {
+    const row = this.db.prepare(
+      "SELECT id FROM tycoon_products WHERE topic_id = ? AND id != ? AND status != 'developing' LIMIT 1",
+    ).get(topicId, exceptId) as { id?: string } | undefined;
+    return Boolean(row?.id);
   }
 
   /** Empty when the product can be ported. The same strings are the button reasons. */

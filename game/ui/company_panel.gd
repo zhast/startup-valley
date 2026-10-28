@@ -39,6 +39,7 @@ var _price_percent := 100
 var _marketing_id := "none"
 var _engine_id := "none"
 var _focus_id := "balanced"
+var _audience_id := "everyone"
 var _release_focus_id := ""
 
 func _ready() -> void:
@@ -557,6 +558,7 @@ func _product_shortcut() -> void:
 	if not developing.is_empty():
 		_show_engine(developing, "EngineJourney")
 		_show_focus(developing, "FocusJourney")
+		_show_audience(developing, "AudienceJourney")
 	var button := _button("New Product", func() -> void: present("product"), false, true, null, "secondary")
 	button.name = "NewProduct"
 
@@ -1066,6 +1068,7 @@ func _product_picker(tycoon: Dictionary) -> void:
 	_marketing_picker(tycoon)
 	_engine_picker(tycoon)
 	_focus_picker(tycoon)
+	_audience_picker(tycoon)
 	var build_line := _label(_on_the_build_text(), true)
 	build_line.name = "OnTheBuild"
 	var staff: Array = tycoon.get("staff", []) as Array
@@ -1086,7 +1089,7 @@ func _product_picker(tycoon: Dictionary) -> void:
 	for person_id: String in _staff_ids:
 		staff_ids.append(person_id)
 	var pair_open := _entry_unlocked("topics", _topic_id) and _entry_unlocked("types", _type_id)
-	_actions("Start development", func() -> void: _request("tycoon.start", {"topicId": _topic_id, "typeId": _type_id, "staffIds": staff_ids, "pricePercent": _price_percent, "marketing": _marketing_id, "engine": _engine_id, "focus": _focus_id}), not fit.is_empty() and pair_open, "Back to office", func() -> void: present("journey"))
+	_actions("Start development", func() -> void: _request("tycoon.start", {"topicId": _topic_id, "typeId": _type_id, "staffIds": staff_ids, "pricePercent": _price_percent, "marketing": _marketing_id, "engine": _engine_id, "focus": _focus_id, "audience": _audience_id}), not fit.is_empty() and pair_open, "Back to office", func() -> void: present("journey"))
 
 func _product_progress(product: Dictionary) -> void:
 	var required := int(product.get("devDaysRequired", 1))
@@ -1098,6 +1101,7 @@ func _product_progress(product: Dictionary) -> void:
 	_show_marketing(product, "MarketingLine")
 	_show_engine(product, "EngineLine")
 	_show_focus(product, "FocusLine")
+	_show_audience(product, "AudienceLine")
 	_show_contract(product, "ContractLine")
 	var progress := _label("Ready to ship" if ready else "Building · day %d of %d" % [dev_days, required], false, null, "action")
 	progress.name = "ProductProgress"
@@ -1144,6 +1148,7 @@ func _release_screen() -> void:
 	_show_marketing(product, "ReleaseMarketing")
 	_show_engine(product, "ReleaseEngine")
 	_show_focus(product, "ReleaseFocus")
+	_show_audience(product, "ReleaseAudience")
 	_show_sequel(product, "ReleaseSequel")
 	var research_line := _label("+%d research points" % int(product.get("researchPoints", 0)), false, null, "action")
 	research_line.name = "ReleaseResearch"
@@ -1172,6 +1177,7 @@ func _product_history(tycoon: Dictionary) -> void:
 		_show_marketing(product, "MarketingLine", card)
 		_show_engine(product, "EngineLine", card)
 		_show_focus(product, "FocusLine", card)
+		_show_audience(product, "AudienceLine", card)
 		_show_contract(product, "ContractLine", card)
 		_show_patch(product, "PatchLine", card)
 		_show_sequel(product, "SequelLine", card)
@@ -1402,6 +1408,8 @@ func _on_the_build_text() -> String:
 	if not engine_name.is_empty(): parts.append(engine_name)
 	var focus_name := _chosen_focus_label()
 	if not focus_name.is_empty(): parts.append(focus_name)
+	var audience_name := _chosen_audience_label()
+	if not audience_name.is_empty(): parts.append(audience_name)
 	if parts.is_empty(): return "On the build"
 	return "On the build · %s" % " · ".join(parts)
 
@@ -1531,6 +1539,77 @@ func _focus_picker(tycoon: Dictionary) -> void:
 
 func _choose_focus(id: String) -> void:
 	_focus_id = id
+	_render()
+
+func _audience_line(product: Dictionary) -> String:
+	var value: Variant = product.get("audience", null)
+	if not value is Dictionary: return ""
+	var audience := value as Dictionary
+	var audience_name := str(audience.get("label", "")).strip_edges()
+	if audience_name.is_empty(): return ""
+	return "On the build · %s" % audience_name
+
+func _show_audience(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var text := _audience_line(product)
+	if text.is_empty(): return
+	var line := _label(text, false, parent, "action")
+	line.name = node_name
+
+func _audience_effect_line(option: Dictionary) -> String:
+	var audience_name := str(option.get("label", "Everyone"))
+	var fans := int(option.get("fans", 0))
+	var unit_percent := int(option.get("unitPercent", 100))
+	if fans <= 0:
+		return "%s · no fan bump" % audience_name
+	if unit_percent < 100:
+		return "%s · +%d fans · −%d%% units" % [audience_name, fans, 100 - unit_percent]
+	return "%s · +%d fans on a repeated topic" % [audience_name, fans]
+
+func _chosen_audience_label() -> String:
+	if _audience_id.is_empty() or _audience_id == "everyone": return ""
+	for item: Variant in _tycoon().get("audienceOptions", []) as Array:
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		if str(option.get("id", "")) != _audience_id: continue
+		return str(option.get("label", "")).strip_edges()
+	return ""
+
+func _audience_picker(tycoon: Dictionary) -> void:
+	var options: Array = tycoon.get("audienceOptions", []) as Array
+	if options.is_empty():
+		_audience_id = "everyone"
+		return
+	var known: Array[String] = []
+	for item: Variant in options:
+		if item is Dictionary:
+			known.append(str((item as Dictionary).get("id", "")))
+	if not known.has(_audience_id): _audience_id = "everyone"
+	var heading := _label("Audience", true)
+	heading.name = "AudienceHeading"
+	var row := GridContainer.new()
+	row.columns = 3
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("h_separation", 8)
+	row.add_theme_constant_override("v_separation", 8)
+	_content.add_child(row)
+	var selected: Dictionary = {}
+	for item: Variant in options:
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		var id := str(option.get("id", ""))
+		var chosen := id == _audience_id
+		if chosen: selected = option
+		var button := _button(str(option.get("label", "")), _choose_audience.bind(id), false, true, row, "secondary")
+		button.name = "Audience_%s" % id
+		button.clip_text = true
+		if chosen:
+			for state: String in ["normal", "hover", "pressed", "hover_pressed"]:
+				button.add_theme_stylebox_override(state, CozyUI.control_style("secondary", "pressed"))
+	var effect := _label(_audience_effect_line(selected), false, null, "action")
+	effect.name = "AudienceEffect"
+
+func _choose_audience(id: String) -> void:
+	_audience_id = id
 	_render()
 
 func _fit_word(fit: String) -> String:

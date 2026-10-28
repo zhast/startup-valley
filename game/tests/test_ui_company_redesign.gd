@@ -899,3 +899,22 @@ func _tycoon_secondary_actions() -> void:
 	var start := _button("Start development")
 	_check(start != null and str(start.get_meta("cozy_variant", "")) == "primary", "Start development stays the primary action")
 	_check(_button("Hire Mina") == null, "Hire stays off the product picker")
+	_check(_panel.find_child("Audience_everyone", true, false) == null, "A payload without audience options draws no audience control")
+	tycoon["audienceOptions"] = [
+		{"id": "everyone", "label": "Everyone", "fans": 0, "unitPercent": 100},
+		{"id": "regulars", "label": "Regulars", "fans": 2, "unitPercent": 100},
+		{"id": "newcomers", "label": "Newcomers", "fans": 2, "unitPercent": 90},
+	]
+	await _present("product", value)
+	var audience_everyone := _panel.find_child("Audience_everyone", true, false) as Button
+	var audience_regulars := _panel.find_child("Audience_regulars", true, false) as Button
+	var audience_newcomers := _panel.find_child("Audience_newcomers", true, false) as Button
+	_check(audience_everyone != null and not audience_everyone.disabled and str(audience_everyone.get_meta("cozy_variant", "")) == "secondary" and audience_everyone.text == "Everyone", "Everyone reads as secondary")
+	_check(audience_regulars != null and str(audience_regulars.get_meta("cozy_variant", "")) == "secondary" and audience_regulars.text == "Regulars", "Regulars reads as secondary")
+	_check(audience_newcomers != null and audience_newcomers.text == "Newcomers", "Newcomers is on the audience row")
+	var audience_line := _panel.find_child("AudienceEffect", true, false) as Label
+	_check(audience_line != null and audience_line.text == "Everyone · no fan bump", "The picker shows the audience line")
+	build = _panel.find_child("OnTheBuild", true, false) as Label
+	_check(build != null and build.text == "On the build", "Everyone leaves the build line plain")
+	start = _button("Start development")
+	_check(start != null and str(start.get_meta("cozy_variant", "")) == "primary", "Start development stays primary beside the audience")

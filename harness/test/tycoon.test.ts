@@ -31,6 +31,11 @@ import {
   FOCUS_BONUS,
   FOCUSES,
   applyFocusPoints,
+  AUDIENCE_FANS,
+  AUDIENCE_NEWCOMER_UNIT_PERCENT,
+  AUDIENCES,
+  applyAudienceUnits,
+  audienceFansForSale,
   PORT_COST_CENTS,
   PORT_SHELF,
   SALES_WINDOW_DAYS,
@@ -2909,6 +2914,247 @@ test("a focus stores a point bump and Balanced leaves the first newsletter alone
   assert.equal(legacyById("p3")?.design, 5);
   assert.equal(JSON.parse(staffJson(restored, "p3")).focusBonus, 9);
   assert.equal(staffJson(restored, "p2"), cappedJson);
+  assert.equal(validate(restored.journey.state()), true, JSON.stringify(validate.errors));
+  restored.close();
+});
+
+test("an audience stores a fan rule and Everyone leaves the first newsletter alone", async () => {
+  assert.equal(AUDIENCE_FANS, 2);
+  assert.equal(AUDIENCE_NEWCOMER_UNIT_PERCENT, 90);
+  assert.deepEqual(AUDIENCES.map((item) => item.id), ["everyone", "regulars", "newcomers"]);
+  assert.equal(applyAudienceUnits(23, "everyone"), 23);
+  assert.equal(applyAudienceUnits(23, "regulars"), 23);
+  assert.equal(applyAudienceUnits(23, undefined), 23);
+  assert.equal(applyAudienceUnits(23, "newcomers"), 21);
+  assert.equal(audienceFansForSale("everyone", true), 0);
+  assert.equal(audienceFansForSale("regulars", false), 0);
+  assert.equal(audienceFansForSale("regulars", true), 2);
+  assert.equal(audienceFansForSale("newcomers", false), 2);
+
+  const everyone = await setup();
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  const options = everyone.db.tycoon.view().audienceOptions;
+  assert.equal(options.length, 3);
+  assert.equal(options[0]?.id, "everyone");
+  assert.equal(options[0]?.fans, 0);
+  assert.equal(options[1]?.id, "regulars");
+  assert.equal(options[1]?.fans, 2);
+  assert.equal(options[2]?.id, "newcomers");
+  assert.equal(options[2]?.unitPercent, 90);
+  assert.throws(() => everyone.db.tycoon.start("crypto", "newsletter", [], 100, "none", "none", "balanced", "crowd"), /Pick Everyone, Regulars, or Newcomers\./u);
+  assert.equal(everyone.db.tycoon.view().developing, null);
+  everyone.db.journey.recordCompanyChange("audience-ad-cash", 1, 20_000, 0, 0, "Audience ad cash");
+  const cashBeforeBad = everyone.db.journey.state().company.cashCents;
+  assert.throws(() => everyone.db.tycoon.start("crypto", "newsletter", [], 100, "small", "none", "balanced", "crowd"), /Pick Everyone, Regulars, or Newcomers\./u);
+  assert.equal(everyone.db.journey.state().company.cashCents, cashBeforeBad);
+  assert.equal(everyone.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:marketing:%'").all().length, 0);
+  assert.equal(everyone.db.tycoon.view().developing, null);
+  everyone.db.tycoon.start("crypto", "newsletter", []);
+  assert.equal(everyone.db.tycoon.view().developing?.audience, null);
+  assert.equal(validate(everyone.db.journey.state()), true, JSON.stringify(validate.errors));
+  everyone.db.endDay(1);
+  everyone.db.endDay(2);
+  everyone.db.tycoon.release("p1");
+  const shipped = productById(everyone.db, "p1");
+  assert.equal(shipped?.salesCents, 20700);
+  assert.equal(shipped?.fans, 5);
+  assert.equal(shipped?.audience, null);
+  const everyoneBody = JSON.parse(staffJson(everyone.db, "p1")) as Record<string, unknown>;
+  assert.equal("audience" in everyoneBody, false);
+  assert.equal(everyone.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:audience:%'").all().length, 0);
+  everyone.db.close();
+
+  const firstRegulars = await setup();
+  firstRegulars.db.tycoon.start("crypto", "newsletter", [], 100, "none", "none", "balanced", "regulars");
+  const firstStarted = firstRegulars.db.tycoon.view().developing;
+  assert.deepEqual(firstStarted?.audience, { id: "regulars", label: "Regulars", fans: 2, unitPercent: 100 });
+  assert.equal(JSON.parse(staffJson(firstRegulars.db, "p1")).audience, "regulars");
+  firstRegulars.db.endDay(1);
+  firstRegulars.db.endDay(2);
+  firstRegulars.db.tycoon.release("p1");
+  const firstRegularsShip = productById(firstRegulars.db, "p1");
+  assert.equal(firstRegularsShip?.salesCents, 20700);
+  assert.equal(firstRegularsShip?.fans, 5);
+  assert.equal(firstRegularsShip?.audience?.id, "regulars");
+  firstRegulars.db.close();
+
+  const newcomers = await setup();
+  newcomers.db.tycoon.start("crypto", "newsletter", [], 100, "none", "none", "balanced", "newcomers");
+  const newStarted = newcomers.db.tycoon.view().developing;
+  assert.deepEqual(newStarted?.audience, { id: "newcomers", label: "Newcomers", fans: 2, unitPercent: 90 });
+  assert.equal(newcomers.db.journey.state().company.cashCents, 0);
+  newcomers.db.endDay(1);
+  newcomers.db.endDay(2);
+  const newReleaseDay = newcomers.db.clockState().day;
+  newcomers.db.tycoon.release("p1");
+  const newProduct = productById(newcomers.db, "p1");
+  const newCalendar = calendarForDay(newReleaseDay);
+  const newSale = salesForDay({
+    seed: 26021,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: "great",
+    score: newProduct?.review?.score ?? 0,
+    dayIndex: 0,
+    reputation: 0,
+    pricePercent: 100,
+    marketing: "none",
+    audience: "newcomers",
+    unitBoostPercent: newCalendar.favoredTopics.some((topic) => topic.id === "crypto") ? SEASON_UNIT_BOOST_PERCENT : 0,
+    bonusFans: newCalendar.event ? EVENT_BONUS_FANS : 0,
+  });
+  const plainSale = salesForDay({
+    seed: 26021,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: "great",
+    score: newProduct?.review?.score ?? 0,
+    dayIndex: 0,
+    reputation: 0,
+    pricePercent: 100,
+    marketing: "none",
+    unitBoostPercent: newCalendar.favoredTopics.some((topic) => topic.id === "crypto") ? SEASON_UNIT_BOOST_PERCENT : 0,
+    bonusFans: newCalendar.event ? EVENT_BONUS_FANS : 0,
+  });
+  assert.equal(newProduct?.salesCents, newSale.cents);
+  assert.equal(newProduct?.fans, newSale.fans);
+  assert.ok(newSale.cents < plainSale.cents);
+  assert.equal(newSale.units, applyAudienceUnits(plainSale.units, "newcomers"));
+  assert.equal(newSale.fans, Math.max(1, Math.round((newSale.units * 200) / 1000)) + (newCalendar.event ? EVENT_BONUS_FANS : 0) + AUDIENCE_FANS);
+  assert.notEqual(newSale.cents, 20700);
+  newcomers.db.close();
+
+  const { db, root } = await setup();
+  db.tycoon.start("crypto", "newsletter", []);
+  db.endDay(1);
+  db.endDay(2);
+  db.tycoon.release("p1");
+  db.tycoon.start("crypto", "newsletter", [], 100, "none", "none", "balanced", "regulars");
+  db.endDay(db.clockState().day);
+  db.endDay(db.clockState().day);
+  const matchReleaseDay = db.clockState().day;
+  const matchReputation = db.journey.state().company.reputation;
+  db.tycoon.release("p2");
+  const matched = productById(db, "p2");
+  const matchCalendar = calendarForDay(matchReleaseDay);
+  const matchSale = salesForDay({
+    seed: 26021,
+    productId: "p2",
+    typeId: "newsletter",
+    fit: "great",
+    score: matched?.review?.score ?? 0,
+    dayIndex: 0,
+    reputation: matchReputation,
+    pricePercent: 100,
+    marketing: "none",
+    audience: "regulars",
+    topicMatch: true,
+    unitBoostPercent: matchCalendar.favoredTopics.some((topic) => topic.id === "crypto") ? SEASON_UNIT_BOOST_PERCENT : 0,
+    bonusFans: matchCalendar.event ? EVENT_BONUS_FANS : 0,
+  });
+  const unmatchedSale = salesForDay({
+    seed: 26021,
+    productId: "p2",
+    typeId: "newsletter",
+    fit: "great",
+    score: matched?.review?.score ?? 0,
+    dayIndex: 0,
+    reputation: matchReputation,
+    pricePercent: 100,
+    marketing: "none",
+    audience: "regulars",
+    topicMatch: false,
+    unitBoostPercent: matchCalendar.favoredTopics.some((topic) => topic.id === "crypto") ? SEASON_UNIT_BOOST_PERCENT : 0,
+    bonusFans: matchCalendar.event ? EVENT_BONUS_FANS : 0,
+  });
+  assert.equal(matched?.salesCents, matchSale.cents);
+  assert.equal(matched?.fans, matchSale.fans);
+  assert.equal(matchSale.cents, unmatchedSale.cents);
+  assert.equal(matchSale.fans, unmatchedSale.fans + 2);
+  db.tycoon.patch("p2");
+  assert.equal(JSON.parse(staffJson(db, "p2")).audience, "regulars");
+  db.endDay(db.clockState().day);
+  db.endDay(db.clockState().day);
+  db.endDay(db.clockState().day);
+  db.endDay(db.clockState().day);
+  assert.equal(productById(db, "p2")?.status, "complete");
+  db.tycoon.sequel("p2");
+  const sequelBody = JSON.parse(staffJson(db, "p3")) as Record<string, unknown>;
+  assert.equal("audience" in sequelBody, false);
+  assert.equal(productById(db, "p3")?.audience, null);
+  assert.equal(JSON.parse(staffJson(db, "p2")).audience, "regulars");
+  const file = join(root, "game.sqlite");
+  const project = join(root, "company-project");
+  db.close();
+  const reopened = new GameDatabase(file, project);
+  assert.equal(productById(reopened, "p2")?.audience?.id, "regulars");
+  assert.equal(productById(reopened, "p3")?.audience, null);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+
+  const otherTopic = await setup();
+  otherTopic.db.tycoon.start("crypto", "newsletter", []);
+  otherTopic.db.endDay(1);
+  otherTopic.db.endDay(2);
+  otherTopic.db.tycoon.release("p1");
+  otherTopic.db.tycoon.start("trading", "newsletter", [], 100, "none", "none", "balanced", "regulars");
+  otherTopic.db.endDay(otherTopic.db.clockState().day);
+  otherTopic.db.endDay(otherTopic.db.clockState().day);
+  const otherDay = otherTopic.db.clockState().day;
+  const otherRep = otherTopic.db.journey.state().company.reputation;
+  otherTopic.db.tycoon.release("p2");
+  const other = productById(otherTopic.db, "p2");
+  const otherCalendar = calendarForDay(otherDay);
+  const otherSale = salesForDay({
+    seed: 26021,
+    productId: "p2",
+    typeId: "newsletter",
+    fit: "great",
+    score: other?.review?.score ?? 0,
+    dayIndex: 0,
+    reputation: otherRep,
+    pricePercent: 100,
+    marketing: "none",
+    audience: "regulars",
+    topicMatch: false,
+    unitBoostPercent: otherCalendar.favoredTopics.some((topic) => topic.id === "trading") ? SEASON_UNIT_BOOST_PERCENT : 0,
+    bonusFans: otherCalendar.event ? EVENT_BONUS_FANS : 0,
+  });
+  assert.equal(other?.salesCents, otherSale.cents);
+  assert.equal(other?.fans, otherSale.fans);
+  otherTopic.db.close();
+
+  const legacy = await setup();
+  const legacyFile = join(legacy.root, "game.sqlite");
+  const legacyProject = join(legacy.root, "company-project");
+  legacy.db.close();
+  const raw = new DatabaseSync(legacyFile);
+  const staffOnly = JSON.stringify(["founder"]);
+  raw.prepare(`
+    INSERT INTO tycoon_products (
+      id, topic_id, type_id, name, fit, status, started_day, dev_days,
+      design_points, tech_points, hype_points, staff_json, last_dev_day,
+      released_day, review_json, sales_applied, last_sales_day, sales_cents, fans
+    ) VALUES ('p1', 'crypto', 'newsletter', 'Crypto Alpha Newsletter', 'great', 'developing', 1, 2, 4, 4, 4, ?, NULL, NULL, NULL, 0, NULL, 0, 0)
+  `).run(staffOnly);
+  raw.close();
+  const restored = new GameDatabase(legacyFile, legacyProject);
+  assert.equal(restored.tycoon.view().developing?.audience, null);
+  assert.equal(staffJson(restored, "p1"), staffOnly);
+  const oldReview = JSON.stringify({
+    score: 6,
+    reviewers: ["Whop Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
+  });
+  restored.journey.db.prepare(`
+    UPDATE tycoon_products
+    SET status = 'complete', released_day = 3, review_json = ?, sales_applied = 4, last_sales_day = 5, sales_cents = 20700, fans = 5
+    WHERE id = 'p1'
+  `).run(oldReview);
+  assert.equal(restored.tycoon.view().history[0]?.audience, null);
+  assert.equal(restored.tycoon.view().history[0]?.salesCents, 20700);
+  assert.equal(restored.tycoon.view().history[0]?.fans, 5);
+  assert.equal(staffJson(restored, "p1"), staffOnly);
   assert.equal(validate(restored.journey.state()), true, JSON.stringify(validate.errors));
   restored.close();
 });
