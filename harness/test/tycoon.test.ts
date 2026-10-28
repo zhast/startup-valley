@@ -64,8 +64,10 @@ import {
   launchPriceCents,
   awardForScore,
   patchedScore,
+  payrollCents,
   requiredDevDays,
   reviewProduct,
+  SALARY_CENTS,
   salesForDay,
   sequelDevDays,
   sequelScoreCarry,
@@ -3331,4 +3333,118 @@ test("a size stores a length and Catalog leaves the first newsletter alone", asy
   assert.equal(staffJson(restored, "p1"), staffOnly);
   assert.equal(validate(restored.journey.state()), true, JSON.stringify(validate.errors));
   restored.close();
+});
+
+test("payroll pays hired staff once per season and can go negative", async () => {
+  assert.equal(payrollCents([]), 0);
+  assert.equal(payrollCents(["founder"]), 0);
+  assert.equal(payrollCents(["nope"]), 0);
+  assert.equal(payrollCents(["mira", "mira", "founder"]), SALARY_CENTS.mira);
+  assert.equal(SALARY_CENTS.mira, 8_000);
+  assert.equal(payrollCents(["theo"]), 10_000);
+  assert.equal(payrollCents(["creative"]), 12_000);
+  assert.equal(payrollCents(["creative", "mira", "theo", "founder"]), 30_000);
+
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+
+  const empty = await setup();
+  empty.db.setClock(28, 480, 0);
+  assert.equal(empty.db.tycoon.view().payroll.cents, 0);
+  assert.equal(empty.db.tycoon.view().payroll.payday, "Spring 28");
+  assert.equal(empty.db.tycoon.view().payroll.notice, "");
+  empty.db.endDay(28);
+  assert.equal(empty.db.journey.state().company.cashCents, 0);
+  assert.equal(empty.db.clockState().day, 29);
+  assert.equal(empty.db.tycoon.view().payroll.payday, "Summer 28");
+  assert.equal(empty.db.tycoon.view().payroll.cents, 0);
+  assert.equal(empty.db.tycoon.view().payroll.notice, "");
+  assert.equal(empty.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:payroll:%'").all().length, 0);
+  assert.equal(validate(empty.db.journey.state()), true, JSON.stringify(validate.errors));
+  empty.db.close();
+
+  const mina = await setup();
+  mina.db.journey.hire("mira", 1);
+  mina.db.setClock(27, 480, 0);
+  mina.db.endDay(27);
+  assert.equal(mina.db.clockState().day, 28);
+  assert.equal(mina.db.journey.state().company.cashCents, 0);
+  assert.equal(mina.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:payroll:%'").all().length, 0);
+  mina.db.tycoon.tickDay(28);
+  mina.db.tycoon.tickDay(28);
+  assert.equal(mina.db.clockState().day, 28);
+  assert.equal(mina.db.journey.state().company.cashCents, -8_000);
+  assert.equal(mina.db.tycoon.view().payroll.notice, "");
+  const spring = mina.db.journey.db.prepare(
+    "SELECT id, label, cash_delta, earned_delta, reputation_delta FROM company_transactions WHERE id LIKE 'tycoon:payroll:%'",
+  ).all() as Array<{ id: string; label: string; cash_delta: number; earned_delta: number; reputation_delta: number }>;
+  assert.equal(spring.length, 1);
+  assert.equal(spring[0]?.id, "tycoon:payroll:1-spring");
+  assert.equal(spring[0]?.label, "Payroll: Spring");
+  assert.equal(spring[0]?.cash_delta, -8_000);
+  assert.equal(spring[0]?.earned_delta, 0);
+  assert.equal(spring[0]?.reputation_delta, 0);
+  mina.db.endDay(28);
+  mina.db.endDay(28);
+  assert.equal(mina.db.clockState().day, 29);
+  assert.equal(mina.db.journey.state().company.cashCents, -8_000);
+  assert.equal(mina.db.tycoon.view().payroll.notice, "Paid payroll · −$80");
+  assert.equal(mina.db.tycoon.view().payroll.payday, "Summer 28");
+  assert.equal(mina.db.tycoon.view().payroll.cents, 8_000);
+  assert.equal(validate(mina.db.journey.state()), true, JSON.stringify(validate.errors));
+  assert.throws(() => mina.db.tycoon.buyUpgrade("standing_desk"), /Not enough game cash/u);
+  assert.throws(() => mina.db.tycoon.train("founder", "tech"), /Not enough game cash/u);
+  assert.throws(() => mina.db.tycoon.buyEngine("whop_kit"), /Need \$120/u);
+  const small = mina.db.tycoon.view().marketingOptions.find((item) => item.id === "small");
+  assert.equal(small?.enabled, false);
+  assert.equal(small?.reason, "Need $50");
+  assert.throws(() => mina.db.journey.recordCompanyChange("payroll-overdraft", 29, -1, 0, 0, "Too much"), /Not enough company cash/u);
+  assert.equal(mina.db.journey.state().company.cashCents, -8_000);
+  mina.db.journey.recordCompanyChange("payroll-test-sale", 29, 1_000, 1_000, 0, "A small sale");
+  assert.equal(mina.db.journey.state().company.cashCents, -7_000);
+  mina.db.tycoon.start("crypto", "newsletter", []);
+  mina.db.endDay(29);
+  assert.equal(mina.db.tycoon.view().developing?.devDays, 1);
+  assert.equal(mina.db.tycoon.view().payroll.notice, "");
+  assert.equal(mina.db.journey.state().company.cashCents, -7_000);
+  assert.notEqual(mina.db.journey.db.prepare("SELECT cash_delta FROM company_transactions WHERE id = 'tycoon:build:p1:29'").get(), undefined);
+  const minaFile = join(mina.root, "game.sqlite");
+  const minaProject = join(mina.root, "company-project");
+  mina.db.close();
+  const reopened = new GameDatabase(minaFile, minaProject);
+  assert.equal(reopened.journey.state().company.cashCents, -7_000);
+  assert.equal(reopened.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:payroll:%'").all().length, 1);
+  assert.equal(reopened.tycoon.view().payroll.notice, "");
+  reopened.tycoon.tickDay(30);
+  assert.equal(reopened.journey.state().company.cashCents, -7_000);
+  reopened.setClock(56, 480, 0);
+  reopened.endDay(56);
+  reopened.endDay(56);
+  assert.equal(reopened.journey.state().company.cashCents, -15_000);
+  const summer = reopened.journey.db.prepare("SELECT label FROM company_transactions WHERE id = 'tycoon:payroll:1-summer'").get() as { label: string } | undefined;
+  assert.equal(summer?.label, "Payroll: Summer");
+  assert.equal(reopened.tycoon.view().payroll.notice, "Paid payroll · −$80");
+  reopened.setClock(140, 480, 0);
+  reopened.endDay(140);
+  assert.equal(reopened.journey.state().company.cashCents, -23_000);
+  const yearTwo = reopened.journey.db.prepare("SELECT label FROM company_transactions WHERE id = 'tycoon:payroll:2-spring'").get() as { label: string } | undefined;
+  assert.equal(yearTwo?.label, "Payroll: Spring");
+  assert.equal(reopened.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:payroll:%'").all().length, 3);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+
+  const team = await setup();
+  team.db.journey.hire("mira", 1);
+  team.db.journey.db.prepare("UPDATE employees SET employment_status = 'hired' WHERE id IN ('theo', 'creative')").run();
+  team.db.setClock(28, 480, 0);
+  assert.equal(team.db.tycoon.view().payroll.cents, 30_000);
+  assert.equal(team.db.tycoon.view().payroll.payday, "Spring 28");
+  team.db.endDay(28);
+  assert.equal(team.db.journey.state().company.cashCents, -30_000);
+  assert.equal(team.db.tycoon.view().payroll.notice, "Paid payroll · −$300");
+  const teamRow = team.db.journey.db.prepare("SELECT label, cash_delta FROM company_transactions WHERE id = 'tycoon:payroll:1-spring'").get() as { label: string; cash_delta: number };
+  assert.equal(teamRow.label, "Payroll: Spring");
+  assert.equal(teamRow.cash_delta, -30_000);
+  assert.equal(validate(team.db.journey.state()), true, JSON.stringify(validate.errors));
+  team.db.close();
 });

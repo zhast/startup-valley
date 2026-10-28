@@ -1758,4 +1758,54 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → Size, or leave it on Catalog. The first newsletter on Catalog is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_size.gd`.
 
+### Round 44 — 2026-10-28
+
+**What changed**
+- Hired staff draw a season salary. The founder is never paid. Mina is $80, under the $207 first newsletter and over the $50 small ad. Theo is $100, the same as a patch. Creative is $120, the same as the engine. All three are $300, the same as the first Tech lesson, once a season. A mid-Spring company has a few thousand dollars, so a full team is real pressure and still payable.
+- Payday is the end of the last day of each season, after that day's sales. One ledger row covers the team: id `tycoon:payroll:<year>-<season>`, label `Payroll: Spring`. Replaying the day end or opening the save again finds the id and does not pay twice. No hires means no row. The morning after payday says "Paid payroll · −$80" on the summary and the Season card, and that notice clears when the next day ends.
+- Cash may go below zero. The company row no longer rejects a negative `cash_cents`. There is no game over. The header then reads "−$80.00 game cash · cash is negative", and the Season card adds "Cash is negative". A positive balance keeps the old words, including "$0.00 game cash". "Need $X" and "Not enough game cash" stay locked. A later sale and a $0 build row still post.
+- The Season card line is "Payroll · $80 on Spring 28", or "No payroll yet". After Spring 28 it moves to Summer 28. `journey.tycoon.payroll` is `{ cents, payday, notice }`. A payload without `payroll` draws no extra line. Hire stays the one primary action. There is no payroll button.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Loans is the next slice. One optional loan of game cash, repaid with a small fee on a later payday. Skipping it leaves cash alone, so the first newsletter stays 20700 cents and 5 fans. No new product picker row.
+2. Bugs was set aside. It overlaps patches and would add another picker row.
+3. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+4. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+5. The tallest Selling card still meets the footer. The Season card payroll lines sit above the money note, and that note sits above the footer.
+6. Carried from Round 40: Creative has no seated sheet. Unbound art stays untracked. The live path is still a harness driver. A cheap reviewer can still sit just under the 2.5 ready line. Chapter 3 ends at "More is coming." The starter `shared_workbench` stays in storage. The one on the Open Floor is a separate grant.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 112 tests, 110 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test covers the salary helper, a season with no hires and no ledger row, one payday paid once across a replay, a reopen that does not pay again, Summer and Year 2 rows, negative cash, locked spending, and a $0 build row that still posts.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS. No hires reads "No payroll yet" and Hire Mina stays primary. Spring 28 with Mina shows "Payroll · $80 on Spring 28" and $0.00. The summary says "Payroll: Spring" and "Paid payroll · −$80". The next morning says cash is negative, the engine stays "Need $120", and Summer 1 does not pay again.
+- `test_ui_company_redesign.gd` — 15349 checks, 0 failures, 0 captures. Existing fixtures omit `payroll` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Forty-one PNGs in `/workspace/sv-proof/round-44/` (local, not committed). `40-payroll-season-card.png` is Company Journey on Spring 28 with Mina hired. The header reads "Spring 28 · Year 1 · $0.00 game cash · 0 reputation". The Season card reads "Payroll · $80 on Spring 28". Prepare work order stays orange. `41-payroll-paid.png` is the next morning. The header reads "Summer 1 · Year 1 · −$80.00 game cash · cash is negative · 0 reputation" on one line. The Season card reads "Payroll · $80 on Summer 28", "Paid payroll · −$80", and "Cash is negative". Those lines are readable and do not overlap the footer. Cash before the desk buy was 118460 cents. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-44 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → Season. With no hires the line is "No payroll yet" and the first newsletter is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_payroll.gd`.
+
 

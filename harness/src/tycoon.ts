@@ -140,6 +140,16 @@ export const STAFF = [
   { id: "creative", name: "Creative", design: 4, tech: 1, hype: 2 },
 ] as const;
 
+/**
+ * Season salary in cents. The founder is omitted and is never paid.
+ * Mina is under one newsletter. Theo matches a patch. Creative matches the engine.
+ */
+export const SALARY_CENTS = {
+  mira: 8_000,
+  theo: 10_000,
+  creative: 12_000,
+} as const;
+
 /** Office tools. Each row is bought once and has one effect. */
 export const UPGRADES = [
   { id: "standing_desk", name: "Oak Standing Desk", blurb: "Sketches land cleaner when you stand.", priceCents: 25_000, kind: "design", effect: "+1 design per person per dev day" },
@@ -516,6 +526,15 @@ export interface TycoonProductSize {
   unitPercent: number;
 }
 
+export interface TycoonPayroll {
+  /** Next payday total. 0 when nobody besides the founder is hired. */
+  cents: number;
+  /** Current season's payday, for example "Spring 28". */
+  payday: string;
+  /** "Paid payroll · −$80" on the morning after payday. Empty otherwise. */
+  notice: string;
+}
+
 export interface TycoonSnapshot {
   seed: number;
   salesWindowDays: number;
@@ -529,6 +548,7 @@ export interface TycoonSnapshot {
   upgradeNotice: string;
   upgrades: TycoonUpgradeView[];
   calendar: TycoonCalendar;
+  payroll: TycoonPayroll;
   office: TycoonOffice;
   priceSteps: LaunchPriceStep[];
   marketingOptions: Array<MarketingOption & { enabled: boolean; reason: string }>;
@@ -629,6 +649,19 @@ export function upgradeById(id: string): (typeof UPGRADES)[number] | undefined {
 /** Whole dollars for player-facing cash lines. Catalog prices are multiples of $1. */
 export function wholeDollars(cents: number): string {
   return `$${Math.floor(cents / 100)}`;
+}
+
+/** Season salary for these hired ids. The founder and unknown ids add nothing. Duplicates count once. */
+export function payrollCents(staffIds: readonly string[]): number {
+  const seen = new Set<string>();
+  let total = 0;
+  for (const id of staffIds) {
+    if (seen.has(id)) continue;
+    seen.add(id);
+    const cents = SALARY_CENTS[id as keyof typeof SALARY_CENTS];
+    if (typeof cents === "number") total += cents;
+  }
+  return total;
 }
 
 /** Unit price after a percent boost. Half rounds away from zero via Math.round. */
@@ -1433,6 +1466,8 @@ export class TycoonStore {
   private patchNoticeDay = 0;
   private engineNotice = "";
   private engineNoticeDay = 0;
+  private payrollNotice = "";
+  private payrollNoticeDay = 0;
 
   constructor(
     private readonly db: DatabaseSync,
@@ -1507,6 +1542,7 @@ export class TycoonStore {
         };
       }),
       calendar: calendarForDay(day),
+      payroll: this.payrollView(day, hired),
       office: this.officeView(this.officeLevel(), hired.size, cash),
       priceSteps: [...LAUNCH_PRICES],
       marketingOptions: marketingOffer(cash),
@@ -1937,6 +1973,30 @@ export class TycoonStore {
       else this.applySale(row, day);
     }
     this.payPorts(day);
+    this.payPayroll(day);
+  }
+
+  /** One season salary, after that day's sales. Replaying the same payday does not pay again. */
+  private payPayroll(day: number): void {
+    const calendar = calendarForDay(day);
+    if (calendar.dayOfSeason !== SEASON_LENGTH_DAYS) return;
+    const cents = payrollCents([...this.hiredIds()]);
+    if (cents <= 0) return;
+    const id = `tycoon:payroll:${calendar.year}-${calendar.season}`;
+    const already = this.db.prepare("SELECT id FROM company_transactions WHERE id = ?").get(id);
+    this.journey.recordCompanyChange(id, day, -cents, 0, 0, `Payroll: ${calendar.seasonName}`, true);
+    if (already) return;
+    this.payrollNotice = `Paid payroll · −${wholeDollars(cents)}`;
+    this.payrollNoticeDay = day + 1;
+  }
+
+  private payrollView(day: number, hired: ReadonlySet<string>): TycoonPayroll {
+    const calendar = calendarForDay(day);
+    return {
+      cents: payrollCents([...hired]),
+      payday: `${calendar.seasonName} ${SEASON_LENGTH_DAYS}`,
+      notice: this.payrollNoticeDay === day ? this.payrollNotice : "",
+    };
   }
 
   private tickDevelopment(row: ProductRow, day: number): void {
@@ -2113,6 +2173,10 @@ export class TycoonStore {
     if (this.engineNoticeDay !== 0 && this.engineNoticeDay <= endedDay) {
       this.engineNotice = "";
       this.engineNoticeDay = 0;
+    }
+    if (this.payrollNoticeDay !== 0 && this.payrollNoticeDay <= endedDay) {
+      this.payrollNotice = "";
+      this.payrollNoticeDay = 0;
     }
   }
 

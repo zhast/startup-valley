@@ -234,7 +234,7 @@ Each event adds 2 fans to any product that sells that day. The line is "+2 fans 
 
 `journey.tycoon.calendar` carries `season`, `seasonName`, `dayOfSeason`, `year`, `label`, `favoredTopics` (`{id, name}`), `event` (or null), and `nextEvent` (the event fields plus `season`, `dayOfSeason`, and `daysUntil`). The day summary stores `dateLabel` for the day that just ended, so the complete screen does not jump to the next morning. Older summaries without that field still load.
 
-Company Journey shows the label on the heading ("Spring 2 · Year 1 · $0.00 game cash · 0 reputation"). The title continue line and the day complete screen use the same words. A Season card sits under Office: "In season: Fitness, Dating Advice", and either "Creator Fair today. +2 fans on sales today" or "Creator Fair in 11 days". The product picker adds "· in season" on a favored topic, including a locked one. Hire stays the one primary action. No new button.
+Company Journey shows the label on the heading ("Spring 2 · Year 1 · $0.00 game cash · 0 reputation"). The title continue line and the day complete screen use the same words. A Season card sits under Office: "In season: Fitness, Dating Advice", and either "Creator Fair today. +2 fans on sales today" or "Creator Fair in 11 days". The same card names the next payday. With no hires that line is "No payroll yet". The product picker adds "· in season" on a favored topic, including a locked one. Hire stays the one primary action. No new button.
 
 ## Whop-themed names
 
@@ -456,13 +456,34 @@ Size is step 6 of the sale composition above. It runs after audience units and b
 
 The New Product picker offers Size under the audience row, with the same choice-row pattern, three buttons on one compact row. The effect line reads "Catalog · same length", "Short · −1 day · −10% units", or "Long · +1 day · +10% units". The shared build line reads "On the build" or "On the build · Long". A non-Catalog product shows "On the build · Long" on the journey, the build screen, the release card, and the shipped list. Hire stays the one primary action. Start development stays the primary on the picker. A payload without `sizeOptions` leaves the control out, so older UI fixtures still render.
 
+## Payroll
+
+Hired staff draw a salary. The founder does not. The harness owns the amount, the payday, and the ledger row. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential.
+
+Each season is one payday, on the last office day of that season (day 28, 56, 84, 112, and the same days in later years). Pay runs at the end of that day, after that day's sales. One ledger row covers the whole team. The id is `tycoon:payroll:<year>-<season>`, for example `tycoon:payroll:1-spring`. The label is `Payroll: Spring`. Replaying that day end, or opening the save again, finds the id and does not pay a second time. A season with nobody hired writes no row.
+
+| Person | Season salary | Why |
+| --- | --- | --- |
+| Founder | $0 | The founder is not on the payroll. |
+| Mina | $80 | Under the $207 first newsletter, and over the $50 small ad. |
+| Theo | $100 | The same as a patch. |
+| Creative | $120 | The same as the engine. |
+
+All three together are $300, the same as the first Tech lesson, once a season. A mid-Spring company has a few thousand dollars, so a full team is real pressure and still payable. A company at $0 with only Mina ends the season at −$80.
+
+Cash may go below zero. The company row no longer rejects a negative `cash_cents`. There is no game over. The header then reads "−$80.00 game cash · cash is negative", and the Season card adds "Cash is negative". A positive balance keeps the old words, including "$0.00 game cash". Spending that already says "Need $X" or "Not enough game cash" stays locked while cash is short. A later sale, and a $0 build row, still post.
+
+The morning after payday shows "Paid payroll · −$80" on the day-end summary and on the Season card. That notice clears when the next office day ends. It lives in memory, so a reopen keeps the cash and the ledger row and drops the notice.
+
+The Season card line is "Payroll · $80 on Spring 28", or "No payroll yet" when the total is $0. After Spring 28 the line moves to Summer 28. `journey.tycoon.payroll` is `{ cents, payday, notice }`. `cents` is the next payday total. `payday` is the current season's last day, such as "Spring 28". `notice` is empty except on the morning after payday. A payload without `payroll` draws no extra line. Hire stays the one primary action. There is no payroll button.
+
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, awards, ports, engines, focus, audience, and size. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Engine**, **Office**, and **Season** on Company Journey. Price, marketing, the engine choice, the focus, the audience, and the size live on the New Product picker. The engine buy lives on the Engine card. The award show and the port live on the Shipped card.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, awards, ports, engines, focus, audience, size, and payroll. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Engine**, **Office**, and **Season** on Company Journey. Price, marketing, the engine choice, the focus, the audience, and the size live on the New Product picker. The engine buy lives on the Engine card. The award show and the port live on the Shipped card. Payroll is one line on the Season card.
 
 Next slice:
 
-1. **Bugs.** One optional known bug when a product starts: Clean (the default), or Buggy. Buggy sells a little less until one cheap fix on the Selling card. Clean leaves the first newsletter at 20700 cents and 5 fans.
+1. **Loans.** One optional loan of game cash, repaid with a small fee on a later payday. Skipping it leaves cash alone, so the first newsletter stays 20700 cents and 5 fans. No new product picker row.
 
 Later art ask: a second room. Office growth shipped as spare desks on the current floor (`compact_desk` and `shared_workbench`, already bound). There is no second-room architecture art, so that room waits.
 
