@@ -1618,5 +1618,50 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - `test_office_layout.gd` — 873 checks passed
 - Proof capture — PROOF PASS. Thirty-three PNGs in `/workspace/sv-proof/round-40/` (local, not committed). `32-engine-offer.png` is Company Journey on the Engine card: "Whop Kit Engine · $120", "One kit, used on the builds you choose.", "+1 score", and "Buy Whop Kit Engine · $120". Hire Mina · free stays orange and does not cover the card. The Office card starts below it. Header reads Spring 13 · Year 1 · $934.60 game cash · 33 reputation. `33-engine-picker.png` is the product picker scrolled to Engine: None, Whop Kit Engine selected, "Whop Kit Engine · +1 score", and "On the build · Whop Kit Engine". Start development stays orange. Those lines are readable and do not overlap. The shipped history below is clipped at the footer. Cash before the desk buy was 118460 cents. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-40 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
+### Round 41 — 2026-10-27
+
+**What changed**
+- One optional focus when a product starts. `tycoon.start` takes an optional `focus`: `balanced`, `design`, `tech`, or `hype`. Omitted is Balanced. Design, Tech, or Hype stores +1 on that stat. The add is applied when the review is scored and when the point line is shown, not again on each office day. It stops at 10. A stat already at 10 or above stays put, and a 9 becomes 10. The line still names the stored +1 when the cap ate the add. A stored bonus other than 1 is ignored. Balanced adds nothing, so the first Crypto Alpha Newsletter still pays 20700 cents and 5 fans and still scores 6. The same build on Hype scores 7 and that launch pays 21600 cents and 5 fans. Design or Tech keeps the score at 6, so that launch stays 20700 cents and 5 fans.
+- The product snapshot in `staff_json` stores `focus` and `focusBonus` only when the choice is not Balanced. `focusBonus` is 1. There is no new SQL column and no ledger row. An older row that is only a staff array, or a row that omits the fields, is Balanced. Reads do not rewrite `staff_json`. A sequel stores no focus. A bad id fails with "Pick Balanced, Design, Tech, or Hype." and starts nothing. It does not charge a marketing ad. The choice spends no cash.
+- The New Product picker offers Focus under the engine row: Balanced, Design, Tech, Hype. The effect line reads "Balanced · no point bump" or "Design · +1 design". The shared build line reads "On the build", "On the build · Design", or "On the build · Whop Kit Engine · Design" when an engine is chosen too. A focused product shows "On the build · Design · +1 design" on the journey, the bench, the release card, and the shipped list. Hire Mina stays the one primary action. Start development stays the primary action on the picker. A payload without `focusOptions` draws no control.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Audience is the next slice. One optional audience when a product starts: Everyone (the default), Regulars, or Newcomers. A lean stores a small fan bump. Everyone leaves the first newsletter at 20700 cents and 5 fans.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. The tallest Selling card still meets the footer. On the focus picker the shipped history is clipped at the footer the same way as the engine picker. The focus lines themselves sit above that clip.
+5. Carried from Round 40: Creative has no seated sheet. Unbound art stays untracked. The live path is still a harness driver. A cheap reviewer can still sit just under the 2.5 ready line. Chapter 3 ends at "More is coming." The starter `shared_workbench` stays in storage. The one on the Open Floor is a separate grant.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 109 tests, 107 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test covers the +1 point bump on Design, Tech, and Hype, the cap at 10, a Hype review that leaves score 6 and a launch that leaves 20700 cents, refusals for a bad id before any ad charge, omitted focus keys, a reopen, a sequel that stores no focus, an older staff-array row staying Balanced, a capped stat that does not grow, and a stored bonus other than 1 that is ignored.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS (40 checks, 0 failures). Launch sales stay 20700 cents and 5 fans. The next office day stays 33300 cents and 8 fans.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS (50 checks, 0 failures)
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS (50 checks, 0 failures)
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS (47 checks, 0 failures)
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS (23 checks, 0 failures)
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS (25 checks, 0 failures)
+- `test_tycoon_price.gd` — TYCOON PRICE PASS (49 checks, 0 failures). Catalog launch is 20700 cents and 5 fans.
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS (55 checks, 0 failures). No ad stays 20700 cents and 5 fans.
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS (60 checks, 0 failures). Ignoring the offer leaves Fitness and Crypto Alpha free. The newsletter still pays 20700 cents and 5 fans.
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS (37 checks, 0 failures). No patch still pays 20700 cents and 5 fans.
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS (49 checks, 0 failures). No sequel still pays 20700 cents and 5 fans.
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS (49 checks, 0 failures). No award still pays 20700 cents and 5 fans.
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS (65 checks, 0 failures). No port still pays 20700 cents and 5 fans.
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS (61 checks, 0 failures). No engine still pays 20700 cents and 5 fans. The build line stays "On the build" until an engine is chosen, then "On the build · Whop Kit Engine".
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS (58 checks, 0 failures). Balanced still pays 20700 cents and 5 fans. The picker starts on "Balanced · no point bump" and "On the build". Design shows "+1 design" and "On the build · Design". Day zero shows design 1. Two founder days land on 5/4/4. The bench, the journey, and the release read "On the build · Design · +1 design". Hire Mina stays primary. Start development stays primary. Choosing a focus spends nothing.
+- `test_ui_company_redesign.gd` — 14065 checks, 0 failures, 0 captures. A fixture without focus options draws no focus control. With the four options, Balanced, Design, Tech, and Hype are secondary, the effect line reads "Balanced · no point bump", the build line stays "On the build", and Start development stays primary.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Thirty-five PNGs in `/workspace/sv-proof/round-41/` (local, not committed). `34-focus-picker.png` is the product picker scrolled to Focus: Balanced, Design selected, Tech, and Hype, with "Design · +1 design" and "On the build · Design". The four labels are fully readable and do not overlap. Start development stays orange. The shipped history below is clipped at the footer. `35-focus-journey.png` reads "On the build · Design · +1 design" above New Product. Hire Mina · free stays orange and does not cover that line. Header reads Spring 13 · Year 1 · $1,016.60 game cash · 46 reputation. Cash before the desk buy was 118460 cents. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-41 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → Focus, or leave it on Balanced. The first newsletter on Balanced is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_focus.gd`.
+
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → buy Whop Kit Engine once → New Product → choose the engine, or leave it on None. The first newsletter with no engine is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_engines.gd`.
 
