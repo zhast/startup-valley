@@ -918,3 +918,22 @@ func _tycoon_secondary_actions() -> void:
 	_check(build != null and build.text == "On the build", "Everyone leaves the build line plain")
 	start = _button("Start development")
 	_check(start != null and str(start.get_meta("cozy_variant", "")) == "primary", "Start development stays primary beside the audience")
+	_check(_panel.find_child("Size_catalog", true, false) == null, "A payload without size options draws no size control")
+	tycoon["sizeOptions"] = [
+		{"id": "catalog", "label": "Catalog", "dayDelta": 0, "unitPercent": 100},
+		{"id": "short", "label": "Short", "dayDelta": -1, "unitPercent": 90},
+		{"id": "long", "label": "Long", "dayDelta": 1, "unitPercent": 110},
+	]
+	await _present("product", value)
+	var size_catalog := _panel.find_child("Size_catalog", true, false) as Button
+	var size_short := _panel.find_child("Size_short", true, false) as Button
+	var size_long := _panel.find_child("Size_long", true, false) as Button
+	_check(size_catalog != null and not size_catalog.disabled and str(size_catalog.get_meta("cozy_variant", "")) == "secondary" and size_catalog.text == "Catalog", "Catalog size reads as secondary")
+	_check(size_short != null and str(size_short.get_meta("cozy_variant", "")) == "secondary" and size_short.text == "Short", "Short reads as secondary")
+	_check(size_long != null and size_long.text == "Long", "Long is on the size row")
+	var size_line := _panel.find_child("SizeEffect", true, false) as Label
+	_check(size_line != null and size_line.text == "Catalog · same length", "The picker shows the size line")
+	build = _panel.find_child("OnTheBuild", true, false) as Label
+	_check(build != null and build.text == "On the build", "Catalog leaves the build line plain")
+	start = _button("Start development")
+	_check(start != null and str(start.get_meta("cozy_variant", "")) == "primary", "Start development stays primary beside the size")

@@ -297,7 +297,7 @@
     "tycoon": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "upgradeNotice", "upgrades", "calendar", "office", "priceSteps", "marketingOptions", "engineNotice", "engine", "engineOptions", "focusOptions", "audienceOptions", "contract", "patchNotice", "developing", "history"],
+      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "upgradeNotice", "upgrades", "calendar", "office", "priceSteps", "marketingOptions", "engineNotice", "engine", "engineOptions", "focusOptions", "audienceOptions", "sizeOptions", "contract", "patchNotice", "developing", "history"],
       "properties": {
         "seed": { "type": "integer", "minimum": 1 },
         "salesWindowDays": { "type": "integer", "const": 4 },
@@ -319,6 +319,7 @@
         "engineOptions": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/tycoonEngineOption" } },
         "focusOptions": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "$ref": "#/$defs/tycoonFocusOption" } },
         "audienceOptions": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/tycoonAudienceOption" } },
+        "sizeOptions": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/tycoonSizeOption" } },
         "contract": { "$ref": "#/$defs/tycoonContract" },
         "patchNotice": { "type": "string" },
         "developing": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/tycoonProduct" }] },
@@ -575,6 +576,17 @@
         "unitPercent": { "enum": [100, 90] }
       }
     },
+    "tycoonSizeOption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "dayDelta", "unitPercent"],
+      "properties": {
+        "id": { "enum": ["catalog", "short", "long"] },
+        "label": { "enum": ["Catalog", "Short", "Long"] },
+        "dayDelta": { "enum": [-1, 0, 1] },
+        "unitPercent": { "enum": [90, 100, 110] }
+      }
+    },
     "tycoonMarketing": {
       "type": "object",
       "additionalProperties": false,
@@ -591,7 +603,7 @@
     "tycoonProduct": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "name", "topicId", "typeId", "topicName", "typeName", "fit", "status", "startedDay", "devDays", "devDaysRequired", "design", "tech", "hype", "progress", "ready", "staffIds", "releasedDay", "review", "salesDays", "salesDaysTotal", "salesCents", "fans", "researchPoints", "researchBonus", "pricePercent", "priceCents", "marketing", "contract", "patch", "sequel", "award", "port", "engine", "focus", "audience"],
+      "required": ["id", "name", "topicId", "typeId", "topicName", "typeName", "fit", "status", "startedDay", "devDays", "devDaysRequired", "design", "tech", "hype", "progress", "ready", "staffIds", "releasedDay", "review", "salesDays", "salesDaysTotal", "salesCents", "fans", "researchPoints", "researchBonus", "pricePercent", "priceCents", "marketing", "contract", "patch", "sequel", "award", "port", "engine", "focus", "audience", "size"],
       "properties": {
         "id": { "type": "string", "pattern": "^p[1-9][0-9]*$" },
         "name": { "type": "string", "minLength": 1 },
@@ -751,6 +763,22 @@
                 "label": { "enum": ["Regulars", "Newcomers"] },
                 "fans": { "const": 2 },
                 "unitPercent": { "enum": [100, 90] }
+              }
+            }
+          ]
+        },
+        "size": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "label", "dayDelta", "unitPercent"],
+              "properties": {
+                "id": { "enum": ["short", "long"] },
+                "label": { "enum": ["Short", "Long"] },
+                "dayDelta": { "enum": [-1, 1] },
+                "unitPercent": { "enum": [90, 110] }
               }
             }
           ]

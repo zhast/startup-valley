@@ -15,6 +15,7 @@ Player-facing flows for the offline tycoon. The harness owns the rules (`docs/TY
 - [Engines](engines.md)
 - [Focus](focus.md)
 - [Audience](audience.md)
+- [Size](size.md)
 - [Seasons](seasons.md)
 - [Office growth](office-growth.md)
 - [End day](end-day.md)

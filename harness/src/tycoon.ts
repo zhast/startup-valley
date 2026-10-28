@@ -90,6 +90,18 @@ export const AUDIENCES = [
   { id: "regulars", label: "Regulars", fans: 2, unitPercent: 100 },
   { id: "newcomers", label: "Newcomers", fans: 2, unitPercent: 90 },
 ] as const;
+/**
+ * One optional length when a product starts. Catalog adds nothing.
+ * Short takes one fewer build day, never below one, and sells at 90% units.
+ * Long adds one build day and sells at 110% units.
+ */
+export const SIZE_SHORT_UNIT_PERCENT = 90;
+export const SIZE_LONG_UNIT_PERCENT = 110;
+export const SIZES = [
+  { id: "catalog", label: "Catalog", dayDelta: 0, unitPercent: 100 },
+  { id: "short", label: "Short", dayDelta: -1, unitPercent: SIZE_SHORT_UNIT_PERCENT },
+  { id: "long", label: "Long", dayDelta: 1, unitPercent: SIZE_LONG_UNIT_PERCENT },
+] as const;
 /** Stardew-shaped office calendar. Derived from the saved day. It does not replace the clock. */
 export const SEASON_LENGTH_DAYS = 28;
 export const YEAR_LENGTH_DAYS = 112;
@@ -171,6 +183,9 @@ export type FocusStat = Exclude<(typeof FOCUSES)[number]["stat"], "">;
 export type AudienceId = (typeof AUDIENCES)[number]["id"];
 export type AudienceLean = Exclude<AudienceId, "everyone">;
 export type AudienceOption = (typeof AUDIENCES)[number];
+export type SizeId = (typeof SIZES)[number]["id"];
+export type SizeLean = Exclude<SizeId, "catalog">;
+export type SizeOption = (typeof SIZES)[number];
 
 /** New companies. Crypto Alpha × Newsletter stays in this set. */
 const STARTER_TOPIC_IDS: readonly TopicId[] = ["fitness", "trading", "cooking", "gaming", "study_notes", "crypto"];
@@ -342,6 +357,8 @@ export interface TycoonProductView {
   focus: TycoonProductFocus | null;
   /** Null when the product started Everyone. Omitted rows are Everyone. */
   audience: TycoonProductAudience | null;
+  /** Null when the product started at Catalog length. Omitted rows are Catalog. */
+  size: TycoonProductSize | null;
 }
 
 export interface TycoonUpgradeView {
@@ -492,6 +509,13 @@ export interface TycoonProductAudience {
   unitPercent: number;
 }
 
+export interface TycoonProductSize {
+  id: SizeLean;
+  label: string;
+  dayDelta: number;
+  unitPercent: number;
+}
+
 export interface TycoonSnapshot {
   seed: number;
   salesWindowDays: number;
@@ -513,6 +537,7 @@ export interface TycoonSnapshot {
   engineOptions: TycoonEngineOption[];
   focusOptions: Array<(typeof FOCUSES)[number]>;
   audienceOptions: Array<(typeof AUDIENCES)[number]>;
+  sizeOptions: Array<(typeof SIZES)[number]>;
   contract: TycoonContractView;
   patchNotice: string;
   developing: TycoonProductView | null;
@@ -846,6 +871,49 @@ export function audienceFansForSale(id: unknown, topicMatch: boolean): number {
   return option.fans;
 }
 
+export function sizeById(id: string): SizeOption | undefined {
+  return SIZES.find((item) => item.id === id);
+}
+
+/** Unknown or omitted values are Catalog. */
+export function normalizeSize(value: unknown): SizeId {
+  return typeof value === "string" && sizeById(value) ? value as SizeId : "catalog";
+}
+
+function asSize(value: string): SizeId {
+  const option = sizeById(value);
+  if (!option) throw new Error("Pick Catalog, Short, or Long.");
+  return option.id;
+}
+
+function parseSize(value: unknown): SizeLean | null {
+  if (value === "short" || value === "long") return value;
+  return null;
+}
+
+function sizeView(id: SizeLean | null): TycoonProductSize | null {
+  if (!id) return null;
+  const option = sizeById(id);
+  if (!option || option.id === "catalog") return null;
+  return { id, label: option.label, dayDelta: option.dayDelta, unitPercent: option.unitPercent };
+}
+
+/** Short sells at 90% units. Long sells at 110%. Catalog leaves units unchanged. Always at least 1. */
+export function applySizeUnits(units: number, id: unknown): number {
+  const option = sizeById(normalizeSize(id));
+  const percent = option?.unitPercent ?? 100;
+  if (percent === 100) return Math.max(1, units);
+  return Math.max(1, Math.round((units * percent) / 100));
+}
+
+/** Short skips one office day and never drops below one. Long adds one. Catalog keeps the catalog length. */
+export function sizedDevDays(catalogDays: number, size: unknown): number {
+  const id = normalizeSize(size);
+  if (id === "short") return Math.max(1, catalogDays - 1);
+  if (id === "long") return catalogDays + 1;
+  return catalogDays;
+}
+
 export function releaseResearchPoints(score: number): number {
   return Math.floor(Math.max(0, score) / 2);
 }
@@ -959,6 +1027,8 @@ interface ProductSnapshot {
   focus: FocusStat | null;
   /** Null when development started Everyone. */
   audience: AudienceLean | null;
+  /** Null when development started at Catalog length. */
+  size: SizeLean | null;
 }
 
 interface ProductPort {
@@ -990,6 +1060,7 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     engine: null,
     focus: null,
     audience: null,
+    size: null,
   };
 }
 
@@ -997,7 +1068,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no engine, Balanced, and Everyone. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no engine, Balanced, Everyone, and Catalog length. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -1019,6 +1090,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     engine?: unknown;
     focus?: unknown;
     audience?: unknown;
+    size?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -1035,6 +1107,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     engine: body.engine === ENGINE_ID ? ENGINE_ID : null,
     focus: parseFocus(body.focus),
     audience: parseAudience(body.audience),
+    size: parseSize(body.size),
   };
 }
 
@@ -1105,6 +1178,7 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
     body.focusBonus = FOCUS_BONUS;
   }
   if (stored.audience) body.audience = stored.audience;
+  if (stored.size) body.size = stored.size;
   return JSON.stringify(body);
 }
 
@@ -1113,9 +1187,10 @@ export function sequelDevDays(catalogDays: number): number {
   return Math.max(1, catalogDays - SEQUEL_DAYS_SAVED);
 }
 
-/** Catalog length, or the shorter sequel length when this product continues another. */
-export function requiredDevDays(catalogDays: number, isSequel: boolean): number {
-  return isSequel ? sequelDevDays(catalogDays) : catalogDays;
+/** Catalog length, the sized length, or the shorter sequel length. A sequel ignores size. */
+export function requiredDevDays(catalogDays: number, isSequel: boolean, size: unknown = null): number {
+  if (isSequel) return sequelDevDays(catalogDays);
+  return sizedDevDays(catalogDays, size);
 }
 
 /** +1 when the original's final score is 6 or more. Otherwise none. */
@@ -1233,13 +1308,15 @@ export function salesForDay(input: {
   audience?: string;
   /** True when a past release used this product's topic. Regulars needs this. */
   topicMatch?: boolean;
+  /** Size id stored on the product. Omitted is Catalog. */
+  size?: string;
 }): TycoonSales {
   const curve = curvePercent(input.dayIndex);
   const type = typeById(input.typeId);
   if (curve === undefined || !type) throw new Error("Sales day is outside the window");
   const swing = (mixSeed(input.seed, input.productId, "sales", input.dayIndex) % 21) - 10;
   const baseUnits = FIT_UNITS[input.fit] + Math.floor((input.score * 3) / 2) + Math.floor(input.reputation / 10);
-  // Units: base, launch price, season, marketing, audience. Fans follow those units.
+  // Units: base, launch price, season, marketing, audience, size. Fans follow those units.
   // Price: launch price, then checkout. Cash is units times that price.
   let units = Math.max(1, Math.round((baseUnits * curve * (100 + swing)) / 10000));
   const pricePercent = normalizeLaunchPricePercent(input.pricePercent);
@@ -1250,6 +1327,7 @@ export function salesForDay(input: {
   }
   units = applyMarketingUnits(units, input.marketing);
   units = applyAudienceUnits(units, input.audience);
+  units = applySizeUnits(units, input.size);
   const fanPermille = input.score >= 8 ? 400 : input.score >= 5 ? 200 : 100;
   const bonusFans = Number.isInteger(input.bonusFans) && (input.bonusFans ?? 0) > 0 ? (input.bonusFans as number) : 0;
   const fans = Math.max(1, Math.round((units * fanPermille) / 1000)) + bonusFans + audienceFansForSale(input.audience, input.topicMatch === true);
@@ -1437,6 +1515,7 @@ export class TycoonStore {
       engineOptions: engineChoices(engineOwned),
       focusOptions: [...FOCUSES],
       audienceOptions: [...AUDIENCES],
+      sizeOptions: [...SIZES],
       contract: this.contractOffer(developing),
       patchNotice: this.patchNoticeDay === day ? this.patchNotice : "",
       developing: developing ? this.toView(developing) : null,
@@ -1444,7 +1523,7 @@ export class TycoonStore {
     };
   }
 
-  start(topicValue: string, typeValue: string, requestedStaff: readonly string[], pricePercentValue?: number, marketingValue?: string, engineValue?: string, focusValue?: string, audienceValue?: string): ReturnType<JourneyStore["state"]> {
+  start(topicValue: string, typeValue: string, requestedStaff: readonly string[], pricePercentValue?: number, marketingValue?: string, engineValue?: string, focusValue?: string, audienceValue?: string, sizeValue?: string): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
       if (this.developingRow()) throw new Error("A product is already on the bench. Ship it or keep building.");
       const topicId = asTopic(topicValue);
@@ -1459,6 +1538,7 @@ export class TycoonStore {
       const engine = engineValue === undefined ? "none" : asEngine(engineValue);
       const focus = focusValue === undefined ? "balanced" : asFocus(focusValue);
       const audience = audienceValue === undefined ? "everyone" : asAudience(audienceValue);
+      const size = sizeValue === undefined ? "catalog" : asSize(sizeValue);
       if (engine === ENGINE_ID && !this.loadEngineOwned()) throw new Error("Buy the engine first.");
       const pending = this.loadPendingContract();
       if (pending && (pending.topicId !== topicId || pending.typeId !== typeId)) {
@@ -1488,6 +1568,7 @@ export class TycoonStore {
         focus?: FocusStat;
         focusBonus?: number;
         audience?: AudienceLean;
+        size?: SizeLean;
       } = {
         staff: staffIds.map((memberId) => ({
           id: memberId, design: stats[memberId].design, tech: stats[memberId].tech, hype: stats[memberId].hype,
@@ -1505,6 +1586,7 @@ export class TycoonStore {
         snapshot.focusBonus = FOCUS_BONUS;
       }
       if (audience !== "everyone") snapshot.audience = audience;
+      if (size !== "catalog") snapshot.size = size;
       if (pending) {
         snapshot.contract = { id: pending.id, client: pending.client, bonusCents: pending.bonusCents };
         this.savePendingContract(null);
@@ -1658,7 +1740,7 @@ export class TycoonStore {
       const type = typeById(row.type_id);
       if (!type) throw new Error("Unknown product type");
       const stored = parseProductSnapshot(row.staff_json);
-      const required = requiredDevDays(type.devDays, stored.sequelOf !== null);
+      const required = requiredDevDays(type.devDays, stored.sequelOf !== null, stored.size);
       const remaining = required - Number(row.dev_days);
       if (remaining > 0) {
         throw new Error(remaining === 1
@@ -1754,6 +1836,7 @@ export class TycoonStore {
         engine: null,
         focus: null,
         audience: null,
+        size: null,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -1863,7 +1946,7 @@ export class TycoonStore {
     const snapshot = parseProductSnapshot(row.staff_json);
     const trainedToday = this.trainedIdsOn(day);
     const working = snapshot.staff.filter((person) => !trainedToday.has(person.id));
-    const accrue = pointsStillAccrue(Number(row.dev_days), requiredDevDays(type.devDays, snapshot.sequelOf !== null));
+    const accrue = pointsStillAccrue(Number(row.dev_days), requiredDevDays(type.devDays, snapshot.sequelOf !== null, snapshot.size));
     const personal = accrue ? snapshotPoints(working) : { design: 0, tech: 0, hype: 0 };
     const bonus = accrue ? this.pointBonus() : { design: 0, tech: 0, hype: 0 };
     const people = accrue ? working.length : 0;
@@ -1912,6 +1995,7 @@ export class TycoonStore {
       marketing: stored.marketing,
       audience: stored.audience ?? "everyone",
       topicMatch: this.topicHasPastRelease(topicId, row.id),
+      size: stored.size ?? "catalog",
       priceBoostPercent: this.priceBoostPercent(),
       unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === topicId) ? SEASON_UNIT_BOOST_PERCENT : 0,
       bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
@@ -1954,6 +2038,7 @@ export class TycoonStore {
         marketing: stored.marketing,
         audience: stored.audience ?? "everyone",
         topicMatch: this.topicHasPastRelease(topicId, row.id),
+        size: stored.size ?? "catalog",
         priceBoostPercent: this.priceBoostPercent(),
         unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === topicId) ? SEASON_UNIT_BOOST_PERCENT : 0,
         bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
@@ -2315,7 +2400,7 @@ export class TycoonStore {
     const topic = topicById(topicId)!;
     const devDays = Number(row.dev_days);
     const snapshot = parseProductSnapshot(row.staff_json);
-    const required = requiredDevDays(type.devDays, snapshot.sequelOf !== null);
+    const required = requiredDevDays(type.devDays, snapshot.sequelOf !== null, snapshot.size);
     const progress = Math.min(100, Math.round((devDays * 100) / required));
     const staffIds = snapshot.staff.map((person) => person.id);
     const points = applyFocusPoints({
@@ -2362,6 +2447,7 @@ export class TycoonStore {
         : null,
       focus: focusView(snapshot.focus),
       audience: audienceView(snapshot.audience),
+      size: sizeView(snapshot.size),
     };
   }
 

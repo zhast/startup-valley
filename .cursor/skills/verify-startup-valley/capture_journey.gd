@@ -390,6 +390,7 @@ func _run() -> void:
 	await _engine_proof()
 	await _focus_proof()
 	await _audience_proof()
+	await _size_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -672,6 +673,50 @@ func _audience_proof() -> void:
 	check(journey != null and journey.text == "On the build · Regulars", "Journey names the audience")
 	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the audience")
 	await snap("37-audience-journey", journey)
+
+func _size_proof() -> void:
+	var guard := 0
+	while not developing().is_empty() and not bool(developing().get("ready", false)) and guard < 4:
+		await end_office_day()
+		await open_journey()
+		guard += 1
+	if not developing().is_empty() and bool(developing().get("ready", false)):
+		await open_product()
+		await click(button_named("Release"))
+		await wait_until(func() -> bool: return main.company_panel.screen == "release" and not main.company_panel.busy, "The audience product releases before the size shot")
+	await open_product()
+	await click(button_named("Crypto Alpha"))
+	await frames(4)
+	await click(button_named("Newsletter"))
+	await frames(4)
+	var none := main.company_panel.find_child("Engine_none", true, false) as Button
+	if none != null and not none.disabled:
+		await click(none)
+		await frames(4)
+	var balanced := main.company_panel.find_child("Focus_balanced", true, false) as Button
+	if balanced != null and not balanced.disabled:
+		await click(balanced)
+		await frames(4)
+	var everyone := main.company_panel.find_child("Audience_everyone", true, false) as Button
+	if everyone != null and not everyone.disabled:
+		await click(everyone)
+		await frames(4)
+	var long_size := main.company_panel.find_child("Size_long", true, false) as Button
+	check(long_size != null and not long_size.disabled and str(long_size.get_meta("cozy_variant", "")) == "secondary" and long_size.text == "Long", "Long is a secondary size")
+	check(label_named("SizeEffect") != null and label_named("SizeEffect").text == "Catalog · same length", "The picker starts on Catalog")
+	await click(long_size)
+	await frames(4)
+	check(label_named("SizeEffect") != null and label_named("SizeEffect").text == "Long · +1 day · +10% units", "The size shows +1 day and +10% units")
+	check(label_named("OnTheBuild") != null and label_named("OnTheBuild").text == "On the build · Long", "The build line names the size")
+	check(button_named("Start development") != null and str(button_named("Start development").get_meta("cozy_variant", "")) == "primary", "Start development stays the primary action")
+	await snap("38-size-picker", label_named("SizeHeading"))
+	await click(button_named("Start development"))
+	await wait_until(func() -> bool: return developing().get("name", "") == "Crypto Alpha Newsletter" and not main.company_panel.busy, "The long newsletter starts")
+	await open_journey()
+	var journey := label_named("SizeJourney")
+	check(journey != null and journey.text == "On the build · Long", "Journey names the size")
+	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the size")
+	await snap("39-size-journey", journey)
 
 func _office_expansion_proof() -> void:
 	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-office-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
