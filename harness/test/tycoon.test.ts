@@ -28,6 +28,9 @@ import {
   ENGINE_ID,
   ENGINE_NAME,
   ENGINE_SCORE_BONUS,
+  FOCUS_BONUS,
+  FOCUSES,
+  applyFocusPoints,
   PORT_COST_CENTS,
   PORT_SHELF,
   SALES_WINDOW_DAYS,
@@ -2751,6 +2754,161 @@ test("an engine is bought once and a product started on it stores a score bump",
   restored.tycoon.buyEngine(ENGINE_ID);
   assert.equal(restored.tycoon.view().engine.owned, true);
   assert.equal(staffJson(restored, "p1"), staffOnly);
+  assert.equal(validate(restored.journey.state()), true, JSON.stringify(validate.errors));
+  restored.close();
+});
+
+test("a focus stores a point bump and Balanced leaves the first newsletter alone", async () => {
+  assert.equal(FOCUS_BONUS, 1);
+  assert.deepEqual(FOCUSES.map((item) => item.id), ["balanced", "design", "tech", "hype"]);
+  const plainPoints = { design: 4, tech: 4, hype: 4 };
+  assert.deepEqual(applyFocusPoints(plainPoints, "balanced"), plainPoints);
+  assert.deepEqual(applyFocusPoints(plainPoints, undefined), plainPoints);
+  assert.deepEqual(applyFocusPoints(plainPoints, "design"), { design: 5, tech: 4, hype: 4 });
+  assert.deepEqual(applyFocusPoints(plainPoints, "tech"), { design: 4, tech: 5, hype: 4 });
+  assert.deepEqual(applyFocusPoints(plainPoints, "hype"), { design: 4, tech: 4, hype: 5 });
+  assert.deepEqual(applyFocusPoints({ design: 10, tech: 3, hype: 12 }, "design"), { design: 10, tech: 3, hype: 12 });
+  assert.deepEqual(applyFocusPoints({ design: 9, tech: 0, hype: 0 }, "design"), { design: 10, tech: 0, hype: 0 });
+  assert.deepEqual(applyFocusPoints({ design: 11, tech: 0, hype: 0 }, "design"), { design: 11, tech: 0, hype: 0 });
+  const plainReview = reviewProduct({ seed: 26021, productId: "p1", topicId: "crypto", typeId: "newsletter", ...plainPoints });
+  const hypeReview = reviewProduct({ seed: 26021, productId: "p1", topicId: "crypto", typeId: "newsletter", ...applyFocusPoints(plainPoints, "hype") });
+  assert.equal(plainReview.score, 6);
+  assert.ok(hypeReview.score <= 10);
+  assert.notEqual(hypeReview.score, plainReview.score);
+
+  const balanced = await setup();
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  const options = balanced.db.tycoon.view().focusOptions;
+  assert.equal(options.length, 4);
+  assert.equal(options[0]?.id, "balanced");
+  assert.equal(options[0]?.bonus, 0);
+  assert.equal(options[1]?.stat, "design");
+  assert.equal(options[1]?.bonus, 1);
+  assert.throws(() => balanced.db.tycoon.start("crypto", "newsletter", [], 100, "none", "none", "poster"), /Pick Balanced, Design, Tech, or Hype\./u);
+  assert.equal(balanced.db.tycoon.view().developing, null);
+  balanced.db.journey.recordCompanyChange("focus-ad-cash", 1, 20_000, 0, 0, "Focus ad cash");
+  const cashBeforeBad = balanced.db.journey.state().company.cashCents;
+  assert.throws(() => balanced.db.tycoon.start("crypto", "newsletter", [], 100, "small", "none", "poster"), /Pick Balanced, Design, Tech, or Hype\./u);
+  assert.equal(balanced.db.journey.state().company.cashCents, cashBeforeBad);
+  assert.equal(balanced.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:marketing:%'").all().length, 0);
+  assert.equal(balanced.db.tycoon.view().developing, null);
+  balanced.db.tycoon.start("crypto", "newsletter", []);
+  assert.equal(balanced.db.tycoon.view().developing?.focus, null);
+  assert.equal(balanced.db.tycoon.view().developing?.design, 0);
+  assert.equal(validate(balanced.db.journey.state()), true, JSON.stringify(validate.errors));
+  balanced.db.endDay(1);
+  balanced.db.endDay(2);
+  const ready = balanced.db.tycoon.view().developing;
+  assert.equal(ready?.design, 4);
+  assert.equal(ready?.tech, 4);
+  assert.equal(ready?.hype, 4);
+  balanced.db.tycoon.release("p1");
+  const shipped = productById(balanced.db, "p1");
+  assert.equal(shipped?.salesCents, 20700);
+  assert.equal(shipped?.fans, 5);
+  assert.equal(shipped?.review?.score, 6);
+  assert.equal(shipped?.focus, null);
+  const balancedBody = JSON.parse(staffJson(balanced.db, "p1")) as Record<string, unknown>;
+  assert.equal("focus" in balancedBody, false);
+  assert.equal("focusBonus" in balancedBody, false);
+  assert.equal(balanced.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:focus:%'").all().length, 0);
+  balanced.db.close();
+
+  const { db, root } = await setup();
+  db.tycoon.start("crypto", "newsletter", [], 100, "none", "none", "hype");
+  const started = db.tycoon.view().developing;
+  assert.deepEqual(started?.focus, { id: "hype", label: "Hype", stat: "hype", bonus: 1 });
+  assert.equal(started?.hype, 1);
+  assert.equal(started?.design, 0);
+  assert.equal(db.journey.state().company.cashCents, 0);
+  const stored = JSON.parse(staffJson(db, "p1")) as { focus?: string; focusBonus?: number; marketing?: string; pricePercent?: number };
+  assert.equal(stored.focus, "hype");
+  assert.equal(stored.focusBonus, 1);
+  assert.equal(stored.marketing, "none");
+  assert.equal(stored.pricePercent, 100);
+  db.endDay(1);
+  db.endDay(2);
+  const built = db.tycoon.view().developing;
+  assert.equal(built?.design, 4);
+  assert.equal(built?.tech, 4);
+  assert.equal(built?.hype, 5);
+  const releaseDay = db.clockState().day;
+  db.tycoon.release("p1");
+  const hypeProduct = productById(db, "p1");
+  assert.deepEqual(hypeProduct?.review, hypeReview);
+  assert.equal(hypeProduct?.focus?.bonus, 1);
+  const calendar = calendarForDay(releaseDay);
+  const sale = salesForDay({
+    seed: 26021,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: "great",
+    score: hypeReview.score,
+    dayIndex: 0,
+    reputation: 0,
+    pricePercent: 100,
+    marketing: "none",
+    unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === "crypto") ? SEASON_UNIT_BOOST_PERCENT : 0,
+    bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
+  });
+  assert.equal(hypeProduct?.salesCents, sale.cents);
+  assert.equal(hypeProduct?.fans, sale.fans);
+  assert.notEqual(sale.cents, 20700);
+  db.tycoon.patch("p1");
+  assert.equal(JSON.parse(staffJson(db, "p1")).focus, "hype");
+  assert.equal(JSON.parse(staffJson(db, "p1")).focusBonus, 1);
+  db.endDay(db.clockState().day);
+  db.endDay(db.clockState().day);
+  db.endDay(db.clockState().day);
+  db.endDay(db.clockState().day);
+  assert.equal(productById(db, "p1")?.status, "complete");
+  db.tycoon.sequel("p1");
+  const sequelBody = JSON.parse(staffJson(db, "p2")) as Record<string, unknown>;
+  assert.equal("focus" in sequelBody, false);
+  assert.equal("focusBonus" in sequelBody, false);
+  assert.equal(productById(db, "p2")?.focus, null);
+  assert.equal(JSON.parse(staffJson(db, "p1")).focus, "hype");
+  const file = join(root, "game.sqlite");
+  const project = join(root, "company-project");
+  db.close();
+  const reopened = new GameDatabase(file, project);
+  assert.equal(productById(reopened, "p1")?.focus?.id, "hype");
+  assert.equal(productById(reopened, "p2")?.focus, null);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+
+  const legacy = await setup();
+  const legacyFile = join(legacy.root, "game.sqlite");
+  const legacyProject = join(legacy.root, "company-project");
+  legacy.db.close();
+  const raw = new DatabaseSync(legacyFile);
+  const staffOnly = JSON.stringify(["founder"]);
+  const cappedJson = JSON.stringify({ staff: [{ id: "founder", design: 2, tech: 2, hype: 2 }], researchBonus: 0, pricePercent: 100, marketing: "none", focus: "design", focusBonus: 1 });
+  const oddJson = JSON.stringify({ staff: [{ id: "founder", design: 2, tech: 2, hype: 2 }], researchBonus: 0, pricePercent: 100, marketing: "none", focus: "design", focusBonus: 9 });
+  raw.prepare(`
+    INSERT INTO tycoon_products (
+      id, topic_id, type_id, name, fit, status, started_day, dev_days,
+      design_points, tech_points, hype_points, staff_json, last_dev_day,
+      released_day, review_json, sales_applied, last_sales_day, sales_cents, fans
+    ) VALUES
+      ('p1', 'crypto', 'newsletter', 'Crypto Alpha Newsletter', 'great', 'developing', 1, 2, 4, 4, 4, ?, NULL, NULL, NULL, 0, NULL, 0, 0),
+      ('p2', 'crypto', 'newsletter', 'Capped', 'great', 'complete', 1, 2, 10, 4, 4, ?, 2, 3, NULL, 4, 6, 0, 0),
+      ('p3', 'crypto', 'newsletter', 'Odd bonus', 'great', 'complete', 1, 2, 4, 4, 4, ?, 2, 3, NULL, 4, 6, 0, 0)
+  `).run(staffOnly, cappedJson, oddJson);
+  raw.close();
+  const restored = new GameDatabase(legacyFile, legacyProject);
+  const legacyView = restored.tycoon.view();
+  const legacyRows = [legacyView.developing, ...legacyView.history];
+  const legacyById = (id: string) => legacyRows.find((item) => item?.id === id);
+  assert.equal(legacyById("p1")?.focus, null);
+  assert.equal(legacyById("p1")?.design, 4);
+  assert.equal(staffJson(restored, "p1"), staffOnly);
+  assert.equal(legacyById("p2")?.design, 10);
+  assert.equal(legacyById("p2")?.focus?.id, "design");
+  assert.equal(legacyById("p3")?.design, 5);
+  assert.equal(JSON.parse(staffJson(restored, "p3")).focusBonus, 9);
+  assert.equal(staffJson(restored, "p2"), cappedJson);
   assert.equal(validate(restored.journey.state()), true, JSON.stringify(validate.errors));
   restored.close();
 });

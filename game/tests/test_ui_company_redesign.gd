@@ -876,3 +876,26 @@ func _tycoon_secondary_actions() -> void:
 	_check(big_ad != null and big_ad.disabled and big_ad.text == "Big ad · Need $150", "Big ad shows Need $150")
 	var marketing_line := _panel.find_child("MarketingEffect", true, false) as Label
 	_check(marketing_line != null and marketing_line.text == "None · $0 · no extra units", "The picker shows the marketing cost line")
+	_check(_panel.find_child("Focus_balanced", true, false) == null, "A payload without focus options draws no focus control")
+	tycoon["focusOptions"] = [
+		{"id": "balanced", "label": "Balanced", "stat": "", "bonus": 0},
+		{"id": "design", "label": "Design", "stat": "design", "bonus": 1},
+		{"id": "tech", "label": "Tech", "stat": "tech", "bonus": 1},
+		{"id": "hype", "label": "Hype", "stat": "hype", "bonus": 1},
+	]
+	await _present("product", value)
+	var focus_balanced := _panel.find_child("Focus_balanced", true, false) as Button
+	var focus_design := _panel.find_child("Focus_design", true, false) as Button
+	var focus_tech := _panel.find_child("Focus_tech", true, false) as Button
+	var focus_hype := _panel.find_child("Focus_hype", true, false) as Button
+	_check(focus_balanced != null and not focus_balanced.disabled and str(focus_balanced.get_meta("cozy_variant", "")) == "secondary" and focus_balanced.text == "Balanced", "Balanced reads as secondary")
+	_check(focus_design != null and str(focus_design.get_meta("cozy_variant", "")) == "secondary" and focus_design.text == "Design", "Design reads as secondary")
+	_check(focus_tech != null and focus_tech.text == "Tech", "Tech is on the focus row")
+	_check(focus_hype != null and focus_hype.text == "Hype", "Hype is on the focus row")
+	var focus_line := _panel.find_child("FocusEffect", true, false) as Label
+	_check(focus_line != null and focus_line.text == "Balanced · no point bump", "The picker shows the focus line")
+	var build := _panel.find_child("OnTheBuild", true, false) as Label
+	_check(build != null and build.text == "On the build", "Balanced leaves the build line plain")
+	var start := _button("Start development")
+	_check(start != null and str(start.get_meta("cozy_variant", "")) == "primary", "Start development stays the primary action")
+	_check(_button("Hire Mina") == null, "Hire stays off the product picker")

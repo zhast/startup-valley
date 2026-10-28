@@ -38,6 +38,7 @@ var _staff_ids: Array[String] = []
 var _price_percent := 100
 var _marketing_id := "none"
 var _engine_id := "none"
+var _focus_id := "balanced"
 var _release_focus_id := ""
 
 func _ready() -> void:
@@ -555,6 +556,7 @@ func _product_shortcut() -> void:
 	var developing: Dictionary = _tycoon().get("developing", {}) if _tycoon().get("developing") is Dictionary else {}
 	if not developing.is_empty():
 		_show_engine(developing, "EngineJourney")
+		_show_focus(developing, "FocusJourney")
 	var button := _button("New Product", func() -> void: present("product"), false, true, null, "secondary")
 	button.name = "NewProduct"
 
@@ -1063,6 +1065,7 @@ func _product_picker(tycoon: Dictionary) -> void:
 	_price_picker(tycoon)
 	_marketing_picker(tycoon)
 	_engine_picker(tycoon)
+	_focus_picker(tycoon)
 	var build_line := _label(_on_the_build_text(), true)
 	build_line.name = "OnTheBuild"
 	var staff: Array = tycoon.get("staff", []) as Array
@@ -1083,7 +1086,7 @@ func _product_picker(tycoon: Dictionary) -> void:
 	for person_id: String in _staff_ids:
 		staff_ids.append(person_id)
 	var pair_open := _entry_unlocked("topics", _topic_id) and _entry_unlocked("types", _type_id)
-	_actions("Start development", func() -> void: _request("tycoon.start", {"topicId": _topic_id, "typeId": _type_id, "staffIds": staff_ids, "pricePercent": _price_percent, "marketing": _marketing_id, "engine": _engine_id}), not fit.is_empty() and pair_open, "Back to office", func() -> void: present("journey"))
+	_actions("Start development", func() -> void: _request("tycoon.start", {"topicId": _topic_id, "typeId": _type_id, "staffIds": staff_ids, "pricePercent": _price_percent, "marketing": _marketing_id, "engine": _engine_id, "focus": _focus_id}), not fit.is_empty() and pair_open, "Back to office", func() -> void: present("journey"))
 
 func _product_progress(product: Dictionary) -> void:
 	var required := int(product.get("devDaysRequired", 1))
@@ -1094,6 +1097,7 @@ func _product_progress(product: Dictionary) -> void:
 	_show_launch_price(product, "LaunchPrice")
 	_show_marketing(product, "MarketingLine")
 	_show_engine(product, "EngineLine")
+	_show_focus(product, "FocusLine")
 	_show_contract(product, "ContractLine")
 	var progress := _label("Ready to ship" if ready else "Building · day %d of %d" % [dev_days, required], false, null, "action")
 	progress.name = "ProductProgress"
@@ -1139,6 +1143,7 @@ func _release_screen() -> void:
 	_show_launch_price(product, "ReleasePrice")
 	_show_marketing(product, "ReleaseMarketing")
 	_show_engine(product, "ReleaseEngine")
+	_show_focus(product, "ReleaseFocus")
 	_show_sequel(product, "ReleaseSequel")
 	var research_line := _label("+%d research points" % int(product.get("researchPoints", 0)), false, null, "action")
 	research_line.name = "ReleaseResearch"
@@ -1166,6 +1171,7 @@ func _product_history(tycoon: Dictionary) -> void:
 		_show_launch_price(product, "LaunchPrice", card)
 		_show_marketing(product, "MarketingLine", card)
 		_show_engine(product, "EngineLine", card)
+		_show_focus(product, "FocusLine", card)
 		_show_contract(product, "ContractLine", card)
 		_show_patch(product, "PatchLine", card)
 		_show_sequel(product, "SequelLine", card)
@@ -1391,14 +1397,31 @@ func _show_engine(product: Dictionary, node_name: String, parent: Control = null
 	line.name = node_name
 
 func _on_the_build_text() -> String:
-	if _engine_id == "none": return "On the build"
+	var parts: PackedStringArray = []
+	var engine_name := _chosen_engine_label()
+	if not engine_name.is_empty(): parts.append(engine_name)
+	var focus_name := _chosen_focus_label()
+	if not focus_name.is_empty(): parts.append(focus_name)
+	if parts.is_empty(): return "On the build"
+	return "On the build · %s" % " · ".join(parts)
+
+func _chosen_engine_label() -> String:
+	if _engine_id == "none": return ""
 	for item: Variant in _tycoon().get("engineOptions", []) as Array:
 		if not item is Dictionary: continue
 		var option := item as Dictionary
 		if str(option.get("id", "")) != _engine_id: continue
-		var engine_name := str(option.get("label", "")).strip_edges()
-		if not engine_name.is_empty(): return "On the build · %s" % engine_name
-	return "On the build"
+		return str(option.get("label", "")).strip_edges()
+	return ""
+
+func _chosen_focus_label() -> String:
+	if _focus_id.is_empty() or _focus_id == "balanced": return ""
+	for item: Variant in _tycoon().get("focusOptions", []) as Array:
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		if str(option.get("id", "")) != _focus_id: continue
+		return str(option.get("label", "")).strip_edges()
+	return ""
 
 func _engine_effect_line(option: Dictionary) -> String:
 	var engine_name := str(option.get("label", "None"))
@@ -1444,6 +1467,70 @@ func _engine_picker(tycoon: Dictionary) -> void:
 
 func _choose_engine(id: String) -> void:
 	_engine_id = id
+	_render()
+
+func _focus_line(product: Dictionary) -> String:
+	var value: Variant = product.get("focus", null)
+	if not value is Dictionary: return ""
+	var focus := value as Dictionary
+	var focus_name := str(focus.get("label", "")).strip_edges()
+	if focus_name.is_empty(): return ""
+	var bonus := int(focus.get("bonus", 0))
+	var stat := _stat_word(str(focus.get("stat", ""))).to_lower()
+	if bonus > 0 and not stat.is_empty():
+		return "On the build · %s · +%d %s" % [focus_name, bonus, stat]
+	return "On the build · %s" % focus_name
+
+func _show_focus(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var text := _focus_line(product)
+	if text.is_empty(): return
+	var line := _label(text, false, parent, "action")
+	line.name = node_name
+
+func _focus_effect_line(option: Dictionary) -> String:
+	var focus_name := str(option.get("label", "Balanced"))
+	var bonus := int(option.get("bonus", 0))
+	if bonus <= 0:
+		return "%s · no point bump" % focus_name
+	var stat := _stat_word(str(option.get("stat", ""))).to_lower()
+	return "%s · +%d %s" % [focus_name, bonus, stat]
+
+func _focus_picker(tycoon: Dictionary) -> void:
+	var options: Array = tycoon.get("focusOptions", []) as Array
+	if options.is_empty():
+		_focus_id = "balanced"
+		return
+	var known: Array[String] = []
+	for item: Variant in options:
+		if item is Dictionary:
+			known.append(str((item as Dictionary).get("id", "")))
+	if not known.has(_focus_id): _focus_id = "balanced"
+	var heading := _label("Focus", true)
+	heading.name = "FocusHeading"
+	var row := GridContainer.new()
+	row.columns = 4
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("h_separation", 8)
+	row.add_theme_constant_override("v_separation", 8)
+	_content.add_child(row)
+	var selected: Dictionary = {}
+	for item: Variant in options:
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		var id := str(option.get("id", ""))
+		var chosen := id == _focus_id
+		if chosen: selected = option
+		var button := _button(str(option.get("label", "")), _choose_focus.bind(id), false, true, row, "secondary")
+		button.name = "Focus_%s" % id
+		button.clip_text = true
+		if chosen:
+			for state: String in ["normal", "hover", "pressed", "hover_pressed"]:
+				button.add_theme_stylebox_override(state, CozyUI.control_style("secondary", "pressed"))
+	var effect := _label(_focus_effect_line(selected), false, null, "action")
+	effect.name = "FocusEffect"
+
+func _choose_focus(id: String) -> void:
+	_focus_id = id
 	_render()
 
 func _fit_word(fit: String) -> String:
