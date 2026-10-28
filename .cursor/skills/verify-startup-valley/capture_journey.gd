@@ -389,6 +389,7 @@ func _run() -> void:
 	check(not main.job_panel._connection_panel.visible, "The loop never opens Connect")
 	await _engine_proof()
 	await _focus_proof()
+	await _audience_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -631,6 +632,46 @@ func _focus_proof() -> void:
 	check(journey != null and journey.text == "On the build · Design · +1 design", "Journey names the focus")
 	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the focus")
 	await snap("35-focus-journey", journey)
+
+func _audience_proof() -> void:
+	var guard := 0
+	while not developing().is_empty() and not bool(developing().get("ready", false)) and guard < 4:
+		await end_office_day()
+		await open_journey()
+		guard += 1
+	if not developing().is_empty() and bool(developing().get("ready", false)):
+		await open_product()
+		await click(button_named("Release"))
+		await wait_until(func() -> bool: return main.company_panel.screen == "release" and not main.company_panel.busy, "The focused product releases before the audience shot")
+	await open_product()
+	await click(button_named("Crypto Alpha"))
+	await frames(4)
+	await click(button_named("Newsletter"))
+	await frames(4)
+	var none := main.company_panel.find_child("Engine_none", true, false) as Button
+	if none != null and not none.disabled:
+		await click(none)
+		await frames(4)
+	var balanced := main.company_panel.find_child("Focus_balanced", true, false) as Button
+	if balanced != null and not balanced.disabled:
+		await click(balanced)
+		await frames(4)
+	var regulars := main.company_panel.find_child("Audience_regulars", true, false) as Button
+	check(regulars != null and not regulars.disabled and str(regulars.get_meta("cozy_variant", "")) == "secondary" and regulars.text == "Regulars", "Regulars is a secondary audience")
+	check(label_named("AudienceEffect") != null and label_named("AudienceEffect").text == "Everyone · no fan bump", "The picker starts on Everyone")
+	await click(regulars)
+	await frames(4)
+	check(label_named("AudienceEffect") != null and label_named("AudienceEffect").text == "Regulars · +2 fans on a repeated topic", "The audience shows +2 fans on a repeated topic")
+	check(label_named("OnTheBuild") != null and label_named("OnTheBuild").text == "On the build · Regulars", "The build line names the audience")
+	check(button_named("Start development") != null and str(button_named("Start development").get_meta("cozy_variant", "")) == "primary", "Start development stays the primary action")
+	await snap("36-audience-picker", label_named("AudienceHeading"))
+	await click(button_named("Start development"))
+	await wait_until(func() -> bool: return developing().get("name", "") == "Crypto Alpha Newsletter" and not main.company_panel.busy, "The Regulars newsletter starts")
+	await open_journey()
+	var journey := label_named("AudienceJourney")
+	check(journey != null and journey.text == "On the build · Regulars", "Journey names the audience")
+	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the audience")
+	await snap("37-audience-journey", journey)
 
 func _office_expansion_proof() -> void:
 	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-office-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])

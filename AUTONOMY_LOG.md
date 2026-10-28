@@ -1665,3 +1665,50 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → buy Whop Kit Engine once → New Product → choose the engine, or leave it on None. The first newsletter with no engine is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_engines.gd`.
 
+### Round 42 — 2026-10-28
+
+**What changed**
+- One optional audience when a product starts. `tycoon.start` takes an optional `audience`: `everyone`, `regulars`, or `newcomers`. Omitted is Everyone. Regulars stores +2 fans on a sale when a past release used the same topic. Newcomers stores +2 fans and sells at 90% units. Everyone adds nothing, so the first Crypto Alpha Newsletter still pays 20700 cents and 5 fans. Regulars on a first-of-topic product stores the lean and still pays 20700 cents and 5 fans. A bad id fails with "Pick Everyone, Regulars, or Newcomers." and starts nothing. It does not charge a marketing ad. The choice spends no cash.
+- The product snapshot in `staff_json` stores `audience` only when the choice is not Everyone. There is no new SQL column and no ledger row. An older row that is only a staff array, or a row that omits the field, is Everyone. Reads do not rewrite `staff_json`. A sequel stores no audience.
+- The New Product picker offers Audience under the focus row: Everyone, Regulars, Newcomers on one compact three-button row. The effect line reads "Everyone · no fan bump", "Regulars · +2 fans on a repeated topic", or "Newcomers · +2 fans · −10% units". The shared build line reads "On the build" or "On the build · Regulars". A non-Everyone product shows "On the build · Regulars" on the journey, the bench, the release card, and the shipped list. Hire Mina stays the one primary action. Start development stays the primary action on the picker. A payload without `audienceOptions` draws no control.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Size is the next slice. One optional length when a product starts: Catalog (the default), Short, or Long. Short skips a day and sells a little less. Long adds a day and sells a little more. Catalog leaves the first newsletter at 20700 cents and 5 fans.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. The tallest Selling card still meets the footer. On the audience picker the shipped history sits above the footer the same way as the focus picker. The audience lines themselves sit above that clip.
+5. Carried from Round 40: Creative has no seated sheet. Unbound art stays untracked. The live path is still a harness driver. A cheap reviewer can still sit just under the 2.5 ready line. Chapter 3 ends at "More is coming." The starter `shared_workbench` stays in storage. The one on the Open Floor is a separate grant.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 110 tests, 108 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test covers Regulars and Newcomers unit and fan helpers, refusals for a bad id before any ad charge, omitted audience keys, Everyone leaving 20700 cents and 5 fans, Regulars on a first-of-topic product leaving those same numbers, Newcomers cutting units and adding 2 fans, Regulars adding 2 fans when the topic repeats, Regulars on a different topic adding none, a reopen, a sequel that stores no audience, and an older staff-array row staying Everyone.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS (40 checks, 0 failures). Launch sales stay 20700 cents and 5 fans. The next office day stays 33300 cents and 8 fans.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS (50 checks, 0 failures)
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS (50 checks, 0 failures)
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS (47 checks, 0 failures)
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS (23 checks, 0 failures)
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS (25 checks, 0 failures)
+- `test_tycoon_price.gd` — TYCOON PRICE PASS (49 checks, 0 failures). Catalog launch is 20700 cents and 5 fans.
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS (55 checks, 0 failures). No ad stays 20700 cents and 5 fans.
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS (60 checks, 0 failures). Ignoring the offer leaves Fitness and Crypto Alpha free. The newsletter still pays 20700 cents and 5 fans.
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS (37 checks, 0 failures). No patch still pays 20700 cents and 5 fans.
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS (49 checks, 0 failures). No sequel still pays 20700 cents and 5 fans.
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS (49 checks, 0 failures). No award still pays 20700 cents and 5 fans.
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS (65 checks, 0 failures). No port still pays 20700 cents and 5 fans.
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS (61 checks, 0 failures). No engine still pays 20700 cents and 5 fans. The build line stays "On the build" until an engine is chosen, then "On the build · Whop Kit Engine".
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS (58 checks, 0 failures). Balanced still pays 20700 cents and 5 fans.
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS (54 checks, 0 failures). Everyone still pays 20700 cents and 5 fans. The picker starts on "Everyone · no fan bump" and "On the build". Regulars shows "+2 fans on a repeated topic" and "On the build · Regulars". Newcomers shows "+2 fans · −10% units". The bench, the journey, and the release read "On the build · Regulars". Hire Mina stays primary. Start development stays primary. Choosing an audience spends nothing.
+- `test_ui_company_redesign.gd` — 14671 checks, 0 failures, 0 captures. A fixture without audience options draws no audience control. With the three options, Everyone, Regulars, and Newcomers are secondary, the effect line reads "Everyone · no fan bump", the build line stays "On the build", and Start development stays primary.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Thirty-seven PNGs in `/workspace/sv-proof/round-42/` (local, not committed). `36-audience-picker.png` is the product picker scrolled to Audience: Everyone, Regulars selected, and Newcomers, with "Regulars · +2 fans on a repeated topic" and "On the build · Regulars". The three labels are fully readable and do not overlap. Start development stays orange. The shipped history below sits above the footer. `37-audience-journey.png` reads "On the build · Regulars" above New Product. Hire Mina · free stays orange and does not cover that line. Header reads Spring 15 · Year 1 · $2,407.40 game cash · 73 reputation. Cash before the desk buy was 118460 cents. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-42 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → New Product → Audience, or leave it on Everyone. The first newsletter on Everyone is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_audience.gd`.
+
+

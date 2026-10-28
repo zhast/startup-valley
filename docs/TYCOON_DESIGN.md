@@ -9,7 +9,7 @@ The rules in `harness/src/tycoon.ts` are authoritative. This document matches th
 1. **Offline.** A new company ships a product with no API key and no network. Providers stay optional, and only on chapter work orders and chat.
 2. **The pairing is the decision.** A topic and a product type fit together at Great, Good, Okay, or Bad, in the Game Dev Tycoon way. A bad pairing can still ship. It sells worse.
 3. **Days, not a progress bar you click.** Development and sales move when the office day ends. The room stays the cozy Stardew-style office already in the game.
-4. **Deterministic.** Reviews and sales are pure functions of the company seed, the product id, the fit, the points, the focus stored on the product, the research bonus stored on the product, the launch price stored on the product, the marketing choice stored on the product, whether it was patched, the sequel bonus stored on the product, the engine score bump stored on the product, the shorter day count that follows from the sequel link, and reputation. A contract bonus is a separate cash line. A patch cost is too. An award fee is too, and its fans are not part of the sales formula. A port fee is a separate cash line. Its one extra sales day uses that same sales formula. An engine fee is a separate cash line, paid once when the engine is bought. They are not extra inputs beyond those. The same save replays the same launch.
+4. **Deterministic.** Reviews and sales are pure functions of the company seed, the product id, the fit, the points, the focus stored on the product, the research bonus stored on the product, the launch price stored on the product, the marketing choice stored on the product, the audience stored on the product, whether it was patched, the sequel bonus stored on the product, the engine score bump stored on the product, the shorter day count that follows from the sequel link, and reputation. Regulars also reads whether a past release used the same topic. A contract bonus is a separate cash line. A patch cost is too. An award fee is too, and its fans are not part of the sales formula. A port fee is a separate cash line. Its one extra sales day uses that same sales formula. An engine fee is a separate cash line, paid once when the engine is bought. They are not extra inputs beyond those. The same save replays the same launch.
 5. **One product on the bench.** A second idea waits until the first one ships. A shipped product can still be selling while the next one starts.
 
 ## Core loop
@@ -17,7 +17,7 @@ The rules in `harness/src/tycoon.ts` are authoritative. This document matches th
 1. From Company Journey, choose **New Product**.
 2. Pick a topic and a product type. The panel shows the fit.
 3. The founder is always on the build. Hired teammates can join.
-4. **Start development.** The product stores the fit, the staff snapshot, the research bonus, the launch price, the marketing choice, the engine choice, and the focus. A paid ad spends game cash here. The engine was already paid when it was bought. The focus spends nothing. An accepted contract also stores the client and the bonus.
+4. **Start development.** The product stores the fit, the staff snapshot, the research bonus, the launch price, the marketing choice, the engine choice, the focus, and the audience. A paid ad spends game cash here. The engine was already paid when it was bought. The focus spends nothing. The audience spends nothing. An accepted contract also stores the client and the bonus.
 5. **End day + save** once for each office day of work. The team adds design, tech, and hype. Progress is `dev days / days required`.
 6. When the required days are done, **Release**. Four reviewers score it from 1 to 10. Launch-day sales pay game cash and fans immediately. If the product was started under a contract, that release also pays the bonus as its own cash line.
 7. The next three office days keep selling, once each, when the day ends. The release day does not sell twice. One optional patch can spend game cash and add 1 to the stored score for those remaining days.
@@ -80,7 +80,7 @@ Sales run for 4 days at 100%, 70%, 45%, then 25% of the opening demand. Opening 
 
 The catalog price is the default. At Start development the player can leave it, or nudge −20% or +20%. A cheaper price sells more units. A higher price sells fewer. The percents are fixed: 80 / 100 / 120 for price, and 120 / 100 / 80 for units. Units after the nudge are `Math.max(1, Math.round((units * unitPercent) / 100))`. The unit price is `Math.round((catalogCents * pricePercent) / 100)`. Catalog (100) leaves both unchanged, so the first newsletter still pays 20700 cents and 5 fans.
 
-The choice is stored on the product, in `staff_json` as `{staff, researchBonus, pricePercent, marketing}`. When the product starts on the engine it also stores `engine` and `engineBonus`. When it starts on Design, Tech, or Hype it also stores `focus` and `focusBonus`. A sequel also stores `sequelOf`, and the original stores `sequelId` once that sequel starts. `scoreBonus` is 1 only when the carry applies. `engineBonus` is 1 only when `engine` is set. `focusBonus` is 1 only when `focus` is set. Sales use the stored price. An older row that is only a staff array, or a row with no `pricePercent`, sells at catalog. A row with no `marketing` sells with no ad. A row with no `patched` flag sells unpatched. A row with no sequel fields is not a sequel and has not started one. A row with no `award` field has not entered a show. A row with no `port` field has not been ported. A row with no `engine` field started with no engine. A row with no `focus` field started Balanced. Stored `sales_cents` are not rewritten. Reads do not rewrite `staff_json`.
+The choice is stored on the product, in `staff_json` as `{staff, researchBonus, pricePercent, marketing}`. When the product starts on the engine it also stores `engine` and `engineBonus`. When it starts on Design, Tech, or Hype it also stores `focus` and `focusBonus`. When it starts on Regulars or Newcomers it also stores `audience`. A sequel also stores `sequelOf`, and the original stores `sequelId` once that sequel starts. `scoreBonus` is 1 only when the carry applies. `engineBonus` is 1 only when `engine` is set. `focusBonus` is 1 only when `focus` is set. Sales use the stored price. An older row that is only a staff array, or a row with no `pricePercent`, sells at catalog. A row with no `marketing` sells with no ad. A row with no `patched` flag sells unpatched. A row with no sequel fields is not a sequel and has not started one. A row with no `award` field has not entered a show. A row with no `port` field has not been ported. A row with no `engine` field started with no engine. A row with no `focus` field started Balanced. A row with no `audience` field started Everyone. Stored `sales_cents` are not rewritten. Reads do not rewrite `staff_json`.
 
 Composition, in this order, on every sale that is computed:
 
@@ -88,12 +88,13 @@ Composition, in this order, on every sale that is computed:
 2. Launch-price units.
 3. Season +20% units, when the topic is favored that day.
 4. Marketing units from the snapshot. None is an identity step. Otherwise `Math.max(1, Math.round((units * unitPercent) / 100))`.
-5. Fans from those units, then the event fan bonus if an event is on.
-6. Launch price on the catalog cents.
-7. Nicer Checkout Page +10% on that unit price, when the tool is already owned.
-8. Cash is units times that price.
+5. Audience units from the snapshot. Everyone and Regulars are identity steps. Newcomers uses 90: `Math.max(1, Math.round((units * 90) / 100))`.
+6. Fans from those units, then the event fan bonus if an event is on, then the audience fan bonus. Regulars adds 2 fans when a past release used the same topic. Newcomers always adds 2 fans. Everyone adds nothing.
+7. Launch price on the catalog cents.
+8. Nicer Checkout Page +10% on that unit price, when the tool is already owned.
+9. Cash is units times that price.
 
-A checkout-page boost still changes only the price. Season still changes only the units. Launch price changes both, from the snapshot.
+A checkout-page boost still changes only the price. Season still changes only the units. Launch price changes both, from the snapshot. Newcomers then cuts units. Regulars and Newcomers add fans after that.
 
 A new company uses seed `26021`, stored in `tycoon_meta`. Product ids are `p1`, `p2`, and so on.
 
@@ -217,7 +218,7 @@ The season is a pure function of the saved day. There is no second clock and no 
 | Fall | 57–84 | Study Notes, Trading |
 | Winter | 85–112 | Cooking, Gaming |
 
-A product whose topic is favored sells 20 percent more units on each sale computed that season: `Math.max(1, Math.round((units * 120) / 100))`. That `units` value already includes the launch-price unit effect. Marketing, when the product bought an ad, runs after this step. Fans are computed from the units after marketing. Cents are the final units times the price. A checkout-page price boost still changes only the price. Stored reviews and earlier sales are not rewritten. A topic outside the pair uses the old formula. Crypto Alpha is not favored in Spring, so the first newsletter's cash is unchanged.
+A product whose topic is favored sells 20 percent more units on each sale computed that season: `Math.max(1, Math.round((units * 120) / 100))`. That `units` value already includes the launch-price unit effect. Marketing, when the product bought an ad, runs after this step. Audience units run after marketing. Fans are computed from the units after that, then the audience fan bonus. Cents are the final units times the price. A checkout-page price boost still changes only the price. Stored reviews and earlier sales are not rewritten. A topic outside the pair uses the old formula. Crypto Alpha is not favored in Spring, so the first newsletter's cash is unchanged.
 
 One cozy event per season, on a fixed day. The effect lasts that day only. Names stay inside the simulation.
 
@@ -266,7 +267,7 @@ The small ad is a Whop Weekly spot. The big ad is the louder buy. The cost is ga
 
 The choice is stored in `staff_json` next to `pricePercent` and `researchBonus`. Sales use the stored id. An older row that is only a staff array, or a row with no `marketing`, sells with no ad. Stored `sales_cents` are not rewritten.
 
-Marketing is step 4 of the sale composition above. It runs after launch-price units and the season boost, and before fans. It does not change the unit price. Checkout still changes only the price. The spend is the cash paid at the start, not a cut of later sales.
+Marketing is step 4 of the sale composition above. It runs after launch-price units and the season boost, and before audience units and fans. It does not change the unit price. Checkout still changes only the price. The spend is the cash paid at the start, not a cut of later sales.
 
 `journey.tycoon.marketingOptions` is the three rows, each with `enabled` and `reason`. The New Product picker shows them under Price as secondary buttons, plus one line, for example "None · $0 · no extra units" or "Small ad · $50 · +20% units". A disabled button reads "Small ad · Need $50". The bench, the release card, and the shipped list repeat that line when an ad was bought. Hire stays the one primary action. A payload without `marketingOptions` leaves the control out, so older UI fixtures still render.
 
@@ -355,7 +356,7 @@ Company Journey shows one Shipped card per product whose sales have finished. Th
 
 One optional port per finished product. No port is the default. The harness owns the fee, the extra sales day, and the refusals. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential.
 
-The shelf is **Whop Mobile**. `tycoon.port` takes `{productId}`. The fee is $80. The port pays exactly one extra sales day on the next day end, then it is done. That day uses the stored score after a patch, the same per-day formula as a normal sale, and the last curve step (25%). The seeded swing uses that extra index, so the day is not a copy of the fourth sales day. `salesDays` stays 4. The payout is added to `sales_cents` and to the product's fans. Price, marketing, season, event fans, reputation, and the checkout boost all apply as they do on a normal sales day.
+The shelf is **Whop Mobile**. `tycoon.port` takes `{productId}`. The fee is $80. The port pays exactly one extra sales day on the next day end, then it is done. That day uses the stored score after a patch, the same per-day formula as a normal sale, and the last curve step (25%). The seeded swing uses that extra index, so the day is not a copy of the fourth sales day. `salesDays` stays 4. The payout is added to `sales_cents` and to the product's fans. Price, marketing, season, audience, event fans, reputation, and the checkout boost all apply as they do on a normal sales day.
 
 The field is `port: {shelf, startedDay}` on the product snapshot in `staff_json` while it is selling, and `port: {shelf, startedDay, cents, fans}` after it pays. `shelf` is Whop Mobile. There is no new SQL column. An older row that is only a staff array, or a row that omits the field, has not been ported. Reads do not rewrite `staff_json`. A successful port writes the field and one ledger row for the fee: id `tycoon:port:<productId>`, cash −$80, earned 0, reputation 0, label `Port: Whop Mobile`. The extra sale is a normal sales row: id `tycoon:<productId>:4`, cash and earned equal to that day's cents, reputation equal to that day's fans, label `Sales · <product>`. Fans add once, on that sales row. Porting twice fails with "Already ported." and charges nothing.
 
@@ -410,13 +411,35 @@ The fields are `focus` and `focusBonus` on the product snapshot in `staff_json`.
 
 The New Product picker offers Focus under the engine row, with the same choice-row pattern. The effect line reads "Balanced · no point bump" or "Design · +1 design". The shared build line reads "On the build", "On the build · Design", or "On the build · Whop Kit Engine · Design" when an engine is chosen too. A focused product shows "On the build · Design · +1 design" on the journey, the build screen, the release card, and the shipped list. Hire stays the one primary action. Start development stays the primary on the picker. A payload without `focusOptions` leaves the control out, so older UI fixtures still render.
 
+## Audience
+
+One optional audience when a product starts. Everyone is the default. The harness owns the fan bump, the Newcomers unit cut, and the refusal. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential.
+
+`tycoon.start` takes an optional `audience`: `everyone`, `regulars`, or `newcomers`. Omitted is Everyone. Any other value fails with "Pick Everyone, Regulars, or Newcomers." and starts nothing. The choice spends no cash. A bad id does not charge a marketing ad.
+
+| Audience | Stored rule |
+| --- | --- |
+| Everyone | none |
+| Regulars | +2 fans on a sale when a past release used the same topic |
+| Newcomers | +2 fans, and 90% units |
+
+The bump is added when the sale is computed. Regulars looks at other products that have already shipped, not at this one. A first-of-topic Regulars product stores the lean and still pays the old cash and fans. Newcomers always applies the unit cut and the fan bump. Units use `Math.max(1, Math.round((units * 90) / 100))`. Everyone adds nothing, so the first Crypto Alpha Newsletter still pays 20700 cents and 5 fans.
+
+The field is `audience` on the product snapshot in `staff_json`. There is no new SQL column. `audience` is `regulars` or `newcomers`. Everyone omits the key. An older row that is only a staff array, or a row that omits the field, is Everyone. A sequel stores no audience. Reads do not rewrite `staff_json`.
+
+Audience is step 5 of the sale composition above. Newcomers units run after marketing, and audience fans run after the unit fans and the event bonus. Regulars does not change units. Checkout still changes only the price.
+
+`journey.tycoon.audienceOptions` is the three rows: Everyone, Regulars, and Newcomers. Each product's `audience` is null, or `{id, label, fans, unitPercent}` with `fans` 2.
+
+The New Product picker offers Audience under the focus row, with the same choice-row pattern, three buttons on one compact row. The effect line reads "Everyone · no fan bump", "Regulars · +2 fans on a repeated topic", or "Newcomers · +2 fans · −10% units". The shared build line reads "On the build" or "On the build · Regulars". A non-Everyone product shows "On the build · Regulars" on the journey, the build screen, the release card, and the shipped list. Hire stays the one primary action. Start development stays the primary on the picker. A payload without `audienceOptions` leaves the control out, so older UI fixtures still render.
+
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, awards, ports, engines, and focus. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Engine**, **Office**, and **Season** on Company Journey. Price, marketing, the engine choice, and the focus live on the New Product picker. The engine buy lives on the Engine card. The award show and the port live on the Shipped card.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, awards, ports, engines, focus, and audience. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Engine**, **Office**, and **Season** on Company Journey. Price, marketing, the engine choice, the focus, and the audience live on the New Product picker. The engine buy lives on the Engine card. The award show and the port live on the Shipped card.
 
 Next slice:
 
-1. **Audience.** One optional audience when a product starts: Everyone (the default), Regulars, or Newcomers. A lean stores a small fan bump. Everyone leaves the first newsletter at 20700 cents and 5 fans.
+1. **Size.** One optional length when a product starts: Catalog (the default), Short, or Long. Short skips a day and sells a little less. Long adds a day and sells a little more. Catalog leaves the first newsletter at 20700 cents and 5 fans.
 
 Later art ask: a second room. Office growth shipped as spare desks on the current floor (`compact_desk` and `shared_workbench`, already bound). There is no second-room architecture art, so that room waits.
 
