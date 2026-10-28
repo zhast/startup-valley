@@ -297,7 +297,7 @@
     "tycoon": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "upgradeNotice", "upgrades", "calendar", "office", "priceSteps", "marketingOptions", "engineNotice", "engine", "engineOptions", "contract", "patchNotice", "developing", "history"],
+      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "upgradeNotice", "upgrades", "calendar", "office", "priceSteps", "marketingOptions", "engineNotice", "engine", "engineOptions", "focusOptions", "contract", "patchNotice", "developing", "history"],
       "properties": {
         "seed": { "type": "integer", "minimum": 1 },
         "salesWindowDays": { "type": "integer", "const": 4 },
@@ -317,6 +317,7 @@
         "engineNotice": { "type": "string" },
         "engine": { "$ref": "#/$defs/tycoonEngine" },
         "engineOptions": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/tycoonEngineOption" } },
+        "focusOptions": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "$ref": "#/$defs/tycoonFocusOption" } },
         "contract": { "$ref": "#/$defs/tycoonContract" },
         "patchNotice": { "type": "string" },
         "developing": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/tycoonProduct" }] },
@@ -551,6 +552,17 @@
         "reason": { "type": "string" }
       }
     },
+    "tycoonFocusOption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "stat", "bonus"],
+      "properties": {
+        "id": { "enum": ["balanced", "design", "tech", "hype"] },
+        "label": { "enum": ["Balanced", "Design", "Tech", "Hype"] },
+        "stat": { "enum": ["", "design", "tech", "hype"] },
+        "bonus": { "enum": [0, 1] }
+      }
+    },
     "tycoonMarketing": {
       "type": "object",
       "additionalProperties": false,
@@ -567,7 +579,7 @@
     "tycoonProduct": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "name", "topicId", "typeId", "topicName", "typeName", "fit", "status", "startedDay", "devDays", "devDaysRequired", "design", "tech", "hype", "progress", "ready", "staffIds", "releasedDay", "review", "salesDays", "salesDaysTotal", "salesCents", "fans", "researchPoints", "researchBonus", "pricePercent", "priceCents", "marketing", "contract", "patch", "sequel", "award", "port", "engine"],
+      "required": ["id", "name", "topicId", "typeId", "topicName", "typeName", "fit", "status", "startedDay", "devDays", "devDaysRequired", "design", "tech", "hype", "progress", "ready", "staffIds", "releasedDay", "review", "salesDays", "salesDaysTotal", "salesCents", "fans", "researchPoints", "researchBonus", "pricePercent", "priceCents", "marketing", "contract", "patch", "sequel", "award", "port", "engine", "focus"],
       "properties": {
         "id": { "type": "string", "pattern": "^p[1-9][0-9]*$" },
         "name": { "type": "string", "minLength": 1 },
@@ -695,6 +707,22 @@
                 "id": { "const": "whop_kit" },
                 "name": { "const": "Whop Kit Engine" },
                 "scoreBonus": { "const": 1 }
+              }
+            }
+          ]
+        },
+        "focus": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "label", "stat", "bonus"],
+              "properties": {
+                "id": { "enum": ["design", "tech", "hype"] },
+                "label": { "enum": ["Design", "Tech", "Hype"] },
+                "stat": { "enum": ["design", "tech", "hype"] },
+                "bonus": { "const": 1 }
               }
             }
           ]

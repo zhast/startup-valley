@@ -67,6 +67,17 @@ export const ENGINE_NAME = "Whop Kit Engine";
 export const ENGINE_BLURB = "One kit, used on the builds you choose.";
 export const ENGINE_COST_CENTS = 12_000;
 export const ENGINE_SCORE_BONUS = 1;
+/**
+ * One optional focus when a product starts. Balanced adds nothing.
+ * Design, Tech, or Hype stores +1 on that stat. The add stops at STAT_CAP.
+ */
+export const FOCUS_BONUS = 1;
+export const FOCUSES = [
+  { id: "balanced", label: "Balanced", stat: "", bonus: 0 },
+  { id: "design", label: "Design", stat: "design", bonus: 1 },
+  { id: "tech", label: "Tech", stat: "tech", bonus: 1 },
+  { id: "hype", label: "Hype", stat: "hype", bonus: 1 },
+] as const;
 /** Stardew-shaped office calendar. Derived from the saved day. It does not replace the clock. */
 export const SEASON_LENGTH_DAYS = 28;
 export const YEAR_LENGTH_DAYS = 112;
@@ -143,6 +154,8 @@ export type MarketingId = (typeof MARKETING)[number]["id"];
 export type MarketingOption = (typeof MARKETING)[number];
 export type ContractId = (typeof CONTRACTS)[number]["id"];
 export type EngineId = typeof ENGINE_ID;
+export type FocusId = (typeof FOCUSES)[number]["id"];
+export type FocusStat = Exclude<(typeof FOCUSES)[number]["stat"], "">;
 
 /** New companies. Crypto Alpha × Newsletter stays in this set. */
 const STARTER_TOPIC_IDS: readonly TopicId[] = ["fitness", "trading", "cooking", "gaming", "study_notes", "crypto"];
@@ -310,6 +323,8 @@ export interface TycoonProductView {
   port: TycoonPortView | null;
   /** Null when the product started with no engine. Omitted rows are no engine. */
   engine: TycoonProductEngine | null;
+  /** Null when the product started Balanced. Omitted rows are Balanced. */
+  focus: TycoonProductFocus | null;
 }
 
 export interface TycoonUpgradeView {
@@ -446,6 +461,13 @@ export interface TycoonProductEngine {
   scoreBonus: number;
 }
 
+export interface TycoonProductFocus {
+  id: FocusStat;
+  label: string;
+  stat: FocusStat;
+  bonus: number;
+}
+
 export interface TycoonSnapshot {
   seed: number;
   salesWindowDays: number;
@@ -465,6 +487,7 @@ export interface TycoonSnapshot {
   engineNotice: string;
   engine: TycoonEngineView;
   engineOptions: TycoonEngineOption[];
+  focusOptions: Array<(typeof FOCUSES)[number]>;
   contract: TycoonContractView;
   patchNotice: string;
   developing: TycoonProductView | null;
@@ -723,6 +746,35 @@ function engineChoices(owned: boolean): TycoonEngineOption[] {
   ];
 }
 
+export function focusById(id: string): (typeof FOCUSES)[number] | undefined {
+  return FOCUSES.find((item) => item.id === id);
+}
+
+/** Unknown or omitted values are Balanced. */
+export function normalizeFocus(value: unknown): FocusId {
+  return typeof value === "string" && focusById(value) ? value as FocusId : "balanced";
+}
+
+function asFocus(value: string): FocusId {
+  const option = focusById(value);
+  if (!option) throw new Error("Pick Balanced, Design, Tech, or Hype.");
+  return option.id;
+}
+
+/** +1 on the chosen stat. Balanced adds nothing. A stat already at the training cap stays there. */
+export function applyFocusPoints(points: CraftPoints, focus: unknown): CraftPoints {
+  const id = normalizeFocus(focus);
+  if (id === "balanced") return points;
+  const current = points[id];
+  if (current >= STAT_CAP) return points;
+  return { ...points, [id]: Math.min(STAT_CAP, current + FOCUS_BONUS) };
+}
+
+function focusView(stat: FocusStat | null): TycoonProductFocus | null {
+  if (!stat) return null;
+  return { id: stat, label: statLabel(stat), stat, bonus: FOCUS_BONUS };
+}
+
 export function releaseResearchPoints(score: number): number {
   return Math.floor(Math.max(0, score) / 2);
 }
@@ -832,6 +884,8 @@ interface ProductSnapshot {
   port: ProductPort | null;
   /** Null when development started with no engine. */
   engine: EngineId | null;
+  /** Null when development started Balanced. */
+  focus: FocusStat | null;
 }
 
 interface ProductPort {
@@ -861,6 +915,7 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     award: null,
     port: null,
     engine: null,
+    focus: null,
   };
 }
 
@@ -868,7 +923,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, and no engine. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no engine, and Balanced. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -888,6 +943,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     award?: unknown;
     port?: unknown;
     engine?: unknown;
+    focus?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -902,7 +958,13 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     award: parseAward(body.award),
     port: parsePort(body.port),
     engine: body.engine === ENGINE_ID ? ENGINE_ID : null,
+    focus: parseFocus(body.focus),
   };
+}
+
+function parseFocus(value: unknown): FocusStat | null {
+  if (value === "design" || value === "tech" || value === "hype") return value;
+  return null;
 }
 
 function awardFans(outcome: AwardOutcome): number {
@@ -961,6 +1023,10 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
   if (stored.engine === ENGINE_ID) {
     body.engine = ENGINE_ID;
     body.engineBonus = ENGINE_SCORE_BONUS;
+  }
+  if (stored.focus) {
+    body.focus = stored.focus;
+    body.focusBonus = FOCUS_BONUS;
   }
   return JSON.stringify(body);
 }
@@ -1287,6 +1353,7 @@ export class TycoonStore {
       engineNotice: this.engineNoticeDay === day ? this.engineNotice : "",
       engine: engineOffer(engineOwned, cash),
       engineOptions: engineChoices(engineOwned),
+      focusOptions: [...FOCUSES],
       contract: this.contractOffer(developing),
       patchNotice: this.patchNoticeDay === day ? this.patchNotice : "",
       developing: developing ? this.toView(developing) : null,
@@ -1294,7 +1361,7 @@ export class TycoonStore {
     };
   }
 
-  start(topicValue: string, typeValue: string, requestedStaff: readonly string[], pricePercentValue?: number, marketingValue?: string, engineValue?: string): ReturnType<JourneyStore["state"]> {
+  start(topicValue: string, typeValue: string, requestedStaff: readonly string[], pricePercentValue?: number, marketingValue?: string, engineValue?: string, focusValue?: string): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
       if (this.developingRow()) throw new Error("A product is already on the bench. Ship it or keep building.");
       const topicId = asTopic(topicValue);
@@ -1307,6 +1374,7 @@ export class TycoonStore {
       const pricePercent = pricePercentValue === undefined ? 100 : asLaunchPrice(pricePercentValue);
       const marketing = marketingValue === undefined ? "none" : asMarketing(marketingValue);
       const engine = engineValue === undefined ? "none" : asEngine(engineValue);
+      const focus = focusValue === undefined ? "balanced" : asFocus(focusValue);
       if (engine === ENGINE_ID && !this.loadEngineOwned()) throw new Error("Buy the engine first.");
       const pending = this.loadPendingContract();
       if (pending && (pending.topicId !== topicId || pending.typeId !== typeId)) {
@@ -1333,6 +1401,8 @@ export class TycoonStore {
         contract?: ProductContract;
         engine?: EngineId;
         engineBonus?: number;
+        focus?: FocusStat;
+        focusBonus?: number;
       } = {
         staff: staffIds.map((memberId) => ({
           id: memberId, design: stats[memberId].design, tech: stats[memberId].tech, hype: stats[memberId].hype,
@@ -1344,6 +1414,10 @@ export class TycoonStore {
       if (engine === ENGINE_ID) {
         snapshot.engine = ENGINE_ID;
         snapshot.engineBonus = ENGINE_SCORE_BONUS;
+      }
+      if (focus !== "balanced") {
+        snapshot.focus = focus;
+        snapshot.focusBonus = FOCUS_BONUS;
       }
       if (pending) {
         snapshot.contract = { id: pending.id, client: pending.client, bonusCents: pending.bonusCents };
@@ -1507,14 +1581,19 @@ export class TycoonStore {
       }
       const topicId = asTopic(row.topic_id);
       const typeId = type.id;
+      const points = applyFocusPoints({
+        design: Number(row.design_points),
+        tech: Number(row.tech_points),
+        hype: Number(row.hype_points),
+      }, stored.focus);
       const review = reviewProduct({
         seed: this.seed(),
         productId: row.id,
         topicId,
         typeId,
-        design: Number(row.design_points),
-        tech: Number(row.tech_points),
-        hype: Number(row.hype_points),
+        design: points.design,
+        tech: points.tech,
+        hype: points.hype,
         researchBonus: stored.researchBonus,
         sequelBonus: stored.scoreBonus,
         engineBonus: stored.engine === ENGINE_ID ? ENGINE_SCORE_BONUS : 0,
@@ -1587,6 +1666,7 @@ export class TycoonStore {
         award: null,
         port: null,
         engine: null,
+        focus: null,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -2147,6 +2227,11 @@ export class TycoonStore {
     const required = requiredDevDays(type.devDays, snapshot.sequelOf !== null);
     const progress = Math.min(100, Math.round((devDays * 100) / required));
     const staffIds = snapshot.staff.map((person) => person.id);
+    const points = applyFocusPoints({
+      design: Number(row.design_points),
+      tech: Number(row.tech_points),
+      hype: Number(row.hype_points),
+    }, snapshot.focus);
     return {
       id: row.id,
       name: row.name,
@@ -2159,9 +2244,9 @@ export class TycoonStore {
       startedDay: Number(row.started_day),
       devDays,
       devDaysRequired: required,
-      design: Number(row.design_points),
-      tech: Number(row.tech_points),
-      hype: Number(row.hype_points),
+      design: points.design,
+      tech: points.tech,
+      hype: points.hype,
       progress,
       ready: row.status === "developing" && devDays >= required,
       staffIds,
@@ -2184,6 +2269,7 @@ export class TycoonStore {
       engine: snapshot.engine === ENGINE_ID
         ? { id: ENGINE_ID, name: ENGINE_NAME, scoreBonus: ENGINE_SCORE_BONUS }
         : null,
+      focus: focusView(snapshot.focus),
     };
   }
 

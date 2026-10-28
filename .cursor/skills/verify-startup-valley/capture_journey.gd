@@ -388,6 +388,7 @@ func _run() -> void:
 	check(button_named("Buy Oak Standing Desk") == null, "The desk buy button hides once it is owned")
 	check(not main.job_panel._connection_panel.visible, "The loop never opens Connect")
 	await _engine_proof()
+	await _focus_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -603,6 +604,33 @@ func _engine_proof() -> void:
 	check(label_named("EngineEffect") != null and label_named("EngineEffect").text == "Whop Kit Engine · +1 score", "The engine shows +1 score")
 	check(label_named("OnTheBuild") != null and label_named("OnTheBuild").text == "On the build · Whop Kit Engine", "The build line names the engine")
 	await snap("33-engine-picker", label_named("EngineHeading"))
+
+func _focus_proof() -> void:
+	await open_product()
+	await click(button_named("Crypto Alpha"))
+	await frames(4)
+	await click(button_named("Newsletter"))
+	await frames(4)
+	var none := main.company_panel.find_child("Engine_none", true, false) as Button
+	check(none != null and not none.disabled, "None is available before the focus shot")
+	await click(none)
+	await frames(4)
+	var design := main.company_panel.find_child("Focus_design", true, false) as Button
+	check(design != null and not design.disabled and str(design.get_meta("cozy_variant", "")) == "secondary" and design.text == "Design", "Design is a secondary focus")
+	check(label_named("FocusEffect") != null and label_named("FocusEffect").text == "Balanced · no point bump", "The picker starts on Balanced")
+	await click(design)
+	await frames(4)
+	check(label_named("FocusEffect") != null and label_named("FocusEffect").text == "Design · +1 design", "The focus shows +1 design")
+	check(label_named("OnTheBuild") != null and label_named("OnTheBuild").text == "On the build · Design", "The build line names the focus")
+	check(button_named("Start development") != null and str(button_named("Start development").get_meta("cozy_variant", "")) == "primary", "Start development stays the primary action")
+	await snap("34-focus-picker", label_named("FocusHeading"))
+	await click(button_named("Start development"))
+	await wait_until(func() -> bool: return developing().get("name", "") == "Crypto Alpha Newsletter" and not main.company_panel.busy, "The focused newsletter starts")
+	await open_journey()
+	var journey := label_named("FocusJourney")
+	check(journey != null and journey.text == "On the build · Design · +1 design", "Journey names the focus")
+	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the focus")
+	await snap("35-focus-journey", journey)
 
 func _office_expansion_proof() -> void:
 	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-office-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
