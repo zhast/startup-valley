@@ -236,7 +236,7 @@ Each event adds 2 fans to any product that sells that day. The line is "+2 fans 
 
 `journey.tycoon.calendar` carries `season`, `seasonName`, `dayOfSeason`, `year`, `label`, `favoredTopics` (`{id, name}`), `event` (or null), and `nextEvent` (the event fields plus `season`, `dayOfSeason`, and `daysUntil`). The day summary stores `dateLabel` for the day that just ended, so the complete screen does not jump to the next morning. Older summaries without that field still load.
 
-Company Journey shows the label on the heading ("Spring 2 · Year 1 · $0.00 game cash · 0 reputation"). The title continue line and the day complete screen use the same words. A Season card sits under Office: "In season: Fitness, Dating Advice", and either "Creator Fair today. +2 fans on sales today" or "Creator Fair in 11 days". The same card names the next payday. With no hires that line is "No payroll yet". The same card offers one optional loan. The product picker adds "· in season" on a favored topic, including a locked one. Hire stays the one primary action. Take loan is secondary.
+Company Journey shows the label on the heading ("Spring 2 · Year 1 · $0.00 game cash · 0 reputation"). The title continue line and the day complete screen use the same words. A Season card sits under Office: "In season: Fitness, Dating Advice", and either "Creator Fair today. +2 fans on sales today" or "Creator Fair in 11 days". The same card names the next payday. With no hires that line is "No payroll yet". The same card offers one optional loan and one optional booth at the next fair. The product picker adds "· in season" on a favored topic, including a locked one. Hire stays the one primary action. Take loan and Book booth are secondary.
 
 ## Whop-themed names
 
@@ -520,13 +520,35 @@ The flag is `publisher: true` on the product snapshot in `staff_json`. There is 
 
 The card is on Company Journey for the product in development, with the build lines and above New Product. The offer line is "Publisher · Creator Collective pays $150 now, takes 30% of sales" plus one secondary button, Sign publisher. Once signed the line is "Published by Creator Collective · 30% cut" and the button is gone. After release the card is gone. Hire stays the one primary action. Sign publisher is not orange.
 
+## Expos
+
+One optional booth at the next seasonal creator fair. The name is **Whop Creator Fair** in copy only. The Spring 13 Creator Fair event is unchanged and still adds 2 fans only when a product sells on its own day. The harness owns the fee, the fans, the fair day, and the ledger rows. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential.
+
+At most one booth per fair. `tycoon.bookBooth` takes `{}` and books the next fair that still pays if today ends on it. A second book for that fair fails with "Already booked." and writes nothing. Skipping the booth writes no row, so the first Crypto Alpha Newsletter still pays 20700 cents and 5 fans, and the next office day is still 33300 cents.
+
+| | Amount | Why |
+| --- | --- | --- |
+| Fee | $60 | Over the $40 award fee and under Mina's $80 season salary. A company that just shipped the $207 newsletter can book and still keep $147. |
+| Fans | 3 | Under that newsletter's 5. The offer says "about 3 fans". The payout is exactly 3. Fans do not depend on a shipped product. |
+| Fair day | 14 | The middle of the season. Not payday (day 28). Not an existing event day (Spring 13, Summer 11, Fall 16, Winter 25). |
+
+Booking writes one ledger row: id `tycoon:expo:<year>-<season>:booth`, for example `tycoon:expo:1-spring:booth`, cash −$60, earned 0, reputation 0, label `Booth: Whop Creator Fair`. Cash may not go below zero for this fee. With less than $60 the call fails with "Need $60" and writes nothing.
+
+Fans are paid at the end of the fair day, after that day's sales, so the same evening's units stay on the old formula. `Math.floor(reputation / 10)` would not change units for +3 fans anyway. One ledger row: id `tycoon:expo:<year>-<season>:fans`, cash 0, earned 0, reputation +3, label `Expo: Whop Creator Fair`. A fair that was not booked writes no row and is not paid late. Booking on the fair morning still pays that evening. The next morning the offer moves to the next season's day 14, and the year wraps after Winter. Replaying that day end, or opening the save again, finds the id and does not charge or pay a second time.
+
+There is no new SQL column. A booked fair is a booth row for that `year-season` key. An older save has no expo rows and loads with the offer.
+
+`journey.tycoon.expo` is `{ name, costCents, fans, when, booked }`. `name` is Whop Creator Fair. `costCents` is 6000. `fans` is 3. `when` is the fair label, such as "Spring 14". `booked` is true once the fee row exists. A payload without `expo` draws no extra line or button.
+
+The Season card line is "Expo · Whop Creator Fair on Spring 14 · $60 booth, about 3 fans" plus one secondary button, Book booth. Once booked the line is "Booth booked · Whop Creator Fair on Spring 14" and the button is gone. Hire stays the one primary action. Book booth is not orange.
+
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, awards, ports, engines, focus, audience, size, payroll, loans, and publishers. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Engine**, **Office**, and **Season** on Company Journey. Price, marketing, the engine choice, the focus, the audience, and the size live on the New Product picker. The engine buy lives on the Engine card. The award show and the port live on the Shipped card. Payroll and the loan live on the Season card. The publisher deal lives on the card for the product in development.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, awards, ports, engines, focus, audience, size, payroll, loans, publishers, and expos. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Engine**, **Office**, and **Season** on Company Journey. Price, marketing, the engine choice, the focus, the audience, and the size live on the New Product picker. The engine buy lives on the Engine card. The award show and the port live on the Shipped card. Payroll, the loan, and the booth live on the Season card. The publisher deal lives on the card for the product in development.
 
 Next slice:
 
-1. **Expos.** One optional booth on the Season card for the next fair. A small fee, and a few fans. Skipping it leaves cash alone, so the first newsletter stays 20700 cents and 5 fans. No new product picker row.
+1. **Localization.** One optional translation of a finished product, on that product's existing shelf row. A small fee, then one quieter extra sales day. Skipping it leaves cash alone, so the first newsletter stays 20700 cents and 5 fans. No new product picker row, and no new Season card button.
 
 Later art ask: a second room. Office growth shipped as spare desks on the current floor (`compact_desk` and `shared_workbench`, already bound). There is no second-room architecture art, so that room waits.
 

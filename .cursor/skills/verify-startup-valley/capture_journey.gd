@@ -394,6 +394,7 @@ func _run() -> void:
 	await _payroll_proof()
 	await _loan_proof()
 	await _publisher_proof()
+	await _expo_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -891,6 +892,62 @@ func _publisher_proof() -> void:
 	header = label_named("OfficeDate")
 	check(header != null and header.text.contains("$150.00"), "The header shows the publisher cash")
 	await snap("45-publisher-signed", main.company_panel.find_child("PublisherCard", true, false) as Control)
+
+func seed_expo_offer(data_dir: String) -> bool:
+	var database := ProjectSettings.globalize_path("res://../harness/src/database.ts")
+	var tsx := ProjectSettings.globalize_path("res://../harness/node_modules/tsx/dist/cli.mjs")
+	var node := OS.get_environment("STARTUP_VALLEY_NODE").strip_edges()
+	if node.is_empty():
+		for dir: String in OS.get_environment("PATH").split(":"):
+			if FileAccess.file_exists(dir.path_join("node")):
+				node = dir.path_join("node")
+				break
+	if node.is_empty():
+		node = "/home/box/.local/node22/bin/node"
+	var script_path := data_dir.path_join("seed-expo.mjs")
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst file = root + '/startup-valley.sqlite';\nconst db = new GameDatabase(file, root + '/company-project');\ndb.journey.recordCompanyChange('seed:expo-cash', 1, 20700, 0, 0, 'Seed cash');\nconst expo = db.tycoon.view().expo;\nconst company = db.journey.state().company;\ndb.close();\nif (company.cashCents !== 20700 || company.earnedCents !== 0 || company.reputation !== 0 || expo.booked || expo.name !== 'Whop Creator Fair' || expo.when !== 'Spring 14' || expo.costCents !== 6000 || expo.fans !== 3) { console.error(JSON.stringify({ company: company, expo: expo })); process.exit(2); }\n" % JSON.stringify(database)
+	var file := FileAccess.open(script_path, FileAccess.WRITE)
+	if file == null:
+		check(false, "Could not write the expo seed script")
+		return false
+	file.store_string(script)
+	file.close()
+	var output: Array = []
+	var code := OS.execute(node, PackedStringArray([tsx, script_path, data_dir]), output, true)
+	check(code == 0, "Seeded a company with $207 and an expo offer (%s)" % " ".join(output))
+	return code == 0
+
+func _expo_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-expo-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_expo_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var line := label_named("SeasonExpo")
+	check(line != null and line.text == "Expo · Whop Creator Fair on Spring 14 · $60 booth, about 3 fans", "The Season card names the expo offer")
+	var book := button_named("Book booth")
+	check(book != null and not book.disabled and str(book.get_meta("cozy_variant", "")) == "secondary", "Book booth is a secondary action")
+	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the booth")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("$207.00"), "The offer still shows $207")
+	await snap("46-expo-offer", main.company_panel.find_child("SeasonCard", true, false) as Control)
+	await click(book)
+	await wait_until(func() -> bool: return company_cash() == 14700 and not main.company_panel.busy, "Booking the booth charges $60")
+	check(label_named("SeasonExpo") != null and label_named("SeasonExpo").text == "Booth booked · Whop Creator Fair on Spring 14", "The Season card names the booked booth")
+	check(button_named("Book booth") == null, "The book button hides once the booth is booked")
+	header = label_named("OfficeDate")
+	check(header != null and header.text.contains("$147.00"), "The header shows the cash after the fee")
+	await snap("47-expo-booked", main.company_panel.find_child("SeasonCard", true, false) as Control)
 
 func _office_expansion_proof() -> void:
 	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-office-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])

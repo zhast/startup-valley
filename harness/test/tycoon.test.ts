@@ -74,6 +74,11 @@ import {
   PUBLISHER_ADVANCE_CENTS,
   PUBLISHER_CUT_PERCENT,
   PUBLISHER_NAME,
+  EXPO_COST_CENTS,
+  EXPO_DAY_OF_SEASON,
+  EXPO_FANS,
+  EXPO_NAME,
+  nextExpoFair,
   publisherCutCents,
   publisherNetCents,
   requiredDevDays,
@@ -3798,4 +3803,166 @@ test("one optional publisher pays an advance once and cuts only that product", a
   assert.equal(productById(reopened, "p1")?.publisher?.signed, true);
   assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
   reopened.close();
+});
+
+test("one optional expo booth charges once and pays fans once on the fair day", async () => {
+  assert.equal(EXPO_NAME, "Whop Creator Fair");
+  assert.equal(EXPO_COST_CENTS, 6_000);
+  assert.equal(EXPO_FANS, 3);
+  assert.equal(EXPO_DAY_OF_SEASON, 14);
+  assert.equal(nextExpoFair(1).when, "Spring 14");
+  assert.equal(nextExpoFair(1).key, "1-spring");
+  assert.equal(nextExpoFair(1).day, 14);
+  assert.equal(nextExpoFair(14).when, "Spring 14");
+  assert.equal(nextExpoFair(15).when, "Summer 14");
+  assert.equal(nextExpoFair(15).day, 42);
+  assert.equal(nextExpoFair(42).key, "1-summer");
+  assert.equal(nextExpoFair(43).when, "Fall 14");
+  assert.equal(nextExpoFair(70).when, "Fall 14");
+  assert.equal(nextExpoFair(71).when, "Winter 14");
+  assert.equal(nextExpoFair(98).key, "1-winter");
+  assert.equal(nextExpoFair(99).when, "Spring 14");
+  assert.equal(nextExpoFair(99).year, 2);
+  assert.equal(nextExpoFair(126).key, "2-spring");
+
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+
+  function expoRows(db: GameDatabase) {
+    return db.journey.db.prepare(
+      "SELECT id, label, cash_delta, earned_delta, reputation_delta FROM company_transactions WHERE id LIKE 'tycoon:expo:%' ORDER BY id",
+    ).all() as Array<{ id: string; label: string; cash_delta: number; earned_delta: number; reputation_delta: number }>;
+  }
+
+  const skip = await setup();
+  assert.equal(skip.db.tycoon.view().expo.booked, false);
+  assert.equal(skip.db.tycoon.view().expo.name, EXPO_NAME);
+  assert.equal(skip.db.tycoon.view().expo.costCents, 6_000);
+  assert.equal(skip.db.tycoon.view().expo.fans, 3);
+  assert.equal(skip.db.tycoon.view().expo.when, "Spring 14");
+  skip.db.tycoon.start("crypto", "newsletter", []);
+  skip.db.endDay(1);
+  skip.db.endDay(2);
+  skip.db.tycoon.release("p1");
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.fans, 5);
+  skip.db.endDay(3);
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  skip.db.endDay(4);
+  assert.equal(skip.db.journey.state().company.cashCents, 33_300);
+  assert.equal(expoRows(skip.db).length, 0);
+  assert.equal(validate(skip.db.journey.state()), true, JSON.stringify(validate.errors));
+  skip.db.close();
+
+  const missed = await setup();
+  missed.db.setClock(14, 480, 0);
+  missed.db.endDay(14);
+  missed.db.endDay(14);
+  assert.equal(missed.db.journey.state().company.cashCents, 0);
+  assert.equal(missed.db.journey.state().company.reputation, 0);
+  assert.equal(expoRows(missed.db).length, 0);
+  assert.equal(missed.db.tycoon.view().expo.when, "Summer 14");
+  assert.equal(missed.db.tycoon.view().expo.booked, false);
+  missed.db.close();
+
+  const short = await setup();
+  short.db.journey.recordCompanyChange("expo-short", 1, 5_999, 0, 0, "Short cash");
+  assert.throws(() => short.db.tycoon.bookBooth(), /Need \$60/u);
+  assert.equal(short.db.journey.state().company.cashCents, 5_999);
+  assert.equal(expoRows(short.db).length, 0);
+  assert.equal(short.db.tycoon.view().expo.booked, false);
+  short.db.close();
+
+  const booked = await setup();
+  booked.db.journey.recordCompanyChange("expo-cash", 1, 6_000, 0, 0, "Booth cash");
+  booked.db.tycoon.bookBooth();
+  assert.equal(booked.db.journey.state().company.cashCents, 0);
+  assert.equal(booked.db.journey.state().company.reputation, 0);
+  assert.equal(booked.db.tycoon.view().expo.booked, true);
+  assert.equal(booked.db.tycoon.view().expo.when, "Spring 14");
+  const fee = expoRows(booked.db);
+  assert.equal(fee.length, 1);
+  assert.equal(fee[0]?.id, "tycoon:expo:1-spring:booth");
+  assert.equal(fee[0]?.label, "Booth: Whop Creator Fair");
+  assert.equal(fee[0]?.cash_delta, -6_000);
+  assert.equal(fee[0]?.earned_delta, 0);
+  assert.equal(fee[0]?.reputation_delta, 0);
+  assert.throws(() => booked.db.tycoon.bookBooth(), /Already booked\./u);
+  assert.equal(booked.db.journey.state().company.cashCents, 0);
+  assert.equal(expoRows(booked.db).length, 1);
+  booked.db.setClock(13, 480, 0);
+  booked.db.tycoon.tickDay(13);
+  assert.equal(expoRows(booked.db).length, 1);
+  assert.equal(booked.db.journey.state().company.reputation, 0);
+  booked.db.setClock(14, 480, 0);
+  booked.db.tycoon.tickDay(14);
+  booked.db.tycoon.tickDay(14);
+  assert.equal(booked.db.journey.state().company.cashCents, 0);
+  assert.equal(booked.db.journey.state().company.reputation, 3);
+  const paid = expoRows(booked.db);
+  assert.equal(paid.length, 2);
+  const fans = paid.find((row) => row.id === "tycoon:expo:1-spring:fans");
+  assert.equal(fans?.label, "Expo: Whop Creator Fair");
+  assert.equal(fans?.cash_delta, 0);
+  assert.equal(fans?.earned_delta, 0);
+  assert.equal(fans?.reputation_delta, 3);
+  booked.db.endDay(14);
+  booked.db.endDay(14);
+  assert.equal(booked.db.clockState().day, 15);
+  assert.equal(booked.db.journey.state().company.reputation, 3);
+  assert.equal(booked.db.journey.state().company.cashCents, 0);
+  assert.equal(booked.db.tycoon.view().expo.booked, false);
+  assert.equal(booked.db.tycoon.view().expo.when, "Summer 14");
+  assert.equal(validate(booked.db.journey.state()), true, JSON.stringify(validate.errors));
+  const bookedFile = join(booked.root, "game.sqlite");
+  const bookedProject = join(booked.root, "company-project");
+  booked.db.close();
+  const reopened = new GameDatabase(bookedFile, bookedProject);
+  assert.equal(reopened.journey.state().company.reputation, 3);
+  assert.equal(reopened.journey.state().company.cashCents, 0);
+  assert.equal(expoRows(reopened).length, 2);
+  reopened.tycoon.tickDay(15);
+  assert.equal(reopened.journey.state().company.reputation, 3);
+  reopened.journey.recordCompanyChange("expo-summer-cash", 15, 6_000, 0, 0, "Summer booth cash");
+  reopened.tycoon.bookBooth();
+  assert.equal(reopened.tycoon.view().expo.booked, true);
+  assert.equal(reopened.tycoon.view().expo.when, "Summer 14");
+  assert.equal(expoRows(reopened).some((row) => row.id === "tycoon:expo:1-summer:booth"), true);
+  assert.throws(() => reopened.tycoon.bookBooth(), /Already booked\./u);
+  reopened.setClock(42, 480, 0);
+  reopened.endDay(42);
+  reopened.endDay(42);
+  assert.equal(reopened.journey.state().company.reputation, 6);
+  assert.equal(reopened.journey.state().company.cashCents, 0);
+  assert.equal(expoRows(reopened).filter((row) => row.id.endsWith(":fans")).length, 2);
+  assert.equal(reopened.tycoon.view().expo.when, "Fall 14");
+  assert.equal(reopened.tycoon.view().expo.booked, false);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+
+  const sameDay = await setup();
+  sameDay.db.journey.recordCompanyChange("expo-same-day", 1, 6_000, 0, 0, "Fair day cash");
+  sameDay.db.setClock(14, 480, 0);
+  sameDay.db.tycoon.bookBooth();
+  assert.equal(sameDay.db.tycoon.view().expo.booked, true);
+  sameDay.db.endDay(14);
+  assert.equal(sameDay.db.journey.state().company.reputation, 3);
+  assert.equal(sameDay.db.journey.state().company.cashCents, 0);
+  assert.equal(sameDay.db.tycoon.view().expo.when, "Summer 14");
+  sameDay.db.close();
+
+  const yearTwo = await setup();
+  yearTwo.db.journey.recordCompanyChange("expo-year-two", 1, 6_000, 0, 0, "Year two cash");
+  yearTwo.db.setClock(113, 480, 0);
+  assert.equal(yearTwo.db.tycoon.view().expo.when, "Spring 14");
+  assert.equal(yearTwo.db.tycoon.view().expo.booked, false);
+  yearTwo.db.tycoon.bookBooth();
+  const yearRow = expoRows(yearTwo.db).find((row) => row.id === "tycoon:expo:2-spring:booth");
+  assert.equal(yearRow?.cash_delta, -6_000);
+  yearTwo.db.setClock(126, 480, 0);
+  yearTwo.db.endDay(126);
+  assert.equal(yearTwo.db.journey.state().company.reputation, 3);
+  assert.equal(expoRows(yearTwo.db).some((row) => row.id === "tycoon:expo:2-spring:fans"), true);
+  assert.equal(validate(yearTwo.db.journey.state()), true, JSON.stringify(validate.errors));
+  yearTwo.db.close();
 });

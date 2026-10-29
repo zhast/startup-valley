@@ -1004,6 +1004,20 @@ func _season_card() -> void:
 		if not outstanding:
 			var loan_button := _button("Take loan", _take_loan, false, true, card, "secondary")
 			loan_button.name = "TakeLoan"
+	var expo: Dictionary = _tycoon().get("expo", {}) if _tycoon().get("expo") is Dictionary else {}
+	if not expo.is_empty():
+		var expo_name := str(expo.get("name", "")).strip_edges()
+		var when := str(expo.get("when", "")).strip_edges()
+		if not expo_name.is_empty() and not when.is_empty():
+			var booked := bool(expo.get("booked", false))
+			var cost := int(expo.get("costCents", 0))
+			var fans := int(expo.get("fans", 0))
+			var expo_text := "Booth booked · %s on %s" % [expo_name, when] if booked else "Expo · %s on %s · $%d booth, about %d fans" % [expo_name, when, int(cost / 100), fans]
+			var expo_label := _label(expo_text, false, card)
+			expo_label.name = "SeasonExpo"
+			if not booked:
+				var expo_button := _button("Book booth", _book_booth, false, true, card, "secondary")
+				expo_button.name = "BookBooth"
 	var company: Dictionary = state.get("company", {}) if state.get("company") is Dictionary else {}
 	if int(company.get("cashCents", 0)) < 0:
 		var negative := _label("Cash is negative", false, card)
@@ -1011,6 +1025,9 @@ func _season_card() -> void:
 
 func _take_loan() -> void:
 	_request("tycoon.takeLoan", {})
+
+func _book_booth() -> void:
+	_request("tycoon.bookBooth", {})
 
 func _publisher_card(product: Dictionary) -> void:
 	var value: Variant = product.get("publisher", null)
