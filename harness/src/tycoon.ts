@@ -171,6 +171,18 @@ export const PUBLISHER_NAME = "Creator Collective";
 export const PUBLISHER_ADVANCE_CENTS = 15_000;
 export const PUBLISHER_CUT_PERCENT = 30;
 
+/**
+ * One optional booth at the Whop Creator Fair. Copy only.
+ * $60 is over the $40 award fee and under Mina's $80 season salary, so a
+ * company that just shipped the $207 newsletter can book and still keep cash.
+ * The fair pays exactly 3 fans, under that newsletter's 5. Day 14 is the
+ * middle of the season: not payday, and not an existing event day.
+ */
+export const EXPO_NAME = "Whop Creator Fair";
+export const EXPO_COST_CENTS = 6_000;
+export const EXPO_FANS = 3;
+export const EXPO_DAY_OF_SEASON = 14;
+
 /** Office tools. Each row is bought once and has one effect. */
 export const UPGRADES = [
   { id: "standing_desk", name: "Oak Standing Desk", blurb: "Sketches land cleaner when you stand.", priceCents: 25_000, kind: "design", effect: "+1 design per person per dev day" },
@@ -567,6 +579,26 @@ export interface TycoonLoan {
   outstanding: boolean;
 }
 
+export interface TycoonExpo {
+  name: string;
+  costCents: number;
+  fans: number;
+  /** Next fair that has not reached day end, for example "Spring 14". */
+  when: string;
+  booked: boolean;
+}
+
+export interface ExpoFair {
+  year: number;
+  season: SeasonId;
+  seasonName: string;
+  when: string;
+  /** Office day the fair pays, at day end. */
+  day: number;
+  /** Ledger key, for example "1-spring". */
+  key: string;
+}
+
 export interface TycoonProductPublisher {
   name: string;
   advanceCents: number;
@@ -589,6 +621,7 @@ export interface TycoonSnapshot {
   calendar: TycoonCalendar;
   payroll: TycoonPayroll;
   loan: TycoonLoan;
+  expo: TycoonExpo;
   office: TycoonOffice;
   priceSteps: LaunchPriceStep[];
   marketingOptions: Array<MarketingOption & { enabled: boolean; reason: string }>;
@@ -713,6 +746,34 @@ export function loanDueDay(fromDay: number): number {
   const safe = Math.max(1, Math.trunc(Number.isFinite(fromDay) ? fromDay : 1));
   const thisPayday = (Math.floor((safe - 1) / SEASON_LENGTH_DAYS) + 1) * SEASON_LENGTH_DAYS;
   return safe < thisPayday ? thisPayday : thisPayday + SEASON_LENGTH_DAYS;
+}
+
+/**
+ * The fair that still pays if today ends on it. Day 14 of this season, or of
+ * the next season once day 14 has passed. Booking on the fair day still catches
+ * that evening.
+ */
+export function nextExpoFair(fromDay: number): ExpoFair {
+  const safe = Math.max(1, Math.trunc(Number.isFinite(fromDay) ? fromDay : 1));
+  const calendar = calendarForDay(safe);
+  let seasonIndex = SEASONS.findIndex((item) => item.id === calendar.season);
+  let year = calendar.year;
+  if (calendar.dayOfSeason > EXPO_DAY_OF_SEASON) {
+    seasonIndex += 1;
+    if (seasonIndex >= SEASONS.length) {
+      seasonIndex = 0;
+      year += 1;
+    }
+  }
+  const season = SEASONS[seasonIndex] ?? SEASONS[0];
+  return {
+    year,
+    season: season.id,
+    seasonName: season.name,
+    when: `${season.name} ${EXPO_DAY_OF_SEASON}`,
+    day: (year - 1) * YEAR_LENGTH_DAYS + seasonIndex * SEASON_LENGTH_DAYS + EXPO_DAY_OF_SEASON,
+    key: `${year}-${season.id}`,
+  };
 }
 
 /**
@@ -1621,6 +1682,7 @@ export class TycoonStore {
       calendar: calendarForDay(day),
       payroll: this.payrollView(day, hired),
       loan: this.loanView(day),
+      expo: this.expoView(day),
       office: this.officeView(this.officeLevel(), hired.size, cash),
       priceSteps: [...LAUNCH_PRICES],
       marketingOptions: marketingOffer(cash),
@@ -1832,6 +1894,18 @@ export class TycoonStore {
         0,
         `Loan: ${LOAN_LENDER}`,
       );
+      return this.journey.state();
+    });
+  }
+
+  /** One booth at the next fair. The fee is one ledger row. Fans wait for that day end. */
+  bookBooth(): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const fair = nextExpoFair(this.day());
+      const id = `tycoon:expo:${fair.key}:booth`;
+      if (this.transactionExists(id)) throw new Error("Already booked.");
+      if (this.cashCents() < EXPO_COST_CENTS) throw new Error(`Need ${wholeDollars(EXPO_COST_CENTS)}`);
+      this.journey.recordCompanyChange(id, this.day(), -EXPO_COST_CENTS, 0, 0, `Booth: ${EXPO_NAME}`);
       return this.journey.state();
     });
   }
@@ -2092,6 +2166,7 @@ export class TycoonStore {
     this.payPorts(day);
     this.payPayroll(day);
     this.repayLoan(day);
+    this.payExpo(day);
   }
 
   /** One season salary, after that day's sales. Replaying the same payday does not pay again. */
@@ -2144,6 +2219,37 @@ export class TycoonStore {
       due: paydayLabel(dueDay),
       outstanding: outstanding !== null,
     };
+  }
+
+  /** Fans for a booked booth, after that day's sales. Replaying the fair does not pay again. */
+  private payExpo(day: number): void {
+    const calendar = calendarForDay(day);
+    if (calendar.dayOfSeason !== EXPO_DAY_OF_SEASON) return;
+    const key = `${calendar.year}-${calendar.season}`;
+    if (!this.transactionExists(`tycoon:expo:${key}:booth`)) return;
+    this.journey.recordCompanyChange(
+      `tycoon:expo:${key}:fans`,
+      day,
+      0,
+      0,
+      EXPO_FANS,
+      `Expo: ${EXPO_NAME}`,
+    );
+  }
+
+  private expoView(day: number): TycoonExpo {
+    const fair = nextExpoFair(day);
+    return {
+      name: EXPO_NAME,
+      costCents: EXPO_COST_CENTS,
+      fans: EXPO_FANS,
+      when: fair.when,
+      booked: this.transactionExists(`tycoon:expo:${fair.key}:booth`),
+    };
+  }
+
+  private transactionExists(id: string): boolean {
+    return this.db.prepare("SELECT id FROM company_transactions WHERE id = ?").get(id) !== undefined;
   }
 
   private outstandingLoan(): { n: number; takenDay: number } | null {

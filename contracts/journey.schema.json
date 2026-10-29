@@ -296,7 +296,7 @@
     "tycoon": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "upgradeNotice", "upgrades", "calendar", "payroll", "loan", "office", "priceSteps", "marketingOptions", "engineNotice", "engine", "engineOptions", "focusOptions", "audienceOptions", "sizeOptions", "contract", "patchNotice", "developing", "history"],
+      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "upgradeNotice", "upgrades", "calendar", "payroll", "loan", "expo", "office", "priceSteps", "marketingOptions", "engineNotice", "engine", "engineOptions", "focusOptions", "audienceOptions", "sizeOptions", "contract", "patchNotice", "developing", "history"],
       "properties": {
         "seed": { "type": "integer", "minimum": 1 },
         "salesWindowDays": { "type": "integer", "const": 4 },
@@ -312,6 +312,7 @@
         "calendar": { "$ref": "#/$defs/tycoonCalendar" },
         "payroll": { "$ref": "#/$defs/tycoonPayroll" },
         "loan": { "$ref": "#/$defs/tycoonLoan" },
+        "expo": { "$ref": "#/$defs/tycoonExpo" },
         "office": { "$ref": "#/$defs/tycoonOffice" },
         "priceSteps": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/tycoonPriceStep" } },
         "marketingOptions": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/tycoonMarketing" } },
@@ -347,6 +348,18 @@
         "repayCents": { "type": "integer", "const": 55000 },
         "due": { "type": "string", "minLength": 1 },
         "outstanding": { "type": "boolean" }
+      }
+    },
+    "tycoonExpo": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "costCents", "fans", "when", "booked"],
+      "properties": {
+        "name": { "type": "string", "const": "Whop Creator Fair" },
+        "costCents": { "type": "integer", "const": 6000 },
+        "fans": { "type": "integer", "const": 3 },
+        "when": { "type": "string", "minLength": 1 },
+        "booked": { "type": "boolean" }
       }
     },
     "tycoonCalendar": {
