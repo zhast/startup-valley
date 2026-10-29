@@ -3,13 +3,13 @@
 ## Sub-features
 
 - Read the date in plain words. Day 1 is "Spring 1 · Year 1". The next morning is "Spring 2 · Year 1".
-- Read the Season card. Spring says "In season: Fitness, Dating Advice". With nobody hired it also says "No payroll yet". Payroll is in `features/payroll.md`.
+- Read the Season card. Spring says "In season: Fitness, Dating Advice". With nobody hired it also says "No payroll yet". Payroll is in `features/payroll.md`. The same card offers a loan; that button is in `features/loans.md`.
 - Read the next event. On Spring 2 that line is "Creator Fair in 11 days".
 - See "· in season" on a favored topic in the product picker.
 
 ## How to get to it (user POV)
 
-Open Company Journey. The date sits on the heading where the day number used to be. The Season card is under Upgrades, in the same card style. Hire stays the primary action. No new button.
+Open Company Journey. The date sits on the heading where the day number used to be. The Season card is under Upgrades, in the same card style. Hire stays the primary action. Take loan is a secondary button on that card.
 
 A season is 28 office days. Spring, Summer, Fall, then Winter. The year turns on day 113. Prices and the favored topics are in `docs/TYCOON_DESIGN.md`.
 

@@ -65,6 +65,12 @@ import {
   awardForScore,
   patchedScore,
   payrollCents,
+  LOAN_AMOUNT_CENTS,
+  LOAN_FEE_CENTS,
+  LOAN_LENDER,
+  LOAN_REPAY_CENTS,
+  loanDueDay,
+  paydayLabel,
   requiredDevDays,
   reviewProduct,
   SALARY_CENTS,
@@ -3447,4 +3453,129 @@ test("payroll pays hired staff once per season and can go negative", async () =>
   assert.equal(teamRow.cash_delta, -30_000);
   assert.equal(validate(team.db.journey.state()), true, JSON.stringify(validate.errors));
   team.db.close();
+});
+
+test("one optional loan pays once, repays once on payday, and skipping it changes nothing", async () => {
+  assert.equal(LOAN_LENDER, "Whop Treasury");
+  assert.equal(LOAN_AMOUNT_CENTS, 50_000);
+  assert.equal(LOAN_FEE_CENTS, 5_000);
+  assert.equal(LOAN_REPAY_CENTS, 55_000);
+  assert.equal(loanDueDay(1), 28);
+  assert.equal(loanDueDay(27), 28);
+  assert.equal(loanDueDay(28), 56);
+  assert.equal(loanDueDay(29), 56);
+  assert.equal(loanDueDay(56), 84);
+  assert.equal(paydayLabel(28), "Spring 28");
+  assert.equal(paydayLabel(56), "Summer 28");
+
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+
+  const skip = await setup();
+  assert.equal(skip.db.tycoon.view().loan.outstanding, false);
+  assert.equal(skip.db.tycoon.view().loan.amountCents, 50_000);
+  assert.equal(skip.db.tycoon.view().loan.repayCents, 55_000);
+  assert.equal(skip.db.tycoon.view().loan.due, "Spring 28");
+  assert.equal(skip.db.tycoon.view().loan.lender, "Whop Treasury");
+  skip.db.tycoon.start("crypto", "newsletter", []);
+  skip.db.endDay(1);
+  skip.db.endDay(2);
+  skip.db.tycoon.release("p1");
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.fans, 5);
+  skip.db.endDay(3);
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700, "release day does not sell twice");
+  skip.db.endDay(4);
+  assert.equal(skip.db.journey.state().company.cashCents, 33_300);
+  assert.equal(skip.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:loan:%'").all().length, 0);
+  assert.equal(validate(skip.db.journey.state()), true, JSON.stringify(validate.errors));
+  skip.db.close();
+
+  const taken = await setup();
+  taken.db.tycoon.takeLoan();
+  assert.equal(taken.db.journey.state().company.cashCents, 50_000);
+  assert.equal(taken.db.tycoon.view().loan.outstanding, true);
+  assert.equal(taken.db.tycoon.view().loan.due, "Spring 28");
+  const takeRow = taken.db.journey.db.prepare(
+    "SELECT id, label, cash_delta, earned_delta, reputation_delta FROM company_transactions WHERE id LIKE 'tycoon:loan:%'",
+  ).all() as Array<{ id: string; label: string; cash_delta: number; earned_delta: number; reputation_delta: number }>;
+  assert.equal(takeRow.length, 1);
+  assert.equal(takeRow[0]?.id, "tycoon:loan:1:taken");
+  assert.equal(takeRow[0]?.label, "Loan: Whop Treasury");
+  assert.equal(takeRow[0]?.cash_delta, 50_000);
+  assert.equal(takeRow[0]?.earned_delta, 0);
+  assert.equal(takeRow[0]?.reputation_delta, 0);
+  assert.throws(() => taken.db.tycoon.takeLoan(), /A loan is already out\./u);
+  assert.equal(taken.db.journey.state().company.cashCents, 50_000);
+  taken.db.tycoon.tickDay(1);
+  taken.db.tycoon.tickDay(1);
+  assert.equal(taken.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:loan:%'").all().length, 1);
+  taken.db.setClock(27, 480, 0);
+  taken.db.endDay(27);
+  assert.equal(taken.db.journey.state().company.cashCents, 50_000);
+  assert.equal(taken.db.tycoon.view().loan.outstanding, true);
+  taken.db.tycoon.tickDay(28);
+  taken.db.tycoon.tickDay(28);
+  assert.equal(taken.db.journey.state().company.cashCents, -5_000);
+  const repaid = taken.db.journey.db.prepare(
+    "SELECT id, label, cash_delta FROM company_transactions WHERE id LIKE 'tycoon:loan:%:repaid'",
+  ).all() as Array<{ id: string; label: string; cash_delta: number }>;
+  assert.equal(repaid.length, 1);
+  assert.equal(repaid[0]?.id, "tycoon:loan:1:repaid");
+  assert.equal(repaid[0]?.label, "Loan repaid");
+  assert.equal(repaid[0]?.cash_delta, -55_000);
+  taken.db.endDay(28);
+  taken.db.endDay(28);
+  assert.equal(taken.db.clockState().day, 29);
+  assert.equal(taken.db.journey.state().company.cashCents, -5_000);
+  assert.equal(taken.db.tycoon.view().loan.outstanding, false);
+  assert.equal(taken.db.tycoon.view().loan.due, "Summer 28");
+  assert.equal(validate(taken.db.journey.state()), true, JSON.stringify(validate.errors));
+  const takenFile = join(taken.root, "game.sqlite");
+  const takenProject = join(taken.root, "company-project");
+  taken.db.close();
+  const reopened = new GameDatabase(takenFile, takenProject);
+  assert.equal(reopened.journey.state().company.cashCents, -5_000);
+  assert.equal(reopened.tycoon.view().loan.outstanding, false);
+  reopened.tycoon.tickDay(29);
+  assert.equal(reopened.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:loan:%'").all().length, 2);
+  reopened.tycoon.takeLoan();
+  assert.equal(reopened.journey.state().company.cashCents, 45_000);
+  const second = reopened.journey.db.prepare("SELECT id FROM company_transactions WHERE id = 'tycoon:loan:2:taken'").get() as { id: string } | undefined;
+  assert.equal(second?.id, "tycoon:loan:2:taken");
+  assert.equal(reopened.tycoon.view().loan.outstanding, true);
+  assert.equal(reopened.tycoon.view().loan.due, "Summer 28");
+  assert.throws(() => reopened.tycoon.takeLoan(), /A loan is already out\./u);
+  reopened.setClock(56, 480, 0);
+  reopened.endDay(56);
+  reopened.endDay(56);
+  assert.equal(reopened.journey.state().company.cashCents, -10_000);
+  assert.equal(reopened.tycoon.view().loan.outstanding, false);
+  const secondRepaid = reopened.journey.db.prepare("SELECT id FROM company_transactions WHERE id = 'tycoon:loan:2:repaid'").get() as { id: string } | undefined;
+  assert.equal(secondRepaid?.id, "tycoon:loan:2:repaid");
+  assert.equal(reopened.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:loan:%'").all().length, 4);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+
+  const paydayTake = await setup();
+  paydayTake.db.setClock(28, 480, 0);
+  paydayTake.db.tycoon.takeLoan();
+  assert.equal(paydayTake.db.tycoon.view().loan.due, "Summer 28");
+  paydayTake.db.endDay(28);
+  assert.equal(paydayTake.db.journey.state().company.cashCents, 50_000);
+  assert.equal(paydayTake.db.tycoon.view().loan.outstanding, true);
+  assert.equal(paydayTake.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:loan:%:repaid'").all().length, 0);
+  paydayTake.db.close();
+
+  const withMina = await setup();
+  withMina.db.journey.hire("mira", 1);
+  withMina.db.tycoon.takeLoan();
+  withMina.db.setClock(28, 480, 0);
+  withMina.db.endDay(28);
+  assert.equal(withMina.db.journey.state().company.cashCents, -13_000);
+  assert.equal(withMina.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id = 'tycoon:payroll:1-spring'").get() !== undefined, true);
+  assert.equal(withMina.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id = 'tycoon:loan:1:repaid'").get() !== undefined, true);
+  assert.equal(withMina.db.tycoon.view().loan.outstanding, false);
+  assert.equal(validate(withMina.db.journey.state()), true, JSON.stringify(validate.errors));
+  withMina.db.close();
 });
