@@ -1861,3 +1861,24 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → Season. Take loan is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_loans.gd`.
 
 
+
+### Round 46 — 2026-10-29
+
+**What changed**
+- One optional publisher deal for the product on the bench. Creator Collective pays a $150 advance now and takes 30% of that product's sales rows. $150 matches the big ad, sits under the $207 first newsletter, and is about what the cut takes across a four-day window, so the deal is cash during the build, not free money.
+- Signing writes `tycoon:publisher:<productId>:advance` with label `Publisher: Creator Collective`. Sales rows for that product, including a port's extra day, post the company's net share, rounded half-up. A contract bonus is not cut. Replaying a day end or reopening never pays the advance or subtracts the cut twice. A sequel can sign its own deal.
+- Skipping the deal writes no row. The first Crypto Alpha Newsletter is still 20700 cents and 5 fans. The next office day is still 33300 cents.
+- The card sits on Company Journey with the build lines, above New Product. The line is "Publisher · Creator Collective pays $150 now, takes 30% of sales" plus one secondary Sign publisher button. Once signed it reads "Published by Creator Collective · 30% cut" and the button is gone. Hire stays the one primary action.
+
+**Proof**
+- `/workspace/sv-proof/round-46/44-publisher-offer.png` and `45-publisher-signed.png`, captured by the verify-startup-valley skill. PROOF PASS.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked.
+
+**Remaining gaps (ranked)**
+1. Expos is the next slice. One optional booth on the Season card for the next fair, a small fee and a few fans. Skipping it leaves cash alone.
+2. A second room needs architecture art.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. `test_tycoon_price.gd` failed once in the first gate run ("A cheaper launch pays a different cash amount") and twice right after with "Worker bootstrap loads a fresh company", then passed three reruns in a row on this branch and on main. Same intermittent pattern as the audience test in Round 45. Left alone; worth a look if it repeats.
+5. Carried from Round 45: the tallest Selling card still meets the footer, and the earlier Round 40 gaps.

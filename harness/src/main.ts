@@ -173,6 +173,8 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
     }
     case "tycoon.takeLoan":
       return { journey: database.tycoon.takeLoan(), dailySpend: database.dailySpend() };
+    case "tycoon.signPublisher":
+      return { journey: database.tycoon.signPublisher(), dailySpend: database.dailySpend() };
     case "game.new": {
       if (request.params.confirmed !== true) throw new Error("Confirm New Company first");
       if (adapter.isBusy() || database.hasOpenWorkOrder()) throw new Error("Finish or cancel open work before starting a new company");

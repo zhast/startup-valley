@@ -71,6 +71,11 @@ import {
   LOAN_REPAY_CENTS,
   loanDueDay,
   paydayLabel,
+  PUBLISHER_ADVANCE_CENTS,
+  PUBLISHER_CUT_PERCENT,
+  PUBLISHER_NAME,
+  publisherCutCents,
+  publisherNetCents,
   requiredDevDays,
   reviewProduct,
   SALARY_CENTS,
@@ -3578,4 +3583,219 @@ test("one optional loan pays once, repays once on payday, and skipping it change
   assert.equal(withMina.db.tycoon.view().loan.outstanding, false);
   assert.equal(validate(withMina.db.journey.state()), true, JSON.stringify(validate.errors));
   withMina.db.close();
+});
+
+test("one optional publisher pays an advance once and cuts only that product", async () => {
+  assert.equal(PUBLISHER_NAME, "Creator Collective");
+  assert.equal(PUBLISHER_ADVANCE_CENTS, 15_000);
+  assert.equal(PUBLISHER_CUT_PERCENT, 30);
+  assert.equal(publisherCutCents(20_700), 6_210);
+  assert.equal(publisherNetCents(20_700), 14_490);
+  assert.equal(publisherCutCents(1), 0);
+  assert.equal(publisherCutCents(2), 1);
+  assert.equal(publisherCutCents(5), 2);
+  assert.equal(publisherCutCents(0), 0);
+  assert.equal(publisherCutCents(-4), 0);
+
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  const offer = {
+    name: "Creator Collective",
+    advanceCents: 15_000,
+    cutPercent: 30,
+    signed: false,
+  };
+  const signedOffer = { ...offer, signed: true };
+
+  function publisherRows(db: GameDatabase) {
+    return db.journey.db.prepare(
+      "SELECT id, label, cash_delta, earned_delta, reputation_delta FROM company_transactions WHERE id LIKE 'tycoon:publisher:%' ORDER BY id",
+    ).all() as Array<{ id: string; label: string; cash_delta: number; earned_delta: number; reputation_delta: number }>;
+  }
+
+  function saleRow(db: GameDatabase, id: string) {
+    return db.journey.db.prepare(
+      "SELECT id, label, cash_delta, earned_delta, reputation_delta FROM company_transactions WHERE id = ?",
+    ).get(id) as { id: string; label: string; cash_delta: number; earned_delta: number; reputation_delta: number } | undefined;
+  }
+
+  function saleOnDay(productId: string, day: number, dayIndex: number, score: number, reputation: number, topicMatch: boolean) {
+    const calendar = calendarForDay(day);
+    return salesForDay({
+      seed: 26021,
+      productId,
+      typeId: "newsletter",
+      fit: "great",
+      score,
+      dayIndex,
+      reputation,
+      pricePercent: 100,
+      marketing: "none",
+      audience: "everyone",
+      topicMatch,
+      size: "catalog",
+      unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === "crypto") ? SEASON_UNIT_BOOST_PERCENT : 0,
+      bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
+    });
+  }
+
+  const skip = await setup();
+  assert.equal(skip.db.tycoon.view().developing, null);
+  assert.throws(() => skip.db.tycoon.signPublisher(), /No product is on the bench\./u);
+  skip.db.tycoon.start("crypto", "newsletter", []);
+  assert.deepEqual(skip.db.tycoon.view().developing?.publisher, offer);
+  assert.equal(JSON.parse(staffJson(skip.db, "p1")).publisher, undefined);
+  assert.equal(validate(skip.db.journey.state()), true, JSON.stringify(validate.errors));
+  skip.db.endDay(1);
+  skip.db.endDay(2);
+  skip.db.tycoon.release("p1");
+  const unsignedLaunch = saleOnDay("p1", 3, 0, 6, 0, false);
+  assert.equal(unsignedLaunch.cents, 20_700);
+  assert.equal(unsignedLaunch.fans, 5);
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.fans, 5);
+  assert.equal(skip.db.tycoon.view().history[0]?.salesCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.publisher, null);
+  const unsignedSale = saleRow(skip.db, "tycoon:p1:0");
+  assert.equal(unsignedSale?.cash_delta, 20_700);
+  assert.equal(unsignedSale?.earned_delta, 20_700);
+  assert.equal(unsignedSale?.reputation_delta, 5);
+  skip.db.endDay(3);
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700, "release day does not sell twice");
+  const secondReputation = skip.db.journey.state().company.reputation;
+  skip.db.endDay(4);
+  const unsignedSecond = saleOnDay("p1", 4, 1, 6, secondReputation, false);
+  assert.equal(unsignedSecond.cents, 33_300 - 20_700);
+  assert.equal(skip.db.journey.state().company.cashCents, 33_300);
+  assert.equal(skip.db.tycoon.view().history[0]?.salesCents, 33_300);
+  assert.equal(saleRow(skip.db, "tycoon:p1:1")?.cash_delta, unsignedSecond.cents);
+  assert.equal(saleRow(skip.db, "tycoon:p1:1")?.reputation_delta, unsignedSecond.fans);
+  assert.equal(publisherRows(skip.db).length, 0);
+  assert.throws(() => skip.db.tycoon.signPublisher(), /No product is on the bench\./u);
+  assert.equal(skip.db.journey.state().company.cashCents, 33_300);
+  assert.equal(validate(skip.db.journey.state()), true, JSON.stringify(validate.errors));
+  skip.db.close();
+
+  const signed = await setup();
+  signed.db.tycoon.start("crypto", "newsletter", []);
+  signed.db.tycoon.signPublisher();
+  assert.equal(signed.db.journey.state().company.cashCents, 15_000);
+  assert.deepEqual(signed.db.tycoon.view().developing?.publisher, signedOffer);
+  assert.equal(JSON.parse(staffJson(signed.db, "p1")).publisher, true);
+  const advance = publisherRows(signed.db);
+  assert.equal(advance.length, 1);
+  assert.equal(advance[0]?.id, "tycoon:publisher:p1:advance");
+  assert.equal(advance[0]?.label, "Publisher: Creator Collective");
+  assert.equal(advance[0]?.cash_delta, 15_000);
+  assert.equal(advance[0]?.earned_delta, 0);
+  assert.equal(advance[0]?.reputation_delta, 0);
+  assert.throws(() => signed.db.tycoon.signPublisher(), /Already signed\./u);
+  assert.equal(signed.db.journey.state().company.cashCents, 15_000);
+  signed.db.tycoon.tickDay(1);
+  signed.db.tycoon.tickDay(1);
+  assert.equal(publisherRows(signed.db).length, 1);
+  assert.equal(signed.db.tycoon.view().developing?.devDays, 1);
+  signed.db.endDay(1);
+  signed.db.endDay(2);
+  const releaseDay = signed.db.clockState().day;
+  signed.db.tycoon.release("p1");
+  const grossLaunch = saleOnDay("p1", releaseDay, 0, 6, 0, false);
+  assert.equal(grossLaunch.cents, 20_700);
+  assert.equal(grossLaunch.fans, 5);
+  const netLaunch = publisherNetCents(grossLaunch.cents);
+  assert.equal(signed.db.tycoon.view().history[0]?.salesCents, netLaunch);
+  assert.equal(signed.db.tycoon.view().history[0]?.fans, 5);
+  assert.deepEqual(signed.db.tycoon.view().history[0]?.publisher, signedOffer);
+  assert.equal(signed.db.journey.state().company.cashCents, 15_000 + netLaunch);
+  assert.equal(signed.db.journey.state().company.reputation, 5);
+  const cutSale = saleRow(signed.db, "tycoon:p1:0");
+  assert.equal(cutSale?.label, "Sales · Crypto Alpha Newsletter");
+  assert.equal(cutSale?.cash_delta, netLaunch);
+  assert.equal(cutSale?.earned_delta, netLaunch);
+  assert.equal(cutSale?.reputation_delta, 5);
+  const launchCash = signed.db.journey.state().company.cashCents;
+  signed.db.tycoon.tickDay(releaseDay);
+  signed.db.tycoon.tickDay(releaseDay);
+  assert.equal(signed.db.journey.state().company.cashCents, launchCash);
+  assert.equal(publisherRows(signed.db).length, 1);
+  assert.equal(saleRow(signed.db, "tycoon:p1:0")?.cash_delta, netLaunch);
+  signed.db.endDay(releaseDay);
+  signed.db.endDay(releaseDay);
+  assert.equal(signed.db.clockState().day, releaseDay + 1);
+  assert.equal(signed.db.journey.state().company.cashCents, launchCash);
+  assert.equal(validate(signed.db.journey.state()), true, JSON.stringify(validate.errors));
+  const signedFile = join(signed.root, "game.sqlite");
+  const signedProject = join(signed.root, "company-project");
+  signed.db.close();
+  const reopened = new GameDatabase(signedFile, signedProject);
+  reopened.tycoon.tickDay(releaseDay);
+  assert.equal(reopened.journey.state().company.cashCents, launchCash);
+  assert.equal(publisherRows(reopened).length, 1);
+  assert.equal(saleRow(reopened, "tycoon:p1:0")?.cash_delta, netLaunch);
+  const secondDay = reopened.clockState().day;
+  const fansBeforeSecond = reopened.journey.state().company.reputation;
+  reopened.endDay(secondDay);
+  reopened.endDay(secondDay);
+  const grossSecond = saleOnDay("p1", secondDay, 1, 6, fansBeforeSecond, false);
+  const netSecond = publisherNetCents(grossSecond.cents);
+  assert.equal(grossSecond.cents, unsignedSecond.cents);
+  assert.equal(saleRow(reopened, "tycoon:p1:1")?.cash_delta, netSecond);
+  assert.equal(saleRow(reopened, "tycoon:p1:1")?.earned_delta, netSecond);
+  assert.equal(saleRow(reopened, "tycoon:p1:1")?.reputation_delta, grossSecond.fans);
+  assert.equal(productById(reopened, "p1")?.salesCents, netLaunch + netSecond);
+  assert.equal(reopened.journey.state().company.cashCents, launchCash + netSecond);
+  reopened.tycoon.tickDay(secondDay);
+  assert.equal(reopened.journey.state().company.cashCents, launchCash + netSecond);
+  assert.equal(publisherRows(reopened).length, 1);
+  reopened.endDay(secondDay + 1);
+  reopened.endDay(secondDay + 2);
+  assert.equal(productById(reopened, "p1")?.status, "complete");
+  assert.throws(() => reopened.tycoon.signPublisher(), /No product is on the bench\./u);
+  const portDay = reopened.clockState().day;
+  const portScore = productById(reopened, "p1")?.review?.score ?? 0;
+  const portGross = expectedPortSale(reopened, "p1", portDay, portScore);
+  assert.ok(publisherCutCents(portGross.cents) > 0);
+  const portNet = publisherNetCents(portGross.cents);
+  const salesBeforePort = productById(reopened, "p1")?.salesCents ?? 0;
+  const fansBeforePort = productById(reopened, "p1")?.fans ?? 0;
+  const cashBeforePort = reopened.journey.state().company.cashCents;
+  reopened.tycoon.port("p1");
+  reopened.endDay(portDay);
+  assert.equal(saleRow(reopened, "tycoon:p1:4")?.cash_delta, portNet);
+  assert.equal(saleRow(reopened, "tycoon:p1:4")?.reputation_delta, portGross.fans);
+  assert.equal(productById(reopened, "p1")?.port?.cents, portNet);
+  assert.equal(productById(reopened, "p1")?.port?.fans, portGross.fans);
+  assert.equal(productById(reopened, "p1")?.salesCents, salesBeforePort + portNet);
+  assert.equal(productById(reopened, "p1")?.fans, fansBeforePort + portGross.fans);
+  assert.equal(reopened.journey.state().company.cashCents, cashBeforePort - PORT_COST_CENTS + portNet);
+  reopened.endDay(portDay + 1);
+  assert.equal(productById(reopened, "p1")?.salesCents, salesBeforePort + portNet);
+  assert.equal(publisherRows(reopened).length, 1);
+  const keptLaunch = saleRow(reopened, "tycoon:p1:0")?.cash_delta;
+  reopened.tycoon.sequel("p1");
+  const sequel = reopened.tycoon.view().developing;
+  assert.equal(sequel?.id, "p2");
+  assert.equal(sequel?.devDaysRequired, 1);
+  assert.deepEqual(sequel?.publisher, offer);
+  assert.equal(JSON.parse(staffJson(reopened, "p2")).publisher, undefined);
+  assert.equal(productById(reopened, "p1")?.publisher?.signed, true);
+  const sequelStart = reopened.clockState().day;
+  reopened.endDay(sequelStart);
+  assert.equal(reopened.tycoon.view().developing?.ready, true);
+  const fansBeforeSequel = reopened.journey.state().company.reputation;
+  const sequelDay = reopened.clockState().day;
+  reopened.tycoon.release("p2");
+  const sequelProduct = productById(reopened, "p2");
+  const sequelGross = saleOnDay("p2", sequelDay, 0, sequelProduct?.review?.score ?? 0, fansBeforeSequel, true);
+  assert.ok(publisherCutCents(sequelGross.cents) > 0);
+  assert.equal(sequelProduct?.publisher, null);
+  assert.equal(sequelProduct?.salesCents, sequelGross.cents);
+  assert.equal(sequelProduct?.fans, sequelGross.fans);
+  assert.equal(saleRow(reopened, "tycoon:p2:0")?.cash_delta, sequelGross.cents);
+  assert.equal(saleRow(reopened, "tycoon:p2:0")?.reputation_delta, sequelGross.fans);
+  assert.equal(publisherRows(reopened).some((row) => row.id === "tycoon:publisher:p2:advance"), false);
+  assert.equal(saleRow(reopened, "tycoon:p1:0")?.cash_delta, keptLaunch);
+  assert.equal(productById(reopened, "p1")?.publisher?.signed, true);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
 });
