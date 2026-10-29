@@ -653,6 +653,7 @@ func _shelf_actions(product: Dictionary, card: Control) -> void:
 	_sequel_action(product, card, row)
 	_award_action(product, card, row)
 	_port_action(product, card, row)
+	_localize_action(product, card, row)
 	if row.get_child_count() == 0:
 		row.free()
 		return
@@ -719,6 +720,51 @@ func _port_action(product: Dictionary, card: Control, row: Control) -> void:
 
 func _port_product(product_id: String) -> void:
 	_request("tycoon.port", {"productId": product_id})
+
+func _localize_action(product: Dictionary, card: Control, row: Control) -> void:
+	if str(product.get("status", "")) != "complete": return
+	var value: Variant = product.get("localization", null)
+	if not value is Dictionary: return
+	var offer := value as Dictionary
+	var product_id := str(product.get("id", ""))
+	var edition := str(offer.get("edition", "")).strip_edges()
+	if edition.is_empty(): return
+	var phase := str(offer.get("phase", ""))
+	if phase.is_empty():
+		var fee := _label("Translate · %s · $%d, one extra sales day" % [edition, int(int(offer.get("costCents", 0)) / 100)], false, card, "meta")
+		fee.name = "LocalizeOffer_%s" % product_id
+		var enabled := bool(offer.get("enabled", false))
+		var reason := str(offer.get("reason", "")).strip_edges()
+		var text := "Translate" if enabled or reason.is_empty() else "Translate · %s" % reason
+		var button := _shelf_button(text, _localize_product.bind(product_id), enabled, row)
+		button.name = "Translate_%s" % product_id
+		return
+	var status_line := _localize_line(offer)
+	if status_line.is_empty(): return
+	var line := _label(status_line, false, card, "action")
+	line.name = "LocalizeLine_%s" % product_id
+
+func _localize_product(product_id: String) -> void:
+	_request("tycoon.localize", {"productId": product_id})
+
+func _localize_line(offer: Dictionary) -> String:
+	var edition := str(offer.get("edition", "")).strip_edges()
+	if edition.is_empty(): return ""
+	match str(offer.get("phase", "")):
+		"selling":
+			return "%s · one extra sales day" % edition
+		"sold":
+			return "%s · $%s" % [edition, _money(int(offer.get("cents", 0)))]
+		_:
+			return ""
+
+func _show_localize(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var value: Variant = product.get("localization", null)
+	if not value is Dictionary: return
+	var text := _localize_line(value as Dictionary)
+	if text.is_empty(): return
+	var line := _label(text, false, parent, "action")
+	line.name = node_name
 
 func _port_line(offer: Dictionary) -> String:
 	var shelf := str(offer.get("shelf", "")).strip_edges()
@@ -1267,6 +1313,7 @@ func _product_history(tycoon: Dictionary) -> void:
 		_show_sequel(product, "SequelLine", card)
 		_show_award(product, "AwardLine", card)
 		_show_port(product, "PortLine", card)
+		_show_localize(product, "LocalizeLine", card)
 
 func _released_focus() -> Dictionary:
 	var history: Array = _tycoon().get("history", []) as Array

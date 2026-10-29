@@ -839,6 +839,57 @@ func _tycoon_secondary_actions() -> void:
 	await _present("journey", port_journey)
 	port_button = _panel.find_child("Port_p1", true, false) as Button
 	_check(port_button != null and port_button.disabled and port_button.text == "Port · Another port is still selling.", "Another selling port disables this one")
+	_check(_panel.find_child("Translate_p1", true, false) == null, "A payload without localization draws no Translate button")
+	_check(_panel.find_child("LocalizeOffer_p1", true, false) == null, "A payload without localization draws no translate line")
+	port_state["localization"] = {
+		"edition": "Spanish edition",
+		"costCents": 5000,
+		"phase": "",
+		"cents": 0,
+		"fans": 0,
+		"enabled": true,
+		"reason": "",
+	}
+	await _present("journey", port_journey)
+	var translate := _panel.find_child("Translate_p1", true, false) as Button
+	var localize_offer := _panel.find_child("LocalizeOffer_p1", true, false) as Label
+	shelf_row = _panel.find_child("ShelfActions_p1", true, false) as Control
+	_check(translate != null and not translate.disabled and str(translate.get_meta("cozy_variant", "")) == "secondary" and translate.text == "Translate", "Translate reads as secondary")
+	_check(localize_offer != null and localize_offer.text == "Translate · Spanish edition · $50, one extra sales day", "The shipped card names the edition and the fee")
+	_check(_panel.find_child("LocalizeLine_p1", true, false) == null, "The translate line waits until the translation starts")
+	_check(shelf_row != null and translate.get_parent() == shelf_row and (_panel.find_child("Port_p1", true, false) as Button).get_parent() == shelf_row, "Translate shares the shelf row with Port")
+	_check(_button("Hire Mina") != null and str(_button("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Translate")
+	var localize_state: Dictionary = port_state["localization"]
+	localize_state["phase"] = "selling"
+	localize_state["enabled"] = false
+	localize_state["reason"] = "Already translated."
+	await _present("journey", port_journey)
+	var localize_line := _panel.find_child("LocalizeLine_p1", true, false) as Label
+	_check(localize_line != null and localize_line.text == "Spanish edition · one extra sales day", "A started translation reads one extra sales day")
+	_check(_panel.find_child("Translate_p1", true, false) == null, "A started translation hides the button")
+	_check(_panel.find_child("LocalizeOffer_p1", true, false) == null, "The offer line hides once the translation has started")
+	localize_state["phase"] = "sold"
+	localize_state["cents"] = 2200
+	localize_state["fans"] = 1
+	await _present("journey", port_journey)
+	localize_line = _panel.find_child("LocalizeLine_p1", true, false) as Label
+	_check(localize_line != null and localize_line.text == "Spanish edition · $22.00", "A finished translation names the extra sales")
+	_check(_panel.find_child("Translate_p1", true, false) == null, "A finished translation hides the button")
+	localize_state["phase"] = ""
+	localize_state["cents"] = 0
+	localize_state["fans"] = 0
+	localize_state["enabled"] = false
+	localize_state["reason"] = "Need $50"
+	await _present("journey", port_journey)
+	translate = _panel.find_child("Translate_p1", true, false) as Button
+	_check(translate != null and translate.disabled and str(translate.get_meta("cozy_variant", "")) == "secondary" and translate.text == "Translate · Need $50", "Short cash reads Need $50")
+	_check(_panel.find_child("LocalizeLine_p1", true, false) == null, "A refused translation draws no status line")
+	port_state["status"] = "released"
+	await _present("journey", port_journey)
+	_check(_panel.find_child("Translate_p1", true, false) == null, "Translate stays off the Selling card")
+	_check(_panel.find_child("LocalizeOffer_p1", true, false) == null, "The translate offer stays off the Selling card")
+	port_state.erase("localization")
+	port_state["status"] = "complete"
 	tycoon.erase("contract")
 	tycoon.erase("history")
 	tycoon.erase("patchNotice")
