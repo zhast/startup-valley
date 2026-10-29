@@ -1808,4 +1808,56 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → Season. With no hires the line is "No payroll yet" and the first newsletter is still $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_payroll.gd`.
 
+### Round 45 — 2026-10-28
+
+**What changed**
+- One optional loan from Whop Treasury. $500 now, $550 back on a later payday. $500 covers a full-team payday ($300) plus a patch ($100) and stays under the $600 office expansion. The $50 fee is under Mina's $80 season salary. $550 is just under Nicer Checkout Page ($560).
+- At most one loan is out. Taking it writes `tycoon:loan:<n>:taken` with label `Loan: Whop Treasury`. Repayment of $550 runs on the due payday after sales and payroll, as `tycoon:loan:<n>:repaid` with label `Loan repaid`. A loan taken on payday itself waits until the next season. Replaying a day end or reopening never pays or repays twice. After repayment a new loan may be taken.
+- Skipping the loan writes no row. The first Crypto Alpha Newsletter is still 20700 cents and 5 fans. The next office day is still 33300 cents.
+- The Season card line is "Loan · $500, repay $550 on Spring 28" plus one secondary Take loan button. While a loan is out the line is "Loan due · $550 on Spring 28" and the button is gone. Hire stays the one primary action. `journey.tycoon.loan` is `{ lender, amountCents, repayCents, due, outstanding }`. A payload without `loan` draws no extra line.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Publishers is the next slice. One optional publisher deal, an advance of game cash, and a cut of that product's sales. Skipping it leaves cash alone, so the first newsletter stays 20700 cents and 5 fans. No new product picker row.
+2. Bugs was set aside. It overlaps patches and would add another picker row.
+3. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+4. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+5. The tallest Selling card still meets the footer. The Season card loan button sits above the money note, and that note sits above the footer.
+6. Carried from Round 40: Creative has no seated sheet. Unbound art stays untracked. The live path is still a harness driver. A cheap reviewer can still sit just under the 2.5 ready line. Chapter 3 ends at "More is coming." The starter `shared_workbench` stays in storage. The one on the Open Floor is a separate grant.
+7. `test_tycoon_audience.gd` printed "The shipped product keeps the fan rule" and "Release names the audience" once in a prior gate run, then passed on two reruns. No shared save, port, or worker file is obvious. Each run uses its own `STARTUP_VALLEY_DATA_DIR`. Left alone. The gate script still ignores Godot's exit code and greps the log.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 113 tests, 111 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test covers the $500/$550 helpers, a skip that still pays 20700 cents and 5 fans then 33300 cents with no loan rows, take once, a second take refused, repay once on payday across a replay, a reopen that does not repay again, a second loan after repayment, a take on payday that waits until the next season, and payroll plus loan on the same payday.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS. The offer reads "Loan · $500, repay $550 on Spring 28". Take loan is secondary. Hire Mina stays primary. Taking it shows "$500.00" and "Loan due · $550 on Spring 28". Spring 28 repays once. The next morning is −$50.00 and the offer returns for Summer 28. A second loan is due on Summer 28.
+- `test_ui_company_redesign.gd` — 15349 checks, 0 failures, 0 captures. Existing fixtures omit `loan` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Forty-three PNGs in `/workspace/sv-proof/round-45/` (local, not committed). `42-loan-offer.png` is Company Journey on Spring 1. The header reads "Spring 1 · Year 1 · $0.00 game cash · 0 reputation". The Season card reads "Loan · $500, repay $550 on Spring 28" with Take loan secondary and Hire Mina · free orange. `43-loan-taken.png` is after Take loan. The header reads "$500.00 game cash". The Season card reads "Loan due · $550 on Spring 28" with no Take loan button. Those lines are readable and do not overlap the footer. Cash before the desk buy was 118460 cents. Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-45 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → Season. Take loan is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_loans.gd`.
+
 

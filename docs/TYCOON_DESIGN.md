@@ -9,7 +9,7 @@ The rules in `harness/src/tycoon.ts` are authoritative. This document matches th
 1. **Offline.** A new company ships a product with no API key and no network. Providers stay optional, and only on chapter work orders and chat.
 2. **The pairing is the decision.** A topic and a product type fit together at Great, Good, Okay, or Bad, in the Game Dev Tycoon way. A bad pairing can still ship. It sells worse.
 3. **Days, not a progress bar you click.** Development and sales move when the office day ends. The room stays the cozy Stardew-style office already in the game.
-4. **Deterministic.** Reviews and sales are pure functions of the company seed, the product id, the fit, the points, the focus stored on the product, the research bonus stored on the product, the launch price stored on the product, the marketing choice stored on the product, the audience stored on the product, the size stored on the product, whether it was patched, the sequel bonus stored on the product, the engine score bump stored on the product, the shorter day count that follows from the sequel link, the shorter or longer day count that follows from the size, and reputation. Regulars also reads whether a past release used the same topic. A contract bonus is a separate cash line. A patch cost is too. An award fee is too, and its fans are not part of the sales formula. A port fee is a separate cash line. Its one extra sales day uses that same sales formula. An engine fee is a separate cash line, paid once when the engine is bought. They are not extra inputs beyond those. The same save replays the same launch.
+4. **Deterministic.** Reviews and sales are pure functions of the company seed, the product id, the fit, the points, the focus stored on the product, the research bonus stored on the product, the launch price stored on the product, the marketing choice stored on the product, the audience stored on the product, the size stored on the product, whether it was patched, the sequel bonus stored on the product, the engine score bump stored on the product, the shorter day count that follows from the sequel link, the shorter or longer day count that follows from the size, and reputation. Regulars also reads whether a past release used the same topic. A contract bonus is a separate cash line. A patch cost is too. An award fee is too, and its fans are not part of the sales formula. A port fee is a separate cash line. Its one extra sales day uses that same sales formula. An engine fee is a separate cash line, paid once when the engine is bought. A loan is a separate cash line, paid once when it is taken and once when it is repaid. They are not extra inputs beyond those. The same save replays the same launch.
 5. **One product on the bench.** A second idea waits until the first one ships. A shipped product can still be selling while the next one starts.
 
 ## Core loop
@@ -234,7 +234,7 @@ Each event adds 2 fans to any product that sells that day. The line is "+2 fans 
 
 `journey.tycoon.calendar` carries `season`, `seasonName`, `dayOfSeason`, `year`, `label`, `favoredTopics` (`{id, name}`), `event` (or null), and `nextEvent` (the event fields plus `season`, `dayOfSeason`, and `daysUntil`). The day summary stores `dateLabel` for the day that just ended, so the complete screen does not jump to the next morning. Older summaries without that field still load.
 
-Company Journey shows the label on the heading ("Spring 2 · Year 1 · $0.00 game cash · 0 reputation"). The title continue line and the day complete screen use the same words. A Season card sits under Office: "In season: Fitness, Dating Advice", and either "Creator Fair today. +2 fans on sales today" or "Creator Fair in 11 days". The same card names the next payday. With no hires that line is "No payroll yet". The product picker adds "· in season" on a favored topic, including a locked one. Hire stays the one primary action. No new button.
+Company Journey shows the label on the heading ("Spring 2 · Year 1 · $0.00 game cash · 0 reputation"). The title continue line and the day complete screen use the same words. A Season card sits under Office: "In season: Fitness, Dating Advice", and either "Creator Fair today. +2 fans on sales today" or "Creator Fair in 11 days". The same card names the next payday. With no hires that line is "No payroll yet". The same card offers one optional loan. The product picker adds "· in season" on a favored topic, including a locked one. Hire stays the one primary action. Take loan is secondary.
 
 ## Whop-themed names
 
@@ -477,13 +477,35 @@ The morning after payday shows "Paid payroll · −$80" on the day-end summary a
 
 The Season card line is "Payroll · $80 on Spring 28", or "No payroll yet" when the total is $0. After Spring 28 the line moves to Summer 28. `journey.tycoon.payroll` is `{ cents, payday, notice }`. `cents` is the next payday total. `payday` is the current season's last day, such as "Spring 28". `notice` is empty except on the morning after payday. A payload without `payroll` draws no extra line. Hire stays the one primary action. There is no payroll button.
 
+## Loans
+
+One optional bank loan. The lender is **Whop Treasury** in copy only. The harness owns the amount, the fee, the due payday, and the ledger rows. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential.
+
+At most one loan is outstanding. `tycoon.takeLoan` takes `{}`. A second take fails with "A loan is already out." and pays nothing. Skipping the loan writes no row, so the first Crypto Alpha Newsletter still pays 20700 cents and 5 fans, and the next office day is still 33300 cents.
+
+| | Amount | Why |
+| --- | --- | --- |
+| Principal | $500 | Covers a full-team payday ($300) plus a patch ($100). Under the $600 office expansion. Over the $207 first newsletter, so it is real relief after payroll goes negative. |
+| Fee | $50 | Ten percent. Under Mina's $80 season salary. |
+| Repay | $550 | Just under Nicer Checkout Page ($560). A real payday bill. |
+
+Taking the loan writes one ledger row: id `tycoon:loan:<n>:taken`, cash +$500, earned 0, reputation 0, label `Loan: Whop Treasury`. Repayment of $550 runs automatically on the due payday, after that day's sales and payroll. One ledger row: id `tycoon:loan:<n>:repaid`, cash −$550, earned 0, reputation 0, label `Loan repaid`. Cash may go below zero, the same way payroll does. Replaying that day end, or opening the save again, finds the id and does not pay or repay a second time.
+
+The due payday is this season's last day. A loan taken on payday itself waits until the next season, so the same evening does not take the $550 back. After repayment a new loan may be taken, with n counting up.
+
+There is no new SQL column. Outstanding is a taken row with no matching repaid row. An older save has no loan rows and loads with the offer.
+
+`journey.tycoon.loan` is `{ lender, amountCents, repayCents, due, outstanding }`. `amountCents` is 50000. `repayCents` is 55000. `due` is the payday label, such as "Spring 28". A payload without `loan` draws no extra line or button.
+
+The Season card line is "Loan · $500, repay $550 on Spring 28" plus one secondary button, Take loan. While a loan is out the line is "Loan due · $550 on Spring 28" and the button is gone. Hire stays the one primary action. Take loan is not orange.
+
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, awards, ports, engines, focus, audience, size, and payroll. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Engine**, **Office**, and **Season** on Company Journey. Price, marketing, the engine choice, the focus, the audience, and the size live on the New Product picker. The engine buy lives on the Engine card. The award show and the port live on the Shipped card. Payroll is one line on the Season card.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, awards, ports, engines, focus, audience, size, payroll, and loans. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Engine**, **Office**, and **Season** on Company Journey. Price, marketing, the engine choice, the focus, the audience, and the size live on the New Product picker. The engine buy lives on the Engine card. The award show and the port live on the Shipped card. Payroll and the loan live on the Season card.
 
 Next slice:
 
-1. **Loans.** One optional loan of game cash, repaid with a small fee on a later payday. Skipping it leaves cash alone, so the first newsletter stays 20700 cents and 5 fans. No new product picker row.
+1. **Publishers.** One optional publisher deal, an advance of game cash, and a cut of that product's sales. Skipping it leaves cash alone, so the first newsletter stays 20700 cents and 5 fans. No new product picker row.
 
 Later art ask: a second room. Office growth shipped as spare desks on the current floor (`compact_desk` and `shared_workbench`, already bound). There is no second-room architecture art, so that room waits.
 
