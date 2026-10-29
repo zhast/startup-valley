@@ -160,6 +160,17 @@ export const LOAN_AMOUNT_CENTS = 50_000;
 export const LOAN_FEE_CENTS = 5_000;
 export const LOAN_REPAY_CENTS = LOAN_AMOUNT_CENTS + LOAN_FEE_CENTS;
 
+/**
+ * One optional publisher for the product on the bench. Copy only.
+ * $150 matches the big ad: under the $207 first newsletter, over Mina's $80,
+ * and well under the $500 loan and the $600 office. 30% of that newsletter's
+ * four-day window is about the same $150, so the advance is cash during the
+ * build. A larger product gives up more than it got.
+ */
+export const PUBLISHER_NAME = "Creator Collective";
+export const PUBLISHER_ADVANCE_CENTS = 15_000;
+export const PUBLISHER_CUT_PERCENT = 30;
+
 /** Office tools. Each row is bought once and has one effect. */
 export const UPGRADES = [
   { id: "standing_desk", name: "Oak Standing Desk", blurb: "Sketches land cleaner when you stand.", priceCents: 25_000, kind: "design", effect: "+1 design per person per dev day" },
@@ -379,6 +390,8 @@ export interface TycoonProductView {
   audience: TycoonProductAudience | null;
   /** Null when the product started at Catalog length. Omitted rows are Catalog. */
   size: TycoonProductSize | null;
+  /** Null unless the product is in development or already signed. */
+  publisher: TycoonProductPublisher | null;
 }
 
 export interface TycoonUpgradeView {
@@ -554,6 +567,13 @@ export interface TycoonLoan {
   outstanding: boolean;
 }
 
+export interface TycoonProductPublisher {
+  name: string;
+  advanceCents: number;
+  cutPercent: number;
+  signed: boolean;
+}
+
 export interface TycoonSnapshot {
   seed: number;
   salesWindowDays: number;
@@ -693,6 +713,21 @@ export function loanDueDay(fromDay: number): number {
   const safe = Math.max(1, Math.trunc(Number.isFinite(fromDay) ? fromDay : 1));
   const thisPayday = (Math.floor((safe - 1) / SEASON_LENGTH_DAYS) + 1) * SEASON_LENGTH_DAYS;
   return safe < thisPayday ? thisPayday : thisPayday + SEASON_LENGTH_DAYS;
+}
+
+/**
+ * Publisher share of one sales row. `Math.round((cents * 30) / 100)`, the same
+ * half-up rounding as the unit percents. The company keeps the rest. A 1-cent
+ * sale rounds the 0.3 cent share to 0. A 2-cent sale rounds 0.6 to 1.
+ */
+export function publisherCutCents(cents: number): number {
+  if (!Number.isInteger(cents) || cents <= 0) return 0;
+  return Math.round((cents * PUBLISHER_CUT_PERCENT) / 100);
+}
+
+/** Sales cents posted for a signed product. Fans stay on the gross sale. */
+export function publisherNetCents(cents: number): number {
+  return Math.max(0, cents - publisherCutCents(cents));
 }
 
 /** Player-facing payday, for example "Spring 28". */
@@ -1098,6 +1133,8 @@ interface ProductSnapshot {
   audience: AudienceLean | null;
   /** Null when development started at Catalog length. */
   size: SizeLean | null;
+  /** True after this product signs the one publisher deal. */
+  publisher: boolean;
 }
 
 interface ProductPort {
@@ -1130,6 +1167,7 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     focus: null,
     audience: null,
     size: null,
+    publisher: false,
   };
 }
 
@@ -1137,7 +1175,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no engine, Balanced, Everyone, and Catalog length. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no engine, Balanced, Everyone, Catalog length, and no publisher. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -1160,6 +1198,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     focus?: unknown;
     audience?: unknown;
     size?: unknown;
+    publisher?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -1177,6 +1216,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     focus: parseFocus(body.focus),
     audience: parseAudience(body.audience),
     size: parseSize(body.size),
+    publisher: body.publisher === true,
   };
 }
 
@@ -1248,6 +1288,7 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
   }
   if (stored.audience) body.audience = stored.audience;
   if (stored.size) body.size = stored.size;
+  if (stored.publisher) body.publisher = true;
   return JSON.stringify(body);
 }
 
@@ -1795,6 +1836,27 @@ export class TycoonStore {
     });
   }
 
+  /** One deal for the product on the bench. The advance is one ledger row. */
+  signPublisher(): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.developingRow();
+      if (!row) throw new Error("No product is on the bench.");
+      const stored = parseProductSnapshot(row.staff_json);
+      if (stored.publisher) throw new Error("Already signed.");
+      this.journey.recordCompanyChange(
+        `tycoon:publisher:${row.id}:advance`,
+        this.day(),
+        PUBLISHER_ADVANCE_CENTS,
+        0,
+        0,
+        `Publisher: ${PUBLISHER_NAME}`,
+      );
+      stored.publisher = true;
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      return this.journey.state();
+    });
+  }
+
   expandOffice(): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
       const current = this.officeLevel();
@@ -1927,6 +1989,7 @@ export class TycoonStore {
         focus: null,
         audience: null,
         size: null,
+        publisher: false,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -2174,7 +2237,8 @@ export class TycoonStore {
       unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === topicId) ? SEASON_UNIT_BOOST_PERCENT : 0,
       bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
     });
-    this.journey.recordCompanyChange(`tycoon:${row.id}:${applied}`, day, payout.cents, payout.cents, payout.fans, `Sales · ${row.name}`);
+    const posted = stored.publisher ? publisherNetCents(payout.cents) : payout.cents;
+    this.journey.recordCompanyChange(`tycoon:${row.id}:${applied}`, day, posted, posted, payout.fans, `Sales · ${row.name}`);
     const salesDays = applied + 1;
     this.db.prepare(`
       UPDATE tycoon_products
@@ -2184,7 +2248,7 @@ export class TycoonStore {
       salesDays >= SALES_WINDOW_DAYS ? "complete" : "released",
       salesDays,
       day,
-      Number(row.sales_cents) + payout.cents,
+      Number(row.sales_cents) + posted,
       Number(row.fans) + payout.fans,
       row.id,
     );
@@ -2217,11 +2281,12 @@ export class TycoonStore {
         unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === topicId) ? SEASON_UNIT_BOOST_PERCENT : 0,
         bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
       });
-      this.journey.recordCompanyChange(`tycoon:${row.id}:${SALES_WINDOW_DAYS}`, day, payout.cents, payout.cents, payout.fans, `Sales · ${row.name}`);
-      stored.port = { ...stored.port, cents: payout.cents, fans: payout.fans };
+      const posted = stored.publisher ? publisherNetCents(payout.cents) : payout.cents;
+      this.journey.recordCompanyChange(`tycoon:${row.id}:${SALES_WINDOW_DAYS}`, day, posted, posted, payout.fans, `Sales · ${row.name}`);
+      stored.port = { ...stored.port, cents: posted, fans: payout.fans };
       this.db.prepare("UPDATE tycoon_products SET staff_json = ?, sales_cents = ?, fans = ? WHERE id = ?").run(
         serializeProductSnapshot(stored),
-        Number(row.sales_cents) + payout.cents,
+        Number(row.sales_cents) + posted,
         Number(row.fans) + payout.fans,
         row.id,
       );
@@ -2626,6 +2691,18 @@ export class TycoonStore {
       focus: focusView(snapshot.focus),
       audience: audienceView(snapshot.audience),
       size: sizeView(snapshot.size),
+      publisher: this.publisherView(row.status, snapshot.publisher),
+    };
+  }
+
+  /** Offer while the product is in development. After that, only a signed deal stays. */
+  private publisherView(status: string, signed: boolean): TycoonProductPublisher | null {
+    if (!signed && status !== "developing") return null;
+    return {
+      name: PUBLISHER_NAME,
+      advanceCents: PUBLISHER_ADVANCE_CENTS,
+      cutPercent: PUBLISHER_CUT_PERCENT,
+      signed,
     };
   }
 

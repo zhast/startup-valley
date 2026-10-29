@@ -571,6 +571,7 @@ func _product_shortcut() -> void:
 		_show_focus(developing, "FocusJourney")
 		_show_audience(developing, "AudienceJourney")
 		_show_size(developing, "SizeJourney")
+		_publisher_card(developing)
 	var button := _button("New Product", func() -> void: present("product"), false, true, null, "secondary")
 	button.name = "NewProduct"
 
@@ -1010,6 +1011,26 @@ func _season_card() -> void:
 
 func _take_loan() -> void:
 	_request("tycoon.takeLoan", {})
+
+func _publisher_card(product: Dictionary) -> void:
+	var value: Variant = product.get("publisher", null)
+	if not value is Dictionary or (value as Dictionary).is_empty(): return
+	var offer := value as Dictionary
+	var publisher_name := str(offer.get("name", "")).strip_edges()
+	if publisher_name.is_empty(): return
+	var card := _card()
+	card.name = "PublisherCard"
+	var cut := int(offer.get("cutPercent", 0))
+	var signed := bool(offer.get("signed", false))
+	var text := "Published by %s · %d%% cut" % [publisher_name, cut] if signed else "Publisher · %s pays $%d now, takes %d%% of sales" % [publisher_name, int(int(offer.get("advanceCents", 0)) / 100), cut]
+	var line := _label(text, false, card)
+	line.name = "PublisherOffer"
+	if signed: return
+	var button := _button("Sign publisher", _sign_publisher, false, true, card, "secondary")
+	button.name = "SignPublisher"
+
+func _sign_publisher() -> void:
+	_request("tycoon.signPublisher", {})
 
 func _season_event_line(calendar: Dictionary) -> String:
 	var today: Variant = calendar.get("event")
