@@ -395,6 +395,7 @@ func _run() -> void:
 	await _loan_proof()
 	await _publisher_proof()
 	await _expo_proof()
+	await _localize_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -948,6 +949,73 @@ func _expo_proof() -> void:
 	header = label_named("OfficeDate")
 	check(header != null and header.text.contains("$147.00"), "The header shows the cash after the fee")
 	await snap("47-expo-booked", main.company_panel.find_child("SeasonCard", true, false) as Control)
+
+func seed_localize_offer(data_dir: String) -> bool:
+	var database := ProjectSettings.globalize_path("res://../harness/src/database.ts")
+	var tsx := ProjectSettings.globalize_path("res://../harness/node_modules/tsx/dist/cli.mjs")
+	var node := OS.get_environment("STARTUP_VALLEY_NODE").strip_edges()
+	if node.is_empty():
+		for dir: String in OS.get_environment("PATH").split(":"):
+			if FileAccess.file_exists(dir.path_join("node")):
+				node = dir.path_join("node")
+				break
+	if node.is_empty():
+		node = "/home/box/.local/node22/bin/node"
+	var script_path := data_dir.path_join("seed-localize.mjs")
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from " + JSON.stringify(database) + ";\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst db = new GameDatabase(root + '/startup-valley.sqlite', root + '/company-project');\ndb.tycoon.start('crypto', 'newsletter', []);\ndb.endDay(1);\ndb.endDay(2);\ndb.tycoon.release('p1');\ndb.endDay(3);\ndb.endDay(4);\ndb.endDay(5);\ndb.endDay(6);\ndb.setClock(7, 480, 0);\nconst offer = db.tycoon.view().history[0].localization;\nconst company = db.journey.state().company;\ndb.close();\nif (company.cashCents < 5000 || offer.phase !== '' || offer.enabled !== true || offer.edition !== 'Spanish edition' || offer.costCents !== 5000) { console.error(JSON.stringify({ company: company, offer: offer })); process.exit(2); }\n"
+	var file := FileAccess.open(script_path, FileAccess.WRITE)
+	if file == null:
+		check(false, "Could not write the localization seed script")
+		return false
+	file.store_string(script)
+	file.close()
+	var output: Array = []
+	var code := OS.execute(node, PackedStringArray([tsx, script_path, data_dir]), output, true)
+	check(code == 0, "Seeded a finished newsletter with a translation offer (%s)" % " ".join(output))
+	return code == 0
+
+func _localize_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-localize-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_localize_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var line := label_named("LocalizeOffer_p1")
+	check(line != null and line.text == "Translate · Spanish edition · $50, one extra sales day", "The shipped card names the translation offer")
+	var translate := button_named("Translate")
+	check(translate != null and not translate.disabled and str(translate.get_meta("cozy_variant", "")) == "secondary" and translate.text == "Translate", "Translate is a secondary action")
+	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside Translate")
+	var before := company_cash()
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("$%s" % _proof_money(before)), "The offer header shows the cash before the fee")
+	await snap("48-localize-offer", line)
+	await click(translate)
+	await wait_until(func() -> bool: return company_cash() == before - 5000 and not main.company_panel.busy, "Translating charges $50")
+	check(label_named("LocalizeLine_p1") != null and label_named("LocalizeLine_p1").text == "Spanish edition · one extra sales day", "The shipped card names the bought translation")
+	check(button_named("Translate") == null, "The translate button hides after the fee")
+	check(label_named("LocalizeOffer_p1") == null, "The offer line hides after the fee")
+	header = label_named("OfficeDate")
+	check(header != null and header.text.contains("$%s" % _proof_money(before - 5000)), "The header shows the cash after the fee")
+	await snap("49-localize-bought", label_named("LocalizeLine_p1"))
+
+func _proof_money(cents: int) -> String:
+	var integer := str(absi(cents) / 100)
+	var grouped := ""
+	for index: int in range(integer.length()):
+		if index > 0 and (integer.length() - index) % 3 == 0:
+			grouped += ","
+		grouped += integer[index]
+	return grouped + ".%02d" % (absi(cents) % 100)
 
 func _office_expansion_proof() -> void:
 	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-office-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])

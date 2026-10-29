@@ -9,6 +9,7 @@ Player-facing flows for the offline tycoon. The harness owns the rules (`docs/TY
 - [Sequels](sequels.md)
 - [Awards](awards.md)
 - [Ports](ports.md)
+- [Localization](localization.md)
 - [Train staff](train-staff.md)
 - [Research](research.md)
 - [Upgrades](upgrades.md)
