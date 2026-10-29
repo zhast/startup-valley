@@ -991,10 +991,25 @@ func _season_card() -> void:
 		if not notice.is_empty():
 			var notice_label := _label(notice, false, card, "action")
 			notice_label.name = "PayrollNotice"
+	var loan: Dictionary = _tycoon().get("loan", {}) if _tycoon().get("loan") is Dictionary else {}
+	if not loan.is_empty():
+		var amount := int(loan.get("amountCents", 0))
+		var repay := int(loan.get("repayCents", 0))
+		var due := str(loan.get("due", "")).strip_edges()
+		var outstanding := bool(loan.get("outstanding", false))
+		var loan_line := "Loan due · $%d on %s" % [int(repay / 100), due] if outstanding else "Loan · $%d, repay $%d on %s" % [int(amount / 100), int(repay / 100), due]
+		var loan_label := _label(loan_line, false, card)
+		loan_label.name = "SeasonLoan"
+		if not outstanding:
+			var loan_button := _button("Take loan", _take_loan, false, true, card, "secondary")
+			loan_button.name = "TakeLoan"
 	var company: Dictionary = state.get("company", {}) if state.get("company") is Dictionary else {}
 	if int(company.get("cashCents", 0)) < 0:
 		var negative := _label("Cash is negative", false, card)
 		negative.name = "CashNegative"
+
+func _take_loan() -> void:
+	_request("tycoon.takeLoan", {})
 
 func _season_event_line(calendar: Dictionary) -> String:
 	var today: Variant = calendar.get("event")

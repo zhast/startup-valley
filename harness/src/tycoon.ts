@@ -150,6 +150,16 @@ export const SALARY_CENTS = {
   creative: 12_000,
 } as const;
 
+/**
+ * One optional loan from Whop Treasury. $500 now, $550 back on a later payday.
+ * $500 covers a full-team payday ($300) plus a patch ($100). It stays under the
+ * $600 office expansion. The $50 fee is under Mina's $80 season salary.
+ */
+export const LOAN_LENDER = "Whop Treasury";
+export const LOAN_AMOUNT_CENTS = 50_000;
+export const LOAN_FEE_CENTS = 5_000;
+export const LOAN_REPAY_CENTS = LOAN_AMOUNT_CENTS + LOAN_FEE_CENTS;
+
 /** Office tools. Each row is bought once and has one effect. */
 export const UPGRADES = [
   { id: "standing_desk", name: "Oak Standing Desk", blurb: "Sketches land cleaner when you stand.", priceCents: 25_000, kind: "design", effect: "+1 design per person per dev day" },
@@ -535,6 +545,15 @@ export interface TycoonPayroll {
   notice: string;
 }
 
+export interface TycoonLoan {
+  lender: string;
+  amountCents: number;
+  repayCents: number;
+  /** Payday the outstanding loan is due, or the payday a new loan would use. */
+  due: string;
+  outstanding: boolean;
+}
+
 export interface TycoonSnapshot {
   seed: number;
   salesWindowDays: number;
@@ -549,6 +568,7 @@ export interface TycoonSnapshot {
   upgrades: TycoonUpgradeView[];
   calendar: TycoonCalendar;
   payroll: TycoonPayroll;
+  loan: TycoonLoan;
   office: TycoonOffice;
   priceSteps: LaunchPriceStep[];
   marketingOptions: Array<MarketingOption & { enabled: boolean; reason: string }>;
@@ -662,6 +682,22 @@ export function payrollCents(staffIds: readonly string[]): number {
     if (typeof cents === "number") total += cents;
   }
   return total;
+}
+
+/**
+ * Payday a loan taken on this office day is due. This season's last day, or the
+ * next season when the take itself falls on payday, so the same evening does
+ * not take the $550 back.
+ */
+export function loanDueDay(fromDay: number): number {
+  const safe = Math.max(1, Math.trunc(Number.isFinite(fromDay) ? fromDay : 1));
+  const thisPayday = (Math.floor((safe - 1) / SEASON_LENGTH_DAYS) + 1) * SEASON_LENGTH_DAYS;
+  return safe < thisPayday ? thisPayday : thisPayday + SEASON_LENGTH_DAYS;
+}
+
+/** Player-facing payday, for example "Spring 28". */
+export function paydayLabel(day: number): string {
+  return `${calendarForDay(day).seasonName} ${SEASON_LENGTH_DAYS}`;
 }
 
 /** Unit price after a percent boost. Half rounds away from zero via Math.round. */
@@ -1543,6 +1579,7 @@ export class TycoonStore {
       }),
       calendar: calendarForDay(day),
       payroll: this.payrollView(day, hired),
+      loan: this.loanView(day),
       office: this.officeView(this.officeLevel(), hired.size, cash),
       priceSteps: [...LAUNCH_PRICES],
       marketingOptions: marketingOffer(cash),
@@ -1737,6 +1774,23 @@ export class TycoonStore {
       this.saveEngineOwned();
       this.engineNotice = `Bought ${ENGINE_NAME}. −${wholeDollars(ENGINE_COST_CENTS)}`;
       this.engineNoticeDay = day;
+      return this.journey.state();
+    });
+  }
+
+  takeLoan(): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      if (this.outstandingLoan()) throw new Error("A loan is already out.");
+      const n = this.nextLoanNumber();
+      const day = this.day();
+      this.journey.recordCompanyChange(
+        `tycoon:loan:${n}:taken`,
+        day,
+        LOAN_AMOUNT_CENTS,
+        0,
+        0,
+        `Loan: ${LOAN_LENDER}`,
+      );
       return this.journey.state();
     });
   }
@@ -1974,6 +2028,7 @@ export class TycoonStore {
     }
     this.payPorts(day);
     this.payPayroll(day);
+    this.repayLoan(day);
   }
 
   /** One season salary, after that day's sales. Replaying the same payday does not pay again. */
@@ -1997,6 +2052,65 @@ export class TycoonStore {
       payday: `${calendar.seasonName} ${SEASON_LENGTH_DAYS}`,
       notice: this.payrollNoticeDay === day ? this.payrollNotice : "",
     };
+  }
+
+  /** Amount plus fee, on the due payday. Replaying that payday does not repay again. */
+  private repayLoan(day: number): void {
+    const loan = this.outstandingLoan();
+    if (!loan) return;
+    if (day < loanDueDay(loan.takenDay)) return;
+    if (calendarForDay(day).dayOfSeason !== SEASON_LENGTH_DAYS) return;
+    this.journey.recordCompanyChange(
+      `tycoon:loan:${loan.n}:repaid`,
+      day,
+      -LOAN_REPAY_CENTS,
+      0,
+      0,
+      "Loan repaid",
+      true,
+    );
+  }
+
+  private loanView(day: number): TycoonLoan {
+    const outstanding = this.outstandingLoan();
+    const dueDay = outstanding ? loanDueDay(outstanding.takenDay) : loanDueDay(day);
+    return {
+      lender: LOAN_LENDER,
+      amountCents: LOAN_AMOUNT_CENTS,
+      repayCents: LOAN_REPAY_CENTS,
+      due: paydayLabel(dueDay),
+      outstanding: outstanding !== null,
+    };
+  }
+
+  private outstandingLoan(): { n: number; takenDay: number } | null {
+    const repaid = new Set(this.loanEntries("repaid").map((entry) => entry.n));
+    for (const entry of this.loanEntries("taken")) {
+      if (!repaid.has(entry.n)) return entry;
+    }
+    return null;
+  }
+
+  private nextLoanNumber(): number {
+    const taken = this.loanEntries("taken");
+    return taken.length === 0 ? 1 : taken[taken.length - 1]!.n + 1;
+  }
+
+  private loanEntries(kind: "taken" | "repaid"): Array<{ n: number; takenDay: number }> {
+    const rows = this.db.prepare(
+      "SELECT id, day FROM company_transactions WHERE id LIKE ?",
+    ).all(`tycoon:loan:%:${kind}`) as Array<{ id: string; day: number }>;
+    const prefix = "tycoon:loan:";
+    const suffix = `:${kind}`;
+    const entries: Array<{ n: number; takenDay: number }> = [];
+    for (const row of rows) {
+      if (!row.id.startsWith(prefix) || !row.id.endsWith(suffix)) continue;
+      const n = Number(row.id.slice(prefix.length, row.id.length - suffix.length));
+      if (!Number.isInteger(n) || n < 1) continue;
+      entries.push({ n, takenDay: Number(row.day) });
+    }
+    entries.sort((a, b) => a.n - b.n);
+    return entries;
   }
 
   private tickDevelopment(row: ProductRow, day: number): void {
