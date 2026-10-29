@@ -20,5 +20,6 @@ Player-facing flows for the offline tycoon. The harness owns the rules (`docs/TY
 - [Office growth](office-growth.md)
 - [End day](end-day.md)
 - [Publishers](publishers.md)
+- [Expos](expos.md)
 
 Launch, display, and proof-file rules live in the verify-startup-valley skill. Do not copy them here.

@@ -1882,3 +1882,58 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
 4. `test_tycoon_price.gd` failed once in the first gate run ("A cheaper launch pays a different cash amount") and twice right after with "Worker bootstrap loads a fresh company", then passed three reruns in a row on this branch and on main. Same intermittent pattern as the audience test in Round 45. Left alone; worth a look if it repeats.
 5. Carried from Round 45: the tallest Selling card still meets the footer, and the earlier Round 40 gaps.
+
+### Round 47 — 2026-10-29
+
+**What changed**
+- One optional booth at the Whop Creator Fair. $60 now, exactly 3 fans on day 14 of that season. $60 is over the $40 award fee and under Mina's $80 season salary, so a company that just shipped the $207 newsletter can book and still keep $147. 3 fans is under that newsletter's 5. Day 14 is the middle of the season: not payday, and not an existing event day. The Spring 13 Creator Fair event is unchanged.
+- Booking writes `tycoon:expo:<year>-<season>:booth` with label `Booth: Whop Creator Fair`. The fair day, after that day's sales, writes `tycoon:expo:<year>-<season>:fans` with label `Expo: Whop Creator Fair` and +3 reputation. A second book fails with "Already booked." Less than $60 fails with "Need $60" and writes nothing. Replaying a day end or reopening never charges or pays twice. A missed fair is not paid late.
+- Skipping the booth writes no row. The first Crypto Alpha Newsletter is still 20700 cents and 5 fans. The next office day is still 33300 cents.
+- The Season card line is "Expo · Whop Creator Fair on Spring 14 · $60 booth, about 3 fans" plus one secondary Book booth button. Once booked the line is "Booth booked · Whop Creator Fair on Spring 14" and the button is gone. Hire stays the one primary action. `journey.tycoon.expo` is `{ name, costCents, fans, when, booked }`. A payload without `expo` draws no extra line.
+
+**Proof**
+- `/workspace/sv-proof/round-47/46-expo-offer.png` and `47-expo-booked.png`, captured by the verify-startup-valley skill. PROOF PASS. Forty-seven PNGs. The offer header reads "Spring 1 · Year 1 · $207.00 game cash · 0 reputation". Book booth is secondary and Hire Mina · free stays orange. The booked header reads "$147.00 game cash" and the line is "Booth booked · Whop Creator Fair on Spring 14" with no Book booth button. Those lines are readable. The money note sits under the Season card and above the footer. Cash before the desk buy was 118460 cents.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Localization is the next slice. One optional translation of a finished product, on that product's existing shelf row. A small fee, then one quieter extra sales day. Skipping it leaves cash alone, so the first newsletter stays 20700 cents and 5 fans. No new product picker row, and no new Season card button.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. `test_tycoon_price.gd` passed this gate. The Round 46 flake was not seen. Left alone.
+5. Carried from Round 45: the tallest Selling card still meets the footer, and the earlier Round 40 gaps. The new booth line and button still sit above the money note.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 115 tests, 113 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test books once, charges the fee once, pays 3 fans once on the fair day, replays that day without a second payment, refuses a second book, fails short cash with Need $60 and no row, and leaves a skipped booth at 20700 cents, 5 fans, then 33300 cents with no expo rows.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS. The offer reads "Expo · Whop Creator Fair on Spring 14 · $60 booth, about 3 fans". Book booth is secondary. Hire Mina stays primary. $0 says Need $60 and writes nothing. Skipping the booth still pays 20700 cents and 5 fans, then 33300 cents. Booking from there leaves $273.00 and "Booth booked · Whop Creator Fair on Spring 14". Reopening does not charge again. A seeded Spring 14 booth pays "Expo: Whop Creator Fair" once, reputation 3, cash still $0, and the next morning offers Summer 14.
+- `test_ui_company_redesign.gd` — 15349 checks, 0 failures, 0 captures. Existing fixtures omit `expo` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Forty-seven PNGs in `/workspace/sv-proof/round-47/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-47 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → Season. Book booth is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_expos.gd`.
