@@ -44,7 +44,7 @@
             "hiring.complete", "milestone.evaluate", "milestone.complete", "milestone.override",
             "chapter.continue",
             "day.end", "game.save", "game.new",
-            "tycoon.start", "tycoon.release", "tycoon.train", "tycoon.research", "tycoon.buyUpgrade", "tycoon.expandOffice", "tycoon.acceptContract", "tycoon.patch", "tycoon.sequel", "tycoon.award", "tycoon.port", "tycoon.localize", "tycoon.buyEngine", "tycoon.takeLoan", "tycoon.signPublisher", "tycoon.bookBooth", "tycoon.takeTownDay", "tycoon.showPressDemo"
+            "tycoon.start", "tycoon.release", "tycoon.train", "tycoon.research", "tycoon.buyUpgrade", "tycoon.expandOffice", "tycoon.acceptContract", "tycoon.patch", "tycoon.sequel", "tycoon.award", "tycoon.port", "tycoon.localize", "tycoon.buyEngine", "tycoon.takeLoan", "tycoon.signPublisher", "tycoon.bookBooth", "tycoon.takeTownDay", "tycoon.showPressDemo", "tycoon.makeTrailer"
           ]
         },
         "params": { "type": "object" }
@@ -88,6 +88,7 @@
         { "if": { "properties": { "method": { "const": "tycoon.bookBooth" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "properties": {} } } } },
         { "if": { "properties": { "method": { "const": "tycoon.takeTownDay" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "properties": {} } } } },
         { "if": { "properties": { "method": { "const": "tycoon.showPressDemo" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "properties": {} } } } },
+        { "if": { "properties": { "method": { "const": "tycoon.makeTrailer" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["productId"], "properties": { "productId": { "type": "string", "minLength": 2, "maxLength": 32, "pattern": "^p[1-9][0-9]*$" } } } } } },
         { "if": { "properties": { "method": { "const": "tycoon.acceptContract" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "properties": {} } } } },
         { "if": { "properties": { "method": { "const": "tycoon.patch" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["productId"], "properties": { "productId": { "type": "string", "minLength": 2, "maxLength": 32, "pattern": "^p[1-9][0-9]*$" } } } } } },
         { "if": { "properties": { "method": { "const": "tycoon.sequel" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["productId"], "properties": { "productId": { "type": "string", "minLength": 2, "maxLength": 32, "pattern": "^p[1-9][0-9]*$" } } } } } },
