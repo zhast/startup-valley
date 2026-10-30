@@ -85,6 +85,9 @@ import {
   PRESS_DEMO_COST_CENTS,
   PRESS_DEMO_FANS,
   PRESS_DEMO_NAME,
+  TRAILER_COST_CENTS,
+  TRAILER_FANS,
+  TRAILER_NAME,
   LOCALIZE_COST_CENTS,
   LOCALIZE_EDITION,
   LOCALIZE_UNIT_PERCENT,
@@ -4523,5 +4526,156 @@ test("one optional press demo charges once and grants fans once", async () => {
   assert.deepEqual(sequel.db.tycoon.view().developing?.pressDemo, offer);
   assert.equal(JSON.parse(staffJson(sequel.db, "p2")).pressDemo, undefined);
   assert.equal(productById(sequel.db, "p1")?.pressDemo, null);
+  sequel.db.close();
+});
+
+function trailerRows(db: GameDatabase) {
+  return db.journey.db.prepare(
+    "SELECT id, label, cash_delta, earned_delta, reputation_delta FROM company_transactions WHERE id LIKE 'tycoon:trailer:%' ORDER BY id",
+  ).all() as Array<{ id: string; label: string; cash_delta: number; earned_delta: number; reputation_delta: number }>;
+}
+
+test("one optional launch trailer charges once and grants fans once", async () => {
+  assert.equal(TRAILER_NAME, "Whop Creator Cut");
+  assert.equal(TRAILER_COST_CENTS, 2_500);
+  assert.equal(TRAILER_FANS, 6);
+
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  const offer = {
+    name: "Whop Creator Cut",
+    costCents: 2_500,
+    fans: 6,
+    made: false,
+  };
+  const madeOffer = { ...offer, made: true };
+
+  const skip = await setup();
+  assert.throws(() => skip.db.tycoon.makeTrailer("p1"), /No product with that id\./u);
+  skip.db.tycoon.start("crypto", "newsletter", []);
+  assert.equal(skip.db.tycoon.view().developing?.trailer, null);
+  assert.throws(() => skip.db.tycoon.makeTrailer("p1"), /No product is selling\./u);
+  assert.equal(JSON.parse(staffJson(skip.db, "p1")).trailer, undefined);
+  skip.db.endDay(1);
+  skip.db.endDay(2);
+  skip.db.tycoon.release("p1");
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.fans, 5);
+  assert.deepEqual(skip.db.tycoon.view().history[0]?.trailer, offer);
+  assert.equal(validate(skip.db.journey.state()), true, JSON.stringify(validate.errors));
+  skip.db.endDay(3);
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  skip.db.endDay(4);
+  assert.equal(skip.db.journey.state().company.cashCents, 33_300);
+  assert.equal(trailerRows(skip.db).length, 0);
+  assert.deepEqual(skip.db.tycoon.view().history[0]?.trailer, offer);
+  skip.db.endDay(5);
+  skip.db.endDay(6);
+  assert.equal(skip.db.tycoon.view().history[0]?.status, "complete");
+  assert.equal(skip.db.tycoon.view().history[0]?.trailer, null);
+  assert.throws(() => skip.db.tycoon.makeTrailer("p1"), /No product is selling\./u);
+  assert.equal(trailerRows(skip.db).length, 0);
+  assert.equal(validate(skip.db.journey.state()), true, JSON.stringify(validate.errors));
+  skip.db.close();
+
+  const short = await setup();
+  short.db.tycoon.start("crypto", "newsletter", []);
+  short.db.endDay(1);
+  short.db.endDay(2);
+  short.db.tycoon.release("p1");
+  short.db.journey.recordCompanyChange("trailer-short", short.db.clockState().day, 2_499 - 20_700, 0, 0, "Short cash");
+  assert.equal(short.db.journey.state().company.cashCents, 2_499);
+  assert.throws(() => short.db.tycoon.makeTrailer("p1"), /Need \$25/u);
+  assert.equal(short.db.journey.state().company.cashCents, 2_499);
+  assert.equal(short.db.journey.state().company.reputation, 5);
+  assert.equal(trailerRows(short.db).length, 0);
+  assert.deepEqual(short.db.tycoon.view().history[0]?.trailer, offer);
+  assert.equal(JSON.parse(staffJson(short.db, "p1")).trailer, undefined);
+  assert.equal(short.db.tycoon.view().history[0]?.salesCents, 20_700);
+  short.db.close();
+
+  const made = await setup();
+  made.db.tycoon.start("crypto", "newsletter", []);
+  made.db.endDay(1);
+  made.db.endDay(2);
+  made.db.tycoon.release("p1");
+  const day = made.db.clockState().day;
+  const devDays = made.db.tycoon.view().history[0]?.devDays;
+  made.db.tycoon.makeTrailer("p1");
+  assert.equal(made.db.clockState().day, day);
+  assert.equal(made.db.tycoon.view().history[0]?.devDays, devDays);
+  assert.equal(made.db.journey.state().company.cashCents, 18_200);
+  assert.equal(made.db.journey.state().company.reputation, 11);
+  assert.equal(made.db.tycoon.view().history[0]?.salesCents, 20_700);
+  assert.equal(made.db.tycoon.view().history[0]?.fans, 5);
+  assert.deepEqual(made.db.tycoon.view().history[0]?.trailer, madeOffer);
+  assert.equal(JSON.parse(staffJson(made.db, "p1")).trailer, true);
+  const fee = trailerRows(made.db);
+  assert.equal(fee.length, 1);
+  assert.equal(fee[0]?.id, "tycoon:trailer:p1:fee");
+  assert.equal(fee[0]?.label, "Trailer: Whop Creator Cut");
+  assert.equal(fee[0]?.cash_delta, -2_500);
+  assert.equal(fee[0]?.earned_delta, 0);
+  assert.equal(fee[0]?.reputation_delta, 6);
+  assert.throws(() => made.db.tycoon.makeTrailer("p1"), /Already made\./u);
+  assert.equal(made.db.journey.state().company.cashCents, 18_200);
+  assert.equal(made.db.journey.state().company.reputation, 11);
+  assert.equal(trailerRows(made.db).length, 1);
+  made.db.tycoon.tickDay(day);
+  made.db.tycoon.tickDay(day);
+  assert.equal(trailerRows(made.db).length, 1);
+  assert.equal(made.db.journey.state().company.reputation, 11);
+  const ended = made.db.endDay(day);
+  const again = made.db.endDay(day);
+  assert.equal(ended.summary.reputation, 11);
+  assert.equal(again.summary.reputation, 11);
+  assert.equal(made.db.clockState().day, day + 1);
+  assert.equal(made.db.journey.state().company.cashCents, 18_200);
+  assert.equal(made.db.journey.state().company.reputation, 11);
+  assert.equal(trailerRows(made.db).length, 1);
+  assert.deepEqual(made.db.tycoon.view().history[0]?.trailer, madeOffer);
+  assert.equal(validate(made.db.journey.state()), true, JSON.stringify(validate.errors));
+  const madeFile = join(made.root, "game.sqlite");
+  const madeProject = join(made.root, "company-project");
+  made.db.close();
+  const reopened = new GameDatabase(madeFile, madeProject);
+  assert.equal(reopened.journey.state().company.cashCents, 18_200);
+  assert.equal(reopened.journey.state().company.reputation, 11);
+  assert.equal(trailerRows(reopened).length, 1);
+  assert.deepEqual(reopened.tycoon.view().history[0]?.trailer, madeOffer);
+  assert.throws(() => reopened.tycoon.makeTrailer("p1"), /Already made\./u);
+  reopened.tycoon.start("fitness", "newsletter", []);
+  assert.equal(reopened.tycoon.view().developing?.trailer, null);
+  reopened.endDay(day + 1);
+  reopened.endDay(day + 2);
+  assert.equal(reopened.tycoon.view().developing?.ready, true);
+  reopened.tycoon.release("p2");
+  assert.deepEqual(reopened.tycoon.view().developing, null);
+  assert.deepEqual(productById(reopened, "p2")?.trailer, offer);
+  assert.equal(JSON.parse(staffJson(reopened, "p2")).trailer, undefined);
+  assert.deepEqual(productById(reopened, "p1")?.trailer, madeOffer);
+  reopened.tycoon.makeTrailer("p2");
+  assert.deepEqual(productById(reopened, "p2")?.trailer, madeOffer);
+  assert.equal(JSON.parse(staffJson(reopened, "p2")).trailer, true);
+  assert.equal(trailerRows(reopened).some((row) => row.id === "tycoon:trailer:p2:fee"), true);
+  assert.equal(trailerRows(reopened).length, 2);
+  assert.throws(() => reopened.tycoon.makeTrailer("p2"), /Already made\./u);
+  assert.throws(() => reopened.tycoon.makeTrailer("p1"), /Already made\./u);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+
+  const sequel = await setup();
+  sequel.db.tycoon.start("crypto", "newsletter", []);
+  sequel.db.endDay(1);
+  sequel.db.endDay(2);
+  sequel.db.tycoon.release("p1");
+  sequel.db.endDay(3);
+  sequel.db.endDay(4);
+  sequel.db.endDay(5);
+  sequel.db.endDay(6);
+  sequel.db.tycoon.sequel("p1");
+  assert.equal(sequel.db.tycoon.view().developing?.trailer, null);
+  assert.equal(JSON.parse(staffJson(sequel.db, "p2")).trailer, undefined);
+  assert.equal(productById(sequel.db, "p1")?.trailer, null);
   sequel.db.close();
 });

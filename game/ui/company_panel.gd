@@ -614,6 +614,7 @@ func _selling_cards() -> void:
 		title.name = "SellingTitle_%s" % product_id
 		var days := _label("Sales day %d of %d" % [int(product.get("salesDays", 0)), int(product.get("salesDaysTotal", 4))], false, card, "meta")
 		days.name = "SellingDays_%s" % product_id
+		_trailer_offer(product, card)
 		if bool(patch.get("applied", false)):
 			var patched := _label("Patched · +%d score" % int(patch.get("scoreBonus", 1)), false, card, "action")
 			patched.name = "SellingPatched_%s" % product_id
@@ -1127,6 +1128,24 @@ func _sign_publisher() -> void:
 
 func _show_press_demo() -> void:
 	_request("tycoon.showPressDemo", {})
+
+func _trailer_offer(product: Dictionary, card: Control) -> void:
+	var value: Variant = product.get("trailer", null)
+	if not value is Dictionary: return
+	var trailer := value as Dictionary
+	var trailer_name := str(trailer.get("name", "")).strip_edges()
+	if trailer_name.is_empty(): return
+	var product_id := str(product.get("id", ""))
+	var made := bool(trailer.get("made", false))
+	var text := "Trailer made · %s" % trailer_name if made else "Trailer · %s · $%d, about %d fans" % [trailer_name, int(int(trailer.get("costCents", 0)) / 100), int(trailer.get("fans", 0))]
+	var line := _label(text, false, card)
+	line.name = "TrailerOffer_%s" % product_id
+	if made: return
+	var button := _button("Make trailer", _make_trailer.bind(product_id), false, true, card, "secondary")
+	button.name = "MakeTrailer_%s" % product_id
+
+func _make_trailer(product_id: String) -> void:
+	_request("tycoon.makeTrailer", {"productId": product_id})
 
 func _season_event_line(calendar: Dictionary) -> String:
 	var today: Variant = calendar.get("event")

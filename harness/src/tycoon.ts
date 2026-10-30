@@ -215,6 +215,19 @@ export const PRESS_DEMO_NAME = "Whop Weekly Preview";
 export const PRESS_DEMO_COST_CENTS = 3_000;
 export const PRESS_DEMO_FANS = 4;
 
+/**
+ * One optional creator-cut trailer for a product that is selling. Copy only.
+ * Not a press look and not a sales day. $25 is unused: over the $20 town
+ * afternoon, under the $30 press preview, the $40 award fee, the $50
+ * translation, the $60 expo booth, and Mina's $80 season salary. A company
+ * that just shipped the $207 newsletter can cut it and still keep $182.
+ * The cut pays exactly 6 fans, over that newsletter's 5, on the same company
+ * fan total. It does not spend an office day.
+ */
+export const TRAILER_NAME = "Whop Creator Cut";
+export const TRAILER_COST_CENTS = 2_500;
+export const TRAILER_FANS = 6;
+
 /** Office tools. Each row is bought once and has one effect. */
 export const UPGRADES = [
   { id: "standing_desk", name: "Oak Standing Desk", blurb: "Sketches land cleaner when you stand.", priceCents: 25_000, kind: "design", effect: "+1 design per person per dev day" },
@@ -440,6 +453,8 @@ export interface TycoonProductView {
   publisher: TycoonProductPublisher | null;
   /** Null unless the product is in development or already shown. */
   pressDemo: TycoonProductPressDemo | null;
+  /** Null unless the product is selling or the trailer was already made. */
+  trailer: TycoonProductTrailer | null;
 }
 
 export interface TycoonUpgradeView {
@@ -667,6 +682,13 @@ export interface TycoonProductPressDemo {
   costCents: number;
   fans: number;
   shown: boolean;
+}
+
+export interface TycoonProductTrailer {
+  name: string;
+  costCents: number;
+  fans: number;
+  made: boolean;
 }
 
 export interface TycoonSnapshot {
@@ -1275,6 +1297,8 @@ interface ProductSnapshot {
   publisher: boolean;
   /** True after this product shows the one press demo. */
   pressDemo: boolean;
+  /** True after this product cuts the one launch trailer. */
+  trailer: boolean;
 }
 
 interface ProductPort {
@@ -1318,6 +1342,7 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     size: null,
     publisher: false,
     pressDemo: false,
+    trailer: false,
   };
 }
 
@@ -1325,7 +1350,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, and no press demo. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, and no trailer. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -1351,6 +1376,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     size?: unknown;
     publisher?: unknown;
     pressDemo?: unknown;
+    trailer?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -1371,6 +1397,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     size: parseSize(body.size),
     publisher: body.publisher === true,
     pressDemo: body.pressDemo === true,
+    trailer: body.trailer === true,
   };
 }
 
@@ -1462,6 +1489,7 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
   if (stored.size) body.size = stored.size;
   if (stored.publisher) body.publisher = true;
   if (stored.pressDemo) body.pressDemo = true;
+  if (stored.trailer) body.trailer = true;
   return JSON.stringify(body);
 }
 
@@ -2081,6 +2109,25 @@ export class TycoonStore {
     });
   }
 
+  /** One trailer for a product that is selling. The fee row also grants the fans. No office day is spent. */
+  makeTrailer(productId: string): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.row(productId);
+      if (!row) throw new Error("No product with that id.");
+      if (row.status !== "released" || Number(row.sales_applied) >= SALES_WINDOW_DAYS) {
+        throw new Error("No product is selling.");
+      }
+      const stored = parseProductSnapshot(row.staff_json);
+      const id = `tycoon:trailer:${row.id}:fee`;
+      if (stored.trailer || this.transactionExists(id)) throw new Error("Already made.");
+      if (this.cashCents() < TRAILER_COST_CENTS) throw new Error(`Need ${wholeDollars(TRAILER_COST_CENTS)}`);
+      this.journey.recordCompanyChange(id, this.day(), -TRAILER_COST_CENTS, 0, TRAILER_FANS, `Trailer: ${TRAILER_NAME}`);
+      stored.trailer = true;
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      return this.journey.state();
+    });
+  }
+
   expandOffice(): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
       const current = this.officeLevel();
@@ -2216,6 +2263,7 @@ export class TycoonStore {
         size: null,
         publisher: false,
         pressDemo: false,
+        trailer: false,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -3029,6 +3077,7 @@ export class TycoonStore {
       size: sizeView(snapshot.size),
       publisher: this.publisherView(row.status, snapshot.publisher),
       pressDemo: this.pressDemoView(row.status, snapshot.pressDemo),
+      trailer: this.trailerView(row.status, Number(row.sales_applied), snapshot.trailer),
     };
   }
 
@@ -3040,6 +3089,18 @@ export class TycoonStore {
       advanceCents: PUBLISHER_ADVANCE_CENTS,
       cutPercent: PUBLISHER_CUT_PERCENT,
       signed,
+    };
+  }
+
+  /** Offer while the product is selling. After that, only a made trailer stays. */
+  private trailerView(status: string, salesApplied: number, made: boolean): TycoonProductTrailer | null {
+    const selling = status === "released" && salesApplied < SALES_WINDOW_DAYS;
+    if (!made && !selling) return null;
+    return {
+      name: TRAILER_NAME,
+      costCents: TRAILER_COST_CENTS,
+      fans: TRAILER_FANS,
+      made,
     };
   }
 
