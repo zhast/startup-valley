@@ -23,5 +23,6 @@ Player-facing flows for the offline tycoon. The harness owns the rules (`docs/TY
 - [Publishers](publishers.md)
 - [Expos](expos.md)
 - [Town day](town-day.md)
+- [Press demo](press-demo.md)
 
 Launch, display, and proof-file rules live in the verify-startup-valley skill. Do not copy them here.
