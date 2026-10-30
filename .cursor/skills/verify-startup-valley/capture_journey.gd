@@ -396,6 +396,7 @@ func _run() -> void:
 	await _publisher_proof()
 	await _expo_proof()
 	await _localize_proof()
+	await _town_day_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -1007,6 +1008,62 @@ func _localize_proof() -> void:
 	header = label_named("OfficeDate")
 	check(header != null and header.text.contains("$%s" % _proof_money(before - 5000)), "The header shows the cash after the fee")
 	await snap("49-localize-bought", label_named("LocalizeLine_p1"))
+
+func seed_town_day_offer(data_dir: String) -> bool:
+	var database := ProjectSettings.globalize_path("res://../harness/src/database.ts")
+	var tsx := ProjectSettings.globalize_path("res://../harness/node_modules/tsx/dist/cli.mjs")
+	var node := OS.get_environment("STARTUP_VALLEY_NODE").strip_edges()
+	if node.is_empty():
+		for dir: String in OS.get_environment("PATH").split(":"):
+			if FileAccess.file_exists(dir.path_join("node")):
+				node = dir.path_join("node")
+				break
+	if node.is_empty():
+		node = "/home/box/.local/node22/bin/node"
+	var script_path := data_dir.path_join("seed-town.mjs")
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst file = root + '/startup-valley.sqlite';\nconst db = new GameDatabase(file, root + '/company-project');\ndb.journey.recordCompanyChange('seed:town-cash', 1, 20700, 0, 0, 'Seed cash');\nconst town = db.tycoon.view().townDay;\nconst company = db.journey.state().company;\ndb.close();\nif (company.cashCents !== 20700 || company.earnedCents !== 0 || company.reputation !== 0 || town.taken || town.name !== 'Whop Block Picnic' || town.season !== 'Spring' || town.costCents !== 2000 || town.fans !== 2) { console.error(JSON.stringify({ company: company, town: town })); process.exit(2); }\n" % JSON.stringify(database)
+	var file := FileAccess.open(script_path, FileAccess.WRITE)
+	if file == null:
+		check(false, "Could not write the town day seed script")
+		return false
+	file.store_string(script)
+	file.close()
+	var output: Array = []
+	var code := OS.execute(node, PackedStringArray([tsx, script_path, data_dir]), output, true)
+	check(code == 0, "Seeded a company with $207 and a town day offer (%s)" % " ".join(output))
+	return code == 0
+
+func _town_day_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-town-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_town_day_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var line := label_named("SeasonTown")
+	check(line != null and line.text == "Town · Whop Block Picnic this Spring · $20, about 2 fans", "The Season card names the town day offer")
+	var take := button_named("Take the afternoon")
+	check(take != null and not take.disabled and str(take.get_meta("cozy_variant", "")) == "secondary", "Take the afternoon is a secondary action")
+	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the picnic")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("$207.00") and header.text.contains("0 reputation"), "The offer still shows $207 and 0 reputation")
+	await snap("50-townday-offer", line)
+	await click(take)
+	await wait_until(func() -> bool: return company_cash() == 18700 and company_reputation() == 2 and not main.company_panel.busy, "The picnic charges $20 and grants 2 fans")
+	check(label_named("SeasonTown") != null and label_named("SeasonTown").text == "Afternoon off · Whop Block Picnic", "The Season card names the afternoon off")
+	check(button_named("Take the afternoon") == null, "The afternoon button hides once the picnic is taken")
+	header = label_named("OfficeDate")
+	check(header != null and header.text.contains("$187.00") and header.text.contains("2 reputation"), "The header shows the cash and fans after the picnic")
+	await snap("51-townday-taken", label_named("SeasonTown"))
 
 func _proof_money(cents: int) -> String:
 	var integer := str(absi(cents) / 100)
