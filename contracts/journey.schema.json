@@ -296,7 +296,7 @@
     "tycoon": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "upgradeNotice", "upgrades", "calendar", "payroll", "loan", "expo", "office", "priceSteps", "marketingOptions", "engineNotice", "engine", "engineOptions", "focusOptions", "audienceOptions", "sizeOptions", "contract", "patchNotice", "developing", "history"],
+      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "upgradeNotice", "upgrades", "calendar", "payroll", "loan", "expo", "townDay", "office", "priceSteps", "marketingOptions", "engineNotice", "engine", "engineOptions", "focusOptions", "audienceOptions", "sizeOptions", "contract", "patchNotice", "developing", "history"],
       "properties": {
         "seed": { "type": "integer", "minimum": 1 },
         "salesWindowDays": { "type": "integer", "const": 4 },
@@ -313,6 +313,7 @@
         "payroll": { "$ref": "#/$defs/tycoonPayroll" },
         "loan": { "$ref": "#/$defs/tycoonLoan" },
         "expo": { "$ref": "#/$defs/tycoonExpo" },
+        "townDay": { "$ref": "#/$defs/tycoonTownDay" },
         "office": { "$ref": "#/$defs/tycoonOffice" },
         "priceSteps": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/tycoonPriceStep" } },
         "marketingOptions": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/tycoonMarketing" } },
@@ -360,6 +361,18 @@
         "fans": { "type": "integer", "const": 3 },
         "when": { "type": "string", "minLength": 1 },
         "booked": { "type": "boolean" }
+      }
+    },
+    "tycoonTownDay": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "costCents", "fans", "season", "taken"],
+      "properties": {
+        "name": { "type": "string", "const": "Whop Block Picnic" },
+        "costCents": { "type": "integer", "const": 2000 },
+        "fans": { "type": "integer", "const": 2 },
+        "season": { "type": "string", "minLength": 1 },
+        "taken": { "type": "boolean" }
       }
     },
     "tycoonCalendar": {
