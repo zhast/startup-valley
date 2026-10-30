@@ -1094,23 +1094,39 @@ func _take_town_day() -> void:
 
 func _publisher_card(product: Dictionary) -> void:
 	var value: Variant = product.get("publisher", null)
-	if not value is Dictionary or (value as Dictionary).is_empty(): return
-	var offer := value as Dictionary
+	var press_value: Variant = product.get("pressDemo", null)
+	var offer := value as Dictionary if value is Dictionary else {}
+	var press := press_value as Dictionary if press_value is Dictionary else {}
 	var publisher_name := str(offer.get("name", "")).strip_edges()
-	if publisher_name.is_empty(): return
+	var press_name := str(press.get("name", "")).strip_edges()
+	if publisher_name.is_empty() and press_name.is_empty(): return
 	var card := _card()
 	card.name = "PublisherCard"
-	var cut := int(offer.get("cutPercent", 0))
-	var signed := bool(offer.get("signed", false))
-	var text := "Published by %s · %d%% cut" % [publisher_name, cut] if signed else "Publisher · %s pays $%d now, takes %d%% of sales" % [publisher_name, int(int(offer.get("advanceCents", 0)) / 100), cut]
-	var line := _label(text, false, card)
-	line.name = "PublisherOffer"
-	if signed: return
-	var button := _button("Sign publisher", _sign_publisher, false, true, card, "secondary")
-	button.name = "SignPublisher"
+	if not publisher_name.is_empty():
+		var cut := int(offer.get("cutPercent", 0))
+		var signed := bool(offer.get("signed", false))
+		var text := "Published by %s · %d%% cut" % [publisher_name, cut] if signed else "Publisher · %s pays $%d now, takes %d%% of sales" % [publisher_name, int(int(offer.get("advanceCents", 0)) / 100), cut]
+		var line := _label(text, false, card)
+		line.name = "PublisherOffer"
+		if not signed:
+			var button := _button("Sign publisher", _sign_publisher, false, true, card, "secondary")
+			button.name = "SignPublisher"
+	if press_name.is_empty(): return
+	var shown := bool(press.get("shown", false))
+	var cost := int(press.get("costCents", 0))
+	var fans := int(press.get("fans", 0))
+	var press_text := "Preview shown · %s" % press_name if shown else "Press demo · %s · $%d, about %d fans" % [press_name, int(cost / 100), fans]
+	var press_line := _label(press_text, false, card)
+	press_line.name = "PressDemoOffer"
+	if shown: return
+	var press_button := _button("Show preview", _show_press_demo, false, true, card, "secondary")
+	press_button.name = "ShowPressDemo"
 
 func _sign_publisher() -> void:
 	_request("tycoon.signPublisher", {})
+
+func _show_press_demo() -> void:
+	_request("tycoon.showPressDemo", {})
 
 func _season_event_line(calendar: Dictionary) -> String:
 	var today: Variant = calendar.get("event")

@@ -2050,3 +2050,61 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Fifty-one PNGs in `/workspace/sv-proof/round-49/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-49 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → Season. Take the afternoon is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_town_day.gd`.
+
+### Round 50 — 2026-10-30
+
+**What changed**
+- One optional press demo of the product on the bench: a Whop Weekly Preview. $30, then exactly 4 fans, on the same company fan total as every other reputation gain. $30 is unused: over the $20 town afternoon, under the $40 award fee, the $50 translation, the $60 expo booth, and Mina's $80 season salary. A company that just shipped the $207 newsletter can show a preview and still keep $177. 4 fans is unused: over the picnic's 2 and the expo's 3, under that newsletter's 5. +4 from 0 does not change `Math.floor(reputation / 10)`, so a show before the first release still leaves that newsletter at 20700 cents and 5 product fans. The preview does not spend an office day. The clock stays put.
+- Showing it writes one ledger row, `tycoon:pressdemo:<productId>:fee`, label `Press demo: Whop Weekly Preview`, cash −$30, earned 0, reputation +4. The fans are on that fee row. A second show fails with "Already shown." Less than $30 fails with "Need $30" and writes nothing. Replaying a day end or reopening never charges or grants twice. The next product offers it again.
+- Skipping the preview writes no row. The first Crypto Alpha Newsletter is still 20700 cents and 5 fans. The next office day is still 33300 cents.
+- The in-development card line is "Press demo · Whop Weekly Preview · $30, about 4 fans" plus one secondary Show preview button, under the publisher deal. Once shown the line is "Preview shown · Whop Weekly Preview" and the button is gone. Hire stays the one primary action. `pressDemo` on a product is `{ name, costCents, fans, shown }` or null. A payload without `pressDemo` draws no line.
+
+**Proof**
+- `/workspace/sv-proof/round-50/52-pressdemo-offer.png` and `53-pressdemo-taken.png`, captured by the verify-startup-valley skill. PROOF PASS. Fifty-three PNGs. The offer header reads "Spring 1 · Year 1 · $207.00 game cash · 0 reputation". Show preview is a cream secondary button, the same shape as Sign publisher. Hire Mina · free stays orange. The press demo line and the button are fully readable and do not cover Hire. The taken header reads "Spring 1 · Year 1 · $177.00 game cash · 4 reputation" and the line is "Preview shown · Whop Weekly Preview" with no button. `44-publisher-offer.png` shows both deals on the same card: Sign publisher and Show preview stack with no overlap.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Launch trailer is the next slice. One optional trailer on the Selling card. A small fee, extra fans on that launch. Skipping it leaves the first newsletter at 20700 cents and 5 fans. This is not another sales day and not another press look.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. `test_tycoon_price.gd` passed this gate. The Round 46 flake was not seen. Left alone.
+5. Carried from Round 45: the tallest Selling card still meets the footer, and the earlier Round 40 gaps. Four short buttons still share one shipped-shelf row. The press demo sits on the in-development card with the publisher deal.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 118 tests, 116 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test charges $30 once, grants 4 fans once, replays the day and a reopen without a second charge, refuses a second show, fails short cash with Need $30 and no row, offers the preview again on the next product, and leaves a skipped preview at 20700 cents, 5 fans, then 33300 cents with no press demo rows.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS
+- `test_tycoon_localization.gd` — TYCOON LOCALIZATION PASS
+- `test_tycoon_town_day.gd` — TYCOON TOWN DAY PASS
+- `test_tycoon_press_demo.gd` — TYCOON PRESS DEMO PASS. The offer reads "Press demo · Whop Weekly Preview · $30, about 4 fans". Show preview is secondary. Hire Mina stays primary. $0 says Need $30 and writes nothing. Skipping the preview still pays 20700 cents and 5 fans, then 33300 cents, with no press demo rows. The next product offers it again. Taking it leaves $303.00, grants 4 fans once, and hides the button. Reopening does not charge again. Ending the preview day names "Press demo: Whop Weekly Preview" and does not pay twice.
+- `test_ui_company_redesign.gd` — 18171 checks, 0 failures, 0 captures. Existing fixtures omit `pressDemo` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Fifty-three PNGs in `/workspace/sv-proof/round-50/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-50 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → product in development. Show preview is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_press_demo.gd`.
