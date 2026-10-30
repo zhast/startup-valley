@@ -78,6 +78,9 @@ import {
   EXPO_DAY_OF_SEASON,
   EXPO_FANS,
   EXPO_NAME,
+  LOCALIZE_COST_CENTS,
+  LOCALIZE_EDITION,
+  LOCALIZE_UNIT_PERCENT,
   nextExpoFair,
   publisherCutCents,
   publisherNetCents,
@@ -3965,4 +3968,245 @@ test("one optional expo booth charges once and pays fans once on the fair day", 
   assert.equal(expoRows(yearTwo.db).some((row) => row.id === "tycoon:expo:2-spring:fans"), true);
   assert.equal(validate(yearTwo.db.journey.state()), true, JSON.stringify(validate.errors));
   yearTwo.db.close();
+});
+
+function localizeRows(db: GameDatabase) {
+  return db.journey.db.prepare(
+    "SELECT id, label, cash_delta, earned_delta, reputation_delta FROM company_transactions WHERE id LIKE 'tycoon:localize:%' ORDER BY id",
+  ).all() as Array<{ id: string; label: string; cash_delta: number; earned_delta: number; reputation_delta: number }>;
+}
+
+function expectedLocalizeSale(db: GameDatabase, productId: string, day: number, score: number, reputation = db.journey.state().company.reputation) {
+  const product = productById(db, productId);
+  if (!product) throw new Error(`missing ${productId}`);
+  const calendar = calendarForDay(day);
+  return salesForDay({
+    seed: 26021,
+    productId,
+    typeId: product.typeId,
+    fit: product.fit,
+    score,
+    dayIndex: SALES_WINDOW_DAYS,
+    reputation,
+    pricePercent: product.pricePercent,
+    marketing: product.marketing,
+    quietPercent: LOCALIZE_UNIT_PERCENT,
+    unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === product.topicId) ? SEASON_UNIT_BOOST_PERCENT : 0,
+    bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
+  });
+}
+
+test("a translation charges once and pays one quieter extra sales day", async () => {
+  assert.equal(LOCALIZE_EDITION, "Spanish edition");
+  assert.equal(LOCALIZE_COST_CENTS, 5_000);
+  assert.equal(LOCALIZE_UNIT_PERCENT, 50);
+  const curve = { seed: 26021, productId: "p1", typeId: "newsletter" as const, fit: "great" as const, score: 6, reputation: 0, dayIndex: SALES_WINDOW_DAYS };
+  const portDay = salesForDay(curve);
+  const quietDay = salesForDay({ ...curve, quietPercent: LOCALIZE_UNIT_PERCENT });
+  const unchanged = salesForDay({ ...curve, quietPercent: 100 });
+  assert.deepEqual(unchanged, portDay);
+  assert.ok(quietDay.cents > 0 && quietDay.cents < portDay.cents);
+  assert.ok(quietDay.fans >= 1 && quietDay.fans <= portDay.fans);
+  assert.throws(() => salesForDay({ ...curve, dayIndex: SALES_WINDOW_DAYS + 1 }), /Sales day is outside the window/u);
+
+  const { db, root } = await setup();
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  db.tycoon.start("crypto", "newsletter", []);
+  assert.equal(db.tycoon.view().developing?.localization, null);
+  assert.throws(() => db.tycoon.localize("p1"), /Ship this product first/u);
+  assert.throws(() => db.tycoon.localize("p9"), /No product with that id/u);
+  assert.equal(localizeRows(db).length, 0);
+  db.endDay(1);
+  db.endDay(2);
+  db.tycoon.release("p1");
+  const plain = productById(db, "p1");
+  assert.equal(plain?.salesCents, 20700);
+  assert.equal(plain?.fans, 5);
+  assert.equal(plain?.localization?.phase, "");
+  assert.equal(plain?.localization?.enabled, false);
+  assert.equal(plain?.localization?.reason, "Still selling.");
+  assert.equal(plain?.localization?.edition, LOCALIZE_EDITION);
+  assert.equal(plain?.localization?.costCents, LOCALIZE_COST_CENTS);
+  assert.equal(staffJson(db, "p1").includes("localization"), false);
+  assert.throws(() => db.tycoon.localize("p1"), /Still selling/u);
+  assert.equal(localizeRows(db).length, 0);
+  assert.equal(db.journey.state().company.cashCents, 20700);
+  assert.equal(db.journey.state().company.reputation, 5);
+  db.endDay(3);
+  assert.equal(productById(db, "p1")?.salesCents, 20700);
+  db.endDay(4);
+  assert.equal(productById(db, "p1")?.salesCents, 33300);
+  assert.equal(localizeRows(db).length, 0);
+  db.endDay(5);
+  db.endDay(6);
+  const finished = productById(db, "p1");
+  assert.equal(finished?.status, "complete");
+  assert.equal(finished?.salesDays, 4);
+  assert.equal(finished?.localization?.enabled, true);
+  assert.equal(finished?.localization?.reason, "");
+  assert.equal(finished?.localization?.phase, "");
+  const finishedSales = finished?.salesCents ?? 0;
+  const finishedFans = finished?.fans ?? 0;
+  const beforeCash = db.journey.state().company.cashCents;
+  const beforeRep = db.journey.state().company.reputation;
+  db.tycoon.localize("p1");
+  const started = productById(db, "p1");
+  assert.equal(started?.localization?.phase, "selling");
+  assert.equal(started?.localization?.enabled, false);
+  assert.equal(started?.localization?.reason, "Already translated.");
+  assert.equal(started?.salesCents, finishedSales);
+  assert.equal(started?.fans, finishedFans);
+  assert.equal(started?.salesDays, 4);
+  assert.equal(db.journey.state().company.cashCents, beforeCash - LOCALIZE_COST_CENTS);
+  assert.equal(db.journey.state().company.reputation, beforeRep);
+  const fee = localizeRows(db);
+  assert.equal(fee.length, 1);
+  assert.equal(fee[0]?.id, "tycoon:localize:p1:fee");
+  assert.equal(fee[0]?.label, "Translate: Spanish edition");
+  assert.equal(fee[0]?.cash_delta, -LOCALIZE_COST_CENTS);
+  assert.equal(fee[0]?.earned_delta, 0);
+  assert.equal(fee[0]?.reputation_delta, 0);
+  const stored = JSON.parse(staffJson(db, "p1")) as { localization?: { edition: string; startedDay: number; cents?: number } };
+  assert.deepEqual(stored.localization, { edition: LOCALIZE_EDITION, startedDay: 7 });
+  assert.throws(() => db.tycoon.localize("p1"), /Already translated/u);
+  assert.equal(localizeRows(db).length, 1);
+  const payout = expectedLocalizeSale(db, "p1", 7, patchedScore(started?.review?.score ?? 0, started?.patch?.applied ?? false));
+  const fullExtra = salesForDay({
+    seed: 26021,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: "great",
+    score: started?.review?.score ?? 0,
+    dayIndex: SALES_WINDOW_DAYS,
+    reputation: beforeRep,
+    pricePercent: 100,
+    marketing: "none",
+  });
+  assert.ok(payout.cents < fullExtra.cents);
+  assert.equal(validate(db.journey.state()), true, JSON.stringify(validate.errors));
+  db.endDay(7);
+  const sold = productById(db, "p1");
+  assert.equal(sold?.localization?.phase, "sold");
+  assert.equal(sold?.localization?.cents, payout.cents);
+  assert.equal(sold?.localization?.fans, payout.fans);
+  assert.equal(sold?.salesCents, finishedSales + payout.cents);
+  assert.equal(sold?.fans, finishedFans + payout.fans);
+  assert.equal(sold?.salesDays, 4);
+  assert.equal(db.journey.state().company.cashCents, beforeCash - LOCALIZE_COST_CENTS + payout.cents);
+  assert.equal(db.journey.state().company.reputation, beforeRep + payout.fans);
+  const sale = localizeRows(db).find((row) => row.id === "tycoon:localize:p1:sales");
+  assert.equal(sale?.label, "Sales · Spanish edition");
+  assert.equal(sale?.cash_delta, payout.cents);
+  assert.equal(sale?.earned_delta, payout.cents);
+  assert.equal(sale?.reputation_delta, payout.fans);
+  assert.equal(localizeRows(db).length, 2);
+  db.endDay(7);
+  db.endDay(8);
+  assert.equal(productById(db, "p1")?.localization?.cents, payout.cents);
+  assert.equal(productById(db, "p1")?.salesCents, finishedSales + payout.cents);
+  assert.equal(db.journey.state().company.cashCents, beforeCash - LOCALIZE_COST_CENTS + payout.cents);
+  assert.equal(db.journey.state().company.reputation, beforeRep + payout.fans);
+  assert.equal(localizeRows(db).filter((row) => row.id === "tycoon:localize:p1:sales").length, 1);
+  assert.equal(validate(db.journey.state()), true, JSON.stringify(validate.errors));
+  const file = join(root, "game.sqlite");
+  const project = join(root, "company-project");
+  db.close();
+  const reopened = new GameDatabase(file, project);
+  assert.equal(reopened.tycoon.view().history.find((item) => item.id === "p1")?.localization?.phase, "sold");
+  assert.equal(reopened.tycoon.view().history.find((item) => item.id === "p1")?.localization?.cents, payout.cents);
+  reopened.endDay(8);
+  assert.equal(reopened.journey.state().company.cashCents, beforeCash - LOCALIZE_COST_CENTS + payout.cents);
+  assert.equal(localizeRows(reopened).length, 2);
+  reopened.close();
+
+  const broke = await setup();
+  finishNewsletter(broke.db);
+  const brokeHave = broke.db.journey.state().company.cashCents;
+  broke.db.journey.recordCompanyChange("drain-localize", 7, -brokeHave, 0, 0, "Drain");
+  assert.equal(broke.db.journey.state().company.cashCents, 0);
+  assert.equal(productById(broke.db, "p1")?.localization?.enabled, false);
+  assert.equal(productById(broke.db, "p1")?.localization?.reason, "Need $50");
+  const brokeJson = staffJson(broke.db, "p1");
+  assert.throws(() => broke.db.tycoon.localize("p1"), /Need \$50/u);
+  assert.equal(broke.db.journey.state().company.cashCents, 0);
+  assert.equal(staffJson(broke.db, "p1"), brokeJson);
+  assert.equal(localizeRows(broke.db).length, 0);
+  broke.db.close();
+
+  const published = await setup();
+  published.db.tycoon.start("crypto", "newsletter", []);
+  published.db.tycoon.signPublisher();
+  published.db.endDay(1);
+  published.db.endDay(2);
+  published.db.tycoon.release("p1");
+  published.db.endDay(3);
+  published.db.endDay(4);
+  published.db.endDay(5);
+  published.db.endDay(6);
+  const gross = expectedLocalizeSale(published.db, "p1", 7, productById(published.db, "p1")?.review?.score ?? 0);
+  assert.ok(publisherCutCents(gross.cents) > 0);
+  published.db.tycoon.localize("p1");
+  published.db.endDay(7);
+  const net = publisherNetCents(gross.cents);
+  const publishedSale = localizeRows(published.db).find((row) => row.id === "tycoon:localize:p1:sales");
+  assert.equal(publishedSale?.cash_delta, net);
+  assert.equal(publishedSale?.reputation_delta, gross.fans);
+  assert.equal(productById(published.db, "p1")?.localization?.cents, net);
+  assert.equal(productById(published.db, "p1")?.localization?.fans, gross.fans);
+  published.db.close();
+
+  const both = await setup();
+  finishNewsletter(both.db);
+  const bothRep = both.db.journey.state().company.reputation;
+  const bothScore = productById(both.db, "p1")?.review?.score ?? 0;
+  const portPayout = salesForDay({
+    seed: 26021,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: "great",
+    score: bothScore,
+    dayIndex: SALES_WINDOW_DAYS,
+    reputation: bothRep,
+  });
+  both.db.tycoon.port("p1");
+  both.db.tycoon.localize("p1");
+  const quiet = expectedLocalizeSale(both.db, "p1", 7, bothScore, bothRep + portPayout.fans);
+  assert.ok(quiet.cents < portPayout.cents);
+  both.db.endDay(7);
+  assert.equal(productById(both.db, "p1")?.port?.cents, portPayout.cents);
+  assert.equal(productById(both.db, "p1")?.localization?.cents, quiet.cents);
+  assert.equal(productById(both.db, "p1")?.port?.phase, "sold");
+  assert.equal(productById(both.db, "p1")?.localization?.phase, "sold");
+  const portRow = both.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id = 'tycoon:p1:4'").get();
+  assert.ok(portRow);
+  assert.equal(localizeRows(both.db).filter((row) => row.id.endsWith(":sales")).length, 1);
+  both.db.close();
+
+  const legacy = await setup();
+  const legacyFile = join(legacy.root, "game.sqlite");
+  const legacyProject = join(legacy.root, "company-project");
+  legacy.db.close();
+  const raw = new DatabaseSync(legacyFile);
+  const staffOnly = JSON.stringify(["founder"]);
+  raw.prepare(`
+    INSERT INTO tycoon_products (
+      id, topic_id, type_id, name, fit, status, started_day, dev_days,
+      design_points, tech_points, hype_points, staff_json, last_dev_day,
+      released_day, review_json, sales_applied, last_sales_day, sales_cents, fans
+    ) VALUES ('p1', 'crypto', 'newsletter', 'Crypto Alpha Newsletter', 'great', 'complete', 1, 2, 4, 4, 4, ?, NULL, 3, ?, 4, 6, 20700, 5)
+  `).run(staffOnly, JSON.stringify({
+    score: 6,
+    reviewers: ["Whop Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
+  }));
+  raw.close();
+  const restored = new GameDatabase(legacyFile, legacyProject);
+  assert.equal(restored.tycoon.view().history[0]?.localization?.phase, "");
+  assert.equal(restored.tycoon.view().history[0]?.localization?.reason, "Need $50");
+  assert.equal(staffJson(restored, "p1"), staffOnly);
+  restored.journey.recordCompanyChange("localize-test-cash", 7, LOCALIZE_COST_CENTS, 0, 0, "Translate test cash");
+  assert.equal(restored.tycoon.view().history[0]?.localization?.enabled, true);
+  assert.equal(staffJson(restored, "p1"), staffOnly);
+  assert.equal(validate(restored.journey.state()), true, JSON.stringify(validate.errors));
+  restored.close();
 });

@@ -61,6 +61,15 @@ export const AWARD_NOMINEE_FANS = 4;
 /** One optional port. One extra sales day on a second shelf, after a small fee. */
 export const PORT_SHELF = "Whop Mobile";
 export const PORT_COST_CENTS = 8_000;
+/**
+ * One optional translation of a finished product, on its existing shelf.
+ * Copy only, so the fee is under the $80 port and over the $40 award.
+ * $50 is also under the $60 expo booth and Mina's $80 season salary.
+ * The extra day keeps half the units of the port's extra-day formula.
+ */
+export const LOCALIZE_EDITION = "Spanish edition";
+export const LOCALIZE_COST_CENTS = 5_000;
+export const LOCALIZE_UNIT_PERCENT = 50;
 /** One optional in-house engine. Bought once. A product started on it stores +1 score, capped at 10. */
 export const ENGINE_ID = "whop_kit";
 export const ENGINE_NAME = "Whop Kit Engine";
@@ -394,6 +403,8 @@ export interface TycoonProductView {
   award: TycoonAwardView | null;
   /** Null while the product is on the bench. Omitted rows have not been ported. */
   port: TycoonPortView | null;
+  /** Null while the product is on the bench. Omitted rows have not been translated. */
+  localization: TycoonLocalizationView | null;
   /** Null when the product started with no engine. Omitted rows are no engine. */
   engine: TycoonProductEngine | null;
   /** Null when the product started Balanced. Omitted rows are Balanced. */
@@ -508,6 +519,17 @@ export interface TycoonPortView {
   shelf: string;
   costCents: number;
   /** Empty until the port starts. Selling until the extra day pays, then sold. */
+  phase: "" | "selling" | "sold";
+  cents: number;
+  fans: number;
+  enabled: boolean;
+  reason: string;
+}
+
+export interface TycoonLocalizationView {
+  edition: string;
+  costCents: number;
+  /** Empty until the translation starts. Selling until the extra day pays, then sold. */
   phase: "" | "selling" | "sold";
   cents: number;
   fans: number;
@@ -1186,6 +1208,8 @@ interface ProductSnapshot {
   award: ProductAward | null;
   /** Null until the product is ported to the second shelf. */
   port: ProductPort | null;
+  /** Null until the product has a translated edition. */
+  localization: ProductLocalization | null;
   /** Null when development started with no engine. */
   engine: EngineId | null;
   /** Null when development started Balanced. */
@@ -1200,6 +1224,14 @@ interface ProductSnapshot {
 
 interface ProductPort {
   shelf: string;
+  startedDay: number;
+  /** Null while the extra sales day has not paid. */
+  cents: number | null;
+  fans: number | null;
+}
+
+interface ProductLocalization {
+  edition: string;
   startedDay: number;
   /** Null while the extra sales day has not paid. */
   cents: number | null;
@@ -1224,6 +1256,7 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     scoreBonus: 0,
     award: null,
     port: null,
+    localization: null,
     engine: null,
     focus: null,
     audience: null,
@@ -1236,7 +1269,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no engine, Balanced, Everyone, Catalog length, and no publisher. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, and no publisher. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -1255,6 +1288,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     scoreBonus?: unknown;
     award?: unknown;
     port?: unknown;
+    localization?: unknown;
     engine?: unknown;
     focus?: unknown;
     audience?: unknown;
@@ -1273,6 +1307,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     scoreBonus: body.scoreBonus === SEQUEL_SCORE_BONUS ? SEQUEL_SCORE_BONUS : 0,
     award: parseAward(body.award),
     port: parsePort(body.port),
+    localization: parseLocalization(body.localization),
     engine: body.engine === ENGINE_ID ? ENGINE_ID : null,
     focus: parseFocus(body.focus),
     audience: parseAudience(body.audience),
@@ -1303,6 +1338,19 @@ function parsePort(value: unknown): ProductPort | null {
   const fans = Number(body.fans);
   if (!Number.isInteger(cents) || cents < 0 || !Number.isInteger(fans) || fans < 0) return null;
   return { shelf: PORT_SHELF, startedDay, cents, fans };
+}
+
+function parseLocalization(value: unknown): ProductLocalization | null {
+  if (!value || typeof value !== "object") return null;
+  const body = value as { edition?: unknown; startedDay?: unknown; cents?: unknown; fans?: unknown };
+  if (body.edition !== LOCALIZE_EDITION) return null;
+  const startedDay = Number(body.startedDay);
+  if (!Number.isInteger(startedDay) || startedDay < 1) return null;
+  if (body.cents === undefined && body.fans === undefined) return { edition: LOCALIZE_EDITION, startedDay, cents: null, fans: null };
+  const cents = Number(body.cents);
+  const fans = Number(body.fans);
+  if (!Number.isInteger(cents) || cents < 0 || !Number.isInteger(fans) || fans < 0) return null;
+  return { edition: LOCALIZE_EDITION, startedDay, cents, fans };
 }
 
 function parseAward(value: unknown): ProductAward | null {
@@ -1338,6 +1386,11 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
     body.port = stored.port.cents === null
       ? { shelf: stored.port.shelf, startedDay: stored.port.startedDay }
       : { shelf: stored.port.shelf, startedDay: stored.port.startedDay, cents: stored.port.cents, fans: stored.port.fans };
+  }
+  if (stored.localization) {
+    body.localization = stored.localization.cents === null
+      ? { edition: stored.localization.edition, startedDay: stored.localization.startedDay }
+      : { edition: stored.localization.edition, startedDay: stored.localization.startedDay, cents: stored.localization.cents, fans: stored.localization.fans };
   }
   if (stored.engine === ENGINE_ID) {
     body.engine = ENGINE_ID;
@@ -1471,6 +1524,11 @@ export function salesForDay(input: {
   unitBoostPercent?: number;
   /** Extra fans from the event on this office day. Omitted leaves the base formula. */
   bonusFans?: number;
+  /**
+   * Unit percent after size. Omitted is 100 and leaves the sale unchanged.
+   * A translation passes 50. A normal day and a port do not.
+   */
+  quietPercent?: number;
   /** Launch price as a percent of the catalog. Omitted is catalog (100). */
   pricePercent?: number;
   /** Ad id stored on the product. Omitted is no ad. */
@@ -1499,6 +1557,10 @@ export function salesForDay(input: {
   units = applyMarketingUnits(units, input.marketing);
   units = applyAudienceUnits(units, input.audience);
   units = applySizeUnits(units, input.size);
+  const quietPercent = input.quietPercent ?? 100;
+  if (quietPercent !== 100) {
+    units = Math.max(1, Math.round((units * quietPercent) / 100));
+  }
   const fanPermille = input.score >= 8 ? 400 : input.score >= 5 ? 200 : 100;
   const bonusFans = Number.isInteger(input.bonusFans) && (input.bonusFans ?? 0) > 0 ? (input.bonusFans as number) : 0;
   const fans = Math.max(1, Math.round((units * fanPermille) / 1000)) + bonusFans + audienceFansForSale(input.audience, input.topicMatch === true);
@@ -2059,6 +2121,7 @@ export class TycoonStore {
         scoreBonus: carry,
         award: null,
         port: null,
+        localization: null,
         engine: null,
         focus: null,
         audience: null,
@@ -2125,6 +2188,29 @@ export class TycoonStore {
     });
   }
 
+  /** One translated edition. The fee is one ledger row. The quieter day waits for day end. */
+  localize(productId: string): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.row(productId);
+      if (!row) throw new Error("No product with that id.");
+      const stored = parseProductSnapshot(row.staff_json);
+      const reason = this.localizeBlockReason(row, stored);
+      if (reason) throw new Error(reason);
+      const day = this.day();
+      this.journey.recordCompanyChange(
+        `tycoon:localize:${row.id}:fee`,
+        day,
+        -LOCALIZE_COST_CENTS,
+        0,
+        0,
+        `Translate: ${LOCALIZE_EDITION}`,
+      );
+      stored.localization = { edition: LOCALIZE_EDITION, startedDay: day, cents: null, fans: null };
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      return this.journey.state();
+    });
+  }
+
   patch(productId: string): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
       const row = this.row(productId);
@@ -2164,6 +2250,7 @@ export class TycoonStore {
       else this.applySale(row, day);
     }
     this.payPorts(day);
+    this.payLocalizations(day);
     this.payPayroll(day);
     this.repayLoan(day);
     this.payExpo(day);
@@ -2390,6 +2477,48 @@ export class TycoonStore {
       const posted = stored.publisher ? publisherNetCents(payout.cents) : payout.cents;
       this.journey.recordCompanyChange(`tycoon:${row.id}:${SALES_WINDOW_DAYS}`, day, posted, posted, payout.fans, `Sales · ${row.name}`);
       stored.port = { ...stored.port, cents: posted, fans: payout.fans };
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ?, sales_cents = ?, fans = ? WHERE id = ?").run(
+        serializeProductSnapshot(stored),
+        Number(row.sales_cents) + posted,
+        Number(row.fans) + payout.fans,
+        row.id,
+      );
+    }
+  }
+
+  /** One quieter extra sales day for a translation that is still waiting. The fee was already charged. */
+  private payLocalizations(day: number): void {
+    const rows = this.db.prepare("SELECT * FROM tycoon_products WHERE status = 'complete' ORDER BY id").all() as unknown as ProductRow[];
+    for (const row of rows) {
+      const stored = parseProductSnapshot(row.staff_json);
+      if (!stored.localization || stored.localization.cents !== null || stored.localization.startedDay > day) continue;
+      const salesId = `tycoon:localize:${row.id}:sales`;
+      if (this.transactionExists(salesId)) continue;
+      const review = JSON.parse(String(row.review_json)) as TycoonReview;
+      const reputation = Number((this.db.prepare("SELECT reputation FROM company_state WHERE id = 1").get() as { reputation: number }).reputation);
+      const calendar = calendarForDay(day);
+      const topicId = asTopic(row.topic_id);
+      const payout = salesForDay({
+        seed: this.seed(),
+        productId: row.id,
+        typeId: asType(row.type_id),
+        fit: asFit(row.fit),
+        score: patchedScore(review.score, stored.patched),
+        dayIndex: SALES_WINDOW_DAYS,
+        reputation,
+        pricePercent: stored.pricePercent,
+        marketing: stored.marketing,
+        audience: stored.audience ?? "everyone",
+        topicMatch: this.topicHasPastRelease(topicId, row.id),
+        size: stored.size ?? "catalog",
+        priceBoostPercent: this.priceBoostPercent(),
+        unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === topicId) ? SEASON_UNIT_BOOST_PERCENT : 0,
+        bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
+        quietPercent: LOCALIZE_UNIT_PERCENT,
+      });
+      const posted = stored.publisher ? publisherNetCents(payout.cents) : payout.cents;
+      this.journey.recordCompanyChange(salesId, day, posted, posted, payout.fans, `Sales · ${LOCALIZE_EDITION}`);
+      stored.localization = { ...stored.localization, cents: posted, fans: payout.fans };
       this.db.prepare("UPDATE tycoon_products SET staff_json = ?, sales_cents = ?, fans = ? WHERE id = ?").run(
         serializeProductSnapshot(stored),
         Number(row.sales_cents) + posted,
@@ -2791,6 +2920,7 @@ export class TycoonStore {
       sequel: this.sequelOffer(row, snapshot),
       award: this.awardOffer(row, snapshot),
       port: this.portOffer(row, snapshot),
+      localization: this.localizeOffer(row, snapshot),
       engine: snapshot.engine === ENGINE_ID
         ? { id: ENGINE_ID, name: ENGINE_NAME, scoreBonus: ENGINE_SCORE_BONUS }
         : null,
@@ -2849,6 +2979,30 @@ export class TycoonStore {
       phase: !port ? "" : port.cents === null ? "selling" : "sold",
       cents: port?.cents ?? 0,
       fans: port?.fans ?? 0,
+      enabled: reason === "",
+      reason,
+    };
+  }
+
+  /** Empty when the product can be translated. The same strings are the button reasons. */
+  private localizeBlockReason(row: ProductRow, snapshot: ProductSnapshot): string {
+    if (snapshot.localization) return "Already translated.";
+    if (row.status === "developing") return "Ship this product first.";
+    if (row.status !== "complete") return "Still selling.";
+    if (this.cashCents() < LOCALIZE_COST_CENTS) return `Need ${wholeDollars(LOCALIZE_COST_CENTS)}`;
+    return "";
+  }
+
+  private localizeOffer(row: ProductRow, snapshot: ProductSnapshot): TycoonLocalizationView | null {
+    if (row.status === "developing") return null;
+    const localization = snapshot.localization;
+    const reason = this.localizeBlockReason(row, snapshot);
+    return {
+      edition: LOCALIZE_EDITION,
+      costCents: LOCALIZE_COST_CENTS,
+      phase: !localization ? "" : localization.cents === null ? "selling" : "sold",
+      cents: localization?.cents ?? 0,
+      fans: localization?.fans ?? 0,
       enabled: reason === "",
       reason,
     };

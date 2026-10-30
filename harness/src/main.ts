@@ -147,6 +147,8 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
       return { journey: database.tycoon.award(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
     case "tycoon.port":
       return { journey: database.tycoon.port(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
+    case "tycoon.localize":
+      return { journey: database.tycoon.localize(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
     case "tycoon.train":
       return {
         journey: database.tycoon.train(stringParameter(request, "staffId", 32), stringParameter(request, "stat", 16)),

@@ -512,7 +512,7 @@ At most one deal per product. `tycoon.signPublisher` takes `{}` and signs the pr
 | Advance | $150 | The same as the big ad. Under the $207 first newsletter, over Mina's $80 season salary, and well under the $500 loan and the $600 office. |
 | Cut | 30% | 30% of the $207 launch is $62.10 exactly (6210 cents). The company keeps 14490 cents. 30% of the next day's 12600 cents is 3780 cents. The company keeps 8820. Across the four-day window the cut is about the size of the $150 advance, so the deal is cash during the build. A larger product gives up more than $150. |
 
-Signing writes one ledger row: id `tycoon:publisher:<productId>:advance`, cash +$150, earned 0, reputation 0, label `Publisher: Creator Collective`. Sales rows for that product, including a port's extra sales day, post the company's share. The id stays `tycoon:<productId>:<dayIndex>`. Cash and earned are the net cents. Reputation is still that sale's fans. The publisher share is `Math.round((cents * 30) / 100)`. The company keeps the rest. The cut is applied when the sales row is first written. Replaying that day end, or opening the save again, finds the existing row and does not pay the advance again or subtract the cut again. A contract bonus is not a sales row and is not cut.
+Signing writes one ledger row: id `tycoon:publisher:<productId>:advance`, cash +$150, earned 0, reputation 0, label `Publisher: Creator Collective`. Sales rows for that product, including a port's extra sales day and a translation's quieter extra day, post the company's share. The port id stays `tycoon:<productId>:<dayIndex>`. The translation id is `tycoon:localize:<productId>:sales`. Cash and earned are the net cents. Reputation is still that sale's fans. The publisher share is `Math.round((cents * 30) / 100)`. The company keeps the rest. The cut is applied when the sales row is first written. Replaying that day end, or opening the save again, finds the existing row and does not pay the advance again or subtract the cut again. A contract bonus is not a sales row and is not cut. The translation fee is not a sales row and is not cut.
 
 The flag is `publisher: true` on the product snapshot in `staff_json`. There is no new SQL column. An older row that is only a staff array, or a row that omits the field, is unsigned. Reads do not rewrite `staff_json`. A sequel stores no publisher, so it can sign its own deal. Its sales are not cut unless it signs.
 
@@ -542,13 +542,42 @@ There is no new SQL column. A booked fair is a booth row for that `year-season` 
 
 The Season card line is "Expo · Whop Creator Fair on Spring 14 · $60 booth, about 3 fans" plus one secondary button, Book booth. Once booked the line is "Booth booked · Whop Creator Fair on Spring 14" and the button is gone. Hire stays the one primary action. Book booth is not orange.
 
+## Localization
+
+One optional translation of a finished product. No translation is the default. The harness owns the fee, the quieter extra sales day, and the refusals. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential.
+
+The edition is **Spanish edition**. That is copy only, for one Whop-flavored region. It is not a new shelf. A port is a second shelf, Whop Mobile, paid as a full last-step sales day. A translation stays on the product's existing shelf, in another language, and sells quieter. A product can have both. They do not block each other. A sequel does not inherit the translation.
+
+`tycoon.localize` takes `{productId}`. At most one translation per product.
+
+| | Amount | Why |
+| --- | --- | --- |
+| Fee | $50 | Copy only, so cheaper than the $80 Whop Mobile port. Over the $40 award fee. Under the $60 expo booth and Mina's $80 season salary. A company that just shipped the $207 newsletter can translate and still keep $157. The fee is not $40, $60, or $80, so the ledger line is its own amount. |
+| Extra day | half the units | The same inputs as that product's port extra day: the last curve step (25%) and the same swing index. Then half the units, rounded, and at least 1. Fans use the normal formula on those quieter units. When the full extra day sells more than one unit, this cash is strictly less. `salesDays` stays 4. Day index 5 is still outside the window. |
+
+Buying writes one ledger row: id `tycoon:localize:<productId>:fee`, cash −$50, earned 0, reputation 0, label `Translate: Spanish edition`. The extra sale writes one row when the day ends: id `tycoon:localize:<productId>:sales`, cash and earned equal to the posted cents, reputation equal to that day's fans, label `Sales · Spanish edition`. Replaying that day end, or opening the save again, finds the ids and does not charge or pay a second time.
+
+If a publisher deal applies to that product, its cut applies to the translation's sales row the same way it applies to a port's extra day. Posted cash and earned are the company's share. Fans are not cut. The cents stored on the product are the net. The $50 fee is not a sales row and is not cut. A contract bonus stays uncut.
+
+The field is `localization: {edition, startedDay}` on the product snapshot in `staff_json` while the extra day is waiting, and `localization: {edition, startedDay, cents, fans}` after it pays. `edition` is Spanish edition. There is no new SQL column. An older row that is only a staff array, or a row that omits the field, has not been translated. Reads do not rewrite `staff_json`. A sequel stores no localization.
+
+The extra day pays when the day ends if `startedDay` is that day or earlier. Buying and ending the same day pays that evening. A later day does not pay it again. It pays after a port's extra day and before payroll, so the same evening's port fans are already in reputation when the quieter units are counted.
+
+A product still on the bench, a product that is still selling, short cash, and a second translation fail with a clear error and spend nothing. The locked reasons are "Ship this product first.", "Still selling.", "Need $50", and "Already translated." A missing id fails with "No product with that id." There is no company-wide lock. Another finished product can be translated while this one is still waiting.
+
+The first Crypto Alpha Newsletter still pays 20700 cents and 5 fans when it skips the translation. The next office day is still 33300 cents. The fee waits until sales have finished, so the launch cash and fans do not change.
+
+Each shipped product carries `localization` as null on the bench, or `{edition, costCents, phase, cents, fans, enabled, reason}` after release. `edition` is Spanish edition. `costCents` is 5000. `phase` is empty until the translation starts, `selling` until the day end that pays it, then `sold`. A payload without `localization` draws no line and no button, so older UI fixtures still render.
+
+Company Journey shows the offer only on the Shipped card, on that product's existing shelf row. There is no new product picker row and no new Season card button. The line is "Translate · Spanish edition · $50, one extra sales day". Translate is a secondary button on the same row as Sequel, Enter award, and Port. The Selling card does not show it. Hire stays the one primary action. Translate is not orange. Once bought the line is "Spanish edition · one extra sales day" and the button is gone. After the extra day it reads "Spanish edition · $X", where X is that day's cash. The shipped list repeats the bought line. Short cash disables the button and reads "Translate · Need $50".
+
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, awards, ports, engines, focus, audience, size, payroll, loans, publishers, and expos. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Engine**, **Office**, and **Season** on Company Journey. Price, marketing, the engine choice, the focus, the audience, and the size live on the New Product picker. The engine buy lives on the Engine card. The award show and the port live on the Shipped card. Payroll, the loan, and the booth live on the Season card. The publisher deal lives on the card for the product in development.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, awards, ports, engines, focus, audience, size, payroll, loans, publishers, expos, and localization. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Engine**, **Office**, and **Season** on Company Journey. Price, marketing, the engine choice, the focus, the audience, and the size live on the New Product picker. The engine buy lives on the Engine card. The award show, the port, and the translation live on the Shipped card. Payroll, the loan, and the booth live on the Season card. The publisher deal lives on the card for the product in development.
 
 Next slice:
 
-1. **Localization.** One optional translation of a finished product, on that product's existing shelf row. A small fee, then one quieter extra sales day. Skipping it leaves cash alone, so the first newsletter stays 20700 cents and 5 fans. No new product picker row, and no new Season card button.
+1. **Town day.** One optional afternoon off on the Season card. A small fee, then a few fans from the neighborhood. No product, and no new picker row. Skipping it leaves the first newsletter at 20700 cents and 5 fans. This is the cozy day, not another button on the shelf. Bugs stay set aside. A second room still waits on architecture art.
 
 Later art ask: a second room. Office growth shipped as spare desks on the current floor (`compact_desk` and `shared_workbench`, already bound). There is no second-room architecture art, so that room waits.
 

@@ -1937,3 +1937,59 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Forty-seven PNGs in `/workspace/sv-proof/round-47/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-47 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → Season. Book booth is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_expos.gd`.
+
+### Round 48 — 2026-10-29
+
+**What changed**
+- One optional Spanish edition of a finished product. Copy only, on that product's existing shelf, not a second shelf like the Whop Mobile port. A product can have both. A sequel does not inherit the translation. The fee is $50, then one quieter extra sales day: the same last-step inputs as the port day, then half the units (at least 1). $50 is over the $40 award, under the $60 booth and Mina's $80 season salary, and cheaper than the $80 port because it is copy only. A company that just shipped the $207 newsletter can translate and still keep $157.
+- Buying writes `tycoon:localize:<productId>:fee` with label `Translate: Spanish edition`. The day end writes `tycoon:localize:<productId>:sales` with label `Sales · Spanish edition`. If a publisher deal applies, its cut applies to that sales row the same way it applies to a port's extra day. Fans are not cut. The fee is not cut. Replaying a day end or reopening never charges or pays twice. Less than $50 fails with "Need $50" and writes nothing.
+- Skipping the translation writes no row. The first Crypto Alpha Newsletter is still 20700 cents and 5 fans. The next office day is still 33300 cents.
+- The Shipped card line is "Translate · Spanish edition · $50, one extra sales day" plus one secondary Translate button on the same row as Sequel, Enter award, and Port. The Selling card does not show it. Once bought the line is "Spanish edition · one extra sales day" and the button is gone. Hire stays the one primary action. `journey.tycoon` products carry `localization`. A payload without it draws no line.
+
+**Proof**
+- `/workspace/sv-proof/round-48/48-localize-offer.png` and `49-localize-bought.png`, captured by the verify-startup-valley skill. PROOF PASS. Forty-nine PNGs. The offer header reads "Spring 7 · Year 1 · $468.00 game cash · 11 reputation". Translate is secondary, on one row with Sequel, Enter award, and Port. Hire Mina · free stays orange. The bought header reads "$418.00 game cash" and the line is "Spanish edition · one extra sales day" with no Translate button. Those lines are readable. Nothing on that row overlaps.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Town day is the next slice. One optional afternoon off on the Season card. A small fee, then a few fans from the neighborhood. No product and no new picker row. Skipping it leaves the first newsletter at 20700 cents and 5 fans.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. `test_tycoon_price.gd` passed this gate. The Round 46 flake was not seen. Left alone.
+5. Carried from Round 45: the tallest Selling card still meets the footer, and the earlier Round 40 gaps. The new translate line stays on the finished shelf row. Four short buttons still share one row.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 116 tests, 114 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test charges $50 once, pays one quieter extra sales day once, replays that day without a second payment, refuses a second translation, fails short cash with Need $50 and no row, leaves a skipped translation at 20700 cents, 5 fans, then 33300 cents with no localization rows, applies the publisher cut to the sales row, and allows a port on the same product.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS
+- `test_tycoon_localization.gd` — TYCOON LOCALIZATION PASS. The offer reads "Translate · Spanish edition · $50, one extra sales day". Translate is secondary and shares the shelf row with Port. Hire Mina stays primary. The Selling card has no Translate button. Skipping it still pays 20700 cents and 5 fans, then 33300 cents, with no localization rows. Buying charges $50 once, hides the button, and the next day end pays the quieter day once. A later day and a reopen do not pay again. $0 reads "Translate · Need $50" and writes nothing.
+- `test_ui_company_redesign.gd` — 18171 checks, 0 failures, 0 captures. Existing fixtures omit `localization` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Forty-nine PNGs in `/workspace/sv-proof/round-48/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-48 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → Shipped. Translate is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_localization.gd`.
