@@ -2108,3 +2108,63 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Fifty-three PNGs in `/workspace/sv-proof/round-50/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-50 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → product in development. Show preview is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_press_demo.gd`.
+
+### Round 51 — 2026-10-30
+
+**What changed**
+- One optional launch trailer for a product that is selling: a Whop Creator Cut. $25, then exactly 6 fans, on the same company fan total as every other reputation gain. $25 is unused: over the $20 town afternoon, under the $30 press demo, the $40 award fee, the $50 translation, the $60 expo booth, and Mina's $80 season salary. After the $207 launch the company keeps $182. 6 fans is unused: over the press demo's 4, the expo's 3, the picnic's 2, and that newsletter's 5 product fans. A cut right after the first sale moves reputation from 5 to 11, so later sales use `Math.floor(reputation / 10)` = 1. The trailer row earns 0. Skipping the cut never calls the method, so the first newsletter stays at 20700 cents and 5 fans. The trailer does not spend an office day. The clock stays put.
+- Making it writes one ledger row, `tycoon:trailer:<productId>:fee`, label `Trailer: Whop Creator Cut`, cash −$25, earned 0, reputation +6. The fans are on that fee row. A second cut fails with "Already made." Less than $25 fails with "Need $25" and writes nothing. Replaying a day end or reopening never charges or grants twice. The next selling product offers it again.
+- Skipping the trailer writes no row. The first Crypto Alpha Newsletter is still 20700 cents and 5 fans. The next office day is still 33300 cents.
+- The Selling card line is "Trailer · Whop Creator Cut · $25, about 6 fans" plus one secondary Make trailer button, after the sales-day line and before Patch. Once made the line is "Trailer made · Whop Creator Cut" and the button is gone. Hire stays the one primary action. `trailer` on a product is `{ name, costCents, fans, made }` or null. A payload without `trailer` draws no line. The Shipped card does not draw it.
+
+**Proof**
+- `/workspace/sv-proof/round-51/54-trailer-offer.png` and `55-trailer-made.png`, captured by the verify-startup-valley skill. PROOF PASS. Fifty-five PNGs. The offer header reads "Spring 3 · Year 1 · $207.00 game cash · 5 reputation". Make trailer is a cream secondary button, the same shape as Patch. Hire Mina · free stays orange. The trailer line, Make trailer, Patch, and the shelf buttons are readable and do not cover Hire. The made header reads "Spring 3 · Year 1 · $182.00 game cash · 11 reputation" and the line is "Trailer made · Whop Creator Cut" with no button. `24-patch-offer.png` now includes the same offer on the first Selling card, because that playthrough skips the cut.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Dev diary is the next slice. One optional writeup after sales finish, on the Shipped card. One line and one secondary button, separate from the four-button shelf row. A small fee, a few fans from readers. No new picker row and no new art.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. `test_tycoon_price.gd` passed this gate. The Round 46 flake was not seen. Left alone.
+5. An earlier gate run hit `test_tycoon_ports.gd` exit 124: the port-line check read a null label, and the process stayed up until the 900s timeout. A direct rerun printed TYCOON PORTS PASS, and the following full gate did too. The ports test was left unchanged.
+6. Carried from Round 45: the Selling card is taller by one line and one secondary button. Shots 54 and 55 keep Patch and the shelf above Hire. The contract card under that Selling card is still clipped at the footer.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 119 tests, 117 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test charges $25 once, grants 6 fans once, replays the day and a reopen without a second charge, refuses a second cut, fails short cash with Need $25 and no row, offers the trailer again on the next selling product, and leaves a skipped trailer at 20700 cents, 5 fans, then 33300 cents with no trailer rows.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS
+- `test_tycoon_localization.gd` — TYCOON LOCALIZATION PASS
+- `test_tycoon_town_day.gd` — TYCOON TOWN DAY PASS
+- `test_tycoon_press_demo.gd` — TYCOON PRESS DEMO PASS
+- `test_tycoon_launch_trailer.gd` — TYCOON LAUNCH TRAILER PASS. The offer reads "Trailer · Whop Creator Cut · $25, about 6 fans". Make trailer is secondary. Hire Mina stays primary. $24.99 says Need $25 and writes nothing. Skipping the trailer still pays 20700 cents and 5 fans, then 33300 cents, with no trailer rows. The next product offers it again. Making it leaves $308.00 after the second sales morning, grants 6 fans once, and hides the button. Reopening does not charge again. Ending the trailer day names "Trailer: Whop Creator Cut" and does not pay twice. A seeded cut on release morning is $182.00 and 11 reputation.
+- `test_ui_company_redesign.gd` — 18171 checks, 0 failures, 0 captures. Existing fixtures omit `trailer` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Fifty-five PNGs in `/workspace/sv-proof/round-51/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-51 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → Selling. Make trailer is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_launch_trailer.gd`.

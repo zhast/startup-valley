@@ -398,6 +398,7 @@ func _run() -> void:
 	await _localize_proof()
 	await _town_day_proof()
 	await _press_demo_proof()
+	await _trailer_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -1121,6 +1122,62 @@ func _press_demo_proof() -> void:
 	header = label_named("OfficeDate")
 	check(header != null and header.text.contains("$177.00") and header.text.contains("4 reputation"), "The header shows the cash and fans after the preview")
 	await snap("53-pressdemo-taken", label_named("PressDemoOffer"))
+
+func seed_trailer_offer(data_dir: String) -> bool:
+	var database := ProjectSettings.globalize_path("res://../harness/src/database.ts")
+	var tsx := ProjectSettings.globalize_path("res://../harness/node_modules/tsx/dist/cli.mjs")
+	var node := OS.get_environment("STARTUP_VALLEY_NODE").strip_edges()
+	if node.is_empty():
+		for dir: String in OS.get_environment("PATH").split(":"):
+			if FileAccess.file_exists(dir.path_join("node")):
+				node = dir.path_join("node")
+				break
+	if node.is_empty():
+		node = "/home/box/.local/node22/bin/node"
+	var script_path := data_dir.path_join("seed-trailer.mjs")
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst file = root + '/startup-valley.sqlite';\nconst db = new GameDatabase(file, root + '/company-project');\ndb.tycoon.start('crypto', 'newsletter', []);\ndb.endDay(1);\ndb.endDay(2);\ndb.tycoon.release('p1');\nconst product = db.tycoon.view().history[0];\nconst company = db.journey.state().company;\ndb.close();\nconst offer = product && product.trailer;\nif (company.cashCents !== 20700 || company.reputation !== 5 || !product || product.status !== 'released' || product.salesCents !== 20700 || product.fans !== 5 || !offer || offer.made || offer.name !== 'Whop Creator Cut' || offer.costCents !== 2500 || offer.fans !== 6) { console.error(JSON.stringify({ company: company, product: product })); process.exit(2); }\n" % JSON.stringify(database)
+	var file := FileAccess.open(script_path, FileAccess.WRITE)
+	if file == null:
+		check(false, "Could not write the trailer seed script")
+		return false
+	file.store_string(script)
+	file.close()
+	var output: Array = []
+	var code := OS.execute(node, PackedStringArray([tsx, script_path, data_dir]), output, true)
+	check(code == 0, "Seeded a selling newsletter at $207 with a trailer offer (%s)" % " ".join(output))
+	return code == 0
+
+func _trailer_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-trailer-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_trailer_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var line := label_named("TrailerOffer_p1")
+	check(line != null and line.text == "Trailer · Whop Creator Cut · $25, about 6 fans", "The Selling card names the trailer offer")
+	var make := button_named("Make trailer")
+	check(make != null and not make.disabled and str(make.get_meta("cozy_variant", "")) == "secondary", "Make trailer is a secondary action")
+	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the trailer")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("Spring 3") and header.text.contains("$207.00") and header.text.contains("5 reputation"), "The offer still shows Spring 3, $207, and 5 reputation")
+	await snap("54-trailer-offer", line)
+	await click(make)
+	await wait_until(func() -> bool: return company_cash() == 18200 and company_reputation() == 11 and not main.company_panel.busy, "The trailer charges $25 and grants 6 fans")
+	check(label_named("TrailerOffer_p1") != null and label_named("TrailerOffer_p1").text == "Trailer made · Whop Creator Cut", "The Selling card names the made trailer")
+	check(button_named("Make trailer") == null, "The trailer button hides once it is made")
+	header = label_named("OfficeDate")
+	check(header != null and header.text.contains("Spring 3") and header.text.contains("$182.00") and header.text.contains("11 reputation"), "The header shows the cash and fans after the trailer")
+	await snap("55-trailer-made", label_named("TrailerOffer_p1"))
 
 func _proof_money(cents: int) -> String:
 	var integer := str(absi(cents) / 100)
