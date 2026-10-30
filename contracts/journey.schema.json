@@ -652,7 +652,7 @@
     "tycoonProduct": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "name", "topicId", "typeId", "topicName", "typeName", "fit", "status", "startedDay", "devDays", "devDaysRequired", "design", "tech", "hype", "progress", "ready", "staffIds", "releasedDay", "review", "salesDays", "salesDaysTotal", "salesCents", "fans", "researchPoints", "researchBonus", "pricePercent", "priceCents", "marketing", "contract", "patch", "sequel", "award", "port", "localization", "engine", "focus", "audience", "size", "publisher"],
+      "required": ["id", "name", "topicId", "typeId", "topicName", "typeName", "fit", "status", "startedDay", "devDays", "devDaysRequired", "design", "tech", "hype", "progress", "ready", "staffIds", "releasedDay", "review", "salesDays", "salesDaysTotal", "salesCents", "fans", "researchPoints", "researchBonus", "pricePercent", "priceCents", "marketing", "contract", "patch", "sequel", "award", "port", "localization", "engine", "focus", "audience", "size", "publisher", "pressDemo"],
       "properties": {
         "id": { "type": "string", "pattern": "^p[1-9][0-9]*$" },
         "name": { "type": "string", "minLength": 1 },
@@ -863,6 +863,22 @@
                 "advanceCents": { "const": 15000 },
                 "cutPercent": { "const": 30 },
                 "signed": { "type": "boolean" }
+              }
+            }
+          ]
+        },
+        "pressDemo": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name", "costCents", "fans", "shown"],
+              "properties": {
+                "name": { "const": "Whop Weekly Preview" },
+                "costCents": { "const": 3000 },
+                "fans": { "const": 4 },
+                "shown": { "type": "boolean" }
               }
             }
           ]

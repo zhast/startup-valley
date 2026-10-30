@@ -202,6 +202,19 @@ export const TOWN_DAY_NAME = "Whop Block Picnic";
 export const TOWN_DAY_COST_CENTS = 2_000;
 export const TOWN_DAY_FANS = 2;
 
+/**
+ * One optional press look at the product on the bench. Copy only.
+ * $30 is unused: over the $20 town afternoon, under the $40 award fee,
+ * the $50 translation, the $60 expo booth, and Mina's $80 season salary.
+ * A company that just shipped the $207 newsletter can preview and still
+ * keep $177. The preview pays exactly 4 fans, over the picnic's 2 and
+ * the expo's 3, under that newsletter's 5. +4 from 0 does not change
+ * Math.floor(reputation / 10).
+ */
+export const PRESS_DEMO_NAME = "Whop Weekly Preview";
+export const PRESS_DEMO_COST_CENTS = 3_000;
+export const PRESS_DEMO_FANS = 4;
+
 /** Office tools. Each row is bought once and has one effect. */
 export const UPGRADES = [
   { id: "standing_desk", name: "Oak Standing Desk", blurb: "Sketches land cleaner when you stand.", priceCents: 25_000, kind: "design", effect: "+1 design per person per dev day" },
@@ -425,6 +438,8 @@ export interface TycoonProductView {
   size: TycoonProductSize | null;
   /** Null unless the product is in development or already signed. */
   publisher: TycoonProductPublisher | null;
+  /** Null unless the product is in development or already shown. */
+  pressDemo: TycoonProductPressDemo | null;
 }
 
 export interface TycoonUpgradeView {
@@ -645,6 +660,13 @@ export interface TycoonProductPublisher {
   advanceCents: number;
   cutPercent: number;
   signed: boolean;
+}
+
+export interface TycoonProductPressDemo {
+  name: string;
+  costCents: number;
+  fans: number;
+  shown: boolean;
 }
 
 export interface TycoonSnapshot {
@@ -1251,6 +1273,8 @@ interface ProductSnapshot {
   size: SizeLean | null;
   /** True after this product signs the one publisher deal. */
   publisher: boolean;
+  /** True after this product shows the one press demo. */
+  pressDemo: boolean;
 }
 
 interface ProductPort {
@@ -1293,6 +1317,7 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     audience: null,
     size: null,
     publisher: false,
+    pressDemo: false,
   };
 }
 
@@ -1300,7 +1325,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, and no publisher. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, and no press demo. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -1325,6 +1350,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     audience?: unknown;
     size?: unknown;
     publisher?: unknown;
+    pressDemo?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -1344,6 +1370,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     audience: parseAudience(body.audience),
     size: parseSize(body.size),
     publisher: body.publisher === true,
+    pressDemo: body.pressDemo === true,
   };
 }
 
@@ -1434,6 +1461,7 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
   if (stored.audience) body.audience = stored.audience;
   if (stored.size) body.size = stored.size;
   if (stored.publisher) body.publisher = true;
+  if (stored.pressDemo) body.pressDemo = true;
   return JSON.stringify(body);
 }
 
@@ -2037,6 +2065,22 @@ export class TycoonStore {
     });
   }
 
+  /** One press look at the product on the bench. The fee row also grants the fans. No office day is spent. */
+  showPressDemo(): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.developingRow();
+      if (!row) throw new Error("No product is on the bench.");
+      const stored = parseProductSnapshot(row.staff_json);
+      const id = `tycoon:pressdemo:${row.id}:fee`;
+      if (stored.pressDemo || this.transactionExists(id)) throw new Error("Already shown.");
+      if (this.cashCents() < PRESS_DEMO_COST_CENTS) throw new Error(`Need ${wholeDollars(PRESS_DEMO_COST_CENTS)}`);
+      this.journey.recordCompanyChange(id, this.day(), -PRESS_DEMO_COST_CENTS, 0, PRESS_DEMO_FANS, `Press demo: ${PRESS_DEMO_NAME}`);
+      stored.pressDemo = true;
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      return this.journey.state();
+    });
+  }
+
   expandOffice(): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
       const current = this.officeLevel();
@@ -2171,6 +2215,7 @@ export class TycoonStore {
         audience: null,
         size: null,
         publisher: false,
+        pressDemo: false,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -2983,6 +3028,7 @@ export class TycoonStore {
       audience: audienceView(snapshot.audience),
       size: sizeView(snapshot.size),
       publisher: this.publisherView(row.status, snapshot.publisher),
+      pressDemo: this.pressDemoView(row.status, snapshot.pressDemo),
     };
   }
 
@@ -2994,6 +3040,17 @@ export class TycoonStore {
       advanceCents: PUBLISHER_ADVANCE_CENTS,
       cutPercent: PUBLISHER_CUT_PERCENT,
       signed,
+    };
+  }
+
+  /** Offer while the product is in development. After that, only a shown preview stays. */
+  private pressDemoView(status: string, shown: boolean): TycoonProductPressDemo | null {
+    if (!shown && status !== "developing") return null;
+    return {
+      name: PRESS_DEMO_NAME,
+      costCents: PRESS_DEMO_COST_CENTS,
+      fans: PRESS_DEMO_FANS,
+      shown,
     };
   }
 
