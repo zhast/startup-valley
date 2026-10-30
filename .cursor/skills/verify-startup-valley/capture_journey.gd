@@ -397,6 +397,7 @@ func _run() -> void:
 	await _expo_proof()
 	await _localize_proof()
 	await _town_day_proof()
+	await _press_demo_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -1064,6 +1065,62 @@ func _town_day_proof() -> void:
 	header = label_named("OfficeDate")
 	check(header != null and header.text.contains("$187.00") and header.text.contains("2 reputation"), "The header shows the cash and fans after the picnic")
 	await snap("51-townday-taken", label_named("SeasonTown"))
+
+func seed_press_demo_offer(data_dir: String) -> bool:
+	var database := ProjectSettings.globalize_path("res://../harness/src/database.ts")
+	var tsx := ProjectSettings.globalize_path("res://../harness/node_modules/tsx/dist/cli.mjs")
+	var node := OS.get_environment("STARTUP_VALLEY_NODE").strip_edges()
+	if node.is_empty():
+		for dir: String in OS.get_environment("PATH").split(":"):
+			if FileAccess.file_exists(dir.path_join("node")):
+				node = dir.path_join("node")
+				break
+	if node.is_empty():
+		node = "/home/box/.local/node22/bin/node"
+	var script_path := data_dir.path_join("seed-press.mjs")
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst file = root + '/startup-valley.sqlite';\nconst db = new GameDatabase(file, root + '/company-project');\ndb.journey.recordCompanyChange('seed:press-cash', 1, 20700, 0, 0, 'Seed cash');\ndb.tycoon.start('crypto', 'newsletter', []);\nconst view = db.tycoon.view().developing;\nconst company = db.journey.state().company;\ndb.close();\nconst offer = view && view.pressDemo;\nif (company.cashCents !== 20700 || company.earnedCents !== 0 || company.reputation !== 0 || !offer || offer.shown || offer.name !== 'Whop Weekly Preview' || offer.costCents !== 3000 || offer.fans !== 4) { console.error(JSON.stringify({ company: company, view: view })); process.exit(2); }\n" % JSON.stringify(database)
+	var file := FileAccess.open(script_path, FileAccess.WRITE)
+	if file == null:
+		check(false, "Could not write the press demo seed script")
+		return false
+	file.store_string(script)
+	file.close()
+	var output: Array = []
+	var code := OS.execute(node, PackedStringArray([tsx, script_path, data_dir]), output, true)
+	check(code == 0, "Seeded a developing newsletter with $207 and a press demo offer (%s)" % " ".join(output))
+	return code == 0
+
+func _press_demo_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-press-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_press_demo_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var line := label_named("PressDemoOffer")
+	check(line != null and line.text == "Press demo · Whop Weekly Preview · $30, about 4 fans", "The journey card names the press demo offer")
+	var show := button_named("Show preview")
+	check(show != null and not show.disabled and str(show.get_meta("cozy_variant", "")) == "secondary", "Show preview is a secondary action")
+	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the preview")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("$207.00") and header.text.contains("0 reputation"), "The offer still shows $207 and 0 reputation")
+	await snap("52-pressdemo-offer", line)
+	await click(show)
+	await wait_until(func() -> bool: return company_cash() == 17700 and company_reputation() == 4 and not main.company_panel.busy, "The preview charges $30 and grants 4 fans")
+	check(label_named("PressDemoOffer") != null and label_named("PressDemoOffer").text == "Preview shown · Whop Weekly Preview", "The card names the shown preview")
+	check(button_named("Show preview") == null, "The preview button hides once it is shown")
+	header = label_named("OfficeDate")
+	check(header != null and header.text.contains("$177.00") and header.text.contains("4 reputation"), "The header shows the cash and fans after the preview")
+	await snap("53-pressdemo-taken", label_named("PressDemoOffer"))
 
 func _proof_money(cents: int) -> String:
 	var integer := str(absi(cents) / 100)
