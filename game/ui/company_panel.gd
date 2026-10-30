@@ -644,6 +644,7 @@ func _finished_cards() -> void:
 		title.name = "FinishedTitle_%s" % product_id
 		var done := _label("Sales finished.", false, card, "meta")
 		done.name = "FinishedDays_%s" % product_id
+		_diary_offer(product, card)
 		_shelf_actions(product, card)
 
 func _shelf_actions(product: Dictionary, card: Control) -> void:
@@ -1146,6 +1147,26 @@ func _trailer_offer(product: Dictionary, card: Control) -> void:
 
 func _make_trailer(product_id: String) -> void:
 	_request("tycoon.makeTrailer", {"productId": product_id})
+
+func _diary_offer(product: Dictionary, card: Control) -> void:
+	var value: Variant = product.get("diary", null)
+	if not value is Dictionary: return
+	var diary := value as Dictionary
+	var diary_name := str(diary.get("name", "")).strip_edges()
+	if diary_name.is_empty(): return
+	var product_id := str(product.get("id", ""))
+	var written := bool(diary.get("written", false))
+	var fans := int(diary.get("fans", 0))
+	var fans_words := "1 fan" if fans == 1 else "%d fans" % fans
+	var text := "Diary written · %s" % diary_name if written else "Diary · %s · $%d, about %s" % [diary_name, int(int(diary.get("costCents", 0)) / 100), fans_words]
+	var line := _label(text, false, card)
+	line.name = "DiaryOffer_%s" % product_id
+	if written: return
+	var button := _button("Write diary", _write_diary.bind(product_id), false, true, card, "secondary")
+	button.name = "WriteDiary_%s" % product_id
+
+func _write_diary(product_id: String) -> void:
+	_request("tycoon.writeDiary", {"productId": product_id})
 
 func _season_event_line(calendar: Dictionary) -> String:
 	var today: Variant = calendar.get("event")
