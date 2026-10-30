@@ -78,6 +78,10 @@ import {
   EXPO_DAY_OF_SEASON,
   EXPO_FANS,
   EXPO_NAME,
+  TOWN_DAY_COST_CENTS,
+  TOWN_DAY_FANS,
+  TOWN_DAY_NAME,
+  townDaySeason,
   LOCALIZE_COST_CENTS,
   LOCALIZE_EDITION,
   LOCALIZE_UNIT_PERCENT,
@@ -4209,4 +4213,156 @@ test("a translation charges once and pays one quieter extra sales day", async ()
   assert.equal(staffJson(restored, "p1"), staffOnly);
   assert.equal(validate(restored.journey.state()), true, JSON.stringify(validate.errors));
   restored.close();
+});
+
+function townRows(db: GameDatabase) {
+  return db.journey.db.prepare(
+    "SELECT id, label, cash_delta, earned_delta, reputation_delta FROM company_transactions WHERE id LIKE 'tycoon:townday:%' ORDER BY id",
+  ).all() as Array<{ id: string; label: string; cash_delta: number; earned_delta: number; reputation_delta: number }>;
+}
+
+test("one optional town afternoon charges once and grants fans once", async () => {
+  assert.equal(TOWN_DAY_NAME, "Whop Block Picnic");
+  assert.equal(TOWN_DAY_COST_CENTS, 2_000);
+  assert.equal(TOWN_DAY_FANS, 2);
+  assert.equal(townDaySeason(1).key, "1-spring");
+  assert.equal(townDaySeason(1).seasonName, "Spring");
+  assert.equal(townDaySeason(28).key, "1-spring");
+  assert.equal(townDaySeason(29).key, "1-summer");
+  assert.equal(townDaySeason(29).seasonName, "Summer");
+  assert.equal(townDaySeason(56).key, "1-summer");
+  assert.equal(townDaySeason(57).key, "1-fall");
+  assert.equal(townDaySeason(112).key, "1-winter");
+  assert.equal(townDaySeason(113).key, "2-spring");
+  assert.equal(townDaySeason(113).year, 2);
+
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+
+  const skip = await setup();
+  assert.equal(skip.db.tycoon.view().townDay.taken, false);
+  assert.equal(skip.db.tycoon.view().townDay.name, TOWN_DAY_NAME);
+  assert.equal(skip.db.tycoon.view().townDay.costCents, 2_000);
+  assert.equal(skip.db.tycoon.view().townDay.fans, 2);
+  assert.equal(skip.db.tycoon.view().townDay.season, "Spring");
+  skip.db.tycoon.start("crypto", "newsletter", []);
+  skip.db.endDay(1);
+  skip.db.endDay(2);
+  skip.db.tycoon.release("p1");
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.fans, 5);
+  skip.db.endDay(3);
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  skip.db.endDay(4);
+  assert.equal(skip.db.journey.state().company.cashCents, 33_300);
+  assert.equal(townRows(skip.db).length, 0);
+  assert.equal(validate(skip.db.journey.state()), true, JSON.stringify(validate.errors));
+  skip.db.close();
+
+  const short = await setup();
+  short.db.journey.recordCompanyChange("town-short", 1, 1_999, 0, 0, "Short cash");
+  assert.throws(() => short.db.tycoon.takeTownDay(), /Need \$20/u);
+  assert.equal(short.db.journey.state().company.cashCents, 1_999);
+  assert.equal(short.db.journey.state().company.reputation, 0);
+  assert.equal(townRows(short.db).length, 0);
+  assert.equal(short.db.tycoon.view().townDay.taken, false);
+  short.db.close();
+
+  const taken = await setup();
+  taken.db.journey.recordCompanyChange("town-cash", 1, 2_000, 0, 0, "Picnic cash");
+  taken.db.tycoon.start("crypto", "newsletter", []);
+  const devDays = taken.db.tycoon.view().developing?.devDays;
+  taken.db.tycoon.takeTownDay();
+  assert.equal(taken.db.clockState().day, 1);
+  assert.equal(taken.db.tycoon.view().developing?.devDays, devDays);
+  assert.equal(taken.db.journey.state().company.cashCents, 0);
+  assert.equal(taken.db.journey.state().company.reputation, 2);
+  assert.equal(taken.db.tycoon.view().townDay.taken, true);
+  assert.equal(taken.db.tycoon.view().townDay.season, "Spring");
+  const fee = townRows(taken.db);
+  assert.equal(fee.length, 1);
+  assert.equal(fee[0]?.id, "tycoon:townday:1-spring:fee");
+  assert.equal(fee[0]?.label, "Town day: Whop Block Picnic");
+  assert.equal(fee[0]?.cash_delta, -2_000);
+  assert.equal(fee[0]?.earned_delta, 0);
+  assert.equal(fee[0]?.reputation_delta, 2);
+  assert.throws(() => taken.db.tycoon.takeTownDay(), /Already took the afternoon\./u);
+  assert.equal(taken.db.journey.state().company.cashCents, 0);
+  assert.equal(taken.db.journey.state().company.reputation, 2);
+  assert.equal(townRows(taken.db).length, 1);
+  taken.db.tycoon.tickDay(1);
+  taken.db.tycoon.tickDay(1);
+  assert.equal(townRows(taken.db).length, 1);
+  assert.equal(taken.db.journey.state().company.reputation, 2);
+  const ended = taken.db.endDay(1);
+  const again = taken.db.endDay(1);
+  assert.equal(ended.summary.reputation, 2);
+  assert.equal(again.summary.reputation, 2);
+  assert.equal(taken.db.clockState().day, 2);
+  assert.equal(taken.db.journey.state().company.cashCents, 0);
+  assert.equal(taken.db.journey.state().company.reputation, 2);
+  assert.equal(townRows(taken.db).length, 1);
+  assert.equal(taken.db.tycoon.view().townDay.taken, true);
+  assert.equal(validate(taken.db.journey.state()), true, JSON.stringify(validate.errors));
+  const takenFile = join(taken.root, "game.sqlite");
+  const takenProject = join(taken.root, "company-project");
+  taken.db.close();
+  const reopened = new GameDatabase(takenFile, takenProject);
+  assert.equal(reopened.journey.state().company.cashCents, 0);
+  assert.equal(reopened.journey.state().company.reputation, 2);
+  assert.equal(townRows(reopened).length, 1);
+  assert.equal(reopened.tycoon.view().townDay.taken, true);
+  reopened.tycoon.tickDay(2);
+  assert.equal(reopened.journey.state().company.reputation, 2);
+  assert.throws(() => reopened.tycoon.takeTownDay(), /Already took the afternoon\./u);
+  reopened.setClock(29, 480, 0);
+  assert.equal(reopened.tycoon.view().townDay.taken, false);
+  assert.equal(reopened.tycoon.view().townDay.season, "Summer");
+  reopened.journey.recordCompanyChange("town-summer-cash", 29, 2_000, 0, 0, "Summer picnic cash");
+  reopened.tycoon.takeTownDay();
+  assert.equal(reopened.tycoon.view().townDay.taken, true);
+  assert.equal(reopened.journey.state().company.cashCents, 0);
+  assert.equal(reopened.journey.state().company.reputation, 4);
+  assert.equal(townRows(reopened).some((row) => row.id === "tycoon:townday:1-summer:fee"), true);
+  assert.throws(() => reopened.tycoon.takeTownDay(), /Already took the afternoon\./u);
+  reopened.endDay(29);
+  reopened.endDay(29);
+  assert.equal(reopened.journey.state().company.reputation, 4);
+  assert.equal(reopened.journey.state().company.cashCents, 0);
+  assert.equal(townRows(reopened).length, 2);
+  assert.equal(reopened.tycoon.view().townDay.season, "Summer");
+  assert.equal(reopened.tycoon.view().townDay.taken, true);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+
+  const beforeSale = await setup();
+  beforeSale.db.journey.recordCompanyChange("town-before-sale", 1, 20_000, 0, 0, "Cash");
+  beforeSale.db.tycoon.takeTownDay();
+  assert.equal(beforeSale.db.journey.state().company.reputation, 2);
+  beforeSale.db.tycoon.start("crypto", "newsletter", []);
+  beforeSale.db.endDay(1);
+  beforeSale.db.endDay(2);
+  beforeSale.db.tycoon.release("p1");
+  assert.equal(beforeSale.db.tycoon.view().history[0]?.fans, 5);
+  assert.equal(beforeSale.db.tycoon.view().history[0]?.salesCents, 20_700);
+  assert.equal(beforeSale.db.journey.state().company.reputation, 7);
+  assert.equal(beforeSale.db.journey.state().company.cashCents, 38_700);
+  assert.equal(townRows(beforeSale.db).length, 1);
+  beforeSale.db.close();
+
+  const yearTwo = await setup();
+  yearTwo.db.journey.recordCompanyChange("town-year-two", 1, 2_000, 0, 0, "Year two cash");
+  yearTwo.db.setClock(113, 480, 0);
+  assert.equal(yearTwo.db.tycoon.view().townDay.season, "Spring");
+  assert.equal(yearTwo.db.tycoon.view().townDay.taken, false);
+  yearTwo.db.tycoon.takeTownDay();
+  const yearRow = townRows(yearTwo.db).find((row) => row.id === "tycoon:townday:2-spring:fee");
+  assert.equal(yearRow?.cash_delta, -2_000);
+  assert.equal(yearRow?.reputation_delta, 2);
+  yearTwo.db.endDay(113);
+  yearTwo.db.endDay(113);
+  assert.equal(yearTwo.db.journey.state().company.reputation, 2);
+  assert.equal(townRows(yearTwo.db).length, 1);
+  assert.equal(validate(yearTwo.db.journey.state()), true, JSON.stringify(validate.errors));
+  yearTwo.db.close();
 });

@@ -192,6 +192,16 @@ export const EXPO_COST_CENTS = 6_000;
 export const EXPO_FANS = 3;
 export const EXPO_DAY_OF_SEASON = 14;
 
+/**
+ * One optional afternoon off in town. Copy only. Not a booth and not a sale.
+ * $20 is under the $40 award fee, the $50 translation, and the $60 expo booth.
+ * A company that just shipped the $207 newsletter can go and still keep $187.
+ * The picnic pays exactly 2 fans, under the expo's 3 and that newsletter's 5.
+ */
+export const TOWN_DAY_NAME = "Whop Block Picnic";
+export const TOWN_DAY_COST_CENTS = 2_000;
+export const TOWN_DAY_FANS = 2;
+
 /** Office tools. Each row is bought once and has one effect. */
 export const UPGRADES = [
   { id: "standing_desk", name: "Oak Standing Desk", blurb: "Sketches land cleaner when you stand.", priceCents: 25_000, kind: "design", effect: "+1 design per person per dev day" },
@@ -610,6 +620,15 @@ export interface TycoonExpo {
   booked: boolean;
 }
 
+export interface TycoonTownDay {
+  name: string;
+  costCents: number;
+  fans: number;
+  /** Current season name, for example "Spring". */
+  season: string;
+  taken: boolean;
+}
+
 export interface ExpoFair {
   year: number;
   season: SeasonId;
@@ -644,6 +663,7 @@ export interface TycoonSnapshot {
   payroll: TycoonPayroll;
   loan: TycoonLoan;
   expo: TycoonExpo;
+  townDay: TycoonTownDay;
   office: TycoonOffice;
   priceSteps: LaunchPriceStep[];
   marketingOptions: Array<MarketingOption & { enabled: boolean; reason: string }>;
@@ -816,6 +836,17 @@ export function publisherNetCents(cents: number): number {
 /** Player-facing payday, for example "Spring 28". */
 export function paydayLabel(day: number): string {
   return `${calendarForDay(day).seasonName} ${SEASON_LENGTH_DAYS}`;
+}
+
+/** This season's town-day ledger key, for example "1-spring". */
+export function townDaySeason(fromDay: number): { year: number; season: SeasonId; seasonName: string; key: string } {
+  const calendar = calendarForDay(fromDay);
+  return {
+    year: calendar.year,
+    season: calendar.season,
+    seasonName: calendar.seasonName,
+    key: `${calendar.year}-${calendar.season}`,
+  };
 }
 
 /** Unit price after a percent boost. Half rounds away from zero via Math.round. */
@@ -1745,6 +1776,7 @@ export class TycoonStore {
       payroll: this.payrollView(day, hired),
       loan: this.loanView(day),
       expo: this.expoView(day),
+      townDay: this.townDayView(day),
       office: this.officeView(this.officeLevel(), hired.size, cash),
       priceSteps: [...LAUNCH_PRICES],
       marketingOptions: marketingOffer(cash),
@@ -1968,6 +2000,18 @@ export class TycoonStore {
       if (this.transactionExists(id)) throw new Error("Already booked.");
       if (this.cashCents() < EXPO_COST_CENTS) throw new Error(`Need ${wholeDollars(EXPO_COST_CENTS)}`);
       this.journey.recordCompanyChange(id, this.day(), -EXPO_COST_CENTS, 0, 0, `Booth: ${EXPO_NAME}`);
+      return this.journey.state();
+    });
+  }
+
+  /** One afternoon off this season. The fee row also grants the fans. No office day is spent. */
+  takeTownDay(): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const season = townDaySeason(this.day());
+      const id = `tycoon:townday:${season.key}:fee`;
+      if (this.transactionExists(id)) throw new Error("Already took the afternoon.");
+      if (this.cashCents() < TOWN_DAY_COST_CENTS) throw new Error(`Need ${wholeDollars(TOWN_DAY_COST_CENTS)}`);
+      this.journey.recordCompanyChange(id, this.day(), -TOWN_DAY_COST_CENTS, 0, TOWN_DAY_FANS, `Town day: ${TOWN_DAY_NAME}`);
       return this.journey.state();
     });
   }
@@ -2332,6 +2376,17 @@ export class TycoonStore {
       fans: EXPO_FANS,
       when: fair.when,
       booked: this.transactionExists(`tycoon:expo:${fair.key}:booth`),
+    };
+  }
+
+  private townDayView(day: number): TycoonTownDay {
+    const season = townDaySeason(day);
+    return {
+      name: TOWN_DAY_NAME,
+      costCents: TOWN_DAY_COST_CENTS,
+      fans: TOWN_DAY_FANS,
+      season: season.seasonName,
+      taken: this.transactionExists(`tycoon:townday:${season.key}:fee`),
     };
   }
 

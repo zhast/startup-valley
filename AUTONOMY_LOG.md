@@ -1993,3 +1993,60 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Forty-nine PNGs in `/workspace/sv-proof/round-48/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-48 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → Shipped. Translate is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_localization.gd`.
+
+### Round 49 — 2026-10-29
+
+**What changed**
+- One optional afternoon off: the Whop Block Picnic. $20, then exactly 2 fans, on the same company fan total as every other reputation gain. $20 is under the $40 award fee, the $50 translation, and the $60 expo booth, and under Mina's $80 season salary. A company that just shipped the $207 newsletter can take the afternoon and still keep $187. 2 fans is under the expo's 3 and that newsletter's 5. +2 from 0 does not change `Math.floor(reputation / 10)`, so a take before the first release still leaves that newsletter at 20700 cents and 5 product fans. The afternoon does not spend an office day. The clock stays put.
+- Taking it writes one ledger row, `tycoon:townday:<year>-<season>:fee`, label `Town day: Whop Block Picnic`, cash −$20, earned 0, reputation +2. The fans are on that fee row. A second take that season fails with "Already took the afternoon." Less than $20 fails with "Need $20" and writes nothing. Replaying a day end or reopening never charges or grants twice. A missed season is not paid later.
+- Skipping the afternoon writes no row. The first Crypto Alpha Newsletter is still 20700 cents and 5 fans. The next office day is still 33300 cents.
+- The Season card line is "Town · Whop Block Picnic this Spring · $20, about 2 fans" plus one secondary Take the afternoon button. Once taken the line is "Afternoon off · Whop Block Picnic" and the button is gone. Hire stays the one primary action. `journey.tycoon.townDay` is `{ name, costCents, fans, season, taken }`. A payload without `townDay` draws no extra line.
+
+**Proof**
+- `/workspace/sv-proof/round-49/50-townday-offer.png` and `51-townday-taken.png`, captured by the verify-startup-valley skill. PROOF PASS. Fifty-one PNGs. The offer header reads "Spring 1 · Year 1 · $207.00 game cash · 0 reputation". Take the afternoon is a cream secondary button, the same shape as Book booth. Hire Mina · free stays orange. The town line and the button are fully readable and do not cover Hire. The taken header reads "Spring 1 · Year 1 · $187.00 game cash · 2 reputation" and the line is "Afternoon off · Whop Block Picnic" with no button. The money note sits under that line and above the footer.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Press demo is the next slice. One optional early look at the product on the bench. A small fee, then a few fans before release. No new picker row. Skipping it leaves the first newsletter at 20700 cents and 5 fans. This is not another sales day and not another afternoon off.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. `test_tycoon_price.gd` passed this gate. The Round 46 flake was not seen. Left alone.
+5. Carried from Round 45: the tallest Selling card still meets the footer, and the earlier Round 40 gaps. Four short buttons still share one shipped-shelf row. The town day stays on the Season card.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 117 tests, 115 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test charges $20 once, grants 2 fans once, replays the day and a reopen without a second charge, refuses a second take, fails short cash with Need $20 and no row, offers the picnic again next season, and leaves a skipped picnic at 20700 cents, 5 fans, then 33300 cents with no town day rows.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS
+- `test_tycoon_localization.gd` — TYCOON LOCALIZATION PASS
+- `test_tycoon_town_day.gd` — TYCOON TOWN DAY PASS. The offer reads "Town · Whop Block Picnic this Spring · $20, about 2 fans". Take the afternoon is secondary. Hire Mina stays primary. $0 says Need $20 and writes nothing. Skipping the picnic still pays 20700 cents and 5 fans, then 33300 cents, with no town day rows. Taking it leaves $313.00, grants 2 fans once, and hides the button. Reopening does not charge again. Ending the picnic day names "Town day: Whop Block Picnic" and does not pay twice. The next season offers Summer again.
+- `test_ui_company_redesign.gd` — 18171 checks, 0 failures, 0 captures. Existing fixtures omit `townDay` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Fifty-one PNGs in `/workspace/sv-proof/round-49/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-49 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → Season. Take the afternoon is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_town_day.gd`.

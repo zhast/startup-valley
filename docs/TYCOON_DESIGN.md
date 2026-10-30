@@ -571,13 +571,32 @@ Each shipped product carries `localization` as null on the bench, or `{edition, 
 
 Company Journey shows the offer only on the Shipped card, on that product's existing shelf row. There is no new product picker row and no new Season card button. The line is "Translate · Spanish edition · $50, one extra sales day". Translate is a secondary button on the same row as Sequel, Enter award, and Port. The Selling card does not show it. Hire stays the one primary action. Translate is not orange. Once bought the line is "Spanish edition · one extra sales day" and the button is gone. After the extra day it reads "Spanish edition · $X", where X is that day's cash. The shipped list repeats the bought line. Short cash disables the button and reads "Translate · Need $50".
 
+## Town day
+
+One optional afternoon off in town. The name is **Whop Block Picnic** in copy only. The harness owns the fee, the fans, and the ledger row. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential. The afternoon does not spend an office day. The clock stays where it is, and the product on the bench does not gain a dev day.
+
+At most one town day per season. `tycoon.takeTownDay` takes `{}`. A second take that season fails with "Already took the afternoon." and writes nothing. Skipping the afternoon writes no row, so the first Crypto Alpha Newsletter still pays 20700 cents and 5 fans, and the next office day is still 33300 cents.
+
+| | Amount | Why |
+| --- | --- | --- |
+| Fee | $20 | Under the $40 award fee, the $50 translation, and the $60 expo booth. Distinct from each of those, and from Mina's $80 season salary. A company that just shipped the $207 newsletter can take the afternoon and still keep $187. |
+| Fans | 2 | Under the expo's 3 and that newsletter's 5. The offer says "about 2 fans". The payout is exactly 2, on the same company fan total as every other reputation gain. +2 from 0 does not change `Math.floor(reputation / 10)`, so a take before the first release still leaves that newsletter at 20700 cents and 5 product fans. |
+
+Taking the afternoon writes one ledger row: id `tycoon:townday:<year>-<season>:fee`, for example `tycoon:townday:1-spring:fee`, cash −$20, earned 0, reputation +2, label `Town day: Whop Block Picnic`. The fans are on that fee row. There is no second row and no day-end payout. Cash may not go below zero. With less than $20 the call fails with "Need $20" and writes nothing. A missed season is not paid later. The next season uses a new key. Replaying a day end, or opening the save again, finds the id and does not charge or grant a second time.
+
+There is no new SQL column. A taken afternoon is that fee row for the `year-season` key. An older save has no town day rows and loads with the offer.
+
+`journey.tycoon.townDay` is `{ name, costCents, fans, season, taken }`. `name` is Whop Block Picnic. `costCents` is 2000. `fans` is 2. `season` is the season name, such as "Spring". `taken` is true once the fee row exists. A payload without `townDay` draws no extra line or button.
+
+The Season card line is "Town · Whop Block Picnic this Spring · $20, about 2 fans" plus one secondary button, Take the afternoon. Once taken the line is "Afternoon off · Whop Block Picnic" and the button is gone. Hire stays the one primary action. Take the afternoon is not orange.
+
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, awards, ports, engines, focus, audience, size, payroll, loans, publishers, expos, and localization. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Engine**, **Office**, and **Season** on Company Journey. Price, marketing, the engine choice, the focus, the audience, and the size live on the New Product picker. The engine buy lives on the Engine card. The award show, the port, and the translation live on the Shipped card. Payroll, the loan, and the booth live on the Season card. The publisher deal lives on the card for the product in development.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, awards, ports, engines, focus, audience, size, payroll, loans, publishers, expos, localization, and town days. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Engine**, **Office**, and **Season** on Company Journey. Price, marketing, the engine choice, the focus, the audience, and the size live on the New Product picker. The engine buy lives on the Engine card. The award show, the port, and the translation live on the Shipped card. Payroll, the loan, the booth, and the town day live on the Season card. The publisher deal lives on the card for the product in development.
 
 Next slice:
 
-1. **Town day.** One optional afternoon off on the Season card. A small fee, then a few fans from the neighborhood. No product, and no new picker row. Skipping it leaves the first newsletter at 20700 cents and 5 fans. This is the cozy day, not another button on the shelf. Bugs stay set aside. A second room still waits on architecture art.
+1. **Press demo.** One optional early look at the product on the bench. A small fee, then a few fans before release. No new picker row. Skipping it leaves the first newsletter at 20700 cents and 5 fans. This is not another sales day and not another afternoon off. Bugs stay set aside. A second room still waits on architecture art.
 
 Later art ask: a second room. Office growth shipped as spare desks on the current floor (`compact_desk` and `shared_workbench`, already bound). There is no second-room architecture art, so that room waits.
 
