@@ -2168,3 +2168,64 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Fifty-five PNGs in `/workspace/sv-proof/round-51/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-51 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → Selling. Make trailer is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_launch_trailer.gd`.
+
+### Round 52 — 2026-10-30
+
+**What changed**
+- One optional dev diary for a product after sales finish: a Whop Post-Mortem on the Whop blog. $15, then exactly 1 fan, on the same company fan total as every other reputation gain. $15 is unused: under the $20 town afternoon, the $25 trailer, the $30 press demo, the $40 award fee, the $50 translation, the $60 expo booth, and Mina's $80 season salary. After the $207 launch the company keeps $192. After the four-day window the first newsletter has $468. 1 fan is unused: under the picnic's 2, the expo's 3, the press demo's 4, that newsletter's 5 product fans, and the trailer's 6. After the four-day window reputation is 11, so the write moves it to 12. `Math.floor(reputation / 10)` stays 1. The diary row earns 0. Skipping the write never calls the method, so the first newsletter stays at 20700 cents and 5 fans. The diary does not spend an office day. The clock stays put.
+- Writing it writes one ledger row, `tycoon:diary:<productId>:fee`, label `Diary: Whop Post-Mortem`, cash −$15, earned 0, reputation +1. The fans are on that fee row. A second write fails with "Already written." Less than $15 fails with "Need $15" and writes nothing. Replaying a day end or reopening never charges or grants twice. The next finished product offers it again.
+- Skipping the diary writes no row. The first Crypto Alpha Newsletter is still 20700 cents and 5 fans. The next office day is still 33300 cents.
+- The Shipped card line is "Diary · Whop Post-Mortem · $15, about 1 fan" plus one secondary Write diary button, after "Sales finished." and off the four-button shelf row. Once written the line is "Diary written · Whop Post-Mortem" and the button is gone. Hire stays the one primary action. `diary` on a product is `{ name, costCents, fans, written }` or null. A payload without `diary` draws no line. The Selling card does not draw it. There is no new picker row.
+
+**Proof**
+- `/workspace/sv-proof/round-52/56-diary-offer.png` and `57-diary-written.png`, captured by the verify-startup-valley skill. PROOF PASS. Fifty-seven PNGs. The offer header reads "Spring 7 · Year 1 · $468.00 game cash · 11 reputation". Write diary is a cream secondary button, the same shape as Make trailer. Hire Mina · free stays orange. The diary line, Write diary, and the shelf buttons are readable and do not cover Hire. Write diary sits above Sequel / Enter award / Port / Translate, not in that row. The written header reads "Spring 7 · Year 1 · $453.00 game cash · 12 reputation" and the line is "Diary written · Whop Post-Mortem" with no button.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Rivals is the next slice. One competing creator shop per season, named in copy. If you ship the same topic they are pushing, opening demand drops a little. A real ship-now-or-wait decision. No new art. Not another fee-for-fans button.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. `test_tycoon_price.gd` passed this gate. The Round 46 flake was not seen. Left alone.
+5. `test_tycoon_upgrades.gd` gate.sh grep showed two FAILURE lines while reporting exit 0. A direct rerun printed TYCOON UPGRADES PASS. The upgrades test was left unchanged.
+6. Carried from Round 45: the Selling card is taller by one line and one secondary button. The Shipped card is now taller the same way while a diary is unwritten. Shot 56 keeps Write diary and the shelf above Hire. The contract card under that Shipped card is clipped at the footer until the diary is written. Shot 57 then shows the full contract card.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 120 tests, 118 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test charges $15 once, grants 1 fan once, replays the day and a reopen without a second charge, refuses a second write, fails short cash with Need $15 and no row, offers the diary again on the next finished product, and leaves a skipped diary at 20700 cents, 5 fans, then 33300 cents with no diary rows.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS (direct rerun)
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS
+- `test_tycoon_localization.gd` — TYCOON LOCALIZATION PASS
+- `test_tycoon_town_day.gd` — TYCOON TOWN DAY PASS
+- `test_tycoon_press_demo.gd` — TYCOON PRESS DEMO PASS
+- `test_tycoon_launch_trailer.gd` — TYCOON LAUNCH TRAILER PASS
+- `test_tycoon_dev_diary.gd` — TYCOON DEV DIARY PASS. The offer reads "Diary · Whop Post-Mortem · $15, about 1 fan". Write diary is secondary and off the shelf row. Hire Mina stays primary. $14.99 says Need $15 and writes nothing. Skipping the diary still pays 20700 cents and 5 fans, then 33300 cents, with no diary rows. After sales finish the offer appears on the Shipped card. Writing it leaves $453.00 and 12 reputation, grants 1 fan once, and hides the button. Reopening does not charge again. Ending the diary day names "Diary: Whop Post-Mortem" and does not pay twice. The next finished product offers it again.
+- `test_ui_company_redesign.gd` — 18171 checks, 0 failures, 0 captures. Existing fixtures omit `diary` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Fifty-seven PNGs in `/workspace/sv-proof/round-52/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-52 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → Shipped. Write diary is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_dev_diary.gd`.
