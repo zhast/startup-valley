@@ -228,6 +228,20 @@ export const TRAILER_NAME = "Whop Creator Cut";
 export const TRAILER_COST_CENTS = 2_500;
 export const TRAILER_FANS = 6;
 
+/**
+ * One optional creator post-mortem after sales finish. Copy only, a writeup
+ * on the Whop blog. Not a sales day, not a press look, and not a trailer.
+ * $15 is unused: under the $20 town afternoon, the $25 trailer, the $30
+ * press preview, the $40 award fee, the $50 translation, the $60 expo booth,
+ * and Mina's $80 season salary. A company that just shipped the $207
+ * newsletter can write it and still keep $192. The writeup pays exactly 1
+ * fan, under the picnic's 2 and the trailer's 6, on the same company fan
+ * total. It does not spend an office day.
+ */
+export const DIARY_NAME = "Whop Post-Mortem";
+export const DIARY_COST_CENTS = 1_500;
+export const DIARY_FANS = 1;
+
 /** Office tools. Each row is bought once and has one effect. */
 export const UPGRADES = [
   { id: "standing_desk", name: "Oak Standing Desk", blurb: "Sketches land cleaner when you stand.", priceCents: 25_000, kind: "design", effect: "+1 design per person per dev day" },
@@ -455,6 +469,8 @@ export interface TycoonProductView {
   pressDemo: TycoonProductPressDemo | null;
   /** Null unless the product is selling or the trailer was already made. */
   trailer: TycoonProductTrailer | null;
+  /** Null unless sales have finished or the diary was already written. */
+  diary: TycoonProductDiary | null;
 }
 
 export interface TycoonUpgradeView {
@@ -689,6 +705,13 @@ export interface TycoonProductTrailer {
   costCents: number;
   fans: number;
   made: boolean;
+}
+
+export interface TycoonProductDiary {
+  name: string;
+  costCents: number;
+  fans: number;
+  written: boolean;
 }
 
 export interface TycoonSnapshot {
@@ -1299,6 +1322,8 @@ interface ProductSnapshot {
   pressDemo: boolean;
   /** True after this product cuts the one launch trailer. */
   trailer: boolean;
+  /** True after this product writes the one dev diary. */
+  diary: boolean;
 }
 
 interface ProductPort {
@@ -1343,6 +1368,7 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     publisher: false,
     pressDemo: false,
     trailer: false,
+    diary: false,
   };
 }
 
@@ -1350,7 +1376,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, and no trailer. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, and no diary. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -1377,6 +1403,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     publisher?: unknown;
     pressDemo?: unknown;
     trailer?: unknown;
+    diary?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -1398,6 +1425,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     publisher: body.publisher === true,
     pressDemo: body.pressDemo === true,
     trailer: body.trailer === true,
+    diary: body.diary === true,
   };
 }
 
@@ -1490,6 +1518,7 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
   if (stored.publisher) body.publisher = true;
   if (stored.pressDemo) body.pressDemo = true;
   if (stored.trailer) body.trailer = true;
+  if (stored.diary) body.diary = true;
   return JSON.stringify(body);
 }
 
@@ -2128,6 +2157,24 @@ export class TycoonStore {
     });
   }
 
+  /** One diary for a product whose sales have finished. The fee row also grants the fans. No office day is spent. */
+  writeDiary(productId: string): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.row(productId);
+      if (!row) throw new Error("No product with that id.");
+      if (row.status === "developing") throw new Error("Ship this product first.");
+      const stored = parseProductSnapshot(row.staff_json);
+      const id = `tycoon:diary:${row.id}:fee`;
+      if (stored.diary || this.transactionExists(id)) throw new Error("Already written.");
+      if (row.status !== "complete") throw new Error("Still selling.");
+      if (this.cashCents() < DIARY_COST_CENTS) throw new Error(`Need ${wholeDollars(DIARY_COST_CENTS)}`);
+      this.journey.recordCompanyChange(id, this.day(), -DIARY_COST_CENTS, 0, DIARY_FANS, `Diary: ${DIARY_NAME}`);
+      stored.diary = true;
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      return this.journey.state();
+    });
+  }
+
   expandOffice(): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
       const current = this.officeLevel();
@@ -2264,6 +2311,7 @@ export class TycoonStore {
         publisher: false,
         pressDemo: false,
         trailer: false,
+        diary: false,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -3078,6 +3126,7 @@ export class TycoonStore {
       publisher: this.publisherView(row.status, snapshot.publisher),
       pressDemo: this.pressDemoView(row.status, snapshot.pressDemo),
       trailer: this.trailerView(row.status, Number(row.sales_applied), snapshot.trailer),
+      diary: this.diaryView(row.status, snapshot.diary),
     };
   }
 
@@ -3101,6 +3150,17 @@ export class TycoonStore {
       costCents: TRAILER_COST_CENTS,
       fans: TRAILER_FANS,
       made,
+    };
+  }
+
+  /** Offer after sales finish. Before that, only a written diary stays. */
+  private diaryView(status: string, written: boolean): TycoonProductDiary | null {
+    if (!written && status !== "complete") return null;
+    return {
+      name: DIARY_NAME,
+      costCents: DIARY_COST_CENTS,
+      fans: DIARY_FANS,
+      written,
     };
   }
 

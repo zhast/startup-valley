@@ -88,6 +88,9 @@ import {
   TRAILER_COST_CENTS,
   TRAILER_FANS,
   TRAILER_NAME,
+  DIARY_COST_CENTS,
+  DIARY_FANS,
+  DIARY_NAME,
   LOCALIZE_COST_CENTS,
   LOCALIZE_EDITION,
   LOCALIZE_UNIT_PERCENT,
@@ -4677,5 +4680,172 @@ test("one optional launch trailer charges once and grants fans once", async () =
   assert.equal(sequel.db.tycoon.view().developing?.trailer, null);
   assert.equal(JSON.parse(staffJson(sequel.db, "p2")).trailer, undefined);
   assert.equal(productById(sequel.db, "p1")?.trailer, null);
+  sequel.db.close();
+});
+
+function diaryRows(db: GameDatabase) {
+  return db.journey.db.prepare(
+    "SELECT id, label, cash_delta, earned_delta, reputation_delta FROM company_transactions WHERE id LIKE 'tycoon:diary:%' ORDER BY id",
+  ).all() as Array<{ id: string; label: string; cash_delta: number; earned_delta: number; reputation_delta: number }>;
+}
+
+function finishFirstNewsletter(db: GameDatabase) {
+  db.tycoon.start("crypto", "newsletter", []);
+  db.endDay(1);
+  db.endDay(2);
+  db.tycoon.release("p1");
+  db.endDay(3);
+  db.endDay(4);
+  db.endDay(5);
+  db.endDay(6);
+}
+
+test("one optional dev diary charges once and grants fans once", async () => {
+  assert.equal(DIARY_NAME, "Whop Post-Mortem");
+  assert.equal(DIARY_COST_CENTS, 1_500);
+  assert.equal(DIARY_FANS, 1);
+
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  const offer = {
+    name: "Whop Post-Mortem",
+    costCents: 1_500,
+    fans: 1,
+    written: false,
+  };
+  const writtenOffer = { ...offer, written: true };
+
+  const skip = await setup();
+  assert.throws(() => skip.db.tycoon.writeDiary("p1"), /No product with that id\./u);
+  skip.db.tycoon.start("crypto", "newsletter", []);
+  assert.equal(skip.db.tycoon.view().developing?.diary, null);
+  assert.throws(() => skip.db.tycoon.writeDiary("p1"), /Ship this product first\./u);
+  assert.equal(JSON.parse(staffJson(skip.db, "p1")).diary, undefined);
+  skip.db.endDay(1);
+  skip.db.endDay(2);
+  skip.db.tycoon.release("p1");
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.fans, 5);
+  assert.equal(skip.db.tycoon.view().history[0]?.diary, null);
+  assert.throws(() => skip.db.tycoon.writeDiary("p1"), /Still selling\./u);
+  assert.equal(validate(skip.db.journey.state()), true, JSON.stringify(validate.errors));
+  skip.db.endDay(3);
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  skip.db.endDay(4);
+  assert.equal(skip.db.journey.state().company.cashCents, 33_300);
+  assert.equal(diaryRows(skip.db).length, 0);
+  skip.db.endDay(5);
+  skip.db.endDay(6);
+  assert.equal(skip.db.tycoon.view().history[0]?.status, "complete");
+  assert.deepEqual(skip.db.tycoon.view().history[0]?.diary, offer);
+  assert.equal(diaryRows(skip.db).length, 0);
+  assert.equal(validate(skip.db.journey.state()), true, JSON.stringify(validate.errors));
+  skip.db.close();
+
+  const short = await setup();
+  finishFirstNewsletter(short.db);
+  const finishedCash = short.db.journey.state().company.cashCents;
+  const finishedFans = short.db.journey.state().company.reputation;
+  short.db.journey.recordCompanyChange("diary-short", short.db.clockState().day, 1_499 - finishedCash, 0, 0, "Short cash");
+  assert.equal(short.db.journey.state().company.cashCents, 1_499);
+  assert.throws(() => short.db.tycoon.writeDiary("p1"), /Need \$15/u);
+  assert.equal(short.db.journey.state().company.cashCents, 1_499);
+  assert.equal(short.db.journey.state().company.reputation, finishedFans);
+  assert.equal(diaryRows(short.db).length, 0);
+  assert.deepEqual(short.db.tycoon.view().history[0]?.diary, offer);
+  assert.equal(JSON.parse(staffJson(short.db, "p1")).diary, undefined);
+  assert.equal(short.db.tycoon.view().history[0]?.status, "complete");
+  short.db.close();
+
+  const written = await setup();
+  finishFirstNewsletter(written.db);
+  const day = written.db.clockState().day;
+  const cashBefore = written.db.journey.state().company.cashCents;
+  const fansBefore = written.db.journey.state().company.reputation;
+  const salesCents = written.db.tycoon.view().history[0]?.salesCents;
+  const productFans = written.db.tycoon.view().history[0]?.fans;
+  const devDays = written.db.tycoon.view().history[0]?.devDays;
+  written.db.tycoon.writeDiary("p1");
+  assert.equal(written.db.clockState().day, day);
+  assert.equal(written.db.tycoon.view().history[0]?.devDays, devDays);
+  assert.equal(written.db.journey.state().company.cashCents, cashBefore - 1_500);
+  assert.equal(written.db.journey.state().company.reputation, fansBefore + 1);
+  assert.equal(written.db.tycoon.view().history[0]?.salesCents, salesCents);
+  assert.equal(written.db.tycoon.view().history[0]?.fans, productFans);
+  assert.deepEqual(written.db.tycoon.view().history[0]?.diary, writtenOffer);
+  assert.equal(JSON.parse(staffJson(written.db, "p1")).diary, true);
+  const fee = diaryRows(written.db);
+  assert.equal(fee.length, 1);
+  assert.equal(fee[0]?.id, "tycoon:diary:p1:fee");
+  assert.equal(fee[0]?.label, "Diary: Whop Post-Mortem");
+  assert.equal(fee[0]?.cash_delta, -1_500);
+  assert.equal(fee[0]?.earned_delta, 0);
+  assert.equal(fee[0]?.reputation_delta, 1);
+  assert.throws(() => written.db.tycoon.writeDiary("p1"), /Already written\./u);
+  assert.equal(written.db.journey.state().company.cashCents, cashBefore - 1_500);
+  assert.equal(written.db.journey.state().company.reputation, fansBefore + 1);
+  assert.equal(diaryRows(written.db).length, 1);
+  written.db.tycoon.tickDay(day);
+  written.db.tycoon.tickDay(day);
+  assert.equal(diaryRows(written.db).length, 1);
+  assert.equal(written.db.journey.state().company.reputation, fansBefore + 1);
+  const ended = written.db.endDay(day);
+  const again = written.db.endDay(day);
+  assert.equal(ended.summary.reputation, 1);
+  assert.equal(again.summary.reputation, 1);
+  assert.equal(written.db.clockState().day, day + 1);
+  assert.equal(written.db.journey.state().company.cashCents, cashBefore - 1_500);
+  assert.equal(written.db.journey.state().company.reputation, fansBefore + 1);
+  assert.equal(diaryRows(written.db).length, 1);
+  assert.deepEqual(written.db.tycoon.view().history[0]?.diary, writtenOffer);
+  assert.equal(validate(written.db.journey.state()), true, JSON.stringify(validate.errors));
+  const writtenFile = join(written.root, "game.sqlite");
+  const writtenProject = join(written.root, "company-project");
+  written.db.close();
+  const reopened = new GameDatabase(writtenFile, writtenProject);
+  assert.equal(reopened.journey.state().company.cashCents, cashBefore - 1_500);
+  assert.equal(reopened.journey.state().company.reputation, fansBefore + 1);
+  assert.equal(diaryRows(reopened).length, 1);
+  assert.deepEqual(reopened.tycoon.view().history[0]?.diary, writtenOffer);
+  assert.throws(() => reopened.tycoon.writeDiary("p1"), /Already written\./u);
+  reopened.tycoon.start("fitness", "newsletter", []);
+  assert.equal(reopened.tycoon.view().developing?.diary, null);
+  assert.throws(() => reopened.tycoon.writeDiary("p2"), /Ship this product first\./u);
+  const nextStart = reopened.clockState().day;
+  reopened.endDay(nextStart);
+  reopened.endDay(nextStart + 1);
+  assert.equal(reopened.tycoon.view().developing?.ready, true);
+  reopened.tycoon.release("p2");
+  assert.equal(productById(reopened, "p2")?.diary, null);
+  assert.throws(() => reopened.tycoon.writeDiary("p2"), /Still selling\./u);
+  const afterRelease = reopened.clockState().day;
+  reopened.endDay(afterRelease);
+  reopened.endDay(afterRelease + 1);
+  reopened.endDay(afterRelease + 2);
+  reopened.endDay(afterRelease + 3);
+  assert.equal(productById(reopened, "p2")?.status, "complete");
+  assert.deepEqual(productById(reopened, "p2")?.diary, offer);
+  assert.equal(JSON.parse(staffJson(reopened, "p2")).diary, undefined);
+  assert.deepEqual(productById(reopened, "p1")?.diary, writtenOffer);
+  const nextCash = reopened.journey.state().company.cashCents;
+  const nextFans = reopened.journey.state().company.reputation;
+  reopened.tycoon.writeDiary("p2");
+  assert.deepEqual(productById(reopened, "p2")?.diary, writtenOffer);
+  assert.equal(JSON.parse(staffJson(reopened, "p2")).diary, true);
+  assert.equal(reopened.journey.state().company.cashCents, nextCash - 1_500);
+  assert.equal(reopened.journey.state().company.reputation, nextFans + 1);
+  assert.equal(diaryRows(reopened).some((row) => row.id === "tycoon:diary:p2:fee"), true);
+  assert.equal(diaryRows(reopened).length, 2);
+  assert.throws(() => reopened.tycoon.writeDiary("p2"), /Already written\./u);
+  assert.throws(() => reopened.tycoon.writeDiary("p1"), /Already written\./u);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+
+  const sequel = await setup();
+  finishFirstNewsletter(sequel.db);
+  sequel.db.tycoon.sequel("p1");
+  assert.equal(sequel.db.tycoon.view().developing?.diary, null);
+  assert.equal(JSON.parse(staffJson(sequel.db, "p2")).diary, undefined);
+  assert.deepEqual(productById(sequel.db, "p1")?.diary, offer);
   sequel.db.close();
 });
