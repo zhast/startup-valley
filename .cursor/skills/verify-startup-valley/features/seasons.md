@@ -3,7 +3,7 @@
 ## Sub-features
 
 - Read the date in plain words. Day 1 is "Spring 1 · Year 1". The next morning is "Spring 2 · Year 1".
-- Read the Season card. Spring says "In season: Fitness, Dating Advice". With nobody hired it also says "No payroll yet". Payroll is in `features/payroll.md`. The same card offers a loan; that button is in `features/loans.md`. The same card offers a booth; that button is in `features/expos.md`. The same card offers a town afternoon; that button is in `features/town-day.md`.
+- Read the Season card. Spring says "In season: Fitness, Dating Advice" and "Rival: Pip's Pop-up is pushing Cooking this season". The rival is in `features/rivals.md`. With nobody hired it also says "No payroll yet". Payroll is in `features/payroll.md`. The same card offers a loan; that button is in `features/loans.md`. The same card offers a booth; that button is in `features/expos.md`. The same card offers a town afternoon; that button is in `features/town-day.md`.
 - Read the next event. On Spring 2 that line is "Creator Fair in 11 days".
 - See "· in season" on a favored topic in the product picker.
 

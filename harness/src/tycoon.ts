@@ -242,6 +242,24 @@ export const DIARY_NAME = "Whop Post-Mortem";
 export const DIARY_COST_CENTS = 1_500;
 export const DIARY_FANS = 1;
 
+/**
+ * One rival creator shop per season. The same shop returns each year.
+ * Shipping that topic in that season cuts opening demand to 90.
+ * 90 is the same small cut Newcomers and Short use, applied once to
+ * opening demand so every sales day of that release is a little quieter.
+ * Ten points sits inside the ±10 swing and under the season's +20,
+ * so waiting for a favored season still pays. Skipping the topic
+ * leaves the sale unchanged. Spring is Cooking so the shipped
+ * Crypto Alpha, Fitness, Trading, and Gaming paths stay exact.
+ */
+export const RIVAL_UNIT_PERCENT = 90;
+export const RIVALS = [
+  { shop: "Pip's Pop-up", topicId: "cooking" },
+  { shop: "Harbor Goods", topicId: "trading" },
+  { shop: "Lumen Kiosk", topicId: "gaming" },
+  { shop: "Sable Shelf", topicId: "study_notes" },
+] as const;
+
 /** Office tools. Each row is bought once and has one effect. */
 export const UPGRADES = [
   { id: "standing_desk", name: "Oak Standing Desk", blurb: "Sketches land cleaner when you stand.", priceCents: 25_000, kind: "design", effect: "+1 design per person per dev day" },
@@ -675,6 +693,15 @@ export interface TycoonTownDay {
   taken: boolean;
 }
 
+/** The rival shop pushing one topic this season. */
+export interface TycoonRival {
+  shop: string;
+  topicId: TopicId;
+  topicName: string;
+  /** Opening demand percent. 90 means a matching release is a little quieter. */
+  unitPercent: number;
+}
+
 export interface ExpoFair {
   year: number;
   season: SeasonId;
@@ -731,6 +758,7 @@ export interface TycoonSnapshot {
   loan: TycoonLoan;
   expo: TycoonExpo;
   townDay: TycoonTownDay;
+  rival: TycoonRival;
   office: TycoonOffice;
   priceSteps: LaunchPriceStep[];
   marketingOptions: Array<MarketingOption & { enabled: boolean; reason: string }>;
@@ -1324,6 +1352,8 @@ interface ProductSnapshot {
   trailer: boolean;
   /** True after this product writes the one dev diary. */
   diary: boolean;
+  /** True when this release shipped into the season rival's topic. */
+  rivalCut: boolean;
 }
 
 interface ProductPort {
@@ -1369,6 +1399,7 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     pressDemo: false,
     trailer: false,
     diary: false,
+    rivalCut: false,
   };
 }
 
@@ -1376,7 +1407,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, and no diary. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, and no rival cut. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -1404,6 +1435,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     pressDemo?: unknown;
     trailer?: unknown;
     diary?: unknown;
+    rivalCut?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -1426,6 +1458,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     pressDemo: body.pressDemo === true,
     trailer: body.trailer === true,
     diary: body.diary === true,
+    rivalCut: body.rivalCut === true,
   };
 }
 
@@ -1519,6 +1552,7 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
   if (stored.pressDemo) body.pressDemo = true;
   if (stored.trailer) body.trailer = true;
   if (stored.diary) body.diary = true;
+  if (stored.rivalCut) body.rivalCut = true;
   return JSON.stringify(body);
 }
 
@@ -1621,6 +1655,13 @@ export function reviewProduct(input: {
   return { score, reviewers };
 }
 
+/** Opening demand before the curve and the swing. A stored rival cut uses 90 and rounds once. */
+export function openingDemand(fit: Fit, score: number, reputation: number, rivalCut = false): number {
+  const base = FIT_UNITS[fit] + Math.floor((score * 3) / 2) + Math.floor(reputation / 10);
+  if (!rivalCut) return base;
+  return Math.max(1, Math.round((base * RIVAL_UNIT_PERCENT) / 100));
+}
+
 /** Indexes 0–3 are the four sales days. The port's extra day stays on the last step. */
 function curvePercent(dayIndex: number): number | undefined {
   if (dayIndex === SALES_WINDOW_DAYS) return SALES_CURVE[SALES_CURVE.length - 1];
@@ -1655,13 +1696,15 @@ export function salesForDay(input: {
   topicMatch?: boolean;
   /** Size id stored on the product. Omitted is Catalog. */
   size?: string;
+  /** True when this release shipped into the season rival's topic. Omitted leaves opening demand alone. */
+  rivalCut?: boolean;
 }): TycoonSales {
   const curve = curvePercent(input.dayIndex);
   const type = typeById(input.typeId);
   if (curve === undefined || !type) throw new Error("Sales day is outside the window");
   const swing = (mixSeed(input.seed, input.productId, "sales", input.dayIndex) % 21) - 10;
-  const baseUnits = FIT_UNITS[input.fit] + Math.floor((input.score * 3) / 2) + Math.floor(input.reputation / 10);
-  // Units: base, launch price, season, marketing, audience, size. Fans follow those units.
+  const baseUnits = openingDemand(input.fit, input.score, input.reputation, input.rivalCut === true);
+  // Units: opening demand, launch price, season, marketing, audience, size. Fans follow those units.
   // Price: launch price, then checkout. Cash is units times that price.
   let units = Math.max(1, Math.round((baseUnits * curve * (100 + swing)) / 10000));
   const pricePercent = normalizeLaunchPricePercent(input.pricePercent);
@@ -1732,6 +1775,24 @@ export function calendarForDay(day: number): TycoonCalendar {
     favoredTopics,
     event: today ? eventView(today) : null,
     nextEvent: { ...eventView(next), season: next.season, dayOfSeason: next.dayOfSeason, daysUntil },
+  };
+}
+
+/** 0 is the first spring. The rival list repeats every four seasons. */
+export function seasonIndexForDay(day: number): number {
+  const safe = Math.max(1, Math.trunc(Number.isFinite(day) ? day : 1));
+  return Math.floor((safe - 1) / SEASON_LENGTH_DAYS);
+}
+
+/** The shop and topic for this office day. Day 1 and day 113 are the same shop. */
+export function rivalForDay(day: number): TycoonRival {
+  const rival = RIVALS[seasonIndexForDay(day) % RIVALS.length] ?? RIVALS[0];
+  const topic = topicById(rival.topicId);
+  return {
+    shop: rival.shop,
+    topicId: rival.topicId,
+    topicName: topic?.name ?? rival.topicId,
+    unitPercent: RIVAL_UNIT_PERCENT,
   };
 }
 
@@ -1862,6 +1923,7 @@ export class TycoonStore {
       loan: this.loanView(day),
       expo: this.expoView(day),
       townDay: this.townDayView(day),
+      rival: rivalForDay(day),
       office: this.officeView(this.officeLevel(), hired.size, cash),
       priceSteps: [...LAUNCH_PRICES],
       marketingOptions: marketingOffer(cash),
@@ -2241,6 +2303,10 @@ export class TycoonStore {
       const bonus = releaseResearchPoints(review.score);
       this.db.prepare("UPDATE tycoon_products SET status = 'released', released_day = ?, review_json = ?, release_research = ? WHERE id = ?")
         .run(day, JSON.stringify(review), bonus, row.id);
+      if (rivalForDay(day).topicId === topicId) {
+        stored.rivalCut = true;
+        this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      }
       this.addResearchPoints(bonus);
       this.applySale(this.row(row.id)!, day);
       if (stored.contract) {
@@ -2312,6 +2378,7 @@ export class TycoonStore {
         pressDemo: false,
         trailer: false,
         diary: false,
+        rivalCut: false,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -2625,6 +2692,7 @@ export class TycoonStore {
       priceBoostPercent: this.priceBoostPercent(),
       unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === topicId) ? SEASON_UNIT_BOOST_PERCENT : 0,
       bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
+      rivalCut: stored.rivalCut,
     });
     const posted = stored.publisher ? publisherNetCents(payout.cents) : payout.cents;
     this.journey.recordCompanyChange(`tycoon:${row.id}:${applied}`, day, posted, posted, payout.fans, `Sales · ${row.name}`);
@@ -2669,6 +2737,7 @@ export class TycoonStore {
         priceBoostPercent: this.priceBoostPercent(),
         unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === topicId) ? SEASON_UNIT_BOOST_PERCENT : 0,
         bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
+        rivalCut: stored.rivalCut,
       });
       const posted = stored.publisher ? publisherNetCents(payout.cents) : payout.cents;
       this.journey.recordCompanyChange(`tycoon:${row.id}:${SALES_WINDOW_DAYS}`, day, posted, posted, payout.fans, `Sales · ${row.name}`);
@@ -2711,6 +2780,7 @@ export class TycoonStore {
         unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === topicId) ? SEASON_UNIT_BOOST_PERCENT : 0,
         bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
         quietPercent: LOCALIZE_UNIT_PERCENT,
+        rivalCut: stored.rivalCut,
       });
       const posted = stored.publisher ? publisherNetCents(payout.cents) : payout.cents;
       this.journey.recordCompanyChange(salesId, day, posted, posted, payout.fans, `Sales · ${LOCALIZE_EDITION}`);

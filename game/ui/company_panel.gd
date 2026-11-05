@@ -1013,6 +1013,10 @@ func _office_card() -> void:
 func _expand_office() -> void:
 	_request("tycoon.expandOffice", {})
 
+func _rival() -> Dictionary:
+	var value: Variant = _tycoon().get("rival", null)
+	return value as Dictionary if value is Dictionary else {}
+
 func _season_card() -> void:
 	var calendar := _calendar()
 	if calendar.is_empty(): return
@@ -1027,6 +1031,12 @@ func _season_card() -> void:
 	_label("Season", true, card)
 	var topics := _label("In season: %s" % ", ".join(names), false, card)
 	topics.name = "SeasonTopics"
+	var rival := _rival()
+	var shop := str(rival.get("shop", "")).strip_edges()
+	var rival_topic := str(rival.get("topicName", "")).strip_edges()
+	if not shop.is_empty() and not rival_topic.is_empty():
+		var rival_line := _label("Rival: %s is pushing %s this season" % [shop, rival_topic], false, card)
+		rival_line.name = "SeasonRival"
 	var event_line := _label(_season_event_line(calendar), false, card)
 	event_line.name = "SeasonEvent"
 	var payroll: Dictionary = _tycoon().get("payroll", {}) if _tycoon().get("payroll") is Dictionary else {}
@@ -1239,6 +1249,10 @@ func _product_picker(tycoon: Dictionary) -> void:
 		elif not topic_held: topic_label = "%s · contract" % topic_name
 		if _topic_in_season(topic_id): topic_label = "%s · in season" % topic_label
 		_choice_button(topic_label, topic_open and topic_held and topic_id == _topic_id, topics, _choose_topic.bind(topic_id), topic_open and topic_held)
+	var rival := _rival()
+	if str(rival.get("topicId", "")).strip_edges() == _topic_id and not str(rival.get("topicId", "")).strip_edges().is_empty():
+		var warning := _label("Rival · opening demand drops.", false, null, "action")
+		warning.name = "RivalWarning"
 	_label("Product type", true)
 	var types := GridContainer.new()
 	types.columns = 2

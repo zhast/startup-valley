@@ -296,7 +296,7 @@
     "tycoon": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "upgradeNotice", "upgrades", "calendar", "payroll", "loan", "expo", "townDay", "office", "priceSteps", "marketingOptions", "engineNotice", "engine", "engineOptions", "focusOptions", "audienceOptions", "sizeOptions", "contract", "patchNotice", "developing", "history"],
+      "required": ["seed", "salesWindowDays", "topics", "types", "fits", "staff", "trainingNotice", "researchPoints", "researchNotice", "upgradeNotice", "upgrades", "calendar", "payroll", "loan", "expo", "townDay", "rival", "office", "priceSteps", "marketingOptions", "engineNotice", "engine", "engineOptions", "focusOptions", "audienceOptions", "sizeOptions", "contract", "patchNotice", "developing", "history"],
       "properties": {
         "seed": { "type": "integer", "minimum": 1 },
         "salesWindowDays": { "type": "integer", "const": 4 },
@@ -314,6 +314,7 @@
         "loan": { "$ref": "#/$defs/tycoonLoan" },
         "expo": { "$ref": "#/$defs/tycoonExpo" },
         "townDay": { "$ref": "#/$defs/tycoonTownDay" },
+        "rival": { "$ref": "#/$defs/tycoonRival" },
         "office": { "$ref": "#/$defs/tycoonOffice" },
         "priceSteps": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/tycoonPriceStep" } },
         "marketingOptions": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/tycoonMarketing" } },
@@ -373,6 +374,17 @@
         "fans": { "type": "integer", "const": 2 },
         "season": { "type": "string", "minLength": 1 },
         "taken": { "type": "boolean" }
+      }
+    },
+    "tycoonRival": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["shop", "topicId", "topicName", "unitPercent"],
+      "properties": {
+        "shop": { "enum": ["Pip's Pop-up", "Harbor Goods", "Lumen Kiosk", "Sable Shelf"] },
+        "topicId": { "enum": ["cooking", "trading", "gaming", "study_notes"] },
+        "topicName": { "enum": ["Cooking", "Trading", "Gaming", "Study Notes"] },
+        "unitPercent": { "type": "integer", "const": 90 }
       }
     },
     "tycoonCalendar": {

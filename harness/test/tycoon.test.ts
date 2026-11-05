@@ -91,6 +91,11 @@ import {
   DIARY_COST_CENTS,
   DIARY_FANS,
   DIARY_NAME,
+  RIVAL_UNIT_PERCENT,
+  RIVALS,
+  openingDemand,
+  rivalForDay,
+  seasonIndexForDay,
   LOCALIZE_COST_CENTS,
   LOCALIZE_EDITION,
   LOCALIZE_UNIT_PERCENT,
@@ -4848,4 +4853,168 @@ test("one optional dev diary charges once and grants fans once", async () => {
   assert.equal(JSON.parse(staffJson(sequel.db, "p2")).diary, undefined);
   assert.deepEqual(productById(sequel.db, "p1")?.diary, offer);
   sequel.db.close();
+});
+
+test("a seasonal rival cuts opening demand only for a matching release", async () => {
+  assert.equal(RIVAL_UNIT_PERCENT, 90);
+  assert.equal(RIVALS.length, 4);
+  assert.equal(seasonIndexForDay(1), 0);
+  assert.equal(seasonIndexForDay(28), 0);
+  assert.equal(seasonIndexForDay(29), 1);
+  assert.equal(seasonIndexForDay(57), 2);
+  assert.equal(seasonIndexForDay(85), 3);
+  assert.equal(seasonIndexForDay(113), 4);
+  const spring = { shop: "Pip's Pop-up", topicId: "cooking", topicName: "Cooking", unitPercent: 90 };
+  const summer = { shop: "Harbor Goods", topicId: "trading", topicName: "Trading", unitPercent: 90 };
+  const fall = { shop: "Lumen Kiosk", topicId: "gaming", topicName: "Gaming", unitPercent: 90 };
+  const winter = { shop: "Sable Shelf", topicId: "study_notes", topicName: "Study Notes", unitPercent: 90 };
+  assert.deepEqual(rivalForDay(1), spring);
+  assert.deepEqual(rivalForDay(28), spring);
+  assert.deepEqual(rivalForDay(113), spring);
+  assert.deepEqual(rivalForDay(29), summer);
+  assert.deepEqual(rivalForDay(57), fall);
+  assert.deepEqual(rivalForDay(85), winter);
+
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+
+  const fresh = await setup();
+  assert.deepEqual(fresh.db.tycoon.view().rival, spring);
+  assert.equal(validate(fresh.db.journey.state()), true, JSON.stringify(validate.errors));
+  fresh.db.tycoon.start("crypto", "newsletter", []);
+  fresh.db.endDay(1);
+  fresh.db.endDay(2);
+  fresh.db.tycoon.release("p1");
+  assert.equal(fresh.db.journey.state().company.cashCents, 20_700);
+  assert.equal(fresh.db.tycoon.view().history[0]?.fans, 5);
+  assert.equal(JSON.parse(staffJson(fresh.db, "p1")).rivalCut, undefined);
+  fresh.db.endDay(3);
+  fresh.db.endDay(4);
+  assert.equal(fresh.db.journey.state().company.cashCents, 33_300);
+  assert.equal(JSON.parse(staffJson(fresh.db, "p1")).rivalCut, undefined);
+  fresh.db.close();
+
+  const hit = await setup();
+  hit.db.setClock(25, 480, 0);
+  assert.deepEqual(hit.db.tycoon.view().rival, spring);
+  hit.db.tycoon.start("cooking", "newsletter", []);
+  hit.db.endDay(25);
+  hit.db.endDay(26);
+  hit.db.tycoon.release("p1");
+  const opened = hit.db.tycoon.view().history[0];
+  assert.ok(opened?.review);
+  const seed = hit.db.tycoon.view().seed;
+  const plain = salesForDay({
+    seed,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: opened.fit,
+    score: opened.review.score,
+    dayIndex: 0,
+    reputation: 0,
+  });
+  const cut = salesForDay({
+    seed,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: opened.fit,
+    score: opened.review.score,
+    dayIndex: 0,
+    reputation: 0,
+    rivalCut: true,
+  });
+  const base = openingDemand(opened.fit, opened.review.score, 0, false);
+  assert.equal(openingDemand(opened.fit, opened.review.score, 0, true), Math.max(1, Math.round((base * 90) / 100)));
+  assert.ok(cut.cents < plain.cents);
+  assert.equal(opened.salesCents, cut.cents);
+  assert.equal(opened.fans, cut.fans);
+  assert.equal(hit.db.journey.state().company.cashCents, cut.cents);
+  assert.equal(JSON.parse(staffJson(hit.db, "p1")).rivalCut, true);
+  const rivalRows = hit.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:rival%'").all();
+  assert.equal(rivalRows.length, 0);
+  const releaseDay = hit.db.clockState().day;
+  const releaseCents = hit.db.journey.state().company.cashCents;
+  const releaseFans = hit.db.journey.state().company.reputation;
+  hit.db.endDay(releaseDay);
+  hit.db.endDay(releaseDay);
+  assert.equal(hit.db.clockState().day, releaseDay + 1);
+  assert.equal(hit.db.journey.state().company.cashCents, releaseCents);
+  assert.equal(hit.db.tycoon.view().history[0]?.salesCents, releaseCents);
+  assert.equal(hit.db.journey.state().company.reputation, releaseFans);
+
+  const dayOne = salesForDay({
+    seed,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: opened.fit,
+    score: opened.review.score,
+    dayIndex: 1,
+    reputation: releaseFans,
+    rivalCut: true,
+  });
+  hit.db.endDay(28);
+  assert.equal(hit.db.tycoon.view().history[0]?.salesCents, releaseCents + dayOne.cents);
+  assert.equal(hit.db.journey.state().company.reputation, releaseFans + dayOne.fans);
+  const fansAfterDayOne = releaseFans + dayOne.fans;
+  const summerDay = salesForDay({
+    seed,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: opened.fit,
+    score: opened.review.score,
+    dayIndex: 2,
+    reputation: fansAfterDayOne,
+    rivalCut: true,
+  });
+  const summerPlain = salesForDay({
+    seed,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: opened.fit,
+    score: opened.review.score,
+    dayIndex: 2,
+    reputation: fansAfterDayOne,
+  });
+  hit.db.endDay(29);
+  assert.ok(summerDay.cents < summerPlain.cents);
+  assert.equal(hit.db.tycoon.view().history[0]?.salesCents, releaseCents + dayOne.cents + summerDay.cents);
+  assert.equal(JSON.parse(staffJson(hit.db, "p1")).rivalCut, true);
+  assert.deepEqual(hit.db.tycoon.view().rival, summer);
+  const savedCents = hit.db.journey.state().company.cashCents;
+  const savedSales = hit.db.tycoon.view().history[0]?.salesCents;
+  const hitFile = join(hit.root, "game.sqlite");
+  const hitProject = join(hit.root, "company-project");
+  hit.db.close();
+  const reopened = new GameDatabase(hitFile, hitProject);
+  assert.equal(reopened.journey.state().company.cashCents, savedCents);
+  assert.equal(reopened.tycoon.view().history[0]?.salesCents, savedSales);
+  assert.equal(JSON.parse(staffJson(reopened, "p1")).rivalCut, true);
+  reopened.endDay(29);
+  assert.equal(reopened.tycoon.view().history[0]?.salesCents, savedSales);
+  assert.equal(reopened.journey.state().company.cashCents, savedCents);
+  reopened.close();
+
+  const other = await setup();
+  other.db.setClock(29, 480, 0);
+  assert.deepEqual(other.db.tycoon.view().rival, summer);
+  other.db.tycoon.start("cooking", "newsletter", []);
+  other.db.endDay(29);
+  other.db.endDay(30);
+  other.db.tycoon.release("p1");
+  const quiet = other.db.tycoon.view().history[0];
+  assert.ok(quiet?.review);
+  const untouched = salesForDay({
+    seed: other.db.tycoon.view().seed,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: quiet.fit,
+    score: quiet.review.score,
+    dayIndex: 0,
+    reputation: 0,
+  });
+  assert.equal(quiet.salesCents, untouched.cents);
+  assert.equal(quiet.fans, untouched.fans);
+  assert.equal(JSON.parse(staffJson(other.db, "p1")).rivalCut, undefined);
+  assert.equal(validate(other.db.journey.state()), true, JSON.stringify(validate.errors));
+  other.db.close();
 });
