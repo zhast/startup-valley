@@ -400,6 +400,7 @@ func _run() -> void:
 	await _press_demo_proof()
 	await _trailer_proof()
 	await _diary_proof()
+	await _rival_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -1239,6 +1240,27 @@ func _diary_proof() -> void:
 	check(header != null and header.text.contains("Spring 7") and header.text.contains("$453.00") and header.text.contains("12 reputation"), "The header shows the cash and fans after the diary")
 	finished = main.company_panel.find_child("Finished_p1", true, false) as Control
 	await snap("57-diary-written", finished)
+
+func _rival_proof() -> void:
+	await open_journey()
+	var card := main.company_panel.find_child("SeasonCard", true, false) as Control
+	var line := label_named("SeasonRival")
+	check(card != null and line != null and card.is_ancestor_of(line) and line.text == "Rival: Pip's Pop-up is pushing Cooking this season", "The Season card names the spring rival")
+	check(label_named("SeasonTopics") != null and label_named("SeasonTopics").text == "In season: Fitness, Dating Advice", "The rival line leaves the season topics alone")
+	var hire := button_named("Hire Mina")
+	check(hire != null and str(hire.get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the rival")
+	await snap("58-rival-season", card)
+	await open_product()
+	check(label_named("RivalWarning") == null, "Fitness shows no rival warning")
+	var cooking := button_named("Cooking")
+	check(cooking != null and cooking.text == "Cooking", "Cooking stays a plain topic button")
+	await click(cooking)
+	var warning := label_named("RivalWarning")
+	check(warning != null and warning.text == "Rival · opening demand drops.", "Cooking shows the rival warning")
+	await reveal(warning)
+	main.company_panel._scroll.scroll_vertical = maxi(0, main.company_panel._scroll.scroll_vertical - 220)
+	await frames(3)
+	await snap("59-rival-picker")
 
 func _proof_money(cents: int) -> String:
 	var integer := str(absi(cents) / 100)

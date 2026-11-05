@@ -76,15 +76,15 @@ Four reviewers then each move that base by −1, 0, or +1. The jitter comes from
 
 Reviewers: **Whop Weekly**, **Discord Dave**, **Margin Call Molly**, **Cohort Casey**.
 
-Sales run for 4 days at 100%, 70%, 45%, then 25% of the opening demand. Opening demand is the fit's base units, plus a term from the score, plus a small term from current reputation. A seeded swing of about ±10% lands on each day. Units are at least 1. Cash is units times the unit price. Fans are a fraction of units: 0.4 at score 8+, 0.2 at 5–7, 0.1 below that, and at least 1. Fans add to company reputation. A port does not open a fifth day inside that window. It pays one later day at the same 25% step, and `salesDays` stays 4.
+Sales run for 4 days at 100%, 70%, 45%, then 25% of the opening demand. Opening demand is the fit's base units, plus a term from the score, plus a small term from current reputation. When the product shipped into that season's rival topic, that opening demand is then `Math.max(1, Math.round((base * 90) / 100))` before the curve and the swing. The flag is stored at release. Later sales days, a port, and a translation reuse it and do not apply it again. A seeded swing of about ±10% lands on each day. Units are at least 1. Cash is units times the unit price. Fans are a fraction of units: 0.4 at score 8+, 0.2 at 5–7, 0.1 below that, and at least 1. Fans add to company reputation. A port does not open a fifth day inside that window. It pays one later day at the same 25% step, and `salesDays` stays 4.
 
 The catalog price is the default. At Start development the player can leave it, or nudge −20% or +20%. A cheaper price sells more units. A higher price sells fewer. The percents are fixed: 80 / 100 / 120 for price, and 120 / 100 / 80 for units. Units after the nudge are `Math.max(1, Math.round((units * unitPercent) / 100))`. The unit price is `Math.round((catalogCents * pricePercent) / 100)`. Catalog (100) leaves both unchanged, so the first newsletter still pays 20700 cents and 5 fans.
 
-The choice is stored on the product, in `staff_json` as `{staff, researchBonus, pricePercent, marketing}`. When the product starts on the engine it also stores `engine` and `engineBonus`. When it starts on Design, Tech, or Hype it also stores `focus` and `focusBonus`. When it starts on Regulars or Newcomers it also stores `audience`. When it starts Short or Long it also stores `size`. A sequel also stores `sequelOf`, and the original stores `sequelId` once that sequel starts. `scoreBonus` is 1 only when the carry applies. `engineBonus` is 1 only when `engine` is set. `focusBonus` is 1 only when `focus` is set. Sales use the stored price. An older row that is only a staff array, or a row with no `pricePercent`, sells at catalog. A row with no `marketing` sells with no ad. A row with no `patched` flag sells unpatched. A row with no sequel fields is not a sequel and has not started one. A row with no `award` field has not entered a show. A row with no `port` field has not been ported. A row with no `engine` field started with no engine. A row with no `focus` field started Balanced. A row with no `audience` field started Everyone. A row with no `size` field started at Catalog length. A row with no `publisher` field has not signed a deal. A row with no `pressDemo` field has not shown a preview. A row with no `trailer` field has not made a trailer. A row with no `diary` field has not written a diary. Stored `sales_cents` are not rewritten. Reads do not rewrite `staff_json`.
+The choice is stored on the product, in `staff_json` as `{staff, researchBonus, pricePercent, marketing}`. When the product starts on the engine it also stores `engine` and `engineBonus`. When it starts on Design, Tech, or Hype it also stores `focus` and `focusBonus`. When it starts on Regulars or Newcomers it also stores `audience`. When it starts Short or Long it also stores `size`. A sequel also stores `sequelOf`, and the original stores `sequelId` once that sequel starts. `scoreBonus` is 1 only when the carry applies. `engineBonus` is 1 only when `engine` is set. `focusBonus` is 1 only when `focus` is set. Sales use the stored price. An older row that is only a staff array, or a row with no `pricePercent`, sells at catalog. A row with no `marketing` sells with no ad. A row with no `patched` flag sells unpatched. A row with no sequel fields is not a sequel and has not started one. A row with no `award` field has not entered a show. A row with no `port` field has not been ported. A row with no `engine` field started with no engine. A row with no `focus` field started Balanced. A row with no `audience` field started Everyone. A row with no `size` field started at Catalog length. A row with no `publisher` field has not signed a deal. A row with no `pressDemo` field has not shown a preview. A row with no `trailer` field has not made a trailer. A row with no `diary` field has not written a diary. A row with no `rivalCut` field did not ship into the rival's topic. `rivalCut` is written only when it is true, and only at that matching release. Stored `sales_cents` are not rewritten. Reads do not rewrite `staff_json`.
 
 Composition, in this order, on every sale that is computed:
 
-1. Base units from fit, the sales score, reputation, the sales curve, and the seeded swing. At least 1. The sales score is the stored review score, plus 1 when the product is patched, capped at 10.
+1. Opening demand from fit, the sales score, and reputation. A stored rival cut then scales that demand to 90 percent, rounded, at least 1. The sales curve and the seeded swing come next. At least 1. The sales score is the stored review score, plus 1 when the product is patched, capped at 10.
 2. Launch-price units.
 3. Season +20% units, when the topic is favored that day.
 4. Marketing units from the snapshot. None is an identity step. Otherwise `Math.max(1, Math.round((units * unitPercent) / 100))`.
@@ -647,13 +647,38 @@ The flag is `diary: true` on the product snapshot in `staff_json`. There is no n
 
 The line sits on the Shipped card, after "Sales finished." and before the four-button shelf row. The offer line is "Diary · Whop Post-Mortem · $15, about 1 fan" plus one secondary button, Write diary. Once written the line is "Diary written · Whop Post-Mortem" and the button is gone. Hire stays the one primary action. Write diary is not orange.
 
+## Rivals
+
+One competing creator shop per season. The shop and the topic come from the season index, `floor((day - 1) / 28) % 4`. The same four shops return every year. Day 1 and day 113 are both Pip's Pop-up.
+
+| Season | Shop | Topic |
+| --- | --- | --- |
+| Spring | Pip's Pop-up | Cooking |
+| Summer | Harbor Goods | Trading |
+| Fall | Lumen Kiosk | Gaming |
+| Winter | Sable Shelf | Study Notes |
+
+The names are creator storefronts in copy only. They are not clients. There is no fee and no ledger row.
+
+Shipping a product whose topic matches the rival on the release day stores `rivalCut: true` and scales opening demand to 90 before the curve and the swing: `Math.max(1, Math.round((base * 90) / 100))`. Every later sales day of that release, including a port and a translation, reuses the stored cut. A replayed day end does not apply it again. Reopening the save does not apply it again.
+
+90 is the same small cut Newcomers and Short use. Those scale units after the curve. Cutting opening demand makes all four sales days a little quieter. Ten points sits inside the ±10 swing and under the season's +20, so waiting for a favored season still pays. Fans follow the quieter units. Cash is still units times price.
+
+A different topic in that season is unchanged. The same topic released in another season is unchanged, because the cut is frozen from the release day. A sequel is a new product and decides on its own release day. Skipping the rival topic never calls a new method, so the first Crypto Alpha Newsletter stays at 20700 cents and 5 fans, and the next office day stays 33300 cents.
+
+`tycoon.rival` is `{ shop, topicId, topicName, unitPercent }`. `unitPercent` is 90. A payload without `rival` draws no line.
+
+The Season card line is "Rival: Pip's Pop-up is pushing Cooking this season", under the in-season line. The product picker shows "Rival · opening demand drops." only when the selected topic matches. It uses the same action line as the fit hint. Hire stays the one primary action. There is no new button.
+
+Spring is Cooking, so the existing Crypto Alpha, Fitness, Trading, and Gaming paths never meet the cut. Summer is Trading, not Fitness, so a Fitness newsletter opened in summer stays on the old formula.
+
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, awards, ports, engines, focus, audience, size, payroll, loans, publishers, expos, localization, town days, press demos, launch trailers, and dev diaries. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Engine**, **Office**, and **Season** on Company Journey. Price, marketing, the engine choice, the focus, the audience, and the size live on the New Product picker. The engine buy lives on the Engine card. The award show, the port, the translation, and the diary live on the Shipped card. Payroll, the loan, the booth, and the town day live on the Season card. The publisher deal and the press demo live on the card for the product in development. The launch trailer lives on the Selling card.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, awards, ports, engines, focus, audience, size, payroll, loans, publishers, expos, localization, town days, press demos, launch trailers, dev diaries, and rivals. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Engine**, **Office**, and **Season** on Company Journey. Price, marketing, the engine choice, the focus, the audience, and the size live on the New Product picker. The rival warning lives on that picker when the selected topic matches. The engine buy lives on the Engine card. The award show, the port, the translation, and the diary live on the Shipped card. Payroll, the loan, the booth, the town day, and the rival line live on the Season card. The publisher deal and the press demo live on the card for the product in development. The launch trailer lives on the Selling card.
 
 Next slice:
 
-1. **Rivals.** One competing creator shop per season, named in copy. If you ship the same topic they are pushing, opening demand drops a little. A real ship-now-or-wait decision. No new art. Not another fee-for-fans button. Bugs stay set aside. A second room still waits on architecture art.
+1. **Features.** One optional feature on the product on the bench. It adds one office day and a small stored bump to opening demand. Skip it and the first newsletter stays at 20700 cents and 5 fans. No new art. A real scope-versus-time decision. Bugs stay set aside. A second room still waits on architecture art.
 
 Later art ask: a second room. Office growth shipped as spare desks on the current floor (`compact_desk` and `shared_workbench`, already bound). There is no second-room architecture art, so that room waits.
 

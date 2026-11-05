@@ -2229,3 +2229,66 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Fifty-seven PNGs in `/workspace/sv-proof/round-52/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-52 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → Shipped. Write diary is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_dev_diary.gd`.
+
+### Round 53 — 2026-11-05
+
+**What changed**
+- One rival creator shop per season, named in copy. The shop and topic come from the season index, `floor((day - 1) / 28) % 4`, so the same four shops return every year. Day 1 and day 113 are both Pip's Pop-up pushing Cooking. Summer is Harbor Goods pushing Trading. Fall is Lumen Kiosk pushing Gaming. Winter is Sable Shelf pushing Study Notes. There is no fee and no ledger row.
+- Shipping that season's topic stores `rivalCut: true` on the product and scales opening demand to 90 before the curve and the swing: `Math.max(1, Math.round((base * 90) / 100))`. Later sales days, a port, and a translation reuse that stored cut. A replayed day end and a reopen do not apply it again. A different topic, or the same topic released in another season, stays on the old formula. A sequel decides on its own release day.
+- 90 is the same small cut Newcomers and Short use. Those scale units after the curve. Cutting opening demand makes all four sales days a little quieter. Ten points sits inside the ±10 swing and under the season's +20, so waiting for a favored season still pays. Fans follow the quieter units.
+- Spring is Cooking, so the existing Crypto Alpha, Fitness, Trading, and Gaming paths never meet the cut. Summer is Trading, so a Fitness newsletter opened in summer stays exact. Skipping the rival topic leaves the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- The Season card adds one line under the in-season topics: "Rival: Pip's Pop-up is pushing Cooking this season". The product picker shows "Rival · opening demand drops." only when the selected topic matches, in the same action style as the fit hint. Hire stays the one primary action. There is no new button. `tycoon.rival` is `{ shop, topicId, topicName, unitPercent }` with `unitPercent` 90. A payload without `rival` draws no line.
+
+**Proof**
+- `/workspace/sv-proof/round-53/58-rival-season.png` and `59-rival-picker.png`, captured by the verify-startup-valley skill. PROOF PASS. Fifty-nine PNGs. The Season card reads "In season: Fitness, Dating Advice" and "Rival: Pip's Pop-up is pushing Cooking this season" on Spring 7, with $453.00 and 12 reputation. The rival line, Creator Fair, payroll, loan, expo, and town lines are readable. Take the afternoon sits above Hire Mina · free. Hire stays orange. The picker shows Cooking selected and "Rival · opening demand drops." between the topic grid and Product type. The warning does not cover the topic buttons.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Features is the next slice. One optional feature on the product on the bench. It adds one office day and a small stored bump to opening demand. Skip it and the first newsletter stays at 20700 cents and 5 fans. No new art. A real scope-versus-time decision. Bugs stay set aside.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. `test_tycoon_price.gd` passed this gate. The Round 46 flake was not seen. Left alone.
+5. `test_tycoon_upgrades.gd` passed this gate with exit 0 and TYCOON UPGRADES PASS. The Round 52 grep quirk was not seen. Left alone.
+6. The Season card is one line taller. Shot 58 keeps the rival line and the town button above Hire. The money note stays below that frame. The picker warning is one action line and does not cover the topic buttons.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 121 tests, 119 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test checks the four-season rotation, including day 113 matching day 1, cuts a spring Cooking release to 90 percent of opening demand, keeps that stored cut on a later summer sales day, leaves a summer Cooking release unchanged, replays the release day and a reopen without a second cut, and leaves Crypto Alpha at 20700 cents, 5 fans, then 33300 cents with no `rivalCut` field.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS
+- `test_tycoon_localization.gd` — TYCOON LOCALIZATION PASS
+- `test_tycoon_town_day.gd` — TYCOON TOWN DAY PASS
+- `test_tycoon_press_demo.gd` — TYCOON PRESS DEMO PASS
+- `test_tycoon_launch_trailer.gd` — TYCOON LAUNCH TRAILER PASS
+- `test_tycoon_dev_diary.gd` — TYCOON DEV DIARY PASS
+- `test_tycoon_rivals.gd` — TYCOON RIVALS PASS. The Season card reads "Rival: Pip's Pop-up is pushing Cooking this season". Hire Mina stays primary. Fitness, Trading, and Crypto Alpha show no warning. Cooking shows "Rival · opening demand drops." and the button text stays "Cooking". Skipping Cooking still pays 20700 cents and 5 fans, then 33300 cents. The rules script checks the rotation, the 90 percent opening-demand cut, a summer Cooking release with no cut, and a replayed day plus a reopen.
+- `test_ui_company_redesign.gd` — 18171 checks, 0 failures, 0 captures. Existing fixtures omit `rival` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Fifty-nine PNGs in `/workspace/sv-proof/round-53/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-53 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey → Season, and New Product when the topic matches. The rival is a line, not a button. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_rivals.gd`.
