@@ -260,6 +260,22 @@ export const RIVALS = [
   { shop: "Sable Shelf", topicId: "study_notes" },
 ] as const;
 
+/**
+ * One optional feature on the product on the bench. Copy only.
+ * Whop Bonus Drop is an add-on the studio ships with that product.
+ * There is no fee and no ledger row. The cost is one extra office day.
+ * Opening demand becomes 110 before the curve. 110 is the same 10
+ * points as Long's unit bump and the rival's cut. Long applies 110
+ * after the curve. The rival applies 90 before the curve. The feature
+ * uses that earlier step, in the other direction, so every sales day
+ * of the release moves a little. Ten points sits inside the ±10 swing
+ * and under the season's +20. The ideal grows with the extra day, so
+ * working that day keeps the catalog score. The sales change is the bump.
+ */
+export const FEATURE_NAME = "Whop Bonus Drop";
+export const FEATURE_DAY_DELTA = 1;
+export const FEATURE_UNIT_PERCENT = 110;
+
 /** Office tools. Each row is bought once and has one effect. */
 export const UPGRADES = [
   { id: "standing_desk", name: "Oak Standing Desk", blurb: "Sketches land cleaner when you stand.", priceCents: 25_000, kind: "design", effect: "+1 design per person per dev day" },
@@ -489,6 +505,8 @@ export interface TycoonProductView {
   trailer: TycoonProductTrailer | null;
   /** Null unless sales have finished or the diary was already written. */
   diary: TycoonProductDiary | null;
+  /** Null unless the product is in development or the feature was added. */
+  feature: TycoonProductFeature | null;
 }
 
 export interface TycoonUpgradeView {
@@ -739,6 +757,13 @@ export interface TycoonProductDiary {
   costCents: number;
   fans: number;
   written: boolean;
+}
+
+export interface TycoonProductFeature {
+  name: string;
+  dayDelta: number;
+  unitPercent: number;
+  added: boolean;
 }
 
 export interface TycoonSnapshot {
@@ -1354,6 +1379,10 @@ interface ProductSnapshot {
   diary: boolean;
   /** True when this release shipped into the season rival's topic. */
   rivalCut: boolean;
+  /** True after this product adds the one feature. */
+  feature: boolean;
+  /** True once release stores the opening-demand bump. Later sales reuse it. */
+  featureDemand: boolean;
 }
 
 interface ProductPort {
@@ -1400,6 +1429,8 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     trailer: false,
     diary: false,
     rivalCut: false,
+    feature: false,
+    featureDemand: false,
   };
 }
 
@@ -1407,7 +1438,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, and no rival cut. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, no rival cut, and no feature. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -1436,6 +1467,8 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     trailer?: unknown;
     diary?: unknown;
     rivalCut?: unknown;
+    feature?: unknown;
+    featureDemand?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -1459,6 +1492,8 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     trailer: body.trailer === true,
     diary: body.diary === true,
     rivalCut: body.rivalCut === true,
+    feature: body.feature === true,
+    featureDemand: body.featureDemand === true,
   };
 }
 
@@ -1553,6 +1588,8 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
   if (stored.trailer) body.trailer = true;
   if (stored.diary) body.diary = true;
   if (stored.rivalCut) body.rivalCut = true;
+  if (stored.feature) body.feature = true;
+  if (stored.featureDemand) body.featureDemand = true;
   return JSON.stringify(body);
 }
 
@@ -1561,10 +1598,10 @@ export function sequelDevDays(catalogDays: number): number {
   return Math.max(1, catalogDays - SEQUEL_DAYS_SAVED);
 }
 
-/** Catalog length, the sized length, or the shorter sequel length. A sequel ignores size. */
-export function requiredDevDays(catalogDays: number, isSequel: boolean, size: unknown = null): number {
-  if (isSequel) return sequelDevDays(catalogDays);
-  return sizedDevDays(catalogDays, size);
+/** Catalog length, the sized length, or the shorter sequel length, plus one when a feature was added. A sequel ignores size. */
+export function requiredDevDays(catalogDays: number, isSequel: boolean, size: unknown = null, feature = false): number {
+  const base = isSequel ? sequelDevDays(catalogDays) : sizedDevDays(catalogDays, size);
+  return feature ? base + FEATURE_DAY_DELTA : base;
 }
 
 /** +1 when the original's final score is 6 or more. Otherwise none. */
@@ -1655,11 +1692,12 @@ export function reviewProduct(input: {
   return { score, reviewers };
 }
 
-/** Opening demand before the curve and the swing. A stored rival cut uses 90 and rounds once. */
-export function openingDemand(fit: Fit, score: number, reputation: number, rivalCut = false): number {
-  const base = FIT_UNITS[fit] + Math.floor((score * 3) / 2) + Math.floor(reputation / 10);
-  if (!rivalCut) return base;
-  return Math.max(1, Math.round((base * RIVAL_UNIT_PERCENT) / 100));
+/** Opening demand before the curve and the swing. A stored feature bump uses 110, then a stored rival cut uses 90. Each rounds once. */
+export function openingDemand(fit: Fit, score: number, reputation: number, rivalCut = false, featureDemand = false): number {
+  let base = FIT_UNITS[fit] + Math.floor((score * 3) / 2) + Math.floor(reputation / 10);
+  if (featureDemand) base = Math.max(1, Math.round((base * FEATURE_UNIT_PERCENT) / 100));
+  if (rivalCut) base = Math.max(1, Math.round((base * RIVAL_UNIT_PERCENT) / 100));
+  return base;
 }
 
 /** Indexes 0–3 are the four sales days. The port's extra day stays on the last step. */
@@ -1698,12 +1736,14 @@ export function salesForDay(input: {
   size?: string;
   /** True when this release shipped into the season rival's topic. Omitted leaves opening demand alone. */
   rivalCut?: boolean;
+  /** True when release stored the feature's opening-demand bump. Omitted leaves that step alone. */
+  featureDemand?: boolean;
 }): TycoonSales {
   const curve = curvePercent(input.dayIndex);
   const type = typeById(input.typeId);
   if (curve === undefined || !type) throw new Error("Sales day is outside the window");
   const swing = (mixSeed(input.seed, input.productId, "sales", input.dayIndex) % 21) - 10;
-  const baseUnits = openingDemand(input.fit, input.score, input.reputation, input.rivalCut === true);
+  const baseUnits = openingDemand(input.fit, input.score, input.reputation, input.rivalCut === true, input.featureDemand === true);
   // Units: opening demand, launch price, season, marketing, audience, size. Fans follow those units.
   // Price: launch price, then checkout. Cash is units times that price.
   let units = Math.max(1, Math.round((baseUnits * curve * (100 + swing)) / 10000));
@@ -2184,6 +2224,19 @@ export class TycoonStore {
     });
   }
 
+  /** One feature on the product on the bench. One extra office day. No cash row. */
+  addFeature(): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.developingRow();
+      if (!row) throw new Error("No product is on the bench.");
+      const stored = parseProductSnapshot(row.staff_json);
+      if (stored.feature) throw new Error("Already added.");
+      stored.feature = true;
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      return this.journey.state();
+    });
+  }
+
   /** One press look at the product on the bench. The fee row also grants the fans. No office day is spent. */
   showPressDemo(): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
@@ -2272,7 +2325,7 @@ export class TycoonStore {
       const type = typeById(row.type_id);
       if (!type) throw new Error("Unknown product type");
       const stored = parseProductSnapshot(row.staff_json);
-      const required = requiredDevDays(type.devDays, stored.sequelOf !== null, stored.size);
+      const required = requiredDevDays(type.devDays, stored.sequelOf !== null, stored.size, stored.feature);
       const remaining = required - Number(row.dev_days);
       if (remaining > 0) {
         throw new Error(remaining === 1
@@ -2303,8 +2356,16 @@ export class TycoonStore {
       const bonus = releaseResearchPoints(review.score);
       this.db.prepare("UPDATE tycoon_products SET status = 'released', released_day = ?, review_json = ?, release_research = ? WHERE id = ?")
         .run(day, JSON.stringify(review), bonus, row.id);
-      if (rivalForDay(day).topicId === topicId) {
+      let storeSnapshot = false;
+      if (rivalForDay(day).topicId === topicId && !stored.rivalCut) {
         stored.rivalCut = true;
+        storeSnapshot = true;
+      }
+      if (stored.feature && !stored.featureDemand) {
+        stored.featureDemand = true;
+        storeSnapshot = true;
+      }
+      if (storeSnapshot) {
         this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
       }
       this.addResearchPoints(bonus);
@@ -2379,6 +2440,8 @@ export class TycoonStore {
         trailer: false,
         diary: false,
         rivalCut: false,
+        feature: false,
+        featureDemand: false,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -2639,7 +2702,7 @@ export class TycoonStore {
     const snapshot = parseProductSnapshot(row.staff_json);
     const trainedToday = this.trainedIdsOn(day);
     const working = snapshot.staff.filter((person) => !trainedToday.has(person.id));
-    const accrue = pointsStillAccrue(Number(row.dev_days), requiredDevDays(type.devDays, snapshot.sequelOf !== null, snapshot.size));
+    const accrue = pointsStillAccrue(Number(row.dev_days), requiredDevDays(type.devDays, snapshot.sequelOf !== null, snapshot.size, snapshot.feature));
     const personal = accrue ? snapshotPoints(working) : { design: 0, tech: 0, hype: 0 };
     const bonus = accrue ? this.pointBonus() : { design: 0, tech: 0, hype: 0 };
     const people = accrue ? working.length : 0;
@@ -2693,6 +2756,7 @@ export class TycoonStore {
       unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === topicId) ? SEASON_UNIT_BOOST_PERCENT : 0,
       bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
       rivalCut: stored.rivalCut,
+      featureDemand: stored.featureDemand,
     });
     const posted = stored.publisher ? publisherNetCents(payout.cents) : payout.cents;
     this.journey.recordCompanyChange(`tycoon:${row.id}:${applied}`, day, posted, posted, payout.fans, `Sales · ${row.name}`);
@@ -2738,6 +2802,7 @@ export class TycoonStore {
         unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === topicId) ? SEASON_UNIT_BOOST_PERCENT : 0,
         bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
         rivalCut: stored.rivalCut,
+        featureDemand: stored.featureDemand,
       });
       const posted = stored.publisher ? publisherNetCents(payout.cents) : payout.cents;
       this.journey.recordCompanyChange(`tycoon:${row.id}:${SALES_WINDOW_DAYS}`, day, posted, posted, payout.fans, `Sales · ${row.name}`);
@@ -2781,6 +2846,7 @@ export class TycoonStore {
         bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
         quietPercent: LOCALIZE_UNIT_PERCENT,
         rivalCut: stored.rivalCut,
+        featureDemand: stored.featureDemand,
       });
       const posted = stored.publisher ? publisherNetCents(payout.cents) : payout.cents;
       this.journey.recordCompanyChange(salesId, day, posted, posted, payout.fans, `Sales · ${LOCALIZE_EDITION}`);
@@ -3144,7 +3210,7 @@ export class TycoonStore {
     const topic = topicById(topicId)!;
     const devDays = Number(row.dev_days);
     const snapshot = parseProductSnapshot(row.staff_json);
-    const required = requiredDevDays(type.devDays, snapshot.sequelOf !== null, snapshot.size);
+    const required = requiredDevDays(type.devDays, snapshot.sequelOf !== null, snapshot.size, snapshot.feature);
     const progress = Math.min(100, Math.round((devDays * 100) / required));
     const staffIds = snapshot.staff.map((person) => person.id);
     const points = applyFocusPoints({
@@ -3197,6 +3263,18 @@ export class TycoonStore {
       pressDemo: this.pressDemoView(row.status, snapshot.pressDemo),
       trailer: this.trailerView(row.status, Number(row.sales_applied), snapshot.trailer),
       diary: this.diaryView(row.status, snapshot.diary),
+      feature: this.featureView(row.status, snapshot.feature),
+    };
+  }
+
+  /** Offer while the product is in development. After that, only an added feature stays. */
+  private featureView(status: string, added: boolean): TycoonProductFeature | null {
+    if (!added && status !== "developing") return null;
+    return {
+      name: FEATURE_NAME,
+      dayDelta: FEATURE_DAY_DELTA,
+      unitPercent: FEATURE_UNIT_PERCENT,
+      added,
     };
   }
 
