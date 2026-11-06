@@ -402,6 +402,7 @@ func _run() -> void:
 	await _diary_proof()
 	await _rival_proof()
 	await _feature_proof()
+	await _day_plan_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -1325,6 +1326,70 @@ func _feature_proof() -> void:
 	var header := label_named("OfficeDate")
 	check(header != null and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at $0 and 0 reputation")
 	await snap("61-feature-added", label_named("FeatureOffer"))
+
+func _choice_pressed(button: Button) -> bool:
+	if button == null:
+		return false
+	var box := button.get_theme_stylebox("normal")
+	return box is StyleBoxTexture and str((box as StyleBoxTexture).texture.resource_path).ends_with("pressed.png")
+
+func _day_plan_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-dayplan-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_feature_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var line := label_named("DayPlanOffer")
+	var card := main.company_panel.find_child("PublisherCard", true, false) as Control
+	var choices := main.company_panel.find_child("DayPlanChoices", true, false) as Control
+	check(card != null and line != null and choices != null and card.is_ancestor_of(line) and card.is_ancestor_of(choices) and line.text == "Day plan · Even · design, tech, and hype as usual", "The journey card names the even day plan")
+	var ids: Array[String] = ["even", "design", "tech", "hype"]
+	var labels: Array[String] = ["Even", "Design", "Tech", "Hype"]
+	var previous_end := line.get_global_rect().position.x
+	for index: int in range(ids.size()):
+		var choice := main.company_panel.find_child("DayPlan_" + ids[index], true, false) as Button
+		check(choice != null and choice.text == labels[index] and not choice.disabled and str(choice.get_meta("cozy_variant", "")) == "secondary", "Day plan %s is a secondary choice" % labels[index])
+		if choice == null:
+			continue
+		check(choice.get_global_rect().position.x >= previous_end - 1.0, "Day plan choices sit in a row")
+		check(choice.get_global_rect().position.y >= line.get_global_rect().end.y - 2.0, "Day plan choices sit under the offer line")
+		previous_end = choice.get_global_rect().end.x
+		if ids[index] == "even":
+			check(_choice_pressed(choice), "Even starts pressed")
+		else:
+			check(not _choice_pressed(choice), "%s starts unpressed" % labels[index])
+	var hire := button_named("Hire Mina")
+	check(hire != null and str(hire.get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the day plan")
+	await reveal(line)
+	var footer := main.company_panel._footer
+	var even := main.company_panel.find_child("DayPlan_even", true, false) as Button
+	check(even != null and even.get_global_rect().end.y <= footer.get_global_rect().position.y, "Day plan sits above Hire")
+	var new_product := button_named("New Product")
+	check(new_product != null and even.get_global_rect().end.y <= new_product.get_global_rect().position.y, "Day plan sits above New Product")
+	check(company_cash() == 0 and company_reputation() == 0 and int(developing().get("devDays", -1)) == 0, "The even plan has not spent cash or a dev day")
+	await snap("62-dayplan-offer", line)
+	var design := main.company_panel.find_child("DayPlan_design", true, false) as Button
+	await click(design)
+	await wait_until(func() -> bool:
+		return not main.company_panel.busy and label_named("DayPlanOffer") != null and label_named("DayPlanOffer").text == "Day plan · Design · today's craft goes to design"
+	, "Picking Design shows the emphasis line")
+	check(company_cash() == 0 and company_reputation() == 0 and int(developing().get("devDays", -1)) == 0, "Picking Design spends no cash and no dev day")
+	var picked := main.company_panel.find_child("DayPlan_design", true, false) as Button
+	check(picked != null and _choice_pressed(picked) and str(picked.get_meta("cozy_variant", "")) == "secondary", "Design stays a pressed secondary choice")
+	check(main.company_panel.find_child("DayPlan_even", true, false) != null and not _choice_pressed(main.company_panel.find_child("DayPlan_even", true, false) as Button), "Even is no longer pressed")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at $0 and 0 reputation")
+	await snap("63-dayplan-design", label_named("DayPlanOffer"))
 
 func _proof_money(cents: int) -> String:
 	var integer := str(absi(cents) / 100)

@@ -97,6 +97,8 @@ import {
   FEATURE_DAY_DELTA,
   FEATURE_NAME,
   FEATURE_UNIT_PERCENT,
+  DAY_PLANS,
+  personalForDayPlan,
   openingDemand,
   rivalForDay,
   seasonIndexForDay,
@@ -5280,6 +5282,219 @@ test("one optional feature adds one office day and bumps opening demand once", a
   assert.equal(late.db.tycoon.view().developing?.devDays, 2);
   late.db.close();
 });
+
+test("a day plan folds personal craft and leaves the even newsletter alone", async () => {
+  assert.deepEqual(DAY_PLANS.map((item) => item.id), ["even", "design", "tech", "hype"]);
+  assert.deepEqual(personalForDayPlan({ design: 2, tech: 2, hype: 2 }, null), { design: 2, tech: 2, hype: 2 });
+  assert.deepEqual(personalForDayPlan({ design: 2, tech: 2, hype: 2 }, "design"), { design: 6, tech: 0, hype: 0 });
+  assert.deepEqual(personalForDayPlan({ design: 3, tech: 2, hype: 1 }, "tech"), { design: 0, tech: 6, hype: 0 });
+  assert.deepEqual(personalForDayPlan({ design: 5, tech: 4, hype: 3 }, "hype"), { design: 0, tech: 0, hype: 12 });
+  assert.equal(parseRequest({ kind: "request", id: "day-plan", method: "tycoon.setDayPlan", params: { stat: "design" } }).method, "tycoon.setDayPlan");
+  assert.throws(() => parseRequest({ kind: "request", id: "day-plan", method: "tycoon.setDayPlan", params: {} }), /Invalid protocol request/u);
+  assert.throws(() => parseRequest({ kind: "request", id: "day-plan", method: "tycoon.setDayPlan", params: { stat: "balanced" } }), /Invalid protocol request/u);
+  assert.throws(() => parseRequest({ kind: "request", id: "day-plan", method: "tycoon.setDayPlan", params: { stat: "design", extra: true } }), /Invalid protocol request/u);
+
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  const designPlan = { id: "design", label: "Design", stat: "design" };
+  const techPlan = { id: "tech", label: "Tech", stat: "tech" };
+  const hypePlan = { id: "hype", label: "Hype", stat: "hype" };
+
+  const bare = await setup();
+  assert.deepEqual(bare.db.tycoon.view().dayPlanOptions, [...DAY_PLANS]);
+  assert.throws(() => bare.db.tycoon.setDayPlan("design"), /No product is on the bench\./u);
+  assert.throws(() => bare.db.tycoon.setDayPlan("balanced"), /Pick Even, Design, Tech, or Hype\./u);
+  assert.equal(bare.db.tycoon.view().developing, null);
+  bare.db.close();
+
+  const skip = await setup();
+  skip.db.tycoon.start("crypto", "newsletter", []);
+  const fresh = staffJson(skip.db, "p1");
+  assert.equal(skip.db.tycoon.view().developing?.dayPlan, null);
+  assert.equal(JSON.parse(fresh).dayPlan, undefined);
+  assert.equal(staffJson(skip.db, "p1"), fresh);
+  skip.db.tycoon.setDayPlan("even");
+  assert.equal(staffJson(skip.db, "p1"), fresh);
+  skip.db.endDay(1);
+  skip.db.endDay(2);
+  skip.db.tycoon.release("p1");
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.fans, 5);
+  assert.equal(skip.db.tycoon.view().history[0]?.salesCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.dayPlan, null);
+  assert.equal(JSON.parse(staffJson(skip.db, "p1")).dayPlan, undefined);
+  skip.db.endDay(3);
+  skip.db.endDay(4);
+  assert.equal(skip.db.journey.state().company.cashCents, 33_300);
+  assert.throws(() => skip.db.tycoon.setDayPlan("hype"), /No product is on the bench\./u);
+  assert.equal(dayPlanRows(skip.db).length, 0);
+  assert.equal(validate(skip.db.journey.state()), true, JSON.stringify(validate.errors));
+  skip.db.close();
+
+  const fold = await setup();
+  fold.db.tycoon.start("crypto", "newsletter", []);
+  const beforeSet = staffJson(fold.db, "p1");
+  assert.throws(() => fold.db.tycoon.setDayPlan("nope"), /Pick Even, Design, Tech, or Hype\./u);
+  assert.equal(staffJson(fold.db, "p1"), beforeSet);
+  const cash = fold.db.journey.state().company.cashCents;
+  const tx = txCount(fold.db);
+  fold.db.tycoon.setDayPlan("design");
+  assert.equal(fold.db.clockState().day, 1);
+  assert.equal(fold.db.journey.state().company.cashCents, cash);
+  assert.equal(txCount(fold.db), tx);
+  assert.equal(dayPlanRows(fold.db).length, 0);
+  assert.deepEqual(fold.db.tycoon.view().developing?.dayPlan, designPlan);
+  assert.equal(JSON.parse(staffJson(fold.db, "p1")).dayPlan, "design");
+  const stored = staffJson(fold.db, "p1");
+  fold.db.tycoon.setDayPlan("design");
+  assert.equal(staffJson(fold.db, "p1"), stored);
+  fold.db.tycoon.view();
+  assert.equal(staffJson(fold.db, "p1"), stored);
+  fold.db.endDay(1);
+  assert.equal(fold.db.tycoon.view().developing?.design, 6);
+  assert.equal(fold.db.tycoon.view().developing?.tech, 0);
+  assert.equal(fold.db.tycoon.view().developing?.hype, 0);
+  fold.db.tycoon.setDayPlan("tech");
+  assert.deepEqual(fold.db.tycoon.view().developing?.dayPlan, techPlan);
+  fold.db.endDay(2);
+  assert.equal(fold.db.tycoon.view().developing?.design, 6);
+  assert.equal(fold.db.tycoon.view().developing?.tech, 6);
+  assert.equal(fold.db.tycoon.view().developing?.hype, 0);
+  fold.db.tycoon.setDayPlan("hype");
+  assert.deepEqual(fold.db.tycoon.view().developing?.dayPlan, hypePlan);
+  fold.db.endDay(3);
+  assert.equal(fold.db.tycoon.view().developing?.design, 6);
+  assert.equal(fold.db.tycoon.view().developing?.tech, 6);
+  assert.equal(fold.db.tycoon.view().developing?.hype, 6);
+  fold.db.tycoon.setDayPlan("even");
+  assert.equal(fold.db.tycoon.view().developing?.dayPlan, null);
+  assert.equal(JSON.parse(staffJson(fold.db, "p1")).dayPlan, undefined);
+  fold.db.endDay(4);
+  assert.equal(fold.db.tycoon.view().developing?.design, 8);
+  assert.equal(fold.db.tycoon.view().developing?.tech, 8);
+  assert.equal(fold.db.tycoon.view().developing?.hype, 8);
+  assert.equal(validate(fold.db.journey.state()), true, JSON.stringify(validate.errors));
+  fold.db.close();
+
+  const opened = await setup();
+  const tools = await teamOfThree(opened.root, opened.db, 250_000);
+  tools.tycoon.expandOffice();
+  tools.tycoon.buyUpgrade("standing_desk");
+  tools.tycoon.buyUpgrade("second_monitor");
+  tools.tycoon.buyUpgrade("ring_light");
+  tools.tycoon.start("crypto", "newsletter", ["founder"]);
+  tools.tycoon.setDayPlan("design");
+  tools.endDay(1);
+  assert.equal(tools.tycoon.view().developing?.design, 8, "personal 6 plus the desk and the office");
+  assert.equal(tools.tycoon.view().developing?.tech, 2, "the monitor and the office stay on tech");
+  assert.equal(tools.tycoon.view().developing?.hype, 1, "the ring light stays on hype");
+  tools.tycoon.setDayPlan("tech");
+  tools.endDay(2);
+  assert.equal(tools.tycoon.view().developing?.design, 8 + 2);
+  assert.equal(tools.tycoon.view().developing?.tech, 2 + 8);
+  assert.equal(tools.tycoon.view().developing?.hype, 1 + 1);
+  tools.tycoon.setDayPlan("hype");
+  tools.endDay(3);
+  assert.equal(tools.tycoon.view().developing?.design, 12);
+  assert.equal(tools.tycoon.view().developing?.tech, 12);
+  assert.equal(tools.tycoon.view().developing?.hype, 9);
+  tools.close();
+
+  const plainOffice = await setup();
+  const plain = await teamOfThree(plainOffice.root, plainOffice.db, 250_000);
+  plain.tycoon.expandOffice();
+  plain.tycoon.buyUpgrade("standing_desk");
+  plain.tycoon.buyUpgrade("second_monitor");
+  plain.tycoon.buyUpgrade("ring_light");
+  plain.tycoon.start("crypto", "newsletter", ["founder"]);
+  plain.endDay(1);
+  assert.equal(plain.tycoon.view().developing?.design, 4);
+  assert.equal(plain.tycoon.view().developing?.tech, 4);
+  assert.equal(plain.tycoon.view().developing?.hype, 3);
+  assert.equal(JSON.parse(staffJson(plain, "p1")).dayPlan, undefined);
+  plain.close();
+
+  const trained = await setup();
+  trained.db.journey.recordCompanyChange("dayplan-train-cash", 1, 40_000, 0, 0, "Day plan train cash");
+  trained.db.journey.hire("mira", 1);
+  trained.db.tycoon.start("crypto", "newsletter", ["mira"]);
+  trained.db.tycoon.setDayPlan("design");
+  trained.db.tycoon.train("founder", "tech");
+  trained.db.endDay(1);
+  assert.equal(trained.db.tycoon.view().developing?.design, 6, "Mina's 3/2/1 lands on design; the founder is in training");
+  assert.equal(trained.db.tycoon.view().developing?.tech, 0);
+  assert.equal(trained.db.tycoon.view().developing?.hype, 0);
+  trained.db.endDay(2);
+  assert.equal(trained.db.tycoon.view().developing?.design, 18);
+  trained.db.close();
+
+  const polish = await setup();
+  polish.db.tycoon.start("crypto", "newsletter", []);
+  for (let day = 1; day <= 4; day += 1) polish.db.endDay(day);
+  assert.equal(polish.db.tycoon.view().developing?.design, 8);
+  polish.db.tycoon.setDayPlan("design");
+  polish.db.endDay(5);
+  assert.equal(polish.db.tycoon.view().developing?.devDays, 5);
+  assert.equal(polish.db.tycoon.view().developing?.design, 8);
+  assert.equal(polish.db.tycoon.view().developing?.tech, 8);
+  assert.equal(polish.db.tycoon.view().developing?.hype, 8);
+  polish.db.close();
+
+  const emphasized = await setup();
+  emphasized.db.tycoon.start("crypto", "newsletter", []);
+  emphasized.db.tycoon.setDayPlan("hype");
+  for (let day = 1; day <= 5; day += 1) emphasized.db.endDay(day);
+  assert.equal(emphasized.db.tycoon.view().developing?.design, 0);
+  assert.equal(emphasized.db.tycoon.view().developing?.tech, 0);
+  assert.equal(emphasized.db.tycoon.view().developing?.hype, 24);
+  assert.equal(emphasized.db.tycoon.view().developing?.devDays, 5);
+  emphasized.db.close();
+
+  const kept = await setup();
+  kept.db.tycoon.start("crypto", "newsletter", []);
+  kept.db.tycoon.setDayPlan("tech");
+  const keptFile = join(kept.root, "game.sqlite");
+  const keptProject = join(kept.root, "company-project");
+  const keptJson = staffJson(kept.db, "p1");
+  kept.db.close();
+  const reopened = new GameDatabase(keptFile, keptProject);
+  assert.equal(staffJson(reopened, "p1"), keptJson);
+  assert.deepEqual(reopened.tycoon.view().developing?.dayPlan, techPlan);
+  reopened.tycoon.setDayPlan("tech");
+  assert.equal(staffJson(reopened, "p1"), keptJson);
+  reopened.endDay(1);
+  assert.equal(reopened.tycoon.view().developing?.design, 0);
+  assert.equal(reopened.tycoon.view().developing?.tech, 6);
+  assert.equal(reopened.tycoon.view().developing?.hype, 0);
+  assert.throws(() => reopened.tycoon.release("p1"), /needs 1 more office day/u);
+  reopened.endDay(2);
+  reopened.tycoon.release("p1");
+  assert.equal(reopened.tycoon.view().history[0]?.dayPlan, null);
+  assert.equal(JSON.parse(staffJson(reopened, "p1")).dayPlan, "tech");
+  finishSales(reopened);
+  reopened.tycoon.sequel("p1");
+  assert.equal(reopened.tycoon.view().developing?.dayPlan, null);
+  assert.equal(JSON.parse(staffJson(reopened, "p2")).dayPlan, undefined);
+  assert.equal(JSON.parse(staffJson(reopened, "p1")).dayPlan, "tech");
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+});
+
+function txCount(db: GameDatabase): number {
+  return Number((db.journey.db.prepare("SELECT COUNT(*) AS n FROM company_transactions").get() as { n: number }).n);
+}
+
+function dayPlanRows(db: GameDatabase) {
+  return db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:dayplan%'").all();
+}
+
+function finishSales(db: GameDatabase): void {
+  for (let guard = 0; guard < 8; guard += 1) {
+    if (db.tycoon.view().history[0]?.status === "complete") return;
+    db.endDay(db.clockState().day);
+  }
+  throw new Error("sales did not finish");
+}
 
 function featureRows(db: GameDatabase) {
   return db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:feature%'").all();

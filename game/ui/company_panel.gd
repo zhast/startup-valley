@@ -1114,7 +1114,8 @@ func _publisher_card(product: Dictionary) -> void:
 	var publisher_name := str(offer.get("name", "")).strip_edges()
 	var press_name := str(press.get("name", "")).strip_edges()
 	var feature_name := str(feature.get("name", "")).strip_edges()
-	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty(): return
+	var plan_offered := _day_plan_offered(product)
+	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered: return
 	var card := _card()
 	card.name = "PublisherCard"
 	if not publisher_name.is_empty():
@@ -1136,14 +1137,16 @@ func _publisher_card(product: Dictionary) -> void:
 		if not shown:
 			var press_button := _button("Show preview", _show_press_demo, false, true, card, "secondary")
 			press_button.name = "ShowPressDemo"
-	if feature_name.is_empty(): return
-	var added := bool(feature.get("added", false))
-	var feature_text := "Feature added · %s · Building · day %d of %d" % [feature_name, int(product.get("devDays", 0)), int(product.get("devDaysRequired", 0))] if added else "Feature · %s · +%d office day, +%d%% opening demand" % [feature_name, int(feature.get("dayDelta", 0)), int(feature.get("unitPercent", 100)) - 100]
-	var feature_line := _label(feature_text, false, card)
-	feature_line.name = "FeatureOffer"
-	if added: return
-	var feature_button := _button("Add feature", _add_feature, false, true, card, "secondary")
-	feature_button.name = "AddFeature"
+	if not feature_name.is_empty():
+		var added := bool(feature.get("added", false))
+		var feature_text := "Feature added · %s · Building · day %d of %d" % [feature_name, int(product.get("devDays", 0)), int(product.get("devDaysRequired", 0))] if added else "Feature · %s · +%d office day, +%d%% opening demand" % [feature_name, int(feature.get("dayDelta", 0)), int(feature.get("unitPercent", 100)) - 100]
+		var feature_line := _label(feature_text, false, card)
+		feature_line.name = "FeatureOffer"
+		if not added:
+			var feature_button := _button("Add feature", _add_feature, false, true, card, "secondary")
+			feature_button.name = "AddFeature"
+	if plan_offered:
+		_day_plan_row(product, card)
 
 func _sign_publisher() -> void:
 	_request("tycoon.signPublisher", {})
@@ -1153,6 +1156,60 @@ func _show_press_demo() -> void:
 
 func _add_feature() -> void:
 	_request("tycoon.addFeature", {})
+
+func _day_plan_offered(product: Dictionary) -> bool:
+	if product.has("dayPlan"): return true
+	return not _day_plan_options().is_empty()
+
+func _day_plan_options() -> Array:
+	var value: Variant = _tycoon().get("dayPlanOptions", [])
+	return value as Array if value is Array else []
+
+func _day_plan_id(product: Dictionary) -> String:
+	var value: Variant = product.get("dayPlan", null)
+	if value is Dictionary:
+		var id := str((value as Dictionary).get("id", "")).strip_edges()
+		if id == "design" or id == "tech" or id == "hype": return id
+	return "even"
+
+func _day_plan_text(product: Dictionary) -> String:
+	var value: Variant = product.get("dayPlan", null)
+	if value is Dictionary:
+		var plan := value as Dictionary
+		var label := str(plan.get("label", "")).strip_edges()
+		var stat := str(plan.get("stat", "")).strip_edges().to_lower()
+		if label.is_empty(): label = _stat_word(stat)
+		if stat.is_empty(): stat = label.to_lower()
+		return "Day plan · %s · today's craft goes to %s" % [label, stat]
+	return "Day plan · Even · design, tech, and hype as usual"
+
+func _day_plan_row(product: Dictionary, card: Control) -> void:
+	var line := _label(_day_plan_text(product), false, card)
+	line.name = "DayPlanOffer"
+	var options := _day_plan_options()
+	if options.is_empty(): return
+	var row := GridContainer.new()
+	row.name = "DayPlanChoices"
+	row.columns = 4
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("h_separation", 8)
+	row.add_theme_constant_override("v_separation", 8)
+	card.add_child(row)
+	var active := _day_plan_id(product)
+	for item: Variant in options:
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		var id := str(option.get("id", ""))
+		if id.is_empty(): continue
+		var button := _button(str(option.get("label", id)), _set_day_plan.bind(id), false, true, row, "secondary")
+		button.name = "DayPlan_%s" % id
+		button.clip_text = true
+		if id == active:
+			for style_name: String in ["normal", "hover", "pressed", "hover_pressed"]:
+				button.add_theme_stylebox_override(style_name, CozyUI.control_style("secondary", "pressed"))
+
+func _set_day_plan(stat: String) -> void:
+	_request("tycoon.setDayPlan", {"stat": stat})
 
 func _trailer_offer(product: Dictionary, card: Control) -> void:
 	var value: Variant = product.get("trailer", null)
