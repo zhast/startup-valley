@@ -1107,11 +1107,14 @@ func _take_town_day() -> void:
 func _publisher_card(product: Dictionary) -> void:
 	var value: Variant = product.get("publisher", null)
 	var press_value: Variant = product.get("pressDemo", null)
+	var feature_value: Variant = product.get("feature", null)
 	var offer := value as Dictionary if value is Dictionary else {}
 	var press := press_value as Dictionary if press_value is Dictionary else {}
+	var feature := feature_value as Dictionary if feature_value is Dictionary else {}
 	var publisher_name := str(offer.get("name", "")).strip_edges()
 	var press_name := str(press.get("name", "")).strip_edges()
-	if publisher_name.is_empty() and press_name.is_empty(): return
+	var feature_name := str(feature.get("name", "")).strip_edges()
+	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty(): return
 	var card := _card()
 	card.name = "PublisherCard"
 	if not publisher_name.is_empty():
@@ -1123,22 +1126,33 @@ func _publisher_card(product: Dictionary) -> void:
 		if not signed:
 			var button := _button("Sign publisher", _sign_publisher, false, true, card, "secondary")
 			button.name = "SignPublisher"
-	if press_name.is_empty(): return
-	var shown := bool(press.get("shown", false))
-	var cost := int(press.get("costCents", 0))
-	var fans := int(press.get("fans", 0))
-	var press_text := "Preview shown · %s" % press_name if shown else "Press demo · %s · $%d, about %d fans" % [press_name, int(cost / 100), fans]
-	var press_line := _label(press_text, false, card)
-	press_line.name = "PressDemoOffer"
-	if shown: return
-	var press_button := _button("Show preview", _show_press_demo, false, true, card, "secondary")
-	press_button.name = "ShowPressDemo"
+	if not press_name.is_empty():
+		var shown := bool(press.get("shown", false))
+		var cost := int(press.get("costCents", 0))
+		var fans := int(press.get("fans", 0))
+		var press_text := "Preview shown · %s" % press_name if shown else "Press demo · %s · $%d, about %d fans" % [press_name, int(cost / 100), fans]
+		var press_line := _label(press_text, false, card)
+		press_line.name = "PressDemoOffer"
+		if not shown:
+			var press_button := _button("Show preview", _show_press_demo, false, true, card, "secondary")
+			press_button.name = "ShowPressDemo"
+	if feature_name.is_empty(): return
+	var added := bool(feature.get("added", false))
+	var feature_text := "Feature added · %s · Building · day %d of %d" % [feature_name, int(product.get("devDays", 0)), int(product.get("devDaysRequired", 0))] if added else "Feature · %s · +%d office day, +%d%% opening demand" % [feature_name, int(feature.get("dayDelta", 0)), int(feature.get("unitPercent", 100)) - 100]
+	var feature_line := _label(feature_text, false, card)
+	feature_line.name = "FeatureOffer"
+	if added: return
+	var feature_button := _button("Add feature", _add_feature, false, true, card, "secondary")
+	feature_button.name = "AddFeature"
 
 func _sign_publisher() -> void:
 	_request("tycoon.signPublisher", {})
 
 func _show_press_demo() -> void:
 	_request("tycoon.showPressDemo", {})
+
+func _add_feature() -> void:
+	_request("tycoon.addFeature", {})
 
 func _trailer_offer(product: Dictionary, card: Control) -> void:
 	var value: Variant = product.get("trailer", null)
