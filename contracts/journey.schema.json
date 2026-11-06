@@ -664,7 +664,7 @@
     "tycoonProduct": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "name", "topicId", "typeId", "topicName", "typeName", "fit", "status", "startedDay", "devDays", "devDaysRequired", "design", "tech", "hype", "progress", "ready", "staffIds", "releasedDay", "review", "salesDays", "salesDaysTotal", "salesCents", "fans", "researchPoints", "researchBonus", "pricePercent", "priceCents", "marketing", "contract", "patch", "sequel", "award", "port", "localization", "engine", "focus", "audience", "size", "publisher", "pressDemo", "trailer", "diary"],
+      "required": ["id", "name", "topicId", "typeId", "topicName", "typeName", "fit", "status", "startedDay", "devDays", "devDaysRequired", "design", "tech", "hype", "progress", "ready", "staffIds", "releasedDay", "review", "salesDays", "salesDaysTotal", "salesCents", "fans", "researchPoints", "researchBonus", "pricePercent", "priceCents", "marketing", "contract", "patch", "sequel", "award", "port", "localization", "engine", "focus", "audience", "size", "publisher", "pressDemo", "trailer", "diary", "feature"],
       "properties": {
         "id": { "type": "string", "pattern": "^p[1-9][0-9]*$" },
         "name": { "type": "string", "minLength": 1 },
@@ -923,6 +923,22 @@
                 "costCents": { "const": 1500 },
                 "fans": { "const": 1 },
                 "written": { "type": "boolean" }
+              }
+            }
+          ]
+        },
+        "feature": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name", "dayDelta", "unitPercent", "added"],
+              "properties": {
+                "name": { "const": "Whop Bonus Drop" },
+                "dayDelta": { "const": 1 },
+                "unitPercent": { "const": 110 },
+                "added": { "type": "boolean" }
               }
             }
           ]

@@ -2292,3 +2292,68 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Fifty-nine PNGs in `/workspace/sv-proof/round-53/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-53 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey → Season, and New Product when the topic matches. The rival is a line, not a button. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_rivals.gd`.
+
+### Round 54 — 2026-11-05
+
+**What changed**
+- One optional feature on the product on the bench. The name is Whop Bonus Drop in copy only, a creator add-on, not a real Whop product. `tycoon.addFeature` takes `{}`. There is no fee and no ledger row. The click does not move the clock and does not add a dev day.
+- Adding it stores `feature: true` and bumps `devDaysRequired` by 1. A newsletter goes from 2 office days to 3. A sequel of that newsletter goes from 1 to 2. Progress and "needs N more office days" use that count. The ideal is still days required × 4, so it grows with the extra day. Working every required day keeps the catalog score. The sales difference is the demand bump.
+- At release, if the feature was added, the product stores `featureDemand: true` once, before the opening sale. Later sales days, a port, and a translation read that flag. A replayed day end and a reopen do not set it again and do not recompute an existing sale. A sequel stores no feature, so it can add its own.
+- Opening demand uses 110 percent: `Math.max(1, Math.round((demand * 110) / 100))`, before the curve. 110 is the same 10 points as Long's unit percent and the rival's 90 cut, in the other direction from the rival. Long scales units after audience. This scales opening demand, the same place the rival cuts. The feature runs first. A stored rival cut then scales that result to 90. Ten points sits inside the ±10 swing, so the bump is real and still small.
+- A second add fails with "Already added." and changes nothing. With nothing on the bench, including after release, it fails with "No product is on the bench." Skipping it changes nothing, so the first Crypto Alpha Newsletter stays at 20700 cents and 5 fans, and the next office day stays 33300 cents.
+- The line sits on the developing-product card, under the press demo and above New Product. The offer is "Feature · Whop Bonus Drop · +1 office day, +10% opening demand" plus one secondary button, Add feature. Once added the line is "Feature added · Whop Bonus Drop · Building · day 0 of 3" and the button is gone. Hire stays the one primary action. Add feature is not orange. A payload without `feature` draws no line.
+
+**Proof**
+- `/workspace/sv-proof/round-54/60-feature-offer.png` and `61-feature-added.png`, captured by the verify-startup-valley skill. PROOF PASS. Sixty-one PNGs. The offer header reads "Spring 1 · Year 1 · $0.00 game cash · 0 reputation". The line "Feature · Whop Bonus Drop · +1 office day, +10% opening demand" is one readable line. Add feature is a cream secondary button. New Product sits under it. Hire Mina · free stays orange in the footer and does not cover the button. The added header is the same $0.00 and 0 reputation. The line is "Feature added · Whop Bonus Drop · Building · day 0 of 3" with no button. New Product is still under that line, and Hire does not cover it.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Day plan is the next slice. One optional emphasis for the office day on the bench: Design, Tech, or Hype. The default stays the even split, so skipping it leaves every existing sale. No fee, no ledger row, no new art. A real how-you-spend-the-day decision. Bugs stay set aside.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. `test_tycoon_price.gd` passed this gate. The Round 46 flake was not seen. Left alone.
+5. `test_tycoon_upgrades.gd` passed this gate with exit 0 and TYCOON UPGRADES PASS. The Round 52 grep quirk was not seen. Left alone.
+6. The developing card is one line and one button taller while the feature is unadded. Shot 60 keeps Add feature above Hire and above New Product. The publisher and press lines sit above the feature in the same card. After the add, the button is gone. Shot 61 shows the day line with New Product under it. Train staff is clipped at the footer the same way other tall journey screens clip.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 122 tests, 120 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test adds one office day, stores a 110 percent opening-demand bump once, replays the release day and a reopen without a second bump, reuses that bump on a port and a translation, refuses a second add, fails with no product on the bench, offers the feature again on the next product, leaves a sequel without it, and leaves a skipped feature at 20700 cents, 5 fans, then 33300 cents with no feature rows.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS
+- `test_tycoon_localization.gd` — TYCOON LOCALIZATION PASS
+- `test_tycoon_town_day.gd` — TYCOON TOWN DAY PASS
+- `test_tycoon_press_demo.gd` — TYCOON PRESS DEMO PASS
+- `test_tycoon_launch_trailer.gd` — TYCOON LAUNCH TRAILER PASS
+- `test_tycoon_dev_diary.gd` — TYCOON DEV DIARY PASS
+- `test_tycoon_rivals.gd` — TYCOON RIVALS PASS
+- `test_tycoon_features.gd` — TYCOON FEATURES PASS. The developing card reads "Feature · Whop Bonus Drop · +1 office day, +10% opening demand". Add feature is secondary and above New Product. Hire Mina stays primary. The picker and the build screen have no feature line. Skipping the feature still pays 20700 cents and 5 fans, then 33300 cents. The next product offers it again. Adding it shows "Feature added · Whop Bonus Drop · Building · day 0 of 3", needs 3 office days, hides the button, and does not change cash. Reopening keeps that line. The rules script checks the 110 percent opening-demand bump, the rival-after-feature order, a replayed day plus a reopen, the port and the translation, a sequel that does not inherit it, and "Already added." / "No product is on the bench."
+- `test_ui_company_redesign.gd` — 18171 checks, 0 failures, 0 captures. Existing fixtures omit `feature` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Sixty-one PNGs in `/workspace/sv-proof/round-54/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-54 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey, on the card for the product in development. Add feature is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_features.gd`.

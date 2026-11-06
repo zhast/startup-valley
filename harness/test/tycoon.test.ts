@@ -10,6 +10,7 @@ import { Ajv2020 } from "ajv/dist/2020.js";
 import { readFileSync } from "node:fs";
 
 import { GameDatabase } from "../src/database.js";
+import { parseRequest } from "../src/validation.js";
 import { DatabaseSync } from "node:sqlite";
 
 import {
@@ -93,6 +94,9 @@ import {
   DIARY_NAME,
   RIVAL_UNIT_PERCENT,
   RIVALS,
+  FEATURE_DAY_DELTA,
+  FEATURE_NAME,
+  FEATURE_UNIT_PERCENT,
   openingDemand,
   rivalForDay,
   seasonIndexForDay,
@@ -5018,3 +5022,291 @@ test("a seasonal rival cuts opening demand only for a matching release", async (
   assert.equal(validate(other.db.journey.state()), true, JSON.stringify(validate.errors));
   other.db.close();
 });
+
+test("one optional feature adds one office day and bumps opening demand once", async () => {
+  assert.equal(FEATURE_NAME, "Whop Bonus Drop");
+  assert.equal(FEATURE_DAY_DELTA, 1);
+  assert.equal(FEATURE_UNIT_PERCENT, 110);
+  assert.equal(requiredDevDays(2, false), 2);
+  assert.equal(requiredDevDays(2, false, null, false), 2);
+  assert.equal(requiredDevDays(2, false, null, true), 3);
+  assert.equal(requiredDevDays(2, false, "long", true), 4);
+  assert.equal(requiredDevDays(2, true, null, true), 2);
+  assert.equal(requiredDevDays(2, true, "long", false), 1);
+  const demandBase = openingDemand("great", 6, 0);
+  const featuredDemand = Math.max(1, Math.round((demandBase * FEATURE_UNIT_PERCENT) / 100));
+  assert.equal(openingDemand("great", 6, 0, false, true), featuredDemand);
+  assert.equal(
+    openingDemand("great", 6, 0, true, true),
+    Math.max(1, Math.round((featuredDemand * RIVAL_UNIT_PERCENT) / 100)),
+  );
+  assert.equal(parseRequest({ kind: "request", id: "feature", method: "tycoon.addFeature", params: {} }).method, "tycoon.addFeature");
+  assert.throws(() => parseRequest({ kind: "request", id: "feature", method: "tycoon.addFeature", params: { extra: true } }), /Invalid protocol request/u);
+
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  const offer = { name: FEATURE_NAME, dayDelta: FEATURE_DAY_DELTA, unitPercent: FEATURE_UNIT_PERCENT, added: false };
+  const added = { ...offer, added: true };
+
+  const bare = await setup();
+  assert.throws(() => bare.db.tycoon.addFeature(), /No product is on the bench\./u);
+  assert.equal(bare.db.tycoon.view().developing, null);
+  bare.db.close();
+
+  const skip = await setup();
+  skip.db.tycoon.start("crypto", "newsletter", []);
+  assert.deepEqual(skip.db.tycoon.view().developing?.feature, offer);
+  assert.equal(skip.db.tycoon.view().developing?.devDaysRequired, 2);
+  assert.equal(skip.db.tycoon.view().developing?.size, null);
+  assert.equal(JSON.parse(staffJson(skip.db, "p1")).feature, undefined);
+  assert.equal(JSON.parse(staffJson(skip.db, "p1")).featureDemand, undefined);
+  skip.db.endDay(1);
+  skip.db.endDay(2);
+  skip.db.tycoon.release("p1");
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.fans, 5);
+  assert.equal(skip.db.tycoon.view().history[0]?.salesCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.feature, null);
+  assert.equal(skip.db.tycoon.view().history[0]?.size, null);
+  const plainScore = skip.db.tycoon.view().history[0]?.review?.score;
+  assert.equal(JSON.parse(staffJson(skip.db, "p1")).featureDemand, undefined);
+  skip.db.endDay(3);
+  skip.db.endDay(4);
+  assert.equal(skip.db.journey.state().company.cashCents, 33_300);
+  assert.throws(() => skip.db.tycoon.addFeature(), /No product is on the bench\./u);
+  assert.equal(featureRows(skip.db).length, 0);
+  assert.equal(validate(skip.db.journey.state()), true, JSON.stringify(validate.errors));
+  skip.db.close();
+
+  const { db, root } = await setup();
+  db.tycoon.start("crypto", "newsletter", []);
+  const cashBefore = db.journey.state().company.cashCents;
+  const fansBefore = db.journey.state().company.reputation;
+  db.tycoon.addFeature();
+  const building = db.tycoon.view().developing;
+  assert.equal(db.clockState().day, 1);
+  assert.equal(db.journey.state().company.cashCents, cashBefore);
+  assert.equal(db.journey.state().company.reputation, fansBefore);
+  assert.equal(building?.devDays, 0);
+  assert.equal(building?.devDaysRequired, 3);
+  assert.equal(building?.progress, 0);
+  assert.equal(building?.ready, false);
+  assert.equal(building?.size, null);
+  assert.deepEqual(building?.feature, added);
+  assert.equal(JSON.parse(staffJson(db, "p1")).feature, true);
+  assert.equal(JSON.parse(staffJson(db, "p1")).featureDemand, undefined);
+  assert.equal(JSON.parse(staffJson(db, "p1")).size, undefined);
+  assert.equal(featureRows(db).length, 0);
+  assert.throws(() => db.tycoon.addFeature(), /Already added\./u);
+  assert.equal(db.tycoon.view().developing?.devDaysRequired, 3);
+  assert.equal(db.journey.state().company.cashCents, cashBefore);
+  const developingFile = join(root, "game.sqlite");
+  const developingProject = join(root, "company-project");
+  db.close();
+  const stillBuilding = new GameDatabase(developingFile, developingProject);
+  assert.equal(stillBuilding.tycoon.view().developing?.devDaysRequired, 3);
+  assert.deepEqual(stillBuilding.tycoon.view().developing?.feature, added);
+  assert.equal(JSON.parse(staffJson(stillBuilding, "p1")).featureDemand, undefined);
+  assert.throws(() => stillBuilding.tycoon.addFeature(), /Already added\./u);
+  assert.equal(stillBuilding.tycoon.view().developing?.devDays, 0);
+  stillBuilding.endDay(1);
+  stillBuilding.endDay(1);
+  assert.equal(stillBuilding.clockState().day, 2);
+  assert.equal(stillBuilding.tycoon.view().developing?.devDays, 1);
+  assert.equal(stillBuilding.tycoon.view().developing?.ready, false);
+  stillBuilding.endDay(2);
+  assert.equal(stillBuilding.tycoon.view().developing?.devDays, 2);
+  assert.equal(stillBuilding.tycoon.view().developing?.ready, false);
+  assert.throws(() => stillBuilding.tycoon.release("p1"), /needs 1 more office day/u);
+  assert.equal(stillBuilding.tycoon.view().developing?.devDays, 2);
+  stillBuilding.endDay(3);
+  assert.equal(stillBuilding.tycoon.view().developing?.devDays, 3);
+  assert.equal(stillBuilding.tycoon.view().developing?.devDaysRequired, 3);
+  assert.equal(stillBuilding.tycoon.view().developing?.ready, true);
+  assert.equal(stillBuilding.clockState().day, 4);
+  stillBuilding.tycoon.release("p1");
+  const opened = stillBuilding.tycoon.view().history[0];
+  assert.ok(opened?.review);
+  assert.equal(opened.review.score, plainScore);
+  assert.equal(opened.size, null);
+  assert.deepEqual(opened.feature, added);
+  assert.equal(JSON.parse(staffJson(stillBuilding, "p1")).feature, true);
+  assert.equal(JSON.parse(staffJson(stillBuilding, "p1")).featureDemand, true);
+  const releaseDay = stillBuilding.clockState().day;
+  const bumped = featureSale(stillBuilding, "p1", 0, 0, releaseDay);
+  const plain = featureSale(stillBuilding, "p1", 0, 0, releaseDay, { featureDemand: false });
+  const openedBase = openingDemand(opened.fit, opened.review.score, 0, false, false);
+  assert.equal(openingDemand(opened.fit, opened.review.score, 0, false, true), Math.max(1, Math.round((openedBase * FEATURE_UNIT_PERCENT) / 100)));
+  assert.ok(bumped.cents > plain.cents);
+  assert.equal(opened.salesCents, bumped.cents);
+  assert.equal(opened.fans, bumped.fans);
+  assert.equal(stillBuilding.journey.state().company.cashCents, bumped.cents);
+  assert.equal(stillBuilding.journey.state().company.reputation, bumped.fans);
+  assert.equal(featureRows(stillBuilding).length, 0);
+  const releaseCents = stillBuilding.journey.state().company.cashCents;
+  const releaseFans = stillBuilding.journey.state().company.reputation;
+  stillBuilding.tycoon.tickDay(releaseDay);
+  stillBuilding.tycoon.tickDay(releaseDay);
+  stillBuilding.endDay(releaseDay);
+  stillBuilding.endDay(releaseDay);
+  assert.equal(stillBuilding.clockState().day, releaseDay + 1);
+  assert.equal(stillBuilding.journey.state().company.cashCents, releaseCents);
+  assert.equal(stillBuilding.tycoon.view().history[0]?.salesCents, releaseCents);
+  assert.equal(stillBuilding.journey.state().company.reputation, releaseFans);
+  assert.equal(JSON.parse(staffJson(stillBuilding, "p1")).featureDemand, true);
+
+  const dayOne = featureSale(stillBuilding, "p1", 1, releaseFans, releaseDay + 1);
+  stillBuilding.endDay(releaseDay + 1);
+  assert.equal(stillBuilding.tycoon.view().history[0]?.salesCents, releaseCents + dayOne.cents);
+  assert.equal(stillBuilding.journey.state().company.reputation, releaseFans + dayOne.fans);
+  const fansAfterDayOne = releaseFans + dayOne.fans;
+  const dayTwo = featureSale(stillBuilding, "p1", 2, fansAfterDayOne, releaseDay + 2);
+  stillBuilding.endDay(releaseDay + 2);
+  const fansAfterDayTwo = fansAfterDayOne + dayTwo.fans;
+  const dayThree = featureSale(stillBuilding, "p1", 3, fansAfterDayTwo, releaseDay + 3);
+  stillBuilding.endDay(releaseDay + 3);
+  const windowCents = releaseCents + dayOne.cents + dayTwo.cents + dayThree.cents;
+  const windowFans = fansAfterDayTwo + dayThree.fans;
+  assert.equal(stillBuilding.tycoon.view().history[0]?.status, "complete");
+  assert.equal(stillBuilding.tycoon.view().history[0]?.salesDays, 4);
+  assert.equal(stillBuilding.tycoon.view().history[0]?.salesCents, windowCents);
+  assert.equal(stillBuilding.journey.state().company.reputation, windowFans);
+  assert.equal(stillBuilding.clockState().day, releaseDay + 4);
+
+  const beforePort = stillBuilding.journey.state().company.cashCents;
+  const portDay = stillBuilding.clockState().day;
+  stillBuilding.tycoon.port("p1");
+  assert.equal(stillBuilding.journey.state().company.cashCents, beforePort - PORT_COST_CENTS);
+  assert.equal(stillBuilding.journey.state().company.reputation, windowFans);
+  const portSale = featureSale(stillBuilding, "p1", SALES_WINDOW_DAYS, windowFans, portDay);
+  stillBuilding.endDay(portDay);
+  stillBuilding.endDay(portDay);
+  const shipped = productById(stillBuilding, "p1");
+  assert.equal(shipped?.port?.cents, portSale.cents);
+  assert.equal(shipped?.port?.fans, portSale.fans);
+  assert.equal(shipped?.salesCents, windowCents + portSale.cents);
+  assert.equal(stillBuilding.journey.state().company.cashCents, beforePort - PORT_COST_CENTS + portSale.cents);
+  assert.equal(stillBuilding.journey.state().company.reputation, windowFans + portSale.fans);
+  assert.equal(stillBuilding.clockState().day, portDay + 1);
+
+  const afterPortCash = stillBuilding.journey.state().company.cashCents;
+  const afterPortFans = stillBuilding.journey.state().company.reputation;
+  const localizeDay = stillBuilding.clockState().day;
+  stillBuilding.tycoon.localize("p1");
+  assert.equal(stillBuilding.journey.state().company.cashCents, afterPortCash - LOCALIZE_COST_CENTS);
+  assert.equal(stillBuilding.journey.state().company.reputation, afterPortFans);
+  const localized = featureSale(stillBuilding, "p1", SALES_WINDOW_DAYS, afterPortFans, localizeDay, { quietPercent: LOCALIZE_UNIT_PERCENT });
+  stillBuilding.endDay(localizeDay);
+  stillBuilding.endDay(localizeDay);
+  const translated = productById(stillBuilding, "p1");
+  assert.equal(translated?.localization?.cents, localized.cents);
+  assert.equal(translated?.localization?.fans, localized.fans);
+  assert.equal(translated?.salesCents, windowCents + portSale.cents + localized.cents);
+  assert.equal(stillBuilding.journey.state().company.cashCents, afterPortCash - LOCALIZE_COST_CENTS + localized.cents);
+  assert.equal(JSON.parse(staffJson(stillBuilding, "p1")).featureDemand, true);
+  assert.deepEqual(translated?.feature, added);
+  const savedCents = stillBuilding.journey.state().company.cashCents;
+  const savedSales = translated?.salesCents;
+  const savedFile = join(root, "game.sqlite");
+  const savedProject = join(root, "company-project");
+  stillBuilding.close();
+  const reopened = new GameDatabase(savedFile, savedProject);
+  assert.equal(reopened.journey.state().company.cashCents, savedCents);
+  assert.equal(productById(reopened, "p1")?.salesCents, savedSales);
+  assert.equal(JSON.parse(staffJson(reopened, "p1")).featureDemand, true);
+  assert.deepEqual(productById(reopened, "p1")?.feature, added);
+  reopened.endDay(localizeDay);
+  assert.equal(reopened.journey.state().company.cashCents, savedCents);
+  assert.equal(productById(reopened, "p1")?.salesCents, savedSales);
+  assert.throws(() => reopened.tycoon.addFeature(), /No product is on the bench\./u);
+  reopened.tycoon.start("fitness", "newsletter", []);
+  assert.deepEqual(reopened.tycoon.view().developing?.feature, offer);
+  assert.equal(reopened.tycoon.view().developing?.devDaysRequired, 2);
+  assert.equal(JSON.parse(staffJson(reopened, "p2")).feature, undefined);
+  reopened.tycoon.addFeature();
+  assert.equal(reopened.tycoon.view().developing?.devDaysRequired, 3);
+  assert.deepEqual(reopened.tycoon.view().developing?.feature, added);
+  assert.deepEqual(productById(reopened, "p1")?.feature, added);
+  assert.equal(productById(reopened, "p1")?.salesCents, savedSales);
+  assert.throws(() => reopened.tycoon.addFeature(), /Already added\./u);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+
+  const sequel = await setup();
+  sequel.db.tycoon.start("crypto", "newsletter", []);
+  sequel.db.tycoon.addFeature();
+  sequel.db.endDay(1);
+  sequel.db.endDay(2);
+  sequel.db.endDay(3);
+  sequel.db.tycoon.release("p1");
+  const sequelReleaseDay = sequel.db.clockState().day;
+  sequel.db.endDay(sequelReleaseDay);
+  sequel.db.endDay(sequelReleaseDay + 1);
+  sequel.db.endDay(sequelReleaseDay + 2);
+  sequel.db.endDay(sequelReleaseDay + 3);
+  assert.equal(sequel.db.tycoon.view().history[0]?.status, "complete");
+  sequel.db.tycoon.sequel("p1");
+  const follow = sequel.db.tycoon.view().developing;
+  assert.equal(follow?.name, "Crypto Alpha Newsletter 2");
+  assert.equal(follow?.devDaysRequired, 1);
+  assert.deepEqual(follow?.feature, offer);
+  assert.equal(JSON.parse(staffJson(sequel.db, "p2")).feature, undefined);
+  assert.equal(JSON.parse(staffJson(sequel.db, "p2")).featureDemand, undefined);
+  assert.deepEqual(productById(sequel.db, "p1")?.feature, added);
+  assert.equal(JSON.parse(staffJson(sequel.db, "p1")).featureDemand, true);
+  sequel.db.tycoon.addFeature();
+  assert.equal(sequel.db.tycoon.view().developing?.devDaysRequired, 2);
+  assert.deepEqual(sequel.db.tycoon.view().developing?.feature, added);
+  assert.equal(JSON.parse(staffJson(sequel.db, "p2")).feature, true);
+  assert.equal(JSON.parse(staffJson(sequel.db, "p2")).featureDemand, undefined);
+  assert.throws(() => sequel.db.tycoon.addFeature(), /Already added\./u);
+  assert.equal(sequel.db.tycoon.view().developing?.devDays, 0);
+  sequel.db.close();
+
+  const late = await setup();
+  late.db.tycoon.start("crypto", "newsletter", []);
+  late.db.endDay(1);
+  late.db.endDay(2);
+  assert.equal(late.db.tycoon.view().developing?.ready, true);
+  assert.equal(late.db.tycoon.view().developing?.devDays, 2);
+  const lateCash = late.db.journey.state().company.cashCents;
+  late.db.tycoon.addFeature();
+  assert.equal(late.db.clockState().day, 3);
+  assert.equal(late.db.journey.state().company.cashCents, lateCash);
+  assert.equal(late.db.tycoon.view().developing?.devDays, 2);
+  assert.equal(late.db.tycoon.view().developing?.devDaysRequired, 3);
+  assert.equal(late.db.tycoon.view().developing?.ready, false);
+  assert.throws(() => late.db.tycoon.release("p1"), /needs 1 more office day/u);
+  assert.equal(late.db.tycoon.view().developing?.devDays, 2);
+  late.db.close();
+});
+
+function featureRows(db: GameDatabase) {
+  return db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:feature%'").all();
+}
+
+function featureSale(
+  db: GameDatabase,
+  productId: string,
+  dayIndex: number,
+  reputation: number,
+  day: number,
+  extra: { featureDemand?: boolean; quietPercent?: number } = {},
+) {
+  const product = productById(db, productId);
+  if (!product?.review) throw new Error(`missing ${productId}`);
+  const calendar = calendarForDay(day);
+  return salesForDay({
+    seed: db.tycoon.view().seed,
+    productId,
+    typeId: product.typeId,
+    fit: product.fit,
+    score: product.review.score,
+    dayIndex,
+    reputation,
+    unitBoostPercent: calendar.favoredTopics.some((topic) => topic.id === product.topicId) ? SEASON_UNIT_BOOST_PERCENT : 0,
+    bonusFans: calendar.event ? EVENT_BONUS_FANS : 0,
+    featureDemand: extra.featureDemand ?? true,
+    ...(extra.quietPercent === undefined ? {} : { quietPercent: extra.quietPercent }),
+  });
+}

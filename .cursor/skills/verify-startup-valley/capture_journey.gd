@@ -401,6 +401,7 @@ func _run() -> void:
 	await _trailer_proof()
 	await _diary_proof()
 	await _rival_proof()
+	await _feature_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -1261,6 +1262,69 @@ func _rival_proof() -> void:
 	main.company_panel._scroll.scroll_vertical = maxi(0, main.company_panel._scroll.scroll_vertical - 220)
 	await frames(3)
 	await snap("59-rival-picker")
+
+func seed_feature_offer(data_dir: String) -> bool:
+	var database := ProjectSettings.globalize_path("res://../harness/src/database.ts")
+	var tsx := ProjectSettings.globalize_path("res://../harness/node_modules/tsx/dist/cli.mjs")
+	var node := OS.get_environment("STARTUP_VALLEY_NODE").strip_edges()
+	if node.is_empty():
+		for dir: String in OS.get_environment("PATH").split(":"):
+			if FileAccess.file_exists(dir.path_join("node")):
+				node = dir.path_join("node")
+				break
+	if node.is_empty():
+		node = "/home/box/.local/node22/bin/node"
+	var script_path := data_dir.path_join("seed-feature.mjs")
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst db = new GameDatabase(root + '/startup-valley.sqlite', root + '/company-project');\ndb.tycoon.start('crypto', 'newsletter', []);\nconst view = db.tycoon.view().developing;\nconst company = db.journey.state().company;\ndb.close();\nconst offer = view && view.feature;\nif (company.cashCents !== 0 || company.reputation !== 0 || !offer || offer.added || offer.name !== 'Whop Bonus Drop' || offer.dayDelta !== 1 || offer.unitPercent !== 110 || view.devDaysRequired !== 2 || view.devDays !== 0) { console.error(JSON.stringify({ company: company, view: view })); process.exit(2); }\n" % JSON.stringify(database)
+	var file := FileAccess.open(script_path, FileAccess.WRITE)
+	if file == null:
+		check(false, "Could not write the feature seed script")
+		return false
+	file.store_string(script)
+	file.close()
+	var output: Array = []
+	var code := OS.execute(node, PackedStringArray([tsx, script_path, data_dir]), output, true)
+	check(code == 0, "Seeded a developing newsletter with the feature offer (%s)" % " ".join(output))
+	return code == 0
+
+func _feature_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-feature-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_feature_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var line := label_named("FeatureOffer")
+	var card := main.company_panel.find_child("PublisherCard", true, false) as Control
+	check(card != null and line != null and card.is_ancestor_of(line) and line.text == "Feature · Whop Bonus Drop · +1 office day, +10% opening demand", "The journey card names the feature offer")
+	var add := button_named("Add feature")
+	check(add != null and not add.disabled and str(add.get_meta("cozy_variant", "")) == "secondary", "Add feature is a secondary action")
+	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the feature")
+	check(int(developing().get("devDaysRequired", 0)) == 2 and int(developing().get("devDays", -1)) == 0 and company_cash() == 0, "The offer still needs 2 office days and no cash")
+	await reveal(line)
+	var footer := main.company_panel._footer
+	check(add.get_global_rect().end.y <= footer.get_global_rect().position.y, "Add feature sits above Hire")
+	var new_product := button_named("New Product")
+	check(new_product != null and add.get_global_rect().end.y <= new_product.get_global_rect().position.y, "Add feature sits above New Product")
+	await snap("60-feature-offer", line)
+	await click(add)
+	await wait_until(func() -> bool:
+		return not main.company_panel.busy and label_named("FeatureOffer") != null and label_named("FeatureOffer").text == "Feature added · Whop Bonus Drop · Building · day 0 of 3" and int(developing().get("devDaysRequired", 0)) == 3 and company_cash() == 0
+	, "Adding the feature keeps the cash and needs 3 office days")
+	check(button_named("Add feature") == null, "The feature button hides once it is added")
+	check(int(developing().get("devDays", -1)) == 0, "Adding the feature does not spend a dev day")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at $0 and 0 reputation")
+	await snap("61-feature-added", label_named("FeatureOffer"))
 
 func _proof_money(cents: int) -> String:
 	var integer := str(absi(cents) / 100)
