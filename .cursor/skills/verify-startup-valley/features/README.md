@@ -27,5 +27,6 @@ Player-facing flows for the offline tycoon. The harness owns the rules (`docs/TY
 - [Launch trailer](launch-trailer.md)
 - [Dev diary](dev-diary.md)
 - [Rivals](rivals.md)
+- [Features](features.md)
 
 Launch, display, and proof-file rules live in the verify-startup-valley skill. Do not copy them here.
