@@ -2357,3 +2357,68 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Sixty-one PNGs in `/workspace/sv-proof/round-54/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-54 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey, on the card for the product in development. Add feature is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_features.gd`.
+
+### Round 55 — 2026-11-06
+
+**What changed**
+- One optional day plan on the product on the bench. The choices are Even, Design, Tech, and Hype. Even is the default and keeps today's split. `tycoon.setDayPlan` takes `{stat}` of `even`, `design`, `tech`, or `hype`. There is no fee and no ledger row. The click does not move the clock.
+- Storage is `dayPlan` on the product snapshot in `staff_json`: `design`, `tech`, or `hype`. Even omits the key. There is no new SQL column. Reads do not rewrite `staff_json`. An older row with no key is Even. A sequel starts Even. Release hides the control because the developing card is gone.
+- An emphasis folds that office day's personal craft into the chosen stat. Personal gain is `personal.design + personal.tech + personal.hype` on that stat, and the other two personal columns are 0. Point-tool bonuses and the office bonus stay on their own stats. The even split keeps today's ratios. The emphasis does not invent new point totals. A founder alone is 2/2/2 on Even and 6/0/0 on Design. With all three point tools and the Open Floor, that Design day is 8/2/1. Accrual still stops after the polish window, so an emphasized day past it adds 0 craft. Training still zeroes that person's personal craft that day. The plan sticks until it changes or the product leaves development.
+- A missing or invalid stat fails with "Pick Even, Design, Tech, or Hype." The protocol rejects a bad payload with "Invalid protocol request". With nothing on the bench, including after release, a valid stat fails with "No product is on the bench." Setting the same plan again is idempotent. Skipping the plan leaves the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- The row sits on the developing-product card, under the feature and above New Product. The line is "Day plan · Even · design, tech, and hype as usual", or "Day plan · Design · today's craft goes to design" when Design is set. Tech and Hype use that shape. The four choices are secondary. The active choice uses the pressed secondary style. Hire stays the one primary action. Nothing on this row is orange. `dayPlan` on the developing product is null for Even, or `{id, label, stat}`. `dayPlanOptions` lists Even and the three emphases. A payload without both draws no control.
+
+**Proof**
+- `/workspace/sv-proof/round-55/62-dayplan-offer.png` and `63-dayplan-design.png`, captured by the verify-startup-valley skill. PROOF PASS. Sixty-three PNGs. The offer header reads "Spring 1 · Year 1 · $0.00 game cash · 0 reputation". The line "Day plan · Even · design, tech, and hype as usual" is one readable line. Even, Design, Tech, and Hype are four cream secondary buttons in one row, and Even is the pressed one. New Product sits under the row. Hire Mina · free stays orange in the footer and does not cover the buttons. The Design header is the same $0.00 and 0 reputation. The line is "Day plan · Design · today's craft goes to design", Design is the pressed choice, and Even, Tech, and Hype are not. New Product is still under that row, and Hire does not cover it.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Bugs is the next slice. A lopsided build stores a small deterministic bug count. A balanced founder newsletter stays at 0 bugs, so the first Crypto Alpha Newsletter stays at 20700 cents and 5 fans. Fix bugs is optional on the developing card. It spends the next office day's personal craft on clearing bugs. No fee, no ledger row, no new art.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. `test_tycoon_price.gd` passed this gate. The Round 46 flake was not seen. Left alone.
+5. `test_tycoon_upgrades.gd` passed this gate with exit 0 and TYCOON UPGRADES PASS. The Round 52 grep quirk was not seen. Left alone.
+6. The developing card is one line and one choice row taller. Shots 62 and 63 scroll the day plan to the top of the journey, so the choices sit above New Product and Hire does not cover them. The publisher, press demo, and feature stay in that same card, above the day plan. Shot 60 still keeps Add feature above Hire and above New Product.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 123 tests, 121 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test folds personal craft, leaves tool and office bonuses on their own stats, switches plans, refuses a bad stat and a call with nothing on the bench, treats the same plan as idempotent, starts a sequel on Even, keeps the plan across a reopen, adds 0 craft past the polish window, and leaves a skipped plan at 20700 cents, 5 fans, then 33300 cents with no day-plan rows.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS
+- `test_tycoon_localization.gd` — TYCOON LOCALIZATION PASS
+- `test_tycoon_town_day.gd` — TYCOON TOWN DAY PASS
+- `test_tycoon_press_demo.gd` — TYCOON PRESS DEMO PASS
+- `test_tycoon_launch_trailer.gd` — TYCOON LAUNCH TRAILER PASS
+- `test_tycoon_dev_diary.gd` — TYCOON DEV DIARY PASS
+- `test_tycoon_rivals.gd` — TYCOON RIVALS PASS
+- `test_tycoon_features.gd` — TYCOON FEATURES PASS
+- `test_tycoon_day_plan.gd` — TYCOON DAY PLAN PASS. The developing card reads "Day plan · Even · design, tech, and hype as usual". Even, Design, Tech, and Hype are secondary and above New Product. Hire Mina stays primary. The picker and the build screen have no day plan. Skipping it still pays 20700 cents and 5 fans, then 33300 cents. The next product starts Even. Picking Design, again, Tech, Hype, Even, and Design spends nothing. The design office day lands at 6/0/0. Reopening keeps that line and those points. The rules script checks the tool and office split, training, the polish window, a sequel that starts Even, and "Pick Even, Design, Tech, or Hype." / "No product is on the bench."
+- `test_ui_company_redesign.gd` — 18171 checks, 0 failures, 0 captures. Existing fixtures omit `dayPlan` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Sixty-three PNGs in `/workspace/sv-proof/round-55/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-55 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey, on the card for the product in development. Day plan is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_day_plan.gd`.
