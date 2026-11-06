@@ -324,6 +324,7 @@
         "focusOptions": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "$ref": "#/$defs/tycoonFocusOption" } },
         "audienceOptions": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/tycoonAudienceOption" } },
         "sizeOptions": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/tycoonSizeOption" } },
+        "dayPlanOptions": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "$ref": "#/$defs/tycoonDayPlanOption" } },
         "contract": { "$ref": "#/$defs/tycoonContract" },
         "patchNotice": { "type": "string" },
         "developing": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/tycoonProduct" }] },
@@ -637,6 +638,16 @@
         "unitPercent": { "enum": [100, 90] }
       }
     },
+    "tycoonDayPlanOption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "stat"],
+      "properties": {
+        "id": { "enum": ["even", "design", "tech", "hype"] },
+        "label": { "enum": ["Even", "Design", "Tech", "Hype"] },
+        "stat": { "enum": ["even", "design", "tech", "hype"] }
+      }
+    },
     "tycoonSizeOption": {
       "type": "object",
       "additionalProperties": false,
@@ -939,6 +950,21 @@
                 "dayDelta": { "const": 1 },
                 "unitPercent": { "const": 110 },
                 "added": { "type": "boolean" }
+              }
+            }
+          ]
+        },
+        "dayPlan": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "label", "stat"],
+              "properties": {
+                "id": { "enum": ["design", "tech", "hype"] },
+                "label": { "enum": ["Design", "Tech", "Hype"] },
+                "stat": { "enum": ["design", "tech", "hype"] }
               }
             }
           ]

@@ -275,6 +275,18 @@ export const RIVALS = [
 export const FEATURE_NAME = "Whop Bonus Drop";
 export const FEATURE_DAY_DELTA = 1;
 export const FEATURE_UNIT_PERCENT = 110;
+/**
+ * One optional emphasis for the office day on the bench. Even is the default
+ * and keeps each stat's personal craft. Design, Tech, or Hype folds that
+ * day's personal craft into one stat. Tool and office bonuses stay put.
+ * There is no fee and no ledger row.
+ */
+export const DAY_PLANS = [
+  { id: "even", label: "Even", stat: "even" },
+  { id: "design", label: "Design", stat: "design" },
+  { id: "tech", label: "Tech", stat: "tech" },
+  { id: "hype", label: "Hype", stat: "hype" },
+] as const;
 
 /** Office tools. Each row is bought once and has one effect. */
 export const UPGRADES = [
@@ -316,6 +328,7 @@ export type ContractId = (typeof CONTRACTS)[number]["id"];
 export type EngineId = typeof ENGINE_ID;
 export type FocusId = (typeof FOCUSES)[number]["id"];
 export type FocusStat = Exclude<(typeof FOCUSES)[number]["stat"], "">;
+export type DayPlanId = (typeof DAY_PLANS)[number]["id"];
 export type AudienceId = (typeof AUDIENCES)[number]["id"];
 export type AudienceLean = Exclude<AudienceId, "everyone">;
 export type AudienceOption = (typeof AUDIENCES)[number];
@@ -507,6 +520,8 @@ export interface TycoonProductView {
   diary: TycoonProductDiary | null;
   /** Null unless the product is in development or the feature was added. */
   feature: TycoonProductFeature | null;
+  /** Null while the day is Even, and after the product leaves development. */
+  dayPlan: TycoonDayPlan | null;
 }
 
 export interface TycoonUpgradeView {
@@ -766,6 +781,13 @@ export interface TycoonProductFeature {
   added: boolean;
 }
 
+/** The emphasis on the bench. Even is null on the product and a row in the options. */
+export interface TycoonDayPlan {
+  id: StatId;
+  label: string;
+  stat: StatId;
+}
+
 export interface TycoonSnapshot {
   seed: number;
   salesWindowDays: number;
@@ -793,6 +815,7 @@ export interface TycoonSnapshot {
   focusOptions: Array<(typeof FOCUSES)[number]>;
   audienceOptions: Array<(typeof AUDIENCES)[number]>;
   sizeOptions: Array<(typeof SIZES)[number]>;
+  dayPlanOptions: Array<(typeof DAY_PLANS)[number]>;
   contract: TycoonContractView;
   patchNotice: string;
   developing: TycoonProductView | null;
@@ -1383,6 +1406,8 @@ interface ProductSnapshot {
   feature: boolean;
   /** True once release stores the opening-demand bump. Later sales reuse it. */
   featureDemand: boolean;
+  /** Null spends the day on the even split. Design, tech, or hype folds personal craft. */
+  dayPlan: StatId | null;
 }
 
 interface ProductPort {
@@ -1431,6 +1456,7 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     rivalCut: false,
     feature: false,
     featureDemand: false,
+    dayPlan: null,
   };
 }
 
@@ -1438,7 +1464,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, no rival cut, and no feature. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, no rival cut, no feature, and an even day plan. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -1469,6 +1495,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     rivalCut?: unknown;
     feature?: unknown;
     featureDemand?: unknown;
+    dayPlan?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -1494,6 +1521,28 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     rivalCut: body.rivalCut === true,
     feature: body.feature === true,
     featureDemand: body.featureDemand === true,
+    dayPlan: parseDayPlan(body.dayPlan),
+  };
+}
+
+function parseDayPlan(value: unknown): StatId | null {
+  if (value === "design" || value === "tech" || value === "hype") return value;
+  return null;
+}
+
+function asDayPlan(value: string): DayPlanId {
+  if (value === "even" || value === "design" || value === "tech" || value === "hype") return value;
+  throw new Error("Pick Even, Design, Tech, or Hype.");
+}
+
+/** Even keeps the split. An emphasis moves the whole personal total onto one stat. */
+export function personalForDayPlan(personal: CraftPoints, plan: StatId | null): CraftPoints {
+  if (!plan) return personal;
+  const total = personal.design + personal.tech + personal.hype;
+  return {
+    design: plan === "design" ? total : 0,
+    tech: plan === "tech" ? total : 0,
+    hype: plan === "hype" ? total : 0,
   };
 }
 
@@ -1590,6 +1639,7 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
   if (stored.rivalCut) body.rivalCut = true;
   if (stored.feature) body.feature = true;
   if (stored.featureDemand) body.featureDemand = true;
+  if (stored.dayPlan) body.dayPlan = stored.dayPlan;
   return JSON.stringify(body);
 }
 
@@ -1973,6 +2023,7 @@ export class TycoonStore {
       focusOptions: [...FOCUSES],
       audienceOptions: [...AUDIENCES],
       sizeOptions: [...SIZES],
+      dayPlanOptions: [...DAY_PLANS],
       contract: this.contractOffer(developing),
       patchNotice: this.patchNoticeDay === day ? this.patchNotice : "",
       developing: developing ? this.toView(developing) : null,
@@ -2224,6 +2275,21 @@ export class TycoonStore {
     });
   }
 
+  /** The office-day emphasis on the bench. Even clears it. No cash row and no clock move. */
+  setDayPlan(statValue: string): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const stat = asDayPlan(statValue);
+      const row = this.developingRow();
+      if (!row) throw new Error("No product is on the bench.");
+      const stored = parseProductSnapshot(row.staff_json);
+      const next = stat === "even" ? null : stat;
+      if (stored.dayPlan === next) return this.journey.state();
+      stored.dayPlan = next;
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      return this.journey.state();
+    });
+  }
+
   /** One feature on the product on the bench. One extra office day. No cash row. */
   addFeature(): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
@@ -2442,6 +2508,7 @@ export class TycoonStore {
         rivalCut: false,
         feature: false,
         featureDemand: false,
+        dayPlan: null,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -2703,7 +2770,8 @@ export class TycoonStore {
     const trainedToday = this.trainedIdsOn(day);
     const working = snapshot.staff.filter((person) => !trainedToday.has(person.id));
     const accrue = pointsStillAccrue(Number(row.dev_days), requiredDevDays(type.devDays, snapshot.sequelOf !== null, snapshot.size, snapshot.feature));
-    const personal = accrue ? snapshotPoints(working) : { design: 0, tech: 0, hype: 0 };
+    // Even keeps today's split. An emphasis folds personal craft only. Tools and the office stay on their own stats.
+    const personal = personalForDayPlan(accrue ? snapshotPoints(working) : { design: 0, tech: 0, hype: 0 }, snapshot.dayPlan);
     const bonus = accrue ? this.pointBonus() : { design: 0, tech: 0, hype: 0 };
     const people = accrue ? working.length : 0;
     const office = accrue && people > 0 ? this.officeBonus() : { design: 0, tech: 0, hype: 0 };
@@ -3264,7 +3332,14 @@ export class TycoonStore {
       trailer: this.trailerView(row.status, Number(row.sales_applied), snapshot.trailer),
       diary: this.diaryView(row.status, snapshot.diary),
       feature: this.featureView(row.status, snapshot.feature),
+      dayPlan: this.dayPlanView(row.status, snapshot.dayPlan),
     };
+  }
+
+  /** Even is null. The control is only for the product still on the bench. */
+  private dayPlanView(status: string, plan: StatId | null): TycoonDayPlan | null {
+    if (status !== "developing" || !plan) return null;
+    return { id: plan, label: statLabel(plan), stat: plan };
   }
 
   /** Offer while the product is in development. After that, only an added feature stays. */
