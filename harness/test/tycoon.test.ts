@@ -99,6 +99,8 @@ import {
   FEATURE_UNIT_PERCENT,
   DAY_PLANS,
   personalForDayPlan,
+  bugCount,
+  bugsClearedGain,
   openingDemand,
   rivalForDay,
   seasonIndexForDay,
@@ -5480,12 +5482,191 @@ test("a day plan folds personal craft and leaves the even newsletter alone", asy
   reopened.close();
 });
 
+test("bugs track imbalance, lower the release, and clear with tomorrow's craft", async () => {
+  assert.equal(bugCount({ design: 4, tech: 4, hype: 4 }), 0);
+  assert.equal(bugCount({ design: 12, tech: 0, hype: 0 }), 3);
+  assert.equal(bugCount({ design: 6, tech: 0, hype: 0 }), 1);
+  assert.equal(bugCount({ design: 20, tech: 0, hype: 0 }), 5);
+  assert.equal(bugsClearedGain(0), 0);
+  assert.equal(bugsClearedGain(2), 1);
+  assert.equal(bugsClearedGain(6), 1);
+  assert.equal(bugsClearedGain(8), 2);
+  assert.equal(parseRequest({ kind: "request", id: "bugs", method: "tycoon.fixBugs", params: {} }).method, "tycoon.fixBugs");
+  assert.throws(() => parseRequest({ kind: "request", id: "bugs", method: "tycoon.fixBugs", params: { extra: true } }), /Invalid protocol request/u);
+
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+
+  const bare = await setup();
+  assert.throws(() => bare.db.tycoon.fixBugs(), /No product is on the bench\./u);
+  bare.db.close();
+
+  const skip = await setup();
+  skip.db.tycoon.start("crypto", "newsletter", []);
+  assert.deepEqual(skip.db.tycoon.view().developing?.bugs, { count: 0, cleared: 0, fixing: false });
+  assert.throws(() => skip.db.tycoon.fixBugs(), /No bugs to fix\./u);
+  const fresh = staffJson(skip.db, "p1");
+  assert.equal(JSON.parse(fresh).bugs, undefined);
+  assert.equal(JSON.parse(fresh).bugsCleared, undefined);
+  assert.equal(JSON.parse(fresh).fixBugs, undefined);
+  skip.db.endDay(1);
+  skip.db.endDay(2);
+  skip.db.tycoon.release("p1");
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.fans, 5);
+  assert.equal(skip.db.tycoon.view().history[0]?.salesCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.bugs, null);
+  assert.equal(JSON.parse(staffJson(skip.db, "p1")).bugs, undefined);
+  skip.db.endDay(3);
+  skip.db.endDay(4);
+  assert.equal(skip.db.journey.state().company.cashCents, 33_300);
+  assert.throws(() => skip.db.tycoon.fixBugs(), /No product is on the bench\./u);
+  assert.equal(bugRows(skip.db).length, 0);
+  assert.equal(validate(skip.db.journey.state()), true, JSON.stringify(validate.errors));
+  skip.db.close();
+
+  const even = await setup();
+  even.db.tycoon.start("crypto", "newsletter", []);
+  even.db.endDay(1);
+  even.db.endDay(2);
+  even.db.tycoon.release("p1");
+  const evenCash = even.db.journey.state().company.cashCents;
+  const evenScore = even.db.tycoon.view().history[0]?.review?.score ?? 0;
+  even.db.close();
+
+  const lop = await setup();
+  lop.db.tycoon.start("crypto", "newsletter", []);
+  lop.db.tycoon.setDayPlan("design");
+  lop.db.endDay(1);
+  assert.deepEqual(lop.db.tycoon.view().developing?.bugs, { count: 1, cleared: 0, fixing: false });
+  assert.equal(lop.db.tycoon.view().developing?.design, 6);
+  assert.equal(lop.db.tycoon.view().developing?.tech, 0);
+  assert.equal(lop.db.tycoon.view().developing?.hype, 0);
+  lop.db.endDay(2);
+  assert.deepEqual(lop.db.tycoon.view().developing?.bugs, { count: 3, cleared: 0, fixing: false });
+  assert.equal(lop.db.tycoon.view().developing?.design, 12);
+  const cashBefore = lop.db.journey.state().company.cashCents;
+  const tx = txCount(lop.db);
+  lop.db.tycoon.fixBugs();
+  assert.equal(lop.db.clockState().day, 3);
+  assert.equal(lop.db.journey.state().company.cashCents, cashBefore);
+  assert.equal(txCount(lop.db), tx);
+  assert.equal(bugRows(lop.db).length, 0);
+  assert.deepEqual(lop.db.tycoon.view().developing?.bugs, { count: 3, cleared: 0, fixing: true });
+  assert.equal(JSON.parse(staffJson(lop.db, "p1")).fixBugs, true);
+  const armed = staffJson(lop.db, "p1");
+  lop.db.tycoon.fixBugs();
+  assert.equal(staffJson(lop.db, "p1"), armed);
+  lop.db.tycoon.view();
+  assert.equal(staffJson(lop.db, "p1"), armed);
+  // Day plan stays set but the fix day ignores it for personal craft.
+  lop.db.endDay(3);
+  assert.equal(lop.db.tycoon.view().developing?.design, 12, "fix day adds no personal craft");
+  assert.equal(lop.db.tycoon.view().developing?.tech, 0);
+  assert.equal(lop.db.tycoon.view().developing?.hype, 0);
+  assert.equal(lop.db.tycoon.view().developing?.devDays, 3);
+  assert.deepEqual(lop.db.tycoon.view().developing?.bugs, { count: 2, cleared: 1, fixing: false });
+  assert.equal(JSON.parse(staffJson(lop.db, "p1")).bugsCleared, 1);
+  assert.equal(JSON.parse(staffJson(lop.db, "p1")).fixBugs, undefined);
+  lop.db.tycoon.release("p1");
+  assert.equal(JSON.parse(staffJson(lop.db, "p1")).bugs, 2);
+  assert.equal(lop.db.tycoon.view().history[0]?.bugs, 2);
+  assert.ok((lop.db.tycoon.view().history[0]?.review?.score ?? 0) < evenScore, "bugs lower the release score");
+  assert.ok(lop.db.journey.state().company.cashCents < evenCash, "bugs lower opening cash");
+  assert.equal(validate(lop.db.journey.state()), true, JSON.stringify(validate.errors));
+  lop.db.close();
+
+  const tools = await setup();
+  const toolsDb = await teamOfThree(tools.root, tools.db, 250_000);
+  toolsDb.tycoon.expandOffice();
+  toolsDb.tycoon.buyUpgrade("standing_desk");
+  toolsDb.tycoon.buyUpgrade("second_monitor");
+  toolsDb.tycoon.buyUpgrade("ring_light");
+  toolsDb.tycoon.start("crypto", "newsletter", ["founder"]);
+  toolsDb.tycoon.setDayPlan("design");
+  toolsDb.endDay(1);
+  assert.equal(toolsDb.tycoon.view().developing?.design, 8);
+  assert.equal(toolsDb.tycoon.view().developing?.tech, 2);
+  assert.equal(toolsDb.tycoon.view().developing?.hype, 1);
+  assert.deepEqual(toolsDb.tycoon.view().developing?.bugs, { count: 1, cleared: 0, fixing: false });
+  toolsDb.tycoon.fixBugs();
+  toolsDb.endDay(2);
+  // Personal 6 clears 1; tools/office still land 2/2/1 on their own stats.
+  assert.equal(toolsDb.tycoon.view().developing?.design, 8 + 2);
+  assert.equal(toolsDb.tycoon.view().developing?.tech, 2 + 2);
+  assert.equal(toolsDb.tycoon.view().developing?.hype, 1 + 1);
+  // Points are now 10/4/2 → bugCount 2, minus 1 cleared → 1 left.
+  assert.deepEqual(toolsDb.tycoon.view().developing?.bugs, { count: 1, cleared: 1, fixing: false });
+  toolsDb.close();
+
+  const polish = await setup();
+  polish.db.tycoon.start("crypto", "newsletter", []);
+  polish.db.tycoon.setDayPlan("design");
+  for (let day = 1; day <= 4; day += 1) polish.db.endDay(day);
+  assert.equal(polish.db.tycoon.view().developing?.design, 24);
+  assert.deepEqual(polish.db.tycoon.view().developing?.bugs, { count: 5, cleared: 0, fixing: false });
+  polish.db.tycoon.fixBugs();
+  polish.db.endDay(5);
+  assert.equal(polish.db.tycoon.view().developing?.devDays, 5);
+  assert.equal(polish.db.tycoon.view().developing?.design, 24, "polish window clears nothing");
+  assert.deepEqual(polish.db.tycoon.view().developing?.bugs, { count: 5, cleared: 0, fixing: false });
+  assert.equal(JSON.parse(staffJson(polish.db, "p1")).fixBugs, undefined);
+  polish.db.close();
+
+  const priority = await setup();
+  priority.db.tycoon.start("crypto", "newsletter", []);
+  priority.db.tycoon.setDayPlan("design");
+  priority.db.endDay(1);
+  priority.db.tycoon.fixBugs();
+  // Setting day plan again does not clear the armed fix.
+  priority.db.tycoon.setDayPlan("hype");
+  priority.db.endDay(2);
+  assert.equal(priority.db.tycoon.view().developing?.design, 6);
+  assert.equal(priority.db.tycoon.view().developing?.tech, 0);
+  assert.equal(priority.db.tycoon.view().developing?.hype, 0);
+  assert.deepEqual(priority.db.tycoon.view().developing?.bugs, { count: 0, cleared: 1, fixing: false });
+  priority.db.close();
+
+  const kept = await setup();
+  kept.db.tycoon.start("crypto", "newsletter", []);
+  kept.db.tycoon.setDayPlan("design");
+  kept.db.endDay(1);
+  kept.db.endDay(2);
+  kept.db.tycoon.fixBugs();
+  kept.db.endDay(3);
+  assert.equal(JSON.parse(staffJson(kept.db, "p1")).bugsCleared, 1);
+  const keptFile = join(kept.root, "game.sqlite");
+  const keptProject = join(kept.root, "company-project");
+  const keptJson = staffJson(kept.db, "p1");
+  kept.db.close();
+  const reopened = new GameDatabase(keptFile, keptProject);
+  assert.equal(staffJson(reopened, "p1"), keptJson);
+  assert.deepEqual(reopened.tycoon.view().developing?.bugs, { count: 2, cleared: 1, fixing: false });
+  reopened.tycoon.release("p1");
+  assert.equal(JSON.parse(staffJson(reopened, "p1")).bugs, 2);
+  assert.equal(reopened.tycoon.view().history[0]?.bugs, 2);
+  finishSales(reopened);
+  reopened.tycoon.sequel("p1");
+  assert.deepEqual(reopened.tycoon.view().developing?.bugs, { count: 0, cleared: 0, fixing: false });
+  assert.equal(JSON.parse(staffJson(reopened, "p2")).bugs, undefined);
+  assert.equal(JSON.parse(staffJson(reopened, "p2")).bugsCleared, undefined);
+  assert.equal(JSON.parse(staffJson(reopened, "p2")).fixBugs, undefined);
+  assert.equal(JSON.parse(staffJson(reopened, "p1")).bugs, 2);
+  assert.equal(JSON.parse(staffJson(reopened, "p1")).bugsCleared, 1);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+});
+
 function txCount(db: GameDatabase): number {
   return Number((db.journey.db.prepare("SELECT COUNT(*) AS n FROM company_transactions").get() as { n: number }).n);
 }
 
 function dayPlanRows(db: GameDatabase) {
   return db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:dayplan%'").all();
+}
+
+function bugRows(db: GameDatabase) {
+  return db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:bugs%' OR id LIKE 'tycoon:fixBugs%'").all();
 }
 
 function finishSales(db: GameDatabase): void {

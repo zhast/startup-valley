@@ -968,6 +968,22 @@
               }
             }
           ]
+        },
+        "bugs": {
+          "anyOf": [
+            { "type": "null" },
+            { "type": "integer", "minimum": 0, "maximum": 5 },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["count", "cleared", "fixing"],
+              "properties": {
+                "count": { "type": "integer", "minimum": 0, "maximum": 5 },
+                "cleared": { "type": "integer", "minimum": 0 },
+                "fixing": { "type": "boolean" }
+              }
+            }
+          ]
         }
       }
     },
