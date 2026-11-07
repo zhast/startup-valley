@@ -522,6 +522,11 @@ export interface TycoonProductView {
   feature: TycoonProductFeature | null;
   /** Null while the day is Even, and after the product leaves development. */
   dayPlan: TycoonDayPlan | null;
+  /**
+   * While developing, the live remaining count, bugs already cleared, and whether the next office day fixes.
+   * After release, the stored count, or null when that count was 0.
+   */
+  bugs: TycoonBugs | number | null;
 }
 
 export interface TycoonUpgradeView {
@@ -786,6 +791,13 @@ export interface TycoonDayPlan {
   id: StatId;
   label: string;
   stat: StatId;
+}
+
+/** Live bugs on the product still on the bench. `count` is what is left. */
+export interface TycoonBugs {
+  count: number;
+  cleared: number;
+  fixing: boolean;
 }
 
 export interface TycoonSnapshot {
@@ -1408,6 +1420,12 @@ interface ProductSnapshot {
   featureDemand: boolean;
   /** Null spends the day on the even split. Design, tech, or hype folds personal craft. */
   dayPlan: StatId | null;
+  /** Bugs stored at release. 0 omits the key. Later sales do not recompute this. */
+  bugs: number;
+  /** Bugs already cleared during development. 0 omits the key. */
+  bugsCleared: number;
+  /** True when the next office day spends personal craft on clearing bugs. */
+  fixBugs: boolean;
 }
 
 interface ProductPort {
@@ -1457,6 +1475,9 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     feature: false,
     featureDemand: false,
     dayPlan: null,
+    bugs: 0,
+    bugsCleared: 0,
+    fixBugs: false,
   };
 }
 
@@ -1464,7 +1485,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, no rival cut, no feature, and an even day plan. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, no rival cut, no feature, an even day plan, no stored bugs, and not fixing. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -1496,6 +1517,9 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     feature?: unknown;
     featureDemand?: unknown;
     dayPlan?: unknown;
+    bugs?: unknown;
+    bugsCleared?: unknown;
+    fixBugs?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -1522,7 +1546,22 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     feature: body.feature === true,
     featureDemand: body.featureDemand === true,
     dayPlan: parseDayPlan(body.dayPlan),
+    bugs: parseStoredBugs(body.bugs),
+    bugsCleared: parseBugsCleared(body.bugsCleared),
+    fixBugs: body.fixBugs === true,
   };
+}
+
+function parseStoredBugs(value: unknown): number {
+  const count = Number(value);
+  if (!Number.isInteger(count) || count <= 0) return 0;
+  return Math.min(5, count);
+}
+
+function parseBugsCleared(value: unknown): number {
+  const cleared = Number(value);
+  if (!Number.isInteger(cleared) || cleared <= 0) return 0;
+  return cleared;
 }
 
 function parseDayPlan(value: unknown): StatId | null {
@@ -1544,6 +1583,19 @@ export function personalForDayPlan(personal: CraftPoints, plan: StatId | null): 
     tech: plan === "tech" ? total : 0,
     hype: plan === "hype" ? total : 0,
   };
+}
+
+/** Spread between the highest and lowest craft stat, one bug per four points, capped at 5. */
+export function bugCount(points: CraftPoints): number {
+  const high = Math.max(points.design, points.tech, points.hype);
+  const low = Math.min(points.design, points.tech, points.hype);
+  return Math.min(5, Math.floor((high - low) / 4));
+}
+
+/** Bugs one fix day clears from personal craft. Nothing clears when that craft is 0. */
+export function bugsClearedGain(personalTotal: number): number {
+  if (!Number.isInteger(personalTotal) || personalTotal <= 0) return 0;
+  return Math.max(1, Math.floor(personalTotal / 4));
 }
 
 function parseFocus(value: unknown): FocusStat | null {
@@ -1640,6 +1692,9 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
   if (stored.feature) body.feature = true;
   if (stored.featureDemand) body.featureDemand = true;
   if (stored.dayPlan) body.dayPlan = stored.dayPlan;
+  if (stored.bugs > 0) body.bugs = stored.bugs;
+  if (stored.bugsCleared > 0) body.bugsCleared = stored.bugsCleared;
+  if (stored.fixBugs) body.fixBugs = true;
   return JSON.stringify(body);
 }
 
@@ -1723,16 +1778,19 @@ export function reviewProduct(input: {
   engineBonus?: number;
   /** Days required for the ideal. Omitted uses the catalog length. */
   devDays?: number;
+  /** Stored bug count. Omitted or 0 leaves the base alone. 1–5 subtracts before the clamp. */
+  bugs?: number;
 }): TycoonReview {
   const carried = input.sequelBonus === SEQUEL_SCORE_BONUS ? SEQUEL_SCORE_BONUS : 0;
   const engineBonus = input.engineBonus === ENGINE_SCORE_BONUS ? ENGINE_SCORE_BONUS : 0;
+  const bugs = Number.isInteger(input.bugs) && (input.bugs ?? 0) >= 1 && (input.bugs ?? 0) <= 5 ? input.bugs ?? 0 : 0;
   const base = clampScore(baseScore(
     { design: input.design, tech: input.tech, hype: input.hype },
     input.topicId,
     input.typeId,
     input.researchBonus ?? 0,
     input.devDays ?? 0,
-  ) + carried + engineBonus);
+  ) + carried + engineBonus - bugs);
   const reviewers = REVIEWERS.map((reviewer, index) => {
     const jitter = (mixSeed(input.seed, input.productId, "review", index) % 3) - 1;
     const score = clampScore(base + jitter);
@@ -2290,6 +2348,25 @@ export class TycoonStore {
     });
   }
 
+  /** Arm the next office day to spend personal craft on bugs. No cash row and no clock move. */
+  fixBugs(): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.developingRow();
+      if (!row) throw new Error("No product is on the bench.");
+      const stored = parseProductSnapshot(row.staff_json);
+      if (stored.fixBugs) return this.journey.state();
+      const points = applyFocusPoints({
+        design: Number(row.design_points),
+        tech: Number(row.tech_points),
+        hype: Number(row.hype_points),
+      }, stored.focus);
+      if (Math.max(0, bugCount(points) - stored.bugsCleared) <= 0) throw new Error("No bugs to fix.");
+      stored.fixBugs = true;
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      return this.journey.state();
+    });
+  }
+
   /** One feature on the product on the bench. One extra office day. No cash row. */
   addFeature(): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
@@ -2417,6 +2494,7 @@ export class TycoonStore {
         sequelBonus: stored.scoreBonus,
         engineBonus: stored.engine === ENGINE_ID ? ENGINE_SCORE_BONUS : 0,
         devDays: required,
+        bugs: Math.max(0, bugCount(points) - stored.bugsCleared),
       });
       const day = this.day();
       const bonus = releaseResearchPoints(review.score);
@@ -2429,6 +2507,11 @@ export class TycoonStore {
       }
       if (stored.feature && !stored.featureDemand) {
         stored.featureDemand = true;
+        storeSnapshot = true;
+      }
+      const bugRemaining = Math.max(0, bugCount(points) - stored.bugsCleared);
+      if (bugRemaining > 0) {
+        stored.bugs = bugRemaining;
         storeSnapshot = true;
       }
       if (storeSnapshot) {
@@ -2509,6 +2592,9 @@ export class TycoonStore {
         feature: false,
         featureDemand: false,
         dayPlan: null,
+        bugs: 0,
+        bugsCleared: 0,
+        fixBugs: false,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -2770,8 +2856,18 @@ export class TycoonStore {
     const trainedToday = this.trainedIdsOn(day);
     const working = snapshot.staff.filter((person) => !trainedToday.has(person.id));
     const accrue = pointsStillAccrue(Number(row.dev_days), requiredDevDays(type.devDays, snapshot.sequelOf !== null, snapshot.size, snapshot.feature));
-    // Even keeps today's split. An emphasis folds personal craft only. Tools and the office stay on their own stats.
-    const personal = personalForDayPlan(accrue ? snapshotPoints(working) : { design: 0, tech: 0, hype: 0 }, snapshot.dayPlan);
+    const rawPersonal = accrue ? snapshotPoints(working) : { design: 0, tech: 0, hype: 0 };
+    // Fixing spends this day's personal craft on bugs. The day plan waits. Tools and the office stay on their own stats.
+    const fixing = snapshot.fixBugs;
+    let personal: CraftPoints;
+    if (fixing) {
+      const personalTotal = rawPersonal.design + rawPersonal.tech + rawPersonal.hype;
+      personal = { design: 0, tech: 0, hype: 0 };
+      if (personalTotal > 0) snapshot.bugsCleared += bugsClearedGain(personalTotal);
+      snapshot.fixBugs = false;
+    } else {
+      personal = personalForDayPlan(rawPersonal, snapshot.dayPlan);
+    }
     const bonus = accrue ? this.pointBonus() : { design: 0, tech: 0, hype: 0 };
     const people = accrue ? working.length : 0;
     const office = accrue && people > 0 ? this.officeBonus() : { design: 0, tech: 0, hype: 0 };
@@ -2793,6 +2889,9 @@ export class TycoonStore {
       day,
       row.id,
     );
+    if (fixing) {
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(snapshot), row.id);
+    }
     this.addResearchPoints(working.length);
     this.journey.recordCompanyChange(`tycoon:build:${row.id}:${day}`, day, 0, 0, 0, `Building ${row.name}`);
   }
@@ -3333,6 +3432,13 @@ export class TycoonStore {
       diary: this.diaryView(row.status, snapshot.diary),
       feature: this.featureView(row.status, snapshot.feature),
       dayPlan: this.dayPlanView(row.status, snapshot.dayPlan),
+      bugs: row.status === "developing"
+        ? {
+          count: Math.max(0, bugCount(points) - snapshot.bugsCleared),
+          cleared: snapshot.bugsCleared,
+          fixing: snapshot.fixBugs,
+        }
+        : (snapshot.bugs > 0 ? snapshot.bugs : null),
     };
   }
 

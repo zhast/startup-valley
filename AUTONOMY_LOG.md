@@ -2422,3 +2422,70 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Sixty-three PNGs in `/workspace/sv-proof/round-55/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-55 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey, on the card for the product in development. Day plan is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_day_plan.gd`.
+
+### Round 56 — 2026-11-06
+
+**What changed**
+- A lopsided build stores a small deterministic bug count. `bugCount(points) = min(5, floor((max - min) / 4))`. Founder 4/4/4 → 0. A Design-emphasized founder-only build that lands 12/0/0 → 3. Cap at 5.
+- During development the journey shows `{ count, cleared, fixing }` with the live remaining count. At release, store that final count as `bugs` on the product snapshot in `staff_json` (omit when 0). Each stored bug subtracts 1 from the base score before reviewers, then clampScore as today. Zero bugs leaves every existing sale. Ports, patches, and translations keep the stored review score.
+- `tycoon.fixBugs` takes `{}`. With nothing on the bench it fails with "No product is on the bench." When live bugs are 0 it fails with "No bugs to fix." Re-arm is idempotent. No fee, no ledger row, no clock move. Storage is `fixBugs: true` plus integer `bugsCleared` (omit when 0). A sequel starts clean. Older rows without the keys have 0 cleared and are not fixing.
+- Armed fixBugs redirects the next office day's personal craft: 0 personal d/t/h, and `bugsCleared += max(1, floor(personalTotal / 4))` when personalTotal > 0. Point-tool and office bonuses still land on their own stats. Day plan is ignored for personal that day because fixing is the day's job. Past the polish window nothing clears. Dev days still increment. Research still accrues. After that one tick the flag clears.
+- Skipping Fix bugs on a balanced build leaves the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- The row sits on the developing-product card, under Day plan and above New Product. The line is "Bugs · 0 · build looks balanced", or "Bugs · N · Fix bugs spends tomorrow's craft", or when armed "Fixing bugs · next office day clears craft into bugfix". Fix bugs is secondary when count > 0 and not armed. Hire stays the one primary action.
+
+**Proof**
+- `/workspace/sv-proof/round-56/64-bugs-offer.png` and `65-bugs-fixing.png`, captured by the verify-startup-valley skill. PROOF PASS. Sixty-five PNGs. The offer header reads "Spring 2 · Year 1 · $0.00 game cash · 0 reputation". The line "Bugs · 1 · Fix bugs spends tomorrow's craft" is one readable line. Fix bugs is a cream secondary button under that line. New Product sits under the button. Hire Mina · free stays orange in the footer and does not cover it. The fixing header is the same $0.00 and 0 reputation. The line is "Fixing bugs · next office day clears craft into bugfix", the Fix bugs button is gone, New Product is still under that line, and Hire does not cover it.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Hype week is the next slice. One optional push on the product on the bench: spend tomorrow's personal craft as pure hype for that one office day, with no fee and no ledger row. Skip it and every existing sale stays put. No new art. A real timing decision beside Day plan and Bugs.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. `test_tycoon_price.gd` passed this gate. The Round 46 flake was not seen. Left alone.
+5. `test_tycoon_upgrades.gd` passed this gate with exit 0 and TYCOON UPGRADES PASS. The Round 52 grep quirk was not seen. Left alone.
+6. The developing card is one line taller when bugs show, and one button taller when Fix bugs is offered. Shots 64 and 65 scroll the bugs line to the top of the journey, so the control sits above New Product and Hire does not cover it. The publisher, press demo, feature, and day plan stay in that same card, above bugs.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 124 tests, 122 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test checks bugCount 4/4/4 → 0 and 12/0/0 → 3, leaves a balanced newsletter at 20700/5 then 33300, stores bugs on a lopsided Design build and lowers the release score/cash, arms fixBugs, clears floor(personal/4) with no personal craft, keeps tools/office on their own stats, refuses no-product and no-bugs, treats re-arm as idempotent, starts a sequel clean, adds 0 past the polish window, and keeps bugsCleared across a reopen.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS
+- `test_tycoon_localization.gd` — TYCOON LOCALIZATION PASS
+- `test_tycoon_town_day.gd` — TYCOON TOWN DAY PASS
+- `test_tycoon_press_demo.gd` — TYCOON PRESS DEMO PASS
+- `test_tycoon_launch_trailer.gd` — TYCOON LAUNCH TRAILER PASS
+- `test_tycoon_dev_diary.gd` — TYCOON DEV DIARY PASS
+- `test_tycoon_rivals.gd` — TYCOON RIVALS PASS
+- `test_tycoon_features.gd` — TYCOON FEATURES PASS
+- `test_tycoon_day_plan.gd` — TYCOON DAY PLAN PASS
+- `test_tycoon_bugs.gd` — TYCOON BUGS PASS. The developing card reads "Bugs · 0 · build looks balanced". Fix bugs is hidden until a Design day leaves one live bug. Arming it spends nothing and shows the fixing line. The fix day clears to 0, adds no personal craft, and still counts as an office day. Skipping Fix bugs on a balanced build still pays 20700 cents and 5 fans, then 33300 cents. Reopening keeps bugsCleared. The rules script checks tools/office, the polish window, a sequel that starts clean, and "No product is on the bench." / "No bugs to fix."
+- `test_ui_company_redesign.gd` — 18171 checks, 0 failures, 0 captures. Existing fixtures omit `bugs` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Sixty-five PNGs in `/workspace/sv-proof/round-56/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-56 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey, on the card for the product in development. Bugs is optional and secondary. Skipping it on a balanced build leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_bugs.gd`.

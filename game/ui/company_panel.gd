@@ -1115,7 +1115,8 @@ func _publisher_card(product: Dictionary) -> void:
 	var press_name := str(press.get("name", "")).strip_edges()
 	var feature_name := str(feature.get("name", "")).strip_edges()
 	var plan_offered := _day_plan_offered(product)
-	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered: return
+	var bugs_offered := _bugs_offered(product)
+	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered and not bugs_offered: return
 	var card := _card()
 	card.name = "PublisherCard"
 	if not publisher_name.is_empty():
@@ -1147,6 +1148,8 @@ func _publisher_card(product: Dictionary) -> void:
 			feature_button.name = "AddFeature"
 	if plan_offered:
 		_day_plan_row(product, card)
+	if bugs_offered:
+		_bugs_row(product, card)
 
 func _sign_publisher() -> void:
 	_request("tycoon.signPublisher", {})
@@ -1210,6 +1213,39 @@ func _day_plan_row(product: Dictionary, card: Control) -> void:
 
 func _set_day_plan(stat: String) -> void:
 	_request("tycoon.setDayPlan", {"stat": stat})
+
+func _bugs_offered(product: Dictionary) -> bool:
+	return product.get("bugs") is Dictionary
+
+func _bugs_text(product: Dictionary) -> String:
+	var value: Variant = product.get("bugs", null)
+	if not value is Dictionary:
+		return ""
+	var bugs := value as Dictionary
+	var count := int(bugs.get("count", 0))
+	var fixing := bool(bugs.get("fixing", false))
+	if fixing:
+		return "Fixing bugs · next office day clears craft into bugfix"
+	if count <= 0:
+		return "Bugs · 0 · build looks balanced"
+	return "Bugs · %d · Fix bugs spends tomorrow's craft" % count
+
+func _bugs_row(product: Dictionary, card: Control) -> void:
+	var line := _label(_bugs_text(product), false, card)
+	line.name = "BugsOffer"
+	var value: Variant = product.get("bugs", null)
+	if not value is Dictionary:
+		return
+	var bugs := value as Dictionary
+	var count := int(bugs.get("count", 0))
+	var fixing := bool(bugs.get("fixing", false))
+	if count <= 0 or fixing:
+		return
+	var button := _button("Fix bugs", _fix_bugs, false, true, card, "secondary")
+	button.name = "FixBugs"
+
+func _fix_bugs() -> void:
+	_request("tycoon.fixBugs", {})
 
 func _trailer_offer(product: Dictionary, card: Control) -> void:
 	var value: Variant = product.get("trailer", null)
