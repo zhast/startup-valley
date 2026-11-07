@@ -403,6 +403,7 @@ func _run() -> void:
 	await _rival_proof()
 	await _feature_proof()
 	await _day_plan_proof()
+	await _bugs_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -1390,6 +1391,73 @@ func _day_plan_proof() -> void:
 	var header := label_named("OfficeDate")
 	check(header != null and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at $0 and 0 reputation")
 	await snap("63-dayplan-design", label_named("DayPlanOffer"))
+
+
+func seed_bugs_offer(data_dir: String) -> bool:
+	var database := ProjectSettings.globalize_path("res://../harness/src/database.ts")
+	var tsx := ProjectSettings.globalize_path("res://../harness/node_modules/tsx/dist/cli.mjs")
+	var node := OS.get_environment("STARTUP_VALLEY_NODE").strip_edges()
+	if node.is_empty():
+		for dir: String in OS.get_environment("PATH").split(":"):
+			if FileAccess.file_exists(dir.path_join("node")):
+				node = dir.path_join("node")
+				break
+	if node.is_empty():
+		node = "/home/box/.local/node22/bin/node"
+	var script_path := data_dir.path_join("seed-bugs.mjs")
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst db = new GameDatabase(root + '/startup-valley.sqlite', root + '/company-project');\ndb.tycoon.start('crypto', 'newsletter', []);\ndb.tycoon.setDayPlan('design');\ndb.endDay(1);\nconst view = db.tycoon.view().developing;\nconst company = db.journey.state().company;\ndb.close();\nconst bugs = view && view.bugs;\nif (company.cashCents !== 0 || company.reputation !== 0 || !bugs || bugs.count < 1 || bugs.cleared !== 0 || bugs.fixing || view.design !== 6 || view.tech !== 0 || view.hype !== 0 || view.devDays !== 1) { console.error(JSON.stringify({ company: company, view: view })); process.exit(2); }\n" % JSON.stringify(database)
+	var file := FileAccess.open(script_path, FileAccess.WRITE)
+	if file == null:
+		check(false, "Could not write the bugs seed script")
+		return false
+	file.store_string(script)
+	file.close()
+	var output: Array = []
+	var code := OS.execute(node, PackedStringArray([tsx, script_path, data_dir]), output, true)
+	check(code == 0, "Seeded a lopsided newsletter with live bugs (%s)" % " ".join(output))
+	return code == 0
+
+func _bugs_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-bugs-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_bugs_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var line := label_named("BugsOffer")
+	var card := main.company_panel.find_child("PublisherCard", true, false) as Control
+	var fix := main.company_panel.find_child("FixBugs", true, false) as Button
+	check(card != null and line != null and fix != null and card.is_ancestor_of(line) and card.is_ancestor_of(fix) and line.text.begins_with("Bugs · ") and line.text.contains("Fix bugs spends tomorrow's craft"), "The journey card names the bugs offer")
+	check(not fix.disabled and str(fix.get_meta("cozy_variant", "")) == "secondary" and fix.text == "Fix bugs", "Fix bugs is a secondary button")
+	var hire := button_named("Hire Mina")
+	check(hire != null and str(hire.get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside bugs")
+	await reveal(line)
+	var footer := main.company_panel._footer
+	check(fix.get_global_rect().end.y <= footer.get_global_rect().position.y, "Bugs sits above Hire")
+	var new_product := button_named("New Product")
+	check(new_product != null and fix.get_global_rect().end.y <= new_product.get_global_rect().position.y, "Bugs sits above New Product")
+	check(company_cash() == 0 and company_reputation() == 0 and int(developing().get("devDays", -1)) == 1, "The bugs offer has not spent cash")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at $0 and 0 reputation")
+	await snap("64-bugs-offer", line)
+	await click(fix)
+	await wait_until(func() -> bool:
+		return not main.company_panel.busy and label_named("BugsOffer") != null and label_named("BugsOffer").text == "Fixing bugs · next office day clears craft into bugfix"
+	, "Arming Fix bugs shows the fixing line")
+	check(company_cash() == 0 and company_reputation() == 0 and int(developing().get("devDays", -1)) == 1, "Arming Fix bugs spends no cash and no extra day")
+	check(main.company_panel.find_child("FixBugs", true, false) == null, "Fix bugs hides once armed")
+	header = label_named("OfficeDate")
+	check(header != null and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at $0 and 0 reputation after arming")
+	await snap("65-bugs-fixing", label_named("BugsOffer"))
 
 func _proof_money(cents: int) -> String:
 	var integer := str(absi(cents) / 100)
