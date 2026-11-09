@@ -612,6 +612,7 @@ func _selling_cards() -> void:
 		var review: Dictionary = product.get("review", {}) if product.get("review") is Dictionary else {}
 		var title := _label("%s · %d/10 · $%s · +%d fans" % [product.get("name", "Product"), int(review.get("score", 0)), _money(int(product.get("salesCents", 0))), int(product.get("fans", 0))], false, card)
 		title.name = "SellingTitle_%s" % product_id
+		_show_early_access(product, "SellingEarly_%s" % product_id, card)
 		var days := _label("Sales day %d of %d" % [int(product.get("salesDays", 0)), int(product.get("salesDaysTotal", 4))], false, card, "meta")
 		days.name = "SellingDays_%s" % product_id
 		_trailer_offer(product, card)
@@ -642,6 +643,7 @@ func _finished_cards() -> void:
 		var review: Dictionary = product.get("review", {}) if product.get("review") is Dictionary else {}
 		var title := _label("%s · %d/10 · $%s · +%d fans" % [product.get("name", "Product"), int(review.get("score", 0)), _money(int(product.get("salesCents", 0))), int(product.get("fans", 0))], false, card)
 		title.name = "FinishedTitle_%s" % product_id
+		_show_early_access(product, "FinishedEarly_%s" % product_id, card)
 		var done := _label("Sales finished.", false, card, "meta")
 		done.name = "FinishedDays_%s" % product_id
 		_diary_offer(product, card)
@@ -1117,7 +1119,8 @@ func _publisher_card(product: Dictionary) -> void:
 	var plan_offered := _day_plan_offered(product)
 	var bugs_offered := _bugs_offered(product)
 	var crunch_offered := _crunch_offered(product)
-	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered and not bugs_offered and not crunch_offered: return
+	var early_offered := _early_access_offered(product)
+	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered and not bugs_offered and not crunch_offered and not early_offered: return
 	var card := _card()
 	card.name = "PublisherCard"
 	if not publisher_name.is_empty():
@@ -1153,6 +1156,8 @@ func _publisher_card(product: Dictionary) -> void:
 		_bugs_row(product, card)
 	if crunch_offered:
 		_crunch_row(product, card)
+	if early_offered:
+		_early_access_row(product, card)
 
 func _sign_publisher() -> void:
 	_request("tycoon.signPublisher", {})
@@ -1281,6 +1286,51 @@ func _crunch_row(product: Dictionary, card: Control) -> void:
 
 func _arm_crunch() -> void:
 	_request("tycoon.crunch", {})
+
+func _early_access_offered(product: Dictionary) -> bool:
+	return product.get("earlyAccess") is Dictionary
+
+func _early_access_text(product: Dictionary) -> String:
+	var value: Variant = product.get("earlyAccess", null)
+	if not value is Dictionary:
+		return ""
+	var offer := value as Dictionary
+	if bool(offer.get("enabled", false)):
+		return "Early access · ship now, −%d score" % int(offer.get("penalty", 0))
+	var reason := str(offer.get("reason", "")).strip_edges()
+	if reason.is_empty():
+		return ""
+	return "Early access · %s" % reason
+
+func _early_access_row(product: Dictionary, card: Control) -> void:
+	var text := _early_access_text(product)
+	if text.is_empty():
+		return
+	var line := _label(text, false, card)
+	line.name = "EarlyAccessOffer"
+	var value: Variant = product.get("earlyAccess", null)
+	if not value is Dictionary or not bool((value as Dictionary).get("enabled", false)):
+		return
+	var button := _button("Ship early", _ship_early, false, true, card, "secondary")
+	button.name = "ShipEarly"
+
+func _ship_early() -> void:
+	var developing: Dictionary = _tycoon().get("developing", {}) if _tycoon().get("developing") is Dictionary else {}
+	_release_focus_id = str(developing.get("id", ""))
+	_request("tycoon.earlyAccess", {})
+
+func _early_shipped(product: Dictionary) -> bool:
+	var value: Variant = product.get("earlyAccess", null)
+	if not value is Dictionary:
+		return false
+	var offer := value as Dictionary
+	return not bool(offer.get("enabled", false)) and int(offer.get("penalty", 0)) > 0
+
+func _show_early_access(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	if not _early_shipped(product):
+		return
+	var line := _label("Early access", false, parent, "action")
+	line.name = node_name
 
 func _trailer_offer(product: Dictionary, card: Control) -> void:
 	var value: Variant = product.get("trailer", null)
@@ -1493,6 +1543,7 @@ func _release_screen() -> void:
 	_heading("Release day", str(product.get("name", "Product")))
 	var score := _label("Score %d / 10" % int(review.get("score", 0)), true)
 	score.name = "ReleaseScore"
+	_show_early_access(product, "ReleaseEarly")
 	_label("Fit · %s" % _fit_word(str(product.get("fit", ""))), false, null, "meta")
 	for item: Variant in review.get("reviewers", []) as Array:
 		if not item is Dictionary: continue
@@ -1530,6 +1581,7 @@ func _product_history(tycoon: Dictionary) -> void:
 		var product := item as Dictionary
 		var review: Dictionary = product.get("review", {}) if product.get("review") is Dictionary else {}
 		_label("%s · %d/10 · $%s · +%d fans" % [product.get("name", "Product"), int(review.get("score", 0)), _money(int(product.get("salesCents", 0))), int(product.get("fans", 0))], false, card)
+		_show_early_access(product, "EarlyAccessHistory_%s" % str(product.get("id", "")), card)
 		_show_research_fit(product, "ResearchFitJourney", card)
 		_show_launch_price(product, "LaunchPrice", card)
 		_show_marketing(product, "MarketingLine", card)
