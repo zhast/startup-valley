@@ -2489,3 +2489,74 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Sixty-five PNGs in `/workspace/sv-proof/round-56/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-56 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey, on the card for the product in development. Bugs is optional and secondary. Skipping it on a balanced build leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_bugs.gd`.
+
+### Round 57 — 2026-11-09
+
+**What changed**
+- Hype week was the roadmap's next slice. It duplicated Day plan's Hype emphasis, which already puts personal craft onto hype, so this slice shipped Crunch instead.
+- `tycoon.crunch` takes `{}`. With nothing on the bench, including after release, it fails with "No product is on the bench." While the team is resting it fails with "The team is still tired." Arming again while already armed is idempotent. No fee, no ledger row, no clock move.
+- Storage is on the product snapshot in `staff_json`: `crunch` is `armed` or `resting` (omit when neither) and integer `crunchBugs` (omit when 0). No new SQL column. Reads do not rewrite `staff_json`. A sequel starts clean. An older row with no keys is not crunching and has 0 crunch bugs.
+- The next office day with crunch armed doubles each non-training person's personal design, tech, and hype after Day plan is applied. A Design day plan doubles the Design total. Tool bonuses and the office bonus stay on their own stats. Then `crunch` becomes `resting` and `crunchBugs` gains 1. A founder alone goes from 2/2/2 to 4/4/4. With all three point tools and the Open Floor, a Design crunch day is 14/2/1, and the rest day adds the tools and office only, landing at 16/4/2.
+- The following office day with crunch resting sets personal craft to 0. Tool and office bonuses still apply. Then the crunch flag clears. Dev days and research points still accrue on both days.
+- Past `pointsStillAccrue`, personal craft is already 0. An armed crunch still advances to resting and still adds the bug. Crunching inside the polish window is a mistake.
+- If fixBugs is armed on the same day as an armed crunch, fixBugs wins that day. Personal goes to clearing, and the clear uses the doubled total, so a founder Design total of 12 clears 3. Crunch still advances to resting and still adds the bug. A rest day zeroes personal before a same-day armed fix, so that fix clears nothing and still spends the fix flag.
+- Live bugs are `Math.min(5, Math.max(0, bugCount(points) + crunchBugs - bugsCleared))`. Release stores that count as `bugs`. Skipping Crunch leaves the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- The row sits on the developing-product card, under Bugs and above New Product. Idle: "Crunch · double craft tomorrow, then a rest day and +1 bug" with one secondary Crunch button. Armed: "Crunching · tomorrow's craft counts double" and the button is gone. Resting: "Resting · team recovers tomorrow" and the button is gone. Hire stays the one primary action. Nothing on this row is orange. The developing product carries `crunch: { state }` of `idle`, `armed`, or `resting`. A payload without it draws no control. After release the field is null.
+
+**Proof**
+- `/workspace/sv-proof/round-57/66-crunch-offer.png` and `67-crunch-resting.png`, captured by the verify-startup-valley skill. PROOF PASS. Sixty-seven PNGs. The offer header reads "Spring 1 · Year 1 · $0.00 game cash · 0 reputation". The line "Crunch · double craft tomorrow, then a rest day and +1 bug" is one readable line. Crunch is a cream secondary button under that line. New Product sits under the button. Hire Mina · free stays orange in the footer and does not cover it. The resting header is "Spring 2 · Year 1 · $0.00 game cash · 0 reputation". The line is "Resting · team recovers tomorrow", the Crunch button is gone, New Product is still under that line, and Hire does not cover it.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Early access is the next slice. One optional early ship on the product still on the bench, once it has at least one office day and is still short of the required days. Shipping early stores a small score penalty and starts the sales window that day. Skip it and the release gate stays put, so the first Crypto Alpha Newsletter still lands at 20700 cents and 5 fans. No fee, no ledger row, no new art.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. `test_tycoon_price.gd` passed this gate. The Round 46 flake was not seen. Left alone.
+5. `test_tycoon_upgrades.gd` passed this gate with exit 0 and TYCOON UPGRADES PASS. The Round 52 grep quirk was not seen. Left alone.
+6. The developing card is one line taller when crunch shows, and one button taller when Crunch is offered. Shots 66 and 67 scroll the crunch line to the top of the journey, so the control sits above New Product and Hire does not cover it. The publisher, press demo, feature, day plan, and bugs stay in that same card, above crunch.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 125 tests, 123 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test doubles personal craft after the day plan, leaves tool and office bonuses on their own stats, rests the next day at 0 personal, clears the flag, raises live bugs and lowers the release score and opening cash, still adds the bug inside the polish window, lets fixBugs use the doubled total on the same day, treats a rest-day fix as a clear of 0, starts a sequel clean, refuses a call with nothing on the bench, refuses a call while resting, treats re-arm as idempotent, keeps the state across a reopen, and leaves a skipped crunch at 20700 cents, 5 fans, then 33300 cents with no crunch rows.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS
+- `test_tycoon_localization.gd` — TYCOON LOCALIZATION PASS
+- `test_tycoon_town_day.gd` — TYCOON TOWN DAY PASS
+- `test_tycoon_press_demo.gd` — TYCOON PRESS DEMO PASS
+- `test_tycoon_launch_trailer.gd` — TYCOON LAUNCH TRAILER PASS
+- `test_tycoon_dev_diary.gd` — TYCOON DEV DIARY PASS
+- `test_tycoon_rivals.gd` — TYCOON RIVALS PASS
+- `test_tycoon_features.gd` — TYCOON FEATURES PASS
+- `test_tycoon_day_plan.gd` — TYCOON DAY PLAN PASS
+- `test_tycoon_bugs.gd` — TYCOON BUGS PASS
+- `test_tycoon_crunch.gd` — TYCOON CRUNCH PASS. The developing card reads "Crunch · double craft tomorrow, then a rest day and +1 bug". Crunch is secondary, under Bugs, and above New Product. Hire Mina stays primary. The picker and the build screen have no crunch control. Skipping it still pays 20700 cents and 5 fans, then 33300 cents. Arming it spends nothing and shows the crunching line. The next office day shows "Resting · team recovers tomorrow", lands at 4/4/4, and shows one live bug. Reopening keeps that line and those points. The rules script checks the tool and office split, the polish window, fixBugs on the same day, a sequel that starts clean, and "No product is on the bench." / "The team is still tired."
+- `test_ui_company_redesign.gd` — 18171 checks, 0 failures, 0 captures. Existing fixtures omit `crunch` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Sixty-seven PNGs in `/workspace/sv-proof/round-57/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-57 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey, on the card for the product in development. Crunch is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_crunch.gd`.
