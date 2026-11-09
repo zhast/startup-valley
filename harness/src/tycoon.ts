@@ -11,6 +11,8 @@ import { JourneyStore } from "./journey.js";
 export const DEFAULT_TYCOON_SEED = 26021;
 export const SALES_WINDOW_DAYS = 4;
 export const EXTRA_POLISH_DAYS = 2;
+/** Score points subtracted per missing office day when a product ships early. */
+export const EARLY_ACCESS_PENALTY_CAP = 3;
 export const TRAIN_COST_PER_LEVEL_CENTS = 15000;
 export const STAT_CAP = 10;
 export const STATS = ["design", "tech", "hype"] as const;
@@ -529,6 +531,11 @@ export interface TycoonProductView {
   bugs: TycoonBugs | number | null;
   /** While developing, idle, armed, or resting. Null after the product leaves the bench. */
   crunch: TycoonCrunch | null;
+  /**
+   * While developing, whether early access can ship and what it costs.
+   * After release, the stored penalty when this product shipped early, otherwise null.
+   */
+  earlyAccess: TycoonEarlyAccess | null;
 }
 
 export interface TycoonUpgradeView {
@@ -805,6 +812,15 @@ export interface TycoonBugs {
 /** Crunch on the product still on the bench. Idle omits the stored flag. */
 export interface TycoonCrunch {
   state: "idle" | "armed" | "resting";
+}
+
+/** Early access on the bench, or the stored penalty after an early ship. */
+export interface TycoonEarlyAccess {
+  enabled: boolean;
+  reason: string;
+  daysLeft: number;
+  /** Score points this ship subtracts. Capped. 0 when the button cannot ship. */
+  penalty: number;
 }
 
 export interface TycoonSnapshot {
@@ -1437,6 +1453,10 @@ interface ProductSnapshot {
   crunch: "armed" | "resting" | null;
   /** Bugs added by armed crunch days. 0 omits the key. */
   crunchBugs: number;
+  /** True when this product shipped before its required days. */
+  earlyAccess: boolean;
+  /** Missing office days at that early ship. 0 omits the key. The score penalty caps this. */
+  earlyDays: number;
 }
 
 interface ProductPort {
@@ -1491,6 +1511,8 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     fixBugs: false,
     crunch: null,
     crunchBugs: 0,
+    earlyAccess: false,
+    earlyDays: 0,
   };
 }
 
@@ -1498,7 +1520,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, no rival cut, no feature, an even day plan, no stored bugs, not fixing, not crunching, and 0 crunch bugs. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, no rival cut, no feature, an even day plan, no stored bugs, not fixing, not crunching, 0 crunch bugs, and not an early ship. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -1535,6 +1557,8 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     fixBugs?: unknown;
     crunch?: unknown;
     crunchBugs?: unknown;
+    earlyAccess?: unknown;
+    earlyDays?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -1566,6 +1590,8 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     fixBugs: body.fixBugs === true,
     crunch: parseCrunch(body.crunch),
     crunchBugs: parseCrunchBugs(body.crunchBugs),
+    earlyAccess: body.earlyAccess === true,
+    earlyDays: parseEarlyDays(body.earlyDays),
   };
 }
 
@@ -1590,6 +1616,19 @@ function parseCrunchBugs(value: unknown): number {
   const count = Number(value);
   if (!Number.isInteger(count) || count <= 0) return 0;
   return count;
+}
+
+function parseEarlyDays(value: unknown): number {
+  const days = Number(value);
+  if (!Number.isInteger(days) || days <= 0) return 0;
+  return days;
+}
+
+/** One point per missing office day, and no more than the cap. Zero when the count is not a positive integer. */
+export function earlyAccessPenalty(missingDays: number): number {
+  const missing = Number(missingDays);
+  if (!Number.isInteger(missing) || missing <= 0) return 0;
+  return Math.min(EARLY_ACCESS_PENALTY_CAP, missing);
 }
 
 function parseDayPlan(value: unknown): StatId | null {
@@ -1730,6 +1769,10 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
   if (stored.fixBugs) body.fixBugs = true;
   if (stored.crunch) body.crunch = stored.crunch;
   if (stored.crunchBugs > 0) body.crunchBugs = stored.crunchBugs;
+  if (stored.earlyAccess) {
+    body.earlyAccess = true;
+    if (stored.earlyDays > 0) body.earlyDays = stored.earlyDays;
+  }
   return JSON.stringify(body);
 }
 
@@ -1815,17 +1858,20 @@ export function reviewProduct(input: {
   devDays?: number;
   /** Stored bug count. Omitted or 0 leaves the base alone. 1–5 subtracts before the clamp. */
   bugs?: number;
+  /** Missing office days on an early ship. Omitted is 0. Capped, then subtracted with bugs. */
+  earlyPenalty?: number;
 }): TycoonReview {
   const carried = input.sequelBonus === SEQUEL_SCORE_BONUS ? SEQUEL_SCORE_BONUS : 0;
   const engineBonus = input.engineBonus === ENGINE_SCORE_BONUS ? ENGINE_SCORE_BONUS : 0;
   const bugs = Number.isInteger(input.bugs) && (input.bugs ?? 0) >= 1 && (input.bugs ?? 0) <= 5 ? input.bugs ?? 0 : 0;
+  const early = earlyAccessPenalty(input.earlyPenalty ?? 0);
   const base = clampScore(baseScore(
     { design: input.design, tech: input.tech, hype: input.hype },
     input.topicId,
     input.typeId,
     input.researchBonus ?? 0,
     input.devDays ?? 0,
-  ) + carried + engineBonus - bugs);
+  ) + carried + engineBonus - bugs - early);
   const reviewers = REVIEWERS.map((reviewer, index) => {
     const jitter = (mixSeed(input.seed, input.productId, "review", index) % 3) - 1;
     const score = clampScore(base + jitter);
@@ -2402,6 +2448,29 @@ export class TycoonStore {
     });
   }
 
+  /**
+   * Ship the bench product before its required days, after at least one office day.
+   * Same release path as Release. Skipped days add no craft. The stored penalty is extra.
+   * No cash row and no clock move.
+   */
+  earlyAccess(): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.developingRow();
+      if (!row) throw new Error("No product is on the bench.");
+      const type = typeById(row.type_id);
+      if (!type) throw new Error("Unknown product type");
+      const stored = parseProductSnapshot(row.staff_json);
+      const required = requiredDevDays(type.devDays, stored.sequelOf !== null, stored.size, stored.feature);
+      const worked = Number(row.dev_days);
+      if (worked < 1) throw new Error("Work one office day first.");
+      const missing = required - worked;
+      if (missing <= 0) throw new Error("Required days are done. Use Release.");
+      stored.earlyAccess = true;
+      stored.earlyDays = missing;
+      return this.finishRelease(row, stored, required);
+    });
+  }
+
   /** Arm the next office day to double personal craft. The day after rests. No cash row and no clock move. */
   crunch(): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
@@ -2524,62 +2593,70 @@ export class TycoonStore {
           ? "Keep building. This product needs 1 more office day."
           : `Keep building. This product needs ${remaining} more office days.`);
       }
-      const topicId = asTopic(row.topic_id);
-      const typeId = type.id;
-      const points = applyFocusPoints({
-        design: Number(row.design_points),
-        tech: Number(row.tech_points),
-        hype: Number(row.hype_points),
-      }, stored.focus);
-      const bugRemaining = liveBugs(points, stored.crunchBugs, stored.bugsCleared);
-      const review = reviewProduct({
-        seed: this.seed(),
-        productId: row.id,
-        topicId,
-        typeId,
-        design: points.design,
-        tech: points.tech,
-        hype: points.hype,
-        researchBonus: stored.researchBonus,
-        sequelBonus: stored.scoreBonus,
-        engineBonus: stored.engine === ENGINE_ID ? ENGINE_SCORE_BONUS : 0,
-        devDays: required,
-        bugs: bugRemaining,
-      });
-      const day = this.day();
-      const bonus = releaseResearchPoints(review.score);
-      this.db.prepare("UPDATE tycoon_products SET status = 'released', released_day = ?, review_json = ?, release_research = ? WHERE id = ?")
-        .run(day, JSON.stringify(review), bonus, row.id);
-      let storeSnapshot = false;
-      if (rivalForDay(day).topicId === topicId && !stored.rivalCut) {
-        stored.rivalCut = true;
-        storeSnapshot = true;
-      }
-      if (stored.feature && !stored.featureDemand) {
-        stored.featureDemand = true;
-        storeSnapshot = true;
-      }
-      if (bugRemaining > 0) {
-        stored.bugs = bugRemaining;
-        storeSnapshot = true;
-      }
-      if (storeSnapshot) {
-        this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
-      }
-      this.addResearchPoints(bonus);
-      this.applySale(this.row(row.id)!, day);
-      if (stored.contract) {
-        this.journey.recordCompanyChange(
-          `tycoon:contract:${row.id}`,
-          day,
-          stored.contract.bonusCents,
-          stored.contract.bonusCents,
-          0,
-          `Contract: ${stored.contract.client}`,
-        );
-      }
-      return this.journey.state();
+      return this.finishRelease(row, stored, required);
     });
+  }
+
+  /** Reviews, launch-day sales, the contract bonus, and the stored release flags. Caller is already in a transaction. */
+  private finishRelease(row: ProductRow, stored: ProductSnapshot, required: number): ReturnType<JourneyStore["state"]> {
+    const type = typeById(row.type_id);
+    if (!type) throw new Error("Unknown product type");
+    const topicId = asTopic(row.topic_id);
+    const typeId = type.id;
+    const points = applyFocusPoints({
+      design: Number(row.design_points),
+      tech: Number(row.tech_points),
+      hype: Number(row.hype_points),
+    }, stored.focus);
+    const bugRemaining = liveBugs(points, stored.crunchBugs, stored.bugsCleared);
+    const review = reviewProduct({
+      seed: this.seed(),
+      productId: row.id,
+      topicId,
+      typeId,
+      design: points.design,
+      tech: points.tech,
+      hype: points.hype,
+      researchBonus: stored.researchBonus,
+      sequelBonus: stored.scoreBonus,
+      engineBonus: stored.engine === ENGINE_ID ? ENGINE_SCORE_BONUS : 0,
+      devDays: required,
+      bugs: bugRemaining,
+      earlyPenalty: stored.earlyAccess ? stored.earlyDays : 0,
+    });
+    const day = this.day();
+    const bonus = releaseResearchPoints(review.score);
+    this.db.prepare("UPDATE tycoon_products SET status = 'released', released_day = ?, review_json = ?, release_research = ? WHERE id = ?")
+      .run(day, JSON.stringify(review), bonus, row.id);
+    let storeSnapshot = stored.earlyAccess;
+    if (rivalForDay(day).topicId === topicId && !stored.rivalCut) {
+      stored.rivalCut = true;
+      storeSnapshot = true;
+    }
+    if (stored.feature && !stored.featureDemand) {
+      stored.featureDemand = true;
+      storeSnapshot = true;
+    }
+    if (bugRemaining > 0) {
+      stored.bugs = bugRemaining;
+      storeSnapshot = true;
+    }
+    if (storeSnapshot) {
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+    }
+    this.addResearchPoints(bonus);
+    this.applySale(this.row(row.id)!, day);
+    if (stored.contract) {
+      this.journey.recordCompanyChange(
+        `tycoon:contract:${row.id}`,
+        day,
+        stored.contract.bonusCents,
+        stored.contract.bonusCents,
+        0,
+        `Contract: ${stored.contract.client}`,
+      );
+    }
+    return this.journey.state();
   }
 
   acceptContract(): ReturnType<JourneyStore["state"]> {
@@ -2646,6 +2723,8 @@ export class TycoonStore {
         fixBugs: false,
         crunch: null,
         crunchBugs: 0,
+        earlyAccess: false,
+        earlyDays: 0,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -3502,7 +3581,28 @@ export class TycoonStore {
         }
         : (snapshot.bugs > 0 ? snapshot.bugs : null),
       crunch: this.crunchView(row.status, snapshot.crunch),
+      earlyAccess: row.status === "developing"
+        ? this.earlyAccessOffer(devDays, required)
+        : this.earlyAccessShipped(snapshot),
     };
+  }
+
+  /** The offer while the product is on the bench. Day 0 and a finished build cannot ship early. */
+  private earlyAccessOffer(devDays: number, required: number): TycoonEarlyAccess {
+    const daysLeft = Math.max(0, required - devDays);
+    if (devDays < 1) {
+      return { enabled: false, reason: "Work one office day first.", daysLeft, penalty: 0 };
+    }
+    if (daysLeft <= 0) {
+      return { enabled: false, reason: "Required days are done. Use Release.", daysLeft: 0, penalty: 0 };
+    }
+    return { enabled: true, reason: "", daysLeft, penalty: earlyAccessPenalty(daysLeft) };
+  }
+
+  /** Null when this product did not ship early. The penalty is the capped score cost. */
+  private earlyAccessShipped(snapshot: ProductSnapshot): TycoonEarlyAccess | null {
+    if (!snapshot.earlyAccess) return null;
+    return { enabled: false, reason: "", daysLeft: 0, penalty: earlyAccessPenalty(snapshot.earlyDays) };
   }
 
   /** Idle while the product is on the bench. Hidden once it ships. */
