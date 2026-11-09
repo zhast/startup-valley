@@ -1116,7 +1116,8 @@ func _publisher_card(product: Dictionary) -> void:
 	var feature_name := str(feature.get("name", "")).strip_edges()
 	var plan_offered := _day_plan_offered(product)
 	var bugs_offered := _bugs_offered(product)
-	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered and not bugs_offered: return
+	var crunch_offered := _crunch_offered(product)
+	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered and not bugs_offered and not crunch_offered: return
 	var card := _card()
 	card.name = "PublisherCard"
 	if not publisher_name.is_empty():
@@ -1150,6 +1151,8 @@ func _publisher_card(product: Dictionary) -> void:
 		_day_plan_row(product, card)
 	if bugs_offered:
 		_bugs_row(product, card)
+	if crunch_offered:
+		_crunch_row(product, card)
 
 func _sign_publisher() -> void:
 	_request("tycoon.signPublisher", {})
@@ -1246,6 +1249,38 @@ func _bugs_row(product: Dictionary, card: Control) -> void:
 
 func _fix_bugs() -> void:
 	_request("tycoon.fixBugs", {})
+
+func _crunch_offered(product: Dictionary) -> bool:
+	var value: Variant = product.get("crunch", null)
+	if not value is Dictionary:
+		return false
+	var state := str((value as Dictionary).get("state", "")).strip_edges()
+	return state == "idle" or state == "armed" or state == "resting"
+
+func _crunch_text(product: Dictionary) -> String:
+	var value: Variant = product.get("crunch", null)
+	if not value is Dictionary:
+		return ""
+	var state := str((value as Dictionary).get("state", "")).strip_edges()
+	if state == "armed":
+		return "Crunching · tomorrow's craft counts double"
+	if state == "resting":
+		return "Resting · team recovers tomorrow"
+	return "Crunch · double craft tomorrow, then a rest day and +1 bug"
+
+func _crunch_row(product: Dictionary, card: Control) -> void:
+	var line := _label(_crunch_text(product), false, card)
+	line.name = "CrunchOffer"
+	var value: Variant = product.get("crunch", null)
+	if not value is Dictionary:
+		return
+	if str((value as Dictionary).get("state", "")).strip_edges() != "idle":
+		return
+	var button := _button("Crunch", _arm_crunch, false, true, card, "secondary")
+	button.name = "Crunch"
+
+func _arm_crunch() -> void:
+	_request("tycoon.crunch", {})
 
 func _trailer_offer(product: Dictionary, card: Control) -> void:
 	var value: Variant = product.get("trailer", null)

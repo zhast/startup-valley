@@ -404,6 +404,7 @@ func _run() -> void:
 	await _feature_proof()
 	await _day_plan_proof()
 	await _bugs_proof()
+	await _crunch_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -1458,6 +1459,85 @@ func _bugs_proof() -> void:
 	header = label_named("OfficeDate")
 	check(header != null and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at $0 and 0 reputation after arming")
 	await snap("65-bugs-fixing", label_named("BugsOffer"))
+
+func seed_crunch_offer(data_dir: String) -> bool:
+	var database := ProjectSettings.globalize_path("res://../harness/src/database.ts")
+	var tsx := ProjectSettings.globalize_path("res://../harness/node_modules/tsx/dist/cli.mjs")
+	var node := OS.get_environment("STARTUP_VALLEY_NODE").strip_edges()
+	if node.is_empty():
+		for dir: String in OS.get_environment("PATH").split(":"):
+			if FileAccess.file_exists(dir.path_join("node")):
+				node = dir.path_join("node")
+				break
+	if node.is_empty():
+		node = "/home/box/.local/node22/bin/node"
+	var script_path := data_dir.path_join("seed-crunch.mjs")
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst db = new GameDatabase(root + '/startup-valley.sqlite', root + '/company-project');\ndb.tycoon.start('crypto', 'newsletter', []);\nconst view = db.tycoon.view().developing;\nconst company = db.journey.state().company;\ndb.close();\nconst crunch = view && view.crunch;\nif (company.cashCents !== 0 || company.reputation !== 0 || !crunch || crunch.state !== 'idle' || view.devDays !== 0) { console.error(JSON.stringify({ company: company, view: view })); process.exit(2); }\n" % JSON.stringify(database)
+	var file := FileAccess.open(script_path, FileAccess.WRITE)
+	if file == null:
+		check(false, "Could not write the crunch seed script")
+		return false
+	file.store_string(script)
+	file.close()
+	var output: Array = []
+	var code := OS.execute(node, PackedStringArray([tsx, script_path, data_dir]), output, true)
+	check(code == 0, "Seeded a developing newsletter with the crunch offer (%s)" % " ".join(output))
+	return code == 0
+
+func _crunch_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-crunch-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_crunch_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var line := label_named("CrunchOffer")
+	var card := main.company_panel.find_child("PublisherCard", true, false) as Control
+	var crunch := main.company_panel.find_child("Crunch", true, false) as Button
+	check(card != null and line != null and crunch != null and card.is_ancestor_of(line) and card.is_ancestor_of(crunch) and line.text == "Crunch · double craft tomorrow, then a rest day and +1 bug", "The journey card names the crunch offer")
+	check(not crunch.disabled and str(crunch.get_meta("cozy_variant", "")) == "secondary" and crunch.text == "Crunch", "Crunch is a secondary button")
+	var hire := button_named("Hire Mina")
+	check(hire != null and str(hire.get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside crunch")
+	await reveal(line)
+	var footer := main.company_panel._footer
+	check(crunch.get_global_rect().end.y <= footer.get_global_rect().position.y, "Crunch sits above Hire")
+	check(line.get_global_rect().end.y <= crunch.get_global_rect().position.y + 1.0, "The crunch line sits above the button")
+	var new_product := button_named("New Product")
+	check(new_product != null and crunch.get_global_rect().end.y <= new_product.get_global_rect().position.y, "Crunch sits above New Product")
+	check(company_cash() == 0 and company_reputation() == 0 and int(developing().get("devDays", -1)) == 0, "The crunch offer has not spent cash")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at $0 and 0 reputation")
+	await snap("66-crunch-offer", line)
+	await click(crunch)
+	await wait_until(func() -> bool:
+		return not main.company_panel.busy and label_named("CrunchOffer") != null and label_named("CrunchOffer").text == "Crunching · tomorrow's craft counts double"
+	, "Arming Crunch shows the crunching line")
+	check(company_cash() == 0 and company_reputation() == 0 and int(developing().get("devDays", -1)) == 0, "Arming Crunch spends no cash and no day")
+	check(main.company_panel.find_child("Crunch", true, false) == null, "Crunch hides once armed")
+	await end_office_day()
+	await open_journey()
+	line = label_named("CrunchOffer")
+	check(line != null and line.text == "Resting · team recovers tomorrow", "The next office day shows the resting line")
+	check(main.company_panel.find_child("Crunch", true, false) == null, "Resting has no Crunch button")
+	check(int(developing().get("design", -1)) == 4 and int(developing().get("tech", -1)) == 4 and int(developing().get("hype", -1)) == 4, "The crunch day doubled personal craft")
+	check(company_cash() == 0 and company_reputation() == 0, "The crunch day spends no cash")
+	header = label_named("OfficeDate")
+	check(header != null and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at $0 and 0 reputation while resting")
+	await reveal(line)
+	new_product = button_named("New Product")
+	footer = main.company_panel._footer
+	check(new_product != null and line.get_global_rect().end.y <= new_product.get_global_rect().position.y, "Resting sits above New Product")
+	check(footer != null and line.get_global_rect().end.y <= footer.get_global_rect().position.y, "Resting sits above Hire")
+	await snap("67-crunch-resting", line)
 
 func _proof_money(cents: int) -> String:
 	var integer := str(absi(cents) / 100)

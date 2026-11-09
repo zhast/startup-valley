@@ -30,5 +30,6 @@ Player-facing flows for the offline tycoon. The harness owns the rules (`docs/TY
 - [Features](features.md)
 - [Day plan](day-plan.md)
 - [Bugs](bugs.md)
+- [Crunch](crunch.md)
 
 Launch, display, and proof-file rules live in the verify-startup-valley skill. Do not copy them here.
