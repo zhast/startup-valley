@@ -984,6 +984,19 @@
               }
             }
           ]
+        },
+        "crunch": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["state"],
+              "properties": {
+                "state": { "enum": ["idle", "armed", "resting"] }
+              }
+            }
+          ]
         }
       }
     },

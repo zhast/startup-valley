@@ -527,6 +527,8 @@ export interface TycoonProductView {
    * After release, the stored count, or null when that count was 0.
    */
   bugs: TycoonBugs | number | null;
+  /** While developing, idle, armed, or resting. Null after the product leaves the bench. */
+  crunch: TycoonCrunch | null;
 }
 
 export interface TycoonUpgradeView {
@@ -798,6 +800,11 @@ export interface TycoonBugs {
   count: number;
   cleared: number;
   fixing: boolean;
+}
+
+/** Crunch on the product still on the bench. Idle omits the stored flag. */
+export interface TycoonCrunch {
+  state: "idle" | "armed" | "resting";
 }
 
 export interface TycoonSnapshot {
@@ -1426,6 +1433,10 @@ interface ProductSnapshot {
   bugsCleared: number;
   /** True when the next office day spends personal craft on clearing bugs. */
   fixBugs: boolean;
+  /** Armed doubles the next personal craft. Resting zeroes the day after. Null is idle. */
+  crunch: "armed" | "resting" | null;
+  /** Bugs added by armed crunch days. 0 omits the key. */
+  crunchBugs: number;
 }
 
 interface ProductPort {
@@ -1478,6 +1489,8 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     bugs: 0,
     bugsCleared: 0,
     fixBugs: false,
+    crunch: null,
+    crunchBugs: 0,
   };
 }
 
@@ -1485,7 +1498,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, no rival cut, no feature, an even day plan, no stored bugs, and not fixing. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, no rival cut, no feature, an even day plan, no stored bugs, not fixing, not crunching, and 0 crunch bugs. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -1520,6 +1533,8 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     bugs?: unknown;
     bugsCleared?: unknown;
     fixBugs?: unknown;
+    crunch?: unknown;
+    crunchBugs?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -1549,6 +1564,8 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     bugs: parseStoredBugs(body.bugs),
     bugsCleared: parseBugsCleared(body.bugsCleared),
     fixBugs: body.fixBugs === true,
+    crunch: parseCrunch(body.crunch),
+    crunchBugs: parseCrunchBugs(body.crunchBugs),
   };
 }
 
@@ -1562,6 +1579,17 @@ function parseBugsCleared(value: unknown): number {
   const cleared = Number(value);
   if (!Number.isInteger(cleared) || cleared <= 0) return 0;
   return cleared;
+}
+
+function parseCrunch(value: unknown): "armed" | "resting" | null {
+  if (value === "armed" || value === "resting") return value;
+  return null;
+}
+
+function parseCrunchBugs(value: unknown): number {
+  const count = Number(value);
+  if (!Number.isInteger(count) || count <= 0) return 0;
+  return count;
 }
 
 function parseDayPlan(value: unknown): StatId | null {
@@ -1590,6 +1618,11 @@ export function bugCount(points: CraftPoints): number {
   const high = Math.max(points.design, points.tech, points.hype);
   const low = Math.min(points.design, points.tech, points.hype);
   return Math.min(5, Math.floor((high - low) / 4));
+}
+
+/** Spread bugs plus crunch bugs, minus clears. Never below 0 or above 5. */
+export function liveBugs(points: CraftPoints, crunchBugs: number, bugsCleared: number): number {
+  return Math.min(5, Math.max(0, bugCount(points) + crunchBugs - bugsCleared));
 }
 
 /** Bugs one fix day clears from personal craft. Nothing clears when that craft is 0. */
@@ -1695,6 +1728,8 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
   if (stored.bugs > 0) body.bugs = stored.bugs;
   if (stored.bugsCleared > 0) body.bugsCleared = stored.bugsCleared;
   if (stored.fixBugs) body.fixBugs = true;
+  if (stored.crunch) body.crunch = stored.crunch;
+  if (stored.crunchBugs > 0) body.crunchBugs = stored.crunchBugs;
   return JSON.stringify(body);
 }
 
@@ -2360,8 +2395,22 @@ export class TycoonStore {
         tech: Number(row.tech_points),
         hype: Number(row.hype_points),
       }, stored.focus);
-      if (Math.max(0, bugCount(points) - stored.bugsCleared) <= 0) throw new Error("No bugs to fix.");
+      if (liveBugs(points, stored.crunchBugs, stored.bugsCleared) <= 0) throw new Error("No bugs to fix.");
       stored.fixBugs = true;
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      return this.journey.state();
+    });
+  }
+
+  /** Arm the next office day to double personal craft. The day after rests. No cash row and no clock move. */
+  crunch(): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.developingRow();
+      if (!row) throw new Error("No product is on the bench.");
+      const stored = parseProductSnapshot(row.staff_json);
+      if (stored.crunch === "resting") throw new Error("The team is still tired.");
+      if (stored.crunch === "armed") return this.journey.state();
+      stored.crunch = "armed";
       this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
       return this.journey.state();
     });
@@ -2482,6 +2531,7 @@ export class TycoonStore {
         tech: Number(row.tech_points),
         hype: Number(row.hype_points),
       }, stored.focus);
+      const bugRemaining = liveBugs(points, stored.crunchBugs, stored.bugsCleared);
       const review = reviewProduct({
         seed: this.seed(),
         productId: row.id,
@@ -2494,7 +2544,7 @@ export class TycoonStore {
         sequelBonus: stored.scoreBonus,
         engineBonus: stored.engine === ENGINE_ID ? ENGINE_SCORE_BONUS : 0,
         devDays: required,
-        bugs: Math.max(0, bugCount(points) - stored.bugsCleared),
+        bugs: bugRemaining,
       });
       const day = this.day();
       const bonus = releaseResearchPoints(review.score);
@@ -2509,7 +2559,6 @@ export class TycoonStore {
         stored.featureDemand = true;
         storeSnapshot = true;
       }
-      const bugRemaining = Math.max(0, bugCount(points) - stored.bugsCleared);
       if (bugRemaining > 0) {
         stored.bugs = bugRemaining;
         storeSnapshot = true;
@@ -2595,6 +2644,8 @@ export class TycoonStore {
         bugs: 0,
         bugsCleared: 0,
         fixBugs: false,
+        crunch: null,
+        crunchBugs: 0,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -2857,16 +2908,27 @@ export class TycoonStore {
     const working = snapshot.staff.filter((person) => !trainedToday.has(person.id));
     const accrue = pointsStillAccrue(Number(row.dev_days), requiredDevDays(type.devDays, snapshot.sequelOf !== null, snapshot.size, snapshot.feature));
     const rawPersonal = accrue ? snapshotPoints(working) : { design: 0, tech: 0, hype: 0 };
-    // Fixing spends this day's personal craft on bugs. The day plan waits. Tools and the office stay on their own stats.
+    // Day plan folds personal first. An armed crunch doubles that fold. A rest day zeroes it.
+    // Tools and the office stay on their own stats either way.
+    let personal = personalForDayPlan(rawPersonal, snapshot.dayPlan);
+    let crunchChanged = false;
+    if (snapshot.crunch === "armed") {
+      personal = { design: personal.design * 2, tech: personal.tech * 2, hype: personal.hype * 2 };
+      snapshot.crunch = "resting";
+      snapshot.crunchBugs += 1;
+      crunchChanged = true;
+    } else if (snapshot.crunch === "resting") {
+      personal = { design: 0, tech: 0, hype: 0 };
+      snapshot.crunch = null;
+      crunchChanged = true;
+    }
+    // Fixing spends this day's personal craft on bugs, including a doubled crunch total.
     const fixing = snapshot.fixBugs;
-    let personal: CraftPoints;
     if (fixing) {
-      const personalTotal = rawPersonal.design + rawPersonal.tech + rawPersonal.hype;
+      const personalTotal = personal.design + personal.tech + personal.hype;
       personal = { design: 0, tech: 0, hype: 0 };
       if (personalTotal > 0) snapshot.bugsCleared += bugsClearedGain(personalTotal);
       snapshot.fixBugs = false;
-    } else {
-      personal = personalForDayPlan(rawPersonal, snapshot.dayPlan);
     }
     const bonus = accrue ? this.pointBonus() : { design: 0, tech: 0, hype: 0 };
     const people = accrue ? working.length : 0;
@@ -2889,7 +2951,7 @@ export class TycoonStore {
       day,
       row.id,
     );
-    if (fixing) {
+    if (fixing || crunchChanged) {
       this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(snapshot), row.id);
     }
     this.addResearchPoints(working.length);
@@ -3434,12 +3496,19 @@ export class TycoonStore {
       dayPlan: this.dayPlanView(row.status, snapshot.dayPlan),
       bugs: row.status === "developing"
         ? {
-          count: Math.max(0, bugCount(points) - snapshot.bugsCleared),
+          count: liveBugs(points, snapshot.crunchBugs, snapshot.bugsCleared),
           cleared: snapshot.bugsCleared,
           fixing: snapshot.fixBugs,
         }
         : (snapshot.bugs > 0 ? snapshot.bugs : null),
+      crunch: this.crunchView(row.status, snapshot.crunch),
     };
+  }
+
+  /** Idle while the product is on the bench. Hidden once it ships. */
+  private crunchView(status: string, crunch: "armed" | "resting" | null): TycoonCrunch | null {
+    if (status !== "developing") return null;
+    return { state: crunch ?? "idle" };
   }
 
   /** Even is null. The control is only for the product still on the bench. */
