@@ -189,6 +189,8 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
       return { journey: database.tycoon.setDayPlan(stringParameter(request, "stat", 16)), dailySpend: database.dailySpend() };
     case "tycoon.fixBugs":
       return { journey: database.tycoon.fixBugs(), dailySpend: database.dailySpend() };
+    case "tycoon.crunch":
+      return { journey: database.tycoon.crunch(), dailySpend: database.dailySpend() };
     case "tycoon.makeTrailer":
       return { journey: database.tycoon.makeTrailer(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
     case "tycoon.writeDiary":
