@@ -1042,6 +1042,54 @@
               }
             }
           ]
+        },
+        "pivot": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["enabled", "used", "reason", "options"],
+              "properties": {
+                "enabled": { "type": "boolean" },
+                "used": { "type": "boolean" },
+                "reason": { "type": "string" },
+                "options": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["topics", "types"],
+                  "properties": {
+                    "topics": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["id", "name", "unlocked"],
+                        "properties": {
+                          "id": { "enum": ["fitness", "trading", "sneakers", "reselling", "sports_betting", "cooking", "gaming", "dating", "study_notes", "crypto"] },
+                          "name": { "type": "string", "minLength": 1 },
+                          "unlocked": { "type": "boolean" }
+                        }
+                      }
+                    },
+                    "types": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["id", "name", "unlocked"],
+                        "properties": {
+                          "id": { "enum": ["course", "community", "template_pack", "coaching", "software", "newsletter"] },
+                          "name": { "type": "string", "minLength": 1 },
+                          "unlocked": { "type": "boolean" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
         }
       }
     },
