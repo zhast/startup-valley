@@ -407,6 +407,7 @@ func _run() -> void:
 	await _crunch_proof()
 	await _early_access_proof()
 	await _cancel_proof()
+	await _slip_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -1696,6 +1697,85 @@ func _cancel_proof() -> void:
 	header = label_named("OfficeDate")
 	check(header != null and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at $0 and 0 reputation after the drop")
 	await snap("71-cancel-done", new_product)
+
+func seed_slip_offer(data_dir: String) -> bool:
+	var database := ProjectSettings.globalize_path("res://../harness/src/database.ts")
+	var tsx := ProjectSettings.globalize_path("res://../harness/node_modules/tsx/dist/cli.mjs")
+	var node := OS.get_environment("STARTUP_VALLEY_NODE").strip_edges()
+	if node.is_empty():
+		for dir: String in OS.get_environment("PATH").split(":"):
+			if FileAccess.file_exists(dir.path_join("node")):
+				node = dir.path_join("node")
+				break
+	if node.is_empty():
+		node = "/home/box/.local/node22/bin/node"
+	var script_path := data_dir.path_join("seed-slip.mjs")
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst db = new GameDatabase(root + '/startup-valley.sqlite', root + '/company-project');\ndb.tycoon.start('crypto', 'newsletter', []);\nconst view = db.tycoon.view().developing;\nconst company = db.journey.state().company;\ndb.close();\nconst offer = view && view.slip;\nif (company.cashCents !== 0 || company.reputation !== 0 || !view || view.devDays !== 0 || !offer || offer.enabled !== true || offer.pending !== false || offer.reason !== '') { console.error(JSON.stringify({ company: company, view: view })); process.exit(2); }\n" % JSON.stringify(database)
+	var file := FileAccess.open(script_path, FileAccess.WRITE)
+	if file == null:
+		check(false, "Could not write the slip seed script")
+		return false
+	file.store_string(script)
+	file.close()
+	var output: Array = []
+	var code := OS.execute(node, PackedStringArray([tsx, script_path, data_dir]), output, true)
+	check(code == 0, "Seeded a day-zero newsletter with Slip a day (%s)" % " ".join(output))
+	return code == 0
+
+func _slip_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-slip-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_slip_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var line := label_named("SlipOffer")
+	var card := main.company_panel.find_child("PublisherCard", true, false) as Control
+	var slip := main.company_panel.find_child("SlipDay", true, false) as Button
+	var cancel := main.company_panel.find_child("CancelBuild", true, false) as Button
+	check(card != null and line != null and slip != null and card.is_ancestor_of(line) and card.is_ancestor_of(slip) and line.text == "Slip a day · hold tomorrow. The build does not.", "The journey card names the slip offer")
+	check(not slip.disabled and str(slip.get_meta("cozy_variant", "")) == "secondary" and slip.text == "Slip a day", "Slip a day is a secondary button")
+	var hire := button_named("Hire Mina")
+	check(hire != null and str(hire.get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside slip")
+	await reveal(line)
+	var footer := main.company_panel._footer
+	var new_product := button_named("New Product")
+	check(cancel != null and cancel.get_global_rect().end.y <= line.get_global_rect().position.y + 1.0, "Slip sits under Cancel build")
+	check(line.get_global_rect().end.y <= slip.get_global_rect().position.y + 1.0, "The slip line sits above Slip a day")
+	check(new_product != null and slip.get_global_rect().end.y <= new_product.get_global_rect().position.y, "Slip a day sits above New Product")
+	check(footer != null and slip.get_global_rect().end.y <= footer.get_global_rect().position.y and not slip.get_global_rect().intersects(footer.get_global_rect()), "Slip a day does not overlap Hire")
+	check(line.get_line_count() == 1, "The slip line stays on one line")
+	check(company_cash() == 0 and company_reputation() == 0 and int(developing().get("devDays", -1)) == 0, "The slip offer has not spent cash")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at $0 and 0 reputation")
+	check(not main.job_panel._connection_panel.visible, "Slip a day never opens Connect")
+	await snap("72-slip-offer", line)
+	await click(slip)
+	var held := await wait_until(func() -> bool:
+		return not main.company_panel.busy and label_named("SlipOffer") != null and label_named("SlipOffer").text == "Holding tomorrow" and main.company_panel.find_child("SlipDay", true, false) == null
+	, "Slip a day shows Holding tomorrow")
+	if not held:
+		return
+	line = label_named("SlipOffer")
+	await reveal(line)
+	new_product = button_named("New Product")
+	footer = main.company_panel._footer
+	check(new_product != null and line.get_global_rect().end.y <= new_product.get_global_rect().position.y, "Holding tomorrow sits above New Product")
+	check(footer != null and line.get_global_rect().end.y <= footer.get_global_rect().position.y and not line.get_global_rect().intersects(footer.get_global_rect()), "Holding tomorrow does not overlap Hire")
+	check(company_cash() == 0 and company_reputation() == 0 and int(developing().get("devDays", -1)) == 0, "Arming the hold spends no cash and gains no day")
+	var slip_block: Variant = developing().get("slip", null)
+	check(slip_block is Dictionary and bool((slip_block as Dictionary).get("pending", false)), "The hold is pending")
+	check(not main.job_panel._connection_panel.visible, "Holding tomorrow never opens Connect")
+	await snap("73-slip-held", line)
 
 func _proof_money(cents: int) -> String:
 	var integer := str(absi(cents) / 100)

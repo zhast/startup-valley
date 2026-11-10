@@ -538,6 +538,8 @@ export interface TycoonProductView {
   earlyAccess: TycoonEarlyAccess | null;
   /** While developing, the drop is available. Null once the product has shipped. */
   cancel: TycoonCancel | null;
+  /** While developing, whether the next office day is held. Null once the product has shipped. */
+  slip: TycoonSlip | null;
 }
 
 export interface TycoonUpgradeView {
@@ -828,6 +830,13 @@ export interface TycoonEarlyAccess {
 /** Drop the product still on the bench. A shipped product stores null. */
 export interface TycoonCancel {
   enabled: boolean;
+  reason: string;
+}
+
+/** Hold the next office day. Pending means that day will not craft. A shipped product stores null. */
+export interface TycoonSlip {
+  enabled: boolean;
+  pending: boolean;
   reason: string;
 }
 
@@ -1465,6 +1474,8 @@ interface ProductSnapshot {
   earlyAccess: boolean;
   /** Missing office days at that early ship. 0 omits the key. The score penalty caps this. */
   earlyDays: number;
+  /** True when the next office day holds this product. The calendar still moves. */
+  slip: boolean;
 }
 
 interface ProductPort {
@@ -1521,6 +1532,7 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     crunchBugs: 0,
     earlyAccess: false,
     earlyDays: 0,
+    slip: false,
   };
 }
 
@@ -1528,7 +1540,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, no rival cut, no feature, an even day plan, no stored bugs, not fixing, not crunching, 0 crunch bugs, and not an early ship. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, no rival cut, no feature, an even day plan, no stored bugs, not fixing, not crunching, 0 crunch bugs, not an early ship, and not holding the next day. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -1567,6 +1579,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     crunchBugs?: unknown;
     earlyAccess?: unknown;
     earlyDays?: unknown;
+    slip?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -1600,6 +1613,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     crunchBugs: parseCrunchBugs(body.crunchBugs),
     earlyAccess: body.earlyAccess === true,
     earlyDays: parseEarlyDays(body.earlyDays),
+    slip: body.slip === true,
   };
 }
 
@@ -1781,6 +1795,7 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
     body.earlyAccess = true;
     if (stored.earlyDays > 0) body.earlyDays = stored.earlyDays;
   }
+  if (stored.slip) body.slip = true;
   return JSON.stringify(body);
 }
 
@@ -2517,6 +2532,23 @@ export class TycoonStore {
     });
   }
 
+  /**
+   * Hold the bench product for the next office day. The calendar, payroll, and other
+   * day-end effects still run. That day adds no dev day and no craft. One-shot.
+   * No cash row and no clock move.
+   */
+  slipDay(): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.developingRow();
+      if (!row) throw new Error("No product is on the bench.");
+      const stored = parseProductSnapshot(row.staff_json);
+      if (stored.slip) return this.journey.state();
+      stored.slip = true;
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      return this.journey.state();
+    });
+  }
+
   /** One feature on the product on the bench. One extra office day. No cash row. */
   addFeature(): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
@@ -2756,6 +2788,7 @@ export class TycoonStore {
         crunchBugs: 0,
         earlyAccess: false,
         earlyDays: 0,
+        slip: false,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -3014,6 +3047,16 @@ export class TycoonStore {
     const type = typeById(row.type_id);
     if (!type) throw new Error("Unknown product type");
     const snapshot = parseProductSnapshot(row.staff_json);
+    // A held day moves the calendar only. Craft, bugs, crunch, and research wait.
+    if (snapshot.slip) {
+      snapshot.slip = false;
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ?, last_dev_day = ? WHERE id = ?").run(
+        serializeProductSnapshot(snapshot),
+        day,
+        row.id,
+      );
+      return;
+    }
     const trainedToday = this.trainedIdsOn(day);
     const working = snapshot.staff.filter((person) => !trainedToday.has(person.id));
     const accrue = pointsStillAccrue(Number(row.dev_days), requiredDevDays(type.devDays, snapshot.sequelOf !== null, snapshot.size, snapshot.feature));
@@ -3634,7 +3677,16 @@ export class TycoonStore {
         ? this.earlyAccessOffer(devDays, required)
         : this.earlyAccessShipped(snapshot),
       cancel: row.status === "developing" ? { enabled: true, reason: "" } : null,
+      slip: this.slipView(row.status, snapshot.slip),
     };
+  }
+
+  /** The next office day is free, or one hold is already pending. Hidden once the product ships. */
+  private slipView(status: string, pending: boolean): TycoonSlip | null {
+    if (status !== "developing") return null;
+    return pending
+      ? { enabled: false, pending: true, reason: "" }
+      : { enabled: true, pending: false, reason: "" };
   }
 
   /** The offer while the product is on the bench. Day 0 and a finished build cannot ship early. */

@@ -2698,3 +2698,72 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Seventy-one PNGs in `/workspace/sv-proof/round-59/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-59 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey, on the card for the product in development. Cancel build is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_cancel.gd`.
+
+### Round 60 — 2026-11-10
+
+**What changed**
+- `tycoon.slipDay` takes `{}`. With nothing on the bench, including after a release or a cancel, it fails with "No product is on the bench." A bad payload fails with "Invalid protocol request". No fee, no ledger row, no clock move. Calling it again while a hold is already pending is idempotent. It does not stack a second day.
+- The hold is one-shot. The office day that was held clears the flag. Slip can be used again on a later day. At most one hold is pending. Storage is `slip: true` on the product snapshot in `staff_json`, omitted when the next day is not held. There is no new SQL column. Reads do not rewrite `staff_json`. A sequel starts with the key omitted. An older row with no key is not holding.
+- That office day still advances the calendar. Payroll, a loan payment, an expo, a town day, and sales of a product that already shipped still happen. The bench product gains no dev day and no design, tech, or hype. Tool bonuses, the office bonus, and research points from that build do not land. `last_dev_day` is set to that day, so ending the same day again does not build it either. There is no `tycoon:build:<id>:<day>` row for the held day.
+- Day plan, an armed crunch, a resting crunch, and an armed fix stay as they were. They apply on the next office day that is not held. A lesson on the held day still raises the stat and still spends its cash. The product on the bench keeps the staff snapshot from the day development started, so this build does not gain the new point. The next product uses the new stat.
+- A developing product carries `slip: { enabled, pending, reason }`. While the next day is free, `enabled` is true and `pending` is false. While a hold is pending, `enabled` is false and `pending` is true. `reason` is empty in both cases. After the product ships, the field is null. `slip` is optional on the product schema, so older payloads still validate. A payload without `slip` draws no control. New payloads include it.
+- The row sits on the developing-product card, under Cancel and above New Product. The offer line is "Slip a day · hold tomorrow. The build does not." with one secondary Slip a day button. Pending, the line is "Holding tomorrow" and the button is gone. Hire stays the one primary action. Nothing on this row is orange. Skipping Slip a day leaves the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+
+**Proof**
+- `/workspace/sv-proof/round-60/72-slip-offer.png` and `73-slip-held.png`, captured by the verify-startup-valley skill. PROOF PASS. Seventy-three PNGs. The offer header reads "Spring 1 · Year 1 · $0.00 game cash · 0 reputation". The line "Slip a day · hold tomorrow. The build does not." is one readable line. Slip a day is a cream secondary button under that line. New Product sits under the button. Hire Mina · free stays orange in the footer and does not cover it. After the click the line is "Holding tomorrow", the button is gone, New Product remains, and the header is still $0.00 and 0 reputation. Those lines are readable and do not overlap. Connect stays closed.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Pivot is the next slice. One optional change of topic or type on the product still on the bench. Dev days and craft points stay. The name and the fit follow the new pair, and the review uses that fit. A contract on the old pair blocks the pivot. No fee, no ledger row, no new art. Skip it and the first Crypto Alpha Newsletter still lands at 20700 cents and 5 fans. A second room still waits on architecture art.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. The developing card is one line taller when slip shows, and one button taller for Slip a day. Pending drops that button. Shots 72 and 73 scroll the slip line to the top of the journey, so the control sits above New Product and Hire does not cover it. The publisher, press demo, feature, day plan, bugs, crunch, early access, and cancel stay in that same card, above slip.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 128 tests, 126 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test holds the bench for one office day, advances the calendar without a dev day or craft, clears the one-shot flag, keeps payroll due, writes no slip ledger row, leaves a skipped newsletter at 20700 cents and 5 fans then 33300 cents, and keeps a pending hold across reopen.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS
+- `test_tycoon_localization.gd` — TYCOON LOCALIZATION PASS
+- `test_tycoon_town_day.gd` — TYCOON TOWN DAY PASS
+- `test_tycoon_press_demo.gd` — TYCOON PRESS DEMO PASS
+- `test_tycoon_launch_trailer.gd` — TYCOON LAUNCH TRAILER PASS
+- `test_tycoon_dev_diary.gd` — TYCOON DEV DIARY PASS
+- `test_tycoon_rivals.gd` — TYCOON RIVALS PASS
+- `test_tycoon_features.gd` — TYCOON FEATURES PASS
+- `test_tycoon_day_plan.gd` — TYCOON DAY PLAN PASS
+- `test_tycoon_bugs.gd` — TYCOON BUGS PASS
+- `test_tycoon_crunch.gd` — TYCOON CRUNCH PASS
+- `test_tycoon_early_access.gd` — TYCOON EARLY ACCESS PASS
+- `test_tycoon_cancel.gd` — TYCOON CANCEL PASS
+- `test_tycoon_slip_day.gd` — TYCOON SLIP DAY PASS. Day 0 shows "Slip a day · hold tomorrow. The build does not." Slip a day is secondary, under Cancel build, and above New Product. The line stays on one line. A payload without `slip` draws no control. The product picker and the build screen have no slip control. Clicking Slip a day shows "Holding tomorrow" and hides the button. Cash, fans, and dev days stay at 0. Reopening keeps the pending hold. The held office day returns the offer, leaves the build at day 0 of 2 with no craft, and the header reads Spring 2 with $0.00 and 0 reputation. Hire Mina stays the one primary action. Connect stays closed. The rules script inside that test checks the same harness cases for the empty bench, the calendar, payroll, and the skipped newsletter.
+- `test_ui_company_redesign.gd` — 18171 checks, 0 failures, 0 captures. Existing fixtures omit `slip` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Seventy-three PNGs in `/workspace/sv-proof/round-60/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-60 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey, on the card for the product in development. Slip a day is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_slip_day.gd`.
