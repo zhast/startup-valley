@@ -1027,6 +1027,21 @@
               }
             }
           ]
+        },
+        "slip": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["enabled", "pending", "reason"],
+              "properties": {
+                "enabled": { "type": "boolean" },
+                "pending": { "type": "boolean" },
+                "reason": { "type": "string" }
+              }
+            }
+          ]
         }
       }
     },
