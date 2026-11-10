@@ -2586,8 +2586,46 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 4. The developing card is one line taller when early access shows, and one button taller when Ship early is offered. The offer scrolls to the top of the journey, so the line and the button sit above New Product and Hire does not cover them. The publisher, press demo, feature, day plan, bugs, and crunch stay in that same card, above early access.
 
 **Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
-- Harness rules and `harness/test/tycoon.test.ts` landed in `1800142` (124 pass). The new test covers each failure, the penalty and the cap, the stored keys, the sales window starting that day, the contract bonus paying once, a clean sequel, the skipped newsletter at 20700 cents and 5 fans then 33300 cents, a reopen, and no Connect call.
-- `godot --headless --path game --script res://tests/test_tycoon_early_access.gd` — TYCOON EARLY ACCESS PASS. Day 0 names the wait and hides Ship early. A finished build points at Release and hides the button. Skipping it still pays 20700 cents and 5 fans, then 33300 cents, and the release card does not say Early access. After one office day the line is "Early access · ship now, −1 score". Ship early is secondary, under Crunch, and above New Product. Hire Mina stays primary. The release card, the Selling card, and the shipped list say Early access. Launch sales are quieter than a full newsletter. Reopening keeps the cash, the mark, and the penalty. Connect stays closed. The rules script inside that test checks the same harness cases.
+- `cd harness && npm run build && npm test` — 126 tests, 124 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test covers each failure, the penalty and the cap, the stored keys, the sales window starting that day, the contract bonus paying once, a clean sequel, the skipped newsletter at 20700 cents and 5 fans then 33300 cents, a reopen, and no Connect call.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS
+- `test_tycoon_localization.gd` — TYCOON LOCALIZATION PASS
+- `test_tycoon_town_day.gd` — TYCOON TOWN DAY PASS
+- `test_tycoon_press_demo.gd` — TYCOON PRESS DEMO PASS
+- `test_tycoon_launch_trailer.gd` — TYCOON LAUNCH TRAILER PASS
+- `test_tycoon_dev_diary.gd` — TYCOON DEV DIARY PASS
+- `test_tycoon_rivals.gd` — TYCOON RIVALS PASS
+- `test_tycoon_features.gd` — TYCOON FEATURES PASS
+- `test_tycoon_day_plan.gd` — TYCOON DAY PLAN PASS
+- `test_tycoon_bugs.gd` — TYCOON BUGS PASS
+- `test_tycoon_crunch.gd` — TYCOON CRUNCH PASS
+- `test_tycoon_early_access.gd` — TYCOON EARLY ACCESS PASS. Day 0 names the wait and hides Ship early. A finished build points at Release and hides the button. Skipping it still pays 20700 cents and 5 fans, then 33300 cents, and the release card does not say Early access. After one office day the line is "Early access · ship now, −1 score". Ship early is secondary, under Crunch, and above New Product. Hire Mina stays primary. The release card, the Selling card, and the shipped list say Early access. Launch sales are quieter than a full newsletter. Reopening keeps the cash, the mark, and the penalty. Connect stays closed. The rules script inside that test checks the same harness cases.
+- `test_ui_company_redesign.gd` — 18171 checks, 0 failures, 0 captures. Existing fixtures omit `earlyAccess` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
 - Proof capture — PROOF PASS. Sixty-nine PNGs in `/workspace/sv-proof/round-58/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-58 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey, on the card for the product in development. Early access is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_early_access.gd`.
