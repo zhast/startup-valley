@@ -405,6 +405,7 @@ func _run() -> void:
 	await _day_plan_proof()
 	await _bugs_proof()
 	await _crunch_proof()
+	await _early_access_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -440,7 +441,7 @@ func boot_company() -> bool:
 	viewport.add_child(main)
 	var ready := await wait_until(func() -> bool:
 		return main._state_loaded and main._worker_ready and main.company_panel != null and main.company_panel.visible and not main.company_panel.state.is_empty()
-	, "Worker bootstrap loads the company")
+	, "Worker bootstrap loads the company", 45000)
 	if ready:
 		main.day_clock.set_speed(0)
 	return ready
@@ -1538,6 +1539,80 @@ func _crunch_proof() -> void:
 	check(new_product != null and line.get_global_rect().end.y <= new_product.get_global_rect().position.y, "Resting sits above New Product")
 	check(footer != null and line.get_global_rect().end.y <= footer.get_global_rect().position.y, "Resting sits above Hire")
 	await snap("67-crunch-resting", line)
+
+func seed_early_offer(data_dir: String) -> bool:
+	var database := ProjectSettings.globalize_path("res://../harness/src/database.ts")
+	var tsx := ProjectSettings.globalize_path("res://../harness/node_modules/tsx/dist/cli.mjs")
+	var node := OS.get_environment("STARTUP_VALLEY_NODE").strip_edges()
+	if node.is_empty():
+		for dir: String in OS.get_environment("PATH").split(":"):
+			if FileAccess.file_exists(dir.path_join("node")):
+				node = dir.path_join("node")
+				break
+	if node.is_empty():
+		node = "/home/box/.local/node22/bin/node"
+	var script_path := data_dir.path_join("seed-early-access.mjs")
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst db = new GameDatabase(root + '/startup-valley.sqlite', root + '/company-project');\ndb.tycoon.start('crypto', 'newsletter', []);\ndb.endDay(1);\nconst view = db.tycoon.view().developing;\nconst company = db.journey.state().company;\ndb.close();\nconst offer = view && view.earlyAccess;\nif (company.cashCents !== 0 || company.reputation !== 0 || !view || view.devDays !== 1 || !offer || offer.enabled !== true || offer.penalty !== 1 || offer.daysLeft !== 1 || offer.reason !== '') { console.error(JSON.stringify({ company: company, view: view })); process.exit(2); }\n" % JSON.stringify(database)
+	var file := FileAccess.open(script_path, FileAccess.WRITE)
+	if file == null:
+		check(false, "Could not write the early access seed script")
+		return false
+	file.store_string(script)
+	file.close()
+	var output: Array = []
+	var code := OS.execute(node, PackedStringArray([tsx, script_path, data_dir]), output, true)
+	check(code == 0, "Seeded a one-day newsletter with the early access offer (%s)" % " ".join(output))
+	return code == 0
+
+func _early_access_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-early-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_early_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var line := label_named("EarlyAccessOffer")
+	var card := main.company_panel.find_child("PublisherCard", true, false) as Control
+	var ship := main.company_panel.find_child("ShipEarly", true, false) as Button
+	check(card != null and line != null and ship != null and card.is_ancestor_of(line) and card.is_ancestor_of(ship) and line.text == "Early access · ship now, −1 score", "The journey card names the early access offer")
+	check(not ship.disabled and str(ship.get_meta("cozy_variant", "")) == "secondary" and ship.text == "Ship early", "Ship early is a secondary button")
+	var hire := button_named("Hire Mina")
+	check(hire != null and str(hire.get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside early access")
+	await reveal(line)
+	var footer := main.company_panel._footer
+	var crunch := main.company_panel.find_child("Crunch", true, false) as Button
+	var new_product := button_named("New Product")
+	check(crunch != null and crunch.get_global_rect().end.y <= line.get_global_rect().position.y + 1.0, "Early access sits under Crunch")
+	check(line.get_global_rect().end.y <= ship.get_global_rect().position.y + 1.0, "The early access line sits above Ship early")
+	check(new_product != null and ship.get_global_rect().end.y <= new_product.get_global_rect().position.y, "Ship early sits above New Product")
+	check(footer != null and ship.get_global_rect().end.y <= footer.get_global_rect().position.y and not ship.get_global_rect().intersects(footer.get_global_rect()), "Ship early does not overlap Hire")
+	check(company_cash() == 0 and company_reputation() == 0 and int(developing().get("devDays", -1)) == 1, "The early access offer has not spent cash")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at $0 and 0 reputation")
+	await snap("68-early-offer", line)
+	await click(ship)
+	var shipped := await wait_until(func() -> bool:
+		return not main.company_panel.busy and main.company_panel.screen == "release" and label_named("ReleaseEarly") != null and label_named("ReleaseEarly").text == "Early access"
+	, "Shipping early opens the release card")
+	if not shipped:
+		return
+	check(company_cash() > 0 and company_cash() < 20700, "Launch-day sales are quieter than a full newsletter")
+	check(developing().is_empty(), "The bench is clear after the early ship")
+	var mark := label_named("ReleaseEarly")
+	var score := label_named("ReleaseScore")
+	footer = main.company_panel._footer
+	check(score != null and mark != null and score.get_global_rect().end.y <= mark.get_global_rect().position.y + 1.0, "Early access sits under the score")
+	check(footer != null and mark.get_global_rect().end.y <= footer.get_global_rect().position.y and not mark.get_global_rect().intersects(footer.get_global_rect()), "Early access does not overlap the release actions")
+	await snap("69-early-released", score)
 
 func _proof_money(cents: int) -> String:
 	var integer := str(absi(cents) / 100)
