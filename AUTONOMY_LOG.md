@@ -2629,3 +2629,72 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Sixty-nine PNGs in `/workspace/sv-proof/round-58/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-58 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey, on the card for the product in development. Early access is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_early_access.gd`.
+
+### Round 59 — 2026-11-10
+
+**What changed**
+- `tycoon.cancelBuild` takes `{}`. With nothing on the bench, including after a release or a cancel, it fails with "No product is on the bench." A bad payload fails with "Invalid protocol request". No fee, no ledger row, no clock move. Calling it again fails with the same bench string.
+- The product row is deleted. It is not a shipped history row, and there is no new SQL status. Awards, sequels, ports, rivals, patches, and contract completion only see rows that remain. `tycoon.release` of the deleted id fails with "No product is on the bench." `tycoon.award`, `tycoon.sequel`, `tycoon.port`, `tycoon.localize`, `tycoon.patch`, `tycoon.makeTrailer`, and `tycoon.writeDiary` fail with "No product with that id."
+- The next product id is one past the highest `pN` still stored, or already used as its own segment in a `tycoon:` ledger id. A day-0 drop that wrote no ledger id can start again as that same id. A drop after an office day, a publisher advance, or a press demo uses the next id, so a charged id is not reused.
+- A contract on the bench product fails. The bonus is not paid. The same offer returns and can be accepted again. A publisher deal is void. The advance already paid stays in cash and in `tycoon:publisher:<id>:advance`. A press demo fee and a marketing fee stay spent. Fans, research points, and staff stay as they are. Cancelling itself does not change cash, fans, research, or staff.
+- A cancelled sequel clears `sequelId` on the original, so that original can start another sequel.
+- The developing product carries `cancel: { enabled: true, reason: "" }`. A shipped product stores null. A payload without `cancel` draws no control.
+- The row sits on the developing-product card, under Early access and above New Product. The line is "Cancel · drop this build. Days worked are gone." with one secondary Cancel build button. That button asks first. The line becomes "Drop this build? Days worked are gone." Keep building takes focus. Drop the build sends the command. The two buttons stack, full width. Both are secondary. Hire stays the one primary action. Nothing on this row is orange. Skipping Cancel leaves the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+
+**Proof**
+- `/workspace/sv-proof/round-59/70-cancel-offer.png` and `71-cancel-done.png`, captured by the verify-startup-valley skill. PROOF PASS. Seventy-one PNGs. The offer header reads "Spring 2 · Year 1 · $0.00 game cash · 0 reputation". The line "Cancel · drop this build. Days worked are gone." is one readable line. Cancel build is a cream secondary button under that line. New Product sits under the button. Hire Mina · free stays orange in the footer and does not cover it. After the drop the developing card is gone, New Product is available, the header is still $0.00 and 0 reputation, and the founder line still shows the craft from the worked day. Those lines are readable and do not overlap.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Slip a day is the next slice. One optional hold on the product still on the bench. The next office day moves the calendar, and payroll still comes due, but that day does not add a dev day and does not add design, tech, or hype. Skip it and every office day still builds, so the first Crypto Alpha Newsletter still lands at 20700 cents and 5 fans. No fee, no ledger row, no new art.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. The developing card is one line taller when cancel shows, and one button taller for Cancel build. The confirm stacks a second button. Shots 70 and 71 scroll the cancel line to the top of the journey, so the control sits above New Product and Hire does not cover it. The publisher, press demo, feature, day plan, bugs, crunch, and early access stay in that same card, above cancel.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 127 tests, 125 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test deletes the bench row, writes no review, sale, or cancel ledger row, refuses a second call and every history command on the missing id, keeps a contract offer unpaid and acceptable again, leaves a publisher advance and a press fee spent, clears a sequel link, reuses an id only when no ledger segment exists, and leaves a skipped newsletter at 20700 cents and 5 fans then 33300 cents.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — the gate process exited 0. Its filtered tail was `FAILURE The sequel releases` and `FAILURE A sequel cannot start its own sequel`, so the summary line was not in that tail. Two direct reruns after the gate printed TYCOON SEQUELS PASS. This test was not edited this round.
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS
+- `test_tycoon_localization.gd` — TYCOON LOCALIZATION PASS
+- `test_tycoon_town_day.gd` — TYCOON TOWN DAY PASS
+- `test_tycoon_press_demo.gd` — TYCOON PRESS DEMO PASS
+- `test_tycoon_launch_trailer.gd` — TYCOON LAUNCH TRAILER PASS
+- `test_tycoon_dev_diary.gd` — TYCOON DEV DIARY PASS
+- `test_tycoon_rivals.gd` — TYCOON RIVALS PASS
+- `test_tycoon_features.gd` — TYCOON FEATURES PASS
+- `test_tycoon_day_plan.gd` — TYCOON DAY PLAN PASS
+- `test_tycoon_bugs.gd` — TYCOON BUGS PASS
+- `test_tycoon_crunch.gd` — TYCOON CRUNCH PASS
+- `test_tycoon_early_access.gd` — TYCOON EARLY ACCESS PASS
+- `test_tycoon_cancel.gd` — TYCOON CANCEL PASS. Day 0 shows "Cancel · drop this build. Days worked are gone." Cancel build is secondary, under Early access, and above New Product. A payload without `cancel` draws no control. Cancel build asks first, Keep building takes focus, and both choices are secondary. Keep building leaves the product. After one office day the same row still sits under Ship early. Skipping cancel still pays 20700 cents and 5 fans, then 33300 cents, and the release card has no cancel control. Dropping a later build clears the bench, leaves the shipped newsletter, and New Product can start again. Reopening keeps that state. Connect stays closed. The rules script inside that test checks the same harness cases.
+- `test_ui_company_redesign.gd` — 18171 checks, 0 failures, 0 captures. Existing fixtures omit `cancel` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Seventy-one PNGs in `/workspace/sv-proof/round-59/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-59 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey, on the card for the product in development. Cancel build is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_cancel.gd`.

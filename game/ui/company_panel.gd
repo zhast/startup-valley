@@ -42,6 +42,7 @@ var _focus_id := "balanced"
 var _audience_id := "everyone"
 var _size_id := "catalog"
 var _release_focus_id := ""
+var _cancel_confirm := false
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -566,7 +567,9 @@ func _product_shortcut() -> void:
 	if _tycoon().is_empty(): return
 	_journey_research_line()
 	var developing: Dictionary = _tycoon().get("developing", {}) if _tycoon().get("developing") is Dictionary else {}
-	if not developing.is_empty():
+	if developing.is_empty():
+		_cancel_confirm = false
+	else:
 		_show_engine(developing, "EngineJourney")
 		_show_focus(developing, "FocusJourney")
 		_show_audience(developing, "AudienceJourney")
@@ -1120,7 +1123,8 @@ func _publisher_card(product: Dictionary) -> void:
 	var bugs_offered := _bugs_offered(product)
 	var crunch_offered := _crunch_offered(product)
 	var early_offered := _early_access_offered(product)
-	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered and not bugs_offered and not crunch_offered and not early_offered: return
+	var cancel_offered := _cancel_offered(product)
+	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered and not bugs_offered and not crunch_offered and not early_offered and not cancel_offered: return
 	var card := _card()
 	card.name = "PublisherCard"
 	if not publisher_name.is_empty():
@@ -1158,6 +1162,8 @@ func _publisher_card(product: Dictionary) -> void:
 		_crunch_row(product, card)
 	if early_offered:
 		_early_access_row(product, card)
+	if cancel_offered:
+		_cancel_row(product, card)
 
 func _sign_publisher() -> void:
 	_request("tycoon.signPublisher", {})
@@ -1318,6 +1324,54 @@ func _ship_early() -> void:
 	var developing: Dictionary = _tycoon().get("developing", {}) if _tycoon().get("developing") is Dictionary else {}
 	_release_focus_id = str(developing.get("id", ""))
 	_request("tycoon.earlyAccess", {})
+
+func _cancel_offered(product: Dictionary) -> bool:
+	return product.get("cancel") is Dictionary
+
+func _cancel_text(product: Dictionary) -> String:
+	var value: Variant = product.get("cancel", null)
+	if not value is Dictionary:
+		return ""
+	var offer := value as Dictionary
+	if _cancel_confirm and bool(offer.get("enabled", false)):
+		return "Drop this build? Days worked are gone."
+	if not bool(offer.get("enabled", false)):
+		var reason := str(offer.get("reason", "")).strip_edges()
+		if reason.is_empty():
+			return ""
+		return "Cancel · %s" % reason
+	return "Cancel · drop this build. Days worked are gone."
+
+func _cancel_row(product: Dictionary, card: Control) -> void:
+	var text := _cancel_text(product)
+	if text.is_empty():
+		return
+	var line := _label(text, false, card)
+	line.name = "CancelOffer"
+	var value: Variant = product.get("cancel", null)
+	if not value is Dictionary or not bool((value as Dictionary).get("enabled", false)):
+		return
+	if _cancel_confirm:
+		var keep := _button("Keep building", _keep_build, false, true, card, "secondary")
+		keep.name = "KeepBuild"
+		var drop := _button("Drop the build", _drop_build, false, true, card, "secondary")
+		drop.name = "DropBuild"
+		_preferred_focus = keep
+		return
+	var button := _button("Cancel build", _ask_cancel, false, true, card, "secondary")
+	button.name = "CancelBuild"
+
+func _ask_cancel() -> void:
+	_cancel_confirm = true
+	call_deferred("_render")
+
+func _keep_build() -> void:
+	_cancel_confirm = false
+	call_deferred("_render")
+
+func _drop_build() -> void:
+	_cancel_confirm = false
+	_request("tycoon.cancelBuild", {})
 
 func _early_shipped(product: Dictionary) -> bool:
 	var value: Variant = product.get("earlyAccess", null)
