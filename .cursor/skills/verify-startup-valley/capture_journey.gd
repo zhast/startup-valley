@@ -406,6 +406,7 @@ func _run() -> void:
 	await _bugs_proof()
 	await _crunch_proof()
 	await _early_access_proof()
+	await _cancel_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -1613,6 +1614,88 @@ func _early_access_proof() -> void:
 	check(score != null and mark != null and score.get_global_rect().end.y <= mark.get_global_rect().position.y + 1.0, "Early access sits under the score")
 	check(footer != null and mark.get_global_rect().end.y <= footer.get_global_rect().position.y and not mark.get_global_rect().intersects(footer.get_global_rect()), "Early access does not overlap the release actions")
 	await snap("69-early-released", score)
+
+func seed_cancel_offer(data_dir: String) -> bool:
+	var database := ProjectSettings.globalize_path("res://../harness/src/database.ts")
+	var tsx := ProjectSettings.globalize_path("res://../harness/node_modules/tsx/dist/cli.mjs")
+	var node := OS.get_environment("STARTUP_VALLEY_NODE").strip_edges()
+	if node.is_empty():
+		for dir: String in OS.get_environment("PATH").split(":"):
+			if FileAccess.file_exists(dir.path_join("node")):
+				node = dir.path_join("node")
+				break
+	if node.is_empty():
+		node = "/home/box/.local/node22/bin/node"
+	var script_path := data_dir.path_join("seed-cancel.mjs")
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst db = new GameDatabase(root + '/startup-valley.sqlite', root + '/company-project');\ndb.tycoon.start('crypto', 'newsletter', []);\ndb.endDay(1);\nconst view = db.tycoon.view().developing;\nconst company = db.journey.state().company;\ndb.close();\nconst offer = view && view.cancel;\nif (company.cashCents !== 0 || company.reputation !== 0 || !view || view.devDays !== 1 || !offer || offer.enabled !== true || offer.reason !== '') { console.error(JSON.stringify({ company: company, view: view })); process.exit(2); }\n" % JSON.stringify(database)
+	var file := FileAccess.open(script_path, FileAccess.WRITE)
+	if file == null:
+		check(false, "Could not write the cancel seed script")
+		return false
+	file.store_string(script)
+	file.close()
+	var output: Array = []
+	var code := OS.execute(node, PackedStringArray([tsx, script_path, data_dir]), output, true)
+	check(code == 0, "Seeded a one-day newsletter with Cancel build (%s)" % " ".join(output))
+	return code == 0
+
+func _cancel_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-cancel-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_cancel_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var line := label_named("CancelOffer")
+	var card := main.company_panel.find_child("PublisherCard", true, false) as Control
+	var cancel := main.company_panel.find_child("CancelBuild", true, false) as Button
+	var early := label_named("EarlyAccessOffer")
+	check(card != null and line != null and cancel != null and card.is_ancestor_of(line) and card.is_ancestor_of(cancel) and line.text == "Cancel · drop this build. Days worked are gone.", "The journey card names the cancel offer")
+	check(not cancel.disabled and str(cancel.get_meta("cozy_variant", "")) == "secondary" and cancel.text == "Cancel build", "Cancel build is a secondary button")
+	var hire := button_named("Hire Mina")
+	check(hire != null and str(hire.get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside cancel")
+	await reveal(line)
+	var footer := main.company_panel._footer
+	var ship := main.company_panel.find_child("ShipEarly", true, false) as Button
+	var new_product := button_named("New Product")
+	check(early != null and ship != null and ship.get_global_rect().end.y <= line.get_global_rect().position.y + 1.0, "Cancel sits under Ship early")
+	check(line.get_global_rect().end.y <= cancel.get_global_rect().position.y + 1.0, "The cancel line sits above Cancel build")
+	check(new_product != null and cancel.get_global_rect().end.y <= new_product.get_global_rect().position.y, "Cancel build sits above New Product")
+	check(footer != null and cancel.get_global_rect().end.y <= footer.get_global_rect().position.y and not cancel.get_global_rect().intersects(footer.get_global_rect()), "Cancel build does not overlap Hire")
+	check(company_cash() == 0 and company_reputation() == 0 and int(developing().get("devDays", -1)) == 1, "The cancel offer has not spent cash")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at $0 and 0 reputation")
+	await snap("70-cancel-offer", line)
+	await click(cancel)
+	var asked := await wait_until(func() -> bool:
+		return not main.company_panel.busy and label_named("CancelOffer") != null and label_named("CancelOffer").text == "Drop this build? Days worked are gone." and main.company_panel.find_child("KeepBuild", true, false) != null and main.company_panel.find_child("DropBuild", true, false) != null
+	, "Cancel build asks before it drops the product")
+	if not asked:
+		return
+	var keep := main.company_panel.find_child("KeepBuild", true, false) as Button
+	var drop := main.company_panel.find_child("DropBuild", true, false) as Button
+	check(keep.has_focus() and str(keep.get_meta("cozy_variant", "")) == "secondary" and str(drop.get_meta("cozy_variant", "")) == "secondary", "Keep building takes focus and both choices stay secondary")
+	await click(drop)
+	var dropped := await wait_until(func() -> bool:
+		return not main.company_panel.busy and main.company_panel.screen == "journey" and developing().is_empty() and label_named("CancelOffer") == null
+	, "Drop the build clears the bench")
+	if not dropped:
+		return
+	new_product = button_named("New Product")
+	check(new_product != null and not new_product.disabled, "New Product is available after the drop")
+	check(company_cash() == 0 and company_reputation() == 0, "Dropping the build leaves cash and fans")
+	header = label_named("OfficeDate")
+	check(header != null and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at $0 and 0 reputation after the drop")
+	await snap("71-cancel-done", new_product)
 
 func _proof_money(cents: int) -> String:
 	var integer := str(absi(cents) / 100)
