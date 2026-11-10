@@ -660,7 +660,7 @@ func _on_company_action(method: String, result: Dictionary) -> void:
 			company_panel.present("journey")
 		"tycoon.start", "tycoon.sequel":
 			company_panel.present("product")
-		"tycoon.release":
+		"tycoon.release", "tycoon.earlyAccess":
 			game_audio.play("reward")
 			company_panel.present("release")
 		"tycoon.train", "tycoon.research", "tycoon.buyUpgrade", "tycoon.buyEngine", "tycoon.expandOffice", "tycoon.acceptContract", "tycoon.patch", "tycoon.award", "tycoon.port", "tycoon.localize", "tycoon.takeLoan", "tycoon.signPublisher", "tycoon.bookBooth", "tycoon.takeTownDay", "tycoon.showPressDemo", "tycoon.makeTrailer", "tycoon.writeDiary", "tycoon.addFeature", "tycoon.setDayPlan", "tycoon.fixBugs", "tycoon.crunch":

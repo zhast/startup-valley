@@ -102,6 +102,8 @@ import {
   bugCount,
   bugsClearedGain,
   liveBugs,
+  EARLY_ACCESS_PENALTY_CAP,
+  earlyAccessPenalty,
   openingDemand,
   rivalForDay,
   seasonIndexForDay,
@@ -5853,6 +5855,253 @@ test("crunch doubles the next personal craft, then rests and adds a bug", async 
   again.close();
 });
 
+test("early access ships a short build, stores a capped score penalty, and starts sales", async () => {
+  assert.equal(EARLY_ACCESS_PENALTY_CAP, 3);
+  assert.equal(earlyAccessPenalty(0), 0);
+  assert.equal(earlyAccessPenalty(1), 1);
+  assert.equal(earlyAccessPenalty(3), 3);
+  assert.equal(earlyAccessPenalty(4), 3);
+  assert.equal(earlyAccessPenalty(9), 3);
+  const rich = { seed: 26021, productId: "p1", topicId: "crypto" as const, typeId: "newsletter" as const, design: 40, tech: 40, hype: 40, devDays: 2 };
+  const plainRich = reviewProduct(rich);
+  const cutRich = reviewProduct({ ...rich, earlyPenalty: 4 });
+  assert.equal(cutRich.score, plainRich.score - 3, "four missing days cap at −3");
+  assert.ok(cutRich.reviewers.every((reviewer) => reviewer.score >= 1 && reviewer.score <= 10));
+  const floored = reviewProduct({ ...rich, design: 0, tech: 0, hype: 0, earlyPenalty: 3 });
+  const flooredPlain = reviewProduct({ ...rich, design: 0, tech: 0, hype: 0 });
+  assert.ok(floored.score >= 1 && floored.score <= flooredPlain.score);
+  assert.ok(floored.reviewers.every((reviewer) => reviewer.score >= 1));
+  assert.equal(parseRequest({ kind: "request", id: "early", method: "tycoon.earlyAccess", params: {} }).method, "tycoon.earlyAccess");
+  assert.throws(() => parseRequest({ kind: "request", id: "early", method: "tycoon.earlyAccess", params: { extra: true } }), /Invalid protocol request/u);
+
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+
+  const bare = await setup();
+  assert.throws(() => bare.db.tycoon.earlyAccess(), /No product is on the bench\./u);
+  bare.db.close();
+
+  const skip = await setup();
+  skip.db.tycoon.start("crypto", "newsletter", []);
+  assert.deepEqual(skip.db.tycoon.view().developing?.earlyAccess, {
+    enabled: false, reason: "Work one office day first.", daysLeft: 2, penalty: 0,
+  });
+  const fresh = staffJson(skip.db, "p1");
+  assert.equal(JSON.parse(fresh).earlyAccess, undefined);
+  assert.equal(JSON.parse(fresh).earlyDays, undefined);
+  skip.db.tycoon.view();
+  assert.equal(staffJson(skip.db, "p1"), fresh);
+  const freshTx = txCount(skip.db);
+  assert.throws(() => skip.db.tycoon.earlyAccess(), /Work one office day first\./u);
+  assert.equal(staffJson(skip.db, "p1"), fresh);
+  assert.equal(txCount(skip.db), freshTx);
+  assert.equal(skip.db.clockState().day, 1);
+  skip.db.endDay(1);
+  skip.db.endDay(2);
+  assert.deepEqual(skip.db.tycoon.view().developing?.earlyAccess, {
+    enabled: false, reason: "Required days are done. Use Release.", daysLeft: 0, penalty: 0,
+  });
+  const readyJson = staffJson(skip.db, "p1");
+  assert.throws(() => skip.db.tycoon.earlyAccess(), /Required days are done\. Use Release\./u);
+  assert.equal(staffJson(skip.db, "p1"), readyJson);
+  skip.db.tycoon.release("p1");
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.fans, 5);
+  assert.equal(skip.db.tycoon.view().history[0]?.salesCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.earlyAccess, null);
+  assert.equal(JSON.parse(staffJson(skip.db, "p1")).earlyAccess, undefined);
+  assert.equal(JSON.parse(staffJson(skip.db, "p1")).earlyDays, undefined);
+  skip.db.endDay(3);
+  skip.db.endDay(4);
+  assert.equal(skip.db.journey.state().company.cashCents, 33_300);
+  assert.throws(() => skip.db.tycoon.earlyAccess(), /No product is on the bench\./u);
+  assert.equal(earlyRows(skip.db).length, 0);
+  assert.equal(validate(skip.db.journey.state()), true, JSON.stringify(validate.errors));
+  skip.db.close();
+
+  const ship = await setup();
+  ship.db.tycoon.start("crypto", "newsletter", []);
+  ship.db.endDay(1);
+  assert.equal(ship.db.tycoon.view().developing?.devDays, 1);
+  assert.deepEqual(ship.db.tycoon.view().developing?.earlyAccess, {
+    enabled: true, reason: "", daysLeft: 1, penalty: 1,
+  });
+  const beforeJson = staffJson(ship.db, "p1");
+  ship.db.tycoon.view();
+  assert.equal(staffJson(ship.db, "p1"), beforeJson);
+  const day = ship.db.clockState().day;
+  const tx = txCount(ship.db);
+  ship.db.tycoon.earlyAccess();
+  assert.equal(ship.db.clockState().day, day);
+  assert.equal(ship.db.tycoon.view().developing, null);
+  const shipped = ship.db.tycoon.view().history[0];
+  assert.equal(shipped?.status, "released");
+  assert.equal(shipped?.releasedDay, day);
+  assert.equal(shipped?.salesDays, 1);
+  assert.equal(JSON.parse(staffJson(ship.db, "p1")).earlyAccess, true);
+  assert.equal(JSON.parse(staffJson(ship.db, "p1")).earlyDays, 1);
+  assert.deepEqual(shipped?.earlyAccess, { enabled: false, reason: "", daysLeft: 0, penalty: 1 });
+  const expected = reviewProduct({
+    seed: ship.db.tycoon.view().seed,
+    productId: "p1",
+    topicId: "crypto",
+    typeId: "newsletter",
+    design: 2,
+    tech: 2,
+    hype: 2,
+    devDays: 2,
+    earlyPenalty: 1,
+  });
+  const uncut = reviewProduct({
+    seed: ship.db.tycoon.view().seed,
+    productId: "p1",
+    topicId: "crypto",
+    typeId: "newsletter",
+    design: 2,
+    tech: 2,
+    hype: 2,
+    devDays: 2,
+  });
+  assert.deepEqual(shipped?.review, expected);
+  assert.equal(expected.score, uncut.score - 1);
+  assert.ok(expected.score >= 1);
+  const sale = salesForDay({
+    seed: ship.db.tycoon.view().seed,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: "great",
+    score: expected.score,
+    dayIndex: 0,
+    reputation: 0,
+  });
+  assert.equal(shipped?.salesCents, sale.cents);
+  assert.equal(shipped?.fans, sale.fans);
+  assert.equal(ship.db.journey.state().company.cashCents, sale.cents);
+  assert.equal(ship.db.journey.state().company.reputation, sale.fans);
+  assert.ok(sale.cents < 20_700);
+  assert.equal(earlyRows(ship.db).length, 0);
+  assert.equal(txCount(ship.db) > tx, true);
+  const launchCash = ship.db.journey.state().company.cashCents;
+  const stored = staffJson(ship.db, "p1");
+  ship.db.tycoon.view();
+  assert.equal(staffJson(ship.db, "p1"), stored);
+  assert.throws(() => ship.db.tycoon.earlyAccess(), /No product is on the bench\./u);
+  assert.equal(ship.db.tycoon.view().history[0]?.salesCents, launchCash);
+  ship.db.endDay(day);
+  assert.equal(ship.db.tycoon.view().history[0]?.salesCents, launchCash, "the release day does not sell twice");
+  assert.equal(ship.db.tycoon.view().history[0]?.salesDays, 1);
+  ship.db.endDay(day + 1);
+  assert.equal(ship.db.tycoon.view().history[0]?.salesDays, 2);
+  assert.ok((ship.db.tycoon.view().history[0]?.salesCents ?? 0) > launchCash);
+  assert.equal(JSON.parse(staffJson(ship.db, "p1")).earlyDays, 1);
+  assert.equal(validate(ship.db.journey.state()), true, JSON.stringify(validate.errors));
+  ship.db.close();
+
+  const deal = await setup();
+  const offer = deal.db.tycoon.view().contract;
+  deal.db.tycoon.acceptContract();
+  deal.db.tycoon.start(offer.topicId, offer.typeId, []);
+  deal.db.endDay(1);
+  const dealDay = deal.db.clockState().day;
+  deal.db.tycoon.earlyAccess();
+  const launch = deal.db.tycoon.view().history[0];
+  assert.equal(launch?.contract?.bonusCents, offer.bonusCents);
+  assert.equal(deal.db.journey.state().company.cashCents, (launch?.salesCents ?? 0) + offer.bonusCents);
+  assert.equal(deal.db.journey.state().company.earnedCents, (launch?.salesCents ?? 0) + offer.bonusCents);
+  assert.equal(deal.db.journey.state().company.reputation, launch?.fans);
+  const paid = deal.db.journey.db.prepare("SELECT COUNT(*) AS n FROM company_transactions WHERE id = 'tycoon:contract:p1'").get() as { n: number };
+  assert.equal(Number(paid.n), 1);
+  assert.throws(() => deal.db.tycoon.earlyAccess(), /No product is on the bench\./u);
+  deal.db.endDay(dealDay);
+  deal.db.endDay(dealDay + 1);
+  const paidAgain = deal.db.journey.db.prepare("SELECT COUNT(*) AS n FROM company_transactions WHERE id = 'tycoon:contract:p1'").get() as { n: number };
+  assert.equal(Number(paidAgain.n), 1);
+  assert.equal(earlyRows(deal.db).length, 0);
+  deal.db.close();
+
+  const cap = await setup();
+  cap.db.tycoon.start("fitness", "course", [], 100, "none", "none", "balanced", "everyone", "long");
+  cap.db.tycoon.addFeature();
+  assert.equal(cap.db.tycoon.view().developing?.devDaysRequired, 5);
+  cap.db.endDay(1);
+  assert.deepEqual(cap.db.tycoon.view().developing?.earlyAccess, {
+    enabled: true, reason: "", daysLeft: 4, penalty: 3,
+  });
+  cap.db.tycoon.earlyAccess();
+  const capped = JSON.parse(staffJson(cap.db, "p1")) as { earlyAccess?: boolean; earlyDays?: number; featureDemand?: boolean; feature?: boolean };
+  assert.equal(capped.earlyAccess, true);
+  assert.equal(capped.earlyDays, 4);
+  assert.equal(capped.feature, true);
+  assert.equal(capped.featureDemand, true);
+  assert.equal(cap.db.tycoon.view().history[0]?.earlyAccess?.penalty, 3);
+  const capReview = cap.db.tycoon.view().history[0]?.review;
+  assert.ok(capReview && capReview.score >= 1);
+  assert.ok(capReview.reviewers.every((reviewer) => reviewer.score >= 1));
+  assert.deepEqual(capReview, reviewProduct({
+    seed: cap.db.tycoon.view().seed,
+    productId: "p1",
+    topicId: "fitness",
+    typeId: "course",
+    design: 2,
+    tech: 2,
+    hype: 2,
+    devDays: 5,
+    earlyPenalty: 4,
+  }));
+  cap.db.close();
+
+  const lop = await setup();
+  lop.db.tycoon.start("crypto", "newsletter", []);
+  lop.db.tycoon.setDayPlan("design");
+  lop.db.endDay(1);
+  lop.db.tycoon.earlyAccess();
+  assert.equal(JSON.parse(staffJson(lop.db, "p1")).bugs, 1);
+  assert.equal(lop.db.tycoon.view().history[0]?.bugs, 1);
+  assert.deepEqual(lop.db.tycoon.view().history[0]?.review, reviewProduct({
+    seed: lop.db.tycoon.view().seed,
+    productId: "p1",
+    topicId: "crypto",
+    typeId: "newsletter",
+    design: 6,
+    tech: 0,
+    hype: 0,
+    devDays: 2,
+    bugs: 1,
+    earlyPenalty: 1,
+  }));
+  lop.db.close();
+
+  const kept = await setup();
+  kept.db.tycoon.start("crypto", "newsletter", []);
+  kept.db.endDay(1);
+  kept.db.tycoon.earlyAccess();
+  const keptFile = join(kept.root, "game.sqlite");
+  const keptProject = join(kept.root, "company-project");
+  const keptJson = staffJson(kept.db, "p1");
+  const keptSales = kept.db.tycoon.view().history[0]?.salesCents;
+  const keptBlock = kept.db.tycoon.view().history[0]?.earlyAccess;
+  kept.db.tycoon.view();
+  assert.equal(staffJson(kept.db, "p1"), keptJson);
+  kept.db.close();
+  const reopened = new GameDatabase(keptFile, keptProject);
+  assert.equal(staffJson(reopened, "p1"), keptJson);
+  assert.equal(reopened.tycoon.view().history[0]?.salesCents, keptSales);
+  assert.deepEqual(reopened.tycoon.view().history[0]?.earlyAccess, keptBlock);
+  reopened.tycoon.view();
+  assert.equal(staffJson(reopened, "p1"), keptJson);
+  finishSales(reopened);
+  reopened.tycoon.sequel("p1");
+  assert.equal(JSON.parse(staffJson(reopened, "p2")).earlyAccess, undefined);
+  assert.equal(JSON.parse(staffJson(reopened, "p2")).earlyDays, undefined);
+  assert.deepEqual(reopened.tycoon.view().developing?.earlyAccess, {
+    enabled: false, reason: "Work one office day first.", daysLeft: 1, penalty: 0,
+  });
+  assert.equal(JSON.parse(staffJson(reopened, "p1")).earlyAccess, true);
+  assert.equal(JSON.parse(staffJson(reopened, "p1")).earlyDays, 1);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+});
+
 function txCount(db: GameDatabase): number {
   return Number((db.journey.db.prepare("SELECT COUNT(*) AS n FROM company_transactions").get() as { n: number }).n);
 }
@@ -5867,6 +6116,10 @@ function bugRows(db: GameDatabase) {
 
 function crunchRows(db: GameDatabase) {
   return db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:crunch%'").all();
+}
+
+function earlyRows(db: GameDatabase) {
+  return db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:early%'").all();
 }
 
 function finishSales(db: GameDatabase): void {

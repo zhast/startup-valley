@@ -2560,3 +2560,72 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Sixty-seven PNGs in `/workspace/sv-proof/round-57/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-57 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey, on the card for the product in development. Crunch is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_crunch.gd`.
+
+### Round 58 — 2026-11-09
+
+**What changed**
+- `tycoon.earlyAccess` takes `{}`. With nothing on the bench, including after release, it fails with "No product is on the bench." With no office day yet it fails with "Work one office day first." When the required days are already done it fails with "Required days are done. Use Release." A bad payload fails with "Invalid protocol request". No fee, no ledger row, no clock move.
+- The ship uses the normal release path the same day. Reviews, launch-day sales, the contract bonus, stored bugs, and later sales days all follow Release. `salesDays` starts at 1. Ending that same day does not sell again.
+- The missing days are not worked, so they add no design, tech, or hype. The review still measures the earned points against the full required length. A founder who ships a newsletter after one even day is 2/2/2 against a two-day ideal.
+- The penalty is 1 score point per missing day, capped at 3, subtracted with bugs before the reviewers, then clamped to 1–10. A newsletter one day early loses 1. A five-day build shipped after one day stores `earlyDays` 4 and loses 3. The score does not go below 1.
+- Storage is on the product snapshot in `staff_json`: `earlyAccess: true` and integer `earlyDays` (omit when 0). Both keys are omitted when the product did not ship early. No new SQL column. Reads do not rewrite `staff_json`. A sequel starts clean. An older row with neither key was not an early ship.
+- The contract bonus still pays once, on `tycoon:contract:<productId>`. There is no `tycoon:early` row. Reopening the save keeps the keys, the penalty, and the sales. Skipping Early access leaves the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- The developing product carries `earlyAccess: { enabled, reason, daysLeft, penalty }`. Day 0 and a finished build are disabled, with a reason and no button. The offer is enabled, with an empty reason and the capped penalty. After an early ship the object stays with `enabled` false and the capped penalty. A normal release stores null. A payload without `earlyAccess` draws no control.
+- The row sits on the developing-product card, under Crunch and above New Product. Waiting: "Early access · Work one office day first." Ready: "Early access · Required days are done. Use Release." Offer: "Early access · ship now, −N score" with one secondary Ship early button. The release card, the Selling card, the Shipped card, and the shipped list say "Early access" after an early ship. Hire stays the one primary action. Nothing on this row is orange.
+
+**Proof**
+- `/workspace/sv-proof/round-58/68-early-offer.png` and `69-early-released.png`, captured by the verify-startup-valley skill. PROOF PASS. Sixty-nine PNGs. The offer header reads "Spring 2 · Year 1 · $0.00 game cash · 0 reputation". The line "Early access · ship now, −1 score" is one readable line. Ship early is a cream secondary button under that line. New Product sits under the button. Hire Mina · free stays orange in the footer and does not cover it. The release card reads "Score 3 / 10", then "Early access", then the four reviewers, then "Launch sales · $153.00 · +2 fans". The top bar shows $153 earned. Those lines are readable and do not overlap. Ship another and Back to office stay in the footer.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Cancel the build is the next slice. One optional drop of the product still on the bench. The bench clears, the days already worked are gone, and there is no review and no sales. Skip it and the product stays, so the first Crypto Alpha Newsletter still lands at 20700 cents and 5 fans. No fee, no ledger row, no new art.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. The developing card is one line taller when early access shows, and one button taller when Ship early is offered. The offer scrolls to the top of the journey, so the line and the button sit above New Product and Hire does not cover them. The publisher, press demo, feature, day plan, bugs, and crunch stay in that same card, above early access.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 126 tests, 124 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test covers each failure, the penalty and the cap, the stored keys, the sales window starting that day, the contract bonus paying once, a clean sequel, the skipped newsletter at 20700 cents and 5 fans then 33300 cents, a reopen, and no Connect call.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS
+- `test_tycoon_localization.gd` — TYCOON LOCALIZATION PASS
+- `test_tycoon_town_day.gd` — TYCOON TOWN DAY PASS
+- `test_tycoon_press_demo.gd` — TYCOON PRESS DEMO PASS
+- `test_tycoon_launch_trailer.gd` — TYCOON LAUNCH TRAILER PASS
+- `test_tycoon_dev_diary.gd` — TYCOON DEV DIARY PASS
+- `test_tycoon_rivals.gd` — TYCOON RIVALS PASS
+- `test_tycoon_features.gd` — TYCOON FEATURES PASS
+- `test_tycoon_day_plan.gd` — TYCOON DAY PLAN PASS
+- `test_tycoon_bugs.gd` — TYCOON BUGS PASS
+- `test_tycoon_crunch.gd` — TYCOON CRUNCH PASS
+- `test_tycoon_early_access.gd` — TYCOON EARLY ACCESS PASS. Day 0 names the wait and hides Ship early. A finished build points at Release and hides the button. Skipping it still pays 20700 cents and 5 fans, then 33300 cents, and the release card does not say Early access. After one office day the line is "Early access · ship now, −1 score". Ship early is secondary, under Crunch, and above New Product. Hire Mina stays primary. The release card, the Selling card, and the shipped list say Early access. Launch sales are quieter than a full newsletter. Reopening keeps the cash, the mark, and the penalty. Connect stays closed. The rules script inside that test checks the same harness cases.
+- `test_ui_company_redesign.gd` — 18171 checks, 0 failures, 0 captures. Existing fixtures omit `earlyAccess` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Sixty-nine PNGs in `/workspace/sv-proof/round-58/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-58 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey, on the card for the product in development. Early access is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_early_access.gd`.

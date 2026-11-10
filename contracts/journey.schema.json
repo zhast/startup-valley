@@ -997,6 +997,22 @@
               }
             }
           ]
+        },
+        "earlyAccess": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["enabled", "reason", "daysLeft", "penalty"],
+              "properties": {
+                "enabled": { "type": "boolean" },
+                "reason": { "type": "string" },
+                "daysLeft": { "type": "integer", "minimum": 0 },
+                "penalty": { "type": "integer", "minimum": 0, "maximum": 3 }
+              }
+            }
+          ]
         }
       }
     },
