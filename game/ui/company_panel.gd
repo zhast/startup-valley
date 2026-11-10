@@ -1124,7 +1124,8 @@ func _publisher_card(product: Dictionary) -> void:
 	var crunch_offered := _crunch_offered(product)
 	var early_offered := _early_access_offered(product)
 	var cancel_offered := _cancel_offered(product)
-	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered and not bugs_offered and not crunch_offered and not early_offered and not cancel_offered: return
+	var slip_offered := _slip_offered(product)
+	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered and not bugs_offered and not crunch_offered and not early_offered and not cancel_offered and not slip_offered: return
 	var card := _card()
 	card.name = "PublisherCard"
 	if not publisher_name.is_empty():
@@ -1164,6 +1165,8 @@ func _publisher_card(product: Dictionary) -> void:
 		_early_access_row(product, card)
 	if cancel_offered:
 		_cancel_row(product, card)
+	if slip_offered:
+		_slip_row(product, card)
 
 func _sign_publisher() -> void:
 	_request("tycoon.signPublisher", {})
@@ -1372,6 +1375,41 @@ func _keep_build() -> void:
 func _drop_build() -> void:
 	_cancel_confirm = false
 	_request("tycoon.cancelBuild", {})
+
+func _slip_offered(product: Dictionary) -> bool:
+	return product.get("slip") is Dictionary
+
+func _slip_text(product: Dictionary) -> String:
+	var value: Variant = product.get("slip", null)
+	if not value is Dictionary:
+		return ""
+	var offer := value as Dictionary
+	if bool(offer.get("pending", false)):
+		return "Holding tomorrow"
+	if not bool(offer.get("enabled", false)):
+		var reason := str(offer.get("reason", "")).strip_edges()
+		if reason.is_empty():
+			return ""
+		return "Slip a day · %s" % reason
+	return "Slip a day · hold tomorrow. The build does not."
+
+func _slip_row(product: Dictionary, card: Control) -> void:
+	var text := _slip_text(product)
+	if text.is_empty():
+		return
+	var line := _label(text, false, card)
+	line.name = "SlipOffer"
+	var value: Variant = product.get("slip", null)
+	if not value is Dictionary:
+		return
+	var offer := value as Dictionary
+	if bool(offer.get("pending", false)) or not bool(offer.get("enabled", false)):
+		return
+	var button := _button("Slip a day", _slip_day, false, true, card, "secondary")
+	button.name = "SlipDay"
+
+func _slip_day() -> void:
+	_request("tycoon.slipDay", {})
 
 func _early_shipped(product: Dictionary) -> bool:
 	var value: Variant = product.get("earlyAccess", null)
