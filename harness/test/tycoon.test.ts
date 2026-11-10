@@ -6102,6 +6102,213 @@ test("early access ships a short build, stores a capped score penalty, and start
   reopened.close();
 });
 
+test("cancel build drops the bench product without a review, a sale, or a history row", async () => {
+  assert.equal(parseRequest({ kind: "request", id: "cancel", method: "tycoon.cancelBuild", params: {} }).method, "tycoon.cancelBuild");
+  assert.throws(() => parseRequest({ kind: "request", id: "cancel", method: "tycoon.cancelBuild", params: { extra: true } }), /Invalid protocol request/u);
+  const source = readFileSync(new URL("../src/tycoon.ts", import.meta.url), "utf8");
+  const bodyStart = source.indexOf("cancelBuild():");
+  const body = source.slice(bodyStart, source.indexOf("crunch():", bodyStart));
+  assert.equal(/fetch|https?:|Connect|credential|openrouter/iu.test(body), false);
+
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+
+  const bare = await setup();
+  assert.throws(() => bare.db.tycoon.cancelBuild(), /No product is on the bench\./u);
+  bare.db.close();
+
+  const skip = await setup();
+  skip.db.tycoon.start("crypto", "newsletter", []);
+  assert.deepEqual(skip.db.tycoon.view().developing?.cancel, { enabled: true, reason: "" });
+  const fresh = staffJson(skip.db, "p1");
+  skip.db.tycoon.view();
+  assert.equal(staffJson(skip.db, "p1"), fresh);
+  skip.db.endDay(1);
+  skip.db.endDay(2);
+  skip.db.tycoon.release("p1");
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.fans, 5);
+  assert.equal(skip.db.tycoon.view().history[0]?.salesCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.cancel, null);
+  skip.db.endDay(3);
+  skip.db.endDay(4);
+  assert.equal(skip.db.journey.state().company.cashCents, 33_300);
+  assert.equal(cancelRows(skip.db).length, 0);
+  assert.throws(() => skip.db.tycoon.cancelBuild(), /No product is on the bench\./u);
+  assert.equal(validate(skip.db.journey.state()), true, JSON.stringify(validate.errors));
+  skip.db.close();
+
+  const drop = await setup();
+  drop.db.tycoon.start("crypto", "newsletter", []);
+  drop.db.endDay(1);
+  assert.equal(drop.db.tycoon.view().developing?.devDays, 1);
+  assert.equal(drop.db.tycoon.view().developing?.design, 2);
+  const points = drop.db.tycoon.view().researchPoints;
+  const founder = drop.db.tycoon.view().staff.find((person) => person.id === "founder");
+  const cash = drop.db.journey.state().company.cashCents;
+  const fans = drop.db.journey.state().company.reputation;
+  const day = drop.db.clockState().day;
+  const before = txIds(drop.db);
+  assert.equal(validate(drop.db.journey.state()), true, JSON.stringify(validate.errors));
+  drop.db.tycoon.cancelBuild();
+  assert.equal(drop.db.clockState().day, day);
+  assert.equal(drop.db.tycoon.view().developing, null);
+  assert.equal(drop.db.tycoon.view().history.length, 0);
+  assert.equal(productCount(drop.db), 0);
+  assert.equal(drop.db.journey.db.prepare("SELECT id FROM tycoon_products WHERE id = 'p1'").get(), undefined);
+  assert.deepEqual(txIds(drop.db), before);
+  assert.equal(cancelRows(drop.db).length, 0);
+  assert.equal(drop.db.tycoon.view().researchPoints, points);
+  assert.equal(drop.db.tycoon.view().staff.find((person) => person.id === "founder")?.design, founder?.design);
+  assert.equal(drop.db.journey.state().company.cashCents, cash);
+  assert.equal(drop.db.journey.state().company.reputation, fans);
+  assert.throws(() => drop.db.tycoon.cancelBuild(), /No product is on the bench\./u);
+  assert.throws(() => drop.db.tycoon.release("p1"), /No product is on the bench\./u);
+  assert.throws(() => drop.db.tycoon.award("p1"), /No product with that id\./u);
+  assert.throws(() => drop.db.tycoon.sequel("p1"), /No product with that id\./u);
+  assert.throws(() => drop.db.tycoon.port("p1"), /No product with that id\./u);
+  assert.throws(() => drop.db.tycoon.patch("p1"), /No product with that id\./u);
+  drop.db.tycoon.start("crypto", "newsletter", []);
+  assert.equal(drop.db.tycoon.view().developing?.id, "p2");
+  assert.equal(drop.db.tycoon.view().developing?.devDays, 0);
+  assert.equal(drop.db.tycoon.view().developing?.design, 0);
+  assert.deepEqual(drop.db.tycoon.view().developing?.cancel, { enabled: true, reason: "" });
+  assert.equal(drop.db.tycoon.view().researchPoints, points);
+  assert.equal(validate(drop.db.journey.state()), true, JSON.stringify(validate.errors));
+  drop.db.close();
+
+  const again = await setup();
+  again.db.tycoon.start("crypto", "newsletter", []);
+  again.db.tycoon.cancelBuild();
+  again.db.tycoon.start("crypto", "newsletter", []);
+  assert.equal(again.db.tycoon.view().developing?.id, "p1");
+  assert.equal(again.db.tycoon.view().developing?.devDays, 0);
+  again.db.close();
+
+  const kept = await setup();
+  kept.db.tycoon.start("crypto", "newsletter", []);
+  kept.db.endDay(1);
+  const keptPoints = kept.db.tycoon.view().researchPoints;
+  const keptCash = kept.db.journey.state().company.cashCents;
+  const keptFans = kept.db.journey.state().company.reputation;
+  const keptDay = kept.db.clockState().day;
+  kept.db.tycoon.cancelBuild();
+  const keptFile = join(kept.root, "game.sqlite");
+  const keptProject = join(kept.root, "company-project");
+  kept.db.close();
+  const reopened = new GameDatabase(keptFile, keptProject);
+  assert.equal(reopened.tycoon.view().developing, null);
+  assert.equal(reopened.tycoon.view().history.length, 0);
+  assert.equal(productCount(reopened), 0);
+  assert.equal(reopened.tycoon.view().researchPoints, keptPoints);
+  assert.equal(reopened.journey.state().company.cashCents, keptCash);
+  assert.equal(reopened.journey.state().company.reputation, keptFans);
+  assert.equal(reopened.clockState().day, keptDay);
+  reopened.tycoon.view();
+  assert.equal(productCount(reopened), 0);
+  reopened.tycoon.start("fitness", "newsletter", []);
+  assert.equal(reopened.tycoon.view().developing?.id, "p2");
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+
+  const deal = await setup();
+  const offer = deal.db.tycoon.view().contract;
+  deal.db.tycoon.acceptContract();
+  deal.db.tycoon.start(offer.topicId, offer.typeId, []);
+  assert.equal(deal.db.tycoon.view().contract.status, "building");
+  assert.equal(deal.db.tycoon.view().developing?.contract?.bonusCents, offer.bonusCents);
+  const dealCash = deal.db.journey.state().company.cashCents;
+  const dealFans = deal.db.journey.state().company.reputation;
+  const dealTx = txIds(deal.db);
+  deal.db.tycoon.cancelBuild();
+  assert.equal(deal.db.tycoon.view().developing, null);
+  assert.equal(deal.db.tycoon.view().history.length, 0);
+  assert.equal(deal.db.journey.state().company.cashCents, dealCash);
+  assert.equal(deal.db.journey.state().company.reputation, dealFans);
+  assert.deepEqual(txIds(deal.db), dealTx);
+  const returned = deal.db.tycoon.view().contract;
+  assert.equal(returned.status, "offered");
+  assert.equal(returned.id, offer.id);
+  assert.equal(returned.enabled, true);
+  assert.equal(Number((deal.db.journey.db.prepare("SELECT COUNT(*) AS n FROM company_transactions WHERE id LIKE 'tycoon:contract:%'").get() as { n: number }).n), 0);
+  deal.db.tycoon.acceptContract();
+  deal.db.tycoon.start(returned.topicId, returned.typeId, []);
+  assert.equal(deal.db.tycoon.view().developing?.contract?.bonusCents, offer.bonusCents);
+  assert.equal(deal.db.tycoon.view().contract.status, "building");
+  deal.db.close();
+
+  const published = await setup();
+  published.db.tycoon.start("crypto", "newsletter", []);
+  published.db.tycoon.signPublisher();
+  published.db.tycoon.showPressDemo();
+  assert.equal(published.db.journey.state().company.cashCents, 12_000);
+  assert.equal(published.db.journey.state().company.reputation, 4);
+  const publishedTx = txIds(published.db);
+  published.db.tycoon.cancelBuild();
+  assert.equal(published.db.tycoon.view().developing, null);
+  assert.equal(published.db.tycoon.view().history.length, 0);
+  assert.equal(published.db.journey.state().company.cashCents, 12_000);
+  assert.equal(published.db.journey.state().company.reputation, 4);
+  assert.deepEqual(txIds(published.db), publishedTx);
+  assert.equal(Number((published.db.journey.db.prepare("SELECT COUNT(*) AS n FROM company_transactions WHERE id = 'tycoon:publisher:p1:advance'").get() as { n: number }).n), 1);
+  assert.equal(Number((published.db.journey.db.prepare("SELECT COUNT(*) AS n FROM company_transactions WHERE id = 'tycoon:pressdemo:p1:fee'").get() as { n: number }).n), 1);
+  published.db.tycoon.start("crypto", "newsletter", []);
+  assert.equal(published.db.tycoon.view().developing?.id, "p2");
+  assert.equal(published.db.tycoon.view().developing?.publisher?.signed, false);
+  assert.equal(published.db.tycoon.view().developing?.pressDemo?.shown, false);
+  published.db.close();
+
+  const shipped = await setup();
+  shipped.db.tycoon.start("crypto", "newsletter", []);
+  shipped.db.endDay(1);
+  shipped.db.endDay(2);
+  shipped.db.tycoon.release("p1");
+  const history = JSON.stringify(shipped.db.tycoon.view().history[0]);
+  const shippedCash = shipped.db.journey.state().company.cashCents;
+  const shippedFans = shipped.db.journey.state().company.reputation;
+  shipped.db.tycoon.start("fitness", "newsletter", []);
+  assert.equal(shipped.db.tycoon.view().developing?.id, "p2");
+  shipped.db.tycoon.cancelBuild();
+  assert.equal(JSON.stringify(shipped.db.tycoon.view().history[0]), history);
+  assert.equal(shipped.db.tycoon.view().history.length, 1);
+  assert.equal(shipped.db.tycoon.view().history[0]?.id, "p1");
+  assert.equal(shipped.db.journey.state().company.cashCents, shippedCash);
+  assert.equal(shipped.db.journey.state().company.reputation, shippedFans);
+  assert.equal(shipped.db.tycoon.view().developing, null);
+  assert.throws(() => shipped.db.tycoon.award("p2"), /No product with that id\./u);
+  assert.throws(() => shipped.db.tycoon.sequel("p2"), /No product with that id\./u);
+  assert.throws(() => shipped.db.tycoon.port("p2"), /No product with that id\./u);
+  assert.throws(() => shipped.db.tycoon.localize("p2"), /No product with that id\./u);
+  assert.throws(() => shipped.db.tycoon.patch("p2"), /No product with that id\./u);
+  assert.throws(() => shipped.db.tycoon.makeTrailer("p2"), /No product with that id\./u);
+  assert.throws(() => shipped.db.tycoon.writeDiary("p2"), /No product with that id\./u);
+  assert.throws(() => shipped.db.tycoon.release("p2"), /No product is on the bench\./u);
+  shipped.db.close();
+
+  const sequel = await setup();
+  finishNewsletter(sequel.db);
+  sequel.db.tycoon.sequel("p1");
+  assert.equal(sequel.db.tycoon.view().developing?.id, "p2");
+  assert.equal(JSON.parse(staffJson(sequel.db, "p1")).sequelId, "p2");
+  sequel.db.tycoon.cancelBuild();
+  assert.equal(JSON.parse(staffJson(sequel.db, "p1")).sequelId, undefined);
+  assert.equal(sequel.db.tycoon.view().developing, null);
+  assert.equal(sequel.db.tycoon.view().history[0]?.id, "p1");
+  sequel.db.tycoon.sequel("p1");
+  assert.equal(sequel.db.tycoon.view().developing?.id, "p2");
+  assert.equal(JSON.parse(staffJson(sequel.db, "p1")).sequelId, "p2");
+  assert.equal(validate(sequel.db.journey.state()), true, JSON.stringify(validate.errors));
+  sequel.db.close();
+});
+
+function txIds(db: GameDatabase): string[] {
+  return (db.journey.db.prepare("SELECT id FROM company_transactions ORDER BY id").all() as Array<{ id: string }>).map((row) => row.id);
+}
+
+function cancelRows(db: GameDatabase) {
+  return db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:cancel%'").all();
+}
+
 function txCount(db: GameDatabase): number {
   return Number((db.journey.db.prepare("SELECT COUNT(*) AS n FROM company_transactions").get() as { n: number }).n);
 }

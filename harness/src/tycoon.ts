@@ -536,6 +536,8 @@ export interface TycoonProductView {
    * After release, the stored penalty when this product shipped early, otherwise null.
    */
   earlyAccess: TycoonEarlyAccess | null;
+  /** While developing, the drop is available. Null once the product has shipped. */
+  cancel: TycoonCancel | null;
 }
 
 export interface TycoonUpgradeView {
@@ -821,6 +823,12 @@ export interface TycoonEarlyAccess {
   daysLeft: number;
   /** Score points this ship subtracts. Capped. 0 when the button cannot ship. */
   penalty: number;
+}
+
+/** Drop the product still on the bench. A shipped product stores null. */
+export interface TycoonCancel {
+  enabled: boolean;
+  reason: string;
 }
 
 export interface TycoonSnapshot {
@@ -2199,8 +2207,7 @@ export class TycoonStore {
       if (option.costCents > 0 && this.cashCents() < option.costCents) throw new Error(`Need ${wholeDollars(option.costCents)}`);
       const stats = this.loadStaffState();
       const researchBonus = researchFitBonus(research.researchedTopics.has(topicId), research.researchedTypes.has(typeId));
-      const count = Number((this.db.prepare("SELECT COUNT(*) AS n FROM tycoon_products").get() as { n: number }).n);
-      const id = `p${count + 1}`;
+      const id = this.nextProductId();
       if (option.costCents > 0) {
         this.journey.recordCompanyChange(`tycoon:marketing:${id}`, this.day(), -option.costCents, 0, 0, option.label);
       }
@@ -2471,6 +2478,31 @@ export class TycoonStore {
     });
   }
 
+  /**
+   * Drop the product on the bench. The row is deleted, so there is no review and no sale.
+   * A contract on it fails. A publisher deal on it is void. Fees already paid stay paid.
+   * No cash row and no clock move.
+   */
+  cancelBuild(): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.developingRow();
+      if (!row) throw new Error("No product is on the bench.");
+      const stored = parseProductSnapshot(row.staff_json);
+      if (stored.sequelOf) {
+        const parent = this.row(stored.sequelOf);
+        if (parent) {
+          const parentStored = parseProductSnapshot(parent.staff_json);
+          if (parentStored.sequelId === row.id) {
+            parentStored.sequelId = null;
+            this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(parentStored), parent.id);
+          }
+        }
+      }
+      this.db.prepare("DELETE FROM tycoon_products WHERE id = ?").run(row.id);
+      return this.journey.state();
+    });
+  }
+
   /** Arm the next office day to double personal craft. The day after rests. No cash row and no clock move. */
   crunch(): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
@@ -2688,8 +2720,7 @@ export class TycoonStore {
       const staffIds = this.assignedStaff(stored.staff.map((person) => person.id).filter((id) => id !== "founder" && hired.has(id)));
       const stats = this.loadStaffState();
       const researchBonus = researchFitBonus(research.researchedTopics.has(topicId), research.researchedTypes.has(typeId));
-      const count = Number((this.db.prepare("SELECT COUNT(*) AS n FROM tycoon_products").get() as { n: number }).n);
-      const id = `p${count + 1}`;
+      const id = this.nextProductId();
       const carry = sequelScoreCarry(patchedScore(this.storedReviewScore(row), stored.patched));
       const snapshot: ProductSnapshot = {
         staff: staffIds.map((memberId) => ({
@@ -3507,6 +3538,24 @@ export class TycoonStore {
     return this.db.prepare("SELECT * FROM tycoon_products WHERE status = 'developing' LIMIT 1").get() as ProductRow | undefined;
   }
 
+  /** One past any product id still stored, or already used on a tycoon ledger row. */
+  private nextProductId(): string {
+    let max = 0;
+    const bump = (id: string): void => {
+      const match = /^p([1-9][0-9]*)$/u.exec(id);
+      if (!match) return;
+      const n = Number(match[1]);
+      if (n > max) max = n;
+    };
+    const products = this.db.prepare("SELECT id FROM tycoon_products").all() as Array<{ id: string }>;
+    for (const product of products) bump(String(product.id));
+    const txs = this.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:%'").all() as Array<{ id: string }>;
+    for (const tx of txs) {
+      for (const part of String(tx.id).split(":")) bump(part);
+    }
+    return `p${max + 1}`;
+  }
+
   private row(id: string): ProductRow | undefined {
     return this.db.prepare("SELECT * FROM tycoon_products WHERE id = ?").get(id) as ProductRow | undefined;
   }
@@ -3584,6 +3633,7 @@ export class TycoonStore {
       earlyAccess: row.status === "developing"
         ? this.earlyAccessOffer(devDays, required)
         : this.earlyAccessShipped(snapshot),
+      cancel: row.status === "developing" ? { enabled: true, reason: "" } : null,
     };
   }
 
