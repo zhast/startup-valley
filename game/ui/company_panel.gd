@@ -44,6 +44,8 @@ var _size_id := "catalog"
 var _release_focus_id := ""
 var _cancel_confirm := false
 var _pivot_open := false
+var _playtest_shown := false
+var _playtest_product_id := ""
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -571,7 +573,10 @@ func _product_shortcut() -> void:
 	if developing.is_empty():
 		_cancel_confirm = false
 		_pivot_open = false
+		_playtest_shown = false
+		_playtest_product_id = ""
 	else:
+		_remember_playtest_product(developing)
 		_show_engine(developing, "EngineJourney")
 		_show_focus(developing, "FocusJourney")
 		_show_audience(developing, "AudienceJourney")
@@ -1128,7 +1133,8 @@ func _publisher_card(product: Dictionary) -> void:
 	var cancel_offered := _cancel_offered(product)
 	var slip_offered := _slip_offered(product)
 	var pivot_offered := _pivot_offered(product)
-	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered and not bugs_offered and not crunch_offered and not early_offered and not cancel_offered and not slip_offered and not pivot_offered: return
+	var playtest_offered := _playtest_offered(product)
+	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered and not bugs_offered and not crunch_offered and not early_offered and not cancel_offered and not slip_offered and not pivot_offered and not playtest_offered: return
 	var card := _card()
 	card.name = "PublisherCard"
 	if not publisher_name.is_empty():
@@ -1172,6 +1178,8 @@ func _publisher_card(product: Dictionary) -> void:
 		_slip_row(product, card)
 	if pivot_offered:
 		_pivot_row(product, card)
+	if playtest_offered:
+		_playtest_row(product, card)
 
 func _sign_publisher() -> void:
 	_request("tycoon.signPublisher", {})
@@ -1533,6 +1541,46 @@ func _choose_pivot_type(type_id: String) -> void:
 
 func _confirm_pivot() -> void:
 	_request("tycoon.pivot", {"topicId": _topic_id, "typeId": _type_id})
+
+func _remember_playtest_product(product: Dictionary) -> void:
+	var id := str(product.get("id", ""))
+	if id != _playtest_product_id:
+		_playtest_product_id = id
+		_playtest_shown = false
+
+func _playtest_offered(product: Dictionary) -> bool:
+	return product.get("playtest") is Dictionary
+
+func _playtest_text(product: Dictionary) -> String:
+	var value: Variant = product.get("playtest", null)
+	if not value is Dictionary:
+		return ""
+	var offer := value as Dictionary
+	var band := str(offer.get("band", "")).strip_edges()
+	if _playtest_shown and (band == "low" or band == "mid" or band == "high"):
+		return "Playtest: likely %s reviews" % band
+	var reason := str(offer.get("reason", "")).strip_edges()
+	if not reason.is_empty():
+		return "Playtest · %s" % reason
+	return "Playtest · see the likely review band."
+
+func _playtest_row(product: Dictionary, card: Control) -> void:
+	var text := _playtest_text(product)
+	if text.is_empty():
+		return
+	var line := _label(text, false, card)
+	line.name = "PlaytestOffer"
+	var value: Variant = product.get("playtest", null)
+	if not value is Dictionary:
+		return
+	if not bool((value as Dictionary).get("enabled", false)):
+		return
+	var button := _button("Playtest", _playtest, false, true, card, "secondary")
+	button.name = "Playtest"
+
+func _playtest() -> void:
+	_playtest_shown = true
+	_request("tycoon.playtest", {})
 
 func _early_shipped(product: Dictionary) -> bool:
 	var value: Variant = product.get("earlyAccess", null)
