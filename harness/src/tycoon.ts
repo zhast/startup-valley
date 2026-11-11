@@ -540,6 +540,8 @@ export interface TycoonProductView {
   cancel: TycoonCancel | null;
   /** While developing, whether the next office day is held. Null once the product has shipped. */
   slip: TycoonSlip | null;
+  /** While developing, whether the one pivot is still available. Null once the product has shipped. */
+  pivot: TycoonPivot | null;
 }
 
 export interface TycoonUpgradeView {
@@ -838,6 +840,17 @@ export interface TycoonSlip {
   enabled: boolean;
   pending: boolean;
   reason: string;
+}
+
+/** Change the topic or type of the product still on the bench. A shipped product stores null. */
+export interface TycoonPivot {
+  enabled: boolean;
+  used: boolean;
+  reason: string;
+  options: {
+    topics: Array<{ id: TopicId; name: string; unlocked: boolean }>;
+    types: Array<{ id: ProductTypeId; name: string; unlocked: boolean }>;
+  };
 }
 
 export interface TycoonSnapshot {
@@ -1476,6 +1489,8 @@ interface ProductSnapshot {
   earlyDays: number;
   /** True when the next office day holds this product. The calendar still moves. */
   slip: boolean;
+  /** True after this product has used its one pivot. */
+  pivoted: boolean;
 }
 
 interface ProductPort {
@@ -1533,6 +1548,7 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     earlyAccess: false,
     earlyDays: 0,
     slip: false,
+    pivoted: false,
   };
 }
 
@@ -1540,7 +1556,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, no rival cut, no feature, an even day plan, no stored bugs, not fixing, not crunching, 0 crunch bugs, not an early ship, and not holding the next day. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, no rival cut, no feature, an even day plan, no stored bugs, not fixing, not crunching, 0 crunch bugs, not an early ship, not holding the next day, and not pivoted. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -1580,6 +1596,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     earlyAccess?: unknown;
     earlyDays?: unknown;
     slip?: unknown;
+    pivoted?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -1614,6 +1631,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     earlyAccess: body.earlyAccess === true,
     earlyDays: parseEarlyDays(body.earlyDays),
     slip: body.slip === true,
+    pivoted: body.pivoted === true,
   };
 }
 
@@ -1796,6 +1814,7 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
     if (stored.earlyDays > 0) body.earlyDays = stored.earlyDays;
   }
   if (stored.slip) body.slip = true;
+  if (stored.pivoted) body.pivoted = true;
   return JSON.stringify(body);
 }
 
@@ -2549,6 +2568,40 @@ export class TycoonStore {
     });
   }
 
+  /**
+   * Change the topic and/or type of the product on the bench. Dev days and craft
+   * points stay. The name, the fit, and the research bonus follow the new pair.
+   * At most one pivot. No cash row and no clock move.
+   */
+  pivot(topicValue: string, typeValue: string): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.developingRow();
+      if (!row) throw new Error("No product is on the bench.");
+      const topicId = asTopic(topicValue);
+      const typeId = asType(typeValue);
+      const stored = parseProductSnapshot(row.staff_json);
+      if (stored.pivoted) throw new Error("Already pivoted.");
+      if (row.topic_id === topicId && row.type_id === typeId) throw new Error("Pick a new topic or type.");
+      if (stored.contract) {
+        const topicName = topicById(asTopic(row.topic_id))?.name ?? row.topic_id;
+        const typeName = typeById(asType(row.type_id))?.name ?? row.type_id;
+        throw new Error(`This contract is ${topicName} × ${typeName}.`);
+      }
+      const research = this.loadResearch();
+      const topic = topicById(topicId);
+      const type = typeById(typeId);
+      if (!topic || !research.topics.has(topicId)) throw new Error(`${topic?.name ?? "That topic"} is locked. Research it first.`);
+      if (!type || !research.types.has(typeId)) throw new Error(`${type?.name ?? "That product type"} is locked. Research it first.`);
+      stored.pivoted = true;
+      stored.researchBonus = researchFitBonus(research.researchedTopics.has(topicId), research.researchedTypes.has(typeId));
+      const title = productTitle(topicId, typeId);
+      const name = stored.sequelOf ? `${title} 2` : title;
+      this.db.prepare("UPDATE tycoon_products SET topic_id = ?, type_id = ?, name = ?, fit = ?, staff_json = ? WHERE id = ?")
+        .run(topicId, typeId, name, fitFor(topicId, typeId), serializeProductSnapshot(stored), row.id);
+      return this.journey.state();
+    });
+  }
+
   /** One feature on the product on the bench. One extra office day. No cash row. */
   addFeature(): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
@@ -2789,6 +2842,7 @@ export class TycoonStore {
         earlyAccess: false,
         earlyDays: 0,
         slip: false,
+        pivoted: false,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -3678,6 +3732,7 @@ export class TycoonStore {
         : this.earlyAccessShipped(snapshot),
       cancel: row.status === "developing" ? { enabled: true, reason: "" } : null,
       slip: this.slipView(row.status, snapshot.slip),
+      pivot: this.pivotView(row, snapshot),
     };
   }
 
@@ -3687,6 +3742,23 @@ export class TycoonStore {
     return pending
       ? { enabled: false, pending: true, reason: "" }
       : { enabled: true, pending: false, reason: "" };
+  }
+
+  /** One change of topic or type while the product is on the bench. Hidden once it ships. */
+  private pivotView(row: ProductRow, snapshot: ProductSnapshot): TycoonPivot | null {
+    if (row.status !== "developing") return null;
+    const research = this.loadResearch();
+    const options = {
+      topics: TOPICS.map((topic) => ({ id: topic.id, name: topic.name, unlocked: research.topics.has(topic.id) })),
+      types: PRODUCT_TYPES.map((type) => ({ id: type.id, name: type.name, unlocked: research.types.has(type.id) })),
+    };
+    if (snapshot.pivoted) return { enabled: false, used: true, reason: "", options };
+    if (snapshot.contract) {
+      const topicName = topicById(asTopic(row.topic_id))?.name ?? row.topic_id;
+      const typeName = typeById(asType(row.type_id))?.name ?? row.type_id;
+      return { enabled: false, used: false, reason: `This contract is ${topicName} × ${typeName}.`, options };
+    }
+    return { enabled: true, used: false, reason: "", options };
   }
 
   /** The offer while the product is on the bench. Day 0 and a finished build cannot ship early. */

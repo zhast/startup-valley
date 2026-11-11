@@ -6533,6 +6533,188 @@ test("slip a day holds the bench product for one office day", async () => {
   sequel.db.close();
 });
 
+test("pivot changes the bench product topic or type once", async () => {
+  assert.equal(parseRequest({ kind: "request", id: "pivot", method: "tycoon.pivot", params: { topicId: "fitness", typeId: "course" } }).method, "tycoon.pivot");
+  assert.throws(() => parseRequest({ kind: "request", id: "pivot", method: "tycoon.pivot", params: {} }), /Invalid protocol request/u);
+  assert.throws(() => parseRequest({ kind: "request", id: "pivot", method: "tycoon.pivot", params: { topicId: "fitness", typeId: "course", extra: true } }), /Invalid protocol request/u);
+  const source = readFileSync(new URL("../src/tycoon.ts", import.meta.url), "utf8");
+  const bodyStart = source.indexOf("pivot(topicValue");
+  const body = source.slice(bodyStart, source.indexOf("addFeature():", bodyStart));
+  assert.equal(/fetch|https?:|Connect|credential|openrouter/iu.test(body), false);
+  assert.ok(body.includes("pivot"), "pivot lives in the harness");
+
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  const idle = { enabled: true, used: false, reason: "" };
+  const used = { enabled: false, used: true, reason: "" };
+
+  const bare = await setup();
+  assert.throws(() => bare.db.tycoon.pivot("fitness", "course"), /No product is on the bench\./u);
+  bare.db.close();
+
+  const skip = await setup();
+  skip.db.tycoon.start("crypto", "newsletter", []);
+  const skipPivot = skip.db.tycoon.view().developing?.pivot;
+  assert.deepEqual({ enabled: skipPivot?.enabled, used: skipPivot?.used, reason: skipPivot?.reason }, idle);
+  assert.equal(skipPivot?.options.topics.find((topic) => topic.id === "crypto")?.unlocked, true);
+  assert.equal(skipPivot?.options.topics.find((topic) => topic.id === "sneakers")?.unlocked, false);
+  assert.equal(skipPivot?.options.types.find((type) => type.id === "newsletter")?.unlocked, true);
+  assert.equal(skipPivot?.options.types.find((type) => type.id === "software")?.unlocked, false);
+  const fresh = staffJson(skip.db, "p1");
+  skip.db.tycoon.view();
+  assert.equal(staffJson(skip.db, "p1"), fresh);
+  assert.equal(JSON.parse(fresh).pivoted, undefined);
+  skip.db.endDay(1);
+  skip.db.endDay(2);
+  skip.db.tycoon.release("p1");
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.fans, 5);
+  assert.equal(skip.db.tycoon.view().history[0]?.salesCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.pivot, null);
+  skip.db.endDay(3);
+  skip.db.endDay(4);
+  assert.equal(skip.db.journey.state().company.cashCents, 33_300);
+  assert.equal(pivotRows(skip.db).length, 0);
+  assert.throws(() => skip.db.tycoon.pivot("fitness", "course"), /No product is on the bench\./u);
+  assert.equal(validate(skip.db.journey.state()), true, JSON.stringify(validate.errors));
+  skip.db.close();
+
+  const same = await setup();
+  same.db.tycoon.start("crypto", "newsletter", []);
+  assert.throws(() => same.db.tycoon.pivot("crypto", "newsletter"), /Pick a new topic or type\./u);
+  same.db.close();
+
+  const locked = await setup();
+  locked.db.tycoon.start("crypto", "newsletter", []);
+  assert.throws(() => locked.db.tycoon.pivot("sneakers", "newsletter"), /Sneakers is locked\. Research it first\./u);
+  assert.throws(() => locked.db.tycoon.pivot("crypto", "software"), /Software Tool is locked\. Research it first\./u);
+  locked.db.close();
+
+  const change = await setup();
+  change.db.tycoon.start("crypto", "newsletter", []);
+  change.db.endDay(1);
+  const before = txIds(change.db);
+  const cash = change.db.journey.state().company.cashCents;
+  const fans = change.db.journey.state().company.reputation;
+  const day = change.db.clockState().day;
+  const days = change.db.tycoon.view().developing?.devDays;
+  const design = change.db.tycoon.view().developing?.design;
+  const tech = change.db.tycoon.view().developing?.tech;
+  const hype = change.db.tycoon.view().developing?.hype;
+  change.db.tycoon.pivot("fitness", "course");
+  assert.equal(change.db.clockState().day, day);
+  assert.equal(change.db.journey.state().company.cashCents, cash);
+  assert.equal(change.db.journey.state().company.reputation, fans);
+  assert.deepEqual(txIds(change.db), before);
+  assert.equal(pivotRows(change.db).length, 0);
+  const moved = change.db.tycoon.view().developing;
+  assert.equal(moved?.name, "Fitness Course");
+  assert.equal(moved?.topicId, "fitness");
+  assert.equal(moved?.typeId, "course");
+  assert.equal(moved?.topicName, "Fitness");
+  assert.equal(moved?.typeName, "Course");
+  assert.equal(moved?.fit, "great");
+  assert.equal(moved?.devDays, days);
+  assert.equal(moved?.design, design);
+  assert.equal(moved?.tech, tech);
+  assert.equal(moved?.hype, hype);
+  assert.equal(moved?.devDaysRequired, 3);
+  assert.equal(moved?.ready, false);
+  assert.equal(moved?.priceCents, 4_900);
+  assert.equal(moved?.researchBonus, 0);
+  assert.deepEqual({ enabled: moved?.pivot?.enabled, used: moved?.pivot?.used, reason: moved?.pivot?.reason }, used);
+  assert.equal(JSON.parse(staffJson(change.db, "p1")).pivoted, true);
+  const pivotedJson = staffJson(change.db, "p1");
+  change.db.tycoon.view();
+  assert.equal(staffJson(change.db, "p1"), pivotedJson);
+  assert.throws(() => change.db.tycoon.pivot("cooking", "newsletter"), /Already pivoted\./u);
+  assert.equal(validate(change.db.journey.state()), true, JSON.stringify(validate.errors));
+  const changeFile = join(change.root, "game.sqlite");
+  const changeProject = join(change.root, "company-project");
+  change.db.close();
+  const reopened = new GameDatabase(changeFile, changeProject);
+  const kept = reopened.tycoon.view().developing;
+  assert.equal(kept?.name, "Fitness Course");
+  assert.equal(kept?.topicId, "fitness");
+  assert.equal(kept?.typeId, "course");
+  assert.equal(kept?.fit, "great");
+  assert.equal(kept?.devDays, 1);
+  assert.equal(kept?.design, 2);
+  assert.equal(JSON.parse(staffJson(reopened, "p1")).pivoted, true);
+  assert.deepEqual({ enabled: kept?.pivot?.enabled, used: kept?.pivot?.used, reason: kept?.pivot?.reason }, used);
+  reopened.tycoon.view();
+  assert.equal(staffJson(reopened, "p1"), pivotedJson);
+  assert.throws(() => reopened.tycoon.pivot("gaming", "community"), /Already pivoted\./u);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+
+  const review = await setup();
+  review.db.tycoon.start("crypto", "newsletter", []);
+  review.db.endDay(1);
+  review.db.endDay(2);
+  assert.equal(review.db.tycoon.view().developing?.ready, true);
+  review.db.tycoon.pivot("fitness", "newsletter");
+  const pivotedReady = review.db.tycoon.view().developing;
+  assert.equal(pivotedReady?.name, "Fitness Newsletter");
+  assert.equal(pivotedReady?.fit, "okay");
+  assert.equal(pivotedReady?.devDays, 2);
+  assert.equal(pivotedReady?.design, 4);
+  assert.equal(pivotedReady?.tech, 4);
+  assert.equal(pivotedReady?.hype, 4);
+  assert.equal(pivotedReady?.ready, true);
+  review.db.tycoon.release("p1");
+  const shipped = review.db.tycoon.view().history[0];
+  assert.equal(shipped?.name, "Fitness Newsletter");
+  assert.equal(shipped?.fit, "okay");
+  assert.equal(shipped?.pivot, null);
+  assert.notEqual(shipped?.salesCents, 20_700);
+  assert.ok((shipped?.salesCents ?? 0) < 20_700);
+  assert.equal(review.db.journey.state().company.cashCents, shipped?.salesCents);
+  assert.equal(pivotRows(review.db).length, 0);
+  assert.equal(validate(review.db.journey.state()), true, JSON.stringify(validate.errors));
+  review.db.close();
+
+  const deal = await setup();
+  const offer = deal.db.tycoon.view().contract;
+  deal.db.tycoon.acceptContract();
+  deal.db.tycoon.start(offer.topicId, offer.typeId, []);
+  const blocked = deal.db.tycoon.view().developing?.pivot;
+  const contractReason = `This contract is ${offer.topicName} × ${offer.typeName}.`;
+  assert.equal(blocked?.enabled, false);
+  assert.equal(blocked?.used, false);
+  assert.equal(blocked?.reason, contractReason);
+  const otherTopic = offer.topicId === "fitness" ? "crypto" : "fitness";
+  const otherType = offer.typeId === "course" ? "newsletter" : "course";
+  assert.throws(() => deal.db.tycoon.pivot(otherTopic, otherType), new RegExp(`This contract is ${offer.topicName} × ${offer.typeName}\\.`));
+  assert.equal(deal.db.tycoon.view().developing?.topicId, offer.topicId);
+  assert.equal(deal.db.tycoon.view().developing?.typeId, offer.typeId);
+  assert.equal(JSON.parse(staffJson(deal.db, "p1")).pivoted, undefined);
+  assert.equal(validate(deal.db.journey.state()), true, JSON.stringify(validate.errors));
+  deal.db.close();
+
+  const bonus = await setup();
+  bonus.db.tycoon.start("crypto", "newsletter", []);
+  bonus.db.journey.db.prepare("UPDATE tycoon_meta SET research_points = research_points + 20 WHERE id = 1").run();
+  bonus.db.tycoon.research("topic", "sneakers");
+  bonus.db.tycoon.pivot("sneakers", "newsletter");
+  assert.equal(bonus.db.tycoon.view().developing?.name, "Sneakers Newsletter");
+  assert.equal(bonus.db.tycoon.view().developing?.researchBonus, 6);
+  assert.equal(JSON.parse(staffJson(bonus.db, "p1")).researchBonus, 6);
+  bonus.db.close();
+
+  const sequel = await setup();
+  finishNewsletter(sequel.db);
+  sequel.db.tycoon.sequel("p1");
+  assert.equal(JSON.parse(staffJson(sequel.db, "p2")).pivoted, undefined);
+  const sequelPivot = sequel.db.tycoon.view().developing?.pivot;
+  assert.deepEqual({ enabled: sequelPivot?.enabled, used: sequelPivot?.used, reason: sequelPivot?.reason }, idle);
+  sequel.db.tycoon.pivot("fitness", "course");
+  assert.equal(sequel.db.tycoon.view().developing?.name, "Fitness Course 2");
+  assert.equal(JSON.parse(staffJson(sequel.db, "p2")).pivoted, true);
+  assert.equal(validate(sequel.db.journey.state()), true, JSON.stringify(validate.errors));
+  sequel.db.close();
+});
+
 function txIds(db: GameDatabase): string[] {
   return (db.journey.db.prepare("SELECT id FROM company_transactions ORDER BY id").all() as Array<{ id: string }>).map((row) => row.id);
 }
@@ -6563,6 +6745,10 @@ function earlyRows(db: GameDatabase) {
 
 function slipRows(db: GameDatabase) {
   return db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:slip%'").all();
+}
+
+function pivotRows(db: GameDatabase) {
+  return db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:pivot%'").all();
 }
 
 function finishSales(db: GameDatabase): void {

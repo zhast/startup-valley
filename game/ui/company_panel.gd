@@ -43,6 +43,7 @@ var _audience_id := "everyone"
 var _size_id := "catalog"
 var _release_focus_id := ""
 var _cancel_confirm := false
+var _pivot_open := false
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -569,6 +570,7 @@ func _product_shortcut() -> void:
 	var developing: Dictionary = _tycoon().get("developing", {}) if _tycoon().get("developing") is Dictionary else {}
 	if developing.is_empty():
 		_cancel_confirm = false
+		_pivot_open = false
 	else:
 		_show_engine(developing, "EngineJourney")
 		_show_focus(developing, "FocusJourney")
@@ -1125,7 +1127,8 @@ func _publisher_card(product: Dictionary) -> void:
 	var early_offered := _early_access_offered(product)
 	var cancel_offered := _cancel_offered(product)
 	var slip_offered := _slip_offered(product)
-	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered and not bugs_offered and not crunch_offered and not early_offered and not cancel_offered and not slip_offered: return
+	var pivot_offered := _pivot_offered(product)
+	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered and not bugs_offered and not crunch_offered and not early_offered and not cancel_offered and not slip_offered and not pivot_offered: return
 	var card := _card()
 	card.name = "PublisherCard"
 	if not publisher_name.is_empty():
@@ -1167,6 +1170,8 @@ func _publisher_card(product: Dictionary) -> void:
 		_cancel_row(product, card)
 	if slip_offered:
 		_slip_row(product, card)
+	if pivot_offered:
+		_pivot_row(product, card)
 
 func _sign_publisher() -> void:
 	_request("tycoon.signPublisher", {})
@@ -1410,6 +1415,124 @@ func _slip_row(product: Dictionary, card: Control) -> void:
 
 func _slip_day() -> void:
 	_request("tycoon.slipDay", {})
+
+func _pivot_offered(product: Dictionary) -> bool:
+	return product.get("pivot") is Dictionary
+
+func _pivot_text(product: Dictionary) -> String:
+	var value: Variant = product.get("pivot", null)
+	if not value is Dictionary:
+		return ""
+	var offer := value as Dictionary
+	if bool(offer.get("used", false)):
+		return "Pivoted · %s" % str(product.get("name", "Product"))
+	var reason := str(offer.get("reason", "")).strip_edges()
+	if not bool(offer.get("enabled", false)):
+		if reason.is_empty():
+			return ""
+		return "Pivot · %s" % reason
+	if _pivot_open:
+		return "Pivot · pick a new topic or type."
+	return "Pivot · change topic or type. Days and points stay."
+
+func _pivot_row(product: Dictionary, card: Control) -> void:
+	var text := _pivot_text(product)
+	if text.is_empty():
+		return
+	var line := _label(text, false, card)
+	line.name = "PivotOffer"
+	var value: Variant = product.get("pivot", null)
+	if not value is Dictionary:
+		return
+	var offer := value as Dictionary
+	if bool(offer.get("used", false)) or not bool(offer.get("enabled", false)):
+		_pivot_open = false
+		return
+	if not _pivot_open:
+		var button := _button("Pivot", _ask_pivot.bind(product), false, true, card, "secondary")
+		button.name = "Pivot"
+		return
+	_pivot_picker(product, offer, card)
+
+func _ask_pivot(product: Dictionary) -> void:
+	_topic_id = str(product.get("topicId", _topic_id))
+	_type_id = str(product.get("typeId", _type_id))
+	_pivot_open = true
+	_render()
+
+func _pivot_picker(product: Dictionary, offer: Dictionary, card: Control) -> void:
+	var options: Variant = offer.get("options", {})
+	var catalog: Dictionary = options as Dictionary if options is Dictionary else {}
+	var topics_value: Variant = catalog.get("topics", _tycoon().get("topics", []))
+	var types_value: Variant = catalog.get("types", _tycoon().get("types", []))
+	_label("Topic", true, card)
+	var topics := GridContainer.new()
+	topics.name = "PivotTopics"
+	topics.columns = 2
+	topics.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	topics.add_theme_constant_override("h_separation", 8)
+	topics.add_theme_constant_override("v_separation", 8)
+	card.add_child(topics)
+	for item: Variant in topics_value as Array:
+		if not item is Dictionary: continue
+		var topic := item as Dictionary
+		var topic_id := str(topic.get("id", ""))
+		var topic_open := bool(topic.get("unlocked", true))
+		var topic_name := str(topic.get("name", "Topic"))
+		var topic_label := topic_name if topic_open else "%s · locked" % topic_name
+		if topic_open and _topic_in_season(topic_id): topic_label = "%s · in season" % topic_label
+		var topic_button := _button(topic_label, _choose_pivot_topic.bind(topic_id), false, topic_open, topics, "secondary")
+		topic_button.name = "PivotTopic_%s" % topic_id
+		topic_button.clip_text = true
+		if topic_open and topic_id == _topic_id:
+			for style_name: String in ["normal", "hover", "pressed", "hover_pressed"]:
+				topic_button.add_theme_stylebox_override(style_name, CozyUI.control_style("secondary", "pressed"))
+	_label("Product type", true, card)
+	var types := GridContainer.new()
+	types.name = "PivotTypes"
+	types.columns = 2
+	types.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	types.add_theme_constant_override("h_separation", 8)
+	types.add_theme_constant_override("v_separation", 8)
+	card.add_child(types)
+	for item: Variant in types_value as Array:
+		if not item is Dictionary: continue
+		var kind := item as Dictionary
+		var type_id := str(kind.get("id", ""))
+		var type_open := bool(kind.get("unlocked", true))
+		var type_name := str(kind.get("name", "Type"))
+		var type_label := type_name if type_open else "%s · locked" % type_name
+		var type_button := _button(type_label, _choose_pivot_type.bind(type_id), false, type_open, types, "secondary")
+		type_button.name = "PivotType_%s" % type_id
+		type_button.clip_text = true
+		if type_open and type_id == _type_id:
+			for style_name: String in ["normal", "hover", "pressed", "hover_pressed"]:
+				type_button.add_theme_stylebox_override(style_name, CozyUI.control_style("secondary", "pressed"))
+	var fit := _pair_fit(_topic_id, _type_id)
+	var fit_line := _label("Fit · %s. %s" % [_fit_word(fit), _fit_hint(fit)], false, card, "action")
+	fit_line.name = "PivotFit"
+	var same_pair := _topic_id == str(product.get("topicId", "")) and _type_id == str(product.get("typeId", ""))
+	var pair_open := _pivot_entry_open(catalog, "topics", _topic_id) and _pivot_entry_open(catalog, "types", _type_id)
+	var confirm := _button("Change pair", _confirm_pivot, false, pair_open and not same_pair and not fit.is_empty(), card, "secondary")
+	confirm.name = "ChangePair"
+
+func _pivot_entry_open(catalog: Dictionary, list_name: String, id: String) -> bool:
+	var value: Variant = catalog.get(list_name, [])
+	for item: Variant in value as Array:
+		if item is Dictionary and str((item as Dictionary).get("id", "")) == id:
+			return bool((item as Dictionary).get("unlocked", true))
+	return _entry_unlocked(list_name, id)
+
+func _choose_pivot_topic(topic_id: String) -> void:
+	_topic_id = topic_id
+	_render()
+
+func _choose_pivot_type(type_id: String) -> void:
+	_type_id = type_id
+	_render()
+
+func _confirm_pivot() -> void:
+	_request("tycoon.pivot", {"topicId": _topic_id, "typeId": _type_id})
 
 func _early_shipped(product: Dictionary) -> bool:
 	var value: Variant = product.get("earlyAccess", null)
