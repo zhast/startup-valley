@@ -202,6 +202,8 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
         journey: database.tycoon.pivot(stringParameter(request, "topicId", 64), stringParameter(request, "typeId", 64)),
         dailySpend: database.dailySpend(),
       };
+    case "tycoon.playtest":
+      return { journey: database.tycoon.playtest(), dailySpend: database.dailySpend() };
     case "tycoon.makeTrailer":
       return { journey: database.tycoon.makeTrailer(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
     case "tycoon.writeDiary":
