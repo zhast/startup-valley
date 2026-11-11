@@ -34,5 +34,7 @@ Player-facing flows for the offline tycoon. The harness owns the rules (`docs/TY
 - [Early access](early-access.md)
 - [Cancel the build](cancel-the-build.md)
 - [Slip a day](slip-a-day.md)
+- [Pivot](pivot.md)
+- [Playtest](playtest.md)
 
 Launch, display, and proof-file rules live in the verify-startup-valley skill. Do not copy them here.

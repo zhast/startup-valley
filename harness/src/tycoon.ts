@@ -542,6 +542,11 @@ export interface TycoonProductView {
   slip: TycoonSlip | null;
   /** While developing, whether the one pivot is still available. Null once the product has shipped. */
   pivot: TycoonPivot | null;
+  /**
+   * While developing, the likely review band from the current points, fit, and type weights.
+   * Null once the product has shipped. The band is not stored.
+   */
+  playtest: TycoonPlaytest | null;
 }
 
 export interface TycoonUpgradeView {
@@ -851,6 +856,16 @@ export interface TycoonPivot {
     topics: Array<{ id: TopicId; name: string; unlocked: boolean }>;
     types: Array<{ id: ProductTypeId; name: string; unlocked: boolean }>;
   };
+}
+
+/**
+ * Likely review band of the product still on the bench.
+ * Computed on read. Null before the first office day, and null once the product ships.
+ */
+export interface TycoonPlaytest {
+  enabled: boolean;
+  band: "low" | "mid" | "high" | null;
+  reason: string;
 }
 
 export interface TycoonSnapshot {
@@ -1876,7 +1891,8 @@ export function baseScore(points: CraftPoints, topicId: TopicId, typeId: Product
   return clampScore(Math.round((used * 9) / 1000 + 1));
 }
 
-function blurbBand(score: number): "high" | "mid" | "low" {
+/** Same cuts the review blurbs use. 8 or more is high. 5 to 7 is mid. Below that is low. */
+export function reviewBand(score: number): "high" | "mid" | "low" {
   if (score >= 8) return "high";
   if (score >= 5) return "mid";
   return "low";
@@ -1917,7 +1933,7 @@ export function reviewProduct(input: {
   const reviewers = REVIEWERS.map((reviewer, index) => {
     const jitter = (mixSeed(input.seed, input.productId, "review", index) % 3) - 1;
     const score = clampScore(base + jitter);
-    return { name: reviewer.name, score, blurb: reviewer.blurbs[blurbBand(score)] };
+    return { name: reviewer.name, score, blurb: reviewer.blurbs[reviewBand(score)] };
   });
   const score = clampScore(Math.round(reviewers.reduce((sum, reviewer) => sum + reviewer.score, 0) / reviewers.length));
   return { score, reviewers };
@@ -2564,6 +2580,20 @@ export class TycoonStore {
       if (stored.slip) return this.journey.state();
       stored.slip = true;
       this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      return this.journey.state();
+    });
+  }
+
+  /**
+   * Look at the likely review band of the product on the bench.
+   * The band is computed on read from the current points, fit, and type weights.
+   * Free to look again. Nothing is stored. No cash row and no clock move.
+   */
+  playtest(): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.developingRow();
+      if (!row) throw new Error("No product is on the bench.");
+      if (Number(row.dev_days) < 1) throw new Error("Work one office day first.");
       return this.journey.state();
     });
   }
@@ -3733,7 +3763,43 @@ export class TycoonStore {
       cancel: row.status === "developing" ? { enabled: true, reason: "" } : null,
       slip: this.slipView(row.status, snapshot.slip),
       pivot: this.pivotView(row, snapshot),
+      playtest: this.playtestView(row, snapshot),
     };
+  }
+
+  /**
+   * The band a release would write today. Hidden once the product ships.
+   * Nothing is stored. Day 0 has no band yet.
+   */
+  private playtestView(row: ProductRow, snapshot: ProductSnapshot): TycoonPlaytest | null {
+    if (row.status !== "developing") return null;
+    if (Number(row.dev_days) < 1) {
+      return { enabled: false, band: null, reason: "Work one office day first." };
+    }
+    const type = typeById(asType(row.type_id));
+    if (!type) return { enabled: false, band: null, reason: "Work one office day first." };
+    const required = requiredDevDays(type.devDays, snapshot.sequelOf !== null, snapshot.size, snapshot.feature);
+    const points = applyFocusPoints({
+      design: Number(row.design_points),
+      tech: Number(row.tech_points),
+      hype: Number(row.hype_points),
+    }, snapshot.focus);
+    const review = reviewProduct({
+      seed: this.seed(),
+      productId: row.id,
+      topicId: asTopic(row.topic_id),
+      typeId: type.id,
+      design: points.design,
+      tech: points.tech,
+      hype: points.hype,
+      researchBonus: snapshot.researchBonus,
+      sequelBonus: snapshot.scoreBonus,
+      engineBonus: snapshot.engine === ENGINE_ID ? ENGINE_SCORE_BONUS : 0,
+      devDays: required,
+      bugs: liveBugs(points, snapshot.crunchBugs, snapshot.bugsCleared),
+      earlyPenalty: snapshot.earlyAccess ? snapshot.earlyDays : 0,
+    });
+    return { enabled: true, band: reviewBand(review.score), reason: "" };
   }
 
   /** The next office day is free, or one hold is already pending. Hidden once the product ships. */

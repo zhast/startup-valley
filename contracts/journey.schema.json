@@ -1043,6 +1043,21 @@
             }
           ]
         },
+        "playtest": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["enabled", "band", "reason"],
+              "properties": {
+                "enabled": { "type": "boolean" },
+                "band": { "anyOf": [{ "type": "null" }, { "enum": ["low", "mid", "high"] }] },
+                "reason": { "type": "string" }
+              }
+            }
+          ]
+        },
         "pivot": {
           "anyOf": [
             { "type": "null" },
