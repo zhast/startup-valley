@@ -2767,3 +2767,72 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Seventy-three PNGs in `/workspace/sv-proof/round-60/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-60 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey, on the card for the product in development. Slip a day is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_slip_day.gd`.
+
+### Round 62 — 2026-11-11
+
+**What changed**
+- `tycoon.playtest` takes `{}`. With nothing on the bench, including after a release or a cancel, it fails with "No product is on the bench." With no office day yet it fails with "Work one office day first." A bad payload fails with "Invalid protocol request". No fee, no ledger row, no clock move. Calling it again is free. The result is the current band.
+- The band is low, mid, or high. It is computed on read from the current points, the current fit, and the current type weights, using the same review math a release would use today. Nothing is written to `staff_json`. The band is not stored. Reviewer jitter uses the saved seed and does not draw a new one. A later office day, a pivot, or a crunch can change the next look. Skipping Playtest, and using it, both leave the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- A developing product carries `playtest: { enabled, band, reason }`. Before any office day, `enabled` is false, `band` is null, and `reason` is "Work one office day first." After at least one office day, `enabled` is true, `reason` is empty, and `band` is the current band. After the product ships, the field is null. `playtest` is optional on the product schema, so older payloads still validate. A payload without `playtest` draws no control. New payloads include it.
+- The row sits on the developing-product card, under Pivot and above New Product. The waiting line is "Playtest · Work one office day first." and it has no button. The offer line is "Playtest · see the likely review band." with one secondary Playtest button. After the look the line is "Playtest: likely mid reviews", or low, or high, and the button stays. The panel hides the band line until the player asks. Hire stays the one primary action. Nothing on this row is orange. A product on the bench raises that journey panel to 660px so Early access through New Product stay inside the scrollport.
+
+**Proof**
+- `/workspace/sv-proof/round-62/76-playtest-offer.png` and `77-playtest-result.png`, captured by the verify-startup-valley skill. PROOF PASS. Seventy-seven PNGs. The offer header reads "Spring 3 · Year 1 · $0.00 game cash · 0 reputation". The line "Playtest · see the likely review band." is one readable line. Playtest is a cream secondary button under that line. New Product sits under the button. Hire Mina · free stays orange in the footer and does not cover it. After the click the line is "Playtest: likely mid reviews", the button stays, and the header is still $0.00 and 0 reputation. Those lines are readable and do not overlap. Connect stays closed.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Assign the team is the next slice. One optional change of who is on the product still on the bench. Days already worked and the points already earned stay. Later office days use the new people, including someone hired after the build started. No fee, no ledger row, no new art. Skip it and the first Crypto Alpha Newsletter still lands at 20700 cents and 5 fans. A second room still waits on architecture art.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. The developing card is one line taller when playtest shows, and one button taller after the first office day. Shots 76 and 77 scroll the playtest line to the top of the journey, so the control sits above New Product and Hire does not cover it. The publisher, press demo, feature, day plan, bugs, crunch, early access, cancel, slip, and pivot stay in that same card, above playtest.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 130 tests, 128 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test refuses an empty bench and a day-0 look, matches the release band for low, mid, and high, leaves points, seed, review, sales, and the ledger alone, keeps a skipped and a looked newsletter at 20700 cents and 5 fans then 33300 cents, moves the band after a pivot and after a crunch, and keeps the same block across reopen.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — the gate's filtered tail showed `FAILURE The shipped product keeps the score bump` and `FAILURE Release names the engine and the score bump`. A direct rerun printed TYCOON ENGINES PASS. The gate before the journey panel grew also printed TYCOON ENGINES PASS. This test was not edited this round.
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS
+- `test_tycoon_localization.gd` — TYCOON LOCALIZATION PASS
+- `test_tycoon_town_day.gd` — TYCOON TOWN DAY PASS
+- `test_tycoon_press_demo.gd` — TYCOON PRESS DEMO PASS
+- `test_tycoon_launch_trailer.gd` — TYCOON LAUNCH TRAILER PASS
+- `test_tycoon_dev_diary.gd` — the gate's filtered tail showed `FAIL Worker bootstrap loads the company`. A direct rerun printed TYCOON DEV DIARY PASS. The earlier gate also printed TYCOON DEV DIARY PASS. This test was not edited this round.
+- `test_tycoon_rivals.gd` — TYCOON RIVALS PASS
+- `test_tycoon_features.gd` — TYCOON FEATURES PASS
+- `test_tycoon_day_plan.gd` — TYCOON DAY PLAN PASS
+- `test_tycoon_bugs.gd` — TYCOON BUGS PASS
+- `test_tycoon_crunch.gd` — TYCOON CRUNCH PASS
+- `test_tycoon_early_access.gd` — TYCOON EARLY ACCESS PASS
+- `test_tycoon_cancel.gd` — TYCOON CANCEL PASS
+- `test_tycoon_slip_day.gd` — TYCOON SLIP DAY PASS
+- `test_tycoon_pivot.gd` — TYCOON PIVOT PASS
+- `test_tycoon_playtest.gd` — TYCOON PLAYTEST PASS. Day 0 shows "Playtest · Work one office day first." and hides Playtest. After two office days the line is "Playtest · see the likely review band." Playtest is secondary, under Pivot, and above New Product. The line stays on one line. A payload without `playtest` draws no control. The product picker and the build screen have no playtest control. Clicking Playtest shows "Playtest: likely mid reviews" and keeps the button. Cash, fans, dev days, and the 4/4/4 points stay put. Looking again keeps the band. Reopening hides the band line until the player asks and keeps the mid block, with cash and fans still 0. Hire Mina stays the one primary action. Connect stays closed. The rules script inside that test checks the same harness cases.
+- `test_ui_company_redesign.gd` — 18171 checks, 0 failures, 0 captures. Existing fixtures omit `playtest` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Seventy-seven PNGs in `/workspace/sv-proof/round-62/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-62 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey, on the card for the product in development. Playtest is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_playtest.gd`.

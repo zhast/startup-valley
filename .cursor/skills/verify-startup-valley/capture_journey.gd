@@ -409,6 +409,7 @@ func _run() -> void:
 	await _cancel_proof()
 	await _slip_proof()
 	await _pivot_proof()
+	await _playtest_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -1872,6 +1873,88 @@ func _pivot_proof() -> void:
 	check(pivot_block is Dictionary and bool((pivot_block as Dictionary).get("used", false)), "The one pivot is used")
 	check(not main.job_panel._connection_panel.visible, "Pivoted never opens Connect")
 	await snap("75-pivot-done", line)
+
+func seed_playtest_offer(data_dir: String) -> bool:
+	var database := ProjectSettings.globalize_path("res://../harness/src/database.ts")
+	var tsx := ProjectSettings.globalize_path("res://../harness/node_modules/tsx/dist/cli.mjs")
+	var node := OS.get_environment("STARTUP_VALLEY_NODE").strip_edges()
+	if node.is_empty():
+		for dir: String in OS.get_environment("PATH").split(":"):
+			if FileAccess.file_exists(dir.path_join("node")):
+				node = dir.path_join("node")
+				break
+	if node.is_empty():
+		node = "/home/box/.local/node22/bin/node"
+	var script_path := data_dir.path_join("seed-playtest.mjs")
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst db = new GameDatabase(root + '/startup-valley.sqlite', root + '/company-project');\ndb.tycoon.start('crypto', 'newsletter', []);\ndb.endDay(1);\ndb.endDay(2);\nconst view = db.tycoon.view().developing;\nconst company = db.journey.state().company;\ndb.close();\nconst offer = view && view.playtest;\nif (company.cashCents !== 0 || company.reputation !== 0 || !view || view.devDays !== 2 || view.design !== 4 || !offer || offer.enabled !== true || offer.band !== 'mid' || offer.reason !== '') { console.error(JSON.stringify({ company: company, view: view })); process.exit(2); }\n" % JSON.stringify(database)
+	var file := FileAccess.open(script_path, FileAccess.WRITE)
+	if file == null:
+		check(false, "Could not write the playtest seed script")
+		return false
+	file.store_string(script)
+	file.close()
+	var output: Array = []
+	var code := OS.execute(node, PackedStringArray([tsx, script_path, data_dir]), output, true)
+	check(code == 0, "Seeded a two-day newsletter with Playtest (%s)" % " ".join(output))
+	return code == 0
+
+func _playtest_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-playtest-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_playtest_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var line := label_named("PlaytestOffer")
+	var card := main.company_panel.find_child("PublisherCard", true, false) as Control
+	var playtest := main.company_panel.find_child("Playtest", true, false) as Button
+	var pivot := main.company_panel.find_child("Pivot", true, false) as Button
+	check(card != null and line != null and playtest != null and card.is_ancestor_of(line) and card.is_ancestor_of(playtest) and line.text == "Playtest · see the likely review band.", "The journey card names the playtest offer")
+	check(not playtest.disabled and str(playtest.get_meta("cozy_variant", "")) == "secondary" and playtest.text == "Playtest", "Playtest is a secondary button")
+	var hire := button_named("Hire Mina")
+	check(hire != null and str(hire.get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside playtest")
+	await reveal(line)
+	var footer := main.company_panel._footer
+	var new_product := button_named("New Product")
+	check(pivot != null and pivot.get_global_rect().end.y <= line.get_global_rect().position.y + 1.0, "Playtest sits under Pivot")
+	check(line.get_global_rect().end.y <= playtest.get_global_rect().position.y + 1.0, "The playtest line sits above Playtest")
+	check(new_product != null and playtest.get_global_rect().end.y <= new_product.get_global_rect().position.y, "Playtest sits above New Product")
+	check(footer != null and playtest.get_global_rect().end.y <= footer.get_global_rect().position.y and not playtest.get_global_rect().intersects(footer.get_global_rect()) and not line.get_global_rect().intersects(footer.get_global_rect()), "Playtest does not overlap Hire")
+	check(line.get_line_count() == 1, "The playtest line stays on one line")
+	check(company_cash() == 0 and company_reputation() == 0 and int(developing().get("devDays", -1)) == 2, "The playtest offer has not spent cash")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at $0 and 0 reputation")
+	check(not main.job_panel._connection_panel.visible, "Playtest never opens Connect")
+	await snap("76-playtest-offer", line)
+	await click(playtest)
+	var shown := await wait_until(func() -> bool:
+		return not main.company_panel.busy and label_named("PlaytestOffer") != null and label_named("PlaytestOffer").text == "Playtest: likely mid reviews"
+	, "Playtest shows the likely mid band")
+	if not shown:
+		return
+	line = label_named("PlaytestOffer")
+	playtest = main.company_panel.find_child("Playtest", true, false) as Button
+	await reveal(line)
+	new_product = button_named("New Product")
+	footer = main.company_panel._footer
+	check(playtest != null and str(playtest.get_meta("cozy_variant", "")) == "secondary", "Playtest stays secondary after the look")
+	check(new_product != null and playtest.get_global_rect().end.y <= new_product.get_global_rect().position.y, "The band line sits above New Product")
+	check(footer != null and line.get_global_rect().end.y <= footer.get_global_rect().position.y and not line.get_global_rect().intersects(footer.get_global_rect()) and not playtest.get_global_rect().intersects(footer.get_global_rect()), "The band line does not overlap Hire")
+	check(line.get_line_count() == 1, "The band line stays on one line")
+	check(company_cash() == 0 and company_reputation() == 0 and int(developing().get("devDays", -1)) == 2 and int(developing().get("design", -1)) == 4, "Playtest changes no cash, day, or points")
+	var playtest_block: Variant = developing().get("playtest", null)
+	check(playtest_block is Dictionary and str((playtest_block as Dictionary).get("band", "")) == "mid", "The payload band stays mid")
+	check(not main.job_panel._connection_panel.visible, "The playtest result never opens Connect")
+	await snap("77-playtest-result", line)
 
 func _proof_money(cents: int) -> String:
 	var integer := str(absi(cents) / 100)
