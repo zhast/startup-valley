@@ -215,7 +215,10 @@ func _render() -> void:
 		"product": panel_size = Vector2(744, 640)
 		"release": panel_size = Vector2(704, 560)
 		"journey":
-			if _current_milestone().is_empty(): panel_size = Vector2(704, 564)
+			if _current_milestone().is_empty():
+				# A product on the bench adds Playtest under Pivot. 660 keeps
+				# Early access through New Product inside the scrollport.
+				panel_size = Vector2(744, 660) if _tycoon().get("developing") is Dictionary else Vector2(704, 564)
 	_maximum_panel_size = panel_size
 	_frame.custom_minimum_size = Vector2.ZERO
 	_frame.size = panel_size
