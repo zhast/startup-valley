@@ -39,5 +39,6 @@ Player-facing flows for the offline tycoon. The harness owns the rules (`docs/TY
 - [Assign the team](assign-the-team.md)
 - [Research spike](research-spike.md)
 - [Sale price](sale-price.md)
+- [Let someone go](let-someone-go.md)
 
 Launch, display, and proof-file rules live in the verify-startup-valley skill. Do not copy them here.
