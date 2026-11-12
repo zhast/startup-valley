@@ -547,6 +547,11 @@ export interface TycoonProductView {
    * Null once the product has shipped. The band is not stored.
    */
   playtest: TycoonPlaytest | null;
+  /**
+   * While developing, who is on the build and who can join.
+   * Null once the product has shipped. A payload without it draws no control.
+   */
+  team: TycoonTeam | null;
 }
 
 export interface TycoonUpgradeView {
@@ -865,6 +870,13 @@ export interface TycoonPivot {
 export interface TycoonPlaytest {
   enabled: boolean;
   band: "low" | "mid" | "high" | null;
+  reason: string;
+}
+
+/** Who is on the product still on the bench. A shipped product stores null. */
+export interface TycoonTeam {
+  enabled: boolean;
+  members: Array<{ id: StaffId; name: string; onTeam: boolean }>;
   reason: string;
 }
 
@@ -1415,6 +1427,12 @@ function clampStat(value: unknown, fallback: number): number {
   const amount = Number(value);
   if (!Number.isInteger(amount)) return fallback;
   return Math.max(0, Math.min(STAT_CAP, amount));
+}
+
+function sameStaffIds(left: readonly string[], right: readonly string[]): boolean {
+  if (left.length !== right.length) return false;
+  const wanted = new Set(right);
+  return left.every((id) => wanted.has(id));
 }
 
 function parseStaffList(parsed: unknown): StaffSnapshot[] {
@@ -2632,6 +2650,29 @@ export class TycoonStore {
     });
   }
 
+  /**
+   * Change who works on the product on the bench. Days and points stay.
+   * Later office days use the new people. Same set is a no-op.
+   * No cash row and no clock move.
+   */
+  assignTeam(requestedStaff: readonly string[]): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.developingRow();
+      if (!row) throw new Error("No product is on the bench.");
+      const ids = this.assignedTeam(requestedStaff);
+      const stored = parseProductSnapshot(row.staff_json);
+      const current = stored.staff.map((person) => person.id);
+      if (sameStaffIds(current, ids)) return this.journey.state();
+      const existing = new Map(stored.staff.map((person) => [person.id, person]));
+      const stats = this.loadStaffState();
+      stored.staff = ids.map((id) => existing.get(id) ?? {
+        id, design: stats[id].design, tech: stats[id].tech, hype: stats[id].hype,
+      });
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      return this.journey.state();
+    });
+  }
+
   /** One feature on the product on the bench. One extra office day. No cash row. */
   addFeature(): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
@@ -3339,6 +3380,20 @@ export class TycoonStore {
     return ids;
   }
 
+  /** Start always includes the founder. Assign the team does not. Empty fails. */
+  private assignedTeam(requested: readonly string[]): StaffId[] {
+    const hired = this.hiredIds();
+    const ids: StaffId[] = [];
+    for (const id of requested) {
+      const person = STAFF.find((member) => member.id === id);
+      if (!person) throw new Error("Unknown teammate");
+      if (person.id !== "founder" && !hired.has(person.id)) throw new Error(`${person.name} is not on the team yet.`);
+      if (!ids.includes(person.id)) ids.push(person.id);
+    }
+    if (ids.length === 0) throw new Error("Pick at least one teammate.");
+    return ids;
+  }
+
   private hiredIds(): Set<string> {
     const rows = this.db.prepare("SELECT id FROM employees WHERE employment_status = 'hired'").all() as unknown as Array<{ id: string }>;
     return new Set(rows.map((row) => row.id));
@@ -3764,6 +3819,7 @@ export class TycoonStore {
       slip: this.slipView(row.status, snapshot.slip),
       pivot: this.pivotView(row, snapshot),
       playtest: this.playtestView(row, snapshot),
+      team: this.teamView(row, snapshot),
     };
   }
 
@@ -3808,6 +3864,17 @@ export class TycoonStore {
     return pending
       ? { enabled: false, pending: true, reason: "" }
       : { enabled: true, pending: false, reason: "" };
+  }
+
+  /** Founder plus hired people, with who is on this build. Hidden once it ships. */
+  private teamView(row: ProductRow, snapshot: ProductSnapshot): TycoonTeam | null {
+    if (row.status !== "developing") return null;
+    const hired = this.hiredIds();
+    const onTeam = new Set(snapshot.staff.map((person) => person.id));
+    const members = STAFF
+      .filter((person) => person.id === "founder" || hired.has(person.id))
+      .map((person) => ({ id: person.id, name: person.name, onTeam: onTeam.has(person.id) }));
+    return { enabled: true, members, reason: "" };
   }
 
   /** One change of topic or type while the product is on the bench. Hidden once it ships. */
