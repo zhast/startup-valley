@@ -189,7 +189,7 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 		if job_id == "journey": journey_received.emit(result.get("journey", {}))
 		return
 	match method:
-		"hiring.complete", "game.new":
+		"hiring.complete", "game.new", "tycoon.letGo":
 			_handle_response("bootstrap", "", result)
 			company_action_completed.emit(method, result)
 		"tycoon.expandOffice":

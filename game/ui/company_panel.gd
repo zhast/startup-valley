@@ -916,12 +916,34 @@ func _train_staff() -> void:
 	if not notice.is_empty():
 		var line := _label(notice, false, card, "action")
 		line.name = "TrainingNotice"
+	var leaving := str(tycoon.get("letGoNotice", ""))
+	if not leaving.is_empty():
+		var gone := _label(leaving, false, card, "action")
+		gone.name = "LetGoNotice"
 	for item: Variant in staff:
 		if not item is Dictionary: continue
 		var person := item as Dictionary
 		if not bool(person.get("hired", false)): continue
 		var person_id := str(person.get("id", ""))
-		_label("%s · D %d · T %d · H %d" % [person.get("name", "Teammate"), int(person.get("design", 0)), int(person.get("tech", 0)), int(person.get("hype", 0))], false, card)
+		var stats := "%s · D %d · T %d · H %d" % [person.get("name", "Teammate"), int(person.get("design", 0)), int(person.get("tech", 0)), int(person.get("hype", 0))]
+		var let_go: Variant = person.get("letGo", null)
+		var can_leave := let_go is Dictionary and bool((let_go as Dictionary).get("enabled", false))
+		if can_leave:
+			var row := HBoxContainer.new()
+			row.name = "LetGoRow_%s" % person_id
+			row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			row.add_theme_constant_override("separation", 8)
+			card.add_child(row)
+			var stats_line := _label(stats, false, row)
+			stats_line.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			stats_line.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+			var leave := _button("Let go", _let_go.bind(person_id), false, true, row, "secondary")
+			leave.name = "LetGo_%s" % person_id
+			leave.custom_minimum_size = Vector2(88, 32)
+			leave.size_flags_horizontal = Control.SIZE_SHRINK_END
+			leave.clip_text = true
+		else:
+			_label(stats, false, card)
 		var offers: Dictionary = person.get("training", {}) if person.get("training") is Dictionary else {}
 		for stat: String in ["design", "tech", "hype"]:
 			var offer: Dictionary = offers.get(stat, {}) if offers.get(stat) is Dictionary else {}
@@ -935,6 +957,9 @@ func _train_staff() -> void:
 
 func _train_person(staff_id: String, stat: String) -> void:
 	_request("tycoon.train", {"staffId": staff_id, "stat": stat})
+
+func _let_go(staff_id: String) -> void:
+	_request("tycoon.letGo", {"staffId": staff_id})
 
 func _research_card() -> void:
 	var tycoon := _tycoon()
