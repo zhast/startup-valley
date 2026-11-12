@@ -665,7 +665,7 @@ func _on_company_action(method: String, result: Dictionary) -> void:
 			company_panel.present("release")
 		"tycoon.letGo":
 			company_panel.present("journey")
-		"tycoon.train", "tycoon.research", "tycoon.buyUpgrade", "tycoon.buyEngine", "tycoon.expandOffice", "tycoon.acceptContract", "tycoon.patch", "tycoon.award", "tycoon.port", "tycoon.localize", "tycoon.takeLoan", "tycoon.signPublisher", "tycoon.bookBooth", "tycoon.takeTownDay", "tycoon.showPressDemo", "tycoon.makeTrailer", "tycoon.writeDiary", "tycoon.addFeature", "tycoon.setDayPlan", "tycoon.fixBugs", "tycoon.crunch", "tycoon.cancelBuild", "tycoon.slipDay", "tycoon.pivot", "tycoon.playtest", "tycoon.assignTeam", "tycoon.researchSpike", "tycoon.salePrice":
+		"tycoon.train", "tycoon.research", "tycoon.buyUpgrade", "tycoon.buyEngine", "tycoon.expandOffice", "tycoon.acceptContract", "tycoon.patch", "tycoon.award", "tycoon.port", "tycoon.localize", "tycoon.takeLoan", "tycoon.signPublisher", "tycoon.bookBooth", "tycoon.takeTownDay", "tycoon.showPressDemo", "tycoon.makeTrailer", "tycoon.writeDiary", "tycoon.addFeature", "tycoon.setDayPlan", "tycoon.fixBugs", "tycoon.crunch", "tycoon.cancelBuild", "tycoon.slipDay", "tycoon.pivot", "tycoon.playtest", "tycoon.assignTeam", "tycoon.researchSpike", "tycoon.salePrice", "tycoon.setPace":
 			company_panel.present("journey")
 		"day.end":
 			job_panel.close_drawer(false)

@@ -925,23 +925,44 @@ func _train_staff() -> void:
 		var person := item as Dictionary
 		if not bool(person.get("hired", false)): continue
 		var person_id := str(person.get("id", ""))
+		var pace_value: Variant = person.get("pace", null)
+		var pace_known := pace_value is Dictionary
+		var pace_id := "full"
+		var can_pace := false
+		if pace_known:
+			var pace := pace_value as Dictionary
+			pace_id = str(pace.get("value", "full"))
+			can_pace = bool(pace.get("enabled", false))
 		var stats := "%s · D %d · T %d · H %d" % [person.get("name", "Teammate"), int(person.get("design", 0)), int(person.get("tech", 0)), int(person.get("hype", 0))]
+		if pace_known and pace_id == "part":
+			stats += " · part-time"
 		var let_go: Variant = person.get("letGo", null)
 		var can_leave := let_go is Dictionary and bool((let_go as Dictionary).get("enabled", false))
-		if can_leave:
+		if can_leave or can_pace:
 			var row := HBoxContainer.new()
-			row.name = "LetGoRow_%s" % person_id
+			row.name = ("LetGoRow_%s" % person_id) if can_leave else ("PaceRow_%s" % person_id)
 			row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			row.add_theme_constant_override("separation", 8)
 			card.add_child(row)
 			var stats_line := _label(stats, false, row)
+			stats_line.name = "StaffLine_%s" % person_id
+			stats_line.autowrap_mode = TextServer.AUTOWRAP_OFF
 			stats_line.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			stats_line.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-			var leave := _button("Let go", _let_go.bind(person_id), false, true, row, "secondary")
-			leave.name = "LetGo_%s" % person_id
-			leave.custom_minimum_size = Vector2(88, 32)
-			leave.size_flags_horizontal = Control.SIZE_SHRINK_END
-			leave.clip_text = true
+			if can_pace:
+				var pace_label := "Full time" if pace_id == "part" else "Part-time"
+				var next_pace := "full" if pace_id == "part" else "part"
+				var pace_button := _button(pace_label, _set_pace.bind(person_id, next_pace), false, true, row, "secondary")
+				pace_button.name = "Pace_%s" % person_id
+				pace_button.custom_minimum_size = Vector2(132, 32)
+				pace_button.size_flags_horizontal = Control.SIZE_SHRINK_END
+				pace_button.clip_text = false
+			if can_leave:
+				var leave := _button("Let go", _let_go.bind(person_id), false, true, row, "secondary")
+				leave.name = "LetGo_%s" % person_id
+				leave.custom_minimum_size = Vector2(88, 32)
+				leave.size_flags_horizontal = Control.SIZE_SHRINK_END
+				leave.clip_text = true
 		else:
 			_label(stats, false, card)
 		var offers: Dictionary = person.get("training", {}) if person.get("training") is Dictionary else {}
@@ -960,6 +981,9 @@ func _train_person(staff_id: String, stat: String) -> void:
 
 func _let_go(staff_id: String) -> void:
 	_request("tycoon.letGo", {"staffId": staff_id})
+
+func _set_pace(staff_id: String, pace: String) -> void:
+	_request("tycoon.setPace", {"staffId": staff_id, "pace": pace})
 
 func _research_card() -> void:
 	var tycoon := _tycoon()
