@@ -3070,10 +3070,56 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
 4. The Train staff row now holds the stats, Part-time, and Let go. Shots 86 and 87 show that row inside the card, above the Train buttons, with Hire clear of it.
 
-**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`). Counts below are from the runs in this round. `bash /workspace/sv-proof/round-67/gate.sh` repeats the suite.
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`). `bash /workspace/sv-proof/round-67/gate.sh` exited 0. The audience script printed two failures on that run and exited 0; a separate rerun printed TYCOON AUDIENCE PASS.
 - `cd harness && npm run build && npm test` — 135 tests, 133 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test refuses the founder, an unknown id, someone not hired, someone dismissed, a bad pace, and a no-op. Later craft and salary are half. The day already posted stays. Switching back restores the full pace. There is no ledger row. A skipped newsletter stays at 20700 cents and 5 fans, then 33300 cents. Reopen keeps the same `pace` block. The path never opens Connect.
-- `test_tycoon_part_time.gd` — TYCOON PART TIME PASS. The Train staff card shows secondary Part-time beside Let go, above Train, inside the journey. The founder has no pace button. A payload without `pace` draws no control. Clicking Part-time shows "· part-time", switches the button to Full time, and sets payroll to 4000 cents. Design, tech, hype, the day, cash, fans, and the clock stay. The header stays Spring 2, $0.00, and 0 reputation. Reopening keeps that. Full time restores payroll to 8000 cents and drops the hint. Hire stays the one primary action. Connect stays closed. The rules script inside that test checks the same harness cases.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — the gate's last matching lines were "FAILURE The shipped product keeps the fan rule" and "FAILURE Release names the audience", and the process still exited 0. A rerun printed TYCOON AUDIENCE PASS, including both of those checks.
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS
+- `test_tycoon_localization.gd` — TYCOON LOCALIZATION PASS
+- `test_tycoon_town_day.gd` — TYCOON TOWN DAY PASS
+- `test_tycoon_press_demo.gd` — TYCOON PRESS DEMO PASS
+- `test_tycoon_launch_trailer.gd` — TYCOON LAUNCH TRAILER PASS
+- `test_tycoon_dev_diary.gd` — TYCOON DEV DIARY PASS
+- `test_tycoon_rivals.gd` — TYCOON RIVALS PASS
+- `test_tycoon_features.gd` — TYCOON FEATURES PASS
+- `test_tycoon_day_plan.gd` — TYCOON DAY PLAN PASS
+- `test_tycoon_bugs.gd` — TYCOON BUGS PASS
+- `test_tycoon_crunch.gd` — TYCOON CRUNCH PASS
+- `test_tycoon_early_access.gd` — TYCOON EARLY ACCESS PASS
+- `test_tycoon_cancel.gd` — TYCOON CANCEL PASS
+- `test_tycoon_slip_day.gd` — TYCOON SLIP DAY PASS
+- `test_tycoon_pivot.gd` — TYCOON PIVOT PASS
+- `test_tycoon_playtest.gd` — TYCOON PLAYTEST PASS
+- `test_tycoon_assign_team.gd` — TYCOON ASSIGN TEAM PASS
+- `test_tycoon_research_spike.gd` — TYCOON RESEARCH SPIKE PASS
+- `test_tycoon_sale_price.gd` — TYCOON SALE PRICE PASS
 - `test_tycoon_let_go.gd` — TYCOON LET GO PASS. The stats row still names LetGoRow_mira, and Let go still sits clear of the name.
+- `test_tycoon_part_time.gd` — TYCOON PART TIME PASS. The Train staff card shows secondary Part-time beside Let go, above Train, inside the journey. The founder has no pace button. A payload without `pace` draws no control. Clicking Part-time shows "· part-time", switches the button to Full time, and sets payroll to 4000 cents. Design, tech, hype, the day, cash, fans, and the clock stay. The header stays Spring 2, $0.00, and 0 reputation. Reopening keeps that. Full time restores payroll to 8000 cents and drops the hint. Hire stays the one primary action. Connect stays closed. The rules script inside that test checks the same harness cases.
+- `test_ui_company_redesign.gd` — 18171 checks, 0 failures, 0 captures. Existing fixtures omit `pace` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
 - Proof capture — PROOF PASS. Eighty-seven PNGs in `/workspace/sv-proof/round-67/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-67 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey, on the Train staff card. Part-time is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_part_time.gd`.
