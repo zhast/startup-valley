@@ -8,7 +8,7 @@
 
 ## How to get to it (user POV)
 
-Open Company Journey while a product is on the bench. The row sits under Playtest and above New Product, with the publisher deal, the press demo, the feature, the day plan, bugs, crunch, early access, cancel, slip, pivot, and playtest. Hire stays the primary action. Team toggles are secondary.
+Open Company Journey while a product is on the bench. The row sits under Playtest and above the research spike, with the publisher deal, the press demo, the feature, the day plan, bugs, crunch, early access, cancel, slip, pivot, and playtest. Hire stays the primary action. Team toggles are secondary.
 
 A payload without `team` draws no control. The word stays Team. The rules are in `docs/TYCOON_DESIGN.md`. There is no fee.
 

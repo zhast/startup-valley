@@ -411,6 +411,7 @@ func _run() -> void:
 	await _pivot_proof()
 	await _playtest_proof()
 	await _assign_team_proof()
+	await _research_spike_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -2042,6 +2043,93 @@ func _assign_team_proof() -> void:
 	check(team_block is Dictionary and bool((team_block as Dictionary).get("enabled", false)), "The payload team stays enabled")
 	check(not main.job_panel._connection_panel.visible, "The changed team never opens Connect")
 	await snap("79-team-changed", line)
+
+func seed_research_spike_offer(data_dir: String) -> bool:
+	var database := ProjectSettings.globalize_path("res://../harness/src/database.ts")
+	var tsx := ProjectSettings.globalize_path("res://../harness/node_modules/tsx/dist/cli.mjs")
+	var node := OS.get_environment("STARTUP_VALLEY_NODE").strip_edges()
+	if node.is_empty():
+		for dir: String in OS.get_environment("PATH").split(":"):
+			if FileAccess.file_exists(dir.path_join("node")):
+				node = dir.path_join("node")
+				break
+	if node.is_empty():
+		node = "/home/box/.local/node22/bin/node"
+	var script_path := data_dir.path_join("seed-spike.mjs")
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst db = new GameDatabase(root + '/startup-valley.sqlite', root + '/company-project');\ndb.tycoon.start('crypto', 'newsletter', []);\nconst view = db.tycoon.view().developing;\nconst company = db.journey.state().company;\ndb.close();\nconst offer = view && view.researchSpike;\nif (company.cashCents !== 0 || company.reputation !== 0 || !view || view.devDays !== 0 || !offer || offer.enabled !== true || offer.pending !== false || offer.used !== false || offer.reason !== '' || offer.points !== 0) { console.error(JSON.stringify({ company: company, view: view })); process.exit(2); }\n" % JSON.stringify(database)
+	var file := FileAccess.open(script_path, FileAccess.WRITE)
+	if file == null:
+		check(false, "Could not write the research spike seed script")
+		return false
+	file.store_string(script)
+	file.close()
+	var output: Array = []
+	var code := OS.execute(node, PackedStringArray([tsx, script_path, data_dir]), output, true)
+	check(code == 0, "Seeded a day-zero newsletter with Research spike (%s)" % " ".join(output))
+	return code == 0
+
+func _research_spike_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-spike-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_research_spike_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var line := label_named("ResearchSpikeOffer")
+	var card := main.company_panel.find_child("PublisherCard", true, false) as Control
+	var spike := main.company_panel.find_child("ResearchSpike", true, false) as Button
+	var team := label_named("TeamOffer")
+	check(card != null and line != null and spike != null and card.is_ancestor_of(line) and card.is_ancestor_of(spike) and line.text == "Research spike · tomorrow's craft becomes research points", "The journey card names the research spike")
+	check(not spike.disabled and str(spike.get_meta("cozy_variant", "")) == "secondary" and spike.text == "Research spike", "Research spike is a secondary button")
+	var hire := button_named("Hire Mina")
+	check(hire != null and str(hire.get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the spike")
+	await reveal(line)
+	var footer := main.company_panel._footer
+	var new_product := button_named("New Product")
+	check(team != null and team.get_global_rect().end.y <= line.get_global_rect().position.y + 1.0, "Research spike sits under Team")
+	check(absf(line.get_global_rect().position.y - spike.get_global_rect().position.y) < 48.0, "The spike line sits with Research spike")
+	check(new_product != null and spike.get_global_rect().end.y <= new_product.get_global_rect().position.y, "Research spike sits above New Product")
+	check(footer != null and spike.get_global_rect().end.y <= footer.get_global_rect().position.y and not spike.get_global_rect().intersects(footer.get_global_rect()) and not line.get_global_rect().intersects(footer.get_global_rect()), "Research spike does not overlap Hire")
+	check(line.get_line_count() == 1, "The spike line stays on one line")
+	check(company_cash() == 0 and company_reputation() == 0 and int(developing().get("devDays", -1)) == 0, "The spike offer has not spent cash")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at $0 and 0 reputation")
+	check(not main.job_panel._connection_panel.visible, "Research spike never opens Connect")
+	await snap("80-spike-offer", line)
+	await click(spike)
+	var armed := await wait_until(func() -> bool:
+		return not main.company_panel.busy and label_named("ResearchSpikeOffer") != null and label_named("ResearchSpikeOffer").text == "Spike set · tomorrow's craft becomes research points" and main.company_panel.find_child("ResearchSpike", true, false) == null
+	, "Research spike marks tomorrow")
+	if not armed:
+		return
+	await end_office_day()
+	await open_journey()
+	line = label_named("ResearchSpikeOffer")
+	await reveal(line)
+	new_product = button_named("New Product")
+	footer = main.company_panel._footer
+	spike = main.company_panel.find_child("ResearchSpike", true, false) as Button
+	check(line != null and line.text == "Spike done · +6 research points" and spike == null, "The spike day shows the gained research points")
+	check(new_product != null and line.get_global_rect().end.y <= new_product.get_global_rect().position.y, "The done line sits above New Product")
+	check(footer != null and line.get_global_rect().end.y <= footer.get_global_rect().position.y and not line.get_global_rect().intersects(footer.get_global_rect()), "The done line does not overlap Hire")
+	check(line.get_line_count() == 1, "The done line stays on one line")
+	check(int(developing().get("devDays", -1)) == 1 and int(developing().get("design", -1)) == 0 and int(developing().get("tech", -1)) == 0 and int(developing().get("hype", -1)) == 0, "The spike day counts and converts craft")
+	var points := label_named("ResearchPoints")
+	check(points != null and points.text == "7 research points", "The Research card shows 7 research points")
+	check(company_cash() == 0 and company_reputation() == 0, "The spike day leaves cash and fans")
+	header = label_named("OfficeDate")
+	check(header != null and header.text.contains("Spring 2") and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at $0 and 0 reputation on Spring 2")
+	check(not main.job_panel._connection_panel.visible, "The spike day never opens Connect")
+	await snap("81-spike-done", line)
 
 func _proof_money(cents: int) -> String:
 	var integer := str(absi(cents) / 100)
