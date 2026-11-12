@@ -1087,6 +1087,23 @@
             }
           ]
         },
+        "researchSpike": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["enabled", "pending", "used", "reason", "points"],
+              "properties": {
+                "enabled": { "type": "boolean" },
+                "pending": { "type": "boolean" },
+                "used": { "type": "boolean" },
+                "reason": { "type": "string" },
+                "points": { "type": "integer", "minimum": 0 }
+              }
+            }
+          ]
+        },
         "pivot": {
           "anyOf": [
             { "type": "null" },

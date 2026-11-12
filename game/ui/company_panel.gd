@@ -216,7 +216,7 @@ func _render() -> void:
 		"release": panel_size = Vector2(704, 560)
 		"journey":
 			if _current_milestone().is_empty():
-				# A product on the bench adds a compact Team row under Playtest.
+				# A product on the bench adds a compact Team row under Playtest and a compact Research spike row under Team.
 				# 720 keeps Cancel through New Product inside the scrollport.
 				# The pivot picker is taller, so that path keeps the Round 62 envelope.
 				if _tycoon().get("developing") is Dictionary:
@@ -1142,9 +1142,12 @@ func _publisher_card(product: Dictionary) -> void:
 	var pivot_offered := _pivot_offered(product)
 	var playtest_offered := _playtest_offered(product)
 	var team_offered := _team_offered(product)
-	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered and not bugs_offered and not crunch_offered and not early_offered and not cancel_offered and not slip_offered and not pivot_offered and not playtest_offered and not team_offered: return
+	var spike_offered := _research_spike_offered(product)
+	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered and not bugs_offered and not crunch_offered and not early_offered and not cancel_offered and not slip_offered and not pivot_offered and not playtest_offered and not team_offered and not spike_offered: return
 	var card := _card()
 	card.name = "PublisherCard"
+	# One compact spike row shares this card with Cancel through Team. 4px keeps New Product inside the scrollport.
+	card.add_theme_constant_override("separation", 4)
 	if not publisher_name.is_empty():
 		var cut := int(offer.get("cutPercent", 0))
 		var signed := bool(offer.get("signed", false))
@@ -1190,6 +1193,8 @@ func _publisher_card(product: Dictionary) -> void:
 		_playtest_row(product, card)
 	if team_offered:
 		_team_row(product, card)
+	if spike_offered:
+		_research_spike_row(product, card)
 
 func _sign_publisher() -> void:
 	_request("tycoon.signPublisher", {})
@@ -1662,6 +1667,48 @@ func _toggle_team(person_id: String) -> void:
 	if ids.is_empty():
 		return
 	_request("tycoon.assignTeam", {"staffIds": ids})
+
+func _research_spike_offered(product: Dictionary) -> bool:
+	return product.get("researchSpike") is Dictionary
+
+func _research_spike_text(product: Dictionary) -> String:
+	var value: Variant = product.get("researchSpike", null)
+	if not value is Dictionary:
+		return ""
+	var offer := value as Dictionary
+	if bool(offer.get("pending", false)):
+		return "Spike set · tomorrow's craft becomes research points"
+	if bool(offer.get("used", false)):
+		return "Spike done · +%d research points" % int(offer.get("points", 0))
+	return "Research spike · tomorrow's craft becomes research points"
+
+func _research_spike_row(product: Dictionary, card: Control) -> void:
+	var text := _research_spike_text(product)
+	if text.is_empty():
+		return
+	var value: Variant = product.get("researchSpike", null)
+	var enabled := value is Dictionary and bool((value as Dictionary).get("enabled", false))
+	if not enabled:
+		var line_only := _label(text, false, card)
+		line_only.name = "ResearchSpikeOffer"
+		return
+	var row := HBoxContainer.new()
+	row.name = "ResearchSpikeChoices"
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("separation", 8)
+	card.add_child(row)
+	var line := _label(text, false, row)
+	line.name = "ResearchSpikeOffer"
+	line.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	line.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	var button := _button("Research spike", _research_spike, false, true, row, "secondary")
+	button.name = "ResearchSpike"
+	button.custom_minimum_size = Vector2(168, 32)
+	button.size_flags_horizontal = Control.SIZE_SHRINK_END
+	button.clip_text = true
+
+func _research_spike() -> void:
+	_request("tycoon.researchSpike", {})
 
 func _early_shipped(product: Dictionary) -> bool:
 	var value: Variant = product.get("earlyAccess", null)

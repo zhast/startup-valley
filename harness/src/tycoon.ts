@@ -552,6 +552,11 @@ export interface TycoonProductView {
    * Null once the product has shipped. A payload without it draws no control.
    */
   team: TycoonTeam | null;
+  /**
+   * While developing, whether the one research spike is free, pending, or used.
+   * Null once the product has shipped. A payload without it draws no control.
+   */
+  researchSpike: TycoonResearchSpike | null;
 }
 
 export interface TycoonUpgradeView {
@@ -878,6 +883,18 @@ export interface TycoonTeam {
   enabled: boolean;
   members: Array<{ id: StaffId; name: string; onTeam: boolean }>;
   reason: string;
+}
+
+/**
+ * One research spike on the product still on the bench.
+ * `points` is the personal craft converted on the spike day. 0 until that day lands.
+ */
+export interface TycoonResearchSpike {
+  enabled: boolean;
+  pending: boolean;
+  used: boolean;
+  reason: string;
+  points: number;
 }
 
 export interface TycoonSnapshot {
@@ -1524,6 +1541,10 @@ interface ProductSnapshot {
   slip: boolean;
   /** True after this product has used its one pivot. */
   pivoted: boolean;
+  /** Pending converts the next office day's personal craft. Used means this build already spiked. */
+  researchSpike: "pending" | "used" | null;
+  /** Personal craft converted on the spike day. 0 omits the key. */
+  researchSpikePoints: number;
 }
 
 interface ProductPort {
@@ -1582,6 +1603,8 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     earlyDays: 0,
     slip: false,
     pivoted: false,
+    researchSpike: null,
+    researchSpikePoints: 0,
   };
 }
 
@@ -1589,7 +1612,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, no rival cut, no feature, an even day plan, no stored bugs, not fixing, not crunching, 0 crunch bugs, not an early ship, not holding the next day, and not pivoted. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, no rival cut, no feature, an even day plan, no stored bugs, not fixing, not crunching, 0 crunch bugs, not an early ship, not holding the next day, not pivoted, and not on a research spike. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -1630,6 +1653,8 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     earlyDays?: unknown;
     slip?: unknown;
     pivoted?: unknown;
+    researchSpike?: unknown;
+    researchSpikePoints?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -1665,7 +1690,20 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     earlyDays: parseEarlyDays(body.earlyDays),
     slip: body.slip === true,
     pivoted: body.pivoted === true,
+    researchSpike: parseResearchSpike(body.researchSpike),
+    researchSpikePoints: parseResearchSpikePoints(body.researchSpikePoints),
   };
+}
+
+function parseResearchSpike(value: unknown): "pending" | "used" | null {
+  if (value === "pending" || value === "used") return value;
+  return null;
+}
+
+function parseResearchSpikePoints(value: unknown): number {
+  const points = Number(value);
+  if (!Number.isInteger(points) || points <= 0) return 0;
+  return points;
 }
 
 function parseStoredBugs(value: unknown): number {
@@ -1848,6 +1886,8 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
   }
   if (stored.slip) body.slip = true;
   if (stored.pivoted) body.pivoted = true;
+  if (stored.researchSpike) body.researchSpike = stored.researchSpike;
+  if (stored.researchSpikePoints > 0) body.researchSpikePoints = stored.researchSpikePoints;
   return JSON.stringify(body);
 }
 
@@ -2673,6 +2713,25 @@ export class TycoonStore {
     });
   }
 
+  /**
+   * Mark the next office day on the bench product as a research spike.
+   * That day converts personal craft into research points. One spike per build.
+   * Calling it again while pending, or after it was used, fails.
+   * No cash row and no clock move.
+   */
+  researchSpike(): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.developingRow();
+      if (!row) throw new Error("No product is on the bench.");
+      const stored = parseProductSnapshot(row.staff_json);
+      if (stored.researchSpike === "pending") throw new Error("A research spike is already set.");
+      if (stored.researchSpike === "used") throw new Error("This build already used its research spike.");
+      stored.researchSpike = "pending";
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      return this.journey.state();
+    });
+  }
+
   /** One feature on the product on the bench. One extra office day. No cash row. */
   addFeature(): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
@@ -2914,6 +2973,8 @@ export class TycoonStore {
         earlyDays: 0,
         slip: false,
         pivoted: false,
+        researchSpike: null,
+        researchSpikePoints: 0,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -3172,7 +3233,7 @@ export class TycoonStore {
     const type = typeById(row.type_id);
     if (!type) throw new Error("Unknown product type");
     const snapshot = parseProductSnapshot(row.staff_json);
-    // A held day moves the calendar only. Craft, bugs, crunch, and research wait.
+    // A held day moves the calendar only. Craft, bugs, crunch, research, and a pending spike wait.
     if (snapshot.slip) {
       snapshot.slip = false;
       this.db.prepare("UPDATE tycoon_products SET staff_json = ?, last_dev_day = ? WHERE id = ?").run(
@@ -3200,8 +3261,18 @@ export class TycoonStore {
       snapshot.crunch = null;
       crunchChanged = true;
     }
+    // A research spike takes this day's personal craft, after day plan and crunch.
+    // An armed fix stays armed and does not clear on the spike day.
+    const spiking = snapshot.researchSpike === "pending";
+    let spikePoints = 0;
+    if (spiking) {
+      spikePoints = personal.design + personal.tech + personal.hype;
+      personal = { design: 0, tech: 0, hype: 0 };
+      snapshot.researchSpike = "used";
+      snapshot.researchSpikePoints = spikePoints;
+    }
     // Fixing spends this day's personal craft on bugs, including a doubled crunch total.
-    const fixing = snapshot.fixBugs;
+    const fixing = snapshot.fixBugs && !spiking;
     if (fixing) {
       const personalTotal = personal.design + personal.tech + personal.hype;
       personal = { design: 0, tech: 0, hype: 0 };
@@ -3229,10 +3300,10 @@ export class TycoonStore {
       day,
       row.id,
     );
-    if (fixing || crunchChanged) {
+    if (fixing || crunchChanged || spiking) {
       this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(snapshot), row.id);
     }
-    this.addResearchPoints(working.length);
+    this.addResearchPoints(working.length + spikePoints);
     this.journey.recordCompanyChange(`tycoon:build:${row.id}:${day}`, day, 0, 0, 0, `Building ${row.name}`);
   }
 
@@ -3820,6 +3891,21 @@ export class TycoonStore {
       pivot: this.pivotView(row, snapshot),
       playtest: this.playtestView(row, snapshot),
       team: this.teamView(row, snapshot),
+      researchSpike: this.researchSpikeView(row.status, snapshot),
+    };
+  }
+
+  /** One spike per build. Hidden once the product ships. */
+  private researchSpikeView(status: string, snapshot: ProductSnapshot): TycoonResearchSpike | null {
+    if (status !== "developing") return null;
+    const pending = snapshot.researchSpike === "pending";
+    const used = snapshot.researchSpike === "used";
+    return {
+      enabled: !pending && !used,
+      pending,
+      used,
+      reason: "",
+      points: snapshot.researchSpikePoints,
     };
   }
 

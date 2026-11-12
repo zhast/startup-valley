@@ -7085,6 +7085,209 @@ test("assignTeam changes who crafts later days and keeps earned points", async (
   dropped.db.close();
 });
 
+test("researchSpike converts one day's personal craft and keeps earned points", async () => {
+  assert.equal(parseRequest({ kind: "request", id: "spike", method: "tycoon.researchSpike", params: {} }).method, "tycoon.researchSpike");
+  assert.throws(() => parseRequest({ kind: "request", id: "spike", method: "tycoon.researchSpike", params: { extra: true } }), /Invalid protocol request/u);
+  const source = readFileSync(new URL("../src/tycoon.ts", import.meta.url), "utf8");
+  const bodyStart = source.indexOf("researchSpike():");
+  const body = source.slice(bodyStart, source.indexOf("addFeature():", bodyStart));
+  assert.equal(/fetch|https?:|Connect|credential|openrouter/iu.test(body), false);
+  assert.ok(body.includes("No product is on the bench."), "researchSpike lives in the harness");
+  assert.ok(body.includes("A research spike is already set."), "a pending spike fails clearly");
+  assert.ok(body.includes("This build already used its research spike."), "a used spike fails clearly");
+
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  const idle = { enabled: true, pending: false, used: false, reason: "", points: 0 };
+
+  const bare = await setup();
+  assert.throws(() => bare.db.tycoon.researchSpike(), /No product is on the bench\./u);
+  bare.db.close();
+
+  const skip = await setup();
+  skip.db.tycoon.start("crypto", "newsletter", []);
+  assert.deepEqual(skip.db.tycoon.view().developing?.researchSpike, idle);
+  skip.db.endDay(1);
+  skip.db.endDay(2);
+  skip.db.tycoon.release("p1");
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.fans, 5);
+  assert.equal(skip.db.tycoon.view().history[0]?.salesCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.researchSpike, null);
+  skip.db.endDay(3);
+  skip.db.endDay(4);
+  assert.equal(skip.db.journey.state().company.cashCents, 33_300);
+  assert.throws(() => skip.db.tycoon.researchSpike(), /No product is on the bench\./u);
+  skip.db.close();
+
+  const kept = await setup();
+  kept.db.tycoon.start("crypto", "newsletter", []);
+  kept.db.endDay(1);
+  assert.equal(kept.db.tycoon.view().developing?.design, 2);
+  assert.equal(kept.db.tycoon.view().developing?.tech, 2);
+  assert.equal(kept.db.tycoon.view().developing?.hype, 2);
+  assert.equal(kept.db.tycoon.view().researchPoints, 1);
+  const before = {
+    staff: staffJson(kept.db, "p1"),
+    txs: txIds(kept.db),
+    day: kept.db.clockState().day,
+    cash: kept.db.journey.state().company.cashCents,
+    fans: kept.db.journey.state().company.reputation,
+    seed: Number((kept.db.journey.db.prepare("SELECT seed FROM tycoon_meta WHERE id = 1").get() as { seed: number }).seed),
+  };
+  kept.db.tycoon.researchSpike();
+  assert.throws(() => kept.db.tycoon.researchSpike(), /already set/u);
+  assert.equal(kept.db.tycoon.view().developing?.design, 2);
+  assert.equal(kept.db.tycoon.view().developing?.tech, 2);
+  assert.equal(kept.db.tycoon.view().developing?.hype, 2);
+  assert.equal(kept.db.tycoon.view().developing?.devDays, 1);
+  assert.equal(kept.db.tycoon.view().researchPoints, 1);
+  assert.equal(kept.db.clockState().day, before.day);
+  assert.equal(kept.db.journey.state().company.cashCents, before.cash);
+  assert.equal(kept.db.journey.state().company.reputation, before.fans);
+  assert.equal(Number((kept.db.journey.db.prepare("SELECT seed FROM tycoon_meta WHERE id = 1").get() as { seed: number }).seed), before.seed);
+  assert.deepEqual(txIds(kept.db), before.txs);
+  assert.equal(spikeRows(kept.db).length, 0);
+  assert.equal(JSON.parse(staffJson(kept.db, "p1")).researchSpike, "pending");
+  assert.deepEqual(kept.db.tycoon.view().developing?.researchSpike, {
+    enabled: false, pending: true, used: false, reason: "", points: 0,
+  });
+  kept.db.endDay(2);
+  assert.equal(kept.db.tycoon.view().developing?.devDays, 2);
+  assert.equal(kept.db.tycoon.view().developing?.design, 2);
+  assert.equal(kept.db.tycoon.view().developing?.tech, 2);
+  assert.equal(kept.db.tycoon.view().developing?.hype, 2);
+  assert.equal(kept.db.tycoon.view().researchPoints, 8);
+  assert.deepEqual(kept.db.tycoon.view().developing?.researchSpike, {
+    enabled: false, pending: false, used: true, reason: "", points: 6,
+  });
+  assert.throws(() => kept.db.tycoon.researchSpike(), /already used/u);
+  assert.equal(kept.db.tycoon.view().developing?.design, 2);
+  kept.db.endDay(3);
+  assert.equal(kept.db.tycoon.view().developing?.devDays, 3);
+  assert.equal(kept.db.tycoon.view().developing?.design, 4);
+  assert.equal(kept.db.tycoon.view().developing?.tech, 4);
+  assert.equal(kept.db.tycoon.view().developing?.hype, 4);
+  assert.equal(kept.db.tycoon.view().researchPoints, 9);
+  assert.equal(validate(kept.db.journey.state()), true, JSON.stringify(validate.errors));
+  kept.db.close();
+
+  const fresh = await setup();
+  fresh.db.tycoon.start("crypto", "newsletter", []);
+  fresh.db.tycoon.researchSpike();
+  fresh.db.endDay(1);
+  assert.equal(fresh.db.tycoon.view().developing?.devDays, 1);
+  assert.equal(fresh.db.tycoon.view().developing?.design, 0);
+  assert.equal(fresh.db.tycoon.view().developing?.tech, 0);
+  assert.equal(fresh.db.tycoon.view().developing?.hype, 0);
+  assert.equal(fresh.db.tycoon.view().researchPoints, 7);
+  assert.equal(fresh.db.tycoon.view().developing?.researchSpike?.points, 6);
+  fresh.db.endDay(2);
+  assert.equal(fresh.db.tycoon.view().developing?.design, 2);
+  assert.equal(fresh.db.tycoon.view().developing?.tech, 2);
+  assert.equal(fresh.db.tycoon.view().developing?.hype, 2);
+  assert.equal(fresh.db.tycoon.view().researchPoints, 8);
+  fresh.db.close();
+
+  const pair = await setup();
+  pair.db.journey.hire("mira", 1);
+  pair.db.tycoon.start("crypto", "newsletter", ["mira"]);
+  pair.db.tycoon.researchSpike();
+  pair.db.endDay(1);
+  assert.equal(pair.db.tycoon.view().developing?.design, 0);
+  assert.equal(pair.db.tycoon.view().developing?.tech, 0);
+  assert.equal(pair.db.tycoon.view().developing?.hype, 0);
+  assert.equal(pair.db.tycoon.view().researchPoints, 14);
+  assert.equal(pair.db.tycoon.view().developing?.researchSpike?.points, 12);
+  pair.db.endDay(2);
+  assert.equal(pair.db.tycoon.view().developing?.design, 5);
+  assert.equal(pair.db.tycoon.view().developing?.tech, 4);
+  assert.equal(pair.db.tycoon.view().developing?.hype, 3);
+  assert.equal(pair.db.tycoon.view().researchPoints, 16);
+  pair.db.close();
+
+  const tool = await setup();
+  tool.db.journey.recordCompanyChange("tool-cash", 1, 25_000, 0, 0, "Tool cash");
+  tool.db.tycoon.buyUpgrade("standing_desk");
+  tool.db.tycoon.start("crypto", "newsletter", []);
+  tool.db.tycoon.researchSpike();
+  tool.db.endDay(1);
+  assert.equal(tool.db.tycoon.view().developing?.design, 1);
+  assert.equal(tool.db.tycoon.view().developing?.tech, 0);
+  assert.equal(tool.db.tycoon.view().developing?.hype, 0);
+  assert.equal(tool.db.tycoon.view().researchPoints, 7);
+  assert.equal(tool.db.tycoon.view().developing?.researchSpike?.points, 6);
+  tool.db.close();
+
+  const held = await setup();
+  held.db.tycoon.start("crypto", "newsletter", []);
+  held.db.tycoon.slipDay();
+  held.db.tycoon.researchSpike();
+  held.db.endDay(1);
+  assert.equal(held.db.tycoon.view().developing?.devDays, 0);
+  assert.equal(held.db.tycoon.view().researchPoints, 0);
+  assert.equal(held.db.tycoon.view().developing?.researchSpike?.pending, true);
+  held.db.endDay(2);
+  assert.equal(held.db.tycoon.view().developing?.devDays, 1);
+  assert.equal(held.db.tycoon.view().developing?.design, 0);
+  assert.equal(held.db.tycoon.view().researchPoints, 7);
+  assert.equal(held.db.tycoon.view().developing?.researchSpike?.used, true);
+  held.db.close();
+
+  const lesson = await setup();
+  lesson.db.journey.recordCompanyChange("train-cash", 1, 30_000, 0, 0, "Train cash");
+  lesson.db.tycoon.start("crypto", "newsletter", []);
+  lesson.db.tycoon.train("founder", "design");
+  lesson.db.tycoon.researchSpike();
+  lesson.db.endDay(1);
+  assert.equal(lesson.db.tycoon.view().developing?.devDays, 1);
+  assert.equal(lesson.db.tycoon.view().developing?.design, 0);
+  assert.equal(lesson.db.tycoon.view().researchPoints, 0);
+  assert.equal(lesson.db.tycoon.view().developing?.researchSpike?.used, true);
+  assert.equal(lesson.db.tycoon.view().developing?.researchSpike?.points, 0);
+  lesson.db.close();
+
+  const reopen = await setup();
+  reopen.db.tycoon.start("crypto", "newsletter", []);
+  const untouched = staffJson(reopen.db, "p1");
+  reopen.db.tycoon.view();
+  assert.equal(staffJson(reopen.db, "p1"), untouched);
+  assert.equal(JSON.parse(untouched).researchSpike, undefined);
+  reopen.db.tycoon.researchSpike();
+  const pending = reopen.db.tycoon.view().developing?.researchSpike;
+  const pendingStaff = staffJson(reopen.db, "p1");
+  const file = join(reopen.root, "game.sqlite");
+  const project = join(reopen.root, "company-project");
+  reopen.db.close();
+  const reopened = new GameDatabase(file, project);
+  assert.deepEqual(reopened.tycoon.view().developing?.researchSpike, pending);
+  assert.equal(staffJson(reopened, "p1"), pendingStaff);
+  reopened.endDay(1);
+  const used = reopened.tycoon.view().developing?.researchSpike;
+  assert.equal(used?.used, true);
+  assert.equal(used?.points, 6);
+  assert.equal(reopened.tycoon.view().researchPoints, 7);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  const usedStaff = staffJson(reopened, "p1");
+  reopened.close();
+  const again = new GameDatabase(file, project);
+  assert.deepEqual(again.tycoon.view().developing?.researchSpike, used);
+  assert.equal(staffJson(again, "p1"), usedStaff);
+  assert.throws(() => again.tycoon.researchSpike(), /already used/u);
+  again.tycoon.cancelBuild();
+  again.tycoon.start("crypto", "newsletter", []);
+  assert.deepEqual(again.tycoon.view().developing?.researchSpike, idle);
+  again.tycoon.researchSpike();
+  assert.equal(again.tycoon.view().developing?.researchSpike?.pending, true);
+  again.close();
+
+  const dropped = await setup();
+  dropped.db.tycoon.start("crypto", "newsletter", []);
+  dropped.db.tycoon.cancelBuild();
+  assert.throws(() => dropped.db.tycoon.researchSpike(), /No product is on the bench\./u);
+  dropped.db.close();
+});
+
 function txIds(db: GameDatabase): string[] {
   return (db.journey.db.prepare("SELECT id FROM company_transactions ORDER BY id").all() as Array<{ id: string }>).map((row) => row.id);
 }
@@ -7127,6 +7330,10 @@ function playtestRows(db: GameDatabase) {
 
 function teamRows(db: GameDatabase) {
   return db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:assign%' OR id LIKE 'tycoon:team%'").all();
+}
+
+function spikeRows(db: GameDatabase) {
+  return db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:spike%' OR id LIKE 'tycoon:researchSpike%'").all();
 }
 
 function finishSales(db: GameDatabase): void {
