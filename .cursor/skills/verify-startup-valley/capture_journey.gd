@@ -412,6 +412,7 @@ func _run() -> void:
 	await _playtest_proof()
 	await _assign_team_proof()
 	await _research_spike_proof()
+	await _sale_price_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -2130,6 +2131,87 @@ func _research_spike_proof() -> void:
 	check(header != null and header.text.contains("Spring 2") and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at $0 and 0 reputation on Spring 2")
 	check(not main.job_panel._connection_panel.visible, "The spike day never opens Connect")
 	await snap("81-spike-done", line)
+
+func seed_sale_price_offer(data_dir: String) -> bool:
+	var database := ProjectSettings.globalize_path("res://../harness/src/database.ts")
+	var tsx := ProjectSettings.globalize_path("res://../harness/node_modules/tsx/dist/cli.mjs")
+	var node := OS.get_environment("STARTUP_VALLEY_NODE").strip_edges()
+	if node.is_empty():
+		for dir: String in OS.get_environment("PATH").split(":"):
+			if FileAccess.file_exists(dir.path_join("node")):
+				node = dir.path_join("node")
+				break
+	if node.is_empty():
+		node = "/home/box/.local/node22/bin/node"
+	var script_path := data_dir.path_join("seed-sale-price.mjs")
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst file = root + '/startup-valley.sqlite';\nconst db = new GameDatabase(file, root + '/company-project');\ndb.tycoon.start('crypto', 'newsletter', []);\ndb.endDay(1);\ndb.endDay(2);\ndb.tycoon.release('p1');\nconst product = db.tycoon.view().history[0];\nconst company = db.journey.state().company;\ndb.close();\nconst offer = product && product.salePrice;\nif (company.cashCents !== 20700 || company.reputation !== 5 || !product || product.status !== 'released' || product.salesCents !== 20700 || product.fans !== 5 || product.pricePercent !== 100 || !offer || offer.enabled !== true || offer.used !== false || offer.currentPercent !== 100 || offer.reason !== '') { console.error(JSON.stringify({ company: company, product: product })); process.exit(2); }\n" % JSON.stringify(database)
+	var file := FileAccess.open(script_path, FileAccess.WRITE)
+	if file == null:
+		check(false, "Could not write the sale price seed script")
+		return false
+	file.store_string(script)
+	file.close()
+	var output: Array = []
+	var code := OS.execute(node, PackedStringArray([tsx, script_path, data_dir]), output, true)
+	check(code == 0, "Seeded a selling newsletter at $207 with a sale price offer (%s)" % " ".join(output))
+	return code == 0
+
+func _sale_price_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-sale-price-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_sale_price_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var line := label_named("SalePriceOffer_p1")
+	var card := main.company_panel.find_child("Selling_p1", true, false) as Control
+	var cheap := main.company_panel.find_child("SalePrice_p1_80", true, false) as Button
+	var premium := main.company_panel.find_child("SalePrice_p1_120", true, false) as Button
+	var catalog := main.company_panel.find_child("SalePrice_p1_100", true, false) as Button
+	check(card != null and line != null and cheap != null and premium != null and card.is_ancestor_of(line) and card.is_ancestor_of(cheap) and line.text == "Sale price · $9.00 · remaining days", "The Selling card names the sale price")
+	check(catalog == null and not cheap.disabled and not premium.disabled and str(cheap.get_meta("cozy_variant", "")) == "secondary" and str(premium.get_meta("cozy_variant", "")) == "secondary" and cheap.text == "−20%" and premium.text == "+20%", "Sale price buttons are secondary and skip the current percent")
+	var hire := button_named("Hire Mina")
+	check(hire != null and str(hire.get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the sale price")
+	var trailer := label_named("TrailerOffer_p1")
+	var patch := button_named("Patch")
+	await reveal(line)
+	var footer := main.company_panel._footer
+	check(trailer != null and trailer.get_global_rect().end.y <= line.get_global_rect().position.y + 1.0, "Sale price sits under the trailer")
+	check(patch != null and cheap.get_global_rect().end.y <= patch.get_global_rect().position.y + 1.0, "Sale price sits above Patch")
+	check(footer != null and not line.get_global_rect().intersects(footer.get_global_rect()) and not cheap.get_global_rect().intersects(footer.get_global_rect()) and not premium.get_global_rect().intersects(footer.get_global_rect()), "Sale price does not overlap Hire")
+	check(line.get_line_count() == 1, "The sale price line stays on one line")
+	check(company_cash() == 20700 and company_reputation() == 5, "The sale price offer has not spent cash or fans")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("Spring 3") and header.text.contains("$207.00") and header.text.contains("5 reputation"), "The offer still shows Spring 3, $207, and 5 reputation")
+	check(not main.job_panel._connection_panel.visible, "Sale price never opens Connect")
+	await snap("82-saleprice-offer", line)
+	await click(cheap)
+	var changed := await wait_until(func() -> bool:
+		return not main.company_panel.busy and label_named("SalePriceOffer_p1") != null and label_named("SalePriceOffer_p1").text == "Sale price · −20% · $7.20" and main.company_panel.find_child("SalePrice_p1_80", true, false) == null
+	, "Sale price shows −20%")
+	if not changed:
+		return
+	line = label_named("SalePriceOffer_p1")
+	await reveal(line)
+	patch = button_named("Patch")
+	footer = main.company_panel._footer
+	check(line.get_line_count() == 1, "The set line stays on one line")
+	check(patch != null and line.get_global_rect().end.y <= patch.get_global_rect().position.y + 1.0, "The set line sits above Patch")
+	check(footer != null and not line.get_global_rect().intersects(footer.get_global_rect()), "The set line does not overlap Hire")
+	check(company_cash() == 20700 and company_reputation() == 5, "The sale price leaves cash and fans")
+	header = label_named("OfficeDate")
+	check(header != null and header.text.contains("Spring 3") and header.text.contains("$207.00") and header.text.contains("5 reputation"), "The header stays at Spring 3, $207, and 5 reputation")
+	check(not main.job_panel._connection_panel.visible, "The sale price never opens Connect")
+	await snap("83-saleprice-set", line)
 
 func _proof_money(cents: int) -> String:
 	var integer := str(absi(cents) / 100)

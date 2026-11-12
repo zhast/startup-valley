@@ -633,6 +633,7 @@ func _selling_cards() -> void:
 		var days := _label("Sales day %d of %d" % [int(product.get("salesDays", 0)), int(product.get("salesDaysTotal", 4))], false, card, "meta")
 		days.name = "SellingDays_%s" % product_id
 		_trailer_offer(product, card)
+		_sale_price_offer(product, card)
 		if bool(patch.get("applied", false)):
 			var patched := _label("Patched · +%d score" % int(patch.get("scoreBonus", 1)), false, card, "action")
 			patched.name = "SellingPatched_%s" % product_id
@@ -1740,6 +1741,59 @@ func _trailer_offer(product: Dictionary, card: Control) -> void:
 
 func _make_trailer(product_id: String) -> void:
 	_request("tycoon.makeTrailer", {"productId": product_id})
+
+func _sale_price_cents(product: Dictionary, percent: int) -> int:
+	return int(round(float(_catalog_price_cents(str(product.get("typeId", ""))) * percent) / 100.0))
+
+func _sale_price_option_label(offer: Dictionary, percent: int) -> String:
+	var options: Variant = offer.get("options", [])
+	if not options is Array:
+		return ""
+	for item: Variant in options as Array:
+		if item is Dictionary and int((item as Dictionary).get("percent", 0)) == percent:
+			return str((item as Dictionary).get("label", ""))
+	return ""
+
+func _sale_price_text(product: Dictionary, offer: Dictionary) -> String:
+	var percent := int(offer.get("currentPercent", 100))
+	var money := "$%s" % _money(_sale_price_cents(product, percent))
+	if bool(offer.get("used", false)):
+		return "Sale price · %s · %s" % [_sale_price_option_label(offer, percent), money]
+	return "Sale price · %s · remaining days" % money
+
+func _sale_price_offer(product: Dictionary, card: Control) -> void:
+	var value: Variant = product.get("salePrice", null)
+	if not value is Dictionary:
+		return
+	var offer := value as Dictionary
+	var product_id := str(product.get("id", ""))
+	var line := _label(_sale_price_text(product, offer), false, card)
+	line.name = "SalePriceOffer_%s" % product_id
+	if not bool(offer.get("enabled", false)):
+		return
+	var options: Variant = offer.get("options", [])
+	if not options is Array:
+		return
+	var row := HBoxContainer.new()
+	row.name = "SalePriceChoices_%s" % product_id
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("separation", 8)
+	card.add_child(row)
+	var current := int(offer.get("currentPercent", 0))
+	for item: Variant in options as Array:
+		if not item is Dictionary:
+			continue
+		var step := item as Dictionary
+		var percent := int(step.get("percent", 0))
+		if percent == current:
+			continue
+		var button := _button(str(step.get("label", "")), _choose_sale_price.bind(product_id, percent), false, true, row, "secondary")
+		button.name = "SalePrice_%s_%d" % [product_id, percent]
+		button.custom_minimum_size = Vector2(104, 32)
+		button.clip_text = true
+
+func _choose_sale_price(product_id: String, percent: int) -> void:
+	_request("tycoon.salePrice", {"productId": product_id, "pricePercent": percent})
 
 func _diary_offer(product: Dictionary, card: Control) -> void:
 	var value: Variant = product.get("diary", null)
