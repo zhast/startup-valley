@@ -414,6 +414,7 @@ func _run() -> void:
 	await _research_spike_proof()
 	await _sale_price_proof()
 	await _let_go_proof()
+	await _part_time_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -2297,6 +2298,69 @@ func _let_go_proof() -> void:
 	view = main.company_panel._scroll.get_global_rect().grow(2.0)
 	check(view.encloses(line.get_global_rect()), "The status line stays inside the journey")
 	await snap("85-letgo-done", card)
+
+func _part_time_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-part-time-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_let_go_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var card := main.company_panel.find_child("TrainStaff", true, false) as Control
+	var pace := main.company_panel.find_child("Pace_mira", true, false) as Button
+	var leave := main.company_panel.find_child("LetGo_mira", true, false) as Button
+	var founder := main.company_panel.find_child("Pace_founder", true, false) as Button
+	var stats := label_named("StaffLine_mira")
+	check(card != null and pace != null and card.is_ancestor_of(pace) and pace.text == "Part-time", "The Train staff card offers Part-time")
+	check(founder == null and not pace.disabled and str(pace.get_meta("cozy_variant", "")) == "secondary", "Part-time is a secondary button and the founder has none")
+	check(leave != null and leave.text == "Let go" and pace.get_global_rect().end.x <= leave.get_global_rect().position.x + 1.0, "Part-time sits beside Let go")
+	var hire := button_named("Hire Theo")
+	check(hire != null and str(hire.get_meta("cozy_variant", "")) == "primary", "Hire Theo stays the one primary action beside Part-time")
+	await reveal(card)
+	var footer := main.company_panel._footer
+	var train := main.company_panel.find_child("Train_mira_design", true, false) as Button
+	check(train != null and pace.get_global_rect().end.y <= train.get_global_rect().position.y + 1.0, "Part-time sits above Train")
+	check(footer != null and not pace.get_global_rect().intersects(footer.get_global_rect()), "Part-time does not overlap Hire")
+	check(stats != null and stats.get_line_count() == 1 and not stats.text.contains("part-time"), "Mina's line is one full-time line")
+	check(company_cash() == 0 and company_reputation() == 0 and int(developing().get("devDays", -1)) == 1 and int(developing().get("design", -1)) == 5, "The offer has not spent the earned day")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("Spring 2") and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at Spring 2, $0, and 0 reputation")
+	var view := main.company_panel._scroll.get_global_rect().grow(2.0)
+	check(view.encloses(pace.get_global_rect()) and view.encloses(leave.get_global_rect()), "Part-time stays inside the journey")
+	check(not main.job_panel._connection_panel.visible, "Part-time never opens Connect")
+	await snap("86-parttime-offer", card)
+	await click(pace)
+	var shown := await wait_until(func() -> bool:
+		var line := label_named("StaffLine_mira")
+		var button := main.company_panel.find_child("Pace_mira", true, false) as Button
+		var payroll: Dictionary = tycoon_state().get("payroll", {}) if tycoon_state().get("payroll") is Dictionary else {}
+		return not main.company_panel.busy and line != null and line.text.contains("part-time") and button != null and button.text == "Full time" and int(payroll.get("cents", -1)) == 4000
+	, "Mina is part-time")
+	if not shown:
+		return
+	var line := label_named("StaffLine_mira")
+	card = main.company_panel.find_child("TrainStaff", true, false) as Control
+	pace = main.company_panel.find_child("Pace_mira", true, false) as Button
+	await reveal(card)
+	footer = main.company_panel._footer
+	check(card != null and line != null and card.is_ancestor_of(line) and line.get_line_count() == 1 and line.text.contains("part-time"), "The part-time status stays on one line")
+	check(pace != null and pace.text == "Full time" and str(pace.get_meta("cozy_variant", "")) == "secondary", "The button switches to Full time and stays secondary")
+	check(footer != null and not pace.get_global_rect().intersects(footer.get_global_rect()) and not line.get_global_rect().intersects(footer.get_global_rect()), "The part-time status does not overlap Hire")
+	check(int(developing().get("devDays", -1)) == 1 and int(developing().get("design", -1)) == 5 and int(developing().get("tech", -1)) == 4 and int(developing().get("hype", -1)) == 3, "Earned days and points stay")
+	check(company_cash() == 0 and company_reputation() == 0, "Part-time leaves cash and fans")
+	check(not main.job_panel._connection_panel.visible, "Setting part-time never opens Connect")
+	view = main.company_panel._scroll.get_global_rect().grow(2.0)
+	check(view.encloses(pace.get_global_rect()) and view.encloses(line.get_global_rect()), "The part-time status stays inside the journey")
+	await snap("87-parttime-set", card)
 
 func _proof_money(cents: int) -> String:
 	var integer := str(absi(cents) / 100)
