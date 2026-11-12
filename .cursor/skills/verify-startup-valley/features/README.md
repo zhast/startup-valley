@@ -36,5 +36,6 @@ Player-facing flows for the offline tycoon. The harness owns the rules (`docs/TY
 - [Slip a day](slip-a-day.md)
 - [Pivot](pivot.md)
 - [Playtest](playtest.md)
+- [Assign the team](assign-the-team.md)
 
 Launch, display, and proof-file rules live in the verify-startup-valley skill. Do not copy them here.

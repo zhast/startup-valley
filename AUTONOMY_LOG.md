@@ -2836,3 +2836,73 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Seventy-seven PNGs in `/workspace/sv-proof/round-62/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-62 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey, on the card for the product in development. Playtest is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_playtest.gd`.
+
+### Round 63 — 2026-11-11
+
+**What changed**
+- `tycoon.assignTeam` takes `{staffIds}`. With nothing on the bench, including after a release or a cancel, it fails with "No product is on the bench." An empty list fails with "Pick at least one teammate." An unknown id fails with "Unknown teammate". An unhired id fails with "Mina is not on the team yet." A bad payload fails with "Invalid protocol request". No fee, no ledger row, no clock move. Assigning the same set of people again is a no-op.
+- Start development still always includes the founder. Assign the team does not. The founder can leave if someone else stays. Days already worked and the points already earned stay. Later office days use the new people, including someone hired after the build started. People already on the team keep the stats stored when they joined this build. A newly added person stores their current stats. A person in training may stay on the team; that office day still zeroes their personal contribution. Skipping Assign the team leaves the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- A developing product carries `team: { enabled, members, reason }`. `enabled` is true, `reason` is empty, and `members` lists the founder and every hired person as `{id, name, onTeam}`. After the product ships, the field is null. `team` is optional on the product schema, so older payloads still validate. A payload without `team` draws no control. New payloads include it. The staff list still lives in `staff_json`. There is no new SQL column.
+- The row sits on the developing-product card, under Playtest and above New Product. One compact line reads "Team: Founder" or "Team: Founder, Mina", with small secondary toggle buttons for each person on that same row. Selected people use the pressed secondary style. Hire stays the one primary action. Nothing on this row is orange. A product on the bench raises that journey panel to 720px so Early access through New Product stay inside the scrollport. The pivot picker keeps the 660px envelope from Round 62.
+
+**Proof**
+- `/workspace/sv-proof/round-63/78-team-offer.png` and `79-team-changed.png`, captured by the verify-startup-valley skill. PROOF PASS. Seventy-nine PNGs. The offer header reads "Spring 1 · Year 1 · $0.00 game cash · 0 reputation". The line "Team: Founder" is one readable line, with Founder pressed and Mina sitting out on the same row. New Product sits under that row. Hire Theo · $300.00 stays in the footer and does not cover it. After clicking Mina the line is "Team: Founder, Mina", both toggles are pressed, and the header is still $0.00 and 0 reputation. Those lines are readable and do not overlap. Connect stays closed.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Research spike is the next slice. One optional office day on the product still on the bench. That day's personal craft becomes research points instead of design, tech, and hype. The day still counts. Points already earned stay. No fee, no ledger row, no new art. Skip it and the first Crypto Alpha Newsletter still lands at 20700 cents and 5 fans. A second room still waits on architecture art.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. The developing card is one compact row taller when team shows. Shots 78 and 79 scroll the team line to the top of the journey, so the control sits above New Product and Hire does not cover it. The publisher, press demo, feature, day plan, bugs, crunch, early access, cancel, slip, pivot, and playtest stay in that same card, above team.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`)
+- `cd harness && npm run build && npm test` — 131 tests, 129 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test refuses an empty bench, an empty team, and an unknown id, keeps earned points, uses only the new team on the next office day, lets a newly hired person join mid-build, leaves a skipped newsletter at 20700 cents and 5 fans then 33300 cents, and keeps the team block across reopen.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS
+- `test_tycoon_localization.gd` — TYCOON LOCALIZATION PASS
+- `test_tycoon_town_day.gd` — TYCOON TOWN DAY PASS
+- `test_tycoon_press_demo.gd` — TYCOON PRESS DEMO PASS
+- `test_tycoon_launch_trailer.gd` — TYCOON LAUNCH TRAILER PASS
+- `test_tycoon_dev_diary.gd` — TYCOON DEV DIARY PASS
+- `test_tycoon_rivals.gd` — TYCOON RIVALS PASS
+- `test_tycoon_features.gd` — TYCOON FEATURES PASS
+- `test_tycoon_day_plan.gd` — TYCOON DAY PLAN PASS
+- `test_tycoon_bugs.gd` — TYCOON BUGS PASS
+- `test_tycoon_crunch.gd` — TYCOON CRUNCH PASS
+- `test_tycoon_early_access.gd` — TYCOON EARLY ACCESS PASS
+- `test_tycoon_cancel.gd` — TYCOON CANCEL PASS
+- `test_tycoon_slip_day.gd` — TYCOON SLIP DAY PASS
+- `test_tycoon_pivot.gd` — TYCOON PIVOT PASS
+- `test_tycoon_playtest.gd` — TYCOON PLAYTEST PASS
+- `test_tycoon_assign_team.gd` — TYCOON ASSIGN TEAM PASS. Day 0 shows "Team: Founder" with a secondary Founder toggle, under Playtest, and above New Product. The line stays on one line. A payload without `team` draws no control. The product picker and the build screen have no team control. Hiring Mina offers a Mina toggle. Clicking Mina shows "Team: Founder, Mina". Cash, fans, and points stay put. The next office day uses Founder and Mina (5/4/3). Reopening keeps that team, with cash and fans still 0. Hire stays the one primary action. Connect stays closed. The rules script inside that test checks the same harness cases.
+- `test_ui_company_redesign.gd` — 18171 checks, 0 failures, 0 captures. Existing fixtures omit `team` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Seventy-nine PNGs in `/workspace/sv-proof/round-63/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-63 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey, on the card for the product in development. Assign the team is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_assign_team.gd`.

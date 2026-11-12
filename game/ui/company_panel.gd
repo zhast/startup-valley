@@ -216,9 +216,13 @@ func _render() -> void:
 		"release": panel_size = Vector2(704, 560)
 		"journey":
 			if _current_milestone().is_empty():
-				# A product on the bench adds Team under Playtest. 680 keeps
-				# Early access through New Product inside the scrollport.
-				panel_size = Vector2(744, 680) if _tycoon().get("developing") is Dictionary else Vector2(704, 564)
+				# A product on the bench adds a compact Team row under Playtest.
+				# 720 keeps Cancel through New Product inside the scrollport.
+				# The pivot picker is taller, so that path keeps the Round 62 envelope.
+				if _tycoon().get("developing") is Dictionary:
+					panel_size = Vector2(744, 660) if _pivot_open else Vector2(744, 720)
+				else:
+					panel_size = Vector2(704, 564)
 	_maximum_panel_size = panel_size
 	_frame.custom_minimum_size = Vector2.ZERO
 	_frame.size = panel_size
@@ -1613,19 +1617,16 @@ func _team_text(product: Dictionary) -> String:
 	return "Team: %s" % ", ".join(names)
 
 func _team_row(product: Dictionary, card: Control) -> void:
-	var text := _team_text(product)
-	var line := _label(text, false, card)
-	line.name = "TeamOffer"
 	var members := _team_members(product)
-	if members.is_empty():
-		return
-	var row := GridContainer.new()
+	var row := HBoxContainer.new()
 	row.name = "TeamChoices"
-	row.columns = mini(4, maxi(1, members.size()))
 	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.add_theme_constant_override("h_separation", 8)
-	row.add_theme_constant_override("v_separation", 8)
+	row.add_theme_constant_override("separation", 8)
 	card.add_child(row)
+	var line := _label(_team_text(product), false, row)
+	line.name = "TeamOffer"
+	line.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	line.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	for item: Variant in members:
 		if not item is Dictionary:
 			continue
@@ -1636,6 +1637,8 @@ func _team_row(product: Dictionary, card: Control) -> void:
 		var on_team := bool(member.get("onTeam", false))
 		var button := _button(str(member.get("name", id)), _toggle_team.bind(id), false, true, row, "secondary")
 		button.name = "Team_%s" % id
+		button.custom_minimum_size = Vector2(88, 32)
+		button.size_flags_horizontal = Control.SIZE_SHRINK_END
 		button.clip_text = true
 		if on_team:
 			for style_name: String in ["normal", "hover", "pressed", "hover_pressed"]:
