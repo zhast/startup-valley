@@ -216,9 +216,9 @@ func _render() -> void:
 		"release": panel_size = Vector2(704, 560)
 		"journey":
 			if _current_milestone().is_empty():
-				# A product on the bench adds Playtest under Pivot. 660 keeps
+				# A product on the bench adds Team under Playtest. 680 keeps
 				# Early access through New Product inside the scrollport.
-				panel_size = Vector2(744, 660) if _tycoon().get("developing") is Dictionary else Vector2(704, 564)
+				panel_size = Vector2(744, 680) if _tycoon().get("developing") is Dictionary else Vector2(704, 564)
 	_maximum_panel_size = panel_size
 	_frame.custom_minimum_size = Vector2.ZERO
 	_frame.size = panel_size
@@ -1137,7 +1137,8 @@ func _publisher_card(product: Dictionary) -> void:
 	var slip_offered := _slip_offered(product)
 	var pivot_offered := _pivot_offered(product)
 	var playtest_offered := _playtest_offered(product)
-	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered and not bugs_offered and not crunch_offered and not early_offered and not cancel_offered and not slip_offered and not pivot_offered and not playtest_offered: return
+	var team_offered := _team_offered(product)
+	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered and not bugs_offered and not crunch_offered and not early_offered and not cancel_offered and not slip_offered and not pivot_offered and not playtest_offered and not team_offered: return
 	var card := _card()
 	card.name = "PublisherCard"
 	if not publisher_name.is_empty():
@@ -1183,6 +1184,8 @@ func _publisher_card(product: Dictionary) -> void:
 		_pivot_row(product, card)
 	if playtest_offered:
 		_playtest_row(product, card)
+	if team_offered:
+		_team_row(product, card)
 
 func _sign_publisher() -> void:
 	_request("tycoon.signPublisher", {})
@@ -1584,6 +1587,78 @@ func _playtest_row(product: Dictionary, card: Control) -> void:
 func _playtest() -> void:
 	_playtest_shown = true
 	_request("tycoon.playtest", {})
+
+func _team_offered(product: Dictionary) -> bool:
+	return product.get("team") is Dictionary
+
+func _team_members(product: Dictionary) -> Array:
+	var value: Variant = product.get("team", null)
+	if not value is Dictionary:
+		return []
+	var members: Variant = (value as Dictionary).get("members", [])
+	return members as Array if members is Array else []
+
+func _team_text(product: Dictionary) -> String:
+	var names: PackedStringArray = PackedStringArray()
+	for item: Variant in _team_members(product):
+		if not item is Dictionary:
+			continue
+		var member := item as Dictionary
+		if bool(member.get("onTeam", false)):
+			var person_name := str(member.get("name", "")).strip_edges()
+			if not person_name.is_empty():
+				names.append(person_name)
+	if names.is_empty():
+		return "Team"
+	return "Team: %s" % ", ".join(names)
+
+func _team_row(product: Dictionary, card: Control) -> void:
+	var text := _team_text(product)
+	var line := _label(text, false, card)
+	line.name = "TeamOffer"
+	var members := _team_members(product)
+	if members.is_empty():
+		return
+	var row := GridContainer.new()
+	row.name = "TeamChoices"
+	row.columns = mini(4, maxi(1, members.size()))
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("h_separation", 8)
+	row.add_theme_constant_override("v_separation", 8)
+	card.add_child(row)
+	for item: Variant in members:
+		if not item is Dictionary:
+			continue
+		var member := item as Dictionary
+		var id := str(member.get("id", ""))
+		if id.is_empty():
+			continue
+		var on_team := bool(member.get("onTeam", false))
+		var button := _button(str(member.get("name", id)), _toggle_team.bind(id), false, true, row, "secondary")
+		button.name = "Team_%s" % id
+		button.clip_text = true
+		if on_team:
+			for style_name: String in ["normal", "hover", "pressed", "hover_pressed"]:
+				button.add_theme_stylebox_override(style_name, CozyUI.control_style("secondary", "pressed"))
+
+func _toggle_team(person_id: String) -> void:
+	var developing: Dictionary = _tycoon().get("developing", {}) if _tycoon().get("developing") is Dictionary else {}
+	var ids: Array[String] = []
+	for item: Variant in _team_members(developing):
+		if not item is Dictionary:
+			continue
+		var member := item as Dictionary
+		var id := str(member.get("id", ""))
+		if id.is_empty():
+			continue
+		var on_team := bool(member.get("onTeam", false))
+		if id == person_id:
+			on_team = not on_team
+		if on_team:
+			ids.append(id)
+	if ids.is_empty():
+		return
+	_request("tycoon.assignTeam", {"staffIds": ids})
 
 func _early_shipped(product: Dictionary) -> bool:
 	var value: Variant = product.get("earlyAccess", null)
