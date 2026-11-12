@@ -7288,6 +7288,229 @@ test("researchSpike converts one day's personal craft and keeps earned points", 
   dropped.db.close();
 });
 
+test("salePrice changes the percent for the days still ahead", async () => {
+  assert.equal(
+    parseRequest({ kind: "request", id: "sale", method: "tycoon.salePrice", params: { productId: "p1", pricePercent: 80 } }).method,
+    "tycoon.salePrice",
+  );
+  assert.throws(
+    () => parseRequest({ kind: "request", id: "sale", method: "tycoon.salePrice", params: { productId: "p1", pricePercent: 90 } }),
+    /Invalid protocol request/u,
+  );
+  assert.throws(
+    () => parseRequest({ kind: "request", id: "sale", method: "tycoon.salePrice", params: { productId: "p1" } }),
+    /Invalid protocol request/u,
+  );
+  assert.throws(
+    () => parseRequest({ kind: "request", id: "sale", method: "tycoon.salePrice", params: { productId: "p1", pricePercent: 80, extra: true } }),
+    /Invalid protocol request/u,
+  );
+  const source = readFileSync(new URL("../src/tycoon.ts", import.meta.url), "utf8");
+  const bodyStart = source.indexOf("salePrice(productId: string");
+  const body = source.slice(bodyStart, source.indexOf("makeTrailer(productId: string", bodyStart));
+  assert.equal(/fetch|https?:|Connect|credential|openrouter/iu.test(body), false);
+  assert.ok(body.includes("No product is selling."), "salePrice lives in the harness");
+  assert.ok(body.includes("A sale price was already set."), "a repeat fails clearly");
+  assert.ok(body.includes("Price is unchanged."), "the same percent fails clearly");
+  const ports = source.slice(source.indexOf("private payPorts"), source.indexOf("private payLocalizations"));
+  const translations = source.slice(source.indexOf("private payLocalizations"), source.indexOf("private assignedStaff"));
+  assert.equal(ports.includes("salePricePercent"), false);
+  assert.equal(translations.includes("salePricePercent"), false);
+  assert.ok(source.slice(source.indexOf("private applySale"), source.indexOf("private payPorts")).includes("stored.salePricePercent ?? stored.pricePercent"));
+
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  const offer = {
+    enabled: true,
+    used: false,
+    currentPercent: 100,
+    options: [...LAUNCH_PRICES],
+    reason: "",
+  };
+
+  const bare = await setup();
+  assert.throws(() => bare.db.tycoon.salePrice("p1", 80), /No product with that id\./u);
+  bare.db.close();
+
+  const bench = await setup();
+  bench.db.tycoon.start("crypto", "newsletter", []);
+  assert.equal(bench.db.tycoon.view().developing?.salePrice, null);
+  assert.throws(() => bench.db.tycoon.salePrice("p1", 80), /No product is selling\./u);
+  bench.db.close();
+
+  const skip = await setup();
+  skip.db.tycoon.start("crypto", "newsletter", []);
+  skip.db.endDay(1);
+  skip.db.endDay(2);
+  skip.db.tycoon.release("p1");
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.fans, 5);
+  assert.equal(skip.db.tycoon.view().history[0]?.salesCents, 20_700);
+  assert.deepEqual(skip.db.tycoon.view().history[0]?.salePrice, offer);
+  assert.equal(JSON.parse(staffJson(skip.db, "p1")).salePricePercent, undefined);
+  assert.throws(() => skip.db.tycoon.salePrice("p1", 100), /Price is unchanged\./u);
+  assert.throws(() => skip.db.tycoon.salePrice("p1", 90), /Pick −20%, catalog, or \+20%\./u);
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  assert.equal(JSON.parse(staffJson(skip.db, "p1")).salePricePercent, undefined);
+  skip.db.endDay(3);
+  skip.db.endDay(4);
+  assert.equal(skip.db.journey.state().company.cashCents, 33_300);
+  assert.equal(skip.db.tycoon.view().history[0]?.salesCents, 33_300);
+  skip.db.close();
+
+  const sold = await setup();
+  sold.db.tycoon.start("crypto", "newsletter", []);
+  sold.db.endDay(1);
+  sold.db.endDay(2);
+  sold.db.tycoon.release("p1");
+  const score = sold.db.tycoon.view().history[0]?.review?.score ?? 0;
+  assert.equal(score, 6);
+  const before = {
+    txs: txIds(sold.db),
+    day: sold.db.clockState().day,
+    cash: sold.db.journey.state().company.cashCents,
+    fans: sold.db.journey.state().company.reputation,
+    sales: sold.db.tycoon.view().history[0]?.salesCents,
+    seed: Number((sold.db.journey.db.prepare("SELECT seed FROM tycoon_meta WHERE id = 1").get() as { seed: number }).seed),
+  };
+  assert.equal(before.seed, 26021);
+  assert.equal(before.cash, 20_700);
+  assert.equal(before.fans, 5);
+  sold.db.tycoon.salePrice("p1", 80);
+  assert.throws(() => sold.db.tycoon.salePrice("p1", 120), /A sale price was already set\./u);
+  assert.throws(() => sold.db.tycoon.salePrice("p1", 80), /A sale price was already set\./u);
+  assert.throws(() => sold.db.tycoon.salePrice("p1", 90), /A sale price was already set\./u);
+  const changed = sold.db.tycoon.view().history[0];
+  assert.equal(changed?.pricePercent, 100);
+  assert.equal(changed?.priceCents, 900);
+  assert.equal(changed?.salesCents, 20_700);
+  assert.equal(changed?.fans, 5);
+  assert.deepEqual(changed?.salePrice, {
+    enabled: false,
+    used: true,
+    currentPercent: 80,
+    options: [...LAUNCH_PRICES],
+    reason: "A sale price was already set.",
+  });
+  assert.equal(sold.db.clockState().day, before.day);
+  assert.equal(sold.db.journey.state().company.cashCents, before.cash);
+  assert.equal(sold.db.journey.state().company.reputation, before.fans);
+  assert.equal(Number((sold.db.journey.db.prepare("SELECT seed FROM tycoon_meta WHERE id = 1").get() as { seed: number }).seed), before.seed);
+  assert.deepEqual(txIds(sold.db), before.txs);
+  assert.equal(salePriceRows(sold.db).length, 0);
+  assert.equal(JSON.parse(staffJson(sold.db, "p1")).salePricePercent, 80);
+  const posted = sold.db.journey.db.prepare("SELECT cash_delta FROM company_transactions WHERE id = 'tycoon:p1:0'").get() as { cash_delta: number };
+  assert.equal(posted.cash_delta, 20_700);
+  assert.equal(validate(sold.db.journey.state()), true, JSON.stringify(validate.errors));
+  sold.db.endDay(3);
+  assert.equal(sold.db.tycoon.view().history[0]?.salesCents, 20_700, "the day already sold stays at the launch percent");
+  const catalogDay = salesForDay({
+    seed: 26021, productId: "p1", typeId: "newsletter", fit: "great", score, dayIndex: 1, reputation: before.fans, pricePercent: 100,
+  });
+  const pricedDay = salesForDay({
+    seed: 26021, productId: "p1", typeId: "newsletter", fit: "great", score, dayIndex: 1, reputation: before.fans, pricePercent: 80,
+  });
+  assert.notEqual(pricedDay.cents, catalogDay.cents);
+  sold.db.endDay(4);
+  const later = sold.db.tycoon.view().history[0];
+  assert.equal((later?.salesCents ?? 0) - 20_700, pricedDay.cents);
+  assert.equal((later?.fans ?? 0) - 5, pricedDay.fans);
+  const next = sold.db.journey.db.prepare("SELECT cash_delta, reputation_delta FROM company_transactions WHERE id = 'tycoon:p1:1'").get() as { cash_delta: number; reputation_delta: number };
+  assert.equal(next.cash_delta, pricedDay.cents);
+  assert.equal(next.reputation_delta, pricedDay.fans);
+  assert.equal((sold.db.journey.db.prepare("SELECT cash_delta FROM company_transactions WHERE id = 'tycoon:p1:0'").get() as { cash_delta: number }).cash_delta, 20_700);
+  let reputation = before.fans + pricedDay.fans;
+  let salesCents = 20_700 + pricedDay.cents;
+  for (const dayIndex of [2, 3]) {
+    const day = salesForDay({
+      seed: 26021, productId: "p1", typeId: "newsletter", fit: "great", score, dayIndex, reputation, pricePercent: 80,
+    });
+    sold.db.endDay(sold.db.clockState().day);
+    salesCents += day.cents;
+    reputation += day.fans;
+  }
+  assert.equal(sold.db.tycoon.view().history[0]?.status, "complete");
+  assert.equal(sold.db.tycoon.view().history[0]?.salesCents, salesCents);
+  assert.equal(sold.db.tycoon.view().history[0]?.fans, reputation);
+  assert.equal(sold.db.tycoon.view().history[0]?.salePrice, null);
+  assert.equal(JSON.parse(staffJson(sold.db, "p1")).salePricePercent, 80);
+  assert.throws(() => sold.db.tycoon.salePrice("p1", 120), /No product is selling\./u);
+  const finishedSales = sold.db.tycoon.view().history[0]?.salesCents ?? 0;
+  sold.db.tycoon.port("p1");
+  const atLaunch = expectedPortSale(sold.db, "p1", sold.db.clockState().day, score);
+  const atSale = salesForDay({
+    seed: 26021,
+    productId: "p1",
+    typeId: "newsletter",
+    fit: "great",
+    score,
+    dayIndex: SALES_WINDOW_DAYS,
+    reputation: sold.db.journey.state().company.reputation,
+    pricePercent: 80,
+  });
+  assert.notEqual(atLaunch.cents, atSale.cents);
+  sold.db.endDay(sold.db.clockState().day);
+  assert.equal(productById(sold.db, "p1")?.port?.cents, atLaunch.cents);
+  assert.equal(productById(sold.db, "p1")?.salesCents, finishedSales + atLaunch.cents);
+  assert.equal((sold.db.journey.db.prepare("SELECT cash_delta FROM company_transactions WHERE id = 'tycoon:p1:0'").get() as { cash_delta: number }).cash_delta, 20_700);
+  sold.db.close();
+
+  const cheap = await setup();
+  cheap.db.tycoon.start("crypto", "newsletter", [], 80);
+  cheap.db.endDay(1);
+  cheap.db.endDay(2);
+  cheap.db.tycoon.release("p1");
+  const cheapSales = cheap.db.tycoon.view().history[0]?.salesCents;
+  assert.throws(() => cheap.db.tycoon.salePrice("p1", 80), /Price is unchanged\./u);
+  cheap.db.tycoon.salePrice("p1", 100);
+  assert.equal(cheap.db.tycoon.view().history[0]?.pricePercent, 80);
+  assert.equal(cheap.db.tycoon.view().history[0]?.salePrice?.currentPercent, 100);
+  assert.equal(cheap.db.tycoon.view().history[0]?.salesCents, cheapSales);
+  assert.equal(JSON.parse(staffJson(cheap.db, "p1")).pricePercent, 80);
+  assert.equal(JSON.parse(staffJson(cheap.db, "p1")).salePricePercent, 100);
+  cheap.db.close();
+
+  const reopen = await setup();
+  reopen.db.tycoon.start("crypto", "newsletter", []);
+  reopen.db.endDay(1);
+  reopen.db.endDay(2);
+  reopen.db.tycoon.release("p1");
+  const untouched = staffJson(reopen.db, "p1");
+  reopen.db.tycoon.view();
+  assert.equal(staffJson(reopen.db, "p1"), untouched);
+  assert.equal(JSON.parse(untouched).salePricePercent, undefined);
+  reopen.db.tycoon.salePrice("p1", 80);
+  const pending = reopen.db.tycoon.view().history[0]?.salePrice;
+  const pendingStaff = staffJson(reopen.db, "p1");
+  const file = join(reopen.root, "game.sqlite");
+  const project = join(reopen.root, "company-project");
+  reopen.db.close();
+  const reopened = new GameDatabase(file, project);
+  assert.deepEqual(reopened.tycoon.view().history[0]?.salePrice, pending);
+  assert.equal(staffJson(reopened, "p1"), pendingStaff);
+  assert.equal(reopened.journey.state().company.cashCents, 20_700);
+  assert.equal(reopened.tycoon.view().history[0]?.salesCents, 20_700);
+  assert.throws(() => reopened.tycoon.salePrice("p1", 120), /A sale price was already set\./u);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.endDay(3);
+  reopened.endDay(4);
+  const resumed = salesForDay({
+    seed: 26021, productId: "p1", typeId: "newsletter", fit: "great", score: 6, dayIndex: 1, reputation: 5, pricePercent: 80,
+  });
+  assert.equal((reopened.tycoon.view().history[0]?.salesCents ?? 0) - 20_700, resumed.cents);
+  reopened.close();
+
+  const legacy = await setup();
+  legacy.db.tycoon.start("crypto", "newsletter", []);
+  legacy.db.endDay(1);
+  legacy.db.endDay(2);
+  legacy.db.tycoon.release("p1");
+  legacy.db.journey.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = 'p1'").run(JSON.stringify(["founder"]));
+  assert.deepEqual(legacy.db.tycoon.view().history[0]?.salePrice, offer);
+  assert.equal(staffJson(legacy.db, "p1"), JSON.stringify(["founder"]));
+  legacy.db.close();
+});
+
 function txIds(db: GameDatabase): string[] {
   return (db.journey.db.prepare("SELECT id FROM company_transactions ORDER BY id").all() as Array<{ id: string }>).map((row) => row.id);
 }
@@ -7334,6 +7557,10 @@ function teamRows(db: GameDatabase) {
 
 function spikeRows(db: GameDatabase) {
   return db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:spike%' OR id LIKE 'tycoon:researchSpike%'").all();
+}
+
+function salePriceRows(db: GameDatabase) {
+  return db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:saleprice%' OR id LIKE 'tycoon:salePrice%'").all();
 }
 
 function finishSales(db: GameDatabase): void {

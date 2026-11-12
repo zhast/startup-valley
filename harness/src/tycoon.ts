@@ -557,6 +557,11 @@ export interface TycoonProductView {
    * Null once the product has shipped. A payload without it draws no control.
    */
   researchSpike: TycoonResearchSpike | null;
+  /**
+   * While the product is selling, the one optional price change for the days still ahead.
+   * Null on the bench and after the window. A payload without it draws no control.
+   */
+  salePrice: TycoonSalePrice | null;
 }
 
 export interface TycoonUpgradeView {
@@ -895,6 +900,18 @@ export interface TycoonResearchSpike {
   used: boolean;
   reason: string;
   points: number;
+}
+
+/**
+ * One price change while the product is selling.
+ * `currentPercent` is what the days still ahead use. `options` are the launch-price rows.
+ */
+export interface TycoonSalePrice {
+  enabled: boolean;
+  used: boolean;
+  currentPercent: LaunchPricePercent;
+  options: LaunchPriceStep[];
+  reason: string;
 }
 
 export interface TycoonSnapshot {
@@ -1545,6 +1562,8 @@ interface ProductSnapshot {
   researchSpike: "pending" | "used" | null;
   /** Personal craft converted on the spike day. 0 omits the key. */
   researchSpikePoints: number;
+  /** Null until the one sale-price change. Remaining sales days use this percent. */
+  salePricePercent: LaunchPricePercent | null;
 }
 
 interface ProductPort {
@@ -1605,6 +1624,7 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     pivoted: false,
     researchSpike: null,
     researchSpikePoints: 0,
+    salePricePercent: null,
   };
 }
 
@@ -1612,7 +1632,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, no rival cut, no feature, an even day plan, no stored bugs, not fixing, not crunching, 0 crunch bugs, not an early ship, not holding the next day, not pivoted, and not on a research spike. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, no rival cut, no feature, an even day plan, no stored bugs, not fixing, not crunching, 0 crunch bugs, not an early ship, not holding the next day, not pivoted, not on a research spike, and no sale price. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -1655,6 +1675,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     pivoted?: unknown;
     researchSpike?: unknown;
     researchSpikePoints?: unknown;
+    salePricePercent?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -1692,7 +1713,13 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     pivoted: body.pivoted === true,
     researchSpike: parseResearchSpike(body.researchSpike),
     researchSpikePoints: parseResearchSpikePoints(body.researchSpikePoints),
+    salePricePercent: parseSalePricePercent(body.salePricePercent),
   };
+}
+
+function parseSalePricePercent(value: unknown): LaunchPricePercent | null {
+  const amount = Number(value);
+  return isLaunchPricePercent(amount) ? amount : null;
 }
 
 function parseResearchSpike(value: unknown): "pending" | "used" | null {
@@ -1888,6 +1915,7 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
   if (stored.pivoted) body.pivoted = true;
   if (stored.researchSpike) body.researchSpike = stored.researchSpike;
   if (stored.researchSpikePoints > 0) body.researchSpikePoints = stored.researchSpikePoints;
+  if (stored.salePricePercent !== null) body.salePricePercent = stored.salePricePercent;
   return JSON.stringify(body);
 }
 
@@ -2761,6 +2789,28 @@ export class TycoonStore {
     });
   }
 
+  /**
+   * One price change on a product that is still selling.
+   * The days still ahead use the new percent. Posted days stay.
+   * Calling it again fails. No cash row and no clock move.
+   */
+  salePrice(productId: string, pricePercentValue: number): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.row(productId);
+      if (!row) throw new Error("No product with that id.");
+      if (row.status !== "released" || Number(row.sales_applied) >= SALES_WINDOW_DAYS) {
+        throw new Error("No product is selling.");
+      }
+      const stored = parseProductSnapshot(row.staff_json);
+      if (stored.salePricePercent !== null) throw new Error("A sale price was already set.");
+      if (!isLaunchPricePercent(pricePercentValue)) throw new Error("Pick −20%, catalog, or +20%.");
+      if (pricePercentValue === stored.pricePercent) throw new Error("Price is unchanged.");
+      stored.salePricePercent = pricePercentValue;
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      return this.journey.state();
+    });
+  }
+
   /** One trailer for a product that is selling. The fee row also grants the fans. No office day is spent. */
   makeTrailer(productId: string): ReturnType<JourneyStore["state"]> {
     return this.journey.transaction(() => {
@@ -2975,6 +3025,7 @@ export class TycoonStore {
         pivoted: false,
         researchSpike: null,
         researchSpikePoints: 0,
+        salePricePercent: null,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -3325,7 +3376,7 @@ export class TycoonStore {
       score: patchedScore(review.score, stored.patched),
       dayIndex: applied,
       reputation,
-      pricePercent: stored.pricePercent,
+      pricePercent: stored.salePricePercent ?? stored.pricePercent,
       marketing: stored.marketing,
       audience: stored.audience ?? "everyone",
       topicMatch: this.topicHasPastRelease(topicId, row.id),
@@ -3892,6 +3943,21 @@ export class TycoonStore {
       playtest: this.playtestView(row, snapshot),
       team: this.teamView(row, snapshot),
       researchSpike: this.researchSpikeView(row.status, snapshot),
+      salePrice: this.salePriceView(row, snapshot),
+    };
+  }
+
+  /** One price change while the product is still selling. Hidden on the bench and after the window. */
+  private salePriceView(row: ProductRow, snapshot: ProductSnapshot): TycoonSalePrice | null {
+    const selling = row.status === "released" && Number(row.sales_applied) < SALES_WINDOW_DAYS;
+    if (!selling) return null;
+    const used = snapshot.salePricePercent !== null;
+    return {
+      enabled: !used,
+      used,
+      currentPercent: snapshot.salePricePercent ?? snapshot.pricePercent,
+      options: [...LAUNCH_PRICES],
+      reason: used ? "A sale price was already set." : "",
     };
   }
 

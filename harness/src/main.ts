@@ -208,6 +208,11 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
       return { journey: database.tycoon.assignTeam(staffParameter(request)), dailySpend: database.dailySpend() };
     case "tycoon.researchSpike":
       return { journey: database.tycoon.researchSpike(), dailySpend: database.dailySpend() };
+    case "tycoon.salePrice":
+      return {
+        journey: database.tycoon.salePrice(stringParameter(request, "productId", 32), numberParameter(request, "pricePercent")),
+        dailySpend: database.dailySpend(),
+      };
     case "tycoon.makeTrailer":
       return { journey: database.tycoon.makeTrailer(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
     case "tycoon.writeDiary":
