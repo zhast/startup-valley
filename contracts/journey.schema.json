@@ -305,6 +305,7 @@
         "fits": { "type": "array", "maxItems": 60, "items": { "$ref": "#/$defs/tycoonFit" } },
         "staff": { "type": "array", "maxItems": 4, "items": { "$ref": "#/$defs/tycoonStaff" } },
         "trainingNotice": { "type": "string" },
+        "letGoNotice": { "type": "string" },
         "researchPoints": { "type": "integer", "minimum": 0 },
         "researchNotice": { "type": "string" },
         "upgradeNotice": { "type": "string" },
@@ -540,7 +541,8 @@
         "hype": { "type": "integer", "minimum": 0, "maximum": 10 },
         "hired": { "type": "boolean" },
         "trainedToday": { "type": "boolean" },
-        "training": { "$ref": "#/$defs/tycoonTraining" }
+        "training": { "$ref": "#/$defs/tycoonTraining" },
+        "letGo": { "$ref": "#/$defs/tycoonLetGo" }
       }
     },
     "tycoonTraining": {
@@ -551,6 +553,15 @@
         "design": { "$ref": "#/$defs/tycoonTrainOffer" },
         "tech": { "$ref": "#/$defs/tycoonTrainOffer" },
         "hype": { "$ref": "#/$defs/tycoonTrainOffer" }
+      }
+    },
+    "tycoonLetGo": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "reason"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "reason": { "type": "string" }
       }
     },
     "tycoonTrainOffer": {

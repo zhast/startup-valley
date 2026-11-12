@@ -429,6 +429,11 @@ export interface TrainOffer {
   enabled: boolean;
 }
 
+export interface LetGoOffer {
+  enabled: boolean;
+  reason: string;
+}
+
 export interface TycoonStaffView {
   id: StaffId;
   name: string;
@@ -438,6 +443,7 @@ export interface TycoonStaffView {
   hired: boolean;
   trainedToday: boolean;
   training: { design: TrainOffer; tech: TrainOffer; hype: TrainOffer };
+  letGo: LetGoOffer;
 }
 
 interface StaffState extends CraftPoints {
@@ -922,6 +928,7 @@ export interface TycoonSnapshot {
   fits: Array<{ topicId: TopicId; typeId: ProductTypeId; fit: Fit; researchBonus: number }>;
   staff: TycoonStaffView[];
   trainingNotice: string;
+  letGoNotice: string;
   researchPoints: number;
   researchNotice: string;
   upgradeNotice: string;
@@ -2227,6 +2234,7 @@ export class TycoonStore {
 
   view(): TycoonSnapshot {
     const hired = this.hiredIds();
+    const dismissed = this.dismissedIds();
     const developing = this.developingRow();
     const history = (this.db.prepare(`
       SELECT * FROM tycoon_products WHERE status != 'developing'
@@ -2272,9 +2280,11 @@ export class TycoonStore {
             tech: this.trainOffer(current.tech, isHired, trainedToday, cash),
             hype: this.trainOffer(current.hype, isHired, trainedToday, cash),
           },
+          letGo: this.letGoOffer(person.id, person.name, isHired, dismissed.has(person.id)),
         };
       }),
       trainingNotice: this.trainingNoticeDay === day ? this.trainingNotice : "",
+      letGoNotice: this.letGoNotice(dismissed),
       researchPoints: research.points,
       researchNotice: this.researchNoticeDay === day ? this.researchNotice : "",
       upgradeNotice: this.upgradeNoticeDay === day ? this.upgradeNotice : "",
@@ -2737,6 +2747,34 @@ export class TycoonStore {
         id, design: stats[id].design, tech: stats[id].tech, hype: stats[id].hype,
       });
       this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      return this.journey.state();
+    });
+  }
+
+  /**
+   * Dismiss one hired teammate. The founder stays. They leave the company.
+   * A build in development that listed them drops them. Days, points, and
+   * sales already earned stay. Later days use whoever remains. Payroll no
+   * longer includes them. No fee, no ledger row, no clock move.
+   * Hiring them again is the usual hire.
+   */
+  letGo(staffId: string): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const person = STAFF.find((member) => member.id === staffId);
+      if (!person) throw new Error("Unknown teammate");
+      if (person.id === "founder") throw new Error("The founder stays.");
+      const status = this.employmentStatus(person.id);
+      if (status === "dismissed") throw new Error(`${person.name} already left.`);
+      if (status !== "hired") throw new Error(`${person.name} is not on the team yet.`);
+      this.db.prepare("UPDATE employees SET employment_status = 'dismissed' WHERE id = ?").run(person.id);
+      const row = this.developingRow();
+      if (row) {
+        const stored = parseProductSnapshot(row.staff_json);
+        if (stored.staff.some((member) => member.id === person.id)) {
+          stored.staff = stored.staff.filter((member) => member.id !== person.id);
+          this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+        }
+      }
       return this.journey.state();
     });
   }
@@ -3519,6 +3557,27 @@ export class TycoonStore {
   private hiredIds(): Set<string> {
     const rows = this.db.prepare("SELECT id FROM employees WHERE employment_status = 'hired'").all() as unknown as Array<{ id: string }>;
     return new Set(rows.map((row) => row.id));
+  }
+
+  private dismissedIds(): Set<string> {
+    const rows = this.db.prepare("SELECT id FROM employees WHERE employment_status = 'dismissed'").all() as unknown as Array<{ id: string }>;
+    return new Set(rows.map((row) => row.id));
+  }
+
+  private employmentStatus(id: string): string | null {
+    const row = this.db.prepare("SELECT employment_status FROM employees WHERE id = ?").get(id) as { employment_status: string } | undefined;
+    return row?.employment_status ?? null;
+  }
+
+  private letGoOffer(id: StaffId, name: string, hired: boolean, dismissed: boolean): LetGoOffer {
+    if (id === "founder") return { enabled: false, reason: "The founder stays." };
+    if (dismissed) return { enabled: false, reason: `${name} already left.` };
+    if (!hired) return { enabled: false, reason: `${name} is not on the team yet.` };
+    return { enabled: true, reason: "" };
+  }
+
+  private letGoNotice(dismissed: ReadonlySet<string>): string {
+    return STAFF.filter((person) => dismissed.has(person.id)).map((person) => `${person.name} left the company.`).join(" ");
   }
 
   private cashCents(): number {
