@@ -410,6 +410,7 @@ func _run() -> void:
 	await _slip_proof()
 	await _pivot_proof()
 	await _playtest_proof()
+	await _assign_team_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -1955,6 +1956,92 @@ func _playtest_proof() -> void:
 	check(playtest_block is Dictionary and str((playtest_block as Dictionary).get("band", "")) == "mid", "The payload band stays mid")
 	check(not main.job_panel._connection_panel.visible, "The playtest result never opens Connect")
 	await snap("77-playtest-result", line)
+
+func seed_team_offer(data_dir: String) -> bool:
+	var database := ProjectSettings.globalize_path("res://../harness/src/database.ts")
+	var tsx := ProjectSettings.globalize_path("res://../harness/node_modules/tsx/dist/cli.mjs")
+	var node := OS.get_environment("STARTUP_VALLEY_NODE").strip_edges()
+	if node.is_empty():
+		for dir: String in OS.get_environment("PATH").split(":"):
+			if FileAccess.file_exists(dir.path_join("node")):
+				node = dir.path_join("node")
+				break
+	if node.is_empty():
+		node = "/home/box/.local/node22/bin/node"
+	var script_path := data_dir.path_join("seed-team.mjs")
+	var script := "import { mkdirSync } from 'node:fs';\nimport { DatabaseSync } from 'node:sqlite';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst file = root + '/startup-valley.sqlite';\nlet db = new GameDatabase(file, root + '/company-project');\ndb.journey.hire('mira', 1);\ndb.close();\nconst sql = new DatabaseSync(file);\nsql.prepare(\"UPDATE milestone_progress SET completed = 1 WHERE id = 'website'\").run();\nsql.close();\ndb = new GameDatabase(file, root + '/company-project');\ndb.tycoon.start('crypto', 'newsletter', []);\nconst view = db.tycoon.view().developing;\nconst company = db.journey.state().company;\ndb.close();\nconst team = view && view.team;\nif (company.cashCents !== 0 || company.reputation !== 0 || !view || view.devDays !== 0 || !team || team.enabled !== true || team.reason !== '' || !team.members || team.members.length !== 2 || team.members[0].id !== 'founder' || team.members[0].onTeam !== true || team.members[1].id !== 'mira' || team.members[1].onTeam !== false) { console.error(JSON.stringify({ company: company, view: view })); process.exit(2); }\n" % JSON.stringify(database)
+	var file := FileAccess.open(script_path, FileAccess.WRITE)
+	if file == null:
+		check(false, "Could not write the team seed script")
+		return false
+	file.store_string(script)
+	file.close()
+	var output: Array = []
+	var code := OS.execute(node, PackedStringArray([tsx, script_path, data_dir]), output, true)
+	check(code == 0, "Seeded a newsletter with Mina hired and Founder on the team (%s)" % " ".join(output))
+	return code == 0
+
+func _assign_team_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-team-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_team_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var line := label_named("TeamOffer")
+	var card := main.company_panel.find_child("PublisherCard", true, false) as Control
+	var founder := main.company_panel.find_child("Team_founder", true, false) as Button
+	var mina := main.company_panel.find_child("Team_mira", true, false) as Button
+	var playtest := label_named("PlaytestOffer")
+	check(card != null and line != null and founder != null and mina != null and card.is_ancestor_of(line) and card.is_ancestor_of(founder) and line.text == "Team: Founder", "The journey card names the team")
+	check(not founder.disabled and str(founder.get_meta("cozy_variant", "")) == "secondary" and founder.text == "Founder", "Founder is a secondary button")
+	check(not mina.disabled and str(mina.get_meta("cozy_variant", "")) == "secondary" and mina.text == "Mina", "Mina is a secondary button")
+	var hire := button_named("Hire Theo")
+	check(hire != null and str(hire.get_meta("cozy_variant", "")) == "primary", "Hire Theo stays the one primary action beside the team")
+	await reveal(line)
+	var footer := main.company_panel._footer
+	var new_product := button_named("New Product")
+	check(playtest != null and playtest.get_global_rect().end.y <= line.get_global_rect().position.y + 1.0, "Team sits under Playtest")
+	check(absf(line.get_global_rect().position.y - founder.get_global_rect().position.y) < 48.0, "The team line sits with Founder")
+	check(new_product != null and founder.get_global_rect().end.y <= new_product.get_global_rect().position.y, "Team sits above New Product")
+	check(footer != null and founder.get_global_rect().end.y <= footer.get_global_rect().position.y and not founder.get_global_rect().intersects(footer.get_global_rect()) and not line.get_global_rect().intersects(footer.get_global_rect()), "Team does not overlap Hire")
+	check(line.get_line_count() == 1, "The team line stays on one line")
+	check(company_cash() == 0 and company_reputation() == 0 and int(developing().get("devDays", -1)) == 0, "The team offer has not spent cash")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at $0 and 0 reputation")
+	check(not main.job_panel._connection_panel.visible, "Team never opens Connect")
+	await snap("78-team-offer", line)
+	await click(mina)
+	var shown := await wait_until(func() -> bool:
+		return not main.company_panel.busy and label_named("TeamOffer") != null and label_named("TeamOffer").text == "Team: Founder, Mina"
+	, "Mina joins the team")
+	if not shown:
+		return
+	line = label_named("TeamOffer")
+	founder = main.company_panel.find_child("Team_founder", true, false) as Button
+	mina = main.company_panel.find_child("Team_mira", true, false) as Button
+	await reveal(line)
+	new_product = button_named("New Product")
+	footer = main.company_panel._footer
+	check(founder != null and str(founder.get_meta("cozy_variant", "")) == "secondary", "Founder stays secondary after the change")
+	check(mina != null and str(mina.get_meta("cozy_variant", "")) == "secondary", "Mina stays secondary after the change")
+	check(new_product != null and line.get_global_rect().end.y <= new_product.get_global_rect().position.y, "The changed team line sits above New Product")
+	check(footer != null and line.get_global_rect().end.y <= footer.get_global_rect().position.y and not line.get_global_rect().intersects(footer.get_global_rect()) and not mina.get_global_rect().intersects(footer.get_global_rect()), "The changed team line does not overlap Hire")
+	check(line.get_line_count() == 1, "The changed team line stays on one line")
+	check(company_cash() == 0 and company_reputation() == 0 and int(developing().get("devDays", -1)) == 0, "Assigning the team changes no cash or day")
+	var team_block: Variant = developing().get("team", null)
+	check(team_block is Dictionary and bool((team_block as Dictionary).get("enabled", false)), "The payload team stays enabled")
+	check(not main.job_panel._connection_panel.visible, "The changed team never opens Connect")
+	await snap("79-team-changed", line)
 
 func _proof_money(cents: int) -> String:
 	var integer := str(absi(cents) / 100)

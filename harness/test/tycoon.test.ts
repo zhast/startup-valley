@@ -6910,6 +6910,181 @@ test("playtest reports the current review band and changes nothing", async () =>
   dropped.db.close();
 });
 
+test("assignTeam changes who crafts later days and keeps earned points", async () => {
+  assert.equal(parseRequest({ kind: "request", id: "team", method: "tycoon.assignTeam", params: { staffIds: ["founder"] } }).method, "tycoon.assignTeam");
+  assert.throws(() => parseRequest({ kind: "request", id: "team", method: "tycoon.assignTeam", params: {} }), /Invalid protocol request/u);
+  assert.throws(() => parseRequest({ kind: "request", id: "team", method: "tycoon.assignTeam", params: { staffIds: ["founder"], extra: true } }), /Invalid protocol request/u);
+  assert.throws(() => parseRequest({ kind: "request", id: "team", method: "tycoon.assignTeam", params: { staffIds: ["nope"] } }), /Invalid protocol request/u);
+  const source = readFileSync(new URL("../src/tycoon.ts", import.meta.url), "utf8");
+  const bodyStart = source.indexOf("assignTeam(requestedStaff");
+  const body = source.slice(bodyStart, source.indexOf("addFeature():", bodyStart));
+  assert.equal(/fetch|https?:|Connect|credential|openrouter/iu.test(body), false);
+  assert.ok(body.includes("No product is on the bench."), "assignTeam lives in the harness");
+  assert.ok(source.includes("Pick at least one teammate."), "empty team fails clearly");
+
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  const founderOnly = {
+    enabled: true,
+    members: [{ id: "founder", name: "Founder", onTeam: true }],
+    reason: "",
+  };
+
+  const bare = await setup();
+  assert.throws(() => bare.db.tycoon.assignTeam(["founder"]), /No product is on the bench\./u);
+  bare.db.close();
+
+  const empty = await setup();
+  empty.db.tycoon.start("crypto", "newsletter", []);
+  assert.throws(() => empty.db.tycoon.assignTeam([]), /Pick at least one teammate\./u);
+  assert.deepEqual(empty.db.tycoon.view().developing?.staffIds, ["founder"]);
+  empty.db.close();
+
+  const unknown = await setup();
+  unknown.db.tycoon.start("crypto", "newsletter", []);
+  assert.throws(() => unknown.db.tycoon.assignTeam(["nope"]), /Unknown teammate/u);
+  unknown.db.close();
+
+  const unhired = await setup();
+  unhired.db.tycoon.start("crypto", "newsletter", []);
+  assert.throws(() => unhired.db.tycoon.assignTeam(["mira"]), /not on the team/u);
+  unhired.db.close();
+
+  const skip = await setup();
+  skip.db.tycoon.start("crypto", "newsletter", []);
+  assert.deepEqual(skip.db.tycoon.view().developing?.team, founderOnly);
+  skip.db.endDay(1);
+  skip.db.endDay(2);
+  skip.db.tycoon.release("p1");
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.fans, 5);
+  assert.equal(skip.db.tycoon.view().history[0]?.salesCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.team, null);
+  skip.db.endDay(3);
+  skip.db.endDay(4);
+  assert.equal(skip.db.journey.state().company.cashCents, 33_300);
+  assert.throws(() => skip.db.tycoon.assignTeam(["founder"]), /No product is on the bench\./u);
+  skip.db.close();
+
+  const kept = await setup();
+  kept.db.tycoon.start("crypto", "newsletter", []);
+  kept.db.endDay(1);
+  assert.equal(kept.db.tycoon.view().developing?.design, 2);
+  assert.equal(kept.db.tycoon.view().developing?.tech, 2);
+  assert.equal(kept.db.tycoon.view().developing?.hype, 2);
+  const before = {
+    staff: staffJson(kept.db, "p1"),
+    txs: txIds(kept.db),
+    day: kept.db.clockState().day,
+    cash: kept.db.journey.state().company.cashCents,
+    fans: kept.db.journey.state().company.reputation,
+    seed: Number((kept.db.journey.db.prepare("SELECT seed FROM tycoon_meta WHERE id = 1").get() as { seed: number }).seed),
+  };
+  kept.db.tycoon.assignTeam(["founder"]);
+  kept.db.tycoon.assignTeam(["founder"]);
+  assert.equal(staffJson(kept.db, "p1"), before.staff);
+  assert.deepEqual(txIds(kept.db), before.txs);
+  assert.equal(kept.db.clockState().day, before.day);
+  assert.equal(kept.db.journey.state().company.cashCents, before.cash);
+  assert.equal(kept.db.journey.state().company.reputation, before.fans);
+  assert.equal(kept.db.tycoon.view().developing?.design, 2);
+  assert.equal(kept.db.tycoon.view().developing?.devDays, 1);
+  assert.equal(Number((kept.db.journey.db.prepare("SELECT seed FROM tycoon_meta WHERE id = 1").get() as { seed: number }).seed), before.seed);
+  assert.equal(teamRows(kept.db).length, 0);
+  kept.db.journey.hire("mira", 1);
+  kept.db.tycoon.assignTeam(["founder", "mira"]);
+  kept.db.tycoon.assignTeam(["mira", "founder"]);
+  assert.deepEqual(kept.db.tycoon.view().developing?.staffIds, ["founder", "mira"]);
+  assert.equal(kept.db.tycoon.view().developing?.design, 2);
+  assert.equal(kept.db.tycoon.view().developing?.devDays, 1);
+  assert.equal(kept.db.clockState().day, before.day);
+  assert.equal(kept.db.journey.state().company.cashCents, before.cash);
+  assert.deepEqual(txIds(kept.db).filter((id) => id.startsWith("tycoon:")), before.txs.filter((id) => id.startsWith("tycoon:")));
+  assert.equal(teamRows(kept.db).length, 0);
+  kept.db.endDay(2);
+  assert.equal(kept.db.tycoon.view().developing?.devDays, 2);
+  assert.equal(kept.db.tycoon.view().developing?.design, 7);
+  assert.equal(kept.db.tycoon.view().developing?.tech, 6);
+  assert.equal(kept.db.tycoon.view().developing?.hype, 5);
+  const withMina = kept.db.tycoon.view().developing?.team;
+  assert.equal(withMina?.enabled, true);
+  assert.equal(withMina?.reason, "");
+  assert.deepEqual(withMina?.members, [
+    { id: "founder", name: "Founder", onTeam: true },
+    { id: "mira", name: "Mina", onTeam: true },
+  ]);
+  assert.equal(validate(kept.db.journey.state()), true, JSON.stringify(validate.errors));
+  kept.db.close();
+
+  const hired = await setup();
+  hired.db.tycoon.start("crypto", "newsletter", []);
+  hired.db.endDay(1);
+  hired.db.journey.hire("mira", 1);
+  assert.deepEqual(hired.db.tycoon.view().developing?.team?.members, [
+    { id: "founder", name: "Founder", onTeam: true },
+    { id: "mira", name: "Mina", onTeam: false },
+  ]);
+  hired.db.tycoon.assignTeam(["mira"]);
+  assert.deepEqual(hired.db.tycoon.view().developing?.staffIds, ["mira"]);
+  assert.equal(hired.db.tycoon.view().developing?.design, 2);
+  hired.db.endDay(2);
+  assert.equal(hired.db.tycoon.view().developing?.design, 5);
+  assert.equal(hired.db.tycoon.view().developing?.tech, 4);
+  assert.equal(hired.db.tycoon.view().developing?.hype, 3);
+  hired.db.close();
+
+  const trained = await setup();
+  trained.db.journey.hire("mira", 1);
+  trained.db.journey.recordCompanyChange("train-cash", 1, 45_000, 0, 0, "Train cash");
+  trained.db.tycoon.start("crypto", "newsletter", ["mira"]);
+  const startedStaff = JSON.parse(staffJson(trained.db, "p1")) as { staff: Array<{ id: string; design: number }> };
+  assert.equal(startedStaff.staff.find((person) => person.id === "mira")?.design, 3);
+  trained.db.tycoon.train("mira", "design");
+  trained.db.tycoon.assignTeam(["founder", "mira"]);
+  trained.db.endDay(1);
+  assert.equal(trained.db.tycoon.view().developing?.design, 2, "training still zeroes Mina that day");
+  assert.equal(JSON.parse(staffJson(trained.db, "p1")).staff.find((person: { id: string }) => person.id === "mira").design, 3);
+  trained.db.endDay(2);
+  assert.equal(trained.db.tycoon.view().developing?.design, 7, "the stored snapshot still crafts, not the lesson");
+  trained.db.close();
+
+  const fresh = await setup();
+  fresh.db.tycoon.start("crypto", "newsletter", []);
+  const freshStaff = staffJson(fresh.db, "p1");
+  fresh.db.tycoon.view();
+  assert.equal(staffJson(fresh.db, "p1"), freshStaff);
+  assert.equal(JSON.parse(freshStaff).team, undefined);
+  assert.deepEqual(fresh.db.tycoon.view().developing?.team, founderOnly);
+  const freshFile = join(fresh.root, "game.sqlite");
+  const freshProject = join(fresh.root, "company-project");
+  fresh.db.close();
+  const reopened = new GameDatabase(freshFile, freshProject);
+  assert.deepEqual(reopened.tycoon.view().developing?.team, founderOnly);
+  assert.equal(staffJson(reopened, "p1"), freshStaff);
+  reopened.journey.hire("mira", 1);
+  reopened.tycoon.assignTeam(["founder", "mira"]);
+  const assigned = reopened.tycoon.view().developing?.team;
+  const assignedStaff = staffJson(reopened, "p1");
+  assert.deepEqual(assigned?.members.map((person) => person.id), ["founder", "mira"]);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+  const again = new GameDatabase(freshFile, freshProject);
+  assert.deepEqual(again.tycoon.view().developing?.team, assigned);
+  assert.equal(staffJson(again, "p1"), assignedStaff);
+  again.endDay(1);
+  again.endDay(2);
+  again.tycoon.release("p1");
+  assert.equal(again.tycoon.view().history[0]?.team, null);
+  assert.throws(() => again.tycoon.assignTeam(["founder"]), /No product is on the bench\./u);
+  again.close();
+
+  const dropped = await setup();
+  dropped.db.tycoon.start("crypto", "newsletter", []);
+  dropped.db.tycoon.cancelBuild();
+  assert.throws(() => dropped.db.tycoon.assignTeam(["founder"]), /No product is on the bench\./u);
+  dropped.db.close();
+});
+
 function txIds(db: GameDatabase): string[] {
   return (db.journey.db.prepare("SELECT id FROM company_transactions ORDER BY id").all() as Array<{ id: string }>).map((row) => row.id);
 }
@@ -6948,6 +7123,10 @@ function pivotRows(db: GameDatabase) {
 
 function playtestRows(db: GameDatabase) {
   return db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:playtest%'").all();
+}
+
+function teamRows(db: GameDatabase) {
+  return db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:assign%' OR id LIKE 'tycoon:team%'").all();
 }
 
 function finishSales(db: GameDatabase): void {

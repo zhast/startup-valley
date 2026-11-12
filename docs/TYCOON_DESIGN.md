@@ -839,15 +839,35 @@ A founder newsletter after one even office day is low. After the second even day
 
 The control sits on the developing-product card, under Pivot and above New Product. The waiting line is "Playtest · Work one office day first." and it has no button. The offer line is "Playtest · see the likely review band." with one secondary button, Playtest. After the look the line is "Playtest: likely mid reviews", or low, or high, and the button stays. Hire stays the one primary action. Nothing orange except Hire.
 
+## Assign the team
+
+One optional change of who is on the product still on the bench. The staff list chosen at Start development is no longer frozen. Days already worked and the points already earned stay. Later office days use the new people, including someone hired after the build started. There is no fee and no ledger row. The click does not move the clock. Nothing on this path calls a model, the network, or a credential. The word stays Team.
+
+`tycoon.assignTeam` takes `{staffIds}`. With nothing on the bench, including after release or after a cancel, it fails with "No product is on the bench." An empty list fails with "Pick at least one teammate." An unknown id fails with "Unknown teammate". An unhired id fails with "Mina is not on the team yet." A bad payload fails with "Invalid protocol request". No cash, no ledger row, no clock move. Assigning the same set of people again is a no-op.
+
+Start development still always includes the founder. Assign the team does not. The founder can leave if someone else stays. Only hired people can be added. Duplicates count once.
+
+People already on the team keep the stats stored when they joined this build. A newly added person stores their current stats. Removing someone drops their snapshot. Adding them again stores the stats they have now. Later training still does not rewrite a stored snapshot.
+
+A person in training may stay on the team. That office day still zeroes their personal contribution, the same as today. They do not count toward tool or office bonuses that day.
+
+Skipping Assign the team leaves the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+
+The staff list lives in `staff_json` as it already does. There is no new SQL column and no new flag. Reads do not rewrite `staff_json`. A sequel starts from the people on that new build, the same as today.
+
+`team` on a developing product is `{ enabled, members, reason }`. `enabled` is true. `reason` is empty. `members` lists the founder and every hired person, each as `{id, name, onTeam}`. After the product ships, the field is null. A payload without `team` draws no control.
+
+The control sits on the developing-product card, under Playtest and above New Product. The line is "Team: Founder" or "Team: Founder, Mina", with one compact row of secondary toggle buttons, one per person. Selected people use the pressed secondary style. Hire stays the one primary action. Nothing orange except Hire.
+
 ## Roadmap
 
-Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, awards, ports, engines, focus, audience, size, payroll, loans, publishers, expos, localization, town days, press demos, launch trailers, dev diaries, rivals, features, day plans, bugs, crunch, early access, cancel the build, slip a day, pivot, and playtest. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Engine**, **Office**, and **Season** on Company Journey. Price, marketing, the engine choice, the focus, the audience, and the size live on the New Product picker. The rival warning lives on that picker when the selected topic matches. The engine buy lives on the Engine card. The award show, the port, the translation, and the diary live on the Shipped card. Payroll, the loan, the booth, the town day, and the rival line live on the Season card. The publisher deal, the press demo, the feature, the day plan, bugs, crunch, early access, cancel the build, slip a day, pivot, and playtest live on the card for the product in development. The launch trailer lives on the Selling card.
+Shipped in this slice: the fit table, office-day development, a deterministic review, a four-day sales curve, game cash, fans, a product history list, staff training, research points, a research fit bonus, the upgrades shop, the season calendar, office growth inside the current room, launch price, marketing, contracts, patches, sequels, awards, ports, engines, focus, audience, size, payroll, loans, publishers, expos, localization, town days, press demos, launch trailers, dev diaries, rivals, features, day plans, bugs, crunch, early access, cancel the build, slip a day, pivot, playtest, and assign the team. The entries are **New Product**, **Selling**, **Shipped**, **Contract**, **Train staff**, **Research**, **Upgrades**, **Engine**, **Office**, and **Season** on Company Journey. Price, marketing, the engine choice, the focus, the audience, and the size live on the New Product picker. The rival warning lives on that picker when the selected topic matches. The engine buy lives on the Engine card. The award show, the port, the translation, and the diary live on the Shipped card. Payroll, the loan, the booth, the town day, and the rival line live on the Season card. The publisher deal, the press demo, the feature, the day plan, bugs, crunch, early access, cancel the build, slip a day, pivot, playtest, and the team live on the card for the product in development. The launch trailer lives on the Selling card.
 
-Playtest was the previous next slice. It shipped: one optional look at the likely review band of the product still on the bench, after at least one office day. The look is free to repeat. The band is computed from the current points, the current fit, and the current type weights. It is not stored. No fee and no ledger row.
+Assign the team was the previous next slice. It shipped: one optional change of who is on the product still on the bench. Days already worked and the points already earned stay. Later office days use the new people, including someone hired after the build started. No fee and no ledger row.
 
 Next slice:
 
-1. **Assign the team.** One optional change of who is on the product still on the bench. The staff list is chosen at Start development and then frozen. This slice unfreezes it. Days already worked and the points already earned stay. Later office days use the new people, including someone hired after the build started. No fee, no ledger row, no new art. Skip it and the first Crypto Alpha Newsletter still lands at 20700 cents and 5 fans. A second room still waits on architecture art.
+1. **Research spike.** One optional office day on the product still on the bench. That day's personal craft becomes research points instead of design, tech, and hype. The day still counts. Points already earned stay. No fee, no ledger row, no new art. Skip it and the first Crypto Alpha Newsletter still lands at 20700 cents and 5 fans. A second room still waits on architecture art.
 
 Later art ask: a second room. Office growth shipped as spare desks on the current floor (`compact_desk` and `shared_workbench`, already bound). There is no second-room architecture art, so that room waits.
 
