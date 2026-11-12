@@ -2977,3 +2977,75 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Eighty-one PNGs in `/workspace/sv-proof/round-64/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-64 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey, on the card for the product in development. Research spike is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_research_spike.gd`.
+
+### Round 65 — 2026-11-12
+
+**What changed**
+- `tycoon.salePrice` takes `{ productId, pricePercent }`. The percent is 80, 100, or 120, the same options as the launch price picker, labeled −20%, Catalog, and +20%. With no product of that id, it fails with "No product with that id." With nothing selling, including a product on the bench or a product whose window is over, it fails with "No product is selling." A second request fails with "A sale price was already set." That repeat fails even when the new percent matches the sale, matches the launch percent, or is not a launch percent. An invalid percent on the first request fails with "Pick −20%, catalog, or +20%." The same percent as the launch price fails with "Price is unchanged." A bad or extra field fails earlier with "Invalid protocol request". No fee, no ledger row, no clock move. The command does not draw a new seed and does not recompute a day that already posted.
+- Once per product. Remaining days inside the four-day window use the new percent. Days already sold stay at the launch percent. The launch `pricePercent` and `priceCents` stay the launch choice. A port and a translation keep the launch percent. A sequel does not inherit a sale price. Skipping Sale price leaves the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- A selling product carries `salePrice: { enabled, used, currentPercent, options, reason }`. While it is offered, `enabled` is true and `currentPercent` is the launch percent. After the change, `enabled` is false, `used` is true, `currentPercent` is the new percent, and `reason` is "A sale price was already set." On the bench and after the window the field is null. `salePrice` is optional on the product schema, so older payloads still validate. A payload without `salePrice` draws no control. New payloads include it while the product is selling. The percent lives in `staff_json` as `salePricePercent`, omitted until it is set. There is no new SQL column.
+- The control sits on the Selling card, under the launch trailer line and above Patch. For a catalog newsletter the offer is "Sale price · $9.00 · remaining days", with a short secondary row of buttons for the percents that are not current. After −20% the line is "Sale price · −20% · $7.20" and the buttons are gone. Hire stays the one primary action. Nothing on this row is orange. The Selling journey panel stays 704×564. The sale price line and its buttons stay inside the scrollport.
+
+**Proof**
+- `/workspace/sv-proof/round-65/82-saleprice-offer.png` and `83-saleprice-set.png`, captured by the verify-startup-valley skill. PROOF PASS. Eighty-three PNGs. The offer header reads "Spring 3 · Year 1 · $207.00 game cash · 5 reputation". The line "Sale price · $9.00 · remaining days" is one readable line, with −20% and +20% as cream secondary buttons on the next row. Patch · $100 sits under those buttons. Hire Mina · free stays orange in the footer and does not cover the line. After the change the line is "Sale price · −20% · $7.20", the buttons are gone, Patch sits under it, the header is unchanged, and Hire does not cover it. Those lines are readable and do not overlap. Connect stays closed. The shots scroll the sale price line to the top of the journey so the trailer line is above the fold; the control itself is fully visible and not clipped.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Let someone go is the next slice. One optional dismissal of a hired teammate. They leave the company. A build that listed them drops them. Days and points already earned stay. Later days use whoever remains. The founder cannot be dismissed. Payroll no longer includes them. No fee, no ledger row, no new art. Skip it and the first Crypto Alpha Newsletter still lands at 20700 cents and 5 fans, and the next office day at 33300 cents. Hiring that person again is the usual hire, when the other gates still pass. A second room still waits on architecture art.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. The Selling card is one compact row plus a short button row taller when the sale price is offered. Shots 82 and 83 scroll the sale price line to the top, so the control sits above Patch and Hire does not cover it. The trailer, Patch, Sequel, award, and port stay on that same card.
+
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`). `test_tycoon_engines.gd` and `test_tycoon_dev_diary.gd` passed on this single gate run. No flake rerun was required.
+- `cd harness && npm run build && npm test` — 133 tests, 131 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test refuses nothing selling, a second change, and an invalid or unchanged percent. Remaining sales days use the new percent. The day already posted stays at the old percent. There is no ledger row. A skipped newsletter stays at 20700 cents and 5 fans, then 33300 cents. Reopen keeps the same `salePrice` block. The path never opens Connect.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS
+- `test_tycoon_localization.gd` — TYCOON LOCALIZATION PASS
+- `test_tycoon_town_day.gd` — TYCOON TOWN DAY PASS
+- `test_tycoon_press_demo.gd` — TYCOON PRESS DEMO PASS
+- `test_tycoon_launch_trailer.gd` — TYCOON LAUNCH TRAILER PASS
+- `test_tycoon_dev_diary.gd` — TYCOON DEV DIARY PASS
+- `test_tycoon_rivals.gd` — TYCOON RIVALS PASS
+- `test_tycoon_features.gd` — TYCOON FEATURES PASS
+- `test_tycoon_day_plan.gd` — TYCOON DAY PLAN PASS
+- `test_tycoon_bugs.gd` — TYCOON BUGS PASS
+- `test_tycoon_crunch.gd` — TYCOON CRUNCH PASS
+- `test_tycoon_early_access.gd` — TYCOON EARLY ACCESS PASS
+- `test_tycoon_cancel.gd` — TYCOON CANCEL PASS
+- `test_tycoon_slip_day.gd` — TYCOON SLIP DAY PASS
+- `test_tycoon_pivot.gd` — TYCOON PIVOT PASS
+- `test_tycoon_playtest.gd` — TYCOON PLAYTEST PASS
+- `test_tycoon_assign_team.gd` — TYCOON ASSIGN TEAM PASS
+- `test_tycoon_research_spike.gd` — TYCOON RESEARCH SPIKE PASS
+- `test_tycoon_sale_price.gd` — TYCOON SALE PRICE PASS. Day 0 of selling shows "Sale price · $9.00 · remaining days" with secondary −20% and +20% (Catalog hidden), under the trailer, and above Patch. A payload without `salePrice` draws no control. The product picker and the bench have no sale price control. Clicking −20% shows "Sale price · −20% · $7.20" and hides the buttons. Cash, fans, sales, and the clock stay. The header stays Spring 3, $207.00, and 5 reputation. Reopening keeps that line, with cash 20700 cents, 5 fans, and `currentPercent` 80. Hire stays the one primary action. Connect stays closed. The rules script inside that test checks the same harness cases.
+- `test_ui_company_redesign.gd` — 18171 checks, 0 failures, 0 captures. Existing fixtures omit `salePrice` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Eighty-three PNGs in `/workspace/sv-proof/round-65/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-65 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey, on the Selling card. Sale price is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_sale_price.gd`.
