@@ -3133,7 +3133,7 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - The row sits on the Season card, under payroll and above the loan, and only when list or delist is enabled. The line names the product and the next check. The button is a secondary "List in catalog" or "Delist". Hire stays the one primary action. Nothing on this row is orange.
 
 **Proof**
-- Shots `88-catalog-offer.png` and `89-catalog-listed.png` are the player-view check for this slice. The capture command is `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-68 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`.
+- `/workspace/sv-proof/round-68/88-catalog-offer.png` and `89-catalog-listed.png`, captured by the verify-startup-valley skill. PROOF PASS. Eighty-nine PNGs. The offer header reads "Spring 3 · Year 1 · $207.00 game cash · 5 reputation". The Season card line is "Crypto Alpha Newsletter · next check $12 on Spring 28" on one line, with a cream secondary List in catalog under it and above Take loan. After listing the line is "Listed · Crypto Alpha Newsletter · next check $12 on Spring 28" and the button reads Delist. Book booth and Take the afternoon stay on that card. Hire Theo · $300.00 stays in the footer and does not cover the row. Those lines are readable and do not overlap. Connect stays closed. The shots scroll the catalog line to the top of the journey so payroll is above the fold; the control itself is fully visible and not clipped.
 
 **Art HOLD**
 - No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
@@ -3144,6 +3144,57 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
 4. The Season card now adds one catalog line and one secondary button after a product ships. The row is hidden until then, so a fresh company stays the same height.
 
-**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`). Full gate is `bash /workspace/sv-proof/round-68/gate.sh`, run after this note.
-- `cd harness && npm test` with Node 22 — 136 tests, 134 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test refuses an unknown id, an unfinished product, a cancelled id, a second listing, and an empty delist. The check is 1200 cents on a later payday only. Listing on payday waits a season. There is no check before listing or after delist. Fans stay. Posted sales match a twin that never listed. A patch does not change the stored score. Listing before the next product does not change that product's review or the seed. A skipped newsletter stays at 20700 cents and 5 fans, then 33300 cents. Reopen keeps the same `catalog` block. The path has no fetch, Connect, or credential use.
+**Test results** (no paid live evals; Node 22; host credentials ignored on the tycoon playtests; no `npm ci`). `bash /workspace/sv-proof/round-68/gate.sh` exited 0. The audience script printed TYCOON AUDIENCE PASS on that run.
+- `cd harness && npm run build && npm test` — 136 tests, 134 pass, 0 fail, 2 skipped (real Godot furnishing inputs, and production Godot title with a disposable founder-only save). The new test refuses an unknown id, an unfinished product, a cancelled id, a second listing, and an empty delist. The check is 1200 cents on a later payday only. Listing on payday waits a season. There is no check before listing or after delist. Fans stay. Posted sales match a twin that never listed. A patch does not change the stored score. Listing before the next product does not change that product's review or the seed. A skipped newsletter stays at 20700 cents and 5 fans, then 33300 cents. Reopen keeps the same `catalog` block. The path has no fetch, Connect, or credential use.
+- `npm run eval:offline` — 8/8 fixtures passed
+- `godot --headless --path game --import` — pass (exit 0)
+- `validate_project.gd` — pass (`validate_project: runtime scenes, art, and all modular office stages are valid`)
+- `tests/run_all.gd` — pass (`test_worker_walks_to_desk: passed`)
+- `test_tycoon_product.gd` — TYCOON PASS. The unchanged test still requires the first Crypto Alpha Newsletter at 20700 cents and 5 fans, and the next office day at 33300 cents.
+- `test_tycoon_training.gd` — TYCOON TRAIN PASS
+- `test_tycoon_research.gd` — TYCOON RESEARCH PASS
+- `test_tycoon_upgrades.gd` — TYCOON UPGRADES PASS
+- `test_tycoon_seasons.gd` — TYCOON SEASONS PASS
+- `test_tycoon_office.gd` — TYCOON OFFICE PASS
+- `test_tycoon_price.gd` — TYCOON PRICE PASS
+- `test_tycoon_marketing.gd` — TYCOON MARKETING PASS
+- `test_tycoon_contracts.gd` — TYCOON CONTRACTS PASS
+- `test_tycoon_patches.gd` — TYCOON PATCHES PASS
+- `test_tycoon_sequels.gd` — TYCOON SEQUELS PASS
+- `test_tycoon_awards.gd` — TYCOON AWARDS PASS
+- `test_tycoon_ports.gd` — TYCOON PORTS PASS
+- `test_tycoon_engines.gd` — TYCOON ENGINES PASS
+- `test_tycoon_focus.gd` — TYCOON FOCUS PASS
+- `test_tycoon_audience.gd` — TYCOON AUDIENCE PASS
+- `test_tycoon_size.gd` — TYCOON SIZE PASS
+- `test_tycoon_payroll.gd` — TYCOON PAYROLL PASS
+- `test_tycoon_loans.gd` — TYCOON LOANS PASS
+- `test_tycoon_publishers.gd` — TYCOON PUBLISHERS PASS
+- `test_tycoon_expos.gd` — TYCOON EXPOS PASS
+- `test_tycoon_localization.gd` — TYCOON LOCALIZATION PASS
+- `test_tycoon_town_day.gd` — TYCOON TOWN DAY PASS
+- `test_tycoon_press_demo.gd` — TYCOON PRESS DEMO PASS
+- `test_tycoon_launch_trailer.gd` — TYCOON LAUNCH TRAILER PASS
+- `test_tycoon_dev_diary.gd` — TYCOON DEV DIARY PASS
+- `test_tycoon_rivals.gd` — TYCOON RIVALS PASS
+- `test_tycoon_features.gd` — TYCOON FEATURES PASS
+- `test_tycoon_day_plan.gd` — TYCOON DAY PLAN PASS
+- `test_tycoon_bugs.gd` — TYCOON BUGS PASS
+- `test_tycoon_crunch.gd` — TYCOON CRUNCH PASS
+- `test_tycoon_early_access.gd` — TYCOON EARLY ACCESS PASS
+- `test_tycoon_cancel.gd` — TYCOON CANCEL PASS
+- `test_tycoon_slip_day.gd` — TYCOON SLIP DAY PASS
+- `test_tycoon_pivot.gd` — TYCOON PIVOT PASS
+- `test_tycoon_playtest.gd` — TYCOON PLAYTEST PASS
+- `test_tycoon_assign_team.gd` — TYCOON ASSIGN TEAM PASS
+- `test_tycoon_research_spike.gd` — TYCOON RESEARCH SPIKE PASS
+- `test_tycoon_sale_price.gd` — TYCOON SALE PRICE PASS
+- `test_tycoon_let_go.gd` — TYCOON LET GO PASS
+- `test_tycoon_part_time.gd` — TYCOON PART TIME PASS
 - `test_tycoon_back_catalog.gd` — TYCOON BACK CATALOG PASS. The Season card shows a secondary List in catalog under payroll and above Take loan. The line is one line: "Crypto Alpha Newsletter · next check $12 on Spring 28". A payload without `catalog` draws no control. Clicking List shows "Listed · Crypto Alpha Newsletter · next check $12 on Spring 28" and Delist. Cash stays 20700 cents, fans stay 5, the posted sale stays 20700 cents, and the clock stays. The header stays Spring 3, $207.00, and 5 reputation. Reopening keeps that payload. Delist restores List. Hire stays the one primary action. The row stays inside the journey and does not overlap Hire. Connect stays closed. The rules script inside that test checks the same harness cases.
+- `test_ui_company_redesign.gd` — 18171 checks, 0 failures, 0 captures. Existing fixtures omit `catalog` and still pass.
+- `test_furnishing_feedback.gd` — 24 checks, 0 failures
+- `test_office_layout.gd` — 873 checks passed
+- Proof capture — PROOF PASS. Eighty-nine PNGs in `/workspace/sv-proof/round-68/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-68 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey, on the Season card. Back catalog is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_back_catalog.gd`.
