@@ -415,6 +415,7 @@ func _run() -> void:
 	await _sale_price_proof()
 	await _let_go_proof()
 	await _part_time_proof()
+	await _catalog_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -2361,6 +2362,90 @@ func _part_time_proof() -> void:
 	view = main.company_panel._scroll.get_global_rect().grow(2.0)
 	check(view.encloses(pace.get_global_rect()) and view.encloses(line.get_global_rect()), "The part-time status stays inside the journey")
 	await snap("87-parttime-set", card)
+
+func seed_catalog_offer(data_dir: String) -> bool:
+	var database := ProjectSettings.globalize_path("res://../harness/src/database.ts")
+	var tsx := ProjectSettings.globalize_path("res://../harness/node_modules/tsx/dist/cli.mjs")
+	var node := OS.get_environment("STARTUP_VALLEY_NODE").strip_edges()
+	if node.is_empty():
+		for dir: String in OS.get_environment("PATH").split(":"):
+			if FileAccess.file_exists(dir.path_join("node")):
+				node = dir.path_join("node")
+				break
+	if node.is_empty():
+		node = "/home/box/.local/node22/bin/node"
+	var script_path := data_dir.path_join("seed-catalog.mjs")
+	var script := "import { mkdirSync } from 'node:fs';\nimport { DatabaseSync } from 'node:sqlite';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst file = root + '/startup-valley.sqlite';\nconst db = new GameDatabase(file, root + '/company-project');\ndb.tycoon.start('crypto', 'newsletter', []);\ndb.endDay(1);\ndb.endDay(2);\ndb.tycoon.release('p1');\ndb.journey.hire('mira', db.clockState().day);\nconst catalog = db.tycoon.view().catalog;\nconst company = db.journey.state().company;\nconst sales = db.tycoon.view().history[0];\ndb.close();\nconst sql = new DatabaseSync(file);\nsql.prepare(\"UPDATE milestone_progress SET completed = 1 WHERE id = 'website'\").run();\nsql.close();\nconst ok = company.cashCents === 20700 && company.reputation === 5 && sales && sales.salesCents === 20700 && sales.fans === 5 && catalog.list.enabled === true && catalog.list.productId === 'p1' && catalog.checkCents === 1200 && catalog.name === 'Crypto Alpha Newsletter';\nif (!ok) { console.error(JSON.stringify({ company, catalog, sales })); process.exit(2); }\n" % JSON.stringify(database)
+	var file := FileAccess.open(script_path, FileAccess.WRITE)
+	if file == null:
+		check(false, "Could not write the catalog seed script")
+		return false
+	file.store_string(script)
+	file.close()
+	var output: Array = []
+	var code := OS.execute(node, PackedStringArray([tsx, script_path, data_dir]), output, true)
+	check(code == 0, "Seeded a shipped newsletter with List in catalog offered (%s)" % " ".join(output))
+	return code == 0
+
+func _catalog_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-catalog-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_catalog_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var card := main.company_panel.find_child("SeasonCard", true, false) as Control
+	var line := label_named("CatalogLine")
+	var button := main.company_panel.find_child("ListCatalog", true, false) as Button
+	var loan := main.company_panel.find_child("TakeLoan", true, false) as Button
+	check(card != null and line != null and button != null and card.is_ancestor_of(line) and card.is_ancestor_of(button), "The Season card offers the back catalog")
+	check(button.text == "List in catalog" and not button.disabled and str(button.get_meta("cozy_variant", "")) == "secondary", "List in catalog is a secondary button")
+	check(line.text == "Crypto Alpha Newsletter · next check $12 on Spring 28" and line.get_line_count() == 1, "The offer names the next check on one line")
+	var hire := button_named("Hire")
+	check(hire != null and str(hire.get_meta("cozy_variant", "")) == "primary" and hire.text.begins_with("Hire"), "Hire stays the one primary action beside the catalog")
+	await reveal(line)
+	var footer := main.company_panel._footer
+	check(loan != null and button.get_global_rect().end.y <= loan.get_global_rect().position.y + 1.0, "List in catalog sits above Take loan")
+	check(footer != null and not line.get_global_rect().intersects(footer.get_global_rect()) and not button.get_global_rect().intersects(footer.get_global_rect()), "The catalog row does not overlap Hire")
+	check(company_cash() == 20700 and company_reputation() == 5, "The catalog offer has not spent cash or fans")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("Spring 3") and header.text.contains("$207.00") and header.text.contains("5 reputation"), "The header stays at Spring 3, $207, and 5 reputation")
+	var view := main.company_panel._scroll.get_global_rect().grow(2.0)
+	check(view.encloses(line.get_global_rect()) and view.encloses(button.get_global_rect()), "The catalog row stays inside the journey")
+	check(not main.job_panel._connection_panel.visible, "Back catalog never opens Connect")
+	await snap("88-catalog-offer", line)
+	await click(button)
+	var shown := await wait_until(func() -> bool:
+		var listed := label_named("CatalogLine")
+		var delist := main.company_panel.find_child("DelistCatalog", true, false) as Button
+		return not main.company_panel.busy and listed != null and listed.text.begins_with("Listed") and delist != null and delist.text == "Delist" and company_cash() == 20700 and company_reputation() == 5
+	, "The newsletter is listed")
+	if not shown:
+		return
+	line = label_named("CatalogLine")
+	button = main.company_panel.find_child("DelistCatalog", true, false) as Button
+	card = main.company_panel.find_child("SeasonCard", true, false) as Control
+	await reveal(line)
+	footer = main.company_panel._footer
+	check(card != null and line != null and line.text == "Listed · Crypto Alpha Newsletter · next check $12 on Spring 28" and line.get_line_count() == 1, "The listed line names the product and the next check")
+	check(button != null and str(button.get_meta("cozy_variant", "")) == "secondary", "Delist stays secondary")
+	check(footer != null and not line.get_global_rect().intersects(footer.get_global_rect()) and not button.get_global_rect().intersects(footer.get_global_rect()), "The listed row does not overlap Hire")
+	check(company_cash() == 20700 and company_reputation() == 5, "Listing leaves cash and fans")
+	header = label_named("OfficeDate")
+	check(header != null and header.text.contains("Spring 3") and header.text.contains("$207.00") and header.text.contains("5 reputation"), "The header stays at Spring 3, $207, and 5 reputation after listing")
+	check(not main.job_panel._connection_panel.visible, "Listing never opens Connect")
+	view = main.company_panel._scroll.get_global_rect().grow(2.0)
+	check(view.encloses(line.get_global_rect()) and view.encloses(button.get_global_rect()), "The listed row stays inside the journey")
+	await snap("89-catalog-listed", line)
 
 func _proof_money(cents: int) -> String:
 	var integer := str(absi(cents) / 100)
