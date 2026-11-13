@@ -60,6 +60,9 @@ import {
   baseScore,
   boostedPriceCents,
   calendarForDay,
+  catalogCheckCents,
+  catalogPaydayDay,
+  CATALOG_CENTS_PER_SCORE,
   contractBySlot,
   fitFor,
   launchPriceCents,
@@ -7946,6 +7949,305 @@ test("setPace halves later craft and salary and leaves posted days alone", async
   assert.equal(skip.db.journey.state().company.cashCents, 33_300);
   assert.equal(skip.db.tycoon.view().history[0]?.salesCents, 33_300);
   assert.equal(skip.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:pace%' OR id LIKE 'tycoon:setPace%' OR id LIKE 'tycoon:setpace%'").all().length, 0);
+  skip.db.close();
+});
+
+test("listCatalog pays score * 200 on later paydays and leaves posted sales alone", async () => {
+  assert.equal(CATALOG_CENTS_PER_SCORE, 200);
+  assert.equal(catalogCheckCents(6), 1_200);
+  assert.equal(catalogCheckCents(0), 0);
+  assert.equal(catalogPaydayDay(3, null), 28);
+  assert.equal(catalogPaydayDay(3, 3), 28);
+  assert.equal(catalogPaydayDay(28, 3), 28);
+  assert.equal(catalogPaydayDay(28, null), 56);
+  assert.equal(catalogPaydayDay(28, 28), 56);
+  assert.equal(catalogPaydayDay(30, 3), 56);
+  assert.equal(
+    parseRequest({ kind: "request", id: "catalog", method: "tycoon.listCatalog", params: { productId: "p1" } }).method,
+    "tycoon.listCatalog",
+  );
+  assert.equal(
+    parseRequest({ kind: "request", id: "catalog", method: "tycoon.delistCatalog", params: {} }).method,
+    "tycoon.delistCatalog",
+  );
+  assert.throws(
+    () => parseRequest({ kind: "request", id: "catalog", method: "tycoon.listCatalog", params: {} }),
+    /Invalid protocol request/u,
+  );
+  assert.throws(
+    () => parseRequest({ kind: "request", id: "catalog", method: "tycoon.listCatalog", params: { productId: "nope" } }),
+    /Invalid protocol request/u,
+  );
+  assert.throws(
+    () => parseRequest({ kind: "request", id: "catalog", method: "tycoon.listCatalog", params: { productId: "p1", extra: true } }),
+    /Invalid protocol request/u,
+  );
+  assert.throws(
+    () => parseRequest({ kind: "request", id: "catalog", method: "tycoon.delistCatalog", params: { productId: "p1" } }),
+    /Invalid protocol request/u,
+  );
+  const source = readFileSync(new URL("../src/tycoon.ts", import.meta.url), "utf8");
+  const bodyStart = source.indexOf("listCatalog(productId: string");
+  const body = source.slice(bodyStart, source.indexOf("letGo(staffId: string", bodyStart));
+  assert.equal(/fetch|https?:|Connect|credential|openrouter/iu.test(body), false);
+  assert.ok(body.includes("This product is not finished."), "an unfinished product fails clearly");
+  assert.ok(body.includes("Already listed."), "listing twice fails clearly");
+  assert.ok(body.includes("A product is already listed."), "a second product does not swap");
+  assert.ok(body.includes("Nothing is listed."), "delist with an empty slot fails clearly");
+
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  const emptyList = { productId: null, enabled: false, reason: "Ship a product first." };
+  const emptyDelist = { enabled: false, reason: "Nothing is listed." };
+
+  const fresh = await setup();
+  assert.deepEqual(fresh.db.tycoon.view().catalog, {
+    productId: null,
+    name: "",
+    score: 0,
+    checkCents: 0,
+    payday: "Spring 28",
+    list: emptyList,
+    delist: emptyDelist,
+  });
+  assert.throws(() => fresh.db.tycoon.listCatalog("p1"), /No product with that id\./u);
+  assert.throws(() => fresh.db.tycoon.listCatalog("p99"), /No product with that id\./u);
+  assert.throws(() => fresh.db.tycoon.delistCatalog(), /Nothing is listed\./u);
+  fresh.db.tycoon.start("crypto", "newsletter", []);
+  assert.throws(() => fresh.db.tycoon.listCatalog("p1"), /This product is not finished\./u);
+  assert.equal(fresh.db.tycoon.view().catalog.list.enabled, false);
+  fresh.db.tycoon.cancelBuild();
+  assert.throws(() => fresh.db.tycoon.listCatalog("p1"), /No product with that id\./u);
+  assert.equal(validate(fresh.db.journey.state()), true, JSON.stringify(validate.errors));
+  const older = structuredClone(fresh.db.journey.state()) as { tycoon: { catalog?: unknown } };
+  delete older.tycoon.catalog;
+  assert.equal(validate(older), true, JSON.stringify(validate.errors));
+  fresh.db.close();
+
+  const listed = await setup();
+  const plain = await setup();
+  for (const ctx of [listed, plain]) {
+    ctx.db.tycoon.start("crypto", "newsletter", []);
+    ctx.db.endDay(1);
+    ctx.db.endDay(2);
+    ctx.db.tycoon.release("p1");
+  }
+  assert.equal(listed.db.journey.state().company.cashCents, 20_700);
+  assert.equal(listed.db.tycoon.view().history[0]?.fans, 5);
+  assert.equal(listed.db.tycoon.view().history[0]?.salesCents, 20_700);
+  assert.equal(listed.db.tycoon.view().history[0]?.review?.score, 6);
+  const beforeList = {
+    txs: txIds(listed.db),
+    day: listed.db.clockState().day,
+    cash: listed.db.journey.state().company.cashCents,
+    fans: listed.db.journey.state().company.reputation,
+    sales: listed.db.tycoon.view().history[0]?.salesCents,
+    productFans: listed.db.tycoon.view().history[0]?.fans,
+    seed: Number((listed.db.journey.db.prepare("SELECT seed FROM tycoon_meta WHERE id = 1").get() as { seed: number }).seed),
+  };
+  assert.equal(beforeList.seed, 26021);
+  const offer = listed.db.tycoon.view().catalog;
+  assert.equal(offer.productId, null);
+  assert.equal(offer.name, "Crypto Alpha Newsletter");
+  assert.equal(offer.score, 6);
+  assert.equal(offer.checkCents, 1_200);
+  assert.equal(offer.payday, "Spring 28");
+  assert.deepEqual(offer.list, { productId: "p1", enabled: true, reason: "" });
+  assert.deepEqual(offer.delist, { enabled: false, reason: "Nothing is listed." });
+  listed.db.tycoon.listCatalog("p1");
+  assert.throws(() => listed.db.tycoon.listCatalog("p1"), /Already listed\./u);
+  const after = listed.db.tycoon.view().catalog;
+  assert.equal(after.productId, "p1");
+  assert.equal(after.checkCents, 1_200);
+  assert.equal(after.payday, "Spring 28");
+  assert.deepEqual(after.list, { productId: "p1", enabled: false, reason: "Already listed." });
+  assert.deepEqual(after.delist, { enabled: true, reason: "" });
+  assert.equal(listed.db.clockState().day, beforeList.day);
+  assert.equal(listed.db.journey.state().company.cashCents, beforeList.cash);
+  assert.equal(listed.db.journey.state().company.reputation, beforeList.fans);
+  assert.equal(listed.db.tycoon.view().history[0]?.salesCents, beforeList.sales);
+  assert.equal(listed.db.tycoon.view().history[0]?.fans, beforeList.productFans);
+  assert.deepEqual(txIds(listed.db), beforeList.txs);
+  assert.equal(Number((listed.db.journey.db.prepare("SELECT seed FROM tycoon_meta WHERE id = 1").get() as { seed: number }).seed), beforeList.seed);
+  const stored = JSON.parse(staffJson(listed.db, "p1")) as { catalogDay?: number };
+  assert.equal(stored.catalogDay, beforeList.day);
+  const untouched = staffJson(listed.db, "p1");
+  listed.db.tycoon.view();
+  assert.equal(staffJson(listed.db, "p1"), untouched);
+  listed.db.endDay(3);
+  plain.db.endDay(3);
+  listed.db.endDay(4);
+  plain.db.endDay(4);
+  assert.equal(listed.db.journey.state().company.cashCents, 33_300);
+  assert.equal(plain.db.journey.state().company.cashCents, 33_300);
+  assert.equal(listed.db.tycoon.view().history[0]?.salesCents, plain.db.tycoon.view().history[0]?.salesCents);
+  assert.equal(listed.db.tycoon.view().history[0]?.fans, plain.db.tycoon.view().history[0]?.fans);
+  assert.equal(listed.db.journey.state().company.reputation, plain.db.journey.state().company.reputation);
+  assert.equal(listed.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:catalog%'").all().length, 0);
+  listed.db.setClock(28, 480, 0);
+  plain.db.setClock(28, 480, 0);
+  listed.db.tycoon.tickDay(28);
+  plain.db.tycoon.tickDay(28);
+  const check = listed.db.journey.db.prepare(
+    "SELECT cash_delta, earned_delta, reputation_delta, label FROM company_transactions WHERE id = 'tycoon:catalog:1-spring'",
+  ).get() as { cash_delta: number; earned_delta: number; reputation_delta: number; label: string };
+  assert.equal(check.cash_delta, 1_200);
+  assert.equal(check.earned_delta, 0);
+  assert.equal(check.reputation_delta, 0);
+  assert.equal(check.label, "Catalog: Crypto Alpha Newsletter");
+  assert.equal(listed.db.journey.state().company.cashCents, plain.db.journey.state().company.cashCents + 1_200);
+  assert.equal(listed.db.journey.state().company.reputation, plain.db.journey.state().company.reputation);
+  assert.equal(listed.db.tycoon.view().history[0]?.salesCents, plain.db.tycoon.view().history[0]?.salesCents);
+  assert.equal(listed.db.tycoon.view().history[0]?.fans, plain.db.tycoon.view().history[0]?.fans);
+  const saleRows = (db: GameDatabase) => db.journey.db.prepare(
+    "SELECT id, cash_delta, earned_delta, reputation_delta FROM company_transactions WHERE id LIKE 'tycoon:p1:%' ORDER BY id",
+  ).all();
+  assert.deepEqual(saleRows(listed.db), saleRows(plain.db));
+  listed.db.tycoon.tickDay(28);
+  assert.equal(listed.db.journey.state().company.cashCents, plain.db.journey.state().company.cashCents + 1_200);
+  assert.equal(validate(listed.db.journey.state()), true, JSON.stringify(validate.errors));
+  listed.db.tycoon.delistCatalog();
+  assert.throws(() => listed.db.tycoon.delistCatalog(), /Nothing is listed\./u);
+  assert.equal(listed.db.tycoon.view().catalog.productId, null);
+  assert.equal(JSON.parse(staffJson(listed.db, "p1")).catalogDay, undefined);
+  listed.db.tycoon.tickDay(56);
+  plain.db.tycoon.tickDay(56);
+  assert.equal(listed.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id = 'tycoon:catalog:1-summer'").get(), undefined);
+  assert.equal(listed.db.journey.state().company.cashCents, plain.db.journey.state().company.cashCents + 1_200);
+  assert.equal(listed.db.tycoon.view().history[0]?.salesCents, plain.db.tycoon.view().history[0]?.salesCents);
+  assert.equal(listed.db.journey.state().company.reputation, plain.db.journey.state().company.reputation);
+  listed.db.close();
+  plain.db.close();
+
+  const patched = await setup();
+  const patchedTwin = await setup();
+  for (const ctx of [patched, patchedTwin]) {
+    ctx.db.tycoon.start("crypto", "newsletter", []);
+    ctx.db.endDay(1);
+    ctx.db.endDay(2);
+    ctx.db.tycoon.release("p1");
+    ctx.db.tycoon.patch("p1");
+  }
+  const postedSales = patched.db.tycoon.view().history[0]?.salesCents;
+  patched.db.tycoon.listCatalog("p1");
+  assert.equal(patched.db.tycoon.view().catalog.score, 6);
+  assert.equal(patched.db.tycoon.view().catalog.checkCents, 1_200);
+  assert.equal(patched.db.tycoon.view().history[0]?.salesCents, postedSales);
+  patched.db.tycoon.tickDay(28);
+  patchedTwin.db.tycoon.tickDay(28);
+  assert.equal((patched.db.journey.db.prepare("SELECT cash_delta FROM company_transactions WHERE id = 'tycoon:catalog:1-spring'").get() as { cash_delta: number }).cash_delta, 1_200);
+  assert.equal(patched.db.tycoon.view().history[0]?.salesCents, patchedTwin.db.tycoon.view().history[0]?.salesCents);
+  assert.equal(patched.db.journey.state().company.cashCents, patchedTwin.db.journey.state().company.cashCents + 1_200);
+  patched.db.close();
+  patchedTwin.db.close();
+
+  const second = await setup();
+  second.db.tycoon.start("crypto", "newsletter", []);
+  second.db.endDay(1);
+  second.db.endDay(2);
+  second.db.tycoon.release("p1");
+  second.db.tycoon.start("fitness", "newsletter", []);
+  second.db.endDay(3);
+  second.db.endDay(4);
+  second.db.tycoon.release("p2");
+  assert.equal(second.db.tycoon.view().catalog.list.productId, "p2");
+  second.db.tycoon.listCatalog("p1");
+  assert.throws(() => second.db.tycoon.listCatalog("p2"), /A product is already listed\./u);
+  assert.equal(second.db.tycoon.view().catalog.productId, "p1");
+  const firstReview = second.db.tycoon.view().history.find((item) => item.id === "p1")?.review?.score;
+  const secondReview = second.db.tycoon.view().history.find((item) => item.id === "p2")?.review?.score;
+  const twin = await setup();
+  twin.db.tycoon.start("crypto", "newsletter", []);
+  twin.db.endDay(1);
+  twin.db.endDay(2);
+  twin.db.tycoon.release("p1");
+  twin.db.tycoon.start("fitness", "newsletter", []);
+  twin.db.endDay(3);
+  twin.db.endDay(4);
+  twin.db.tycoon.release("p2");
+  assert.equal(firstReview, twin.db.tycoon.view().history.find((item) => item.id === "p1")?.review?.score);
+  assert.equal(secondReview, twin.db.tycoon.view().history.find((item) => item.id === "p2")?.review?.score);
+  assert.equal(second.db.tycoon.view().history.find((item) => item.id === "p1")?.salesCents, twin.db.tycoon.view().history.find((item) => item.id === "p1")?.salesCents);
+  second.db.close();
+  twin.db.close();
+
+  const draw = await setup();
+  const drawTwin = await setup();
+  for (const ctx of [draw, drawTwin]) {
+    ctx.db.tycoon.start("crypto", "newsletter", []);
+    ctx.db.endDay(1);
+    ctx.db.endDay(2);
+    ctx.db.tycoon.release("p1");
+  }
+  draw.db.tycoon.listCatalog("p1");
+  for (const ctx of [draw, drawTwin]) {
+    ctx.db.tycoon.start("fitness", "newsletter", []);
+    ctx.db.endDay(3);
+    ctx.db.endDay(4);
+    ctx.db.tycoon.release("p2");
+  }
+  assert.equal(draw.db.tycoon.view().history.find((item) => item.id === "p2")?.review?.score, drawTwin.db.tycoon.view().history.find((item) => item.id === "p2")?.review?.score);
+  assert.equal(draw.db.tycoon.view().history.find((item) => item.id === "p1")?.salesCents, drawTwin.db.tycoon.view().history.find((item) => item.id === "p1")?.salesCents);
+  assert.equal(
+    Number((draw.db.journey.db.prepare("SELECT seed FROM tycoon_meta WHERE id = 1").get() as { seed: number }).seed),
+    Number((drawTwin.db.journey.db.prepare("SELECT seed FROM tycoon_meta WHERE id = 1").get() as { seed: number }).seed),
+  );
+  draw.db.close();
+  drawTwin.db.close();
+
+  const sameDay = await setup();
+  sameDay.db.tycoon.start("crypto", "newsletter", []);
+  sameDay.db.endDay(1);
+  sameDay.db.endDay(2);
+  sameDay.db.tycoon.release("p1");
+  sameDay.db.setClock(28, 480, 0);
+  sameDay.db.tycoon.listCatalog("p1");
+  assert.equal(sameDay.db.tycoon.view().catalog.payday, "Summer 28");
+  const cashOnPayday = sameDay.db.journey.state().company.cashCents;
+  sameDay.db.tycoon.tickDay(28);
+  assert.equal(sameDay.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:catalog%'").all().length, 0);
+  assert.equal(sameDay.db.journey.state().company.cashCents, cashOnPayday + ((sameDay.db.journey.db.prepare("SELECT COALESCE(SUM(cash_delta), 0) AS cents FROM company_transactions WHERE id LIKE 'tycoon:p1:%' AND day = 28").get() as { cents: number }).cents));
+  sameDay.db.tycoon.tickDay(56);
+  const summer = sameDay.db.journey.db.prepare(
+    "SELECT cash_delta, reputation_delta FROM company_transactions WHERE id = 'tycoon:catalog:1-summer'",
+  ).get() as { cash_delta: number; reputation_delta: number };
+  assert.equal(summer.cash_delta, 1_200);
+  assert.equal(summer.reputation_delta, 0);
+  sameDay.db.close();
+
+  const reopen = await setup();
+  reopen.db.tycoon.start("crypto", "newsletter", []);
+  reopen.db.endDay(1);
+  reopen.db.endDay(2);
+  reopen.db.tycoon.release("p1");
+  reopen.db.tycoon.listCatalog("p1");
+  const pending = reopen.db.tycoon.view().catalog;
+  assert.equal(pending.productId, "p1");
+  assert.equal(pending.checkCents, 1_200);
+  const file = join(reopen.root, "game.sqlite");
+  const project = join(reopen.root, "company-project");
+  reopen.db.close();
+  const reopened = new GameDatabase(file, project);
+  assert.deepEqual(reopened.tycoon.view().catalog, pending);
+  assert.equal(reopened.journey.state().company.cashCents, 20_700);
+  assert.equal(reopened.journey.state().company.reputation, 5);
+  assert.equal(reopened.tycoon.view().history[0]?.salesCents, 20_700);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+
+  const skip = await setup();
+  skip.db.tycoon.start("crypto", "newsletter", []);
+  skip.db.endDay(1);
+  skip.db.endDay(2);
+  skip.db.tycoon.release("p1");
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.fans, 5);
+  assert.equal(skip.db.tycoon.view().history[0]?.salesCents, 20_700);
+  skip.db.endDay(3);
+  skip.db.endDay(4);
+  assert.equal(skip.db.journey.state().company.cashCents, 33_300);
+  assert.equal(skip.db.tycoon.view().history[0]?.salesCents, 33_300);
+  assert.equal(skip.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:catalog%'").all().length, 0);
   skip.db.close();
 });
 

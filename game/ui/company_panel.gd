@@ -1119,6 +1119,23 @@ func _season_card() -> void:
 		if not notice.is_empty():
 			var notice_label := _label(notice, false, card, "action")
 			notice_label.name = "PayrollNotice"
+	var catalog: Dictionary = _tycoon().get("catalog", {}) if _tycoon().get("catalog") is Dictionary else {}
+	var catalog_list: Dictionary = catalog.get("list", {}) if catalog.get("list") is Dictionary else {}
+	var catalog_delist: Dictionary = catalog.get("delist", {}) if catalog.get("delist") is Dictionary else {}
+	if bool(catalog_list.get("enabled", false)) or bool(catalog_delist.get("enabled", false)):
+		var catalog_name := str(catalog.get("name", "")).strip_edges()
+		var check_dollars := int(int(catalog.get("checkCents", 0)) / 100)
+		var catalog_payday := str(catalog.get("payday", "")).strip_edges()
+		var listed := bool(catalog_delist.get("enabled", false))
+		var catalog_text := "Listed · %s · next check $%d on %s" % [catalog_name, check_dollars, catalog_payday] if listed else "%s · next check $%d on %s" % [catalog_name, check_dollars, catalog_payday]
+		var catalog_label := _label(catalog_text, false, card)
+		catalog_label.name = "CatalogLine"
+		if listed:
+			var delist_button := _button("Delist", _delist_catalog, false, true, card, "secondary")
+			delist_button.name = "DelistCatalog"
+		else:
+			var list_button := _button("List in catalog", _list_catalog, false, true, card, "secondary")
+			list_button.name = "ListCatalog"
 	var loan: Dictionary = _tycoon().get("loan", {}) if _tycoon().get("loan") is Dictionary else {}
 	if not loan.is_empty():
 		var amount := int(loan.get("amountCents", 0))
@@ -1163,6 +1180,16 @@ func _season_card() -> void:
 	if int(company.get("cashCents", 0)) < 0:
 		var negative := _label("Cash is negative", false, card)
 		negative.name = "CashNegative"
+
+func _list_catalog() -> void:
+	var catalog: Dictionary = _tycoon().get("catalog", {}) if _tycoon().get("catalog") is Dictionary else {}
+	var offer: Dictionary = catalog.get("list", {}) if catalog.get("list") is Dictionary else {}
+	var product_id := str(offer.get("productId", "")).strip_edges()
+	if product_id.is_empty(): return
+	_request("tycoon.listCatalog", {"productId": product_id})
+
+func _delist_catalog() -> void:
+	_request("tycoon.delistCatalog", {})
 
 func _take_loan() -> void:
 	_request("tycoon.takeLoan", {})

@@ -312,6 +312,7 @@
         "upgrades": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "$ref": "#/$defs/tycoonUpgrade" } },
         "calendar": { "$ref": "#/$defs/tycoonCalendar" },
         "payroll": { "$ref": "#/$defs/tycoonPayroll" },
+        "catalog": { "$ref": "#/$defs/tycoonCatalog" },
         "loan": { "$ref": "#/$defs/tycoonLoan" },
         "expo": { "$ref": "#/$defs/tycoonExpo" },
         "townDay": { "$ref": "#/$defs/tycoonTownDay" },
@@ -340,6 +341,37 @@
         "cents": { "type": "integer", "minimum": 0 },
         "payday": { "type": "string", "minLength": 1 },
         "notice": { "type": "string" }
+      }
+    },
+    "tycoonCatalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["productId", "name", "score", "checkCents", "payday", "list", "delist"],
+      "properties": {
+        "productId": { "anyOf": [{ "type": "null" }, { "type": "string", "pattern": "^p[1-9][0-9]*$" }] },
+        "name": { "type": "string" },
+        "score": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "checkCents": { "type": "integer", "minimum": 0, "maximum": 2000 },
+        "payday": { "type": "string", "minLength": 1 },
+        "list": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["productId", "enabled", "reason"],
+          "properties": {
+            "productId": { "anyOf": [{ "type": "null" }, { "type": "string", "pattern": "^p[1-9][0-9]*$" }] },
+            "enabled": { "type": "boolean" },
+            "reason": { "type": "string" }
+          }
+        },
+        "delist": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["enabled", "reason"],
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "reason": { "type": "string" }
+          }
+        }
       }
     },
     "tycoonLoan": {
