@@ -542,7 +542,8 @@
         "hired": { "type": "boolean" },
         "trainedToday": { "type": "boolean" },
         "training": { "$ref": "#/$defs/tycoonTraining" },
-        "letGo": { "$ref": "#/$defs/tycoonLetGo" }
+        "letGo": { "$ref": "#/$defs/tycoonLetGo" },
+        "pace": { "$ref": "#/$defs/tycoonPace" }
       }
     },
     "tycoonTraining": {
@@ -560,6 +561,16 @@
       "additionalProperties": false,
       "required": ["enabled", "reason"],
       "properties": {
+        "enabled": { "type": "boolean" },
+        "reason": { "type": "string" }
+      }
+    },
+    "tycoonPace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "enabled", "reason"],
+      "properties": {
+        "value": { "enum": ["full", "part"] },
         "enabled": { "type": "boolean" },
         "reason": { "type": "string" }
       }
