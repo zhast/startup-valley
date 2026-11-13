@@ -113,6 +113,12 @@ export const SIZES = [
   { id: "short", label: "Short", dayDelta: -1, unitPercent: SIZE_SHORT_UNIT_PERCENT },
   { id: "long", label: "Long", dayDelta: 1, unitPercent: SIZE_LONG_UNIT_PERCENT },
 ] as const;
+/**
+ * One optional back-catalog listing. While a shipped product is listed, each
+ * later payday pays $2 per stored review score. A patch does not change it.
+ * Listing on payday itself waits until the next season.
+ */
+export const CATALOG_CENTS_PER_SCORE = 200;
 /** Stardew-shaped office calendar. Derived from the saved day. It does not replace the clock. */
 export const SEASON_LENGTH_DAYS = 28;
 export const YEAR_LENGTH_DAYS = 112;
@@ -755,6 +761,18 @@ export interface TycoonPayroll {
   notice: string;
 }
 
+/** One back-catalog slot. `productId` is null until a product is listed. */
+export interface TycoonCatalog {
+  productId: string | null;
+  name: string;
+  score: number;
+  checkCents: number;
+  /** Next payday that would pay this listing, for example "Spring 28". */
+  payday: string;
+  list: { productId: string | null; enabled: boolean; reason: string };
+  delist: { enabled: boolean; reason: string };
+}
+
 export interface TycoonLoan {
   lender: string;
   amountCents: number;
@@ -945,6 +963,7 @@ export interface TycoonSnapshot {
   upgrades: TycoonUpgradeView[];
   calendar: TycoonCalendar;
   payroll: TycoonPayroll;
+  catalog: TycoonCatalog;
   loan: TycoonLoan;
   expo: TycoonExpo;
   townDay: TycoonTownDay;
@@ -1050,6 +1069,25 @@ export function upgradeById(id: string): (typeof UPGRADES)[number] | undefined {
 /** Whole dollars for player-facing cash lines. Catalog prices are multiples of $1. */
 export function wholeDollars(cents: number): string {
   return `$${Math.floor(cents / 100)}`;
+}
+
+/** Payday check for a stored review score. 0 when the score is not a positive integer. */
+export function catalogCheckCents(score: number): number {
+  if (!Number.isInteger(score) || score <= 0) return 0;
+  return score * CATALOG_CENTS_PER_SCORE;
+}
+
+/**
+ * First season-end day that pays a listing.
+ * A null listed day previews a listing made today, so payday itself waits a season.
+ * A listing from an earlier day still pays when today is that payday.
+ */
+export function catalogPaydayDay(today: number, listedDay: number | null): number {
+  const threshold = listedDay === null ? today : listedDay;
+  let end = SEASON_LENGTH_DAYS;
+  while (end <= threshold) end += SEASON_LENGTH_DAYS;
+  while (end < today) end += SEASON_LENGTH_DAYS;
+  return end;
 }
 
 /**
@@ -1595,6 +1633,8 @@ interface ProductSnapshot {
   researchSpikePoints: number;
   /** Null until the one sale-price change. Remaining sales days use this percent. */
   salePricePercent: LaunchPricePercent | null;
+  /** Office day this shipped product was listed. Null means it is not in the back catalog. */
+  catalogDay: number | null;
 }
 
 interface ProductPort {
@@ -1656,6 +1696,7 @@ function emptyProductSnapshot(staff: StaffSnapshot[] = []): ProductSnapshot {
     researchSpike: null,
     researchSpikePoints: 0,
     salePricePercent: null,
+    catalogDay: null,
   };
 }
 
@@ -1663,7 +1704,7 @@ function parseProductId(value: unknown): string | null {
   return typeof value === "string" && /^p[1-9][0-9]*$/u.test(value) ? value : null;
 }
 
-/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, no rival cut, no feature, an even day plan, no stored bugs, not fixing, not crunching, 0 crunch bugs, not an early ship, not holding the next day, not pivoted, not on a research spike, and no sale price. */
+/** Older rows are a staff array and count as catalog price, no bonus, no ad, no contract, unpatched, no sequel, no award, no port, no translation, no engine, Balanced, Everyone, Catalog length, no publisher, no press demo, no trailer, no diary, no rival cut, no feature, an even day plan, no stored bugs, not fixing, not crunching, 0 crunch bugs, not an early ship, not holding the next day, not pivoted, not on a research spike, no sale price, and no catalog listing. */
 function parseProductSnapshot(raw: string): ProductSnapshot {
   const empty = emptyProductSnapshot();
   let parsed: unknown;
@@ -1707,6 +1748,7 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     researchSpike?: unknown;
     researchSpikePoints?: unknown;
     salePricePercent?: unknown;
+    catalogDay?: unknown;
   };
   return {
     staff: parseStaffList(body.staff),
@@ -1745,7 +1787,14 @@ function parseProductSnapshot(raw: string): ProductSnapshot {
     researchSpike: parseResearchSpike(body.researchSpike),
     researchSpikePoints: parseResearchSpikePoints(body.researchSpikePoints),
     salePricePercent: parseSalePricePercent(body.salePricePercent),
+    catalogDay: parseCatalogDay(body.catalogDay),
   };
+}
+
+function parseCatalogDay(value: unknown): number | null {
+  const day = Number(value);
+  if (!Number.isInteger(day) || day < 1) return null;
+  return day;
 }
 
 function parseSalePricePercent(value: unknown): LaunchPricePercent | null {
@@ -1947,6 +1996,7 @@ function serializeProductSnapshot(stored: ProductSnapshot): string {
   if (stored.researchSpike) body.researchSpike = stored.researchSpike;
   if (stored.researchSpikePoints > 0) body.researchSpikePoints = stored.researchSpikePoints;
   if (stored.salePricePercent !== null) body.salePricePercent = stored.salePricePercent;
+  if (stored.catalogDay !== null) body.catalogDay = stored.catalogDay;
   return JSON.stringify(body);
 }
 
@@ -2328,6 +2378,7 @@ export class TycoonStore {
       }),
       calendar: calendarForDay(day),
       payroll: this.payrollView(day, hired),
+      catalog: this.catalogView(day),
       loan: this.loanView(day),
       expo: this.expoView(day),
       townDay: this.townDayView(day),
@@ -2804,6 +2855,36 @@ export class TycoonStore {
   }
 
   /**
+   * List one shipped product in the back catalog. One listing at a time.
+   * A second product fails and does not swap. No fee, no fans, no clock move.
+   * Posted sales stay. The check waits for a later payday.
+   */
+  listCatalog(productId: string): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const row = this.row(productId);
+      if (!row) throw new Error("No product with that id.");
+      if (!this.catalogReady(row)) throw new Error("This product is not finished.");
+      const stored = parseProductSnapshot(row.staff_json);
+      if (stored.catalogDay !== null) throw new Error("Already listed.");
+      if (this.listedEntry()) throw new Error("A product is already listed.");
+      stored.catalogDay = this.day();
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(stored), row.id);
+      return this.journey.state();
+    });
+  }
+
+  /** Take the listed product off the back catalog. No fee, no fans, no clock move. */
+  delistCatalog(): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const listed = this.listedEntry();
+      if (!listed) throw new Error("Nothing is listed.");
+      listed.stored.catalogDay = null;
+      this.db.prepare("UPDATE tycoon_products SET staff_json = ? WHERE id = ?").run(serializeProductSnapshot(listed.stored), listed.row.id);
+      return this.journey.state();
+    });
+  }
+
+  /**
    * Dismiss one hired teammate. The founder stays. They leave the company.
    * A build in development that listed them drops them. Days, points, and
    * sales already earned stay. Later days use whoever remains. Payroll no
@@ -3121,6 +3202,7 @@ export class TycoonStore {
         researchSpike: null,
         researchSpikePoints: 0,
         salePricePercent: null,
+        catalogDay: null,
       };
       if (pending) this.savePendingContract(null);
       this.db.prepare(`
@@ -3246,8 +3328,87 @@ export class TycoonStore {
     this.payPorts(day);
     this.payLocalizations(day);
     this.payPayroll(day);
+    this.payCatalog(day);
     this.repayLoan(day);
     this.payExpo(day);
+  }
+
+  /** One catalog check, after payroll, on a payday after the listing day. Replaying that payday does not pay again. */
+  private payCatalog(day: number): void {
+    const calendar = calendarForDay(day);
+    if (calendar.dayOfSeason !== SEASON_LENGTH_DAYS) return;
+    const listed = this.listedEntry();
+    if (!listed || listed.stored.catalogDay === null || listed.stored.catalogDay >= day) return;
+    const cents = catalogCheckCents(this.storedReviewScore(listed.row));
+    if (cents <= 0) return;
+    this.journey.recordCompanyChange(
+      `tycoon:catalog:${calendar.year}-${calendar.season}`,
+      day,
+      cents,
+      0,
+      0,
+      `Catalog: ${listed.row.name}`,
+    );
+  }
+
+  private catalogView(day: number): TycoonCatalog {
+    const listed = this.listedEntry();
+    const offer = listed ? null : this.catalogOfferEntry();
+    const subject = listed ?? offer;
+    const score = subject ? this.storedReviewScore(subject.row) : 0;
+    const listedDay = listed?.stored.catalogDay ?? null;
+    return {
+      productId: listed ? listed.row.id : null,
+      name: subject ? subject.row.name : "",
+      score,
+      checkCents: catalogCheckCents(score),
+      payday: paydayLabel(catalogPaydayDay(day, listedDay)),
+      list: listed
+        ? { productId: listed.row.id, enabled: false, reason: "Already listed." }
+        : offer
+          ? { productId: offer.row.id, enabled: true, reason: "" }
+          : { productId: null, enabled: false, reason: "Ship a product first." },
+      delist: listed
+        ? { enabled: true, reason: "" }
+        : { enabled: false, reason: "Nothing is listed." },
+    };
+  }
+
+  /** Shipped, with a stored review score. A bench product and a cancelled id are not. */
+  private catalogReady(row: ProductRow): boolean {
+    return row.status !== "developing" && this.storedReviewScore(row) >= 1;
+  }
+
+  private allEntries(): Array<{ row: ProductRow; stored: ProductSnapshot }> {
+    const rows = this.db.prepare("SELECT * FROM tycoon_products ORDER BY id").all() as unknown as ProductRow[];
+    return rows.map((row) => ({ row, stored: parseProductSnapshot(row.staff_json) }));
+  }
+
+  /** The one listed product. The earliest listing wins if a save somehow has two. */
+  private listedEntry(): { row: ProductRow; stored: ProductSnapshot } | null {
+    const listed = this.allEntries().filter((entry) => entry.stored.catalogDay !== null && this.catalogReady(entry.row));
+    listed.sort((a, b) => {
+      const day = (a.stored.catalogDay ?? 0) - (b.stored.catalogDay ?? 0);
+      if (day !== 0) return day;
+      return this.productNumber(a.row.id) - this.productNumber(b.row.id);
+    });
+    return listed[0] ?? null;
+  }
+
+  /** Newest shipped product. The List button offers this one when the slot is empty. */
+  private catalogOfferEntry(): { row: ProductRow; stored: ProductSnapshot } | null {
+    const ready = this.allEntries().filter((entry) => this.catalogReady(entry.row));
+    ready.sort((a, b) => {
+      const day = Number(b.row.released_day ?? 0) - Number(a.row.released_day ?? 0);
+      if (day !== 0) return day;
+      return this.productNumber(b.row.id) - this.productNumber(a.row.id);
+    });
+    return ready[0] ?? null;
+  }
+
+  private productNumber(id: string): number {
+    const match = /^p([1-9][0-9]*)$/u.exec(id);
+    return match ? Number(match[1]) : 0;
   }
 
   /** One season salary, after that day's sales. Replaying the same payday does not pay again. */
