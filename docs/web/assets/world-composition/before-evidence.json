@@ -1,0 +1,38 @@
+{
+  "status": "before-change audit; not map approval",
+  "buildId": "b5d7da90f647ea26",
+  "sourceCommit": "3cd6e71",
+  "captureMethod": "Parent agent in-app browser screenshot, inspected by shell_quality; preserved byte-for-byte",
+  "scope": "One playable studio screen before inviting Mina",
+  "imageSize": [
+    1164,
+    655
+  ],
+  "evidence": [
+    {
+      "path": "docs/web/assets/world-composition/01-office-garden-before.jpg",
+      "bytes": 133249,
+      "sha256": "a8de9a16db4e8bd5801cc531a4be3ed9c70b8cf1a2af5cdf33b3be27f5b06f55"
+    },
+    {
+      "path": "game/world/office_architecture.gd",
+      "bytes": 5418,
+      "sha256": "ef7821b48253cb10565f477aafd7a95fff46b45acc3d16cd45ad984385a255a9"
+    },
+    {
+      "path": "game/data/office_layout_starter.json",
+      "bytes": 2253,
+      "sha256": "d6a910bb357c0bb21c28bebc877ca64f362bfcb634d9d416a186d844b7dab290"
+    },
+    {
+      "path": "game/assets/runtime/office/campus-surround.png",
+      "bytes": 1720494,
+      "sha256": "d5387a27eb3131d8f6bc7816724f99090620c68aeb62e7cecef42c5d7138be81"
+    },
+    {
+      "path": "dev/map-catalogue/world-profile.json",
+      "bytes": 1256,
+      "sha256": "2563a9ddbc44b097112d01fd8c45e80c15c09d949af759ffe529625522469593"
+    }
+  ]
+}

@@ -256,14 +256,14 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 		"hiring.complete", "game.new", "tycoon.letGo":
 			_handle_response("bootstrap", "", result)
 			company_action_completed.emit(method, result)
-		"tycoon.expandOffice":
+		"tycoon.expandOffice", "tycoon.release", "tycoon.earlyAccess":
 			journey_received.emit(result.get("journey", {}))
 			var office_furnishing: Variant = result.get("furnishing")
 			if office_furnishing is Dictionary and int((office_furnishing as Dictionary).get("version", 0)) == 1:
 				furnishing_state = (office_furnishing as Dictionary).duplicate(true)
 				furnishing_received.emit(furnishing_state.duplicate(true), "")
 			company_action_completed.emit(method, result)
-		"milestone.evaluate", "milestone.complete", "milestone.override", "chapter.continue", "day.end", "tycoon.start", "tycoon.release", "tycoon.train", "tycoon.research", "tycoon.buyUpgrade", "tycoon.buyEngine", "tycoon.acceptContract", "tycoon.patch", "tycoon.sequel", "tycoon.award", "tycoon.port", "tycoon.localize", "tycoon.takeLoan", "tycoon.signPublisher", "tycoon.bookBooth", "tycoon.takeTownDay", "tycoon.showPressDemo", "tycoon.makeTrailer", "tycoon.writeDiary", "tycoon.addFeature", "tycoon.setDayPlan", "tycoon.fixBugs", "tycoon.crunch", "tycoon.earlyAccess", "tycoon.cancelBuild", "tycoon.slipDay", "tycoon.pivot", "tycoon.playtest", "tycoon.assignTeam", "tycoon.researchSpike", "tycoon.salePrice", "tycoon.setPace", "tycoon.listCatalog", "tycoon.delistCatalog":
+		"milestone.evaluate", "milestone.complete", "milestone.override", "chapter.continue", "day.end", "tycoon.start", "tycoon.train", "tycoon.research", "tycoon.buyUpgrade", "tycoon.buyEngine", "tycoon.acceptContract", "tycoon.patch", "tycoon.sequel", "tycoon.award", "tycoon.port", "tycoon.localize", "tycoon.takeLoan", "tycoon.signPublisher", "tycoon.bookBooth", "tycoon.takeTownDay", "tycoon.showPressDemo", "tycoon.makeTrailer", "tycoon.writeDiary", "tycoon.addFeature", "tycoon.setDayPlan", "tycoon.fixBugs", "tycoon.crunch", "tycoon.cancelBuild", "tycoon.slipDay", "tycoon.pivot", "tycoon.playtest", "tycoon.assignTeam", "tycoon.researchSpike", "tycoon.salePrice", "tycoon.setPace", "tycoon.listCatalog", "tycoon.delistCatalog":
 			journey_received.emit(result.get("journey", {}))
 			company_action_completed.emit(method, result)
 		"game.save":

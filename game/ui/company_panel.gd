@@ -44,6 +44,7 @@ var _focus_id := "balanced"
 var _audience_id := "everyone"
 var _size_id := "catalog"
 var _release_focus_id := ""
+var _release_rewards: Array[String] = []
 var _cancel_confirm := false
 var _pivot_open := false
 var _playtest_shown := false
@@ -93,12 +94,19 @@ func _ready() -> void:
 			_configure_focus.call_deferred()
 	)
 	visibility_changed.connect(func() -> void:
-		if not is_visible_in_tree(): _website_preview.dismiss()
+		if not is_visible_in_tree():
+			_website_preview.dismiss()
+			_release_rewards.clear()
+	)
+	resized.connect(func() -> void:
+		_position_frame()
+		if is_visible_in_tree(): call_deferred("_fit_sparse_height", _render_generation)
 	)
 	hide()
 
 func present(mode: String = "journey") -> void:
 	_website_preview.dismiss()
+	if mode != "release": _release_rewards.clear()
 	if mode == "journey" and not story_mode and _is_chapter_complete():
 		mode = "complete"
 	screen = mode
@@ -147,6 +155,13 @@ func show_error(message: String) -> void:
 func show_summary(value: Dictionary) -> void:
 	_summary = value
 	present("summary")
+
+func show_release(result: Dictionary) -> void:
+	_release_rewards.clear()
+	for reward: Variant in result.get("furnishingRewards", []):
+		if reward is String and not reward.strip_edges().is_empty() and not _release_rewards.has(reward):
+			_release_rewards.append(reward)
+	present("release")
 
 func _clear() -> void:
 	_preferred_focus = null
@@ -258,7 +273,7 @@ func _render() -> void:
 					panel_size = Vector2(704, 564)
 	_maximum_panel_size = panel_size
 	if _is_story_meeting():
-		panel_size = Vector2(860, 344)
+		panel_size = Vector2(680, 256)
 		_maximum_panel_size = panel_size
 	_scrim.color.a = 0.18 if _is_story_meeting() else 0.3 if story_mode and screen == "title" else 0.65
 	_frame.custom_minimum_size = Vector2.ZERO
@@ -282,6 +297,7 @@ func _render() -> void:
 	_notice.max_lines_visible = 3
 	_notice.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_notice.mouse_filter = Control.MOUSE_FILTER_PASS
+	_header.visible = _header.get_child_count() > 0
 	call_deferred("_configure_focus")
 	call_deferred("_fit_sparse_height", _render_generation)
 
@@ -291,9 +307,6 @@ func _fit_sparse_height(generation: int) -> void:
 	await get_tree().process_frame
 	await get_tree().process_frame
 	if generation != _render_generation or not is_inside_tree(): return
-	if _is_story_meeting():
-		_position_frame()
-		return
 	# Review pages retain their envelope when evidence expands; scrolling then
 	# leaves the header and primary action stationary. Only sparse states shrink.
 	if _details_open or _future_open: return
@@ -311,16 +324,35 @@ func _fit_sparse_height(generation: int) -> void:
 		"release": minimum_height = 420.0 if story_mode else 460.0
 	var column := _header.get_parent() as VBoxContainer
 	var required_height := _frame.get_theme_stylebox("panel").get_minimum_size().y
-	required_height += _header.get_combined_minimum_size().y + _content.get_combined_minimum_size().y + _footer.get_combined_minimum_size().y
-	required_height += column.get_theme_constant("separation") * 2 + 4
-	_frame.size.y = clampf(ceilf(required_height), minimum_height, _maximum_panel_size.y)
-	_frame.position = ((Vector2(1280, 720) - _frame.size) * 0.5).round()
+	required_height += _content.get_combined_minimum_size().y + _footer.get_combined_minimum_size().y
+	required_height += column.get_theme_constant("separation")
+	if _header.visible:
+		required_height += _header.get_combined_minimum_size().y + column.get_theme_constant("separation")
+	if _is_story_meeting():
+		# Portrait, short dialogue and one action determine the meeting height.
+		# Empty header rows must not reserve space in a character conversation.
+		_frame.size.y = minf(ceilf(required_height), _panel_safe_rect().size.y)
+	else:
+		_frame.size.y = clampf(ceilf(required_height + 4), minimum_height, _maximum_panel_size.y)
+	_position_frame()
 
 func _is_story_meeting() -> bool:
 	return story_mode and (screen in ["hired", "courtyard"] or (screen == "journey" and not _has_hired_teammate() and not _available_candidate().is_empty()))
 
+func _panel_safe_rect() -> Rect2:
+	var canvas_size := size if size.x > 0 and size.y > 0 else get_viewport_rect().size
+	return Rect2(Vector2.ZERO, canvas_size).grow(-CozyUI.INSET * 2)
+
 func _position_frame() -> void:
-	_frame.position = Vector2(140, 352) if _is_story_meeting() else ((Vector2(1280, 720) - _frame.size) * 0.5).round()
+	if _frame == null: return
+	var safe := _panel_safe_rect()
+	_frame.size.x = minf(_maximum_panel_size.x, safe.size.x)
+	_frame.set_anchors_preset(Control.PRESET_CENTER_BOTTOM if _is_story_meeting() else Control.PRESET_CENTER)
+	_frame.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	_frame.grow_vertical = Control.GROW_DIRECTION_BEGIN if _is_story_meeting() else Control.GROW_DIRECTION_BOTH
+	var origin := safe.get_center() - _frame.size * 0.5
+	if _is_story_meeting(): origin.y = safe.end.y - _frame.size.y
+	_frame.position = origin.round()
 
 func _title_screen() -> void:
 	if story_mode:
@@ -2351,7 +2383,13 @@ func _release_screen() -> void:
 		boost.name = "ReleasePriceBoost"
 	_label("Sales keep coming for a few office days.", false, null, "meta")
 	_label("Company · %s · %d reputation" % [_cash_phrase(int(company.get("cashCents", 0))), int(company.get("reputation", 0))])
+	_release_reward_line(_content)
 	_actions("Back to office", hide, true, "Ship another", func() -> void: present("product"))
+
+func _release_reward_line(parent: Control) -> void:
+	if _release_rewards.is_empty(): return
+	var reward_line := _label("For the studio: " + ", ".join(_release_rewards), false, parent, "action")
+	reward_line.name = "ReleaseFurnishingRewards"
 
 func _story_release_screen(product: Dictionary) -> void:
 	var first := (_tycoon().get("history", []) as Array).size() == 1
@@ -2363,6 +2401,7 @@ func _story_release_screen(product: Dictionary) -> void:
 	var review: Dictionary = product.get("review", {}) if product.get("review") is Dictionary else {}
 	_label("%d / 10 from reviewers · %d new fans" % [int(review.get("score", 0)), int(product.get("fans", 0))], false, achievement, "action")
 	_label("Launch earnings · $%s" % _money(int(product.get("salesCents", 0))), false, achievement, "action")
+	_release_reward_line(achievement)
 	_disclosure("Close the reviews" if _details_open else "Read the reviews", _toggle_details, _details_open, _content)
 	if _details_open:
 		for reviewer: Dictionary in review.get("reviewers", []):
@@ -2956,11 +2995,11 @@ func _has_hired_teammate() -> bool:
 func _story_person(candidate: Dictionary, line: String) -> void:
 	var row := HBoxContainer.new()
 	row.name = "StoryIntroduction"
-	row.add_theme_constant_override("separation", 24)
+	row.add_theme_constant_override("separation", 20)
 	_content.add_child(row)
 	var portrait_frame := PanelContainer.new()
 	portrait_frame.add_theme_stylebox_override("panel", NotebookSkin.portrait_frame())
-	portrait_frame.custom_minimum_size = Vector2(208, 232)
+	portrait_frame.custom_minimum_size = Vector2(144, 160)
 	row.add_child(portrait_frame)
 	var portrait := TextureRect.new()
 	portrait.name = "HirePortrait"
@@ -2972,7 +3011,7 @@ func _story_person(candidate: Dictionary, line: String) -> void:
 	var words := VBoxContainer.new()
 	words.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	words.alignment = BoxContainer.ALIGNMENT_CENTER
-	words.add_theme_constant_override("separation", 12)
+	words.add_theme_constant_override("separation", 8)
 	row.add_child(words)
 	var name_label := _label(str(candidate.get("name", "Your teammate")), true, words)
 	name_label.add_theme_font_size_override("font_size", 28)

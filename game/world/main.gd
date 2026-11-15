@@ -768,7 +768,7 @@ func _on_company_action(method: String, result: Dictionary) -> void:
 			company_panel.present("product")
 		"tycoon.release", "tycoon.earlyAccess":
 			game_audio.play("reward")
-			company_panel.present("release")
+			company_panel.show_release(result)
 		"tycoon.letGo":
 			company_panel.present("journey")
 		"tycoon.train", "tycoon.research", "tycoon.buyUpgrade", "tycoon.buyEngine", "tycoon.expandOffice", "tycoon.acceptContract", "tycoon.patch", "tycoon.award", "tycoon.port", "tycoon.localize", "tycoon.takeLoan", "tycoon.signPublisher", "tycoon.bookBooth", "tycoon.takeTownDay", "tycoon.showPressDemo", "tycoon.makeTrailer", "tycoon.writeDiary", "tycoon.addFeature", "tycoon.setDayPlan", "tycoon.fixBugs", "tycoon.crunch", "tycoon.cancelBuild", "tycoon.slipDay", "tycoon.pivot", "tycoon.playtest", "tycoon.assignTeam", "tycoon.researchSpike", "tycoon.salePrice", "tycoon.setPace", "tycoon.listCatalog", "tycoon.delistCatalog":

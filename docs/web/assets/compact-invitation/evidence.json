@@ -1,0 +1,205 @@
+{
+  "scope": "Compact dialogue component acceptance; not final world or three-clean-journey acceptance",
+  "layout": {
+    "checks": 250,
+    "failures": [],
+    "observations": [
+      {
+        "frame": [
+          300,
+          440,
+          680,
+          256
+        ],
+        "screen": "journey",
+        "window": [
+          1280,
+          720
+        ]
+      },
+      {
+        "frame": [
+          300,
+          440,
+          680,
+          256
+        ],
+        "screen": "hired",
+        "window": [
+          1280,
+          720
+        ]
+      },
+      {
+        "frame": [
+          300,
+          440,
+          680,
+          256
+        ],
+        "screen": "courtyard",
+        "window": [
+          1280,
+          720
+        ]
+      },
+      {
+        "frame": [
+          300,
+          440,
+          680,
+          256
+        ],
+        "screen": "journey",
+        "window": [
+          1440,
+          900
+        ]
+      },
+      {
+        "frame": [
+          300,
+          440,
+          680,
+          256
+        ],
+        "screen": "hired",
+        "window": [
+          1440,
+          900
+        ]
+      },
+      {
+        "frame": [
+          300,
+          440,
+          680,
+          256
+        ],
+        "screen": "courtyard",
+        "window": [
+          1440,
+          900
+        ]
+      },
+      {
+        "frame": [
+          300,
+          440,
+          680,
+          256
+        ],
+        "screen": "journey",
+        "window": [
+          1024,
+          576
+        ]
+      },
+      {
+        "frame": [
+          300,
+          440,
+          680,
+          256
+        ],
+        "screen": "hired",
+        "window": [
+          1024,
+          576
+        ]
+      },
+      {
+        "frame": [
+          300,
+          440,
+          680,
+          256
+        ],
+        "screen": "courtyard",
+        "window": [
+          1024,
+          576
+        ]
+      }
+    ]
+  },
+  "integration": {
+    "checks": 126,
+    "phases": [
+      {
+        "phase": "arrival",
+        "checks": 29
+      },
+      {
+        "phase": "hire",
+        "checks": 36
+      },
+      {
+        "phase": "start",
+        "checks": 61
+      }
+    ],
+    "runtimeUnchanged": false,
+    "runtimeChanges": [
+      "game/data/furnishing_catalog.json",
+      "game/worker_client.gd",
+      "game/assets/runtime/office/cozy-furniture-v1/cafe-chair-south.png",
+      "game/assets/runtime/office/cozy-furniture-v1/cafe-chair-south.png.import",
+      "game/assets/runtime/office/cozy-furniture-v1/cafe-table-south.png",
+      "game/assets/runtime/office/cozy-furniture-v1/cafe-table-south.png.import",
+      "game/assets/runtime/office/cozy-furniture-v1/phone-booth-south.png",
+      "game/assets/runtime/office/cozy-furniture-v1/phone-booth-south.png.import"
+    ]
+  },
+  "rewardCoverage": "show_release(result) shows nonempty granted names, omits empty row, clears after hiding/reopening",
+  "evidence": [
+    {
+      "path": "docs/web/assets/compact-invitation/before.png",
+      "sha256": "62724d0f0a5fb420a49723198d18b9bb5936e5adb2e616d2bf62602aefd51d37",
+      "bytes": 978600,
+      "kind": "actual_game_main_native"
+    },
+    {
+      "path": "docs/web/assets/compact-invitation/after.png",
+      "sha256": "75287f8bda25f6c0d30c17b09038c5de31ce89efc1955a4219cbdaa7b9884b18",
+      "bytes": 1064604,
+      "kind": "actual_game_main_native"
+    },
+    {
+      "path": "docs/web/assets/compact-invitation/1280x720.png",
+      "sha256": "7395ef8b673ce13f3c4f3f050c33ea189cdb68d315a2e1b2c5f53d5240d0b26b",
+      "bytes": 98614,
+      "kind": "isolated_production_ui_native"
+    },
+    {
+      "path": "docs/web/assets/compact-invitation/1440x900.png",
+      "sha256": "dee3807b60640513cd1f2bef72f4bac4d1b28863d6d714d85bd520fbdf8cc1a5",
+      "bytes": 103408,
+      "kind": "isolated_production_ui_native"
+    },
+    {
+      "path": "docs/web/assets/compact-invitation/1024x576.png",
+      "sha256": "f1c067aedefc30c4827a19ffe46a0f05f6b7611a82193e705b9575a23f32d612",
+      "bytes": 78828,
+      "kind": "isolated_production_ui_native"
+    },
+    {
+      "path": "game/ui/company_panel.gd",
+      "sha256": "e44e330a1fea8e758f1a929be50deeef507014de8a733389f87f0665cae62aad",
+      "bytes": 151643,
+      "kind": "source"
+    },
+    {
+      "path": "game/tests/test_story_dialogue_layout.gd",
+      "sha256": "8326e1a99e7ca33782d8a04916f79d41461475ada081b5252e0942a9357aa247",
+      "bytes": 6002,
+      "kind": "source"
+    },
+    {
+      "path": "game/tests/test_story_conversation.gd",
+      "sha256": "aabbd8f67fd81b7c17325bbd5aaf521c5ce2c9aa641d4c966d59586c632511fb",
+      "bytes": 7779,
+      "kind": "source"
+    }
+  ]
+}

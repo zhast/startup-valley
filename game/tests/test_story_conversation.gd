@@ -74,8 +74,9 @@ func run() -> void:
 	var role := panel.find_child("CharacterRole", true, false) as Label
 	check(role != null and role.text == "Product designer", "Mina's role is explicit before hiring")
 	var portrait := panel.find_child("HirePortrait", true, false) as TextureRect
-	check(portrait != null and portrait.size.x >= 180 and portrait.size.y >= 200, "First meeting gives Mina a prominent portrait")
-	check(panel._frame.position.y >= 340, "Introduction leaves the upper office visible")
+	check(portrait != null and portrait.size.x >= 120 and portrait.size.y >= 140, "Compact first meeting retains a readable face portrait")
+	check(absf(panel._frame.get_global_rect().get_center().x - panel.size.x * 0.5) <= 0.5, "Introduction is centered in the actual game canvas")
+	check(panel._frame.size.y <= 260 and panel._frame.position.y >= 420, "Compact introduction leaves most of the office visible")
 	check(panel._scrim.color.a <= 0.2, "Introduction keeps the surrounding world visible")
 	if DisplayServer.get_name() != "headless":
 		RenderingServer.force_draw(false)
