@@ -82,6 +82,10 @@ func _ready() -> void:
 		job_panel.close_drawer()
 		company_panel.present(mode)
 	)
+	founder_hud.goal_requested.connect(func(mode: String) -> void:
+		job_panel.close_drawer()
+		company_panel.present(mode)
+	)
 	job_panel.worker_retry_requested.connect(_retry_worker_connection)
 	game_audio = GameAudio.new()
 	add_child(game_audio)
@@ -161,6 +165,8 @@ func _process(delta: float) -> void:
 	founder_hud.update_station_hover(str(station.get("id", "")), str(station.get("caption", "")), station.get("bounds", Rect2()), not paused and not player.input_blocked, station_obstacles)
 	if company_panel != null and company_panel.visible:
 		founder_hud.hide_next_step()
+	elif company_panel != null and company_panel.story_mode:
+		founder_hud.set_story_goal(StoryMoments.goal(_journey))
 	else:
 		founder_hud.set_next_step(CompanyPanel.next_step_line(_journey, company_panel.busy if company_panel != null else false, company_panel._pending_method if company_panel != null else "", company_panel._pending_job_id if company_panel != null else ""))
 	for employee_id: String in _employees:
@@ -206,6 +212,10 @@ func _station_hover_details(hover: Dictionary) -> Dictionary:
 		not job_panel._approval_id.is_empty(),
 		job_panel._has_pending_delivery(owner_id)
 	)
+	if company_panel.story_mode:
+		if id == "founder-workstation" or id == "artifact-archive": caption = "Our story"
+		elif id == "approval-console": caption = "Our project"
+		elif _employees.has(owner_id): caption = "Talk with " + _employees[owner_id].display_name
 	var bounds: Rect2 = placement.world_visual_bounds
 	bounds.position += room.global_position
 	return {"id": id, "caption": caption, "bounds": bounds} if not caption.is_empty() else {}
@@ -406,6 +416,7 @@ func _spawn_employees(records: Array[EmployeeRecord]) -> void:
 	_updating_roster = false
 	_on_room_placements_changed()
 	job_panel.configure_employees(records)
+	_sync_studio_project_team()
 	if records.is_empty():
 		founder_hud.hide_delivery()
 
@@ -598,6 +609,7 @@ func _on_clock_changed(day: int, minute_of_day: int, phase: String, speed: float
 
 func _on_journey(value: Dictionary) -> void:
 	_journey = value
+	_sync_studio_project_team()
 	var tycoon: Variant = value.get("tycoon", {})
 	if room != null and tycoon is Dictionary:
 		var office: Variant = (tycoon as Dictionary).get("office", {})
@@ -607,7 +619,17 @@ func _on_journey(value: Dictionary) -> void:
 	job_panel.set_journey_state(value)
 	var company: Dictionary = value.get("company", {})
 	clock_panel.show_money_earned(float(company.get("earnedCents", 0)) / 100.0)
-	founder_hud.set_next_step(CompanyPanel.next_step_line(value, company_panel.busy, company_panel._pending_method, company_panel._pending_job_id))
+	if company_panel.story_mode:
+		founder_hud.set_story_goal(StoryMoments.goal(value))
+	else:
+		founder_hud.set_next_step(CompanyPanel.next_step_line(value, company_panel.busy, company_panel._pending_method, company_panel._pending_job_id))
+
+func _sync_studio_project_team() -> void:
+	var tycoon: Dictionary = _journey.get("tycoon", {})
+	var developing: Dictionary = tycoon.get("developing", {}) if tycoon.get("developing") is Dictionary else {}
+	var team: Array = developing.get("staffIds", [])
+	for employee: EmployeeAvatar in _employees.values():
+		employee.set_studio_project(team.has(employee.employee_id))
 
 func _restore_player() -> void:
 	_restored_player = true
@@ -814,15 +836,21 @@ func _on_destination_reached() -> void:
 	elif target == "founder-workstation":
 		company_panel.present("journey")
 	elif target == "artifact-archive":
-		job_panel.open_drawer()
-		job_panel._tabs.current_tab = 3
+		if company_panel.story_mode:
+			company_panel.present("journey")
+		else:
+			job_panel.open_drawer()
+			job_panel._tabs.current_tab = 3
 	elif target == "approval-console":
-		job_panel.open_journal_for_employee(job_panel.pending_decision_employee_id())
+		if company_panel.story_mode: company_panel.present("product")
+		else: job_panel.open_journal_for_employee(job_panel.pending_decision_employee_id())
 	else:
 		for placement: Dictionary in room.resolved_placements:
 			if placement.id == target and _employees.has(placement.owner_id):
-				job_panel.select_employee(placement.owner_id)
-				job_panel._tabs.current_tab = 2 if not job_panel.active_job_id().is_empty() else 1
+				if company_panel.story_mode: job_panel.open_chat_for_employee(placement.owner_id)
+				else:
+					job_panel.select_employee(placement.owner_id)
+					job_panel._tabs.current_tab = 2 if not job_panel.active_job_id().is_empty() else 1
 
 func _yield_employee_passage(employee_id: String, destination: Vector2) -> void:
 	var employee := get_employee(employee_id)

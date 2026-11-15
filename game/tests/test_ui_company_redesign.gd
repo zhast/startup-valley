@@ -601,7 +601,7 @@ func _tycoon_secondary_actions() -> void:
 	var tycoon: Dictionary = value["tycoon"]
 	tycoon["contract"] = {
 		"id": "nova",
-		"client": "Nova on Whop",
+		"client": "Nova on TownSquare",
 		"topicId": "crypto",
 		"typeId": "newsletter",
 		"topicName": "Crypto Alpha",
@@ -617,7 +617,7 @@ func _tycoon_secondary_actions() -> void:
 	var contract_pair := _panel.find_child("ContractPair", true, false) as Label
 	var contract_bonus := _panel.find_child("ContractBonus", true, false) as Label
 	_check(accept != null and not accept.disabled and str(accept.get_meta("cozy_variant", "")) == "secondary" and accept.text == "Accept contract", "Accept contract reads as secondary")
-	_check(contract_client != null and contract_client.text == "Nova on Whop", "The contract card names the client")
+	_check(contract_client != null and contract_client.text == "Nova on TownSquare", "The contract card names the client")
 	_check(contract_pair != null and contract_pair.text == "Crypto Alpha × Newsletter", "The contract card names the pair")
 	_check(contract_bonus != null and contract_bonus.text == "Bonus $80 on release", "The contract card names the bonus")
 	_check(_button("Hire Mina") != null and str(_button("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside the contract")
@@ -703,7 +703,7 @@ func _tycoon_secondary_actions() -> void:
 		"fans": 11,
 		"review": {"score": 6, "reviewers": []},
 		"award": {
-			"show": "Whop Creator Awards",
+			"show": "TownSquare Creator Awards",
 			"costCents": 4000,
 			"outcome": "",
 			"fans": 0,
@@ -718,7 +718,7 @@ func _tycoon_secondary_actions() -> void:
 	var award := _panel.find_child("Award_p1", true, false) as Button
 	var award_show := _panel.find_child("AwardShow_p1", true, false) as Label
 	_check(award != null and not award.disabled and str(award.get_meta("cozy_variant", "")) == "secondary" and award.text == "Enter award", "Enter award reads as secondary")
-	_check(award_show != null and award_show.text == "Whop Creator Awards · $40", "The shipped card names the show and the fee")
+	_check(award_show != null and award_show.text == "TownSquare Creator Awards · $40", "The shipped card names the show and the fee")
 	_check(_panel.find_child("AwardResult_p1", true, false) == null, "The result line waits until the product enters")
 	_check(_button("Hire Mina") != null and str(_button("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Enter award")
 	var award_offer: Dictionary = award_state["award"]
@@ -767,7 +767,7 @@ func _tycoon_secondary_actions() -> void:
 			"reason": "",
 		},
 		"award": {
-			"show": "Whop Creator Awards",
+			"show": "TownSquare Creator Awards",
 			"costCents": 4000,
 			"outcome": "",
 			"fans": 0,
@@ -776,7 +776,7 @@ func _tycoon_secondary_actions() -> void:
 			"reason": "",
 		},
 		"port": {
-			"shelf": "Whop Mobile",
+			"shelf": "TownSquare Mobile",
 			"costCents": 8000,
 			"phase": "",
 			"cents": 0,
@@ -794,7 +794,7 @@ func _tycoon_secondary_actions() -> void:
 	var sequel_row := _panel.find_child("Sequel_p1", true, false) as Button
 	var award_row := _panel.find_child("Award_p1", true, false) as Button
 	_check(port_button != null and not port_button.disabled and str(port_button.get_meta("cozy_variant", "")) == "secondary" and port_button.text == "Port", "Port reads as secondary")
-	_check(port_shelf != null and port_shelf.text == "Whop Mobile · $80", "The shipped card names the shelf and the fee")
+	_check(port_shelf != null and port_shelf.text == "TownSquare Mobile · $80", "The shipped card names the shelf and the fee")
 	_check(_panel.find_child("PortLine_p1", true, false) == null, "The port line waits until the port starts")
 	_check(shelf_row != null and sequel_row != null and award_row != null and sequel_row.get_parent() == shelf_row and award_row.get_parent() == shelf_row and port_button.get_parent() == shelf_row, "Sequel, Enter award, and Port share one row")
 	_check(_button("Hire Mina") != null and str(_button("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Port")
@@ -805,7 +805,7 @@ func _tycoon_secondary_actions() -> void:
 	await _present("journey", port_journey)
 	var port_line := _panel.find_child("PortLine_p1", true, false) as Label
 	port_button = _panel.find_child("Port_p1", true, false) as Button
-	_check(port_line != null and port_line.text == "Port · Whop Mobile · selling 1 day", "A started port reads selling 1 day")
+	_check(port_line != null and port_line.text == "Port · TownSquare Mobile · selling 1 day", "A started port reads selling 1 day")
 	_check(port_button != null and port_button.disabled and port_button.text == "Port · Already ported.", "A second port stays disabled")
 	_check(_panel.find_child("PortShelf_p1", true, false) == null, "The fee line hides once the port has started")
 	port_offer["phase"] = "sold"
@@ -813,7 +813,7 @@ func _tycoon_secondary_actions() -> void:
 	port_offer["fans"] = 2
 	await _present("journey", port_journey)
 	port_line = _panel.find_child("PortLine_p1", true, false) as Label
-	_check(port_line != null and port_line.text == "Port · Whop Mobile · $45.00", "A finished port names the extra sales")
+	_check(port_line != null and port_line.text == "Port · TownSquare Mobile · $45.00", "A finished port names the extra sales")
 	port_offer["phase"] = ""
 	port_offer["cents"] = 0
 	port_offer["fans"] = 0

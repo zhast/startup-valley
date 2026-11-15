@@ -4,8 +4,8 @@ extends SceneTree
 ## Skipping the preview leaves the first newsletter alone. Showing it charges once.
 
 const MAIN := preload("res://world/main.tscn")
-const OFFER := "Press demo · Whop Weekly Preview · $30, about 4 fans"
-const SHOWN := "Preview shown · Whop Weekly Preview"
+const OFFER := "Press demo · TownSquare Weekly Preview · $30, about 4 fans"
+const SHOWN := "Preview shown · TownSquare Weekly Preview"
 var main: GameMain
 var viewport: SubViewport
 var failures: Array[String] = []
@@ -378,7 +378,7 @@ func _run() -> void:
 	check(header != null and header.text.contains("Spring") and header.text.contains("$0.00") and header.text.contains("4 reputation"), "Spring morning shows the preview fee and fans")
 	await click(button_named("End day"))
 	await wait_until(func() -> bool: return main.company_panel.screen == "summary", "Ending the preview day opens the summary")
-	check(label_contains("Press demo: Whop Weekly Preview"), "The summary names the press demo")
+	check(label_contains("Press demo: TownSquare Weekly Preview"), "The summary names the press demo")
 	check(company_reputation() == 4 and company_cash() == 0, "Ending the day does not charge or grant again")
 	await click(button_named("Begin next day"))
 	await wait_until(func() -> bool: return not main.company_panel.visible, "Begin next day returns to the office")

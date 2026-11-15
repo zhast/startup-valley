@@ -1,6 +1,6 @@
 # Tycoon design
 
-Startup Valley plays as a small offline tycoon. Whop shows up in the names, the product types, and the jokes. The game does not talk to Whop, and it does not call a model while you ship a product.
+Startup Valley is a small, story-led offline tycoon set in the fictional TownSquare community. Characters, visible goals, and release milestones guide the player. The core game does not call an external service or model.
 
 The rules in `harness/src/tycoon.ts` are authoritative. This document matches that module. Godot only presents `journey.tycoon`.
 
@@ -74,7 +74,7 @@ The ideal for a stat is `days required × 4`. A sequel's required days are the c
 
 Four reviewers then each move that base by −1, 0, or +1. The jitter comes from the company seed and the product id. Scores clamp to 1–10. The headline is the rounded mean, clamped again. Blurbs follow the headline band: 8–10 high, 5–7 mid, 1–4 low. The review is stored on the product, so a later formula change does not rewrite a shipped score.
 
-Reviewers: **Whop Weekly**, **Discord Dave**, **Margin Call Molly**, **Cohort Casey**.
+Reviewers: **TownSquare Weekly**, **Discord Dave**, **Margin Call Molly**, **Cohort Casey**.
 
 Sales run for 4 days at 100%, 70%, 45%, then 25% of the opening demand. Opening demand is the fit's base units, plus a term from the score, plus a small term from current reputation. When the product added its feature, that opening demand is then `Math.max(1, Math.round((demand * 110) / 100))`. When the product shipped into that season's rival topic, the demand after that step is then `Math.max(1, Math.round((demand * 90) / 100))`. Both run before the curve and the swing. Each flag is stored at release. Later sales days, a port, and a translation reuse them and do not apply them again. A seeded swing of about ±10% lands on each day. Units are at least 1. Cash is units times the unit price. Fans are a fraction of units: 0.4 at score 8+, 0.2 at 5–7, 0.1 below that, and at least 1. Fans add to company reputation. A port does not open a fifth day inside that window. It pays one later day at the same 25% step, and `salesDays` stays 4.
 
@@ -231,7 +231,7 @@ One cozy event per season, on a fixed day. The effect lasts that day only. Names
 | Spring | 13 | Creator Fair | The floor is full of shops and first buyers. |
 | Summer | 11 | Drop Day | Everyone refreshes the page at the same minute. |
 | Fall | 16 | Cohort Kickoff | A new class shows up with notebooks open. |
-| Winter | 25 | Cozy Gift Guide | Whop Weekly lists the warm shops. |
+| Winter | 25 | Cozy Gift Guide | TownSquare Weekly lists the warm shops. |
 
 Each event adds 2 fans to any product that sells that day. The line is "+2 fans on sales today". Units, price, and the stored review do not change. If nothing sells, the event still shows and adds no fans. The next event is the next one after today. After Winter 25 it wraps to Creator Fair in the following year. `daysUntil` is at least 1.
 
@@ -239,7 +239,7 @@ Each event adds 2 fans to any product that sells that day. The line is "+2 fans 
 
 Company Journey shows the label on the heading ("Spring 2 · Year 1 · $0.00 game cash · 0 reputation"). The title continue line and the day complete screen use the same words. A Season card sits under Office: "In season: Fitness, Dating Advice", and either "Creator Fair today. +2 fans on sales today" or "Creator Fair in 11 days". The same card names the next payday. With no hires that line is "No payroll yet". The same card offers one optional loan and one optional booth at the next fair. The product picker adds "· in season" on a favored topic, including a locked one. Hire stays the one primary action. Take loan and Book booth are secondary.
 
-## Whop-themed names
+## TownSquare-themed names
 
 Topics: Fitness, Trading, Sneakers, Reselling, Sports Betting Picks, Cooking, Gaming, Dating Advice, Study Notes, Crypto Alpha.
 
@@ -247,7 +247,7 @@ Product types: Course, Community, Template Pack, Coaching, Software Tool, Newsle
 
 Team: Founder, Mina, Theo, Creative.
 
-Press: Whop Weekly, Discord Dave, Margin Call Molly, Cohort Casey.
+Press: TownSquare Weekly, Discord Dave, Margin Call Molly, Cohort Casey.
 
 Shelf jokes stay in the reviewer blurbs (checkout links, lurkers, margins, welcome modules). They are not a second product catalog.
 
@@ -267,7 +267,7 @@ No ad is the default. `tycoon.start` takes an optional `marketing` of `none`, `s
 | `small` | Small ad | $50 | +20% |
 | `big` | Big ad | $150 | +50% |
 
-The small ad is a Whop Weekly spot. The big ad is the louder buy. The cost is game cash, paid when development starts. Short cash fails with "Need $50" or "Need $150", starts nothing, and charges nothing. The unit boost uses the percents 100 / 120 / 150: `Math.max(1, Math.round((units * unitPercent) / 100))`. None leaves units unchanged, so the first newsletter still pays 20700 cents and 5 fans. Fans follow those units. The boost applies on every day of that product's sales window.
+The small ad is a TownSquare Weekly spot. The big ad is the louder buy. The cost is game cash, paid when development starts. Short cash fails with "Need $50" or "Need $150", starts nothing, and charges nothing. The unit boost uses the percents 100 / 120 / 150: `Math.max(1, Math.round((units * unitPercent) / 100))`. None leaves units unchanged, so the first newsletter still pays 20700 cents and 5 fans. Fans follow those units. The boost applies on every day of that product's sales window.
 
 The choice is stored in `staff_json` next to `pricePercent` and `researchBonus`. Sales use the stored id. An older row that is only a staff array, or a row with no `marketing`, sells with no ad. Stored `sales_cents` are not rewritten.
 
@@ -283,12 +283,12 @@ Every pair is in the starter catalog. There is no minimum review score. The bonu
 
 | Id | Client | Topic | Type | Bonus |
 | --- | --- | --- | --- | --- |
-| `nova` | Nova on Whop | Crypto Alpha | Newsletter | $80 |
-| `remy` | Remy on Whop | Fitness | Course | $120 |
-| `juniper` | Juniper on Whop | Cooking | Newsletter | $70 |
-| `pax` | Pax on Whop | Gaming | Community | $100 |
-| `kit` | Kit on Whop | Study Notes | Template Pack | $60 |
-| `lane` | Lane on Whop | Trading | Newsletter | $90 |
+| `nova` | Nova on TownSquare | Crypto Alpha | Newsletter | $80 |
+| `remy` | Remy on TownSquare | Fitness | Course | $120 |
+| `juniper` | Juniper on TownSquare | Cooking | Newsletter | $70 |
+| `pax` | Pax on TownSquare | Gaming | Community | $100 |
+| `kit` | Kit on TownSquare | Study Notes | Template Pack | $60 |
+| `lane` | Lane on TownSquare | Trading | Newsletter | $90 |
 
 Accept only while the bench is empty. Otherwise the card says "Ship the product on the bench first." and Accept stays disabled. A second accept fails with "A contract is already accepted." The pending accept is `{"id":"..."}` in `tycoon_meta.contract_json` (migration `014_tycoon_contracts.sql`). Empty or unknown means no pending accept.
 
@@ -344,33 +344,33 @@ Company Journey shows one Shipped card per product whose sales have finished. Th
 
 One optional award show per finished product. No entry is the default. The harness owns the fee, the result, and the refusals. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential.
 
-The show is **Whop Creator Awards**. `tycoon.award` takes `{productId}`. The fee is $40. The result comes from the stored review score, not the patched sales score. 8–10 wins and adds 12 fans. 5–7 is a nominee and adds 4 fans. 1–4 is entered and adds no fans. Sales units, price, fans, and `sales_cents` stay on the old formula.
+The show is **TownSquare Creator Awards**. `tycoon.award` takes `{productId}`. The fee is $40. The result comes from the stored review score, not the patched sales score. 8–10 wins and adds 12 fans. 5–7 is a nominee and adds 4 fans. 1–4 is entered and adds no fans. Sales units, price, fans, and `sales_cents` stay on the old formula.
 
-The entry is `award: {outcome, fans}` on the product snapshot in `staff_json`. `outcome` is `won`, `nominated`, or `entered`. There is no new SQL column. An older row that is only a staff array, or a row that omits the field, has not entered. Reads do not rewrite `staff_json`. A successful entry writes the field and one ledger row: id `tycoon:award:<productId>`, cash −$40, earned 0, reputation equal to the fan bonus, label `Award: Whop Creator Awards`. Entering twice fails with "Already entered." and charges nothing. Fans add once.
+The entry is `award: {outcome, fans}` on the product snapshot in `staff_json`. `outcome` is `won`, `nominated`, or `entered`. There is no new SQL column. An older row that is only a staff array, or a row that omits the field, has not entered. Reads do not rewrite `staff_json`. A successful entry writes the field and one ledger row: id `tycoon:award:<productId>`, cash −$40, earned 0, reputation equal to the fan bonus, label `Award: TownSquare Creator Awards`. Entering twice fails with "Already entered." and charges nothing. Fans add once.
 
 A product still on the bench, a product that is still selling, short cash, and a second entry fail with a clear error and spend nothing. The locked reasons are "Ship this product first.", "Still selling.", "Need $40", and "Already entered." A missing id fails with "No product with that id."
 
 The first Crypto Alpha Newsletter still pays 20700 cents and 5 fans when it skips the show. That newsletter scores 6, so entering after sales finish is a nominee and adds 4 fans. The fee waits until sales have finished, so the launch cash and fans do not change.
 
-Each shipped product carries `award` as null on the bench, or `{show, costCents, outcome, fans, entered, enabled, reason}` after release. `show` is Whop Creator Awards. `costCents` is 4000. `outcome` is empty until the product enters. A payload without `award` draws no button, so older UI fixtures still render.
+Each shipped product carries `award` as null on the bench, or `{show, costCents, outcome, fans, entered, enabled, reason}` after release. `show` is TownSquare Creator Awards. `costCents` is 4000. `outcome` is empty until the product enters. A payload without `award` draws no button, so older UI fixtures still render.
 
-Company Journey shows one Shipped card per product whose sales have finished. The card names the show and the fee, "Whop Creator Awards · $40". Enter award is a secondary button. A selling card shows the same button after Sequel, disabled, for example "Enter award · Still selling." A disabled button reads the reason, for example "Enter award · Need $40" or "Enter award · Already entered." Hire stays the one primary action. After entry the card adds "Award · Won · +12 fans", "Award · Nominated · +4 fans", or "Award · Entered". The shipped list repeats that line.
+Company Journey shows one Shipped card per product whose sales have finished. The card names the show and the fee, "TownSquare Creator Awards · $40". Enter award is a secondary button. A selling card shows the same button after Sequel, disabled, for example "Enter award · Still selling." A disabled button reads the reason, for example "Enter award · Need $40" or "Enter award · Already entered." Hire stays the one primary action. After entry the card adds "Award · Won · +12 fans", "Award · Nominated · +4 fans", or "Award · Entered". The shipped list repeats that line.
 
 ## Ports
 
 One optional port per finished product. No port is the default. The harness owns the fee, the extra sales day, and the refusals. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential.
 
-The shelf is **Whop Mobile**. `tycoon.port` takes `{productId}`. The fee is $80. The port pays exactly one extra sales day on the next day end, then it is done. That day uses the stored score after a patch, the same per-day formula as a normal sale, and the last curve step (25%). The seeded swing uses that extra index, so the day is not a copy of the fourth sales day. `salesDays` stays 4. The payout is added to `sales_cents` and to the product's fans. Price, marketing, season, audience, size, event fans, reputation, and the checkout boost all apply as they do on a normal sales day.
+The shelf is **TownSquare Mobile**. `tycoon.port` takes `{productId}`. The fee is $80. The port pays exactly one extra sales day on the next day end, then it is done. That day uses the stored score after a patch, the same per-day formula as a normal sale, and the last curve step (25%). The seeded swing uses that extra index, so the day is not a copy of the fourth sales day. `salesDays` stays 4. The payout is added to `sales_cents` and to the product's fans. Price, marketing, season, audience, size, event fans, reputation, and the checkout boost all apply as they do on a normal sales day.
 
-The field is `port: {shelf, startedDay}` on the product snapshot in `staff_json` while it is selling, and `port: {shelf, startedDay, cents, fans}` after it pays. `shelf` is Whop Mobile. There is no new SQL column. An older row that is only a staff array, or a row that omits the field, has not been ported. Reads do not rewrite `staff_json`. A successful port writes the field and one ledger row for the fee: id `tycoon:port:<productId>`, cash −$80, earned 0, reputation 0, label `Port: Whop Mobile`. The extra sale is a normal sales row: id `tycoon:<productId>:4`, cash and earned equal to that day's cents, reputation equal to that day's fans, label `Sales · <product>`. Fans add once, on that sales row. Porting twice fails with "Already ported." and charges nothing.
+The field is `port: {shelf, startedDay}` on the product snapshot in `staff_json` while it is selling, and `port: {shelf, startedDay, cents, fans}` after it pays. `shelf` is TownSquare Mobile. There is no new SQL column. An older row that is only a staff array, or a row that omits the field, has not been ported. Reads do not rewrite `staff_json`. A successful port writes the field and one ledger row for the fee: id `tycoon:port:<productId>`, cash −$80, earned 0, reputation 0, label `Port: TownSquare Mobile`. The extra sale is a normal sales row: id `tycoon:<productId>:4`, cash and earned equal to that day's cents, reputation equal to that day's fans, label `Sales · <product>`. Fans add once, on that sales row. Porting twice fails with "Already ported." and charges nothing.
 
 A product still on the bench, a product that is still selling, short cash, a second port, and a port while another port is still unpaid fail with a clear error and spend nothing. The locked reasons are "Ship this product first.", "Still selling.", "Need $80", "Already ported.", and "Another port is still selling." A missing id fails with "No product with that id." Only one port can be selling at a time. After it pays, another finished product can port.
 
 The first Crypto Alpha Newsletter still pays 20700 cents and 5 fans when it skips the port. The fee waits until sales have finished, so the launch cash and fans do not change.
 
-Each shipped product carries `port` as null on the bench, or `{shelf, costCents, phase, cents, fans, enabled, reason}` after release. `shelf` is Whop Mobile. `costCents` is 8000. `phase` is empty until the port starts, `selling` until the next day end, then `sold`. A payload without `port` draws no button, so older UI fixtures still render.
+Each shipped product carries `port` as null on the bench, or `{shelf, costCents, phase, cents, fans, enabled, reason}` after release. `shelf` is TownSquare Mobile. `costCents` is 8000. `phase` is empty until the port starts, `selling` until the next day end, then `sold`. A payload without `port` draws no button, so older UI fixtures still render.
 
-Company Journey shows one Shipped card per product whose sales have finished. The card names the shelf and the fee, "Whop Mobile · $80". Port is a secondary button. A selling card shows the same button, disabled, for example "Port · Still selling." A disabled button reads the reason, for example "Port · Need $80", "Port · Already ported.", or "Port · Another port is still selling." After the port starts the card adds "Port · Whop Mobile · selling 1 day". After the extra day it reads "Port · Whop Mobile · $X", where X is that day's cash. The shipped list repeats that line.
+Company Journey shows one Shipped card per product whose sales have finished. The card names the shelf and the fee, "TownSquare Mobile · $80". Port is a secondary button. A selling card shows the same button, disabled, for example "Port · Still selling." A disabled button reads the reason, for example "Port · Need $80", "Port · Already ported.", or "Port · Another port is still selling." After the port starts the card adds "Port · TownSquare Mobile · selling 1 day". After the extra day it reads "Port · TownSquare Mobile · $X", where X is that day's cash. The shipped list repeats that line.
 
 Sequel, Enter award, and Port share one row on the card. Patch stays on its own line while the product is selling. Hire Mina stays the one primary action in the footer. That row is what keeps the orange Hire button from sitting on top of a stack of secondary buttons.
 
@@ -378,19 +378,19 @@ Sequel, Enter award, and Port share one row on the card. Patch stays on its own 
 
 One optional in-house engine. No engine is the default. The harness owns the price, the score bump, and the refusals. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential.
 
-The engine is **Whop Kit Engine**. `tycoon.buyEngine` takes `{id}` and the only id is `whop_kit`. The price is $120. It is bought once for the company. A product can then start on it. The bump is +1 to the base score, added with the sequel bonus, then the score clamps to 1–10. Sales still use the stored review score. The engine is not a new input to the per-day sales formula.
+The engine is **TownSquare Kit Engine**. `tycoon.buyEngine` takes `{id}` and the only id is `whop_kit`. The price is $120. It is bought once for the company. A product can then start on it. The bump is +1 to the base score, added with the sequel bonus, then the score clamps to 1–10. Sales still use the stored review score. The engine is not a new input to the per-day sales formula.
 
-Ownership is `engine_id` on `tycoon_meta`. Empty means not owned. The product snapshot in `staff_json` stores `engine` and `engineBonus` only when that product starts on the engine. `engine` is `whop_kit`. `engineBonus` is 1. An older row that is only a staff array, or a row that omits the fields, started with no engine. Reads do not rewrite `staff_json`. A sequel stores no engine, so its score stays on the sequel rules. The buy is one ledger row: id `tycoon:engine`, cash −$120, earned 0, reputation 0, label `Engine: Whop Kit Engine`. Buying twice fails with "Already owned." and charges nothing. An unknown id fails with "Unknown engine." Short cash fails with "Need $120".
+Ownership is `engine_id` on `tycoon_meta`. Empty means not owned. The product snapshot in `staff_json` stores `engine` and `engineBonus` only when that product starts on the engine. `engine` is `whop_kit`. `engineBonus` is 1. An older row that is only a staff array, or a row that omits the fields, started with no engine. Reads do not rewrite `staff_json`. A sequel stores no engine, so its score stays on the sequel rules. The buy is one ledger row: id `tycoon:engine`, cash −$120, earned 0, reputation 0, label `Engine: TownSquare Kit Engine`. Buying twice fails with "Already owned." and charges nothing. An unknown id fails with "Unknown engine." Short cash fails with "Need $120".
 
-Starting on the engine before it is owned fails with "Buy the engine first." and does not charge a marketing ad. Any other id fails with "Pick None or Whop Kit Engine." The fee is paid at the buy, not again at Start development.
+Starting on the engine before it is owned fails with "Buy the engine first." and does not charge a marketing ad. Any other id fails with "Pick None or TownSquare Kit Engine." The fee is paid at the buy, not again at Start development.
 
 The first Crypto Alpha Newsletter still pays 20700 cents and 5 fans when it starts with no engine. That newsletter scores 6. The same build on the engine scores 7 before the 1–10 cap. A score that is already 10 stays 10.
 
-`journey.tycoon.engine` is `{id, name, blurb, priceCents, scoreBonus, owned, enabled, reason}`. `priceCents` is 12000. `scoreBonus` is 1. The blurb is "One kit, used on the builds you choose." `engineOptions` is None, then Whop Kit Engine. None is always enabled and adds no bump. The kit is enabled only when it is owned. Otherwise its reason is "Buy it first." The buy button is enabled only when the company can pay and does not already own it. The reasons are "Need $120" and "Already owned."
+`journey.tycoon.engine` is `{id, name, blurb, priceCents, scoreBonus, owned, enabled, reason}`. `priceCents` is 12000. `scoreBonus` is 1. The blurb is "One kit, used on the builds you choose." `engineOptions` is None, then TownSquare Kit Engine. None is always enabled and adds no bump. The kit is enabled only when it is owned. Otherwise its reason is "Buy it first." The buy button is enabled only when the company can pay and does not already own it. The reasons are "Need $120" and "Already owned."
 
-Company Journey shows an Engine card under Upgrades. The price line is "Whop Kit Engine · $120". Buy is a secondary button. After the buy the notice reads "Bought Whop Kit Engine. −$120" until the day ends, and the button reads "Buy Whop Kit Engine · Already owned." Hire stays the one primary action.
+Company Journey shows an Engine card under Upgrades. The price line is "TownSquare Kit Engine · $120". Buy is a secondary button. After the buy the notice reads "Bought TownSquare Kit Engine. −$120" until the day ends, and the button reads "Buy TownSquare Kit Engine · Already owned." Hire stays the one primary action.
 
-Once the engine is owned, the New Product picker offers Engine under marketing, with the same choice-row pattern. The default is None. The effect line reads "None · no score bump" or "Whop Kit Engine · +1 score". The build line reads "On the build" or "On the build · Whop Kit Engine". A product on the engine shows "On the build · Whop Kit Engine · +1 score" on the journey, the build screen, the release card, and the shipped list. The picker stays hidden until the engine is owned, so a new company still starts the first newsletter with no engine. A payload without `engine` draws no card and no picker, so older UI fixtures still render.
+Once the engine is owned, the New Product picker offers Engine under marketing, with the same choice-row pattern. The default is None. The effect line reads "None · no score bump" or "TownSquare Kit Engine · +1 score". The build line reads "On the build" or "On the build · TownSquare Kit Engine". A product on the engine shows "On the build · TownSquare Kit Engine · +1 score" on the journey, the build screen, the release card, and the shipped list. The picker stays hidden until the engine is owned, so a new company still starts the first newsletter with no engine. A payload without `engine` draws no card and no picker, so older UI fixtures still render.
 
 ## Focus
 
@@ -413,7 +413,7 @@ The fields are `focus` and `focusBonus` on the product snapshot in `staff_json`.
 
 `journey.tycoon.focusOptions` is the four rows: Balanced, Design, Tech, and Hype. Each product's `focus` is null, or `{id, label, stat, bonus}` with `bonus` 1.
 
-The New Product picker offers Focus under the engine row, with the same choice-row pattern. The effect line reads "Balanced · no point bump" or "Design · +1 design". The shared build line reads "On the build", "On the build · Design", or "On the build · Whop Kit Engine · Design" when an engine is chosen too. A focused product shows "On the build · Design · +1 design" on the journey, the build screen, the release card, and the shipped list. Hire stays the one primary action. Start development stays the primary on the picker. A payload without `focusOptions` leaves the control out, so older UI fixtures still render.
+The New Product picker offers Focus under the engine row, with the same choice-row pattern. The effect line reads "Balanced · no point bump" or "Design · +1 design". The shared build line reads "On the build", "On the build · Design", or "On the build · TownSquare Kit Engine · Design" when an engine is chosen too. A focused product shows "On the build · Design · +1 design" on the journey, the build screen, the release card, and the shipped list. Hire stays the one primary action. Start development stays the primary on the picker. A payload without `focusOptions` leaves the control out, so older UI fixtures still render.
 
 ## Audience
 
@@ -482,7 +482,7 @@ The Season card line is "Payroll · $80 on Spring 28", or "No payroll yet" when 
 
 ## Loans
 
-One optional bank loan. The lender is **Whop Treasury** in copy only. The harness owns the amount, the fee, the due payday, and the ledger rows. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential.
+One optional bank loan. The lender is **TownSquare Treasury** in copy only. The harness owns the amount, the fee, the due payday, and the ledger rows. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential.
 
 At most one loan is outstanding. `tycoon.takeLoan` takes `{}`. A second take fails with "A loan is already out." and pays nothing. Skipping the loan writes no row, so the first Crypto Alpha Newsletter still pays 20700 cents and 5 fans, and the next office day is still 33300 cents.
 
@@ -492,7 +492,7 @@ At most one loan is outstanding. `tycoon.takeLoan` takes `{}`. A second take fai
 | Fee | $50 | Ten percent. Under Mina's $80 season salary. |
 | Repay | $550 | Just under Nicer Checkout Page ($560). A real payday bill. |
 
-Taking the loan writes one ledger row: id `tycoon:loan:<n>:taken`, cash +$500, earned 0, reputation 0, label `Loan: Whop Treasury`. Repayment of $550 runs automatically on the due payday, after that day's sales and payroll. One ledger row: id `tycoon:loan:<n>:repaid`, cash −$550, earned 0, reputation 0, label `Loan repaid`. Cash may go below zero, the same way payroll does. Replaying that day end, or opening the save again, finds the id and does not pay or repay a second time.
+Taking the loan writes one ledger row: id `tycoon:loan:<n>:taken`, cash +$500, earned 0, reputation 0, label `Loan: TownSquare Treasury`. Repayment of $550 runs automatically on the due payday, after that day's sales and payroll. One ledger row: id `tycoon:loan:<n>:repaid`, cash −$550, earned 0, reputation 0, label `Loan repaid`. Cash may go below zero, the same way payroll does. Replaying that day end, or opening the save again, finds the id and does not pay or repay a second time.
 
 The due payday is this season's last day. A loan taken on payday itself waits until the next season, so the same evening does not take the $550 back. After repayment a new loan may be taken, with n counting up.
 
@@ -523,7 +523,7 @@ The card is on Company Journey for the product in development, with the build li
 
 ## Expos
 
-One optional booth at the next seasonal creator fair. The name is **Whop Creator Fair** in copy only. The Spring 13 Creator Fair event is unchanged and still adds 2 fans only when a product sells on its own day. The harness owns the fee, the fans, the fair day, and the ledger rows. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential.
+One optional booth at the next seasonal creator fair. The name is **TownSquare Creator Fair** in copy only. The Spring 13 Creator Fair event is unchanged and still adds 2 fans only when a product sells on its own day. The harness owns the fee, the fans, the fair day, and the ledger rows. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential.
 
 At most one booth per fair. `tycoon.bookBooth` takes `{}` and books the next fair that still pays if today ends on it. A second book for that fair fails with "Already booked." and writes nothing. Skipping the booth writes no row, so the first Crypto Alpha Newsletter still pays 20700 cents and 5 fans, and the next office day is still 33300 cents.
 
@@ -533,27 +533,27 @@ At most one booth per fair. `tycoon.bookBooth` takes `{}` and books the next fai
 | Fans | 3 | Under that newsletter's 5. The offer says "about 3 fans". The payout is exactly 3. Fans do not depend on a shipped product. |
 | Fair day | 14 | The middle of the season. Not payday (day 28). Not an existing event day (Spring 13, Summer 11, Fall 16, Winter 25). |
 
-Booking writes one ledger row: id `tycoon:expo:<year>-<season>:booth`, for example `tycoon:expo:1-spring:booth`, cash −$60, earned 0, reputation 0, label `Booth: Whop Creator Fair`. Cash may not go below zero for this fee. With less than $60 the call fails with "Need $60" and writes nothing.
+Booking writes one ledger row: id `tycoon:expo:<year>-<season>:booth`, for example `tycoon:expo:1-spring:booth`, cash −$60, earned 0, reputation 0, label `Booth: TownSquare Creator Fair`. Cash may not go below zero for this fee. With less than $60 the call fails with "Need $60" and writes nothing.
 
-Fans are paid at the end of the fair day, after that day's sales, so the same evening's units stay on the old formula. `Math.floor(reputation / 10)` would not change units for +3 fans anyway. One ledger row: id `tycoon:expo:<year>-<season>:fans`, cash 0, earned 0, reputation +3, label `Expo: Whop Creator Fair`. A fair that was not booked writes no row and is not paid late. Booking on the fair morning still pays that evening. The next morning the offer moves to the next season's day 14, and the year wraps after Winter. Replaying that day end, or opening the save again, finds the id and does not charge or pay a second time.
+Fans are paid at the end of the fair day, after that day's sales, so the same evening's units stay on the old formula. `Math.floor(reputation / 10)` would not change units for +3 fans anyway. One ledger row: id `tycoon:expo:<year>-<season>:fans`, cash 0, earned 0, reputation +3, label `Expo: TownSquare Creator Fair`. A fair that was not booked writes no row and is not paid late. Booking on the fair morning still pays that evening. The next morning the offer moves to the next season's day 14, and the year wraps after Winter. Replaying that day end, or opening the save again, finds the id and does not charge or pay a second time.
 
 There is no new SQL column. A booked fair is a booth row for that `year-season` key. An older save has no expo rows and loads with the offer.
 
-`journey.tycoon.expo` is `{ name, costCents, fans, when, booked }`. `name` is Whop Creator Fair. `costCents` is 6000. `fans` is 3. `when` is the fair label, such as "Spring 14". `booked` is true once the fee row exists. A payload without `expo` draws no extra line or button.
+`journey.tycoon.expo` is `{ name, costCents, fans, when, booked }`. `name` is TownSquare Creator Fair. `costCents` is 6000. `fans` is 3. `when` is the fair label, such as "Spring 14". `booked` is true once the fee row exists. A payload without `expo` draws no extra line or button.
 
-The Season card line is "Expo · Whop Creator Fair on Spring 14 · $60 booth, about 3 fans" plus one secondary button, Book booth. Once booked the line is "Booth booked · Whop Creator Fair on Spring 14" and the button is gone. Hire stays the one primary action. Book booth is not orange.
+The Season card line is "Expo · TownSquare Creator Fair on Spring 14 · $60 booth, about 3 fans" plus one secondary button, Book booth. Once booked the line is "Booth booked · TownSquare Creator Fair on Spring 14" and the button is gone. Hire stays the one primary action. Book booth is not orange.
 
 ## Localization
 
 One optional translation of a finished product. No translation is the default. The harness owns the fee, the quieter extra sales day, and the refusals. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential.
 
-The edition is **Spanish edition**. That is copy only, for one Whop-flavored region. It is not a new shelf. A port is a second shelf, Whop Mobile, paid as a full last-step sales day. A translation stays on the product's existing shelf, in another language, and sells quieter. A product can have both. They do not block each other. A sequel does not inherit the translation.
+The edition is **Spanish edition**. That is copy only, for one TownSquare-flavored region. It is not a new shelf. A port is a second shelf, TownSquare Mobile, paid as a full last-step sales day. A translation stays on the product's existing shelf, in another language, and sells quieter. A product can have both. They do not block each other. A sequel does not inherit the translation.
 
 `tycoon.localize` takes `{productId}`. At most one translation per product.
 
 | | Amount | Why |
 | --- | --- | --- |
-| Fee | $50 | Copy only, so cheaper than the $80 Whop Mobile port. Over the $40 award fee. Under the $60 expo booth and Mina's $80 season salary. A company that just shipped the $207 newsletter can translate and still keep $157. The fee is not $40, $60, or $80, so the ledger line is its own amount. |
+| Fee | $50 | Copy only, so cheaper than the $80 TownSquare Mobile port. Over the $40 award fee. Under the $60 expo booth and Mina's $80 season salary. A company that just shipped the $207 newsletter can translate and still keep $157. The fee is not $40, $60, or $80, so the ledger line is its own amount. |
 | Extra day | half the units | The same inputs as that product's port extra day: the last curve step (25%) and the same swing index. Then half the units, rounded, and at least 1. Fans use the normal formula on those quieter units. When the full extra day sells more than one unit, this cash is strictly less. `salesDays` stays 4. Day index 5 is still outside the window. |
 
 Buying writes one ledger row: id `tycoon:localize:<productId>:fee`, cash −$50, earned 0, reputation 0, label `Translate: Spanish edition`. The extra sale writes one row when the day ends: id `tycoon:localize:<productId>:sales`, cash and earned equal to the posted cents, reputation equal to that day's fans, label `Sales · Spanish edition`. Replaying that day end, or opening the save again, finds the ids and does not charge or pay a second time.
@@ -574,7 +574,7 @@ Company Journey shows the offer only on the Shipped card, on that product's exis
 
 ## Town day
 
-One optional afternoon off in town. The name is **Whop Block Picnic** in copy only. The harness owns the fee, the fans, and the ledger row. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential. The afternoon does not spend an office day. The clock stays where it is, and the product on the bench does not gain a dev day.
+One optional afternoon off in town. The name is **TownSquare Block Picnic** in copy only. The harness owns the fee, the fans, and the ledger row. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential. The afternoon does not spend an office day. The clock stays where it is, and the product on the bench does not gain a dev day.
 
 At most one town day per season. `tycoon.takeTownDay` takes `{}`. A second take that season fails with "Already took the afternoon." and writes nothing. Skipping the afternoon writes no row, so the first Crypto Alpha Newsletter still pays 20700 cents and 5 fans, and the next office day is still 33300 cents.
 
@@ -583,17 +583,17 @@ At most one town day per season. `tycoon.takeTownDay` takes `{}`. A second take 
 | Fee | $20 | Under the $40 award fee, the $50 translation, and the $60 expo booth. Distinct from each of those, and from Mina's $80 season salary. A company that just shipped the $207 newsletter can take the afternoon and still keep $187. |
 | Fans | 2 | Under the expo's 3 and that newsletter's 5. The offer says "about 2 fans". The payout is exactly 2, on the same company fan total as every other reputation gain. +2 from 0 does not change `Math.floor(reputation / 10)`, so a take before the first release still leaves that newsletter at 20700 cents and 5 product fans. |
 
-Taking the afternoon writes one ledger row: id `tycoon:townday:<year>-<season>:fee`, for example `tycoon:townday:1-spring:fee`, cash −$20, earned 0, reputation +2, label `Town day: Whop Block Picnic`. The fans are on that fee row. There is no second row and no day-end payout. Cash may not go below zero. With less than $20 the call fails with "Need $20" and writes nothing. A missed season is not paid later. The next season uses a new key. Replaying a day end, or opening the save again, finds the id and does not charge or grant a second time.
+Taking the afternoon writes one ledger row: id `tycoon:townday:<year>-<season>:fee`, for example `tycoon:townday:1-spring:fee`, cash −$20, earned 0, reputation +2, label `Town day: TownSquare Block Picnic`. The fans are on that fee row. There is no second row and no day-end payout. Cash may not go below zero. With less than $20 the call fails with "Need $20" and writes nothing. A missed season is not paid later. The next season uses a new key. Replaying a day end, or opening the save again, finds the id and does not charge or grant a second time.
 
 There is no new SQL column. A taken afternoon is that fee row for the `year-season` key. An older save has no town day rows and loads with the offer.
 
-`journey.tycoon.townDay` is `{ name, costCents, fans, season, taken }`. `name` is Whop Block Picnic. `costCents` is 2000. `fans` is 2. `season` is the season name, such as "Spring". `taken` is true once the fee row exists. A payload without `townDay` draws no extra line or button.
+`journey.tycoon.townDay` is `{ name, costCents, fans, season, taken }`. `name` is TownSquare Block Picnic. `costCents` is 2000. `fans` is 2. `season` is the season name, such as "Spring". `taken` is true once the fee row exists. A payload without `townDay` draws no extra line or button.
 
-The Season card line is "Town · Whop Block Picnic this Spring · $20, about 2 fans" plus one secondary button, Take the afternoon. Once taken the line is "Afternoon off · Whop Block Picnic" and the button is gone. Hire stays the one primary action. Take the afternoon is not orange.
+The Season card line is "Town · TownSquare Block Picnic this Spring · $20, about 2 fans" plus one secondary button, Take the afternoon. Once taken the line is "Afternoon off · TownSquare Block Picnic" and the button is gone. Hire stays the one primary action. Take the afternoon is not orange.
 
 ## Press demo
 
-One optional early look at the product on the bench. The name is **Whop Weekly Preview** in copy only, a sneak peek for that creator newsletter. The harness owns the fee, the fans, and the ledger row. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential. The preview does not spend an office day. The clock stays where it is, and the product on the bench does not gain a dev day.
+One optional early look at the product on the bench. The name is **TownSquare Weekly Preview** in copy only, a sneak peek for that creator newsletter. The harness owns the fee, the fans, and the ledger row. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential. The preview does not spend an office day. The clock stays where it is, and the product on the bench does not gain a dev day.
 
 At most one press demo per product. `tycoon.showPressDemo` takes `{}` and shows the product in development. A second show fails with "Already shown." and writes nothing. With nothing on the bench, including after release, it fails with "No product is on the bench." and writes nothing. Skipping the preview writes no row, so the first Crypto Alpha Newsletter still pays 20700 cents and 5 fans, and the next office day is still 33300 cents.
 
@@ -602,36 +602,36 @@ At most one press demo per product. `tycoon.showPressDemo` takes `{}` and shows 
 | Fee | $30 | Unused. Over the $20 town afternoon, under the $40 award fee, the $50 translation, the $60 expo booth, and Mina's $80 season salary. Distinct from each of those, and from the $150 publisher advance. A company that just shipped the $207 newsletter can show a preview and still keep $177. |
 | Fans | 4 | Unused. Over the picnic's 2 and the expo's 3, under that newsletter's 5. The offer says "about 4 fans". The payout is exactly 4, on the same company fan total as every other reputation gain. +4 from 0 does not change `Math.floor(reputation / 10)`, so a show before the first release still leaves that newsletter at 20700 cents and 5 product fans. |
 
-Showing the preview writes one ledger row: id `tycoon:pressdemo:<productId>:fee`, for example `tycoon:pressdemo:p1:fee`, cash −$30, earned 0, reputation +4, label `Press demo: Whop Weekly Preview`. The fans are on that fee row. There is no second row and no day-end payout. Cash may not go below zero. With less than $30 the call fails with "Need $30" and writes nothing. Replaying a day end, or opening the save again, finds the id and does not charge or grant a second time. The next product uses a new id.
+Showing the preview writes one ledger row: id `tycoon:pressdemo:<productId>:fee`, for example `tycoon:pressdemo:p1:fee`, cash −$30, earned 0, reputation +4, label `Press demo: TownSquare Weekly Preview`. The fans are on that fee row. There is no second row and no day-end payout. Cash may not go below zero. With less than $30 the call fails with "Need $30" and writes nothing. Replaying a day end, or opening the save again, finds the id and does not charge or grant a second time. The next product uses a new id.
 
 The flag is `pressDemo: true` on the product snapshot in `staff_json`. There is no new SQL column. An older row that is only a staff array, or a row that omits the field, has not shown a preview. Reads do not rewrite `staff_json`. A sequel stores no press demo, so it can show its own preview.
 
-`pressDemo` on a product is `{ name, costCents, fans, shown }` or null. `name` is Whop Weekly Preview. `costCents` is 3000. `fans` is 4. The object is present while the product is in development, shown or not. After release it stays only when the preview was shown. A payload without `pressDemo` draws no line.
+`pressDemo` on a product is `{ name, costCents, fans, shown }` or null. `name` is TownSquare Weekly Preview. `costCents` is 3000. `fans` is 4. The object is present while the product is in development, shown or not. After release it stays only when the preview was shown. A payload without `pressDemo` draws no line.
 
-The line sits on Company Journey for the product in development, on the same card as the publisher deal, above New Product. The offer line is "Press demo · Whop Weekly Preview · $30, about 4 fans" plus one secondary button, Show preview. Once shown the line is "Preview shown · Whop Weekly Preview" and the button is gone. After release the card is gone. Hire stays the one primary action. Show preview is not orange.
+The line sits on Company Journey for the product in development, on the same card as the publisher deal, above New Product. The offer line is "Press demo · TownSquare Weekly Preview · $30, about 4 fans" plus one secondary button, Show preview. Once shown the line is "Preview shown · TownSquare Weekly Preview" and the button is gone. After release the card is gone. Hire stays the one primary action. Show preview is not orange.
 
 ## Launch trailer
 
-One optional cut for a product that is currently selling. The name is **Whop Creator Cut** in copy only, a launch trailer the company cuts itself. The harness owns the fee, the fans, and the ledger row. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential. The trailer does not spend an office day. The clock stays where it is, and dev days do not move.
+One optional cut for a product that is currently selling. The name is **TownSquare Creator Cut** in copy only, a launch trailer the company cuts itself. The harness owns the fee, the fans, and the ledger row. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential. The trailer does not spend an office day. The clock stays where it is, and dev days do not move.
 
 At most one trailer per product. `tycoon.makeTrailer` takes `{ productId }` and cuts that selling product. A second cut fails with "Already made." and writes nothing. An unknown id fails with "No product with that id." A product that is not selling, including one still on the bench and one whose four sales days are finished, fails with "No product is selling." and writes nothing. Skipping the trailer writes no row, so the first Crypto Alpha Newsletter still pays 20700 cents and 5 fans, and the next office day is still 33300 cents.
 
 | | Amount | Why |
 | --- | --- | --- |
-| Fee | $25 | Unused. Over the $20 town afternoon, under the $30 press demo, the $40 award fee, the $50 translation, the $60 expo booth, and Mina's $80 season salary. Distinct from each of those, and from the $150 publisher advance. A self-cut is cheaper than the Whop Weekly sneak peek and a little more than the picnic. After the $207 launch the company keeps $182. |
+| Fee | $25 | Unused. Over the $20 town afternoon, under the $30 press demo, the $40 award fee, the $50 translation, the $60 expo booth, and Mina's $80 season salary. Distinct from each of those, and from the $150 publisher advance. A self-cut is cheaper than the TownSquare Weekly sneak peek and a little more than the picnic. After the $207 launch the company keeps $182. |
 | Fans | 6 | Unused. Over the press demo's 4, the expo's 3, the picnic's 2, and that newsletter's 5 product fans. The offer says "about 6 fans". The payout is exactly 6, on the same company fan total as every other reputation gain. A cut right after the first sale moves reputation from 5 to 11, so later sales use `Math.floor(reputation / 10)` = 1 and those later days sell one more base unit. The trailer row itself earns 0. The product's sales cents and product fans stay on the sales rows. Skipping the cut never calls the method, so the first newsletter stays at 20700 cents and 5 fans, and the next office day stays 33300 cents. |
 
-Making the trailer writes one ledger row: id `tycoon:trailer:<productId>:fee`, for example `tycoon:trailer:p1:fee`, cash −$25, earned 0, reputation +6, label `Trailer: Whop Creator Cut`. The fans are on that fee row. There is no second row and no day-end payout. Cash may not go below zero. With less than $25 the call fails with "Need $25" and writes nothing. Replaying a day end, or opening the save again, finds the id and does not charge or grant a second time. The next product uses a new id while it is selling.
+Making the trailer writes one ledger row: id `tycoon:trailer:<productId>:fee`, for example `tycoon:trailer:p1:fee`, cash −$25, earned 0, reputation +6, label `Trailer: TownSquare Creator Cut`. The fans are on that fee row. There is no second row and no day-end payout. Cash may not go below zero. With less than $25 the call fails with "Need $25" and writes nothing. Replaying a day end, or opening the save again, finds the id and does not charge or grant a second time. The next product uses a new id while it is selling.
 
 The flag is `trailer: true` on the product snapshot in `staff_json`. There is no new SQL column. An older row that is only a staff array, or a row that omits the field, has not made a trailer. Reads do not rewrite `staff_json`. A sequel stores no trailer, so it can cut its own while it is selling.
 
-`trailer` on a product is `{ name, costCents, fans, made }` or null. `name` is Whop Creator Cut. `costCents` is 2500. `fans` is 6. The object is present while the product is selling, made or not. After the sales window it stays only when the trailer was made. A payload without `trailer` draws no line. The Shipped card does not draw the line.
+`trailer` on a product is `{ name, costCents, fans, made }` or null. `name` is TownSquare Creator Cut. `costCents` is 2500. `fans` is 6. The object is present while the product is selling, made or not. After the sales window it stays only when the trailer was made. A payload without `trailer` draws no line. The Shipped card does not draw the line.
 
-The line sits on the Selling card, after the sales-day line and before Patch. The offer line is "Trailer · Whop Creator Cut · $25, about 6 fans" plus one secondary button, Make trailer. Once made the line is "Trailer made · Whop Creator Cut" and the button is gone. Hire stays the one primary action. Make trailer is not orange. There is no new marketing picker row.
+The line sits on the Selling card, after the sales-day line and before Patch. The offer line is "Trailer · TownSquare Creator Cut · $25, about 6 fans" plus one secondary button, Make trailer. Once made the line is "Trailer made · TownSquare Creator Cut" and the button is gone. Hire stays the one primary action. Make trailer is not orange. There is no new marketing picker row.
 
 ## Dev diary
 
-One optional writeup for a product after its sales finish. The name is **Whop Post-Mortem** in copy only, a creator post-mortem on the Whop blog. The harness owns the fee, the fans, and the ledger row. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential. The diary does not spend an office day. The clock stays where it is, and dev days do not move.
+One optional writeup for a product after its sales finish. The name is **TownSquare Post-Mortem** in copy only, a creator post-mortem on the TownSquare blog. The harness owns the fee, the fans, and the ledger row. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential. The diary does not spend an office day. The clock stays where it is, and dev days do not move.
 
 At most one diary per product. `tycoon.writeDiary` takes `{ productId }` and writes that finished product. A second write fails with "Already written." and writes nothing. An unknown id fails with "No product with that id." A product still on the bench fails with "Ship this product first." A product that is still selling fails with "Still selling." Skipping the diary writes no row, so the first Crypto Alpha Newsletter still pays 20700 cents and 5 fans, and the next office day is still 33300 cents.
 
@@ -640,13 +640,13 @@ At most one diary per product. `tycoon.writeDiary` takes `{ productId }` and wri
 | Fee | $15 | Unused. Under the $20 town afternoon, the $25 trailer, the $30 press demo, the $40 award fee, the $50 translation, the $60 expo booth, and Mina's $80 season salary. Distinct from each of those. A self-published post-mortem is cheaper than a self-cut trailer. After the $207 launch the company keeps $192. After the four-day window the first newsletter has $468, so the fee is a small leftover. |
 | Fans | 1 | Unused. Under the picnic's 2, the expo's 3, the press demo's 4, that newsletter's 5 product fans, and the trailer's 6. The offer says "about 1 fan". The payout is exactly 1, on the same company fan total as every other reputation gain. After the four-day window reputation is 11, so the write moves it to 12. `Math.floor(reputation / 10)` stays 1. The diary row itself earns 0. The product's sales cents and product fans stay on the sales rows. Skipping the write never calls the method, so the first newsletter stays at 20700 cents and 5 fans, and the next office day stays 33300 cents. |
 
-Writing the diary writes one ledger row: id `tycoon:diary:<productId>:fee`, for example `tycoon:diary:p1:fee`, cash −$15, earned 0, reputation +1, label `Diary: Whop Post-Mortem`. The fans are on that fee row. There is no second row and no day-end payout. Cash may not go below zero. With less than $15 the call fails with "Need $15" and writes nothing. Replaying a day end, or opening the save again, finds the id and does not charge or grant a second time. The next finished product uses a new id.
+Writing the diary writes one ledger row: id `tycoon:diary:<productId>:fee`, for example `tycoon:diary:p1:fee`, cash −$15, earned 0, reputation +1, label `Diary: TownSquare Post-Mortem`. The fans are on that fee row. There is no second row and no day-end payout. Cash may not go below zero. With less than $15 the call fails with "Need $15" and writes nothing. Replaying a day end, or opening the save again, finds the id and does not charge or grant a second time. The next finished product uses a new id.
 
 The flag is `diary: true` on the product snapshot in `staff_json`. There is no new SQL column. An older row that is only a staff array, or a row that omits the field, has not written a diary. Reads do not rewrite `staff_json`. A sequel stores no diary, so it can write its own after its sales finish.
 
-`diary` on a product is `{ name, costCents, fans, written }` or null. `name` is Whop Post-Mortem. `costCents` is 1500. `fans` is 1. The object is present after sales finish, written or not. Before that it stays only when the diary was already written. A payload without `diary` draws no line. The Selling card does not draw the line. There is no new marketing picker row.
+`diary` on a product is `{ name, costCents, fans, written }` or null. `name` is TownSquare Post-Mortem. `costCents` is 1500. `fans` is 1. The object is present after sales finish, written or not. Before that it stays only when the diary was already written. A payload without `diary` draws no line. The Selling card does not draw the line. There is no new marketing picker row.
 
-The line sits on the Shipped card, after "Sales finished." and before the four-button shelf row. The offer line is "Diary · Whop Post-Mortem · $15, about 1 fan" plus one secondary button, Write diary. Once written the line is "Diary written · Whop Post-Mortem" and the button is gone. Hire stays the one primary action. Write diary is not orange.
+The line sits on the Shipped card, after "Sales finished." and before the four-button shelf row. The offer line is "Diary · TownSquare Post-Mortem · $15, about 1 fan" plus one secondary button, Write diary. Once written the line is "Diary written · TownSquare Post-Mortem" and the button is gone. Hire stays the one primary action. Write diary is not orange.
 
 ## Rivals
 
@@ -675,7 +675,7 @@ Spring is Cooking, so the existing Crypto Alpha, Fitness, Trading, and Gaming pa
 
 ## Features
 
-One optional feature on the product on the bench. The name is **Whop Bonus Drop** in copy only, a small add-on a creator ships with the product. It is not a real Whop product. The harness owns the extra day and the demand bump. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential. There is no fee and no ledger row. The cost is one extra office day.
+One optional feature on the product on the bench. The name is **TownSquare Bonus Drop** in copy only, a small add-on a creator ships with the product. It is not a real TownSquare product. The harness owns the extra day and the demand bump. Godot only shows `journey.tycoon`. Nothing on this path calls a model, the network, or a credential. There is no fee and no ledger row. The cost is one extra office day.
 
 At most one feature per product. `tycoon.addFeature` takes `{}` and adds it to the product in development. A second add fails with "Already added." and changes nothing. With nothing on the bench, including after release, it fails with "No product is on the bench." and changes nothing. The click does not move the clock and does not add a dev day. Skipping it changes nothing, so the first Crypto Alpha Newsletter still takes 2 office days, still pays 20700 cents and 5 fans, and the next office day is still 33300 cents.
 
@@ -686,9 +686,9 @@ At most one feature per product. `tycoon.addFeature` takes `{}` and adds it to t
 
 Adding the feature stores `feature: true` on the product snapshot in `staff_json`. There is no new SQL column. At release, if that flag is set and `featureDemand` is not, the release stores `featureDemand: true` in the same snapshot write as a rival cut, before the opening sale. Later sales days, a port, and a translation read `featureDemand`. They do not read the live choice. A replayed day end does not set it again and does not recompute an existing sale. Reopening the save does not set it again. An older row that is only a staff array, or a row that omits the field, has no feature. Reads do not rewrite `staff_json`. A sequel stores no feature, so it can add its own. `devDaysRequired` is `requiredDevDays` plus 1 when `feature` is true. Progress and "needs N more office days" use that count. If the days already worked cover the new count, release is allowed. The usual path, adding while the build is short of the new count, costs the extra day.
 
-`feature` on a product is `{ name, dayDelta, unitPercent, added }` or null. `name` is Whop Bonus Drop. `dayDelta` is 1. `unitPercent` is 110. `added` is true once the feature is on the product. The object is present while the product is in development, added or not. After release it stays only when the feature was added. A payload without `feature` draws no line.
+`feature` on a product is `{ name, dayDelta, unitPercent, added }` or null. `name` is TownSquare Bonus Drop. `dayDelta` is 1. `unitPercent` is 110. `added` is true once the feature is on the product. The object is present while the product is in development, added or not. After release it stays only when the feature was added. A payload without `feature` draws no line.
 
-The line sits on Company Journey for the product in development, on the same card as the publisher deal and the press demo, under the press demo and above New Product. The offer line is "Feature · Whop Bonus Drop · +1 office day, +10% opening demand" plus one secondary button, Add feature. Once added the line is "Feature added · Whop Bonus Drop · Building · day 0 of 3" and the button is gone. The day count uses `devDays` and `devDaysRequired`, so the extra day is visible on this card. After release the card is gone. Hire stays the one primary action. Add feature is not orange.
+The line sits on Company Journey for the product in development, on the same card as the publisher deal and the press demo, under the press demo and above New Product. The offer line is "Feature · TownSquare Bonus Drop · +1 office day, +10% opening demand" plus one secondary button, Add feature. Once added the line is "Feature added · TownSquare Bonus Drop · Building · day 0 of 3" and the button is gone. The day count uses `devDays` and `devDaysRequired`, so the extra day is visible on this card. After release the card is gone. Hire stays the one primary action. Add feature is not orange.
 
 ## Day plan
 

@@ -49,6 +49,7 @@ var delivery_position: Vector2 = Vector2.ZERO
 var work_state: WorkState = WorkState.IDLE
 var schedule_phase: String = "work"
 var has_live_job: bool = false
+var has_studio_project := false
 var memory_line: String = ""
 var _target_position: Vector2 = Vector2.ZERO
 var _arrival_state: WorkState = WorkState.IDLE
@@ -568,6 +569,9 @@ func set_schedule_phase(phase: String) -> void:
 	elif phase == "off":
 		walk_to(home_position, WorkState.OFF_SHIFT, WorkState.OFF_SHIFT)
 	else:
+		if has_studio_project:
+			walk_to(desk_position, WorkState.WALKING_TO_DESK, WorkState.SITTING)
+			return
 		if leaving_collaboration:
 			walk_to(desk_position, WorkState.IDLE_WALKING, WorkState.SITTING)
 			return
@@ -578,6 +582,16 @@ func set_schedule_phase(phase: String) -> void:
 		_idle_cooldown = 0.5
 		_update_character_frame()
 		queue_redraw()
+
+func set_studio_project(active: bool) -> void:
+	# This is a read-only projection of the worker's assigned product team.
+	# Offline studio work uses the seated pose, never fake provider/tool events.
+	if has_studio_project == active: return
+	has_studio_project = active
+	_idle_elapsed = 0.0
+	if active and schedule_phase == "work" and not has_live_job:
+		_speech_visible = false
+		walk_to(desk_position, WorkState.WALKING_TO_DESK, WorkState.SITTING)
 
 func apply_worker_event(event: WorkerEventRecord, player_position: Vector2) -> void:
 	if not has_live_job and event.type in [&"agent.thinking", &"tool.started", &"tool.completed", &"approval.required"]:
@@ -825,6 +839,8 @@ func _physics_process(delta: float) -> void:
 
 func _update_idle(delta: float) -> void:
 	if _terminal_seat_rest:
+		return
+	if has_studio_project and work_state == WorkState.SITTING:
 		return
 	_idle_elapsed += delta
 	if work_state == WorkState.IDLE and _idle_elapsed >= _idle_cooldown:

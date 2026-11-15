@@ -47,6 +47,7 @@ var _cancel_confirm := false
 var _pivot_open := false
 var _playtest_shown := false
 var _playtest_product_id := ""
+var _story_draft_started := false
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -83,11 +84,17 @@ func _ready() -> void:
 	hide()
 
 func present(mode: String = "journey") -> void:
-	if mode == "journey" and _is_chapter_complete():
+	if mode == "journey" and not story_mode and _is_chapter_complete():
 		mode = "complete"
 	screen = mode
 	_details_open = false
 	_future_open = false
+	if story_mode and mode == "product" and not (_tycoon().get("developing") is Dictionary) and not _story_draft_started:
+		_story_draft_started = true
+		_staff_ids.clear()
+		for person: Dictionary in _tycoon().get("staff", []):
+			if bool(person.get("hired", false)) and str(person.get("id", "")) != "founder":
+				_staff_ids.append(str(person.get("id", "")))
 	_scroll.scroll_vertical = 0
 	show()
 	_render()
@@ -99,8 +106,13 @@ func present(mode: String = "journey") -> void:
 
 func update_state(value: Dictionary) -> void:
 	state = value
+	if story_mode and not _has_hired_teammate():
+		_story_draft_started = false
+		_staff_ids.clear()
+	elif story_mode and _tycoon().get("developing") is Dictionary:
+		_story_draft_started = false
 	busy = false
-	if visible and screen == "journey" and _is_chapter_complete():
+	if visible and screen == "journey" and not story_mode and _is_chapter_complete():
 		present("complete")
 		return
 	if visible and screen in ["journey", "title", "closing", "complete", "product", "release"]: _render()
@@ -203,7 +215,7 @@ func _request(method: String, params: Dictionary) -> void:
 func _render() -> void:
 	_render_generation += 1
 	_clear()
-	if screen == "journey" and _is_chapter_complete():
+	if screen == "journey" and not story_mode and _is_chapter_complete():
 		screen = "complete"
 	var panel_size := Vector2(744, 608)
 	match screen:
@@ -266,8 +278,8 @@ func _fit_sparse_height(generation: int) -> void:
 		"settings": minimum_height = 480.0
 		"journey": minimum_height = 456.0
 		"closing", "summary": minimum_height = 456.0
-		"product": minimum_height = 520.0
-		"release": minimum_height = 460.0
+		"product": minimum_height = (400.0 if _tycoon().get("developing") is Dictionary else 500.0) if story_mode else 520.0
+		"release": minimum_height = 420.0 if story_mode else 460.0
 	var column := _header.get_parent() as VBoxContainer
 	var required_height := _frame.get_theme_stylebox("panel").get_minimum_size().y
 	required_height += _header.get_combined_minimum_size().y + _content.get_combined_minimum_size().y + _footer.get_combined_minimum_size().y
@@ -527,6 +539,9 @@ func _journey_screen() -> void:
 		_label("Mina joins for free. You’ll build your first project together.", false, null, "meta")
 		_actions("Let’s do this, Mina", func() -> void: _request("hiring.complete", {"employeeId": str(first_guest.get("id", "mira"))}), true, "")
 		return
+	if story_mode:
+		_story_journey_screen()
+		return
 	_heading("Company Journey", "%s  ·  %s  ·  %d reputation" % [_office_date(), _cash_phrase(int(company.get("cashCents", 0))), int(company.get("reputation", 0))], "meta", "OfficeDate")
 	var next := _label(_next_step().trim_prefix("NEXT · "), false, null, "action")
 	next.name = "NextStep"
@@ -575,6 +590,37 @@ func _journey_screen() -> void:
 	_season_card()
 	var money_note := _label("Game cash is virtual. Shipping products is fully offline." if OS.has_feature("web") else "Game cash is virtual. Shipping products is fully offline. Ads and incorporation create planning files only.")
 	money_note.name = "MoneyExplanation"
+
+func _story_journey_screen() -> void:
+	var goal := StoryMoments.goal(state)
+	_heading("Our story", "%s · %s" % [_office_date(), _cash_phrase(int((state.get("company", {}) as Dictionary).get("cashCents", 0)))], "meta", "OfficeDate")
+	var current := _card()
+	current.name = "CurrentStoryGoal"
+	_label(str(goal.get("title", "A studio begins")), true, current)
+	_label(str(goal.get("detail", "Every story starts with a small idea.")), false, current)
+	var moments := _card()
+	moments.name = "StoryMilestones"
+	_label("A studio begins", true, moments)
+	for moment: Dictionary in StoryMoments.milestones(state):
+		var prefix := "Done · " if bool(moment.get("complete", false)) else "Next · " if bool(moment.get("current", false)) else "Later · "
+		_label(prefix + str(moment.get("title", "")), false, moments, "action" if bool(moment.get("current", false)) else "meta")
+	_disclosure("Close studio plans" if _details_open else "Studio plans", _toggle_details, _details_open, _content)
+	if _details_open:
+		var candidate := _available_candidate()
+		if not candidate.is_empty():
+			_person(candidate, true)
+			var cost := int(candidate.get("costCents", 0))
+			_button("Invite %s · $%s" % [candidate.get("name", "a teammate"), _money(cost)], func() -> void: _request("hiring.complete", {"employeeId": str(candidate.get("id", ""))}), false, int((state.get("company", {}) as Dictionary).get("cashCents", 0)) >= cost)
+		_selling_cards()
+		_finished_cards()
+		_contract_card()
+		_train_staff()
+		_research_card()
+		_upgrades_card()
+		_engine_card()
+		_office_card()
+		_season_card()
+	_actions(str(goal.get("action", "Plan our first project")), func() -> void: present("product"), not state.is_empty(), "Back to office")
 
 func _tycoon() -> Dictionary:
 	var value: Variant = state.get("tycoon", {})
@@ -1946,11 +1992,129 @@ func _stat_word(stat: String) -> String:
 func _product_screen() -> void:
 	var tycoon := _tycoon()
 	var developing: Dictionary = tycoon.get("developing", {}) if tycoon.get("developing") is Dictionary else {}
+	if story_mode:
+		if developing.is_empty(): _story_product_picker(tycoon)
+		else: _story_product_progress(developing)
+		return
 	if developing.is_empty():
 		_product_picker(tycoon)
 	else:
 		_product_progress(developing)
 	_product_history(tycoon)
+
+func _story_product_picker(tycoon: Dictionary) -> void:
+	var first := (tycoon.get("history", []) as Array).is_empty()
+	_heading("Our first idea" if first else "Our next idea", "Pick something you’d love to make. We’ll bring it to life together.")
+	var lock := _locked_contract()
+	if not lock.is_empty():
+		_topic_id = str(lock.get("topicId", _topic_id))
+		_type_id = str(lock.get("typeId", _type_id))
+		_label("A promise to %s · %s × %s" % [lock.get("client", "our client"), lock.get("topicName", ""), lock.get("typeName", "")], false, null, "action")
+	var choices := _card()
+	_label("What is it about?", true, choices)
+	_story_choice(tycoon.get("topics", []) as Array, true, not lock.is_empty(), choices)
+	_label("What will we make?", true, choices)
+	_story_choice(tycoon.get("types", []) as Array, false, not lock.is_empty(), choices)
+	var fit := _pair_fit(_topic_id, _type_id)
+	var hint := _label("%s match · %s" % [_fit_word(fit), _fit_hint(fit)], false, choices, "action")
+	hint.name = "ProductFit"
+	var team_names := PackedStringArray(["You"])
+	for person: Dictionary in tycoon.get("staff", []):
+		if _staff_ids.has(str(person.get("id", ""))): team_names.append(str(person.get("name", "a teammate")))
+	_label("Making it together · " + " & ".join(team_names), false, null, "action")
+	_disclosure("Close the details" if _details_open else "Adjust the details", _toggle_details, _details_open, _content)
+	# Keep the existing option validators active while their controls are folded.
+	# The form remains a view of worker options, with the original request shape.
+	var advanced := VBoxContainer.new()
+	advanced.name = "ProjectDetails"
+	advanced.add_theme_constant_override("separation", 10)
+	_content.add_child(advanced)
+	var main_content := _content
+	_content = advanced
+	_price_picker(tycoon)
+	_marketing_picker(tycoon)
+	_engine_picker(tycoon)
+	_focus_picker(tycoon)
+	_audience_picker(tycoon)
+	_size_picker(tycoon)
+	_label("Who’s joining in?", true)
+	for person: Dictionary in tycoon.get("staff", []):
+		var person_id := str(person.get("id", ""))
+		if person_id == "founder" or not bool(person.get("hired", false)): continue
+		_button("%s · %s" % [person.get("name", "Teammate"), "joining in" if _staff_ids.has(person_id) else "taking a break"], _toggle_staff.bind(person_id), _staff_ids.has(person_id))
+	_content = main_content
+	advanced.visible = _details_open
+	var staff_ids: Array[String] = ["founder"]
+	staff_ids.append_array(_staff_ids)
+	_actions("Let’s make it", func() -> void: _request("tycoon.start", {"topicId": _topic_id, "typeId": _type_id, "staffIds": staff_ids, "pricePercent": _price_percent, "marketing": _marketing_id, "engine": _engine_id, "focus": _focus_id, "audience": _audience_id, "size": _size_id}), not fit.is_empty() and _entry_unlocked("topics", _topic_id) and _entry_unlocked("types", _type_id), "Back to our story", func() -> void: present("journey"))
+
+func _story_choice(options: Array, topic: bool, locked: bool, parent: Control) -> void:
+	var picker := OptionButton.new()
+	picker.name = "StoryTopic" if topic else "StoryFormat"
+	picker.custom_minimum_size.y = 44
+	picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	picker.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	CozyUI.dropdown(picker)
+	var selected := -1
+	var wanted := _topic_id if topic else _type_id
+	for item: Dictionary in options:
+		if not bool(item.get("unlocked", true)): continue
+		var id := str(item.get("id", ""))
+		if locked and id != wanted: continue
+		var index := picker.item_count
+		picker.add_item(str(item.get("name", "Idea")))
+		picker.set_item_metadata(index, id)
+		if id == wanted: selected = index
+	if picker.item_count > 0:
+		if selected < 0: selected = 0
+		picker.select(selected)
+		if topic: _topic_id = str(picker.get_item_metadata(selected))
+		else: _type_id = str(picker.get_item_metadata(selected))
+	picker.disabled = locked or picker.item_count == 0
+	picker.item_selected.connect(func(index: int) -> void:
+		if topic: _choose_topic(str(picker.get_item_metadata(index)))
+		else: _choose_type(str(picker.get_item_metadata(index)))
+	)
+	parent.add_child(picker)
+
+func _story_product_progress(product: Dictionary) -> void:
+	var ready := bool(product.get("ready", false))
+	_heading("Ready for the world" if ready else "One day at a time", str(product.get("name", "Our project")))
+	var progress := _card()
+	_label("We made this." if ready else "Our idea is taking shape.", true, progress)
+	_label("Take a breath. Your first audience is waiting." if ready else "A little more care, a little more craft. Wrap up the day to move our project forward.", false, progress)
+	var bar := ProgressBar.new()
+	bar.name = "StoryProjectProgress"
+	bar.custom_minimum_size.y = 24
+	var track := StyleBoxFlat.new()
+	track.bg_color = Color("d8c49c")
+	track.border_color = Color("785a38")
+	track.set_border_width_all(1)
+	bar.add_theme_stylebox_override("background", track)
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = Color("be974e")
+	fill.border_color = Color("785a38")
+	fill.set_border_width_all(1)
+	bar.add_theme_stylebox_override("fill", fill)
+	bar.add_theme_color_override("font_color", CozyUI.INK)
+	bar.value = clampf(float(product.get("progress", 0)), 0, 100)
+	progress.add_child(bar)
+	_label("Ready to release" if ready else "Day %d of %d" % [int(product.get("devDays", 0)), int(product.get("devDaysRequired", 1))], false, progress, "action")
+	_disclosure("Close project notes" if _details_open else "Project notes", _toggle_details, _details_open, _content)
+	if _details_open:
+		_show_research_fit(product, "ResearchFitJourney")
+		_show_launch_price(product, "LaunchPrice")
+		_show_marketing(product, "MarketingLine")
+		_show_engine(product, "EngineLine")
+		_show_focus(product, "FocusLine")
+		_show_audience(product, "AudienceLine")
+		_show_size(product, "SizeLine")
+		_show_contract(product, "ContractLine")
+		_label("Design %d · Tech %d · Hype %d" % [int(product.get("design", 0)), int(product.get("tech", 0)), int(product.get("hype", 0))], false, null, "meta")
+	if ready:
+		_actions("Share it with the world", func() -> void: _release_product(str(product.get("id", ""))), true, "Back to office")
+	else:
+		_actions("Wrap up the day", func() -> void: _request("day.end", {"day": day}), true, "Back to office")
 
 func _product_picker(tycoon: Dictionary) -> void:
 	var lock := _locked_contract()
@@ -2081,6 +2245,9 @@ func _release_screen() -> void:
 		_heading("Release day", "The shelf is empty.")
 		_actions("Back to office", hide, true, "Ship a product", func() -> void: present("product"))
 		return
+	if story_mode:
+		_story_release_screen(product)
+		return
 	var review: Dictionary = product.get("review", {}) if product.get("review") is Dictionary else {}
 	var company: Dictionary = state.get("company", {})
 	_heading("Release day", str(product.get("name", "Product")))
@@ -2111,6 +2278,25 @@ func _release_screen() -> void:
 	_label("Sales keep coming for a few office days.", false, null, "meta")
 	_label("Company · %s · %d reputation" % [_cash_phrase(int(company.get("cashCents", 0))), int(company.get("reputation", 0))])
 	_actions("Back to office", hide, true, "Ship another", func() -> void: present("product"))
+
+func _story_release_screen(product: Dictionary) -> void:
+	var first := (_tycoon().get("history", []) as Array).size() == 1
+	_heading("Our first release!" if first else "Out in the world", str(product.get("name", "Our project")))
+	var achievement := _card()
+	achievement.name = "ReleaseAchievement"
+	_label("Moment completed · Our first release" if first else "Another idea made real", true, achievement)
+	_label("An empty office. A notebook full of ideas. And now, something people can enjoy." if first else "There’s a little more of your studio out in the world today.", false, achievement)
+	var review: Dictionary = product.get("review", {}) if product.get("review") is Dictionary else {}
+	_label("%d / 10 from reviewers · %d new fans" % [int(review.get("score", 0)), int(product.get("fans", 0))], false, achievement, "action")
+	_label("Launch earnings · $%s" % _money(int(product.get("salesCents", 0))), false, achievement, "action")
+	_disclosure("Close the reviews" if _details_open else "Read the reviews", _toggle_details, _details_open, _content)
+	if _details_open:
+		for reviewer: Dictionary in review.get("reviewers", []):
+			_label("%s · %d / 10" % [reviewer.get("name", "A reviewer"), int(reviewer.get("score", 0))], true)
+			_label(str(reviewer.get("blurb", "")))
+		_show_contract(product, "ReleaseContract")
+	_label("Your next chapter is waiting back at the studio.", false, null, "meta")
+	_actions("Back to our studio", hide, true, "")
 
 func _product_history(tycoon: Dictionary) -> void:
 	var card := _card()
@@ -2653,7 +2839,7 @@ func _fit_word(fit: String) -> String:
 
 func _fit_hint(fit: String) -> String:
 	match fit:
-		"great": return "Whop regulars already want this."
+		"great": return "TownSquare regulars already want this."
 		"good": return "A fair pairing. It can sell."
 		"okay": return "People will squint, then maybe buy."
 		"bad": return "The group chat will notice."
@@ -2810,12 +2996,7 @@ func _next_step() -> String:
 
 static func next_step_line(state: Dictionary, busy: bool = false, pending_method: String = "", pending_job_id: String = "") -> String:
 	if OS.has_feature("web") and not state.is_empty():
-		var candidate := available_candidate(state)
-		if not candidate.is_empty(): return "NEXT · Hire %s from Company Journey." % candidate.get("name", "your teammate")
-		var tycoon: Dictionary = state.get("tycoon", {})
-		if tycoon.get("developing") is Dictionary:
-			return "NEXT · Open New Product in Company Journey to develop and release your product."
-		return "NEXT · Open Company Journey and choose New Product to build your next release."
+		return "NEXT · " + str(StoryMoments.goal(state).get("title", "Your next chapter"))
 	if state.is_empty() or ((state.get("milestones", []) as Array).is_empty() and (state.get("candidates", []) as Array).is_empty()):
 		return ""
 	var definition := open_milestone(state)

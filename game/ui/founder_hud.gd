@@ -3,6 +3,7 @@ extends Control
 
 signal chat_requested(employee_id: String)
 signal delivery_requested(job_id: String, employee_id: String)
+signal goal_requested(mode: String)
 
 class InteractionButton extends Button:
 	var callout_target := Vector2.ZERO
@@ -46,6 +47,9 @@ var _movement_hint_tween: Tween
 var _movement_seen: bool = false
 var _next_step_hint: Control
 var _next_step_label: Label
+var _goal_chapter: Label
+var _goal_action: Button
+var _goal_mode := "journey"
 var _station_callout: StationCallout
 var _station_target_id := ""
 var station_input_enabled: Callable
@@ -172,6 +176,40 @@ func _build_next_step_hint() -> void:
 	_next_step_label.position = Vector2(12.0, 6.0)
 	_next_step_label.size = Vector2(296.0, 44.0)
 	_next_step_hint.add_child(_next_step_label)
+	_goal_chapter = _label("A studio begins", GameFonts.BODY_META, CHARCOAL)
+	CozyUI.label(_goal_chapter, "meta")
+	_goal_chapter.position = Vector2(14, 8)
+	_goal_chapter.size = Vector2(312, 20)
+	_goal_chapter.hide()
+	plaque.add_child(_goal_chapter)
+	_goal_action = Button.new()
+	_goal_action.name = "CurrentGoalAction"
+	_goal_action.position = Vector2(12, 62)
+	_goal_action.size = Vector2(316, 42)
+	_goal_action.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	CozyUI.button(_goal_action, "primary")
+	_goal_action.pressed.connect(func() -> void: goal_requested.emit(_goal_mode))
+	_goal_action.hide()
+	plaque.add_child(_goal_action)
+
+func set_story_goal(goal: Dictionary) -> void:
+	if goal.is_empty():
+		hide_next_step()
+		return
+	_next_step_hint.position = Vector2(780, 12)
+	_next_step_hint.size = Vector2(340, 114)
+	_next_step_hint.mouse_filter = Control.MOUSE_FILTER_STOP
+	_next_step_label.position = Vector2(14, 30)
+	_next_step_label.size = Vector2(312, 28)
+	_next_step_label.max_lines_visible = 1
+	_next_step_label.text = str(goal.get("title", "Your next step"))
+	_next_step_label.tooltip_text = str(goal.get("detail", ""))
+	_goal_chapter.text = "%s · %d / %d" % [goal.get("chapter", "Our story"), int(goal.get("completed", 0)), int(goal.get("total", 4))]
+	_goal_chapter.show()
+	_goal_action.text = str(goal.get("action", "Open our notebook"))
+	_goal_action.show()
+	_goal_mode = str(goal.get("mode", "journey"))
+	_next_step_hint.show()
 
 func set_next_step(text: String) -> void:
 	var line := text.trim_prefix("NEXT · ").strip_edges()

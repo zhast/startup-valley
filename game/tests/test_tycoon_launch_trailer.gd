@@ -4,8 +4,8 @@ extends SceneTree
 ## Skipping the cut leaves the first newsletter alone. Making it charges once.
 
 const MAIN := preload("res://world/main.tscn")
-const OFFER := "Trailer · Whop Creator Cut · $25, about 6 fans"
-const MADE := "Trailer made · Whop Creator Cut"
+const OFFER := "Trailer · TownSquare Creator Cut · $25, about 6 fans"
+const MADE := "Trailer made · TownSquare Creator Cut"
 var main: GameMain
 var viewport: SubViewport
 var failures: Array[String] = []
@@ -427,7 +427,7 @@ func _run() -> void:
 	check(header != null and header.text.contains("Spring") and header.text.contains("$182.00") and header.text.contains("11 reputation"), "Spring morning shows the trailer fee and fans")
 	await click(button_named("End day"))
 	await wait_until(func() -> bool: return main.company_panel.screen == "summary", "Ending the trailer day opens the summary")
-	check(label_contains("Trailer: Whop Creator Cut"), "The summary names the trailer")
+	check(label_contains("Trailer: TownSquare Creator Cut"), "The summary names the trailer")
 	check(company_reputation() == 11 and company_cash() == 18200, "Ending the day does not charge or grant again")
 	# The summary frame shrinks after it is shown. A click before that misses Begin next day.
 	await frames(8)

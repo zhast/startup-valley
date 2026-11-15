@@ -4,9 +4,9 @@ extends SceneTree
 ## Skipping the picnic leaves the first newsletter alone. Taking it charges once.
 
 const MAIN := preload("res://world/main.tscn")
-const OFFER := "Town · Whop Block Picnic this Spring · $20, about 2 fans"
-const TAKEN := "Afternoon off · Whop Block Picnic"
-const SUMMER := "Town · Whop Block Picnic this Summer · $20, about 2 fans"
+const OFFER := "Town · TownSquare Block Picnic this Spring · $20, about 2 fans"
+const TAKEN := "Afternoon off · TownSquare Block Picnic"
+const SUMMER := "Town · TownSquare Block Picnic this Summer · $20, about 2 fans"
 var main: GameMain
 var viewport: SubViewport
 var failures: Array[String] = []
@@ -374,7 +374,7 @@ func _run() -> void:
 	check(header != null and header.text.contains("Spring") and header.text.contains("$0.00"), "Spring morning shows the picnic fee")
 	await click(button_named("End day"))
 	await wait_until(func() -> bool: return main.company_panel.screen == "summary", "Ending the picnic day opens the summary")
-	check(label_contains("Town day: Whop Block Picnic"), "The summary names the picnic")
+	check(label_contains("Town day: TownSquare Block Picnic"), "The summary names the picnic")
 	check(company_reputation() == 2 and company_cash() == 0, "Ending the day does not charge or grant again")
 	await click(button_named("Begin next day"))
 	await wait_until(func() -> bool: return not main.company_panel.visible, "Begin next day returns to the office")

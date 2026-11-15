@@ -1,6 +1,7 @@
 import type { SqlDatabase } from "./sql-database.js";
 
 import { JourneyStore } from "./journey.js";
+import { fictionalWorld } from "./fictional-world.js";
 
 /**
  * Authoritative offline tycoon rules. Gameplay never calls a model provider,
@@ -39,12 +40,12 @@ export const MARKETING = [
  * The bonus is cash on release. It does not change units, price, or fans.
  */
 export const CONTRACTS = [
-  { id: "nova", client: "Nova on Whop", topicId: "crypto", typeId: "newsletter", bonusCents: 8_000 },
-  { id: "remy", client: "Remy on Whop", topicId: "fitness", typeId: "course", bonusCents: 12_000 },
-  { id: "juniper", client: "Juniper on Whop", topicId: "cooking", typeId: "newsletter", bonusCents: 7_000 },
-  { id: "pax", client: "Pax on Whop", topicId: "gaming", typeId: "community", bonusCents: 10_000 },
-  { id: "kit", client: "Kit on Whop", topicId: "study_notes", typeId: "template_pack", bonusCents: 6_000 },
-  { id: "lane", client: "Lane on Whop", topicId: "trading", typeId: "newsletter", bonusCents: 9_000 },
+  { id: "nova", client: "Nova on TownSquare", topicId: "crypto", typeId: "newsletter", bonusCents: 8_000 },
+  { id: "remy", client: "Remy on TownSquare", topicId: "fitness", typeId: "course", bonusCents: 12_000 },
+  { id: "juniper", client: "Juniper on TownSquare", topicId: "cooking", typeId: "newsletter", bonusCents: 7_000 },
+  { id: "pax", client: "Pax on TownSquare", topicId: "gaming", typeId: "community", bonusCents: 10_000 },
+  { id: "kit", client: "Kit on TownSquare", topicId: "study_notes", typeId: "template_pack", bonusCents: 6_000 },
+  { id: "lane", client: "Lane on TownSquare", topicId: "trading", typeId: "newsletter", bonusCents: 9_000 },
 ] as const;
 /** One optional patch per shipped product. Cash now, +1 score on remaining sales days. */
 export const PATCH_COST_CENTS = 10_000;
@@ -54,14 +55,14 @@ export const SEQUEL_DAYS_SAVED = 1;
 export const SEQUEL_SCORE_MARK = 6;
 export const SEQUEL_SCORE_BONUS = 1;
 /** One optional show after sales finish. The fee is cash. Fans come from the stored review score, once. */
-export const AWARD_SHOW = "Whop Creator Awards";
+export const AWARD_SHOW = "TownSquare Creator Awards";
 export const AWARD_COST_CENTS = 4_000;
 export const AWARD_WIN_SCORE = 8;
 export const AWARD_NOMINEE_SCORE = 5;
 export const AWARD_WIN_FANS = 12;
 export const AWARD_NOMINEE_FANS = 4;
 /** One optional port. One extra sales day on a second shelf, after a small fee. */
-export const PORT_SHELF = "Whop Mobile";
+export const PORT_SHELF = "TownSquare Mobile";
 export const PORT_COST_CENTS = 8_000;
 /**
  * One optional translation of a finished product, on its existing shelf.
@@ -74,7 +75,7 @@ export const LOCALIZE_COST_CENTS = 5_000;
 export const LOCALIZE_UNIT_PERCENT = 50;
 /** One optional in-house engine. Bought once. A product started on it stores +1 score, capped at 10. */
 export const ENGINE_ID = "whop_kit";
-export const ENGINE_NAME = "Whop Kit Engine";
+export const ENGINE_NAME = "TownSquare Kit Engine";
 export const ENGINE_BLURB = "One kit, used on the builds you choose.";
 export const ENGINE_COST_CENTS = 12_000;
 export const ENGINE_SCORE_BONUS = 1;
@@ -168,11 +169,11 @@ export const SALARY_CENTS = {
 } as const;
 
 /**
- * One optional loan from Whop Treasury. $500 now, $550 back on a later payday.
+ * One optional loan from TownSquare Treasury. $500 now, $550 back on a later payday.
  * $500 covers a full-team payday ($300) plus a patch ($100). It stays under the
  * $600 office expansion. The $50 fee is under Mina's $80 season salary.
  */
-export const LOAN_LENDER = "Whop Treasury";
+export const LOAN_LENDER = "TownSquare Treasury";
 export const LOAN_AMOUNT_CENTS = 50_000;
 export const LOAN_FEE_CENTS = 5_000;
 export const LOAN_REPAY_CENTS = LOAN_AMOUNT_CENTS + LOAN_FEE_CENTS;
@@ -189,13 +190,13 @@ export const PUBLISHER_ADVANCE_CENTS = 15_000;
 export const PUBLISHER_CUT_PERCENT = 30;
 
 /**
- * One optional booth at the Whop Creator Fair. Copy only.
+ * One optional booth at the TownSquare Creator Fair. Copy only.
  * $60 is over the $40 award fee and under Mina's $80 season salary, so a
  * company that just shipped the $207 newsletter can book and still keep cash.
  * The fair pays exactly 3 fans, under that newsletter's 5. Day 14 is the
  * middle of the season: not payday, and not an existing event day.
  */
-export const EXPO_NAME = "Whop Creator Fair";
+export const EXPO_NAME = "TownSquare Creator Fair";
 export const EXPO_COST_CENTS = 6_000;
 export const EXPO_FANS = 3;
 export const EXPO_DAY_OF_SEASON = 14;
@@ -206,7 +207,7 @@ export const EXPO_DAY_OF_SEASON = 14;
  * A company that just shipped the $207 newsletter can go and still keep $187.
  * The picnic pays exactly 2 fans, under the expo's 3 and that newsletter's 5.
  */
-export const TOWN_DAY_NAME = "Whop Block Picnic";
+export const TOWN_DAY_NAME = "TownSquare Block Picnic";
 export const TOWN_DAY_COST_CENTS = 2_000;
 export const TOWN_DAY_FANS = 2;
 
@@ -219,7 +220,7 @@ export const TOWN_DAY_FANS = 2;
  * the expo's 3, under that newsletter's 5. +4 from 0 does not change
  * Math.floor(reputation / 10).
  */
-export const PRESS_DEMO_NAME = "Whop Weekly Preview";
+export const PRESS_DEMO_NAME = "TownSquare Weekly Preview";
 export const PRESS_DEMO_COST_CENTS = 3_000;
 export const PRESS_DEMO_FANS = 4;
 
@@ -232,13 +233,13 @@ export const PRESS_DEMO_FANS = 4;
  * The cut pays exactly 6 fans, over that newsletter's 5, on the same company
  * fan total. It does not spend an office day.
  */
-export const TRAILER_NAME = "Whop Creator Cut";
+export const TRAILER_NAME = "TownSquare Creator Cut";
 export const TRAILER_COST_CENTS = 2_500;
 export const TRAILER_FANS = 6;
 
 /**
  * One optional creator post-mortem after sales finish. Copy only, a writeup
- * on the Whop blog. Not a sales day, not a press look, and not a trailer.
+ * on the TownSquare blog. Not a sales day, not a press look, and not a trailer.
  * $15 is unused: under the $20 town afternoon, the $25 trailer, the $30
  * press preview, the $40 award fee, the $50 translation, the $60 expo booth,
  * and Mina's $80 season salary. A company that just shipped the $207
@@ -246,7 +247,7 @@ export const TRAILER_FANS = 6;
  * fan, under the picnic's 2 and the trailer's 6, on the same company fan
  * total. It does not spend an office day.
  */
-export const DIARY_NAME = "Whop Post-Mortem";
+export const DIARY_NAME = "TownSquare Post-Mortem";
 export const DIARY_COST_CENTS = 1_500;
 export const DIARY_FANS = 1;
 
@@ -270,7 +271,7 @@ export const RIVALS = [
 
 /**
  * One optional feature on the product on the bench. Copy only.
- * Whop Bonus Drop is an add-on the studio ships with that product.
+ * TownSquare Bonus Drop is an add-on the studio ships with that product.
  * There is no fee and no ledger row. The cost is one extra office day.
  * Opening demand becomes 110 before the curve. 110 is the same 10
  * points as Long's unit bump and the rival's cut. Long applies 110
@@ -280,7 +281,7 @@ export const RIVALS = [
  * and under the season's +20. The ideal grows with the extra day, so
  * working that day keeps the catalog score. The sales change is the bump.
  */
-export const FEATURE_NAME = "Whop Bonus Drop";
+export const FEATURE_NAME = "TownSquare Bonus Drop";
 export const FEATURE_DAY_DELTA = 1;
 export const FEATURE_UNIT_PERCENT = 110;
 /**
@@ -388,12 +389,12 @@ export const SEASON_EVENTS = [
   { id: "creator_fair", season: "spring", dayOfSeason: 13, name: "Creator Fair", blurb: "The floor is full of shops and first buyers." },
   { id: "drop_day", season: "summer", dayOfSeason: 11, name: "Drop Day", blurb: "Everyone refreshes the page at the same minute." },
   { id: "cohort_kickoff", season: "fall", dayOfSeason: 16, name: "Cohort Kickoff", blurb: "A new class shows up with notebooks open." },
-  { id: "cozy_gift_guide", season: "winter", dayOfSeason: 25, name: "Cozy Gift Guide", blurb: "Whop Weekly lists the warm shops." },
+  { id: "cozy_gift_guide", season: "winter", dayOfSeason: 25, name: "Cozy Gift Guide", blurb: "TownSquare Weekly lists the warm shops." },
 ] as const;
 
 const REVIEWERS = [
   {
-    name: "Whop Weekly",
+    name: "TownSquare Weekly",
     blurbs: {
       high: "I would pay before the free trial ended.",
       mid: "Fine if you already trust the creator.",
@@ -1310,7 +1311,7 @@ function marketingOffer(cash: number): TycoonSnapshot["marketingOptions"] {
 
 function asEngine(value: string): "none" | EngineId {
   if (value === "none" || value === ENGINE_ID) return value;
-  throw new Error("Pick None or Whop Kit Engine.");
+  throw new Error("Pick None or TownSquare Kit Engine.");
 }
 
 function engineOffer(owned: boolean, cash: number): TycoonEngineView {
@@ -1902,7 +1903,7 @@ function awardFans(outcome: AwardOutcome): number {
 function parsePort(value: unknown): ProductPort | null {
   if (!value || typeof value !== "object") return null;
   const body = value as { shelf?: unknown; startedDay?: unknown; cents?: unknown; fans?: unknown };
-  if (body.shelf !== PORT_SHELF) return null;
+  if (fictionalWorld(body.shelf) !== PORT_SHELF) return null;
   const startedDay = Number(body.startedDay);
   if (!Number.isInteger(startedDay) || startedDay < 1) return null;
   if (body.cents === undefined && body.fans === undefined) return { shelf: PORT_SHELF, startedDay, cents: null, fans: null };

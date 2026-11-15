@@ -391,7 +391,7 @@
       "additionalProperties": false,
       "required": ["name", "costCents", "fans", "when", "booked"],
       "properties": {
-        "name": { "type": "string", "const": "Whop Creator Fair" },
+        "name": { "type": "string", "const": "TownSquare Creator Fair" },
         "costCents": { "type": "integer", "const": 6000 },
         "fans": { "type": "integer", "const": 3 },
         "when": { "type": "string", "minLength": 1 },
@@ -403,7 +403,7 @@
       "additionalProperties": false,
       "required": ["name", "costCents", "fans", "season", "taken"],
       "properties": {
-        "name": { "type": "string", "const": "Whop Block Picnic" },
+        "name": { "type": "string", "const": "TownSquare Block Picnic" },
         "costCents": { "type": "integer", "const": 2000 },
         "fans": { "type": "integer", "const": 2 },
         "season": { "type": "string", "minLength": 1 },
@@ -649,7 +649,7 @@
       "required": ["id", "name", "blurb", "priceCents", "scoreBonus", "owned", "enabled", "reason"],
       "properties": {
         "id": { "const": "whop_kit" },
-        "name": { "const": "Whop Kit Engine" },
+        "name": { "const": "TownSquare Kit Engine" },
         "blurb": { "type": "string", "minLength": 1 },
         "priceCents": { "const": 12000 },
         "scoreBonus": { "const": 1 },
@@ -816,7 +816,7 @@
               "additionalProperties": false,
               "required": ["show", "costCents", "outcome", "fans", "entered", "enabled", "reason"],
               "properties": {
-                "show": { "const": "Whop Creator Awards" },
+                "show": { "const": "TownSquare Creator Awards" },
                 "costCents": { "const": 4000 },
                 "outcome": { "enum": ["", "won", "nominated", "entered"] },
                 "fans": { "enum": [0, 4, 12] },
@@ -835,7 +835,7 @@
               "additionalProperties": false,
               "required": ["shelf", "costCents", "phase", "cents", "fans", "enabled", "reason"],
               "properties": {
-                "shelf": { "const": "Whop Mobile" },
+                "shelf": { "const": "TownSquare Mobile" },
                 "costCents": { "const": 8000 },
                 "phase": { "enum": ["", "selling", "sold"] },
                 "cents": { "type": "integer", "minimum": 0 },
@@ -874,7 +874,7 @@
               "required": ["id", "name", "scoreBonus"],
               "properties": {
                 "id": { "const": "whop_kit" },
-                "name": { "const": "Whop Kit Engine" },
+                "name": { "const": "TownSquare Kit Engine" },
                 "scoreBonus": { "const": 1 }
               }
             }
@@ -952,7 +952,7 @@
               "additionalProperties": false,
               "required": ["name", "costCents", "fans", "shown"],
               "properties": {
-                "name": { "const": "Whop Weekly Preview" },
+                "name": { "const": "TownSquare Weekly Preview" },
                 "costCents": { "const": 3000 },
                 "fans": { "const": 4 },
                 "shown": { "type": "boolean" }
@@ -968,7 +968,7 @@
               "additionalProperties": false,
               "required": ["name", "costCents", "fans", "made"],
               "properties": {
-                "name": { "const": "Whop Creator Cut" },
+                "name": { "const": "TownSquare Creator Cut" },
                 "costCents": { "const": 2500 },
                 "fans": { "const": 6 },
                 "made": { "type": "boolean" }
@@ -984,7 +984,7 @@
               "additionalProperties": false,
               "required": ["name", "costCents", "fans", "written"],
               "properties": {
-                "name": { "const": "Whop Post-Mortem" },
+                "name": { "const": "TownSquare Post-Mortem" },
                 "costCents": { "const": 1500 },
                 "fans": { "const": 1 },
                 "written": { "type": "boolean" }
@@ -1000,7 +1000,7 @@
               "additionalProperties": false,
               "required": ["name", "dayDelta", "unitPercent", "added"],
               "properties": {
-                "name": { "const": "Whop Bonus Drop" },
+                "name": { "const": "TownSquare Bonus Drop" },
                 "dayDelta": { "const": 1 },
                 "unitPercent": { "const": 110 },
                 "added": { "type": "boolean" }

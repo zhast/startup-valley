@@ -4,9 +4,9 @@ extends SceneTree
 ## Skipping the booth leaves the first newsletter alone. Booking charges once.
 
 const MAIN := preload("res://world/main.tscn")
-const OFFER := "Expo · Whop Creator Fair on Spring 14 · $60 booth, about 3 fans"
-const BOOKED := "Booth booked · Whop Creator Fair on Spring 14"
-const NEXT_OFFER := "Expo · Whop Creator Fair on Summer 14 · $60 booth, about 3 fans"
+const OFFER := "Expo · TownSquare Creator Fair on Spring 14 · $60 booth, about 3 fans"
+const BOOKED := "Booth booked · TownSquare Creator Fair on Spring 14"
+const NEXT_OFFER := "Expo · TownSquare Creator Fair on Summer 14 · $60 booth, about 3 fans"
 var main: GameMain
 var viewport: SubViewport
 var failures: Array[String] = []
@@ -330,7 +330,7 @@ func _run() -> void:
 	check(header != null and header.text.contains("Spring 14") and header.text.contains("$0.00"), "Spring 14 morning shows the fair and $0")
 	await click(button_named("End day"))
 	await wait_until(func() -> bool: return main.company_panel.screen == "summary", "Ending Spring 14 opens the summary")
-	check(label_contains("Expo: Whop Creator Fair"), "The summary names the fair")
+	check(label_contains("Expo: TownSquare Creator Fair"), "The summary names the fair")
 	check(company_reputation() == 3 and company_cash() == 0, "The fair pays 3 fans and no cash")
 	await click(button_named("Begin next day"))
 	await wait_until(func() -> bool: return not main.company_panel.visible, "Begin next day returns to the office")

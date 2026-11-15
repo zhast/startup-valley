@@ -4,8 +4,8 @@ extends SceneTree
 ## Skipping the feature leaves the first newsletter alone. Adding it costs one office day.
 
 const MAIN := preload("res://world/main.tscn")
-const OFFER := "Feature · Whop Bonus Drop · +1 office day, +10% opening demand"
-const ADDED := "Feature added · Whop Bonus Drop · Building · day 0 of 3"
+const OFFER := "Feature · TownSquare Bonus Drop · +1 office day, +10% opening demand"
+const ADDED := "Feature added · TownSquare Bonus Drop · Building · day 0 of 3"
 var main: GameMain
 var viewport: SubViewport
 var failures: Array[String] = []
@@ -259,7 +259,7 @@ function sale(db, dayIndex, reputation, day, extra = {}) {
     ...(extra.quietPercent === undefined ? {} : { quietPercent: extra.quietPercent }),
   });
 }
-if (FEATURE_NAME !== 'Whop Bonus Drop' || FEATURE_DAY_DELTA !== 1 || FEATURE_UNIT_PERCENT !== 110) fail({ FEATURE_NAME, FEATURE_DAY_DELTA, FEATURE_UNIT_PERCENT });
+if (FEATURE_NAME !== 'TownSquare Bonus Drop' || FEATURE_DAY_DELTA !== 1 || FEATURE_UNIT_PERCENT !== 110) fail({ FEATURE_NAME, FEATURE_DAY_DELTA, FEATURE_UNIT_PERCENT });
 if (requiredDevDays(2, false) !== 2 || requiredDevDays(2, false, null, true) !== 3 || requiredDevDays(2, false, 'long', true) !== 4 || requiredDevDays(2, true, null, true) !== 2) fail('days');
 const base = openingDemand('great', 6, 0);
 const featured = Math.max(1, Math.round((base * 110) / 100));
@@ -452,7 +452,7 @@ func _run() -> void:
 	check(int(latest_shipped().get("salesCents", 0)) == 33300, "The feature does not change the earlier sale")
 	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary after the feature")
 	var feature: Dictionary = developing().get("feature", {}) if developing().get("feature") is Dictionary else {}
-	check(bool(feature.get("added", false)) and str(feature.get("name", "")) == "Whop Bonus Drop" and int(feature.get("dayDelta", 0)) == 1 and int(feature.get("unitPercent", 0)) == 110, "The worker stores the added feature")
+	check(bool(feature.get("added", false)) and str(feature.get("name", "")) == "TownSquare Bonus Drop" and int(feature.get("dayDelta", 0)) == 1 and int(feature.get("unitPercent", 0)) == 110, "The worker stores the added feature")
 	await release_company()
 	OS.set_environment("STARTUP_VALLEY_DATA_DIR", data_dir)
 	if not await boot():

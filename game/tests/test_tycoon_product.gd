@@ -193,7 +193,7 @@ func _run() -> void:
 	if released:
 		var score := label_named("ReleaseScore")
 		check(score != null and score.text.begins_with("Score ") and score.text.contains("/ 10"), "Release card shows a score out of 10")
-		check(label_contains("Whop Weekly"), "Whop Weekly reviews the launch")
+		check(label_contains("TownSquare Weekly"), "TownSquare Weekly reviews the launch")
 		check(label_contains("Discord Dave"), "Discord Dave reviews the launch")
 		check(label_contains("Margin Call Molly"), "Margin Call Molly reviews the launch")
 		check(label_contains("Cohort Casey"), "Cohort Casey reviews the launch")

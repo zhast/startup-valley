@@ -4,8 +4,8 @@ extends SceneTree
 ## Skipping the writeup leaves the first newsletter alone. Writing it charges once.
 
 const MAIN := preload("res://world/main.tscn")
-const OFFER := "Diary · Whop Post-Mortem · $15, about 1 fan"
-const WRITTEN := "Diary written · Whop Post-Mortem"
+const OFFER := "Diary · TownSquare Post-Mortem · $15, about 1 fan"
+const WRITTEN := "Diary written · TownSquare Post-Mortem"
 var main: GameMain
 var viewport: SubViewport
 var failures: Array[String] = []
@@ -432,7 +432,7 @@ func _run() -> void:
 	check(header != null and header.text.contains("Spring") and header.text.contains("$453.00") and header.text.contains("12 reputation"), "Spring morning shows the diary fee and fans")
 	await click(button_named("End day"))
 	await wait_until(func() -> bool: return main.company_panel.screen == "summary", "Ending the diary day opens the summary")
-	check(label_contains("Diary: Whop Post-Mortem"), "The summary names the diary")
+	check(label_contains("Diary: TownSquare Post-Mortem"), "The summary names the diary")
 	check(company_reputation() == 12 and company_cash() == 45300, "Ending the day does not charge or grant again")
 	await frames(8)
 	await click(button_named("Begin next day"))

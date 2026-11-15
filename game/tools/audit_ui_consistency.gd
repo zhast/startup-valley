@@ -35,7 +35,7 @@ func font_details(font: Font) -> Dictionary:
 	var base: Font = (font as FontVariation).base_font if font is FontVariation else font
 	return {"resource": font.resource_path, "family": font.get_font_name(), "style": font.get_font_style_name(),
 		# Variable-font metadata can report the base weight; it is not a measurement
-		# of the rendered variation. Current Whop faces are static and exact.
+		# of the rendered variation. Current TownSquare faces are static and exact.
 		"metadataWeight": font.get_font_weight(), "baseWeight": base.get_font_weight(),
 		"requestedWeight": (font as FontVariation).variation_opentype.get("weight", base.get_font_weight()) if font is FontVariation else font.get_font_weight(),
 		"effectiveRidCount": font.get_rids().size(), "sameRidAsBase": font.get_rids() == base.get_rids()}
@@ -47,7 +47,7 @@ func record(label: Label, role: String, side: String) -> void:
 
 func legacy_clock_at(point: Vector2) -> ClockPanel:
 	var clock := clock_at(point)
-	# Explicitly reconstruct pre-Whop fonts and geometry on the old ledger art.
+	# Explicitly reconstruct pre-TownSquare fonts and geometry on the old ledger art.
 	# The production ClockPanel on the right receives none of these overrides.
 	clock._day_caption.hide()
 	clock._time_caption.hide()
@@ -87,10 +87,10 @@ func run() -> void:
 	paper.size = canvas.size
 	paper.add_theme_stylebox_override("panel", CozyUI.paper())
 	canvas.add_child(paper)
-	label_at("Startup Valley: legacy and Whop typography", Vector2(24, 12), GameFonts.DISPLAY, 26, 1200)
+	label_at("Startup Valley: legacy and TownSquare typography", Vector2(24, 12), GameFonts.DISPLAY, 26, 1200)
 	label_at("The same paper and ledger art. Legacy fonts are loaded explicitly; the right-hand HUD is the actual runtime control.", Vector2(24, 50), GameFonts.BODY, 16, 1216)
 	label_at("Before (legacy reconstruction)", Vector2(24, 88), GameFonts.BOLD, 20)
-	label_at("Implemented Whop typography", Vector2(656, 88), GameFonts.BOLD, 20)
+	label_at("Implemented TownSquare typography", Vector2(656, 88), GameFonts.BOLD, 20)
 	var legacy := legacy_clock_at(Vector2(24, 130))
 	var current := clock_at(Vector2(656, 130))
 	for entry: Array in [[legacy._day_label, "day"], [legacy._time_label, "time"], [legacy._earned_label, "earned"], [legacy._earned_caption, "earned caption"]]:
@@ -133,7 +133,7 @@ func run() -> void:
 	var error := root.get_texture().get_image().save_png(path)
 	diagnostics["capture"] = path
 	diagnostics["engine"] = Engine.get_version_info().string
-	diagnostics["comparison"] = {"left": "Before (legacy reconstruction)", "right": "Implemented Whop typography; unmodified current ClockPanel"}
+	diagnostics["comparison"] = {"left": "Before (legacy reconstruction)", "right": "Implemented TownSquare typography; unmodified current ClockPanel"}
 	diagnostics["currentFonts"] = {"display": font_details(GameFonts.DISPLAY), "body": font_details(GameFonts.BODY), "emphasis": font_details(GameFonts.EMPHASIS), "action": font_details(GameFonts.BOLD)}
 	diagnostics["legacyFonts"] = {"display": font_details(LEGACY_DISPLAY), "body": font_details(LEGACY_BODY), "action": font_details(LEGACY_BOLD)}
 	diagnostics["legacyTiny5Import"] = {"antialiasing": LEGACY_DISPLAY.antialiasing, "hinting": LEGACY_DISPLAY.hinting, "oversampling": LEGACY_DISPLAY.oversampling}

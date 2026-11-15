@@ -1,6 +1,6 @@
 extends SceneTree
 ## Historical Nunito weight experiment, explicitly reconstructed in memory.
-## Current Whop runtime controls are measured separately, never called legacy fonts.
+## Current TownSquare runtime controls are measured separately, never called legacy fonts.
 ## godot --path game --script res://tools/audit_ui_typography.gd
 
 const OUTPUT := "res://tests/output/whop-typography/legacy-weight-experiment"
@@ -35,7 +35,7 @@ func _run() -> void:
 		supported.append({"tag": tag, "name": ts.tag_to_name(tag), "minimum": limits.x, "maximum": limits.y, "default": limits.z})
 	_diagnostics = {
 		"engine": Engine.get_version_info().string,
-		"scope": "Historical Nunito/Tiny5 reconstruction; current Whop controls recorded separately",
+		"scope": "Historical Nunito/Tiny5 reconstruction; current TownSquare controls recorded separately",
 		"legacyBaseResource": base.resource_path,
 		"legacyReconstructedAxes": body.variation_opentype,
 		"supportedAxes": supported,

@@ -1,4 +1,5 @@
 import type { SqlDatabase } from "./sql-database.js";
+import { fictionalWorld } from "./fictional-world.js";
 import { calendarForDay, type TycoonSnapshot } from "./tycoon.js";
 import type { JobSpec } from "./types.js";
 
@@ -101,7 +102,7 @@ export class JourneyStore {
         { id: "creative", name: "Creative", costCents: 0, available: !this.hired("creative") && this.openedChapter() >= 2 && this.completed("incorporate"), hired: this.hired("creative"), role: "Design + brand" },
       ],
     };
-    return this.tycoonView ? { ...body, tycoon: this.tycoonView() } : body;
+    return fictionalWorld(this.tycoonView ? { ...body, tycoon: this.tycoonView() } : body);
   }
   hire(id: string, day: number) {
     return this.transaction(() => {
@@ -216,7 +217,7 @@ export class JourneyStore {
     this.db.prepare("UPDATE company_state SET player_json=? WHERE id=1").run(JSON.stringify({ x, y, movementSeen: value.movementSeen === true, effectsVolume: unit("effectsVolume", 0.5), ambienceVolume: unit("ambienceVolume", 0.2), attentionEmployeeId: attentionIds.includes(String(value.attentionEmployeeId)) ? value.attentionEmployeeId : "", architectureTheme }));
   }
   daySummary(day: number, spend: number) {
-    const rows = this.db.prepare("SELECT label,cash_delta,earned_delta,reputation_delta FROM company_transactions WHERE day=?").all(day);
+    const rows = fictionalWorld(this.db.prepare("SELECT label,cash_delta,earned_delta,reputation_delta FROM company_transactions WHERE day=?").all(day));
     const completedWork = this.db.prepare("SELECT title, revision_of_job_id FROM work_orders WHERE game_day=? AND status='completed'").all(day).map((row) => String(row.title) + (row.revision_of_job_id ? " (revision)" : ""));
     return { day, dateLabel: calendarForDay(day).label, entries: rows, completedWork, earnedCents: rows.reduce((n, row) => n + Number(row.earned_delta), 0), reputation: rows.reduce((n, row) => n + Number(row.reputation_delta), 0), aiSpend: spend, nextMilestone: this.state().milestones.find((item) => item.state !== "completed")?.title ?? "Your next chapter" };
   }

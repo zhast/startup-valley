@@ -156,7 +156,7 @@ test("review scores and sales are deterministic and fit changes the take", () =>
   assert.deepEqual(great, again);
   assert.equal(great.reviewers.length, 4);
   assert.deepEqual(great.reviewers.map((reviewer) => reviewer.name), [
-    "Whop Weekly",
+    "TownSquare Weekly",
     "Discord Dave",
     "Margin Call Molly",
     "Cohort Casey",
@@ -1017,7 +1017,7 @@ test("an older save loads and the calendar follows the clock day", async () => {
   const storedReview = JSON.stringify({
     score: 6,
     reviewers: [
-      { name: "Whop Weekly", score: 6, blurb: "Fine." },
+      { name: "TownSquare Weekly", score: 6, blurb: "Fine." },
       { name: "Discord Dave", score: 6, blurb: "Fine." },
       { name: "Margin Call Molly", score: 6, blurb: "Fine." },
       { name: "Cohort Casey", score: 6, blurb: "Fine." },
@@ -1610,7 +1610,7 @@ test("contracts lock one offer and pay the bonus once", async () => {
   assert.deepEqual(contractBySlot(26021, 0), first);
   assert.notEqual(contractBySlot(26021, 1).id, first.id);
   assert.equal(CONTRACTS.length, 6);
-  assert.ok(CONTRACTS.every((item) => item.bonusCents > 0 && item.client.includes("Whop")));
+  assert.ok(CONTRACTS.every((item) => item.bonusCents > 0 && item.client.includes("TownSquare")));
 
   const left = await setup();
   const right = await setup();
@@ -2106,7 +2106,7 @@ test("a sequel builds faster and carries a score", async () => {
   matched.db.journey.db.prepare("UPDATE tycoon_meta SET contract_json = ? WHERE id = 1").run(JSON.stringify({ id: "nova" }));
   const matchedCash = matched.db.journey.state().company.cashCents;
   matched.db.tycoon.sequel("p1");
-  assert.equal(matched.db.tycoon.view().developing?.contract?.client, "Nova on Whop");
+  assert.equal(matched.db.tycoon.view().developing?.contract?.client, "Nova on TownSquare");
   assert.equal(matched.db.tycoon.view().contract.status, "building");
   assert.equal(String((matched.db.journey.db.prepare("SELECT contract_json FROM tycoon_meta WHERE id = 1").get() as { contract_json: string }).contract_json), "");
   assert.equal(matched.db.journey.state().company.cashCents, matchedCash);
@@ -2143,7 +2143,7 @@ test("a sequel builds faster and carries a score", async () => {
   assert.equal(staffJson(restored, "p1"), staffOnly);
   const oldReview = JSON.stringify({
     score: 6,
-    reviewers: ["Whop Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
+    reviewers: ["TownSquare Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
   });
   restored.journey.db.prepare(`
     UPDATE tycoon_products
@@ -2163,7 +2163,7 @@ test("a sequel builds faster and carries a score", async () => {
 });
 
 test("an award charges once and adds fans from the stored review score", async () => {
-  assert.equal(AWARD_SHOW, "Whop Creator Awards");
+  assert.equal(AWARD_SHOW, "TownSquare Creator Awards");
   assert.equal(AWARD_COST_CENTS, 4_000);
   assert.equal(AWARD_WIN_SCORE, 8);
   assert.equal(AWARD_NOMINEE_SCORE, 5);
@@ -2234,7 +2234,7 @@ test("an award charges once and adds fans from the stored review score", async (
     earned_delta: number;
     reputation_delta: number;
   };
-  assert.equal(paid.label, "Award: Whop Creator Awards");
+  assert.equal(paid.label, "Award: TownSquare Creator Awards");
   assert.equal(paid.cash_delta, -AWARD_COST_CENTS);
   assert.equal(paid.earned_delta, 0);
   assert.equal(paid.reputation_delta, 4);
@@ -2283,7 +2283,7 @@ test("an award charges once and adds fans from the stored review score", async (
   assert.equal(low.db.journey.state().company.reputation, lowFans);
   const lowRow = low.db.journey.db.prepare("SELECT reputation_delta, label FROM company_transactions WHERE id = 'tycoon:award:p1'").get() as { reputation_delta: number; label: string };
   assert.equal(lowRow.reputation_delta, 0);
-  assert.equal(lowRow.label, "Award: Whop Creator Awards");
+  assert.equal(lowRow.label, "Award: TownSquare Creator Awards");
   low.db.close();
 
   const patched = await setup();
@@ -2340,7 +2340,7 @@ test("an award charges once and adds fans from the stored review score", async (
   assert.equal(staffJson(restored, "p1"), staffOnly);
   const oldReview = JSON.stringify({
     score: 6,
-    reviewers: ["Whop Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
+    reviewers: ["TownSquare Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
   });
   restored.journey.db.prepare(`
     UPDATE tycoon_products
@@ -2386,7 +2386,7 @@ function expectedPortSale(db: GameDatabase, productId: string, day: number, scor
 }
 
 test("a port charges once and pays one extra sales day from the stored score", async () => {
-  assert.equal(PORT_SHELF, "Whop Mobile");
+  assert.equal(PORT_SHELF, "TownSquare Mobile");
   assert.equal(PORT_COST_CENTS, 8_000);
   assert.equal(SALES_WINDOW_DAYS, 4);
   const curve = { seed: 26021, productId: "p1", typeId: "newsletter" as const, fit: "great" as const, score: 6, reputation: 0 };
@@ -2460,7 +2460,7 @@ test("a port charges once and pays one extra sales day from the stored score", a
     earned_delta: number;
     reputation_delta: number;
   };
-  assert.equal(fee.label, "Port: Whop Mobile");
+  assert.equal(fee.label, "Port: TownSquare Mobile");
   assert.equal(fee.cash_delta, -PORT_COST_CENTS);
   assert.equal(fee.earned_delta, 0);
   assert.equal(fee.reputation_delta, 0);
@@ -2615,7 +2615,7 @@ test("a port charges once and pays one extra sales day from the stored score", a
   assert.equal(staffJson(restored, "p1"), staffOnly);
   const oldReview = JSON.stringify({
     score: 6,
-    reviewers: ["Whop Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
+    reviewers: ["TownSquare Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
   });
   restored.journey.db.prepare(`
     UPDATE tycoon_products
@@ -2640,7 +2640,7 @@ test("a port charges once and pays one extra sales day from the stored score", a
 
 test("an engine is bought once and a product started on it stores a score bump", async () => {
   assert.equal(ENGINE_ID, "whop_kit");
-  assert.equal(ENGINE_NAME, "Whop Kit Engine");
+  assert.equal(ENGINE_NAME, "TownSquare Kit Engine");
   assert.equal(ENGINE_COST_CENTS, 12_000);
   assert.equal(ENGINE_SCORE_BONUS, 1);
   const points = { design: 4, tech: 4, hype: 4 };
@@ -2675,7 +2675,7 @@ test("an engine is bought once and a product started on it stores a score bump",
   assert.throws(() => broke.db.tycoon.buyEngine(ENGINE_ID), /Need \$120/u);
   assert.throws(() => broke.db.tycoon.start("crypto", "newsletter", [], 100, "none", ENGINE_ID), /Buy the engine first\./u);
   assert.equal(broke.db.tycoon.view().developing, null);
-  assert.throws(() => broke.db.tycoon.start("crypto", "newsletter", [], 100, "none", "rocket"), /Pick None or Whop Kit Engine\./u);
+  assert.throws(() => broke.db.tycoon.start("crypto", "newsletter", [], 100, "none", "rocket"), /Pick None or TownSquare Kit Engine\./u);
   broke.db.journey.recordCompanyChange("engine-short", 1, 11_900, 0, 0, "Engine short cash");
   assert.equal(broke.db.tycoon.view().engine.reason, "Need $120");
   assert.equal(broke.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id = 'tycoon:engine'").get(), undefined);
@@ -2711,7 +2711,7 @@ test("an engine is bought once and a product started on it stores a score bump",
     id: string; label: string; cash_delta: number; earned_delta: number; reputation_delta: number;
   };
   assert.equal(fee.id, "tycoon:engine");
-  assert.equal(fee.label, "Engine: Whop Kit Engine");
+  assert.equal(fee.label, "Engine: TownSquare Kit Engine");
   assert.equal(fee.cash_delta, -ENGINE_COST_CENTS);
   assert.equal(fee.earned_delta, 0);
   assert.equal(fee.reputation_delta, 0);
@@ -2720,7 +2720,7 @@ test("an engine is bought once and a product started on it stores a score bump",
   assert.equal(owned.engine.owned, true);
   assert.equal(owned.engine.enabled, false);
   assert.equal(owned.engine.reason, "Already owned.");
-  assert.equal(owned.engineNotice, "Bought Whop Kit Engine. −$120");
+  assert.equal(owned.engineNotice, "Bought TownSquare Kit Engine. −$120");
   assert.equal(owned.engineOptions[1]?.enabled, true);
   assert.equal(owned.engineOptions[1]?.reason, "");
   const cashOwned = db.journey.state().company.cashCents;
@@ -2804,7 +2804,7 @@ test("an engine is bought once and a product started on it stores a score bump",
   assert.equal(staffJson(restored, "p1"), staffOnly);
   const oldReview = JSON.stringify({
     score: 6,
-    reviewers: ["Whop Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
+    reviewers: ["TownSquare Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
   });
   restored.journey.db.prepare(`
     UPDATE tycoon_products
@@ -3204,7 +3204,7 @@ test("an audience stores a fan rule and Everyone leaves the first newsletter alo
   assert.equal(staffJson(restored, "p1"), staffOnly);
   const oldReview = JSON.stringify({
     score: 6,
-    reviewers: ["Whop Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
+    reviewers: ["TownSquare Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
   });
   restored.journey.db.prepare(`
     UPDATE tycoon_products
@@ -3372,7 +3372,7 @@ test("a size stores a length and Catalog leaves the first newsletter alone", asy
   assert.equal(staffJson(restored, "p2"), objectWithoutSize);
   const oldReview = JSON.stringify({
     score: 6,
-    reviewers: ["Whop Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
+    reviewers: ["TownSquare Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
   });
   restored.journey.db.prepare("DELETE FROM tycoon_products WHERE id = 'p2'").run();
   restored.journey.db.prepare(`
@@ -3503,7 +3503,7 @@ test("payroll pays hired staff once per season and can go negative", async () =>
 });
 
 test("one optional loan pays once, repays once on payday, and skipping it changes nothing", async () => {
-  assert.equal(LOAN_LENDER, "Whop Treasury");
+  assert.equal(LOAN_LENDER, "TownSquare Treasury");
   assert.equal(LOAN_AMOUNT_CENTS, 50_000);
   assert.equal(LOAN_FEE_CENTS, 5_000);
   assert.equal(LOAN_REPAY_CENTS, 55_000);
@@ -3523,7 +3523,7 @@ test("one optional loan pays once, repays once on payday, and skipping it change
   assert.equal(skip.db.tycoon.view().loan.amountCents, 50_000);
   assert.equal(skip.db.tycoon.view().loan.repayCents, 55_000);
   assert.equal(skip.db.tycoon.view().loan.due, "Spring 28");
-  assert.equal(skip.db.tycoon.view().loan.lender, "Whop Treasury");
+  assert.equal(skip.db.tycoon.view().loan.lender, "TownSquare Treasury");
   skip.db.tycoon.start("crypto", "newsletter", []);
   skip.db.endDay(1);
   skip.db.endDay(2);
@@ -3548,7 +3548,7 @@ test("one optional loan pays once, repays once on payday, and skipping it change
   ).all() as Array<{ id: string; label: string; cash_delta: number; earned_delta: number; reputation_delta: number }>;
   assert.equal(takeRow.length, 1);
   assert.equal(takeRow[0]?.id, "tycoon:loan:1:taken");
-  assert.equal(takeRow[0]?.label, "Loan: Whop Treasury");
+  assert.equal(takeRow[0]?.label, "Loan: TownSquare Treasury");
   assert.equal(takeRow[0]?.cash_delta, 50_000);
   assert.equal(takeRow[0]?.earned_delta, 0);
   assert.equal(takeRow[0]?.reputation_delta, 0);
@@ -3843,7 +3843,7 @@ test("one optional publisher pays an advance once and cuts only that product", a
 });
 
 test("one optional expo booth charges once and pays fans once on the fair day", async () => {
-  assert.equal(EXPO_NAME, "Whop Creator Fair");
+  assert.equal(EXPO_NAME, "TownSquare Creator Fair");
   assert.equal(EXPO_COST_CENTS, 6_000);
   assert.equal(EXPO_FANS, 3);
   assert.equal(EXPO_DAY_OF_SEASON, 14);
@@ -3920,7 +3920,7 @@ test("one optional expo booth charges once and pays fans once on the fair day", 
   const fee = expoRows(booked.db);
   assert.equal(fee.length, 1);
   assert.equal(fee[0]?.id, "tycoon:expo:1-spring:booth");
-  assert.equal(fee[0]?.label, "Booth: Whop Creator Fair");
+  assert.equal(fee[0]?.label, "Booth: TownSquare Creator Fair");
   assert.equal(fee[0]?.cash_delta, -6_000);
   assert.equal(fee[0]?.earned_delta, 0);
   assert.equal(fee[0]?.reputation_delta, 0);
@@ -3939,7 +3939,7 @@ test("one optional expo booth charges once and pays fans once on the fair day", 
   const paid = expoRows(booked.db);
   assert.equal(paid.length, 2);
   const fans = paid.find((row) => row.id === "tycoon:expo:1-spring:fans");
-  assert.equal(fans?.label, "Expo: Whop Creator Fair");
+  assert.equal(fans?.label, "Expo: TownSquare Creator Fair");
   assert.equal(fans?.cash_delta, 0);
   assert.equal(fans?.earned_delta, 0);
   assert.equal(fans?.reputation_delta, 3);
@@ -4231,7 +4231,7 @@ test("a translation charges once and pays one quieter extra sales day", async ()
     ) VALUES ('p1', 'crypto', 'newsletter', 'Crypto Alpha Newsletter', 'great', 'complete', 1, 2, 4, 4, 4, ?, NULL, 3, ?, 4, 6, 20700, 5)
   `).run(staffOnly, JSON.stringify({
     score: 6,
-    reviewers: ["Whop Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
+    reviewers: ["TownSquare Weekly", "Discord Dave", "Margin Call Molly", "Cohort Casey"].map((name) => ({ name, score: 6, blurb: "Solid." })),
   }));
   raw.close();
   const restored = new GameDatabase(legacyFile, legacyProject);
@@ -4252,7 +4252,7 @@ function townRows(db: GameDatabase) {
 }
 
 test("one optional town afternoon charges once and grants fans once", async () => {
-  assert.equal(TOWN_DAY_NAME, "Whop Block Picnic");
+  assert.equal(TOWN_DAY_NAME, "TownSquare Block Picnic");
   assert.equal(TOWN_DAY_COST_CENTS, 2_000);
   assert.equal(TOWN_DAY_FANS, 2);
   assert.equal(townDaySeason(1).key, "1-spring");
@@ -4312,7 +4312,7 @@ test("one optional town afternoon charges once and grants fans once", async () =
   const fee = townRows(taken.db);
   assert.equal(fee.length, 1);
   assert.equal(fee[0]?.id, "tycoon:townday:1-spring:fee");
-  assert.equal(fee[0]?.label, "Town day: Whop Block Picnic");
+  assert.equal(fee[0]?.label, "Town day: TownSquare Block Picnic");
   assert.equal(fee[0]?.cash_delta, -2_000);
   assert.equal(fee[0]?.earned_delta, 0);
   assert.equal(fee[0]?.reputation_delta, 2);
@@ -4404,14 +4404,14 @@ function pressDemoRows(db: GameDatabase) {
 }
 
 test("one optional press demo charges once and grants fans once", async () => {
-  assert.equal(PRESS_DEMO_NAME, "Whop Weekly Preview");
+  assert.equal(PRESS_DEMO_NAME, "TownSquare Weekly Preview");
   assert.equal(PRESS_DEMO_COST_CENTS, 3_000);
   assert.equal(PRESS_DEMO_FANS, 4);
 
   const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
   const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
   const offer = {
-    name: "Whop Weekly Preview",
+    name: "TownSquare Weekly Preview",
     costCents: 3_000,
     fans: 4,
     shown: false,
@@ -4465,7 +4465,7 @@ test("one optional press demo charges once and grants fans once", async () => {
   const fee = pressDemoRows(shown.db);
   assert.equal(fee.length, 1);
   assert.equal(fee[0]?.id, "tycoon:pressdemo:p1:fee");
-  assert.equal(fee[0]?.label, "Press demo: Whop Weekly Preview");
+  assert.equal(fee[0]?.label, "Press demo: TownSquare Weekly Preview");
   assert.equal(fee[0]?.cash_delta, -3_000);
   assert.equal(fee[0]?.earned_delta, 0);
   assert.equal(fee[0]?.reputation_delta, 4);
@@ -4560,14 +4560,14 @@ function trailerRows(db: GameDatabase) {
 }
 
 test("one optional launch trailer charges once and grants fans once", async () => {
-  assert.equal(TRAILER_NAME, "Whop Creator Cut");
+  assert.equal(TRAILER_NAME, "TownSquare Creator Cut");
   assert.equal(TRAILER_COST_CENTS, 2_500);
   assert.equal(TRAILER_FANS, 6);
 
   const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
   const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
   const offer = {
-    name: "Whop Creator Cut",
+    name: "TownSquare Creator Cut",
     costCents: 2_500,
     fans: 6,
     made: false,
@@ -4637,7 +4637,7 @@ test("one optional launch trailer charges once and grants fans once", async () =
   const fee = trailerRows(made.db);
   assert.equal(fee.length, 1);
   assert.equal(fee[0]?.id, "tycoon:trailer:p1:fee");
-  assert.equal(fee[0]?.label, "Trailer: Whop Creator Cut");
+  assert.equal(fee[0]?.label, "Trailer: TownSquare Creator Cut");
   assert.equal(fee[0]?.cash_delta, -2_500);
   assert.equal(fee[0]?.earned_delta, 0);
   assert.equal(fee[0]?.reputation_delta, 6);
@@ -4722,14 +4722,14 @@ function finishFirstNewsletter(db: GameDatabase) {
 }
 
 test("one optional dev diary charges once and grants fans once", async () => {
-  assert.equal(DIARY_NAME, "Whop Post-Mortem");
+  assert.equal(DIARY_NAME, "TownSquare Post-Mortem");
   assert.equal(DIARY_COST_CENTS, 1_500);
   assert.equal(DIARY_FANS, 1);
 
   const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
   const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
   const offer = {
-    name: "Whop Post-Mortem",
+    name: "TownSquare Post-Mortem",
     costCents: 1_500,
     fans: 1,
     written: false,
@@ -4798,7 +4798,7 @@ test("one optional dev diary charges once and grants fans once", async () => {
   const fee = diaryRows(written.db);
   assert.equal(fee.length, 1);
   assert.equal(fee[0]?.id, "tycoon:diary:p1:fee");
-  assert.equal(fee[0]?.label, "Diary: Whop Post-Mortem");
+  assert.equal(fee[0]?.label, "Diary: TownSquare Post-Mortem");
   assert.equal(fee[0]?.cash_delta, -1_500);
   assert.equal(fee[0]?.earned_delta, 0);
   assert.equal(fee[0]?.reputation_delta, 1);
@@ -5036,7 +5036,7 @@ test("a seasonal rival cuts opening demand only for a matching release", async (
 });
 
 test("one optional feature adds one office day and bumps opening demand once", async () => {
-  assert.equal(FEATURE_NAME, "Whop Bonus Drop");
+  assert.equal(FEATURE_NAME, "TownSquare Bonus Drop");
   assert.equal(FEATURE_DAY_DELTA, 1);
   assert.equal(FEATURE_UNIT_PERCENT, 110);
   assert.equal(requiredDevDays(2, false), 2);

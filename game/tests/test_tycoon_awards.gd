@@ -216,7 +216,7 @@ func _run() -> void:
 	check(int(review.get("score", 0)) == 6, "The first newsletter still scores 6")
 	check(not bool(offer.get("entered", true)), "Skipping the show leaves the product unentered")
 	check(award != null and not award.disabled and str(award.get_meta("cozy_variant", "")) == "secondary" and award.text == "Enter award", "Enter award is a secondary action")
-	check(label_named("AwardShow_p1") != null and label_named("AwardShow_p1").text == "Whop Creator Awards · $40", "The shipped card names the show and the fee")
+	check(label_named("AwardShow_p1") != null and label_named("AwardShow_p1").text == "TownSquare Creator Awards · $40", "The shipped card names the show and the fee")
 	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary on the finished card")
 	var sales_cents := int(shipped.get("salesCents", 0))
 	var sales_fans := int(shipped.get("fans", 0))
