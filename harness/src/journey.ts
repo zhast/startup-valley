@@ -2,6 +2,7 @@ import type { SqlDatabase } from "./sql-database.js";
 import { fictionalWorld } from "./fictional-world.js";
 import { calendarForDay, type TycoonSnapshot } from "./tycoon.js";
 import type { JobSpec } from "./types.js";
+import type { StoryView } from "./story.js";
 
 export interface MilestoneDefinition {
   id: string; title: string; employeeId: string; prerequisite?: string;
@@ -63,6 +64,7 @@ export function parseEvaluation(text: string, definition: MilestoneDefinition): 
 
 export class JourneyStore {
   private tycoonView: (() => TycoonSnapshot) | null = null;
+  private storyView: (() => StoryView) | null = null;
 
   constructor(readonly db: SqlDatabase, readonly onHire: () => void = () => {}) {
     for (const item of MILESTONES) db.prepare("INSERT OR IGNORE INTO milestone_progress(id) VALUES (?)").run(item.id);
@@ -71,6 +73,7 @@ export class JourneyStore {
   bindTycoon(view: () => TycoonSnapshot): void {
     this.tycoonView = view;
   }
+  bindStory(view: () => StoryView): void { this.storyView = view; }
   transaction<T>(action: () => T): T {
     this.db.exec("BEGIN IMMEDIATE");
     try { const result = action(); this.db.exec("COMMIT"); return result; }
@@ -100,10 +103,11 @@ export class JourneyStore {
     const body = {
       company: { cashCents: Number(company.cash_cents), earnedCents: Number(company.earned_cents), reputation: Number(company.reputation), chapter: Number(company.chapter) },
       player: JSON.parse(String(company.player_json)) as Record<string, unknown>, milestones,
+      ...(this.storyView ? { story: this.storyView() } : {}),
       candidates: [
         { id: "mira", name: "Mina", costCents: 0, available: !this.hired("mira"), hired: this.hired("mira"), role: "Product + research" },
         { id: "theo", name: "Theo", costCents: 30000, available: !this.hired("theo") && (releases >= 1 || this.completed("website")), hired: this.hired("theo"), role: "Growth + operations" },
-        { id: "creative", name: "Creative", costCents: 0, available: !this.hired("creative") && (releases >= 3 || this.openedChapter() >= 2 && this.completed("incorporate")), hired: this.hired("creative"), role: "Design + brand" },
+        { id: "creative", name: "Creative", costCents: 0, available: !this.hired("creative") && (releases >= 3 || (this.openedChapter() >= 2 && this.completed("incorporate"))), hired: this.hired("creative"), role: "Design + brand" },
       ],
     };
     return fictionalWorld(this.tycoonView ? { ...body, tycoon: this.tycoonView() } : body);
@@ -218,7 +222,13 @@ export class JourneyStore {
     const architectureThemes = ["office", "cafe", "loft", "studio", "evening"];
     const architectureTheme = architectureThemes.includes(String(value.architectureTheme)) ? String(value.architectureTheme) : "office";
     const attentionIds = ["mira", "theo", "creative"];
-    this.db.prepare("UPDATE company_state SET player_json=? WHERE id=1").run(JSON.stringify({ x, y, movementSeen: value.movementSeen === true, effectsVolume: unit("effectsVolume", 0.5), ambienceVolume: unit("ambienceVolume", 0.2), attentionEmployeeId: attentionIds.includes(String(value.attentionEmployeeId)) ? value.attentionEmployeeId : "", architectureTheme }));
+    this.transaction(() => {
+      const story = this.db.prepare("SELECT location,revision FROM story_state WHERE id=1").get()!;
+      if ((value.location ?? "office") !== story.location) throw new Error("The location changed. Refresh before saving position.");
+      if (value.storyRevision !== undefined && (!Number.isSafeInteger(value.storyRevision) || value.storyRevision !== story.revision)) throw new Error("The story changed. Refresh before saving position.");
+      if (story.location === "courtyard" && (value.storyRevision === undefined || x < 224 || x > 864 || y < 208 || y > 624)) throw new Error("Invalid courtyard position or missing story revision");
+      this.db.prepare("UPDATE company_state SET player_json=? WHERE id=1").run(JSON.stringify({ x, y, movementSeen: value.movementSeen === true, effectsVolume: unit("effectsVolume", 0.5), ambienceVolume: unit("ambienceVolume", 0.2), attentionEmployeeId: attentionIds.includes(String(value.attentionEmployeeId)) ? value.attentionEmployeeId : "", architectureTheme }));
+    });
   }
   daySummary(day: number, spend: number) {
     const rows = fictionalWorld(this.db.prepare("SELECT label,cash_delta,earned_delta,reputation_delta FROM company_transactions WHERE day=?").all(day));

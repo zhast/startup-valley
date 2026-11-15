@@ -2305,6 +2305,7 @@ export class TycoonStore {
     private readonly db: SqlDatabase,
     private readonly journey: JourneyStore,
     private readonly onOfficeChanged: () => void = () => {},
+    private readonly onProductStarted: (id: string, topic: string, type: string) => void = () => {},
   ) {}
 
   view(): TycoonSnapshot {
@@ -2475,6 +2476,7 @@ export class TycoonStore {
           released_day, review_json, sales_applied, last_sales_day, sales_cents, fans
         ) VALUES (?, ?, ?, ?, ?, 'developing', ?, 0, 0, 0, 0, ?, NULL, NULL, NULL, 0, NULL, 0, 0)
       `).run(id, topicId, typeId, productTitle(topicId, typeId), fitFor(topicId, typeId), this.day(), JSON.stringify(snapshot));
+      this.onProductStarted(id, topicId, typeId);
       return this.journey.state();
     });
   }
@@ -2531,6 +2533,14 @@ export class TycoonStore {
       }
       return this.journey.state();
     });
+  }
+
+  /** Bounded story grant; caller owns the transaction. No paid-research bonus. */
+  unlockStoryResearch(topic: TopicId, type: ProductTypeId): void {
+    const state = this.loadResearch();
+    state.topics.add(topic);
+    state.types.add(type);
+    this.saveResearch(state);
   }
 
   buyUpgrade(idValue: string): ReturnType<JourneyStore["state"]> {

@@ -161,6 +161,7 @@ export type ProtocolMethod =
   | "health"
   | "bootstrap"
   | "furnishing.update"
+  | "story.travel" | "story.acceptOpportunity"
   | "credential.status"
   | "credential.set"
   | "credential.grok.login.start"

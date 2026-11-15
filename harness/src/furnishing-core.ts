@@ -295,6 +295,7 @@ export class FurnishingStore {
     }
   }
   private movePlayerToEntrance(): void {
+    if (this.db.prepare("SELECT location FROM story_state WHERE id=1").get()?.location === "courtyard") return;
     const row = this.db.prepare("SELECT player_json FROM company_state WHERE id=1").get();
     const player = JSON.parse(String(row?.player_json ?? "{}")) as Record<string, unknown>;
     const [x, y] = this.geometry.room.player_spawn;
@@ -432,6 +433,7 @@ export class FurnishingStore {
       }
       this.sync();
       const before = this.read();
+      if (this.db.prepare("SELECT location FROM story_state WHERE id=1").get()?.location === "courtyard") throw new Error("Return to the studio before arranging its furniture.");
       if (value.expectedRevision !== before.revision) throw new Error("The room changed. Refresh the saved layout before trying again.");
       const player = JSON.parse(String(this.db.prepare("SELECT player_json FROM company_state WHERE id=1").get()!.player_json)) as Record<string, unknown>;
       const actors = value.actorCells ? [...value.actorCells] : [];

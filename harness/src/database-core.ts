@@ -1,5 +1,6 @@
 import { normalizeClock, phaseForMinute } from "./day-clock.js";
 import { JourneyStore } from "./journey.js";
+import { StoryStore } from "./story.js";
 import { FurnishingGeometry, FurnishingStore, type GeometryData, type FurnishingState } from "./furnishing-core.js";
 import type { SqlDatabase } from "./sql-database.js";
 import { legacyResearchJson, starterResearchJson, TycoonStore } from "./tycoon.js";
@@ -110,6 +111,7 @@ export class GameDatabase {
   readonly journey: JourneyStore;
   readonly furnishing: FurnishingStore;
   readonly tycoon: TycoonStore;
+  readonly story: StoryStore;
   readonly #database: SqlDatabase;
   readonly #projectRoot: string;
 
@@ -144,6 +146,7 @@ export class GameDatabase {
       [15, "015_tycoon_engines.sql"],
       [16, "016_payroll_debt.sql"],
       [17, "017_office_layout.sql"],
+      [18, "018_courtyard_story.sql"],
     ] as const) {
       const applied = this.#database.prepare("SELECT version FROM schema_migrations WHERE version = ?").get(version);
       if (applied) continue;
@@ -168,7 +171,9 @@ export class GameDatabase {
     this.#seed();
     this.furnishing = new FurnishingStore(this.#database, new FurnishingGeometry(resources.geometryData), resources.parseFurnishingState, resources.hash);
     this.journey = new JourneyStore(this.#database, () => this.furnishing.sync());
-    this.tycoon = new TycoonStore(this.#database, this.journey, () => this.furnishing.sync());
+    this.tycoon = new TycoonStore(this.#database, this.journey, () => this.furnishing.sync(), (id, topic, type) => this.story.productStarted(id, topic, type));
+    this.story = new StoryStore(this.#database, this.journey, this.furnishing, () => this.tycoon.unlockStoryResearch("reselling", "template_pack"));
+    this.journey.bindStory(() => this.story.view());
     this.journey.bindTycoon(() => this.tycoon.view());
     this.recoverInterruptedJobs();
   }

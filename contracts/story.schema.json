@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://startup-valley.local/contracts/story.schema.json",
+  "title": "Offline courtyard story projection and commands",
+  "$ref": "#/$defs/state",
+  "$defs": {
+    "operation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["operationId", "expectedRevision"],
+      "properties": {
+        "operationId": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,100}$" },
+        "expectedRevision": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "travel": {
+      "type": "object", "additionalProperties": false,
+      "required": ["operationId", "expectedRevision", "destination"],
+      "properties": {
+        "operationId": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,100}$" },
+        "expectedRevision": { "type": "integer", "minimum": 0 },
+        "destination": { "enum": ["office", "courtyard"] }
+      }
+    },
+    "state": {
+      "type": "object", "additionalProperties": false,
+      "required": ["revision", "location", "courtyardUnlocked", "visited", "metTheo", "opportunity"],
+      "properties": {
+        "revision": { "type": "integer", "minimum": 0 },
+        "location": { "enum": ["office", "courtyard"] },
+        "courtyardUnlocked": { "type": "boolean" },
+        "visited": { "type": "boolean" },
+        "metTheo": { "type": "boolean" },
+        "opportunity": {
+          "type": "object", "additionalProperties": false,
+          "required": ["id", "title", "description", "topicId", "typeId", "status", "productId"],
+          "properties": {
+            "id": { "const": "market_day_kit" },
+            "title": { "type": "string", "maxLength": 80 },
+            "description": { "type": "string", "maxLength": 400 },
+            "topicId": { "const": "reselling" },
+            "typeId": { "const": "template_pack" },
+            "status": { "enum": ["locked", "available", "accepted", "developing", "completed"] },
+            "productId": { "type": "string", "pattern": "^(|p[1-9][0-9]*)$" }
+          }
+        }
+      }
+    }
+  }
+}

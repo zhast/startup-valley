@@ -1,5 +1,6 @@
 import type { GameDatabase } from "./database-core.js";
 import type { FurnishingUpdate } from "./furnishing-core.js";
+import type { StoryOperation, StoryTravel } from "./story.js";
 import type { ProtocolRequest } from "./types.js";
 import { stringParameter, numberParameter, staffParameter, optionalIntegerParameter, optionalStringParameter } from "./request-parameters.js";
 
@@ -11,6 +12,14 @@ export interface OfflineHooks {
 /** The same authoritative routes serve native stdio and the offline browser Worker. */
 export async function dispatchOffline(request: ProtocolRequest, database: GameDatabase, hooks: OfflineHooks = {}): Promise<unknown> {
   switch (request.method) {
+    case "story.travel":
+    case "story.acceptOpportunity": {
+      const replayed = request.method === "story.travel"
+        ? database.story.travel(request.params as unknown as StoryTravel)
+        : database.story.acceptOpportunity(request.params as unknown as StoryOperation);
+      const { journey, furnishing } = database.bootstrap();
+      return { journey, furnishing, replayed };
+    }
     case "furnishing.update":
       return database.furnishing.update(request.params as unknown as FurnishingUpdate);
     case "hiring.complete":

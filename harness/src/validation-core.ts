@@ -3,9 +3,10 @@ import formats from "ajv-formats";
 import type { FormatsPlugin } from "ajv-formats";
 import type { JobSpec, ProtocolRequest } from "./types.js";
 import type { FurnishingState } from "./furnishing-core.js";
+import type { StoryView } from "./story.js";
 const addFormats = formats as unknown as FormatsPlugin;
 
-export const CONTRACT_SCHEMAS = ["worker-event.schema.json", "artifact.schema.json", "job.schema.json", "protocol.schema.json", "furnishing.schema.json"] as const;
+export const CONTRACT_SCHEMAS = ["worker-event.schema.json", "artifact.schema.json", "job.schema.json", "protocol.schema.json", "furnishing.schema.json", "story.schema.json"] as const;
 
 function validationMessage(validate: ValidateFunction): string {
   return validate.errors?.map((error) => `${error.instancePath || "/"} ${error.message ?? "is invalid"}`).join("; ") ?? "invalid data";
@@ -27,8 +28,10 @@ export function createValidation(schemas: Record<string, object>) {
   ajv.addSchema(artifactSchema);
   ajv.addSchema(jobSchema);
   ajv.addSchema(readSchema("furnishing.schema.json"));
+  ajv.addSchema(readSchema("story.schema.json"));
   const validateProtocol = ajv.compile(protocolSchema);
   const validateFurnishing = ajv.getSchema("https://startup-valley.local/contracts/furnishing.schema.json")!;
+  const validateStory = ajv.getSchema("https://startup-valley.local/contracts/story.schema.json")!;
   const registeredJobValidator = ajv.getSchema("https://startup-valley.local/contracts/job.schema.json");
   if (!registeredJobValidator) throw new Error("Job schema failed to register");
   const validateJob: ValidateFunction = registeredJobValidator;
@@ -50,5 +53,9 @@ export function createValidation(schemas: Record<string, object>) {
     return value as FurnishingState;
   }
 
-  return { parseRequest, parseJobSpec, parseFurnishingState };
+  function parseStoryState(value: unknown): StoryView {
+    if (!validateStory(value)) throw new Error(`Invalid story state: ${validationMessage(validateStory)}`);
+    return value as StoryView;
+  }
+  return { parseRequest, parseJobSpec, parseFurnishingState, parseStoryState };
 }

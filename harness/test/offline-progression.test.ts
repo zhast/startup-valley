@@ -1,14 +1,19 @@
 import assert from "node:assert/strict";
-import { mkdtemp } from "node:fs/promises";
+import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import test from "node:test";
+import test, { type TestContext } from "node:test";
 import { GameDatabase } from "../src/database.js";
 
-async function company() {
+async function company(t: TestContext) {
   const root = await mkdtemp(join(tmpdir(), "startup-valley-offline-growth-"));
   const path = join(root, "game.sqlite");
-  return { root, path, db: new GameDatabase(path, root) };
+  const db = new GameDatabase(path, root);
+  t.after(async () => {
+    try { db.close(); } catch { /* already closed by the reopen check */ }
+    await rm(root, { recursive: true, force: true });
+  });
+  return { root, path, db };
 }
 
 function release(db: GameDatabase): string {
@@ -19,8 +24,8 @@ function release(db: GameDatabase): string {
   return id;
 }
 
-test("ordinary offline releases unlock every teammate and the larger office without legacy work orders", async () => {
-  const { db, path, root } = await company();
+test("ordinary offline releases unlock every teammate and the larger office without legacy work orders", async (t) => {
+  const { db, path, root } = await company(t);
   assert.equal(db.journey.state().candidates.find((person) => person.id === "theo")!.available, false);
   db.journey.hire("mira", 1);
   release(db);
@@ -42,13 +47,14 @@ test("ordinary offline releases unlock every teammate and the larger office with
   const state = db.bootstrap();
   db.close();
   const reopened = new GameDatabase(path, root);
+  t.after(() => { try { reopened.close(); } catch { /* already closed */ } });
   assert.deepEqual(reopened.bootstrap().journey, state.journey);
   assert.deepEqual(reopened.bootstrap().furnishing, state.furnishing);
   reopened.close();
 });
 
-test("existing optional chapter milestones still unlock their teammates without fabricating releases", async () => {
-  const { db } = await company();
+test("existing optional chapter milestones still unlock their teammates without fabricating releases", async (t) => {
+  const { db } = await company(t);
   db.journey.db.exec("UPDATE milestone_progress SET completed=1 WHERE id IN ('website','incorporate'); UPDATE company_state SET opened_chapter=2 WHERE id=1");
   assert.equal(db.journey.releasedProducts(), 0);
   assert.equal(db.journey.state().candidates.find((person) => person.id === "theo")!.available, true);

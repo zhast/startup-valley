@@ -20,6 +20,7 @@
             "health",
             "bootstrap",
             "furnishing.update",
+            "story.travel", "story.acceptOpportunity",
             "credential.status",
             "credential.set",
             "credential.grok.login.start",
@@ -50,6 +51,8 @@
         "params": { "type": "object" }
       },
       "allOf": [
+        { "if": { "properties": { "method": { "const": "story.travel" } } }, "then": { "properties": { "params": { "$ref": "story.schema.json#/$defs/travel" } } } },
+        { "if": { "properties": { "method": { "const": "story.acceptOpportunity" } } }, "then": { "properties": { "params": { "$ref": "story.schema.json#/$defs/operation" } } } },
         { "if": { "properties": { "method": { "const": "furnishing.update" } } }, "then": { "properties": { "params": { "$ref": "furnishing.schema.json#/$defs/update" } } } },
         { "if": { "properties": { "method": { "const": "hiring.complete" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["employeeId"], "properties": { "employeeId": { "enum": ["mira", "theo", "creative"] } } } } } },
         { "if": { "properties": { "method": { "const": "chapter.continue" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "properties": {} } } } },
@@ -117,7 +120,7 @@
         { "if": { "properties": { "method": { "const": "tycoon.award" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["productId"], "properties": { "productId": { "type": "string", "minLength": 2, "maxLength": 32, "pattern": "^p[1-9][0-9]*$" } } } } } },
         { "if": { "properties": { "method": { "const": "tycoon.port" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["productId"], "properties": { "productId": { "type": "string", "minLength": 2, "maxLength": 32, "pattern": "^p[1-9][0-9]*$" } } } } } },
         { "if": { "properties": { "method": { "const": "tycoon.localize" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["productId"], "properties": { "productId": { "type": "string", "minLength": 2, "maxLength": 32, "pattern": "^p[1-9][0-9]*$" } } } } } },
-        { "if": { "properties": { "method": { "const": "game.save" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["x", "y"], "properties": { "x": { "type": "number", "minimum": 0, "maximum": 1280 }, "y": { "type": "number", "minimum": 0, "maximum": 720 }, "movementSeen": { "type": "boolean" }, "effectsVolume": { "type": "number", "minimum": 0, "maximum": 1 }, "ambienceVolume": { "type": "number", "minimum": 0, "maximum": 1 }, "attentionEmployeeId": { "enum": ["", "mira", "theo", "creative"] }, "architectureTheme": { "enum": ["office", "cafe", "loft", "studio", "evening"] } } } } } }
+        { "if": { "properties": { "method": { "const": "game.save" } } }, "then": { "properties": { "params": { "type": "object", "additionalProperties": false, "required": ["x", "y"], "properties": { "location": { "enum": ["office", "courtyard"] }, "storyRevision": { "type": "integer", "minimum": 0 }, "x": { "type": "number", "minimum": 0, "maximum": 1280 }, "y": { "type": "number", "minimum": 0, "maximum": 720 }, "movementSeen": { "type": "boolean" }, "effectsVolume": { "type": "number", "minimum": 0, "maximum": 1 }, "ambienceVolume": { "type": "number", "minimum": 0, "maximum": 1 }, "attentionEmployeeId": { "enum": ["", "mira", "theo", "creative"] }, "architectureTheme": { "enum": ["office", "cafe", "loft", "studio", "evening"] } } } } } }
       ]
     },
     "response": {
