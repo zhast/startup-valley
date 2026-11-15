@@ -5,12 +5,15 @@
   "runtime_scale": 1,
   "sampling": "nearest",
   "id": "courtyard",
-  "adapter": "courtyard_gd",
-  "source": "game/world/courtyard.gd",
+  "adapter": "courtyard_json",
+  "source": "game/data/courtyard_layout.json",
   "modules": [
     "game/world/office_navigation.gd",
-    "game/world/office_layout.gd"
+    "game/world/office_layout.gd",
+    "game/world/courtyard.gd",
+    "game/world/village_terrain.gd"
   ],
   "art": [],
-  "notes": "Current courtyard uses existing campus-surround pixels, samples stone path tiles from that texture, and assembles approved south-facing cafe furniture. It does not claim a new modular outdoor tileset or new generated art. One bounded visit, Theo and a real return."
+  "notes": "Shared native 32px terrain modules use a declared source recipe. Logical room data controls geometry; current composition remains pending in-app visual review.",
+  "terrain": "game/data/village_terrain.json"
 }

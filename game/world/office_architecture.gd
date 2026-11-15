@@ -11,6 +11,7 @@ var trim_art: Texture2D
 var window_art: Texture2D
 var door_art: Texture2D
 var exterior_art: Texture2D
+var exterior_terrain: VillageTerrain
 const ART_ROOT := "res://assets/runtime/office/architecture/"
 const DEFAULT_THEME := "office"
 const PARTS: PackedStringArray = ["floor", "wall", "trim", "window", "door"]
@@ -54,7 +55,15 @@ func apply_theme(theme: String) -> bool:
 
 func configure(model: OfficeLayout) -> void:
 	layout = model
-	exterior_art = load("res://assets/runtime/office/campus-surround.png") as Texture2D if model != null and str(model.data.get("exterior", "")) == "campus" else null
+	exterior_art = null
+	if exterior_terrain != null:
+		remove_child(exterior_terrain)
+		exterior_terrain.queue_free()
+		exterior_terrain = null
+	if model != null and str(model.data.get("exterior", "")) == "village-yard":
+		exterior_terrain = VillageTerrain.new()
+		add_child(exterior_terrain)
+		exterior_terrain.configure(model.data, true)
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	var requested := DEFAULT_THEME
 	if model != null:
@@ -69,14 +78,11 @@ func _draw() -> void:
 	if blockout or floor_art == null:
 		_draw_blockout()
 		return
-	if exterior_art != null:
-		# Existing campus artwork is scenery only. Walkability still comes solely
-		# from the authored floor cells; the garden is not an unlocked destination.
-		draw_texture(exterior_art, Vector2.ZERO)
 	for y: int in range(layout.height):
 		for x: int in range(layout.width):
 			var cell := Vector2i(x, y)
 			var rect := Rect2(Vector2(cell * layout.tile_size), Vector2.ONE * layout.tile_size)
+			if exterior_terrain != null and _entry_lane(cell): continue
 			if layout.is_floor(cell):
 				draw_texture_rect_region(floor_art, rect, Rect2((x % 4) * 32, (y % 4) * 32, 32, 32))
 				continue
@@ -85,7 +91,7 @@ func _draw() -> void:
 				draw_texture_rect_region(wall_art, rect, Rect2((x % 4) * 32, (3 - wall_distance) * 32, 32, 32))
 			else:
 				var tile := _trim_cell(cell)
-				if exterior_art != null and tile == 3: continue
+				if exterior_terrain != null and tile == 3: continue
 				draw_texture_rect_region(trim_art, rect, Rect2((tile % 4) * 32, (tile / 4) * 32, 32, 32))
 	# Windows occupy solid wall cells; scenery exists only inside their panes.
 	for window: Dictionary in layout.data.get("windows", []):
@@ -94,6 +100,13 @@ func _draw() -> void:
 	for door: Dictionary in layout.data.get("doors", []):
 		var cell := OfficeLayout.vector(door.grid)
 		draw_texture(door_art, Vector2(cell * layout.tile_size))
+
+func _entry_lane(cell: Vector2i) -> bool:
+	for door: Dictionary in layout.data.get("doors", []):
+		if not bool(door.get("entrance", false)): continue
+		var start := OfficeLayout.vector(door.grid)
+		if cell.y >= start.y and cell.x >= start.x and cell.x < start.x + int(door.get("width", 1)): return true
+	return false
 
 func _north_face_distance(cell: Vector2i) -> int:
 	for distance: int in range(1, 4):

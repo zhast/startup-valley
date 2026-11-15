@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "id": "modular-yard-v1",
+  "status": "candidate",
+  "reviewer": "",
+  "reviewed_at": "",
+  "camera_profile": "office-square-grid-v1",
+  "style_profile": {
+    "id": "startup-valley-cozy-pixel-v1",
+    "path": "dev/art-catalogue/style-profile.json",
+    "sha256": "c7c4834623a482bb976abf27bcc976f72d5b83df59a66bb93af00a49d1589fe7",
+    "application": "generation_reference",
+    "reference_board": {
+      "path": "dev/art-catalogue/style-reference-board.png",
+      "sha256": "d91ba07ace9aef1d7e82c0daf55621afb57636d08376feae5ef8900623ba8283",
+      "note": "Code-arranged existing reference pixels; characters at3×, phone/floor at2×, window at1×, paper/desk at3×. Zoom is for inspection, not a change in runtime scale."
+    },
+    "references": [
+      {
+        "id": "founder-idle",
+        "path": "dev/art-catalogue/style-references/founder-idle.png",
+        "sha256": "d01a61aac781bea83902877ab96f45087bfb9ac8d0e3d6801fecf642cc1aa756"
+      },
+      {
+        "id": "mina-idle",
+        "path": "dev/art-catalogue/style-references/mina-idle.png",
+        "sha256": "3a8ad37498e9945a4bbeca8567db757b97b28f496c6e9294d11a707d8bd7e1df"
+      },
+      {
+        "id": "phone-booth",
+        "path": "dev/art-catalogue/style-references/phone-booth.png",
+        "sha256": "13f132874da276515063855f045ce62a02324820e18b9af8a3e9cc1be4af4fd8"
+      },
+      {
+        "id": "desk-front",
+        "path": "dev/art-catalogue/style-references/desk-front.png",
+        "sha256": "adb3458aa63d799af6f9a07723523344d63b82772e6d77f03e8da96137c02f21"
+      },
+      {
+        "id": "desk-rear",
+        "path": "dev/art-catalogue/style-references/desk-rear.png",
+        "sha256": "d5e167d93d424fcfddbb00f1cb85217aa69b3de4ee5f4b67036c0830754d29c4"
+      },
+      {
+        "id": "oak-floor",
+        "path": "dev/art-catalogue/style-references/oak-floor.png",
+        "sha256": "851eadbadcfcaf5eaeb4f30a5679d797e42409ac4ffba95d0c71fc591473db66"
+      },
+      {
+        "id": "office-window",
+        "path": "dev/art-catalogue/style-references/office-window.png",
+        "sha256": "cca8896dac6640c452ba2c7148a6f551be4e2d9c2ac793f7439e3501d8863571"
+      },
+      {
+        "id": "paper-frame",
+        "path": "dev/art-catalogue/style-references/paper-frame.png",
+        "sha256": "3a07014154ae2d624f52b563db4befaa1b3f22ed82bc440213d69251caa8111b"
+      }
+    ]
+  },
+  "provenance": {
+    "kind": "openai_imagegen",
+    "note": "New lawn and three hedge modules generated with the canonical board. The single paving cell is an unchanged crop of existing project art whose original provenance is unknown; see derivation.json.",
+    "sources": [
+      {
+        "path": "game/assets/source/modular-yard/grass-generated.png",
+        "sha256": "8f1745bac4b1cf536be317128896cf074876c96dd046bd1f9f2d73133759be51"
+      },
+      {
+        "path": "game/assets/source/modular-yard/hedges-generated.png",
+        "sha256": "677d2513ef0b6ec36b7f959dee58e0f8be7531b577401041f45502cb0982386a"
+      },
+      {
+        "path": "game/assets/source/modular-yard/grass-before.png",
+        "sha256": "9e51efc6995fd67ca7210e49b0dd0bd98939b09dc65190cbf53b3e24390aeaf0"
+      },
+      {
+        "path": "game/assets/source/modular-yard/hedge-before.png",
+        "sha256": "87839af093409bfaaa65369239a3993311f08a236318d90354494b93ad354f24"
+      },
+      {
+        "path": "game/assets/source/modular-yard/hedges-prompt.txt",
+        "sha256": "33793fbe1acf1f56e172e4c1ade0715b8c7503c56ed2f2646de767086f351a04"
+      },
+      {
+        "path": "game/assets/source/modular-yard/derivation.json",
+        "sha256": "ed22e804ce87cf9372a62c3699c46ceebeba871db2cc889c5e6bcadf71b27d52"
+      },
+      {
+        "path": "game/assets/runtime/office/campus-surround.png",
+        "sha256": "d5387a27eb3131d8f6bc7816724f99090620c68aeb62e7cecef42c5d7138be81"
+      }
+    ],
+    "prompt": {
+      "path": "game/assets/source/modular-yard/grass-prompt.txt",
+      "sha256": "7e99b05d0fa391b8ac3526f39bf88c3c08dd477647db7f6cd2377728058b89cc"
+    },
+    "generation_id": "exec-aed54b32-dcd3-409e-8c33-03ed8f95a831, exec-a296e227-0615-4d00-9233-daee78d4ceb4",
+    "transform": "dev/tools/build_village_terrain.mjs: complete lawn nearest-resized to128x128, three alpha-bounded hedge crops nearest-fit48x32, binaryalpha threshold128, grounded in64x64 cells at32,48; exact32x32 paving crop. Final192x192 atlas at runtime scale1."
+  },
+  "artifacts": [
+    {
+      "path": "game/assets/runtime/office/terrain-v1/yard-atlas.png",
+      "sha256": "d598107f7a089911a083f68b843a47bd58f499cec0daea357be311e3b2c10b66"
+    }
+  ],
+  "bindings": [
+    {
+      "path": "dev/tools/build_village_terrain.mjs",
+      "sha256": "97e2ed266f4c5a97d9043c10e51f724225f337e12ca96318a0f70feb71edb4e3"
+    },
+    {
+      "path": "game/world/village_terrain.gd",
+      "sha256": "0afc91a91295f0b263bd52de7b2690eb2883bb9041abc3a66aa64551b42a4bf3"
+    },
+    {
+      "path": "game/data/village_terrain.json",
+      "sha256": "27513e2fa1a77a4e94ff27f7256b44a720b89fbb3580549eb9b6ff2eb5c11209"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "docs/web/assets/modular-yard/terrain-geometry.json",
+      "sha256": "e73b92f1e0f48670460b1351ff2fc0f4ba58c9974d9bc022366237bb7f609e48",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/modular-yard/routes.json",
+      "sha256": "df66bca86e421cd752d3751fbf32cd15599414c156b3f87545a2df35f60f0ba3",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/modular-yard/source-manifest.json",
+      "sha256": "d90407510eac3c3a2e8736a954029f9e2b96bf72b636f9fce57b3c1b53437c79",
+      "kind": "test_report"
+    }
+  ],
+  "checks": {
+    "style": {
+      "result": "pending",
+      "note": ""
+    },
+    "camera": {
+      "result": "pending",
+      "note": ""
+    },
+    "scale": {
+      "result": "pending",
+      "note": ""
+    },
+    "anchor": {
+      "result": "pending",
+      "note": ""
+    },
+    "layering": {
+      "result": "pending",
+      "note": ""
+    },
+    "animation": {
+      "result": "not_applicable",
+      "note": "Static terrain modules; no animation frames."
+    },
+    "placement": {
+      "result": "pending",
+      "note": ""
+    },
+    "readability": {
+      "result": "pending",
+      "note": ""
+    }
+  },
+  "capture_notes": "Candidate only. First in-app build c44018e9 confirmed quieter lawn but rejected vertical hedge stamp chains. Current maps use sparse, staggered horizontal groups without bitmap changes. New in-app visual inspection remains required; no windowed Godot runs."
+}

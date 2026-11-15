@@ -13,7 +13,8 @@
     "game/world/office_navigation.gd",
     "game/world/office_architecture.gd",
     "game/world/office_daylight.gd",
-    "harness/src/furnishing-core.ts"
+    "harness/src/furnishing-core.ts",
+    "game/world/village_terrain.gd"
   ],
   "art": [
     "game/assets/runtime/office/architecture/cafe-door.png",
@@ -42,5 +43,6 @@
     "game/assets/runtime/office/architecture/wall.png",
     "game/assets/runtime/office/architecture/window.png"
   ],
-  "notes": "Actual authored office and all registered future stations. Saved furnishing variations remain covered by authoritative furnishing and engine placement tests; this manifest does not replace them."
+  "notes": "Shared native 32px terrain modules use a declared source recipe. Logical room data controls geometry; current composition remains pending in-app visual review.",
+  "terrain": "game/data/village_terrain.json"
 }

@@ -1,0 +1,130 @@
+{
+  "origin": "openai_imagegen_with_legacy_stone_crop",
+  "styleProfile": "startup-valley-cozy-pixel-v1",
+  "tool": "built-in image_gen",
+  "generationIds": [
+    "exec-aed54b32-dcd3-409e-8c33-03ed8f95a831",
+    "exec-a296e227-0615-4d00-9233-daee78d4ceb4"
+  ],
+  "lawn": {
+    "resize": [
+      128,
+      128
+    ],
+    "kernel": "nearest"
+  },
+  "paving": {
+    "crop": [
+      832,
+      384,
+      32,
+      32
+    ],
+    "transform": "none",
+    "provenance": "Pre-existing project art; original generation history not established by this change."
+  },
+  "hedges": {
+    "crops": [
+      {
+        "source": {
+          "left": 84,
+          "top": 227,
+          "width": 586,
+          "height": 271
+        },
+        "normalized": [
+          48,
+          22
+        ],
+        "atlas": {
+          "left": 8,
+          "top": 154
+        },
+        "groundPivot": [
+          32,
+          176
+        ]
+      },
+      {
+        "source": {
+          "left": 792,
+          "top": 225,
+          "width": 589,
+          "height": 273
+        },
+        "normalized": [
+          48,
+          22
+        ],
+        "atlas": {
+          "left": 72,
+          "top": 154
+        },
+        "groundPivot": [
+          96,
+          176
+        ]
+      },
+      {
+        "source": {
+          "left": 1502,
+          "top": 212,
+          "width": 588,
+          "height": 286
+        },
+        "normalized": [
+          48,
+          23
+        ],
+        "atlas": {
+          "left": 136,
+          "top": 153
+        },
+        "groundPivot": [
+          160,
+          176
+        ]
+      }
+    ],
+    "alphaThreshold": 128,
+    "kernel": "nearest",
+    "runtimeScale": 1,
+    "cellCanvas": [
+      64,
+      64
+    ],
+    "groundPivot": [
+      32,
+      48
+    ]
+  },
+  "files": {
+    "game/assets/source/modular-yard/grass-generated.png": "8f1745bac4b1cf536be317128896cf074876c96dd046bd1f9f2d73133759be51",
+    "game/assets/source/modular-yard/hedges-generated.png": "677d2513ef0b6ec36b7f959dee58e0f8be7531b577401041f45502cb0982386a",
+    "game/assets/source/modular-yard/grass-prompt.txt": "7e99b05d0fa391b8ac3526f39bf88c3c08dd477647db7f6cd2377728058b89cc",
+    "game/assets/source/modular-yard/hedges-prompt.txt": "33793fbe1acf1f56e172e4c1ade0715b8c7503c56ed2f2646de767086f351a04",
+    "game/assets/runtime/office/campus-surround.png": "d5387a27eb3131d8f6bc7816724f99090620c68aeb62e7cecef42c5d7138be81",
+    "game/assets/runtime/office/terrain-v1/yard-atlas.png": "d598107f7a089911a083f68b843a47bd58f499cec0daea357be311e3b2c10b66",
+    "game/assets/source/modular-yard/grass-before.png": "9e51efc6995fd67ca7210e49b0dd0bd98939b09dc65190cbf53b3e24390aeaf0",
+    "game/assets/source/modular-yard/hedge-before.png": "87839af093409bfaaa65369239a3993311f08a236318d90354494b93ad354f24",
+    "dev/art-catalogue/style-profile.json": "c7c4834623a482bb976abf27bcc976f72d5b83df59a66bb93af00a49d1589fe7",
+    "dev/art-catalogue/style-reference-board.png": "d91ba07ace9aef1d7e82c0daf55621afb57636d08376feae5ef8900623ba8283",
+    "dev/tools/build_village_terrain.mjs": "97e2ed266f4c5a97d9043c10e51f724225f337e12ca96318a0f70feb71edb4e3"
+  },
+  "editReferences": {
+    "source": "game/assets/runtime/office/campus-surround.png",
+    "grassCrop": [
+      192,
+      192,
+      256,
+      256
+    ],
+    "hedgeCrop": [
+      192,
+      0,
+      448,
+      64
+    ],
+    "styleBoard": "dev/art-catalogue/style-reference-board.png"
+  }
+}

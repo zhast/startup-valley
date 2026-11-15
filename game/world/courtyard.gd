@@ -1,9 +1,9 @@
 class_name Courtyard
 extends Node2D
-## The approved campus artwork becomes a bounded, navigable garden visit.
+## A bounded shared neighborhood yard, using the office's native terrain cells.
 ## No office placements or worker entities are moved into this scene.
 
-const BACKGROUND: Texture2D = preload("res://assets/runtime/office/campus-surround.png")
+const LAYOUT_PATH := "res://data/courtyard_layout.json"
 const SPAWN := Vector2(496, 560)
 const THEO_POSITION := Vector2(624, 336)
 const THEO_APPROACH := Vector2(624, 384)
@@ -12,34 +12,21 @@ var navigation: OfficeNavigation
 var guest: StoryGuest
 var return_sign: StoryWaypoint
 var decoration_bounds: Array[Rect2] = []
-
-func _draw() -> void:
-	# Reuse native stone-path pixels from the existing campus. A short path and
-	# small meeting terrace make the destination readable without new bitmap art.
-	for y: int in range(288, 417, 32):
-		for x: int in range(480, 705, 32):
-			draw_texture_rect_region(BACKGROUND, Rect2(x, y, 32, 32), Rect2(400, 580, 32, 32))
-	for y: int in range(448, 577, 32):
-		draw_texture_rect_region(BACKGROUND, Rect2(480, y, 32, 32), Rect2(400, 580, 32, 32))
+var terrain: VillageTerrain
 
 func _ready() -> void:
-	var background := Sprite2D.new()
-	background.texture = BACKGROUND
-	background.centered = false
-	background.z_index = -1000
-	background.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	add_child(background)
+	var data: Dictionary = OfficeLayout._read_json(LAYOUT_PATH)
+	terrain = VillageTerrain.new()
+	add_child(terrain)
+	terrain.configure(data)
 	navigation = OfficeNavigation.new()
 	navigation.name = "CourtyardNavigation"
 	add_child(navigation)
-	navigation.configure({"width": 40, "height": 23, "tile_size": 32, "walkable_rects": [[4, 3, 22, 6], [3, 9, 24, 7], [4, 16, 21, 2], [5, 18, 19, 1], [10, 19, 12, 1]]}, Vector2.ZERO)
+	navigation.configure(data, Vector2.ZERO)
 	var catalogue := OfficeLayout.new()
 	catalogue.load_files()
-	_add_decoration(catalogue, "cafe_table", Vector2(560, 304))
-	_add_decoration(catalogue, "cafe_chair", Vector2(528, 368))
-	_add_decoration(catalogue, "cafe_chair", Vector2(592, 368))
-	_add_decoration(catalogue, "broadleaf_planter", Vector2(464, 336))
-	_add_decoration(catalogue, "broadleaf_planter", Vector2(720, 336))
+	for prop: Dictionary in data.props:
+		_add_decoration(catalogue, str(prop.kind), (Vector2(OfficeLayout.vector(prop.grid)) + Vector2(0.5, 0.5)) * 32)
 	navigation.rebuild(decoration_bounds)
 	guest = StoryGuest.new()
 	guest.name = "TheoVisitor"

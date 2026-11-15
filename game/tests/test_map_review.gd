@@ -19,6 +19,7 @@ func check(value: bool, message: String) -> void:
 		push_error(message)
 
 func capture(label: String) -> void:
+	if DisplayServer.get_name() == "headless": return
 	await process_frame
 	RenderingServer.force_draw(false)
 	var file := output.path_join(label + ".png")
@@ -35,8 +36,8 @@ func cross_to(point: Vector2, label: String) -> void:
 
 func run() -> void:
 	output = OS.get_environment("STARTUP_VALLEY_MAP_OUTPUT")
-	if output.is_empty() or DisplayServer.get_name() == "headless":
-		push_error("Map review requires native rendering and STARTUP_VALLEY_MAP_OUTPUT")
+	if output.is_empty():
+		push_error("Map review requires STARTUP_VALLEY_MAP_OUTPUT")
 		quit(1)
 		return
 	DirAccess.make_dir_recursive_absolute(output)
@@ -78,7 +79,7 @@ func run() -> void:
 	await capture("courtyard-behind-planter")
 	await cross_to(Vector2(720, 368), "courtyard-in-front-of-planter")
 	check(not courtyard.navigation.path(player.position, Courtyard.SPAWN, "founder").is_empty(), "Actual return path remains reachable")
-	var report := {"scope": "native map component fixture; not final demo acceptance", "checks": checks, "failures": failures, "captures": captures, "engine": Engine.get_version_info(), "display": DisplayServer.get_name(), "renderer": RenderingServer.get_current_rendering_method(), "fixture_source": "dev/map-catalogue/fixtures/first-project-furnishing.json"}
+	var report := {"scope": "map component fixture; headless runs prove routes only, not visual acceptance", "checks": checks, "failures": failures, "captures": captures, "engine": Engine.get_version_info(), "display": DisplayServer.get_name(), "renderer": RenderingServer.get_current_rendering_method(), "fixture_source": "dev/map-catalogue/fixtures/first-project-furnishing.json"}
 	var file := FileAccess.open(output.path_join("depth-report.json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify(report, "  "))
 	file.close()

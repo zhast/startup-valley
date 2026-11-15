@@ -23,13 +23,17 @@ separate. A visible path must either lead to implemented travel or end in an
 honest boundary. Give each place a readable arrival point, focal activity,
 quiet walking lanes and a safe way home.
 
-The office uses logical JSON layouts and modular architecture. The present
-courtyard is a deliberately small exception in representation: its GDScript
-assembles existing campus artwork, samples the existing stone pixels for a
-path, and places registered cafe props. It is **not** a new outdoor tileset and
-its artwork was not regenerated for this framework. Future outdoor areas should
-prefer reusable authored tiles/modules rather than expanding one background
-painting indefinitely. Do not copy third-party game assets.
+The office and courtyard use logical JSON layouts. `VillageTerrain` shares
+native 32px grass and paving cells plus registered hedge modules between them.
+Its recipe declares every atlas crop, origin and contiguous grass patch; the
+runtime creates `TileMapLayer` nodes rather than scaling a room painting.
+The modest studio's stone apron meets its actual doorway. Courtyard walkable
+geometry, story approach and saved spawn remain explicit and independently
+validated. See the retained source and transformation history in
+`game/assets/source/modular-yard/`. Do not copy third-party game assets.
+Low, wide shrubs form sparse authored `terrain_plantings` groups; they must not
+be repeated vertically as disconnected stair-step silhouettes. The map gate
+rejects any planted cell on legal walking floor.
 
 ## Register and validate a map
 
@@ -39,13 +43,15 @@ painting indefinitely. Do not copy third-party game assets.
    admission records; the worker remains authoritative for travel, unlocks,
    save location and inventory.
 2. Prefer the existing `office_json` adapter. It reads the actual layout and
-   catalogue; do not duplicate its grid in the manifest. `courtyard_gd` reads
-   the existing scene's literal navigation, spawn, approach and prop calls.
+   catalogue; do not duplicate its grid in the manifest. `courtyard_json` reads
+   actual courtyard data and checks its renderer's spawn/approach constants.
+   The historical `courtyard_gd` adapter can read literal navigation geometry.
    A different representation needs an explicit adapter and regression tests.
 3. Run `node scripts/validate-maps.mjs --preview`. Preview permits missing
    approval, never invalid geometry/references. Run the existing Godot layout,
    projection and navigation tests and production worker persistence tests too.
-4. Capture the actual Godot scene at native scale. Show a reference character,
+4. Capture the actual exported Godot scene in Codex's existing in-app browser.
+   Do not launch windowed Godot capture tests. Show a reference character,
    arrival/return, interaction affordances, front/behind crossings, and the
    widest relevant state (hires/expansion if applicable). Record a successful
    engine journey through arrival, interaction, return and save/reload. A
@@ -57,10 +63,14 @@ painting indefinitely. Do not copy third-party game assets.
      > dev/map-catalogue/reviews/courtyard.json
    ```
 
-6. Retain a compact PNG selection and test report in the repository. Fill the
+6. Retain a compact PNG/JPEG selection and test report in the repository. Fill the
    candidate's `evidence` with repository-relative paths, exact SHA-256 hashes,
-   `kind: godot_frame` or `godot_test_report`, `capture_method: godot_engine`,
-   and notes identifying the view/scenario. A reviewer must inspect those
+   `kind: godot_frame` or `godot_test_report`, and notes identifying the scenario.
+   Current browser frames use `capture_method: in_app_browser_godot` and the
+   captured export's `build_id`. Headless route reports use `godot_headless`;
+   they prove input, state and navigation, never visual appearance. Historical
+   native PNGs retain `godot_engine` and must not be relabeled as current browser
+   evidence. A reviewer must inspect those
    images against the shared board, name themselves, supply an ISO review date,
    and assess every listed check with a concrete note. Only then change
    `status` to `approved`. Keep one active approval per map; archive superseded

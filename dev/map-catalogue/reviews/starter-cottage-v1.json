@@ -2,7 +2,7 @@
   "schema_version": 1,
   "map_id": "starter-cottage-v1",
   "status": "candidate",
-  "signature": "a6a65c179640a859a2d07e8e83edd777413f5b84412c7f19fc546e36d4a78446",
+  "signature": "a32b1f6eba864745079c297f5d10706c6ba6ee2772fb46c377c3512474305cd1",
   "reviewer": "",
   "reviewed_at": "",
   "style_profile": {
@@ -252,18 +252,6 @@
       "sha256": "9a2dd706a83d19e68ad9e81b1f98eba72ac39ed03f2040f3f8f40a8581544d30"
     },
     {
-      "path": "game/assets/runtime/office/cafe-chair-south.png",
-      "sha256": "9dd1295a0e41cc94351b029c0218174d566b6e25cb07fec518250f404427a23a"
-    },
-    {
-      "path": "game/assets/runtime/office/cafe-table-south.png",
-      "sha256": "59d0aa3d46f150265690853d56f3133b1461485bc2f215e20440afc05a4265a3"
-    },
-    {
-      "path": "game/assets/runtime/office/campus-surround.png",
-      "sha256": "d5387a27eb3131d8f6bc7816724f99090620c68aeb62e7cecef42c5d7138be81"
-    },
-    {
       "path": "game/assets/runtime/office/coffee-station-v1/east-counter_carcass.png",
       "sha256": "f23ba897a97ee02b772344579d75bdf4ba604cbae002382164a5def45cced193"
     },
@@ -428,22 +416,6 @@
       "sha256": "84657d68e891a48519c416ebcd36aeb0839300c141ac9cb13815b3927adfeea9"
     },
     {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/east-east_chair_0_front.png",
-      "sha256": "642ccd14edafc4cf1e7a60a3ac71189cf2ba243a5926af13beb0eb18c1dc1ede"
-    },
-    {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/east-east_chair_0_rear.png",
-      "sha256": "918f906bb3d8a9c903efbd939b997ec648406644ae3ab74f385e1e089bd635ab"
-    },
-    {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/east-east_chair_1_front.png",
-      "sha256": "aa248826a60b6a06a90f49bf14fbd3916b250ecbb00c836547dafd084cf775dd"
-    },
-    {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/east-east_chair_1_rear.png",
-      "sha256": "5ff7ae039f3704af67090c74b89821f870dfc75a00c77558132ceba7c65418d4"
-    },
-    {
       "path": "game/assets/runtime/office/collaboration-cluster-v2/east-table_floor_shadow.png",
       "sha256": "7499bc116f914b2a783e9a37e2419df6cc17ae0e957ac8a4f7b216c0cf0f5089"
     },
@@ -454,38 +426,6 @@
     {
       "path": "game/assets/runtime/office/collaboration-cluster-v2/east-table_rear_structure.png",
       "sha256": "927606813ca2c10e0d557c6acff952b23c1c06907fb1f9b36f8fd0a689542198"
-    },
-    {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/east-west_chair_0_front.png",
-      "sha256": "54d98c5f5f56af92916b6ea8b16efb0b3b355360739bfd34048762b8a054effc"
-    },
-    {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/east-west_chair_0_rear.png",
-      "sha256": "c8b67f2958ee10125cf23b1621c038f53d3cd34ef237d5c26eff4d1d116181c0"
-    },
-    {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/east-west_chair_1_front.png",
-      "sha256": "d0d4aeb8aaf0c546732cdfc21d809ba4bd2b9042a07bade34f0146153ff520dc"
-    },
-    {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/east-west_chair_1_rear.png",
-      "sha256": "37fd57b3806f40c48bb5db8685ca5292c088ec51189879f70ba324b7e2c06cfa"
-    },
-    {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/north-north_chair_0_whole.png",
-      "sha256": "c48ca7ecfaec8198306b7ee086e3cba896b254fb03a28a70caa6ba85fc1e2945"
-    },
-    {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/north-north_chair_1_whole.png",
-      "sha256": "92d413ca2398dddbef2ccb9fe0543d8752772f320f1d3ad8d91f596a39632476"
-    },
-    {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/north-south_chair_0_whole.png",
-      "sha256": "04c7f46d7a5dfdd8c09a8dcdcd517a5446ddcf990f050b006d2139502ffbd170"
-    },
-    {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/north-south_chair_1_whole.png",
-      "sha256": "43bcbd0fd3e7b95d4cb73e3b85c73708acb741017a9e635c0f35f2237c5579b7"
     },
     {
       "path": "game/assets/runtime/office/collaboration-cluster-v2/north-table_floor_shadow.png",
@@ -500,22 +440,6 @@
       "sha256": "38f376f3c2c67ea264bc42d3770e9bcb88c5673ba68577f178b1e0487f0b7a85"
     },
     {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/south-north_chair_0_whole.png",
-      "sha256": "1af41be07a20103ed1511bd7317ed4b4537060bcd224fb017e8019b995a9eb23"
-    },
-    {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/south-north_chair_1_whole.png",
-      "sha256": "e785ff2b2e71e1414ec2abe88ab3b791b0436256fc4d03e42de6c4546f9ea955"
-    },
-    {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/south-south_chair_0_whole.png",
-      "sha256": "d13067d8dd62c11216c07c17a683734f19eaee6411527d97581b3c08e61db791"
-    },
-    {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/south-south_chair_1_whole.png",
-      "sha256": "2f770eac0788640b475561164c802168cf94c1dd99c2f3ca15b76147160c5769"
-    },
-    {
       "path": "game/assets/runtime/office/collaboration-cluster-v2/south-table_floor_shadow.png",
       "sha256": "7d9460aaf814808c2fed4f2a10f3d3220e8e12c87048089711daf9019d9c5802"
     },
@@ -526,22 +450,6 @@
     {
       "path": "game/assets/runtime/office/collaboration-cluster-v2/south-table_rear_structure.png",
       "sha256": "6f8cf8c9ce75efe0780702ca7c1e54d53422cd7575168320b0124a14ed4d76a6"
-    },
-    {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/west-east_chair_0_front.png",
-      "sha256": "9ab0f56be87aac5906860f77b6cd1b686e06fb1b2ccc5d86208c2b45b62b7d43"
-    },
-    {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/west-east_chair_0_rear.png",
-      "sha256": "cdf17941f6d8c58449f035a541a5958a54393956ce94f7477680d6c4834d56a1"
-    },
-    {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/west-east_chair_1_front.png",
-      "sha256": "2e347bf38cd509216e6538d01d7e72593bc0e167fa92d9b643aabc6b8bfbef53"
-    },
-    {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/west-east_chair_1_rear.png",
-      "sha256": "9d57fe038087931a11e0457f0810a943ece78fc7a51aa11b7546b99829762e0a"
     },
     {
       "path": "game/assets/runtime/office/collaboration-cluster-v2/west-table_floor_shadow.png",
@@ -556,20 +464,16 @@
       "sha256": "c883b634a012c6a125da1cbfc75d0e3e7ff7b3a224138408d500a026efb42f64"
     },
     {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/west-west_chair_0_front.png",
-      "sha256": "3a4752a9536a3ae658b2fcfdcb5d8d680f99304986a1e3dfb3b43e5728ec105e"
+      "path": "game/assets/runtime/office/cozy-furniture-v1/cafe-chair-south.png",
+      "sha256": "7728f60d8bd26941fe7ac06ffe8600e65855363dea5812f1ad78b08732d93d76"
     },
     {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/west-west_chair_0_rear.png",
-      "sha256": "e55182015d8a93459d0bbac2e3af522e56819fa2e67e2901e6b5f5747c383739"
+      "path": "game/assets/runtime/office/cozy-furniture-v1/cafe-table-south.png",
+      "sha256": "75216f94590acfa4110ceb52d73200518e0a9fecf23650ad216e31b5245c25c5"
     },
     {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/west-west_chair_1_front.png",
-      "sha256": "b4682410fc301486c0084eef8c7fb6f96ee5a0da8316e5dfdceec7fcddb8d4bb"
-    },
-    {
-      "path": "game/assets/runtime/office/collaboration-cluster-v2/west-west_chair_1_rear.png",
-      "sha256": "6257d63512a5216a43d47b6e2528002ed0689069f7d75701b3d2b236b68e3b10"
+      "path": "game/assets/runtime/office/cozy-furniture-v1/phone-booth-south.png",
+      "sha256": "8ce70fd1c112d367efa6ab8c7e4ff9539afc768d98ce2b0e1d5e72d397a70618"
     },
     {
       "path": "game/assets/runtime/office/furnishing-library/acoustic_divider/east-front_foot.png",
@@ -2304,12 +2208,12 @@
       "sha256": "d702101d1c84fe67c9c999b94b15129554fac1118c6a07527dc60fb6b2308a03"
     },
     {
-      "path": "game/assets/runtime/office/phone-booth-south.png",
-      "sha256": "13f132874da276515063855f045ce62a02324820e18b9af8a3e9cc1be4af4fd8"
-    },
-    {
       "path": "game/assets/runtime/office/south-workstation.png",
       "sha256": "d2f08e4f65312ac8535d936cc2099a71c2a396f1fb0df4037b439f6d02f194ba"
+    },
+    {
+      "path": "game/assets/runtime/office/terrain-v1/yard-atlas.png",
+      "sha256": "d598107f7a089911a083f68b843a47bd58f499cec0daea357be311e3b2c10b66"
     },
     {
       "path": "game/assets/runtime/office/whiteboard-south.png",
@@ -2317,27 +2221,27 @@
     },
     {
       "path": "game/assets/runtime/office/workstations-v2/chair-east-front.png",
-      "sha256": "2bd23748783ac7a36de5ebd494ca72d594da0a7dcd9bd4ef39df0c3616b3f2ad"
+      "sha256": "1c33dea821fb5a5cc8988919d6bd8477e8eb36a26c6a6b858afd7e02b3a19e14"
     },
     {
       "path": "game/assets/runtime/office/workstations-v2/chair-east-rear.png",
-      "sha256": "7fb1c2c441b240ab2b1fb46cbdcc7b666d488e8626c136239b9151a1d02838b4"
+      "sha256": "d8d95f980d775a0106c6ce5d4372a6c6fb8e6ac39c7f97c3c80b9924ae5a6e67"
     },
     {
       "path": "game/assets/runtime/office/workstations-v2/chair-north.png",
-      "sha256": "2cf83dd5605a7e79dfbbda137af2e102919420dfe90b411236da825e2271bd2e"
+      "sha256": "181533012b18d8c167b16d66712f1c098ca72038d8e4db0209549dda16eb25a7"
     },
     {
       "path": "game/assets/runtime/office/workstations-v2/chair-south.png",
-      "sha256": "15e9e5ce8f5e3943ffc1b4f1b63843f136cc1df71afc071a4bd5323131c943e4"
+      "sha256": "34a0e2894f089f256cef7c29ab826376e640a13fcce5e266599f19b3f4338a9c"
     },
     {
       "path": "game/assets/runtime/office/workstations-v2/chair-west-front.png",
-      "sha256": "b35f169215a8130a951c0a8e143c683a58a493f4a1bc5dfd751891c2c6fe186c"
+      "sha256": "06f55fc22a9d8a304ad0821bf1abeaaee67bd1590c2711662d3c0e77b8cceea9"
     },
     {
       "path": "game/assets/runtime/office/workstations-v2/chair-west-rear.png",
-      "sha256": "a12947b65df8d7af46db8e42a3b6c5457fc88608a11b414848bb801d8b4f9cd9"
+      "sha256": "354a5cc29e1fd9c318eec3312fed3da20d9e6aa78c11819c7b44bf34b3cfd724"
     },
     {
       "path": "game/assets/runtime/office/workstations-v2/desk-east-front.png",
@@ -2449,11 +2353,11 @@
     },
     {
       "path": "game/data/furnishing_catalog.json#/furniture/cafe_chair",
-      "sha256": "6c5d9a4574a0e4497270fa3bada8e6abb69527e4d239acad030028a7ff1a01ea"
+      "sha256": "262369ec4122f10f2060944b0ada2e3739f61d4471750d65d2f4923eae8e8f84"
     },
     {
       "path": "game/data/furnishing_catalog.json#/furniture/cafe_table",
-      "sha256": "673bdab3498d482f83f773e7b0f42ce7d1fb744c19e40d46abdd2af22eb15cc6"
+      "sha256": "f3ce7c374dcb9eb552fc36cae6db82c1994b2d0a64b05e871a7a914ec2a37231"
     },
     {
       "path": "game/data/furnishing_catalog.json#/furniture/coat_bag_stand",
@@ -2485,7 +2389,7 @@
     },
     {
       "path": "game/data/furnishing_catalog.json#/furniture/phone_booth",
-      "sha256": "384dfcf4b86968938425a17becc1f1bd52c8872725d708a00ad2b155a81faa9c"
+      "sha256": "e6bacabfe3c1361d982424b63096dec3540ad9bb38a5937f063d73723bbcaf9e"
     },
     {
       "path": "game/data/furnishing_catalog.json#/furniture/printer_scanner_station",
@@ -2557,19 +2461,23 @@
     },
     {
       "path": "game/data/furniture_catalog.json#/furniture/collaboration_cluster",
-      "sha256": "8cbab92bbe33fc6024855d6ae6b69ebb46d07e8d9fddf52fbbbb053307c17538"
+      "sha256": "c3bdd6018f49fe87d1f0c697c38a4885cc7b83d7788a58ff202cebe2780bff0b"
     },
     {
       "path": "game/data/furniture_catalog.json#/furniture/desk",
-      "sha256": "ad54c2caa5a63b457f430ac4e6a60b7a6d2b49ef3fe1b631bf0da737fbb19eb5"
+      "sha256": "909097d19c4a84b5591265d13af7e2978d9e6d40ac49a65f81dbfa900b069da6"
     },
     {
       "path": "game/data/office_layout_starter.json",
-      "sha256": "d6a910bb357c0bb21c28bebc877ca64f362bfcb634d9d416a186d844b7dab290"
+      "sha256": "1f6ddc1b3c9c14f6bd7fd28a8d5344d9c3f5b2207be9a88d71e7af43f77b62da"
+    },
+    {
+      "path": "game/data/village_terrain.json",
+      "sha256": "27513e2fa1a77a4e94ff27f7256b44a720b89fbb3580549eb9b6ff2eb5c11209"
     },
     {
       "path": "game/world/office_architecture.gd",
-      "sha256": "ef7821b48253cb10565f477aafd7a95fff46b45acc3d16cd45ad984385a255a9"
+      "sha256": "f15605b93fb09a5cd5b752f1b9416b7ce0be336407f7a6fa3d9f80045e384584"
     },
     {
       "path": "game/world/office_daylight.gd",
@@ -2588,11 +2496,23 @@
       "sha256": "b16a5d315c00504b7866dfe8b4e98fd10060f5ba6602d81dd388154f5ffaf1c5"
     },
     {
+      "path": "game/world/village_terrain.gd",
+      "sha256": "0afc91a91295f0b263bd52de7b2690eb2883bb9041abc3a66aa64551b42a4bf3"
+    },
+    {
       "path": "harness/src/furnishing-core.ts",
-      "sha256": "c1cf9f013d5af8b89099fcf2ebc70de7f347c0f9c1b85bad4539ea0e1ec972c7"
+      "sha256": "223a37df566b715f3159c8cc9927794ff2ac3b002bd8200a452511e20d8d4080"
     }
   ],
-  "evidence": [],
+  "evidence": [
+    {
+      "path": "docs/web/assets/modular-yard/routes.json",
+      "sha256": "df66bca86e421cd752d3751fbf32cd15599414c156b3f87545a2df35f60f0ba3",
+      "kind": "godot_test_report",
+      "capture_method": "godot_headless",
+      "note": "Actual component navigation with retained furniture fixture; no visual or earned-journey claim."
+    }
+  ],
   "checks": {
     "universe": {
       "result": "pending",

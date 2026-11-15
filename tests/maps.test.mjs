@@ -107,6 +107,74 @@ test('map approval needs actual-engine evidence and every visual assessment', t 
   assert.match(validateMaps(f.options).errors.join('\n'), /composition assessment/);
 });
 
+test('in-app Godot frames can pair with headless routes but require their build identity', t => {
+  const f = fixture(t), review = approve(f);
+  review.evidence[0].capture_method = 'in_app_browser_godot';
+  review.evidence[1].capture_method = 'godot_headless';
+  assert.match(validateMaps(f.options).errors.join('\n'), /captured build identifier/);
+  review.evidence[0].build_id = 'b5d7da90f647ea26';
+  assert.equal(validateMaps(f.options).ok, true);
+  // A headless route report never substitutes for a rendered game frame.
+  review.evidence[0].capture_method = 'godot_headless';
+  assert.match(validateMaps(f.options).errors.join('\n'), /actual Godot capture/);
+  review.evidence[0].capture_method = 'in_app_browser_godot';
+  // CUA can return JPEG. Signature-only bytes here test admission, not imaging.
+  const jpeg = Buffer.from([0xff, 0xd8, 0xff, 0xe0]);
+  f.write('evidence/frame.jpg', jpeg);
+  Object.assign(review.evidence[0], { path: 'evidence/frame.jpg', sha256: sha256(jpeg) });
+  assert.equal(validateMaps(f.options).ok, true);
+  review.evidence[0].capture_method = 'godot_engine';
+  assert.match(validateMaps(f.options).errors.join('\n'), /in-app browser JPEG/);
+});
+
+test('courtyard JSON is tied to its real renderer, spawn and interaction approach', t => {
+  const f = fixture(t);
+  f.manifest.adapter = 'courtyard_json';
+  f.manifest.modules = ['game/world/fixture.gd', 'game/world/courtyard.gd'];
+  f.layout.walkable_rects = f.layout.floor_rects;
+  f.layout.story_approach = [4, 4];
+  f.write(f.manifest.source, f.layout);
+  const source = 'const LAYOUT_PATH := "res://data/fixture.json"\nconst SPAWN := Vector2(48, 48)\nconst THEO_APPROACH := Vector2(144, 144)\ncatalogue.resolve_profile(kind, "south")\n';
+  f.write('game/world/courtyard.gd', source);
+  assert.equal(validateMaps({ ...f.options, allowUnreviewed: true }).ok, true);
+  f.write('game/world/courtyard.gd', source.replace('144, 144', '176, 144'));
+  assert.match(validateMaps({ ...f.options, allowUnreviewed: true }).errors.join('\n'), /THEO_APPROACH differs/);
+  f.write('game/world/courtyard.gd', source.replace('fixture.json', 'another.json'));
+  assert.match(validateMaps({ ...f.options, allowUnreviewed: true }).errors.join('\n'), /load its registered source/);
+  f.write('game/world/courtyard.gd', source);
+  f.layout.props[0].facing = 'north'; f.write(f.manifest.source, f.layout);
+  assert.match(validateMaps({ ...f.options, allowUnreviewed: true }).errors.join('\n'), /south-facing renderer/);
+});
+
+test('terrain recipes bind native grid modules and reject invalid crops even in preview', t => {
+  const f = fixture(t);
+  f.manifest.terrain = 'game/data/terrain.json';
+  // Header metadata is sufficient for this parser fixture; no render uses it.
+  const atlas = Buffer.from(f.png); atlas.writeUInt32BE(192, 16); atlas.writeUInt32BE(192, 20);
+  f.write('game/assets/runtime/terrain.png', atlas);
+  const recipe = { tile_size: 32, runtime_scale: 1, sampling: 'nearest', source: 'res://assets/runtime/terrain.png', grass_patch_columns: 1, grass_patch_rows: 1,
+    materials: { grass: { region_size: [32, 32], texture_origin: [0, 0], samples: [[0, 0, 32, 32]] },
+      paving: { region_size: [32, 32], texture_origin: [0, 0], samples: [[32, 0, 32, 32]] },
+      hedge: { region_size: [64, 64], texture_origin: [0, -16], samples: [[0, 128, 64, 64]] } } };
+  f.write(f.manifest.terrain, recipe);
+  const options = { ...f.options, allowUnreviewed: true };
+  assert.equal(validateMaps(options).ok, true);
+  const before = inspectMap(f.root, f.manifest).signature;
+  f.layout.terrain_plantings = [[0, 0, 1]]; f.write(f.manifest.source, f.layout);
+  assert.match(validateMaps(options).errors.join('\n'), /planting overlaps legal walkable floor/);
+  f.layout.terrain_plantings = [[0, 0, 0]]; f.write(f.manifest.source, f.layout);
+  assert.match(validateMaps(options).errors.join('\n'), /Invalid terrain planting row/);
+  delete f.layout.terrain_plantings; f.write(f.manifest.source, f.layout);
+  recipe.materials.hedge.texture_origin = [0, -15]; f.write(f.manifest.terrain, recipe);
+  assert.notEqual(inspectMap(f.root, f.manifest).signature, before);
+  recipe.materials.hedge.samples[0][0] = 160; f.write(f.manifest.terrain, recipe);
+  assert.match(validateMaps(options).errors.join('\n'), /in-bounds native grid module/);
+  recipe.materials.hedge.samples[0][0] = 0; recipe.grass_patch_columns = 2; f.write(f.manifest.terrain, recipe);
+  assert.match(validateMaps(options).errors.join('\n'), /sample count/);
+  recipe.grass_patch_columns = 1; recipe.runtime_scale = 2; f.write(f.manifest.terrain, recipe);
+  assert.match(validateMaps(options).errors.join('\n'), /grid\/native scale/);
+});
+
 test('world profile, scale and grid stay aligned with canonical assets', t => {
   const f = fixture(t); f.manifest.runtime_scale = 2;
   assert.match(validateMaps(f.options).errors.join('\n'), /camera\/scale\/sampling/);

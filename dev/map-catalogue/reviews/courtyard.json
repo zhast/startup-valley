@@ -2,7 +2,7 @@
   "schema_version": 1,
   "map_id": "courtyard",
   "status": "candidate",
-  "signature": "164dd8145946f0639f1e8ede1f0b793edcdb92be574a03c7b55e235fa7d1cf92",
+  "signature": "d54c91a10dc4305f889591b808148109d4eabe3bffc16a5d9e62cb26b1df4e6e",
   "reviewer": "",
   "reviewed_at": "",
   "style_profile": {
@@ -64,16 +64,12 @@
       "sha256": "2563a9ddbc44b097112d01fd8c45e80c15c09d949af759ffe529625522469593"
     },
     {
-      "path": "game/assets/runtime/office/cafe-chair-south.png",
-      "sha256": "9dd1295a0e41cc94351b029c0218174d566b6e25cb07fec518250f404427a23a"
+      "path": "game/assets/runtime/office/cozy-furniture-v1/cafe-chair-south.png",
+      "sha256": "7728f60d8bd26941fe7ac06ffe8600e65855363dea5812f1ad78b08732d93d76"
     },
     {
-      "path": "game/assets/runtime/office/cafe-table-south.png",
-      "sha256": "59d0aa3d46f150265690853d56f3133b1461485bc2f215e20440afc05a4265a3"
-    },
-    {
-      "path": "game/assets/runtime/office/campus-surround.png",
-      "sha256": "d5387a27eb3131d8f6bc7816724f99090620c68aeb62e7cecef42c5d7138be81"
+      "path": "game/assets/runtime/office/cozy-furniture-v1/cafe-table-south.png",
+      "sha256": "75216f94590acfa4110ceb52d73200518e0a9fecf23650ad216e31b5245c25c5"
     },
     {
       "path": "game/assets/runtime/office/furnishing-library/broadleaf_planter/east-floor_shadow.png",
@@ -140,20 +136,32 @@
       "sha256": "fe65387f3a74732be5e56d2b042c3f9e0710dfd0243cf1b33346c98f4bf39458"
     },
     {
+      "path": "game/assets/runtime/office/terrain-v1/yard-atlas.png",
+      "sha256": "d598107f7a089911a083f68b843a47bd58f499cec0daea357be311e3b2c10b66"
+    },
+    {
+      "path": "game/data/courtyard_layout.json",
+      "sha256": "d4e6797272d9d5bba1e2ec7065fff7dac6d67f9c5ac3657c986dee63b4d932be"
+    },
+    {
       "path": "game/data/furnishing_catalog.json#/furniture/broadleaf_planter",
       "sha256": "73c931c4e8e19ba3ce9aff233fb957f78f0b8fbdc04c80146ef78c76ce7d8c42"
     },
     {
       "path": "game/data/furnishing_catalog.json#/furniture/cafe_chair",
-      "sha256": "6c5d9a4574a0e4497270fa3bada8e6abb69527e4d239acad030028a7ff1a01ea"
+      "sha256": "262369ec4122f10f2060944b0ada2e3739f61d4471750d65d2f4923eae8e8f84"
     },
     {
       "path": "game/data/furnishing_catalog.json#/furniture/cafe_table",
-      "sha256": "673bdab3498d482f83f773e7b0f42ce7d1fb744c19e40d46abdd2af22eb15cc6"
+      "sha256": "f3ce7c374dcb9eb552fc36cae6db82c1994b2d0a64b05e871a7a914ec2a37231"
+    },
+    {
+      "path": "game/data/village_terrain.json",
+      "sha256": "27513e2fa1a77a4e94ff27f7256b44a720b89fbb3580549eb9b6ff2eb5c11209"
     },
     {
       "path": "game/world/courtyard.gd",
-      "sha256": "af6bea34bcb838e019ff453f00e0f3bb266f9a28ad28fc257ec96ff66070378f"
+      "sha256": "daa6c6362010cb0edc62805190bbfc34adde69f555e53171c0cca5266c00e42a"
     },
     {
       "path": "game/world/office_layout.gd",
@@ -162,9 +170,21 @@
     {
       "path": "game/world/office_navigation.gd",
       "sha256": "7889f1e6984df0822b10b6a1bc38e5449f354c4afb0f1f83fe6db769c5888909"
+    },
+    {
+      "path": "game/world/village_terrain.gd",
+      "sha256": "0afc91a91295f0b263bd52de7b2690eb2883bb9041abc3a66aa64551b42a4bf3"
     }
   ],
-  "evidence": [],
+  "evidence": [
+    {
+      "path": "docs/web/assets/modular-yard/routes.json",
+      "sha256": "df66bca86e421cd752d3751fbf32cd15599414c156b3f87545a2df35f60f0ba3",
+      "kind": "godot_test_report",
+      "capture_method": "godot_headless",
+      "note": "Actual component navigation with retained furniture fixture; no visual or earned-journey claim."
+    }
+  ],
   "checks": {
     "universe": {
       "result": "pending",

@@ -1,0 +1,12 @@
+{
+  "path": "docs/web/assets/modular-yard/rejected-vertical-stamps.jpg",
+  "sha256": "0dbabfa7e4e43a1f4c7a872dc04820567bd17f583b118b5bacbd7d9b54dc768c",
+  "capture_method": "in_app_browser_godot",
+  "build_id": "c44018e9a5d119bf",
+  "source": "Root captured the actual exported game in the existing Codex in-app browser.",
+  "assessment": "Rejected side planting: repeated isolated horizontal shrubs resemble floating stairs/buttons. Lawn is visibly quieter. This is historical evidence, not approval of current sparse plantings.",
+  "build_info": {
+    "path": "docs/web/assets/modular-yard/rejected-build-info.json",
+    "sha256": "22ed806dc36fbe39ccdf162c96a895665631882431e014a68df1fb366a42d636"
+  }
+}

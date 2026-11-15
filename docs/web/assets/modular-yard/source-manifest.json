@@ -1,0 +1,63 @@
+{
+  "scope": "Current component checks only; not a complete played journey or visual acceptance",
+  "files": [
+    {
+      "path": "game/world/village_terrain.gd",
+      "sha256": "0afc91a91295f0b263bd52de7b2690eb2883bb9041abc3a66aa64551b42a4bf3"
+    },
+    {
+      "path": "game/world/office_architecture.gd",
+      "sha256": "f15605b93fb09a5cd5b752f1b9416b7ce0be336407f7a6fa3d9f80045e384584"
+    },
+    {
+      "path": "game/world/courtyard.gd",
+      "sha256": "daa6c6362010cb0edc62805190bbfc34adde69f555e53171c0cca5266c00e42a"
+    },
+    {
+      "path": "game/data/village_terrain.json",
+      "sha256": "27513e2fa1a77a4e94ff27f7256b44a720b89fbb3580549eb9b6ff2eb5c11209"
+    },
+    {
+      "path": "game/data/office_layout_starter.json",
+      "sha256": "1f6ddc1b3c9c14f6bd7fd28a8d5344d9c3f5b2207be9a88d71e7af43f77b62da"
+    },
+    {
+      "path": "game/data/courtyard_layout.json",
+      "sha256": "d4e6797272d9d5bba1e2ec7065fff7dac6d67f9c5ac3657c986dee63b4d932be"
+    },
+    {
+      "path": "game/data/furniture_catalog.json",
+      "sha256": "c9af647824cbd13be19b368aee79e1ab1b7f34258204c30d834b5cd00ac09261"
+    },
+    {
+      "path": "game/data/furnishing_catalog.json",
+      "sha256": "f3bf35cc86420358e2c40b8fe4fc383f5927b472981c6b733793081c965353c2"
+    },
+    {
+      "path": "game/assets/runtime/office/terrain-v1/yard-atlas.png",
+      "sha256": "d598107f7a089911a083f68b843a47bd58f499cec0daea357be311e3b2c10b66"
+    },
+    {
+      "path": "game/tests/test_village_terrain.gd",
+      "sha256": "717745338b5d911d6f59bbcd36a82ca1575802b6ab62890ecf904a741ed07100"
+    },
+    {
+      "path": "game/tests/test_map_review.gd",
+      "sha256": "6cb20d64c1593d7ced48480c23973009a9ad026528e18a03f42483b2579d9d1f"
+    },
+    {
+      "path": "dev/map-catalogue/fixtures/first-project-furnishing.json",
+      "sha256": "3f004057a7a49e0ae11a0d10b998ec672426684f2eaec1bdbf09f540e1c8c73b"
+    }
+  ],
+  "reports": [
+    {
+      "path": "docs/web/assets/modular-yard/terrain-geometry.json",
+      "sha256": "e73b92f1e0f48670460b1351ff2fc0f4ba58c9974d9bc022366237bb7f609e48"
+    },
+    {
+      "path": "docs/web/assets/modular-yard/routes.json",
+      "sha256": "df66bca86e421cd752d3751fbf32cd15599414c156b3f87545a2df35f60f0ba3"
+    }
+  ]
+}

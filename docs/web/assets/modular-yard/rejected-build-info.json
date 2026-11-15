@@ -1,0 +1,125 @@
+{
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "preset": "Web",
+  "builtAt": "2026-11-15T23:31:19.174Z",
+  "assetReview": "candidate_preview",
+  "mapReview": [
+    {
+      "id": "courtyard",
+      "status": "candidate_preview",
+      "signature": "6675c5553b7b100e69dcea7f2b22d45f45a36630a328ed791e6349d0270ad4d0"
+    },
+    {
+      "id": "starter-cottage-v1",
+      "status": "candidate_preview",
+      "signature": "44b513b8fd788985fa79629ebc5261c46ce3d72759469a2bbfb0f40f01b8190b"
+    },
+    {
+      "id": "startup-office",
+      "status": "candidate_preview",
+      "signature": "04ade817450a87369bcf8ed590c96b8260813947be609f171745468fd2f6844e"
+    }
+  ],
+  "buildId": "c44018e9a5d119bf",
+  "payloadFiles": [
+    {
+      "path": "_headers",
+      "bytes": 105,
+      "sha256": "ed19c72611e48e23371d8e087f0d5d06345d162e8cf9e3aebb18d9d73994c295"
+    },
+    {
+      "path": "index.apple-touch-icon.png",
+      "bytes": 11944,
+      "sha256": "01d4f63e525941e06ce74f5187dad030d20a8d52a07ce365ae4e94af97a3b1f5"
+    },
+    {
+      "path": "index.audio.position.worklet.js",
+      "bytes": 2973,
+      "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+    },
+    {
+      "path": "index.audio.worklet.js",
+      "bytes": 7298,
+      "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+    },
+    {
+      "path": "index.html",
+      "bytes": 13903,
+      "sha256": "17f41e7afd424e76536b3e379a6084f3ce1c487806eeab0edcdacc5ba3faf8cb"
+    },
+    {
+      "path": "index.icon.png",
+      "bytes": 5700,
+      "sha256": "ad3c35ad0facf487c618204bd98db543034fc95224eadc7f08c7a9ff38d5b3b5"
+    },
+    {
+      "path": "index.js",
+      "bytes": 279815,
+      "sha256": "33c94cb3175f3333b82e2a3be5e8e86f77986f0aa2042b1631f6367a4e5bb6ba"
+    },
+    {
+      "path": "index.pck",
+      "bytes": 29179252,
+      "sha256": "8241762dc4382f32009f900fec25b9fb7233e915fe828834541f1ba83c949784"
+    },
+    {
+      "path": "index.png",
+      "bytes": 21443,
+      "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
+    },
+    {
+      "path": "index.wasm",
+      "bytes": 39514754,
+      "sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0"
+    },
+    {
+      "path": "web/assets/sqlite3-k2cTanUO.wasm",
+      "bytes": 879084,
+      "sha256": "b8a92a19f441a90ff2339fe988fbe317c4adf3ed844096f12aee04aa72d58257"
+    },
+    {
+      "path": "web/assets/sqlite3-opfs-async-proxy-DeAec6oc.js",
+      "bytes": 32462,
+      "sha256": "02c38ed7f2d41d2b57ee02241d7f8a09059e1ded16749013f2412137614aa459"
+    },
+    {
+      "path": "web/assets/sqlite3-worker1-B8jyMtC6.js",
+      "bytes": 215927,
+      "sha256": "701eea671cc48912d2c90c128cb4b974bae00cde81d84b4f534f3d2b79d87c51"
+    },
+    {
+      "path": "web/bridge.js",
+      "bytes": 2822,
+      "sha256": "470239801176847eebd6c12c668549edbede8a44559b5d4fc3c94cd52fb20859"
+    },
+    {
+      "path": "web/index.html",
+      "bytes": 3042,
+      "sha256": "ba17c9e2eb8c1b6b24418f2d0d605691cff7630bd2d772fa4fd7fb3d2faffdc0"
+    },
+    {
+      "path": "web/worker.js",
+      "bytes": 862330,
+      "sha256": "3c8786b20038157bfe17ec71b9c5e3084bf5e6de72fd458822d3c4b849ebe5c9"
+    }
+  ],
+  "files": [
+    {
+      "name": "index.html",
+      "bytes": 13903
+    },
+    {
+      "name": "index.js",
+      "bytes": 279815
+    },
+    {
+      "name": "index.wasm",
+      "bytes": 39514754
+    },
+    {
+      "name": "index.pck",
+      "bytes": 29179252
+    }
+  ],
+  "totalBytes": 68987724
+}

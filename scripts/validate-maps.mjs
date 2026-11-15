@@ -20,6 +20,21 @@ function records(root, directory) {
 // Explicit adapters read actual runtime geometry. A new representation needs an
 // adapter and tests, rather than an unverified duplicate map in its manifest.
 export function mapGeometry(root, manifest) {
+  if (manifest.adapter === 'courtyard_json') {
+    const value = json(root, manifest.source);
+    requireThat(value.id === manifest.id, 'Courtyard id differs from manifest');
+    requireThat(manifest.modules.includes('game/world/courtyard.gd'), 'Courtyard needs its actual renderer');
+    const renderer = text(root, 'game/world/courtyard.gd');
+    requireThat(renderer.includes(`"res://${manifest.source.slice(5)}"`), 'Courtyard renderer must load its registered source');
+    requireThat(value.props.every(p => p.facing === 'south') && renderer.includes('catalogue.resolve_profile(kind, "south")'), 'Courtyard prop facing differs from its south-facing renderer');
+    for (const [name, point] of [['SPAWN', value.player_spawn], ['THEO_APPROACH', value.story_approach]]) {
+      const match = renderer.match(new RegExp(`const ${name} := Vector2\\(([^)]+)\\)`));
+      requireThat(match && equal(match[1].split(',').map(n => Math.floor(Number(n) / value.tile_size)), point), `Courtyard ${name} differs from authored grid`);
+    }
+    return { width: value.width, height: value.height, tile: value.tile_size, floor: value.walkable_rects,
+      walls: value.wall_rects ?? [], spawn: value.player_spawn, exits: [value.player_spawn], targets: [value.story_approach],
+      props: value.props.map(p => ({ kind: p.kind, facing: p.facing, cell: p.grid })) };
+  }
   if (manifest.adapter === 'office_json') {
     const value = json(root, manifest.source);
     requireThat(value.id === manifest.id, 'Layout id differs from manifest');
@@ -81,6 +96,29 @@ export function inspectMap(root, manifest) {
     for (const match of JSON.stringify(value).matchAll(/"(res:\/\/[^"\n]+\.png)"/g)) bind(resource(match[1]));
   };
   bind(`${DIRECTORY}/world-profile.json`);
+  if (manifest.terrain) {
+    const recipe = json(root, manifest.terrain);
+    requireThat(recipe.tile_size === 32 && recipe.runtime_scale === 1 && recipe.sampling === 'nearest', 'Terrain recipe must preserve shared grid/native scale/sampling');
+    requireThat(recipe.materials && ['grass', 'paving', 'hedge'].every(name => Array.isArray(recipe.materials[name]?.samples) && recipe.materials[name].samples.length), 'Terrain recipe needs its actual material samples');
+    const image = fs.readFileSync(localFile(root, resource(recipe.source)));
+    requireThat(image.subarray(1, 4).toString() === 'PNG', 'Terrain source must be PNG');
+    const width = image.readUInt32BE(16), height = image.readUInt32BE(20);
+    for (const material of Object.values(recipe.materials)) {
+      const [w, h] = material.region_size ?? [];
+      requireThat([w, h].every(n => Number.isInteger(n) && n > 0 && n % 32 === 0) && cell(material.texture_origin), 'Invalid terrain module size/origin');
+      for (const crop of material.samples) {
+        requireThat(Array.isArray(crop) && crop.length === 4 && crop.every(Number.isInteger) && crop[0] >= 0 && crop[1] >= 0 && crop[0] % w === 0 && crop[1] % h === 0 && crop[2] === w && crop[3] === h && crop[0] + w <= width && crop[1] + h <= height, 'Terrain sample is not an in-bounds native grid module');
+      }
+    }
+    requireThat(Number.isInteger(recipe.grass_patch_columns) && recipe.grass_patch_columns > 0 && Number.isInteger(recipe.grass_patch_rows) && recipe.grass_patch_rows > 0 && recipe.grass_patch_columns * recipe.grass_patch_rows === recipe.materials.grass.samples.length, 'Grass patch dimensions differ from native sample count');
+    const plantings = json(root, manifest.source).terrain_plantings ?? [];
+    requireThat(Array.isArray(plantings), 'Terrain plantings must be authored rows');
+    for (const row of plantings) {
+      requireThat(Array.isArray(row) && row.length === 3 && row.every(Number.isInteger) && row[0] >= 0 && row[1] >= 0 && row[2] > 0 && row[0] + row[2] <= geometry.width && row[1] < geometry.height, 'Invalid terrain planting row');
+      for (let x = row[0]; x < row[0] + row[2]; x++) requireThat(!floor.has(key([x, row[1]])), 'Terrain planting overlaps legal walkable floor');
+    }
+    bind(manifest.terrain); bind(resource(recipe.source));
+  }
   for (const name of [manifest.source, ...manifest.modules, ...(manifest.art ?? [])]) {
     bind(name);
     if (!name.endsWith('.gd')) continue;
@@ -152,10 +190,16 @@ function validateReview(root, review, inspected) {
   for (const name of CHECKS) requireThat(review.checks?.[name]?.result === 'passed' && review.checks[name].note?.trim(), `Map review needs an explicit ${name} assessment`);
   requireThat(Array.isArray(review.evidence) && review.evidence.some(item => item.kind === 'godot_frame') && review.evidence.some(item => item.kind === 'godot_test_report'), 'Map review needs actual-engine frame and test report');
   for (const evidence of review.evidence) {
-    requireThat(evidence.capture_method === 'godot_engine' && evidence.note?.trim(), 'Map evidence must name actual Godot capture and coverage');
+    const allowed = evidence.kind === 'godot_frame' ? ['godot_engine', 'in_app_browser_godot'] : ['godot_engine', 'godot_headless'];
+    requireThat(allowed.includes(evidence.capture_method) && evidence.note?.trim(), 'Map evidence must name actual Godot capture and coverage');
     const bytes = fs.readFileSync(localFile(root, evidence.path));
     requireThat(sha256(bytes) === evidence.sha256, `Stale map evidence: ${evidence.path}`);
-    if (evidence.kind === 'godot_frame') requireThat(bytes.subarray(0, 8).equals(Buffer.from([137,80,78,71,13,10,26,10])), 'Godot frame must be a PNG');
+    if (evidence.kind === 'godot_frame') {
+      const png = bytes.subarray(0, 8).equals(Buffer.from([137,80,78,71,13,10,26,10]));
+      const jpeg = bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
+      requireThat(png || (evidence.capture_method === 'in_app_browser_godot' && jpeg), 'Godot frame must be PNG, or an in-app browser JPEG');
+      if (evidence.capture_method === 'in_app_browser_godot') requireThat(typeof evidence.build_id === 'string' && /^[a-f0-9]{16,64}$/.test(evidence.build_id), 'In-app engine frame needs the captured build identifier');
+    }
   }
 }
 
