@@ -34,7 +34,7 @@
   "bindings": [
     {
       "path": "game/character_art.gd",
-      "sha256": "df789f4d5c10683356c3508806ec775362422118a70c62418cf7fc043719e4b5"
+      "sha256": "ae9a6fc00e4b637486c2ee3bf92226ddf1512a8a6d76e12900120f122286d040"
     },
     {
       "path": "dev/tools/apply_character_motion.sh",
@@ -65,6 +65,16 @@
       "path": "docs/web/playtest-polish-native-motion.json",
       "kind": "test_report",
       "sha256": "e8223eb1cad640d143bd1583d3d91e6744915faeef41e945890f5328574efc59"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-creative-portrait.png",
+      "kind": "in_game",
+      "sha256": "150e6d12f49a66264964edceafd9d82471fb98c822437bb72bba2fba36c80243"
+    },
+    {
+      "path": "docs/web/creative-portrait-fix.json",
+      "kind": "test_report",
+      "sha256": "412f0f6748565000a48d6bea69b449b7b34dab736af98a4e3c01d646af70c878"
     }
   ],
   "checks": {

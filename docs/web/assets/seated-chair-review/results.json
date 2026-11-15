@@ -1,0 +1,583 @@
+{
+	"checks": 234,
+	"failures": [],
+	"observations": [
+		{
+			"pixels": {
+				"chair_body_overlap": 461,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 869,
+				"desk_body_overlap": 0,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 527
+			},
+			"pose": "mira/north/idle/0"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 470,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 775,
+				"desk_body_overlap": 0,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 616
+			},
+			"pose": "theo/north/idle/0"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 464,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 869,
+				"desk_body_overlap": 0,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 518
+			},
+			"pose": "mira/north/idle/1"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 465,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 775,
+				"desk_body_overlap": 0,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 610
+			},
+			"pose": "theo/north/idle/1"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 461,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 869,
+				"desk_body_overlap": 0,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 528
+			},
+			"pose": "mira/north/typing/0"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 465,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 775,
+				"desk_body_overlap": 0,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 610
+			},
+			"pose": "theo/north/typing/0"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 457,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 869,
+				"desk_body_overlap": 0,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 521
+			},
+			"pose": "mira/north/typing/1"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 471,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 775,
+				"desk_body_overlap": 0,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 622
+			},
+			"pose": "theo/north/typing/1"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 460,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 869,
+				"desk_body_overlap": 0,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 524
+			},
+			"pose": "mira/north/typing/2"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 472,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 775,
+				"desk_body_overlap": 0,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 599
+			},
+			"pose": "theo/north/typing/2"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 466,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 869,
+				"desk_body_overlap": 0,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 537
+			},
+			"pose": "mira/north/typing/3"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 467,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 775,
+				"desk_body_overlap": 0,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 614
+			},
+			"pose": "theo/north/typing/3"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 0,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 48,
+				"desk_body_overlap": 18,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 534
+			},
+			"pose": "mira/south/idle/0"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 0,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 82,
+				"desk_body_overlap": 35,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 578
+			},
+			"pose": "theo/south/idle/0"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 0,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 48,
+				"desk_body_overlap": 18,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 534
+			},
+			"pose": "mira/south/idle/1"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 0,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 82,
+				"desk_body_overlap": 35,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 578
+			},
+			"pose": "theo/south/idle/1"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 0,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 47,
+				"desk_body_overlap": 17,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 533
+			},
+			"pose": "mira/south/typing/0"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 0,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 85,
+				"desk_body_overlap": 36,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 565
+			},
+			"pose": "theo/south/typing/0"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 0,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 45,
+				"desk_body_overlap": 17,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 535
+			},
+			"pose": "mira/south/typing/1"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 0,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 83,
+				"desk_body_overlap": 35,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 564
+			},
+			"pose": "theo/south/typing/1"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 0,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 42,
+				"desk_body_overlap": 17,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 542
+			},
+			"pose": "mira/south/typing/2"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 0,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 84,
+				"desk_body_overlap": 36,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 559
+			},
+			"pose": "theo/south/typing/2"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 0,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 44,
+				"desk_body_overlap": 18,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 537
+			},
+			"pose": "mira/south/typing/3"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 0,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 82,
+				"desk_body_overlap": 37,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 574
+			},
+			"pose": "theo/south/typing/3"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 15,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 419,
+				"desk_body_overlap": 147,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 470
+			},
+			"pose": "mira/east/idle/0"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 9,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 457,
+				"desk_body_overlap": 173,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 509
+			},
+			"pose": "theo/east/idle/0"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 15,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 420,
+				"desk_body_overlap": 147,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 465
+			},
+			"pose": "mira/east/idle/1"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 9,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 460,
+				"desk_body_overlap": 175,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 516
+			},
+			"pose": "theo/east/idle/1"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 15,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 420,
+				"desk_body_overlap": 147,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 470
+			},
+			"pose": "mira/east/typing/0"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 9,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 460,
+				"desk_body_overlap": 178,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 516
+			},
+			"pose": "theo/east/typing/0"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 15,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 420,
+				"desk_body_overlap": 147,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 464
+			},
+			"pose": "mira/east/typing/1"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 9,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 459,
+				"desk_body_overlap": 176,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 516
+			},
+			"pose": "theo/east/typing/1"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 15,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 420,
+				"desk_body_overlap": 147,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 470
+			},
+			"pose": "mira/east/typing/2"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 9,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 472,
+				"desk_body_overlap": 168,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 518
+			},
+			"pose": "theo/east/typing/2"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 15,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 418,
+				"desk_body_overlap": 155,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 468
+			},
+			"pose": "mira/east/typing/3"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 9,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 457,
+				"desk_body_overlap": 175,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 507
+			},
+			"pose": "theo/east/typing/3"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 28,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 377,
+				"desk_body_overlap": 175,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 464
+			},
+			"pose": "mira/west/idle/0"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 24,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 431,
+				"desk_body_overlap": 229,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 477
+			},
+			"pose": "theo/west/idle/0"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 28,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 375,
+				"desk_body_overlap": 175,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 460
+			},
+			"pose": "mira/west/idle/1"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 24,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 431,
+				"desk_body_overlap": 229,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 474
+			},
+			"pose": "theo/west/idle/1"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 28,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 373,
+				"desk_body_overlap": 180,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 460
+			},
+			"pose": "mira/west/typing/0"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 24,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 442,
+				"desk_body_overlap": 229,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 467
+			},
+			"pose": "theo/west/typing/0"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 28,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 375,
+				"desk_body_overlap": 192,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 478
+			},
+			"pose": "mira/west/typing/1"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 24,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 441,
+				"desk_body_overlap": 228,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 466
+			},
+			"pose": "theo/west/typing/1"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 28,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 377,
+				"desk_body_overlap": 192,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 478
+			},
+			"pose": "mira/west/typing/2"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 24,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 437,
+				"desk_body_overlap": 221,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 466
+			},
+			"pose": "theo/west/typing/2"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 28,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 399,
+				"desk_body_overlap": 179,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 466
+			},
+			"pose": "mira/west/typing/3"
+		},
+		{
+			"pixels": {
+				"chair_body_overlap": 24,
+				"chair_hidden_by_body": 0,
+				"chair_visible": 431,
+				"desk_body_overlap": 239,
+				"desk_hidden_by_body": 0,
+				"head_obscured": 0,
+				"head_pixels": 462
+			},
+			"pose": "theo/west/typing/3"
+		}
+	],
+	"rendered": false
+}

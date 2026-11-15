@@ -45,7 +45,7 @@ func reviewed_geometry(actor: EmployeeAvatar, facing: String) -> Dictionary:
 		"south": {"mira": Vector2(0, 12), "theo": Vector2(0, 12)},
 		"west": {"mira": Vector2(-12, 4), "theo": Vector2(-12, 8)},
 	}
-	var depths := {"north": {"upper": 3, "lower": 0}, "east": {"upper": 2, "lower": -4}, "south": {"upper": 3, "lower": 0}, "west": {"upper": 2, "lower": -4}}
+	var depths := {"north": {"upper": 3, "lower": -3}, "east": {"upper": 2, "lower": -4}, "south": {"upper": 3, "lower": 0}, "west": {"upper": 2, "lower": -4}}
 	var seat_depths := {"north": 20, "east": 2, "south": 3, "west": 2}
 	return {
 		"work_facing": facing,

@@ -33,7 +33,7 @@
           "seat_anchor": [0, -20],
           "seat_anchor_by_employee": {"mira": [0, -20], "theo": [0, -16]},
           "seat_z_offset": 20,
-          "seat_layer_z_offsets": {"upper": 3, "lower": 0},
+          "seat_layer_z_offsets": {"upper": 3, "lower": -3},
           "pose_set": "reviewed-workstations-v2",
           "seat_pose_depth_lock": true,
           "seat_state_handoff": {"clearance_pixels": 32},

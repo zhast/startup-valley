@@ -172,6 +172,12 @@ separate game feature, not something an art manifest should silently enable.
 
 ## Seated characters: separate assets, separate behavior
 
+The [north backrest composition decision](decisions/2026-11-15-seated-chair-depth.md)
+records the current facing-specific draw order and its real-sprite regression.
+North places the lower body behind the chair back and the head in front;
+south keeps the far chair behind the person. Check empty, seated and typing
+assemblies in all four directions before changing chair depth or body cuts.
+
 The current workstation already has separate desk, chair and actor assets.
 For the default south-facing Mina desk, `DeskRear` and `DeskFront` use 192×224
 canvases; `ChairWhole` uses 96×160; the keyboard, mouse and monitor are separate

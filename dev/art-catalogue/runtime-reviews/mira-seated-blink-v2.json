@@ -30,11 +30,11 @@
   "bindings": [
     {
       "path": "game/character_art.gd",
-      "sha256": "df789f4d5c10683356c3508806ec775362422118a70c62418cf7fc043719e4b5"
+      "sha256": "ae9a6fc00e4b637486c2ee3bf92226ddf1512a8a6d76e12900120f122286d040"
     },
     {
       "path": "game/data/furniture_catalog.json",
-      "sha256": "60cb42a14094f0acda8eb33f533639ba75949c24f54af5a8db7dea4f64338cd0"
+      "sha256": "ff9d7d5ba22f81c2b6717cd930b2dee9030086db4e7fcb1d50c0927a8d784b24"
     },
     {
       "path": "dev/tools/build_workstation_assets.sh",
@@ -150,5 +150,6 @@
         "sha256": "3a07014154ae2d624f52b563db4befaa1b3f22ed82bc440213d69251caa8111b"
       }
     ]
-  }
+  },
+  "binding_refresh_note": "2026-11-15: reviewed north seated lower-body depth changed from 0 to -3; approved runtime PNGs, coffee geometry and south Mina-blink composition remain unchanged. See docs/decisions/2026-11-15-seated-chair-depth.md and the 48-pose production composition test."
 }

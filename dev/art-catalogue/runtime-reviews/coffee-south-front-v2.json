@@ -13,7 +13,7 @@
     "reference_board": {
       "path": "dev/art-catalogue/style-reference-board.png",
       "sha256": "d91ba07ace9aef1d7e82c0daf55621afb57636d08376feae5ef8900623ba8283",
-      "note": "Code-arranged existing reference pixels; characters at3\u00d7, phone/floor at2\u00d7, window at1\u00d7, paper/desk at3\u00d7. Zoom is for inspection, not a change in runtime scale."
+      "note": "Code-arranged existing reference pixels; characters at3×, phone/floor at2×, window at1×, paper/desk at3×. Zoom is for inspection, not a change in runtime scale."
     },
     "references": [
       {
@@ -107,7 +107,7 @@
   "bindings": [
     {
       "path": "game/data/furniture_catalog.json",
-      "sha256": "60cb42a14094f0acda8eb33f533639ba75949c24f54af5a8db7dea4f64338cd0"
+      "sha256": "ff9d7d5ba22f81c2b6717cd930b2dee9030086db4e7fcb1d50c0927a8d784b24"
     },
     {
       "path": "game/assets/runtime/office/coffee-station-v1/manifest.json",
@@ -127,7 +127,7 @@
     },
     {
       "path": "dev/art-catalogue/runtime-contracts.json",
-      "sha256": "9009fe5bfe0be576907cc5798025f0c76009c69fe1148f7445d8db8bb1673083"
+      "sha256": "292116bea57c79446d13169b851482965aa85e07cabcda85ea9d005805abca6a"
     }
   ],
   "evidence": [
@@ -221,5 +221,6 @@
       "note": "At native size a cream cup below the metal group head and a distinct drip tray identify an espresso machine; enlarged detail confirms clean pixel clusters."
     }
   },
-  "capture_notes": "Inspected native room captures of all four orientations, and south-facing scale/front/behind views. Root independently reviewed the changed south artwork with Mina and both occlusion views. Original elevated top plane and registration are retained; no browser-specific visual claim is made."
+  "capture_notes": "Inspected native room captures of all four orientations, and south-facing scale/front/behind views. Root independently reviewed the changed south artwork with Mina and both occlusion views. Original elevated top plane and registration are retained; no browser-specific visual claim is made.",
+  "binding_refresh_note": "2026-11-15: reviewed north seated lower-body depth changed from 0 to -3; approved runtime PNGs, coffee geometry and south Mina-blink composition remain unchanged. See docs/decisions/2026-11-15-seated-chair-depth.md and the 48-pose production composition test."
 }

@@ -34,7 +34,7 @@
   "bindings": [
     {
       "path": "game/character_art.gd",
-      "sha256": "df789f4d5c10683356c3508806ec775362422118a70c62418cf7fc043719e4b5"
+      "sha256": "ae9a6fc00e4b637486c2ee3bf92226ddf1512a8a6d76e12900120f122286d040"
     },
     {
       "path": "dev/tools/apply_character_motion.sh",

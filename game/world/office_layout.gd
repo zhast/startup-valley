@@ -579,14 +579,19 @@ func _validate_direction_profile(profile: Dictionary, errors: Array[String], adm
 			else:
 				var lower := int(depths.lower)
 				var chair_behind := false
+				var north_backrest := false
 				var desk_ahead := false
 				for layer: Variant in profile.get("render_layers", []):
 					if not layer is Dictionary or not _integer_number(layer.get("z_offset")): continue
 					var layer_name := str(layer.get("name", ""))
 					if layer_name.begins_with("Chair") and int(layer.z_offset) < lower: chair_behind = true
+					# Viewed from behind, the reviewed north chair back covers the
+					# seated lap while the upper body remains in front of it.
+					if not reviewed_capability.is_empty() and str(profile.get("work_facing", "")) == "north" and layer_name == "ChairWhole" and _integer_number(depths.get("upper")):
+						north_backrest = int(layer.z_offset) > lower and int(layer.z_offset) < int(depths.upper)
 					if layer_name == "DeskFront" and int(layer.z_offset) > lower: desk_ahead = true
-				if not chair_behind or not desk_ahead:
-					errors.append("Seat state handoff depth must be bracketed by chair and DeskFront layers")
+				if not (chair_behind or north_backrest) or not desk_ahead:
+					errors.append("Seat state handoff depth requires a rear chair or reviewed north backrest, and a forward DeskFront")
 	if profile.has("calibration_limitations"):
 		if not profile.calibration_limitations is Array:
 			errors.append("Calibration limitations must be a list of honest diagnostic notes")

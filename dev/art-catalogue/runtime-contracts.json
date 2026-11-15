@@ -15,7 +15,8 @@
     "res://tests/test_furnishing_projection.gd",
     "res://tests/test_coffee_station_production.gd",
     "res://tests/test_reviewed_workstation_production.gd",
-    "res://tests/test_seat_transition.gd"
+    "res://tests/test_seat_transition.gd",
+    "res://tests/test_seated_chair_composition.gd"
   ],
   "families": [
     {
@@ -464,7 +465,7 @@
           "seat_z_offset": 20,
           "seat_layer_z_offsets": {
             "upper": 3,
-            "lower": 0
+            "lower": -3
           },
           "pose_set": "reviewed-workstations-v2",
           "seat_pose_depth_lock": true,

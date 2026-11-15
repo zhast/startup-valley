@@ -26,6 +26,7 @@ const THEO_RESEARCH_SOUTH: Texture2D = preload("res://assets/runtime/characters/
 const THEO_RESEARCH_WEST: Texture2D = preload("res://assets/runtime/characters/research-v1/theo-west.png")
 const FRAME_SIZE := Vector2(48.0, 80.0)
 const CHAT_FACE_REGION := Rect2(8.0, 4.0, 32.0, 32.0)
+const CREATIVE_BUST_REGION := Rect2(8.0, 4.0, 32.0, 48.0)
 const LEGACY_WORK_POSE_SET := "legacy-office-v1"
 const REVIEWED_WORKSTATION_POSE_SET := "reviewed-workstations-v2"
 const REVIEWED_COLLABORATION_REVISION := "collaboration-cluster-v2"
@@ -276,17 +277,17 @@ const WORLD_HEIGHTS: Dictionary = {
 static func portrait(character_id: String) -> AtlasTexture:
 	var region: Rect2 = PORTRAIT_REGIONS.get(character_id, PORTRAIT_REGIONS["founder"])
 	var texture := AtlasTexture.new()
-	texture.atlas = CHARACTER_SHEET
-	texture.region = region
+	# Creative has no portrait in the original concept sheet. Reuse the same
+	# front-idle character seen in the office instead of another person's face.
+	texture.atlas = CREATIVE_LOCOMOTION if character_id == "creative" else CHARACTER_SHEET
+	texture.region = Rect2(Vector2.ZERO, FRAME_SIZE) if character_id == "creative" else region
 	texture.filter_clip = true
 	return texture
 
 static func bust_portrait(character_id: String) -> AtlasTexture:
-	var region: Rect2 = PORTRAIT_REGIONS.get(character_id, PORTRAIT_REGIONS["founder"])
-	var texture := AtlasTexture.new()
-	texture.atlas = CHARACTER_SHEET
-	texture.region = Rect2(region.position, Vector2(region.size.x, region.size.y * 0.68))
-	texture.filter_clip = true
+	var texture := portrait(character_id)
+	var region := texture.region
+	texture.region = CREATIVE_BUST_REGION if character_id == "creative" else Rect2(region.position, Vector2(region.size.x, region.size.y * 0.68))
 	return texture
 
 static func chat_face(character_id: String) -> AtlasTexture:

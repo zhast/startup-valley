@@ -1,0 +1,22 @@
+{
+  "result": "passed",
+  "reviewed_at": "2026-11-15T22:51:04.125Z",
+  "reviewer": "Codex visual QA (shell_quality)",
+  "change": "Creative full and bust portraits use their own unchanged front-idle locomotion art. Founder/Mina/Theo authored portraits retain their existing bindings.",
+  "runtime_png_changed": false,
+  "verification": "Native actual GameMain rail and drawer inspected; focused Character portraits test returned0failures. Complete face fits inside its own frame, atlas clipping enabled.",
+  "evidence": [
+    {
+      "path": "game/character_art.gd",
+      "sha256": "ae9a6fc00e4b637486c2ee3bf92226ddf1512a8a6d76e12900120f122286d040"
+    },
+    {
+      "path": "game/tests/test_character_portraits.gd",
+      "sha256": "b8343f0d79e65473696ed9a1bf1b29f7e106951b112aa2648c780d18cc8d61f1"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-creative-portrait.png",
+      "sha256": "150e6d12f49a66264964edceafd9d82471fb98c822437bb72bba2fba36c80243"
+    }
+  ]
+}

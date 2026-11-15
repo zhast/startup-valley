@@ -64,8 +64,6 @@ while acknowledging that visual review still requires judgment.
 [browser acceptance](web/playtest-polish.md), and
 `dev/art-catalogue/style-profile.json`.
 
-## 2026-11-15 — Small direct-to-main checkpoints
-
 ## 2026-11-15 — Preserve facing-specific chair occlusion
 
 **Decision:** Place the north seated lower body behind the chair back while
