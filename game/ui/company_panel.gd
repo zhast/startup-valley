@@ -8,6 +8,7 @@ signal renovation_requested
 signal volume_changed(effects: float, ambience: float)
 signal architecture_theme_requested(theme_id: String)
 signal presented(mode: String)
+signal goal_requested(mode: String)
 
 var state: Dictionary = {}
 var day := 1
@@ -133,7 +134,7 @@ func update_state(value: Dictionary) -> void:
 	if visible and screen == "journey" and not story_mode and _is_chapter_complete():
 		present("complete")
 		return
-	if visible and screen in ["journey", "title", "closing", "complete", "product", "release"]: _render()
+	if visible and screen in ["journey", "title", "closing", "complete", "product", "release", "courtyard"]: _render()
 
 func show_error(message: String) -> void:
 	busy = false
@@ -272,6 +273,7 @@ func _render() -> void:
 		"closing", "summary": _day_screen()
 		"product": _product_screen()
 		"release": _release_screen()
+		"courtyard": _courtyard_screen()
 		_: _journey_screen()
 	# Evaluation already has one durable status on its milestone card. An empty
 	# footer row must not reserve a line and force otherwise short pages to scroll.
@@ -315,7 +317,7 @@ func _fit_sparse_height(generation: int) -> void:
 	_frame.position = ((Vector2(1280, 720) - _frame.size) * 0.5).round()
 
 func _is_story_meeting() -> bool:
-	return story_mode and (screen == "hired" or (screen == "journey" and not _has_hired_teammate() and not _available_candidate().is_empty()))
+	return story_mode and (screen in ["hired", "courtyard"] or (screen == "journey" and not _has_hired_teammate() and not _available_candidate().is_empty()))
 
 func _position_frame() -> void:
 	_frame.position = Vector2(140, 352) if _is_story_meeting() else ((Vector2(1280, 720) - _frame.size) * 0.5).round()
@@ -427,14 +429,15 @@ static func chapter_three_finished(state: Dictionary) -> bool:
 	return false
 
 func _settings_screen() -> void:
-	_heading("Settings", "The office clock is paused. Your company saves in this browser." if OS.has_feature("web") else "The office clock is paused. Real AI work can still finish.")
+	_heading("Settings", "The office clock is paused. Your company saves on this device." if story_mode else "The office clock is paused. Real AI work can still finish.")
 	var shortcuts := HBoxContainer.new()
 	shortcuts.add_theme_constant_override("separation", 12)
 	_content.add_child(shortcuts)
 	_button("Company Journey", func() -> void: present("journey"), false, true, shortcuts)
-	if not OS.has_feature("web"):
+	if not story_mode:
 		_button("Connect AI", func() -> void: hide(); connection_requested.emit(), false, true, shortcuts)
-	_button("Renovate office", func() -> void: hide(); renovation_requested.emit(), false, true, shortcuts)
+	var at_home := str((state.get("story", {}) as Dictionary).get("location", "office")) == "office"
+	_button("Renovate office" if at_home else "Renovate back at the studio", func() -> void: hide(); renovation_requested.emit(), false, at_home, shortcuts)
 	var audio := _card()
 	_label("Sound", true, audio)
 	_slider(effects_volume, true, audio)
@@ -471,8 +474,8 @@ func _settings_screen() -> void:
 		)
 		look.add_child(picker)
 	_label("Explore: WASD, arrows, or click the floor · J Journey.\nRenovate: M move · R rotate · U undo · Esc cancel or back." if OS.has_feature("web") else "Explore: WASD, arrows, or click the floor · E chat · J Journey.\nRenovate: M move · R rotate · U undo · Esc cancel or back.")
-	if OS.has_feature("web"):
-		_label("Products, staff, sales and decorating work offline. AI chat and file work orders are available in the desktop edition.", false, null, "meta")
+	if story_mode:
+		_label("Your projects, teammates and town visits work offline. Progress saves on this device.", false, null, "meta")
 	_actions("Resume", hide, true, "Title screen", func() -> void: present("title"))
 
 func set_architecture_theme(theme_id: String) -> void:
@@ -546,11 +549,11 @@ func _day_screen() -> void:
 	if not payroll_notice.is_empty() and not seen.has(payroll_notice):
 		var notice_label := _label(payroll_notice, false, activity, "action")
 		notice_label.name = "PayrollNotice"
-	_label("Tomorrow · " + (_next_step().trim_prefix("NEXT · ") if OS.has_feature("web") else str(summary.get("nextMilestone", "Your next chapter"))), true)
+	_label("Tomorrow · " + (str(StoryMoments.goal(state).get("title", "Your next chapter")) if story_mode else str(summary.get("nextMilestone", "Your next chapter"))), true)
 	if screen == "summary":
 		_actions("Begin next day", hide, true, "")
 	else:
-		if not OS.has_feature("web"):
+		if not story_mode:
 			_label("Active AI work can finish after closing. Finish or cancel it before ending the day; queued work carries over.", false, _footer)
 		_actions("End day + save", func() -> void: _request("day.end", {"day": day}), true, "Review office")
 
@@ -642,7 +645,7 @@ func _story_journey_screen() -> void:
 	_label(str(goal.get("detail", "Every story starts with a small idea.")), false, current)
 	var moments := _card()
 	moments.name = "StoryMilestones"
-	_label("A studio begins", true, moments)
+	_label(str(goal.get("chapter", "A studio begins")), true, moments)
 	for moment: Dictionary in StoryMoments.milestones(state):
 		var prefix := "Done · " if bool(moment.get("complete", false)) else "Next · " if bool(moment.get("current", false)) else "Later · "
 		_label(prefix + str(moment.get("title", "")), false, moments, "action" if bool(moment.get("current", false)) else "meta")
@@ -662,7 +665,32 @@ func _story_journey_screen() -> void:
 		_engine_card()
 		_office_card()
 		_season_card()
-	_actions(str(goal.get("action", "Plan our first project")), func() -> void: present("product"), not state.is_empty(), "Back to office")
+	_actions(str(goal.get("action", "Plan our first project")), func() -> void: _open_story_goal(str(goal.get("mode", "product"))), not state.is_empty(), "Back to the world")
+
+func _open_story_goal(mode: String) -> void:
+	if mode in ["product", "journey"]: present(mode)
+	elif mode == "opportunity_product": present_opportunity()
+	else: goal_requested.emit(mode)
+
+func _courtyard_screen() -> void:
+	var story: Dictionary = state.get("story", {})
+	var opportunity: Dictionary = story.get("opportunity", {})
+	var status := str(opportunity.get("status", "locked"))
+	if status == "available":
+		_story_person({"id": "theo", "name": "Theo"}, "I loved your first release! Could you make a simple planning kit for our weekend makers market?")
+		_actions("Let’s make the Market Day Kit", func() -> void: goal_requested.emit("accept_opportunity"), not busy, "Maybe in a moment", hide)
+	elif status == "completed":
+		_story_person({"id": "theo", "name": "Theo"}, "The kit is out! Now our little market can spend less time planning and more time making.")
+		_actions("Back to our studio", func() -> void: goal_requested.emit("return_office"), not busy)
+	else:
+		_story_person({"id": "theo", "name": "Theo"}, "Thank you! A Reselling template pack would be just right. Your next idea has a real place to belong.")
+		_actions("Back to our studio", func() -> void: goal_requested.emit("return_office"), not busy, "Stay a little longer", hide)
+
+func present_opportunity() -> void:
+	var opportunity: Dictionary = (state.get("story", {}) as Dictionary).get("opportunity", {})
+	_topic_id = str(opportunity.get("topicId", "reselling"))
+	_type_id = str(opportunity.get("typeId", "template_pack"))
+	present("product")
 
 func _tycoon() -> Dictionary:
 	var value: Variant = state.get("tycoon", {})
@@ -2337,8 +2365,12 @@ func _story_release_screen(product: Dictionary) -> void:
 			_label("%s · %d / 10" % [reviewer.get("name", "A reviewer"), int(reviewer.get("score", 0))], true)
 			_label(str(reviewer.get("blurb", "")))
 		_show_contract(product, "ReleaseContract")
-	_label("Your next chapter is waiting back at the studio.", false, null, "meta")
-	_actions("Back to our studio", hide, true, "Preview our website", show_website.bind(product))
+	var goal := StoryMoments.goal(state)
+	_label(str(goal.get("detail", "Your next chapter is waiting.")), false, null, "meta")
+	if bool((state.get("story", {}) as Dictionary).get("courtyardUnlocked", false)):
+		_actions(str(goal.get("action", "Back to our studio")), func() -> void: _open_story_goal(str(goal.get("mode", "product"))), true, "Preview our website", show_website.bind(product))
+	else:
+		_actions("Back to our studio", hide, true, "Preview our website", show_website.bind(product))
 
 func _product_history(tycoon: Dictionary) -> void:
 	var card := _card()
@@ -3148,11 +3180,9 @@ func _toggle_fullscreen() -> void:
 	_render()
 
 func _continue_game() -> void:
-	for candidate: Dictionary in state.get("candidates", []):
-		if bool(candidate.get("hired", false)):
-			hide()
-			return
-	present("journey")
+	# Start in the world. The persistent goal and the nearby visitor teach the
+	# first interaction; reopening a save never forces an already-seen meeting.
+	hide()
 
 func _company_started() -> bool:
 	for candidate: Dictionary in state.get("candidates", []):

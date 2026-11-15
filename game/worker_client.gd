@@ -212,7 +212,7 @@ func _handle_line(line: String) -> void:
 		if method == "furnishing.update":
 			furnishing_failed.emit(job_id, error)
 			return
-		if method.begins_with("milestone.") or method.begins_with("hiring.") or method.begins_with("game.") or method.begins_with("tycoon.") or method == "day.end":
+		if method.begins_with("milestone.") or method.begins_with("hiring.") or method.begins_with("game.") or method.begins_with("tycoon.") or method.begins_with("story.") or method == "day.end":
 			company_action_failed.emit(method, error)
 			return
 		if method.begins_with("credential.grok."):
@@ -246,6 +246,13 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 		if job_id == "journey": journey_received.emit(result.get("journey", {}))
 		return
 	match method:
+		"story.travel", "story.acceptOpportunity":
+			journey_received.emit(result.get("journey", {}))
+			var story_furnishing: Variant = result.get("furnishing")
+			if story_furnishing is Dictionary and int((story_furnishing as Dictionary).get("version", 0)) == 1:
+				furnishing_state = (story_furnishing as Dictionary).duplicate(true)
+				furnishing_received.emit(furnishing_state.duplicate(true), "")
+			company_action_completed.emit(method, result)
 		"hiring.complete", "game.new", "tycoon.letGo":
 			_handle_response("bootstrap", "", result)
 			company_action_completed.emit(method, result)

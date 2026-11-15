@@ -217,7 +217,7 @@ func set_story_goal(goal: Dictionary) -> void:
 	_goal_chapter.show()
 	for index: int in range(_goal_marks.size()):
 		_goal_marks[index].color = Color("598347") if index < int(goal.get("completed", 0)) else Color("c9b58d")
-		_goal_marks[index].show()
+		_goal_marks[index].visible = index < int(goal.get("total", 4))
 	_goal_action.text = str(goal.get("action", "Open our notebook"))
 	_goal_action.show()
 	_goal_mode = str(goal.get("mode", "journey"))
@@ -231,6 +231,10 @@ func set_next_step(text: String) -> void:
 	_next_step_label.text = "Next · " + line
 	_next_step_label.tooltip_text = line
 	_next_step_hint.visible = true
+
+func set_goal_pending(pending: bool) -> void:
+	_goal_action.disabled = pending
+	if pending: _goal_action.text = "Saving our place…"
 
 func hide_next_step() -> void:
 	if _next_step_hint != null:

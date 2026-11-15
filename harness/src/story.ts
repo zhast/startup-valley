@@ -3,6 +3,9 @@ import type { JourneyStore } from "./journey.js";
 import type { FurnishingStore } from "./furnishing-core.js";
 
 export type StoryLocation = "office" | "courtyard";
+// Cross-language contract test binds these to the rendered Courtyard constants.
+export const COURTYARD_BOUNDS = [96, 96, 800, 544] as const;
+export const COURTYARD_SPAWN = [496, 560] as const;
 export interface StoryOperation { operationId: string; expectedRevision: number }
 export interface StoryTravel extends StoryOperation { destination: StoryLocation }
 export interface StoryView {
@@ -85,7 +88,7 @@ export class StoryStore {
           typeof player.y === "number" ? player.y : y,
           geometry.room.id,
         );
-        x = 496; y = 560;
+        [x, y] = COURTYARD_SPAWN;
       } else if (row.return_layout_id === geometry.room.id && typeof row.return_x === "number" && typeof row.return_y === "number") {
         // Furniture updates are refused outside. Validate nevertheless so old
         // or externally edited saves cannot restore the founder inside a prop.

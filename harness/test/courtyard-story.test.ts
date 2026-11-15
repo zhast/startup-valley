@@ -13,6 +13,7 @@ import { furnishingHash, readGeometryData } from "../src/furnishing.js";
 import { dispatchOffline } from "../src/offline-dispatch.js";
 import { parseRequest, parseStoryState, readContractSchemas } from "../src/validation.js";
 import type { ProtocolMethod } from "../src/types.js";
+import { COURTYARD_BOUNDS, COURTYARD_SPAWN } from "../src/story.js";
 
 async function fixture(t: TestContext) {
   const root = await mkdtemp(join(tmpdir(), "startup-valley-courtyard-"));
@@ -30,6 +31,17 @@ test("standalone journey contract includes the canonical bounded story projectio
   const journey = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
   const story = JSON.parse(readFileSync(new URL("../../contracts/story.schema.json", import.meta.url), "utf8"));
   assert.deepEqual(journey.properties.story, story.$defs.state);
+});
+
+test("worker courtyard save bounds and travel spawn match the actual Godot scene constants", () => {
+  const scene = readFileSync(new URL("../../game/world/courtyard.gd", import.meta.url), "utf8");
+  const values = (name: string, constructor: string) => {
+    const match = scene.match(new RegExp(`const ${name} := ${constructor}\\(([^)]+)\\)`));
+    assert.ok(match, `Courtyard must expose its ${name} contract`);
+    return match[1]!.split(",").map((value) => Number(value.trim()));
+  };
+  assert.deepEqual(values("BOUNDS", "Rect2"), [...COURTYARD_BOUNDS]);
+  assert.deepEqual(values("SPAWN", "Vector2"), [...COURTYARD_SPAWN]);
 });
 
 async function request(db: GameDatabase, method: ProtocolMethod, params: Record<string, unknown> = {}) {
@@ -57,7 +69,9 @@ test("production offline journey visits Theo, preserves exact positions, and com
   assert.equal(entered.journey.story.location, "courtyard");
   assert.deepEqual(parseStoryState(entered.journey.story), entered.journey.story);
   assert.deepEqual([entered.journey.player.x, entered.journey.player.y], [496, 560]);
-  await request(db, "game.save", { ...officePosition, x: 624.25, y: 416.5, location: "courtyard", storyRevision: 1 });
+  // A legal garden point near the north-west edge must survive a real close
+  // and reopen, including subpixel coordinates (not just the central path).
+  await request(db, "game.save", { ...officePosition, x: 144.25, y: 112.5, location: "courtyard", storyRevision: 1 });
   const outsideBefore = db.bootstrap();
   db.close(); db = fixtureValue.open();
   assert.deepEqual(db.bootstrap().journey, outsideBefore.journey);
@@ -99,6 +113,8 @@ test("stale commands, delayed room saves, forged travel and exterior renovation 
   await firstRelease(db);
   const second = open();
   await travel(db, "courtyard", "go");
+  await request(db, "game.save", { x: 144, y: 112, location: "courtyard", storyRevision: 1 });
+  assert.deepEqual([second.journey.state().player.x, second.journey.state().player.y], [144, 112], "north-west walkable garden cells must remain saveable");
   const before = db.bootstrap();
   await assert.rejects(request(second, "story.travel", { operationId: "stale-return", expectedRevision: 0, destination: "office" }), /story changed/u);
   await assert.rejects(request(db, "game.save", { x: 496, y: 624, location: "office", storyRevision: 0 }), /location changed/u);

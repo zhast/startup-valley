@@ -3,6 +3,7 @@ extends Node
 
 const EMPLOYEE_SCENE: PackedScene = preload("res://actors/employee_avatar.tscn")
 const OFFICE_RENOVATION_SCRIPT: Script = preload("res://ui/office_renovation.gd")
+@export var demo_story_mode := true
 
 @onready var room: TownRoom = $TownRoom
 @onready var player: PlayerAvatar = $PlayerAvatar
@@ -41,6 +42,18 @@ var _studio_paths: PackedStringArray = []
 var _pending_preview_html := ""
 var _pending_preview_html_content := ""
 var _pending_preview_css_path := ""
+var courtyard: Courtyard
+var arrival_guest: StoryGuest
+var courtyard_sign: StoryWaypoint
+var _location := "office"
+var _story_busy := false
+var viewport_guard: DemoViewportGuard
+
+func _enter_tree() -> void:
+	# The playable entry scene always uses the offline demo. Isolated legacy
+	# panel fixtures may still opt into the optional work-order presentation.
+	var panel := get_node_or_null("Interface/JobPanel") as JobPanel
+	if panel != null: panel.story_mode = demo_story_mode
 
 func _ready() -> void:
 	_apply_initial_window_presentation.call_deferred()
@@ -55,13 +68,19 @@ func _ready() -> void:
 		initial_employees = room.placeholder_records()
 	_spawn_employees(initial_employees)
 	company_panel = CompanyPanel.new()
+	company_panel.story_mode = demo_story_mode
 	$Interface.add_child(company_panel)
+	viewport_guard = DemoViewportGuard.new()
+	viewport_guard.name = "DemoViewportGuard"
+	$Interface.add_child(viewport_guard)
+	_build_story_world()
 	office_renovation = OFFICE_RENOVATION_SCRIPT.new() as OfficeRenovation
 	office_renovation.name = "OfficeRenovation"
 	office_renovation.game = self
 	add_child(office_renovation)
 	founder_hud.station_input_enabled = func() -> bool: return not player.input_blocked and not _world_paused()
 	company_panel.action_requested.connect(worker_client.company_request)
+	company_panel.goal_requested.connect(_follow_story_goal)
 	company_panel.milestone_requested.connect(job_panel.prepare_milestone)
 	company_panel.connection_requested.connect(job_panel._open_connection_settings)
 	job_panel.connect_allowed = func() -> bool:
@@ -80,12 +99,9 @@ func _ready() -> void:
 	)
 	job_panel.story_requested.connect(func(mode: String) -> void:
 		job_panel.close_drawer()
-		company_panel.present(mode)
+		_follow_story_goal(str(StoryMoments.goal(_journey).get("mode", mode)))
 	)
-	founder_hud.goal_requested.connect(func(mode: String) -> void:
-		job_panel.close_drawer()
-		company_panel.present(mode)
-	)
+	founder_hud.goal_requested.connect(_follow_story_goal)
 	job_panel.worker_retry_requested.connect(_retry_worker_connection)
 	game_audio = GameAudio.new()
 	add_child(game_audio)
@@ -121,6 +137,9 @@ func _apply_initial_window_presentation() -> void:
 	print("Window presentation: internal=1280x720 native=%dx%d display_scale=%.2f usable=%s" % [window.size.x, window.size.y, display_scale, usable])
 
 func _process(delta: float) -> void:
+	if _location == "courtyard":
+		_process_courtyard(delta)
+		return
 	var paused := _world_paused()
 	day_clock.ui_paused = paused
 	player.input_blocked = paused
@@ -167,6 +186,7 @@ func _process(delta: float) -> void:
 		founder_hud.hide_next_step()
 	elif company_panel != null and company_panel.story_mode:
 		founder_hud.set_story_goal(StoryMoments.goal(_journey))
+		founder_hud.set_goal_pending(_story_busy)
 	else:
 		founder_hud.set_next_step(CompanyPanel.next_step_line(_journey, company_panel.busy if company_panel != null else false, company_panel._pending_method if company_panel != null else "", company_panel._pending_job_id if company_panel != null else ""))
 	for employee_id: String in _employees:
@@ -195,9 +215,23 @@ func _update_hover_highlight(hover: Dictionary) -> void:
 		var employee := _employees[id]
 		if employee._character_sprite != null: sources.append(employee._character_sprite)
 		for layer: Sprite2D in employee._work_pose_layer_sprites.values(): sources.append(layer)
+	elif str(hover.get("kind", "")) == "story":
+		if id == "arrival-mina" and arrival_guest != null: sources.append(arrival_guest.sprite)
+		elif id == "courtyard-theo" and courtyard != null: sources.append(courtyard.guest.sprite)
+	if courtyard_sign != null:
+		courtyard_sign.hovered = id == "courtyard-exit"
+		courtyard_sign.queue_redraw()
+	if courtyard != null:
+		courtyard.return_sign.hovered = id == "office-return"
+		courtyard.return_sign.queue_redraw()
 	interaction_highlight.sync(sources)
 
 func _station_hover_details(hover: Dictionary) -> Dictionary:
+	if str(hover.get("kind", "")) == "story":
+		var id := str(hover.get("id", ""))
+		var point: Vector2 = hover.get("point", Vector2.ZERO)
+		var caption := "Meet Mina · E" if id == "arrival-mina" else "Talk with Theo · E" if id == "courtyard-theo" else "Visit courtyard · E" if id == "courtyard-exit" else "Return to studio · E"
+		return {"id": id, "caption": caption, "bounds": Rect2(point + Vector2(-24, -80), Vector2(48, 80))}
 	if str(hover.get("kind", "")) != "prop": return {}
 	var id := str(hover.get("id", ""))
 	var placement := room.placement_by_id(id)
@@ -230,6 +264,7 @@ func _retry_worker_connection() -> void:
 	worker_client.refresh_journey()
 
 func _open_office_renovation() -> void:
+	if _location != "office": return
 	job_panel.close_drawer(false)
 	artifact_viewer.hide()
 	player.cancel_route()
@@ -238,7 +273,7 @@ func _open_office_renovation() -> void:
 	office_renovation.open()
 
 func _world_paused() -> bool:
-	return (office_renovation != null and office_renovation.active) or job_panel.drawer_is_open() or job_panel._connection_panel.visible or artifact_viewer.visible or (company_panel != null and company_panel.visible)
+	return _story_busy or (viewport_guard != null and viewport_guard.visible) or (office_renovation != null and office_renovation.active) or job_panel.drawer_is_open() or job_panel._connection_panel.visible or artifact_viewer.visible or (company_panel != null and company_panel.visible)
 
 func _connect_signals() -> void:
 	worker_client.furnishing_received.connect(_on_furnishing_received)
@@ -398,10 +433,11 @@ func _spawn_employees(records: Array[EmployeeRecord]) -> void:
 			_employees.erase(id)
 	if room.navigation != null:
 		room.navigation.actors.clear()
-		room.navigation.actors["founder"] = player.position
+		if _location == "office": room.navigation.actors["founder"] = player.position
 	room.configure_employee_desks(records)
-	player.position = room.navigation.safe_position(player.position, "founder")
-	room.navigation.actors["founder"] = player.position
+	if _location == "office":
+		player.position = room.navigation.safe_position(player.position, "founder")
+		room.navigation.actors["founder"] = player.position
 	for record: EmployeeRecord in records:
 		var employee: EmployeeAvatar = _employees.get(record.id)
 		if employee == null:
@@ -421,14 +457,16 @@ func _spawn_employees(records: Array[EmployeeRecord]) -> void:
 		founder_hud.hide_delivery()
 
 func _on_room_placements_changed() -> void:
-	player.movement_bounds = room.playable_bounds()
+	if _location == "office": player.movement_bounds = room.playable_bounds()
 	if _updating_roster: return
-	player.cancel_route()
-	_pending_interaction = ""
+	if _location == "office":
+		player.cancel_route()
+		_pending_interaction = ""
 	room.navigation.actors.clear()
 	room.navigation.reservations.clear()
-	player.position = room.navigation.safe_position(player.position, "founder")
-	room.navigation.actors["founder"] = player.position
+	if _location == "office":
+		player.position = room.navigation.safe_position(player.position, "founder")
+		room.navigation.actors["founder"] = player.position
 	var replans: Array[Dictionary] = []
 	for employee: EmployeeAvatar in _employees.values():
 		var previous_desk := employee.desk_position
@@ -461,6 +499,7 @@ func _on_room_placements_changed() -> void:
 	for replan: Dictionary in replans:
 		var employee := replan.employee as EmployeeAvatar
 		employee.walk_to(replan.target, replan.state, replan.arrival)
+	_sync_story_visitors()
 
 func _on_assignment_submitted(
 	employee_id: String,
@@ -624,6 +663,8 @@ func _on_journey(value: Dictionary) -> void:
 		founder_hud.set_story_goal(StoryMoments.goal(value))
 	else:
 		founder_hud.set_next_step(CompanyPanel.next_step_line(value, company_panel.busy, company_panel._pending_method, company_panel._pending_job_id))
+	_sync_story_visitors()
+	if _state_loaded: _apply_story_location()
 
 func _sync_studio_project_team() -> void:
 	var tycoon: Dictionary = _journey.get("tycoon", {})
@@ -674,12 +715,20 @@ func _restore_player() -> void:
 	if _employees.has(attention):
 		job_panel._attention_employee_id = attention
 		job_panel._refresh_team_card_styles()
+	_apply_story_location(true)
 
 func _on_company_action(method: String, result: Dictionary) -> void:
 	company_panel.busy = false
+	if method.begins_with("story."): _story_busy = false
 	if result.has("dailySpend"):
 		job_panel.set_spend(float(result.dailySpend), 5.0)
 	match method:
+		"story.travel":
+			company_panel.hide()
+			_apply_story_location()
+		"story.acceptOpportunity":
+			game_audio.play("reward")
+			company_panel.present("courtyard")
 		"game.new":
 			office_renovation.reset_layout()
 			_restored_player = true
@@ -724,18 +773,26 @@ func _on_company_action(method: String, result: Dictionary) -> void:
 	_save_game()
 
 func _on_company_action_failed(method: String, message: String) -> void:
+	if method.begins_with("story."):
+		_story_busy = false
+		company_panel.present("courtyard" if _location == "courtyard" else "journey")
+		if _worker_ready: worker_client.refresh_journey()
 	company_panel.show_error(message)
 	if method == "milestone.evaluate" and _worker_ready: worker_client.refresh_journey()
 
 func _save_game() -> void:
-	if not _worker_ready: return
-	worker_client.company_request("game.save", {
+	if not _worker_ready or _story_busy: return
+	var params := {
 		"x": player.position.x, "y": player.position.y,
 		"movementSeen": founder_hud._movement_seen,
 		"effectsVolume": game_audio.effects_volume, "ambienceVolume": game_audio.ambience_volume,
 		"attentionEmployeeId": job_panel._attention_employee_id,
 		"architectureTheme": room.architecture.theme_id if room != null and room.architecture != null else OfficeArchitecture.DEFAULT_THEME,
-	})
+	}
+	if _journey.get("story") is Dictionary:
+		params.location = _location
+		params.storyRevision = int(_journey.story.get("revision", 0))
+	worker_client.company_request("game.save", params)
 
 func _on_architecture_theme(theme_id: String) -> void:
 	if room == null or room.architecture == null: return
@@ -752,6 +809,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed() and not event.is_echo():
 		var key := event as InputEventKey
 		if not _world_paused():
+			if key.physical_keycode == KEY_E and _nearby_story_interaction():
+				get_viewport().set_input_as_handled()
+				return
 			for action: StringName in [&"move_left", &"move_right", &"move_up", &"move_down"]:
 				if event.is_action_pressed(action):
 					# Even a key tap shorter than one physics tick cancels the route.
@@ -786,7 +846,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		_pending_interaction = interaction.id
 		_pending_kind = interaction.kind
 		point = interaction.point
-	if _pending_interaction.is_empty() and not room.navigation.walkable(room.navigation.cell_at(point)):
+	var active_navigation := courtyard.navigation if _location == "courtyard" else room.navigation
+	if _pending_interaction.is_empty() and not active_navigation.walkable(active_navigation.cell_at(point)):
 		click_feedback.show_at(point, false)
 		get_viewport().set_input_as_handled()
 		return
@@ -805,6 +866,14 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 func _interaction_at(point: Vector2) -> Dictionary:
+	if _location == "courtyard":
+		var target := courtyard.interaction_at(point)
+		if str(target.get("id", "")) == "courtyard-theo" and VisibleSurface.in_front(player.body_surface_at(point), courtyard.guest.sprite): return {}
+		return target
+	if arrival_guest != null and arrival_guest.hit(point):
+		if VisibleSurface.in_front(player.body_surface_at(point), arrival_guest.sprite): return {}
+		return {"id": "arrival-mina", "kind": "story", "point": arrival_guest.position + Vector2(0, 32)}
+	if courtyard_sign != null and courtyard_sign.hit(point): return {"id": "courtyard-exit", "kind": "story", "point": room.grid_to_world_position(room.player_spawn)}
 	var surface := room.surface_at(point)
 	var top_sprite := surface.get("sprite") as Sprite2D
 	var interaction: Dictionary = surface.get("interaction", {})
@@ -822,6 +891,9 @@ func _on_destination_reached() -> void:
 	var target := _pending_interaction
 	_pending_interaction = ""
 	if target.is_empty(): return
+	if _pending_kind == "story":
+		_activate_story_interaction(target)
+		return
 	if _pending_kind == "prop":
 		var approach := room.interaction_approach_direction(target)
 		if not approach.is_zero_approx():
@@ -858,6 +930,147 @@ func _yield_employee_passage(employee_id: String, destination: Vector2) -> void:
 	if employee == null or employee._has_target: return
 	# Retain approval/work state after a small step aside; no job lifecycle change.
 	employee.walk_to(destination, EmployeeAvatar.WorkState.WANDERING, employee.work_state)
+
+func _build_story_world() -> void:
+	courtyard = Courtyard.new()
+	courtyard.name = "Courtyard"
+	add_child(courtyard)
+	arrival_guest = StoryGuest.new()
+	arrival_guest.name = "MinaArrival"
+	add_child(arrival_guest)
+	arrival_guest.set_active(false)
+	courtyard_sign = StoryWaypoint.new()
+	courtyard_sign.name = "CourtyardEntrance"
+	courtyard_sign.caption = "Courtyard →"
+	add_child(courtyard_sign)
+	courtyard_sign.hide()
+
+func _sync_story_visitors() -> void:
+	if arrival_guest == null or courtyard_sign == null: return
+	var hired := false
+	for candidate: Dictionary in _journey.get("candidates", []):
+		if str(candidate.get("id", "")) == "mira" and bool(candidate.get("hired", false)): hired = true
+	arrival_guest.position = room.grid_to_world_position(room.player_spawn + Vector2i(-2, -2))
+	arrival_guest.set_active(_location == "office" and not _journey.is_empty() and not hired)
+	if arrival_guest.visible: room.navigation.actors["arrival-mina"] = arrival_guest.position
+	else: room.navigation.actors.erase("arrival-mina")
+	courtyard_sign.position = room.grid_to_world_position(room.player_spawn) + Vector2(0, 26)
+	courtyard_sign.visible = _location == "office" and bool((_journey.get("story", {}) as Dictionary).get("courtyardUnlocked", false))
+
+func _apply_story_location(force: bool = false) -> void:
+	if courtyard == null: return
+	var destination := str((_journey.get("story", {}) as Dictionary).get("location", "office"))
+	if destination == _location and not force: return
+	_location = destination
+	player.cancel_route()
+	_pending_interaction = ""
+	_pending_kind = ""
+	_update_hover_highlight({})
+	job_panel.close_drawer(false)
+	job_panel._close_connection_settings()
+	artifact_viewer.hide()
+	if not (force and company_panel.screen == "title"): company_panel.hide()
+	var outside := destination == "courtyard"
+	room.visible = not outside
+	room.process_mode = Node.PROCESS_MODE_DISABLED if outside else Node.PROCESS_MODE_INHERIT
+	room.navigation.process_mode = room.process_mode
+	employee_container.visible = not outside
+	employee_container.process_mode = room.process_mode
+	job_panel.visible = not outside
+	courtyard.set_active(outside)
+	player.navigation = courtyard.navigation if outside else room.navigation
+	player.movement_bounds = Courtyard.BOUNDS if outside else room.playable_bounds()
+	var saved: Dictionary = _journey.get("player", {})
+	var fallback := Courtyard.SPAWN if outside else room.grid_to_world_position(room.player_spawn)
+	var point := Vector2(float(saved.get("x", fallback.x)), float(saved.get("y", fallback.y)))
+	player.position = player.navigation.safe_position(point, "founder")
+	player.navigation.actors["founder"] = player.position
+	if outside: room.navigation.actors.erase("founder")
+	else: courtyard.navigation.actors.erase("founder")
+	_sync_story_visitors()
+
+func _process_courtyard(delta: float) -> void:
+	var paused := _world_paused()
+	day_clock.ui_paused = true
+	player.input_blocked = paused
+	for employee: EmployeeAvatar in _employees.values(): employee.world_paused = true
+	if paused:
+		player.cancel_route()
+		_pending_interaction = ""
+	_save_elapsed += delta
+	if _save_elapsed > 5.0 and _state_loaded:
+		_save_elapsed = 0
+		_save_game()
+	if player.velocity.length() > 10 and not paused: founder_hud.notice_movement()
+	founder_hud.update_interaction(player.position, {}, false, [])
+	var hovered_control := get_viewport().gui_get_hovered_control()
+	var ui_hover := hovered_control != null and hovered_control.mouse_filter != Control.MOUSE_FILTER_IGNORE
+	var hover := _interaction_at(get_viewport().get_mouse_position()) if not paused and not ui_hover else {}
+	_update_hover_highlight(hover)
+	var station := _station_hover_details(hover)
+	founder_hud.update_station_hover(str(station.get("id", "")), str(station.get("caption", "")), station.get("bounds", Rect2()), not paused, [clock_panel.get_global_rect()])
+	if company_panel.visible: founder_hud.hide_next_step()
+	else:
+		founder_hud.set_story_goal(StoryMoments.goal(_journey))
+		founder_hud.set_goal_pending(_story_busy)
+	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND if not hover.is_empty() else Input.CURSOR_ARROW)
+
+func _follow_story_goal(mode: String) -> void:
+	if _story_busy: return
+	job_panel.close_drawer(false)
+	company_panel.hide()
+	match mode:
+		"meet_mina": _walk_to_story("arrival-mina", arrival_guest.position + Vector2(0, 32))
+		"courtyard": _walk_to_story("courtyard-exit", room.grid_to_world_position(room.player_spawn))
+		"meet_theo": _walk_to_story("courtyard-theo", Courtyard.THEO_APPROACH)
+		"return_office": _walk_to_story("office-return", Courtyard.SPAWN)
+		"accept_opportunity": _request_story("story.acceptOpportunity", {})
+		"opportunity_product": company_panel.present_opportunity()
+		_: company_panel.present(mode)
+
+func _walk_to_story(id: String, point: Vector2) -> void:
+	player.input_blocked = false
+	_pending_interaction = id
+	_pending_kind = "story"
+	if player.position.distance_to(point) <= 6:
+		_on_destination_reached()
+	elif not player.move_to(point):
+		_pending_interaction = ""
+		click_feedback.show_at(point, false)
+
+func _activate_story_interaction(id: String) -> void:
+	match id:
+		"arrival-mina": company_panel.present("journey")
+		"courtyard-exit": _request_story("story.travel", {"destination": "courtyard"})
+		"courtyard-theo": company_panel.present("courtyard")
+		"office-return": _request_story("story.travel", {"destination": "office"})
+
+func _nearby_story_interaction() -> bool:
+	if _location == "courtyard":
+		if player.position.distance_to(Courtyard.THEO_POSITION) < 96:
+			_activate_story_interaction("courtyard-theo")
+			return true
+		if player.position.distance_to(Courtyard.SPAWN) < 64:
+			_activate_story_interaction("office-return")
+			return true
+	else:
+		if arrival_guest.visible and player.position.distance_to(arrival_guest.position) < 96:
+			_activate_story_interaction("arrival-mina")
+			return true
+		if courtyard_sign.visible and player.position.distance_to(courtyard_sign.position) < 80:
+			_activate_story_interaction("courtyard-exit")
+			return true
+	return false
+
+func _request_story(method: String, parameters: Dictionary) -> void:
+	if not _worker_ready or _story_busy: return
+	# Flush the last position before the worker atomically changes location.
+	_save_game()
+	_story_busy = true
+	parameters.operationId = "story-%d-%d" % [int(Time.get_unix_time_from_system()), Time.get_ticks_usec()]
+	parameters.expectedRevision = int((_journey.get("story", {}) as Dictionary).get("revision", 0))
+	company_panel.busy = true
+	worker_client.company_request(method, parameters)
 
 func _world_ui_obstacles() -> Array[Rect2]:
 	# Rendering metadata only: never alter furniture, navigation or collision.
@@ -955,6 +1168,7 @@ func _notification(what: int) -> void:
 		get_tree().quit()
 
 func _on_worker_crashed(message: String) -> void:
+	_story_busy = false
 	_worker_ready = false
 	if office_renovation != null: office_renovation.connection_lost()
 	company_panel.busy = false

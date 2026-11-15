@@ -23,6 +23,9 @@ func _fail(message: String) -> void:
 
 func _run() -> void:
 	var main := MAIN_SCENE.instantiate() as GameMain
+	# This suite exercises the optional work-order UI; demo journeys keep the
+	# production default true and cover the story presentation separately.
+	main.demo_story_mode = false
 	root.add_child(main)
 	await process_frame
 	await process_frame
@@ -531,7 +534,13 @@ func _assert_ui_typography(main: GameMain) -> void:
 		var font := control.get_theme_font("font")
 		if font not in [GameFonts.DISPLAY, GameFonts.BODY, GameFonts.EMPHASIS, GameFonts.BOLD]:
 			_fail("test_ui_typography: %s uses an unapproved functional font" % control.name)
-		if font == GameFonts.DISPLAY and font_size != 22:
+		# The retained in-game website deliberately uses the same11px display
+		# face at3x for its hero title. This exact owned node is the exception;
+		# ordinary game headings still use the original2x/native22 contract.
+		var project_title := control == main.company_panel._website_preview._title
+		if project_title and (font != GameFonts.DISPLAY or font_size != 33):
+			_fail("test_ui_typography: website hero must keep its intentional Slab33")
+		elif not project_title and font == GameFonts.DISPLAY and font_size != 22:
 			_fail("test_ui_typography: %s must use Slab at native22" % control.name)
 		elif font_size < GameFonts.BODY_META:
 			_fail("test_ui_typography: %s secondary copy is below 14 px" % control.name)

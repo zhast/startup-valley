@@ -56,7 +56,23 @@ func run() -> void:
 	root.size = Vector2i(1280, 720)
 	root.content_scale_size = Vector2i(1280, 720)
 	var state := {"company": {"cashCents": 0}, "candidates": [{"id": "mira", "name": "Mina", "hired": false, "available": true}], "tycoon": {"topics": [{"id": "fitness", "name": "Fitness", "unlocked": true}], "types": [{"id": "course", "name": "Course", "unlocked": true}, {"id": "software", "name": "Software Tool", "unlocked": false}], "fits": [{"topicId": "fitness", "typeId": "course", "fit": "great"}], "staff": [{"id": "founder", "name": "You", "hired": true}, {"id": "mira", "name": "Mina", "hired": true}]}}
-	check(StoryMoments.goal(state).completed == 0 and StoryMoments.goal(state).mode == "journey", "Fresh company starts with meeting Mina")
+	check(StoryMoments.goal(state).completed == 0 and StoryMoments.goal(state).mode == "meet_mina", "Fresh company starts with meeting Mina in the world")
+	var outdoor := state.duplicate(true)
+	outdoor.candidates[0].hired = true
+	outdoor.tycoon.history = [{"id": "first-release"}]
+	outdoor.story = {"location": "office", "courtyardUnlocked": true, "opportunity": {"status": "available"}}
+	check(StoryMoments.goal(outdoor).mode == "courtyard" and StoryMoments.goal(outdoor).completed == 0 and StoryMoments.goal(outdoor).total == 3, "First release opens an unfinished three-step neighbor chapter")
+	check(StoryMoments.milestones(outdoor).size() == 3 and StoryMoments.milestones(outdoor)[0].title == "Meet our neighbor", "Neighbor chapter has matching milestone labels")
+	outdoor.story.location = "courtyard"
+	check(StoryMoments.goal(outdoor).mode == "meet_theo", "Courtyard goal leads to the real visitor")
+	outdoor.story.opportunity.status = "accepted"
+	check(StoryMoments.goal(outdoor).completed == 1 and StoryMoments.goal(outdoor).mode == "return_office", "Accepted brief has one completed step and a safe return action")
+	outdoor.story.location = "office"
+	check(StoryMoments.goal(outdoor).mode == "opportunity_product", "Returned player gets the specific next project")
+	outdoor.story.opportunity.status = "developing"
+	check(StoryMoments.goal(outdoor).completed == 2, "Real project start advances the neighbor chapter")
+	outdoor.story.opportunity.status = "completed"
+	check(StoryMoments.goal(outdoor).completed == 3, "Released opportunity completes the neighbor chapter")
 	state.candidates[0].hired = true
 	state.candidates[0].available = false
 	check(StoryMoments.goal(state).completed == 1, "Hiring advances the story from worker state")

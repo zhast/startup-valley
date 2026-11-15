@@ -2,7 +2,7 @@ import type { SqlDatabase } from "./sql-database.js";
 import { fictionalWorld } from "./fictional-world.js";
 import { calendarForDay, type TycoonSnapshot } from "./tycoon.js";
 import type { JobSpec } from "./types.js";
-import type { StoryView } from "./story.js";
+import { COURTYARD_BOUNDS, type StoryView } from "./story.js";
 
 export interface MilestoneDefinition {
   id: string; title: string; employeeId: string; prerequisite?: string;
@@ -226,7 +226,8 @@ export class JourneyStore {
       const story = this.db.prepare("SELECT location,revision FROM story_state WHERE id=1").get()!;
       if ((value.location ?? "office") !== story.location) throw new Error("The location changed. Refresh before saving position.");
       if (value.storyRevision !== undefined && (!Number.isSafeInteger(value.storyRevision) || value.storyRevision !== story.revision)) throw new Error("The story changed. Refresh before saving position.");
-      if (story.location === "courtyard" && (value.storyRevision === undefined || x < 224 || x > 864 || y < 208 || y > 624)) throw new Error("Invalid courtyard position or missing story revision");
+      const [left, top, width, height] = COURTYARD_BOUNDS;
+      if (story.location === "courtyard" && (value.storyRevision === undefined || x < left || x > left + width || y < top || y > top + height)) throw new Error("Invalid courtyard position or missing story revision");
       this.db.prepare("UPDATE company_state SET player_json=? WHERE id=1").run(JSON.stringify({ x, y, movementSeen: value.movementSeen === true, effectsVolume: unit("effectsVolume", 0.5), ambienceVolume: unit("ambienceVolume", 0.2), attentionEmployeeId: attentionIds.includes(String(value.attentionEmployeeId)) ? value.attentionEmployeeId : "", architectureTheme }));
     });
   }
