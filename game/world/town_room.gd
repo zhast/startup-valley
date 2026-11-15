@@ -25,6 +25,7 @@ var unlocked_hires: int = 0
 var unlocked_office_level: int = 1
 var navigation: OfficeNavigation
 var architecture: OfficeArchitecture
+var daylight: OfficeDaylight
 var _employee_names: Dictionary[String, String] = {}
 var _prop_root: Node2D
 var _effect_root: Node2D
@@ -36,6 +37,12 @@ func _ready() -> void:
 	architecture = OfficeArchitecture.new()
 	architecture.name = "Architecture"
 	add_child(architecture)
+	daylight = OfficeDaylight.new()
+	daylight.name = "WindowDaylight"
+	add_child(daylight)
+	# Repainting a new room theme also recolours the window light. There is no
+	# animated pulse or process loop, and it never sits over a prop or person.
+	architecture.draw.connect(daylight.queue_redraw)
 	_prop_root = Node2D.new()
 	_prop_root.name = "Props"
 	add_child(_prop_root)
@@ -68,6 +75,7 @@ func load_layout(path: String = "res://data/office_layout.json") -> bool:
 		get_parent().add_child(navigation)
 	navigation.configure(layout_model.navigation_data(), global_position)
 	architecture.configure(layout_model)
+	daylight.configure(layout_model, architecture)
 	set_hire_count(_employee_names.size())
 	return true
 
