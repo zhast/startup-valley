@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "id": "cozy-standalone-furniture-scale-v1",
+  "camera_profile": "office-square-grid-v1",
+  "grid_px": 32,
+  "runtime_scale": 1,
+  "scope": "South-facing standalone cafe chair/table and earned call nook only. Numeric landmarks are measured review declarations, not automatic proof of painted semantics or beauty. Workstation chair is reviewed separately.",
+  "calibration": {
+    "kind": "godot_same_scale",
+    "path": "docs/web/assets/furniture-scale-v1/same-scale-comparison.png",
+    "sha256": "999b7b95152195bf2856b932ab1bb241b3c877898cea45053c0e23a80df175e3",
+    "report": {
+      "path": "docs/web/assets/furniture-scale-v1/calibration-report.json",
+      "sha256": "0d690a3fda88d76f3f446370a2c6aeb3217056428c9bd01ec52854294ac8063f"
+    }
+  },
+  "actor_references": [
+    {
+      "path": "dev/art-catalogue/style-references/founder-idle.png",
+      "sha256": "d01a61aac781bea83902877ab96f45087bfb9ac8d0e3d6801fecf642cc1aa756"
+    },
+    {
+      "path": "dev/art-catalogue/style-references/mina-idle.png",
+      "sha256": "3a8ad37498e9945a4bbeca8567db757b97b28f496c6e9294d11a707d8bd7e1df"
+    }
+  ],
+  "ranges": {
+    "seat_rise": [
+      18,
+      24
+    ],
+    "chair_back_rise": [
+      38,
+      48
+    ],
+    "tabletop_rise": [
+      28,
+      35
+    ],
+    "opening_width": [
+      34,
+      42
+    ],
+    "opening_height": [
+      82,
+      90
+    ],
+    "booth_front_rise": [
+      92,
+      100
+    ]
+  },
+  "families": [
+    {
+      "kind": "cafe_chair",
+      "catalog": "game/data/furnishing_catalog.json",
+      "facing": "south",
+      "profile_sha256": "81aec1b429f7150ca2628252b26e17de8cb11219b96adde06315da1d940fbcce",
+      "art": "game/assets/runtime/office/cozy-furniture-v1/cafe-chair-south.png",
+      "art_sha256": "7728f60d8bd26941fe7ac06ffe8600e65855363dea5812f1ad78b08732d93d76",
+      "canvas": [
+        96,
+        160
+      ],
+      "ground_pivot": [
+        48,
+        128
+      ],
+      "contacts": [
+        [
+          -12,
+          15
+        ],
+        [
+          12,
+          15
+        ],
+        [
+          -10,
+          8
+        ],
+        [
+          10,
+          8
+        ]
+      ],
+      "seat": {
+        "width": 30,
+        "back_y": -12,
+        "front_y": -5,
+        "back_floor_y": 8,
+        "front_floor_y": 15
+      },
+      "back": {
+        "top_y": -36,
+        "floor_y": 8
+      }
+    },
+    {
+      "kind": "cafe_table",
+      "catalog": "game/data/furnishing_catalog.json",
+      "facing": "south",
+      "profile_sha256": "687f888efc6566555e81f8d4660068b45aaa538129146ad51cf362626274ff04",
+      "art": "game/assets/runtime/office/cozy-furniture-v1/cafe-table-south.png",
+      "art_sha256": "75216f94590acfa4110ceb52d73200518e0a9fecf23650ad216e31b5245c25c5",
+      "canvas": [
+        96,
+        160
+      ],
+      "ground_pivot": [
+        48,
+        128
+      ],
+      "contacts": [
+        [
+          -11,
+          13
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          10,
+          13
+        ]
+      ],
+      "tabletop": {
+        "width": 56,
+        "back_y": -32,
+        "front_y": -12,
+        "back_floor_y": 0,
+        "front_floor_y": 20
+      }
+    },
+    {
+      "kind": "phone_booth",
+      "catalog": "game/data/furnishing_catalog.json",
+      "facing": "south",
+      "profile_sha256": "43999a2723c550badf4f98e1f2dd488842b48402fdbfe2ed022779156597cad9",
+      "art": "game/assets/runtime/office/cozy-furniture-v1/phone-booth-south.png",
+      "art_sha256": "8ce70fd1c112d367efa6ab8c7e4ff9539afc768d98ce2b0e1d5e72d397a70618",
+      "canvas": [
+        128,
+        192
+      ],
+      "ground_pivot": [
+        80,
+        160
+      ],
+      "contacts": [
+        [
+          -42,
+          15
+        ],
+        [
+          10,
+          15
+        ],
+        [
+          -40,
+          -3
+        ],
+        [
+          8,
+          -3
+        ]
+      ],
+      "opening": {
+        "left": -36,
+        "top": -71,
+        "width": 40,
+        "floor_y": 15
+      },
+      "structure": {
+        "top_y": -79,
+        "floor_y": 15
+      }
+    }
+  ]
+}

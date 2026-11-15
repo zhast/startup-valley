@@ -1,0 +1,30 @@
+{
+  "source_report_sha256": "e1d89345f2ca0324195d806d02d42980c16eac2c1b8e0f02b4f7de661a72ad9c",
+  "result": "pass",
+  "providerFree": true,
+  "realGodot": true,
+  "realWorker": true,
+  "transport": "Production messages forwarded unchanged except delayed acknowledgements and one lost committed reply",
+  "phases": [
+    "edit",
+    "restart",
+    "lost_ack",
+    "final_restart"
+  ],
+  "mutations": 9,
+  "finalRevision": 9,
+  "workersStopped": true,
+  "nativeRenderer": false,
+  "inputDriver": {
+    "method": "Input.parse_input_event through normal GUI hit-testing",
+    "nativeWindowUnfocusable": null,
+    "nativeMousePassthrough": null,
+    "osPointerWarped": false
+  },
+  "sourceStable": true,
+  "sourceBeforeSha256": "e614abf33fe87bd605c0ad51662051bf0060fba4176146af8dedd2028aa4268c",
+  "sourceAfterSha256": "e614abf33fe87bd605c0ad51662051bf0060fba4176146af8dedd2028aa4268c",
+  "recordedCommand": "GODOT_BINARY=/private/tmp/startup-valley-godot-4.7.2/Godot.app/Contents/MacOS/Godot STARTUP_VALLEY_FURNISHING_RENDER=0 /Users/openai/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node --import tsx --test test/furnishing-game.test.ts",
+  "nodeVersion": "v24.22.1",
+  "workingDirectory": "harness"
+}

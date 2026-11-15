@@ -1,0 +1,86 @@
+{
+	"candidate": false,
+	"captures": [
+		{
+			"path": "/private/tmp/startup-valley-cozy-furniture-runtime/starter-chair-behind.png",
+			"pixels": [
+				1280,
+				720
+			],
+			"player": [
+				432.0,
+				496.0
+			]
+		},
+		{
+			"path": "/private/tmp/startup-valley-cozy-furniture-runtime/starter-chair-front.png",
+			"pixels": [
+				1280,
+				720
+			],
+			"player": [
+				432.0,
+				560.0
+			]
+		},
+		{
+			"path": "/private/tmp/startup-valley-cozy-furniture-runtime/starter-table-behind.png",
+			"pixels": [
+				1280,
+				720
+			],
+			"player": [
+				368.0,
+				496.0
+			]
+		},
+		{
+			"path": "/private/tmp/startup-valley-cozy-furniture-runtime/starter-table-front.png",
+			"pixels": [
+				1280,
+				720
+			],
+			"player": [
+				368.0,
+				560.0
+			]
+		},
+		{
+			"path": "/private/tmp/startup-valley-cozy-furniture-runtime/full-office-booth-behind.png",
+			"pixels": [
+				1280,
+				720
+			],
+			"player": [
+				112.0,
+				560.0
+			]
+		},
+		{
+			"path": "/private/tmp/startup-valley-cozy-furniture-runtime/full-office-booth-front.png",
+			"pixels": [
+				1280,
+				720
+			],
+			"player": [
+				112.0,
+				624.0
+			]
+		}
+	],
+	"checks": 21,
+	"display": "macOS",
+	"engine": {
+		"build": "official",
+		"hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+		"hex": 263938,
+		"major": 4,
+		"minor": 7,
+		"patch": 2,
+		"status": "stable",
+		"string": "4.7.2-stable (official)",
+		"timestamp": 0
+	},
+	"failures": [],
+	"scope": "actual Godot room and navigation component evidence, not full demo acceptance"
+}

@@ -12789,22 +12789,40 @@
       ],
       "facing_profiles": {
         "south": {
-          "status": "runtime_ready",
-          "review": {
-            "art": true,
-            "geometry": true
-          },
-          "source_review": "Phase 1 PASS runtime south bind 2026-09-16",
-          "preview_art": "res://assets/runtime/office/cafe-table-south.png",
-          "visual_bounds": [
-            -30,
-            -16,
-            60,
-            72
+          "ambient_overlays": [],
+          "anchor_offset": [
+            0,
+            0
           ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "hit_bounds": [
+            -28,
+            -32,
+            56,
+            48
+          ],
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "preview_art": "res://assets/runtime/office/cozy-furniture-v1/cafe-table-south.png",
+          "profile_kind": "decorative",
           "render_layers": [
             {
-              "art": "res://assets/runtime/office/cafe-table-south.png",
+              "art": "res://assets/runtime/office/cozy-furniture-v1/cafe-table-south.png",
+              "content_bounds": [
+                20,
+                96,
+                56,
+                48
+              ],
               "name": "CafeTableBody",
               "offset": [
                 0,
@@ -12813,42 +12831,17 @@
               "region": [
                 0,
                 0,
-                192,
-                224
+                96,
+                160
               ],
-              "z_offset": 0,
-              "content_bounds": [
-                66,
-                144,
-                60,
-                72
-              ]
+              "z_offset": 0
             }
           ],
-          "profile_kind": "decorative",
-          "occupied": [
-            [
-              0,
-              0
-            ]
-          ],
-          "clearance": [
-            [
-              0,
-              1
-            ]
-          ],
-          "anchor_offset": [
-            0,
-            0
-          ],
-          "hit_bounds": [
-            -30,
-            -16,
-            60,
-            72
-          ],
-          "ambient_overlays": [],
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Cozy furniture v1: actual Godot same-scale and room crossings; see furniture-scale-v1 runtime review",
           "standing_viewpoints": [
             {
               "cell": [
@@ -12862,6 +12855,13 @@
                 84
               ]
             }
+          ],
+          "status": "runtime_ready",
+          "visual_bounds": [
+            -28,
+            -32,
+            56,
+            48
           ]
         }
       },
@@ -12874,22 +12874,40 @@
       ],
       "facing_profiles": {
         "south": {
-          "status": "runtime_ready",
-          "review": {
-            "art": true,
-            "geometry": true
-          },
-          "source_review": "Phase 1 PASS runtime south bind 2026-09-16",
-          "preview_art": "res://assets/runtime/office/cafe-chair-south.png",
-          "visual_bounds": [
-            -19,
-            -20,
-            38,
-            76
+          "ambient_overlays": [],
+          "anchor_offset": [
+            0,
+            0
           ],
+          "clearance": [
+            [
+              0,
+              1
+            ]
+          ],
+          "hit_bounds": [
+            -16,
+            -36,
+            32,
+            52
+          ],
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "preview_art": "res://assets/runtime/office/cozy-furniture-v1/cafe-chair-south.png",
+          "profile_kind": "decorative",
           "render_layers": [
             {
-              "art": "res://assets/runtime/office/cafe-chair-south.png",
+              "art": "res://assets/runtime/office/cozy-furniture-v1/cafe-chair-south.png",
+              "content_bounds": [
+                32,
+                92,
+                32,
+                52
+              ],
               "name": "CafeChairBody",
               "offset": [
                 0,
@@ -12898,42 +12916,17 @@
               "region": [
                 0,
                 0,
-                192,
-                224
+                96,
+                160
               ],
-              "z_offset": 0,
-              "content_bounds": [
-                77,
-                140,
-                38,
-                76
-              ]
+              "z_offset": 0
             }
           ],
-          "profile_kind": "decorative",
-          "occupied": [
-            [
-              0,
-              0
-            ]
-          ],
-          "clearance": [
-            [
-              0,
-              1
-            ]
-          ],
-          "anchor_offset": [
-            0,
-            0
-          ],
-          "hit_bounds": [
-            -19,
-            -20,
-            38,
-            76
-          ],
-          "ambient_overlays": [],
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Cozy furniture v1: actual Godot same-scale and room crossings; see furniture-scale-v1 runtime review",
           "standing_viewpoints": [
             {
               "cell": [
@@ -12947,6 +12940,13 @@
                 84
               ]
             }
+          ],
+          "status": "runtime_ready",
+          "visual_bounds": [
+            -16,
+            -36,
+            32,
+            52
           ]
         }
       },
@@ -12959,66 +12959,67 @@
       ],
       "facing_profiles": {
         "south": {
-          "status": "runtime_ready",
-          "review": {
-            "art": true,
-            "geometry": true
-          },
-          "source_review": "Phase 1 PASS runtime south bind 2026-09-16",
-          "preview_art": "res://assets/runtime/office/phone-booth-south.png",
-          "visual_bounds": [
-            -56,
-            -119,
-            111,
-            175
-          ],
-          "render_layers": [
-            {
-              "art": "res://assets/runtime/office/phone-booth-south.png",
-              "name": "PhoneBoothBody",
-              "offset": [
-                0,
-                -48
-              ],
-              "region": [
-                0,
-                0,
-                192,
-                224
-              ],
-              "z_offset": 0,
-              "content_bounds": [
-                40,
-                41,
-                111,
-                175
-              ]
-            }
-          ],
-          "profile_kind": "decorative",
-          "occupied": [
-            [
-              0,
-              0
-            ]
+          "ambient_overlays": [],
+          "anchor_offset": [
+            0,
+            0
           ],
           "clearance": [
+            [
+              -1,
+              1
+            ],
             [
               0,
               1
             ]
           ],
-          "anchor_offset": [
-            0,
-            0
-          ],
           "hit_bounds": [
-            -56,
-            -119,
-            111,
-            175
+            -44,
+            -96,
+            56,
+            112
           ],
-          "ambient_overlays": [],
+          "occupied": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "preview_art": "res://assets/runtime/office/cozy-furniture-v1/phone-booth-south.png",
+          "profile_kind": "decorative",
+          "render_layers": [
+            {
+              "art": "res://assets/runtime/office/cozy-furniture-v1/phone-booth-south.png",
+              "content_bounds": [
+                36,
+                64,
+                56,
+                112
+              ],
+              "name": "PhoneBoothBody",
+              "offset": [
+                -16,
+                -64
+              ],
+              "region": [
+                0,
+                0,
+                128,
+                192
+              ],
+              "z_offset": 0
+            }
+          ],
+          "review": {
+            "art": true,
+            "geometry": true
+          },
+          "source_review": "Cozy furniture v1: actual Godot same-scale and room crossings; see furniture-scale-v1 runtime review",
           "standing_viewpoints": [
             {
               "cell": [
@@ -13032,6 +13033,13 @@
                 84
               ]
             }
+          ],
+          "status": "runtime_ready",
+          "visual_bounds": [
+            -44,
+            -96,
+            56,
+            112
           ]
         }
       },

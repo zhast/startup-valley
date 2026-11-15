@@ -1,0 +1,23 @@
+{
+  "kind": "openai_imagegen",
+  "generation_id": "exec-b560b865-23e3-40d0-8824-20df806e3735",
+  "original_output": "/Users/openai/.codex/generated_images/01a1e15d-c0d6-7322-ba31-96e8c40b9cb5/exec-b560b865-23e3-40d0-8824-20df806e3735.png",
+  "retained_output": "game/assets/source/furniture-scale-v1/cafe-chair-generated.png",
+  "sha256": "9ba2743e0eb8fccd935203971cdd704e4318bbea1da831ecaca7a34e4e6fd5f2",
+  "prompt": "game/assets/source/furniture-scale-v1/cafe-chair-tool-prompt.txt",
+  "status": "candidate_not_admitted",
+  "references": [
+    {
+      "path": "game/assets/runtime/office/cafe-chair-south.png",
+      "sha256": "9dd1295a0e41cc94351b029c0218174d566b6e25cb07fec518250f404427a23a"
+    },
+    {
+      "path": "dev/art-catalogue/style-reference-board.png",
+      "sha256": "d91ba07ace9aef1d7e82c0daf55621afb57636d08376feae5ef8900623ba8283"
+    },
+    {
+      "path": "docs/web/assets/furniture-scale-audit/native-lineup.png",
+      "sha256": "0a88e12ae3a3d636208beed792789ff5c058dac8516052ecb10cdbfb0ab087c4"
+    }
+  ]
+}

@@ -11,6 +11,7 @@ var failures: Array[String] = []
 
 class Board extends Node2D:
 	var captions: Array[Dictionary] = []
+	var footer := "Bottom: office chair uses its work-cell ground datum; occupied desks use actual EmployeeAvatar seating."
 	var floor_art: Texture2D = preload("res://assets/runtime/office/architecture/floor.png")
 	func _draw() -> void:
 		for y: int in range(0, 720, 32):
@@ -22,7 +23,7 @@ class Board extends Node2D:
 			draw_line(point - Vector2(0, 6), point + Vector2(0, 6), Color("ac504b"), 1)
 			draw_string(GameFonts.BODY, item.label_point, item.label, HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("3b2c25"))
 		draw_string(GameFonts.BOLD, Vector2(40, 35), "FURNITURE SCALE AUDIT · native pixels · all nodes 1× · red line/cross = declared ground", HORIZONTAL_ALIGNMENT_LEFT, -1, 20, Color("3b2c25"))
-		draw_string(GameFonts.BODY, Vector2(40, 380), "Bottom: office chair uses its work-cell ground datum; occupied desks use actual EmployeeAvatar seating.", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("3b2c25"))
+		draw_string(GameFonts.BODY, Vector2(40, 380), footer, HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("3b2c25"))
 
 var board: Board
 

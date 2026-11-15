@@ -1,0 +1,29 @@
+{
+  "scope": "Migration of closed real native compatibility playthrough saves copied before mutation",
+  "results": [
+    {
+      "source": "/private/tmp/startup-valley-demo-legacy/run-1/save/startup-valley.sqlite",
+      "sha256": "1fb0bd22f6f51ba8a1cb4a6a19b9b04c0ef62e833823a94b0df3929459196672",
+      "oldSchemaVersion": 18,
+      "inventoryCount": 32,
+      "placedCount": 9,
+      "allOwnedItemsUnchanged": true,
+      "allPlacementsUnchanged": true,
+      "playerUnchanged": true,
+      "revisionAdvancedOnce": true,
+      "reopenExact": true
+    },
+    {
+      "source": "/private/tmp/startup-valley-demo-expansion-capture/run-1/save/startup-valley.sqlite",
+      "sha256": "263476b3b866a259a570803767f5b12abe2ec433e516507a174b66d422ae617a",
+      "oldSchemaVersion": 18,
+      "inventoryCount": 35,
+      "placedCount": 8,
+      "allOwnedItemsUnchanged": true,
+      "allPlacementsUnchanged": true,
+      "playerUnchanged": true,
+      "revisionAdvancedOnce": true,
+      "reopenExact": true
+    }
+  ]
+}

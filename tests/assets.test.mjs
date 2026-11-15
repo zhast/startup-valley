@@ -47,6 +47,16 @@ test('unchanged legacy inventory passes without claiming visual approval', t => 
   assert.equal(result.reviewedArtifacts, 0);
 });
 
+test('a declared scale contract cannot be missing or redirected', t => {
+  const f = fixture(t);
+  f.options.contracts.scale_calibration = 'dev/art-catalogue/furniture-scale-contracts.json';
+  const missing = validateAssets(f.options);
+  assert.equal(missing.ok, false);
+  assert.match(missing.errors.join('\n'), /Furniture scale:/);
+  f.options.contracts.scale_calibration = 'unreviewed-scale.json';
+  assert.match(validateAssets(f.options).errors.join('\n'), /shared furniture contract/);
+});
+
 test('changed and unregistered PNGs are blocked even when they decode', t => {
   const f = fixture(t);
   f.write(art, newBytes);

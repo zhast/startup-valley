@@ -3,7 +3,7 @@ extends SceneTree
 ## hydrated from a fixture: every committed state comes from production JSONL.
 const MAIN := preload("res://world/main.tscn")
 const PLANT := "decor-broadleaf_planter"
-const CELL := Vector2i(7, 14)
+var cell := Vector2i(7, 14)
 var game: GameMain
 var checks := 0
 var failures: Array[String] = []
@@ -33,6 +33,7 @@ func run() -> void:
 	game = MAIN.instantiate() as GameMain
 	root.add_child(game)
 	await until(func() -> bool: return game._state_loaded and game._worker_ready, "Actual worker bootstrap reaches GameMain")
+	if str(game.worker_client.furnishing_state.get("layoutId", "")) == "starter-cottage-v1": cell = Vector2i(24, 11)
 	check(game._employees.is_empty(), "A disposable fresh company has no employees or paid work")
 	var expected_json := OS.get_environment("STARTUP_VALLEY_FURNISHING_EXPECTED")
 	var expected_value: Variant = JSON.parse_string(expected_json) if not expected_json.is_empty() else null
@@ -45,18 +46,21 @@ func run() -> void:
 		check(player.has("x") and player.has("y") and game.player.position == Vector2(float(player.get("x", -1)), float(player.get("y", -1))), "Restart keeps exact safe founder coordinates saved alongside the layout")
 	else:
 		var library: Dictionary = OfficeLayout._read_json(OfficeLayout.FURNISHING_CATALOG_PATH)
-		var starter_count: int = (library.get("starter_decor", []) as Array).size()
+		var starter_count: int = (library.get("decor_grants", {}).get("starter", []) as Array).size()
 		check(game.worker_client.furnishing_state.inventory.size() == 1 + starter_count, "Founder station and owned starter decorations are bootstrapped")
-		check(game.room.visible_prop_count() == 4, "Fresh companies place the phone booth and adjacent café pair")
-		check(game.room.prop_node("decor-phone_booth") != null, "Phone booth occupies the southwest lounge bay on a fresh company")
+		check(game.room.visible_prop_count() == 4, "Fresh companies place the founder desk, plant and adjacent café pair")
+		check(game.room.prop_node("decor-phone_booth") == null, "A fresh company has no luxury phone booth")
+		for item: Dictionary in game.worker_client.furnishing_state.inventory:
+			check(str(item.kind) not in ["phone_booth", "server_cabinet", "two_seat_sofa", "lounge_sofa"], "Premium furniture is earned later: " + str(item.kind))
 		check(game.room.prop_node("decor-cafe_table") != null and game.room.prop_node("decor-cafe_chair") != null, "Café table and chair render on first bootstrap")
-		check(OfficeLayout.vector(game.worker_client.furnishing_state.placements["decor-cafe_table"].grid) == Vector2i(5, 8) and OfficeLayout.vector(game.worker_client.furnishing_state.placements["decor-cafe_chair"].grid) == Vector2i(7, 8), "Starter café is arranged together by the future coffee station")
+		check(OfficeLayout.vector(game.worker_client.furnishing_state.placements["decor-cafe_table"].grid) == Vector2i(11, 16) and OfficeLayout.vector(game.worker_client.furnishing_state.placements["decor-cafe_chair"].grid) == Vector2i(13, 16), "Starter café is arranged together by the future coffee station")
 		for cafe_id: String in ["decor-cafe_table", "decor-cafe_chair"]:
 			var bounds: Rect2 = game.room.placement_by_id(cafe_id).world_visual_bounds
-			for employee_id: String in ["mira", "theo", "creative"]:
-				var arrival := Rect2(game.room.employee_spawn_position(employee_id) - Vector2(24, 72), CharacterArt.FRAME_SIZE)
-				check(not bounds.intersects(arrival), "Starter café art clears employee arrival: " + employee_id)
-		check(OfficeLayout.vector(game.worker_client.furnishing_state.placements["decor-phone_booth"].grid) != CELL, "First-run lounge never occupies the planter test bay")
+			# The unhired story visitor uses a deliberately clear presentation spot.
+			# Hired actor spawn cells can legitimately pass in front of furniture.
+			var arrival := Rect2(game.arrival_guest.position - Vector2(24, 72), CharacterArt.FRAME_SIZE)
+			check(game.arrival_guest.visible and not bounds.intersects(arrival), "Starter café art clears the actual Mina arrival visitor")
+		check(OfficeLayout.vector(game.worker_client.furnishing_state.placements[PLANT].grid) != cell, "First-run plant does not occupy the move-test bay")
 	await button_named("Continue" if game.company_panel._company_started() else "Start company", game.company_panel)
 	await key(KEY_ESCAPE)
 	if not game.company_panel.visible: await key(KEY_ESCAPE)
@@ -85,21 +89,26 @@ func run() -> void:
 
 func edit_room() -> void:
 	var renovate := game.office_renovation
-	var initial_revision := int(renovate._committed_state.revision)
 	var initial_inventory: Array = renovate._committed_state.inventory.duplicate(true)
 	var initial_position := game.player.position
 	await select_item(PLANT)
+	if renovate._committed_state.placements.has(PLANT):
+		var before_store := int(renovate._committed_state.revision)
+		await click(renovate._store_button.get_global_rect().get_center())
+		await saved(before_store + 1)
+	var initial_revision := int(renovate._committed_state.revision)
+	var history_before_place := renovate._history.size()
 	check(renovate._ownership.text.contains("1 in storage") and renovate._move_button.text.begins_with("Place"), "Stored item has explicit ownership and Place action")
 	await capture("stored-picker")
 	await click(renovate._move_button.get_global_rect().get_center())
 	check(renovate.placement_active, "Real Place button starts preview")
-	await motion(game.room.layout_model.world(CELL))
+	await motion(game.room.layout_model.world(cell))
 	check(bool(renovate.preview_result.get("valid", false)), "Decor preview has valid floor, wall, route and future-hire clearance")
 	await capture("valid-preview")
 	await commit_pointer(initial_revision + 1)
 	check(game.player.position == initial_position and game.player.route.is_empty(), "Placement clicks never leak into founder movement")
-	check(renovate._history.size() == 1, "Rapid duplicate input creates exactly one Undo step")
-	check(game.room.prop_node(PLANT) != null and not game.room.navigation.walkable(CELL), "Committed decoration adds actual art and navigation collision")
+	check(renovate._history.size() == history_before_place + 1, "Rapid duplicate input creates exactly one Undo step")
+	check(game.room.prop_node(PLANT) != null and not game.room.navigation.walkable(cell), "Committed decoration adds actual art and navigation collision")
 	await capture("saved-" + str(game.room.placement_by_id(PLANT).facing))
 	var seen: Array[String] = [str(game.room.placement_by_id(PLANT).facing)]
 	for _index: int in range(3):
@@ -125,15 +134,16 @@ func edit_room() -> void:
 	check(renovate._committed_state.placements == placed, "Keyboard Undo durably restores the exact previous layout")
 	await select_item("founder-workstation")
 	check(renovate._store_button.disabled, "Required founder station cannot be stored")
+	var moved_founder: Vector2i = game.room.placement_by_id("founder-workstation").grid + Vector2i.DOWN
 	await key(KEY_M)
 	# Moving north overlaps the taller planter art in the current catalog.
 	# Move south into clear floor, leaving room for the later lost-ack move.
 	await key(KEY_DOWN)
-	check(renovate.preview_grid == Vector2i(8, 18) and bool(renovate.preview_result.get("valid", false)), "Keyboard movement produces a valid non-default desk position: %s / %s" % [renovate.preview_grid, renovate.preview_result.get("errors", [])])
+	check(renovate.preview_grid == moved_founder and bool(renovate.preview_result.get("valid", false)), "Keyboard movement produces a valid non-default desk position: %s / %s" % [renovate.preview_grid, renovate.preview_result.get("errors", [])])
 	revision = int(renovate._committed_state.revision)
 	await key(KEY_ENTER)
 	await saved(revision + 1)
-	check(game.room.placement_by_id("founder-workstation").grid == Vector2i(8, 18), "Enter commits moved founder desk through the worker")
+	check(game.room.placement_by_id("founder-workstation").grid == moved_founder, "Enter commits moved founder desk through the worker")
 	var before_invalid := renovate._committed_state.duplicate(true)
 	await key(KEY_M)
 	await click(game.room.layout_model.world(Vector2i(0, 4)))
@@ -154,10 +164,10 @@ func lose_reply() -> void:
 	await select_item(PLANT)
 	await key(KEY_M)
 	await key(KEY_RIGHT)
-	check(renovate.preview_grid == CELL + Vector2i.RIGHT and bool(renovate.preview_result.get("valid", false)), "Lost-ack scenario moves an owned decoration to a valid new cell")
+	check(renovate.preview_grid == cell + Vector2i.RIGHT and bool(renovate.preview_result.get("valid", false)), "Lost-ack scenario moves an owned decoration to a valid new cell")
 	await key(KEY_ENTER)
 	await until(func() -> bool: return game.worker_client._restart_count == 1 and game._worker_ready and int(game.worker_client.furnishing_state.get("revision", -1)) == int(before.revision) + 1 and not renovate._save_pending, "Actual worker exit after commit recovers through automatic restart/bootstrap")
-	check(OfficeLayout.vector(renovate._committed_state.placements[PLANT].grid) == CELL + Vector2i.RIGHT, "Lost response never loses the already-committed placement")
+	check(OfficeLayout.vector(renovate._committed_state.placements[PLANT].grid) == cell + Vector2i.RIGHT, "Lost response never loses the already-committed placement")
 	check(renovate._pending_mutation.is_empty(), "Authoritative matching bootstrap resolves an interrupted pending transaction")
 	check(renovate._committed_state.inventory == before.inventory, "Recovery neither duplicates nor loses owned items")
 	check(renovate._history.size() == 1, "Recovered commit has one local Undo step")

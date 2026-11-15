@@ -77,10 +77,20 @@ test("release and office milestones progressively unlock the remaining library w
   await release(db); await release(db); await release(db);
   assert.equal(decor(db.furnishing.state()).length, 12, "six releases alone do not grant the later studio library");
   db.journey.hire("theo", db.clockState().day);
-  db.tycoon.expandOffice();
+  assert.equal((await request(db, "tycoon.expandOffice")).furnishingRewards.length, 15);
   assert.equal(decor(db.furnishing.state()).length, 27);
   assert.ok(db.furnishing.state().inventory.some((item) => item.kind === "phone_booth" && item.grant === "decor:established_studio:v1"));
   assert.equal(db.dailySpend(), 0);
+});
+
+test("an early-access release uses the same immediate furnishing reward projection", async (t) => {
+  const { db } = await company(t);
+  db.journey.hire("mira", 1);
+  db.tycoon.start("fitness", "course", ["founder", "mira"]);
+  db.endDay(db.clockState().day);
+  const result = await request(db, "tycoon.earlyAccess");
+  assert.equal(result.furnishingRewards.length, 3);
+  assert.equal(decor(result.furnishing).length, 6);
 });
 
 test("pre-existing premium inventory and item IDs are never revoked or granted twice", async (t) => {

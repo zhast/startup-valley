@@ -101,8 +101,10 @@ export async function dispatchOffline(request: ProtocolRequest, database: GameDa
         dailySpend: database.dailySpend(),
       };
     case "tycoon.expandOffice": {
+      const before = database.furnishing.state();
       const journey = database.tycoon.expandOffice();
-      return { journey, furnishing: database.furnishing.state(), dailySpend: database.dailySpend() };
+      const furnishing = database.furnishing.state();
+      return { journey, furnishing, furnishingRewards: furnishingRewards(database, before, furnishing), dailySpend: database.dailySpend() };
     }
     case "tycoon.takeLoan":
       return { journey: database.tycoon.takeLoan(), dailySpend: database.dailySpend() };
@@ -122,8 +124,12 @@ export async function dispatchOffline(request: ProtocolRequest, database: GameDa
       return { journey: database.tycoon.fixBugs(), dailySpend: database.dailySpend() };
     case "tycoon.crunch":
       return { journey: database.tycoon.crunch(), dailySpend: database.dailySpend() };
-    case "tycoon.earlyAccess":
-      return { journey: database.tycoon.earlyAccess(), dailySpend: database.dailySpend() };
+    case "tycoon.earlyAccess": {
+      const before = database.furnishing.state();
+      const journey = database.tycoon.earlyAccess();
+      const furnishing = database.furnishing.state();
+      return { journey, furnishing, furnishingRewards: furnishingRewards(database, before, furnishing), dailySpend: database.dailySpend() };
+    }
     case "tycoon.cancelBuild":
       return { journey: database.tycoon.cancelBuild(), dailySpend: database.dailySpend() };
     case "tycoon.slipDay":

@@ -6,6 +6,7 @@ import { spawnSync } from 'node:child_process';
 import { ROOT, sha256, localFile, styleReference, validateStyleProfile } from './lib/art-reference.mjs';
 export { ROOT, sha256, STYLE_PATH, localFile, styleReference, validateStyleProfile } from './lib/art-reference.mjs';
 import { parsePngHeader, nativePngFacts } from '../dev/tools/validate_art_catalogue.mjs';
+import { SCALE_CONTRACT, validateFurnitureScale } from './validate-furniture-scale.mjs';
 
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const HASH = /^[a-f0-9]{64}$/;
@@ -94,6 +95,10 @@ export function validateAssets({ root = ROOT, baseline, reviews, contracts, allo
   const verify = (ok, message) => { if (!ok) errors.push(message); };
   verify(baseline.schema_version === 1 && baseline.status === 'legacy_snapshot_not_visual_approval', 'baseline must explicitly remain an unreviewed legacy snapshot');
   verify(contracts.schema_version === 1, 'runtime contracts schema_version must be 1');
+  if (contracts.scale_calibration !== undefined) {
+    verify(contracts.scale_calibration === SCALE_CONTRACT, 'scale calibration must use the shared furniture contract');
+    errors.push(...validateFurnitureScale({ root }).errors.map(error => `Furniture scale: ${error}`));
+  }
   verify(contracts.camera_profile?.id === 'office-square-grid-v1' && same(contracts.camera_profile.tile_px, [32, 32]), 'runtime camera profile must retain the 32×32 square grid');
   for (const review of reviews) {
     const result = validateReview(review, root);

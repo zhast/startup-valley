@@ -1,9 +1,12 @@
 # Furniture scale and registration audit
 
-**Result: corrections required; visual approval is withheld.** The desk,
+**Initial finding: corrections required.** The desk,
 office chair, café seating and phone booth do not currently read as one
 consistently proportioned set. All render at unit scale. The problems are in
 their authored pixels and ground registration, not a Godot zoom setting.
+The original evidence below is retained. The standalone café pair and booth
+have since received the bounded repair described at the end; this does not
+approve the separate workstation-chair family or outdoor scenery.
 
 ![Native comparison](web/assets/furniture-scale-audit/native-lineup.png)
 
@@ -152,3 +155,85 @@ only declare south. No runtime art, catalogue, save state, style-profile hash
 or map approval was changed by this audit. Starter/courtyard map approvals
 remain pending the furniture correction and fresh scene review. The separate
 final three-run demo acceptance is still required.
+
+## Standalone repair — November 15, 2026
+
+![Same-scale repair](web/assets/furniture-scale-v1/same-scale-comparison.png)
+
+The upper row is the original registration; the lower row uses the corrected
+standalone pieces at the **same native scale and ground plane**. Existing
+characters and workstation are unchanged in this comparison. The café chair
+and table are simple wood/cream starter objects. The call nook is a modest
+wooden later reward, rather than free starter equipment.
+
+The first generated imports were still too tall above their actual contact
+planes. The initial total-height targets were therefore revised after native
+inspection: chair **32×52**, table **56×48**, booth **56×112** painted pixels.
+This is deliberate semantic calibration, not a claim that the original rough
+32×64/56×60/64×124 targets were met. A total PNG height combines vertical rise,
+projected depth and ornament; it is not an anthropometric measurement.
+
+| Final measured registration | Result |
+| --- | --- |
+| Chair | Ground pivot (48,128) in a96×160 canvas; painted bounds[-16,-36,32,52]. Seat about30px wide,20px above corresponding rear/front foot planes; back44px above its rear feet. |
+| Table | Same canvas/pivot; painted bounds[-28,-32,56,48]. Tabletop32px above its projected floor plane, leaving12px over the chair seat. Its top overhangs a one-cell base. |
+| Call nook | Pivot(80,160) in128×192; painted bounds[-44,-96,56,112]. Clear opening40×86px at the front floor plane; structural front rise94px. Occupies two cells[-1,0],[0,0], with both front cells reserved as clearance. |
+
+The chair's visible cushion includes its front thickness; its projected top
+is shallower than the earlier speculative18–22px target. The final contract
+records actual surface/contact landmarks, with separate checks for rise,
+width, ground registration and collision. It does not invent pixel geometry
+to fit the original estimate.
+
+![Actual starter café](web/assets/furniture-scale-v1/starter-table-front.png)
+![Actual call nook crossing](web/assets/furniture-scale-v1/booth-front.png)
+
+These are real Godot component renders, not full-demo acceptance. The still
+ornate exterior and older workstation chair visible in them are outside this
+repair's approval. The furniture route fixture traverses behind and in front
+of the café pair and booth through real `PlayerAvatar` navigation. The
+[runtime report](web/assets/furniture-scale-v1/room-report.json) records21
+passing checks; the [same-scale report](web/assets/furniture-scale-v1/calibration-report.json)
+records33. The [doorway view](web/assets/furniture-scale-v1/doorway-calibration.png)
+puts Founder at the booth's painted front-floor plane solely for measurement;
+the booth remains a noninteractive decoration.
+
+The three OpenAI image-model outputs, exact prompts and generation IDs are
+retained in `game/assets/source/furniture-scale-v1/`. The deterministic
+`game/tools/import_furniture_scale.gd` importer crops explicit source bounds,
+resamples with nearest neighbor, bins alpha at0.5, and preserves sampled RGB.
+Old runtime images and canonical material references remain intact. The
+[review manifest](../dev/art-catalogue/runtime-reviews/furniture-scale-v1.json)
+binds the new PNGs, import recipe, semantic contract and inspected evidence.
+
+`scripts/validate-furniture-scale.mjs` checks exact native pixels/profile
+bindings, canvas/pivot, no scale/rotation workaround, footprint contacts and
+declared seat/table/door heights. Four regression tests reject drift. This
+cannot prove beauty or that a human labeled the pixels honestly; actual
+same-scene inspection remains required for every changed family.
+
+Registration revision1 preserves old item IDs and every valid arrangement.
+If a corrected object's expanded footprint would cover an existing founder,
+only that object is placed in owned storage; other furniture stays put.
+Layout revision advances once so stale edits cannot overwrite the result.
+Tests cover exact reopen, stale commands, old receipt replay and interrupted
+transaction rollback. Two copied **real schema18 compatibility saves** kept
+all32/35 owned items, all9/8 placements and exact player coordinates:
+[migration evidence](web/assets/furniture-scale-v1/legacy-save-migration.json).
+
+The new-company library is three modest pieces. First release adds a small
+bookshelf, visitor chair and coat stand; three releases or two hires add six
+useful workspace items. Six releases plus office level2 unlock the remaining
+library, including the call nook. Existing owners retain everything. Rewards
+stay in storage and are returned immediately with release/hire/expansion
+responses, rather than being automatically crammed into the room.
+
+The adapted production-worker renovation journey also passes in **headless
+Godot**: edit, full restart, lost committed acknowledgement and final restart.
+All9 mutations are durable, source hashes stayed identical across the run,
+and every worker/relay exited. The
+[retained summary](web/assets/furniture-scale-v1/headless-worker-ui.json)
+records its fingerprint and exact command. This run found the real pre-hire
+`arrival-mina`/`mira` transport identity mismatch, now fixed at the client
+boundary without removing Mina's collision protection. Subsequent verification
+uses headless Godot only; no further native windows are needed.

@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "id": "furniture-scale-v1",
+  "status": "approved",
+  "reviewer": "Codex standalone-furniture reviewer; actual Godot calibration and movement evidence",
+  "reviewed_at": "2026-11-15",
+  "camera_profile": "office-square-grid-v1",
+  "style_profile": {
+    "id": "startup-valley-cozy-pixel-v1",
+    "path": "dev/art-catalogue/style-profile.json",
+    "sha256": "c7c4834623a482bb976abf27bcc976f72d5b83df59a66bb93af00a49d1589fe7",
+    "application": "generation_reference",
+    "reference_board": {
+      "path": "dev/art-catalogue/style-reference-board.png",
+      "sha256": "d91ba07ace9aef1d7e82c0daf55621afb57636d08376feae5ef8900623ba8283",
+      "note": "Code-arranged existing reference pixels; characters at3×, phone/floor at2×, window at1×, paper/desk at3×. Zoom is for inspection, not a change in runtime scale."
+    },
+    "references": [
+      {
+        "id": "founder-idle",
+        "path": "dev/art-catalogue/style-references/founder-idle.png",
+        "sha256": "d01a61aac781bea83902877ab96f45087bfb9ac8d0e3d6801fecf642cc1aa756"
+      },
+      {
+        "id": "mina-idle",
+        "path": "dev/art-catalogue/style-references/mina-idle.png",
+        "sha256": "3a8ad37498e9945a4bbeca8567db757b97b28f496c6e9294d11a707d8bd7e1df"
+      },
+      {
+        "id": "phone-booth",
+        "path": "dev/art-catalogue/style-references/phone-booth.png",
+        "sha256": "13f132874da276515063855f045ce62a02324820e18b9af8a3e9cc1be4af4fd8"
+      },
+      {
+        "id": "desk-front",
+        "path": "dev/art-catalogue/style-references/desk-front.png",
+        "sha256": "adb3458aa63d799af6f9a07723523344d63b82772e6d77f03e8da96137c02f21"
+      },
+      {
+        "id": "desk-rear",
+        "path": "dev/art-catalogue/style-references/desk-rear.png",
+        "sha256": "d5e167d93d424fcfddbb00f1cb85217aa69b3de4ee5f4b67036c0830754d29c4"
+      },
+      {
+        "id": "oak-floor",
+        "path": "dev/art-catalogue/style-references/oak-floor.png",
+        "sha256": "851eadbadcfcaf5eaeb4f30a5679d797e42409ac4ffba95d0c71fc591473db66"
+      },
+      {
+        "id": "office-window",
+        "path": "dev/art-catalogue/style-references/office-window.png",
+        "sha256": "cca8896dac6640c452ba2c7148a6f551be4e2d9c2ac793f7439e3501d8863571"
+      },
+      {
+        "id": "paper-frame",
+        "path": "dev/art-catalogue/style-references/paper-frame.png",
+        "sha256": "3a07014154ae2d624f52b563db4befaa1b3f22ed82bc440213d69251caa8111b"
+      }
+    ]
+  },
+  "provenance": {
+    "kind": "openai_imagegen",
+    "note": "Three semantic redraws use the canonical material board and same-scale Godot actor/desk comparison. Original outputs and exact prompts retained. Final dimensions were refined against actual seat, tabletop and opening landmarks, rather than the initial rough total-height targets.",
+    "sources": [
+      {
+        "path": "game/assets/source/furniture-scale-v1/cafe-chair-generated.png",
+        "sha256": "9ba2743e0eb8fccd935203971cdd704e4318bbea1da831ecaca7a34e4e6fd5f2"
+      },
+      {
+        "path": "game/assets/source/furniture-scale-v1/cafe-chair-generation.json",
+        "sha256": "45735dbf482ca75790aedad22b64371e53812070a82905fbbd43ed19c6c9c30d"
+      },
+      {
+        "path": "game/assets/source/furniture-scale-v1/cafe-table-generated.png",
+        "sha256": "3cf4e16f71345c7f01460ab83a82d62e8e09fd7bd834d06f63b6a43336189b9b"
+      },
+      {
+        "path": "game/assets/source/furniture-scale-v1/cafe-table-generation.json",
+        "sha256": "0807d0bfe295dfab84d0be4fa5dc6759eedce41dbaa97f8ba204b65fbeb1c0fe"
+      },
+      {
+        "path": "game/assets/source/furniture-scale-v1/phone-booth-generated.png",
+        "sha256": "1d906029d728c7cde8f5dd90bb9a1e3d252fb2bf16d693ffff804baf6e210c32"
+      },
+      {
+        "path": "game/assets/source/furniture-scale-v1/phone-booth-generation.json",
+        "sha256": "5e7415402866218fa8636011345a1517096c4750116be2271058b78bd82a0cfe"
+      }
+    ],
+    "prompt": {
+      "path": "game/assets/source/furniture-scale-v1/prompts.txt",
+      "sha256": "280f50bd4f05fd9ce90ee822088ca03e8d47d73036cb78c97a0355173adea694"
+    },
+    "generation_id": "exec-b560b865-23e3-40d0-8824-20df806e3735; exec-c94ba129-c6a7-4b08-affd-c479639d1745; exec-f8d909d3-a28a-46d9-9d17-758daf5f05fb",
+    "transform": "game/tools/import_furniture_scale.gd crops explicit generated-source rectangles, resamples with nearest neighbor to32x52/56x48/56x112, thresholds alpha at0.5, keeps sampled RGB, and registers explicit canvases/pivots. Source imports are copied byte-for-byte into cozy-furniture-v1 runtime files."
+  },
+  "artifacts": [
+    {
+      "path": "game/assets/runtime/office/cozy-furniture-v1/cafe-chair-south.png",
+      "sha256": "7728f60d8bd26941fe7ac06ffe8600e65855363dea5812f1ad78b08732d93d76"
+    },
+    {
+      "path": "game/assets/runtime/office/cozy-furniture-v1/cafe-table-south.png",
+      "sha256": "75216f94590acfa4110ceb52d73200518e0a9fecf23650ad216e31b5245c25c5"
+    },
+    {
+      "path": "game/assets/runtime/office/cozy-furniture-v1/phone-booth-south.png",
+      "sha256": "8ce70fd1c112d367efa6ab8c7e4ff9539afc768d98ce2b0e1d5e72d397a70618"
+    }
+  ],
+  "bindings": [
+    {
+      "path": "dev/art-catalogue/furniture-scale-contracts.json",
+      "sha256": "8314673968491641ae65647e062cb329a59e290a42d97e484f711441bf55606c"
+    },
+    {
+      "path": "game/tools/import_furniture_scale.gd",
+      "sha256": "39f7cb7c2917727157c265c455f160356f3e44b0bd910c987d1cb742bf75a621"
+    },
+    {
+      "path": "game/assets/source/furniture-scale-v1/import-record.json",
+      "sha256": "5c308fbdb8ba48f299c0548a1cf226a9a2ec2c77afd416d414ae73aaa7656ab8"
+    },
+    {
+      "path": "game/tests/test_cozy_furniture.gd",
+      "sha256": "f4796dedcac34b185c681dcd38a81ccdbedab94da65b679a78454048d6b75fdc"
+    },
+    {
+      "path": "scripts/validate-furniture-scale.mjs",
+      "sha256": "3addaff971dfd875d9a0c131120d26e1f2289373758229e5fd5362d5739977f7"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "docs/web/assets/furniture-scale-v1/same-scale-comparison.png",
+      "sha256": "999b7b95152195bf2856b932ab1bb241b3c877898cea45053c0e23a80df175e3",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/assets/furniture-scale-v1/doorway-calibration.png",
+      "sha256": "5c1ef01c07d27a885705998edf494e600db0a52b8d71c579ef2eb4d5ebc923b7",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/assets/furniture-scale-v1/starter-chair-behind.png",
+      "sha256": "d8b7a44b6abc1f98020ca585f7e353f2c4dc7656c2739494fb4a15c4f8d2fffb",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/assets/furniture-scale-v1/starter-table-front.png",
+      "sha256": "d885968f055e223b802df60fcab4744b870b914257775f4adc66cb0d053d9af4",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/assets/furniture-scale-v1/booth-behind.png",
+      "sha256": "c5fe7a274eae242cf1309a544725e806a2f6d113d58eb7de6add3978221bc461",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/assets/furniture-scale-v1/booth-front.png",
+      "sha256": "e926e16401f17a83904e96ca00e05d3e94888e8ec51ec4a651879ad900c09a69",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/assets/furniture-scale-v1/room-report.json",
+      "sha256": "09f7fea37393a1bc1cdc85f6031e676755cf6c199f48db8023944470464eb572",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/furniture-scale-v1/calibration-report.json",
+      "sha256": "0d690a3fda88d76f3f446370a2c6aeb3217056428c9bd01ec52854294ac8063f",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/furniture-scale-v1/legacy-save-migration.json",
+      "sha256": "3c24749c3ea9253b9109e26737d73a63bd0576b8308f538e531cf20550e6cf4a",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/furniture-scale-v1/headless-worker-ui.json",
+      "sha256": "c9abb6cd247c1b1510443bc2e0348ffade98b238c4838b76b9dc2407692ae182",
+      "kind": "test_report"
+    }
+  ],
+  "checks": {
+    "style": {
+      "result": "passed",
+      "note": "Simple warm wood and cream cushions match the modest starter brief; call nook is earned later. Existing canonical material reference images remain unchanged."
+    },
+    "camera": {
+      "result": "passed",
+      "note": "Screen-aligned front edges and vertical posts; no rotated or mirrored pseudo-facing. Only independently generated south profiles are registered."
+    },
+    "scale": {
+      "result": "passed",
+      "note": "Same67-68px standing characters and native desk compare directly. Chair seat rises20px, tabletop32px, booth opening40x86px. Total ink sizes32x52,56x48,56x112 include floor projection."
+    },
+    "anchor": {
+      "result": "passed",
+      "note": "All front ground contacts end at+15px, within their declared occupied cells. Pivots and actual painted bounds are checked, avoiding old+56px registration drift."
+    },
+    "layering": {
+      "result": "passed",
+      "note": "Actual TownRoom rendering and PlayerAvatar routes cross behind/in front of the chair, table and booth with shared ground-depth order. No actors are baked into art."
+    },
+    "animation": {
+      "result": "not_applicable",
+      "note": "These are static noninteractive decorative pieces. They add no animation or seated behavior."
+    },
+    "placement": {
+      "result": "passed",
+      "note": "One-cell café bases, two-cell booth, front clearances and wall/route validation pass. Versioned worker migration preserves valid old anchors and stores only a corrected item if its new footprint blocks an existing founder."
+    },
+    "readability": {
+      "result": "passed",
+      "note": "Native room and lineup images show a small wooden chair, round café table with restrained mug, and plain timber call nook; no oversized wardrobe or premium pod silhouette."
+    }
+  },
+  "scope": "Three south-facing standalone pieces only. No approval of workstation chairs, exterior scenery, other facings, or full demo acceptance."
+}

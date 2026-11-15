@@ -1,0 +1,257 @@
+{
+  "cafe_chair": {
+    "display_name": "Cafe chair",
+    "facings": [
+      "south"
+    ],
+    "facing_profiles": {
+      "south": {
+        "status": "runtime_ready",
+        "review": {
+          "art": true,
+          "geometry": true
+        },
+        "source_review": "Phase 1 PASS runtime south bind 2026-09-16",
+        "preview_art": "res://assets/runtime/office/cafe-chair-south.png",
+        "visual_bounds": [
+          -19,
+          -20,
+          38,
+          76
+        ],
+        "render_layers": [
+          {
+            "art": "res://assets/runtime/office/cafe-chair-south.png",
+            "name": "CafeChairBody",
+            "offset": [
+              0,
+              -48
+            ],
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "z_offset": 0,
+            "content_bounds": [
+              77,
+              140,
+              38,
+              76
+            ]
+          }
+        ],
+        "profile_kind": "decorative",
+        "occupied": [
+          [
+            0,
+            0
+          ]
+        ],
+        "clearance": [
+          [
+            0,
+            1
+          ]
+        ],
+        "anchor_offset": [
+          0,
+          0
+        ],
+        "hit_bounds": [
+          -19,
+          -20,
+          38,
+          76
+        ],
+        "ambient_overlays": [],
+        "standing_viewpoints": [
+          {
+            "cell": [
+              0,
+              1
+            ],
+            "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+          }
+        ]
+      }
+    },
+    "interaction_kind": "none"
+  },
+  "cafe_table": {
+    "display_name": "Cafe table",
+    "facings": [
+      "south"
+    ],
+    "facing_profiles": {
+      "south": {
+        "status": "runtime_ready",
+        "review": {
+          "art": true,
+          "geometry": true
+        },
+        "source_review": "Phase 1 PASS runtime south bind 2026-09-16",
+        "preview_art": "res://assets/runtime/office/cafe-table-south.png",
+        "visual_bounds": [
+          -30,
+          -16,
+          60,
+          72
+        ],
+        "render_layers": [
+          {
+            "art": "res://assets/runtime/office/cafe-table-south.png",
+            "name": "CafeTableBody",
+            "offset": [
+              0,
+              -48
+            ],
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "z_offset": 0,
+            "content_bounds": [
+              66,
+              144,
+              60,
+              72
+            ]
+          }
+        ],
+        "profile_kind": "decorative",
+        "occupied": [
+          [
+            0,
+            0
+          ]
+        ],
+        "clearance": [
+          [
+            0,
+            1
+          ]
+        ],
+        "anchor_offset": [
+          0,
+          0
+        ],
+        "hit_bounds": [
+          -30,
+          -16,
+          60,
+          72
+        ],
+        "ambient_overlays": [],
+        "standing_viewpoints": [
+          {
+            "cell": [
+              0,
+              1
+            ],
+            "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+          }
+        ]
+      }
+    },
+    "interaction_kind": "none"
+  },
+  "phone_booth": {
+    "display_name": "Phone booth",
+    "facings": [
+      "south"
+    ],
+    "facing_profiles": {
+      "south": {
+        "status": "runtime_ready",
+        "review": {
+          "art": true,
+          "geometry": true
+        },
+        "source_review": "Phase 1 PASS runtime south bind 2026-09-16",
+        "preview_art": "res://assets/runtime/office/phone-booth-south.png",
+        "visual_bounds": [
+          -56,
+          -119,
+          111,
+          175
+        ],
+        "render_layers": [
+          {
+            "art": "res://assets/runtime/office/phone-booth-south.png",
+            "name": "PhoneBoothBody",
+            "offset": [
+              0,
+              -48
+            ],
+            "region": [
+              0,
+              0,
+              192,
+              224
+            ],
+            "z_offset": 0,
+            "content_bounds": [
+              40,
+              41,
+              111,
+              175
+            ]
+          }
+        ],
+        "profile_kind": "decorative",
+        "occupied": [
+          [
+            0,
+            0
+          ]
+        ],
+        "clearance": [
+          [
+            0,
+            1
+          ]
+        ],
+        "anchor_offset": [
+          0,
+          0
+        ],
+        "hit_bounds": [
+          -56,
+          -119,
+          111,
+          175
+        ],
+        "ambient_overlays": [],
+        "standing_viewpoints": [
+          {
+            "cell": [
+              0,
+              1
+            ],
+            "visual_bounds": [
+              -24,
+              -76,
+              48,
+              84
+            ]
+          }
+        ]
+      }
+    },
+    "interaction_kind": "none"
+  }
+}

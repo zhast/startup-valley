@@ -1,0 +1,238 @@
+{
+	"cafe_chair": {
+		"ambient_overlays": [],
+		"anchor_offset": [
+			0,
+			0
+		],
+		"clearance": [
+			[
+				0,
+				1
+			]
+		],
+		"hit_bounds": [
+			-16,
+			-36,
+			32,
+			52
+		],
+		"occupied": [
+			[
+				0,
+				0
+			]
+		],
+		"preview_art": "res://assets/source/furniture-scale-v1/cafe-chair-native.png",
+		"profile_kind": "decorative",
+		"render_layers": [
+			{
+				"art": "res://assets/source/furniture-scale-v1/cafe-chair-native.png",
+				"content_bounds": [
+					32,
+					92,
+					32,
+					52
+				],
+				"name": "CafeChairBody",
+				"offset": [
+					0,
+					-48
+				],
+				"region": [
+					0,
+					0,
+					96,
+					160
+				],
+				"z_offset": 0
+			}
+		],
+		"review": {
+			"art": false,
+			"geometry": false
+		},
+		"source_review": "furniture-scale-v1 candidate; not admitted",
+		"standing_viewpoints": [
+			{
+				"cell": [
+					0,
+					1
+				],
+				"visual_bounds": [
+					-24,
+					-76,
+					48,
+					84
+				]
+			}
+		],
+		"status": "calibration_candidate",
+		"visual_bounds": [
+			-16,
+			-36,
+			32,
+			52
+		]
+	},
+	"cafe_table": {
+		"ambient_overlays": [],
+		"anchor_offset": [
+			0,
+			0
+		],
+		"clearance": [
+			[
+				0,
+				1
+			]
+		],
+		"hit_bounds": [
+			-28,
+			-32,
+			56,
+			48
+		],
+		"occupied": [
+			[
+				0,
+				0
+			]
+		],
+		"preview_art": "res://assets/source/furniture-scale-v1/cafe-table-native.png",
+		"profile_kind": "decorative",
+		"render_layers": [
+			{
+				"art": "res://assets/source/furniture-scale-v1/cafe-table-native.png",
+				"content_bounds": [
+					20,
+					96,
+					56,
+					48
+				],
+				"name": "CafeTableBody",
+				"offset": [
+					0,
+					-48
+				],
+				"region": [
+					0,
+					0,
+					96,
+					160
+				],
+				"z_offset": 0
+			}
+		],
+		"review": {
+			"art": false,
+			"geometry": false
+		},
+		"source_review": "furniture-scale-v1 candidate; not admitted",
+		"standing_viewpoints": [
+			{
+				"cell": [
+					0,
+					1
+				],
+				"visual_bounds": [
+					-24,
+					-76,
+					48,
+					84
+				]
+			}
+		],
+		"status": "calibration_candidate",
+		"visual_bounds": [
+			-28,
+			-32,
+			56,
+			48
+		]
+	},
+	"phone_booth": {
+		"ambient_overlays": [],
+		"anchor_offset": [
+			0,
+			0
+		],
+		"clearance": [
+			[
+				-1,
+				1
+			],
+			[
+				0,
+				1
+			]
+		],
+		"hit_bounds": [
+			-44,
+			-96,
+			56,
+			112
+		],
+		"occupied": [
+			[
+				-1,
+				0
+			],
+			[
+				0,
+				0
+			]
+		],
+		"preview_art": "res://assets/source/furniture-scale-v1/phone-booth-native.png",
+		"profile_kind": "decorative",
+		"render_layers": [
+			{
+				"art": "res://assets/source/furniture-scale-v1/phone-booth-native.png",
+				"content_bounds": [
+					36,
+					64,
+					56,
+					112
+				],
+				"name": "PhoneBoothBody",
+				"offset": [
+					-16,
+					-64
+				],
+				"region": [
+					0,
+					0,
+					128,
+					192
+				],
+				"z_offset": 0
+			}
+		],
+		"review": {
+			"art": false,
+			"geometry": false
+		},
+		"source_review": "furniture-scale-v1 candidate; not admitted",
+		"standing_viewpoints": [
+			{
+				"cell": [
+					0,
+					1
+				],
+				"visual_bounds": [
+					-24,
+					-76,
+					48,
+					84
+				]
+			}
+		],
+		"status": "calibration_candidate",
+		"visual_bounds": [
+			-44,
+			-96,
+			56,
+			112
+		]
+	}
+}

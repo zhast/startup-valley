@@ -310,6 +310,39 @@ export class FurnishingStore {
   }
   /** Caller may use this inside the hiring transaction. */
   sync(): void {
+    const upgradeRegistration = Number(this.db.prepare("SELECT revision FROM furnishing_geometry_state WHERE id=1").get()!.revision) < 1;
+    this.syncCurrent(upgradeRegistration);
+    if (upgradeRegistration) this.db.prepare("UPDATE furnishing_geometry_state SET revision=1 WHERE id=1").run();
+  }
+  /** Only the three re-registered decorative families may move during this
+   * compatibility pass. Never reset a healthy player-authored workstation. */
+  private upgradeDecorRegistration(previous: FurniturePlacements, inventory: FurnitureItem[]): { placements: FurniturePlacements; notice: string } {
+    const corrected = new Set(["cafe_chair", "cafe_table", "phone_booth"]);
+    const affected = inventory.filter((item) => corrected.has(item.kind) && previous[item.id]);
+    if (!affected.length) return { placements: previous, notice: "" };
+    const affectedIds = new Set(affected.map((item) => item.id));
+    let placements = Object.fromEntries(Object.entries(previous).filter(([id]) => !affectedIds.has(id)));
+    this.geometry.validate(placements, inventory);
+    const actors: FurnitureActor[] = [];
+    if (this.db.prepare("SELECT location FROM story_state WHERE id=1").get()?.location !== "courtyard") {
+      const player = JSON.parse(String(this.db.prepare("SELECT player_json FROM company_state WHERE id=1").get()!.player_json));
+      if (Number.isFinite(player.x) && Number.isFinite(player.y)) {
+        const founder: FurnitureActor = { id: "founder", grid: [Math.floor(player.x / 32), Math.floor(player.y / 32)] };
+        // Do not conflate an unrelated old invalid autosave with this prop-only
+        // migration. A valid old founder position must not gain a new obstacle.
+        try { this.geometry.validate(placements, inventory, [founder]); actors.push(founder); } catch { /* old autosave recovery is separate */ }
+      }
+    }
+    try { this.geometry.validate(previous, inventory, actors); return { placements: previous, notice: "" }; } catch { /* retry only corrected items */ }
+    const stored: string[] = [];
+    for (const item of affected.sort((a, b) => a.id.localeCompare(b.id))) {
+      const candidate = { ...placements, [item.id]: previous[item.id]! };
+      try { this.geometry.validate(candidate, inventory, actors); placements = candidate; }
+      catch { stored.push(this.geometry.catalog[item.kind]?.display_name ?? item.kind); }
+    }
+    return { placements, notice: stored.length ? `Safely stored after a furniture size correction: ${stored.join(", ")}. Your other furniture stayed in place.` : "" };
+  }
+  private syncCurrent(upgradeRegistration: boolean): void {
     const hired = this.db.prepare("SELECT id FROM employees WHERE employment_status='hired'").all().map((row) => String(row.id));
     const officeLevel = this.officeLevel();
     // Resolve geometry from durable state on every transaction, including after
@@ -416,6 +449,11 @@ export class FurnishingStore {
       if (!placements || typeof placements !== "object" || Array.isArray(placements)) throw new Error("Invalid layout map");
       // Newly granted stations are inserted only into their reserved cells.
       placements = { ...addedStations, ...placements };
+      if (upgradeRegistration) {
+        const upgraded = this.upgradeDecorRegistration(placements, inventory);
+        placements = upgraded.placements;
+        if (upgraded.notice) recovery = upgraded.notice;
+      }
       this.geometry.validate(placements, inventory);
     } catch {
       recovered = true;
@@ -423,15 +461,21 @@ export class FurnishingStore {
         const saved = JSON.parse(String(row.last_valid_json)) as { version: number; placements: FurniturePlacements };
         if (saved.version !== 1 || !saved.placements || typeof saved.placements !== "object" || Array.isArray(saved.placements)) throw new Error("Unsupported snapshot version");
         placements = { ...addedStations, ...saved.placements };
+        let registrationNotice = "";
+        if (upgradeRegistration) {
+          const upgraded = this.upgradeDecorRegistration(placements, inventory);
+          placements = upgraded.placements;
+          registrationNotice = upgraded.notice;
+        }
         this.geometry.validate(placements, inventory);
-        recovery = "The saved room was invalid. Your last valid furniture layout has been restored.";
+        recovery = "The saved room was invalid. Your last valid furniture layout has been restored." + (registrationNotice ? ` ${registrationNotice}` : "");
       } catch {
         placements = this.defaults(inventory);
         this.geometry.validate(placements, inventory);
         recovery = "The saved room could not be restored. Required stations are safely reset; your decorations are in storage.";
       }
     }
-    if (grants || recovered) {
+    if (grants || recovered || upgradeRegistration) {
       this.db.prepare("UPDATE furnishing_state SET version=1,revision=revision+1,placements_json=?,last_valid_json=?,recovery=? WHERE id=1").run(JSON.stringify(placements), JSON.stringify({ version: 1, placements }), recovery);
       this.syncEmployeeDesks(placements, inventory);
     }

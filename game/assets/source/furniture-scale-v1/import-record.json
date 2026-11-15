@@ -1,0 +1,166 @@
+{
+	"cafe_chair": {
+		"output": "res://assets/source/furniture-scale-v1/cafe-chair-native.png",
+		"output_sha256": "7728f60d8bd26941fe7ac06ffe8600e65855363dea5812f1ad78b08732d93d76",
+		"painted_bounds": [
+			-16,
+			-36,
+			32,
+			52
+		],
+		"sampling": "Godot Image.INTERPOLATE_NEAREST; alpha>=0.5 opaque; RGB unchanged",
+		"source": "res://assets/source/furniture-scale-v1/cafe-chair-generated.png",
+		"source_sha256": "9ba2743e0eb8fccd935203971cdd704e4318bbea1da831ecaca7a34e4e6fd5f2",
+		"status": "candidate_not_admitted",
+		"transform": {
+			"canvas": [
+				96,
+				160
+			],
+			"clearance": [
+				[
+					0,
+					1
+				]
+			],
+			"crop": [
+				521,
+				738,
+				212,
+				367
+			],
+			"layer": "CafeChairBody",
+			"native_size": [
+				32,
+				52
+			],
+			"occupied": [
+				[
+					0,
+					0
+				]
+			],
+			"pivot": [
+				48,
+				128
+			],
+			"source": "cafe-chair-generated.png",
+			"top_left": [
+				32,
+				92
+			]
+		}
+	},
+	"cafe_table": {
+		"output": "res://assets/source/furniture-scale-v1/cafe-table-native.png",
+		"output_sha256": "75216f94590acfa4110ceb52d73200518e0a9fecf23650ad216e31b5245c25c5",
+		"painted_bounds": [
+			-28,
+			-32,
+			56,
+			48
+		],
+		"sampling": "Godot Image.INTERPOLATE_NEAREST; alpha>=0.5 opaque; RGB unchanged",
+		"source": "res://assets/source/furniture-scale-v1/cafe-table-generated.png",
+		"source_sha256": "3cf4e16f71345c7f01460ab83a82d62e8e09fd7bd834d06f63b6a43336189b9b",
+		"status": "candidate_not_admitted",
+		"transform": {
+			"canvas": [
+				96,
+				160
+			],
+			"clearance": [
+				[
+					0,
+					1
+				]
+			],
+			"crop": [
+				412,
+				598,
+				430,
+				461
+			],
+			"layer": "CafeTableBody",
+			"native_size": [
+				56,
+				48
+			],
+			"occupied": [
+				[
+					0,
+					0
+				]
+			],
+			"pivot": [
+				48,
+				128
+			],
+			"source": "cafe-table-generated.png",
+			"top_left": [
+				20,
+				96
+			]
+		}
+	},
+	"phone_booth": {
+		"output": "res://assets/source/furniture-scale-v1/phone-booth-native.png",
+		"output_sha256": "8ce70fd1c112d367efa6ab8c7e4ff9539afc768d98ce2b0e1d5e72d397a70618",
+		"painted_bounds": [
+			-44,
+			-96,
+			56,
+			112
+		],
+		"sampling": "Godot Image.INTERPOLATE_NEAREST; alpha>=0.5 opaque; RGB unchanged",
+		"source": "res://assets/source/furniture-scale-v1/phone-booth-generated.png",
+		"source_sha256": "1d906029d728c7cde8f5dd90bb9a1e3d252fb2bf16d693ffff804baf6e210c32",
+		"status": "candidate_not_admitted",
+		"transform": {
+			"canvas": [
+				128,
+				192
+			],
+			"clearance": [
+				[
+					-1,
+					1
+				],
+				[
+					0,
+					1
+				]
+			],
+			"crop": [
+				324,
+				151,
+				606,
+				1049
+			],
+			"layer": "PhoneBoothBody",
+			"native_size": [
+				56,
+				112
+			],
+			"occupied": [
+				[
+					-1,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"pivot": [
+				80,
+				160
+			],
+			"source": "phone-booth-generated.png",
+			"top_left": [
+				36,
+				64
+			]
+		}
+	}
+}

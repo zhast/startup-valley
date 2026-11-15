@@ -1,0 +1,23 @@
+{
+  "kind": "openai_imagegen",
+  "generation_id": "exec-f8d909d3-a28a-46d9-9d17-758daf5f05fb",
+  "original_output": "/Users/openai/.codex/generated_images/01a1e15d-c0d6-7322-ba31-96e8c40b9cb5/exec-f8d909d3-a28a-46d9-9d17-758daf5f05fb.png",
+  "retained_output": "game/assets/source/furniture-scale-v1/phone-booth-generated.png",
+  "sha256": "1d906029d728c7cde8f5dd90bb9a1e3d252fb2bf16d693ffff804baf6e210c32",
+  "prompt": "game/assets/source/furniture-scale-v1/phone-booth-tool-prompt.txt",
+  "status": "candidate_not_admitted",
+  "references": [
+    {
+      "path": "game/assets/runtime/office/phone-booth-south.png",
+      "sha256": "13f132874da276515063855f045ce62a02324820e18b9af8a3e9cc1be4af4fd8"
+    },
+    {
+      "path": "dev/art-catalogue/style-reference-board.png",
+      "sha256": "d91ba07ace9aef1d7e82c0daf55621afb57636d08376feae5ef8900623ba8283"
+    },
+    {
+      "path": "docs/web/assets/furniture-scale-audit/native-lineup.png",
+      "sha256": "0a88e12ae3a3d636208beed792789ff5c058dac8516052ecb10cdbfb0ab087c4"
+    }
+  ]
+}
