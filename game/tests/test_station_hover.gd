@@ -1,6 +1,6 @@
 extends "res://tests/test_visible_surface_picking.gd"
 ## Actual input through production GameMain, no saved state or worker transport.
-const HOVER_OUTPUT := "res://tests/output/station-hover"
+const HOVER_OUTPUT := "res://tests/output/station-hover-current"
 var samples: Array[Dictionary] = []
 
 func hover(point: Vector2) -> void:
@@ -69,9 +69,19 @@ func run() -> void:
 	for spec: Array in [[Vector2(132, 400), "Studio", "artifact-archive"], [Vector2(272, 522), "Company Journey", "founder-workstation"], [Vector2(944, 376), "Activity", "approval-console"], [Vector2(336, 234), "Assign", "mira-workstation"]]:
 		await hover(spec[0])
 		verify(spec[1], spec[2])
+		var highlighted: Array[Sprite2D] = main.interaction_highlight.active_sources()
+		check(not highlighted.is_empty(), "Interactive station has a visible warm highlight")
+		for source: Sprite2D in highlighted:
+			check(source.get_parent() == main.room.prop_node(spec[2]), "Only the picked station's registered body layers glow")
+			check(source.material == null, "Hover does not replace the station's original material")
+		if spec[2] == "founder-workstation":
+			main.interaction_highlight.sync([])
+			await capture("founder-workstation-before-glow")
+			main._update_hover_highlight(main._interaction_at(spec[0]))
 		await capture(spec[2])
 		await click(spec[0])
 		check(main._pending_interaction == spec[2], "Showing a hover callout does not steal the actual station click")
+		check(main.click_feedback.position == spec[0], "Station click feedback stays at the pointer, not the navigation socket")
 		main.player.cancel_route()
 	check(state() == geometry, "Hover does not alter poses, feet, routing, clock or office geometry")
 	main.player.input_blocked = true
@@ -80,9 +90,12 @@ func run() -> void:
 	main.player.input_blocked = false
 	await hover(Vector2(210, 466))
 	verify("", "")
+	check(main.interaction_highlight.active_sources().is_empty(), "Transparent sprite padding does not activate glow")
 	await hover(Vector2(336, 194))
 	verify("", "")
 	check(actor._ui_highlighted, "Visible face shows employee hover, never desk discovery")
+	check(main.interaction_highlight.active_sources().has(actor.body_surface_at(Vector2(336, 194))), "Hover highlights the visible employee body layer")
+	check(not main.interaction_highlight.active_sources().has(actor._shadow_sprite) and not main.interaction_highlight.active_sources().has(actor._effect_sprite), "Employee shadows and work effects never glow")
 	await capture("visible-face-not-desk")
 	main.player.position = Vector2(400, 240)
 	await hover(Vector2(336, 234))
@@ -99,6 +112,7 @@ func run() -> void:
 	main._process(0)
 	check(main.job_panel.drawer_is_open() and main.job_panel.selected_employee_id() == "mira", "Real E still opens nearby employee Chat while station paper is shown")
 	verify("", "")
+	check(main.interaction_highlight.active_sources().is_empty(), "Opening the employee drawer clears hover glow")
 	main.job_panel.close_drawer(false)
 	main.player.position = Vector2(272, 496)
 	main.job_panel.begin_job("hover-local-job", "mira")
@@ -122,6 +136,7 @@ func run() -> void:
 	main.company_panel.present("settings")
 	await hover(Vector2(132, 400))
 	verify("", "")
+	check(main.interaction_highlight.active_sources().is_empty(), "Modal settings clear hover glow")
 	main.company_panel.hide()
 	await hover(Vector2(132, 400))
 	verify("Studio", "artifact-archive")
@@ -129,6 +144,7 @@ func run() -> void:
 	main.room.set_hire_count(0)
 	await hover(Vector2(132, 400))
 	verify("", "")
+	check(main.interaction_highlight.active_sources().is_empty(), "Removing a hovered station releases its destroyed source layers")
 	await capture("removed-station")
 	main.room.set_hire_count(4)
 	# Crowd the upper archive candidate with a physical founder silhouette.
@@ -148,6 +164,7 @@ func run() -> void:
 	await frames(3)
 	await hover(Vector2(944, 376))
 	verify("", "")
+	check(main.interaction_highlight.active_sources().is_empty(), "UI over a station prevents world highlight")
 	await click(Vector2(944, 376))
 	check(main.player.route.is_empty(), "Interactive UI over a station owns the click")
 	ui_cover.queue_free()
@@ -158,11 +175,71 @@ func run() -> void:
 	verify("", "")
 	await hover(Vector2(500, 420))
 	verify("", "")
+	check(main.interaction_highlight.active_sources().is_empty(), "Moving to empty ground clears every glow layer")
 	await capture("pointer-left-clears")
+	await click(Vector2(707, 625))
+	check(not main.player.route.is_empty(), "Non-centered ground click still starts navigation")
+	check(main.click_feedback.position == Vector2(707, 625), "Ground click feedback stays at the pointer instead of the nearest tile center")
+	main.player.cancel_route()
 	check(samples.size() >= 9, "All expected hover scenarios completed")
+	cleanup()
+	await check_highlight_frame_boundaries()
 	var results := {"checks": checks, "failures": failures, "samples": samples, "captures": captures}
 	var file := FileAccess.open(HOVER_OUTPUT.path_join("headless.json" if DisplayServer.get_name() == "headless" else "results.json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify(results, "  "))
 	print(JSON.stringify(results))
-	cleanup()
 	quit(0 if failures.is_empty() else 1)
+
+func check_highlight_frame_boundaries() -> void:
+	# A deliberately opaque adjacent atlas cell makes texture bleeding visible;
+	# the chosen cell has just a two-pixel-wide body in its center.
+	var holder := Node2D.new()
+	root.add_child(holder)
+	var backdrop := ColorRect.new()
+	backdrop.position = Vector2(64, 64)
+	backdrop.size = Vector2(64, 64)
+	backdrop.color = Color("182030")
+	holder.add_child(backdrop)
+	var atlas := Image.create(16, 8, false, Image.FORMAT_RGBA8)
+	atlas.fill(Color.TRANSPARENT)
+	atlas.fill_rect(Rect2i(3, 3, 2, 2), Color.WHITE)
+	atlas.fill_rect(Rect2i(8, 0, 8, 8), Color.WHITE)
+	var source := Sprite2D.new()
+	source.texture = ImageTexture.create_from_image(atlas)
+	source.centered = false
+	source.position = Vector2(80, 80)
+	source.region_enabled = true
+	source.region_rect = Rect2(0, 0, 8, 8)
+	var original_material := CanvasItemMaterial.new()
+	source.material = original_material
+	holder.add_child(source)
+	var highlight := preload("res://world/interaction_highlight.gd").new()
+	highlight.sync([source])
+	var overlay := source.get_node("InteractionGlow") as Sprite2D
+	check(source.material == original_material and source.position == Vector2(80, 80), "Highlight preserves original material and sprite transform")
+	check(overlay.texture == source.texture and overlay.region_rect == source.region_rect, "Highlight uses the current animated texture region")
+	check(VisibleSurface.depth(overlay) == VisibleSurface.depth(source), "Glow stays at the painted layer's occlusion depth")
+	if DisplayServer.get_name() != "headless":
+		await frames(3)
+		RenderingServer.force_draw(false)
+		var rendered := root.get_texture().get_image()
+		var background := rendered.get_pixel(78, 83)
+		check(rendered.get_pixel(87, 83) == background, "Adjacent opaque atlas frame cannot bleed into highlight")
+		check(rendered.get_pixel(82, 83) != background, "Actual opaque body receives a one-pixel warm rim")
+	source.region_rect = Rect2(8, 0, 8, 8)
+	highlight.sync([source])
+	check(overlay.region_rect == source.region_rect, "An animation frame change updates the existing glow")
+	source.self_modulate.a = 0
+	highlight.sync([source])
+	check(highlight.active_sources().is_empty(), "An alpha-hidden body cannot glow")
+	source.self_modulate.a = 1
+	highlight.sync([source])
+	source.hide()
+	highlight.sync([source])
+	check(highlight.active_sources().is_empty(), "A hidden body cannot glow")
+	source.show()
+	highlight.sync([source])
+	source.free()
+	highlight.sync([])
+	check(highlight.active_sources().is_empty(), "Destroyed source cleanup retains no stale glow")
+	holder.free()

@@ -25,6 +25,7 @@ var company_panel: CompanyPanel
 var office_renovation: OfficeRenovation
 var game_audio: GameAudio
 var click_feedback: ClickFeedback
+var interaction_highlight := preload("res://world/interaction_highlight.gd").new()
 var _journey: Dictionary = {}
 var _pending_interaction := ""
 var _pending_kind := ""
@@ -77,11 +78,16 @@ func _ready() -> void:
 		job_panel.close_drawer()
 		company_panel.present("journey")
 	)
+	job_panel.story_requested.connect(func(mode: String) -> void:
+		job_panel.close_drawer()
+		company_panel.present(mode)
+	)
 	job_panel.worker_retry_requested.connect(_retry_worker_connection)
 	game_audio = GameAudio.new()
 	add_child(game_audio)
 	company_panel.volume_changed.connect(game_audio.set_volumes)
 	click_feedback = ClickFeedback.new()
+	GameCursor.install()
 	click_feedback.z_index = 2000
 	add_child(click_feedback)
 	player.destination_reached.connect(_on_destination_reached)
@@ -147,6 +153,7 @@ func _process(delta: float) -> void:
 	var hovered_control := get_viewport().gui_get_hovered_control()
 	var ui_owns_hover := hovered_control != null and hovered_control.mouse_filter != Control.MOUSE_FILTER_IGNORE
 	var hover := _interaction_at(get_viewport().get_mouse_position()) if not paused and not ui_owns_hover else {}
+	_update_hover_highlight(hover)
 	var station := _station_hover_details(hover)
 	var station_obstacles := _world_ui_obstacles()
 	station_obstacles.append(WorldCalloutSkin.actor_rect(player.position))
@@ -166,6 +173,23 @@ func _process(delta: float) -> void:
 		employee.set_ui_highlighted(str(hover.get("kind", "")) == "employee" and str(hover.get("id", "")) == employee_id)
 	_update_label_visibility(interaction_target)
 	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND if not hover.is_empty() else Input.CURSOR_ARROW)
+
+func _update_hover_highlight(hover: Dictionary) -> void:
+	var sources: Array[Sprite2D] = []
+	var id := str(hover.get("id", ""))
+	if str(hover.get("kind", "")) == "prop":
+		var prop := room.prop_node(id)
+		var placement := room.placement_by_id(id)
+		if prop != null:
+			# Only registered painted layers: never ambient animation or shadows.
+			for layer: Dictionary in placement.get("render_layers", []):
+				var sprite := prop.get_node_or_null(NodePath(str(layer.name))) as Sprite2D
+				if sprite != null: sources.append(sprite)
+	elif str(hover.get("kind", "")) == "employee" and _employees.has(id):
+		var employee := _employees[id]
+		if employee._character_sprite != null: sources.append(employee._character_sprite)
+		for layer: Sprite2D in employee._work_pose_layer_sprites.values(): sources.append(layer)
+	interaction_highlight.sync(sources)
 
 func _station_hover_details(hover: Dictionary) -> Dictionary:
 	if str(hover.get("kind", "")) != "prop": return {}
@@ -751,7 +775,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		if player.route[-1].distance_to(point) > 1.0:
 			player.cancel_route()
 			accepted = false
-	click_feedback.show_at(player.route[-1] if accepted else point, accepted)
+	# Confirm the pointer hit immediately. The navigation endpoint may be a
+	# tile center or service socket far from the visible object that was clicked.
+	click_feedback.show_at(click.position, accepted)
 	if not accepted: _pending_interaction = ""
 	get_viewport().set_input_as_handled()
 

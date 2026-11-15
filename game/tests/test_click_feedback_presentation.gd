@@ -1,7 +1,7 @@
 extends SceneTree
 ## Native click-marker geometry, contrast separation and pixel sampling.
 
-const OUTPUT := "res://tests/output/ui-world-consistency"
+const OUTPUT := "res://tests/output/click-feedback-current"
 const POINT := Vector2(560, 400)
 
 var checks := 0
@@ -42,6 +42,14 @@ func capture(name_value: String) -> Image:
 func run() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUTPUT))
 	root.size = Vector2i(1280, 720)
+	for pixels: PackedStringArray in [GameCursor.ARROW, GameCursor.HAND]:
+		check(pixels.size() == 16, "Cursor has sixteen source rows")
+		for row: String in pixels: check(row.length() == 16, "Cursor row fits its native grid")
+	var arrow := GameCursor.texture(GameCursor.ARROW).get_image()
+	var hand := GameCursor.texture(GameCursor.HAND).get_image()
+	check(arrow.get_pixelv(GameCursor.ARROW_HOTSPOT).a == 1, "Arrow hotspot touches its visible tip")
+	check(hand.get_pixelv(GameCursor.HAND_HOTSPOT).a == 1, "Hand hotspot touches its pointing fingertip")
+	check(arrow.get_size() == Vector2i(32, 32) and hand.get_size() == Vector2i(32, 32), "Hardware cursors fit browser size limits")
 	var cores := ClickFeedback.accepted_core_rects()
 	var rims := ClickFeedback.accepted_rim_rects()
 	check(cores.size() == 4 and rims.size() == 4, "Accepted marker keeps four cardinal sparks")
@@ -73,7 +81,7 @@ func run() -> void:
 	var accepted := await capture("accepted-marker")
 	if accepted != null:
 		for center: Vector2 in ClickFeedback.DOT_CENTERS:
-			check(color_near(accepted.get_pixelv(Vector2i(POINT + center)), ClickFeedback.VALID), "Every accepted spark retains its chartreuse core")
+			check(color_near(accepted.get_pixelv(Vector2i(POINT + center)), ClickFeedback.VALID), "Every accepted spark has a warm gold core")
 		var rim_sample := POINT + rims[0].position
 		check(color_near(accepted.get_pixelv(Vector2i(rim_sample)), ClickFeedback.INK), "Accepted marker has a crisp dark separation pixel on the pale floor")
 

@@ -16,6 +16,7 @@ var ambience_volume := 0.2
 var architecture_theme := OfficeArchitecture.DEFAULT_THEME
 var screen := "journey"
 var busy := false
+var story_mode := OS.has_feature("web")
 var _content: VBoxContainer
 var _scroll: ScrollContainer
 var _notice: Label
@@ -308,6 +309,11 @@ func _hired_screen() -> void:
 			hired = candidate
 			if str(candidate.get("id", "")) == _pending_employee_id: break
 	var person_name := str(hired.get("name", "Your teammate"))
+	if story_mode:
+		_heading("A new beginning", person_name + " joins your studio.")
+		_story_person(hired, "I’m in! Let’s settle in, then find our first idea. Every good story has to start somewhere.")
+		_actions("Welcome to the team", hide, true, "")
+		return
 	_heading("Welcome, " + person_name, "A new desk is ready in your office.")
 	_person(hired, false)
 	_label(_next_step().trim_prefix("NEXT · "))
@@ -514,6 +520,13 @@ func _cash_phrase(cents: int) -> String:
 
 func _journey_screen() -> void:
 	var company: Dictionary = state.get("company", {})
+	var first_guest := _available_candidate()
+	if story_mode and not first_guest.is_empty() and not _has_hired_teammate():
+		_heading("Someone at the door", "Your studio’s first chapter")
+		_story_person(first_guest, StoryMoments.introduction(str(first_guest.get("id", "mira"))))
+		_label("Mina joins for free. You’ll build your first project together.", false, null, "meta")
+		_actions("Let’s do this, Mina", func() -> void: _request("hiring.complete", {"employeeId": str(first_guest.get("id", "mira"))}), true, "")
+		return
 	_heading("Company Journey", "%s  ·  %s  ·  %d reputation" % [_office_date(), _cash_phrase(int(company.get("cashCents", 0))), int(company.get("reputation", 0))], "meta", "OfficeDate")
 	var next := _label(_next_step().trim_prefix("NEXT · "), false, null, "action")
 	next.name = "NextStep"
@@ -2670,6 +2683,33 @@ func _person(candidate: Dictionary, hiring: bool) -> void:
 		_label("A teammate and a new workstation for your office.", false, identity)
 	else:
 		_label("Hired · ready to meet you", false, identity, "meta")
+
+func _has_hired_teammate() -> bool:
+	for candidate: Dictionary in state.get("candidates", []):
+		if bool(candidate.get("hired", false)): return true
+	return false
+
+func _story_person(candidate: Dictionary, line: String) -> void:
+	var card := _card()
+	card.name = "StoryIntroduction"
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 24)
+	card.add_child(row)
+	var portrait := TextureRect.new()
+	portrait.name = "HirePortrait"
+	portrait.texture = CharacterArt.bust_portrait(str(candidate.get("id", "mira")))
+	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	portrait.custom_minimum_size = Vector2(112, 144)
+	portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_child(portrait)
+	var words := VBoxContainer.new()
+	words.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	words.alignment = BoxContainer.ALIGNMENT_CENTER
+	words.add_theme_constant_override("separation", 12)
+	row.add_child(words)
+	_label(str(candidate.get("name", "Your teammate")), true, words)
+	_label("“" + line + "”", false, words)
 
 func _milestone_card(definition: Dictionary) -> void:
 	var card := _card()

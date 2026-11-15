@@ -43,6 +43,7 @@ signal grok_logout_requested
 signal grok_use_local_requested
 signal settings_requested
 signal journey_requested
+signal story_requested(mode: String)
 signal worker_retry_requested
 signal chat_history_requested(employee_id: String)
 signal chat_submitted(employee_id: String, message: String)
@@ -177,6 +178,10 @@ var _draft_reset_button: Button
 var _submission_pending := false
 var _submitted_job_id := ""
 var _journey_state: Dictionary = {}
+var story_mode := OS.has_feature("web")
+var _story_page: VBoxContainer
+var _story_line: Label
+var _story_action: Button
 var _purpose_picker: OptionButton
 var _purpose_chosen_by_player := false
 var _next_step_label: Label
@@ -262,11 +267,15 @@ func _build_interface() -> void:
 	_drawer_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	_drawer_panel.set_anchors_preset(Control.PRESET_LEFT_WIDE)
 	_drawer_panel.offset_right = DRAWER_WIDTH
+	if story_mode:
+		_drawer_panel.anchor_bottom = 0
+		_drawer_panel.offset_top = 144
+		_drawer_panel.offset_bottom = 592
 	_drawer_panel.add_theme_stylebox_override("panel", NotebookSkin.wood_surface(Vector4(12.0, 12.0, 12.0, 12.0)))
 	add_child(_drawer_panel)
 	_add_outer_frame(_drawer_panel)
 	var drawer_margin := MarginContainer.new()
-	drawer_margin.custom_minimum_size = Vector2(DRAWER_WIDTH, 720.0)
+	drawer_margin.custom_minimum_size = Vector2(DRAWER_WIDTH, 448.0 if story_mode else 720.0)
 	drawer_margin.add_theme_constant_override("margin_left", 12)
 	drawer_margin.add_theme_constant_override("margin_right", 12)
 	drawer_margin.add_theme_constant_override("margin_top", 28)
@@ -288,6 +297,9 @@ func _build_interface() -> void:
 
 	_rail_panel = Panel.new()
 	_rail_panel.name = "TeamRail"
+	# The sliding drawer's decorative frame is z=1. Keep the whole rail above
+	# that frame, not just later in sibling order, so it cannot cross portraits.
+	_rail_panel.z_index = 2
 	_rail_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	_rail_panel.set_anchors_preset(Control.PRESET_RIGHT_WIDE)
 	_rail_panel.offset_left = -RAIL_WIDTH
@@ -302,7 +314,7 @@ func _build_interface() -> void:
 func _fit_drawer_contents(content: Control) -> void:
 	# Wrapped labels can report a tall provisional minimum before their first
 	# container sort. Refit after it settles instead of retaining that old size.
-	content.set_deferred("size", Vector2(DRAWER_WIDTH, 720.0))
+	content.set_deferred("size", Vector2(DRAWER_WIDTH, 448.0 if story_mode else 720.0))
 
 func _add_outer_frame(panel: Control) -> void:
 	var frame := Panel.new()
@@ -740,6 +752,37 @@ func _build_employee_drawer() -> VBoxContainer:
 	_tabs.add_child(_build_work_tab())
 	_tabs.add_child(_build_journal_tab())
 	_tabs.add_child(_build_studio_tab())
+	if story_mode:
+		notebook_stack.hide()
+		_story_page = VBoxContainer.new()
+		_story_page.name = "CharacterConversation"
+		_story_page.add_theme_constant_override("separation", 12)
+		_story_page.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		drawer.add_child(_story_page)
+		var paper := PanelContainer.new()
+		paper.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		paper.add_theme_stylebox_override("panel", CozyUI.paper(Vector4(18, 16, 18, 16)))
+		_story_page.add_child(paper)
+		_story_line = Label.new()
+		_story_line.name = "CharacterDialogue"
+		_story_line.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_story_line.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		CozyUI.label(_story_line)
+		paper.add_child(_story_line)
+		_story_action = Button.new()
+		_story_action.name = "StoryNextStep"
+		_story_action.custom_minimum_size.y = 44
+		_story_action.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		CozyUI.button(_story_action, "primary")
+		_story_action.pressed.connect(func() -> void: story_requested.emit("product"))
+		_story_page.add_child(_story_action)
+		var goodbye := Button.new()
+		goodbye.text = "See you in a bit"
+		goodbye.custom_minimum_size.y = 44
+		goodbye.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		CozyUI.button(goodbye, "quiet")
+		goodbye.pressed.connect(close_drawer)
+		_story_page.add_child(goodbye)
 	_empty_team_panel = PanelContainer.new()
 	_empty_team_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_empty_team_panel.add_theme_stylebox_override("panel", CozyUI.paper(Vector4(24, 24, 24, 24)))
@@ -1405,11 +1448,12 @@ func configure_employees(records: Array[EmployeeRecord]) -> void:
 	_employees = records
 	_empty_team_panel.visible = records.is_empty()
 	_header_shell.visible = not records.is_empty()
-	_tabs.visible = not records.is_empty()
-	_tab_strip.visible = not records.is_empty()
+	_tabs.visible = not records.is_empty() and not story_mode
+	_tab_strip.visible = not records.is_empty() and not story_mode
 	# Hiding only its children leaves this expanding stack claiming half the
 	# empty drawer. Onboarding owns the complete paper surface instead.
-	(_tabs.get_parent() as Control).visible = not records.is_empty()
+	(_tabs.get_parent() as Control).visible = not records.is_empty() and not story_mode
+	if _story_page != null: _story_page.visible = not records.is_empty()
 	var list := _team_list()
 	for child: Node in list.get_children():
 		child.queue_free()
@@ -1567,7 +1611,7 @@ func _select_employee(employee_id: String) -> void:
 	_refresh_chat_mode()
 	_show_empty_chat()
 	_refresh_selected_activity()
-	if _worker_connected:
+	if _worker_connected and not story_mode:
 		chat_history_requested.emit(employee_id)
 
 func _refresh_team_card_styles() -> void:
@@ -1609,7 +1653,7 @@ func _fit_employee_heading() -> void:
 
 func _refresh_employee_header() -> void:
 	var portrait_frame := _employee_portrait.get_parent() as PanelContainer
-	if _tabs != null and _tabs.current_tab == 3:
+	if not story_mode and _tabs != null and _tabs.current_tab == 3:
 		_set_employee_heading("Studio")
 		_employee_meta.text = "Approved deliveries"
 		_employee_meta.tooltip_text = _employee_meta.text
@@ -1637,6 +1681,16 @@ func _refresh_employee_header() -> void:
 	_employee_meta.tooltip_text = _employee_meta.text
 	_employee_status.text = activity.left(1).to_upper() + activity.substr(1)
 	_employee_status.add_theme_color_override("font_color", _state_text_color(activity))
+	if story_mode:
+		_employee_meta.text = "Your teammate"
+		_employee_status.hide()
+		_refresh_story()
+
+func _refresh_story() -> void:
+	if _story_page == null: return
+	var moment := StoryMoments.conversation(_selected_employee_id, _journey_state)
+	_story_line.text = "“" + str(moment.get("line", "")) + "”"
+	_story_action.text = str(moment.get("action", "Open our notebook"))
 
 func _refresh_team_statuses() -> void:
 	_refresh_employee_header()
@@ -1966,6 +2020,7 @@ func set_journey_state(value: Dictionary) -> void:
 	_journey_state = value
 	_refresh_work_purposes()
 	_refresh_rail_next_step()
+	_refresh_story()
 
 func _available_milestone_for(employee_id: String) -> Dictionary:
 	for definition: Dictionary in _journey_state.get("milestones", []):
@@ -1975,6 +2030,10 @@ func _available_milestone_for(employee_id: String) -> Dictionary:
 
 func _refresh_rail_next_step() -> void:
 	if _next_step_label == null: return
+	if story_mode:
+		_next_step_label.text = ""
+		_next_step_label.hide()
+		return
 	if _employees.is_empty():
 		_next_step_label.text = ""
 		_next_step_label.visible = false
