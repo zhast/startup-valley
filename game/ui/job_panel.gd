@@ -650,7 +650,7 @@ func _build_employee_drawer() -> VBoxContainer:
 	drawer.add_theme_constant_override("separation", 7)
 	var header_shell := Control.new()
 	_header_shell = header_shell
-	header_shell.custom_minimum_size = Vector2(0.0, 112.0)
+	header_shell.custom_minimum_size = Vector2(0.0, 168.0 if story_mode else 112.0)
 	drawer.add_child(header_shell)
 	var header_card := PanelContainer.new()
 	header_card.add_theme_stylebox_override("panel", CozyUI.paper(Vector4(8, 8, 8, 8)))
@@ -667,7 +667,7 @@ func _build_employee_drawer() -> VBoxContainer:
 	employee_header.add_theme_constant_override("separation", 12)
 	header_margin.add_child(employee_header)
 	var portrait_frame := PanelContainer.new()
-	portrait_frame.custom_minimum_size = Vector2(76.0, 88.0)
+	portrait_frame.custom_minimum_size = Vector2(120.0, 144.0) if story_mode else Vector2(76.0, 88.0)
 	portrait_frame.add_theme_stylebox_override("panel", NotebookSkin.portrait_frame())
 	employee_header.add_child(portrait_frame)
 	_employee_portrait = TextureRect.new()
@@ -1682,7 +1682,8 @@ func _refresh_employee_header() -> void:
 	_employee_status.text = activity.left(1).to_upper() + activity.substr(1)
 	_employee_status.add_theme_color_override("font_color", _state_text_color(activity))
 	if story_mode:
-		_employee_meta.text = "Your teammate"
+		_employee_portrait.texture = StoryMoments.portrait(employee.id)
+		_employee_meta.text = StoryMoments.role(employee.id)
 		_employee_status.hide()
 		_refresh_story()
 

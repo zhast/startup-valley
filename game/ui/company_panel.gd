@@ -48,6 +48,7 @@ var _pivot_open := false
 var _playtest_shown := false
 var _playtest_product_id := ""
 var _story_draft_started := false
+var _scrim: ColorRect
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -56,6 +57,7 @@ func _ready() -> void:
 	theme = GameFonts.interface_theme()
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	var scrim := ColorRect.new()
+	_scrim = scrim
 	scrim.color = Color(0.04, 0.035, 0.025, 0.65)
 	scrim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(scrim)
@@ -199,6 +201,7 @@ func _actions(primary_text: String, callback: Callable, enabled: bool = true, se
 			secondary.disabled = false
 	if not primary_text.is_empty():
 		var primary := _button(primary_text, callback, not danger, enabled, row, "danger" if danger else "primary")
+		if _is_story_meeting() or (story_mode and screen == "title"): CozyUI.button(primary, "secondary")
 		_preferred_focus = secondary if danger else primary
 	elif secondary != null:
 		_preferred_focus = secondary
@@ -219,7 +222,7 @@ func _render() -> void:
 		screen = "complete"
 	var panel_size := Vector2(744, 608)
 	match screen:
-		"title": panel_size = Vector2(624, 408)
+		"title": panel_size = Vector2(624, 276 if story_mode else 408)
 		"confirm": panel_size = Vector2(616, 364)
 		"hired": panel_size = Vector2(648, 424)
 		"complete": panel_size = Vector2(664, 448)
@@ -237,9 +240,13 @@ func _render() -> void:
 				else:
 					panel_size = Vector2(704, 564)
 	_maximum_panel_size = panel_size
+	if _is_story_meeting():
+		panel_size = Vector2(860, 344)
+		_maximum_panel_size = panel_size
+	_scrim.color.a = 0.18 if _is_story_meeting() else 0.3 if story_mode and screen == "title" else 0.65
 	_frame.custom_minimum_size = Vector2.ZERO
 	_frame.size = panel_size
-	_frame.position = ((Vector2(1280, 720) - panel_size) * 0.5).round()
+	_position_frame()
 	match screen:
 		"title": _title_screen()
 		"confirm": _confirm_screen()
@@ -266,12 +273,16 @@ func _fit_sparse_height(generation: int) -> void:
 	await get_tree().process_frame
 	await get_tree().process_frame
 	if generation != _render_generation or not is_inside_tree(): return
+	if _is_story_meeting():
+		_position_frame()
+		return
 	# Review pages retain their envelope when evidence expands; scrolling then
 	# leaves the header and primary action stationary. Only sparse states shrink.
 	if _details_open or _future_open: return
 	if screen == "journey" and not _evaluation(_current_milestone()).is_empty(): return
 	var minimum_height := 360.0
 	match screen:
+		"title": minimum_height = 260.0 if story_mode else 360.0
 		"confirm": minimum_height = 340.0
 		"hired": minimum_height = 400.0
 		"complete": minimum_height = 400.0
@@ -287,7 +298,25 @@ func _fit_sparse_height(generation: int) -> void:
 	_frame.size.y = clampf(ceilf(required_height), minimum_height, _maximum_panel_size.y)
 	_frame.position = ((Vector2(1280, 720) - _frame.size) * 0.5).round()
 
+func _is_story_meeting() -> bool:
+	return story_mode and (screen == "hired" or (screen == "journey" and not _has_hired_teammate() and not _available_candidate().is_empty()))
+
+func _position_frame() -> void:
+	_frame.position = Vector2(140, 352) if _is_story_meeting() else ((Vector2(1280, 720) - _frame.size) * 0.5).round()
+
 func _title_screen() -> void:
+	if story_mode:
+		var title := _label("Startup Valley", true)
+		title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		title.add_theme_font_override("font", GameFonts.DISPLAY)
+		title.add_theme_font_size_override("font_size", 44)
+		var subtitle := _label("Little ideas grow here.")
+		subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		var started := _company_started()
+		var detail := _label("Your studio is waiting." if started else "A little studio. Your first teammate. A fresh start.", false, null, "meta")
+		detail.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_actions("Continue" if started else "Start company", _continue_game, not state.is_empty(), "New company" if started else "", _confirm_start)
+		return
 	_heading("Startup Valley", "A small office. A real idea. Your first company.", "meta")
 	var started := _company_started()
 	var card := _card()
@@ -322,9 +351,8 @@ func _hired_screen() -> void:
 			if str(candidate.get("id", "")) == _pending_employee_id: break
 	var person_name := str(hired.get("name", "Your teammate"))
 	if story_mode:
-		_heading("A new beginning", person_name + " joins your studio.")
-		_story_person(hired, "I’m in! Let’s settle in, then find our first idea. Every good story has to start somewhere.")
-		_actions("Welcome to the team", hide, true, "")
+		_story_person(hired, "A desk for me? This already feels like home.")
+		_actions("Let’s find our first idea", func() -> void: present("product"), true, "")
 		return
 	_heading("Welcome, " + person_name, "A new desk is ready in your office.")
 	_person(hired, false)
@@ -534,10 +562,8 @@ func _journey_screen() -> void:
 	var company: Dictionary = state.get("company", {})
 	var first_guest := _available_candidate()
 	if story_mode and not first_guest.is_empty() and not _has_hired_teammate():
-		_heading("Someone at the door", "Your studio’s first chapter")
 		_story_person(first_guest, StoryMoments.introduction(str(first_guest.get("id", "mira"))))
-		_label("Mina joins for free. You’ll build your first project together.", false, null, "meta")
-		_actions("Let’s do this, Mina", func() -> void: _request("hiring.complete", {"employeeId": str(first_guest.get("id", "mira"))}), true, "")
+		_actions("Invite Mina · Free", func() -> void: _request("hiring.complete", {"employeeId": str(first_guest.get("id", "mira"))}), true, "")
 		return
 	if story_mode:
 		_story_journey_screen()
@@ -2876,26 +2902,33 @@ func _has_hired_teammate() -> bool:
 	return false
 
 func _story_person(candidate: Dictionary, line: String) -> void:
-	var card := _card()
-	card.name = "StoryIntroduction"
 	var row := HBoxContainer.new()
+	row.name = "StoryIntroduction"
 	row.add_theme_constant_override("separation", 24)
-	card.add_child(row)
+	_content.add_child(row)
+	var portrait_frame := PanelContainer.new()
+	portrait_frame.add_theme_stylebox_override("panel", NotebookSkin.portrait_frame())
+	portrait_frame.custom_minimum_size = Vector2(208, 232)
+	row.add_child(portrait_frame)
 	var portrait := TextureRect.new()
 	portrait.name = "HirePortrait"
-	portrait.texture = CharacterArt.bust_portrait(str(candidate.get("id", "mira")))
+	portrait.texture = StoryMoments.portrait(str(candidate.get("id", "mira")))
 	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	portrait.custom_minimum_size = Vector2(112, 144)
 	portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.add_child(portrait)
+	portrait_frame.add_child(portrait)
 	var words := VBoxContainer.new()
 	words.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	words.alignment = BoxContainer.ALIGNMENT_CENTER
 	words.add_theme_constant_override("separation", 12)
 	row.add_child(words)
-	_label(str(candidate.get("name", "Your teammate")), true, words)
-	_label("“" + line + "”", false, words)
+	var name_label := _label(str(candidate.get("name", "Your teammate")), true, words)
+	name_label.add_theme_font_size_override("font_size", 28)
+	var role_label := _label(StoryMoments.role(str(candidate.get("id", "mira"))), false, words, "meta")
+	role_label.name = "CharacterRole"
+	var dialogue := _label("“" + line + "”", false, words)
+	dialogue.name = "IntroductionLine"
+	dialogue.add_theme_font_size_override("font_size", 20)
 
 func _milestone_card(definition: Dictionary) -> void:
 	var card := _card()

@@ -4,21 +4,34 @@ extends RefCounted
 
 static func introduction(employee_id: String) -> String:
 	match employee_id:
-		"mira": return "You found a whole office! I brought a notebook full of ideas. Want to make something together?"
+		"mira": return "I turn little ideas into things people love. Let’s make one!"
 		"theo": return "Give me a desk and a tricky problem. I think we could build something worth staying up for."
 		"creative": return "This place has potential. A little colour, a good idea… I can already picture it."
 		_: return "A new desk, a fresh start. I’m glad there’s room for me here."
+
+static func role(employee_id: String) -> String:
+	match employee_id:
+		"mira": return "Product designer"
+		"theo": return "Growth & operations"
+		"creative": return "Artist & storyteller"
+		_: return "Your teammate"
+
+static func portrait(employee_id: String) -> Texture2D:
+	# Face and shoulders from our existing character art, with an integer crop.
+	var texture := CharacterArt.bust_portrait(employee_id)
+	texture.region.size.y = minf(texture.region.size.y, 128.0)
+	return texture
 
 static func conversation(employee_id: String, state: Dictionary) -> Dictionary:
 	var tycoon: Dictionary = state.get("tycoon", {})
 	var product: Dictionary = tycoon.get("developing", {}) if tycoon.get("developing") is Dictionary else {}
 	if not product.is_empty():
 		if bool(product.get("ready", false)):
-			return {"line": "It’s ready. All those little ideas finally became something real. Shall we show everyone?", "action": "See what we made"}
-		return {"line": "It’s starting to take shape. Let’s give this idea a little care each day and see where it goes.", "action": "See our project"}
+			return {"line": "We made it! Ready to show everyone?", "action": "See what we made"}
+		return {"line": "It’s taking shape. Come see what we’re making!", "action": "See our project"}
 	if not (tycoon.get("history", []) as Array).is_empty():
-		return {"line": "Remember when this was just an empty room? Now we’ve put something out into the world. I have a few ideas for what comes next.", "action": "Plan our next project"}
-	var line := "I saved you a page in my notebook. Let’s start with one small idea—something we’d be proud to put our names on."
+		return {"line": "Our first release! I’m already dreaming about the next one.", "action": "Plan our next project"}
+	var line := "I saved you a page. What shall we make together?"
 	if employee_id != "mira": line = introduction(employee_id)
 	return {"line": line, "action": "Plan our first project"}
 

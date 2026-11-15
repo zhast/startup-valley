@@ -70,6 +70,16 @@ func run() -> void:
 	var actions := visible_buttons(panel)
 	check(actions.size() == 1, "First meeting has one action, no contracts or day-end distractions")
 	check(panel.find_child("StoryIntroduction", true, false) != null, "First meeting shows character dialogue")
+	var role := panel.find_child("CharacterRole", true, false) as Label
+	check(role != null and role.text == "Product designer", "Mina's role is explicit before hiring")
+	var portrait := panel.find_child("HirePortrait", true, false) as TextureRect
+	check(portrait != null and portrait.size.x >= 180 and portrait.size.y >= 200, "First meeting gives Mina a prominent portrait")
+	check(panel._frame.position.y >= 340, "Introduction leaves the upper office visible")
+	check(panel._scrim.color.a <= 0.2, "Introduction keeps the surrounding world visible")
+	if DisplayServer.get_name() != "headless":
+		RenderingServer.force_draw(false)
+		DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://tests/output/story-conversation-current"))
+		root.get_texture().get_image().save_png("res://tests/output/story-conversation-current/first-meeting.png")
 	await click(actions[0])
 	check(requests.size() == 1 and requests[0] == {"method": "hiring.complete", "params": {"employeeId": "mira"}}, "Welcome uses the existing durable hiring request exactly once")
 	initial.candidates[0].hired = true
@@ -80,7 +90,8 @@ func run() -> void:
 	actions = visible_buttons(panel)
 	check(actions.size() == 1, "Welcome has one clear action")
 	await click(actions[0])
-	check(not panel.visible, "Welcome returns to the office")
+	check(panel.visible and panel.screen == "product", "Welcome leads directly to the first idea")
+	panel.hide()
 	var team := JobPanel.new()
 	team.story_mode = true
 	root.add_child(team)
@@ -113,5 +124,12 @@ func run() -> void:
 	team.open_chat_for_employee("mira")
 	await frames()
 	check(team._story_page.is_visible_in_tree() and history_requests == 0, "Reopening preserves offline story mode")
+	team.hide()
+	panel.present("title")
+	await frames()
+	check(panel._frame.get_global_rect().encloses(panel._content.get_global_rect()), "Visual opening fits its frame")
+	if DisplayServer.get_name() != "headless":
+		RenderingServer.force_draw(false)
+		root.get_texture().get_image().save_png("res://tests/output/story-conversation-current/opening.png")
 	print("Story conversation: %d failures" % failures.size())
 	quit(0 if failures.is_empty() else 1)
