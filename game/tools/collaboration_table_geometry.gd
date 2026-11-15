@@ -261,7 +261,16 @@ static func cluster_specs(side: String, art_root: String) -> Array[Dictionary]:
 		parts.assign(["Whole"] if (CHAIR_PATHS.get(str(chair.facing), []) as Array).size() == 1 else ["Rear", "Front"])
 		for part_index: int in range(parts.size()):
 			var name := str(chair.name) + parts[part_index]
-			specs.append(_layer_spec(name, side, art_root, int(chair.z_offset) + part_index * 2))
+			# Share the workstation modules directly. The old padded layer blit
+			# was PIVOT + offset - CHAIR_CANVAS/2 inside a canvas at -PIVOT;
+			# this is the same placement without duplicating each chair PNG.
+			specs.append({
+				"name": name,
+				"art": CHAIR_PATHS[str(chair.facing)][part_index],
+				"region": [0, 0, CHAIR_CANVAS.x, CHAIR_CANVAS.y],
+				"offset": chair.offset.duplicate(),
+				"z_offset": int(chair.z_offset) + part_index * 2,
+			})
 	return specs
 
 static func _layer_spec(name: String, side: String, art_root: String, depth: int) -> Dictionary:

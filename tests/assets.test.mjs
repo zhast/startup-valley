@@ -55,6 +55,11 @@ test('a declared scale contract cannot be missing or redirected', t => {
   assert.match(missing.errors.join('\n'), /Furniture scale:/);
   f.options.contracts.scale_calibration = 'unreviewed-scale.json';
   assert.match(validateAssets(f.options).errors.join('\n'), /shared furniture contract/);
+  delete f.options.contracts.scale_calibration;
+  f.write('game/assets/runtime/office/cozy-furniture-v1/cafe-chair-south.png', oldBytes);
+  f.write('game/assets/runtime/office/cozy-furniture-v1/cafe-chair-south.png.import', importer);
+  assert.match(validateAssets(f.options).errors.join('\n'), /shared furniture contract/,
+    'Removing metadata cannot disable scale validation when the runtime family is present');
 });
 
 test('changed and unregistered PNGs are blocked even when they decode', t => {

@@ -1,0 +1,285 @@
+{
+  "schema_version": 1,
+  "id": "task-chair-v3",
+  "status": "approved",
+  "reviewer": "Codex asset_quality; independent four-facing seated visual review by root",
+  "reviewed_at": "2026-11-15T23:28:56.234Z",
+  "camera_profile": "office-square-grid-v1",
+  "style_profile": {
+    "id": "startup-valley-cozy-pixel-v1",
+    "path": "dev/art-catalogue/style-profile.json",
+    "sha256": "c7c4834623a482bb976abf27bcc976f72d5b83df59a66bb93af00a49d1589fe7",
+    "application": "generation_reference",
+    "reference_board": {
+      "path": "dev/art-catalogue/style-reference-board.png",
+      "sha256": "d91ba07ace9aef1d7e82c0daf55621afb57636d08376feae5ef8900623ba8283",
+      "note": "Code-arranged existing reference pixels; characters at3×, phone/floor at2×, window at1×, paper/desk at3×. Zoom is for inspection, not a change in runtime scale."
+    },
+    "references": [
+      {
+        "id": "founder-idle",
+        "path": "dev/art-catalogue/style-references/founder-idle.png",
+        "sha256": "d01a61aac781bea83902877ab96f45087bfb9ac8d0e3d6801fecf642cc1aa756"
+      },
+      {
+        "id": "mina-idle",
+        "path": "dev/art-catalogue/style-references/mina-idle.png",
+        "sha256": "3a8ad37498e9945a4bbeca8567db757b97b28f496c6e9294d11a707d8bd7e1df"
+      },
+      {
+        "id": "phone-booth",
+        "path": "dev/art-catalogue/style-references/phone-booth.png",
+        "sha256": "13f132874da276515063855f045ce62a02324820e18b9af8a3e9cc1be4af4fd8"
+      },
+      {
+        "id": "desk-front",
+        "path": "dev/art-catalogue/style-references/desk-front.png",
+        "sha256": "adb3458aa63d799af6f9a07723523344d63b82772e6d77f03e8da96137c02f21"
+      },
+      {
+        "id": "desk-rear",
+        "path": "dev/art-catalogue/style-references/desk-rear.png",
+        "sha256": "d5e167d93d424fcfddbb00f1cb85217aa69b3de4ee5f4b67036c0830754d29c4"
+      },
+      {
+        "id": "oak-floor",
+        "path": "dev/art-catalogue/style-references/oak-floor.png",
+        "sha256": "851eadbadcfcaf5eaeb4f30a5679d797e42409ac4ffba95d0c71fc591473db66"
+      },
+      {
+        "id": "office-window",
+        "path": "dev/art-catalogue/style-references/office-window.png",
+        "sha256": "cca8896dac6640c452ba2c7148a6f551be4e2d9c2ac793f7439e3501d8863571"
+      },
+      {
+        "id": "paper-frame",
+        "path": "dev/art-catalogue/style-references/paper-frame.png",
+        "sha256": "3a07014154ae2d624f52b563db4befaa1b3f22ed82bc440213d69251caa8111b"
+      }
+    ]
+  },
+  "provenance": {
+    "kind": "openai_imagegen",
+    "note": "New wooden chair family from retained built-in ImageGen output. Original corporate modules and rejected taller normalization retained. The canonical style board, original four-view target and same-scale character calibration were supplied. No generated person/desk/background pixels used.",
+    "sources": [
+      {
+        "path": "game/assets/source/task-chair-v3/generated-four-views.png",
+        "sha256": "cc45ac47c18600bd557146259a33127d8331a32f901a2f138869794b6720787e"
+      },
+      {
+        "path": "game/assets/source/task-chair-v3/original-four-views.png",
+        "sha256": "46b42337a8da88684b6378140c26266036cbdc0ee5f71005022579fc62fbe1a1"
+      },
+      {
+        "path": "game/assets/source/task-chair-v3/scale-reference.png",
+        "sha256": "bca21f7c354c745536c515d4f58335e7d7807e92e3eddfe5c148074001bf5bdb"
+      },
+      {
+        "path": "game/assets/source/task-chair-v3/previous-runtime/chair-north.png",
+        "sha256": "2cf83dd5605a7e79dfbbda137af2e102919420dfe90b411236da825e2271bd2e"
+      },
+      {
+        "path": "game/assets/source/task-chair-v3/previous-runtime/chair-south.png",
+        "sha256": "15e9e5ce8f5e3943ffc1b4f1b63843f136cc1df71afc071a4bd5323131c943e4"
+      },
+      {
+        "path": "game/assets/source/task-chair-v3/previous-runtime/chair-east-rear.png",
+        "sha256": "7fb1c2c441b240ab2b1fb46cbdcc7b666d488e8626c136239b9151a1d02838b4"
+      },
+      {
+        "path": "game/assets/source/task-chair-v3/previous-runtime/chair-east-front.png",
+        "sha256": "2bd23748783ac7a36de5ebd494ca72d594da0a7dcd9bd4ef39df0c3616b3f2ad"
+      },
+      {
+        "path": "game/assets/source/task-chair-v3/previous-runtime/chair-west-rear.png",
+        "sha256": "a12947b65df8d7af46db8e42a3b6c5457fc88608a11b414848bb801d8b4f9cd9"
+      },
+      {
+        "path": "game/assets/source/task-chair-v3/previous-runtime/chair-west-front.png",
+        "sha256": "b35f169215a8130a951c0a8e143c683a58a493f4a1bc5dfd751891c2c6fe186c"
+      }
+    ],
+    "prompt": {
+      "path": "game/assets/source/task-chair-v3/prompt.txt",
+      "sha256": "67d84cc8976e1909605f1db08342561929985ffc827cf4691bdee89501986c9a"
+    },
+    "generation_id": "01a1e146-9490-71d0-99d4-d5691e91d349/exec-7c6977b3-bf04-43fe-b2fb-f2c62aa4ad9e.png",
+    "transform": "game/tools/build_task_chair.gd: fixed raw crops, nearest32x58 sample, binaryalpha, shorten only upper29rows to14 at y85, preserve cushion/legs y99..127; side nearframes copy y109..159. Final96x160 native registered modules reproduce byte-for-byte. Collaboration profiles directly reuse the same modules; no bitmap duplication or runtime scale."
+  },
+  "artifacts": [
+    {
+      "path": "game/assets/runtime/office/workstations-v2/chair-north.png",
+      "sha256": "181533012b18d8c167b16d66712f1c098ca72038d8e4db0209549dda16eb25a7"
+    },
+    {
+      "path": "game/assets/runtime/office/workstations-v2/chair-south.png",
+      "sha256": "34a0e2894f089f256cef7c29ab826376e640a13fcce5e266599f19b3f4338a9c"
+    },
+    {
+      "path": "game/assets/runtime/office/workstations-v2/chair-east-rear.png",
+      "sha256": "d8d95f980d775a0106c6ce5d4372a6c6fb8e6ac39c7f97c3c80b9924ae5a6e67"
+    },
+    {
+      "path": "game/assets/runtime/office/workstations-v2/chair-east-front.png",
+      "sha256": "1c33dea821fb5a5cc8988919d6bd8477e8eb36a26c6a6b858afd7e02b3a19e14"
+    },
+    {
+      "path": "game/assets/runtime/office/workstations-v2/chair-west-rear.png",
+      "sha256": "354a5cc29e1fd9c318eec3312fed3da20d9e6aa78c11819c7b44bf34b3cfd724"
+    },
+    {
+      "path": "game/assets/runtime/office/workstations-v2/chair-west-front.png",
+      "sha256": "06f55fc22a9d8a304ad0821bf1abeaaee67bd1590c2711662d3c0e77b8cceea9"
+    }
+  ],
+  "bindings": [
+    {
+      "path": "game/data/furniture_catalog.json",
+      "sha256": "c9af647824cbd13be19b368aee79e1ab1b7f34258204c30d834b5cd00ac09261"
+    },
+    {
+      "path": "game/tools/build_task_chair.gd",
+      "sha256": "b5180720f7d37a12ba24c6a28a50ee399053b13b0847c267e92d8b861dbdbdc2"
+    },
+    {
+      "path": "game/tools/update_shared_chair_profiles.gd",
+      "sha256": "7db4eaecc254d90169a35011bdd3c0e15eb564869e80b88f67a8c0a127b760f4"
+    },
+    {
+      "path": "game/tools/collaboration_table_geometry.gd",
+      "sha256": "05a120e34adb02a9ed780f5984dc3bda00079e8bada41081a25e30cb46710880"
+    },
+    {
+      "path": "game/character_art.gd",
+      "sha256": "ae9a6fc00e4b637486c2ee3bf92226ddf1512a8a6d76e12900120f122286d040"
+    },
+    {
+      "path": "game/tests/test_seated_chair_composition.gd",
+      "sha256": "b341469314018632a9654956dc5430c8ff6d99fa836c863ec3ae883db79b8d0b"
+    },
+    {
+      "path": "game/tests/test_collaboration_production.gd",
+      "sha256": "bf53300ca8862e60be29a99cb99706ed0b4dec269e3dd4d8a933755f2c05885c"
+    },
+    {
+      "path": "game/tests/test_reviewed_workstation_production.gd",
+      "sha256": "fb3117ad53d6c6e139d0db25b8e784564601dc9a30578f702acc8eaef7f9065e"
+    },
+    {
+      "path": "game/tools/capture_task_chair_motion.gd",
+      "sha256": "3ff4da465f835069ee4d18ce9d09dd9d6897082deb227534b9bb2f1e443baf4f"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "docs/web/assets/task-chair-v3/after/north-seated-0.png",
+      "sha256": "c104ba2a647ec114299466f4a1b7a5b8dd4ccf46c9b3bb84f7018afbfb7aabc7",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/assets/task-chair-v3/after/south-seated-0.png",
+      "sha256": "f0f6f453024acc79296423b5400cad38e1eab70865b23d4447b993b39ca51875",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/assets/task-chair-v3/after/east-seated-0.png",
+      "sha256": "57a0e2004e0a9e8663bf022c6351ddc9d8a9a3f8680c064bb6b1d4a2f071558c",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/assets/task-chair-v3/after/west-seated-0.png",
+      "sha256": "d9d15244cb7eeffd016aab8c34ffac8c7d9629305d2881ac0c334d656965dc18",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/assets/task-chair-v3/native-48-pose-contact.png",
+      "sha256": "84a915688b828002f66d7bbff7769a7598104fd10c53bf53950990caae54f0ce",
+      "kind": "native_contact_sheet"
+    },
+    {
+      "path": "docs/web/assets/task-chair-v3/motion/entry-contact.png",
+      "sha256": "7098256e606e3e43174055a89c5e3d61b01eccd740b5d1178121adc4fb1221be",
+      "kind": "native_contact_sheet"
+    },
+    {
+      "path": "docs/web/assets/task-chair-v3/motion/exit-contact.png",
+      "sha256": "ed99a67236fd80dfaa6d40d9d9acb4bb4da454c038e454b409e7221d968901ac",
+      "kind": "native_contact_sheet"
+    },
+    {
+      "path": "docs/web/assets/task-chair-v3/after/results.json",
+      "sha256": "77d91612a11f40fb4a1c068bfe72433311ba5d5289ac3fbe7f574fe37aecca6f",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/task-chair-v3/motion/results.json",
+      "sha256": "4a0da612b29d7f02fb1220dd89e078a7c92fee0ed003fbbf8eab5a3fda2d22be",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/task-chair-v3/collaboration-results.json",
+      "sha256": "6fbd1a6a562d668e3a88a43ba41bc93fb4aee4a6d9e156f89623f8e0b73119e7",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/task-chair-v3/collaboration-headless.log",
+      "sha256": "ff2063b59ceaff886b120afd6ff97a269e888a1e4c9605d1bfcbffd9bc9558ff",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/task-chair-v3/seat-transition.log",
+      "sha256": "cc48ec21f71b4b1be56c6f1916a3fe37f2ffef6361f6d16ed7f8e2e16d7cf06d",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/task-chair-v3/workstation-production.log",
+      "sha256": "352f5e6a5f02740f0803ec9b197dc2f1055eac071adeb7466cb249ac6d35f496",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/task-chair-v3/reproduction.log",
+      "sha256": "c15c617f36847c7fac93d87939eeabdce7d000dd8ac0d4178e5fec55b5a291aa",
+      "kind": "test_report"
+    },
+    {
+      "path": "game/assets/source/task-chair-v3/technical-validation.json",
+      "sha256": "8dcf9293bd159a2dfe9588f60f591c37b11f517cca661efa880ea3f9c460f7ae",
+      "kind": "test_report"
+    }
+  ],
+  "checks": {
+    "style": {
+      "result": "passed",
+      "note": "Cute, humble, handmade, restrained wood/cream family. No caster/chrome/ergonomic mechanisms. Canonical material board supplied at generation and starter brief used."
+    },
+    "camera": {
+      "result": "passed",
+      "note": "Four independently generated cardinal views preserve elevated screen-aligned camera. No runtime rotation or mirroring."
+    },
+    "scale": {
+      "result": "passed",
+      "note": "All modules native96x160 canvas with32x43 painted extent, shown against unchanged48x80 actor cells. Only overly tall back shortened; cushion and feet kept at tested height."
+    },
+    "anchor": {
+      "result": "passed",
+      "note": "All desk work cells, seat anchors, actor cuts and depths unchanged. Shared cluster registration reconstructs the prior padded position pixel-for-pixel; one-pixel negative control fails."
+    },
+    "layering": {
+      "result": "passed",
+      "note": "346 native assertions cover48 seated/typing poses for Mina/Theo in four directions. Head clear, north backrest visible over lower body, desk covers correct lower-body pixels. No face/raster changes."
+    },
+    "animation": {
+      "result": "passed",
+      "note": "Native actual-route entry/exit fixture1388 checks passes for both actors/all4directions; bounded140ms handoff and4729 transition assertions pass. Chairs are static."
+    },
+    "placement": {
+      "result": "passed",
+      "note": "Four-facing collaboration route/hold/interruption/rotation suite712 checks passes headlessly with unchanged occupied/clearance and16 sockets. South desk visual/hit bound updated to measured ink union; collision unchanged."
+    },
+    "readability": {
+      "result": "passed",
+      "note": "Independently reviewed four seated Mina directions and inspected48pose native contact. Warm slatted back, visible cushion and four legs read as everyday wooden chair."
+    }
+  },
+  "capture_notes": "All windowed captures completed before the user stopped windowed demos. No subsequent windowed run. Collaboration native run was interrupted before saving its full sheet; final collaboration evidence is headless lifecycle plus exact pixel registration equivalence. Final integrated browser visual acceptance remains with root; this review approves six raster modules and tested bindings, not an entire game playthrough."
+}

@@ -1,0 +1,1410 @@
+{
+  "east": {
+    "ambient_overlays": [],
+    "anchor_offset": [
+      0.0,
+      0.0
+    ],
+    "asset_revision": "collaboration-cluster-v2",
+    "clearance": [
+      [
+        -1.0,
+        -1.0
+      ],
+      [
+        -1.0,
+        1.0
+      ],
+      [
+        2.0,
+        -1.0
+      ],
+      [
+        2.0,
+        1.0
+      ]
+    ],
+    "collaboration_pose_set": "reviewed-workstations-v2",
+    "collaboration_slots": [
+      {
+        "capability_revision": "collaboration-cluster-v2:east",
+        "cell": [
+          -1.0,
+          -1.0
+        ],
+        "ground_shadow_z_offset": -11.0,
+        "seat_anchor_by_employee": {
+          "mira": [
+            12.0,
+            3.0
+          ],
+          "theo": [
+            12.0,
+            4.0
+          ]
+        },
+        "seat_layer_z_offsets": {
+          "lower": -7.0,
+          "upper": 2.0
+        },
+        "seat_z_offset": -7.0,
+        "visual_bounds": [
+          -24.0,
+          -72.0,
+          48.0,
+          80.0
+        ],
+        "work_facing": "east"
+      },
+      {
+        "capability_revision": "collaboration-cluster-v2:west",
+        "cell": [
+          2.0,
+          1.0
+        ],
+        "ground_shadow_z_offset": 3.0,
+        "seat_anchor_by_employee": {
+          "mira": [
+            -12.0,
+            4.0
+          ],
+          "theo": [
+            -12.0,
+            8.0
+          ]
+        },
+        "seat_layer_z_offsets": {
+          "lower": 7.0,
+          "upper": 10.0
+        },
+        "seat_z_offset": 7.0,
+        "visual_bounds": [
+          -24.0,
+          -72.0,
+          48.0,
+          80.0
+        ],
+        "work_facing": "west"
+      },
+      {
+        "capability_revision": "collaboration-cluster-v2:east",
+        "cell": [
+          -1.0,
+          1.0
+        ],
+        "ground_shadow_z_offset": 3.0,
+        "seat_anchor_by_employee": {
+          "mira": [
+            12.0,
+            3.0
+          ],
+          "theo": [
+            12.0,
+            4.0
+          ]
+        },
+        "seat_layer_z_offsets": {
+          "lower": 7.0,
+          "upper": 10.0
+        },
+        "seat_z_offset": 7.0,
+        "visual_bounds": [
+          -24.0,
+          -72.0,
+          48.0,
+          80.0
+        ],
+        "work_facing": "east"
+      },
+      {
+        "capability_revision": "collaboration-cluster-v2:west",
+        "cell": [
+          2.0,
+          -1.0
+        ],
+        "ground_shadow_z_offset": -11.0,
+        "seat_anchor_by_employee": {
+          "mira": [
+            -12.0,
+            4.0
+          ],
+          "theo": [
+            -12.0,
+            8.0
+          ]
+        },
+        "seat_layer_z_offsets": {
+          "lower": -7.0,
+          "upper": 2.0
+        },
+        "seat_z_offset": -7.0,
+        "visual_bounds": [
+          -24.0,
+          -72.0,
+          48.0,
+          80.0
+        ],
+        "work_facing": "west"
+      }
+    ],
+    "hit_bounds": [
+      -36,
+      -112,
+      104,
+      193
+    ],
+    "interaction": [
+      -1.0,
+      -1.0
+    ],
+    "occupied": [
+      [
+        0.0,
+        -2.0
+      ],
+      [
+        0.0,
+        -1.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        2.0
+      ],
+      [
+        1.0,
+        -2.0
+      ],
+      [
+        1.0,
+        -1.0
+      ],
+      [
+        1.0,
+        0.0
+      ],
+      [
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        2.0
+      ]
+    ],
+    "profile_kind": "collaboration",
+    "reference_gaze": "east",
+    "render_layers": [
+      {
+        "art": "res://assets/runtime/office/collaboration-cluster-v2/east-table_floor_shadow.png",
+        "name": "TableFloorShadow",
+        "offset": [
+          0,
+          -40
+        ],
+        "region": [
+          0,
+          0,
+          256,
+          272
+        ],
+        "z_offset": -12
+      },
+      {
+        "art": "res://assets/runtime/office/collaboration-cluster-v2/east-table_rear_structure.png",
+        "name": "TableRearStructure",
+        "offset": [
+          0,
+          -40
+        ],
+        "region": [
+          0,
+          0,
+          256,
+          272
+        ],
+        "z_offset": 0
+      },
+      {
+        "art": "res://assets/runtime/office/collaboration-cluster-v2/east-table_front_structure.png",
+        "name": "TableFrontStructure",
+        "offset": [
+          0,
+          -40
+        ],
+        "region": [
+          0,
+          0,
+          256,
+          272
+        ],
+        "z_offset": 3
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-east-rear.png",
+        "name": "WestChair0Rear",
+        "offset": [
+          -20,
+          -64
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": -10
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-east-front.png",
+        "name": "WestChair0Front",
+        "offset": [
+          -20,
+          -64
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": -8
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-west-rear.png",
+        "name": "EastChair0Rear",
+        "offset": [
+          52,
+          -64
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": -10
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-west-front.png",
+        "name": "EastChair0Front",
+        "offset": [
+          52,
+          -64
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": -8
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-east-rear.png",
+        "name": "WestChair1Rear",
+        "offset": [
+          -20,
+          0
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": 4
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-east-front.png",
+        "name": "WestChair1Front",
+        "offset": [
+          -20,
+          0
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": 6
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-west-rear.png",
+        "name": "EastChair1Rear",
+        "offset": [
+          52,
+          0
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": 4
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-west-front.png",
+        "name": "EastChair1Front",
+        "offset": [
+          52,
+          0
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": 6
+      }
+    ],
+    "review": {
+      "art": true,
+      "geometry": true,
+      "poses": true
+    },
+    "status": "runtime_ready",
+    "visual_bounds": [
+      -36,
+      -112,
+      104,
+      193
+    ]
+  },
+  "north": {
+    "ambient_overlays": [],
+    "anchor_offset": [
+      0.0,
+      0.0
+    ],
+    "asset_revision": "collaboration-cluster-v2",
+    "clearance": [
+      [
+        -1.0,
+        -2.0
+      ],
+      [
+        1.0,
+        -2.0
+      ],
+      [
+        -1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0
+      ]
+    ],
+    "collaboration_pose_set": "reviewed-workstations-v2",
+    "collaboration_slots": [
+      {
+        "capability_revision": "collaboration-cluster-v2:north",
+        "cell": [
+          -1.0,
+          1.0
+        ],
+        "ground_shadow_z_offset": 3.0,
+        "seat_anchor_by_employee": {
+          "mira": [
+            0.0,
+            -20.0
+          ],
+          "theo": [
+            0.0,
+            -16.0
+          ]
+        },
+        "seat_layer_z_offsets": {
+          "lower": 7.0,
+          "upper": 10.0
+        },
+        "seat_z_offset": 7.0,
+        "visual_bounds": [
+          -24.0,
+          -72.0,
+          48.0,
+          80.0
+        ],
+        "work_facing": "north"
+      },
+      {
+        "capability_revision": "collaboration-cluster-v2:south",
+        "cell": [
+          1.0,
+          -2.0
+        ],
+        "ground_shadow_z_offset": -11.0,
+        "seat_anchor_by_employee": {
+          "mira": [
+            0.0,
+            12.0
+          ],
+          "theo": [
+            0.0,
+            12.0
+          ]
+        },
+        "seat_layer_z_offsets": {
+          "lower": -7.0,
+          "upper": -2.0
+        },
+        "seat_z_offset": -7.0,
+        "visual_bounds": [
+          -24.0,
+          -72.0,
+          48.0,
+          80.0
+        ],
+        "work_facing": "south"
+      },
+      {
+        "capability_revision": "collaboration-cluster-v2:north",
+        "cell": [
+          1.0,
+          1.0
+        ],
+        "ground_shadow_z_offset": 3.0,
+        "seat_anchor_by_employee": {
+          "mira": [
+            0.0,
+            -20.0
+          ],
+          "theo": [
+            0.0,
+            -16.0
+          ]
+        },
+        "seat_layer_z_offsets": {
+          "lower": 7.0,
+          "upper": 10.0
+        },
+        "seat_z_offset": 7.0,
+        "visual_bounds": [
+          -24.0,
+          -72.0,
+          48.0,
+          80.0
+        ],
+        "work_facing": "north"
+      },
+      {
+        "capability_revision": "collaboration-cluster-v2:south",
+        "cell": [
+          -1.0,
+          -2.0
+        ],
+        "ground_shadow_z_offset": -11.0,
+        "seat_anchor_by_employee": {
+          "mira": [
+            0.0,
+            12.0
+          ],
+          "theo": [
+            0.0,
+            12.0
+          ]
+        },
+        "seat_layer_z_offsets": {
+          "lower": -7.0,
+          "upper": -2.0
+        },
+        "seat_z_offset": -7.0,
+        "visual_bounds": [
+          -24.0,
+          -72.0,
+          48.0,
+          80.0
+        ],
+        "work_facing": "south"
+      }
+    ],
+    "hit_bounds": [
+      -80,
+      -87,
+      161,
+      123
+    ],
+    "interaction": [
+      -1.0,
+      1.0
+    ],
+    "occupied": [
+      [
+        -2.0,
+        -1.0
+      ],
+      [
+        -1.0,
+        -1.0
+      ],
+      [
+        0.0,
+        -1.0
+      ],
+      [
+        1.0,
+        -1.0
+      ],
+      [
+        2.0,
+        -1.0
+      ],
+      [
+        -2.0,
+        0.0
+      ],
+      [
+        -1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0
+      ],
+      [
+        2.0,
+        0.0
+      ]
+    ],
+    "profile_kind": "collaboration",
+    "reference_gaze": "north",
+    "render_layers": [
+      {
+        "art": "res://assets/runtime/office/collaboration-cluster-v2/north-table_floor_shadow.png",
+        "name": "TableFloorShadow",
+        "offset": [
+          0,
+          -40
+        ],
+        "region": [
+          0,
+          0,
+          256,
+          272
+        ],
+        "z_offset": -12
+      },
+      {
+        "art": "res://assets/runtime/office/collaboration-cluster-v2/north-table_rear_structure.png",
+        "name": "TableRearStructure",
+        "offset": [
+          0,
+          -40
+        ],
+        "region": [
+          0,
+          0,
+          256,
+          272
+        ],
+        "z_offset": 0
+      },
+      {
+        "art": "res://assets/runtime/office/collaboration-cluster-v2/north-table_front_structure.png",
+        "name": "TableFrontStructure",
+        "offset": [
+          0,
+          -40
+        ],
+        "region": [
+          0,
+          0,
+          256,
+          272
+        ],
+        "z_offset": 3
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-south.png",
+        "name": "NorthChair0Whole",
+        "offset": [
+          -32,
+          -92
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": -9
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-north.png",
+        "name": "SouthChair0Whole",
+        "offset": [
+          -32,
+          -12
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": 5
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-south.png",
+        "name": "NorthChair1Whole",
+        "offset": [
+          32,
+          -92
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": -9
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-north.png",
+        "name": "SouthChair1Whole",
+        "offset": [
+          32,
+          -12
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": 5
+      }
+    ],
+    "review": {
+      "art": true,
+      "geometry": true,
+      "poses": true
+    },
+    "status": "runtime_ready",
+    "visual_bounds": [
+      -80,
+      -87,
+      161,
+      123
+    ]
+  },
+  "south": {
+    "ambient_overlays": [],
+    "anchor_offset": [
+      0.0,
+      0.0
+    ],
+    "asset_revision": "collaboration-cluster-v2",
+    "clearance": [
+      [
+        -1.0,
+        -1.0
+      ],
+      [
+        1.0,
+        -1.0
+      ],
+      [
+        -1.0,
+        2.0
+      ],
+      [
+        1.0,
+        2.0
+      ]
+    ],
+    "collaboration_pose_set": "reviewed-workstations-v2",
+    "collaboration_slots": [
+      {
+        "capability_revision": "collaboration-cluster-v2:south",
+        "cell": [
+          -1.0,
+          -1.0
+        ],
+        "ground_shadow_z_offset": -11.0,
+        "seat_anchor_by_employee": {
+          "mira": [
+            0.0,
+            12.0
+          ],
+          "theo": [
+            0.0,
+            12.0
+          ]
+        },
+        "seat_layer_z_offsets": {
+          "lower": -7.0,
+          "upper": -2.0
+        },
+        "seat_z_offset": -7.0,
+        "visual_bounds": [
+          -24.0,
+          -72.0,
+          48.0,
+          80.0
+        ],
+        "work_facing": "south"
+      },
+      {
+        "capability_revision": "collaboration-cluster-v2:north",
+        "cell": [
+          1.0,
+          2.0
+        ],
+        "ground_shadow_z_offset": 3.0,
+        "seat_anchor_by_employee": {
+          "mira": [
+            0.0,
+            -20.0
+          ],
+          "theo": [
+            0.0,
+            -16.0
+          ]
+        },
+        "seat_layer_z_offsets": {
+          "lower": 7.0,
+          "upper": 10.0
+        },
+        "seat_z_offset": 7.0,
+        "visual_bounds": [
+          -24.0,
+          -72.0,
+          48.0,
+          80.0
+        ],
+        "work_facing": "north"
+      },
+      {
+        "capability_revision": "collaboration-cluster-v2:south",
+        "cell": [
+          1.0,
+          -1.0
+        ],
+        "ground_shadow_z_offset": -11.0,
+        "seat_anchor_by_employee": {
+          "mira": [
+            0.0,
+            12.0
+          ],
+          "theo": [
+            0.0,
+            12.0
+          ]
+        },
+        "seat_layer_z_offsets": {
+          "lower": -7.0,
+          "upper": -2.0
+        },
+        "seat_z_offset": -7.0,
+        "visual_bounds": [
+          -24.0,
+          -72.0,
+          48.0,
+          80.0
+        ],
+        "work_facing": "south"
+      },
+      {
+        "capability_revision": "collaboration-cluster-v2:north",
+        "cell": [
+          -1.0,
+          2.0
+        ],
+        "ground_shadow_z_offset": 3.0,
+        "seat_anchor_by_employee": {
+          "mira": [
+            0.0,
+            -20.0
+          ],
+          "theo": [
+            0.0,
+            -16.0
+          ]
+        },
+        "seat_layer_z_offsets": {
+          "lower": 7.0,
+          "upper": 10.0
+        },
+        "seat_z_offset": 7.0,
+        "visual_bounds": [
+          -24.0,
+          -72.0,
+          48.0,
+          80.0
+        ],
+        "work_facing": "north"
+      }
+    ],
+    "hit_bounds": [
+      -80,
+      -55,
+      161,
+      123
+    ],
+    "interaction": [
+      -1.0,
+      -1.0
+    ],
+    "occupied": [
+      [
+        -2.0,
+        0.0
+      ],
+      [
+        -1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0
+      ],
+      [
+        2.0,
+        0.0
+      ],
+      [
+        -2.0,
+        1.0
+      ],
+      [
+        -1.0,
+        1.0
+      ],
+      [
+        0.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0
+      ],
+      [
+        2.0,
+        1.0
+      ]
+    ],
+    "profile_kind": "collaboration",
+    "reference_gaze": "south",
+    "render_layers": [
+      {
+        "art": "res://assets/runtime/office/collaboration-cluster-v2/south-table_floor_shadow.png",
+        "name": "TableFloorShadow",
+        "offset": [
+          0,
+          -40
+        ],
+        "region": [
+          0,
+          0,
+          256,
+          272
+        ],
+        "z_offset": -12
+      },
+      {
+        "art": "res://assets/runtime/office/collaboration-cluster-v2/south-table_rear_structure.png",
+        "name": "TableRearStructure",
+        "offset": [
+          0,
+          -40
+        ],
+        "region": [
+          0,
+          0,
+          256,
+          272
+        ],
+        "z_offset": 0
+      },
+      {
+        "art": "res://assets/runtime/office/collaboration-cluster-v2/south-table_front_structure.png",
+        "name": "TableFrontStructure",
+        "offset": [
+          0,
+          -40
+        ],
+        "region": [
+          0,
+          0,
+          256,
+          272
+        ],
+        "z_offset": 3
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-south.png",
+        "name": "NorthChair0Whole",
+        "offset": [
+          -32,
+          -60
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": -9
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-north.png",
+        "name": "SouthChair0Whole",
+        "offset": [
+          -32,
+          20
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": 5
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-south.png",
+        "name": "NorthChair1Whole",
+        "offset": [
+          32,
+          -60
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": -9
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-north.png",
+        "name": "SouthChair1Whole",
+        "offset": [
+          32,
+          20
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": 5
+      }
+    ],
+    "review": {
+      "art": true,
+      "geometry": true,
+      "poses": true
+    },
+    "status": "runtime_ready",
+    "visual_bounds": [
+      -80,
+      -55,
+      161,
+      123
+    ]
+  },
+  "west": {
+    "ambient_overlays": [],
+    "anchor_offset": [
+      0.0,
+      0.0
+    ],
+    "asset_revision": "collaboration-cluster-v2",
+    "clearance": [
+      [
+        -2.0,
+        -1.0
+      ],
+      [
+        -2.0,
+        1.0
+      ],
+      [
+        1.0,
+        -1.0
+      ],
+      [
+        1.0,
+        1.0
+      ]
+    ],
+    "collaboration_pose_set": "reviewed-workstations-v2",
+    "collaboration_slots": [
+      {
+        "capability_revision": "collaboration-cluster-v2:west",
+        "cell": [
+          1.0,
+          -1.0
+        ],
+        "ground_shadow_z_offset": -11.0,
+        "seat_anchor_by_employee": {
+          "mira": [
+            -12.0,
+            4.0
+          ],
+          "theo": [
+            -12.0,
+            8.0
+          ]
+        },
+        "seat_layer_z_offsets": {
+          "lower": -7.0,
+          "upper": 2.0
+        },
+        "seat_z_offset": -7.0,
+        "visual_bounds": [
+          -24.0,
+          -72.0,
+          48.0,
+          80.0
+        ],
+        "work_facing": "west"
+      },
+      {
+        "capability_revision": "collaboration-cluster-v2:east",
+        "cell": [
+          -2.0,
+          1.0
+        ],
+        "ground_shadow_z_offset": 3.0,
+        "seat_anchor_by_employee": {
+          "mira": [
+            12.0,
+            3.0
+          ],
+          "theo": [
+            12.0,
+            4.0
+          ]
+        },
+        "seat_layer_z_offsets": {
+          "lower": 7.0,
+          "upper": 10.0
+        },
+        "seat_z_offset": 7.0,
+        "visual_bounds": [
+          -24.0,
+          -72.0,
+          48.0,
+          80.0
+        ],
+        "work_facing": "east"
+      },
+      {
+        "capability_revision": "collaboration-cluster-v2:west",
+        "cell": [
+          1.0,
+          1.0
+        ],
+        "ground_shadow_z_offset": 3.0,
+        "seat_anchor_by_employee": {
+          "mira": [
+            -12.0,
+            4.0
+          ],
+          "theo": [
+            -12.0,
+            8.0
+          ]
+        },
+        "seat_layer_z_offsets": {
+          "lower": 7.0,
+          "upper": 10.0
+        },
+        "seat_z_offset": 7.0,
+        "visual_bounds": [
+          -24.0,
+          -72.0,
+          48.0,
+          80.0
+        ],
+        "work_facing": "west"
+      },
+      {
+        "capability_revision": "collaboration-cluster-v2:east",
+        "cell": [
+          -2.0,
+          -1.0
+        ],
+        "ground_shadow_z_offset": -11.0,
+        "seat_anchor_by_employee": {
+          "mira": [
+            12.0,
+            3.0
+          ],
+          "theo": [
+            12.0,
+            4.0
+          ]
+        },
+        "seat_layer_z_offsets": {
+          "lower": -7.0,
+          "upper": 2.0
+        },
+        "seat_z_offset": -7.0,
+        "visual_bounds": [
+          -24.0,
+          -72.0,
+          48.0,
+          80.0
+        ],
+        "work_facing": "east"
+      }
+    ],
+    "hit_bounds": [
+      -68,
+      -112,
+      104,
+      193
+    ],
+    "interaction": [
+      1.0,
+      -1.0
+    ],
+    "occupied": [
+      [
+        -1.0,
+        -2.0
+      ],
+      [
+        -1.0,
+        -1.0
+      ],
+      [
+        -1.0,
+        0.0
+      ],
+      [
+        -1.0,
+        1.0
+      ],
+      [
+        -1.0,
+        2.0
+      ],
+      [
+        0.0,
+        -2.0
+      ],
+      [
+        0.0,
+        -1.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        2.0
+      ]
+    ],
+    "profile_kind": "collaboration",
+    "reference_gaze": "west",
+    "render_layers": [
+      {
+        "art": "res://assets/runtime/office/collaboration-cluster-v2/west-table_floor_shadow.png",
+        "name": "TableFloorShadow",
+        "offset": [
+          0,
+          -40
+        ],
+        "region": [
+          0,
+          0,
+          256,
+          272
+        ],
+        "z_offset": -12
+      },
+      {
+        "art": "res://assets/runtime/office/collaboration-cluster-v2/west-table_rear_structure.png",
+        "name": "TableRearStructure",
+        "offset": [
+          0,
+          -40
+        ],
+        "region": [
+          0,
+          0,
+          256,
+          272
+        ],
+        "z_offset": 0
+      },
+      {
+        "art": "res://assets/runtime/office/collaboration-cluster-v2/west-table_front_structure.png",
+        "name": "TableFrontStructure",
+        "offset": [
+          0,
+          -40
+        ],
+        "region": [
+          0,
+          0,
+          256,
+          272
+        ],
+        "z_offset": 3
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-east-rear.png",
+        "name": "WestChair0Rear",
+        "offset": [
+          -52,
+          -64
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": -10
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-east-front.png",
+        "name": "WestChair0Front",
+        "offset": [
+          -52,
+          -64
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": -8
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-west-rear.png",
+        "name": "EastChair0Rear",
+        "offset": [
+          20,
+          -64
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": -10
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-west-front.png",
+        "name": "EastChair0Front",
+        "offset": [
+          20,
+          -64
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": -8
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-east-rear.png",
+        "name": "WestChair1Rear",
+        "offset": [
+          -52,
+          0
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": 4
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-east-front.png",
+        "name": "WestChair1Front",
+        "offset": [
+          -52,
+          0
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": 6
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-west-rear.png",
+        "name": "EastChair1Rear",
+        "offset": [
+          20,
+          0
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": 4
+      },
+      {
+        "art": "res://assets/runtime/office/workstations-v2/chair-west-front.png",
+        "name": "EastChair1Front",
+        "offset": [
+          20,
+          0
+        ],
+        "region": [
+          0,
+          0,
+          96,
+          160
+        ],
+        "z_offset": 6
+      }
+    ],
+    "review": {
+      "art": true,
+      "geometry": true,
+      "poses": true
+    },
+    "status": "runtime_ready",
+    "visual_bounds": [
+      -68,
+      -112,
+      104,
+      193
+    ]
+  }
+}

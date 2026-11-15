@@ -157,7 +157,8 @@ func collision_signature(prop: Node2D) -> Array[String]:
 
 func viewport_image() -> Image:
 	if DisplayServer.get_name() == "headless": return Image.new()
-	await RenderingServer.frame_post_draw
+	await process_frame
+	RenderingServer.force_draw(false)
 	var image := root.get_texture().get_image()
 	check(image != null and image.get_size() == Vector2i(1280, 720), "Native GameMain capture remains exactly 1280x720")
 	return image
@@ -260,15 +261,36 @@ func production_contract() -> Dictionary:
 		check((profile.get("collaboration_slots", []) as Array).size() == 4, side + " retains four authored sockets")
 		check((profile.get("occupied", []) as Array).size() == 10, side + " retains ten exact collision cells")
 		var specs := GEOMETRY.cluster_specs(side, ART_ROOT)
+		check_shared_chair_registration(side, specs)
 		var layers: Array = profile.get("render_layers", [])
 		check(layers.size() == specs.size(), side + " production profile retains every reviewed v2 layer")
 		for index: int in range(mini(layers.size(), specs.size())):
 			var layer := layers[index] as Dictionary
 			var expected := specs[index] as Dictionary
 			check(str(layer.get("name", "")) == str(expected.name) and str(layer.get("art", "")) == str(expected.art), side + " layer path/order is exact: " + str(expected.name))
+			check(OfficeLayout.rectangle(layer.region) == OfficeLayout.rectangle(expected.region) and OfficeLayout.vector(layer.offset) == OfficeLayout.vector(expected.offset) and int(layer.z_offset) == int(expected.z_offset), side + " layer region/registration/depth matches shared source: " + str(expected.name))
 			check(not layer.has("rotation") and not layer.has("scale") and not layer.has("flip_h") and not layer.has("flip_v"), side + " layer has no finished-bitmap transform: " + str(expected.name))
 		result[side] = {"layers": layers.size(), "slots": (profile.collaboration_slots as Array).size(), "occupied": (profile.occupied as Array).size()}
 	return result
+
+func check_shared_chair_registration(side: String, specs: Array[Dictionary]) -> void:
+	var legacy_layers := GEOMETRY.cluster_layers(side)
+	var count := 0
+	for spec: Dictionary in specs:
+		if str(spec.name).begins_with("Table"): continue
+		count += 1
+		check(str(spec.art).begins_with("res://assets/runtime/office/workstations-v2/chair-"), side + " reuses the workstation chair module")
+		check(spec.region == [0, 0, 96, 160], side + " retains native chair canvas")
+		var source := Image.load_from_file(ProjectSettings.globalize_path(spec.art))
+		var direct := Image.create(GEOMETRY.CANVAS.x, GEOMETRY.CANVAS.y, false, Image.FORMAT_RGBA8)
+		var offset := Vector2i(int(spec.offset[0]), int(spec.offset[1]))
+		direct.blend_rect(source, Rect2i(Vector2i.ZERO, GEOMETRY.CHAIR_CANVAS), GEOMETRY.PIVOT + offset - GEOMETRY.CHAIR_CANVAS / 2)
+		var legacy := legacy_layers[str(spec.name)] as Image
+		check(direct.get_data() == legacy.get_data(), side + " shared module matches registered composite pixel-for-pixel: " + str(spec.name))
+		var shifted := Image.create(GEOMETRY.CANVAS.x, GEOMETRY.CANVAS.y, false, Image.FORMAT_RGBA8)
+		shifted.blend_rect(source, Rect2i(Vector2i.ZERO, GEOMETRY.CHAIR_CANVAS), GEOMETRY.PIVOT + offset - GEOMETRY.CHAIR_CANVAS / 2 + Vector2i(1, 0))
+		check(shifted.get_data() != legacy.get_data(), side + " negative control detects one-pixel registration drift")
+	check(count == (4 if side in ["north", "south"] else 8), side + " uses every chair part")
 
 func stage_contract(side: String, pivot: Vector2i) -> Dictionary:
 	var proposed := {"collaboration-cluster": {"grid": cell_values(pivot), "facing": side}}
@@ -295,6 +317,12 @@ func reset_actors() -> Dictionary[String, Vector2]:
 	main.player.hide()
 	main.player.position = navigation.safe_position(main.room.grid_to_world_position(main.room.player_spawn), "founder")
 	navigation.actors["founder"] = main.player.position
+	# The current production placeholder roster also includes Creative. Keep
+	# this two-person motion probe bounded without changing roster/socket order.
+	for actor_id: String in main._employees:
+		if actor_id in ACTOR_IDS: continue
+		main.get_employee(actor_id).set_physics_process(false)
+		main.get_employee(actor_id).hide()
 	var starts: Dictionary[String, Vector2] = {}
 	for actor_id: String in ACTOR_IDS:
 		var actor := main.get_employee(actor_id)
@@ -342,7 +370,8 @@ func verify_live_geometry(side: String, placement: Dictionary, prop: Node2D) -> 
 		check(main.room.navigation.walkable(slot.cell) and not (placement.occupied as Array).has(slot.cell), side + " collaboration socket remains clear/walkable at " + str(slot.cell))
 	for layer: Dictionary in placement.render_layers:
 		var sprite := prop.get_node_or_null(NodePath(str(layer.name))) as Sprite2D
-		check(sprite != null and sprite.texture != null and sprite.texture.get_size() == Vector2(GEOMETRY.CANVAS), side + " live layer loads its native v2 canvas: " + str(layer.name))
+		var expected_canvas := GEOMETRY.CANVAS if str(layer.name).begins_with("Table") else GEOMETRY.CHAIR_CANVAS
+		check(sprite != null and sprite.texture != null and sprite.texture.get_size() == Vector2(expected_canvas), side + " live layer loads its native module canvas: " + str(layer.name))
 		if sprite != null:
 			check(sprite.scale == Vector2.ONE and is_zero_approx(sprite.rotation) and not sprite.flip_h and not sprite.flip_v, side + " live layer stays untransformed: " + str(layer.name))
 	return signature
@@ -350,9 +379,11 @@ func verify_live_geometry(side: String, placement: Dictionary, prop: Node2D) -> 
 func route_to_lunch(side: String, placement: Dictionary, collision_before: Array[String]) -> Dictionary:
 	var navigation := main.room.navigation
 	var targets: Dictionary[String, Vector2] = {}
+	var roster: Array = main.room._employee_names.keys()
+	roster.sort()
 	for index: int in range(ACTOR_IDS.size()):
 		var actor_id := ACTOR_IDS[index]
-		var slot := placement.collaboration_slots[index] as Dictionary
+		var slot := placement.collaboration_slots[roster.find(actor_id)] as Dictionary
 		targets[actor_id] = main.room.lunch_position(actor_id)
 		check(targets[actor_id] == main.room.grid_to_world_position(slot.cell), side + " " + actor_id + " resolves its deterministic production socket")
 	for actor_id: String in ACTOR_IDS: navigation.release(actor_id)
@@ -601,6 +632,8 @@ func run() -> void:
 	if DisplayServer.get_name() != "headless":
 		root.size = Vector2i(1280, 720)
 		root.content_scale_size = Vector2i(1280, 720)
+		root.unfocusable = true
+		root.mouse_passthrough = true
 	main = MAIN_SCENE.instantiate() as GameMain
 	root.add_child(main)
 	await frames(6)

@@ -34,7 +34,7 @@
     },
     {
       "path": "game/data/furniture_catalog.json",
-      "sha256": "ff9d7d5ba22f81c2b6717cd930b2dee9030086db4e7fcb1d50c0927a8d784b24"
+      "sha256": "c9af647824cbd13be19b368aee79e1ab1b7f34258204c30d834b5cd00ac09261"
     },
     {
       "path": "dev/tools/build_workstation_assets.sh",
@@ -61,6 +61,16 @@
       "path": "docs/web/playtest-polish-evidence.json",
       "kind": "test_report",
       "sha256": "54685871e6e53d1413de5f24e0fed78bca374b34c71b67cd390fe904b887e11a"
+    },
+    {
+      "path": "docs/web/assets/task-chair-v3/after/results.json",
+      "sha256": "77d91612a11f40fb4a1c068bfe72433311ba5d5289ac3fbe7f574fe37aecca6f",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/task-chair-v3/native-48-pose-contact.png",
+      "sha256": "84a915688b828002f66d7bbff7769a7598104fd10c53bf53950990caae54f0ce",
+      "kind": "native_contact_sheet"
     }
   ],
   "checks": {
@@ -151,5 +161,18 @@
       }
     ]
   },
-  "binding_refresh_note": "2026-11-15: reviewed north seated lower-body depth changed from 0 to -3; approved runtime PNGs, coffee geometry and south Mina-blink composition remain unchanged. See docs/decisions/2026-11-15-seated-chair-depth.md and the 48-pose production composition test."
+  "binding_refresh_note": "2026-11-15: reviewed north seated lower-body depth changed from 0 to -3; approved runtime PNGs, coffee geometry and south Mina-blink composition remain unchanged. See docs/decisions/2026-11-15-seated-chair-depth.md and the 48-pose production composition test.",
+  "binding_refreshes": [
+    {
+      "date": "2026-11-15T23:28:56.260Z",
+      "note": "Mina seated PNG hash and all actor cuts/anchors/depths unchanged. Wooden chair replacement updates unrelated/shared catalogue bindings; new48pose rendered head/desk/chair regression passes.",
+      "updates": [
+        {
+          "path": "game/data/furniture_catalog.json",
+          "previous_sha256": "ff9d7d5ba22f81c2b6717cd930b2dee9030086db4e7fcb1d50c0927a8d784b24",
+          "sha256": "c9af647824cbd13be19b368aee79e1ab1b7f34258204c30d834b5cd00ac09261"
+        }
+      ]
+    }
+  ]
 }

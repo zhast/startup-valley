@@ -107,7 +107,7 @@
   "bindings": [
     {
       "path": "game/data/furniture_catalog.json",
-      "sha256": "ff9d7d5ba22f81c2b6717cd930b2dee9030086db4e7fcb1d50c0927a8d784b24"
+      "sha256": "c9af647824cbd13be19b368aee79e1ab1b7f34258204c30d834b5cd00ac09261"
     },
     {
       "path": "game/assets/runtime/office/coffee-station-v1/manifest.json",
@@ -127,7 +127,7 @@
     },
     {
       "path": "dev/art-catalogue/runtime-contracts.json",
-      "sha256": "99237b5576eda6721a44f1912470057c61981d930681e1a14d8e294c5ff53d30"
+      "sha256": "29fb2fd0e1361db5a6801d2a0b4a513788af73581660b1e4f4281274a344647c"
     }
   ],
   "evidence": [
@@ -222,5 +222,34 @@
     }
   },
   "capture_notes": "Inspected native room captures of all four orientations, and south-facing scale/front/behind views. Root independently reviewed the changed south artwork with Mina and both occlusion views. Original elevated top plane and registration are retained; no browser-specific visual claim is made.",
-  "binding_refresh_note": "2026-11-15: build script now reapplies bounded Founder/Mina standing-blink overlays; this reviewed artifact is unchanged. Runtime contract list adds the blink regression without changing furniture geometry."
+  "binding_refresh_note": "2026-11-15: build script now reapplies bounded Founder/Mina standing-blink overlays; this reviewed artifact is unchanged. Runtime contract list adds the blink regression without changing furniture geometry.",
+  "binding_refreshes": [
+    {
+      "date": "2026-11-15T23:28:56.259Z",
+      "note": "Metadata-only refresh. Coffee catalogue entry and entire coffee family contract deep-equal blink checkpoint3cd6e71. Runtime coffee pixels unchanged. Shared file changes are wooden chair bindings and top-level standalone scale-calibration registration.",
+      "updates": [
+        {
+          "path": "game/data/furniture_catalog.json",
+          "previous_sha256": "ff9d7d5ba22f81c2b6717cd930b2dee9030086db4e7fcb1d50c0927a8d784b24",
+          "sha256": "c9af647824cbd13be19b368aee79e1ab1b7f34258204c30d834b5cd00ac09261"
+        },
+        {
+          "path": "dev/art-catalogue/runtime-contracts.json",
+          "previous_sha256": "99237b5576eda6721a44f1912470057c61981d930681e1a14d8e294c5ff53d30",
+          "sha256": "9f5374f522f6eaede9c5ebceff5396e72143119e176c31b9be4b63750374583c"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-15T23:29:31.789Z",
+      "note": "Only required Godot tests changed: added headless test_collaboration_production.gd to continuously protect the shared chair modules. Preserved scale_calibration and unchanged coffee geometry/layer family.",
+      "updates": [
+        {
+          "path": "dev/art-catalogue/runtime-contracts.json",
+          "previous_sha256": "9f5374f522f6eaede9c5ebceff5396e72143119e176c31b9be4b63750374583c",
+          "sha256": "29fb2fd0e1361db5a6801d2a0b4a513788af73581660b1e4f4281274a344647c"
+        }
+      ]
+    }
+  ]
 }

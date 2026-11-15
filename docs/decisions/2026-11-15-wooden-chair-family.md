@@ -1,0 +1,13 @@
+# One modest wooden chair family
+
+The starter studio should feel like a small village venture. The old workstation chair had a narrow usable seat and an ergonomic/caster silhouette inconsistent with that direction. A retained OpenAI ImageGen family now supplies a simple warm wooden back, cream cushion and four legs in all four camera directions.
+
+We preserve the96×160 module canvas and every existing work cell, hip/hand anchor, seated cut and depth. A first58px-high sample had too much back above the seated character. Shortening only that upper back gives32×43px ink; the cushion and leg pixels remain at their tested positions. The cream cushion spans26–28px in the front/back samples, with the wooden seat rail reaching32px. These measurements are surface evidence, not a claim that total image height equals physical rise. The existing seated adults determine the final usable support and camera relationship.
+
+The same six chair PNGs are referenced directly by collaboration-table profiles. A padded cluster layer previously blitted a96×160 chair at `PIVOT + chair_offset − chair_canvas/2`, then rendered the cluster canvas at `−PIVOT`. A direct native chair at `chair_offset` therefore produces the same pixels and depth. The regression reconstructs both paths and rejects a one-pixel shifted negative control. Table art, occupied cells and all16 collaboration sockets remain unchanged. Historical padded chair composites remain in the source library; they are no longer runtime bindings.
+
+The shorter south back narrows only that desk assembly's painted/hit union from `[-48,-80,96,96]` to `[-48,-71,96,87]`. The exact-union validation caught this, preventing stale hover/placement paint bounds. Collision/clearance cells remain unchanged.
+
+Evidence is retained in [the chair review folder](../web/assets/task-chair-v3/README.md). It contains all48 static seated/typing poses, real navigation entry/exit samples and before images. Root independently reviewed the four seated Mina directions. These are native production-assembly fixtures, not user-input playthroughs. Windowed capture ended at the user's explicit stop request; further automated checks run headlessly. Final integrated visual acceptance uses the existing in-app browser.
+
+Future chair changes must preserve these contact contracts, reconstruct the shared module equivalence, pass head/desk/chair occlusion tests and be reviewed beside the standing character and café seating at the same scale. Do not globally scale an assembled desk, redraw chairs separately inside table canvases, or move seated actors to disguise mismatched furniture.

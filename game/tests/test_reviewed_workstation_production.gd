@@ -3,12 +3,12 @@ extends SceneTree
 
 const CALIBRATED_FIXTURE := preload("res://tools/calibrated_workstation_fixture.gd")
 const RUNTIME_HASHES := {
-	"res://assets/runtime/office/workstations-v2/chair-east-front.png": "2bd23748783ac7a36de5ebd494ca72d594da0a7dcd9bd4ef39df0c3616b3f2ad",
-	"res://assets/runtime/office/workstations-v2/chair-east-rear.png": "7fb1c2c441b240ab2b1fb46cbdcc7b666d488e8626c136239b9151a1d02838b4",
-	"res://assets/runtime/office/workstations-v2/chair-north.png": "2cf83dd5605a7e79dfbbda137af2e102919420dfe90b411236da825e2271bd2e",
-	"res://assets/runtime/office/workstations-v2/chair-south.png": "15e9e5ce8f5e3943ffc1b4f1b63843f136cc1df71afc071a4bd5323131c943e4",
-	"res://assets/runtime/office/workstations-v2/chair-west-front.png": "b35f169215a8130a951c0a8e143c683a58a493f4a1bc5dfd751891c2c6fe186c",
-	"res://assets/runtime/office/workstations-v2/chair-west-rear.png": "a12947b65df8d7af46db8e42a3b6c5457fc88608a11b414848bb801d8b4f9cd9",
+	"res://assets/runtime/office/workstations-v2/chair-east-front.png": "1c33dea821fb5a5cc8988919d6bd8477e8eb36a26c6a6b858afd7e02b3a19e14",
+	"res://assets/runtime/office/workstations-v2/chair-east-rear.png": "d8d95f980d775a0106c6ce5d4372a6c6fb8e6ac39c7f97c3c80b9924ae5a6e67",
+	"res://assets/runtime/office/workstations-v2/chair-north.png": "181533012b18d8c167b16d66712f1c098ca72038d8e4db0209549dda16eb25a7",
+	"res://assets/runtime/office/workstations-v2/chair-south.png": "34a0e2894f089f256cef7c29ab826376e640a13fcce5e266599f19b3f4338a9c",
+	"res://assets/runtime/office/workstations-v2/chair-west-front.png": "06f55fc22a9d8a304ad0821bf1abeaaee67bd1590c2711662d3c0e77b8cceea9",
+	"res://assets/runtime/office/workstations-v2/chair-west-rear.png": "354a5cc29e1fd9c318eec3312fed3da20d9e6aa78c11819c7b44bf34b3cfd724",
 	"res://assets/runtime/office/workstations-v2/desk-east-front.png": "84955f38693eba83e5891b77fbb7c30b6a62286cc69aa40436162fcccb3c2a11",
 	"res://assets/runtime/office/workstations-v2/desk-east-rear.png": "a8f7bb9475f20ec83f7cf5d0896e90b5f646f7d15086f719bb89073a8aec9610",
 	"res://assets/runtime/office/workstations-v2/desk-north-front.png": "ce1a47d7a86766c390aea38f1b89fa56540db5b80101cb5d0090a43cb975b276",

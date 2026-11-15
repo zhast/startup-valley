@@ -250,3 +250,19 @@ boundary, keeping exact grid/position protection and the original frozen local
 snapshot for retry/movement checks. Do not remove the visitor from collision
 validation. The headless actual-worker renovation test now passes the formerly
 rejected save operations; focused projection checks also cover immutability.
+
+## 2026-11-15 — Share one modest chair family and enforce furniture scale
+
+**Decision:** Use six original wooden chair modules for both workstations and
+collaboration seating. Preserve actor contact points; compare the old padded
+and new direct rendering mathematically and test a deliberately shifted module.
+Calibrate standalone café furniture and the earned call nook with floor, seat,
+tabletop and opening landmarks. Register changed footprints through a versioned
+transaction that preserves owned items and valid saved placements.
+
+**Evidence:** [Chair decision](decisions/2026-11-15-wooden-chair-family.md),
+[same-scale audit](FURNITURE_SCALE_AUDIT.md), 21 asset/scale tooling checks,
+168 passing harness tests plus two optional skips, and four-phase headless
+renovation with nine durable edits and exact restart/lost-response recovery.
+Visual approval is scoped to these families; replacement outdoor terrain and
+the complete current browser journey remain pending.

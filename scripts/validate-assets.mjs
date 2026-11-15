@@ -95,7 +95,8 @@ export function validateAssets({ root = ROOT, baseline, reviews, contracts, allo
   const verify = (ok, message) => { if (!ok) errors.push(message); };
   verify(baseline.schema_version === 1 && baseline.status === 'legacy_snapshot_not_visual_approval', 'baseline must explicitly remain an unreviewed legacy snapshot');
   verify(contracts.schema_version === 1, 'runtime contracts schema_version must be 1');
-  if (contracts.scale_calibration !== undefined) {
+  const hasCalibratedFurniture = fs.existsSync(path.join(root, 'game/assets/runtime/office/cozy-furniture-v1'));
+  if (hasCalibratedFurniture || contracts.scale_calibration !== undefined) {
     verify(contracts.scale_calibration === SCALE_CONTRACT, 'scale calibration must use the shared furniture contract');
     errors.push(...validateFurnitureScale({ root }).errors.map(error => `Furniture scale: ${error}`));
   }

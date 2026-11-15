@@ -1,0 +1,118 @@
+{
+  "normalization": "Fixed crops -> nearest32x58; retain lower29rows at y99; shorten upper29rows to14 at y85. Binaryalpha, zero transparentRGB. Side nearframe copies rows109..159.",
+  "views": [
+    {
+      "facing": "south",
+      "canvas": [
+        96,
+        160
+      ],
+      "inkBounds": [
+        32,
+        85,
+        32,
+        43
+      ],
+      "alphaValues": [
+        0,
+        255
+      ],
+      "opaquePixels": 1013,
+      "cushionColorBoundingBox": [
+        35,
+        99,
+        60,
+        105
+      ]
+    },
+    {
+      "facing": "north",
+      "canvas": [
+        96,
+        160
+      ],
+      "inkBounds": [
+        32,
+        85,
+        32,
+        43
+      ],
+      "alphaValues": [
+        0,
+        255
+      ],
+      "opaquePixels": 994,
+      "cushionColorBoundingBox": [
+        34,
+        99,
+        61,
+        105
+      ]
+    },
+    {
+      "facing": "east",
+      "canvas": [
+        96,
+        160
+      ],
+      "inkBounds": [
+        32,
+        85,
+        32,
+        43
+      ],
+      "alphaValues": [
+        0,
+        255
+      ],
+      "opaquePixels": 702,
+      "cushionColorBoundingBox": [
+        40,
+        100,
+        60,
+        105
+      ]
+    },
+    {
+      "facing": "west",
+      "canvas": [
+        96,
+        160
+      ],
+      "inkBounds": [
+        32,
+        85,
+        32,
+        43
+      ],
+      "alphaValues": [
+        0,
+        255
+      ],
+      "opaquePixels": 711,
+      "cushionColorBoundingBox": [
+        34,
+        100,
+        55,
+        105
+      ]
+    }
+  ],
+  "deskBindings": "All4 work cells, occupied/clearance, seat/hand/hip anchors, depths, render_layers, handoff unchanged.",
+  "collaborationBindings": "All4 occupied/clearance and all16 sockets unchanged. Six shared chair source paths replace24 padded duplicates at algebraically identical offsets.",
+  "southVisualBounds": {
+    "before": [
+      -48,
+      -80,
+      96,
+      96
+    ],
+    "after": [
+      -48,
+      -71,
+      96,
+      87
+    ]
+  },
+  "generationId": "01a1e146-9490-71d0-99d4-d5691e91d349/exec-7c6977b3-bf04-43fe-b2fb-f2c62aa4ad9e.png"
+}

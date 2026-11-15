@@ -1,0 +1,779 @@
+{
+	"captures": [],
+	"catalogue_injected": false,
+	"checks": 712,
+	"default_grid": [
+		12,
+		14
+	],
+	"default_layout_sha256": "250366ea7bf74de9f85837e4d3752fcefd27963b592bd1826c77f39f7a92ceb5",
+	"entry_exit_settle_ms": 140,
+	"failures": [],
+	"native_viewport": [
+		1280,
+		720
+	],
+	"observations": {
+		"east": {
+			"approach": {
+				"frames": 271,
+				"motion_probe": {
+					"label": "east lunch entry",
+					"max_physical_step": {
+						"mira": 1.83334350585938,
+						"theo": 1.83334350585938
+					},
+					"max_visual_sample": {
+						"mira": {
+							"collaboration_handoff": true,
+							"from": [
+								461.0,
+								497.0
+							],
+							"has_target": false,
+							"physics_tick": 744,
+							"position": [
+								464.0,
+								496.0
+							],
+							"seat_offset": [
+								-6.0,
+								2.0
+							],
+							"split_layers": 2,
+							"to": [
+								458.0,
+								498.0
+							]
+						},
+						"theo": {
+							"collaboration_handoff": true,
+							"from": [
+								371.0,
+								497.0
+							],
+							"has_target": false,
+							"physics_tick": 906,
+							"position": [
+								368.0,
+								496.0
+							],
+							"seat_offset": [
+								6.0,
+								2.0
+							],
+							"split_layers": 2,
+							"to": [
+								374.0,
+								498.0
+							]
+						}
+					},
+					"max_visual_step": {
+						"mira": 3.16227769851685,
+						"theo": 3.16227769851685
+					},
+					"physics_samples": 287,
+					"reservation_conflicts": 0,
+					"split_contact_seen": {
+						"mira": true,
+						"theo": true
+					},
+					"targets": {
+						"mira": "(464.0, 496.0)",
+						"theo": "(368.0, 496.0)"
+					},
+					"unsafe_samples": 0
+				},
+				"targets": {
+					"mira": "(464.0, 496.0)",
+					"theo": "(368.0, 496.0)"
+				}
+			},
+			"hold_and_occupied_rotation": {
+				"conflicts": 2,
+				"status": "Placement canceled. Your saved room is unchanged."
+			},
+			"stages": {
+				"0": {
+					"cluster_count": 0,
+					"valid": true
+				},
+				"1": {
+					"cluster_count": 1,
+					"valid": true
+				},
+				"2": {
+					"cluster_count": 1,
+					"valid": true
+				},
+				"3": {
+					"cluster_count": 1,
+					"valid": true
+				},
+				"4": {
+					"cluster_count": 1,
+					"valid": true
+				}
+			},
+			"vacant_rotation": {
+				"from": "east",
+				"to": "south",
+				"undo_restored": "east"
+			},
+			"work_interruption": {
+				"immediate_visual_jump": {
+					"mira": 0.0,
+					"theo": 0.0
+				},
+				"motion_probe": {
+					"label": "east lunch work interruption",
+					"max_physical_step": {
+						"mira": 1.83334350585938,
+						"theo": 1.83334350585938
+					},
+					"max_visual_sample": {
+						"mira": {
+							"collaboration_handoff": true,
+							"from": [
+								452.0,
+								498.0
+							],
+							"has_target": true,
+							"physics_tick": 963,
+							"position": [
+								464.0,
+								492.333312988281
+							],
+							"seat_offset": [
+								-10.0,
+								3.0
+							],
+							"split_layers": 2,
+							"to": [
+								454.0,
+								495.0
+							]
+						},
+						"theo": {
+							"collaboration_handoff": true,
+							"from": [
+								380.0,
+								498.0
+							],
+							"has_target": true,
+							"physics_tick": 963,
+							"position": [
+								368.0,
+								492.333312988281
+							],
+							"seat_offset": [
+								10.0,
+								3.0
+							],
+							"split_layers": 2,
+							"to": [
+								378.0,
+								495.0
+							]
+						}
+					},
+					"max_visual_step": {
+						"mira": 3.60555124282837,
+						"theo": 3.60555124282837
+					},
+					"physics_samples": 330,
+					"reservation_conflicts": 0,
+					"split_contact_seen": {
+						"mira": true,
+						"theo": true
+					},
+					"targets": {
+						"mira": "(464.0, 496.0)",
+						"theo": "(368.0, 496.0)"
+					},
+					"unsafe_samples": 0
+				},
+				"route_frames": 292
+			}
+		},
+		"north": {
+			"approach": {
+				"frames": 235,
+				"motion_probe": {
+					"label": "north lunch entry",
+					"max_physical_step": {
+						"mira": 1.83334350585938,
+						"theo": 1.83334350585938
+					},
+					"max_visual_sample": {
+						"mira": {
+							"collaboration_handoff": true,
+							"from": [
+								432.0,
+								403.0
+							],
+							"has_target": false,
+							"physics_tick": 246,
+							"position": [
+								432.0,
+								400.0
+							],
+							"seat_offset": [
+								0.0,
+								6.0
+							],
+							"split_layers": 2,
+							"to": [
+								432.0,
+								406.0
+							]
+						},
+						"theo": {
+							"collaboration_handoff": true,
+							"from": [
+								432.0,
+								494.0
+							],
+							"has_target": false,
+							"physics_tick": 263,
+							"position": [
+								432.0,
+								496.0
+							],
+							"seat_offset": [
+								0.0,
+								-5.0
+							],
+							"split_layers": 2,
+							"to": [
+								432.0,
+								491.0
+							]
+						}
+					},
+					"max_visual_step": {
+						"mira": 3.0,
+						"theo": 3.0
+					},
+					"physics_samples": 251,
+					"reservation_conflicts": 0,
+					"split_contact_seen": {
+						"mira": true,
+						"theo": true
+					},
+					"targets": {
+						"mira": "(432.0, 400.0)",
+						"theo": "(432.0, 496.0)"
+					},
+					"unsafe_samples": 0
+				},
+				"targets": {
+					"mira": "(432.0, 400.0)",
+					"theo": "(432.0, 496.0)"
+				}
+			},
+			"hold_and_occupied_rotation": {
+				"conflicts": 2,
+				"status": "Placement canceled. Your saved room is unchanged."
+			},
+			"stages": {
+				"0": {
+					"cluster_count": 0,
+					"valid": true
+				},
+				"1": {
+					"cluster_count": 1,
+					"valid": true
+				},
+				"2": {
+					"cluster_count": 1,
+					"valid": true
+				},
+				"3": {
+					"cluster_count": 1,
+					"valid": true
+				},
+				"4": {
+					"cluster_count": 1,
+					"valid": true
+				}
+			},
+			"vacant_rotation": {
+				"from": "north",
+				"to": "east",
+				"undo_restored": "north"
+			},
+			"work_interruption": {
+				"immediate_visual_jump": {
+					"mira": 0.0,
+					"theo": 0.0
+				},
+				"motion_probe": {
+					"label": "north lunch work interruption",
+					"max_physical_step": {
+						"mira": 1.83334350585938,
+						"theo": 1.83334350585938
+					},
+					"max_visual_sample": {
+						"mira": {
+							"collaboration_handoff": true,
+							"from": [
+								432.0,
+								410.0
+							],
+							"has_target": true,
+							"physics_tick": 321,
+							"position": [
+								432.0,
+								396.333312988281
+							],
+							"seat_offset": [
+								0.0,
+								10.0
+							],
+							"split_layers": 2,
+							"to": [
+								432.0,
+								406.0
+							]
+						},
+						"theo": {
+							"collaboration_handoff": true,
+							"from": [
+								436.0,
+								482.0
+							],
+							"has_target": true,
+							"physics_tick": 322,
+							"position": [
+								437.500030517578,
+								496.0
+							],
+							"seat_offset": [
+								0.0,
+								-11.0
+							],
+							"split_layers": 2,
+							"to": [
+								438.0,
+								485.0
+							]
+						}
+					},
+					"max_visual_step": {
+						"mira": 4.0,
+						"theo": 3.60555124282837
+					},
+					"physics_samples": 294,
+					"reservation_conflicts": 0,
+					"split_contact_seen": {
+						"mira": true,
+						"theo": true
+					},
+					"targets": {
+						"mira": "(432.0, 400.0)",
+						"theo": "(432.0, 496.0)"
+					},
+					"unsafe_samples": 0
+				},
+				"route_frames": 256
+			}
+		},
+		"production_contract": {
+			"east": {
+				"layers": 11,
+				"occupied": 10,
+				"slots": 4
+			},
+			"north": {
+				"layers": 7,
+				"occupied": 10,
+				"slots": 4
+			},
+			"south": {
+				"layers": 7,
+				"occupied": 10,
+				"slots": 4
+			},
+			"west": {
+				"layers": 11,
+				"occupied": 10,
+				"slots": 4
+			}
+		},
+		"south": {
+			"approach": {
+				"frames": 271,
+				"motion_probe": {
+					"label": "south lunch entry",
+					"max_physical_step": {
+						"mira": 1.83334350585938,
+						"theo": 1.83334350585938
+					},
+					"max_visual_sample": {
+						"mira": {
+							"collaboration_handoff": true,
+							"from": [
+								432.0,
+								519.0
+							],
+							"has_target": false,
+							"physics_tick": 1386,
+							"position": [
+								432.0,
+								528.0
+							],
+							"seat_offset": [
+								0.0,
+								-13.0
+							],
+							"split_layers": 2,
+							"to": [
+								432.0,
+								515.0
+							]
+						},
+						"theo": {
+							"collaboration_handoff": true,
+							"from": [
+								432.0,
+								435.0
+							],
+							"has_target": false,
+							"physics_tick": 1583,
+							"position": [
+								432.0,
+								432.0
+							],
+							"seat_offset": [
+								0.0,
+								6.0
+							],
+							"split_layers": 2,
+							"to": [
+								432.0,
+								438.0
+							]
+						}
+					},
+					"max_visual_step": {
+						"mira": 4.0,
+						"theo": 3.0
+					},
+					"physics_samples": 287,
+					"reservation_conflicts": 0,
+					"split_contact_seen": {
+						"mira": true,
+						"theo": true
+					},
+					"targets": {
+						"mira": "(432.0, 528.0)",
+						"theo": "(432.0, 432.0)"
+					},
+					"unsafe_samples": 0
+				},
+				"targets": {
+					"mira": "(432.0, 528.0)",
+					"theo": "(432.0, 432.0)"
+				}
+			},
+			"hold_and_occupied_rotation": {
+				"conflicts": 2,
+				"status": "Placement canceled. Your saved room is unchanged."
+			},
+			"stages": {
+				"0": {
+					"cluster_count": 0,
+					"valid": true
+				},
+				"1": {
+					"cluster_count": 1,
+					"valid": true
+				},
+				"2": {
+					"cluster_count": 1,
+					"valid": true
+				},
+				"3": {
+					"cluster_count": 1,
+					"valid": true
+				},
+				"4": {
+					"cluster_count": 1,
+					"valid": true
+				}
+			},
+			"vacant_rotation": {
+				"from": "south",
+				"to": "west",
+				"undo_restored": "south"
+			},
+			"work_interruption": {
+				"immediate_visual_jump": {
+					"mira": 0.0,
+					"theo": 0.0
+				},
+				"motion_probe": {
+					"label": "south lunch work interruption",
+					"max_physical_step": {
+						"mira": 1.83334350585938,
+						"theo": 1.83334350585938
+					},
+					"max_visual_sample": {
+						"mira": {
+							"collaboration_handoff": true,
+							"from": [
+								439.0,
+								517.0
+							],
+							"has_target": true,
+							"physics_tick": 1642,
+							"position": [
+								441.166717529297,
+								528.0
+							],
+							"seat_offset": [
+								0.0,
+								-7.0
+							],
+							"split_layers": 2,
+							"to": [
+								441.0,
+								521.0
+							]
+						},
+						"theo": {
+							"collaboration_handoff": true,
+							"from": [
+								438.0,
+								441.0
+							],
+							"has_target": true,
+							"physics_tick": 1641,
+							"position": [
+								439.333374023438,
+								432.0
+							],
+							"seat_offset": [
+								0.0,
+								6.0
+							],
+							"split_layers": 2,
+							"to": [
+								439.0,
+								438.0
+							]
+						}
+					},
+					"max_visual_step": {
+						"mira": 4.4721360206604,
+						"theo": 3.16227769851685
+					},
+					"physics_samples": 312,
+					"reservation_conflicts": 0,
+					"split_contact_seen": {
+						"mira": true,
+						"theo": true
+					},
+					"targets": {
+						"mira": "(432.0, 528.0)",
+						"theo": "(432.0, 432.0)"
+					},
+					"unsafe_samples": 0
+				},
+				"route_frames": 274
+			}
+		},
+		"west": {
+			"approach": {
+				"frames": 235,
+				"motion_probe": {
+					"label": "west lunch entry",
+					"max_physical_step": {
+						"mira": 1.83334350585938,
+						"theo": 1.83334350585938
+					},
+					"max_visual_sample": {
+						"mira": {
+							"collaboration_handoff": true,
+							"from": [
+								339.0,
+								497.0
+							],
+							"has_target": false,
+							"physics_tick": 2044,
+							"position": [
+								336.0,
+								496.0
+							],
+							"seat_offset": [
+								6.0,
+								1.0
+							],
+							"split_layers": 2,
+							"to": [
+								342.0,
+								497.0
+							]
+						},
+						"theo": {
+							"collaboration_handoff": true,
+							"from": [
+								429.0,
+								498.0
+							],
+							"has_target": false,
+							"physics_tick": 2206,
+							"position": [
+								432.0,
+								496.0
+							],
+							"seat_offset": [
+								-6.0,
+								4.0
+							],
+							"split_layers": 2,
+							"to": [
+								426.0,
+								500.0
+							]
+						}
+					},
+					"max_visual_step": {
+						"mira": 3.0,
+						"theo": 3.60555124282837
+					},
+					"physics_samples": 251,
+					"reservation_conflicts": 0,
+					"split_contact_seen": {
+						"mira": true,
+						"theo": true
+					},
+					"targets": {
+						"mira": "(336.0, 496.0)",
+						"theo": "(432.0, 496.0)"
+					},
+					"unsafe_samples": 0
+				},
+				"targets": {
+					"mira": "(336.0, 496.0)",
+					"theo": "(432.0, 496.0)"
+				}
+			},
+			"hold_and_occupied_rotation": {
+				"conflicts": 2,
+				"status": "Placement canceled. Your saved room is unchanged."
+			},
+			"stages": {
+				"0": {
+					"cluster_count": 0,
+					"valid": true
+				},
+				"1": {
+					"cluster_count": 1,
+					"valid": true
+				},
+				"2": {
+					"cluster_count": 1,
+					"valid": true
+				},
+				"3": {
+					"cluster_count": 1,
+					"valid": true
+				},
+				"4": {
+					"cluster_count": 1,
+					"valid": true
+				}
+			},
+			"vacant_rotation": {
+				"from": "west",
+				"to": "north",
+				"undo_restored": "west"
+			},
+			"work_interruption": {
+				"immediate_visual_jump": {
+					"mira": 0.0,
+					"theo": 0.0
+				},
+				"motion_probe": {
+					"label": "west lunch work interruption",
+					"max_physical_step": {
+						"mira": 1.83334350585938,
+						"theo": 1.83334350585938
+					},
+					"max_visual_sample": {
+						"mira": {
+							"collaboration_handoff": true,
+							"from": [
+								342.0,
+								491.0
+							],
+							"has_target": true,
+							"physics_tick": 2266,
+							"position": [
+								336.0,
+								486.833282470703
+							],
+							"seat_offset": [
+								4.0,
+								1.0
+							],
+							"split_layers": 2,
+							"to": [
+								340.0,
+								488.0
+							]
+						},
+						"theo": {
+							"collaboration_handoff": true,
+							"from": [
+								423.0,
+								496.0
+							],
+							"has_target": true,
+							"physics_tick": 2265,
+							"position": [
+								432.0,
+								488.666625976562
+							],
+							"seat_offset": [
+								-6.0,
+								4.0
+							],
+							"split_layers": 2,
+							"to": [
+								426.0,
+								493.0
+							]
+						}
+					},
+					"max_visual_step": {
+						"mira": 3.60555124282837,
+						"theo": 4.24264049530029
+					},
+					"physics_samples": 294,
+					"reservation_conflicts": 0,
+					"split_contact_seen": {
+						"mira": true,
+						"theo": true
+					},
+					"targets": {
+						"mira": "(336.0, 496.0)",
+						"theo": "(432.0, 496.0)"
+					},
+					"unsafe_samples": 0
+				},
+				"route_frames": 256
+			}
+		}
+	},
+	"production_catalog_sha256": "c9af647824cbd13be19b368aee79e1ab1b7f34258204c30d834b5cd00ac09261",
+	"renderer": "headless",
+	"runtime_revision": "collaboration-cluster-v2",
+	"save_access": false,
+	"scene": "ordinary GameMain/TownRoom loaded directly from production furniture_catalog.json and office_layout.json; no injected catalogue or calibration owner",
+	"status": "production_acceptance_passed",
+	"worker_disabled": true
+}

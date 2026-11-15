@@ -155,12 +155,17 @@ func run() -> void:
 			var empty := empty_chair_desk_overlap(prop)
 			check(empty.chair_over_desk == 0, id + "/" + facing + " empty chair stays behind desk")
 			if facing == "north":
-				check(empty.overlap > 0, "North empty-chair test samples real desk intersection")
 				var chair := prop.get_node("ChairWhole") as Sprite2D
 				var original_depth := chair.z_index
+				var original_position := chair.position
+				# A modest low back correctly clears the desktop. Move the real
+				# chair into overlap only for the wrong-depth negative control.
+				if empty.overlap == 0: chair.position.y -= 16
+				check(empty_chair_desk_overlap(prop).overlap > 0, "North negative control samples real chair/desk intersection")
 				chair.z_index = roundi(prop.global_position.y) + 1
 				check(empty_chair_desk_overlap(prop).chair_over_desk > 0, "Negative control rejects raising whole chair through desktop")
 				chair.z_index = original_depth
+				chair.position = original_position
 			main.get_employee(id).show()
 		for typing: bool in [false, true]:
 			for frame: int in range(4 if typing else 2):
