@@ -1,0 +1,1284 @@
+{
+  "status": "diagnostic_not_approval",
+  "families": [
+    {
+      "id": "desk",
+      "catalog": "game/data/furniture_catalog.json",
+      "catalog_entry_sha256": "ad54c2caa5a63b457f430ac4e6a60b7a6d2b49ef3fe1b631bf0da737fbb19eb5",
+      "facings": [
+        {
+          "facing": "north",
+          "declared_visual_bounds": [
+            -48,
+            -73,
+            96,
+            109
+          ],
+          "occupied": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "layers": [
+            {
+              "name": "DeskRear",
+              "path": "game/assets/runtime/office/workstations-v2/desk-north-rear.png",
+              "sha256": "bae1dc8b8e65c2a7768761c22655f37abc87a86272f2ee1d531f1758b8583fd0",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "ink": [
+                48,
+                112,
+                96,
+                32
+              ],
+              "registered_bounds": [
+                -48,
+                -48,
+                96,
+                32
+              ]
+            },
+            {
+              "name": "DeskFront",
+              "path": "game/assets/runtime/office/workstations-v2/desk-north-front.png",
+              "sha256": "ce1a47d7a86766c390aea38f1b89fa56540db5b80101cb5d0090a43cb975b276",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "ink": [
+                48,
+                144,
+                96,
+                32
+              ],
+              "registered_bounds": [
+                -48,
+                -16,
+                96,
+                32
+              ]
+            },
+            {
+              "name": "ChairWhole",
+              "path": "game/assets/runtime/office/workstations-v2/chair-north.png",
+              "sha256": "2cf83dd5605a7e79dfbbda137af2e102919420dfe90b411236da825e2271bd2e",
+              "canvas": [
+                96,
+                160
+              ],
+              "offset": [
+                0,
+                -12
+              ],
+              "ink": [
+                32,
+                73,
+                32,
+                55
+              ],
+              "registered_bounds": [
+                -16,
+                -19,
+                32,
+                55
+              ]
+            },
+            {
+              "name": "Keyboard",
+              "path": "game/assets/runtime/office/workstations-v2/keyboard-north.png",
+              "sha256": "370b661c5d88cab4881f571f4c80a47b0d591cf7b4bc2abe8cc925934067c647",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -44
+              ],
+              "ink": [
+                79,
+                127,
+                31,
+                11
+              ],
+              "registered_bounds": [
+                -17,
+                -29,
+                31,
+                11
+              ]
+            },
+            {
+              "name": "Mouse",
+              "path": "game/assets/runtime/office/workstations-v2/mouse-north.png",
+              "sha256": "4e730bbb85f1f13e794a256b75ff297223860bd2d8d439954176674e4d48a6ad",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -44
+              ],
+              "ink": [
+                112,
+                129,
+                6,
+                8
+              ],
+              "registered_bounds": [
+                16,
+                -27,
+                6,
+                8
+              ]
+            },
+            {
+              "name": "Monitor",
+              "path": "game/assets/runtime/office/workstations-v2/monitor-north.png",
+              "sha256": "237b9e27311a0fc11dc772c0fac9a477f904bb02b7336fc0298c4f6a529f1088",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -58
+              ],
+              "ink": [
+                80,
+                97,
+                33,
+                30
+              ],
+              "registered_bounds": [
+                -16,
+                -73,
+                33,
+                30
+              ]
+            }
+          ]
+        },
+        {
+          "facing": "east",
+          "declared_visual_bounds": [
+            -36,
+            -80,
+            52,
+            128
+          ],
+          "occupied": [
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "layers": [
+            {
+              "name": "DeskRear",
+              "path": "game/assets/runtime/office/workstations-v2/desk-east-rear.png",
+              "sha256": "a8f7bb9475f20ec83f7cf5d0896e90b5f646f7d15086f719bb89073a8aec9610",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "ink": [
+                80,
+                80,
+                32,
+                96
+              ],
+              "registered_bounds": [
+                -16,
+                -80,
+                32,
+                96
+              ]
+            },
+            {
+              "name": "DeskFront",
+              "path": "game/assets/runtime/office/workstations-v2/desk-east-front.png",
+              "sha256": "84955f38693eba83e5891b77fbb7c30b6a62286cc69aa40436162fcccb3c2a11",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "ink": [
+                80,
+                84,
+                32,
+                124
+              ],
+              "registered_bounds": [
+                -16,
+                -76,
+                32,
+                124
+              ]
+            },
+            {
+              "name": "ChairRear",
+              "path": "game/assets/runtime/office/workstations-v2/chair-east-rear.png",
+              "sha256": "7fb1c2c441b240ab2b1fb46cbdcc7b666d488e8626c136239b9151a1d02838b4",
+              "canvas": [
+                96,
+                160
+              ],
+              "offset": [
+                -20,
+                -32
+              ],
+              "ink": [
+                32,
+                72,
+                32,
+                56
+              ],
+              "registered_bounds": [
+                -36,
+                -40,
+                32,
+                56
+              ]
+            },
+            {
+              "name": "ChairNearArm",
+              "path": "game/assets/runtime/office/workstations-v2/chair-east-front.png",
+              "sha256": "2bd23748783ac7a36de5ebd494ca72d594da0a7dcd9bd4ef39df0c3616b3f2ad",
+              "canvas": [
+                96,
+                160
+              ],
+              "offset": [
+                -20,
+                -32
+              ],
+              "ink": [
+                44,
+                88,
+                14,
+                14
+              ],
+              "registered_bounds": [
+                -24,
+                -24,
+                14,
+                14
+              ]
+            },
+            {
+              "name": "Keyboard",
+              "path": "game/assets/runtime/office/workstations-v2/keyboard-east.png",
+              "sha256": "0112b823fcdfe67092e35a33b8aa6a4e7d812101e6c85e12304462327d57ae91",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                6,
+                -48
+              ],
+              "ink": [
+                81,
+                115,
+                9,
+                31
+              ],
+              "registered_bounds": [
+                -9,
+                -45,
+                9,
+                31
+              ]
+            },
+            {
+              "name": "Mouse",
+              "path": "game/assets/runtime/office/workstations-v2/mouse-east.png",
+              "sha256": "6b0f4a723f41d8e03ef389757560b97a5722fa0046db52549ae33abaa2709c68",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                6,
+                -48
+              ],
+              "ink": [
+                81,
+                149,
+                9,
+                6
+              ],
+              "registered_bounds": [
+                -9,
+                -11,
+                9,
+                6
+              ]
+            },
+            {
+              "name": "Monitor",
+              "path": "game/assets/runtime/office/workstations-v2/monitor-east.png",
+              "sha256": "18856d719560ebbc634d1843f856bd20ca2264d908804436e188136482c56c34",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "ink": [
+                99,
+                108,
+                12,
+                30
+              ],
+              "registered_bounds": [
+                3,
+                -52,
+                12,
+                30
+              ]
+            }
+          ]
+        },
+        {
+          "facing": "south",
+          "declared_visual_bounds": [
+            -48,
+            -80,
+            96,
+            96
+          ],
+          "occupied": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              -1,
+              0
+            ]
+          ],
+          "layers": [
+            {
+              "name": "DeskRear",
+              "path": "game/assets/runtime/office/workstations-v2/desk-south-rear.png",
+              "sha256": "54e7bfe7f3c6760700e0aa61cb3e9eeac4cb51833bbc3fc40028b1902f7bbcc4",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "ink": [
+                52,
+                114,
+                88,
+                30
+              ],
+              "registered_bounds": [
+                -44,
+                -46,
+                88,
+                30
+              ]
+            },
+            {
+              "name": "DeskFront",
+              "path": "game/assets/runtime/office/workstations-v2/desk-south-front.png",
+              "sha256": "5e9e1eeeab65a39a73db6ffee6544d59514e43e62493859d796f5efe8183c183",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "ink": [
+                48,
+                112,
+                96,
+                64
+              ],
+              "registered_bounds": [
+                -48,
+                -48,
+                96,
+                64
+              ]
+            },
+            {
+              "name": "ChairWhole",
+              "path": "game/assets/runtime/office/workstations-v2/chair-south.png",
+              "sha256": "15e9e5ce8f5e3943ffc1b4f1b63843f136cc1df71afc071a4bd5323131c943e4",
+              "canvas": [
+                96,
+                160
+              ],
+              "offset": [
+                0,
+                -76
+              ],
+              "ink": [
+                32,
+                76,
+                32,
+                52
+              ],
+              "registered_bounds": [
+                -16,
+                -80,
+                32,
+                52
+              ]
+            },
+            {
+              "name": "Keyboard",
+              "path": "game/assets/runtime/office/workstations-v2/keyboard-south.png",
+              "sha256": "8b57a8a83600547a3f077dca2daf5e4df01836ab251764657fc7e5a66456eb89",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "ink": [
+                80,
+                112,
+                31,
+                13
+              ],
+              "registered_bounds": [
+                -16,
+                -48,
+                31,
+                13
+              ]
+            },
+            {
+              "name": "Mouse",
+              "path": "game/assets/runtime/office/workstations-v2/mouse-south.png",
+              "sha256": "35fc55d02929dfbe6785f819c5b6c990c756aefa029551c8c38b5d88ccaf53b5",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "ink": [
+                69,
+                113,
+                5,
+                8
+              ],
+              "registered_bounds": [
+                -27,
+                -47,
+                5,
+                8
+              ]
+            },
+            {
+              "name": "Monitor",
+              "path": "game/assets/runtime/office/workstations-v2/monitor-south.png",
+              "sha256": "ade1a3685651e9babb2ad8d2342ed7d944cac45ce7f33caf7ca0b7b83a41524f",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -45
+              ],
+              "ink": [
+                80,
+                109,
+                32,
+                31
+              ],
+              "registered_bounds": [
+                -16,
+                -48,
+                32,
+                31
+              ]
+            }
+          ]
+        },
+        {
+          "facing": "west",
+          "declared_visual_bounds": [
+            -16,
+            -80,
+            52,
+            128
+          ],
+          "occupied": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              -1
+            ]
+          ],
+          "layers": [
+            {
+              "name": "DeskRear",
+              "path": "game/assets/runtime/office/workstations-v2/desk-west-rear.png",
+              "sha256": "a8f7bb9475f20ec83f7cf5d0896e90b5f646f7d15086f719bb89073a8aec9610",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "ink": [
+                80,
+                80,
+                32,
+                96
+              ],
+              "registered_bounds": [
+                -16,
+                -80,
+                32,
+                96
+              ]
+            },
+            {
+              "name": "DeskFront",
+              "path": "game/assets/runtime/office/workstations-v2/desk-west-front.png",
+              "sha256": "35ec784fd856582aa9da1a737be451c09b6ba4e7388f1f850b3828e514d5e6c5",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "ink": [
+                80,
+                84,
+                32,
+                124
+              ],
+              "registered_bounds": [
+                -16,
+                -76,
+                32,
+                124
+              ]
+            },
+            {
+              "name": "ChairRear",
+              "path": "game/assets/runtime/office/workstations-v2/chair-west-rear.png",
+              "sha256": "a12947b65df8d7af46db8e42a3b6c5457fc88608a11b414848bb801d8b4f9cd9",
+              "canvas": [
+                96,
+                160
+              ],
+              "offset": [
+                20,
+                -32
+              ],
+              "ink": [
+                35,
+                72,
+                29,
+                56
+              ],
+              "registered_bounds": [
+                7,
+                -40,
+                29,
+                56
+              ]
+            },
+            {
+              "name": "ChairNearArm",
+              "path": "game/assets/runtime/office/workstations-v2/chair-west-front.png",
+              "sha256": "b35f169215a8130a951c0a8e143c683a58a493f4a1bc5dfd751891c2c6fe186c",
+              "canvas": [
+                96,
+                160
+              ],
+              "offset": [
+                20,
+                -32
+              ],
+              "ink": [
+                39,
+                89,
+                13,
+                14
+              ],
+              "registered_bounds": [
+                11,
+                -23,
+                13,
+                14
+              ]
+            },
+            {
+              "name": "Keyboard",
+              "path": "game/assets/runtime/office/workstations-v2/keyboard-west.png",
+              "sha256": "1d56652c485e9785247d88192e12b77b6a0690036c5944210a54cb85035e89de",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "ink": [
+                99,
+                115,
+                11,
+                31
+              ],
+              "registered_bounds": [
+                3,
+                -45,
+                11,
+                31
+              ]
+            },
+            {
+              "name": "Mouse",
+              "path": "game/assets/runtime/office/workstations-v2/mouse-west.png",
+              "sha256": "2c8f5ea5c4ba06d8bfc7a1d20193f0254b17a9789471c2ddd020e1bf30bd5ef4",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "ink": [
+                99,
+                103,
+                9,
+                6
+              ],
+              "registered_bounds": [
+                3,
+                -57,
+                9,
+                6
+              ]
+            },
+            {
+              "name": "Monitor",
+              "path": "game/assets/runtime/office/workstations-v2/monitor-west.png",
+              "sha256": "a70e5fc0465c2df58b9ecdb8a8309120c933a94ca348299ea29314e417d67f95",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "ink": [
+                81,
+                108,
+                12,
+                30
+              ],
+              "registered_bounds": [
+                -15,
+                -52,
+                12,
+                30
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "phone_booth",
+      "catalog": "game/data/furnishing_catalog.json",
+      "catalog_entry_sha256": "384dfcf4b86968938425a17becc1f1bd52c8872725d708a00ad2b155a81faa9c",
+      "facings": [
+        {
+          "facing": "south",
+          "declared_visual_bounds": [
+            -56,
+            -119,
+            111,
+            175
+          ],
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "layers": [
+            {
+              "name": "PhoneBoothBody",
+              "path": "game/assets/runtime/office/phone-booth-south.png",
+              "sha256": "13f132874da276515063855f045ce62a02324820e18b9af8a3e9cc1be4af4fd8",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "ink": [
+                48,
+                41,
+                96,
+                175
+              ],
+              "registered_bounds": [
+                -48,
+                -119,
+                96,
+                175
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cafe_chair",
+      "catalog": "game/data/furnishing_catalog.json",
+      "catalog_entry_sha256": "6c5d9a4574a0e4497270fa3bada8e6abb69527e4d239acad030028a7ff1a01ea",
+      "facings": [
+        {
+          "facing": "south",
+          "declared_visual_bounds": [
+            -19,
+            -20,
+            38,
+            76
+          ],
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "layers": [
+            {
+              "name": "CafeChairBody",
+              "path": "game/assets/runtime/office/cafe-chair-south.png",
+              "sha256": "9dd1295a0e41cc94351b029c0218174d566b6e25cb07fec518250f404427a23a",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "ink": [
+                77,
+                140,
+                38,
+                76
+              ],
+              "registered_bounds": [
+                -19,
+                -20,
+                38,
+                76
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "visitor_chair",
+      "catalog": "game/data/furnishing_catalog.json",
+      "catalog_entry_sha256": "60e33f4bd96cf70af769b717fa86e7a8c6a673a4f80c31b26f151fbf92c727a3",
+      "facings": [
+        {
+          "facing": "north",
+          "declared_visual_bounds": [
+            -16,
+            -48,
+            32,
+            64
+          ],
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "layers": [
+            {
+              "name": "VisitorChairV2NorthFloorShadow",
+              "path": "game/assets/runtime/office/furnishing-library/visitor_chair/north-floor_shadow.png",
+              "sha256": "023905a33e7f8a38726eb866f5ea9fcd2a7bd6f194c2c7af673ba25ac3840e89",
+              "canvas": [
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "ink": [
+                37,
+                87,
+                27,
+                25
+              ],
+              "registered_bounds": [
+                -11,
+                -9,
+                27,
+                25
+              ]
+            },
+            {
+              "name": "VisitorChairV2NorthSeatBack",
+              "path": "game/assets/runtime/office/furnishing-library/visitor_chair/north-seat_back.png",
+              "sha256": "7b33c334f10cff922dec4e4377ca01aacbedd9130151d6948af408a430c703bc",
+              "canvas": [
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "ink": [
+                32,
+                48,
+                32,
+                41
+              ],
+              "registered_bounds": [
+                -16,
+                -48,
+                32,
+                41
+              ]
+            },
+            {
+              "name": "VisitorChairV2NorthSeatFront",
+              "path": "game/assets/runtime/office/furnishing-library/visitor_chair/north-seat_front.png",
+              "sha256": "a5f3d917dc708ce149fe1d04fb54b390eb5fc8592eefa6ad6bf7d4b6483ef1c3",
+              "canvas": [
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "ink": [
+                32,
+                85,
+                32,
+                27
+              ],
+              "registered_bounds": [
+                -16,
+                -11,
+                32,
+                27
+              ]
+            }
+          ]
+        },
+        {
+          "facing": "east",
+          "declared_visual_bounds": [
+            -18,
+            -48,
+            36,
+            64
+          ],
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "layers": [
+            {
+              "name": "VisitorChairV2EastFloorShadow",
+              "path": "game/assets/runtime/office/furnishing-library/visitor_chair/east-floor_shadow.png",
+              "sha256": "520662c72f062c321e510c6e688d91bf435a7ded21db1ccb02d8e73e9278933d",
+              "canvas": [
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "ink": [
+                35,
+                89,
+                29,
+                23
+              ],
+              "registered_bounds": [
+                -13,
+                -7,
+                29,
+                23
+              ]
+            },
+            {
+              "name": "VisitorChairV2EastSeatBack",
+              "path": "game/assets/runtime/office/furnishing-library/visitor_chair/east-seat_back.png",
+              "sha256": "1979899fca2e8b84260b76322d00a03ae00d0577fca7b5510a0e0ef3da212011",
+              "canvas": [
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "ink": [
+                30,
+                48,
+                35,
+                60
+              ],
+              "registered_bounds": [
+                -18,
+                -48,
+                35,
+                60
+              ]
+            },
+            {
+              "name": "VisitorChairV2EastSeatFront",
+              "path": "game/assets/runtime/office/furnishing-library/visitor_chair/east-seat_front.png",
+              "sha256": "49321a0484a3c852985494cfdaab2de02d2b2745362a9442e927a791d3b6ae2d",
+              "canvas": [
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "ink": [
+                40,
+                83,
+                26,
+                29
+              ],
+              "registered_bounds": [
+                -8,
+                -13,
+                26,
+                29
+              ]
+            }
+          ]
+        },
+        {
+          "facing": "south",
+          "declared_visual_bounds": [
+            -17,
+            -48,
+            34,
+            64
+          ],
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "layers": [
+            {
+              "name": "VisitorChairV2SouthFloorShadow",
+              "path": "game/assets/runtime/office/furnishing-library/visitor_chair/south-floor_shadow.png",
+              "sha256": "0546c6a515666fcfff3656a638fdf85a53826bfd29d89c7179e1e41e477991d2",
+              "canvas": [
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "ink": [
+                37,
+                84,
+                27,
+                28
+              ],
+              "registered_bounds": [
+                -11,
+                -12,
+                27,
+                28
+              ]
+            },
+            {
+              "name": "VisitorChairV2SouthSeatBack",
+              "path": "game/assets/runtime/office/furnishing-library/visitor_chair/south-seat_back.png",
+              "sha256": "da7ef9847c4a1a85c32d35cd0e2309cc8e96bc08b77c48b8f4f7155b676677a3",
+              "canvas": [
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "ink": [
+                31,
+                48,
+                34,
+                41
+              ],
+              "registered_bounds": [
+                -17,
+                -48,
+                34,
+                41
+              ]
+            },
+            {
+              "name": "VisitorChairV2SouthSeatFront",
+              "path": "game/assets/runtime/office/furnishing-library/visitor_chair/south-seat_front.png",
+              "sha256": "131631b7153da3c29efab91a3e8a840d5413560adc20e16879eba1a9915cb61e",
+              "canvas": [
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "ink": [
+                32,
+                87,
+                32,
+                25
+              ],
+              "registered_bounds": [
+                -16,
+                -9,
+                32,
+                25
+              ]
+            }
+          ]
+        },
+        {
+          "facing": "west",
+          "declared_visual_bounds": [
+            -18,
+            -48,
+            36,
+            64
+          ],
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "layers": [
+            {
+              "name": "VisitorChairV2WestFloorShadow",
+              "path": "game/assets/runtime/office/furnishing-library/visitor_chair/west-floor_shadow.png",
+              "sha256": "54c33ea8c8260077ad74c6d35e0a01eae33da69ae9ead969a0ebb83873647055",
+              "canvas": [
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "ink": [
+                36,
+                89,
+                28,
+                23
+              ],
+              "registered_bounds": [
+                -12,
+                -7,
+                28,
+                23
+              ]
+            },
+            {
+              "name": "VisitorChairV2WestSeatBack",
+              "path": "game/assets/runtime/office/furnishing-library/visitor_chair/west-seat_back.png",
+              "sha256": "df660440defb0e210eba6ff2b5049dff48381af73a41a47031a308890156b6df",
+              "canvas": [
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "ink": [
+                31,
+                48,
+                35,
+                60
+              ],
+              "registered_bounds": [
+                -17,
+                -48,
+                35,
+                60
+              ]
+            },
+            {
+              "name": "VisitorChairV2WestSeatFront",
+              "path": "game/assets/runtime/office/furnishing-library/visitor_chair/west-seat_front.png",
+              "sha256": "dd99f6882e1141746fc493c31df6cec985c377a74fdd141f2b38114728436e12",
+              "canvas": [
+                96,
+                144
+              ],
+              "offset": [
+                0,
+                -24
+              ],
+              "ink": [
+                30,
+                84,
+                26,
+                28
+              ],
+              "registered_bounds": [
+                -18,
+                -12,
+                26,
+                28
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cafe_table",
+      "catalog": "game/data/furnishing_catalog.json",
+      "catalog_entry_sha256": "673bdab3498d482f83f773e7b0f42ce7d1fb744c19e40d46abdd2af22eb15cc6",
+      "facings": [
+        {
+          "facing": "south",
+          "declared_visual_bounds": [
+            -30,
+            -16,
+            60,
+            72
+          ],
+          "occupied": [
+            [
+              0,
+              0
+            ]
+          ],
+          "layers": [
+            {
+              "name": "CafeTableBody",
+              "path": "game/assets/runtime/office/cafe-table-south.png",
+              "sha256": "59d0aa3d46f150265690853d56f3133b1461485bc2f215e20440afc05a4265a3",
+              "canvas": [
+                192,
+                224
+              ],
+              "offset": [
+                0,
+                -48
+              ],
+              "ink": [
+                66,
+                144,
+                60,
+                72
+              ],
+              "registered_bounds": [
+                -30,
+                -16,
+                60,
+                72
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

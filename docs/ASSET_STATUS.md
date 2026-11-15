@@ -23,6 +23,13 @@ scale, canvas padding, ground pivots, perspective and occupied poses recorded.
 Current map visual approvals stay pending that assessment. Do not treat an
 existing geometry contract as proof that these proportions look coherent.
 
+The [native furniture audit](FURNITURE_SCALE_AUDIT.md) now confirms mixed ground
+registration, inconsistent usable seat proportions, and an oversized booth
+with an inadequate one-cell footprint. Its 39 fixture checks validate capture
+and measurements, **not visual quality**. Corrections are in progress: the
+standalone café pair/booth and the occupied office-chair family have separate
+owners. The booth correction must preserve saved furniture and ownership.
+
 ## Generated art already integrated
 
 Six accepted OpenAI image-generation treatments produced **seven changed

@@ -174,3 +174,22 @@ New or changed maps cannot use a legacy snapshot as an approval.
 beauty. Existing snapshots remain explicitly unreviewed until inspected in
 Godot. Deficient shared assets are repaired in their source workflow, rather
 than independently patched or resized in each map. See `MAP_WORKFLOW.md`.
+
+## 2026-11-15 — Calibrate furniture together with the same actors
+
+**Finding:** A native side-by-side audit confirms mixed ground registration
+and seat/enclosure proportions across office furniture. Unit sprite scale
+does not prove consistent authored dimensions. The current style board uses
+different inspection zooms and therefore cannot serve as a scale chart.
+
+**Decision:** Define seat, desktop, doorway and foot-contact landmarks against
+the unchanged actor and 32px grid. Distinguish vertical rise from projected
+floor depth. Future generation uses both the style board and a same-scale
+native calibration reference. Repair source families rather than adding
+per-map scaling. A larger booth collision footprint requires a save-preserving
+placement migration, not a reset of owned furniture.
+
+**Evidence and pending work:** `FURNITURE_SCALE_AUDIT.md` retains the native
+lineup and measured geometry. Its 39 mechanical checks pass while visual
+quality is explicitly marked corrections-required. Café chair/table, booth
+and occupied office-chair repairs remain open; map visual approval waits.
