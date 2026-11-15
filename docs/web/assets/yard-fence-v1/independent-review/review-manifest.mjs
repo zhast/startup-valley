@@ -1,0 +1,53 @@
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
+import {readFile, writeFile, readdir, lstat, mkdir, copyFile} from 'node:fs/promises';
+import {join} from 'node:path';
+const repo='/Users/openai/Documents/ChatGPT/Startup Valley/startup-valley';
+const output='/private/tmp/startup-valley-fence-final-review';
+await mkdir(output,{recursive:true});
+const digest=x=>createHash('sha256').update(x).digest('hex');
+const json=async p=>JSON.parse(await readFile(p,'utf8'));
+const baselinePath='/private/tmp/startup-valley-final-headless-evidence-copyfix/runtime-manifest.json';
+const before=await json(baselinePath);
+assert.equal(before.sha256,'f06f9176745b08fd17ed36b2302f6251789249e8e23ad17e6c549a67092ac3f9');
+const files=[];
+const excluded=['game/.godot','game/tests','game/tools','game/assets/source','game/web/templates'];
+async function visit(p) {
+ if(excluded.some(x=>p===x||p.startsWith(x+'/')))return;
+ const stat=await lstat(join(repo,p));
+ assert(!stat.isSymbolicLink(),p);
+ if(stat.isDirectory())for(const child of(await readdir(join(repo,p))).sort())await visit(p+'/'+child);
+ else if(stat.isFile()){const b=await readFile(join(repo,p));files.push({path:p,bytes:b.length,sha256:digest(b)});}
+}
+for(const p of ['game','harness/src','harness/dist','harness/migrations','contracts','web/src','harness/package.json','harness/package-lock.json','web/package.json','web/package-lock.json','godot-web.config.json'])await visit(p);
+files.sort((a,b)=>a.path.localeCompare(b.path));
+const after={sha256:digest(JSON.stringify(files)),files};
+const bm=new Map(before.files.map(f=>[f.path,f]));
+const am=new Map(files.map(f=>[f.path,f]));
+const delta=[...new Set([...bm.keys(),...am.keys()])].sort().filter(p=>bm.get(p)?.sha256!==am.get(p)?.sha256).map(p=>({path:p,before:bm.get(p)||null,after:am.get(p)||null}));
+const expected=['game/assets/runtime/office/yard-fence-v1/fence-atlas.png','game/assets/runtime/office/yard-fence-v1/fence-atlas.png.import','game/data/courtyard_layout.json','game/data/yard_fence.json','game/world/courtyard.gd','game/world/yard_fence.gd','game/world/yard_fence.gd.uid'];
+assert.deepEqual(delta.map(d=>d.path),expected);
+const protectedPaths=['game/world/office_navigation.gd','game/data/office_layout.json','game/data/office_layout_starter.json','game/actors/player_avatar.gd','game/actors/employee_avatar.gd','game/worker_client.gd'];
+const protectedFiles=files.filter(f=>['harness/src/','harness/dist/','harness/migrations/','contracts/','web/src/'].some(p=>f.path.startsWith(p))||protectedPaths.includes(f.path));
+for(const f of protectedFiles)assert.equal(f.sha256,bm.get(f.path)?.sha256,f.path);
+const git='/Applications/GitHub Desktop.app/Contents/Resources/app/git/bin/git';
+const oldLayout=execFileSync(git,['show','75618b0:game/data/courtyard_layout.json'],{cwd:repo});
+assert.equal(digest(oldLayout),bm.get('game/data/courtyard_layout.json').sha256);
+const currentLayout=await json(join(repo,'game/data/courtyard_layout.json'));
+const gates=currentLayout.boundary_gates;
+assert.deepEqual(gates,[{id:'studio-return',interaction_id:'office-return',from:[15,20],to:[17,20],approach:[15,17]}]);
+delete currentLayout.boundary_gates;
+assert.deepEqual(currentLayout,JSON.parse(oldLayout.toString()));
+const derivation=await json(join(repo,'game/assets/source/yard-fence-v1/derivation.json'));
+for(const[p,hash]of Object.entries(derivation.files))assert.equal(digest(await readFile(join(repo,p))),hash,p);
+const atlas=await readFile(join(repo,'game/assets/runtime/office/yard-fence-v1/fence-atlas.png'));
+assert.equal(digest(atlas),derivation.files['game/assets/source/yard-fence-v1/candidate-atlas.png']);
+const recipe=await json(join(repo,'game/data/yard_fence.json'));
+assert.equal(recipe.cell_size,32);assert.equal(recipe.runtime_scale,1);assert.equal(recipe.sampling,'nearest');
+for(const crop of derivation.crops){assert.deepEqual(recipe.pieces[crop.id].region,crop.region);assert.deepEqual(recipe.pieces[crop.id].pivot,crop.pivot);}
+const report={before:before.sha256,after:after.sha256,delta,protectedFilesUnchanged:protectedFiles.length,protectedPaths,courtyardLayoutDifference:'Only boundary_gates; all existing floor/navigation/paving/props/sign data deep-equal to tested baseline',sourceHashAndRecipeChecks:'passed',provenance:{tool:derivation.tool,generationId:derivation.generation_id,sourceFiles:Object.keys(derivation.files).length,atlasSHA256:digest(atlas)},note:'Visual fence + gate metadata only. No full journey rerun. Independent graph/pixel tests and unchanged simulation/save sources bridge prior clean-journey evidence; final IAB visual approval remains separate.'};
+await writeFile(join(output,'runtime-manifest.json'),JSON.stringify(after,null,2)+'\n');
+await writeFile(join(output,'runtime-delta.json'),JSON.stringify(report,null,2)+'\n');
+await copyFile(baselinePath,join(output,'pre-fence-runtime-manifest.json'));
+console.log(JSON.stringify({before:before.sha256,after:after.sha256,paths:delta.map(d=>d.path),protectedFilesUnchanged:protectedFiles.length,sourceHashAndRecipeChecks:'passed'},null,2));

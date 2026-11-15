@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "cell_size": 32,
+  "runtime_scale": 1,
+  "sampling": "nearest",
+  "atlas": "res://assets/runtime/office/yard-fence-v1/fence-atlas.png",
+  "pieces": {
+    "post": {"region": [0, 0, 16, 32], "pivot": [8, 32]},
+    "horizontal": {"region": [16, 0, 32, 32], "pivot": [0, 32]},
+    "vertical": {"region": [48, 0, 16, 64], "pivot": [8, 32]}
+  }
+}

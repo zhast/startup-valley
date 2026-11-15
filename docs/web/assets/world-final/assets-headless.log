@@ -1,0 +1,81 @@
+{
+  "ok": true,
+  "mode": "release",
+  "runtimePngs": 809,
+  "reviewedArtifacts": 18,
+  "legacySnapshotIsNotVisualApproval": true,
+  "errors": [],
+  "warnings": [],
+  "mapReview": [
+    {
+      "id": "courtyard",
+      "status": "reviewed",
+      "signature": "0e5801b7e999abe280b0c1f4f9fdb1f50cbca74fc0f79c85286ee8db7ea7d1c2"
+    },
+    {
+      "id": "starter-cottage-v1",
+      "status": "reviewed",
+      "signature": "a32b1f6eba864745079c297f5d10706c6ba6ee2772fb46c377c3512474305cd1"
+    },
+    {
+      "id": "startup-office",
+      "status": "reviewed",
+      "signature": "3500ae74254ced7cf334f24d11e2404584b4a727bf57a5acf870e325c141f3ef"
+    }
+  ]
+}
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+test_furnishing_projection: 797 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+Coffee station production: 409 checks, 0 failures; interaction intentionally disabled.
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+Reviewed workstation production: 273 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+seat_transition: 4729 checks, 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+Seated chair composition: 234 checks, 0 failures; 48 real poses
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+Collaboration production: north contract/placement
+Collaboration production: north two-actor lunch entry
+Collaboration production: north hold/occupied rotation
+Collaboration production: north paused work interruption/return
+Collaboration production: north vacant rotation/Undo
+Collaboration production: east contract/placement
+Collaboration production: east two-actor lunch entry
+Collaboration production: east hold/occupied rotation
+Collaboration production: east paused work interruption/return
+Collaboration production: east vacant rotation/Undo
+Collaboration production: south contract/placement
+Collaboration production: south two-actor lunch entry
+Collaboration production: south hold/occupied rotation
+Collaboration production: south paused work interruption/return
+Collaboration production: south vacant rotation/Undo
+Collaboration production: west contract/placement
+Collaboration production: west two-actor lunch entry
+Collaboration production: west hold/occupied rotation
+Collaboration production: west paused work interruption/return
+Collaboration production: west vacant rotation/Undo
+Collaboration production: 712 checks, 0 failures (headless)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+Idle blink: 105 checks, 0 failures

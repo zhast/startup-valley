@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "id": "modular-yard-v1",
-  "status": "candidate",
-  "reviewer": "",
-  "reviewed_at": "",
+  "status": "approved",
+  "reviewer": "Codex root (actual in-app game); asset_quality (independent fence image/geometry review)",
+  "reviewed_at": "2026-11-15T23:45:54.117Z",
   "camera_profile": "office-square-grid-v1",
   "style_profile": {
     "id": "startup-valley-cozy-pixel-v1",
@@ -133,41 +133,57 @@
       "path": "docs/web/assets/modular-yard/source-manifest.json",
       "sha256": "d90407510eac3c3a2e8736a954029f9e2b96bf72b636f9fce57b3c1b53437c79",
       "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/world-final/starter-d23a4835.jpg",
+      "sha256": "d62362c28e4046903b3e75d1c43e8c89f11d469d2b4dd511820588cb7e7bfc0f",
+      "kind": "in_game",
+      "capture_method": "in_app_browser_godot",
+      "build_id": "d23a483542544696",
+      "note": "New Company through actual UI resets to Day1, no hires; compact studio and shared native-grid yard."
+    },
+    {
+      "path": "docs/web/assets/world-final/courtyard-front-d23a4835.jpg",
+      "sha256": "6f9b0aa6e426bebd053b0609d326398e6157aa6f97421e1900921084db01355c",
+      "kind": "in_game",
+      "capture_method": "in_app_browser_godot",
+      "build_id": "d23a483542544696",
+      "note": "Current exported Godot game in hidden Codex browser,1280x720: gate, all boundary orientations, current cafe furniture and Founder lower-leg foreground occlusion."
     }
   ],
   "checks": {
     "style": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "Warm wooden fence and restrained green lawn/hedges visually match the current chairs and character world in the exported game."
     },
     "camera": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "Orthogonal top-down/front-visible camera preserved; separately generated horizontal and north-south fence parts are used without rotation."
     },
     "scale": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "32px lattice, native runtime scale1 and nearest sampling. Fence is low relative to the64px character; cafe table and chair remain calibrated."
     },
     "anchor": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "Ground pivots and contact points verified in headless geometry and current game frames; terminal gate posts align exactly with the two omitted edges."
     },
     "layering": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "Current front-edge and northwest captures show intended foreground feet occlusion and rear-fence depth. No face or torso obstruction in observed states."
     },
     "animation": {
       "result": "not_applicable",
       "note": "Static terrain modules; no animation frames."
     },
     "placement": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "Exact existing373-cell courtyard footprint yields82 exposed edges, minus the two registered Studio entrance edges. No navigation or gameplay rules changed."
     },
     "readability": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "Continuous boundary now communicates the playable region, with a visible Studio opening. Sparse hedges are decoration, not substitutes for connected boundary art."
     }
   },
-  "capture_notes": "Candidate only. First in-app build c44018e9 confirmed quieter lawn but rejected vertical hedge stamp chains. Current maps use sparse, staggered horizontal groups without bitmap changes. New in-app visual inspection remains required; no windowed Godot runs."
+  "capture_notes": "Approved current build d23a483542544696 from original hidden in-app browser captures, paired with headless geometry and actual pointer travel/reload. Historical porous and sealed variants remain rejected. Static terrain/fence approval is not proof of all character animation frames."
 }

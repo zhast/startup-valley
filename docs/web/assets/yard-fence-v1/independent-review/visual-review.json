@@ -1,0 +1,31 @@
+{
+  "status": "approved for visible final-build states",
+  "build": "d23a483542544696",
+  "runtimeFingerprint": "5e8afa18aa826a0883d0af6506aa47c96e9d405c7766fe86befe7d474c882ebd",
+  "capturedBy": "parent agent in existing Codex in-app browser",
+  "reviewedBy": "independent asset-quality agent via provided local screenshots",
+  "findings": [
+    "Front fence projects over feet/lower legs only; Founder face and torso are clear.",
+    "Studio opening is two cells wide with both terminal posts and no center post or rail.",
+    "Northwest screenshot shows coherent north/west joins and Founder drawn in front of rear boundary.",
+    "Native grid scale, wood palette, camera and occupied-yard composition are coherent in these two views."
+  ],
+  "limits": [
+    "These are static screenshots of the actual IAB build, not an independently driven browser session.",
+    "Parent owns live return-interaction and final visual acceptance. Headless tests separately establish geometry and route invariants."
+  ],
+  "captures": [
+    {
+      "path": "courtyard-front-d23a4835.jpg",
+      "source": "/private/tmp/startup-valley-iab-review/courtyard-front-d23a4835.jpg",
+      "bytes": 104686,
+      "sha256": "6f9b0aa6e426bebd053b0609d326398e6157aa6f97421e1900921084db01355c"
+    },
+    {
+      "path": "courtyard-northwest-d23a4835.jpg",
+      "source": "/private/tmp/startup-valley-iab-review/courtyard-northwest-d23a4835.jpg",
+      "bytes": 104191,
+      "sha256": "768dd329b72f8588f9099de617fadc2ba25775223d7e7e58649c3be18c82550d"
+    }
+  ]
+}

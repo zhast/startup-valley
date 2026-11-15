@@ -1,0 +1,91 @@
+{
+  "runtimeFingerprint": "5e8afa18aa826a0883d0af6506aa47c96e9d405c7766fe86befe7d474c882ebd",
+  "scope": "Independent final gated fence review; headless only; no runtime edits",
+  "files": [
+    {
+      "path": "geometry-probe.gd",
+      "bytes": 5889,
+      "sha256": "a7caf0ab84cd55d26c68135aff97017434d669ca6cd0e64ab09333bc16fbc06d"
+    },
+    {
+      "path": "geometry-results.json",
+      "bytes": 3888,
+      "sha256": "7f094ca10cac684ca755156e33cf84f7cb0218b79241fb81884dcb2d73666d33"
+    },
+    {
+      "path": "geometry.log",
+      "bytes": 162,
+      "sha256": "d55c643552716800b20917bf3991ddf00557c3ce095a10d7b6c88d2891aefa69"
+    },
+    {
+      "path": "headless-results.json",
+      "bytes": 443,
+      "sha256": "1463e3bbe3ef2566ceb32aa652fba599f59089441e5f6b00f517a7926edf54e3"
+    },
+    {
+      "path": "headless.log",
+      "bytes": 108,
+      "sha256": "fbeefbaabd4311ed1456419e171940d0adf93aaf8b8611c24c7d322f84f6538a"
+    },
+    {
+      "path": "map-tests.log",
+      "bytes": 1567,
+      "sha256": "95d47ca41f01160c8e0546e5d448949f09237d432a791f4975e447f8313c5b84"
+    },
+    {
+      "path": "routes.json",
+      "bytes": 535,
+      "sha256": "df66bca86e421cd752d3751fbf32cd15599414c156b3f87545a2df35f60f0ba3"
+    },
+    {
+      "path": "routes.log",
+      "bytes": 106,
+      "sha256": "62911b5f182059ab18521cb160fa5c26c31f14c520406f45d2d99f98493f6e4d"
+    },
+    {
+      "path": "review-manifest.mjs",
+      "bytes": 5138,
+      "sha256": "cb8d0e5d8a0c9d1b2cba19ce6cd65b249bb22652632c2ce15c661d108bdd0a6f"
+    },
+    {
+      "path": "runtime-manifest.json",
+      "bytes": 426643,
+      "sha256": "b22bdfd56d38e700dd3c4b8c53f99f66508f1bad527a2efeded3d9341953f102"
+    },
+    {
+      "path": "pre-fence-runtime-manifest.json",
+      "bytes": 425775,
+      "sha256": "77c31188cb27032096bcb6e16ef12fa1237b95e789a653b24345cd196a139b56"
+    },
+    {
+      "path": "runtime-delta.json",
+      "bytes": 3348,
+      "sha256": "3fb429c224607113475626a43f813a7a67391e444e308e2099ab1f087683e83c"
+    },
+    {
+      "path": "builder-verify.log",
+      "bytes": 62,
+      "sha256": "59161db66c2c7f94c42fb5d3002437cae69a5f586a4d7bd3f324c00b53131b8d"
+    },
+    {
+      "path": "visual-review.json",
+      "bytes": 1540,
+      "sha256": "f1ae01227a867cf6ea50093be8d5da6aecb4beca9e7730938fb5e0b171cd05cf"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3753,
+      "sha256": "2f0393b8ebc2fcfe656cd23940dfa99976a87ecb6f558a1534799840a7205285"
+    },
+    {
+      "path": "courtyard-front-d23a4835.jpg",
+      "bytes": 104686,
+      "sha256": "6f9b0aa6e426bebd053b0609d326398e6157aa6f97421e1900921084db01355c"
+    },
+    {
+      "path": "courtyard-northwest-d23a4835.jpg",
+      "bytes": 104191,
+      "sha256": "768dd329b72f8588f9099de617fadc2ba25775223d7e7e58649c3be18c82550d"
+    }
+  ]
+}

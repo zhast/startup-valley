@@ -1,12 +1,12 @@
 {
 	"captures": [],
 	"catalogue_injected": false,
-	"checks": 574,
+	"checks": 712,
 	"default_grid": [
 		12,
 		14
 	],
-	"default_layout_sha256": "820d4e7cfe206d8f7543ab421c437de2a5037299f707e5602f6a6faf299078eb",
+	"default_layout_sha256": "250366ea7bf74de9f85837e4d3752fcefd27963b592bd1826c77f39f7a92ceb5",
 	"entry_exit_settle_ms": 140,
 	"failures": [],
 	"native_viewport": [
@@ -16,7 +16,7 @@
 	"observations": {
 		"east": {
 			"approach": {
-				"frames": 217,
+				"frames": 271,
 				"motion_probe": {
 					"label": "east lunch entry",
 					"max_physical_step": {
@@ -27,67 +27,67 @@
 						"mira": {
 							"collaboration_handoff": true,
 							"from": [
-								371.0,
-								433.0
-							],
-							"has_target": false,
-							"physics_tick": 718,
-							"position": [
-								368.0,
-								432.0
-							],
-							"seat_offset": [
-								6.0,
-								1.0
-							],
-							"split_layers": 2,
-							"to": [
-								374.0,
-								433.0
-							]
-						},
-						"theo": {
-							"collaboration_handoff": true,
-							"from": [
 								461.0,
-								498.0
+								497.0
 							],
 							"has_target": false,
-							"physics_tick": 844,
+							"physics_tick": 744,
 							"position": [
 								464.0,
 								496.0
 							],
 							"seat_offset": [
 								-6.0,
-								4.0
+								2.0
 							],
 							"split_layers": 2,
 							"to": [
 								458.0,
-								500.0
+								498.0
+							]
+						},
+						"theo": {
+							"collaboration_handoff": true,
+							"from": [
+								371.0,
+								497.0
+							],
+							"has_target": false,
+							"physics_tick": 906,
+							"position": [
+								368.0,
+								496.0
+							],
+							"seat_offset": [
+								6.0,
+								2.0
+							],
+							"split_layers": 2,
+							"to": [
+								374.0,
+								498.0
 							]
 						}
 					},
 					"max_visual_step": {
-						"mira": 3.0,
-						"theo": 3.60555124282837
+						"mira": 3.16227769851685,
+						"theo": 3.16227769851685
 					},
-					"physics_samples": 233,
+					"physics_samples": 287,
 					"reservation_conflicts": 0,
 					"split_contact_seen": {
 						"mira": true,
 						"theo": true
 					},
 					"targets": {
-						"mira": "(368.0, 432.0)",
-						"theo": "(464.0, 496.0)"
+						"mira": "(464.0, 496.0)",
+						"theo": "(368.0, 496.0)"
 					},
 					"unsafe_samples": 0
 				},
 				"targets": {
-					"mira": "(368.0, 432.0)",
-					"theo": "(464.0, 496.0)"
+					"mira": "(464.0, 496.0)",
+					"theo": "(368.0, 496.0)"
 				}
 			},
 			"hold_and_occupied_rotation": {
@@ -136,70 +136,70 @@
 						"mira": {
 							"collaboration_handoff": true,
 							"from": [
-								374.0,
-								427.0
+								452.0,
+								498.0
 							],
 							"has_target": true,
-							"physics_tick": 898,
+							"physics_tick": 963,
 							"position": [
-								368.0,
-								422.833282470703
+								464.0,
+								492.333312988281
 							],
 							"seat_offset": [
-								4.0,
-								1.0
+								-10.0,
+								3.0
 							],
 							"split_layers": 2,
 							"to": [
-								372.0,
-								424.0
+								454.0,
+								495.0
 							]
 						},
 						"theo": {
 							"collaboration_handoff": true,
 							"from": [
-								455.0,
-								496.0
+								380.0,
+								498.0
 							],
 							"has_target": true,
-							"physics_tick": 897,
+							"physics_tick": 963,
 							"position": [
-								464.0,
-								488.666625976562
+								368.0,
+								492.333312988281
 							],
 							"seat_offset": [
-								-6.0,
-								4.0
+								10.0,
+								3.0
 							],
 							"split_layers": 2,
 							"to": [
-								458.0,
-								493.0
+								378.0,
+								495.0
 							]
 						}
 					},
 					"max_visual_step": {
 						"mira": 3.60555124282837,
-						"theo": 4.24264049530029
+						"theo": 3.60555124282837
 					},
-					"physics_samples": 276,
+					"physics_samples": 330,
 					"reservation_conflicts": 0,
 					"split_contact_seen": {
 						"mira": true,
 						"theo": true
 					},
 					"targets": {
-						"mira": "(368.0, 432.0)",
-						"theo": "(464.0, 496.0)"
+						"mira": "(464.0, 496.0)",
+						"theo": "(368.0, 496.0)"
 					},
 					"unsafe_samples": 0
 				},
-				"route_frames": 237
+				"route_frames": 292
 			}
 		},
 		"north": {
 			"approach": {
-				"frames": 289,
+				"frames": 235,
 				"motion_probe": {
 					"label": "north lunch entry",
 					"max_physical_step": {
@@ -210,33 +210,11 @@
 						"mira": {
 							"collaboration_handoff": true,
 							"from": [
-								368.0,
-								487.0
-							],
-							"has_target": false,
-							"physics_tick": 69,
-							"position": [
-								368.0,
-								496.0
-							],
-							"seat_offset": [
-								0.0,
-								-13.0
-							],
-							"split_layers": 2,
-							"to": [
-								368.0,
-								483.0
-							]
-						},
-						"theo": {
-							"collaboration_handoff": true,
-							"from": [
 								432.0,
 								403.0
 							],
 							"has_target": false,
-							"physics_tick": 302,
+							"physics_tick": 247,
 							"position": [
 								432.0,
 								400.0
@@ -250,27 +228,49 @@
 								432.0,
 								406.0
 							]
+						},
+						"theo": {
+							"collaboration_handoff": true,
+							"from": [
+								432.0,
+								494.0
+							],
+							"has_target": false,
+							"physics_tick": 264,
+							"position": [
+								432.0,
+								496.0
+							],
+							"seat_offset": [
+								0.0,
+								-5.0
+							],
+							"split_layers": 2,
+							"to": [
+								432.0,
+								491.0
+							]
 						}
 					},
 					"max_visual_step": {
-						"mira": 4.0,
+						"mira": 3.0,
 						"theo": 3.0
 					},
-					"physics_samples": 305,
+					"physics_samples": 251,
 					"reservation_conflicts": 0,
 					"split_contact_seen": {
 						"mira": true,
 						"theo": true
 					},
 					"targets": {
-						"mira": "(368.0, 496.0)",
-						"theo": "(432.0, 400.0)"
+						"mira": "(432.0, 400.0)",
+						"theo": "(432.0, 496.0)"
 					},
 					"unsafe_samples": 0
 				},
 				"targets": {
-					"mira": "(368.0, 496.0)",
-					"theo": "(432.0, 400.0)"
+					"mira": "(432.0, 400.0)",
+					"theo": "(432.0, 496.0)"
 				}
 			},
 			"hold_and_occupied_rotation": {
@@ -319,65 +319,65 @@
 						"mira": {
 							"collaboration_handoff": true,
 							"from": [
-								361.0,
-								485.0
+								432.0,
+								410.0
 							],
 							"has_target": true,
-							"physics_tick": 356,
+							"physics_tick": 322,
 							"position": [
-								358.833282470703,
-								496.0
+								432.0,
+								396.333312988281
 							],
 							"seat_offset": [
 								0.0,
-								-7.0
+								10.0
 							],
 							"split_layers": 2,
 							"to": [
-								359.0,
-								489.0
+								432.0,
+								406.0
 							]
 						},
 						"theo": {
 							"collaboration_handoff": true,
 							"from": [
-								438.0,
-								409.0
+								436.0,
+								482.0
 							],
 							"has_target": true,
-							"physics_tick": 355,
+							"physics_tick": 323,
 							"position": [
-								439.333374023438,
-								400.0
+								437.500030517578,
+								496.0
 							],
 							"seat_offset": [
 								0.0,
-								6.0
+								-11.0
 							],
 							"split_layers": 2,
 							"to": [
-								439.0,
-								406.0
+								438.0,
+								485.0
 							]
 						}
 					},
 					"max_visual_step": {
-						"mira": 4.4721360206604,
-						"theo": 3.16227769851685
+						"mira": 4.0,
+						"theo": 3.60555124282837
 					},
-					"physics_samples": 258,
+					"physics_samples": 294,
 					"reservation_conflicts": 0,
 					"split_contact_seen": {
 						"mira": true,
 						"theo": true
 					},
 					"targets": {
-						"mira": "(368.0, 496.0)",
-						"theo": "(432.0, 400.0)"
+						"mira": "(432.0, 400.0)",
+						"theo": "(432.0, 496.0)"
 					},
 					"unsafe_samples": 0
 				},
-				"route_frames": 219
+				"route_frames": 256
 			}
 		},
 		"production_contract": {
@@ -404,7 +404,7 @@
 		},
 		"south": {
 			"approach": {
-				"frames": 217,
+				"frames": 271,
 				"motion_probe": {
 					"label": "south lunch entry",
 					"max_physical_step": {
@@ -415,13 +415,35 @@
 						"mira": {
 							"collaboration_handoff": true,
 							"from": [
-								368.0,
+								432.0,
+								519.0
+							],
+							"has_target": false,
+							"physics_tick": 1386,
+							"position": [
+								432.0,
+								528.0
+							],
+							"seat_offset": [
+								0.0,
+								-13.0
+							],
+							"split_layers": 2,
+							"to": [
+								432.0,
+								515.0
+							]
+						},
+						"theo": {
+							"collaboration_handoff": true,
+							"from": [
+								432.0,
 								435.0
 							],
 							"has_target": false,
-							"physics_tick": 1350,
+							"physics_tick": 1583,
 							"position": [
-								368.0,
+								432.0,
 								432.0
 							],
 							"seat_offset": [
@@ -430,52 +452,30 @@
 							],
 							"split_layers": 2,
 							"to": [
-								368.0,
+								432.0,
 								438.0
-							]
-						},
-						"theo": {
-							"collaboration_handoff": true,
-							"from": [
-								432.0,
-								526.0
-							],
-							"has_target": false,
-							"physics_tick": 1403,
-							"position": [
-								432.0,
-								528.0
-							],
-							"seat_offset": [
-								0.0,
-								-5.0
-							],
-							"split_layers": 2,
-							"to": [
-								432.0,
-								523.0
 							]
 						}
 					},
 					"max_visual_step": {
-						"mira": 3.0,
+						"mira": 4.0,
 						"theo": 3.0
 					},
-					"physics_samples": 233,
+					"physics_samples": 287,
 					"reservation_conflicts": 0,
 					"split_contact_seen": {
 						"mira": true,
 						"theo": true
 					},
 					"targets": {
-						"mira": "(368.0, 432.0)",
-						"theo": "(432.0, 528.0)"
+						"mira": "(432.0, 528.0)",
+						"theo": "(432.0, 432.0)"
 					},
 					"unsafe_samples": 0
 				},
 				"targets": {
-					"mira": "(368.0, 432.0)",
-					"theo": "(432.0, 528.0)"
+					"mira": "(432.0, 528.0)",
+					"theo": "(432.0, 432.0)"
 				}
 			},
 			"hold_and_occupied_rotation": {
@@ -524,51 +524,51 @@
 						"mira": {
 							"collaboration_handoff": true,
 							"from": [
-								368.0,
-								442.0
+								439.0,
+								517.0
 							],
 							"has_target": true,
-							"physics_tick": 1455,
+							"physics_tick": 1643,
 							"position": [
-								368.0,
-								428.333312988281
+								441.166717529297,
+								528.0
 							],
 							"seat_offset": [
 								0.0,
-								10.0
+								-7.0
 							],
 							"split_layers": 2,
 							"to": [
-								368.0,
-								438.0
+								441.0,
+								521.0
 							]
 						},
 						"theo": {
 							"collaboration_handoff": true,
 							"from": [
-								436.0,
-								514.0
+								438.0,
+								441.0
 							],
 							"has_target": true,
-							"physics_tick": 1456,
+							"physics_tick": 1642,
 							"position": [
-								437.500030517578,
-								528.0
+								439.333374023438,
+								432.0
 							],
 							"seat_offset": [
 								0.0,
-								-11.0
+								6.0
 							],
 							"split_layers": 2,
 							"to": [
-								438.0,
-								517.0
+								439.0,
+								438.0
 							]
 						}
 					},
 					"max_visual_step": {
-						"mira": 4.0,
-						"theo": 3.60555124282837
+						"mira": 4.4721360206604,
+						"theo": 3.16227769851685
 					},
 					"physics_samples": 312,
 					"reservation_conflicts": 0,
@@ -577,17 +577,17 @@
 						"theo": true
 					},
 					"targets": {
-						"mira": "(368.0, 432.0)",
-						"theo": "(432.0, 528.0)"
+						"mira": "(432.0, 528.0)",
+						"theo": "(432.0, 432.0)"
 					},
 					"unsafe_samples": 0
 				},
-				"route_frames": 273
+				"route_frames": 274
 			}
 		},
 		"west": {
 			"approach": {
-				"frames": 289,
+				"frames": 235,
 				"motion_probe": {
 					"label": "west lunch entry",
 					"max_physical_step": {
@@ -598,67 +598,67 @@
 						"mira": {
 							"collaboration_handoff": true,
 							"from": [
-								429.0,
-								433.0
-							],
-							"has_target": false,
-							"physics_tick": 1910,
-							"position": [
-								432.0,
-								432.0
-							],
-							"seat_offset": [
-								-6.0,
-								2.0
-							],
-							"split_layers": 2,
-							"to": [
-								426.0,
-								434.0
-							]
-						},
-						"theo": {
-							"collaboration_handoff": true,
-							"from": [
 								339.0,
 								497.0
 							],
 							"has_target": false,
-							"physics_tick": 2072,
+							"physics_tick": 2045,
 							"position": [
 								336.0,
 								496.0
 							],
 							"seat_offset": [
 								6.0,
-								2.0
+								1.0
 							],
 							"split_layers": 2,
 							"to": [
 								342.0,
+								497.0
+							]
+						},
+						"theo": {
+							"collaboration_handoff": true,
+							"from": [
+								429.0,
 								498.0
+							],
+							"has_target": false,
+							"physics_tick": 2207,
+							"position": [
+								432.0,
+								496.0
+							],
+							"seat_offset": [
+								-6.0,
+								4.0
+							],
+							"split_layers": 2,
+							"to": [
+								426.0,
+								500.0
 							]
 						}
 					},
 					"max_visual_step": {
-						"mira": 3.16227769851685,
-						"theo": 3.16227769851685
+						"mira": 3.0,
+						"theo": 3.60555124282837
 					},
-					"physics_samples": 305,
+					"physics_samples": 251,
 					"reservation_conflicts": 0,
 					"split_contact_seen": {
 						"mira": true,
 						"theo": true
 					},
 					"targets": {
-						"mira": "(432.0, 432.0)",
-						"theo": "(336.0, 496.0)"
+						"mira": "(336.0, 496.0)",
+						"theo": "(432.0, 496.0)"
 					},
 					"unsafe_samples": 0
 				},
 				"targets": {
-					"mira": "(432.0, 432.0)",
-					"theo": "(336.0, 496.0)"
+					"mira": "(336.0, 496.0)",
+					"theo": "(432.0, 496.0)"
 				}
 			},
 			"hold_and_occupied_rotation": {
@@ -707,69 +707,69 @@
 						"mira": {
 							"collaboration_handoff": true,
 							"from": [
-								420.0,
-								434.0
+								342.0,
+								491.0
 							],
 							"has_target": true,
-							"physics_tick": 2123,
+							"physics_tick": 2267,
 							"position": [
-								432.0,
-								428.333312988281
+								336.0,
+								486.833282470703
 							],
 							"seat_offset": [
-								-10.0,
-								3.0
+								4.0,
+								1.0
 							],
 							"split_layers": 2,
 							"to": [
-								422.0,
-								431.0
+								340.0,
+								488.0
 							]
 						},
 						"theo": {
 							"collaboration_handoff": true,
 							"from": [
-								348.0,
-								498.0
+								423.0,
+								496.0
 							],
 							"has_target": true,
-							"physics_tick": 2123,
+							"physics_tick": 2266,
 							"position": [
-								336.0,
-								492.333312988281
+								432.0,
+								488.666625976562
 							],
 							"seat_offset": [
-								10.0,
-								3.0
+								-6.0,
+								4.0
 							],
 							"split_layers": 2,
 							"to": [
-								346.0,
-								495.0
+								426.0,
+								493.0
 							]
 						}
 					},
 					"max_visual_step": {
 						"mira": 3.60555124282837,
-						"theo": 3.60555124282837
+						"theo": 4.24264049530029
 					},
-					"physics_samples": 348,
+					"physics_samples": 294,
 					"reservation_conflicts": 0,
 					"split_contact_seen": {
 						"mira": true,
 						"theo": true
 					},
 					"targets": {
-						"mira": "(432.0, 432.0)",
-						"theo": "(336.0, 496.0)"
+						"mira": "(336.0, 496.0)",
+						"theo": "(432.0, 496.0)"
 					},
 					"unsafe_samples": 0
 				},
-				"route_frames": 309
+				"route_frames": 256
 			}
 		}
 	},
-	"production_catalog_sha256": "36f81e5d20ee0894e66657bcfcdb275c69266bd48116f3d324c8df37f484b883",
+	"production_catalog_sha256": "c9af647824cbd13be19b368aee79e1ab1b7f34258204c30d834b5cd00ac09261",
 	"renderer": "headless",
 	"runtime_revision": "collaboration-cluster-v2",
 	"save_access": false,

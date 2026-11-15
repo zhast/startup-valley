@@ -1,0 +1,95 @@
+{
+  "before": "f06f9176745b08fd17ed36b2302f6251789249e8e23ad17e6c549a67092ac3f9",
+  "after": "5e8afa18aa826a0883d0af6506aa47c96e9d405c7766fe86befe7d474c882ebd",
+  "delta": [
+    {
+      "path": "game/assets/runtime/office/yard-fence-v1/fence-atlas.png",
+      "before": null,
+      "after": {
+        "path": "game/assets/runtime/office/yard-fence-v1/fence-atlas.png",
+        "bytes": 2232,
+        "sha256": "dcb0c32a484bd5408344d84e9d11227fcb8a9b9eb05b582809a0af28cc9b6fe4"
+      }
+    },
+    {
+      "path": "game/assets/runtime/office/yard-fence-v1/fence-atlas.png.import",
+      "before": null,
+      "after": {
+        "path": "game/assets/runtime/office/yard-fence-v1/fence-atlas.png.import",
+        "bytes": 972,
+        "sha256": "82053c6a7ef3ff664848f017bef7d5a50db739aff4b377fad3eb1b75f6d898a2"
+      }
+    },
+    {
+      "path": "game/data/courtyard_layout.json",
+      "before": {
+        "path": "game/data/courtyard_layout.json",
+        "bytes": 1724,
+        "sha256": "d4e6797272d9d5bba1e2ec7065fff7dac6d67f9c5ac3657c986dee63b4d932be"
+      },
+      "after": {
+        "path": "game/data/courtyard_layout.json",
+        "bytes": 1978,
+        "sha256": "d1fbfbaf4d04a335544de2f8600d97307fc5bc25b84a4072cbf19dafca9d4324"
+      }
+    },
+    {
+      "path": "game/data/yard_fence.json",
+      "before": null,
+      "after": {
+        "path": "game/data/yard_fence.json",
+        "bytes": 368,
+        "sha256": "1bf2a474aff6e38d1be0f299a28ccf14bafd013f49ce2b10aa0bade5d65878f5"
+      }
+    },
+    {
+      "path": "game/world/courtyard.gd",
+      "before": {
+        "path": "game/world/courtyard.gd",
+        "bytes": 3228,
+        "sha256": "daa6c6362010cb0edc62805190bbfc34adde69f555e53171c0cca5266c00e42a"
+      },
+      "after": {
+        "path": "game/world/courtyard.gd",
+        "bytes": 3502,
+        "sha256": "1b13725552c3639a0aa4a5460fc2b8f69312d8ae71058a9d06167033c30ea898"
+      }
+    },
+    {
+      "path": "game/world/yard_fence.gd",
+      "before": null,
+      "after": {
+        "path": "game/world/yard_fence.gd",
+        "bytes": 3593,
+        "sha256": "e19031877001b6739b2a52f1168f947dec77c829b7e27af2bc4650891b1d42fe"
+      }
+    },
+    {
+      "path": "game/world/yard_fence.gd.uid",
+      "before": null,
+      "after": {
+        "path": "game/world/yard_fence.gd.uid",
+        "bytes": 20,
+        "sha256": "22693846c9c9433577c9942805a5bf02e3c3b980a53b4649cd3ea57006c19837"
+      }
+    }
+  ],
+  "protectedFilesUnchanged": 170,
+  "protectedPaths": [
+    "game/world/office_navigation.gd",
+    "game/data/office_layout.json",
+    "game/data/office_layout_starter.json",
+    "game/actors/player_avatar.gd",
+    "game/actors/employee_avatar.gd",
+    "game/worker_client.gd"
+  ],
+  "courtyardLayoutDifference": "Only boundary_gates; all existing floor/navigation/paving/props/sign data deep-equal to tested baseline",
+  "sourceHashAndRecipeChecks": "passed",
+  "provenance": {
+    "tool": "built-in image_gen",
+    "generationId": "exec-0fafe280-0668-454a-bf30-cc892f6181cb",
+    "sourceFiles": 7,
+    "atlasSHA256": "dcb0c32a484bd5408344d84e9d11227fcb8a9b9eb05b582809a0af28cc9b6fe4"
+  },
+  "note": "Visual fence + gate metadata only. No full journey rerun. Independent graph/pixel tests and unchanged simulation/save sources bridge prior clean-journey evidence; final IAB visual approval remains separate."
+}

@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "id": "yard-fence-v1",
+  "status": "approved",
+  "reviewer": "Codex root (actual in-app game); asset_quality (independent fence image/geometry review)",
+  "reviewed_at": "2026-11-15T23:45:54.117Z",
+  "camera_profile": "office-square-grid-v1",
+  "style_profile": {
+    "id": "startup-valley-cozy-pixel-v1",
+    "path": "dev/art-catalogue/style-profile.json",
+    "sha256": "c7c4834623a482bb976abf27bcc976f72d5b83df59a66bb93af00a49d1589fe7",
+    "application": "generation_reference",
+    "reference_board": {
+      "path": "dev/art-catalogue/style-reference-board.png",
+      "sha256": "d91ba07ace9aef1d7e82c0daf55621afb57636d08376feae5ef8900623ba8283",
+      "note": "Code-arranged existing reference pixels; characters at3×, phone/floor at2×, window at1×, paper/desk at3×. Zoom is for inspection, not a change in runtime scale."
+    },
+    "references": [
+      {
+        "id": "founder-idle",
+        "path": "dev/art-catalogue/style-references/founder-idle.png",
+        "sha256": "d01a61aac781bea83902877ab96f45087bfb9ac8d0e3d6801fecf642cc1aa756"
+      },
+      {
+        "id": "mina-idle",
+        "path": "dev/art-catalogue/style-references/mina-idle.png",
+        "sha256": "3a8ad37498e9945a4bbeca8567db757b97b28f496c6e9294d11a707d8bd7e1df"
+      },
+      {
+        "id": "phone-booth",
+        "path": "dev/art-catalogue/style-references/phone-booth.png",
+        "sha256": "13f132874da276515063855f045ce62a02324820e18b9af8a3e9cc1be4af4fd8"
+      },
+      {
+        "id": "desk-front",
+        "path": "dev/art-catalogue/style-references/desk-front.png",
+        "sha256": "adb3458aa63d799af6f9a07723523344d63b82772e6d77f03e8da96137c02f21"
+      },
+      {
+        "id": "desk-rear",
+        "path": "dev/art-catalogue/style-references/desk-rear.png",
+        "sha256": "d5e167d93d424fcfddbb00f1cb85217aa69b3de4ee5f4b67036c0830754d29c4"
+      },
+      {
+        "id": "oak-floor",
+        "path": "dev/art-catalogue/style-references/oak-floor.png",
+        "sha256": "851eadbadcfcaf5eaeb4f30a5679d797e42409ac4ffba95d0c71fc591473db66"
+      },
+      {
+        "id": "office-window",
+        "path": "dev/art-catalogue/style-references/office-window.png",
+        "sha256": "cca8896dac6640c452ba2c7148a6f551be4e2d9c2ac793f7439e3501d8863571"
+      },
+      {
+        "id": "paper-frame",
+        "path": "dev/art-catalogue/style-references/paper-frame.png",
+        "sha256": "3a07014154ae2d624f52b563db4befaa1b3f22ed82bc440213d69251caa8111b"
+      }
+    ]
+  },
+  "provenance": {
+    "kind": "openai_imagegen",
+    "note": "Original generated three-part fence kit; reference board and current wooden chair family supplied for shared camera, wood colors and pixel density.",
+    "sources": [
+      {
+        "path": "game/assets/source/yard-fence-v1/generated-kit.png",
+        "sha256": "b394134587ed26e7b806996470366f4c614dafe01ed26b777865e0c0896026a3"
+      },
+      {
+        "path": "game/assets/source/yard-fence-v1/derivation.json",
+        "sha256": "730753b281e766ee30fd2e7ac04454c8c370133535a106f3bb85d6c896020db7"
+      },
+      {
+        "path": "docs/web/assets/task-chair-v3/normalized-four-views.png",
+        "sha256": "64e93a1e0bfd6404598eb741ac30018f00b70058d9618ed6cef2d616b092208a"
+      }
+    ],
+    "prompt": {
+      "path": "game/assets/source/yard-fence-v1/prompt.txt",
+      "sha256": "07bbb0e870b08e9f9ad8e26d74fe9f9f0084be75b5e41bbada18ca0fa3d880e0"
+    },
+    "generation_id": "exec-0fafe280-0668-454a-bf30-cc892f6181cb",
+    "transform": "dev/tools/build_yard_fence.mjs: separate alpha-bound crops, explicit nearest native sizes, binaryalpha128, fixed64x64 atlas. Separate generated north-south rail, no image rotation or runtime scaling."
+  },
+  "artifacts": [
+    {
+      "path": "game/assets/runtime/office/yard-fence-v1/fence-atlas.png",
+      "sha256": "dcb0c32a484bd5408344d84e9d11227fcb8a9b9eb05b582809a0af28cc9b6fe4"
+    }
+  ],
+  "bindings": [
+    {
+      "path": "game/world/yard_fence.gd",
+      "sha256": "e19031877001b6739b2a52f1168f947dec77c829b7e27af2bc4650891b1d42fe"
+    },
+    {
+      "path": "game/world/courtyard.gd",
+      "sha256": "1b13725552c3639a0aa4a5460fc2b8f69312d8ae71058a9d06167033c30ea898"
+    },
+    {
+      "path": "game/world/office_navigation.gd",
+      "sha256": "7889f1e6984df0822b10b6a1bc38e5449f354c4afb0f1f83fe6db769c5888909"
+    },
+    {
+      "path": "game/data/yard_fence.json",
+      "sha256": "1bf2a474aff6e38d1be0f299a28ccf14bafd013f49ce2b10aa0bade5d65878f5"
+    },
+    {
+      "path": "game/data/courtyard_layout.json",
+      "sha256": "d1fbfbaf4d04a335544de2f8600d97307fc5bc25b84a4072cbf19dafca9d4324"
+    },
+    {
+      "path": "game/tests/test_yard_fence.gd",
+      "sha256": "39cd826ea6b3486a1be2b02b1b1a6cb9b095656c2f9ac333bc65b40596af397f"
+    },
+    {
+      "path": "game/tests/test_map_review.gd",
+      "sha256": "6cb20d64c1593d7ced48480c23973009a9ad026528e18a03f42483b2579d9d1f"
+    },
+    {
+      "path": "dev/tools/build_yard_fence.mjs",
+      "sha256": "3ae911abed94997a8d3eed5b7fda4d367d07df3e200f4124c91f42e030c27e2f"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "docs/web/assets/yard-fence-v1/headless-results.json",
+      "sha256": "1463e3bbe3ef2566ceb32aa652fba599f59089441e5f6b00f517a7926edf54e3",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/yard-fence-v1/routes.json",
+      "sha256": "df66bca86e421cd752d3751fbf32cd15599414c156b3f87545a2df35f60f0ba3",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/yard-fence-v1/source-manifest.json",
+      "sha256": "968ba197cd4b4c02d89f117a5f45576350bfc70d5170307cb2eae8e5009340f1",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/world-final/courtyard-front-d23a4835.jpg",
+      "sha256": "6f9b0aa6e426bebd053b0609d326398e6157aa6f97421e1900921084db01355c",
+      "kind": "in_game",
+      "capture_method": "in_app_browser_godot",
+      "build_id": "d23a483542544696",
+      "note": "Current exported Godot game in hidden Codex browser,1280x720: gate, all boundary orientations, current cafe furniture and Founder lower-leg foreground occlusion."
+    },
+    {
+      "path": "docs/web/assets/world-final/courtyard-northwest-d23a4835.jpg",
+      "sha256": "768dd329b72f8588f9099de617fadc2ba25775223d7e7e58649c3be18c82550d",
+      "kind": "in_game",
+      "capture_method": "in_app_browser_godot",
+      "build_id": "d23a483542544696",
+      "note": "Actual pointer walk from south edge to northwest; continuous joins, rear-fence depth and unobstructed character face/body."
+    }
+  ],
+  "checks": {
+    "style": {
+      "result": "passed",
+      "note": "Warm wooden fence and restrained green lawn/hedges visually match the current chairs and character world in the exported game."
+    },
+    "camera": {
+      "result": "passed",
+      "note": "Orthogonal top-down/front-visible camera preserved; separately generated horizontal and north-south fence parts are used without rotation."
+    },
+    "scale": {
+      "result": "passed",
+      "note": "32px lattice, native runtime scale1 and nearest sampling. Fence is low relative to the64px character; cafe table and chair remain calibrated."
+    },
+    "anchor": {
+      "result": "passed",
+      "note": "Ground pivots and contact points verified in headless geometry and current game frames; terminal gate posts align exactly with the two omitted edges."
+    },
+    "layering": {
+      "result": "passed",
+      "note": "Current front-edge and northwest captures show intended foreground feet occlusion and rear-fence depth. No face or torso obstruction in observed states."
+    },
+    "animation": {
+      "result": "not_applicable",
+      "note": "Static fence modules."
+    },
+    "placement": {
+      "result": "passed",
+      "note": "Exact existing373-cell courtyard footprint yields82 exposed edges, minus the two registered Studio entrance edges. No navigation or gameplay rules changed."
+    },
+    "readability": {
+      "result": "passed",
+      "note": "Continuous boundary now communicates the playable region, with a visible Studio opening. Sparse hedges are decoration, not substitutes for connected boundary art."
+    }
+  },
+  "capture_notes": "Approved current build d23a483542544696 from original hidden in-app browser captures, paired with headless geometry and actual pointer travel/reload. Historical porous and sealed variants remain rejected. Static terrain/fence approval is not proof of all character animation frames."
+}

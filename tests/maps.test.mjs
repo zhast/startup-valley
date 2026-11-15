@@ -182,6 +182,49 @@ test('world profile, scale and grid stay aligned with canonical assets', t => {
   assert.match(validateMaps(f.options).errors.join('\n'), /canonical 32px grid/);
 });
 
+test('connected boundary art and registration are bound to its map review', t => {
+  const f = fixture(t), atlas = Buffer.from(f.png);
+  atlas.writeUInt32BE(64, 16); atlas.writeUInt32BE(64, 20);
+  f.write('game/assets/runtime/fence.png', atlas);
+  f.manifest.boundary = 'game/data/fence.json';
+  const recipe = { cell_size: 32, runtime_scale: 1, sampling: 'nearest', atlas: 'res://assets/runtime/fence.png', pieces: {
+    post: { region: [0, 0, 16, 32], pivot: [8, 32] }, horizontal: { region: [16, 0, 32, 32], pivot: [0, 32] }, vertical: { region: [48, 0, 16, 64], pivot: [8, 32] },
+  } };
+  f.write(f.manifest.boundary, recipe);
+  const before = inspectMap(f.root, f.manifest).signature;
+  recipe.pieces.vertical.pivot = [7, 32]; f.write(f.manifest.boundary, recipe);
+  assert.notEqual(inspectMap(f.root, f.manifest).signature, before);
+  recipe.pieces.vertical.region[0] = 49; f.write(f.manifest.boundary, recipe);
+  assert.match(validateMaps({ ...f.options, allowUnreviewed: true }).errors.join('\n'), /boundary vertical module crop/);
+  recipe.pieces.vertical.region[0] = 48; recipe.pieces.post.pivot = [8, 33]; f.write(f.manifest.boundary, recipe);
+  assert.match(validateMaps({ ...f.options, allowUnreviewed: true }).errors.join('\n'), /boundary post ground pivot/);
+});
+
+test('courtyard gate can omit only the existing paved Studio return edges', t => {
+  const f = fixture(t), atlas = Buffer.from(f.png);
+  atlas.writeUInt32BE(64, 16); atlas.writeUInt32BE(64, 20);
+  f.write('game/assets/runtime/fence.png', atlas);
+  f.manifest.boundary = 'game/data/fence.json';
+  f.write(f.manifest.boundary, { cell_size: 32, runtime_scale: 1, sampling: 'nearest', atlas: 'res://assets/runtime/fence.png', pieces: {
+    post: { region: [0, 0, 16, 32], pivot: [8, 32] }, horizontal: { region: [16, 0, 32, 32], pivot: [0, 32] }, vertical: { region: [48, 0, 16, 64], pivot: [8, 32] },
+  } });
+  f.manifest.adapter = 'courtyard_json'; f.manifest.modules.push('game/world/courtyard.gd');
+  f.layout.walkable_rects = f.layout.floor_rects; f.layout.story_approach = [4, 4]; f.layout.paving_rects = [[1, 7, 2, 1]];
+  f.layout.boundary_gates = [{ id: 'studio-return', interaction_id: 'office-return', from: [1, 8], to: [3, 8], approach: [1, 1] }];
+  f.write(f.manifest.source, f.layout);
+  f.write('game/world/courtyard.gd', 'const LAYOUT_PATH := "res://data/fixture.json"\nconst SPAWN := Vector2(48, 48)\nconst THEO_APPROACH := Vector2(144, 144)\ncatalogue.resolve_profile(kind, "south")\nreturn_sign.position = Vector2(48, 240)\nif return_sign.hit(point): return {"id": "office-return", "kind": "story", "point": SPAWN}\n');
+  const options = { ...f.options, allowUnreviewed: true };
+  assert.equal(validateMaps(options).ok, true);
+  f.layout.boundary_gates[0].interaction_id = 'unimplemented-door'; f.write(f.manifest.source, f.layout);
+  assert.match(validateMaps(options).errors.join('\n'), /existing return interaction/);
+  f.layout.boundary_gates[0].interaction_id = 'office-return'; f.layout.boundary_gates[0].to[0] = 4; f.write(f.manifest.source, f.layout);
+  assert.match(validateMaps(options).errors.join('\n'), /two-cell south opening/);
+  f.layout.boundary_gates[0].to[0] = 3; f.layout.paving_rects = [[1, 7, 1, 1]]; f.write(f.manifest.source, f.layout);
+  assert.match(validateMaps(options).errors.join('\n'), /existing return paving/);
+  f.layout.boundary_gates = []; f.write(f.manifest.source, f.layout);
+  assert.match(validateMaps(options).errors.join('\n'), /exactly its existing Studio return gate/);
+});
+
 test('retired reference cannot silently return to runtime', t => {
   const f = fixture(t); f.write('game/data/retired.json', f.layout);
   f.options.baseline.retired = { 'game/data/retired.json': { sha256: sha256(fs.readFileSync(path.join(f.root, 'game/data/retired.json'))), reason: 'Fixture retired reference.' } };

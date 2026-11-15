@@ -1,0 +1,98 @@
+{
+  "tool": "built-in image_gen",
+  "generation_id": "exec-0fafe280-0668-454a-bf30-cc892f6181cb",
+  "style_profile": "startup-valley-cozy-pixel-v1",
+  "operations": "Per-component alpha bounds, explicit nearest resize, binary alpha at128, fixed atlas placement. No raster rotation, repainting or runtime scaling.",
+  "crops": [
+    {
+      "id": "post",
+      "size": [
+        10,
+        24
+      ],
+      "at": [
+        3,
+        8
+      ],
+      "region": [
+        0,
+        0,
+        16,
+        32
+      ],
+      "pivot": [
+        8,
+        32
+      ],
+      "crop": {
+        "left": 292,
+        "top": 244,
+        "width": 133,
+        "height": 266
+      }
+    },
+    {
+      "id": "horizontal",
+      "size": [
+        32,
+        16
+      ],
+      "at": [
+        16,
+        12
+      ],
+      "region": [
+        16,
+        0,
+        32,
+        32
+      ],
+      "pivot": [
+        0,
+        32
+      ],
+      "crop": {
+        "left": 847,
+        "top": 266,
+        "width": 479,
+        "height": 208
+      }
+    },
+    {
+      "id": "vertical",
+      "size": [
+        4,
+        32
+      ],
+      "at": [
+        54,
+        18
+      ],
+      "region": [
+        48,
+        0,
+        16,
+        64
+      ],
+      "pivot": [
+        8,
+        32
+      ],
+      "crop": {
+        "left": 1795,
+        "top": 171,
+        "width": 69,
+        "height": 380
+      }
+    }
+  ],
+  "files": {
+    "game/assets/source/yard-fence-v1/generated-kit.png": "b394134587ed26e7b806996470366f4c614dafe01ed26b777865e0c0896026a3",
+    "game/assets/source/yard-fence-v1/prompt.txt": "07bbb0e870b08e9f9ad8e26d74fe9f9f0084be75b5e41bbada18ca0fa3d880e0",
+    "dev/art-catalogue/style-profile.json": "c7c4834623a482bb976abf27bcc976f72d5b83df59a66bb93af00a49d1589fe7",
+    "dev/art-catalogue/style-reference-board.png": "d91ba07ace9aef1d7e82c0daf55621afb57636d08376feae5ef8900623ba8283",
+    "docs/web/assets/task-chair-v3/normalized-four-views.png": "64e93a1e0bfd6404598eb741ac30018f00b70058d9618ed6cef2d616b092208a",
+    "dev/tools/build_yard_fence.mjs": "3ae911abed94997a8d3eed5b7fda4d367d07df3e200f4124c91f42e030c27e2f",
+    "game/assets/source/yard-fence-v1/candidate-atlas.png": "dcb0c32a484bd5408344d84e9d11227fcb8a9b9eb05b582809a0af28cc9b6fe4"
+  }
+}

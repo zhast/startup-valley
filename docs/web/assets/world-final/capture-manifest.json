@@ -1,0 +1,53 @@
+{
+  "buildId": "d23a483542544696",
+  "capturedAt": "2026-11-15T23:45:54.117Z",
+  "viewport": [
+    1280,
+    720
+  ],
+  "method": "Codex hidden in-app browser, exported Godot",
+  "runtimeFingerprint": "5e8afa18aa826a0883d0af6506aa47c96e9d405c7766fe86befe7d474c882ebd",
+  "frames": [
+    {
+      "path": "docs/web/assets/world-final/courtyard-front-d23a4835.jpg",
+      "sha256": "6f9b0aa6e426bebd053b0609d326398e6157aa6f97421e1900921084db01355c",
+      "kind": "godot_frame",
+      "capture_method": "in_app_browser_godot",
+      "build_id": "d23a483542544696",
+      "note": "Current exported Godot game in hidden Codex browser,1280x720: gate, all boundary orientations, current cafe furniture and Founder lower-leg foreground occlusion."
+    },
+    {
+      "path": "docs/web/assets/world-final/courtyard-northwest-d23a4835.jpg",
+      "sha256": "768dd329b72f8588f9099de617fadc2ba25775223d7e7e58649c3be18c82550d",
+      "kind": "godot_frame",
+      "capture_method": "in_app_browser_godot",
+      "build_id": "d23a483542544696",
+      "note": "Actual pointer walk from south edge to northwest; continuous joins, rear-fence depth and unobstructed character face/body."
+    },
+    {
+      "path": "docs/web/assets/world-final/starter-d23a4835.jpg",
+      "sha256": "d62362c28e4046903b3e75d1c43e8c89f11d469d2b4dd511820588cb7e7bfc0f",
+      "kind": "godot_frame",
+      "capture_method": "in_app_browser_godot",
+      "build_id": "d23a483542544696",
+      "note": "New Company through actual UI resets to Day1, no hires; compact studio and shared native-grid yard."
+    },
+    {
+      "path": "docs/web/assets/world-final/full-office-d23a4835.jpg",
+      "sha256": "66f4834cc61502c7039fecf45c777fc7111f0f64ea16f8d2b28c078ab64d90a5",
+      "kind": "godot_frame",
+      "capture_method": "in_app_browser_godot",
+      "build_id": "d23a483542544696",
+      "note": "Actual return from courtyard to expanded office, preserving two hires and active Market Day project."
+    },
+    {
+      "path": "docs/web/assets/world-final/mina-invitation-d23a4835.jpg",
+      "sha256": "139341356598d05b5d74d37a58b8394e9cf8064b55ed25963c12632055939835",
+      "kind": "godot_frame",
+      "capture_method": "in_app_browser_godot",
+      "build_id": "d23a483542544696",
+      "note": "Current centered compact invitation; actual free invite succeeds."
+    }
+  ],
+  "scope": "Current composition, pointer movement, gate/foreground depth, return/reload/reset and invitation. Three clean journey integrity runs predate only the independently audited fence delta."
+}

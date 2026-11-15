@@ -1,7 +1,9 @@
 # Asset audit status — November 15, 2026
 
 The standing-eye, blink-timing and modest furniture repairs have passed their
-component reviews; coherent modular outdoor terrain is still in progress.
+component reviews. Shared modular terrain and the connected courtyard fence
+are now visually approved for build `d23a483542544696`, using actual in-app
+Godot frames and independent geometry/image review.
 This page distinguishes generated pixels, runtime composition fixes
 and open findings. A reviewed PNG does not prove every animation using it is
 correct. See [the generation and review workflow](ASSET_WORKFLOW.md).
@@ -13,9 +15,10 @@ correct. See [the generation and review workflow](ASSET_WORKFLOW.md).
 | Mina's standing blink painted pale bars through her bangs while her pupils stayed open | Corrected front/left/right closed-eye regions, preserving open eyes, body, alpha and walks. [Current review](../dev/art-catalogue/runtime-reviews/mira-standing-blink-v3.json). | Native review passed |
 | Founder's front closed eyes read as dark blocks | Replaced the thick closed-eye blocks with registered thin eyelids. [Current review](../dev/art-catalogue/runtime-reviews/founder-standing-blink-v3.json). Theo's existing one-pixel eyelids required no new pixels. | Native review passed |
 | Blinks looked like prolonged face flicker | Replaced the 667ms/50%-duty loop with a 120ms closure every 4 seconds, offset by character. Blocked input no longer freezes Founder with closed eyes. | Native timing checks passed |
-| Full visual consistency of future maps | Shared-world manifests and a map gate require matching camera, scale, material treatment, modular props and actual-engine review. Existing snapshots are explicitly not visual approvals. | Gate implemented; replacement terrain not approved |
-| Chairs felt corporate and inconsistent | Six warm wooden chair layers are shared by workstations and collaboration tables; existing actor/seat anchors and depth retained. | Component review passed; final browser check pending |
+| Full visual consistency of future maps | Shared-world manifests and a map gate require matching camera, scale, material treatment, modular props and actual-engine review. Starter, full-office and courtyard reviews now bind current browser frames; future changes still require admission. | Current three maps approved; no blanket approval of future maps |
+| Chairs felt corporate and inconsistent | Six warm wooden chair layers are shared by workstations and collaboration tables; existing actor/seat anchors and depth retained. | Component review passed; current office composition inspected in browser |
 | Café furniture and phone booth felt out of scale | Three generated replacements have measured contact/height contracts and a save-preserving registration migration. | Component review and real headless save/recovery passed |
+| Estate-like background, repeated hedge rows and porous courtyard boundary | Shared 32px lawn/paving, sparse planting and native connected wooden fence replace the rejected compositions. A registered two-cell opening aligns with the existing Studio return. | Current terrain/fence visually approved; navigation unchanged |
 
 ## Reported furniture consistency issue
 
@@ -32,7 +35,31 @@ the six shared workstation modules and original seat/hand anchors. Static48-pose
 motion, seat transition and collaboration checks pass. The last windowed
 collaboration run was stopped at the owner's request; final integrated visual
 acceptance uses the existing in-app browser, not another native window.
-Current map reviews remain pending the separate terrain correction.
+Current starter/full-office browser frames are included in the approved map
+reviews; they do not replace the separate all-facing animation tests.
+
+## Approved shared yard
+
+The [shared-yard decision](decisions/2026-11-15-shared-yard-and-connected-fence.md)
+records native 32px modules, generated and reused source pixels, and the
+registered two-cell Studio opening. The final runtime fingerprint is
+`5e8afa18aa826a0883d0af6506aa47c96e9d405c7766fe86befe7d474c882ebd`.
+The parent inspected build `d23a483542544696` in the background in-app browser;
+an independent agent checked its front/northwest images and exact seven-file
+delta from the clean-journey runtime. Floor, paving, props, interactions,
+navigation and worker state remain unchanged by the fence addition.
+
+[Current frames](web/assets/world-final/capture-manifest.json) bind the starter
+studio, full office, courtyard front/northwest and Mina invitation. The
+[independent review](web/assets/yard-fence-v1/independent-review/README.md)
+records 752 fence checks, 17 map tests and 9 component route checks, plus a
+separate geometric probe. All 75 root tooling tests passed and the map release
+gate passed at admission. The full `assets:check -- --godot` run and final
+normal-export/package verification remain separate completion steps.
+
+The old monolithic garden, vertical hedge stamps, porous boundary and sealed
+fence frames remain rejected historical evidence. Neither a passed gate nor
+these current static frames certify every future scene or character animation.
 
 ## Generated art already integrated
 
@@ -40,8 +67,9 @@ The first seven runtime PNGs contain accepted generated corrections. The newer s
 eye pass revises two of those existing character sheets; it does not replace
 their identities or bodies. These are bounded overlays, not seven entirely
 regenerated assets. The furniture pass adds three standalone replacement PNGs
-and revises six shared chair modules: sixteen unique runtime PNGs now have
-current reviews. Original generation outputs, prompts, transforms and
+and revises six shared chair modules: these character/furniture repairs cover
+sixteen unique runtime PNGs. Two additional reviewed atlases supply modular
+terrain and fence art. Original generation outputs, prompts, transforms and
 hash-bound reviews are retained in the repository. The final byte-stable
 native eye playback passes 196 checks; the broader pose review covers all four
 characters and supported facings. See [blink evidence](web/assets/blink-polish-v3/README.md).

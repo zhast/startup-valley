@@ -13,6 +13,7 @@ var guest: StoryGuest
 var return_sign: StoryWaypoint
 var decoration_bounds: Array[Rect2] = []
 var terrain: VillageTerrain
+var fence: YardFence
 
 func _ready() -> void:
 	var data: Dictionary = OfficeLayout._read_json(LAYOUT_PATH)
@@ -28,6 +29,13 @@ func _ready() -> void:
 	for prop: Dictionary in data.props:
 		_add_decoration(catalogue, str(prop.kind), (Vector2(OfficeLayout.vector(prop.grid)) + Vector2(0.5, 0.5)) * 32)
 	navigation.rebuild(decoration_bounds)
+	fence = YardFence.new()
+	fence.name = "BoundaryFence"
+	add_child(fence)
+	var gates: Array = data.get("boundary_gates", [])
+	for gate: Dictionary in gates:
+		assert(str(gate.interaction_id) == "office-return")
+	fence.configure(navigation._floor, gates)
 	guest = StoryGuest.new()
 	guest.name = "TheoVisitor"
 	guest.person_id = "theo"

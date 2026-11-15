@@ -119,6 +119,34 @@ export function inspectMap(root, manifest) {
     }
     bind(manifest.terrain); bind(resource(recipe.source));
   }
+  if (manifest.boundary) {
+    const recipe = json(root, manifest.boundary);
+    requireThat(recipe.cell_size === 32 && recipe.runtime_scale === 1 && recipe.sampling === 'nearest', 'Boundary modules must preserve shared grid/native scale/sampling');
+    const image = fs.readFileSync(localFile(root, resource(recipe.atlas)));
+    requireThat(image.subarray(1, 4).toString() === 'PNG', 'Boundary atlas must be PNG');
+    const width = image.readUInt32BE(16), height = image.readUInt32BE(20);
+    for (const name of ['post', 'horizontal', 'vertical']) {
+      const piece = recipe.pieces?.[name], rect = piece?.region, pivot = piece?.pivot;
+      requireThat(Array.isArray(rect) && rect.length === 4 && rect.every(Number.isInteger) && rect[0] >= 0 && rect[1] >= 0 && rect[2] > 0 && rect[3] > 0 && rect[0] + rect[2] <= width && rect[1] + rect[3] <= height, `Invalid boundary ${name} module crop`);
+      requireThat(cell(pivot) && pivot[0] >= 0 && pivot[1] >= 0 && pivot[0] <= rect[2] && pivot[1] <= rect[3], `Invalid boundary ${name} ground pivot`);
+    }
+    if (manifest.adapter === 'courtyard_json') {
+      const layout = json(root, manifest.source), gates = layout.boundary_gates;
+      requireThat(Array.isArray(gates) && gates.length === 1, 'Courtyard needs exactly its existing Studio return gate');
+      const gate = gates[0], renderer = text(root, 'game/world/courtyard.gd');
+      const match = renderer.match(/return_sign\.position = Vector2\(([^)]+)\)/);
+      requireThat(match && /if return_sign\.hit\(point\): return \{"id": "office-return", "kind": "story", "point": SPAWN\}/.test(renderer), 'Gate must bind the actual Studio return affordance');
+      const sign = match[1].split(',').map(n => Math.floor(Number(n) / geometry.tile));
+      requireThat(gate.id === 'studio-return' && gate.interaction_id === 'office-return' && equal(gate.approach, geometry.spawn), 'Gate does not match the existing return interaction/approach');
+      requireThat(cell(gate.from) && cell(gate.to) && gate.from[1] === gate.to[1] && gate.to[0] - gate.from[0] === 2 && gate.from[0] <= sign[0] && sign[0] < gate.to[0] && gate.from[1] === sign[1] + 1, 'Studio return needs a two-cell south opening aligned with its sign');
+      for (let x = gate.from[0]; x < gate.to[0]; x++) {
+        const inside = [x, gate.from[1] - 1], outside = [x, gate.from[1]];
+        requireThat(floor.has(key(inside)) && !floor.has(key(outside)), 'Gate may omit only existing south boundary edges');
+        requireThat((layout.paving_rects ?? []).some(([px, py, w, h]) => x >= px && x < px + w && inside[1] >= py && inside[1] < py + h), 'Gate must meet the existing return paving');
+      }
+    }
+    bind(manifest.boundary); bind(resource(recipe.atlas));
+  }
   for (const name of [manifest.source, ...manifest.modules, ...(manifest.art ?? [])]) {
     bind(name);
     if (!name.endsWith('.gd')) continue;

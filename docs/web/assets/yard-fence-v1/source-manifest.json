@@ -1,0 +1,51 @@
+{
+  "scope": "Current headless exact gate omissions, boundary topology, real pixel connectivity and component routes; not final visual approval or complete journey",
+  "files": [
+    {
+      "path": "game/world/yard_fence.gd",
+      "sha256": "e19031877001b6739b2a52f1168f947dec77c829b7e27af2bc4650891b1d42fe"
+    },
+    {
+      "path": "game/world/courtyard.gd",
+      "sha256": "1b13725552c3639a0aa4a5460fc2b8f69312d8ae71058a9d06167033c30ea898"
+    },
+    {
+      "path": "game/world/office_navigation.gd",
+      "sha256": "7889f1e6984df0822b10b6a1bc38e5449f354c4afb0f1f83fe6db769c5888909"
+    },
+    {
+      "path": "game/data/yard_fence.json",
+      "sha256": "1bf2a474aff6e38d1be0f299a28ccf14bafd013f49ce2b10aa0bade5d65878f5"
+    },
+    {
+      "path": "game/data/courtyard_layout.json",
+      "sha256": "d1fbfbaf4d04a335544de2f8600d97307fc5bc25b84a4072cbf19dafca9d4324"
+    },
+    {
+      "path": "game/assets/runtime/office/yard-fence-v1/fence-atlas.png",
+      "sha256": "dcb0c32a484bd5408344d84e9d11227fcb8a9b9eb05b582809a0af28cc9b6fe4"
+    },
+    {
+      "path": "game/tests/test_yard_fence.gd",
+      "sha256": "39cd826ea6b3486a1be2b02b1b1a6cb9b095656c2f9ac333bc65b40596af397f"
+    },
+    {
+      "path": "game/tests/test_map_review.gd",
+      "sha256": "6cb20d64c1593d7ced48480c23973009a9ad026528e18a03f42483b2579d9d1f"
+    },
+    {
+      "path": "dev/tools/build_yard_fence.mjs",
+      "sha256": "3ae911abed94997a8d3eed5b7fda4d367d07df3e200f4124c91f42e030c27e2f"
+    }
+  ],
+  "reports": [
+    {
+      "path": "docs/web/assets/yard-fence-v1/headless-results.json",
+      "sha256": "1463e3bbe3ef2566ceb32aa652fba599f59089441e5f6b00f517a7926edf54e3"
+    },
+    {
+      "path": "docs/web/assets/yard-fence-v1/routes.json",
+      "sha256": "df66bca86e421cd752d3751fbf32cd15599414c156b3f87545a2df35f60f0ba3"
+    }
+  ]
+}

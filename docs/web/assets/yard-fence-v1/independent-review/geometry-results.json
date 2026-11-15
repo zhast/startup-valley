@@ -1,0 +1,275 @@
+{
+  "actualEdges": 80,
+  "checks": 61053,
+  "expectedEdges": 80,
+  "failures": [],
+  "minimumCenterToGroundEdgePixels": 16.0,
+  "note": "Fence ground never crosses reachable centers/paths. Its raised front rails may intentionally project over front-row feet; that occlusion needs in-app visual approval.",
+  "projectedPaintAtReachableCenters": [
+    {
+      "cell": [
+        14,
+        19
+      ],
+      "ground": [
+        448.0,
+        640.0
+      ],
+      "kind": "horizontal",
+      "z": 640
+    },
+    {
+      "cell": [
+        13,
+        19
+      ],
+      "ground": [
+        416.0,
+        640.0
+      ],
+      "kind": "horizontal",
+      "z": 640
+    },
+    {
+      "cell": [
+        17,
+        19
+      ],
+      "ground": [
+        544.0,
+        640.0
+      ],
+      "kind": "horizontal",
+      "z": 640
+    },
+    {
+      "cell": [
+        12,
+        19
+      ],
+      "ground": [
+        384.0,
+        640.0
+      ],
+      "kind": "horizontal",
+      "z": 640
+    },
+    {
+      "cell": [
+        18,
+        19
+      ],
+      "ground": [
+        576.0,
+        640.0
+      ],
+      "kind": "horizontal",
+      "z": 640
+    },
+    {
+      "cell": [
+        11,
+        19
+      ],
+      "ground": [
+        352.0,
+        640.0
+      ],
+      "kind": "horizontal",
+      "z": 640
+    },
+    {
+      "cell": [
+        19,
+        19
+      ],
+      "ground": [
+        608.0,
+        640.0
+      ],
+      "kind": "horizontal",
+      "z": 640
+    },
+    {
+      "cell": [
+        10,
+        19
+      ],
+      "ground": [
+        320.0,
+        640.0
+      ],
+      "kind": "horizontal",
+      "z": 640
+    },
+    {
+      "cell": [
+        20,
+        19
+      ],
+      "ground": [
+        640.0,
+        640.0
+      ],
+      "kind": "horizontal",
+      "z": 640
+    },
+    {
+      "cell": [
+        9,
+        18
+      ],
+      "ground": [
+        288.0,
+        608.0
+      ],
+      "kind": "horizontal",
+      "z": 608
+    },
+    {
+      "cell": [
+        21,
+        19
+      ],
+      "ground": [
+        672.0,
+        640.0
+      ],
+      "kind": "horizontal",
+      "z": 640
+    },
+    {
+      "cell": [
+        8,
+        18
+      ],
+      "ground": [
+        256.0,
+        608.0
+      ],
+      "kind": "horizontal",
+      "z": 608
+    },
+    {
+      "cell": [
+        22,
+        18
+      ],
+      "ground": [
+        704.0,
+        608.0
+      ],
+      "kind": "horizontal",
+      "z": 608
+    },
+    {
+      "cell": [
+        7,
+        18
+      ],
+      "ground": [
+        224.0,
+        608.0
+      ],
+      "kind": "horizontal",
+      "z": 608
+    },
+    {
+      "cell": [
+        23,
+        18
+      ],
+      "ground": [
+        736.0,
+        608.0
+      ],
+      "kind": "horizontal",
+      "z": 608
+    },
+    {
+      "cell": [
+        24,
+        17
+      ],
+      "ground": [
+        768.0,
+        576.0
+      ],
+      "kind": "horizontal",
+      "z": 576
+    },
+    {
+      "cell": [
+        6,
+        18
+      ],
+      "ground": [
+        192.0,
+        608.0
+      ],
+      "kind": "horizontal",
+      "z": 608
+    },
+    {
+      "cell": [
+        5,
+        18
+      ],
+      "ground": [
+        160.0,
+        608.0
+      ],
+      "kind": "horizontal",
+      "z": 608
+    },
+    {
+      "cell": [
+        4,
+        17
+      ],
+      "ground": [
+        128.0,
+        576.0
+      ],
+      "kind": "horizontal",
+      "z": 576
+    },
+    {
+      "cell": [
+        25,
+        15
+      ],
+      "ground": [
+        800.0,
+        512.0
+      ],
+      "kind": "horizontal",
+      "z": 512
+    },
+    {
+      "cell": [
+        26,
+        15
+      ],
+      "ground": [
+        832.0,
+        512.0
+      ],
+      "kind": "horizontal",
+      "z": 512
+    },
+    {
+      "cell": [
+        3,
+        15
+      ],
+      "ground": [
+        96.0,
+        512.0
+      ],
+      "kind": "horizontal",
+      "z": 512
+    }
+  ],
+  "reachableCells": 368
+}

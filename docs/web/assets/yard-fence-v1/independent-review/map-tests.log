@@ -1,0 +1,25 @@
+✔ existing map snapshot is explicitly not a visual approval (24.580333ms)
+✔ new and changed maps require current review, candidate output never approves (39.263167ms)
+✔ unregistered map data and custom renderers fail closed (16.730209ms)
+✔ unknown props, unsupported facings and escaping resources are rejected (24.425167ms)
+✔ blocked spawn, overlapping props and unreachable exit fail even in preview (26.311667ms)
+✔ door cutouts reopen walls in the same order as OfficeLayout (16.272375ms)
+✔ art changes and changed evidence invalidate review (24.342166ms)
+✔ map approval needs actual-engine evidence and every visual assessment (26.548209ms)
+✔ in-app Godot frames can pair with headless routes but require their build identity (36.953584ms)
+✔ courtyard JSON is tied to its real renderer, spawn and interaction approach (22.460166ms)
+✔ terrain recipes bind native grid modules and reject invalid crops even in preview (28.807833ms)
+✔ world profile, scale and grid stay aligned with canonical assets (12.371167ms)
+✔ connected boundary art and registration are bound to its map review (18.378083ms)
+✔ courtyard gate can omit only the existing paved Studio return edges (32.678208ms)
+✔ retired reference cannot silently return to runtime (14.506583ms)
+✔ production map adapters inspect actual authored geometry (168.179292ms)
+✔ normal asset CLI completes module initialization and includes the map gate (1836.498959ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2443.812

@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "map_id": "courtyard",
-  "status": "candidate",
-  "signature": "d54c91a10dc4305f889591b808148109d4eabe3bffc16a5d9e62cb26b1df4e6e",
-  "reviewer": "",
-  "reviewed_at": "",
+  "status": "approved",
+  "signature": "0e5801b7e999abe280b0c1f4f9fdb1f50cbca74fc0f79c85286ee8db7ea7d1c2",
+  "reviewer": "Codex root (in-app playtest); asset_quality (independent fence review)",
+  "reviewed_at": "2026-11-15T23:45:54.117Z",
   "style_profile": {
     "id": "startup-valley-cozy-pixel-v1",
     "path": "dev/art-catalogue/style-profile.json",
@@ -140,8 +140,12 @@
       "sha256": "d598107f7a089911a083f68b843a47bd58f499cec0daea357be311e3b2c10b66"
     },
     {
+      "path": "game/assets/runtime/office/yard-fence-v1/fence-atlas.png",
+      "sha256": "dcb0c32a484bd5408344d84e9d11227fcb8a9b9eb05b582809a0af28cc9b6fe4"
+    },
+    {
       "path": "game/data/courtyard_layout.json",
-      "sha256": "d4e6797272d9d5bba1e2ec7065fff7dac6d67f9c5ac3657c986dee63b4d932be"
+      "sha256": "d1fbfbaf4d04a335544de2f8600d97307fc5bc25b84a4072cbf19dafca9d4324"
     },
     {
       "path": "game/data/furnishing_catalog.json#/furniture/broadleaf_planter",
@@ -160,8 +164,12 @@
       "sha256": "27513e2fa1a77a4e94ff27f7256b44a720b89fbb3580549eb9b6ff2eb5c11209"
     },
     {
+      "path": "game/data/yard_fence.json",
+      "sha256": "1bf2a474aff6e38d1be0f299a28ccf14bafd013f49ce2b10aa0bade5d65878f5"
+    },
+    {
       "path": "game/world/courtyard.gd",
-      "sha256": "daa6c6362010cb0edc62805190bbfc34adde69f555e53171c0cca5266c00e42a"
+      "sha256": "1b13725552c3639a0aa4a5460fc2b8f69312d8ae71058a9d06167033c30ea898"
     },
     {
       "path": "game/world/office_layout.gd",
@@ -174,45 +182,72 @@
     {
       "path": "game/world/village_terrain.gd",
       "sha256": "0afc91a91295f0b263bd52de7b2690eb2883bb9041abc3a66aa64551b42a4bf3"
+    },
+    {
+      "path": "game/world/yard_fence.gd",
+      "sha256": "e19031877001b6739b2a52f1168f947dec77c829b7e27af2bc4650891b1d42fe"
     }
   ],
   "evidence": [
     {
-      "path": "docs/web/assets/modular-yard/routes.json",
+      "path": "docs/web/assets/yard-fence-v1/headless-results.json",
+      "sha256": "1463e3bbe3ef2566ceb32aa652fba599f59089441e5f6b00f517a7926edf54e3",
+      "kind": "godot_test_report",
+      "capture_method": "godot_headless",
+      "note": "752 checks: only declared gate edges omitted; all remaining edges/posts/alpha joins valid; original ground and return interaction unchanged."
+    },
+    {
+      "path": "docs/web/assets/yard-fence-v1/routes.json",
       "sha256": "df66bca86e421cd752d3751fbf32cd15599414c156b3f87545a2df35f60f0ba3",
       "kind": "godot_test_report",
       "capture_method": "godot_headless",
-      "note": "Actual component navigation with retained furniture fixture; no visual or earned-journey claim."
+      "note": "9 actual component movement checks around furniture and to unchanged return; not visual approval."
+    },
+    {
+      "path": "docs/web/assets/world-final/courtyard-front-d23a4835.jpg",
+      "sha256": "6f9b0aa6e426bebd053b0609d326398e6157aa6f97421e1900921084db01355c",
+      "kind": "godot_frame",
+      "capture_method": "in_app_browser_godot",
+      "build_id": "d23a483542544696",
+      "note": "Current exported Godot game in hidden Codex browser,1280x720: gate, all boundary orientations, current cafe furniture and Founder lower-leg foreground occlusion."
+    },
+    {
+      "path": "docs/web/assets/world-final/courtyard-northwest-d23a4835.jpg",
+      "sha256": "768dd329b72f8588f9099de617fadc2ba25775223d7e7e58649c3be18c82550d",
+      "kind": "godot_frame",
+      "capture_method": "in_app_browser_godot",
+      "build_id": "d23a483542544696",
+      "note": "Actual pointer walk from south edge to northwest; continuous joins, rear-fence depth and unobstructed character face/body."
     }
   ],
   "checks": {
     "universe": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "Reviewed actual game against the shared warm-wood and quiet pixel-yard family; generated lawn/hedges replace the former room-sized garden painting."
     },
     "camera_scale": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "Native32px modules and scale1 retained. People, low fence, cafe chairs/table and desk assemblies read consistently in the actual1280x720 game."
     },
     "composition": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "The compact starter room and restrained yard leave the objective and walking areas readable. The expanded room is earned through a second hire."
     },
     "depth": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "Current screenshots show grounded props and intact characters. Fence front rail covers lower legs only, rear fence stays behind the character; existing seating component reviews remain separately scoped."
     },
     "navigation": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "Three clean headless journeys cover the pre-fence runtime; independent exact seven-file delta and targeted fence/routes checks prove floor, collision, worker and interaction semantics unchanged. Actual browser walk/return succeeded."
     },
     "spawn_return": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "Browser reload restored courtyard position, pointer return restored the expanded studio, and UI New Company restored the starter spawn. Automated journey reports cover exact saved state."
     },
     "interaction_readability": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "Mina portrait invitation, named Theo, current-goal action and Studio return remain visible. The two-cell opening is aligned with the existing Studio return interaction."
     }
   }
 }

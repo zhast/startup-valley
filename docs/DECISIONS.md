@@ -266,3 +266,26 @@ transaction that preserves owned items and valid saved placements.
 renovation with nine durable edits and exact restart/lost-response recovery.
 Visual approval is scoped to these families; replacement outdoor terrain and
 the complete current browser journey remain pending.
+
+## 2026-11-15 — Share a quiet native-grid yard and a connected return boundary
+
+**Decision:** Use shared 32px lawn/paving and sparse planting for the starter
+studio and courtyard. Assemble a low wooden fence from native posts and
+separate horizontal/north–south rails. Derive its boundary from the existing
+floor; register the two-cell Studio opening against the real return
+interaction. Add no collision, navigation, save or travel rule.
+
+**Evidence:** Current exported build `d23a483542544696` was inspected in the
+background in-app browser, with an independent image/geometry review of the
+exact seven-file delta. The 752 fence checks, 17 map tests and 9 component
+route checks passed, as did all 75 root tooling tests and map release admission.
+Three map reviews and both new atlas reviews now bind approved current frames.
+Rejected vertical hedge, porous boundary and sealed-fence images remain
+historical; static approval does not certify all actor animation frames.
+
+**Workflow:** Preserve original generated sources and the reused paving crop's
+honest provenance. Continue headless engine checks and background in-app
+visual review only; the owner prohibited further native windows. See the
+[shared-yard decision](decisions/2026-11-15-shared-yard-and-connected-fence.md)
+for exact source/runtime identities, gate geometry and scope limits. Final
+export/package acceptance remains a separate handoff step.

@@ -1,0 +1,7 @@
+{
+  "path": "docs/web/assets/yard-fence-v1/rejected-porous-boundary.jpg",
+  "sha256": "a77bef0974985db96368c84bc2e8adae7d954cefddf2d770a8d1999d7186ab94",
+  "capture_method": "in_app_browser_godot",
+  "build_id": "01f5a4ee41e4e3a0",
+  "assessment": "Rejected pre-fence iteration: sparse planting appears natural, but visible lawn has no convincing boundary matching constrained movement. Root captured this actual game frame; it does not approve the new fence."
+}

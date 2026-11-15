@@ -11,9 +11,11 @@
     "game/world/office_navigation.gd",
     "game/world/office_layout.gd",
     "game/world/courtyard.gd",
-    "game/world/village_terrain.gd"
+    "game/world/village_terrain.gd",
+    "game/world/yard_fence.gd"
   ],
   "art": [],
   "notes": "Shared native 32px terrain modules use a declared source recipe. Logical room data controls geometry; current composition remains pending in-app visual review.",
-  "terrain": "game/data/village_terrain.json"
+  "terrain": "game/data/village_terrain.json",
+  "boundary": "game/data/yard_fence.json"
 }

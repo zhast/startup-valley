@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "map_id": "startup-office",
-  "status": "candidate",
+  "status": "approved",
   "signature": "3500ae74254ced7cf334f24d11e2404584b4a727bf57a5acf870e325c141f3ef",
-  "reviewer": "",
-  "reviewed_at": "",
+  "reviewer": "Codex root (in-app playtest); asset_quality (independent fence review)",
+  "reviewed_at": "2026-11-15T23:45:54.117Z",
   "style_profile": {
     "id": "startup-valley-cozy-pixel-v1",
     "path": "dev/art-catalogue/style-profile.json",
@@ -2723,36 +2723,44 @@
       "kind": "godot_test_report",
       "capture_method": "godot_headless",
       "note": "Actual component navigation with retained furniture fixture; no visual or earned-journey claim."
+    },
+    {
+      "path": "docs/web/assets/world-final/full-office-d23a4835.jpg",
+      "sha256": "66f4834cc61502c7039fecf45c777fc7111f0f64ea16f8d2b28c078ab64d90a5",
+      "kind": "godot_frame",
+      "capture_method": "in_app_browser_godot",
+      "build_id": "d23a483542544696",
+      "note": "Actual return from courtyard to expanded office, preserving two hires and active Market Day project."
     }
   ],
   "checks": {
     "universe": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "Reviewed actual game against the shared warm-wood and quiet pixel-yard family; generated lawn/hedges replace the former room-sized garden painting."
     },
     "camera_scale": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "Native32px modules and scale1 retained. People, low fence, cafe chairs/table and desk assemblies read consistently in the actual1280x720 game."
     },
     "composition": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "The compact starter room and restrained yard leave the objective and walking areas readable. The expanded room is earned through a second hire."
     },
     "depth": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "Current screenshots show grounded props and intact characters. Fence front rail covers lower legs only, rear fence stays behind the character; existing seating component reviews remain separately scoped."
     },
     "navigation": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "Three clean headless journeys cover the pre-fence runtime; independent exact seven-file delta and targeted fence/routes checks prove floor, collision, worker and interaction semantics unchanged. Actual browser walk/return succeeded."
     },
     "spawn_return": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "Browser reload restored courtyard position, pointer return restored the expanded studio, and UI New Company restored the starter spawn. Automated journey reports cover exact saved state."
     },
     "interaction_readability": {
-      "result": "pending",
-      "note": ""
+      "result": "passed",
+      "note": "Mina portrait invitation, named Theo, current-goal action and Studio return remain visible. The two-cell opening is aligned with the existing Studio return interaction."
     }
   }
 }

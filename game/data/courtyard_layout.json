@@ -166,5 +166,23 @@
       21,
       4
     ]
+  ],
+  "boundary_gates": [
+    {
+      "id": "studio-return",
+      "interaction_id": "office-return",
+      "from": [
+        15,
+        20
+      ],
+      "to": [
+        17,
+        20
+      ],
+      "approach": [
+        15,
+        17
+      ]
+    }
   ]
 }

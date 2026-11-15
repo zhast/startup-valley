@@ -35,6 +35,19 @@ Low, wide shrubs form sparse authored `terrain_plantings` groups; they must not
 be repeated vertically as disconnected stair-step silhouettes. The map gate
 rejects any planted cell on legal walking floor.
 
+`YardFence` derives its connected boundary from exposed edges of the actual
+navigation floor. Cardinal vertex masks share one post between adjoining rails;
+separately authored horizontal and north–south pieces keep their own projection.
+The recipe declares native crops/pivots and is bound to map approval. Fence
+sprites do not create a second collision or travel system. Headless tests check
+every connection mask using actual alpha pixels and reject a disconnected rail;
+the in-app game view still decides whether the fence looks coherent at scale.
+Courtyard `boundary_gates` may omit only the two south edges at the existing
+Studio return path. The declaration names `office-return`, its unchanged
+approach, and its grid endpoints. Validation binds it to the actual return sign
+and paving; unknown exits, extra openings and wider gaps fail. Terminal posts
+remain, and the opening never adds walkable cells or new travel semantics.
+
 ## Register and validate a map
 
 1. Add a manifest under `dev/map-catalogue/maps/`. Copy the closest existing
