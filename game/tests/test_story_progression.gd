@@ -35,6 +35,15 @@ func button_named(node: Node, text_value: String) -> Button:
 		if button.is_visible_in_tree() and button.text == text_value: return button
 	return null
 
+func escape() -> void:
+	for pressed: bool in [true, false]:
+		var event := InputEventKey.new()
+		event.keycode = KEY_ESCAPE
+		event.pressed = pressed
+		root.push_input(event, true)
+		await process_frame
+	await frames()
+
 func capture(name_value: String) -> void:
 	if DisplayServer.get_name() == "headless": return
 	await frames()
@@ -83,10 +92,24 @@ func run() -> void:
 	await click(button_named(panel, "Let’s make it"))
 	check(requests.size() == 1 and requests[0].method == "tycoon.start", "Planning uses the existing authoritative start request")
 	check(requests[0].params.staffIds == ["founder", "mira"] and requests[0].params.typeId == "course", "Start request includes the selected valid format and both teammates")
-	state.tycoon.developing = {"id": "p1", "name": "Fitness Course", "devDays": 1, "devDaysRequired": 3, "progress": 33, "ready": false}
+	state.tycoon.developing = {"id": "p1", "name": "Fitness Course", "topicName": "Fitness", "typeName": "Course", "status": "developing", "devDays": 1, "devDaysRequired": 3, "progress": 33, "ready": false}
 	panel.update_state(state)
 	check(StoryMoments.goal(state).completed == 2, "Active project advances to the build goal")
 	await capture("04-developing")
+	var before_preview := requests.size()
+	var before_state := state.duplicate(true)
+	await click(button_named(panel, "Preview our website"))
+	check(panel.visible and panel._website_preview.is_visible_in_tree(), "Project opens the website above its still-visible host")
+	check(panel._website_preview._title.text == "Fitness Course", "Project entry previews the selected project")
+	check(panel._website_preview.get_parent() == panel, "Preview is a direct child, outside rerendered content")
+	await capture("04a-project-website")
+	panel.update_state(state)
+	await frames()
+	check(panel._website_preview.is_visible_in_tree() and root.gui_get_focus_owner() == panel._website_preview._back_button, "State refresh keeps the preview open and does not steal its keyboard focus")
+	await escape()
+	check(panel.visible and not panel._website_preview.visible and panel.screen == "product", "Escape closes only the website and retains the project screen")
+	check(root.gui_get_focus_owner() != null, "Closing after a host rerender restores a usable focus target")
+	check(requests.size() == before_preview and state == before_state, "Project preview and dismissal issue no simulation request and mutate no state")
 	await click(button_named(panel, "Wrap up the day"))
 	check(requests[-1].method == "day.end", "Project progress action advances the actual game day")
 	state.tycoon.developing.ready = true
@@ -96,6 +119,7 @@ func run() -> void:
 	await click(button_named(panel, "Share it with the world"))
 	check(requests[-1].method == "tycoon.release" and requests[-1].params.productId == "p1", "Release action uses the existing product ID")
 	state.tycoon.history = [state.tycoon.developing.duplicate(true)]
+	state.tycoon.history[0].status = "released"
 	state.tycoon.developing = null
 	panel.update_state(state)
 	panel.present("release")
@@ -103,6 +127,23 @@ func run() -> void:
 	check(panel.find_child("ReleaseAchievement", true, false) != null, "Release screen celebrates a saved achievement")
 	check(StoryMoments.goal(state).completed == 4, "Release completes all four first-story moments")
 	await capture("05-release")
+	before_preview = requests.size()
+	before_state = state.duplicate(true)
+	await click(button_named(panel, "Preview our website"))
+	check(panel._website_preview._snapshot.id == "p1" and panel._website_preview._stage.text == "Made with care. Shared with the valley.", "Release entry previews the saved release and its actual status")
+	await capture("05a-release-website")
+	await click(button_named(panel._website_preview, "Back to our project"))
+	check(panel.visible and panel.screen == "release" and not panel._website_preview.visible, "Website back action returns to the release screen")
+	check(root.gui_get_focus_owner() == button_named(panel, "Preview our website"), "Website back action restores focus to its release entry")
+	check(requests.size() == before_preview and state == before_state, "Release preview and dismissal are read-only")
+	await click(button_named(panel, "Preview our website"))
+	panel.present("product")
+	check(not panel._website_preview.visible, "Host navigation dismisses the preview")
+	panel.present("release")
+	await click(button_named(panel, "Preview our website"))
+	panel.hide()
+	check(not panel._website_preview.visible, "Hiding the host dismisses the preview")
+	panel.present("release")
 	var restored: Dictionary = JSON.parse_string(JSON.stringify(state))
 	check(StoryMoments.goal(restored) == StoryMoments.goal(state), "Story progress restores solely from saved worker state")
 	await click(button_named(panel, "Back to our studio"))

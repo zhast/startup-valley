@@ -50,6 +50,7 @@ var _next_step_label: Label
 var _goal_chapter: Label
 var _goal_action: Button
 var _goal_mode := "journey"
+var _goal_marks: Array[ColorRect] = []
 var _station_callout: StationCallout
 var _station_target_id := ""
 var station_input_enabled: Callable
@@ -182,6 +183,14 @@ func _build_next_step_hint() -> void:
 	_goal_chapter.size = Vector2(312, 20)
 	_goal_chapter.hide()
 	plaque.add_child(_goal_chapter)
+	for index: int in range(4):
+		var mark := ColorRect.new()
+		mark.position = Vector2(266 + index * 13, 14)
+		mark.size = Vector2(9, 9)
+		mark.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		mark.hide()
+		plaque.add_child(mark)
+		_goal_marks.append(mark)
 	_goal_action = Button.new()
 	_goal_action.name = "CurrentGoalAction"
 	_goal_action.position = Vector2(12, 62)
@@ -206,6 +215,9 @@ func set_story_goal(goal: Dictionary) -> void:
 	_next_step_label.tooltip_text = str(goal.get("detail", ""))
 	_goal_chapter.text = "%s · %d / %d" % [goal.get("chapter", "Our story"), int(goal.get("completed", 0)), int(goal.get("total", 4))]
 	_goal_chapter.show()
+	for index: int in range(_goal_marks.size()):
+		_goal_marks[index].color = Color("598347") if index < int(goal.get("completed", 0)) else Color("c9b58d")
+		_goal_marks[index].show()
 	_goal_action.text = str(goal.get("action", "Open our notebook"))
 	_goal_action.show()
 	_goal_mode = str(goal.get("mode", "journey"))

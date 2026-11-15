@@ -12,6 +12,13 @@ Keep the two-process boundary intact:
 
 The worker is authoritative for the tycoon (products, reviews, sales), employees, memories, relationships, schedules, projects, work orders, approvals, clock state, usage, studio files, and artifacts. SQLite is the game database. Pi session files are never the source of truth for people. Do not duplicate tycoon rules in GDScript.
 
+## Development decisions and checkpoints
+
+- Record consequential design, architecture, asset and workflow decisions in `docs/DECISIONS.md`; link detailed acceptance evidence there.
+- The owner works alone and authorizes tested commits directly to `main`. Save significant completed increments promptly; do not require a pull request unless isolation materially helps the work.
+- Refresh the playable web export after significant verified changes, and distinguish the current build from source-only progress.
+- Treat the opening as a playable tutorial: one clear goal, one relevant action, visual character identity, and progressively revealed complexity. Keep the current goal readable without clipping or requiring a tooltip.
+
 ## Exact commands
 
 ```sh

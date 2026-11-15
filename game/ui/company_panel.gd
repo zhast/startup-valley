@@ -49,6 +49,7 @@ var _playtest_shown := false
 var _playtest_product_id := ""
 var _story_draft_started := false
 var _scrim: ColorRect
+var _website_preview: StudioWebsitePreview
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -83,9 +84,20 @@ func _ready() -> void:
 	_footer = VBoxContainer.new()
 	_footer.add_theme_constant_override("separation", 8)
 	column.add_child(_footer)
+	_website_preview = StudioWebsitePreview.new()
+	_website_preview.name = "StudioWebsitePreview"
+	add_child(_website_preview)
+	_website_preview.closed.connect(func() -> void:
+		if is_visible_in_tree() and get_viewport().gui_get_focus_owner() == null:
+			_configure_focus.call_deferred()
+	)
+	visibility_changed.connect(func() -> void:
+		if not is_visible_in_tree(): _website_preview.dismiss()
+	)
 	hide()
 
 func present(mode: String = "journey") -> void:
+	_website_preview.dismiss()
 	if mode == "journey" and not story_mode and _is_chapter_complete():
 		mode = "complete"
 	screen = mode
@@ -105,6 +117,10 @@ func present(mode: String = "journey") -> void:
 	_transition = create_tween()
 	_transition.tween_property(self, "modulate:a", 1.0, 0.14)
 	presented.emit(screen)
+
+func show_website(project: Dictionary) -> void:
+	if not is_visible_in_tree(): return
+	_website_preview.present(project)
 
 func update_state(value: Dictionary) -> void:
 	state = value
@@ -2138,9 +2154,9 @@ func _story_product_progress(product: Dictionary) -> void:
 		_show_contract(product, "ContractLine")
 		_label("Design %d · Tech %d · Hype %d" % [int(product.get("design", 0)), int(product.get("tech", 0)), int(product.get("hype", 0))], false, null, "meta")
 	if ready:
-		_actions("Share it with the world", func() -> void: _release_product(str(product.get("id", ""))), true, "Back to office")
+		_actions("Share it with the world", func() -> void: _release_product(str(product.get("id", ""))), true, "Preview our website", show_website.bind(product))
 	else:
-		_actions("Wrap up the day", func() -> void: _request("day.end", {"day": day}), true, "Back to office")
+		_actions("Wrap up the day", func() -> void: _request("day.end", {"day": day}), true, "Preview our website", show_website.bind(product))
 
 func _product_picker(tycoon: Dictionary) -> void:
 	var lock := _locked_contract()
@@ -2322,7 +2338,7 @@ func _story_release_screen(product: Dictionary) -> void:
 			_label(str(reviewer.get("blurb", "")))
 		_show_contract(product, "ReleaseContract")
 	_label("Your next chapter is waiting back at the studio.", false, null, "meta")
-	_actions("Back to our studio", hide, true, "")
+	_actions("Back to our studio", hide, true, "Preview our website", show_website.bind(product))
 
 func _product_history(tycoon: Dictionary) -> void:
 	var card := _card()
@@ -3110,6 +3126,7 @@ static func station_caption(state: Dictionary, station_id: String, kind: String,
 
 func _configure_focus() -> void:
 	if not visible: return
+	if _website_preview != null and _website_preview.is_visible_in_tree(): return
 	var controls: Array[Control] = []
 	for node: Node in _frame.find_children("*", "Control", true, false):
 		if node is Button and not (node as Button).disabled and (node as Button).is_visible_in_tree(): controls.append(node as Control)
@@ -3147,6 +3164,7 @@ func _back() -> void:
 	else: hide()
 
 func _input(event: InputEvent) -> void:
+	if _website_preview != null and _website_preview.is_visible_in_tree(): return
 	if visible and event.is_action_pressed("ui_cancel"):
 		_back()
 		get_viewport().set_input_as_handled()
