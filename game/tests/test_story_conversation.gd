@@ -4,6 +4,7 @@ var failures: Array[String] = []
 var requests: Array[Dictionary] = []
 var requested_screen := ""
 var history_requests := 0
+var settings_requests := 0
 
 func _initialize() -> void:
 	call_deferred("run")
@@ -96,11 +97,17 @@ func run() -> void:
 	team.story_mode = true
 	root.add_child(team)
 	team.story_requested.connect(func(mode: String) -> void: requested_screen = mode)
+	team.settings_requested.connect(func() -> void: settings_requests += 1)
 	team.chat_history_requested.connect(func(_id: String) -> void: history_requests += 1)
 	var employees: Array[EmployeeRecord] = [EmployeeRecord.from_dictionary({"id": "mira", "name": "Mina"})]
 	team.set_worker_ready()
 	team.set_journey_state(initial)
 	team.configure_employees(employees)
+	check(team._settings_button.text == "Settings", "Native story rail offers Settings without a provider credential")
+	await click(team._settings_button)
+	check(settings_requests == 1 and not team._connection_panel.visible, "Actual Settings click cannot open AI connection setup in story mode")
+	team._open_connection_settings()
+	check(settings_requests == 2 and not team._connection_panel.visible, "Other connection entry routes remain guarded in story mode")
 	team.open_chat_for_employee("mira")
 	await frames()
 	check(team._story_page.is_visible_in_tree(), "Mina opens offline dialogue")
@@ -125,6 +132,10 @@ func run() -> void:
 	await frames()
 	check(team._story_page.is_visible_in_tree() and history_requests == 0, "Reopening preserves offline story mode")
 	team.hide()
+	panel.present("confirm")
+	await frames()
+	for label: Label in panel._content.find_children("*", "Label", true, false):
+		check(not label.text.contains("AI connection"), "Story reset explains real backups without provider setup copy")
 	panel.present("title")
 	await frames()
 	check(panel._frame.get_global_rect().encloses(panel._content.get_global_rect()), "Visual opening fits its frame")

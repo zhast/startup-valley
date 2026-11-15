@@ -354,7 +354,7 @@ func _build_team_rail() -> Control:
 	_settings_button.size = Vector2(100.0, 42.0)
 	_settings_button.tooltip_text = "Open settings or connect AI"
 	_settings_button.pressed.connect(func() -> void:
-		if OS.has_feature("web") or (_credential_configured and _worker_connected):
+		if story_mode or OS.has_feature("web") or (_credential_configured and _worker_connected):
 			close_drawer(false)
 			settings_requested.emit()
 		else:
@@ -492,7 +492,7 @@ func _build_connection_panel() -> void:
 	content.add_child(close_button)
 
 func _open_connection_settings() -> void:
-	if OS.has_feature("web"):
+	if story_mode or OS.has_feature("web"):
 		close_drawer(false)
 		settings_requested.emit()
 		return
@@ -598,8 +598,8 @@ func _refresh_rail_connection_action() -> void:
 		_settings_button.disabled = false
 		CozyUI.button(_settings_button, "primary")
 	else:
-		_settings_button.text = "Settings" if OS.has_feature("web") or _credential_configured else "Connect"
-		_settings_button.tooltip_text = "Open settings" if OS.has_feature("web") else "Open settings or connect AI"
+		_settings_button.text = "Settings" if story_mode or OS.has_feature("web") or _credential_configured else "Connect"
+		_settings_button.tooltip_text = "Open settings" if story_mode or OS.has_feature("web") else "Open settings or connect AI"
 		_settings_button.disabled = false
 		CozyUI.button(_settings_button, "secondary")
 

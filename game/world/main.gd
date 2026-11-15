@@ -107,7 +107,7 @@ func _ready() -> void:
 	add_child(game_audio)
 	company_panel.volume_changed.connect(game_audio.set_volumes)
 	click_feedback = ClickFeedback.new()
-	GameCursor.install()
+	GameCursor.install(self)
 	click_feedback.z_index = 2000
 	add_child(click_feedback)
 	player.destination_reached.connect(_on_destination_reached)
@@ -746,8 +746,12 @@ func _on_company_action(method: String, result: Dictionary) -> void:
 			founder_hud._movement_hint.show()
 			room.architecture.apply_theme(OfficeArchitecture.DEFAULT_THEME)
 			company_panel.set_architecture_theme(OfficeArchitecture.DEFAULT_THEME)
-			company_panel.present("journey")
-			company_panel._notice.text = "Previous company backed up to: " + str(result.get("backupPath", ""))
+			if company_panel.story_mode:
+				company_panel.hide()
+				_sync_story_visitors()
+			else:
+				company_panel.present("journey")
+				company_panel._notice.text = "Previous company backed up to: " + str(result.get("backupPath", ""))
 		"hiring.complete":
 			game_audio.play("reward")
 			company_panel.present("hired")
@@ -950,12 +954,30 @@ func _sync_story_visitors() -> void:
 	var hired := false
 	for candidate: Dictionary in _journey.get("candidates", []):
 		if str(candidate.get("id", "")) == "mira" and bool(candidate.get("hired", false)): hired = true
-	arrival_guest.position = room.grid_to_world_position(room.player_spawn + Vector2i(-2, -2))
+	arrival_guest.position = _arrival_guest_position()
 	arrival_guest.set_active(_location == "office" and not _journey.is_empty() and not hired)
 	if arrival_guest.visible: room.navigation.actors["arrival-mina"] = arrival_guest.position
 	else: room.navigation.actors.erase("arrival-mina")
 	courtyard_sign.position = room.grid_to_world_position(room.player_spawn) + Vector2(0, 26)
 	courtyard_sign.visible = _location == "office" and bool((_journey.get("story", {}) as Dictionary).get("courtyardUnlocked", false))
+
+func _arrival_guest_position() -> Vector2:
+	# The visitor needs clear painted space, not just an unoccupied foot tile:
+	# the cafe chair extends below its logical cell. Keep this deterministic so
+	# player movement or a routine bootstrap cannot make Mina jump positions.
+	for offset: Vector2i in [Vector2i(2, -2), Vector2i(-2, -2), Vector2i(3, -3), Vector2i(-3, -3), Vector2i(1, -3)]:
+		var point := room.grid_to_world_position(room.player_spawn + offset)
+		if not room.navigation.walkable(room.navigation.cell_at(point)) or not room.navigation.walkable(room.navigation.cell_at(point + Vector2(0, 32))): continue
+		var painted := Rect2(point + Vector2(-24, -72), Vector2(48, 80))
+		var clear := true
+		for placement: Dictionary in room.resolved_placements:
+			var bounds: Rect2 = placement.world_visual_bounds
+			bounds.position += room.global_position
+			if bounds.intersects(painted):
+				clear = false
+				break
+		if clear: return point
+	return room.grid_to_world_position(room.player_spawn + Vector2i(0, -1))
 
 func _apply_story_location(force: bool = false) -> void:
 	if courtyard == null: return
@@ -1157,6 +1179,7 @@ func _calibration_callout_fallback(employee: EmployeeAvatar, size: Vector2, occu
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST and not _quitting:
 		_quitting = true
+		GameCursor.release(self)
 		game_audio.shutdown()
 		_save_acknowledged = false
 		_save_game()
@@ -1166,6 +1189,11 @@ func _notification(what: int) -> void:
 		# Let the audio mixer retire stopped playback before tearing down the tree.
 		await get_tree().create_timer(0.05).timeout
 		get_tree().quit()
+
+func _exit_tree() -> void:
+	# Scene replacement/free also owns cursor cleanup; release is idempotent
+	# after the explicit normal-close path above.
+	GameCursor.release(self)
 
 func _on_worker_crashed(message: String) -> void:
 	_story_busy = false

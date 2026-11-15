@@ -17,6 +17,10 @@ const HAND: PackedStringArray = [
 const ARROW_HOTSPOT := Vector2(0, 0)
 const HAND_HOTSPOT := Vector2(10, 0)
 
+static var _owners: Dictionary[int, bool] = {}
+static var _arrow_texture: ImageTexture
+static var _hand_texture: ImageTexture
+
 static func texture(pixels: PackedStringArray) -> ImageTexture:
 	var image := Image.create(32, 32, false, Image.FORMAT_RGBA8)
 	image.fill(Color.TRANSPARENT)
@@ -31,6 +35,22 @@ static func texture(pixels: PackedStringArray) -> ImageTexture:
 				for dx: int in range(2): image.set_pixel(x * 2 + dx, y * 2 + dy, color)
 	return ImageTexture.create_from_image(image)
 
-static func install() -> void:
-	Input.set_custom_mouse_cursor(texture(ARROW), Input.CURSOR_ARROW, ARROW_HOTSPOT)
-	Input.set_custom_mouse_cursor(texture(HAND), Input.CURSOR_POINTING_HAND, HAND_HOTSPOT)
+static func install(owner: Object) -> void:
+	var id := owner.get_instance_id()
+	if _owners.has(id): return
+	_owners[id] = true
+	if _arrow_texture != null: return
+	_arrow_texture = texture(ARROW)
+	_hand_texture = texture(HAND)
+	Input.set_custom_mouse_cursor(_arrow_texture, Input.CURSOR_ARROW, ARROW_HOTSPOT)
+	Input.set_custom_mouse_cursor(_hand_texture, Input.CURSOR_POINTING_HAND, HAND_HOTSPOT)
+
+static func release(owner: Object) -> void:
+	if not _owners.erase(owner.get_instance_id()) or not _owners.is_empty(): return
+	# Input retains the textures independently. Clear its slots before releasing
+	# our references, while RenderingServer is still alive. Static resources
+	# otherwise survive until script shutdown, after the renderer is gone.
+	Input.set_custom_mouse_cursor(null, Input.CURSOR_ARROW)
+	Input.set_custom_mouse_cursor(null, Input.CURSOR_POINTING_HAND)
+	_arrow_texture = null
+	_hand_texture = null

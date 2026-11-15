@@ -357,7 +357,11 @@ func _title_screen() -> void:
 
 func _confirm_screen() -> void:
 	_heading("Start a new company?", "Your current company will leave this office.")
-	_label("This replaces the company saved in this browser. Your current progress will be lost." if OS.has_feature("web") else "Your company database and project files will move into a recoverable, timestamped backup. Your AI connection stays saved.")
+	var replacement := "This replaces the company saved in this browser. Your current progress will be lost."
+	if not OS.has_feature("web"):
+		replacement = "Your company and project files will move into a recoverable, dated backup."
+		if not story_mode: replacement += " Your AI connection stays saved."
+	_label(replacement)
 	_label("This starts a new journey with no hires or earned progress. Go back without changing anything.")
 	_actions("Start new company" if OS.has_feature("web") else "Back up + start new", func() -> void: _request("game.new", {"confirmed": true}), true, "Go back", func() -> void: present("title"), true)
 
