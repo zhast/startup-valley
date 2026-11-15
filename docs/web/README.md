@@ -14,6 +14,7 @@ Godot owns presentation. The harness owns the simulation and saves. Preserve thi
 - [Original runtime plan](browser-runtime-plan.md): design rationale and module seams.
 - [Porting guide](porting.md): order of work and acceptance criteria.
 - [Verification record](verification.md): current scaffold and native baseline results.
+- [Canvas playtest](playtest.md): actual browser gameplay and regression commands.
 - [Asset audit](asset-audit.md): art quality, technical checks, and in-game evidence.
 
 ## Where the original project left off
@@ -69,6 +70,9 @@ npm run test:web
 npm --prefix harness test
 npm --prefix harness run eval:offline
 CHROME_PATH=/path/to/chrome npm --prefix web test
+CHROME_PATH=/path/to/chrome npm run test:web:loading
+# While npm run dev:web is running:
+CHROME_PATH=/path/to/chrome npm run test:web:play
 ```
 
 Browser tests launch an isolated temporary Chrome profile. Until an export exists, `npm run dev:web` displays a clearly marked **loading-screen preview**, not gameplay. The loopback server serves static files only; it exposes no worker API or game-state endpoint.

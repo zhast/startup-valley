@@ -2,7 +2,7 @@
 
 Research date: November 15, 2026. Target: the existing `zhast/startup-valley` Godot 4.7.2/GDScript presentation layer and Node/TypeScript/SQLite harness.
 
-**Status: proposed, not implemented.** The web scaffold has tested export preflight, staging, binary-header validation, and local HTTP serving. It does not yet port the Node harness, connect the Godot client to a browser Worker, or prove browser save persistence. A successful Godot export alone would not make the current game playable.
+**Historical design plan, now implemented.** The module boundaries below guided the shared harness extraction and browser Worker. For the actual bridge API, SQLite package, save recovery, build commands, and tested behavior, read [the runtime guide](../../web/README.md) and [verification record](verification.md). A successful Godot export alone does not establish gameplay correctness.
 
 ## Preserve the existing ownership model
 

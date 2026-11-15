@@ -87,6 +87,7 @@
     const fullscreen = document.getElementById('fullscreen');
     const notice = document.getElementById('game-notice');
     let engine;
+    let engineStarted = false;
     const worker = globalThis.StartupValleyWorker;
     let phase = 'ready';
     let startupTimer;
@@ -101,13 +102,14 @@
       console.error('Game loading failed:', event?.reason ?? event?.error ?? 'No download progress');
       event?.preventDefault?.();
       fail('The game files could not finish loading. Check your connection, then reload. Your committed save is preserved.');
-      stopWorker();
+      stopGame();
     }
     function watchStartupProgress() {
       clearTimeout(startupTimer);
       startupTimer = setTimeout(startupFailure, 90000);
     }
     function fail(message) {
+      if (phase === 'stopped') return;
       clearStartupWatch();
       phase = 'stopped';
       cover.hidden = false; canvas.hidden = true; fullscreen.hidden = true;
@@ -121,6 +123,12 @@
     }
     function stopWorker() {
       if (worker) Promise.resolve(worker.stop()).catch(error => console.error('Worker shutdown failed:', error));
+    }
+    function stopGame() {
+      // Never launch the game after a cancelled download. Once it has started,
+      // request quit as well as closing the authoritative save worker.
+      try { if (engineStarted) engine.requestQuit(); } catch (error) { console.error('Game shutdown failed:', error); }
+      stopWorker();
     }
     reload.addEventListener('click', () => location.reload());
     fullscreen.addEventListener('click', async () => {
@@ -149,7 +157,7 @@
         if (phase !== 'ready') return;
         phase = 'loading';
         // Godot's loader can reject an internal fetch without rejecting the
-        // startGame promise. Recover those failures and stalled downloads too.
+        // initialization promise. Recover those failures and stalled downloads too.
         window.addEventListener('unhandledrejection', startupFailure);
         window.addEventListener('error', startupFailure);
         watchStartupProgress();
@@ -161,15 +169,18 @@
           try { await worker.start(); }
           catch (error) {
             fail(`Your saved company could not be opened. ${error instanceof Error ? error.message : String(error)}`);
-            stopWorker();
+            stopGame();
             return;
           }
+          if (phase !== 'loading') { stopGame(); return; }
           worker.onError(message => {
             fail(`The game simulation stopped. ${message}`);
-            stopWorker();
+            stopGame();
           });
-          engine = new Engine(config);
-          await engine.startGame({
+          const pack = config.mainPack || `${config.executable}.pck`;
+          engine = new Engine({
+            ...config,
+            args: ['--main-pack', pack, ...(config.args || [])],
             canvas,
             onProgress: (loaded, total) => {
               if (phase !== 'loading') return;
@@ -188,9 +199,15 @@
             },
             onExit: () => { fail('The game has closed. Reload whenever you are ready to return.'); stopWorker(); },
           });
+          // Split the public load/init API from start so a cancelled download
+          // cannot later execute game scripts or reopen its database worker.
+          await Promise.all([engine.init(config.executable), engine.preloadFile(pack, pack)]);
+          if (phase !== 'loading') { stopGame(); return; }
+          engineStarted = true;
+          await engine.start();
           // A project may quit during initialization. A resolved start promise
           // must not hide the exit message or focus a stopped game.
-          if (phase !== 'loading') return;
+          if (phase !== 'loading') { stopGame(); return; }
           clearStartupWatch();
           phase = 'running';
           cover.hidden = true;
@@ -201,7 +218,7 @@
         } catch (error) {
           console.error('Godot startup failed:', error);
           fail('The game could not start. Check your connection and reload. If it continues, try another browser.');
-          stopWorker();
+          stopGame();
         }
       }, { once: true });
     }

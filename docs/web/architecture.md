@@ -8,7 +8,7 @@ The project pins **Godot 4.7.2**, uses GDScript and Compatibility rendering, and
 
 A browser cannot start the native child process used by [WorkerClient](../../game/worker_client.gd). Static Godot export provides only the presentation half of this port.
 
-## Recommended target
+## Implemented target
 
 ```mermaid
 flowchart LR
@@ -34,7 +34,7 @@ Phaser has an official React/Vite integration and PixiJS is a capable renderer. 
 
 ## Browser runtime and persistence
 
-Evaluate SQLite WASM's **OPFS SAH-pool VFS** inside one dedicated Worker. Its synchronous database surface fits the current SQL stores without requiring COOP/COEP. Enforce one owner for each save; a second tab must report contention instead of creating an empty save. Handle the existing WAL migration deliberately. These are requirements, not completed integrations. [SQLite persistence](https://sqlite.org/wasm/doc/trunk/persistence.md#vfs-opfs-sahpool) · [SQLite OO API](https://sqlite.org/wasm/doc/trunk/api-oo1.md)
+The implementation uses SQLite WASM's **OPFS SAH-pool VFS** inside one dedicated Worker. Its synchronous database surface fits the current SQL stores without requiring COOP/COEP. A Web Lock enforces one owner per origin; a second tab reports contention. Exclusive SQLite locking is enabled before the existing WAL migration. Initialization preserves existing pool data on failure. See the [runtime implementation notes](../../web/README.md). [SQLite persistence](https://sqlite.org/wasm/doc/trunk/persistence.md#vfs-opfs-sahpool) · [SQLite OO API](https://sqlite.org/wasm/doc/trunk/api-oo1.md)
 
 Do not introduce a parallel JSON save model. Keep Node keychain, process, Pi, and provider modules out of the browser bundle. Optional provider features should report unavailable capabilities in the initial web target; the core tycoon must remain playable without them.
 
@@ -46,7 +46,7 @@ Start with a single-threaded export and the existing Compatibility renderer. God
 
 Preserve the 1280×720 design viewport, 32px logical grid, 48×80 character frames, and authored foot anchors until browser comparison suggests changes. Do not repack assets to fit a generic template. Include layout/catalog JSON read through FileAccess in the PCK.
 
-The custom shell handles startup, loading, errors, and display controls only. It uses Godot's export placeholders and Engine.startGame API. [Custom HTML shell](https://docs.godotengine.org/en/stable/tutorials/platform/web/customizing_html5_shell.html)
+The custom shell handles startup, loading, errors, and display controls only. It uses Godot's export placeholders and public Engine initialization/start APIs. Initialization is separate from starting game scripts so a cancelled download cannot launch a hidden game later. [Custom HTML shell](https://docs.godotengine.org/en/stable/tutorials/platform/web/customizing_html5_shell.html)
 
 ## Acceptance and shipping
 
@@ -54,4 +54,4 @@ The first milestone is the same native/browser command sequence producing the sa
 
 Measure real download size, startup time, memory, and frame pacing. Preserve fonts initially and optimize only with text-coverage tests. Ship loader, WASM, PCK, and worker code as one release. Establish persistence across updates before introducing PWA caching.
 
-The web scaffold tests verify tooling and shell behavior only. They do not demonstrate a working browser game. The mobile shell is tested; mobile gameplay remains a separate acceptance target.
+The root web tests verify tooling and shell behavior; the separate `web/` suite exercises the actual bundled Worker and SQLite in Chrome. See the [verification record](verification.md) for game-level checks. Mobile gameplay remains a separate acceptance target.

@@ -15,7 +15,7 @@ function deferred() {
 
 // Small event/DOM adapter, deliberately not a browser renderer. It tests the
 // actual exported startup script's transitions and focus behavior.
-function harness({ config = {}, missingEngine = false, missingWorker = false, workerStart = async () => {}, wasm = true, webgl = true, startGame } = {}) {
+function harness({ config = {}, missingEngine = false, missingWorker = false, workerStart = async () => {}, wasm = true, webgl = true, initialize, startGame } = {}) {
   const elements = new Map();
   let focused = null, reloads = 0;
   const timers = new Map();
@@ -65,8 +65,11 @@ function harness({ config = {}, missingEngine = false, missingWorker = false, wo
   document.exitFullscreen = async () => { document.fullscreenElement = null; };
   class Engine {
     static isWebGLAvailable(version) { assert.equal(version, 2); return webgl; }
-    constructor(configuration) { this.config = configuration; instances.push(this); }
-    startGame(options) { this.options = options; return startGame ? startGame(options) : Promise.resolve(); }
+    constructor(configuration) { this.config = configuration; this.options = configuration; this.quitCalls = 0; this.startCalls = 0; instances.push(this); }
+    init(executable) { this.executable = executable; return initialize ? initialize() : Promise.resolve(); }
+    preloadFile(file, path) { this.preloaded = [file, path]; return Promise.resolve(); }
+    start() { this.startCalls++; return startGame ? startGame(this.config) : Promise.resolve(); }
+    requestQuit() { this.quitCalls++; }
   }
   const globals = {
     document,
@@ -114,7 +117,9 @@ test('loads once, preserves exported config, isolates input until ready, and han
   const clicked = shell.get('start').emit('click');
   await new Promise(resolve => setImmediate(resolve));
   const instance = shell.instances[0];
-  assert.equal(JSON.stringify(instance.config), JSON.stringify(config));
+  for (const field of Object.keys(config)) assert.equal(JSON.stringify(instance.config[field]), JSON.stringify(config[field]));
+  assert.equal(JSON.stringify(instance.config.args), JSON.stringify(['--main-pack', 'index.pck']));
+  assert.deepEqual(instance.preloaded, ['index.pck', 'index.pck']);
   assert.equal(shell.get('start').disabled, true);
   assert.equal(shell.get('canvas').inert, true);
   assert.equal(shell.get('canvas').tabIndex, -1);
@@ -195,6 +200,35 @@ test('an internal loader rejection recovers even if startGame never rejects', as
   completion.resolve();
   await clicked;
   assert.equal(shell.get('cover').hidden, false, 'late success cannot dismiss the failure');
+  assert.equal(shell.instances[0].quitCalls, 2, 'late engine is asked to quit again after startup completes');
+  shell.instances[0].options.onExit();
+  assert.match(shell.get('status').textContent, /could not finish loading/, 'cleanup cannot overwrite the original failure');
+});
+
+test('cancelled startup never launches an engine when storage resolves late', async () => {
+  const storage = deferred();
+  const shell = harness({ workerStart: () => storage.promise });
+  const clicked = shell.get('start').emit('click');
+  [...shell.timers.values()][0]();
+  storage.resolve();
+  await clicked;
+  assert.equal(shell.instances.length, 0);
+  assert.equal(shell.get('reload').hidden, false);
+  assert.match(shell.get('status').textContent, /could not finish loading/);
+});
+
+test('a cancelled engine download can finish initialization without starting game scripts', async () => {
+  const initialization = deferred();
+  const shell = harness({ initialize: () => initialization.promise });
+  const clicked = shell.get('start').emit('click');
+  await new Promise(resolve => setImmediate(resolve));
+  await shell.window.emit('error', { error: new Error('load failed'), preventDefault() {} });
+  initialization.resolve();
+  await clicked;
+  assert.equal(shell.instances[0].startCalls, 0);
+  assert.equal(shell.instances[0].quitCalls, 0, 'never sends quit to an engine that has not started');
+  assert.equal(shell.get('reload').hidden, false);
+  assert.match(shell.get('status').textContent, /could not finish loading/);
 });
 
 test('startup watchdog advances only with download progress and is removed once playing', async () => {
