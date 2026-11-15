@@ -4,6 +4,9 @@ Resuming development? Start with the [current handoff](docs/DEMO_HANDOFF.md),
 [bounded demo plan](docs/DEMO_GOAL_PLAN.md), and [recorded decisions](docs/DECISIONS.md).
 
 Art changes follow the [asset generation and placement workflow](docs/ASSET_WORKFLOW.md).
+See the [current asset findings and repairs](docs/ASSET_STATUS.md). New maps
+follow the [shared-world map workflow](docs/MAP_WORKFLOW.md), including modular
+assets, matching camera/scale, and current Godot visual evidence.
 Run `npm run assets:check` for the current runtime gate; browser exports run it automatically.
 
 Startup Valley is a story-led Godot office-town tycoon set in the fictional TownSquare community. Meet your teammates, follow the current goal, develop a product across office days, and release it for game cash and reputation. The simulation plays without credentials or a network connection.

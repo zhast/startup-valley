@@ -112,6 +112,11 @@ quest system to this demo.
 - Reopened blink acceptance includes standing, seated and guest sprites across
   all identities and supported facings, correct closed-eye pixels, and short,
   infrequent rendered blink timing. Track exact findings in `ASSET_STATUS.md`.
+- Audit chairs, desks and phone booths together in native Godot views with the
+  same reference characters. Correct confirmed relative-scale/perspective
+  inconsistencies at the shared asset-family source and enforce documented
+  proportions for future assets. Do not visually approve affected maps before
+  that review or hide a mismatch with unrelated per-map sprite scaling.
 
 ### 5. Package the tested demo and a durable handoff
 

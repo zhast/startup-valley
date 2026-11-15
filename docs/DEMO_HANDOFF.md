@@ -9,17 +9,22 @@ parallel agents, fixes, art work, integrated Godot tests, local exports, and
 frequent tested commits/pushes directly to `main`. Website/public hosting is
 **deferred**. Do not use computer-use or browser UI automation for this goal.
 
-Current local production checkpoint: `bdc0b90` (story hover and native input
-probe fixes; follows `b0aff46`). Confirmed
-remote checkpoint: `3fdaf93feae951abff408a87b1973a1ca13acce7`, which includes the
+Current verified local/remote checkpoint: `d39231e` (includes map admission,
+asset status and native input probes; the equivalent local commit was
+`1630b40`). Confirmed remote checkpoint:
+`d39231e52be72c7d0f50282f7e5901dc7cc6c68f`, which includes the
 opening/courtyard implementation, cursor/settings/arrival fixes and initial
 test harness. Verify
 Git state before resuming; connector-created remote commits can have different
 IDs with identical full Git trees. Do not overwrite someone else's new work.
 
 The QA agent owns ongoing test-only edits in `game/tests/test_demo_journey.gd`
-and `scripts/test-demo-godot.mjs`. Production is frozen unless a confirmed defect
-requires a fix. Newly imported test `.gd.uid` files should be retained.
+and `scripts/test-demo-godot.mjs`. The asset agent is repairing standing eye
+pixels and shared blink timing; those runtime changes are not yet a completed
+reviewed checkpoint. Hold normal exports while their raster reviews are pending.
+The former story agent is now auditing chairs/desks/phone-booth scale with
+native comparison fixtures; map visual approval is on hold for that audit.
+Newly imported test `.gd.uid` files should be retained.
 
 ## Implemented and saved
 
@@ -40,6 +45,12 @@ requires a fix. Newly imported test `.gd.uid` files should be retained.
   while the pupils stay open. All idle blink timing is excessively long.
   The asset-quality agent is repairing both with broad native pose coverage.
   See `ASSET_STATUS.md` for the exact generated/code-only inventory.
+- Mina's new candidate has passed an independent timed native check (194
+  checks, 90 samples). The same review exposed oversized dark closed-eye blocks
+  on Founder, now being repaired. Do not claim all blinks are complete yet.
+- New owner report: chairs, desks and phone booths feel inconsistently scaled.
+  A separate agent is measuring their painted bounds, anchors and proportions
+  in native scenes; preserve pending map evidence but do not approve it yet.
 - Precise interaction feedback, visitor/sign hover, native story Settings,
   no AI setup in the default story, clean cursor teardown and safe arrival
   placement even when furniture crowds preferred spots.

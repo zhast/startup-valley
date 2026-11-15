@@ -10,8 +10,18 @@ correct. See [the generation and review workflow](ASSET_WORKFLOW.md).
 | Finding | Evidence and action | Status |
 | --- | --- | --- |
 | Mina's standing blink paints pale bars through her bangs while her pupils stay open | The previous correction touched only `mira-seated.png`; the front idle closed cell in `mira-locomotion.png` still needs a narrow eye correction. Audit all facings and poses in Godot. | Repair in progress |
+| Founder's front closed eyes read as dark blocks | Actual timed Godot captures exposed a two-pixel-high closed-eye block; align its lid treatment with the other characters while preserving his identity and remaining frames. | Repair in progress |
 | Blinks look like prolonged face flicker | Standing Founder, employees, seated idle and story guests alternate two cells at 1.5 fps, leaving eyes closed about 667 ms every 1.33 s. Replace this with a short, infrequent blink and verify rendered timing. | Repair in progress |
 | Full visual consistency of future maps | New shared-world manifests and a map gate require matching camera, scale, material treatment, modular props and actual-engine review. Existing snapshots are explicitly not visual approvals. | Framework under validation |
+
+## Reported furniture consistency issue
+
+The owner reports that chairs, desks and phone booths feel inconsistently
+sized/scaled. A separate furniture-quality audit is comparing the actual
+Godot-rendered families beside the same reference characters, with native
+scale, canvas padding, ground pivots, perspective and occupied poses recorded.
+Current map visual approvals stay pending that assessment. Do not treat an
+existing geometry contract as proof that these proportions look coherent.
 
 ## Generated art already integrated
 
