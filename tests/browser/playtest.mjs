@@ -40,6 +40,36 @@ async function click(x, y) {
     rect.y + (rect.height - 720 * scale) / 2 + y * scale);
   await settle();
 }
+async function cursorAt(name, x, y, expectedHotspot) {
+  const rect = await page.locator('#canvas').boundingBox();
+  const scale = Math.min(rect.width / 1280, rect.height / 720);
+  await page.mouse.move(rect.x + (rect.width - 1280 * scale) / 2 + x * scale,
+    rect.y + (rect.height - 720 * scale) / 2 + y * scale);
+  await settle();
+  const cursor = await page.locator('#canvas').evaluate(async canvas => {
+    const css = getComputedStyle(canvas).cursor;
+    const match = css.match(/url\(["']?(.*?)["']?\)\s*(\d+)\s+(\d+)/);
+    if (!match) return { css };
+    const image = new Image();
+    image.src = match[1];
+    await image.decode();
+    const bitmap = document.createElement('canvas');
+    bitmap.width = image.width;
+    bitmap.height = image.height;
+    const context = bitmap.getContext('2d');
+    context.drawImage(image, 0, 0);
+    const hotspot = [Number(match[2]), Number(match[3])];
+    return { css, hotspot, width: image.width, height: image.height,
+      alpha: context.getImageData(...hotspot, 1, 1).data[3], png: bitmap.toDataURL() };
+  });
+  assert.deepEqual(cursor.hotspot, expectedHotspot, `${name} uses the intended hardware cursor hotspot`);
+  assert.equal(cursor.width, 32);
+  assert.equal(cursor.height, 32);
+  assert.equal(cursor.alpha, 255, 'The actual cursor hotspot touches opaque artwork');
+  await writeFile(join(artifacts, `${name}-cursor.png`), Buffer.from(cursor.png.split(',')[1], 'base64'));
+  const { png, ...summary } = cursor;
+  return summary;
+}
 async function response(method, action) {
   const previous = (await diagnostics()).lastResponses[method]?.id;
   await action();
@@ -71,23 +101,30 @@ try {
   await capture('02-hire');
   const hired = await response('hiring.complete', () => key('Enter'));
   assert.ok(hired.employees.some(employee => employee.id === 'mira'));
+  const founderGrid = hired.furnishing.placements['founder-workstation'].grid;
+  // Target the tabletop art relative to its saved placement, not an old room.
+  const founderDesk = [(founderGrid[0] + 0.5) * 32 + 28, (founderGrid[1] + 0.5) * 32 - 34];
   await capture('03-hired');
-  await key('Enter'); // Meet Mina.
-  await key('j');
-  await key('Enter'); // Web Journey's primary New Product action.
+  await key('Enter'); // Let's find our first idea opens planning directly.
   await capture('04-product');
-  await click(460, 535); // Course, an unlocked product type.
   const started = await response('tycoon.start', () => key('Enter'));
   assert.equal(started.journey.tycoon.developing.typeId, 'course');
+  assert.deepEqual(started.journey.tycoon.developing.staffIds, ['founder', 'mira'], 'Mina joins the first project by default');
   await capture('05-developing');
+  await click(455, 518); // The secondary action previews the in-game website.
+  await capture('05a-website-preview');
+  await key('Enter'); // Back to our project.
+  await click(966, 201); // Close progress and return to the office.
+  await click(1217, 155);
+  await capture('05b-Mina-conversation');
+  await click(966, 501); // See our project returns to saved progress.
   let lastDay;
   for (let day = 1; day <= 3; day++) {
     lastDay = await response('day.end', () => key('Enter'));
     assert.equal(lastDay.clock.day, day + 1);
     await capture(`06-day-${day}-saved`);
     await key('Enter'); // Begin next day.
-    await key('j');
-    await key('Enter'); // Continue development.
+    await click(943, 94); // The persistent story goal opens current progress.
   }
   assert.equal(lastDay.journey.tycoon.developing.ready, true);
   await capture('07-ready');
@@ -96,14 +133,19 @@ try {
   assert.ok(released.journey.tycoon.history.length > 0);
   await capture('08-release-sales');
   await key('Enter'); // Back to office.
-  await click(735, 606); // Move the founder across unobstructed floor.
+  const cursors = {
+    floor: await cursorAt('floor', 816, 592, [0, 0]),
+    desk: await cursorAt('desk', ...founderDesk, [10, 0]),
+  };
+  await capture('08b-desk-hover');
+  await click(816, 592); // Move across the compact room's bottom walkway.
   await page.waitForTimeout(2000);
   await capture('09-office-movement');
   await key('Escape');
   await capture('10-settings');
   await click(790, 189); // Renovate office; no unsupported Connect button.
   await capture('11-renovate');
-  await click(299, 526); // Select the painted founder desk, not its empty bounds.
+  await click(...founderDesk); // Select the painted tabletop.
   await key('m');
   await key('ArrowDown');
   await capture('12-furniture-preview');
@@ -118,7 +160,7 @@ try {
   assert.equal(restored.journey.company.cashCents, released.journey.company.cashCents);
   assert.equal(restored.journey.company.reputation, released.journey.company.reputation);
   assert.equal(restored.journey.tycoon.history[0].id, released.journey.tycoon.history[0].id);
-  assert.deepEqual(restored.furnishing.placements['founder-workstation'].grid, [8, 18]);
+  assert.deepEqual(restored.furnishing.placements['founder-workstation'].grid, [founderGrid[0], founderGrid[1] + 1]);
   assert.equal(restored.furnishing.revision, hired.furnishing.revision + 1);
   assert.ok(restored.journey.player.x > 600, 'Movement and its save survive reload');
   assert.ok(restored.employees.some(employee => employee.id === 'mira'));
@@ -142,7 +184,7 @@ try {
   await writeFile(join(artifacts, 'result.json'), JSON.stringify({
     ok: true, checkpoints, consoleLog, errors, released: released.journey.company,
     restored: { company: restored.journey.company, player: restored.journey.player, furnishing: restored.furnishing },
-    methods, furnishing, lockMessage,
+    methods, furnishing, lockMessage, cursors,
   }, null, 2));
   console.log(`PASS: real Godot canvas gameplay, OPFS reload and second-tab protection. Evidence: ${artifacts}`);
 } catch (error) {

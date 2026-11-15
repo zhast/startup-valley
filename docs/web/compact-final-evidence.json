@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "build": {
+    "engine": "4.7.2.stable.official.ed1daf0bf",
+    "preset": "Web",
+    "builtAt": "2026-11-15T22:54:04.023Z",
+    "assetReview": "release",
+    "files": [
+      {
+        "name": "index.html",
+        "bytes": 13903
+      },
+      {
+        "name": "index.js",
+        "bytes": 279815
+      },
+      {
+        "name": "index.wasm",
+        "bytes": 39514754
+      },
+      {
+        "name": "index.pck",
+        "bytes": 29103004
+      }
+    ],
+    "totalBytes": 68911476
+  },
+  "buildHashes": {
+    "html": "2a95e47a12ed15f0af67fd5973705cca1cd42bbe9db20e4ffe1d86e46187c340",
+    "pck": "35272a7f2900927777879a76cc237454800c68209d1306e9de57474097074d16"
+  },
+  "method": "Existing isolated headless Chrome session, real exported Godot canvas input; read-only worker diagnostics. No synthetic state or protocol writes.",
+  "evidence": [
+    {
+      "path": "docs/web/assets/compact-final-intro.png",
+      "sha256": "ebefbc524ca4d21beece0c7930a27107fd4d8dfc756e8db38815f7a1f17968e5"
+    },
+    {
+      "path": "docs/web/assets/compact-final-welcome.png",
+      "sha256": "8d80c732893119dbe835b6bea17e59adee351aef576ea97730dac8f2021c041c"
+    },
+    {
+      "path": "docs/web/assets/compact-final-plan.png",
+      "sha256": "241548ad74d2c6f8c209c3a4aa7517bf6e31a998a2a3ebddd0902bca7e81e1fe"
+    },
+    {
+      "path": "docs/web/assets/compact-final-website.png",
+      "sha256": "13207a5a069169e254e8c7501cd62a44c3020ec7d852906c392dd186c7ae6867"
+    },
+    {
+      "path": "docs/web/assets/compact-final-office.png",
+      "sha256": "2bb506a5acc682188bac4968ae5c6044592033efce7cd844dbfd1db45d2b3130"
+    },
+    {
+      "path": "docs/web/assets/compact-final-goal-landscape.png",
+      "sha256": "0f8fbd9671931254a76e938e9cbd8ad9c83976b5e0d06b3b6eb074760ae31d1d"
+    },
+    {
+      "path": "docs/web/assets/compact-final-release.png",
+      "sha256": "05a45199ea1f54f4801c656d8603ecc83d1f00dda8a1e69d76583cb25d4ee235"
+    },
+    {
+      "path": "docs/web/assets/compact-final-goal-complete.png",
+      "sha256": "813a8557f4e2d2ee5fd1b0c134a3debeb8d7a0ebbe46e11fb2ad05aa40f6674b"
+    },
+    {
+      "path": "docs/web/assets/compact-final-Mina-blink.png",
+      "sha256": "eef88280d988d92195632ee83f336bdd28142732f47458498559c936183e0830"
+    },
+    {
+      "path": "docs/web/assets/compact-final-drawer.png",
+      "sha256": "9521ca5deb000fb30d4aec681d1f97465d284f73322bf9c42d13f1851fe16933"
+    },
+    {
+      "path": "docs/web/assets/compact-final-walk.png",
+      "sha256": "14d15a7b02c88974a8e2cfae4d45d0811a1db2c71d5c04d862869254d9d091e4"
+    }
+  ],
+  "events": [
+    {
+      "id": "9",
+      "ok": true,
+      "company": {
+        "cashCents": 0,
+        "earnedCents": 0,
+        "reputation": 0,
+        "chapter": 1
+      },
+      "day": 1,
+      "product": null
+    },
+    {
+      "id": "14",
+      "ok": true,
+      "company": {
+        "cashCents": 0,
+        "earnedCents": 0,
+        "reputation": 0,
+        "chapter": 1
+      },
+      "product": {
+        "name": "Fitness Course",
+        "staffIds": [
+          "founder",
+          "mira"
+        ],
+        "progress": 0,
+        "ready": false
+      }
+    },
+    {
+      "id": "44",
+      "ok": true,
+      "company": {
+        "cashCents": 0,
+        "earnedCents": 0,
+        "reputation": 0,
+        "chapter": 1
+      },
+      "day": 2,
+      "product": {
+        "name": "Fitness Course",
+        "staffIds": [
+          "founder",
+          "mira"
+        ],
+        "progress": 33,
+        "ready": false
+      }
+    },
+    {
+      "id": "50",
+      "ok": true,
+      "company": {
+        "cashCents": 0,
+        "earnedCents": 0,
+        "reputation": 0,
+        "chapter": 1
+      },
+      "day": 3,
+      "product": {
+        "name": "Fitness Course",
+        "staffIds": [
+          "founder",
+          "mira"
+        ],
+        "progress": 67,
+        "ready": false
+      }
+    },
+    {
+      "id": "53",
+      "ok": true,
+      "company": {
+        "cashCents": 0,
+        "earnedCents": 0,
+        "reputation": 0,
+        "chapter": 1
+      },
+      "day": 4,
+      "product": {
+        "name": "Fitness Course",
+        "staffIds": [
+          "founder",
+          "mira"
+        ],
+        "progress": 100,
+        "ready": true
+      }
+    },
+    {
+      "id": "56",
+      "ok": true,
+      "company": {
+        "cashCents": 156800,
+        "earnedCents": 156800,
+        "reputation": 13,
+        "chapter": 1
+      },
+      "product": null
+    }
+  ],
+  "errors": [],
+  "methods": [
+    "health",
+    "bootstrap",
+    "credential.status",
+    "clock.set",
+    "game.save",
+    "hiring.complete",
+    "tycoon.start",
+    "day.end",
+    "tycoon.release"
+  ],
+  "lastAutosave": {
+    "kind": "response",
+    "id": "81",
+    "ok": true,
+    "result": {
+      "saved": true
+    }
+  },
+  "drawer": {
+    "frames": 59,
+    "changedPortraitFrames": 0,
+    "maxChangedPixels": 0
+  },
+  "coverageLimits": [
+    "Session ended at Settings in response to requested switch to integrated testing. No new browser session was launched.",
+    "Save acknowledgements observed, but reload, furniture movement, second-tab lock and cursor decoding were not repeated against this exact build. Earlier build evidence remains separately dated.",
+    "844x390 landscape layout inspected for clipping; not a touch-input or mobile usability acceptance.",
+    "Founder contact uses first four timed captures in each direction; later actor positions left the fixed crop.",
+    "Updated permanent playtest has passed syntax checking only against this build."
+  ]
+}
