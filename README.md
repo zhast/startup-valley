@@ -1,5 +1,8 @@
 # Startup Valley
 
+Resuming development? Start with the [current handoff](docs/DEMO_HANDOFF.md),
+[bounded demo plan](docs/DEMO_GOAL_PLAN.md), and [recorded decisions](docs/DECISIONS.md).
+
 Art changes follow the [asset generation and placement workflow](docs/ASSET_WORKFLOW.md).
 Run `npm run assets:check` for the current runtime gate; browser exports run it automatically.
 

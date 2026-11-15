@@ -84,3 +84,20 @@ gate for this single-owner project.
 
 **Reason:** The owner needs to play each meaningful change promptly. Report when
 source is committed but a new playable export or browser verification is pending.
+
+## 2026-11-15 — Preserve progress without waiting for the owner
+
+**Decision:** Push each tested checkpoint to `main` promptly and maintain a
+durable [handoff](DEMO_HANDOFF.md). Preserve useful work, test evidence and next
+steps in the repository. Local commits and successful remote pushes must be
+reported separately. Ordinary authorized work does not need further approval.
+
+**Reason:** The owner may not return and the current computer/session may be
+interrupted. A dirty working tree or an unpushed commit is not an off-machine
+backup.
+
+**Scope update:** Website and public-hosting work are deferred. The prepared
+deployment workflow is retained only as an inactive example. Use integrated
+Godot tests, rendered engine captures and automated worker/export validation;
+no computer-use session is required. Prior browser evidence remains useful,
+but does not claim future browser coverage.

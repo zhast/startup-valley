@@ -1,0 +1,105 @@
+name: Public playable demo
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: public-demo-pages
+  cancel-in-progress: false
+
+env:
+  GODOT_VERSION: 4.7.2
+  GODOT_LINUX_SHA256: cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4
+  STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS: '1'
+  STARTUP_VALLEY_FAKE_PROVIDER: '0'
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 22.19.0
+          cache: npm
+          cache-dependency-path: |
+            harness/package-lock.json
+            web/package-lock.json
+
+      - name: Install locked dependencies
+        run: |
+          npm ci --prefix harness
+          npm ci --prefix web
+
+      - name: Install the verified Godot editor
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module -e 'import fs from "node:fs"; const config = JSON.parse(fs.readFileSync("godot-web.config.json")); if (config.godotVersion !== process.env.GODOT_VERSION) throw new Error("CI Godot pin must match godot-web.config.json");'
+          GODOT_ARCHIVE="$RUNNER_TEMP/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          curl --fail --location --retry 3 "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" --output "$GODOT_ARCHIVE"
+          printf '%s  %s\n' "$GODOT_LINUX_SHA256" "$GODOT_ARCHIVE" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/startup-valley-godot"
+          unzip -q "$GODOT_ARCHIVE" -d "$RUNNER_TEMP/startup-valley-godot"
+          GODOT_EXECUTABLE="$RUNNER_TEMP/startup-valley-godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64"
+          chmod +x "$GODOT_EXECUTABLE"
+          "$GODOT_EXECUTABLE" --version
+          printf 'GODOT_BIN=%s\n' "$GODOT_EXECUTABLE" >> "$GITHUB_ENV"
+
+      - name: Verify offline harness and export tooling
+        run: |
+          npm run build --prefix harness
+          npm test --prefix harness
+          npm run eval:offline --prefix harness
+          npm run test:web
+
+      - name: Download matching web templates
+        run: npm run setup:web
+
+      - name: Build and validate the normal release export
+        run: |
+          npm run build:web
+          npm run validate:web
+          "$GODOT_BIN" --headless --path game --script res://tools/validate_project.gd
+          "$GODOT_BIN" --headless --path game --script res://tests/run_all.gd
+
+      - name: Upload playable Pages artifact
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
+        with:
+          path: dist
+          retention-days: 7
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+        with:
+          # Try the documented creation path; existing Pages sites need no
+          # extra credential. Initial enablement may require repository admin.
+          enablement: true
+
+      - name: Publish the playable demo
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
