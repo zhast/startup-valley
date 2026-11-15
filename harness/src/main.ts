@@ -4,7 +4,9 @@ import { createInterface } from "node:readline";
 
 import { credentialStoreFromEnvironment } from "./credential-store.js";
 import { GameDatabase } from "./database.js";
-import type { FurnishingUpdate } from "./furnishing.js";
+import { dispatchOffline, UNHANDLED } from "./offline-dispatch.js";
+import { stringParameter } from "./request-parameters.js";
+import { createRequestHandler } from "./request-handler.js";
 import { offlineProviderEnabled } from "./offline-provider.js";
 import { PiWorkerAdapter } from "./pi-worker-adapter.js";
 import type { ApprovalDecision, ProtocolEvent, ProtocolRequest, ProtocolResponse } from "./types.js";
@@ -15,57 +17,13 @@ function withOfflineCredentialStatus<T extends { configured: boolean }>(status: 
   return { ...status, configured: true, offline: true };
 }
 
-const MAX_LINE_LENGTH = 1_000_000;
-
 function argument(name: string): string | undefined {
   const index = process.argv.indexOf(name);
   return index >= 0 ? process.argv[index + 1] : undefined;
 }
 
-function stringParameter(request: ProtocolRequest, name: string, maxLength = 4000): string {
-  const value = request.params[name];
-  if (typeof value !== "string" || value.length === 0 || value.length > maxLength) throw new Error(`Parameter ${name} must be a non-empty string`);
-  return value;
-}
-
-function staffParameter(request: ProtocolRequest): string[] {
-  const value = request.params.staffIds;
-  if (value === undefined) return [];
-  if (!Array.isArray(value) || value.some((item) => typeof item !== "string")) throw new Error("Parameter staffIds must be an array of strings");
-  return value;
-}
-
-function numberParameter(request: ProtocolRequest, name: string): number {
-  const value = request.params[name];
-  if (typeof value !== "number" || !Number.isFinite(value)) throw new Error(`Parameter ${name} must be a finite number`);
-  return value;
-}
-
-function optionalIntegerParameter(request: ProtocolRequest, name: string): number | undefined {
-  const value = request.params[name];
-  if (value === undefined) return undefined;
-  if (typeof value !== "number" || !Number.isInteger(value)) throw new Error(`Parameter ${name} must be an integer`);
-  return value;
-}
-
-function optionalStringParameter(request: ProtocolRequest, name: string, maxLength = 64): string | undefined {
-  const value = request.params[name];
-  if (value === undefined) return undefined;
-  if (typeof value !== "string" || value.length === 0 || value.length > maxLength) throw new Error(`Parameter ${name} must be a non-empty string`);
-  return value;
-}
-
 function write(message: ProtocolResponse | ProtocolEvent): void {
   process.stdout.write(`${JSON.stringify(message)}\n`);
-}
-
-function success(id: string, result: unknown): void {
-  write({ kind: "response", id, ok: true, result });
-}
-
-function failure(id: string, error: unknown): void {
-  const message = error instanceof Error ? error.message : String(error);
-  write({ kind: "response", id, ok: false, error: message.slice(0, 4000) });
 }
 
 const dataRoot = resolve(argument("--data-dir") ?? join(process.cwd(), ".startup-valley-data"));
@@ -97,141 +55,18 @@ function ensureEventPump(jobId: string): void {
 
 async function dispatch(request: ProtocolRequest): Promise<unknown> {
   if (resetting) throw new Error("New company is being prepared");
+  const offline = await dispatchOffline(request, database, {
+    isBusy: () => adapter.isBusy(),
+    startNextQueuedJob: async () => {
+      const jobId = await adapter.startNextQueuedJob();
+      if (jobId) ensureEventPump(jobId);
+      return jobId;
+    },
+  });
+  if (offline !== UNHANDLED) return offline;
   switch (request.method) {
-    case "furnishing.update":
-      return database.furnishing.update(request.params as unknown as FurnishingUpdate);
-    case "hiring.complete":
-      database.journey.hire(stringParameter(request, "employeeId", 64), database.clockState().day);
-      return database.bootstrap();
     case "milestone.evaluate":
       return adapter.evaluateMilestone(stringParameter(request, "jobId", 64));
-    case "milestone.complete":
-    case "milestone.override":
-      return { journey: database.journey.complete(stringParameter(request, "jobId", 64), request.method === "milestone.override", database.clockState().day), dailySpend: database.dailySpend() };
-    case "chapter.continue":
-      return { journey: database.journey.continueChapter(), dailySpend: database.dailySpend() };
-    case "game.save":
-      database.journey.savePlayer(request.params);
-      return { saved: true };
-    case "day.end": {
-      if (adapter.isBusy()) throw new Error("Wait for active AI work to finish before ending the day");
-      const result = database.endDay(numberParameter(request, "day"));
-      const startedJobId = await adapter.startNextQueuedJob();
-      if (startedJobId) ensureEventPump(startedJobId);
-      return { ...result, journey: database.journey.state(), dailySpend: database.dailySpend() };
-    }
-    case "tycoon.start":
-      return {
-        journey: database.tycoon.start(
-          stringParameter(request, "topicId", 64),
-          stringParameter(request, "typeId", 64),
-          staffParameter(request),
-          optionalIntegerParameter(request, "pricePercent"),
-          optionalStringParameter(request, "marketing"),
-          optionalStringParameter(request, "engine"),
-          optionalStringParameter(request, "focus"),
-          optionalStringParameter(request, "audience"),
-          optionalStringParameter(request, "size"),
-        ),
-        dailySpend: database.dailySpend(),
-      };
-    case "tycoon.release":
-      return { journey: database.tycoon.release(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
-    case "tycoon.acceptContract":
-      return { journey: database.tycoon.acceptContract(), dailySpend: database.dailySpend() };
-    case "tycoon.patch":
-      return { journey: database.tycoon.patch(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
-    case "tycoon.sequel":
-      return { journey: database.tycoon.sequel(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
-    case "tycoon.award":
-      return { journey: database.tycoon.award(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
-    case "tycoon.port":
-      return { journey: database.tycoon.port(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
-    case "tycoon.localize":
-      return { journey: database.tycoon.localize(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
-    case "tycoon.train":
-      return {
-        journey: database.tycoon.train(stringParameter(request, "staffId", 32), stringParameter(request, "stat", 16)),
-        dailySpend: database.dailySpend(),
-      };
-    case "tycoon.research":
-      return {
-        journey: database.tycoon.research(stringParameter(request, "kind", 16), stringParameter(request, "id", 64)),
-        dailySpend: database.dailySpend(),
-      };
-    case "tycoon.buyUpgrade":
-      return {
-        journey: database.tycoon.buyUpgrade(stringParameter(request, "id", 64)),
-        dailySpend: database.dailySpend(),
-      };
-    case "tycoon.buyEngine":
-      return {
-        journey: database.tycoon.buyEngine(stringParameter(request, "id", 64)),
-        dailySpend: database.dailySpend(),
-      };
-    case "tycoon.expandOffice": {
-      const journey = database.tycoon.expandOffice();
-      return { journey, furnishing: database.furnishing.state(), dailySpend: database.dailySpend() };
-    }
-    case "tycoon.takeLoan":
-      return { journey: database.tycoon.takeLoan(), dailySpend: database.dailySpend() };
-    case "tycoon.signPublisher":
-      return { journey: database.tycoon.signPublisher(), dailySpend: database.dailySpend() };
-    case "tycoon.bookBooth":
-      return { journey: database.tycoon.bookBooth(), dailySpend: database.dailySpend() };
-    case "tycoon.takeTownDay":
-      return { journey: database.tycoon.takeTownDay(), dailySpend: database.dailySpend() };
-    case "tycoon.showPressDemo":
-      return { journey: database.tycoon.showPressDemo(), dailySpend: database.dailySpend() };
-    case "tycoon.addFeature":
-      return { journey: database.tycoon.addFeature(), dailySpend: database.dailySpend() };
-    case "tycoon.setDayPlan":
-      return { journey: database.tycoon.setDayPlan(stringParameter(request, "stat", 16)), dailySpend: database.dailySpend() };
-    case "tycoon.fixBugs":
-      return { journey: database.tycoon.fixBugs(), dailySpend: database.dailySpend() };
-    case "tycoon.crunch":
-      return { journey: database.tycoon.crunch(), dailySpend: database.dailySpend() };
-    case "tycoon.earlyAccess":
-      return { journey: database.tycoon.earlyAccess(), dailySpend: database.dailySpend() };
-    case "tycoon.cancelBuild":
-      return { journey: database.tycoon.cancelBuild(), dailySpend: database.dailySpend() };
-    case "tycoon.slipDay":
-      return { journey: database.tycoon.slipDay(), dailySpend: database.dailySpend() };
-    case "tycoon.pivot":
-      return {
-        journey: database.tycoon.pivot(stringParameter(request, "topicId", 64), stringParameter(request, "typeId", 64)),
-        dailySpend: database.dailySpend(),
-      };
-    case "tycoon.playtest":
-      return { journey: database.tycoon.playtest(), dailySpend: database.dailySpend() };
-    case "tycoon.assignTeam":
-      return { journey: database.tycoon.assignTeam(staffParameter(request)), dailySpend: database.dailySpend() };
-    case "tycoon.researchSpike":
-      return { journey: database.tycoon.researchSpike(), dailySpend: database.dailySpend() };
-    case "tycoon.salePrice":
-      return {
-        journey: database.tycoon.salePrice(stringParameter(request, "productId", 32), numberParameter(request, "pricePercent")),
-        dailySpend: database.dailySpend(),
-      };
-    case "tycoon.letGo":
-      database.tycoon.letGo(stringParameter(request, "staffId", 32));
-      return database.bootstrap();
-    case "tycoon.setPace":
-      return {
-        journey: database.tycoon.setPace(stringParameter(request, "staffId", 32), stringParameter(request, "pace", 16)),
-        dailySpend: database.dailySpend(),
-      };
-    case "tycoon.listCatalog":
-      return {
-        journey: database.tycoon.listCatalog(stringParameter(request, "productId", 32)),
-        dailySpend: database.dailySpend(),
-      };
-    case "tycoon.delistCatalog":
-      return { journey: database.tycoon.delistCatalog(), dailySpend: database.dailySpend() };
-    case "tycoon.makeTrailer":
-      return { journey: database.tycoon.makeTrailer(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
-    case "tycoon.writeDiary":
-      return { journey: database.tycoon.writeDiary(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
     case "game.new": {
       if (request.params.confirmed !== true) throw new Error("Confirm New Company first");
       if (adapter.isBusy() || database.hasOpenWorkOrder()) throw new Error("Finish or cancel open work before starting a new company");
@@ -272,8 +107,6 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
     }
     case "health":
       return { status: "ok", protocolVersion: 1, workerVersion: "0.0.1", provider: await credentials.peekProvider(), maxConcurrentJobs: 1, offline: offlineProviderEnabled() || undefined };
-    case "bootstrap":
-      return database.bootstrap();
     case "credential.status":
       return withOfflineCredentialStatus(await credentials.status());
     case "credential.set":
@@ -350,46 +183,13 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
       return adapter.studioFiles();
     case "studio.read":
       return adapter.readStudioFile(stringParameter(request, "relativePath", 1024));
-    case "clock.set": {
-      const clock = database.setClock(
-        numberParameter(request, "day"),
-        numberParameter(request, "minuteOfDay"),
-        numberParameter(request, "speed"),
-      );
-      const startedJobId = await adapter.startNextQueuedJob();
-      if (startedJobId) ensureEventPump(startedJobId);
-      return { clock, startedJobId };
-    }
+
   }
 }
 
 const lines = createInterface({ input: process.stdin, crlfDelay: Infinity, terminal: false });
-// Protocol retries share the same in-flight operation and response. Domain writes
-// also have durable unique keys, so replay after a process restart stays safe.
-const requests = new Map<string, { fingerprint: string; result: Promise<unknown> }>();
-lines.on("line", (line) => {
-  void (async () => {
-    let id = "invalid";
-    try {
-      if (line.length > MAX_LINE_LENGTH) throw new Error("Protocol line is too large");
-      const raw = JSON.parse(line) as unknown;
-      if (typeof raw === "object" && raw !== null && typeof (raw as { id?: unknown }).id === "string") id = (raw as { id: string }).id;
-      const request = parseRequest(raw);
-      const fingerprint = JSON.stringify([request.method, request.params]);
-      let entry = requests.get(request.id);
-      if (entry && entry.fingerprint !== fingerprint) throw new Error("Request id was already used for a different action");
-      if (!entry) {
-        entry = { fingerprint, result: dispatch(request) };
-        requests.set(request.id, entry);
-        if (requests.size > 512) requests.delete(requests.keys().next().value!);
-      }
-      const result = await entry.result;
-      success(request.id, result);
-    } catch (error) {
-      failure(id, error);
-    }
-  })();
-});
+const handleRequest = createRequestHandler(parseRequest, dispatch);
+lines.on("line", (line) => { void handleRequest(line).then(write); });
 
 async function shutdown(): Promise<void> {
   if (shuttingDown) return;
