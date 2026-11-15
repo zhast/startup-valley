@@ -9,7 +9,7 @@ import { DatabaseSync } from "node:sqlite";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
-import { GameDatabase } from "../src/database.js";
+import { GameDatabase, readMigrations } from "../src/database.js";
 import type { Facing, FurniturePlacements, FurnishingState } from "../src/furnishing.js";
 import { parseFurnishingState, parseRequest } from "../src/validation.js";
 
@@ -25,6 +25,17 @@ async function setup() {
   const root = await mkdtemp(join(tmpdir(), "startup-valley-furnishing-"));
   const project = join(root, "company-project"); await mkdir(project);
   const path = join(root, "startup-valley.sqlite");
+  // These coordinates exercise the mature legacy room. New-company cottage
+  // behavior has its own compact-office suite; keep the migration fixture explicit.
+  const old = new DatabaseSync(path);
+  const migrations = readMigrations();
+  old.exec(migrations["001_initial.sql"]!);
+  old.exec("CREATE TABLE schema_migrations(version INTEGER PRIMARY KEY,applied_at TEXT NOT NULL)");
+  for (const name of Object.keys(migrations).sort().filter((name) => Number(name.slice(0, 3)) >= 2 && Number(name.slice(0, 3)) <= 16)) {
+    old.exec(migrations[name]!);
+    old.prepare("INSERT INTO schema_migrations VALUES (?,'legacy-fixture')").run(Number(name.slice(0, 3)));
+  }
+  old.close();
   return { root, project, path, db: new GameDatabase(path, project) };
 }
 // Open Floor desks reserve the old east-center pocket. [24,8] still clears story

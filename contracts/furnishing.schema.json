@@ -37,6 +37,7 @@
       "required": ["version", "revision", "inventory", "placements", "recovery"],
       "properties": {
         "version": { "const": 1 },
+        "layoutId": { "enum": ["startup-office", "starter-cottage-v1"] },
         "revision": { "type": "integer", "minimum": 0 },
         "inventory": { "type": "array", "maxItems": 39, "items": { "$ref": "#/$defs/inventoryItem" } },
         "placements": { "$ref": "#/$defs/placements" },

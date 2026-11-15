@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "id": "starter-cottage-v1",
+  "tile_size": 32,
+  "width": 40,
+  "height": 23,
+  "floor_rects": [
+    [
+      5,
+      7,
+      23,
+      12
+    ],
+    [
+      13,
+      19,
+      5,
+      2
+    ]
+  ],
+  "wall_rects": [],
+  "wall_height_tiles": 3,
+  "doors": [
+    {
+      "id": "entrance",
+      "grid": [
+        15,
+        21
+      ],
+      "width": 2,
+      "depth": 1,
+      "facing": "south",
+      "entrance": true
+    }
+  ],
+  "windows": [
+    {
+      "id": "work-window",
+      "grid": [
+        8,
+        4
+      ],
+      "width": 5,
+      "height": 3,
+      "facing": "north"
+    },
+    {
+      "id": "studio-window",
+      "grid": [
+        19,
+        4
+      ],
+      "width": 5,
+      "height": 3,
+      "facing": "north"
+    }
+  ],
+  "circulation_rects": [
+    [
+      15,
+      7,
+      2,
+      14
+    ],
+    [
+      6,
+      13,
+      21,
+      1
+    ]
+  ],
+  "player_spawn": [
+    15,
+    19
+  ],
+  "employees": [
+    {
+      "id": "mira",
+      "name": "Mina",
+      "spawn": [
+        13,
+        17
+      ]
+    },
+    {
+      "id": "theo",
+      "name": "Theo",
+      "spawn": [
+        18,
+        17
+      ]
+    },
+    {
+      "id": "creative",
+      "name": "Creative",
+      "spawn": [
+        17,
+        17
+      ]
+    }
+  ],
+  "props": [
+    {
+      "id": "founder-workstation",
+      "kind": "desk",
+      "grid": [
+        11,
+        11
+      ],
+      "facing": "south",
+      "required_hires": 0,
+      "owner_id": "founder"
+    },
+    {
+      "id": "mira-workstation",
+      "kind": "desk",
+      "grid": [
+        20,
+        11
+      ],
+      "facing": "south",
+      "required_hires": 1,
+      "owner_id": "mira"
+    },
+    {
+      "id": "coffee-station",
+      "kind": "coffee_station",
+      "grid": [
+        7,
+        16
+      ],
+      "facing": "south",
+      "required_hires": 1
+    },
+    {
+      "id": "collaboration-cluster",
+      "kind": "collaboration_cluster",
+      "grid": [
+        22,
+        16
+      ],
+      "facing": "south",
+      "required_hires": 1
+    },
+    {
+      "id": "artifact-archive",
+      "kind": "artifact_archive",
+      "grid": [
+        7,
+        10
+      ],
+      "facing": "south",
+      "required_hires": 1
+    }
+  ],
+  "exterior": "campus"
+}

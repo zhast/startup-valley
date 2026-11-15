@@ -421,6 +421,7 @@ func _spawn_employees(records: Array[EmployeeRecord]) -> void:
 		founder_hud.hide_delivery()
 
 func _on_room_placements_changed() -> void:
+	player.movement_bounds = room.playable_bounds()
 	if _updating_roster: return
 	player.cancel_route()
 	_pending_interaction = ""

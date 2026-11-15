@@ -37,7 +37,7 @@ test("real stdio furnishing dispatch survives retry, stale concurrent updates, c
   const boot = await process.request("boot", "bootstrap"); assert.equal(boot.ok, true);
   const initial = boot.result.furnishing as FurnishingState;
   const params = { operationId: "place-plant", expectedRevision: initial.revision,
-    placements: { ...initial.placements, "decor-broadleaf_planter": { grid: [24, 8], facing: "south" } } };
+    placements: { ...initial.placements, "decor-broadleaf_planter": { grid: [25, 11], facing: "south" } } };
   const placed = await process.request("place", "furnishing.update", params);
   assert.equal(placed.ok, true); assert.equal(placed.result.replayed, false);
   assert.deepEqual((await process.request("place", "furnishing.update", params)).result, placed.result, "same protocol ID shares exact receipt");
@@ -45,7 +45,7 @@ test("real stdio furnishing dispatch survives retry, stale concurrent updates, c
   const snapshot = placed.result.furnishing as FurnishingState;
   const [first, second] = await Promise.all(["east", "west"].map((facing) => process.request(facing, "furnishing.update", {
     operationId: `rotate-${facing}`, expectedRevision: snapshot.revision,
-    placements: { ...snapshot.placements, "decor-broadleaf_planter": { grid: [24, 8], facing } },
+    placements: { ...snapshot.placements, "decor-broadleaf_planter": { grid: [25, 11], facing } },
   })));
   assert.equal([first, second].filter((item) => item.ok).length, 1);
   assert.match([first, second].find((item) => !item.ok).error, /room changed/u);

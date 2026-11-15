@@ -2,6 +2,7 @@ import type { SqlDatabase } from "./sql-database.js";
 
 export interface GeometryData {
   officeLayout: unknown;
+  starterOfficeLayout: unknown;
   furnitureCatalog: unknown;
   furnishingCatalog: unknown;
 }
@@ -14,7 +15,7 @@ export interface FurnitureItem {
   id: string; kind: string; ownerId: string; essential: boolean; grant: string; roleKit: string;
 }
 export interface FurnishingState {
-  version: 1; revision: number; inventory: FurnitureItem[]; placements: FurniturePlacements; recovery: string;
+  version: 1; layoutId?: "startup-office" | "starter-cottage-v1"; revision: number; inventory: FurnitureItem[]; placements: FurniturePlacements; recovery: string;
 }
 export interface FurnitureActor {
   id: string; grid: Cell;
@@ -28,6 +29,7 @@ export interface FurnishingUpdate {
 interface Prop { id: string; kind: string; grid: Cell; facing: Facing; required_hires: number; owner_id?: string; required_office_level?: number }
 type Rect = [number, number, number, number];
 interface Room {
+  id: "startup-office" | "starter-cottage-v1";
   tile_size: number; width: number; height: number;
   floor_rects: Rect[]; wall_rects: Rect[]; circulation_rects: Rect[];
   doors: Array<{ grid: Cell; width: number; depth: number; entrance?: boolean }>;
@@ -74,8 +76,10 @@ export class FurnishingGeometry {
   readonly circulation = new Set<string>();
   readonly entrances = new Set<string>();
 
-  constructor(data: GeometryData) {
-    this.room = data.officeLayout as Room;
+  constructor(private readonly data: GeometryData, layoutId = "startup-office") {
+    if (!["startup-office", "starter-cottage-v1"].includes(layoutId)) throw new Error("Unknown office layout");
+    this.room = (layoutId === "starter-cottage-v1" ? data.starterOfficeLayout : data.officeLayout) as Room;
+    if (!this.room || this.room.id !== layoutId) throw new Error("Missing authored office layout");
     this.catalog = { ...(data.furnitureCatalog as { furniture: Record<string, Profile> }).furniture };
     const additions = data.furnishingCatalog as { furniture: Record<string, Profile>; starter_decor: Array<{ id: string; kind: string }>; employee_role_kits: Record<string, string>; role_kits: Record<string, RoleKit>; employee_decor_kits?: Record<string, string>; decor_kits?: Record<string, DecorKit> };
     Object.assign(this.catalog, additions.furniture);
@@ -93,6 +97,10 @@ export class FurnishingGeometry {
       if (door.entrance) addRectangle(this.entrances, rect);
     }
     if (this.room.tile_size !== 32 || !this.floor.size || !this.entrances.size) throw new Error("Invalid authored furnishing room");
+  }
+
+  forLayout(layoutId: string): FurnishingGeometry {
+    return layoutId === this.room.id ? this : new FurnishingGeometry(this.data, layoutId);
   }
 
   #boundsAt(bounds: Rect, anchor: Cell): Rect { return [anchor[0] + bounds[0], anchor[1] + bounds[1], bounds[2], bounds[3]]; }
@@ -227,7 +235,7 @@ export class FurnishingGeometry {
 export class FurnishingStore {
   constructor(
     readonly db: SqlDatabase,
-    readonly geometry: FurnishingGeometry,
+    public geometry: FurnishingGeometry,
     private readonly parseState: (value: unknown) => FurnishingState,
     private readonly hash: (value: string) => string,
   ) { this.transaction(() => this.sync()); }
@@ -248,7 +256,10 @@ export class FurnishingStore {
   /** First-run lounge only. Existing saves and recovery keep their own arrangement. */
   private starterLounge(inventory: FurnitureItem[], base: FurniturePlacements): FurniturePlacements {
     const owned = new Set(inventory.map((item) => item.id));
-    const groups: Array<Array<{ id: string; grid: Cell }>> = [
+    const groups: Array<Array<{ id: string; grid: Cell }>> = this.geometry.room.id === "starter-cottage-v1" ? [
+      [{ id: "decor-cafe_table", grid: [11, 16] }, { id: "decor-cafe_chair", grid: [13, 16] }],
+      [{ id: "decor-broadleaf_planter", grid: [25, 11] }],
+    ] : [
       [{ id: "decor-phone_booth", grid: [3, 18] }],
       [{ id: "decor-cafe_table", grid: [5, 8] }, { id: "decor-cafe_chair", grid: [7, 8] }],
     ];
@@ -283,10 +294,21 @@ export class FurnishingStore {
       if (placed && item.ownerId && item.ownerId !== "founder") save.run(...placed.grid, item.ownerId);
     }
   }
+  private movePlayerToEntrance(): void {
+    const row = this.db.prepare("SELECT player_json FROM company_state WHERE id=1").get();
+    const player = JSON.parse(String(row?.player_json ?? "{}")) as Record<string, unknown>;
+    const [x, y] = this.geometry.room.player_spawn;
+    this.db.prepare("UPDATE company_state SET player_json=? WHERE id=1").run(JSON.stringify({ ...player, x: x * 32 + 16, y: y * 32 + 16 }));
+  }
   /** Caller may use this inside the hiring transaction. */
   sync(): void {
     const hired = this.db.prepare("SELECT id FROM employees WHERE employment_status='hired'").all().map((row) => String(row.id));
     const officeLevel = this.officeLevel();
+    // Resolve geometry from durable state on every transaction, including after
+    // rollback or a change made by another connection. Layout is never a client input.
+    const layoutId = String(this.db.prepare("SELECT layout_id FROM office_layout_state WHERE id=1").get()!.layout_id);
+    const expanding = layoutId === "starter-cottage-v1" && (hired.length >= 2 || hired.some((id) => id !== "mira") || officeLevel >= 2);
+    this.geometry = this.geometry.forLayout(expanding ? "startup-office" : layoutId);
     const insert = this.db.prepare("INSERT OR IGNORE INTO furnishing_inventory(id,kind,owner_id,essential,grant_id,role_kit) VALUES (?,?,?,?,?,?)");
     let grants = 0;
     const addedStations: FurniturePlacements = {};
@@ -314,7 +336,7 @@ export class FurnishingStore {
       // employee rows. Preserve every compatible location rather than silently
       // flattening an old room to today's defaults. New hires use reserved cells.
       const legacyStations: FurniturePlacements = {};
-      for (const employee of this.db.prepare("SELECT id,desk_x,desk_y FROM employees WHERE employment_status='hired' ORDER BY id").all()) {
+      for (const employee of this.geometry.room.id === "startup-office" ? this.db.prepare("SELECT id,desk_x,desk_y FROM employees WHERE employment_status='hired' ORDER BY id").all() : []) {
         const id = `${String(employee.id)}-workstation`;
         const old = placements[id];
         if (!old) continue;
@@ -335,7 +357,31 @@ export class FurnishingStore {
       }
       this.geometry.validate(placements, inventory);
       this.db.prepare("INSERT INTO furnishing_state VALUES (1,1,0,?,?,?)").run(JSON.stringify(placements), JSON.stringify({ version: 1, placements }), recovery);
+      if (this.geometry.room.id === "starter-cottage-v1") this.movePlayerToEntrance();
+      if (expanding) this.db.prepare("UPDATE office_layout_state SET layout_id='startup-office' WHERE id=1").run();
       this.syncEmployeeDesks(placements, inventory);
+      return;
+    }
+    if (expanding) {
+      // Moving premises relocates required stations as one validated batch.
+      // Compatible decorations keep their positions; all other owned items stay
+      // in storage. No inventory, company progress or operation receipts are lost.
+      let previous: FurniturePlacements = {};
+      try { previous = JSON.parse(String(row.placements_json)) as FurniturePlacements; } catch { /* use required defaults */ }
+      let placements = this.defaults(inventory);
+      this.geometry.validate(placements, inventory);
+      for (const item of inventory.filter((entry) => !entry.essential)) {
+        if (!previous?.[item.id]) continue;
+        const candidate = { ...placements, [item.id]: previous[item.id]! };
+        try { this.geometry.validate(candidate, inventory); placements = candidate; } catch { /* safely stored */ }
+      }
+      this.db.prepare("UPDATE office_layout_state SET layout_id='startup-office' WHERE id=1").run();
+      this.db.prepare("UPDATE furnishing_state SET revision=revision+1,placements_json=?,last_valid_json=?,recovery=? WHERE id=1").run(
+        JSON.stringify(placements), JSON.stringify({ version: 1, placements }),
+        "Your team has moved into the larger studio. Required stations are ready; decorations that need a new spot are in storage.",
+      );
+      this.syncEmployeeDesks(placements, inventory);
+      this.movePlayerToEntrance();
       return;
     }
     let placements: FurniturePlacements;
@@ -369,7 +415,7 @@ export class FurnishingStore {
   }
   private read(): FurnishingState {
     const row = this.db.prepare("SELECT * FROM furnishing_state WHERE id=1").get()!;
-    return this.parseState({ version: 1, revision: Number(row.revision), inventory: this.inventory(), placements: JSON.parse(String(row.placements_json)) as FurniturePlacements, recovery: String(row.recovery) });
+    return this.parseState({ version: 1, layoutId: this.geometry.room.id, revision: Number(row.revision), inventory: this.inventory(), placements: JSON.parse(String(row.placements_json)) as FurniturePlacements, recovery: String(row.recovery) });
   }
   state(): FurnishingState { return this.transaction(() => { this.sync(); return this.read(); }); }
   update(value: FurnishingUpdate): { furnishing: FurnishingState; replayed: boolean } {

@@ -87,7 +87,7 @@ test("full three-day journey awards money once, charges hiring/filing, and survi
   const { db, root, project } = await setup("startup-valley.sqlite");
   const initialRoom = db.bootstrap().furnishing;
   db.furnishing.update({ operationId: "journey-plant", expectedRevision: initialRoom.revision, placements: {
-    ...initialRoom.placements, "decor-broadleaf_planter": { grid: [24, 8], facing: "west" },
+    ...initialRoom.placements, "decor-broadleaf_planter": { grid: [25, 11], facing: "west" },
   } });
   let calls = 0;
   const adapter = new PiWorkerAdapter(db, credentials, root, async (def) => { calls++; return { text: review(def.id), inputTokens: 600, outputTokens: 300, cost: 0.002 }; });
@@ -99,7 +99,9 @@ test("full three-day journey awards money once, charges hiring/filing, and survi
   db.journey.complete("website", false, 1); db.journey.complete("website", false, 1);
   db.journey.hire("theo", 1); db.journey.hire("theo", 1);
   const hiredRoom = db.bootstrap().furnishing;
-  assert.deepEqual(hiredRoom.placements["decor-broadleaf_planter"], { grid: [24, 8], facing: "west" });
+  assert.equal(hiredRoom.layoutId, "startup-office");
+  assert.equal(hiredRoom.placements["decor-broadleaf_planter"], undefined, "the cottage plant position crosses the larger office aisle, so it moves safely to storage");
+  assert.ok(hiredRoom.inventory.some((item) => item.id === "decor-broadleaf_planter"));
   assert.deepEqual(hiredRoom.inventory.filter((item) => item.roleKit).map((item) => item.roleKit).sort(), ["founder_strategy_kit", "mina_discovery_kit", "theo_campaign_kit"]);
   assert.equal(db.journey.state().company.cashCents, 30000);
   db.endDay(1); assert.equal(db.endDay(1).clock.day, 2);
@@ -215,7 +217,7 @@ test("evaluation failure is retryable; revisions and reduced-reward override can
   const { db, root } = await setup(); db.journey.hire("mira", 1);
   const initialRoom = db.bootstrap().furnishing;
   const revisionRoom = db.furnishing.update({ operationId: "revision-room", expectedRevision: initialRoom.revision, placements: {
-    ...initialRoom.placements, "decor-broadleaf_planter": { grid: [24, 8], facing: "north" },
+    ...initialRoom.placements, "decor-broadleaf_planter": { grid: [25, 11], facing: "north" },
   } }).furnishing;
   await deliver(db, root, "website", "first");
   let output = "invalid JSON";
@@ -236,7 +238,8 @@ test("evaluation failure is retryable; revisions and reduced-reward override can
   assert.deepEqual(db.bootstrap().furnishing, revisionRoom, "revision and reduced reward do not rewrite the player room");
   db.journey.hire("theo", 1);
   assert.equal(db.journey.state().company.cashCents, 0);
-  assert.deepEqual(db.bootstrap().furnishing.placements["decor-broadleaf_planter"], revisionRoom.placements["decor-broadleaf_planter"]);
+  assert.equal(db.bootstrap().furnishing.layoutId, "startup-office");
+  assert.ok(db.bootstrap().furnishing.inventory.some((item) => item.id === "decor-broadleaf_planter"), "moving to the larger room preserves plant ownership");
   db.close();
 });
 

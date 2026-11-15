@@ -123,6 +123,8 @@ export class GameDatabase {
     };
     this.#database.exec(migration("001_initial.sql"));
     this.#database.exec("CREATE TABLE IF NOT EXISTS schema_migrations (version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL)");
+    const existingCompany = this.#database.prepare("SELECT version FROM schema_migrations LIMIT 1").get() !== undefined
+      || this.#database.prepare("SELECT id FROM projects LIMIT 1").get() !== undefined;
     // A save that already recorded a schema version predates research and keeps the full catalog.
     const researchPredates = this.#database.prepare("SELECT version FROM schema_migrations WHERE version < 11 LIMIT 1").get() !== undefined;
     for (const [version, name] of [
@@ -141,12 +143,16 @@ export class GameDatabase {
       [14, "014_tycoon_contracts.sql"],
       [15, "015_tycoon_engines.sql"],
       [16, "016_payroll_debt.sql"],
+      [17, "017_office_layout.sql"],
     ] as const) {
       const applied = this.#database.prepare("SELECT version FROM schema_migrations WHERE version = ?").get(version);
       if (applied) continue;
       this.#database.exec("BEGIN IMMEDIATE");
       try {
         this.#database.exec(migration(name));
+        if (version === 17 && !existingCompany) {
+          this.#database.prepare("UPDATE office_layout_state SET layout_id='starter-cottage-v1' WHERE id=1").run();
+        }
         if (version === 11) {
           this.#database.prepare("UPDATE tycoon_meta SET research_points = 0, research_json = ? WHERE id = 1").run(
             researchPredates ? legacyResearchJson() : starterResearchJson(),

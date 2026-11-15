@@ -3,6 +3,11 @@ extends Node2D
 
 signal placements_changed
 
+const LAYOUT_PATHS: Dictionary = {
+	"startup-office": "res://data/office_layout.json",
+	"starter-cottage-v1": "res://data/office_layout_starter.json",
+}
+
 const PROP_SCENES: Dictionary = {
 	"desk": preload("res://props/desk.tscn"),
 	"research_table": preload("res://props/research_table.tscn"),
@@ -57,11 +62,16 @@ func load_layout(path: String = "res://data/office_layout.json") -> bool:
 	if not next_model.load_files(path): return false
 	for stage: int in range(5):
 		if not bool(next_model.validate_placements(next_model.resolve_placements(stage)).valid): return false
-	layout_model = next_model
-	layout_model.office_level = maxi(1, unlocked_office_level)
 	placement_overrides.clear()
 	furnishing_revision = -1
 	migration_notes.clear()
+	_adopt_layout(next_model)
+	set_hire_count(_employee_names.size())
+	return true
+
+func _adopt_layout(next_model: OfficeLayout) -> void:
+	layout_model = next_model
+	layout_model.office_level = maxi(1, unlocked_office_level)
 	tile_size = layout_model.tile_size
 	grid_width = layout_model.width
 	grid_height = layout_model.height
@@ -74,28 +84,29 @@ func load_layout(path: String = "res://data/office_layout.json") -> bool:
 		navigation.name = "OfficeNavigation"
 		get_parent().add_child(navigation)
 	navigation.configure(layout_model.navigation_data(), global_position)
+	var previous_theme := architecture.theme_id
 	architecture.configure(layout_model)
+	if previous_theme != architecture.theme_id: architecture.apply_theme(previous_theme)
 	daylight.configure(layout_model, architecture)
-	set_hire_count(_employee_names.size())
-	return true
 
 func _vector(value: Variant) -> Vector2i:
 	if value is Vector2i: return value
 	if value is Array and value.size() >= 2: return Vector2i(int(value[0]), int(value[1]))
 	return Vector2i.ZERO
 
-func _validate_all(overrides: Dictionary) -> bool:
-	if layout_model.furnishing_bound:
+func _validate_all(overrides: Dictionary, model: OfficeLayout = null) -> bool:
+	if model == null: model = layout_model
+	if model.furnishing_bound:
 		for key: Variant in overrides:
-			if not layout_model.furnishing_inventory.has(str(key)): return false
+			if not model.furnishing_inventory.has(str(key)): return false
 			var value: Variant = overrides[key]
 			if not value is Dictionary or not OfficeLayout._integer_pair(value.get("grid")) or not OfficeLayout.FACINGS.has(str(value.get("facing", ""))): return false
 			for field: Variant in value:
 				if str(field) not in ["grid", "facing"]: return false
-		for id: String in layout_model.furnishing_inventory:
-			if bool(layout_model.furnishing_inventory[id].get("essential", false)) and not overrides.has(id): return false
+		for id: String in model.furnishing_inventory:
+			if bool(model.furnishing_inventory[id].get("essential", false)) and not overrides.has(id): return false
 	for stage: int in range(5):
-		var result := layout_model.validate_placements(layout_model.resolve_placements(stage, overrides, true))
+		var result := model.validate_placements(model.resolve_placements(stage, overrides, true))
 		if not bool(result.valid): return false
 	return true
 
@@ -103,20 +114,29 @@ func apply_furnishing_state(state: Dictionary) -> bool:
 	# Commit the projection only after the entire worker snapshot validates. A
 	# failed snapshot leaves the room, inventory, collision and revision intact.
 	if layout_model == null or int(state.get("version", -1)) != 1 or not state.get("inventory") is Array or not state.get("placements") is Dictionary: return false
+	# Only shipped layout identities are admitted, never arbitrary file paths.
+	# Old projections without an identity retain the original office.
+	var layout_id := str(state.get("layoutId", "startup-office"))
+	if not LAYOUT_PATHS.has(layout_id): return false
+	var switching := str(layout_model.data.get("id", "")) != layout_id
+	var next_model := OfficeLayout.new() if switching else layout_model
+	if switching and not next_model.load_files(str(LAYOUT_PATHS[layout_id])): return false
+	next_model.office_level = maxi(1, unlocked_office_level)
 	var next_inventory: Dictionary = {}
 	for value: Variant in state.inventory:
-		if not value is Dictionary or str(value.get("id", "")).is_empty() or not layout_model.catalog.has(str(value.get("kind", ""))): return false
+		if not value is Dictionary or str(value.get("id", "")).is_empty() or not next_model.catalog.has(str(value.get("kind", ""))): return false
 		var id := str(value.id)
 		if next_inventory.has(id): return false
 		next_inventory[id] = value.duplicate(true)
-	var previous_inventory := layout_model.furnishing_inventory
-	var previously_bound := layout_model.furnishing_bound
-	layout_model.furnishing_inventory = next_inventory
-	layout_model.furnishing_bound = true
-	if not _validate_all(state.placements):
-		layout_model.furnishing_inventory = previous_inventory
-		layout_model.furnishing_bound = previously_bound
+	var previous_inventory := next_model.furnishing_inventory
+	var previously_bound := next_model.furnishing_bound
+	next_model.furnishing_inventory = next_inventory
+	next_model.furnishing_bound = true
+	if not _validate_all(state.placements, next_model):
+		next_model.furnishing_inventory = previous_inventory
+		next_model.furnishing_bound = previously_bound
 		return false
+	if switching: _adopt_layout(next_model)
 	placement_overrides = state.placements.duplicate(true)
 	furnishing_revision = int(state.get("revision", 0))
 	_rebuild_props()

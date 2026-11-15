@@ -10,7 +10,7 @@ export * from "./furnishing-core.js";
 export function readGeometryData(): GeometryData {
   const data = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "game", "data");
   const read = (name: string): unknown => JSON.parse(readFileSync(join(data, name), "utf8"));
-  return { officeLayout: read("office_layout.json"), furnitureCatalog: read("furniture_catalog.json"), furnishingCatalog: read("furnishing_catalog.json") };
+  return { officeLayout: read("office_layout.json"), starterOfficeLayout: read("office_layout_starter.json"), furnitureCatalog: read("furniture_catalog.json"), furnishingCatalog: read("furnishing_catalog.json") };
 }
 export const furnishingHash = (value: string): string => createHash("sha256").update(value).digest("hex");
 export class FurnishingGeometry extends CoreGeometry {

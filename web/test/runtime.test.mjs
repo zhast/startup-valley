@@ -76,8 +76,9 @@ test("real WASM/OPFS preserves gameplay, rejects a second owner, and reports fai
   };
   assert.equal((await both("health", "health")).result.offline, true);
   const opening = await both("opening", "bootstrap");
+  assert.equal(opening.result.furnishing.layoutId, "starter-cottage-v1");
   const placement = { operationId: "web-plant", expectedRevision: opening.result.furnishing.revision,
-    placements: { ...opening.result.furnishing.placements, "decor-broadleaf_planter": { grid: [24, 8], facing: "south" } } };
+    placements: { ...opening.result.furnishing.placements, "decor-broadleaf_planter": { grid: [25, 11], facing: "south" } } };
   assert.equal((await both("furnish", "furnishing.update", placement)).ok, true);
   assert.equal((await both("start", "tycoon.start", { topicId: "crypto", typeId: "newsletter", staffIds: ["founder"] })).ok, true);
   await both("day1", "day.end", { day: 1 });
