@@ -193,3 +193,26 @@ placement migration, not a reset of owned furniture.
 lineup and measured geometry. Its 39 mechanical checks pass while visual
 quality is explicitly marked corrections-required. Café chair/table, booth
 and occupied office-chair repairs remain open; map visual approval waits.
+
+## 2026-11-15 — Short blinks and correctly registered eyelids
+
+**Decision:** Idle eyelids close for 120ms every four seconds, with different
+character phases. Movement retains its independent gait timing. Input-blocked
+Founder continues the blink clock instead of freezing with closed eyes.
+Generated overlays correct Mina's three visible standing facings and Founder's
+front closed-eye frame; Theo and Creative did not need new raster pixels.
+
+**Evidence:** Final byte-stable native input/playback passes 196 checks;
+targeted blink/pixel/actor checks pass 105. The full pose inspection and exact
+provenance live in `docs/web/assets/blink-polish-v3/` and its runtime reviews.
+Only 112 Mina and 46 Founder pixels changed; open eyes, bodies, walks and alpha
+remain unchanged. The blink regression is now in the required asset gate.
+
+## 2026-11-15 — Browser testing without system-level computer access
+
+**Owner clarification:** Actual web playtesting is now authorized inside
+Codex's in-app browser. Keep the native Godot tests; add browser checks on a
+separate localhost origin so the owner's 5177 save is untouched. Do not use
+OS-level computer control or other browser profiles. Public hosting remains
+deferred. Record the exact browser build and distinguish its coverage from
+native, physical-device and cross-browser acceptance.

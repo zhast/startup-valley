@@ -38,7 +38,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_elapsed += delta
-	sprite.region_rect = CharacterArt.locomotion_region(&"front", int(_elapsed * 1.5) % 2)
+	sprite.region_rect = CharacterArt.locomotion_region(&"front", IdleBlink.frame(_elapsed, person_id))
 	z_index = roundi(position.y)
 
 func _draw() -> void:

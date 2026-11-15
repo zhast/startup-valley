@@ -85,6 +85,7 @@ func close_fixture() -> void:
 
 func verify_source(actor: EmployeeAvatar, facing: String, phase: int) -> void:
 	actor._animation_elapsed = (float(phase) + 0.01) / 1.5
+	actor._blink_elapsed = (3.2 if actor.employee_id == "mira" else 2.45) if phase == 1 else 0
 	actor._update_character_frame()
 	var idle := CharacterArt.work_pose_frame(actor.employee_id, fixture.pose_set_id, facing, "seated", phase)
 	var thought := CharacterArt.work_pose_frame(actor.employee_id, fixture.pose_set_id, facing, "thinking", phase)
@@ -235,7 +236,7 @@ func run() -> void:
 		var frame := CharacterArt.work_pose_frame(id, CharacterArt.LEGACY_WORK_POSE_SET, "south", "thinking", 0)
 		check(frame.texture == CharacterArt.work_sheet(id) and frame.region == CharacterArt.work_region(1, 4), "Legacy South thinking texture/region remains byte-for-byte source-identical")
 	check(FileAccess.get_sha256(OfficeLayout.DEFAULT_PATH) == room_hash and FileAccess.get_sha256(OfficeLayout.DEFAULT_CATALOG_PATH) == catalog_hash, "No production layout or art catalogue changed")
-	var report := {"checks": checks, "failures": failures, "worker_disabled": true, "production_activation": false, "reuse": "Owner-scoped WORKING + thinking reuses seated-idle source columns0–1 at1.5FPS; typing remains columns2–5 only on actual tool state.", "captures": captures, "motion": motion, "motion_ticks": movie_tick, "limitations": ["No new drawn art.", "No research, approval or delivery capability added.", "Existing seat/hand contact and mount-pose limitations remain.", "Pause freezes navigation/seat interpolation; live event visuals and gentle animation keep updating as before."]}
+	var report := {"checks": checks, "failures": failures, "worker_disabled": true, "production_activation": false, "reuse": "Owner-scoped WORKING + thinking reuses seated-idle source columns0–1 with a brief120ms blink every4s; typing remains columns2–5 only on actual tool state.", "captures": captures, "motion": motion, "motion_ticks": movie_tick, "limitations": ["No new drawn art.", "No research, approval or delivery capability added.", "Existing seat/hand contact and mount-pose limitations remain.", "Pause freezes navigation/seat interpolation; live event visuals and gentle animation keep updating as before."]}
 	var output := FileAccess.open(OUTPUT.path_join("results-headless.json" if DisplayServer.get_name() == "headless" else "manifest.json"), FileAccess.WRITE)
 	output.store_string(JSON.stringify(report, "\t"))
 	print("calibrated_thinking: %d checks, %d failures" % [checks, failures.size()])

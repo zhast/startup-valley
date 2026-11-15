@@ -113,6 +113,8 @@ func pose(actor: EmployeeAvatar, typing: bool, frame: int) -> void:
 	actor._update_character_frame()
 	actor._physics_process(0.15)
 	actor._animation_elapsed = float(frame) / (8.0 if typing else 1.5)
+	# Select the authored idle cell independently of the slower blink clock.
+	actor._blink_elapsed = (3.2 if actor.employee_id == "mira" else 2.45) if frame == 1 and not typing else 0
 	actor._update_character_frame()
 
 func run() -> void:
@@ -180,7 +182,8 @@ func run() -> void:
 						lower.z_index = roundi(Vector2(actor._workstation_visual.prop_anchor).y)
 						check(measure(prop, actor).chair_hidden_by_body > 0, label + " reproduces old disappearing backrest at original depth")
 						lower.z_index = original_depth
-				if frame == 0: await capture(facing, "typing" if typing else "seated")
+				if frame == 0 or "--capture-all" in OS.get_cmdline_user_args():
+					await capture(facing, ("typing" if typing else "seated") + "-" + str(frame))
 	var report := {"checks": checks, "failures": failures, "observations": observations, "rendered": capture_enabled}
 	FileAccess.open(OUTPUT.path_join("results.json"), FileAccess.WRITE).store_string(JSON.stringify(report, "\t") + "\n")
 	print("Seated chair composition: %d checks, %d failures; %d real poses" % [checks, failures.size(), observations.size()])

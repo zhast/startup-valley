@@ -55,6 +55,7 @@ var _target_position: Vector2 = Vector2.ZERO
 var _arrival_state: WorkState = WorkState.IDLE
 var _has_target: bool = false
 var _animation_elapsed: float = 0.0
+var _blink_elapsed: float = 0.0
 var _idle_elapsed: float = 0.0
 var _idle_cooldown: float = 0.5
 var _idle_cycle: int = 0
@@ -751,6 +752,7 @@ func _physics_process(delta: float) -> void:
 		return
 	_advance_seat_transition(delta)
 	_animation_elapsed += delta
+	_blink_elapsed += delta
 	if _label_hold > 0.0:
 		_label_hold = maxf(0.0, _label_hold - delta)
 		if is_zero_approx(_label_hold):
@@ -1084,13 +1086,13 @@ func _update_character_frame() -> void:
 	var shadow_kind := 1 if walking else 0
 	if not walking and _uses_collaboration_visual():
 		_collaboration_seat_rest = true
-		_set_directional_work_pose("seated", int(_animation_elapsed * 1.5), _collaboration_visual)
+		_set_directional_work_pose("seated", IdleBlink.frame(_blink_elapsed, employee_id), _collaboration_visual)
 		shadow_kind = 2
 	elif not walking and _terminal_seat_rest and _seat_state_handoff_admitted():
-		_set_directional_work_pose("seated", int(_animation_elapsed * 1.5), _workstation_visual)
+		_set_directional_work_pose("seated", IdleBlink.frame(_blink_elapsed, employee_id), _workstation_visual)
 		shadow_kind = 2
 	elif not walking and work_state == WorkState.SITTING:
-		_set_directional_work_pose("seated", int(_animation_elapsed * 1.5), _workstation_visual)
+		_set_directional_work_pose("seated", IdleBlink.frame(_blink_elapsed, employee_id), _workstation_visual)
 		shadow_kind = 2
 	elif not walking and work_state == WorkState.TYPING:
 		_set_directional_work_pose("typing", int(_animation_elapsed * 8.0), _workstation_visual)
@@ -1104,7 +1106,7 @@ func _update_character_frame() -> void:
 		else:
 			var station := _research_visual if position.distance_to(research_position) <= 0.5 and not is_at_desk() else _workstation_visual
 			var seated_thinking := _uses_seated_thinking()
-			_set_directional_work_pose("thinking", int(_animation_elapsed * (1.5 if seated_thinking else 4.0)), station)
+			_set_directional_work_pose("thinking", IdleBlink.frame(_blink_elapsed, employee_id) if seated_thinking else int(_animation_elapsed * 4.0), station)
 			if seated_thinking: shadow_kind = 2
 	elif work_state == WorkState.DELIVERING:
 		_set_delivery_frame(int(_animation_elapsed * 8.0) % 4)
@@ -1112,7 +1114,7 @@ func _update_character_frame() -> void:
 		# A lunch stop without the exact reviewed collaboration capability remains
 		# honestly standing; no generic target is allowed to imply a seat.
 		_character_sprite.texture = CharacterArt.locomotion_sheet(employee_id)
-		var frame := 2 + int(_animation_elapsed * 8.0) % 4 if walking else int(_animation_elapsed * 1.5) % 2
+		var frame := 2 + int(_animation_elapsed * 8.0) % 4 if walking else IdleBlink.frame(_blink_elapsed, employee_id)
 		_character_sprite.region_rect = CharacterArt.locomotion_region(_facing, frame)
 	if _uses_collaboration_handoff() and not _uses_collaboration_visual():
 		# Preserve the original locomotion cell while passing through the chair.

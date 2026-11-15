@@ -7,7 +7,10 @@ implementation is present, final frozen-source integrated acceptance and demo
 packaging remain. Continue without routine approvals. The owner authorizes
 parallel agents, fixes, art work, integrated Godot tests, local exports, and
 frequent tested commits/pushes directly to `main`. Website/public hosting is
-**deferred**. Do not use computer-use or browser UI automation for this goal.
+**deferred**. The owner now authorizes actual web playtesting inside Codex's
+in-app browser, without OS-level control or other browser profiles. QA should
+serve the same `dist` on a separate localhost origin (planned port 5181) to
+avoid modifying the owner's existing 5177 save. Native testing remains required.
 
 Current verified local/remote checkpoint: `d39231e` (includes map admission,
 asset status and native input probes; the equivalent local commit was

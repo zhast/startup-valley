@@ -4,6 +4,11 @@ See [ASSET_STATUS.md](ASSET_STATUS.md) for current findings, generated repairs
 and reopened defects. An asset review has a specific scope; it is not a claim
 that every animation or map using the image is defect-free.
 
+New briefs also follow [STARTER_ART_DIRECTION.md](STARTER_ART_DIRECTION.md) and
+name their progression stage. Starter furniture and surroundings are cute,
+modest and handmade; more elaborate improvements are earned later. Include a
+same-scale native calibration reference as well as the material/style board.
+
 The goal is a dependable art pipeline, not a claim that a script can judge
 beauty. Geometry and provenance checks prevent common mistakes. A current
 in-game visual review catches wrong-looking faces, furniture, animation and

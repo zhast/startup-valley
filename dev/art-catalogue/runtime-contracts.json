@@ -16,7 +16,8 @@
     "res://tests/test_coffee_station_production.gd",
     "res://tests/test_reviewed_workstation_production.gd",
     "res://tests/test_seat_transition.gd",
-    "res://tests/test_seated_chair_composition.gd"
+    "res://tests/test_seated_chair_composition.gd",
+    "res://tests/test_idle_blink.gd"
   ],
   "families": [
     {

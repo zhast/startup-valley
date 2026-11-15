@@ -222,6 +222,7 @@ func verify_source_layers(actor: EmployeeAvatar, facing: String, source_frame: i
 	var phase := source_frame if source_frame < 2 else source_frame - 2
 	actor.work_state = EmployeeAvatar.WorkState.SITTING if source_frame < 2 else EmployeeAvatar.WorkState.TYPING
 	actor._animation_elapsed = (float(phase) + 0.01) / (1.5 if source_frame < 2 else 8.0)
+	actor._blink_elapsed = (3.2 if actor.employee_id == "mira" else 2.45) if source_frame == 1 else 0
 	actor._update_character_frame()
 	var authored := CharacterArt.work_pose_frame(actor.employee_id, actor._workstation_visual.pose_set, facing, pose, phase)
 	var atlas: Image = authored.texture.get_image()

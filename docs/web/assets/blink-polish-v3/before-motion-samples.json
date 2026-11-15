@@ -1,0 +1,2975 @@
+{
+  "note": "Actual native viewport pixels; observed atlas cells only, no animation setters.",
+  "samples": [
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-000.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-000.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 53
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-001.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-001.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 115
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-002.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-002.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 177
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-003.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-003.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 240
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-004.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-004.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 303
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-005.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-005.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 366
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-006.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-006.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 425
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-007.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-007.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 492
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-008.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-008.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 549
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-009.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-009.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 611
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-010.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-010.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 674
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-011.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-011.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 736
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-012.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-012.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 798
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-013.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-013.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 860
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-014.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-014.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 922
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-015.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-015.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 986
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-016.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-016.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 1048
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-017.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-017.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 1109
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-018.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-018.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 1172
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-019.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-019.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 1233
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-020.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-020.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 1297
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-021.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-021.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 1356
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-022.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-022.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 1418
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-023.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-023.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 1480
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-024.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-024.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 1542
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-025.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-025.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 1604
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-026.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-026.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 1666
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-027.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-027.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 1728
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-028.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-028.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 1790
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-029.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-029.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 1853
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-030.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-030.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 1915
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-031.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-031.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 1976
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-032.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-032.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 2039
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-033.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-033.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 2102
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-034.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-034.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 2164
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-035.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-035.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 2226
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-036.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-036.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 2288
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-037.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-037.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 2351
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-038.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-038.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 2412
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-039.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-039.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 2475
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-040.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-040.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 2536
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-041.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 1,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-041.png",
+          "region": [
+            48.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 2598
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 1,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-042.png",
+          "region": [
+            48.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 1,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-042.png",
+          "region": [
+            48.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 2661
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 1,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-043.png",
+          "region": [
+            48.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-043.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 2724
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-044.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-044.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 2785
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-045.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-045.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 2846
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-046.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-046.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 2910
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-047.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-047.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 2972
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-048.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-048.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 3034
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-049.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-049.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 3096
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-050.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-050.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 3159
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-051.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-051.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 3220
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-052.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-052.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 3282
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-053.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-053.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 3345
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-054.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-054.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 3405
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-055.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-055.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 3467
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-056.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-056.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 3530
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-057.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-057.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 3591
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-058.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-058.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 3653
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-059.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-059.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 3716
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-060.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-060.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 3778
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-061.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-061.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 3840
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-062.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-062.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 3902
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-063.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-063.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 3965
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-064.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-064.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 4027
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-065.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-065.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 4089
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-066.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-066.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 4151
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-067.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-067.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 4214
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-068.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-068.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 4276
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-069.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-069.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 4338
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-070.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-070.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 4400
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-071.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-071.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 4462
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-072.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-072.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 4525
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-073.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-073.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 4586
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-074.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-074.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 4648
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-075.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-075.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 4710
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-076.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-076.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 4771
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-077.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-077.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 4833
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-078.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-078.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 4895
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-079.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-079.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 4958
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-080.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-080.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 5020
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-081.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-081.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 5082
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-082.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-082.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 5144
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-083.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-083.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 5207
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-084.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-084.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 5268
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-085.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-085.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 5330
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-086.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-086.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 5392
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-087.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-087.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 5454
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-088.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-088.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 5517
+    },
+    {
+      "actors": {
+        "founder": {
+          "cell": 0,
+          "crop": [
+            456,
+            546,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-founder-089.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        },
+        "mina": {
+          "cell": 0,
+          "crop": [
+            520,
+            482,
+            80,
+            88
+          ],
+          "path": "/private/tmp/startup-valley-standing-before-raster/run-1/motion-mina-089.png",
+          "region": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "elapsedMs": 5578
+    }
+  ]
+}

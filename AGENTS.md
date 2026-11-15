@@ -2,6 +2,11 @@
 
 Startup Valley v0 is an offline, story-led office tycoon set in the fictional TownSquare community. It should feel like Game Dev Tycoon and Stardew Valley: meet teammates, follow clear goals, ship products, earn game cash and reputation, and grow the office across days. Gameplay is a pure in-game simulation. It must start and play with no API key or network. Keep real-platform branding out of player-facing content. See `docs/TYCOON_DESIGN.md`.
 
+The opening is cute, humble and handmade: a tiny venture in a quiet village,
+not a corporate suite or estate. Follow `docs/STARTER_ART_DIRECTION.md`.
+New asset briefs declare starter or earned-upgrade context; improvements to
+furniture and surroundings should communicate saved player progress.
+
 Keep the two-process boundary intact:
 
 - `game/`: Godot 4.7.2, typed GDScript only. Rendering, input, animation, menus, interpolation, and cached read-only worker views.
@@ -17,7 +22,7 @@ The worker is authoritative for the tycoon (products, reviews, sales), employees
 - Record consequential design, architecture, asset and workflow decisions in `docs/DECISIONS.md`; link detailed acceptance evidence there.
 - The owner works alone and authorizes tested commits directly to `main`. Save significant completed increments promptly; do not require a pull request unless isolation materially helps the work.
 - Push tested checkpoints promptly so progress survives loss of this machine. Keep `docs/DEMO_HANDOFF.md` current with source/build state, checks, remaining work and any unpushed commits. Do not wait for the owner to return for routine authorized work.
-- Website/public-hosting work is deferred. Use integrated Godot tests and automated worker/export validation; no computer-use or manual browser session is required.
+- Website/public-hosting work is deferred. Use integrated Godot tests and automated worker/export validation. The owner also authorizes browser QA inside Codex's in-app browser; use a disposable localhost origin and supported browser APIs. Do not use OS-level computer control or other browser profiles.
 - Refresh the playable web export promptly after each significant passing source checkpoint; do not hold localhost updates until final acceptance is complete. Verify the served build identifier/files and distinguish preview readiness from final gameplay acceptance.
 - Treat the opening as a playable tutorial: one clear goal, one relevant action, visual character identity, and progressively revealed complexity. Keep the current goal readable without clipping or requiring a tooltip.
 

@@ -42,7 +42,7 @@
     },
     {
       "path": "dev/tools/build_locomotion_assets.sh",
-      "sha256": "bda2aacf7e19b0e23555f08df825175453ca04d49d4811378e9a54700dd0297c"
+      "sha256": "97a6043b4c07898476f19bcd98b1a126e7942acd96f86ed935cdb6f9bf0560ff"
     }
   ],
   "evidence": [
@@ -154,5 +154,6 @@
         "sha256": "3a07014154ae2d624f52b563db4befaa1b3f22ed82bc440213d69251caa8111b"
       }
     ]
-  }
+  },
+  "binding_refresh_note": "2026-11-15: build script now reapplies bounded Founder/Mina standing-blink overlays; this reviewed artifact is unchanged. Runtime contract list adds the blink regression without changing furniture geometry."
 }

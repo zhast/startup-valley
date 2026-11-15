@@ -1,0 +1,62 @@
+{
+  "scope": "Mina standing front/left/right closed cells; Founder standing front closed cell only",
+  "timing": {
+    "oldClosedSeconds": 0.6666666666666666,
+    "oldPeriodSeconds": 1.3333333333333333,
+    "newClosedSeconds": 0.12,
+    "newPeriodSeconds": 4
+  },
+  "actors": {
+    "mira": {
+      "canvas": [
+        288,
+        320
+      ],
+      "frame": [
+        48,
+        80
+      ],
+      "footAnchor": [
+        24,
+        72
+      ],
+      "changedPixels": 112,
+      "alphaChanges": 0,
+      "outsideAllowedRegion": 0,
+      "decodedBeforeSha256": "b263605fe1b62f6b1f54933381b1d6eed197c58365f006b69b2a5392447a4df6",
+      "decodedAfterSha256": "1f09ff674aa7980e0d1a62e40224f4ebee65d9fcf1422f1dc0878ec561bf4b88",
+      "candidateMatchesRuntime": true,
+      "overlayRebuildMatchesRuntime": true
+    },
+    "founder": {
+      "canvas": [
+        288,
+        320
+      ],
+      "frame": [
+        48,
+        80
+      ],
+      "footAnchor": [
+        24,
+        72
+      ],
+      "changedPixels": 46,
+      "alphaChanges": 0,
+      "outsideAllowedRegion": 0,
+      "decodedBeforeSha256": "bd211ed7157012d67ac3cbbb1a819cfa547c9e0786e29387fc3412438cdc46c9",
+      "decodedAfterSha256": "51e2ecfb82c07f0a22b45f23375cade22e3319609df55a55c67e50756a2cea45",
+      "candidateMatchesRuntime": true,
+      "overlayRebuildMatchesRuntime": true
+    }
+  },
+  "tests": {
+    "idleBlink": 105,
+    "walking": 738,
+    "workstation": 6684,
+    "seatedThinking": 8519,
+    "realRoomSeatedPoses": 48,
+    "seatedCompositionChecks": 346,
+    "actualNativeMotionChecks": 196
+  }
+}

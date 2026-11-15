@@ -157,6 +157,12 @@ func run() -> void:
 		"visit": await visit_courtyard()
 		"outdoor": await outdoor()
 		"viewport": await viewport_guard()
+		"motion": await standing_motion()
+		"compatibility": await compatibility()
+		"compatibility_restored":
+			await enter()
+			check(game.room.layout_model.floor_cells().size() == 614, "Restarted compatibility company retains the full office geometry")
+			await capture("restored-full-office")
 		"reset": await reset_company()
 		"reset_restored":
 			await enter()
@@ -180,6 +186,118 @@ func enter() -> void:
 	var button := find_button("Continue")
 	if button == null: button = find_button("Start company")
 	await activate(button)
+
+func standing_motion() -> void:
+	# Diagnostic only: observe real idle animation without changing actor state.
+	await enter()
+	await move_pointer(Vector2(950, 700))
+	await settle_interface()
+	if not check(DisplayServer.get_name() != "headless", "Motion evidence requires native rendering"): return
+	var samples: Array[Dictionary] = []
+	var started := Time.get_ticks_msec()
+	var seen := {"mina": {}, "founder": {}}
+	for index: int in range(90):
+		await create_timer(0.06).timeout
+		RenderingServer.force_draw(false)
+		var rendered := viewport.get_texture().get_image()
+		var sample := {"elapsedMs": Time.get_ticks_msec() - started, "actors": {}}
+		for id: String in ["mina", "founder"]:
+			var actor: Node2D = game.arrival_guest if id == "mina" else game.player
+			var sprite: Sprite2D = game.arrival_guest.sprite if id == "mina" else game.player._character_sprite
+			var cell := int(sprite.region_rect.position.x / 48)
+			seen[id][cell] = true
+			var crop := Rect2i(Vector2i(actor.position) + Vector2i(-40, -78), Vector2i(80, 88))
+			var path := output_dir.path_join("motion-%s-%03d.png" % [id, index])
+			check(rendered.get_region(crop).save_png(path) == OK, "Save native motion sample")
+			sample.actors[id] = {"cell": cell, "region": [sprite.region_rect.position.x, sprite.region_rect.position.y], "crop": [crop.position.x, crop.position.y, crop.size.x, crop.size.y], "path": path}
+		samples.append(sample)
+	for id: String in ["mina", "founder"]:
+		check(seen[id].has(0) and seen[id].has(1), "Native standing motion includes open and closed eyes: " + id)
+	var contact := Image.create(1280, 704, false, Image.FORMAT_RGBA8)
+	var selected: Array[Dictionary] = []
+	for row: int in range(2):
+		var id := "mina" if row == 0 else "founder"
+		var closed := -1
+		for index: int in range(samples.size()):
+			if int(samples[index].actors[id].cell) == 1:
+				closed = index
+				break
+		if closed < 0: continue
+		var indexes := [maxi(0, closed - 1), closed, mini(samples.size() - 1, closed + 1), mini(samples.size() - 1, closed + 3)]
+		for column: int in range(indexes.size()):
+			var sample: Dictionary = samples[indexes[column]]
+			var frame := Image.load_from_file(str(sample.actors[id].path))
+			frame.resize(320, 352, Image.INTERPOLATE_NEAREST)
+			contact.blit_rect(frame, Rect2i(0, 0, 320, 352), Vector2i(column * 320, row * 352))
+			selected.append({"actor": id, "sample": indexes[column], "elapsedMs": sample.elapsedMs, "cell": sample.actors[id].cell})
+	check(contact.save_png(output_dir.path_join("motion-contact.png")) == OK, "Save native motion contact sheet")
+	var evidence := FileAccess.open(output_dir.path_join("motion-samples.json"), FileAccess.WRITE)
+	evidence.store_string(JSON.stringify({"samples": samples, "selected": selected, "contactRows": ["Mina", "Founder"], "note": "Actual native viewport pixels; observed atlas cells only, no animation setters. Contact uses nearest-neighbor enlargement."}, "  ") + "\n")
+	evidence.close()
+
+func compatibility() -> void:
+	var fixture_path := OS.get_environment("STARTUP_VALLEY_DEMO_FIXTURE")
+	if not check(not fixture_path.is_empty(), "Compatibility phase requires an explicit labeled fixture"): return
+	var expected: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(fixture_path))
+	check(game._journey.company == expected.company, "Fixture company values survive actual worker migration")
+	check(game.worker_client.furnishing_state == expected.furnishing, "Fixture furniture and inventory survive actual worker migration exactly")
+	var saved_position := Vector2(float(expected.player.x), float(expected.player.y))
+	check(game.player.position.distance_to(saved_position) < 0.01, "Fixture position survives actual worker migration")
+	await enter()
+	if expected.kind == "legacy":
+		check(game.room.layout_model.floor_cells().size() == 614, "Pre-cottage save hydrates the original full office")
+		await capture("legacy-full-office")
+		await click(Vector2(560, 624))
+		await wait_for(func() -> bool: return game.player.route.is_empty() and game.player.position.distance_to(Vector2(560, 624)) < 25, "Migrated office remains navigable through actual input")
+	else:
+		check(game.room.layout_model.floor_cells().size() == 288, "Expansion fixture starts in the compact office")
+		await capture("compact-before-expansion")
+		await activate(find_button("Settings"))
+		await activate(find_button("Company Journey"))
+		await scroll_to_action("Studio plans")
+		await activate(find_button("Studio plans"))
+		await scroll_to_action("Invite Theo")
+		await capture("expansion-invitation")
+		await activate(find_button("Invite Theo"))
+		await capture("after-invitation-input")
+		await wait_for(func() -> bool: return game.get_employee("theo") != null and str(game.worker_client.furnishing_state.get("layoutId", "")) == "startup-office", "Actual invitation expands the compact room and hires Theo")
+		check(game.room.layout_model.floor_cells().size() == 614, "Live expansion updates actual room navigation")
+		check(int(game._journey.company.cashCents) == int(expected.company.cashCents) - 30000, "Expansion invitation charges exactly once")
+		for item: Dictionary in expected.furnishing.inventory:
+			var retained := false
+			for current: Dictionary in game.worker_client.furnishing_state.inventory:
+				if current.id == item.id: retained = true
+			check(retained, "Expansion retains owned item: " + str(item.id))
+		await key(KEY_ESCAPE)
+		await capture("expanded-full-office")
+		await click(Vector2(560, 624))
+		await wait_for(func() -> bool: return game.player.route.is_empty() and game.player.position.distance_to(Vector2(560, 624)) < 25, "Expanded office remains navigable through actual input")
+
+func scroll_to_action(label: String) -> void:
+	await settle_interface()
+	var button := find_button(label)
+	if not check(button != null, "Scroll target exists: " + label): return
+	var ancestor := button.get_parent()
+	while ancestor != null and not ancestor is ScrollContainer: ancestor = ancestor.get_parent()
+	if ancestor == null: return
+	var scroll := ancestor as ScrollContainer
+	for attempt: int in range(50):
+		if scroll.get_global_rect().encloses(button.get_global_rect()): return
+		var down := button.get_global_rect().get_center().y > scroll.get_global_rect().get_center().y
+		var event := InputEventMouseButton.new()
+		event.position = root.get_final_transform() * scroll.get_global_rect().get_center()
+		event.global_position = event.position
+		event.button_index = MOUSE_BUTTON_WHEEL_DOWN if down else MOUSE_BUTTON_WHEEL_UP
+		event.pressed = true
+		event.factor = 2.0
+		inject(event)
+		# Balance synthetic wheel press/release just as the platform does. A
+		# held wheel bit can leave subsequent clicks captured by the root GUI.
+		event = event.duplicate() as InputEventMouseButton
+		event.pressed = false
+		inject(event)
+		await frames(3)
+	check(false, "Wheel scrolling reaches action: " + label)
 
 func hire() -> void:
 	await enter()
@@ -340,7 +458,18 @@ func activate(button: Button) -> void:
 		while is_instance_valid(button) and (not button.is_visible_in_tree() or button.disabled) and Time.get_ticks_msec() < deadline:
 			await process_frame
 	if not check(button != null and button.is_visible_in_tree() and not button.disabled, "Required action is visible and enabled" + (": " + button.text if button != null else "")): return
-	await frames(6)
+	# Scroll/layout updates can continue after the first enclosed frame. Wait
+	# for a stable measured rectangle, not an FPS-dependent frame count.
+	var rectangle := button.get_global_rect()
+	var stable_since := Time.get_ticks_msec()
+	var layout_deadline := stable_since + 2500
+	while Time.get_ticks_msec() - stable_since < 150 and Time.get_ticks_msec() < layout_deadline:
+		await process_frame
+		var current_rectangle := button.get_global_rect()
+		if current_rectangle != rectangle:
+			rectangle = current_rectangle
+			stable_since = Time.get_ticks_msec()
+	check(Time.get_ticks_msec() - stable_since >= 150, "Action geometry settles before input: " + button.text)
 	check(root.get_visible_rect().encloses(button.get_global_rect()), "Action fits logical viewport: " + button.text)
 	var ancestor: Node = button.get_parent()
 	while ancestor != null:

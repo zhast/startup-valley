@@ -168,11 +168,21 @@ for actor in founder mira theo; do
   fi
 done
 
+# Preserve the separately reviewed standing blink fixes after the old gaits.
+for actor in founder mira; do
+  blink_overlay="$project_root/game/assets/source/blink-polish-v3/$actor-blink-overlay.png"
+  if [[ -f "$blink_overlay" ]]; then
+    magick "$scratch_dir/$actor/$actor-locomotion.png" "$blink_overlay" -compose Over -composite \
+      -strip -define png:color-type=6 "$scratch_dir/$actor/$actor-locomotion.png"
+  fi
+done
+
 # Only replace outputs after all three sources have passed measured-grid checks.
 if [[ "$check_only" == true ]]; then
   for actor in founder mira theo; do
     overlay="$project_root/game/assets/source/web-eye-polish/$actor-blink-overlay.png"
-    if [[ -f "$overlay" ]]; then
+    blink_overlay="$project_root/game/assets/source/blink-polish-v3/$actor-blink-overlay.png"
+    if [[ -f "$overlay" || ( "$actor" == mira && -f "$blink_overlay" ) ]]; then
       # Reviewed overlays may be stored by a different PNG encoder. Compare
       # decoded RGBA, including alpha, rather than compression or metadata.
       if ! magick compare -metric AE -channel RGBA "$scratch_dir/$actor/$actor-locomotion.png" "$output_dir/$actor-locomotion.png" null: >/dev/null 2>&1; then

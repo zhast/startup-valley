@@ -7,7 +7,8 @@ import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 // Every milestone is reached by input in the real game. Files read below are
-// observations; the launcher never seeds or modifies the game's SQLite state.
+// observations. Only explicitly labeled --compatibility fixtures seed SQLite;
+// ordinary clean-journey runs never modify it outside the production game.
 const repository = fileURLToPath(new URL('..', import.meta.url));
 const configuration = JSON.parse(await readFile(join(repository, 'godot-web.config.json'), 'utf8'));
 function git(args) {
@@ -46,12 +47,15 @@ await mkdir(output, { recursive: true });
 const runtimeBefore = await runtimeFingerprint();
 await writeFile(join(output, 'runtime-manifest.json'), JSON.stringify(runtimeBefore, null, 2));
 const phases = String(options.phases || 'arrival,hire,start,mid,release,visit,outdoor,restored').split(',');
+assert.ok(!options.compatibility || ['legacy', 'expansion'].includes(options.compatibility));
+assert.ok(!options.compatibility || phases.every(phase => phase.startsWith('compatibility')), 'Compatibility fixtures cannot be reported as clean journey phases');
 const runs = Number(options.runs || 3);
 assert.ok(Number.isInteger(runs) && runs >= 1 && runs <= 10, '--runs must be 1..10');
 const sizes = options.size ? [String(options.size).split('x').map(Number)] : [[1280, 720], [1440, 900], [1024, 576]];
 const inputOverride = options.input ? String(options.input) : null;
 assert.ok(!inputOverride || ['pointer', 'keyboard', 'touch'].includes(inputOverride));
 const summaries = [];
+let completedEvidence = {};
 const environment = { ...process.env };
 for (const name of ['OPENAI_API_KEY', 'OPENROUTER_API_KEY', 'XAI_API_KEY', 'GROK_API_KEY', 'STARTUP_VALLEY_NO_WORKER']) delete environment[name];
 try {
@@ -59,7 +63,8 @@ try {
     const runRoot = join(output, `run-${run}`);
     const data = join(runRoot, 'save');
     await mkdir(runRoot, { recursive: true });
-    await mkdir(data); // Refuse reused data: every reported journey starts clean.
+    await mkdir(data); // Refuse reused data; only the explicit fixture option seeds it.
+    const fixture = options.compatibility ? await (await import('./lib/demo-compatibility-fixture.mjs')).createCompatibilityFixture(options.compatibility, data, runRoot) : '';
     const [width, height] = sizes[(run - 1) % sizes.length];
     const input = inputOverride || (run === 2 ? 'keyboard' : 'pointer');
     let previous;
@@ -70,7 +75,7 @@ try {
       const env = { ...environment, STARTUP_VALLEY_NODE: process.execPath, STARTUP_VALLEY_DATA_DIR: data,
         STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS: '1', STARTUP_VALLEY_FAKE_PROVIDER: '0', STARTUP_VALLEY_DEMO_PHASE: phase,
         STARTUP_VALLEY_DEMO_OUTPUT: runRoot, STARTUP_VALLEY_DEMO_RUN: String(run), STARTUP_VALLEY_DEMO_INPUT: input,
-        STARTUP_VALLEY_DEMO_WIDTH: String(width), STARTUP_VALLEY_DEMO_HEIGHT: String(height), STARTUP_VALLEY_DEMO_EXPECTED: previous || '' };
+        STARTUP_VALLEY_DEMO_WIDTH: String(width), STARTUP_VALLEY_DEMO_HEIGHT: String(height), STARTUP_VALLEY_DEMO_EXPECTED: previous || '', STARTUP_VALLEY_DEMO_FIXTURE: fixture };
       const child = spawn(godot, args, { env, stdio: ['ignore', 'pipe', 'pipe'] });
       let text = '';
       for (const stream of [child.stdout, child.stderr]) stream.on('data', chunk => {
@@ -99,7 +104,7 @@ try {
       const exitDeadline = Date.now() + 3000;
       while (alive() && Date.now() < exitDeadline) await new Promise(resolve => setTimeout(resolve, 50));
       assert.equal(alive(), false, 'Graceful game shutdown leaves no tested worker process alive');
-      summaries.push({ run, phase, width, height, input, checks: result.checks, captures: result.captures, snapshot: result.snapshot });
+      summaries.push({ run, phase, width, height, input, compatibilityFixture: options.compatibility || null, checks: result.checks, captures: result.captures, snapshot: result.snapshot });
       previous = resultPath;
     }
   }
@@ -107,13 +112,17 @@ try {
   const sourceUnchanged = source.commit !== null && source.commit === sourceAfter.commit && source.dirty === sourceAfter.dirty;
   const runtimeAfter = await runtimeFingerprint();
   const runtimeUnchanged = runtimeBefore.sha256 === runtimeAfter.sha256;
-  await writeFile(join(output, 'result.json'), JSON.stringify({ ok: runtimeUnchanged, source, sourceAfter, sourceUnchanged,
-    runtimeBefore: runtimeBefore.sha256, runtimeAfter: runtimeAfter.sha256, runtimeUnchanged, summaries }, null, 2));
+  const beforeFiles = new Map(runtimeBefore.files.map(file => [file.path, file.sha256]));
+  const afterFiles = new Map(runtimeAfter.files.map(file => [file.path, file.sha256]));
+  const runtimeChanges = [...new Set([...beforeFiles.keys(), ...afterFiles.keys()])].filter(path => beforeFiles.get(path) !== afterFiles.get(path));
+  completedEvidence = { sourceAfter, sourceUnchanged, runtimeBefore: runtimeBefore.sha256, runtimeAfter: runtimeAfter.sha256, runtimeUnchanged, runtimeChanges };
+  if (!runtimeUnchanged) await writeFile(join(output, 'runtime-manifest-after.json'), JSON.stringify(runtimeAfter, null, 2));
+  await writeFile(join(output, 'result.json'), JSON.stringify({ ok: runtimeUnchanged, source, ...completedEvidence, summaries }, null, 2));
   assert.ok(runtimeUnchanged, 'Production runtime content changed during the run; repeat affected acceptance on frozen content');
   if (!sourceUnchanged) console.warn('Git metadata changed; the recorded runtime-content fingerprint stayed identical.');
   console.log(`PASS: ${summaries.length} actual Godot phases. Evidence: ${output}`);
 } catch (error) {
-  await writeFile(join(output, 'result.json'), JSON.stringify({ ok: false, source, error: error.stack, summaries }, null, 2));
+  await writeFile(join(output, 'result.json'), JSON.stringify({ ok: false, source, ...completedEvidence, error: error.stack, summaries }, null, 2));
   console.error(`Evidence: ${output}`);
   throw error;
 }

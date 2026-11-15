@@ -6,6 +6,7 @@ var movement_bounds: Rect2 = Rect2(32.0, 56.0, 832.0, 576.0)
 var _character_sprite: Sprite2D
 var _shadow_sprite: Sprite2D
 var _animation_elapsed: float = 0.0
+var _blink_elapsed: float = 0.0
 var _facing: StringName = &"front"
 signal destination_reached
 var navigation: OfficeNavigation
@@ -64,9 +65,11 @@ func _ready() -> void:
 	add_child(_character_sprite)
 
 func _physics_process(delta: float) -> void:
+	_blink_elapsed += delta
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	if input_blocked:
 		velocity = Vector2.ZERO
+		_character_sprite.region_rect = CharacterArt.locomotion_region(_facing, IdleBlink.frame(_blink_elapsed))
 		return
 	if not direction.is_zero_approx():
 		cancel_route()
@@ -101,7 +104,7 @@ func _physics_process(delta: float) -> void:
 	_animation_elapsed += delta
 	if not direction.is_zero_approx():
 		_facing = _direction_name(direction)
-	var frame := int(_animation_elapsed * 8.0) % 4 + 2 if moved else int(_animation_elapsed * 1.5) % 2
+	var frame := int(_animation_elapsed * 8.0) % 4 + 2 if moved else IdleBlink.frame(_blink_elapsed)
 	_character_sprite.region_rect = CharacterArt.locomotion_region(_facing, frame)
 	_character_sprite.position = Vector2(0, -32) + position.round() - position
 	_shadow_sprite.position = Vector2(0, -2) + position.round() - position

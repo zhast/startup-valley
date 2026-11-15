@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "id": "founder-standing-blink-v3",
+  "status": "approved",
+  "reviewer": "Codex asset_quality; independent native review by shell_quality and root",
+  "reviewed_at": "2026-11-15T23:18:32.947Z",
+  "camera_profile": "office-square-grid-v1",
+  "style_profile": {
+    "id": "startup-valley-cozy-pixel-v1",
+    "path": "dev/art-catalogue/style-profile.json",
+    "sha256": "c7c4834623a482bb976abf27bcc976f72d5b83df59a66bb93af00a49d1589fe7",
+    "application": "generation_reference",
+    "reference_board": {
+      "path": "dev/art-catalogue/style-reference-board.png",
+      "sha256": "d91ba07ace9aef1d7e82c0daf55621afb57636d08376feae5ef8900623ba8283",
+      "note": "Code-arranged existing reference pixels; characters at3×, phone/floor at2×, window at1×, paper/desk at3×. Zoom is for inspection, not a change in runtime scale."
+    },
+    "references": [
+      {
+        "id": "founder-idle",
+        "path": "dev/art-catalogue/style-references/founder-idle.png",
+        "sha256": "d01a61aac781bea83902877ab96f45087bfb9ac8d0e3d6801fecf642cc1aa756"
+      },
+      {
+        "id": "mina-idle",
+        "path": "dev/art-catalogue/style-references/mina-idle.png",
+        "sha256": "3a8ad37498e9945a4bbeca8567db757b97b28f496c6e9294d11a707d8bd7e1df"
+      },
+      {
+        "id": "phone-booth",
+        "path": "dev/art-catalogue/style-references/phone-booth.png",
+        "sha256": "13f132874da276515063855f045ce62a02324820e18b9af8a3e9cc1be4af4fd8"
+      },
+      {
+        "id": "desk-front",
+        "path": "dev/art-catalogue/style-references/desk-front.png",
+        "sha256": "adb3458aa63d799af6f9a07723523344d63b82772e6d77f03e8da96137c02f21"
+      },
+      {
+        "id": "desk-rear",
+        "path": "dev/art-catalogue/style-references/desk-rear.png",
+        "sha256": "d5e167d93d424fcfddbb00f1cb85217aa69b3de4ee5f4b67036c0830754d29c4"
+      },
+      {
+        "id": "oak-floor",
+        "path": "dev/art-catalogue/style-references/oak-floor.png",
+        "sha256": "851eadbadcfcaf5eaeb4f30a5679d797e42409ac4ffba95d0c71fc591473db66"
+      },
+      {
+        "id": "office-window",
+        "path": "dev/art-catalogue/style-references/office-window.png",
+        "sha256": "cca8896dac6640c452ba2c7148a6f551be4e2d9c2ac793f7439e3501d8863571"
+      },
+      {
+        "id": "paper-frame",
+        "path": "dev/art-catalogue/style-references/paper-frame.png",
+        "sha256": "3a07014154ae2d624f52b563db4befaa1b3f22ed82bc440213d69251caa8111b"
+      }
+    ]
+  },
+  "provenance": {
+    "kind": "openai_imagegen",
+    "note": "A newly generated eye treatment was retained only as registered bounded patches. The base preserves the previously reviewed gait and earlier source history; whole generated bodies were rejected. Theo appeared in the paired output but none of its pixels were retained.",
+    "sources": [
+      {
+        "path": "game/assets/source/blink-polish-v3/founder-locomotion-before.png",
+        "sha256": "912e17abe095398d75aef2c250c36c505e9f4a1a164f1f17f594c2e3531025a6"
+      },
+      {
+        "path": "game/assets/source/blink-polish-v3/founder-blink-overlay.png",
+        "sha256": "92642341b478a177f9695243cab3993229bcb68ed4871b776b4a8475eab3a682"
+      },
+      {
+        "path": "game/assets/source/blink-polish-v3/generated-founder-theo.png",
+        "sha256": "442340252ab66363a1189542e553b5b2a9ac4c3b99541f0c94fed21cda995a14"
+      },
+      {
+        "path": "game/assets/source/blink-polish-v3/founder-theo-closed-target.png",
+        "sha256": "a4f13f955d527ab95d8dabdd3ae85c7d547cee43e18cca04c561ce4f3b23fb74"
+      },
+      {
+        "path": "game/assets/source/blink-polish-v3/founder-theo-open-reference.png",
+        "sha256": "0888f9f76be0a640b6e805211d96bdee177110ee29f077ea02c5eb3f3a21b16c"
+      }
+    ],
+    "prompt": {
+      "path": "game/assets/source/blink-polish-v3/founder-theo-prompt.txt",
+      "sha256": "92fb61ae40d9739ff90cecd1728d4fd8a20713dd8614cc6d8b14d65851f1fec2"
+    },
+    "generation_id": "01a1e146-9490-71d0-99d4-d5691e91d349/exec-419d6b6c-9e84-4f39-9f84-5bedd7517b48.png",
+    "transform": "game/tools/build_standing_blinks.gd: fixed source crops, nearest6x6 samples, nearest original palette, original alpha/transparent RGB. Two front closed-eye patches thin the dark lids to1row. dev/tools/build_locomotion_assets.sh reapplies the retained overlay after gait normalization."
+  },
+  "artifacts": [
+    {
+      "path": "game/assets/runtime/characters/founder-locomotion.png",
+      "sha256": "7f97e86ef5e74375cfcf3677812a27e1a630f05c300210e685ebfa1b1e5527ad"
+    }
+  ],
+  "bindings": [
+    {
+      "path": "game/character_art.gd",
+      "sha256": "ae9a6fc00e4b637486c2ee3bf92226ddf1512a8a6d76e12900120f122286d040"
+    },
+    {
+      "path": "game/actors/idle_blink.gd",
+      "sha256": "7f569a06eb19731a43e57a4b6844c898d1de25e48d5fcdc2bd165272fd712218"
+    },
+    {
+      "path": "game/actors/player_avatar.gd",
+      "sha256": "a1094f0132a0c60b2df5c0154b57f01d61f440b0b4a50a219c0ccee1108e4913"
+    },
+    {
+      "path": "game/actors/employee_avatar.gd",
+      "sha256": "884df914687a1d71515d0d4c0bceeaa8d06da10c67423ff6a1298b8edae68b6e"
+    },
+    {
+      "path": "game/world/story_guest.gd",
+      "sha256": "32223d38d5d1fc5825d460e383e314cd87d375968256a12cca6490ad196ec1b6"
+    },
+    {
+      "path": "game/tools/build_standing_blinks.gd",
+      "sha256": "7e2a43829ed014075ce74d1a0ecbad0c6aa1d5010bd6aedcb12adf7bb7748b23"
+    },
+    {
+      "path": "dev/tools/build_locomotion_assets.sh",
+      "sha256": "97a6043b4c07898476f19bcd98b1a126e7942acd96f86ed935cdb6f9bf0560ff"
+    },
+    {
+      "path": "game/tests/test_idle_blink.gd",
+      "sha256": "ddf8d39fbcc45bc3492a4d80b48966c32b07eb3252c8865f0cb5c0750209d6f9"
+    },
+    {
+      "path": "game/tools/capture_blink_matrix.gd",
+      "sha256": "cadb88784a0fc4e4cc0fd83e5f9c0b7dae27e1d7b05a0b25ab96153426e75edc"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "docs/web/assets/blink-polish-v3/after-raster-contact.png",
+      "sha256": "e17e14c033a7ce02fe447cbf5d97a33a43483129c987e7e7876d7c7e932a394b",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/assets/blink-polish-v3/before-raster-contact.png",
+      "sha256": "c05f122af1db68a7518f3746c65bbf7a0fe1700b78e488c878d0dd7cf00e9640",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/assets/blink-polish-v3/after-motion-samples.json",
+      "sha256": "050b4abe1c4064e31a75f4dc8ee0f7eb61eca17abe5d3a64a9c0c2646bbe093f",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/blink-polish-v3/native-motion-result.json",
+      "sha256": "a55bca6f87cb7c87a658144fec8f1c9f805e909834e7a337348c8860a6ede028",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/blink-polish-v3/idle-blink-test.log",
+      "sha256": "91dee447fd85357b031e4b846c9c12aa539a5beb1c51de919872dd8e68be6048",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/blink-polish-v3/seated-composition-results.json",
+      "sha256": "32be7b278785c747d6d55e498224a876f065df17e8679cbaa8879cdf989f465a",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/blink-polish-v3/walking-test.log",
+      "sha256": "0b4fc6de25f413210013674fea96c9f6d47f902445327551ec5db947e9d6b01b",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/blink-polish-v3/native-matrix/founder-locomotion.png",
+      "sha256": "42e831cea58cd03ad33664b492970d101c75dfcac51a587b7a0f138db338b13d",
+      "kind": "native_contact_sheet"
+    },
+    {
+      "path": "docs/web/assets/blink-polish-v3/founder-source-diagnostic.png",
+      "sha256": "fad9fb9dc2a327a72a9845fd0dc4cf33eafc315ef3ae73c7c3d907e772ad8fff",
+      "kind": "native_contact_sheet"
+    },
+    {
+      "path": "game/assets/source/blink-polish-v3/technical-validation.json",
+      "sha256": "f60926fac5729979c81cf1255a31d9628cc81b5d5515b59d8e688507d09c30f4",
+      "kind": "test_report"
+    }
+  ],
+  "checks": {
+    "style": {
+      "result": "passed",
+      "note": "Canonical board supplied at generation. Original palette and contours preserved; only semantic eyelid pixels retained."
+    },
+    "camera": {
+      "result": "passed",
+      "note": "All4cardinal views inspected through native Godot registry captures; no camera or directional transform changed."
+    },
+    "scale": {
+      "result": "passed",
+      "note": "48x80 cells at original unit runtime scale; inspected native room and nearest diagnostic enlargements."
+    },
+    "anchor": {
+      "result": "passed",
+      "note": "Original alpha and all feet/body pixels remain unchanged. Existing navigation/walk regression738checks passes."
+    },
+    "layering": {
+      "result": "passed",
+      "note": "All48 real seated/typing poses pass head/chair/desk occlusion checks; changed standing eyes introduce no new layer."
+    },
+    "animation": {
+      "result": "passed",
+      "note": "Actual native GameMain sampled90times with production worker/input; both actors close and reopen. Runtime tests enforce120ms per4s with distinct phases and blocked-player reopening."
+    },
+    "placement": {
+      "result": "passed",
+      "note": "Actual fresh studio capture shows unchanged positions and sprite registration. Walk/body regions remain byte-identical; furniture geometry is outside this patch."
+    },
+    "readability": {
+      "result": "passed",
+      "note": "Thin dark lids occupy original pupil rows, with skin below. The previous two-row black block is now a single dark row."
+    }
+  },
+  "capture_notes": "Live native timing uses final runtime bytes, production worker and actual input. Native matrix is a separate registry fixture, not gameplay. Source diagnostics are labeled inspection views. See bound evidence README for coverage and remaining chair-scale audit."
+}
