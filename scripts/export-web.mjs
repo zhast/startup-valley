@@ -1,15 +1,15 @@
-import { mkdir, mkdtemp, rename, rm, writeFile, access } from 'node:fs/promises';
+import { mkdir, mkdtemp, rename, rm, writeFile, access, cp } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { spawn } from 'node:child_process';
 import { loadConfig, isMain } from './lib/config.mjs';
 import { diagnose, printDiagnosis } from './doctor.mjs';
 import { validateExport } from './validate-web.mjs';
 
-export function run(bin, args, cwd) {
+export function run(bin, args, cwd, label = 'Godot') {
   return new Promise((accept, reject) => {
     const child = spawn(bin, args, { cwd, stdio: 'inherit', shell: false });
     child.once('error', reject);
-    child.once('exit', (code, signal) => code === 0 ? accept() : reject(new Error(`Godot exited with ${signal ?? code}. The previous dist build was preserved.`)));
+    child.once('exit', (code, signal) => code === 0 ? accept() : reject(new Error(`${label} exited with ${signal ?? code}. The previous dist build was preserved.`)));
   });
 }
 
@@ -43,8 +43,12 @@ export async function exportWeb() {
     temporary = await mkdtemp(resolve(buildRoot, 'export-'));
     const staging = resolve(temporary, 'output');
     await mkdir(staging);
+    await run(process.env.NPM_BIN || 'npm', ['run', 'build'], resolve(config.root, 'web'), 'Browser runtime build');
     await run(diagnosis.engine.bin, ['--headless', '--path', config.projectPath, '--import'], config.root);
     await run(diagnosis.engine.bin, ['--headless', '--path', config.projectPath, '--export-release', config.preset, resolve(staging, 'index.html')], config.root);
+    await cp(resolve(config.root, 'web/dist'), resolve(staging, 'web'), { recursive: true });
+    await access(resolve(staging, 'web/bridge.js'));
+    await access(resolve(staging, 'web/worker.js'));
     const report = await validateExport(staging);
     // Godot uses stable file names. Revalidate all of them so releases cannot mix
     // an old loader with a new WASM/PCK. Deploy the entire directory atomically.

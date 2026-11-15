@@ -1,0 +1,21 @@
+{
+  "name": "startup-valley-browser-runtime",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit && vite build --config vite.worker.config.ts && vite build --config vite.bridge.config.ts",
+    "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@noble/hashes": "2.4.0",
+    "@sqlite.org/sqlite-wasm": "3.54.1-build1"
+  },
+  "devDependencies": {
+    "@types/node": "24.3.0",
+    "typescript": "5.9.2",
+    "vite": "8.3.8",
+    "playwright-core": "1.62.1"
+  }
+}

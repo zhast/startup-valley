@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Startup Valley — runtime check</title>
+<style>
+  :root { color-scheme: dark; font: 16px system-ui, sans-serif; background: #172322; color: #eef1de; }
+  body { max-width: 66rem; margin: 3rem auto; padding: 0 1.2rem; }
+  h1 { font-size: 1.8rem; } button { font: inherit; background: #e8c07a; color: #172322; border: 0; padding: .7rem 1rem; border-radius: .4rem; cursor: pointer; }
+  button:disabled { opacity: .45; cursor: wait; } nav { display: flex; gap: .6rem; flex-wrap: wrap; }
+  pre { overflow: auto; max-height: 62vh; padding: 1rem; background: #101a19; border-radius: .6rem; font-size: .8rem; }
+  #status { min-height: 1.5rem; } a { color: #e8c07a; }
+</style>
+<h1>Startup Valley runtime check</h1>
+<p>This developer page exercises the real offline simulation and the same persistent browser save as the game.</p>
+<p id="status" role="status">Opening the company save…</p>
+<nav aria-label="Runtime checks">
+  <button id="bootstrap" disabled>Read company</button>
+  <button id="save" disabled>Save company</button>
+  <button id="reopen" disabled>Close and reopen save</button>
+</nav>
+<pre id="output" aria-label="Worker response"></pre>
+<script src="./bridge.js"></script>
+<script>
+  const bridge = window.StartupValleyWorker;
+  const status = document.getElementById("status");
+  const output = document.getElementById("output");
+  let sequence = 0;
+  let player = null;
+  const pending = new Map();
+  const request = (method, params = {}) => new Promise((resolve, reject) => {
+    const id = `runtime-check-${++sequence}`;
+    pending.set(id, { resolve, reject });
+    bridge.request(JSON.stringify({ kind: "request", id, method, params }));
+  });
+  bridge.onMessage((json) => {
+    const response = JSON.parse(json);
+    if (response.ok && response.result?.journey?.player) player = response.result.journey.player;
+    const handler = pending.get(response.id);
+    if (!handler) return;
+    pending.delete(response.id);
+    output.textContent = JSON.stringify(response, null, 2);
+    handler.resolve(response);
+  });
+  bridge.onError((error) => {
+    status.textContent = error;
+    document.querySelectorAll("button").forEach((button) => button.disabled = true);
+    for (const handler of pending.values()) handler.reject(new Error(error));
+    pending.clear();
+  });
+  async function open() {
+    await bridge.start();
+    status.textContent = "Company save open · SQLite in persistent OPFS storage";
+    document.querySelectorAll("button").forEach((button) => button.disabled = false);
+    await request("bootstrap");
+  }
+  document.getElementById("bootstrap").onclick = () => request("bootstrap");
+  document.getElementById("save").onclick = () => player && request("game.save", { x: player.x, y: player.y });
+  document.getElementById("reopen").onclick = async () => { await bridge.stop(); await open(); };
+  open().catch((error) => { status.textContent = error.message; });
+</script>
+</html>

@@ -6,6 +6,7 @@ Keep the two-process boundary intact:
 
 - `game/`: Godot 4.7.2, typed GDScript only. Rendering, input, animation, menus, interpolation, and cached read-only worker views.
 - `harness/`: Node.js 22.19+ and TypeScript. SQLite, the tycoon simulation, and optional Pi sessions for chapter work orders. Jobs, constrained tools, credentials, audit, token budgets, and artifacts stay here.
+- `web/`: browser-only Worker and SQLite WASM adapters for the shared offline harness core. No provider credentials or Node-only dependencies may enter this bundle.
 - `contracts/`: JSON Schemas for every JSONL request, response, job, event, and artifact crossing the process boundary.
 - `dev/`: acceptance notes and developer-only artifacts.
 
@@ -33,7 +34,7 @@ godot --path game
 
 ## Required boundaries
 
-- The game communicates with the worker only over stdio JSONL for v0. Do not add an unauthenticated HTTP listener.
+- Native builds communicate with the worker over stdio JSONL. Web builds use JavaScriptBridge and a dedicated browser Worker with the same request/response envelopes. Do not add an unauthenticated HTTP listener. Keep offline rules in the shared harness core and platform storage in adapters.
 - The core loop is offline. `tycoon.start`, `tycoon.release`, `tycoon.acceptContract`, `tycoon.patch`, `tycoon.sequel`, `tycoon.award`, `tycoon.port`, `tycoon.localize`, `tycoon.train`, `tycoon.letGo`, `tycoon.setPace`, `tycoon.listCatalog`, `tycoon.delistCatalog`, `tycoon.research`, `tycoon.buyUpgrade`, `tycoon.buyEngine`, `tycoon.expandOffice`, `tycoon.takeLoan`, `tycoon.signPublisher`, `tycoon.bookBooth`, `tycoon.takeTownDay`, `tycoon.showPressDemo`, `tycoon.makeTrailer`, `tycoon.writeDiary`, and the `day.end` product tick must not read a credential, call a provider, or use the network. A missing key must never block shipping a product.
 - Model providers are optional and off the core path. They exist only for chapter work orders and chat when the player opts in. Grok / xAI is the primary optional provider. Sign in with Grok (or reuse `~/.grok/auth.json`) and inject the access token with Pi `setRuntimeApiKey("xai", …)` for `grok-4.6`. An OpenRouter key in the OS keychain remains a fallback. `STARTUP_VALLEY_FAKE_PROVIDER=1` is the dev-only offline stand-in for those jobs. It is not the default, and it is not the tycoon. Never log or print tokens.
 - Create a bounded Pi session for each substantial work order and dispose it at job end. Do not create an immortal employee conversation.

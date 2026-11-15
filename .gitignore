@@ -20,3 +20,6 @@ game/tests/output/polish-audit/*
 /node_modules/
 /dist/
 /.build/
+/web/node_modules/
+/web/dist/
+/game/web/templates/

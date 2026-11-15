@@ -98,6 +98,6 @@ New Company requires confirmation and moves
 the previous database and project into a timestamped `backups/` directory inside
 the game's user-data folder; it never deletes the old company.
 
-## Browser port groundwork
+## Browser build
 
-The [web port guide](docs/web/README.md) contains the repository audit, browser-worker/SQLite architecture plan, asset review, and verification results. Delivery tooling is under `scripts/`, with an optional Godot shell at `game/web/shell.html`. Run `node --test tests/*.test.mjs` for its isolated checks. The browser runtime adaptation is not yet implemented; the native run instructions above still apply.
+The [web port guide](docs/web/README.md) covers the Godot web export, shared offline simulation, persistent browser saves, asset review, and verification results. The browser uses a dedicated Worker with SQLite WASM; native builds retain the setup above. Optional AI/provider work is unavailable in the web edition. See the guide for build and playtest commands.
