@@ -48,6 +48,7 @@ export function createPreviewServer(config) {
           return send(200, renderPreview(template), MIME['.html']);
         }
         if (path === '/__preview__/engine.js') return send(200, '/* Shell preview only: no engine or game has been imported. */', MIME['.js']);
+        if (path === '/web/bridge.js') return send(200, '/* Shell preview only: no simulation has been loaded. */', MIME['.js']);
         return send(404, 'No web export yet. Run the doctor and export commands.');
       }
       const target = resolve(config.dist, '.' + (path.endsWith('/') ? `${path}index.html` : path));

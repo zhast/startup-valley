@@ -15,7 +15,7 @@ function deferred() {
 
 // Small event/DOM adapter, deliberately not a browser renderer. It tests the
 // actual exported startup script's transitions and focus behavior.
-function harness({ config = {}, missingEngine = false, wasm = true, webgl = true, startGame } = {}) {
+function harness({ config = {}, missingEngine = false, missingWorker = false, workerStart = async () => {}, wasm = true, webgl = true, startGame } = {}) {
   const elements = new Map();
   let focused = null, reloads = 0;
   const instances = [], errors = [];
@@ -69,6 +69,7 @@ function harness({ config = {}, missingEngine = false, wasm = true, webgl = true
     console: { error: (...args) => errors.push(args) },
     WebAssembly: wasm ? {} : undefined,
   };
+  if (!missingWorker) globals.StartupValleyWorker = { start: workerStart, stop: async () => {}, onError: () => {} };
   if (!missingEngine) globals.Engine = Engine;
   vm.runInNewContext(source.replace('$GODOT_CONFIG', JSON.stringify(config)), globals, { filename: 'godot-shell.js' });
   return { document, instances, errors, get: id => document.getElementById(id), get focused() { return focused; }, get reloads() { return reloads; } };
@@ -85,7 +86,7 @@ test('preview remains non-playable even without a downloaded engine', async () =
 });
 
 test('missing runtime or unsupported browser offers a focused recovery action', async () => {
-  for (const options of [{ missingEngine: true }, { wasm: false }, { webgl: false }]) {
+  for (const options of [{ missingEngine: true }, { missingWorker: true }, { wasm: false }, { webgl: false }]) {
     const shell = harness(options);
     assert.equal(shell.get('reload').hidden, false);
     assert.equal(shell.get('canvas').hidden, true);
@@ -103,6 +104,7 @@ test('loads once, preserves exported config, isolates input until ready, and han
   const shell = harness({ config, startGame: () => completion.promise });
   assert.equal(shell.instances.length, 0, 'must wait for a player gesture');
   const clicked = shell.get('start').emit('click');
+  await new Promise(resolve => setImmediate(resolve));
   const instance = shell.instances[0];
   assert.equal(JSON.stringify(instance.config), JSON.stringify(config));
   assert.equal(shell.get('start').disabled, true);
@@ -137,6 +139,15 @@ test('loads once, preserves exported config, isolates input until ready, and han
   assert.equal(shell.get('fullscreen').hidden, true);
   assert.equal(shell.document.body.classList.contains('playing'), false);
   assert.equal(shell.focused, 'reload');
+});
+
+test('a persistent-storage startup failure never launches Godot or pretends to load a company', async () => {
+  const shell = harness({ workerStart: async () => { throw new Error('Save already open in another tab.'); } });
+  await shell.get('start').emit('click');
+  assert.equal(shell.instances.length, 0);
+  assert.equal(shell.get('reload').hidden, false);
+  assert.equal(shell.get('canvas').hidden, true);
+  assert.match(shell.get('status').textContent, /already open in another tab/);
 });
 
 test('a rejected startup exposes recovery and does not leave a focusable canvas', async () => {
