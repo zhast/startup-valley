@@ -53,8 +53,49 @@ function ensureEventPump(jobId: string): void {
   void pumpEvents(jobId);
 }
 
+/** Reserve replacement synchronously before any shared-dispatch await. */
+async function resetCompany(request: ProtocolRequest): Promise<unknown> {
+  if (request.params.confirmed !== true) throw new Error("Confirm New Company first");
+  if (adapter.isBusy() || database.hasOpenWorkOrder()) throw new Error("Finish or cancel open work before starting a new company");
+  resetting = true;
+  const dbPath = join(dataRoot, "startup-valley.sqlite");
+  await mkdir(join(dataRoot, "backups"), { recursive: true }).catch((error: unknown) => { resetting = false; throw error; });
+  const safeBackup = await mkdtemp(join(dataRoot, "backups", new Date().toISOString().replace(/[:.]/gu, "-") + "-")).catch((error: unknown) => { resetting = false; throw error; });
+  const stagedPath = join(safeBackup, "prepared.sqlite");
+  let movedDb = false, movedProject = false, installedDb = false, installedProject = false, closed = false;
+  let replacement: GameDatabase | undefined;
+  try {
+    // Validate and checkpoint the new database before touching the old company.
+    const prepared = new GameDatabase(stagedPath, projectRoot);
+    prepared.close();
+    await mkdir(join(safeBackup, "prepared-project"));
+    database.close(); closed = true;
+    await rename(dbPath, join(safeBackup, "startup-valley.sqlite")); movedDb = true;
+    await rename(projectRoot, join(safeBackup, "company-project")); movedProject = true;
+    await rename(stagedPath, dbPath); installedDb = true;
+    await rename(join(safeBackup, "prepared-project"), projectRoot); installedProject = true;
+    replacement = new GameDatabase(dbPath, projectRoot);
+    database = replacement;
+    adapter = new PiWorkerAdapter(database, credentials, dataRoot);
+    return { ...database.bootstrap(), backupPath: safeBackup };
+  } catch (error) {
+    replacement?.close();
+    // Keep even the failed replacement recoverable; never overwrite the backup.
+    if (installedProject) await rename(projectRoot, join(safeBackup, "failed-new-project"));
+    if (installedDb) await rename(dbPath, join(safeBackup, "failed-new.sqlite"));
+    if (movedProject) await rename(join(safeBackup, "company-project"), projectRoot);
+    if (movedDb) await rename(join(safeBackup, "startup-valley.sqlite"), dbPath);
+    if (closed) {
+      database = new GameDatabase(dbPath, projectRoot);
+      adapter = new PiWorkerAdapter(database, credentials, dataRoot);
+    }
+    throw error;
+  } finally { resetting = false; }
+}
+
 async function dispatch(request: ProtocolRequest): Promise<unknown> {
   if (resetting) throw new Error("New company is being prepared");
+  if (request.method === "game.new") return resetCompany(request);
   const offline = await dispatchOffline(request, database, {
     isBusy: () => adapter.isBusy(),
     startNextQueuedJob: async () => {
@@ -64,47 +105,11 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
     },
   });
   if (offline !== UNHANDLED) return offline;
+  // A reset may have started while this native-only request yielded above.
+  if (resetting) throw new Error("New company is being prepared");
   switch (request.method) {
     case "milestone.evaluate":
       return adapter.evaluateMilestone(stringParameter(request, "jobId", 64));
-    case "game.new": {
-      if (request.params.confirmed !== true) throw new Error("Confirm New Company first");
-      if (adapter.isBusy() || database.hasOpenWorkOrder()) throw new Error("Finish or cancel open work before starting a new company");
-      resetting = true;
-      const dbPath = join(dataRoot, "startup-valley.sqlite");
-      await mkdir(join(dataRoot, "backups"), { recursive: true }).catch((error: unknown) => { resetting = false; throw error; });
-      const safeBackup = await mkdtemp(join(dataRoot, "backups", new Date().toISOString().replace(/[:.]/gu, "-") + "-")).catch((error: unknown) => { resetting = false; throw error; });
-      const stagedPath = join(safeBackup, "prepared.sqlite");
-      let movedDb = false, movedProject = false, installedDb = false, installedProject = false, closed = false;
-      let replacement: GameDatabase | undefined;
-      try {
-        // Validate and checkpoint the new database before touching the old company.
-        const prepared = new GameDatabase(stagedPath, projectRoot);
-        prepared.close();
-        await mkdir(join(safeBackup, "prepared-project"));
-        database.close(); closed = true;
-        await rename(dbPath, join(safeBackup, "startup-valley.sqlite")); movedDb = true;
-        await rename(projectRoot, join(safeBackup, "company-project")); movedProject = true;
-        await rename(stagedPath, dbPath); installedDb = true;
-        await rename(join(safeBackup, "prepared-project"), projectRoot); installedProject = true;
-        replacement = new GameDatabase(dbPath, projectRoot);
-        database = replacement;
-        adapter = new PiWorkerAdapter(database, credentials, dataRoot);
-        return { ...database.bootstrap(), backupPath: safeBackup };
-      } catch (error) {
-        replacement?.close();
-        // Keep even the failed replacement recoverable; never overwrite the backup.
-        if (installedProject) await rename(projectRoot, join(safeBackup, "failed-new-project"));
-        if (installedDb) await rename(dbPath, join(safeBackup, "failed-new.sqlite"));
-        if (movedProject) await rename(join(safeBackup, "company-project"), projectRoot);
-        if (movedDb) await rename(join(safeBackup, "startup-valley.sqlite"), dbPath);
-        if (closed) {
-          database = new GameDatabase(dbPath, projectRoot);
-          adapter = new PiWorkerAdapter(database, credentials, dataRoot);
-        }
-        throw error;
-      } finally { resetting = false; }
-    }
     case "health":
       return { status: "ok", protocolVersion: 1, workerVersion: "0.0.1", provider: await credentials.peekProvider(), maxConcurrentJobs: 1, offline: offlineProviderEnabled() || undefined };
     case "credential.status":
