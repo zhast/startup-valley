@@ -15,7 +15,7 @@ are assigned to separate agents. Root coordinates integration and Git pushes.
 
 ### Active goal checkpoints
 
-- Confirmed remote `main`: `6966203176a7adabccd49d3d929a924ed477629c`
+- Confirmed remote `main`: `ee12cb46cb8770fd33388022ac0a5f0996b043a0`
   (initial polish, compact-room QA, active plan, offline unlocks and packaging).
   Local history was aligned after verifying identical complete Git trees.
 - Local `4c0b134` + `982e43a`: durable courtyard/location/market brief,
@@ -23,8 +23,19 @@ are assigned to separate agents. Root coordinates integration and Git pushes.
   The complete worker suite passes 156 tests with 2 opt-in skips; offline
   evaluation passes 8/8. The contract follow-up fixes an omission discovered
   by the full suite; publish the coherent pair together.
-- Godot world/UI integration and actual-input journey tests are in progress.
-  Do not confuse the saved worker slice with a completed visual demonstration.
+- `cc3b2a6` saves the Godot opening/courtyard integration and matching worker
+  bounds; `7e72e21` saves the actual-input acceptance harness. Final rendered
+  acceptance is pending. Source components pass story, movement, workstation,
+  seating, asset-gate and legacy optional-mode checks. Worker suite: 157 passed,
+  2 pre-existing skips. The bound/spawn contract now checks actual Godot values.
+- Preliminary engine input reached the first release with production-worker
+  save/restart. The 844×390 size guard and simulated touch recovery passed.
+  These are preliminary results, not the final three frozen-source journeys.
+- Current integration follow-up: release custom cursor resources before native
+  renderer shutdown; route the native story rail to Settings instead of Connect;
+  wait for UI transitions before sampling native test click coordinates. The
+  Godot owner handles the first two and QA handles the test timing. Do not
+  confuse an exit code of zero with error-free renderer shutdown.
 
 ## Saved implementation
 

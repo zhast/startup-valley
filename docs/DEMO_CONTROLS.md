@@ -10,6 +10,9 @@ is required, and all money and reputation are fictional game values.
 - Click a highlighted person or object to approach and interact.
 - Follow the current objective and its action button. Meet Mina, choose a
   project, develop it across days, and release it when ready.
+- After the first release, follow the courtyard sign to meet Theo. His makers
+  market needs a planning kit; accept the idea, return to the studio and follow
+  the new objective to build it through the same project loop.
 - Press J to open Company Journey. Press Escape to close the top panel or open
   settings. Menus pause the office clock.
 - Company progress saves locally. Start with a new company to see the compact
