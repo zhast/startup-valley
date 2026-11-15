@@ -3140,6 +3140,9 @@ export class TycoonStore {
         `Contract: ${stored.contract.client}`,
       );
     }
+    // Furnishing rewards commit with the actual release, including releases
+    // completed by another simulation path. No provider or restart is needed.
+    this.onOfficeChanged();
     return this.journey.state();
   }
 

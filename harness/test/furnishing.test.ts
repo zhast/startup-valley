@@ -19,7 +19,7 @@ const furnishingCatalog = JSON.parse(readFileSync(join(dirname(fileURLToPath(imp
 };
 const starterCount = furnishingCatalog.starter_decor.length;
 const founderInventory = 1 + starterCount;
-const hiredTwoInventory = 8 + starterCount;
+const hiredTwoInventory = 8 + 3 + 6; // pre-furnishing two-person team earns the starter + growing-team sets
 
 async function setup() {
   const root = await mkdtemp(join(tmpdir(), "startup-valley-furnishing-"));
@@ -35,6 +35,10 @@ async function setup() {
     old.exec(migrations[name]!);
     old.prepare("INSERT INTO schema_migrations VALUES (?,'legacy-fixture')").run(Number(name.slice(0, 3)));
   }
+  // Explicit old-owner fixture: before progression grants, the full decorative
+  // library was owned. These geometry tests still exercise every owned family.
+  const legacyGrant = old.prepare("INSERT INTO furnishing_inventory VALUES (?,?, '',0,'starter-decor-v1','')");
+  for (const item of furnishingCatalog.starter_decor) legacyGrant.run(item.id, item.kind);
   old.close();
   return { root, project, path, db: new GameDatabase(path, project) };
 }

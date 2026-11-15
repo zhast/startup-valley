@@ -1,5 +1,5 @@
 import type { GameDatabase } from "./database-core.js";
-import type { FurnishingUpdate } from "./furnishing-core.js";
+import type { FurnishingState, FurnishingUpdate } from "./furnishing-core.js";
 import type { StoryOperation, StoryTravel } from "./story.js";
 import type { ProtocolRequest } from "./types.js";
 import { stringParameter, numberParameter, staffParameter, optionalIntegerParameter, optionalStringParameter } from "./request-parameters.js";
@@ -8,6 +8,11 @@ export const UNHANDLED = Symbol("unhandled offline request");
 export interface OfflineHooks {
   isBusy?: () => boolean;
   startNextQueuedJob?: () => Promise<string | undefined>;
+}
+function furnishingRewards(database: GameDatabase, before: FurnishingState, after: FurnishingState): string[] {
+  const owned = new Set(before.inventory.map((item) => item.id));
+  return after.inventory.filter((item) => !item.essential && !owned.has(item.id))
+    .map((item) => database.furnishing.geometry.catalog[item.kind]?.display_name ?? item.kind);
 }
 /** The same authoritative routes serve native stdio and the offline browser Worker. */
 export async function dispatchOffline(request: ProtocolRequest, database: GameDatabase, hooks: OfflineHooks = {}): Promise<unknown> {
@@ -22,9 +27,12 @@ export async function dispatchOffline(request: ProtocolRequest, database: GameDa
     }
     case "furnishing.update":
       return database.furnishing.update(request.params as unknown as FurnishingUpdate);
-    case "hiring.complete":
+    case "hiring.complete": {
+      const before = database.furnishing.state();
       database.journey.hire(stringParameter(request, "employeeId", 64), database.clockState().day);
-      return database.bootstrap();
+      const result = database.bootstrap();
+      return { ...result, furnishingRewards: furnishingRewards(database, before, result.furnishing) };
+    }
     case "milestone.complete":
     case "milestone.override":
       return { journey: database.journey.complete(stringParameter(request, "jobId", 64), request.method === "milestone.override", database.clockState().day), dailySpend: database.dailySpend() };
@@ -54,8 +62,12 @@ export async function dispatchOffline(request: ProtocolRequest, database: GameDa
         ),
         dailySpend: database.dailySpend(),
       };
-    case "tycoon.release":
-      return { journey: database.tycoon.release(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
+    case "tycoon.release": {
+      const before = database.furnishing.state();
+      const journey = database.tycoon.release(stringParameter(request, "productId", 32));
+      const furnishing = database.furnishing.state();
+      return { journey, furnishing, furnishingRewards: furnishingRewards(database, before, furnishing), dailySpend: database.dailySpend() };
+    }
     case "tycoon.acceptContract":
       return { journey: database.tycoon.acceptContract(), dailySpend: database.dailySpend() };
     case "tycoon.patch":

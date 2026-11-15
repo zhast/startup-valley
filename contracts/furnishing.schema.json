@@ -5,64 +5,191 @@
   "$ref": "#/$defs/state",
   "$defs": {
     "cell": {
-      "type": "array", "minItems": 2, "maxItems": 2,
-      "items": { "type": "integer", "minimum": 0, "maximum": 255 }
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 255
+      }
     },
     "placement": {
-      "type": "object", "additionalProperties": false, "required": ["grid", "facing"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "grid",
+        "facing"
+      ],
       "properties": {
-        "grid": { "$ref": "#/$defs/cell" },
-        "facing": { "enum": ["north", "east", "south", "west"] }
+        "grid": {
+          "$ref": "#/$defs/cell"
+        },
+        "facing": {
+          "enum": [
+            "north",
+            "east",
+            "south",
+            "west"
+          ]
+        }
       }
     },
     "placements": {
-      "type": "object", "maxProperties": 32,
-      "propertyNames": { "pattern": "^[a-z0-9_-]{1,100}$" },
-      "additionalProperties": { "$ref": "#/$defs/placement" }
+      "type": "object",
+      "maxProperties": 32,
+      "propertyNames": {
+        "pattern": "^[a-z0-9_-]{1,100}$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/placement"
+      }
     },
     "inventoryItem": {
-      "type": "object", "additionalProperties": false,
-      "required": ["id", "kind", "ownerId", "essential", "grant", "roleKit"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "ownerId",
+        "essential",
+        "grant",
+        "roleKit"
+      ],
       "properties": {
-        "id": { "type": "string", "pattern": "^[a-z0-9_-]{1,100}$" },
-        "kind": { "type": "string", "pattern": "^[a-z0-9_-]{1,100}$" },
-        "ownerId": { "enum": ["", "founder", "mira", "theo", "creative"] },
-        "essential": { "type": "boolean" },
-        "grant": { "type": "string", "minLength": 1, "maxLength": 100 },
-        "roleKit": { "enum": ["", "mina_discovery_kit", "theo_campaign_kit", "creative_design_kit", "founder_strategy_kit"] }
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9_-]{1,100}$"
+        },
+        "kind": {
+          "type": "string",
+          "pattern": "^[a-z0-9_-]{1,100}$"
+        },
+        "ownerId": {
+          "enum": [
+            "",
+            "founder",
+            "mira",
+            "theo",
+            "creative"
+          ]
+        },
+        "essential": {
+          "type": "boolean"
+        },
+        "grant": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "roleKit": {
+          "enum": [
+            "",
+            "mina_discovery_kit",
+            "theo_campaign_kit",
+            "creative_design_kit",
+            "founder_strategy_kit"
+          ]
+        }
       }
     },
     "state": {
-      "type": "object", "additionalProperties": false,
-      "required": ["version", "revision", "inventory", "placements", "recovery"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "revision",
+        "inventory",
+        "placements",
+        "recovery"
+      ],
       "properties": {
-        "version": { "const": 1 },
-        "layoutId": { "enum": ["startup-office", "starter-cottage-v1"] },
-        "revision": { "type": "integer", "minimum": 0 },
-        "inventory": { "type": "array", "maxItems": 39, "items": { "$ref": "#/$defs/inventoryItem" } },
-        "placements": { "$ref": "#/$defs/placements" },
-        "recovery": { "type": "string", "maxLength": 1000 }
+        "version": {
+          "const": 1
+        },
+        "layoutId": {
+          "enum": [
+            "startup-office",
+            "starter-cottage-v1"
+          ]
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "inventory": {
+          "type": "array",
+          "maxItems": 39,
+          "items": {
+            "$ref": "#/$defs/inventoryItem"
+          }
+        },
+        "placements": {
+          "$ref": "#/$defs/placements"
+        },
+        "recovery": {
+          "type": "string",
+          "maxLength": 1000
+        }
       }
     },
     "update": {
-      "type": "object", "additionalProperties": false,
-      "required": ["operationId", "expectedRevision", "placements"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operationId",
+        "expectedRevision",
+        "placements"
+      ],
       "properties": {
-        "operationId": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,100}$" },
-        "expectedRevision": { "type": "integer", "minimum": 0 },
-        "placements": { "$ref": "#/$defs/placements" },
+        "operationId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,100}$"
+        },
+        "expectedRevision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "placements": {
+          "$ref": "#/$defs/placements"
+        },
         "actorCells": {
-          "type": "array", "maxItems": 4,
+          "type": "array",
+          "maxItems": 4,
           "items": {
-            "type": "object", "additionalProperties": false, "required": ["id", "grid"],
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "grid"
+            ],
             "properties": {
-              "id": { "enum": ["founder", "mira", "theo", "creative"] },
-              "grid": { "$ref": "#/$defs/cell" },
+              "id": {
+                "enum": [
+                  "founder",
+                  "mira",
+                  "theo",
+                  "creative"
+                ]
+              },
+              "grid": {
+                "$ref": "#/$defs/cell"
+              },
               "position": {
-                "type": "array", "minItems": 2, "maxItems": 2,
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
                 "prefixItems": [
-                  { "type": "number", "minimum": 0, "maximum": 1280 },
-                  { "type": "number", "minimum": 0, "maximum": 720 }
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1280
+                  },
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 720
+                  }
                 ],
                 "items": false
               }
@@ -72,10 +199,30 @@
       }
     },
     "result": {
-      "type": "object", "additionalProperties": false, "required": ["furnishing", "replayed"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "furnishing",
+        "replayed"
+      ],
       "properties": {
-        "furnishing": { "$ref": "#/$defs/state" },
-        "replayed": { "type": "boolean" }
+        "furnishing": {
+          "$ref": "#/$defs/state"
+        },
+        "replayed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "rewards": {
+      "description": "New decorative inventory earned by this successful release or hire only. Repeated hires return an empty array; repeated releases fail without another reward.",
+      "type": "array",
+      "maxItems": 27,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 80
       }
     }
   }

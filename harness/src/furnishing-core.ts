@@ -36,6 +36,7 @@ interface Room {
   player_spawn: Cell; employees: Array<{ id: string; spawn: Cell }>; props: Prop[];
 }
 interface Profile {
+  display_name?: string;
   status?: string; profile_kind?: string; occupied: Cell[]; clearance: Cell[];
   anchor_offset: Cell; visual_bounds: Rect; interaction?: Cell; work_cell?: Cell;
   approach_visual_bounds?: Rect; collaboration_slots?: Array<{ cell: Cell; visual_bounds: Rect }>;
@@ -48,6 +49,8 @@ interface Resolved {
 interface RoleKit { host_kind: string; owner_id: string; facing_profiles: Record<Facing, { visual_bounds: Rect }> }
 interface DecorKit { host_kind: string; owner_id: string; facing_profiles: Record<Facing, { visual_bounds: Rect }> }
 const FACINGS = ["north", "east", "south", "west"];
+type DecorStage = "starter" | "first_release" | "growing_team" | "established_studio";
+const DECOR_STAGES: DecorStage[] = ["starter", "first_release", "growing_team", "established_studio"];
 const key = (cell: Cell): string => `${cell[0]},${cell[1]}`;
 const plus = (left: Cell, right: Cell): Cell => [left[0] + right[0], left[1] + right[1]];
 const cell = (value: unknown): value is Cell => Array.isArray(value) && value.length === 2 && value.every(Number.isSafeInteger);
@@ -68,6 +71,7 @@ export class FurnishingGeometry {
   readonly room: Room;
   readonly catalog: Record<string, Profile>;
   readonly starterDecor: Array<{ id: string; kind: string }>;
+  readonly decorGrants: Record<DecorStage, string[]>;
   readonly employeeRoleKits: Record<string, string>;
   readonly roleKits: Record<string, RoleKit>;
   readonly employeeDecorKits: Record<string, string>;
@@ -81,9 +85,12 @@ export class FurnishingGeometry {
     this.room = (layoutId === "starter-cottage-v1" ? data.starterOfficeLayout : data.officeLayout) as Room;
     if (!this.room || this.room.id !== layoutId) throw new Error("Missing authored office layout");
     this.catalog = { ...(data.furnitureCatalog as { furniture: Record<string, Profile> }).furniture };
-    const additions = data.furnishingCatalog as { furniture: Record<string, Profile>; starter_decor: Array<{ id: string; kind: string }>; employee_role_kits: Record<string, string>; role_kits: Record<string, RoleKit>; employee_decor_kits?: Record<string, string>; decor_kits?: Record<string, DecorKit> };
+    const additions = data.furnishingCatalog as { furniture: Record<string, Profile>; starter_decor: Array<{ id: string; kind: string }>; decor_grants: Record<DecorStage, string[]>; employee_role_kits: Record<string, string>; role_kits: Record<string, RoleKit>; employee_decor_kits?: Record<string, string>; decor_kits?: Record<string, DecorKit> };
     Object.assign(this.catalog, additions.furniture);
     this.starterDecor = additions.starter_decor;
+    this.decorGrants = additions.decor_grants;
+    const grantedKinds = DECOR_STAGES.flatMap((stage) => this.decorGrants?.[stage] ?? []);
+    if (new Set(grantedKinds).size !== grantedKinds.length || grantedKinds.length !== this.starterDecor.length || this.starterDecor.some(({ kind }) => !grantedKinds.includes(kind))) throw new Error("Each decorative furnishing needs exactly one progression grant");
     this.employeeRoleKits = additions.employee_role_kits;
     this.roleKits = additions.role_kits;
     this.employeeDecorKits = additions.employee_decor_kits ?? {};
@@ -323,7 +330,22 @@ export class FurnishingStore {
       grants += added;
       if (added) addedStations[prop.id] = { grid: prop.grid, facing: prop.facing };
     }
-    for (const { id, kind } of this.geometry.starterDecor) grants += Number(insert.run(id, kind, "", 0, "starter-decor-v1", "").changes);
+    const releases = Number(this.db.prepare("SELECT COUNT(*) AS count FROM tycoon_products WHERE status IN ('released','complete') AND released_day IS NOT NULL").get()!.count);
+    const eligible: Record<DecorStage, boolean> = {
+      starter: true,
+      first_release: releases >= 1,
+      growing_team: releases >= 3 || hired.length >= 2,
+      established_studio: releases >= 6 && officeLevel >= 2,
+    };
+    for (const stage of DECOR_STAGES) {
+      if (!eligible[stage]) continue;
+      for (const kind of this.geometry.decorGrants[stage]) {
+        const item = this.geometry.starterDecor.find((entry) => entry.kind === kind)!;
+        // Stable IDs preserve every item owned before progression grants were
+        // introduced. Rewards stay in storage; they never crowd a saved room.
+        grants += Number(insert.run(item.id, kind, "", 0, `decor:${stage}:v1`, "").changes);
+      }
+    }
     const founderKit = this.geometry.employeeRoleKits["founder"] ?? "";
     if (founderKit) {
       grants += Number(this.db.prepare("UPDATE furnishing_inventory SET role_kit=? WHERE id='founder-workstation' AND role_kit=''").run(founderKit).changes);

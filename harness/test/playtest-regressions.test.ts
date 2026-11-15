@@ -34,6 +34,9 @@ test("approval tool retains pending SQLite decision, live assignment and End Day
   assert.equal(db.journey.db.prepare("SELECT finished_at FROM work_orders WHERE id=?").get(job.jobId)!.finished_at, null);
   assert.ok(db.employee("mira")!.assignment);
   assert.equal(db.journey.db.prepare("SELECT status FROM approvals WHERE id=?").get(approvalId)!.status, "pending");
+  // This is an approval/renovation compatibility fixture with an already-owned
+  // pedestal. New studios now earn this item through team/release progression.
+  db.journey.db.prepare("INSERT INTO furnishing_inventory VALUES ('decor-rolling_storage_pedestal','rolling_storage_pedestal','',0,'starter-decor-v1','')").run();
   const room = db.bootstrap().furnishing;
   const approvalRoom = db.furnishing.update({ operationId: "approval-room", expectedRevision: room.revision, placements: {
     ...room.placements, "decor-rolling_storage_pedestal": { grid: [22, 9], facing: "east" },
