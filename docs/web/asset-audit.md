@@ -6,7 +6,7 @@ Reviewed November 15, 2026 at source commit `c4d1829df5ce2924ef68964bf16b7c1c369
 
 **Keep the existing art direction and registered frame/layer contracts.** The initial review found usable assets. A subsequent focused review of the user’s eye concern identified two specific blink defects; the bounded corrections below now replace those pixels. Whole-sheet regeneration was rejected because it changed unrelated pixels.
 
-The initial audit changed only two stale asset-guide statements. The follow-up changes two locomotion PNGs, adds two source overlays and a reproducible overlay step; import settings, scene bindings and gameplay rules remain unchanged.
+The initial audit changed only two stale asset-guide statements. The follow-up changes two locomotion PNGs and one phone-booth PNG, retains reviewed native sources, and adds a reproducible eye-overlay step; import settings, scene bindings and gameplay rules remain unchanged.
 
 ## Evidence and checks
 
@@ -88,13 +88,33 @@ check. A baseline run against retained original images reproduces those four;
 they are separate from these blink edits. Import checks, alpha, the corrected
 frame’s registration and the other measured silhouette checks pass.
 
-## Furniture perspective follow-up
+## Furniture perspective correction — November 15, 2026
 
-Fresh browser captures show that the bookshelf and desk use straight horizontal
-front edges, while the phone booth displays a slight left-side/roof oblique
-angle. The misplaced team rail also covered much of the office during the first
-capture; that is a UI layout defect, not a furniture-layer placement error.
-The phone booth is the bounded perspective candidate. Its 192×224 canvas,
-111×175 painted envelope and bottom/scene anchor must survive any replacement.
-No furniture PNG has been replaced by this follow-up yet; a candidate must be
-reviewed beside the current desk/bookcase at native scale before binding.
+Fresh browser captures confirmed a visible camera mismatch: the phone booth
+showed a prominent left side and sloping roof edge beside the straight-front
+desk and bookcase. The misplaced team rail also hid furniture during the first
+capture; that separate UI defect was not treated as an art problem.
+
+The built-in imagegen tool produced one replacement using the existing booth,
+desk, archive and actual room as references. The selected result centers the
+front and reduces the lateral yaw. It retains the wooden frame, cream seat,
+small window, lamp and roof plant. Uniform normalization and the original
+14-color palette keep it consistent with the surrounding furniture.
+
+The replacement was rendered inside the actual Godot 4.7.2 GameMain room using
+isolated offline fixture state. The comparison below contains native-scale
+crops of the same scene, before on the left and after on the right. Only the
+booth texture was swapped for this capture.
+
+![Phone booth before and after in the native room](assets/asset-audit/phone-booth-native-comparison.png)
+
+The native 192×224 canvas and ground contact (96,216) remain fixed. The new
+painted bounds [48,41,96,175] fit within the registered [40,41,111,175]
+envelope. Occupancy, clearance, scene offset, south-facing capability and the
+single layer’s depth order are unchanged; no simulation migration is needed.
+The narrower front removes the old projected side rather than stretching the
+object. The bookshelf and desk art were retained.
+
+[Generation prompt](assets/asset-audit/prompts/phone-booth-camera-v1.md) ·
+[Reviewed native source](../../game/assets/source/web-furniture-polish/phone-booth-south.png) ·
+[Normalization and contract](../../game/assets/source/web-furniture-polish/manifest.json)

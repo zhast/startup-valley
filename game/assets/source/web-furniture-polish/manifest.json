@@ -1,0 +1,45 @@
+{
+  "revision": "phone-booth-camera-v1",
+  "source": "exec-1026ae07-ab01-4590-8926-9dd59e41784f.png",
+  "sourceDimensions": [
+    1161,
+    1355
+  ],
+  "sourceAlphaCrop": [
+    303,
+    232,
+    554,
+    1012
+  ],
+  "normalization": "Uniform nearest-neighbor to height175; original14-color palette; binary alpha; centered atx96 and bottomy216",
+  "canvas": [
+    192,
+    224
+  ],
+  "paintedBounds": [
+    48,
+    41,
+    96,
+    175
+  ],
+  "catalogBounds": [
+    40,
+    41,
+    111,
+    175
+  ],
+  "groundContact": [
+    96,
+    216
+  ],
+  "runtime": "game/assets/runtime/office/phone-booth-south.png",
+  "sha256": "13f132874da276515063855f045ce62a02324820e18b9af8a3e9cc1be4af4fd8",
+  "unchanged": [
+    "occupancy",
+    "clearance",
+    "scene offset",
+    "z ordering",
+    "single render layer",
+    "south facing only"
+  ]
+}

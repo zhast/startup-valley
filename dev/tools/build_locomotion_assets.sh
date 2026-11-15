@@ -161,12 +161,20 @@ done
 # Only replace outputs after all three sources have passed measured-grid checks.
 if [[ "$check_only" == true ]]; then
   for actor in founder mira theo; do
-    if ! cmp -s "$scratch_dir/$actor/$actor-locomotion.png" "$output_dir/$actor-locomotion.png"; then
+    overlay="$project_root/game/assets/source/web-eye-polish/$actor-blink-overlay.png"
+    if [[ -f "$overlay" ]]; then
+      # Reviewed overlays may be stored by a different PNG encoder. Compare
+      # decoded RGBA, including alpha, rather than compression or metadata.
+      if ! magick compare -metric AE -channel RGBA "$scratch_dir/$actor/$actor-locomotion.png" "$output_dir/$actor-locomotion.png" null: >/dev/null 2>&1; then
+        printf 'Runtime locomotion pixels differ from reviewed source export: %s.\n' "$actor" >&2
+        exit 1
+      fi
+    elif ! cmp -s "$scratch_dir/$actor/$actor-locomotion.png" "$output_dir/$actor-locomotion.png"; then
       printf 'Runtime locomotion differs from deterministic source export: %s.\n' "$actor" >&2
       exit 1
     fi
   done
-  printf 'Locomotion source gutters, 72 isolated cells and byte-identical rebuild: passed.\n'
+  printf 'Locomotion source gutters, 72 isolated cells and pixel-identical rebuild: passed.\n'
   exit 0
 fi
 mkdir -p "$output_dir" "$evidence_dir"
