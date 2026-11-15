@@ -337,6 +337,7 @@ func update_station_hover(target_id: String, caption: String, target_bounds: Rec
 		var candidate := Rect2(point.round(), size_value)
 		var painted := WorldCalloutSkin.bounds(candidate, center)
 		if not viewport.encloses(painted): continue
+		if painted.intersects(target_bounds): continue
 		var blocked := false
 		for obstacle: Rect2 in obstacles:
 			if painted.intersects(obstacle):

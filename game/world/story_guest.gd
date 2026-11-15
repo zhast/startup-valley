@@ -6,6 +6,8 @@ var person_id := "mira"
 var display_name := "Mina"
 var sprite: Sprite2D
 var _elapsed := 0.0
+const NAMEPLATE := Rect2(-48, -96, 96, 28)
+const BODY := Rect2(-24, -72, 48, 80)
 
 func _ready() -> void:
 	z_as_relative = false
@@ -40,11 +42,14 @@ func _process(delta: float) -> void:
 	z_index = roundi(position.y)
 
 func _draw() -> void:
-	draw_style_box(CozyUI.paper(), Rect2(-48, -96, 96, 28))
+	draw_style_box(CozyUI.paper(), NAMEPLATE)
 	draw_string(GameFonts.BOLD, Vector2(-44, -77), display_name, HORIZONTAL_ALIGNMENT_CENTER, 88, 16, CozyUI.INK)
 
 func hit(point: Vector2) -> bool:
-	return is_visible_in_tree() and (VisibleSurface.painted(sprite, point) or Rect2(global_position + Vector2(-48, -96), Vector2(96, 28)).has_point(point))
+	return is_visible_in_tree() and (VisibleSurface.painted(sprite, point) or (global_transform * NAMEPLATE).has_point(point))
+
+func painted_bounds() -> Rect2:
+	return global_transform * NAMEPLATE.merge(BODY)
 
 func set_active(value: bool) -> void:
 	visible = value

@@ -40,7 +40,8 @@ try {
     const [width, height] = sizes[(run - 1) % sizes.length];
     const input = inputOverride || (run === 2 ? 'keyboard' : 'pointer');
     let previous;
-    for (const phase of phases) {
+    const runPhases = options['reset-check'] && run === runs ? [...phases, 'reset', 'reset_restored'] : phases;
+    for (const phase of runPhases) {
       console.log(`Godot demo ${run}/${runs}: ${phase}, ${width}×${height}, ${input}`);
       const args = [...(options.render ? [] : ['--headless']), '--path', join(repository, 'game'), '--script', 'res://tests/test_demo_journey.gd', '--log-file', join(runRoot, `${phase}-engine.log`)];
       const env = { ...environment, STARTUP_VALLEY_NODE: process.execPath, STARTUP_VALLEY_DATA_DIR: data,
@@ -71,7 +72,10 @@ try {
       previous = resultPath;
     }
   }
-  await writeFile(join(output, 'result.json'), JSON.stringify({ ok: true, source, summaries }, null, 2));
+  const sourceAfter = { commit: git(['rev-parse', 'HEAD']), dirty: git(['status', '--porcelain']) };
+  const sourceUnchanged = source.commit !== null && source.commit === sourceAfter.commit && source.dirty === sourceAfter.dirty;
+  await writeFile(join(output, 'result.json'), JSON.stringify({ ok: true, source, sourceAfter, sourceUnchanged, summaries }, null, 2));
+  if (!sourceUnchanged) console.warn('Source identity changed or is unavailable; this run is a diagnostic, not immutable release acceptance.');
   console.log(`PASS: ${summaries.length} actual Godot phases. Evidence: ${output}`);
 } catch (error) {
   await writeFile(join(output, 'result.json'), JSON.stringify({ ok: false, source, error: error.stack, summaries }, null, 2));

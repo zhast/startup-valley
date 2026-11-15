@@ -229,9 +229,15 @@ func _update_hover_highlight(hover: Dictionary) -> void:
 func _station_hover_details(hover: Dictionary) -> Dictionary:
 	if str(hover.get("kind", "")) == "story":
 		var id := str(hover.get("id", ""))
-		var point: Vector2 = hover.get("point", Vector2.ZERO)
+		var bounds := Rect2()
+		match id:
+			"arrival-mina": bounds = arrival_guest.painted_bounds()
+			"courtyard-theo": bounds = courtyard.guest.painted_bounds()
+			"courtyard-exit": bounds = courtyard_sign.painted_bounds()
+			"office-return": bounds = courtyard.return_sign.painted_bounds()
+			_: return {}
 		var caption := "Meet Mina · E" if id == "arrival-mina" else "Talk with Theo · E" if id == "courtyard-theo" else "Visit courtyard · E" if id == "courtyard-exit" else "Return to studio · E"
-		return {"id": id, "caption": caption, "bounds": Rect2(point + Vector2(-24, -80), Vector2(48, 80))}
+		return {"id": id, "caption": caption, "bounds": bounds}
 	if str(hover.get("kind", "")) != "prop": return {}
 	var id := str(hover.get("id", ""))
 	var placement := room.placement_by_id(id)
@@ -1048,7 +1054,8 @@ func _process_courtyard(delta: float) -> void:
 	var hover := _interaction_at(get_viewport().get_mouse_position()) if not paused and not ui_hover else {}
 	_update_hover_highlight(hover)
 	var station := _station_hover_details(hover)
-	founder_hud.update_station_hover(str(station.get("id", "")), str(station.get("caption", "")), station.get("bounds", Rect2()), not paused, [clock_panel.get_global_rect()])
+	var obstacles: Array[Rect2] = [clock_panel.get_global_rect(), WorldCalloutSkin.actor_rect(player.position), courtyard.guest.painted_bounds(), courtyard.return_sign.painted_bounds(), founder_hud.next_step_rect()]
+	founder_hud.update_station_hover(str(station.get("id", "")), str(station.get("caption", "")), station.get("bounds", Rect2()), not paused, obstacles)
 	if company_panel.visible: founder_hud.hide_next_step()
 	else:
 		founder_hud.set_story_goal(StoryMoments.goal(_journey))
@@ -1117,6 +1124,8 @@ func _request_story(method: String, parameters: Dictionary) -> void:
 func _world_ui_obstacles() -> Array[Rect2]:
 	# Rendering metadata only: never alter furniture, navigation or collision.
 	var placed: Array[Rect2] = []
+	if arrival_guest != null and arrival_guest.is_visible_in_tree(): placed.append(arrival_guest.painted_bounds())
+	if courtyard_sign != null and courtyard_sign.is_visible_in_tree(): placed.append(courtyard_sign.painted_bounds())
 	for placement: Dictionary in room.resolved_placements:
 		var rect: Rect2 = placement.world_visual_bounds
 		rect.position += room.global_position

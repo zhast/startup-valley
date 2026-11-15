@@ -2,11 +2,27 @@ extends SceneTree
 ## Production scenes + production worker. Only injected input changes gameplay.
 ## Launched by scripts/test-demo-godot.mjs with an isolated save directory.
 const MAIN := preload("res://world/main.tscn")
+class InjectedInputRelay extends Node:
+	var target: SubViewport
+	var window: Window
+	var forwarding := false
+	func _input(event: InputEvent) -> void:
+		if not forwarding: return
+		# A direct SubViewport retains its injected pointer independently of the
+		# OS cursor. Input still updates held keys and generates touch emulation.
+		# Window dispatch has already removed its stretch/letterbox transform
+		# before Node._input; applying it twice breaks non-1280 viewports.
+		target.push_input(event, true)
+		window.set_input_as_handled()
+
 var game: GameMain
+var viewport: SubViewport
+var input_relay: InjectedInputRelay
 var failures: Array[String] = []
 var checks := 0
 var actions: Array[Dictionary] = []
 var captures: Array[String] = []
+var capture_details: Array[Dictionary] = []
 var completed: Dictionary = {}
 var request_observations: Array[Dictionary] = []
 var restored_snapshot: Dictionary = {}
@@ -50,12 +66,28 @@ func run() -> void:
 	root.unfocusable = true
 	root.mouse_passthrough = true
 	root.always_on_top = false
+	viewport = SubViewport.new()
+	viewport.size = Vector2i(1280, 720)
+	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	viewport.gui_embed_subwindows = true
+	root.add_child(viewport)
+	var display := TextureRect.new()
+	display.texture = viewport.get_texture()
+	display.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	display.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	display.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	display.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.add_child(display)
+	input_relay = InjectedInputRelay.new()
+	input_relay.target = viewport
+	input_relay.window = root
+	root.add_child(input_relay)
 	game = MAIN.instantiate() as GameMain
 	if game == null:
 		push_error("Production main scene could not instantiate")
 		quit(1)
 		return
-	root.add_child(game)
+	viewport.add_child(game)
 	game.worker_client.company_action_completed.connect(func(method: String, result: Dictionary) -> void: completed[method] = result.duplicate(true))
 	game.worker_client.company_action_failed.connect(func(method: String, message: String) -> void: check(false, method + ": " + message))
 	game.worker_client.request_failed.connect(func(message: String) -> void: check(false, "Worker: " + message))
@@ -89,7 +121,9 @@ func run() -> void:
 		"arrival":
 			check(game._employees.is_empty() and int(game._journey.company.cashCents) == 0, "Clean save starts with no hires or reward")
 			await enter()
-			check(not game.company_panel.visible, "Start company reveals the playable studio")
+			if not await wait_for(func() -> bool: return not game.company_panel.visible, "Start company reveals the playable studio", 3.0):
+				await finish()
+				return
 			await move_pointer(game.arrival_guest.position + Vector2(0, -32))
 			await frames(4)
 			check(game.interaction_highlight.active_sources().has(game.arrival_guest.sprite), "Visible Mina visitor receives pointer highlight")
@@ -100,16 +134,21 @@ func run() -> void:
 			event.keycode = KEY_D
 			event.physical_keycode = KEY_D
 			event.pressed = true
-			Input.parse_input_event(event)
+			inject(event)
 			await create_timer(0.25).timeout
 			event = event.duplicate() as InputEventKey
 			event.pressed = false
-			Input.parse_input_event(event)
-			Input.flush_buffered_events()
+			inject(event)
 			await frames(3)
 			check(game.player.position.x > before.x + 5, "Held D moves the actual Founder")
 			check(game.founder_hud._movement_seen, "Movement tutorial is recorded by gameplay")
 			await capture("arrival-movement")
+			await activate(find_button("Settings"))
+			await wait_for(func() -> bool: return game.company_panel.visible and game.company_panel.screen == "settings", "Native story rail opens game Settings")
+			check(not game.job_panel._connection_panel.visible, "Settings does not open optional credential setup")
+			await capture("settings")
+			await key(KEY_ESCAPE)
+			check(not game.company_panel.visible, "Escape closes Settings back to the studio")
 		"hire": await hire()
 		"start": await start_project()
 		"mid": await work_day()
@@ -117,6 +156,11 @@ func run() -> void:
 		"visit": await visit_courtyard()
 		"outdoor": await outdoor()
 		"viewport": await viewport_guard()
+		"reset": await reset_company()
+		"reset_restored":
+			await enter()
+			check(not game.company_panel.visible and not game.founder_hud._movement_seen, "Restarted new company returns to its untouched arrival tutorial")
+			check(game._employees.is_empty() and int(game._journey.company.cashCents) == 0, "Restart after New Company does not restore old hires or rewards")
 		"restored":
 			await enter()
 			check(not game.company_panel.visible, "Reloaded company resumes without replaying a reward modal")
@@ -263,6 +307,24 @@ func viewport_guard() -> void:
 	await wait_for(func() -> bool: return find_button("Invite Mina") != null, "Injected touch objective reaches Mina", 18.0)
 	await capture("touch-Mina-invitation")
 
+func reset_company() -> void:
+	await enter()
+	await activate(find_button("Settings"))
+	await activate(find_button("Title screen"))
+	await activate(find_button("New company"))
+	await capture("new-company-confirmation")
+	var confirm := find_button("Start new company")
+	if confirm == null: confirm = find_button("Back up + start new")
+	await activate(confirm)
+	await wait_for(func() -> bool: return completed.has("game.new"), "Confirmed New Company completes through the production worker")
+	check(game._employees.is_empty(), "New Company removes all previous hires")
+	check(int(game._journey.company.cashCents) == 0 and int(game._journey.company.reputation) == 0, "New Company resets actual rewards")
+	check((game._journey.tycoon.history as Array).is_empty() and game._journey.tycoon.get("developing") == null, "New Company resets released and in-progress products")
+	check(not game.founder_hud._movement_seen, "New Company restores the movement hint")
+	check(str(game._journey.story.location) == "office" and not bool(game._journey.story.courtyardUnlocked), "New Company restores the office arrival story")
+	check(not game.company_panel.visible and not game.job_panel._connection_panel.visible, "Reset returns to playable arrival without a credential or hire modal")
+	await capture("new-company-arrival")
+
 func find_button(prefix: String) -> Button:
 	for node: Node in game.find_children("*", "Button", true, false):
 		var button := node as Button
@@ -270,6 +332,7 @@ func find_button(prefix: String) -> Button:
 	return null
 
 func activate(button: Button) -> void:
+	await settle_interface()
 	if button != null:
 		var deadline := Time.get_ticks_msec() + 2500
 		while is_instance_valid(button) and (not button.is_visible_in_tree() or button.disabled) and Time.get_ticks_msec() < deadline:
@@ -287,11 +350,20 @@ func activate(button: Button) -> void:
 	if input_mode == "touch": await touch(point)
 	elif input_mode == "keyboard":
 		for i: int in range(80):
-			if root.gui_get_focus_owner() == button: break
+			if viewport.gui_get_focus_owner() == button: break
 			await key(KEY_TAB)
-		if check(root.gui_get_focus_owner() == button, "Keyboard Tab reaches action: " + button.text): await key(KEY_SPACE)
+		if check(viewport.gui_get_focus_owner() == button, "Keyboard Tab reaches action: " + button.text): await key(KEY_SPACE)
 	else: await click(point)
 	await frames(12)
+
+func settle_interface() -> void:
+	# Native and headless frame rates differ; animation duration is wall time.
+	await wait_for(func() -> bool:
+		var panel_tween := game.company_panel._transition
+		var drawer_tween := game.job_panel._drawer_tween
+		return (panel_tween == null or not panel_tween.is_running()) and (drawer_tween == null or not drawer_tween.is_running()),
+		"Interface transitions settle before input", 3.0)
+	await frames(2)
 
 func click(point: Vector2) -> void:
 	await move_pointer(point)
@@ -302,16 +374,14 @@ func click(point: Vector2) -> void:
 		event.button_index = MOUSE_BUTTON_LEFT
 		event.button_mask = MOUSE_BUTTON_MASK_LEFT if down else 0
 		event.pressed = down
-		Input.parse_input_event(event)
-		Input.flush_buffered_events()
+		inject(event)
 		await frames(2)
 
 func move_pointer(point: Vector2) -> void:
 	var motion := InputEventMouseMotion.new()
 	motion.position = root.get_final_transform() * point
 	motion.global_position = motion.position
-	Input.parse_input_event(motion)
-	Input.flush_buffered_events()
+	inject(motion)
 	await frames(1)
 
 func touch(point: Vector2) -> void:
@@ -320,8 +390,7 @@ func touch(point: Vector2) -> void:
 		event.position = root.get_final_transform() * point
 		event.index = 0
 		event.pressed = down
-		Input.parse_input_event(event)
-		Input.flush_buffered_events()
+		inject(event)
 		await frames(2)
 
 func key(code: Key) -> void:
@@ -330,10 +399,15 @@ func key(code: Key) -> void:
 		event.keycode = code
 		event.physical_keycode = code
 		event.pressed = down
-		Input.parse_input_event(event)
-		Input.flush_buffered_events()
+		inject(event)
 		await frames(2)
 	await frames(6)
+
+func inject(event: InputEvent) -> void:
+	input_relay.forwarding = true
+	Input.parse_input_event(event)
+	Input.flush_buffered_events()
+	input_relay.forwarding = false
 
 func snapshot() -> Dictionary:
 	var tycoon: Dictionary = game._journey.get("tycoon", {})
@@ -351,20 +425,24 @@ func snapshot() -> Dictionary:
 
 func capture(name_value: String) -> void:
 	if DisplayServer.get_name() == "headless": return
+	await settle_interface()
 	await frames(4)
 	RenderingServer.force_draw(false)
 	var file := output_dir.path_join(phase + "-" + name_value + ".png")
-	check(root.get_texture().get_image().save_png(file) == OK, "Native capture: " + name_value)
+	var image := root.get_texture().get_image()
+	check(image.save_png(file) == OK, "Native capture: " + name_value)
 	captures.append(file)
+	capture_details.append({"path": file, "window": [root.size.x, root.size.y], "image": [image.get_width(), image.get_height()], "logicalViewport": [viewport.size.x, viewport.size.y]})
 
 func finish() -> void:
 	if stopped: return
 	stopped = true
 	await capture("final")
 	var file := FileAccess.open(output_dir.path_join(phase + ".json"), FileAccess.WRITE)
-	file.store_string(JSON.stringify({"phase": phase, "checks": checks, "failures": failures, "actions": actions, "requests": request_observations, "captures": captures,
+	file.store_string(JSON.stringify({"phase": phase, "checks": checks, "failures": failures, "actions": actions, "requests": request_observations, "captures": captures, "captureDetails": capture_details,
 		"engine": Engine.get_version_info(), "renderer": RenderingServer.get_current_rendering_method(), "display": DisplayServer.get_name(),
-		"window": [root.size.x, root.size.y], "logicalViewport": [root.get_visible_rect().size.x, root.get_visible_rect().size.y],
+		"inputRouting": "Input.parse_input_event -> isolated root relay -> direct SubViewport; no OS cursor movement",
+		"window": [root.size.x, root.size.y], "logicalViewport": [viewport.size.x, viewport.size.y],
 		"restoredSnapshot": restored_snapshot, "snapshot": snapshot() if game._state_loaded else {}}, "  ") + "\n")
 	file.close()
 	print("DEMO_PHASE_RESULT %s checks=%d failures=%d" % [phase, checks, failures.size()])
