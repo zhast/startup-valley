@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "map_id": "courtyard",
+  "status": "candidate",
+  "signature": "164dd8145946f0639f1e8ede1f0b793edcdb92be574a03c7b55e235fa7d1cf92",
+  "reviewer": "",
+  "reviewed_at": "",
+  "style_profile": {
+    "id": "startup-valley-cozy-pixel-v1",
+    "path": "dev/art-catalogue/style-profile.json",
+    "sha256": "c7c4834623a482bb976abf27bcc976f72d5b83df59a66bb93af00a49d1589fe7",
+    "application": "retrospective_review",
+    "reference_board": {
+      "path": "dev/art-catalogue/style-reference-board.png",
+      "sha256": "d91ba07ace9aef1d7e82c0daf55621afb57636d08376feae5ef8900623ba8283",
+      "note": "Code-arranged existing reference pixels; characters at3×, phone/floor at2×, window at1×, paper/desk at3×. Zoom is for inspection, not a change in runtime scale."
+    },
+    "references": [
+      {
+        "id": "founder-idle",
+        "path": "dev/art-catalogue/style-references/founder-idle.png",
+        "sha256": "d01a61aac781bea83902877ab96f45087bfb9ac8d0e3d6801fecf642cc1aa756"
+      },
+      {
+        "id": "mina-idle",
+        "path": "dev/art-catalogue/style-references/mina-idle.png",
+        "sha256": "3a8ad37498e9945a4bbeca8567db757b97b28f496c6e9294d11a707d8bd7e1df"
+      },
+      {
+        "id": "phone-booth",
+        "path": "dev/art-catalogue/style-references/phone-booth.png",
+        "sha256": "13f132874da276515063855f045ce62a02324820e18b9af8a3e9cc1be4af4fd8"
+      },
+      {
+        "id": "desk-front",
+        "path": "dev/art-catalogue/style-references/desk-front.png",
+        "sha256": "adb3458aa63d799af6f9a07723523344d63b82772e6d77f03e8da96137c02f21"
+      },
+      {
+        "id": "desk-rear",
+        "path": "dev/art-catalogue/style-references/desk-rear.png",
+        "sha256": "d5e167d93d424fcfddbb00f1cb85217aa69b3de4ee5f4b67036c0830754d29c4"
+      },
+      {
+        "id": "oak-floor",
+        "path": "dev/art-catalogue/style-references/oak-floor.png",
+        "sha256": "851eadbadcfcaf5eaeb4f30a5679d797e42409ac4ffba95d0c71fc591473db66"
+      },
+      {
+        "id": "office-window",
+        "path": "dev/art-catalogue/style-references/office-window.png",
+        "sha256": "cca8896dac6640c452ba2c7148a6f551be4e2d9c2ac793f7439e3501d8863571"
+      },
+      {
+        "id": "paper-frame",
+        "path": "dev/art-catalogue/style-references/paper-frame.png",
+        "sha256": "3a07014154ae2d624f52b563db4befaa1b3f22ed82bc440213d69251caa8111b"
+      }
+    ]
+  },
+  "bindings": [
+    {
+      "path": "dev/map-catalogue/world-profile.json",
+      "sha256": "2563a9ddbc44b097112d01fd8c45e80c15c09d949af759ffe529625522469593"
+    },
+    {
+      "path": "game/assets/runtime/office/cafe-chair-south.png",
+      "sha256": "9dd1295a0e41cc94351b029c0218174d566b6e25cb07fec518250f404427a23a"
+    },
+    {
+      "path": "game/assets/runtime/office/cafe-table-south.png",
+      "sha256": "59d0aa3d46f150265690853d56f3133b1461485bc2f215e20440afc05a4265a3"
+    },
+    {
+      "path": "game/assets/runtime/office/campus-surround.png",
+      "sha256": "d5387a27eb3131d8f6bc7816724f99090620c68aeb62e7cecef42c5d7138be81"
+    },
+    {
+      "path": "game/assets/runtime/office/furnishing-library/broadleaf_planter/east-floor_shadow.png",
+      "sha256": "ed3ce3509b9614ef922e148e0e0b20bd83d0569496d5026d498da3eec534fbf7"
+    },
+    {
+      "path": "game/assets/runtime/office/furnishing-library/broadleaf_planter/east-front_structure.png",
+      "sha256": "ad16dbcc01c2cd0674955a7668098fdac822da72730bb60fb363e5a744154961"
+    },
+    {
+      "path": "game/assets/runtime/office/furnishing-library/broadleaf_planter/east-rear_structure.png",
+      "sha256": "31ff4a571c6249a863e894f78ab6de3ce444021720251626c953706f508d59d3"
+    },
+    {
+      "path": "game/assets/runtime/office/furnishing-library/broadleaf_planter/east-whole.png",
+      "sha256": "6ac077fff317af1383b49b2985a4dd20a37cb0debae97c4d6fcb81845039e5b5"
+    },
+    {
+      "path": "game/assets/runtime/office/furnishing-library/broadleaf_planter/north-floor_shadow.png",
+      "sha256": "1a97fd0e5360de859beafecefc445fec5571bab1e303591c2f339e0cdc65e8bd"
+    },
+    {
+      "path": "game/assets/runtime/office/furnishing-library/broadleaf_planter/north-front_structure.png",
+      "sha256": "c963d5f23e71039f6640f2dc520286c835bb4132473b065566ceecfd36881a8e"
+    },
+    {
+      "path": "game/assets/runtime/office/furnishing-library/broadleaf_planter/north-rear_structure.png",
+      "sha256": "c1cfc47685207d0802fab394625027b86b8267bacbdbebe8bbe3edb11c70bd31"
+    },
+    {
+      "path": "game/assets/runtime/office/furnishing-library/broadleaf_planter/north-whole.png",
+      "sha256": "6382c863a2556b98b1efbbd42006209cdd1a08461d28b9e53e28820d77112e5e"
+    },
+    {
+      "path": "game/assets/runtime/office/furnishing-library/broadleaf_planter/south-floor_shadow.png",
+      "sha256": "5d4eb1f7c844c2970e86567fa8faa9c78ecd7e0dfa73f5922aa6873a911f1760"
+    },
+    {
+      "path": "game/assets/runtime/office/furnishing-library/broadleaf_planter/south-front_structure.png",
+      "sha256": "80ae6b917f73b6b906304227f7fdd78d53854a654efbcf8522ab9b024c8ad5f4"
+    },
+    {
+      "path": "game/assets/runtime/office/furnishing-library/broadleaf_planter/south-rear_structure.png",
+      "sha256": "bdab83ac3749500f71bf27bdcc5b18d636ca818af2a3f55814be820640752553"
+    },
+    {
+      "path": "game/assets/runtime/office/furnishing-library/broadleaf_planter/south-whole.png",
+      "sha256": "308a0796b912a2fb3a30d624c42cc3919b353701dfa4c3b1d180cb32e3e4a487"
+    },
+    {
+      "path": "game/assets/runtime/office/furnishing-library/broadleaf_planter/west-floor_shadow.png",
+      "sha256": "1a97fd0e5360de859beafecefc445fec5571bab1e303591c2f339e0cdc65e8bd"
+    },
+    {
+      "path": "game/assets/runtime/office/furnishing-library/broadleaf_planter/west-front_structure.png",
+      "sha256": "487f6f231c9b7186bcd7ab6d7747034d6aa36b779f99bdfd2119eaaf06b3962e"
+    },
+    {
+      "path": "game/assets/runtime/office/furnishing-library/broadleaf_planter/west-rear_structure.png",
+      "sha256": "7784117cdc943927fe44417b6f4bbb0ad03055b869496aaef982e69a72287681"
+    },
+    {
+      "path": "game/assets/runtime/office/furnishing-library/broadleaf_planter/west-whole.png",
+      "sha256": "fe65387f3a74732be5e56d2b042c3f9e0710dfd0243cf1b33346c98f4bf39458"
+    },
+    {
+      "path": "game/data/furnishing_catalog.json#/furniture/broadleaf_planter",
+      "sha256": "73c931c4e8e19ba3ce9aff233fb957f78f0b8fbdc04c80146ef78c76ce7d8c42"
+    },
+    {
+      "path": "game/data/furnishing_catalog.json#/furniture/cafe_chair",
+      "sha256": "6c5d9a4574a0e4497270fa3bada8e6abb69527e4d239acad030028a7ff1a01ea"
+    },
+    {
+      "path": "game/data/furnishing_catalog.json#/furniture/cafe_table",
+      "sha256": "673bdab3498d482f83f773e7b0f42ce7d1fb744c19e40d46abdd2af22eb15cc6"
+    },
+    {
+      "path": "game/world/courtyard.gd",
+      "sha256": "af6bea34bcb838e019ff453f00e0f3bb266f9a28ad28fc257ec96ff66070378f"
+    },
+    {
+      "path": "game/world/office_layout.gd",
+      "sha256": "ad8bfff8477e763772633ca98e8c3b9f05ad9cdf409988371e12d8a349c1d69a"
+    },
+    {
+      "path": "game/world/office_navigation.gd",
+      "sha256": "7889f1e6984df0822b10b6a1bc38e5449f354c4afb0f1f83fe6db769c5888909"
+    }
+  ],
+  "evidence": [],
+  "checks": {
+    "universe": {
+      "result": "pending",
+      "note": ""
+    },
+    "camera_scale": {
+      "result": "pending",
+      "note": ""
+    },
+    "composition": {
+      "result": "pending",
+      "note": ""
+    },
+    "depth": {
+      "result": "pending",
+      "note": ""
+    },
+    "navigation": {
+      "result": "pending",
+      "note": ""
+    },
+    "spawn_return": {
+      "result": "pending",
+      "note": ""
+    },
+    "interaction_readability": {
+      "result": "pending",
+      "note": ""
+    }
+  }
+}

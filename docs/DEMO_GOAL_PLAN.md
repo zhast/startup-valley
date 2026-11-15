@@ -103,6 +103,15 @@ quest system to this demo.
   Retain prompts, generation source, transforms and current in-game evidence.
 - Record reusable decisions in `docs/DECISIONS.md` and the relevant detailed
   contract. Add a targeted regression for each confirmed systemic visual defect.
+- Keep new maps in the same visual world: reuse modular catalogue assets,
+  camera/grid/scale and material treatment. Enforce registration and current
+  actual-Godot review through the map gate documented in `MAP_WORKFLOW.md`.
+  A frozen legacy inventory is not a visual approval. Regenerate deficient
+  source assets through the existing workflow instead of hiding them with
+  map-specific resizing or patches.
+- Reopened blink acceptance includes standing, seated and guest sprites across
+  all identities and supported facings, correct closed-eye pixels, and short,
+  infrequent rendered blink timing. Track exact findings in `ASSET_STATUS.md`.
 
 ### 5. Package the tested demo and a durable handoff
 

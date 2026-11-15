@@ -5,6 +5,7 @@ import { loadConfig, isMain } from './lib/config.mjs';
 import { diagnose, printDiagnosis } from './doctor.mjs';
 import { validateExport } from './validate-web.mjs';
 import { validateAssets } from './validate-assets.mjs';
+import { validateMaps } from './validate-maps.mjs';
 import { identifyBuild } from './lib/build-identity.mjs';
 
 export function run(bin, args, cwd, label = 'Godot') {
@@ -51,6 +52,9 @@ export async function exportWeb({ assetPreview = false } = {}) {
     const assets = validateAssets({ root: config.root, allowUnreviewed: assetPreview });
     if (!assets.ok) throw new Error(`Runtime asset gate failed:\n${assets.errors.join('\n')}`);
     for (const warning of assets.warnings) console.warn(`Asset review: ${warning}`);
+    const maps = validateMaps({ root: config.root, allowUnreviewed: assetPreview });
+    if (!maps.ok) throw new Error(`Map admission gate failed:\n${maps.errors.join('\n')}`);
+    for (const warning of maps.warnings) console.warn(`Map review: ${warning}`);
     await run(diagnosis.engine.bin, ['--headless', '--path', config.projectPath, '--export-release', config.preset, resolve(staging, 'index.html')], config.root);
     await cp(resolve(config.root, 'web/dist'), resolve(staging, 'web'), { recursive: true });
     await access(resolve(staging, 'web/bridge.js'));
@@ -60,7 +64,7 @@ export async function exportWeb({ assetPreview = false } = {}) {
     // an old loader with a new WASM/PCK. Deploy the entire directory atomically.
     await writeFile(resolve(staging, '_headers'), '/*\n  Cache-Control: no-cache\n  X-Content-Type-Options: nosniff\n\n/*.wasm\n  Content-Type: application/wasm\n');
     const identity = await identifyBuild(staging);
-    await writeFile(resolve(staging, 'build-info.json'), JSON.stringify({ engine: diagnosis.engine.output, preset: config.preset, builtAt: new Date().toISOString(), assetReview: assets.mode, ...identity, ...report }, null, 2) + '\n');
+    await writeFile(resolve(staging, 'build-info.json'), JSON.stringify({ engine: diagnosis.engine.output, preset: config.preset, builtAt: new Date().toISOString(), assetReview: assets.mode, mapReview: maps.maps, ...identity, ...report }, null, 2) + '\n');
     await publishDirectory(staging, config.dist, resolve(temporary, 'previous'));
     console.log(`Web export ready at ${config.dist}. Serve it with node scripts/serve.mjs${assetPreview ? ' --asset-preview' : ''}.`);
   } finally {

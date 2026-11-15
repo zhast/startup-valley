@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "status": "pre_framework_snapshot_not_visual_approval",
+  "note": "One-time migration inventory of maps that predate this gate. Do not refresh hashes to bypass changed-map review. Final demo acceptance should replace these exceptions with current reviewed engine evidence.",
+  "maps": {
+    "courtyard": "164dd8145946f0639f1e8ede1f0b793edcdb92be574a03c7b55e235fa7d1cf92",
+    "starter-cottage-v1": "a6a65c179640a859a2d07e8e83edd777413f5b84412c7f19fc546e36d4a78446",
+    "startup-office": "35375a50654b424fb2484f4fdfd9055ff53d3e90168b2cc64aa7d6b63028c6ae"
+  },
+  "retired": {
+    "game/data/town.json": {
+      "sha256": "0cd896e672863ffde722ac2a39d043bea1760e335b677ba20ff42081af3866d4",
+      "reason": "Pre-office-layout reference only; game/assets/runtime/office/README.md documents retirement. No runtime reference permitted."
+    }
+  }
+}

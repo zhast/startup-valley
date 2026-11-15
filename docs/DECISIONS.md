@@ -146,3 +146,31 @@ and distinguish available-to-try from fully accepted.
 **Reason:** The owner correctly observed that committing source did not update
 the running localhost game. Build `ae82cfc908ec417a` was exported and its served
 HTML, WASM, PCK and worker were verified byte-for-byte to resolve the stale view.
+
+## 2026-11-15 — Protect rendered targets and scope asset approvals honestly
+
+**Decision:** Hover callouts derive their bounds from the rendered actor/sign,
+including its nameplate, not its navigation approach point. Their complete
+painted bounds must clear the target and protected world content. The targeted
+native regression passes 57 checks and reproduces the former Theo overlap as
+a negative control.
+
+**Asset audit:** The user's repeated blink report exposed a gap in the earlier
+review: the seated Mina correction did not touch her standing closed-eye cell.
+That cell still shows pale bang marks while the pupils remain open. A second
+issue holds idle blinks closed for about 667 ms at a 50% duty cycle. Both are
+reopened in `ASSET_STATUS.md`; existing raster approval is not evidence that
+every pose or its runtime timing is correct.
+
+## 2026-11-15 — Make future maps belong to one visual world
+
+**Decision:** Maps share the existing original-art profile, 32px grid, fixed
+elevated camera, native scale, material ramps and modular catalogue props.
+Map admission reads actual authored geometry through explicit adapters and
+binds narrow composition sources/art to current native review evidence.
+New or changed maps cannot use a legacy snapshot as an approval.
+
+**Limit:** Mechanical geometry, provenance and reference checks do not judge
+beauty. Existing snapshots remain explicitly unreviewed until inspected in
+Godot. Deficient shared assets are repaired in their source workflow, rather
+than independently patched or resized in each map. See `MAP_WORKFLOW.md`.

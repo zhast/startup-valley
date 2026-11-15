@@ -9,6 +9,8 @@
   "scripts": {
     "assets:check": "node scripts/validate-assets.mjs",
     "assets:test": "node --test tests/assets.test.mjs",
+    "maps:check": "node scripts/validate-maps.mjs",
+    "maps:test": "node --test tests/maps.test.mjs",
     "setup:web": "node scripts/setup-web-templates.mjs",
     "build:web": "node scripts/export-web.mjs",
     "package:demo": "node scripts/package-demo.mjs",

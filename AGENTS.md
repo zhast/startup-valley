@@ -84,3 +84,10 @@ and the relevant Godot placement/animation tests. New or changed runtime PNGs
 need a hash-bound review in `dev/art-catalogue/runtime-reviews/`; do not refresh
 the frozen legacy baseline to bypass review. Record code-native and unknown
 legacy origins honestly rather than calling every image AI-generated.
+
+New or changed maps follow `docs/MAP_WORKFLOW.md`. Register actual map sources
+in `dev/map-catalogue/maps`, reuse the canonical style and registered catalogue
+modules, and pass `npm run maps:check`. Changed composition requires hash-bound
+actual-Godot visual evidence; never refresh the frozen map baseline to bypass
+review. Keep `docs/ASSET_STATUS.md` current with open defects and the exact scope
+of completed art repairs; an approved image does not certify every animation.

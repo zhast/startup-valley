@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "id": "startup-valley-world-v1",
+  "style_profile": "startup-valley-cozy-pixel-v1",
+  "camera_profile": "office-square-grid-v1",
+  "visual_rules_source": "dev/art-catalogue/style-profile.json",
+  "rules": {
+    "grid_px": 32,
+    "runtime_scale": 1,
+    "sampling": "nearest",
+    "lighting": "upper-left",
+    "camera": "Screen-aligned elevated orthographic. No diamond isometric yaw or per-map camera tilt.",
+    "palette": "Reuse canonical warm wood, cream paper, charcoal equipment and muted foliage material ramps; retain character identities.",
+    "composition": "A legible home or destination silhouette, quiet walking lanes, recognizable focal activity and meaningful boundary. Avoid unexplained empty floor.",
+    "props": "Reuse registered catalog facing profiles with their own pivots, layers and footprint. No raster rotation or baked character/furniture composites.",
+    "navigation": "A real spawn and reachable return; visible terrain is not automatically walkable. Decorative exits must not imply implemented travel.",
+    "review": "Current actual-Godot captures at native scale with an actor, entrance/return, depth crossings and navigation tests. Automated geometry does not certify artistic quality."
+  }
+}

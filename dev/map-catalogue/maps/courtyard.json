@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "world_profile": "startup-valley-world-v1",
+  "camera_profile": "office-square-grid-v1",
+  "runtime_scale": 1,
+  "sampling": "nearest",
+  "id": "courtyard",
+  "adapter": "courtyard_gd",
+  "source": "game/world/courtyard.gd",
+  "modules": [
+    "game/world/office_navigation.gd",
+    "game/world/office_layout.gd"
+  ],
+  "art": [],
+  "notes": "Current courtyard uses existing campus-surround pixels, samples stone path tiles from that texture, and assembles approved south-facing cafe furniture. It does not claim a new modular outdoor tileset or new generated art. One bounded visit, Theo and a real return."
+}

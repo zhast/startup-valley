@@ -127,6 +127,7 @@ func run() -> void:
 			await move_pointer(game.arrival_guest.position + Vector2(0, -32))
 			await frames(4)
 			check(game.interaction_highlight.active_sources().has(game.arrival_guest.sprite), "Visible Mina visitor receives pointer highlight")
+			check(not game.founder_hud._station_callout.get_global_rect().intersects(game.arrival_guest.painted_bounds()), "Mina's hover paper clears her face and nameplate")
 			await click(Vector2(560, 432))
 			await wait_for(func() -> bool: return game.player.route.is_empty() and game.player.position.distance_to(Vector2(560, 432)) < 25, "Real floor click moves Founder to the selected clear floor")
 			var before := game.player.position
@@ -262,6 +263,7 @@ func visit_courtyard() -> void:
 	await move_pointer(game.courtyard.guest.position + Vector2(0, -32))
 	await frames(4)
 	check(game.interaction_highlight.active_sources().has(game.courtyard.guest.sprite), "Theo's visible sprite receives pointer highlight")
+	check(not game.founder_hud._station_callout.get_global_rect().intersects(game.courtyard.guest.painted_bounds()), "Theo's hover paper clears his face and nameplate")
 	await capture("courtyard-arrival")
 	await move_pointer(game.courtyard.return_sign.position + Vector2(0, -12))
 	await frames(4)
@@ -346,9 +348,16 @@ func activate(button: Button) -> void:
 			check((ancestor as Control).get_global_rect().encloses(button.get_global_rect()), "Action is not clipped by its scroll/container: " + button.text)
 		ancestor = ancestor.get_parent()
 	var point := button.get_global_rect().get_center()
-	actions.append({"input": input_mode, "action": button.text, "point": [point.x, point.y]})
-	if input_mode == "touch": await touch(point)
-	elif input_mode == "keyboard":
+	var actual_input := input_mode
+	if input_mode == "keyboard" and viewport.gui_get_focus_owner() == null:
+		# Godot does not initialize Tab focus across a CanvasLayer from the
+		# unfocused world. Exercise the shipped Escape shortcut for Settings;
+		# other world affordances remain pointer-driven. Dialogs use Tab/Space.
+		actual_input = "keyboard_escape" if button == game.job_panel._settings_button else "pointer_world"
+	actions.append({"input": actual_input, "action": button.text, "point": [point.x, point.y]})
+	if actual_input == "touch": await touch(point)
+	elif actual_input == "keyboard_escape": await key(KEY_ESCAPE)
+	elif actual_input == "keyboard":
 		for i: int in range(80):
 			if viewport.gui_get_focus_owner() == button: break
 			await key(KEY_TAB)
@@ -441,6 +450,7 @@ func finish() -> void:
 	var file := FileAccess.open(output_dir.path_join(phase + ".json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify({"phase": phase, "checks": checks, "failures": failures, "actions": actions, "requests": request_observations, "captures": captures, "captureDetails": capture_details,
 		"engine": Engine.get_version_info(), "renderer": RenderingServer.get_current_rendering_method(), "display": DisplayServer.get_name(),
+		"workerPid": game.worker_client._process_id,
 		"inputRouting": "Input.parse_input_event -> isolated root relay -> direct SubViewport; no OS cursor movement",
 		"window": [root.size.x, root.size.y], "logicalViewport": [viewport.size.x, viewport.size.y],
 		"restoredSnapshot": restored_snapshot, "snapshot": snapshot() if game._state_loaded else {}}, "  ") + "\n")

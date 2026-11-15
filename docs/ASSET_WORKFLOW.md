@@ -1,5 +1,9 @@
 # Asset generation and placement workflow
 
+See [ASSET_STATUS.md](ASSET_STATUS.md) for current findings, generated repairs
+and reopened defects. An asset review has a specific scope; it is not a claim
+that every animation or map using the image is defect-free.
+
 The goal is a dependable art pipeline, not a claim that a script can judge
 beauty. Geometry and provenance checks prevent common mistakes. A current
 in-game visual review catches wrong-looking faces, furniture, animation and
@@ -141,10 +145,16 @@ outside `runtime-reviews/` so they remain history rather than active assertions.
 
 The gate can prevent accidental drift. It cannot prove an honest visual review
 occurred, discover all artistic defects, or prevent someone editing both an
-asset and its checks. PR review remains part of acceptance. Do not update the
+asset and its checks. Recorded visual review remains part of acceptance;
+the owner permits tested commits directly to main. Do not update the
 legacy baseline just to make a changed image pass; add a real review instead.
 
 ## Coffee machine audit — November 15, 2026
+
+Historical initial finding: the south espresso-front repair is now integrated
+with [retained evidence](../dev/art-catalogue/runtime-reviews/coffee-south-front-v2.json).
+The other three facings were not regenerated. The notes below describe the
+original defect, not the current south-panel status.
 
 ![Current coffee station in the browser](web/assets/asset-framework/coffee-before.png)
 

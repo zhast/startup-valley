@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { spawn, execFileSync } from 'node:child_process';
-import { mkdtemp, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { mkdtemp, mkdir, readFile, writeFile, readdir, lstat } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -14,6 +15,26 @@ function git(args) {
   catch { return null; }
 }
 const source = { commit: git(['rev-parse', 'HEAD']), dirty: git(['status', '--porcelain']), node: process.version, startedAt: new Date().toISOString() };
+async function runtimeFingerprint() {
+  const files = [];
+  const excluded = ['game/.godot', 'game/tests', 'game/tools', 'game/assets/source', 'game/web/templates'];
+  async function visit(path) {
+    if (excluded.some(prefix => path === prefix || path.startsWith(`${prefix}/`))) return;
+    const absolute = join(repository, path);
+    const stat = await lstat(absolute);
+    assert.ok(!stat.isSymbolicLink(), `Runtime fingerprint refuses symlinks: ${path}`);
+    if (stat.isDirectory()) {
+      for (const child of (await readdir(absolute)).sort()) await visit(`${path}/${child}`);
+    } else if (stat.isFile()) {
+      const content = await readFile(absolute);
+      files.push({ path, bytes: content.length, sha256: createHash('sha256').update(content).digest('hex') });
+    }
+  }
+  for (const path of ['game', 'harness/src', 'harness/dist', 'harness/migrations', 'contracts', 'web/src',
+    'harness/package.json', 'harness/package-lock.json', 'web/package.json', 'web/package-lock.json', 'godot-web.config.json']) await visit(path);
+  files.sort((a, b) => a.path.localeCompare(b.path));
+  return { sha256: createHash('sha256').update(JSON.stringify(files)).digest('hex'), files };
+}
 const options = Object.fromEntries(process.argv.slice(2).map(value => {
   const [key, ...rest] = value.replace(/^--/, '').split('=');
   return [key, rest.join('=') || true];
@@ -22,6 +43,8 @@ const godot = process.env.GODOT_BINARY;
 assert.ok(godot, 'Set GODOT_BINARY to Godot 4.7.2');
 const output = options.output ? resolve(String(options.output)) : await mkdtemp(join(tmpdir(), 'startup-valley-demo-'));
 await mkdir(output, { recursive: true });
+const runtimeBefore = await runtimeFingerprint();
+await writeFile(join(output, 'runtime-manifest.json'), JSON.stringify(runtimeBefore, null, 2));
 const phases = String(options.phases || 'arrival,hire,start,mid,release,visit,outdoor,restored').split(',');
 const runs = Number(options.runs || 3);
 assert.ok(Number.isInteger(runs) && runs >= 1 && runs <= 10, '--runs must be 1..10');
@@ -68,14 +91,26 @@ try {
       const result = JSON.parse(await readFile(resultPath, 'utf8'));
       assert.deepEqual(result.failures, [], phase);
       assert.equal(`${result.engine.major}.${result.engine.minor}.${result.engine.patch}`, configuration.godotVersion, 'Test the pinned engine version');
+      assert.ok(Number.isInteger(result.workerPid) && result.workerPid > 0, 'A real production worker process was running');
+      const alive = () => {
+        try { process.kill(result.workerPid, 0); return true; }
+        catch (error) { if (error.code === 'ESRCH') return false; throw error; }
+      };
+      const exitDeadline = Date.now() + 3000;
+      while (alive() && Date.now() < exitDeadline) await new Promise(resolve => setTimeout(resolve, 50));
+      assert.equal(alive(), false, 'Graceful game shutdown leaves no tested worker process alive');
       summaries.push({ run, phase, width, height, input, checks: result.checks, captures: result.captures, snapshot: result.snapshot });
       previous = resultPath;
     }
   }
   const sourceAfter = { commit: git(['rev-parse', 'HEAD']), dirty: git(['status', '--porcelain']) };
   const sourceUnchanged = source.commit !== null && source.commit === sourceAfter.commit && source.dirty === sourceAfter.dirty;
-  await writeFile(join(output, 'result.json'), JSON.stringify({ ok: true, source, sourceAfter, sourceUnchanged, summaries }, null, 2));
-  if (!sourceUnchanged) console.warn('Source identity changed or is unavailable; this run is a diagnostic, not immutable release acceptance.');
+  const runtimeAfter = await runtimeFingerprint();
+  const runtimeUnchanged = runtimeBefore.sha256 === runtimeAfter.sha256;
+  await writeFile(join(output, 'result.json'), JSON.stringify({ ok: runtimeUnchanged, source, sourceAfter, sourceUnchanged,
+    runtimeBefore: runtimeBefore.sha256, runtimeAfter: runtimeAfter.sha256, runtimeUnchanged, summaries }, null, 2));
+  assert.ok(runtimeUnchanged, 'Production runtime content changed during the run; repeat affected acceptance on frozen content');
+  if (!sourceUnchanged) console.warn('Git metadata changed; the recorded runtime-content fingerprint stayed identical.');
   console.log(`PASS: ${summaries.length} actual Godot phases. Evidence: ${output}`);
 } catch (error) {
   await writeFile(join(output, 'result.json'), JSON.stringify({ ok: false, source, error: error.stack, summaries }, null, 2));

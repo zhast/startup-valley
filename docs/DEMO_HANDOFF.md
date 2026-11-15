@@ -9,8 +9,9 @@ parallel agents, fixes, art work, integrated Godot tests, local exports, and
 frequent tested commits/pushes directly to `main`. Website/public hosting is
 **deferred**. Do not use computer-use or browser UI automation for this goal.
 
-Current local production checkpoint: `b0aff46` (following `deaf300`). Confirmed
-remote checkpoint: `9ce236dbd469fd3e1b555659465199902fe203ec`, which includes the
+Current local production checkpoint: `bdc0b90` (story hover and native input
+probe fixes; follows `b0aff46`). Confirmed
+remote checkpoint: `3fdaf93feae951abff408a87b1973a1ca13acce7`, which includes the
 opening/courtyard implementation, cursor/settings/arrival fixes and initial
 test harness. Verify
 Git state before resuming; connector-created remote commits can have different
@@ -32,9 +33,13 @@ requires a fix. Newly imported test `.gd.uid` files should be retained.
   accepted brief, product link and idempotent travel/acceptance transactions.
 - Matching worker/Godot bounds, delayed-save protection, older-save migration,
   canceled-project replacement and interrupted-transaction recovery.
-- Repaired walk poses, Mina blink, coffee machine, chair depth and Creative
+- Repaired walk poses, Mina seated eye pixels, south coffee front, chair depth and Creative
   portrait. Seven approved runtime image changes retain source/provenance and
   hash-bound reviews. New courtyard work adds no runtime PNGs.
+- **Reopened:** Mina standing blink still paints pale bars across her bangs
+  while the pupils stay open. All idle blink timing is excessively long.
+  The asset-quality agent is repairing both with broad native pose coverage.
+  See `ASSET_STATUS.md` for the exact generated/code-only inventory.
 - Precise interaction feedback, visitor/sign hover, native story Settings,
   no AI setup in the default story, clean cursor teardown and safe arrival
   placement even when furniture crowds preferred spots.
@@ -45,11 +50,11 @@ requires a fix. Newly imported test `.gd.uid` files should be retained.
 ## Playable build
 
 The normal export was refreshed immediately after the owner's localhost report.
-`http://127.0.0.1:5177/` now serves build **ae82cfc908ec417a**, built at
-**2026-11-15T23:08:21.226Z**, including production through `b0aff46`.
+`http://127.0.0.1:5177/` now serves build **598d1388963c00e7**, built at
+**2026-11-15T23:11:49.670Z**, including production through `bdc0b90`.
 The release asset gate passed. HTTP200 responses and exact SHA256 comparisons
 confirmed the served HTML, WASM, PCK and browser worker match this build.
-PCK: 29,119,440 bytes; engine WASM: 39,514,754 bytes.
+The reopened standing-blink/timing fixes are not in this checkpoint yet.
 
 Refresh the browser page to load a newly exported build. Source commits alone
 do not change an already-running game. Rebuild and verify localhost promptly
@@ -63,7 +68,8 @@ can be reproduced; do not commit it.
   Logs: `/private/tmp/courtyard-harness-tests.log` and
   `/private/tmp/courtyard-build.log`. The pre-bounds-only-change offline
   evaluation passed **8/8**, log `/private/tmp/courtyard-offline-eval.log`.
-- Root tooling/asset/package suite: **53 passing**. Web TypeScript/Vite build
+- Root tooling/asset/package/map suite: **65 passing**, including adapter,
+  stale-review and combined CLI initialization regressions. Web TypeScript/Vite build
   passes. The built worker contains the new story routes and no provider
   endpoints, Pi SDK, native filesystem or keychain imports.
 - Release asset gate: **804 PNGs, 7 approved changes, no errors/warnings**.
@@ -78,8 +84,8 @@ can be reproduced; do not commit it.
   return, real next-project start and New Company reset. The focused small-size
   and injected-touch check passes **22 checks**. These probes repaired the test
   runner; **three final frozen-source journeys have not yet been recorded**.
-  A Theo hover label overlap found during visual review is being fixed before
-  final acceptance.
+  The Theo hover label overlap is fixed; its native regression passes **57
+  checks**. Final acceptance waits for the standing-blink/timing repair.
 
 The deterministic native runner uses a direct SubViewport displayed in the
 native window and forwards injected engine input into the real GameMain scene.
