@@ -82,8 +82,12 @@ export class JourneyStore {
   completed(id: string): boolean {
     return Boolean(this.db.prepare("SELECT id FROM milestone_progress WHERE id = ? AND completed = 1").get(id));
   }
+  releasedProducts(): number {
+    return Number(this.db.prepare("SELECT COUNT(*) AS count FROM tycoon_products WHERE status IN ('released','complete') AND released_day IS NOT NULL").get()!.count);
+  }
   state() {
     const company = this.db.prepare("SELECT * FROM company_state WHERE id = 1").get()!;
+    const releases = this.releasedProducts();
     const milestones = MILESTONES.map((definition) => {
       const progress = this.db.prepare("SELECT * FROM milestone_progress WHERE id = ?").get(definition.id)!;
       const jobId = String(progress.job_id ?? "");
@@ -98,8 +102,8 @@ export class JourneyStore {
       player: JSON.parse(String(company.player_json)) as Record<string, unknown>, milestones,
       candidates: [
         { id: "mira", name: "Mina", costCents: 0, available: !this.hired("mira"), hired: this.hired("mira"), role: "Product + research" },
-        { id: "theo", name: "Theo", costCents: 30000, available: !this.hired("theo") && this.completed("website"), hired: this.hired("theo"), role: "Growth + operations" },
-        { id: "creative", name: "Creative", costCents: 0, available: !this.hired("creative") && this.openedChapter() >= 2 && this.completed("incorporate"), hired: this.hired("creative"), role: "Design + brand" },
+        { id: "theo", name: "Theo", costCents: 30000, available: !this.hired("theo") && (releases >= 1 || this.completed("website")), hired: this.hired("theo"), role: "Growth + operations" },
+        { id: "creative", name: "Creative", costCents: 0, available: !this.hired("creative") && (releases >= 3 || this.openedChapter() >= 2 && this.completed("incorporate")), hired: this.hired("creative"), role: "Design + brand" },
       ],
     };
     return fictionalWorld(this.tycoonView ? { ...body, tycoon: this.tycoonView() } : body);
