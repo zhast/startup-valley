@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "id": "creative-side-walk-v2",
+  "status": "approved",
+  "reviewer": "Codex visual QA (shell_quality)",
+  "reviewed_at": "2026-11-15T22:49:21.584Z",
+  "camera_profile": "office-square-grid-v1",
+  "provenance": {
+    "kind": "openai_imagegen",
+    "note": "OpenAI-generated treatment retained only as a registered native overlay; unrelated generated pixels were rejected. Historical base-sheet origin remains unchanged.",
+    "sources": [
+      {
+        "path": "game/assets/source/web-motion-polish/creative-walk-overlay.png",
+        "sha256": "d018da16b05c9cf45e8673a0ba97cd6e790694ad481f031e624936fb74ed3f5f"
+      },
+      {
+        "path": "game/assets/source/web-motion-polish/walk-replacement-mask.png",
+        "sha256": "ca46b908f6f76bdca795ff45e600c1f95507e560ff1cb295a21cabc3524826bb"
+      }
+    ],
+    "prompt": {
+      "path": "game/assets/source/web-motion-polish/prompts/creative-walk.md",
+      "sha256": "07d0be5c56480457ecb4d2e017556c3e75ca7d603b445ab9244bd571cc4dc961"
+    },
+    "generation_id": "01a1e146-9490-71d0-99d4-d5691e91d349/exec-69e38e85-a065-4200-b9f4-ab724bdfbc62.png",
+    "transform": "Clear and replace only the lower 20px of side-walk frames in the two fixed rectangles recorded in web-motion-polish/manifest.json. Nearest sample, register to original feet, remap to original palette; preserve upper body, front/back rows and idles. Rebuild with dev/tools/apply_character_motion.sh (called by build_locomotion_assets.sh)."
+  },
+  "artifacts": [
+    {
+      "path": "game/assets/runtime/characters/creative-locomotion.png",
+      "sha256": "484cc0311ab5d8bca0f487408c2d5fda0717c4e3bedb209551ece1b0e801b805"
+    }
+  ],
+  "bindings": [
+    {
+      "path": "game/character_art.gd",
+      "sha256": "df789f4d5c10683356c3508806ec775362422118a70c62418cf7fc043719e4b5"
+    },
+    {
+      "path": "dev/tools/apply_character_motion.sh",
+      "sha256": "96d443ea045dd89221c0a8c86f44a2548369f6ce9d798f26f604b0f37a55c523"
+    },
+    {
+      "path": "dev/tools/build_locomotion_assets.sh",
+      "sha256": "bda2aacf7e19b0e23555f08df825175453ca04d49d4811378e9a54700dd0297c"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "game/assets/source/web-motion-polish/technical-validation.json",
+      "kind": "test_report",
+      "sha256": "3a84ec1da2e10eaf8b57f8a6d3cf1f091e282542e2c9912817296d3e330580b1"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-creative-contact.png",
+      "sha256": "dcabb036ac3623cd69d21a5da5ee12f64c7be8a1d9e2a419b819deefd6a5d22c",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-creative-room.png",
+      "sha256": "a4a641b6a424994f2eb4ff217df69528a020115b47f3a84a463fcd5107fc43b1",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/playtest-polish-native-motion.json",
+      "kind": "test_report",
+      "sha256": "e8223eb1cad640d143bd1583d3d91e6744915faeef41e945890f5328574efc59"
+    }
+  ],
+  "checks": {
+    "camera": {
+      "result": "passed",
+      "note": "Full native GameMain screenshots retain established side-view perspective against the actual room."
+    },
+    "scale": {
+      "result": "passed",
+      "note": "Native1280x720 and nearest3x detail inspected; original48x80 cell and upper-body scale unchanged."
+    },
+    "anchor": {
+      "result": "passed",
+      "note": "Actual moving actor stays aligned with the floor; foot line and torso registration remain coherent through all4phases."
+    },
+    "layering": {
+      "result": "passed",
+      "note": "Native floor/shadow layering inspected. Technical mask check confirms only lower-leg art changed; no chair, upper-body or renderer-depth changes are part of this revision."
+    },
+    "animation": {
+      "result": "passed",
+      "note": "Real physics and navigation visited and rendered all4columns on left/right; distinct contracted passing and extended stride poses are now visible."
+    },
+    "placement": {
+      "result": "passed",
+      "note": "Actor accepted cell-centered paths in shipped office, arrived at both destinations and returned to idle. Staged fixture, not proof of player unlock progression."
+    },
+    "readability": {
+      "result": "passed",
+      "note": "Gait reads at native size and enlarged detail. Existing face, outfit and upper-body identity are preserved in the locomotion sprite."
+    },
+    "style": {
+      "result": "passed",
+      "note": "Compared with canonical board and original unmodified upper-body art: same pixel density, contour treatment, palette family and lighting; retrospective review."
+    }
+  },
+  "capture_notes": "Approved after actual native GameMain physics/navigation capture,16frames total and0fixture failures. Exact source of the isolated capture fixture is embedded in the report. This is not browser hiring coverage.",
+  "style_profile": {
+    "id": "startup-valley-cozy-pixel-v1",
+    "path": "dev/art-catalogue/style-profile.json",
+    "sha256": "c7c4834623a482bb976abf27bcc976f72d5b83df59a66bb93af00a49d1589fe7",
+    "application": "retrospective_review",
+    "reference_board": {
+      "path": "dev/art-catalogue/style-reference-board.png",
+      "sha256": "d91ba07ace9aef1d7e82c0daf55621afb57636d08376feae5ef8900623ba8283",
+      "note": "Code-arranged existing reference pixels; characters at3×, phone/floor at2×, window at1×, paper/desk at3×. Zoom is for inspection, not a change in runtime scale."
+    },
+    "references": [
+      {
+        "id": "founder-idle",
+        "path": "dev/art-catalogue/style-references/founder-idle.png",
+        "sha256": "d01a61aac781bea83902877ab96f45087bfb9ac8d0e3d6801fecf642cc1aa756"
+      },
+      {
+        "id": "mina-idle",
+        "path": "dev/art-catalogue/style-references/mina-idle.png",
+        "sha256": "3a8ad37498e9945a4bbeca8567db757b97b28f496c6e9294d11a707d8bd7e1df"
+      },
+      {
+        "id": "phone-booth",
+        "path": "dev/art-catalogue/style-references/phone-booth.png",
+        "sha256": "13f132874da276515063855f045ce62a02324820e18b9af8a3e9cc1be4af4fd8"
+      },
+      {
+        "id": "desk-front",
+        "path": "dev/art-catalogue/style-references/desk-front.png",
+        "sha256": "adb3458aa63d799af6f9a07723523344d63b82772e6d77f03e8da96137c02f21"
+      },
+      {
+        "id": "desk-rear",
+        "path": "dev/art-catalogue/style-references/desk-rear.png",
+        "sha256": "d5e167d93d424fcfddbb00f1cb85217aa69b3de4ee5f4b67036c0830754d29c4"
+      },
+      {
+        "id": "oak-floor",
+        "path": "dev/art-catalogue/style-references/oak-floor.png",
+        "sha256": "851eadbadcfcaf5eaeb4f30a5679d797e42409ac4ffba95d0c71fc591473db66"
+      },
+      {
+        "id": "office-window",
+        "path": "dev/art-catalogue/style-references/office-window.png",
+        "sha256": "cca8896dac6640c452ba2c7148a6f551be4e2d9c2ac793f7439e3501d8863571"
+      },
+      {
+        "id": "paper-frame",
+        "path": "dev/art-catalogue/style-references/paper-frame.png",
+        "sha256": "3a07014154ae2d624f52b563db4befaa1b3f22ed82bc440213d69251caa8111b"
+      }
+    ]
+  }
+}

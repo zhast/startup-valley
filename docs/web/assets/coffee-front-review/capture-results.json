@@ -1,0 +1,19 @@
+{
+	"captures": [
+		"south-scale",
+		"south-front",
+		"south-behind",
+		"north-scale",
+		"east-scale",
+		"west-scale"
+	],
+	"failures": [],
+	"geometry_changed": false,
+	"native_size": [
+		1280,
+		720
+	],
+	"room": "actual GameMain and TownRoom production layers",
+	"save_access": false,
+	"worker_disabled": true
+}

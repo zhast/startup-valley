@@ -1,13 +1,17 @@
 # Startup Valley
 
-Startup Valley is a Godot office-town tycoon. You hire a small team, pick a Whop-flavored topic and product, develop it across office days, and ship it for game cash and reputation. That loop is a deterministic simulation inside the local worker. It does not call Whop or any model API, and it plays with no credential and no network.
+Art changes follow the [asset generation and placement workflow](docs/ASSET_WORKFLOW.md).
+Run `npm run assets:check` for the current runtime gate; browser exports run it automatically.
+
+Startup Valley is a story-led Godot office-town tycoon set in the fictional TownSquare community. Meet your teammates, follow the current goal, develop a product across office days, and release it for game cash and reputation. The simulation plays without credentials or a network connection.
 
 Optional chapter work orders can still run bounded AI jobs through the same worker. Those jobs are off the core loop. The worker owns SQLite state and, only when you opt in, Pi sessions, provider access, usage, approvals, and artifacts.
 
-The current chapter starts with the founder alone. Hire Mina, build and evaluate
-a website, hire Theo, prepare an advertising experiment, and plan incorporation
-across three office days. Company cash, reputation, milestone reviews, shipped
-products, and one-time rewards live in SQLite. Existing companies keep their hired employees.
+The browser story starts with the founder alone. Welcome Mina, choose your first
+project together, develop it across office days, and celebrate its first release.
+The visible goal and notebook show what to do next. Native optional work-order
+chapters remain available. Company progress, shipped products, and rewards live
+in SQLite. Existing companies keep their hired employees.
 
 Click the floor to walk, click a person or desk to approach and interact, or use
 WASD/arrows. The founder desk (or **J**) opens Company Journey; **Escape** closes

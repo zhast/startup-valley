@@ -1,0 +1,225 @@
+{
+  "schema_version": 1,
+  "id": "coffee-south-front-v2",
+  "status": "approved",
+  "reviewer": "Codex asset-quality reviewer; independently checked by root",
+  "reviewed_at": "2026-11-15",
+  "camera_profile": "office-square-grid-v1",
+  "style_profile": {
+    "id": "startup-valley-cozy-pixel-v1",
+    "path": "dev/art-catalogue/style-profile.json",
+    "sha256": "c7c4834623a482bb976abf27bcc976f72d5b83df59a66bb93af00a49d1589fe7",
+    "application": "generation_reference",
+    "reference_board": {
+      "path": "dev/art-catalogue/style-reference-board.png",
+      "sha256": "d91ba07ace9aef1d7e82c0daf55621afb57636d08376feae5ef8900623ba8283",
+      "note": "Code-arranged existing reference pixels; characters at3\u00d7, phone/floor at2\u00d7, window at1\u00d7, paper/desk at3\u00d7. Zoom is for inspection, not a change in runtime scale."
+    },
+    "references": [
+      {
+        "id": "founder-idle",
+        "path": "dev/art-catalogue/style-references/founder-idle.png",
+        "sha256": "d01a61aac781bea83902877ab96f45087bfb9ac8d0e3d6801fecf642cc1aa756"
+      },
+      {
+        "id": "mina-idle",
+        "path": "dev/art-catalogue/style-references/mina-idle.png",
+        "sha256": "3a8ad37498e9945a4bbeca8567db757b97b28f496c6e9294d11a707d8bd7e1df"
+      },
+      {
+        "id": "phone-booth",
+        "path": "dev/art-catalogue/style-references/phone-booth.png",
+        "sha256": "13f132874da276515063855f045ce62a02324820e18b9af8a3e9cc1be4af4fd8"
+      },
+      {
+        "id": "desk-front",
+        "path": "dev/art-catalogue/style-references/desk-front.png",
+        "sha256": "adb3458aa63d799af6f9a07723523344d63b82772e6d77f03e8da96137c02f21"
+      },
+      {
+        "id": "desk-rear",
+        "path": "dev/art-catalogue/style-references/desk-rear.png",
+        "sha256": "d5e167d93d424fcfddbb00f1cb85217aa69b3de4ee5f4b67036c0830754d29c4"
+      },
+      {
+        "id": "oak-floor",
+        "path": "dev/art-catalogue/style-references/oak-floor.png",
+        "sha256": "851eadbadcfcaf5eaeb4f30a5679d797e42409ac4ffba95d0c71fc591473db66"
+      },
+      {
+        "id": "office-window",
+        "path": "dev/art-catalogue/style-references/office-window.png",
+        "sha256": "cca8896dac6640c452ba2c7148a6f551be4e2d9c2ac793f7439e3501d8863571"
+      },
+      {
+        "id": "paper-frame",
+        "path": "dev/art-catalogue/style-references/paper-frame.png",
+        "sha256": "3a07014154ae2d624f52b563db4befaa1b3f22ed82bc440213d69251caa8111b"
+      }
+    ]
+  },
+  "provenance": {
+    "kind": "openai_imagegen",
+    "note": "Only the south espresso front panel is newly generated. The original code-native roof, body silhouette, counter and all other layers remain unchanged; the whole is a deterministic composition.",
+    "sources": [
+      {
+        "path": "game/assets/source/coffee-front-polish/generated-front-panel.png",
+        "sha256": "c95f2cd91ac78c4435ac0d0aabc59902ea352db7f743acbc0127cbcd8275a213"
+      },
+      {
+        "path": "game/assets/source/coffee-front-polish/rejected-whole-machine.png",
+        "sha256": "b63258c6783c9b8740437f25be9e8146f782776b75b3d05b7afa10bb3b256635"
+      },
+      {
+        "path": "game/assets/source/coffee-front-polish/south-front-panel.png",
+        "sha256": "e6e53e40fd9644bcdc323a776071e2df0b83b3234a3682051b3bf3c163bafbd9"
+      },
+      {
+        "path": "game/assets/source/coffee-front-polish/south-espresso.png",
+        "sha256": "5ce03aacceb7d6eb3e7a6def30ab8af363f86ec4f036ad0178fc2d3a885dab97"
+      },
+      {
+        "path": "game/assets/source/coffee-front-polish/south-whole.png",
+        "sha256": "d6b9bcce4568472abe14826f7d6d23477022b3bdcdf4f0ecc433ab4384f67ca9"
+      },
+      {
+        "path": "game/tests/fixtures/furniture-calibration/coffee-station-code-v1/south-espresso.png",
+        "sha256": "6244bfde72c106f3d0cd956485c595b39910d59a0d62a8eaf528947ce4fe799f"
+      }
+    ],
+    "prompt": {
+      "path": "game/assets/source/coffee-front-polish/prompt.md",
+      "sha256": "2b573731823d33195515252ed594b22a8de006544a412e834502786c60bd0a8a"
+    },
+    "generation_id": "01a1e146-9490-71d0-99d4-d5691e91d349/exec-b3c1930a-e729-4fb6-87d4-5050bbd9fe55.png",
+    "transform": "game/tools/build_coffee_front_polish.gd: explicit nearest source samples into31x31, original family palette mapping, blit to81,134, preserve original alpha/roof and recompose ten unchanged registered layers."
+  },
+  "artifacts": [
+    {
+      "path": "game/assets/runtime/office/coffee-station-v1/south-espresso.png",
+      "sha256": "5ce03aacceb7d6eb3e7a6def30ab8af363f86ec4f036ad0178fc2d3a885dab97"
+    },
+    {
+      "path": "game/assets/runtime/office/coffee-station-v1/south-whole.png",
+      "sha256": "d6b9bcce4568472abe14826f7d6d23477022b3bdcdf4f0ecc433ab4384f67ca9"
+    }
+  ],
+  "bindings": [
+    {
+      "path": "game/data/furniture_catalog.json",
+      "sha256": "60cb42a14094f0acda8eb33f533639ba75949c24f54af5a8db7dea4f64338cd0"
+    },
+    {
+      "path": "game/assets/runtime/office/coffee-station-v1/manifest.json",
+      "sha256": "6ea64d488329d75050b07527a0b0010375683b065fb8e946743241dd07536e84"
+    },
+    {
+      "path": "game/tools/build_coffee_front_polish.gd",
+      "sha256": "41e66830dddeda78cf3eab5e06ce56603b735017aef3646cc6917dd411b98863"
+    },
+    {
+      "path": "game/tools/capture_coffee_front_review.gd",
+      "sha256": "79dac8b419114057505ed0b1df197c72ab397f7c06cf46435af538f5e14f4b22"
+    },
+    {
+      "path": "game/tests/test_coffee_station_production.gd",
+      "sha256": "cc9fc248cf95df217dffcd6813f11446f9573de1850931b5e7018dbe359b71bf"
+    },
+    {
+      "path": "dev/art-catalogue/runtime-contracts.json",
+      "sha256": "9009fe5bfe0be576907cc5798025f0c76009c69fe1148f7445d8db8bb1673083"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "docs/web/assets/coffee-front-review/south-scale.png",
+      "sha256": "9abe6ed02937a34f24b1dd78685fab44cb72f768f3fecb455793bb85d8d76e0e",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/assets/coffee-front-review/south-scale-detail.png",
+      "sha256": "2d86179a1d3e18d8a2a56b8571f8b7cadf6bae7ffa5400839c9786da3a084802",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/assets/coffee-front-review/south-front-detail.png",
+      "sha256": "f0ffe8b38687c90f3e3843a1affa4680e9a4fe8e6861d1643e78ec9a6da7ba89",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/assets/coffee-front-review/south-behind-detail.png",
+      "sha256": "f2e0de1cc72a23d07120c3eb895ef3ee1353eec3a69e7b7d1e787f22bf226d62",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/assets/coffee-front-review/north-scale-detail.png",
+      "sha256": "fca486866332616d81b53cb0c675c4a41ff4b2ef34acdc78512bb349fea9cac7",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/assets/coffee-front-review/east-scale-detail.png",
+      "sha256": "46308d426f5789593a5a2382f3ab2d97d063f30293ccb89f42539497f5de2f2f",
+      "kind": "in_game"
+    },
+    {
+      "path": "docs/web/assets/coffee-front-review/west-scale-detail.png",
+      "sha256": "184f8dbe4addd5e6ee2d2eb25fd0147448a1caba2c113551af31b6ffe1f6d2fa",
+      "kind": "in_game"
+    },
+    {
+      "path": "game/assets/source/coffee-front-polish/technical-validation.json",
+      "sha256": "d9bf7fc521833a4687df9af16e30b5415e855873a4b46aa6f47b82c7ecf9079e",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/coffee-front-review/production-test.log",
+      "sha256": "b816bd642ee7c92a90b058fde204c60bc8f7c94f9a26a3cf58c1e26325e027e0",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/coffee-front-review/rebuild.log",
+      "sha256": "d18c32e012fa5e7d9022e06f3552db7bd6243dc7d33211bc581837f65598bf6d",
+      "kind": "test_report"
+    },
+    {
+      "path": "docs/web/assets/coffee-front-review/capture-results.json",
+      "sha256": "45bce2161c9b9b7f56a3b9baa919b6be21665a3c12067e5389f38e637589636c",
+      "kind": "test_report"
+    }
+  ],
+  "checks": {
+    "style": {
+      "result": "passed",
+      "note": "Canonical profile startup-valley-cozy-pixel-v1 and its board were included in the final generation; panel uses warm cream/brass accents within existing charcoal equipment material."
+    },
+    "camera": {
+      "result": "passed",
+      "note": "Original elevated top plane is byte-identical; front remains screen aligned. All four native room views were inspected."
+    },
+    "scale": {
+      "result": "passed",
+      "note": "31x46 machine content and192x256 layer canvas retained; actual-room native capture includes Mina at original48x80 scale."
+    },
+    "anchor": {
+      "result": "passed",
+      "note": "Original96,192 pivot and0,-64 sprite offset retained;409production checks pass."
+    },
+    "layering": {
+      "result": "passed",
+      "note": "Ten registered layers remain in the same order; recomposition exact; native Founder front/behind captures confirm occlusion."
+    },
+    "animation": {
+      "result": "not_applicable",
+      "note": "Static appliance artwork. No frames, animated props or character behavior are changed."
+    },
+    "placement": {
+      "result": "passed",
+      "note": "Footprints, clearance, service cells and noninteractive capability unchanged; all four production profiles pass existing tests."
+    },
+    "readability": {
+      "result": "passed",
+      "note": "At native size a cream cup below the metal group head and a distinct drip tray identify an espresso machine; enlarged detail confirms clean pixel clusters."
+    }
+  },
+  "capture_notes": "Inspected native room captures of all four orientations, and south-facing scale/front/behind views. Root independently reviewed the changed south artwork with Mina and both occlusion views. Original elevated top plane and registration are retained; no browser-specific visual claim is made."
+}

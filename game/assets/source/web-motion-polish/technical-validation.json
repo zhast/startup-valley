@@ -1,0 +1,278 @@
+{
+  "date": "2026-11-15",
+  "method": "Read decoded RGBA, compare to unchanged merged-main art, validate all native cells and exact registered source reconstruction. No game rules or test mocks.",
+  "failures": [],
+  "walks": {
+    "founder": {
+      "changedPixels": 3187,
+      "outsidePermittedStrips": 0,
+      "nonbinaryAlphaPixels": 0,
+      "newPaletteColors": 0,
+      "exactDecodedSourceReconstruction": true,
+      "all24CellsConnected": true,
+      "sideFrames": [
+        {
+          "row": 2,
+          "col": 2,
+          "footWidth": 34,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "footWidth": 17,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "footWidth": 32,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 2,
+          "col": 5,
+          "footWidth": 17,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "footWidth": 33,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "footWidth": 18,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "footWidth": 31,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 3,
+          "col": 5,
+          "footWidth": 16,
+          "footBottom": 72,
+          "components": 1
+        }
+      ]
+    },
+    "mira": {
+      "changedPixels": 2863,
+      "outsidePermittedStrips": 0,
+      "nonbinaryAlphaPixels": 0,
+      "newPaletteColors": 0,
+      "exactDecodedSourceReconstruction": true,
+      "all24CellsConnected": true,
+      "sideFrames": [
+        {
+          "row": 2,
+          "col": 2,
+          "footWidth": 32,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "footWidth": 17,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "footWidth": 33,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 2,
+          "col": 5,
+          "footWidth": 16,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "footWidth": 33,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "footWidth": 17,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "footWidth": 34,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 3,
+          "col": 5,
+          "footWidth": 17,
+          "footBottom": 72,
+          "components": 1
+        }
+      ]
+    },
+    "theo": {
+      "changedPixels": 2982,
+      "outsidePermittedStrips": 0,
+      "nonbinaryAlphaPixels": 0,
+      "newPaletteColors": 0,
+      "exactDecodedSourceReconstruction": true,
+      "all24CellsConnected": true,
+      "sideFrames": [
+        {
+          "row": 2,
+          "col": 2,
+          "footWidth": 31,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "footWidth": 17,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "footWidth": 32,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 2,
+          "col": 5,
+          "footWidth": 18,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "footWidth": 30,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "footWidth": 15,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "footWidth": 30,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 3,
+          "col": 5,
+          "footWidth": 14,
+          "footBottom": 72,
+          "components": 1
+        }
+      ]
+    },
+    "creative": {
+      "changedPixels": 3279,
+      "outsidePermittedStrips": 0,
+      "nonbinaryAlphaPixels": 0,
+      "newPaletteColors": 0,
+      "exactDecodedSourceReconstruction": true,
+      "all24CellsConnected": true,
+      "sideFrames": [
+        {
+          "row": 2,
+          "col": 2,
+          "footWidth": 36,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "footWidth": 17,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "footWidth": 34,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 2,
+          "col": 5,
+          "footWidth": 22,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "footWidth": 33,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "footWidth": 20,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "footWidth": 35,
+          "footBottom": 72,
+          "components": 1
+        },
+        {
+          "row": 3,
+          "col": 5,
+          "footWidth": 22,
+          "footBottom": 72,
+          "components": 1
+        }
+      ]
+    }
+  },
+  "minaBlink": {
+    "changedPixels": 86,
+    "changedAlphaPixels": 0,
+    "outsidePermittedRects": 0,
+    "newPaletteColors": 0,
+    "exactDecodedSourceReconstruction": true
+  }
+}

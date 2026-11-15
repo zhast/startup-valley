@@ -72,9 +72,16 @@ export function createPreviewServer(config) {
 if (isMain(import.meta.url)) {
   try {
     const config = await loadConfig();
+    const args = process.argv.slice(2);
+    if (args.some(arg => arg !== '--asset-preview')) throw new Error('Supported option: --asset-preview');
+    const assetPreview = args.includes('--asset-preview');
+    if (assetPreview) {
+      config.dist = resolve(config.root, '.build/asset-preview');
+      config.port = config.port === 65535 ? 65534 : config.port + 1;
+    }
     const server = createPreviewServer(config);
     server.on('error', error => { console.error(error.message); process.exitCode = 1; });
-    server.listen(config.port, '127.0.0.1', () => console.log(`Local: http://127.0.0.1:${config.port}\nServes dist when an export exists; otherwise shows the clearly marked shell preview.\nCtrl+C to stop.`));
+    server.listen(config.port, '127.0.0.1', () => console.log(`Local: http://127.0.0.1:${config.port}\n${assetPreview ? 'Asset review build: serves .build/asset-preview; unreviewed art is not a release.' : 'Serves dist when an export exists; otherwise shows the clearly marked shell preview.'}\nCtrl+C to stop.`));
     for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => { server.close(); server.closeAllConnections(); });
   } catch (error) { console.error(error.message); process.exitCode = 1; }
 }

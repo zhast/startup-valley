@@ -60,6 +60,17 @@ for employee in mira theo; do
   done
   magick "${cell_files[@]}" +append -strip -define png:color-type=6 \
     "$output_dir/characters/$employee-seated.png"
+  # Accepted eye-only correction: keep the generated source treatment when
+  # rebuilding the original seated master, without replacing other poses.
+  overlay="$project_root/game/assets/source/web-motion-polish/$employee-seated-blink-overlay.png"
+  if [[ -f "$overlay" ]]; then
+    if [[ "$(magick identify -format '%wx%h' "$overlay")" != '288x80' ]]; then
+      printf 'Invalid seated blink overlay dimensions: %s\n' "$employee" >&2
+      exit 1
+    fi
+    magick "$output_dir/characters/$employee-seated.png" "$overlay" -compose Over -composite \
+      -strip -define png:color-type=6 "$output_dir/characters/$employee-seated.png"
+  fi
 done
 
 printf 'Built registered workstation and seated atlases. Intermediate files: %s\n' "$scratch_dir"

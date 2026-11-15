@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "reviewer": "Codex visual QA (shell_quality)",
+  "reviewed_at": "2026-11-15T22:49:21.584Z",
+  "result": "passed",
+  "environment": {
+    "engine": "Godot4.7.2 standard native, OpenGL Compatibility,1280x720",
+    "worker": "disabled with existing NullWorker fixture",
+    "room": "Actual shipped GameMain and OfficeNavigation"
+  },
+  "scope": "Theo and Creative side locomotion. Native fixture evidence, not browser hiring/unlock coverage.",
+  "checks": {
+    "rendered_frames": 16,
+    "failures": [],
+    "real_physics": true,
+    "real_navigation": true,
+    "all_four_walk_columns_each_side": true,
+    "arrives_and_returns_to_idle": true,
+    "visual": "Full room and nearest3x contacts inspected. Passing and stride silhouettes alternate; original upper-body identity and pixel treatment preserved."
+  },
+  "fixture_source": "extends SceneTree\nconst FIXTURE = preload(\"res://tools/calibrated_workstation_fixture.gd\")\nconst OUT = \"/private/tmp/startup-valley-other-walks\"\nvar captures: Array[Dictionary] = []\nvar failures: Array[String] = []\nfunc _initialize() -> void:\n\tOS.set_environment(\"STARTUP_VALLEY_NO_WORKER\", \"1\")\n\tcall_deferred(\"run\")\nfunc check(ok: bool, message: String) -> void:\n\tif not ok: failures.append(message)\nfunc run() -> void:\n\tDirAccess.make_dir_recursive_absolute(OUT)\n\troot.size = Vector2i(1280, 720)\n\troot.content_scale_size = Vector2i(1280, 720)\n\tvar main = load(\"res://world/main.tscn\").instantiate()\n\tmain.get_node(\"WorkerClient\").set_script(FIXTURE.NullWorker)\n\troot.add_child(main)\n\tmain.game_audio.set_volumes(0, 0)\n\tmain.day_clock.set_speed(0)\n\tfor i in range(6): await process_frame\n\troot.size = Vector2i(1280, 720)\n\tmain.set_process(false)\n\tDisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_ALWAYS_ON_TOP, true)\n\tmain.player.process_mode = Node.PROCESS_MODE_DISABLED\n\tmain.player.hide()\n\tfor actor in main._employees.values():\n\t\tactor.process_mode = Node.PROCESS_MODE_DISABLED\n\t\tactor.hide()\n\tfor id in [\"theo\", \"creative\"]:\n\t\tvar actor = main.get_employee(id)\n\t\tactor.position = Vector2(656, 624)\n\t\tmain.room.navigation.actors[id] = actor.position\n\t\tactor.world_paused = false\n\t\tactor.has_live_job = true # Same idle-suppression fixture as test_walking_animation.gd; no worker exists.\n\t\tactor._idle_elapsed = 0.0\n\t\tactor._idle_cooldown = 30.0\n\t\tactor.show()\n\t\tactor.process_mode = Node.PROCESS_MODE_INHERIT\n\t\tfor direction in [\"right\", \"left\"]:\n\t\t\tvar start: Vector2 = actor.position\n\t\t\tvar goal = Vector2(944,624) if direction == \"right\" else Vector2(656,624)\n\t\t\tactor.walk_to(goal, EmployeeAvatar.WorkState.WANDERING)\n\t\t\tcheck(actor._has_target, id + \" accepted real room path \" + direction)\n\t\t\tvar seen = {}\n\t\t\tfor tick in range(240):\n\t\t\t\tawait physics_frame\n\t\t\t\tvar col = int(actor._character_sprite.region_rect.position.x / 48)\n\t\t\t\tif actor._has_target and str(actor._facing) == direction and col in [2,3,4,5] and not seen.has(col):\n\t\t\t\t\tRenderingServer.force_draw(false)\n\t\t\t\t\tvar file = \"%s/%s-%s-%d.png\" % [OUT,id,direction,col]\n\t\t\t\t\troot.get_texture().get_image().save_png(file)\n\t\t\t\t\tcaptures.append({\"id\":id,\"direction\":direction,\"column\":col,\"position\":[actor.position.x,actor.position.y],\"file\":file})\n\t\t\t\t\tseen[col] = true\n\t\t\t\tif not actor._has_target: break\n\t\t\tcheck(seen.size() == 4,id + \" renders all four walk columns \" + direction)\n\t\t\tcheck(actor.position.distance_to(goal)<1.0,id + \" arrives via real room navigation \" + direction)\n\t\t\tfor i in range(10): await physics_frame\n\t\t\tcheck(int(actor._character_sprite.region_rect.position.x/48) in [0,1],id + \" returns to idle\")\n\t\tactor.position = actor.desk_position\n\t\tactor.hide()\n\t\tactor.process_mode = Node.PROCESS_MODE_DISABLED\n\t\tmain.room.navigation.actors[id] = actor.desk_position\n\t\tmain.room.navigation.release(id)\n\tvar output = FileAccess.open(OUT + \"/result.json\",FileAccess.WRITE)\n\toutput.store_string(JSON.stringify({\"captures\":captures,\"failures\":failures},\"\\t\"))\n\tmain.game_audio.shutdown()\n\tmain.free()\n\tInput.set_custom_mouse_cursor(null, Input.CURSOR_ARROW)\n\tInput.set_custom_mouse_cursor(null, Input.CURSOR_POINTING_HAND)\n\tfor i in range(3): await process_frame\n\tprint(\"Native other walk review: %d captures, %d failures\" % [captures.size(),failures.size()])\n\tquit(0 if failures.is_empty() else 1)\n",
+  "captures": [
+    {
+      "column": 2,
+      "direction": "right",
+      "file": "/private/tmp/startup-valley-other-walks/theo-right-2.png",
+      "id": "theo",
+      "position": [
+        656,
+        624
+      ]
+    },
+    {
+      "column": 3,
+      "direction": "right",
+      "file": "/private/tmp/startup-valley-other-walks/theo-right-3.png",
+      "id": "theo",
+      "position": [
+        670.66650390625,
+        624
+      ]
+    },
+    {
+      "column": 4,
+      "direction": "right",
+      "file": "/private/tmp/startup-valley-other-walks/theo-right-4.png",
+      "id": "theo",
+      "position": [
+        685.3330078125,
+        624
+      ]
+    },
+    {
+      "column": 5,
+      "direction": "right",
+      "file": "/private/tmp/startup-valley-other-walks/theo-right-5.png",
+      "id": "theo",
+      "position": [
+        697.166564941406,
+        624
+      ]
+    },
+    {
+      "column": 2,
+      "direction": "left",
+      "file": "/private/tmp/startup-valley-other-walks/theo-left-2.png",
+      "id": "theo",
+      "position": [
+        942.166687011719,
+        624
+      ]
+    },
+    {
+      "column": 3,
+      "direction": "left",
+      "file": "/private/tmp/startup-valley-other-walks/theo-left-3.png",
+      "id": "theo",
+      "position": [
+        929.33349609375,
+        624
+      ]
+    },
+    {
+      "column": 4,
+      "direction": "left",
+      "file": "/private/tmp/startup-valley-other-walks/theo-left-4.png",
+      "id": "theo",
+      "position": [
+        914.6669921875,
+        624
+      ]
+    },
+    {
+      "column": 5,
+      "direction": "left",
+      "file": "/private/tmp/startup-valley-other-walks/theo-left-5.png",
+      "id": "theo",
+      "position": [
+        902.833435058594,
+        624
+      ]
+    },
+    {
+      "column": 2,
+      "direction": "right",
+      "file": "/private/tmp/startup-valley-other-walks/creative-right-2.png",
+      "id": "creative",
+      "position": [
+        657.833312988281,
+        624
+      ]
+    },
+    {
+      "column": 3,
+      "direction": "right",
+      "file": "/private/tmp/startup-valley-other-walks/creative-right-3.png",
+      "id": "creative",
+      "position": [
+        670.66650390625,
+        624
+      ]
+    },
+    {
+      "column": 4,
+      "direction": "right",
+      "file": "/private/tmp/startup-valley-other-walks/creative-right-4.png",
+      "id": "creative",
+      "position": [
+        685.3330078125,
+        624
+      ]
+    },
+    {
+      "column": 5,
+      "direction": "right",
+      "file": "/private/tmp/startup-valley-other-walks/creative-right-5.png",
+      "id": "creative",
+      "position": [
+        697.166564941406,
+        624
+      ]
+    },
+    {
+      "column": 2,
+      "direction": "left",
+      "file": "/private/tmp/startup-valley-other-walks/creative-left-2.png",
+      "id": "creative",
+      "position": [
+        942.166687011719,
+        624
+      ]
+    },
+    {
+      "column": 3,
+      "direction": "left",
+      "file": "/private/tmp/startup-valley-other-walks/creative-left-3.png",
+      "id": "creative",
+      "position": [
+        929.33349609375,
+        624
+      ]
+    },
+    {
+      "column": 4,
+      "direction": "left",
+      "file": "/private/tmp/startup-valley-other-walks/creative-left-4.png",
+      "id": "creative",
+      "position": [
+        914.6669921875,
+        624
+      ]
+    },
+    {
+      "column": 5,
+      "direction": "left",
+      "file": "/private/tmp/startup-valley-other-walks/creative-left-5.png",
+      "id": "creative",
+      "position": [
+        902.833435058594,
+        624
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "path": "docs/web/assets/playtest-polish-theo-contact.png",
+      "sha256": "8c9fbe6bed19dbc21daba338be235004e12b0bc48ea5cea594d3bf0343c9217a"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-theo-room.png",
+      "sha256": "18376b655bd9c4e2de16d6a59ff794d447e443fb05e71cb4ad3c44b577d85402"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-creative-contact.png",
+      "sha256": "dcabb036ac3623cd69d21a5da5ee12f64c7be8a1d9e2a419b819deefd6a5d22c"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-creative-room.png",
+      "sha256": "a4a641b6a424994f2eb4ff217df69528a020115b47f3a84a463fcd5107fc43b1"
+    }
+  ],
+  "limits": [
+    "This fixture stages characters on clear room floor; it does not prove natural hiring/unlock access.",
+    "No new seated or portrait assets were approved.",
+    "Creative currently uses a mismatched Founder rail portrait; that pre-existing binding is separate from the approved locomotion bitmap."
+  ]
+}

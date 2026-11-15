@@ -4,6 +4,7 @@ extends SceneTree
 
 const RUNTIME := "res://assets/runtime/office/coffee-station-v1/"
 const SOURCE := "res://tests/fixtures/furniture-calibration/coffee-station-code-v1/"
+const FRONT_CORRECTION := "res://assets/source/coffee-front-polish/"
 const MANIFEST_PATH := RUNTIME + "manifest.json"
 const PIXELS := preload("res://tools/export_modular_desk_layers.gd")
 const PARTS: Array[String] = [
@@ -45,6 +46,13 @@ func load_json(path: String) -> Dictionary:
 
 func source_image(path: String) -> Image:
 	return Image.load_from_file(ProjectSettings.globalize_path(path))
+
+func reviewed_source(file_name: String) -> String:
+	# Preserve the historical code fixture. The south front panel now has its
+	# own retained, reproducible ImageGen treatment with identical geometry.
+	if file_name in ["south-espresso.png", "south-whole.png"]:
+		return FRONT_CORRECTION + file_name
+	return SOURCE + file_name
 
 func first_painted_point(prop: Node2D, placement: Dictionary) -> Vector2:
 	for layer: Dictionary in placement.render_layers:
@@ -94,7 +102,7 @@ func run() -> void:
 			check(OfficeLayout.rectangle(layer.region) == Rect2(0, 0, 192, 256) and OfficeLayout.vector(layer.offset) == Vector2i(0, -64), side + " keeps exact layer registration: " + file_name)
 			check(not layer.has("scale") and not layer.has("rotation") and not layer.has("flip_h") and not layer.has("flip_v"), side + " never transforms the reviewed raster: " + file_name)
 			var runtime_path := RUNTIME + file_name
-			var source_path := SOURCE + file_name
+			var source_path := reviewed_source(file_name)
 			check(FileAccess.file_exists(runtime_path) and FileAccess.file_exists(source_path), side + " source/runtime layer exists: " + file_name)
 			check(FileAccess.get_sha256(runtime_path) == FileAccess.get_sha256(source_path), side + " runtime layer is byte-identical to reviewed candidate: " + file_name)
 			check(str(manifest.files.get(file_name, "")) == FileAccess.get_sha256(runtime_path), side + " manifest hash matches installed layer: " + file_name)
@@ -103,9 +111,9 @@ func run() -> void:
 			composite = PIXELS.binary_over(composite, source_image(source_path))
 		check(ordered == ORDER[side], side + " keeps the reviewed far-to-near layer declaration")
 		var whole_name := side + "-whole.png"
-		var source_whole := source_image(SOURCE + whole_name)
+		var source_whole := source_image(reviewed_source(whole_name))
 		check(composite.get_data() == source_whole.get_data(), side + " production declaration reconstructs the reviewed whole exactly")
-		check(FileAccess.get_sha256(RUNTIME + whole_name) == FileAccess.get_sha256(SOURCE + whole_name), side + " runtime whole reference is byte-identical")
+		check(FileAccess.get_sha256(RUNTIME + whole_name) == FileAccess.get_sha256(reviewed_source(whole_name)), side + " runtime whole reference is byte-identical")
 		check(str(manifest.files.get(whole_name, "")) == FileAccess.get_sha256(RUNTIME + whole_name), side + " manifest hash matches installed whole reference")
 		var original: Dictionary = model.catalog.coffee_station.facing_profiles[side].duplicate(true)
 		model.catalog.coffee_station.facing_profiles[side].status = "calibration_candidate"

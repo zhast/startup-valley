@@ -18,6 +18,9 @@ func state_for(room: TownRoom, hires: int) -> Dictionary:
 	var result := {"version": 1, "revision": 0, "inventory": [], "placements": {}, "recovery": ""}
 	for original: Dictionary in room.layout_model.data.props:
 		if int(original.required_hires) > hires: continue
+		# This fixture represents the initial office. Expansion furniture must
+		# not occupy the free placement bay before its office level is unlocked.
+		if int(original.get("required_office_level", 1)) > 1: continue
 		var item := {"id": original.id, "kind": original.kind, "ownerId": str(original.get("owner_id", "")), "essential": true, "grant": "test"}
 		if original.id == "founder-workstation": item["roleKit"] = "founder_strategy_kit"
 		if original.id == "mira-workstation": item["roleKit"] = "mina_discovery_kit"

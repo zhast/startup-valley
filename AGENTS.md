@@ -1,6 +1,6 @@
 # Startup Valley v0 agent guide
 
-Startup Valley v0 is an offline office tycoon with Whop flavor in the names only. It should feel like Game Dev Tycoon and Stardew Valley: hire staff, ship products, earn game cash and reputation, buy upgrades, and grow the office across days. Gameplay is a pure in-game simulation. It must start and play with no API key, no Whop call, and no network. See `docs/TYCOON_DESIGN.md`.
+Startup Valley v0 is an offline, story-led office tycoon set in the fictional TownSquare community. It should feel like Game Dev Tycoon and Stardew Valley: meet teammates, follow clear goals, ship products, earn game cash and reputation, and grow the office across days. Gameplay is a pure in-game simulation. It must start and play with no API key or network. Keep real-platform branding out of player-facing content. See `docs/TYCOON_DESIGN.md`.
 
 Keep the two-process boundary intact:
 
@@ -64,3 +64,14 @@ godot --path game
 - Do not add C#, Electron, Unity, Unreal, Bevy, MonoGame, Omnigent, OpenHands, Letta, or a remote cloud instance to v0.
 
 Dev-only Godot MCP or editor automation may assist scene editing, but it must not ship in production exports.
+
+## Runtime art changes
+
+Follow `docs/ASSET_WORKFLOW.md` before adding or replacing runtime art. Keep
+generation sources/prompts and source-to-runtime transforms, explicit camera,
+canvas, shared anchor and layer contracts, and current in-game evidence. Do not
+infer visual approval from passing geometry tests. Run `npm run assets:check`
+and the relevant Godot placement/animation tests. New or changed runtime PNGs
+need a hash-bound review in `dev/art-catalogue/runtime-reviews/`; do not refresh
+the frozen legacy baseline to bypass review. Record code-native and unknown
+legacy origins honestly rather than calling every image AI-generated.

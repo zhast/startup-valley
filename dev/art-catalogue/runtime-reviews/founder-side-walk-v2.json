@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "id": "founder-side-walk-v2",
+  "status": "approved",
+  "reviewer": "Codex browser QA (shell_quality)",
+  "reviewed_at": "2026-11-15T22:46:18.322Z",
+  "camera_profile": "office-square-grid-v1",
+  "provenance": {
+    "kind": "openai_imagegen",
+    "note": "OpenAI-generated treatment retained only as a registered native overlay; unrelated generated pixels were rejected. Historical base-sheet origin remains unchanged.",
+    "sources": [
+      {
+        "path": "game/assets/source/web-motion-polish/founder-walk-overlay.png",
+        "sha256": "b4ca3c991e78b1c4682e668391eb56efc9f85a1ef0df7e5adf2d8d2df63a2214"
+      },
+      {
+        "path": "game/assets/source/web-motion-polish/walk-replacement-mask.png",
+        "sha256": "ca46b908f6f76bdca795ff45e600c1f95507e560ff1cb295a21cabc3524826bb"
+      }
+    ],
+    "prompt": {
+      "path": "game/assets/source/web-motion-polish/prompts/founder-walk.md",
+      "sha256": "fdab20e75eaa4519625a0b1a9f102591ef20cba08e13a62c4140f2c1a96537b1"
+    },
+    "generation_id": "01a1e146-9490-71d0-99d4-d5691e91d349/exec-95a92ed5-58b9-4f73-b6ac-29bc1f9267e7.png",
+    "transform": "Clear and replace only the lower 20px of side-walk frames in the two fixed rectangles recorded in web-motion-polish/manifest.json. Nearest sample, register to original feet, remap to original palette; preserve upper body, front/back rows and idles. Rebuild with dev/tools/apply_character_motion.sh (called by build_locomotion_assets.sh)."
+  },
+  "artifacts": [
+    {
+      "path": "game/assets/runtime/characters/founder-locomotion.png",
+      "sha256": "912e17abe095398d75aef2c250c36c505e9f4a1a164f1f17f594c2e3531025a6"
+    }
+  ],
+  "bindings": [
+    {
+      "path": "game/character_art.gd",
+      "sha256": "df789f4d5c10683356c3508806ec775362422118a70c62418cf7fc043719e4b5"
+    },
+    {
+      "path": "dev/tools/apply_character_motion.sh",
+      "sha256": "96d443ea045dd89221c0a8c86f44a2548369f6ce9d798f26f604b0f37a55c523"
+    },
+    {
+      "path": "dev/tools/build_locomotion_assets.sh",
+      "sha256": "bda2aacf7e19b0e23555f08df825175453ca04d49d4811378e9a54700dd0297c"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "game/assets/source/web-motion-polish/technical-validation.json",
+      "kind": "test_report",
+      "sha256": "3a84ec1da2e10eaf8b57f8a6d3cf1f091e282542e2c9912817296d3e330580b1"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-founder-walk.png",
+      "kind": "in_game",
+      "sha256": "abdbcc41c9137d24ad87a003bd650b9b81bd04cad5a88160d4540eb6831ccabd"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-Mina-seated.png",
+      "kind": "in_game",
+      "sha256": "843e8a5a533a454443c861dea20582aaf22283755208ee16bb57c0cfed5665c5"
+    },
+    {
+      "path": "docs/web/playtest-polish-evidence.json",
+      "kind": "test_report",
+      "sha256": "54685871e6e53d1413de5f24e0fed78bca374b34c71b67cd390fe904b887e11a"
+    }
+  ],
+  "checks": {
+    "camera": {
+      "result": "passed",
+      "note": "Actual 1280x720 office capture retains established cardinal perspective; compared with the canonical board."
+    },
+    "scale": {
+      "result": "passed",
+      "note": "Inspected full native-scale office and nearest-enlarged detail; 48x80 cells and original upper-body size retained."
+    },
+    "anchor": {
+      "result": "passed",
+      "note": "Timed real movement has stable upper-body registration and a coherent foot line; no lateral frame jump."
+    },
+    "layering": {
+      "result": "passed",
+      "note": "Lower-leg replacement retains alpha and upper body; observed character moving on the office floor with its existing depth."
+    },
+    "animation": {
+      "result": "passed",
+      "note": "8 moving frames each left/right show clearly distinct passing and stride silhouettes."
+    },
+    "placement": {
+      "result": "passed",
+      "note": "Real keyboard and click navigation moved the player across free floor and returned to idle."
+    },
+    "readability": {
+      "result": "passed",
+      "note": "Leg movement is readable at intended scale, while outfit, face and identity match the original character."
+    },
+    "style": {
+      "result": "passed",
+      "note": "Retrospective comparison against the canonical board preserves pixel density, dark contour weight, character palette and existing light direction. Board was not supplied to the original generation."
+    }
+  },
+  "capture_notes": "Reviewed real Godot candidate export in isolated Chrome with actual canvas input. Contact sheets are nearest-enlarged crops of timed in-game captures, not reconstructed sprites. See bound report for exact build, metrics and coverage limits.",
+  "style_profile": {
+    "id": "startup-valley-cozy-pixel-v1",
+    "path": "dev/art-catalogue/style-profile.json",
+    "sha256": "c7c4834623a482bb976abf27bcc976f72d5b83df59a66bb93af00a49d1589fe7",
+    "application": "retrospective_review",
+    "reference_board": {
+      "path": "dev/art-catalogue/style-reference-board.png",
+      "sha256": "d91ba07ace9aef1d7e82c0daf55621afb57636d08376feae5ef8900623ba8283",
+      "note": "Code-arranged existing reference pixels; characters at3×, phone/floor at2×, window at1×, paper/desk at3×. Zoom is for inspection, not a change in runtime scale."
+    },
+    "references": [
+      {
+        "id": "founder-idle",
+        "path": "dev/art-catalogue/style-references/founder-idle.png",
+        "sha256": "d01a61aac781bea83902877ab96f45087bfb9ac8d0e3d6801fecf642cc1aa756"
+      },
+      {
+        "id": "mina-idle",
+        "path": "dev/art-catalogue/style-references/mina-idle.png",
+        "sha256": "3a8ad37498e9945a4bbeca8567db757b97b28f496c6e9294d11a707d8bd7e1df"
+      },
+      {
+        "id": "phone-booth",
+        "path": "dev/art-catalogue/style-references/phone-booth.png",
+        "sha256": "13f132874da276515063855f045ce62a02324820e18b9af8a3e9cc1be4af4fd8"
+      },
+      {
+        "id": "desk-front",
+        "path": "dev/art-catalogue/style-references/desk-front.png",
+        "sha256": "adb3458aa63d799af6f9a07723523344d63b82772e6d77f03e8da96137c02f21"
+      },
+      {
+        "id": "desk-rear",
+        "path": "dev/art-catalogue/style-references/desk-rear.png",
+        "sha256": "d5e167d93d424fcfddbb00f1cb85217aa69b3de4ee5f4b67036c0830754d29c4"
+      },
+      {
+        "id": "oak-floor",
+        "path": "dev/art-catalogue/style-references/oak-floor.png",
+        "sha256": "851eadbadcfcaf5eaeb4f30a5679d797e42409ac4ffba95d0c71fc591473db66"
+      },
+      {
+        "id": "office-window",
+        "path": "dev/art-catalogue/style-references/office-window.png",
+        "sha256": "cca8896dac6640c452ba2c7148a6f551be4e2d9c2ac793f7439e3501d8863571"
+      },
+      {
+        "id": "paper-frame",
+        "path": "dev/art-catalogue/style-references/paper-frame.png",
+        "sha256": "3a07014154ae2d624f52b563db4befaa1b3f22ed82bc440213d69251caa8111b"
+      }
+    ]
+  }
+}

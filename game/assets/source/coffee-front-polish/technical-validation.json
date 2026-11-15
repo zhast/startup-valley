@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-15",
+  "failures": [],
+  "changedRect": [
+    81,
+    134,
+    31,
+    31
+  ],
+  "canvas": [
+    192,
+    256
+  ],
+  "pivot": [
+    96,
+    192
+  ],
+  "unchangedOtherRuntimePngs": 42,
+  "files": {
+    "south-espresso.png": {
+      "sha256": "5ce03aacceb7d6eb3e7a6def30ab8af363f86ec4f036ad0178fc2d3a885dab97",
+      "changedPixels": 783,
+      "outsideChangedRect": 0,
+      "changedAlphaPixels": 0,
+      "partialAlphaPixels": 0
+    },
+    "south-whole.png": {
+      "sha256": "d6b9bcce4568472abe14826f7d6d23477022b3bdcdf4f0ecc433ab4384f67ca9",
+      "changedPixels": 783,
+      "outsideChangedRect": 0,
+      "changedAlphaPixels": 0,
+      "partialAlphaPixels": 0
+    }
+  },
+  "productionTest": {
+    "checks": 409,
+    "failures": 0,
+    "log": "docs/web/assets/coffee-front-review/production-test.log"
+  },
+  "rebuild": {
+    "exact": true,
+    "log": "docs/web/assets/coffee-front-review/rebuild.log"
+  },
+  "visualReview": {
+    "room": "Actual GameMain/TownRoom native renderer",
+    "views": [
+      "south",
+      "north",
+      "east",
+      "west"
+    ],
+    "scaleReference": "Mina",
+    "occlusion": [
+      "founder in front",
+      "founder behind"
+    ],
+    "saveAccess": false,
+    "workerDisabled": true
+  }
+}

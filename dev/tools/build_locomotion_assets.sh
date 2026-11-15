@@ -158,6 +158,16 @@ for actor in founder theo; do
   fi
 done
 
+# Keep the accepted side gait when normalizing the older source masters. The
+# reviewed mask replaces only the lower twenty pixels of walking cells.
+for actor in founder mira theo; do
+  overlay="$project_root/game/assets/source/web-motion-polish/$actor-walk-overlay.png"
+  if [[ -f "$overlay" ]]; then
+    bash "$project_root/dev/tools/apply_character_motion.sh" "$actor" \
+      "$scratch_dir/$actor/$actor-locomotion.png" "$scratch_dir/$actor/$actor-locomotion.png"
+  fi
+done
+
 # Only replace outputs after all three sources have passed measured-grid checks.
 if [[ "$check_only" == true ]]; then
   for actor in founder mira theo; do

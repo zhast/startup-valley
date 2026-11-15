@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "id": "mira-seated-blink-v2",
+  "status": "approved",
+  "reviewer": "Codex browser QA (shell_quality)",
+  "reviewed_at": "2026-11-15T22:46:18.322Z",
+  "camera_profile": "office-square-grid-v1",
+  "provenance": {
+    "kind": "openai_imagegen",
+    "note": "OpenAI-generated treatment retained only as a registered native overlay; unrelated generated pixels were rejected. Historical base-sheet origin remains unchanged.",
+    "sources": [
+      {
+        "path": "game/assets/source/web-motion-polish/mira-seated-blink-overlay.png",
+        "sha256": "94bd22e34159b07af23b099cd7dc638fcb1487891414f8587285413b759b1282"
+      }
+    ],
+    "prompt": {
+      "path": "game/assets/source/web-motion-polish/prompts/mira-seated-blink.md",
+      "sha256": "2e50e4d2f73d133ba784a1c91bbdf7fea739e4e6bfac75442c19eab50eadb959"
+    },
+    "generation_id": "01a1e146-9490-71d0-99d4-d5691e91d349/exec-87efb840-d6e8-4cc3-bcae-35ec9eac5096.png",
+    "transform": "Reapply the 288×80 registered overlay to seated frame 1. Only 86 opaque pixels in the three recorded face/bang rectangles change; other pixels and alpha remain exact. Rebuild with dev/tools/build_workstation_assets.sh."
+  },
+  "artifacts": [
+    {
+      "path": "game/assets/runtime/characters/mira-seated.png",
+      "sha256": "2e78cdcd85e7d8242ae97736658c12ffdf591d264fc684e2418b423b2904bc66"
+    }
+  ],
+  "bindings": [
+    {
+      "path": "game/character_art.gd",
+      "sha256": "df789f4d5c10683356c3508806ec775362422118a70c62418cf7fc043719e4b5"
+    },
+    {
+      "path": "game/data/furniture_catalog.json",
+      "sha256": "60cb42a14094f0acda8eb33f533639ba75949c24f54af5a8db7dea4f64338cd0"
+    },
+    {
+      "path": "dev/tools/build_workstation_assets.sh",
+      "sha256": "6255ebcd101ac05ddfa77ff417d505a70538afab4b3f6e7a7628eb24baf71a0e"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "game/assets/source/web-motion-polish/technical-validation.json",
+      "kind": "test_report",
+      "sha256": "3a84ec1da2e10eaf8b57f8a6d3cf1f091e282542e2c9912817296d3e330580b1"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-Mina-blink.png",
+      "kind": "in_game",
+      "sha256": "a1b22e76846cfb265048a0c65c67f0f870582dc6ce082c676fe197f3168ad63e"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-Mina-seated.png",
+      "kind": "in_game",
+      "sha256": "843e8a5a533a454443c861dea20582aaf22283755208ee16bb57c0cfed5665c5"
+    },
+    {
+      "path": "docs/web/playtest-polish-evidence.json",
+      "kind": "test_report",
+      "sha256": "54685871e6e53d1413de5f24e0fed78bca374b34c71b67cd390fe904b887e11a"
+    }
+  ],
+  "checks": {
+    "camera": {
+      "result": "passed",
+      "note": "Actual 1280x720 office capture retains established cardinal perspective; compared with the canonical board."
+    },
+    "scale": {
+      "result": "passed",
+      "note": "Inspected full native-scale office and nearest-enlarged detail; 48x80 cells and original upper-body size retained."
+    },
+    "anchor": {
+      "result": "passed",
+      "note": "24 seated captures keep the face and torso registered to the chair/monitor."
+    },
+    "layering": {
+      "result": "passed",
+      "note": "Observed natural movement around furniture and seated body behind the monitor; corrected pixels do not cross desk or hair layers."
+    },
+    "animation": {
+      "result": "passed",
+      "note": "Open/closed eyelids alternate at the eyes; pale bars through bangs are gone."
+    },
+    "placement": {
+      "result": "passed",
+      "note": "Real hired Mina navigated to her desk, remained seated while assigned, and resumed movement after release."
+    },
+    "readability": {
+      "result": "passed",
+      "note": "Face remains recognizably Mina in native scale and enlarged detail, with a readable blink and unchanged hair."
+    },
+    "style": {
+      "result": "passed",
+      "note": "Retrospective comparison against the canonical board preserves pixel density, dark contour weight, character palette and existing light direction. Board was not supplied to the original generation."
+    }
+  },
+  "capture_notes": "Reviewed real Godot candidate export in isolated Chrome with actual canvas input. Contact sheets are nearest-enlarged crops of timed in-game captures, not reconstructed sprites. See bound report for exact build, metrics and coverage limits.",
+  "style_profile": {
+    "id": "startup-valley-cozy-pixel-v1",
+    "path": "dev/art-catalogue/style-profile.json",
+    "sha256": "c7c4834623a482bb976abf27bcc976f72d5b83df59a66bb93af00a49d1589fe7",
+    "application": "retrospective_review",
+    "reference_board": {
+      "path": "dev/art-catalogue/style-reference-board.png",
+      "sha256": "d91ba07ace9aef1d7e82c0daf55621afb57636d08376feae5ef8900623ba8283",
+      "note": "Code-arranged existing reference pixels; characters at3×, phone/floor at2×, window at1×, paper/desk at3×. Zoom is for inspection, not a change in runtime scale."
+    },
+    "references": [
+      {
+        "id": "founder-idle",
+        "path": "dev/art-catalogue/style-references/founder-idle.png",
+        "sha256": "d01a61aac781bea83902877ab96f45087bfb9ac8d0e3d6801fecf642cc1aa756"
+      },
+      {
+        "id": "mina-idle",
+        "path": "dev/art-catalogue/style-references/mina-idle.png",
+        "sha256": "3a8ad37498e9945a4bbeca8567db757b97b28f496c6e9294d11a707d8bd7e1df"
+      },
+      {
+        "id": "phone-booth",
+        "path": "dev/art-catalogue/style-references/phone-booth.png",
+        "sha256": "13f132874da276515063855f045ce62a02324820e18b9af8a3e9cc1be4af4fd8"
+      },
+      {
+        "id": "desk-front",
+        "path": "dev/art-catalogue/style-references/desk-front.png",
+        "sha256": "adb3458aa63d799af6f9a07723523344d63b82772e6d77f03e8da96137c02f21"
+      },
+      {
+        "id": "desk-rear",
+        "path": "dev/art-catalogue/style-references/desk-rear.png",
+        "sha256": "d5e167d93d424fcfddbb00f1cb85217aa69b3de4ee5f4b67036c0830754d29c4"
+      },
+      {
+        "id": "oak-floor",
+        "path": "dev/art-catalogue/style-references/oak-floor.png",
+        "sha256": "851eadbadcfcaf5eaeb4f30a5679d797e42409ac4ffba95d0c71fc591473db66"
+      },
+      {
+        "id": "office-window",
+        "path": "dev/art-catalogue/style-references/office-window.png",
+        "sha256": "cca8896dac6640c452ba2c7148a6f551be4e2d9c2ac793f7439e3501d8863571"
+      },
+      {
+        "id": "paper-frame",
+        "path": "dev/art-catalogue/style-references/paper-frame.png",
+        "sha256": "3a07014154ae2d624f52b563db4befaa1b3f22ed82bc440213d69251caa8111b"
+      }
+    ]
+  }
+}

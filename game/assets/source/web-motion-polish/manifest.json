@@ -1,0 +1,703 @@
+{
+  "revision": "web-motion-polish-v1",
+  "method": "Built-in OpenAI ImageGen; only registered corrections retained, point sampled and remapped to the original palette.",
+  "miraSeatedBlink": {
+    "runtime": "game/assets/runtime/characters/mira-seated.png",
+    "source": "game/assets/source/web-motion-polish/mira-seated-blink-overlay.png",
+    "prompt": "game/assets/source/web-motion-polish/prompts/mira-seated-blink.md",
+    "generationSession": "01a1e146-9490-71d0-99d4-d5691e91d349",
+    "generationArtifact": "exec-87efb840-d6e8-4cc3-bcae-35ec9eac5096.png",
+    "canvas": [
+      288,
+      80
+    ],
+    "frame": [
+      1,
+      0
+    ],
+    "changedPixels": 86,
+    "rectangles": [
+      [
+        65,
+        22,
+        15,
+        3
+      ],
+      [
+        65,
+        26,
+        6,
+        5
+      ],
+      [
+        74,
+        26,
+        6,
+        5
+      ]
+    ],
+    "otherPixelsUnchanged": true,
+    "alphaUnchanged": true,
+    "rebuild": "dev/tools/build_workstation_assets.sh"
+  },
+  "sideWalks": {
+    "canvas": [
+      288,
+      320
+    ],
+    "frameSize": [
+      48,
+      80
+    ],
+    "footAnchor": [
+      24,
+      72
+    ],
+    "rectangles": [
+      [
+        96,
+        212,
+        192,
+        20
+      ],
+      [
+        96,
+        292,
+        192,
+        20
+      ]
+    ],
+    "replacementMask": "game/assets/source/web-motion-polish/walk-replacement-mask.png",
+    "rebuild": "dev/tools/apply_character_motion.sh",
+    "actors": {
+      "founder": {
+        "runtime": "game/assets/runtime/characters/founder-locomotion.png",
+        "source": "game/assets/source/web-motion-polish/founder-walk-overlay.png",
+        "generationArtifact": "exec-95a92ed5-58b9-4f73-b6ac-29bc1f9267e7.png",
+        "generationSession": "01a1e146-9490-71d0-99d4-d5691e91d349",
+        "changedPixels": 3187,
+        "beforeDecodedSha256": "1b80442852af55c1b20c0194e60176fdae520f3b30db12a074b2a2a3b9c53d44",
+        "afterDecodedSha256": "bd211ed7157012d67ac3cbbb1a819cfa547c9e0786e29387fc3412438cdc46c9",
+        "outsideRectanglesUnchanged": true,
+        "normalization": [
+          {
+            "row": 2,
+            "col": 2,
+            "sourceBounds": [
+              7,
+              4,
+              43,
+              72
+            ],
+            "beforeBounds": [
+              9,
+              4,
+              41,
+              71
+            ],
+            "shiftX": 1,
+            "shiftY": 0
+          },
+          {
+            "row": 2,
+            "col": 3,
+            "sourceBounds": [
+              8,
+              4,
+              43,
+              72
+            ],
+            "beforeBounds": [
+              8,
+              4,
+              40,
+              71
+            ],
+            "shiftX": 1,
+            "shiftY": 0
+          },
+          {
+            "row": 2,
+            "col": 4,
+            "sourceBounds": [
+              9,
+              4,
+              44,
+              72
+            ],
+            "beforeBounds": [
+              7,
+              4,
+              40,
+              71
+            ],
+            "shiftX": 2,
+            "shiftY": 0
+          },
+          {
+            "row": 2,
+            "col": 5,
+            "sourceBounds": [
+              9,
+              4,
+              44,
+              73
+            ],
+            "beforeBounds": [
+              8,
+              4,
+              40,
+              71
+            ],
+            "shiftX": 2,
+            "shiftY": 1
+          },
+          {
+            "row": 3,
+            "col": 2,
+            "sourceBounds": [
+              7,
+              4,
+              43,
+              72
+            ],
+            "beforeBounds": [
+              8,
+              4,
+              40,
+              71
+            ],
+            "shiftX": 1,
+            "shiftY": 0
+          },
+          {
+            "row": 3,
+            "col": 3,
+            "sourceBounds": [
+              8,
+              4,
+              43,
+              72
+            ],
+            "beforeBounds": [
+              8,
+              4,
+              40,
+              71
+            ],
+            "shiftX": 1,
+            "shiftY": 0
+          },
+          {
+            "row": 3,
+            "col": 4,
+            "sourceBounds": [
+              9,
+              4,
+              44,
+              72
+            ],
+            "beforeBounds": [
+              9,
+              4,
+              41,
+              71
+            ],
+            "shiftX": 2,
+            "shiftY": 0
+          },
+          {
+            "row": 3,
+            "col": 5,
+            "sourceBounds": [
+              9,
+              4,
+              44,
+              72
+            ],
+            "beforeBounds": [
+              8,
+              4,
+              40,
+              71
+            ],
+            "shiftX": 2,
+            "shiftY": 0
+          }
+        ],
+        "prompt": "game/assets/source/web-motion-polish/prompts/founder-walk.md"
+      },
+      "mira": {
+        "runtime": "game/assets/runtime/characters/mira-locomotion.png",
+        "source": "game/assets/source/web-motion-polish/mira-walk-overlay.png",
+        "generationArtifact": "exec-a5751b5e-031d-4be7-acbc-e5755f1149a0.png",
+        "generationSession": "01a1e146-9490-71d0-99d4-d5691e91d349",
+        "changedPixels": 2863,
+        "beforeDecodedSha256": "cf56cb3520047dd90862365677672f2832b89be0e296370d99c71b02ce23a453",
+        "afterDecodedSha256": "b263605fe1b62f6b1f54933381b1d6eed197c58365f006b69b2a5392447a4df6",
+        "outsideRectanglesUnchanged": true,
+        "normalization": [
+          {
+            "row": 2,
+            "col": 2,
+            "sourceBounds": [
+              8,
+              3,
+              40,
+              72
+            ],
+            "beforeBounds": [
+              10,
+              4,
+              38,
+              72
+            ],
+            "shiftX": 1,
+            "shiftY": 0
+          },
+          {
+            "row": 2,
+            "col": 3,
+            "sourceBounds": [
+              10,
+              3,
+              40,
+              73
+            ],
+            "beforeBounds": [
+              11,
+              4,
+              40,
+              72
+            ],
+            "shiftX": 0,
+            "shiftY": 1
+          },
+          {
+            "row": 2,
+            "col": 4,
+            "sourceBounds": [
+              8,
+              3,
+              41,
+              72
+            ],
+            "beforeBounds": [
+              11,
+              4,
+              39,
+              72
+            ],
+            "shiftX": 0,
+            "shiftY": 0
+          },
+          {
+            "row": 2,
+            "col": 5,
+            "sourceBounds": [
+              10,
+              3,
+              40,
+              73
+            ],
+            "beforeBounds": [
+              9,
+              4,
+              39,
+              72
+            ],
+            "shiftX": 0,
+            "shiftY": 1
+          },
+          {
+            "row": 3,
+            "col": 2,
+            "sourceBounds": [
+              8,
+              4,
+              41,
+              72
+            ],
+            "beforeBounds": [
+              9,
+              4,
+              38,
+              72
+            ],
+            "shiftX": 0,
+            "shiftY": 0
+          },
+          {
+            "row": 3,
+            "col": 3,
+            "sourceBounds": [
+              8,
+              4,
+              39,
+              73
+            ],
+            "beforeBounds": [
+              8,
+              4,
+              39,
+              72
+            ],
+            "shiftX": 0,
+            "shiftY": 1
+          },
+          {
+            "row": 3,
+            "col": 4,
+            "sourceBounds": [
+              8,
+              4,
+              42,
+              73
+            ],
+            "beforeBounds": [
+              10,
+              4,
+              40,
+              72
+            ],
+            "shiftX": 1,
+            "shiftY": 1
+          },
+          {
+            "row": 3,
+            "col": 5,
+            "sourceBounds": [
+              8,
+              3,
+              39,
+              72
+            ],
+            "beforeBounds": [
+              10,
+              4,
+              40,
+              72
+            ],
+            "shiftX": 0,
+            "shiftY": 0
+          }
+        ],
+        "prompt": "game/assets/source/web-motion-polish/prompts/mira-walk.md"
+      },
+      "theo": {
+        "runtime": "game/assets/runtime/characters/theo-locomotion.png",
+        "source": "game/assets/source/web-motion-polish/theo-walk-overlay.png",
+        "generationArtifact": "exec-9a73a205-683d-4710-a952-aa49ec8c0b93.png",
+        "generationSession": "01a1e146-9490-71d0-99d4-d5691e91d349",
+        "changedPixels": 2982,
+        "beforeDecodedSha256": "225a16f29c26ef1c3c940c3141602a9f8e58020db335b39b1a2947f281306c07",
+        "afterDecodedSha256": "bdc62148c672985825fce0ace23aceb8126eedf60a4eb5a44c674805684df6c3",
+        "outsideRectanglesUnchanged": true,
+        "normalization": [
+          {
+            "row": 2,
+            "col": 2,
+            "sourceBounds": [
+              9,
+              4,
+              40,
+              73
+            ],
+            "beforeBounds": [
+              11,
+              4,
+              40,
+              72
+            ],
+            "shiftX": 0,
+            "shiftY": 1
+          },
+          {
+            "row": 2,
+            "col": 3,
+            "sourceBounds": [
+              11,
+              4,
+              39,
+              72
+            ],
+            "beforeBounds": [
+              11,
+              4,
+              41,
+              72
+            ],
+            "shiftX": 0,
+            "shiftY": 0
+          },
+          {
+            "row": 2,
+            "col": 4,
+            "sourceBounds": [
+              10,
+              4,
+              42,
+              73
+            ],
+            "beforeBounds": [
+              10,
+              4,
+              40,
+              72
+            ],
+            "shiftX": 0,
+            "shiftY": 1
+          },
+          {
+            "row": 2,
+            "col": 5,
+            "sourceBounds": [
+              10,
+              4,
+              40,
+              72
+            ],
+            "beforeBounds": [
+              11,
+              4,
+              41,
+              72
+            ],
+            "shiftX": -1,
+            "shiftY": 0
+          },
+          {
+            "row": 3,
+            "col": 2,
+            "sourceBounds": [
+              8,
+              4,
+              38,
+              73
+            ],
+            "beforeBounds": [
+              9,
+              4,
+              38,
+              72
+            ],
+            "shiftX": 0,
+            "shiftY": 1
+          },
+          {
+            "row": 3,
+            "col": 3,
+            "sourceBounds": [
+              10,
+              4,
+              37,
+              72
+            ],
+            "beforeBounds": [
+              9,
+              4,
+              38,
+              72
+            ],
+            "shiftX": -1,
+            "shiftY": 0
+          },
+          {
+            "row": 3,
+            "col": 4,
+            "sourceBounds": [
+              7,
+              4,
+              37,
+              73
+            ],
+            "beforeBounds": [
+              9,
+              4,
+              38,
+              72
+            ],
+            "shiftX": -1,
+            "shiftY": 1
+          },
+          {
+            "row": 3,
+            "col": 5,
+            "sourceBounds": [
+              10,
+              4,
+              38,
+              72
+            ],
+            "beforeBounds": [
+              9,
+              4,
+              38,
+              72
+            ],
+            "shiftX": 0,
+            "shiftY": 0
+          }
+        ],
+        "prompt": "game/assets/source/web-motion-polish/prompts/theo-walk.md"
+      },
+      "creative": {
+        "runtime": "game/assets/runtime/characters/creative-locomotion.png",
+        "source": "game/assets/source/web-motion-polish/creative-walk-overlay.png",
+        "generationArtifact": "exec-69e38e85-a065-4200-b9f4-ab724bdfbc62.png",
+        "generationSession": "01a1e146-9490-71d0-99d4-d5691e91d349",
+        "changedPixels": 3279,
+        "beforeDecodedSha256": "4f8b8ba2e67414043fa1281532a430055253acbc1950ec57b651c8c3933c5061",
+        "afterDecodedSha256": "69172c6e82f01f0c07c8879fafc99b5b6272831f91007642822882ae1c41b59d",
+        "outsideRectanglesUnchanged": true,
+        "normalization": [
+          {
+            "row": 2,
+            "col": 2,
+            "sourceBounds": [
+              4,
+              2,
+              41,
+              73
+            ],
+            "beforeBounds": [
+              8,
+              4,
+              39,
+              72
+            ],
+            "shiftX": 0,
+            "shiftY": 1
+          },
+          {
+            "row": 2,
+            "col": 3,
+            "sourceBounds": [
+              7,
+              2,
+              40,
+              73
+            ],
+            "beforeBounds": [
+              8,
+              4,
+              39,
+              72
+            ],
+            "shiftX": -1,
+            "shiftY": 1
+          },
+          {
+            "row": 2,
+            "col": 4,
+            "sourceBounds": [
+              4,
+              2,
+              40,
+              73
+            ],
+            "beforeBounds": [
+              8,
+              4,
+              39,
+              72
+            ],
+            "shiftX": -1,
+            "shiftY": 1
+          },
+          {
+            "row": 2,
+            "col": 5,
+            "sourceBounds": [
+              6,
+              2,
+              40,
+              73
+            ],
+            "beforeBounds": [
+              8,
+              4,
+              39,
+              72
+            ],
+            "shiftX": -1,
+            "shiftY": 1
+          },
+          {
+            "row": 3,
+            "col": 2,
+            "sourceBounds": [
+              7,
+              2,
+              42,
+              73
+            ],
+            "beforeBounds": [
+              10,
+              4,
+              41,
+              72
+            ],
+            "shiftX": -1,
+            "shiftY": 1
+          },
+          {
+            "row": 3,
+            "col": 3,
+            "sourceBounds": [
+              7,
+              3,
+              40,
+              73
+            ],
+            "beforeBounds": [
+              10,
+              4,
+              41,
+              72
+            ],
+            "shiftX": -1,
+            "shiftY": 1
+          },
+          {
+            "row": 3,
+            "col": 4,
+            "sourceBounds": [
+              6,
+              3,
+              42,
+              73
+            ],
+            "beforeBounds": [
+              9,
+              4,
+              40,
+              72
+            ],
+            "shiftX": -1,
+            "shiftY": 1
+          },
+          {
+            "row": 3,
+            "col": 5,
+            "sourceBounds": [
+              6,
+              3,
+              39,
+              73
+            ],
+            "beforeBounds": [
+              10,
+              4,
+              41,
+              72
+            ],
+            "shiftX": -2,
+            "shiftY": 1
+          }
+        ],
+        "prompt": "game/assets/source/web-motion-polish/prompts/creative-walk.md"
+      }
+    }
+  }
+}

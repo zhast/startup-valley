@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "id": "startup-valley-cozy-pixel-v1",
+  "camera_profile": "office-square-grid-v1",
+  "status": "canonical_reference_profile",
+  "inspiration": "Stardew Valley-inspired warmth, legible daily-life pixel art, expressive characters and tactile interiors, interpreted through Startup Valley’s existing original art.",
+  "rules": {
+    "grid_px": [
+      32,
+      32
+    ],
+    "character_cell_px": [
+      48,
+      80
+    ],
+    "character_foot_anchor_px": [
+      24,
+      72
+    ],
+    "runtime_scale": 1,
+    "sampling": "nearest",
+    "camera": "Fixed elevated screen-aligned orthographic floor; horizontal front edges and vertical height; no diamond/isometric yaw.",
+    "lighting": "One soft upper-left light direction; stable light and shadow across all facings.",
+    "outlines": "Crisp approximately one native pixel contours in warm dark brown or material-dark colors; no thick sticker borders, blur or antialiased halo.",
+    "pixel_density": "Match reference actors and furniture at native scale. Use intentional pixel clusters, not high-resolution painted detail shrunk until noisy.",
+    "palette": "Coordinated material families: warm oak/walnut, cream paper/fabric, charcoal equipment, muted green foliage. Preserve distinct character palettes and restrained vermilion/indigo accents; do not force every asset into an identical palette.",
+    "readability": "A recognizable silhouette and purpose at native scale before small details; friendly handcrafted shapes; quiet surfaces leave faces and actions legible.",
+    "consistency": "Repeat material ramps, contour weight, light direction, scale and camera across assets. Animated frames keep identity, material colors and fixed anchors.",
+    "avoid": [
+      "photorealism",
+      "glossy 3D renders",
+      "vector-flat sticker art",
+      "isometric diamond floor",
+      "per-asset camera tilt",
+      "baked room or character in furniture",
+      "random high-saturation accents",
+      "copied third-party game sprites or logos"
+    ]
+  },
+  "references": [
+    {
+      "id": "founder-idle",
+      "source": "game/assets/runtime/characters/founder-locomotion.png",
+      "crop": [
+        0,
+        0,
+        48,
+        80
+      ],
+      "purpose": "Character anatomy, native pixel density, warm skin and hair ramps.",
+      "path": "dev/art-catalogue/style-references/founder-idle.png",
+      "sha256": "d01a61aac781bea83902877ab96f45087bfb9ac8d0e3d6801fecf642cc1aa756",
+      "source_sha256": "912e17abe095398d75aef2c250c36c505e9f4a1a164f1f17f594c2e3531025a6",
+      "derivation": "Exact crop of unchanged pre-existing front-idle cell; no resampling or repainting."
+    },
+    {
+      "id": "mina-idle",
+      "source": "game/assets/runtime/characters/mira-locomotion.png",
+      "crop": [
+        0,
+        0,
+        48,
+        80
+      ],
+      "purpose": "Consistent character proportions and face style; distinct green outfit family.",
+      "path": "dev/art-catalogue/style-references/mina-idle.png",
+      "sha256": "3a8ad37498e9945a4bbeca8567db757b97b28f496c6e9294d11a707d8bd7e1df",
+      "source_sha256": "e3a74b3afb86583caece71ca78ce9601afbdcce3725b2805e6f70572a054cc16",
+      "derivation": "Exact crop of unchanged pre-existing front-idle cell; no resampling or repainting."
+    },
+    {
+      "id": "phone-booth",
+      "source": "game/assets/runtime/office/phone-booth-south.png",
+      "purpose": "Accepted camera, upper-left lighting, warm wood and clean object silhouette.",
+      "path": "dev/art-catalogue/style-references/phone-booth.png",
+      "sha256": "13f132874da276515063855f045ce62a02324820e18b9af8a3e9cc1be4af4fd8",
+      "source_sha256": "13f132874da276515063855f045ce62a02324820e18b9af8a3e9cc1be4af4fd8",
+      "derivation": "Pixel-preserving PNG snapshot; no resampling or repainting."
+    },
+    {
+      "id": "desk-front",
+      "source": "game/assets/runtime/office/workstations-v2/desk-south-front.png",
+      "purpose": "Screen-aligned horizontal front edges, native furniture scale and warm wood.",
+      "path": "dev/art-catalogue/style-references/desk-front.png",
+      "sha256": "adb3458aa63d799af6f9a07723523344d63b82772e6d77f03e8da96137c02f21",
+      "source_sha256": "5e9e1eeeab65a39a73db6ffee6544d59514e43e62493859d796f5efe8183c183",
+      "derivation": "Pixel-preserving PNG snapshot; no resampling or repainting."
+    },
+    {
+      "id": "desk-rear",
+      "source": "game/assets/runtime/office/workstations-v2/desk-south-rear.png",
+      "purpose": "Separate rear structure without baked characters.",
+      "path": "dev/art-catalogue/style-references/desk-rear.png",
+      "sha256": "d5e167d93d424fcfddbb00f1cb85217aa69b3de4ee5f4b67036c0830754d29c4",
+      "source_sha256": "54e7bfe7f3c6760700e0aa61cb3e9eeac4cb51833bbc3fc40028b1902f7bbcc4",
+      "derivation": "Pixel-preserving PNG snapshot; no resampling or repainting."
+    },
+    {
+      "id": "oak-floor",
+      "source": "game/assets/runtime/office/architecture/floor.png",
+      "purpose": "Quiet low-contrast material texture on the 32px logical grid.",
+      "path": "dev/art-catalogue/style-references/oak-floor.png",
+      "sha256": "851eadbadcfcaf5eaeb4f30a5679d797e42409ac4ffba95d0c71fc591473db66",
+      "source_sha256": "6202478639de33fe7f8b548b49a20dddff6b69b59300300bcc89cfa064f2d0bd",
+      "derivation": "Pixel-preserving PNG snapshot; no resampling or repainting."
+    },
+    {
+      "id": "office-window",
+      "source": "game/assets/runtime/office/architecture/window.png",
+      "purpose": "Warm interior wood and grouped natural landscape colors.",
+      "path": "dev/art-catalogue/style-references/office-window.png",
+      "sha256": "cca8896dac6640c452ba2c7148a6f551be4e2d9c2ac793f7439e3501d8863571",
+      "source_sha256": "c34301f0f32ff5e2fb37762ca4a781246b5f54156fe66b056a1aef1df7ac6f53",
+      "derivation": "Pixel-preserving PNG snapshot; no resampling or repainting."
+    },
+    {
+      "id": "paper-frame",
+      "source": "game/assets/runtime/ui/notebook/content-frame.png",
+      "purpose": "Cream paper, brown borders, restrained highlights and friendly tone.",
+      "path": "dev/art-catalogue/style-references/paper-frame.png",
+      "sha256": "3a07014154ae2d624f52b563db4befaa1b3f22ed82bc440213d69251caa8111b",
+      "source_sha256": "a98c0d59ddb91aed2449f2ce60190d55eeee5321c34f2999d2a794cd301d87fc",
+      "derivation": "Pixel-preserving PNG snapshot; no resampling or repainting."
+    }
+  ],
+  "board": {
+    "path": "dev/art-catalogue/style-reference-board.png",
+    "sha256": "d91ba07ace9aef1d7e82c0daf55621afb57636d08376feae5ef8900623ba8283",
+    "note": "Code-arranged existing reference pixels; characters at3×, phone/floor at2×, window at1×, paper/desk at3×. Zoom is for inspection, not a change in runtime scale."
+  },
+  "prompt_template": {
+    "path": "dev/art-catalogue/prompts/shared-style-template.md",
+    "sha256": "1eef607f3fdfb8753358deae0cc8fa0fd98e19aaddc6d0b5dc81da8dd037092a"
+  }
+}

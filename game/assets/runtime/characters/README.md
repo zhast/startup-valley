@@ -22,3 +22,11 @@ head center across each employee's frames to prevent pose jitter/color flicker.
 The measured locomotion export also applies the reviewed eye-only overlays in
 `assets/source/web-eye-polish/` to the Founder and Theo front-idle blink.
 They preserve the original palette, alpha, frame positions and all other poses.
+
+The reviewed corrections in `assets/source/web-motion-polish/` add distinct
+contact/passing legs to side-facing walking frames and repair Mina's seated
+blink. Walk replacements affect only local rows 52–71 of walking columns 2–5
+in the left/right atlas rows. The source mask removes old leg pixels before
+applying the replacement, while every idle, front/back walk and upper-body
+pixel remains unchanged. The standard locomotion and seated build scripts
+reapply these corrections; the source manifest records their exact bounds.

@@ -1,0 +1,616 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-15T22:46:18.322Z",
+  "reviewer": "Codex browser QA (shell_quality)",
+  "environment": {
+    "engine": "4.7.2.stable.official.ed1daf0bf",
+    "built_at": "2026-11-15T22:41:50.715Z",
+    "asset_review": "candidate_preview",
+    "browser": "Installed Google Chrome via Playwright, fresh isolated profiles",
+    "viewports": [
+      [
+        1280,
+        720
+      ],
+      [
+        1280,
+        900
+      ],
+      [
+        960,
+        600
+      ],
+      [
+        1440,
+        900
+      ]
+    ],
+    "build_sha256": {
+      "pck": "1d08b0f208cfe6eb6c8b00bc99cf9fb4f5404614988c978691a09050711cdb50",
+      "shell": "0b56bf83b08250f8d1528db78b40463f4bf42889e06b341d93d666a55c198901"
+    }
+  },
+  "result": "passed",
+  "gameplay": {
+    "real_canvas_input": true,
+    "worker_mutations_injected": false,
+    "default_product": "Fitness Course",
+    "staff_ids": [
+      "founder",
+      "mira"
+    ],
+    "development_days": 3,
+    "released": {
+      "cashCents": 156800,
+      "earnedCents": 156800,
+      "reputation": 13,
+      "chapter": 1
+    },
+    "restored_company": {
+      "cashCents": 156800,
+      "earnedCents": 156800,
+      "reputation": 13,
+      "chapter": 1
+    },
+    "restored_product_id": "p1",
+    "restored_story_moments": 4,
+    "furnishing_grid": [
+      8,
+      18
+    ],
+    "second_tab_protected": true,
+    "methods": [
+      "health",
+      "bootstrap",
+      "credential.status",
+      "clock.set",
+      "hiring.complete",
+      "game.save",
+      "tycoon.start",
+      "day.end",
+      "tycoon.release",
+      "furnishing.update"
+    ],
+    "errors": []
+  },
+  "visual": {
+    "accepted_reviews": [
+      "founder-side-walk-v2",
+      "mira-side-walk-v2",
+      "mira-seated-blink-v2"
+    ],
+    "other_characters": "Theo and Creative not rendered in this browser run; their review stays pending.",
+    "founder": "8 real moving frames in each side direction; contracting passing poses alternate with extended strides.",
+    "mina_walk": "32 frames of natural office route; left/right poses, furniture occlusion and seated arrival inspected.",
+    "mina_blink": "24 seated captures; eyelids close at eyes, bangs remain stable. At desk through the captures plus a further 9 second hold. Later departs after release.",
+    "drawer": {
+      "frames": 97,
+      "changed": 0,
+      "maxDiff": 0,
+      "byframe": [
+        {
+          "frame": 0,
+          "diff": 0
+        },
+        {
+          "frame": 1,
+          "diff": 0
+        },
+        {
+          "frame": 2,
+          "diff": 0
+        },
+        {
+          "frame": 3,
+          "diff": 0
+        },
+        {
+          "frame": 4,
+          "diff": 0
+        },
+        {
+          "frame": 5,
+          "diff": 0
+        },
+        {
+          "frame": 6,
+          "diff": 0
+        },
+        {
+          "frame": 7,
+          "diff": 0
+        },
+        {
+          "frame": 8,
+          "diff": 0
+        },
+        {
+          "frame": 9,
+          "diff": 0
+        },
+        {
+          "frame": 10,
+          "diff": 0
+        },
+        {
+          "frame": 11,
+          "diff": 0
+        },
+        {
+          "frame": 12,
+          "diff": 0
+        },
+        {
+          "frame": 13,
+          "diff": 0
+        },
+        {
+          "frame": 14,
+          "diff": 0
+        },
+        {
+          "frame": 15,
+          "diff": 0
+        },
+        {
+          "frame": 16,
+          "diff": 0
+        },
+        {
+          "frame": 17,
+          "diff": 0
+        },
+        {
+          "frame": 18,
+          "diff": 0
+        },
+        {
+          "frame": 19,
+          "diff": 0
+        },
+        {
+          "frame": 20,
+          "diff": 0
+        },
+        {
+          "frame": 21,
+          "diff": 0
+        },
+        {
+          "frame": 22,
+          "diff": 0
+        },
+        {
+          "frame": 23,
+          "diff": 0
+        },
+        {
+          "frame": 24,
+          "diff": 0
+        },
+        {
+          "frame": 25,
+          "diff": 0
+        },
+        {
+          "frame": 26,
+          "diff": 0
+        },
+        {
+          "frame": 27,
+          "diff": 0
+        },
+        {
+          "frame": 28,
+          "diff": 0
+        },
+        {
+          "frame": 29,
+          "diff": 0
+        },
+        {
+          "frame": 30,
+          "diff": 0
+        },
+        {
+          "frame": 31,
+          "diff": 0
+        },
+        {
+          "frame": 32,
+          "diff": 0
+        },
+        {
+          "frame": 33,
+          "diff": 0
+        },
+        {
+          "frame": 34,
+          "diff": 0
+        },
+        {
+          "frame": 35,
+          "diff": 0
+        },
+        {
+          "frame": 36,
+          "diff": 0
+        },
+        {
+          "frame": 37,
+          "diff": 0
+        },
+        {
+          "frame": 38,
+          "diff": 0
+        },
+        {
+          "frame": 39,
+          "diff": 0
+        },
+        {
+          "frame": 40,
+          "diff": 0
+        },
+        {
+          "frame": 41,
+          "diff": 0
+        },
+        {
+          "frame": 42,
+          "diff": 0
+        },
+        {
+          "frame": 43,
+          "diff": 0
+        },
+        {
+          "frame": 44,
+          "diff": 0
+        },
+        {
+          "frame": 45,
+          "diff": 0
+        },
+        {
+          "frame": 46,
+          "diff": 0
+        },
+        {
+          "frame": 47,
+          "diff": 0
+        },
+        {
+          "frame": 48,
+          "diff": 0
+        },
+        {
+          "frame": 49,
+          "diff": 0
+        },
+        {
+          "frame": 50,
+          "diff": 0
+        },
+        {
+          "frame": 51,
+          "diff": 0
+        },
+        {
+          "frame": 52,
+          "diff": 0
+        },
+        {
+          "frame": 53,
+          "diff": 0
+        },
+        {
+          "frame": 54,
+          "diff": 0
+        },
+        {
+          "frame": 55,
+          "diff": 0
+        },
+        {
+          "frame": 56,
+          "diff": 0
+        },
+        {
+          "frame": 57,
+          "diff": 0
+        },
+        {
+          "frame": 58,
+          "diff": 0
+        },
+        {
+          "frame": 59,
+          "diff": 0
+        },
+        {
+          "frame": 60,
+          "diff": 0
+        },
+        {
+          "frame": 61,
+          "diff": 0
+        },
+        {
+          "frame": 62,
+          "diff": 0
+        },
+        {
+          "frame": 63,
+          "diff": 0
+        },
+        {
+          "frame": 64,
+          "diff": 0
+        },
+        {
+          "frame": 65,
+          "diff": 0
+        },
+        {
+          "frame": 66,
+          "diff": 0
+        },
+        {
+          "frame": 67,
+          "diff": 0
+        },
+        {
+          "frame": 68,
+          "diff": 0
+        },
+        {
+          "frame": 69,
+          "diff": 0
+        },
+        {
+          "frame": 70,
+          "diff": 0
+        },
+        {
+          "frame": 71,
+          "diff": 0
+        },
+        {
+          "frame": 72,
+          "diff": 0
+        },
+        {
+          "frame": 73,
+          "diff": 0
+        },
+        {
+          "frame": 74,
+          "diff": 0
+        },
+        {
+          "frame": 75,
+          "diff": 0
+        },
+        {
+          "frame": 76,
+          "diff": 0
+        },
+        {
+          "frame": 77,
+          "diff": 0
+        },
+        {
+          "frame": 78,
+          "diff": 0
+        },
+        {
+          "frame": 79,
+          "diff": 0
+        },
+        {
+          "frame": 80,
+          "diff": 0
+        },
+        {
+          "frame": 81,
+          "diff": 0
+        },
+        {
+          "frame": 82,
+          "diff": 0
+        },
+        {
+          "frame": 83,
+          "diff": 0
+        },
+        {
+          "frame": 84,
+          "diff": 0
+        },
+        {
+          "frame": 85,
+          "diff": 0
+        },
+        {
+          "frame": 86,
+          "diff": 0
+        },
+        {
+          "frame": 87,
+          "diff": 0
+        },
+        {
+          "frame": 88,
+          "diff": 0
+        },
+        {
+          "frame": 89,
+          "diff": 0
+        },
+        {
+          "frame": 90,
+          "diff": 0
+        },
+        {
+          "frame": 91,
+          "diff": 0
+        },
+        {
+          "frame": 92,
+          "diff": 0
+        },
+        {
+          "frame": 93,
+          "diff": 0
+        },
+        {
+          "frame": 94,
+          "diff": 0
+        },
+        {
+          "frame": 95,
+          "diff": 0
+        },
+        {
+          "frame": 96,
+          "diff": 0
+        }
+      ]
+    },
+    "clicks": [
+      {
+        "file": "26-click-1280",
+        "click": [
+          801,
+          609
+        ],
+        "center": [
+          801,
+          609
+        ],
+        "delta": [
+          0,
+          0
+        ],
+        "pixels": 16
+      },
+      {
+        "file": "28-click-960",
+        "click": [
+          600.75,
+          486.75
+        ],
+        "center": [
+          600,
+          486
+        ],
+        "delta": [
+          -0.75,
+          -0.75
+        ],
+        "pixels": 8
+      },
+      {
+        "file": "30-click-1440",
+        "click": [
+          901.125,
+          730.125
+        ],
+        "center": [
+          901,
+          730
+        ],
+        "delta": [
+          -0.125,
+          -0.125
+        ],
+        "pixels": 16
+      }
+    ],
+    "cursor": {
+      "floor": {
+        "hotspot": [
+          0,
+          0
+        ],
+        "size": [
+          32,
+          32
+        ],
+        "opaque_hotspot": true
+      },
+      "desk": {
+        "hotspot": [
+          10,
+          0
+        ],
+        "size": [
+          32,
+          32
+        ],
+        "opaque_hotspot": true
+      }
+    },
+    "style": "Compared with canonical style-reference-board.png; preserved character identity, palette family, native pixel density and room perspective."
+  },
+  "limits": [
+    "Desktop Chrome tested; no physical touch, Safari, Firefox or controller acceptance.",
+    "Desk caption copy is from candidate preview and predates later story-caption edit.",
+    "Future onboarding redesign needs its own fresh smoke; these files certify the captured build only."
+  ],
+  "evidence": [
+    {
+      "path": "docs/web/assets/playtest-polish-founder-walk.png",
+      "sha256": "abdbcc41c9137d24ad87a003bd650b9b81bd04cad5a88160d4540eb6831ccabd"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-Mina-walk.png",
+      "sha256": "7e25e7f546092dfbbe6c7d162f9dc49965554e614ddb6738f92b834cc7bbeeec"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-Mina-blink.png",
+      "sha256": "a1b22e76846cfb265048a0c65c67f0f870582dc6ce082c676fe197f3168ad63e"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-Mina-seated.png",
+      "sha256": "843e8a5a533a454443c861dea20582aaf22283755208ee16bb57c0cfed5665c5"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-first-meeting.png",
+      "sha256": "d74f30eb54f0f126844ddbd1f5292cd05c9213b19a28fb4f18d57ae1b47bc9dd"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-welcome.png",
+      "sha256": "ccb5dd964460b11b6b70629518fb6a80aad4ed927f78fe2a06131773c7a66eef"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-project-plan.png",
+      "sha256": "8df636cda751f59073cff58151acbdf6a29631f9a1b71f744daf981907cfb47a"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-release.png",
+      "sha256": "4c281c677897e73d28a4bf98a9a4d8984aa0c124345a4770c6fc5933abcf1c55"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-reloaded-story.png",
+      "sha256": "0fb4edd86d728783609dbacb0346b749be248b72960076d04ce1f9729e5f079a"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-drawer-motion.png",
+      "sha256": "a9fe5446bcfade039c28d01052e3b3c3ddb3fb9da2683e688a6709d08c2baa98"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-click.png",
+      "sha256": "70a4103a396a1a56f92dbd6e111da3c78b826c48fd5ed71740bfa349c3dc007a"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-arrow-cursor.png",
+      "sha256": "3058bea393946cd553ba151960699c2ae982efe69ae563193f5ce69c34163805"
+    },
+    {
+      "path": "docs/web/assets/playtest-polish-hand-cursor.png",
+      "sha256": "362f275262214c8a305222a0dd32ba0865b971be0dcf41d3600796ac232ac2a6"
+    }
+  ]
+}

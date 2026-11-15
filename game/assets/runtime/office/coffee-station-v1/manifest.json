@@ -1,9 +1,20 @@
 {
   "revision": "coffee-station-v1",
   "status": "runtime_ready",
-  "directions": ["north", "east", "south", "west"],
-  "canvas": [192, 256],
-  "pivot": [96, 192],
+  "directions": [
+    "north",
+    "east",
+    "south",
+    "west"
+  ],
+  "canvas": [
+    192,
+    256
+  ],
+  "pivot": [
+    96,
+    192
+  ],
   "native_scale": 1,
   "interaction": "noninteractive",
   "files": {
@@ -33,13 +44,13 @@
     "south-counter_front.png": "913a1f5dfe1105cc491bd8fb2da9a14d6932fd2ffdedcb3b7b6aa88d1b16c95e",
     "south-counter_plinth.png": "7c3a9a718101a3679e5fb689799b841b5d979548b3f70e2997e9c980f00fad3d",
     "south-counter_top.png": "f3e9cee584aa231b7a0747df21b004b6d00cc8d73a5dca96919b21112abb396f",
-    "south-espresso.png": "6244bfde72c106f3d0cd956485c595b39910d59a0d62a8eaf528947ce4fe799f",
+    "south-espresso.png": "5ce03aacceb7d6eb3e7a6def30ab8af363f86ec4f036ad0178fc2d3a885dab97",
     "south-floor_shadow.png": "f7f9b70d64503734ad2cf812fcc17a96640f8e86d1e4096e6052055b5586ba98",
     "south-grinder.png": "b6c2f19f008c7873610dc47e625b07ce431751b8c3817ea8400913a03b23706a",
     "south-plant.png": "f5733fcd51f6ec4afa8f901a3583b59f24945fafd2bc61798465191a8a9e556f",
     "south-service_panel.png": "334e8e2ea2887eb78f041b514a541c56a6bf583e9b345294dc5292cd92bb4403",
     "south-serviceware.png": "f6088533bdc29ca55aa7a5401aa5908c2335c4c0fead1394dd1f2e1a7b62dd17",
-    "south-whole.png": "f7bbf9c6b0c072d53140a0acae2c017a613fc546caa89a44eb8e2bc1ae0da021",
+    "south-whole.png": "d6b9bcce4568472abe14826f7d6d23477022b3bdcdf4f0ecc433ab4384f67ca9",
     "west-counter_carcass.png": "f23ba897a97ee02b772344579d75bdf4ba604cbae002382164a5def45cced193",
     "west-counter_front.png": "3bac0d165259773442839754ab0c1e86270bc12d78804bab3da30f7fed0049a5",
     "west-counter_plinth.png": "6295ba76026d8877490c7ca94186d3960861eed547227eff8c14b8a07ec2f917",
