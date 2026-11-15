@@ -393,7 +393,16 @@ func update_furnishing(operation_id: String, expected_revision: int, placements:
 	if not _transport_connected():
 		furnishing_failed.emit(operation_id, "The worker is disconnected. Reconnect before saving the office.")
 		return
-	_send_request("furnishing.update", {"operationId": operation_id, "expectedRevision": expected_revision, "placements": placements, "actorCells": actor_cells}, operation_id)
+	_send_request("furnishing.update", {"operationId": operation_id, "expectedRevision": expected_revision, "placements": placements, "actorCells": furnishing_actor_snapshot(actor_cells)}, operation_id)
+
+static func furnishing_actor_snapshot(actor_cells: Array) -> Array:
+	# The arrival visitor reserves real floor space before she joins the team.
+	# Keep the local navigation identity for retry/movement checks, but send her
+	# canonical person ID at the protocol boundary. Do not remove her collision.
+	var snapshot := actor_cells.duplicate(true)
+	for actor: Dictionary in snapshot:
+		if str(actor.get("id", "")) == "arrival-mina": actor["id"] = "mira"
+	return snapshot
 
 func refresh_furnishing() -> void:
 	if _transport_connected(): _send_request("bootstrap", {}, "furnishing")

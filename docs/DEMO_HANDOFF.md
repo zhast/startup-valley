@@ -12,22 +12,26 @@ in-app browser, without OS-level control or other browser profiles. QA should
 serve the same `dist` on a separate localhost origin (planned port 5181) to
 avoid modifying the owner's existing 5177 save. Native testing remains required.
 
-Current verified local/remote checkpoint: `d39231e` (includes map admission,
-asset status and native input probes; the equivalent local commit was
-`1630b40`). Confirmed remote checkpoint:
-`d39231e52be72c7d0f50282f7e5901dc7cc6c68f`, which includes the
-opening/courtyard implementation, cursor/settings/arrival fixes and initial
-test harness. Verify
+Latest confirmed remote checkpoint: `d881da406d76f68b1a6c32f4c70ebeb2f00e27d6`,
+the exact tree of local `0f32486`: compact centered Mina dialogue, reward
+projection and retained visual audit. Previous local `46c2e0b` (earned furnishing
+grants) is also pushed; local `3cd6e71` contains the completed blink repair.
+Verify
 Git state before resuming; connector-created remote commits can have different
 IDs with identical full Git trees. Do not overwrite someone else's new work.
 
-The QA agent owns ongoing test-only edits in `game/tests/test_demo_journey.gd`
-and `scripts/test-demo-godot.mjs`. The asset agent is repairing standing eye
-pixels and shared blink timing; those runtime changes are not yet a completed
-reviewed checkpoint. Hold normal exports while their raster reviews are pending.
-The former story agent is now auditing chairs/desks/phone-booth scale with
-native comparison fixtures; map visual approval is on hold for that audit.
-Newly imported test `.gd.uid` files should be retained.
+**Latest owner constraint:** No windowed Godot demos or captures. All agents
+stopped them; the process inventory confirmed only headless Godot remains.
+Use headless engine checks and the existing Codex in-app browser tab without
+bringing this chat to the foreground. Keep other browser profiles/OS control out.
+
+Current work owners: asset-quality handles the shared cute wooden workstation
+and collaboration chairs; story-progression handles standalone furniture scale,
+earned grants and save-preserving registration migration; shell-quality handles
+shared modular office/courtyard terrain. Root owns visual-QA documentation,
+WorkerClient integration, publication and in-app browser verification. Hold
+normal exports while these raster/map reviews are pending. Retain new `.gd.uid`
+files. See [VISUAL_QA.md](VISUAL_QA.md) for the current review loop and tool choice.
 
 ## Implemented and saved
 
@@ -44,13 +48,11 @@ Newly imported test `.gd.uid` files should be retained.
 - Repaired walk poses, Mina seated eye pixels, south coffee front, chair depth and Creative
   portrait. Seven approved runtime image changes retain source/provenance and
   hash-bound reviews. New courtyard work adds no runtime PNGs.
-- **Reopened:** Mina standing blink still paints pale bars across her bangs
-  while the pupils stay open. All idle blink timing is excessively long.
-  The asset-quality agent is repairing both with broad native pose coverage.
-  See `ASSET_STATUS.md` for the exact generated/code-only inventory.
-- Mina's new candidate has passed an independent timed native check (194
-  checks, 90 samples). The same review exposed oversized dark closed-eye blocks
-  on Founder, now being repaired. Do not claim all blinks are complete yet.
+- **Completed:** Mina and Founder standing eyelids are repaired; idle blinks
+  last 120ms every four seconds, staggered by actor. The final byte-stable native
+  timing run passed 196 checks, with 90 samples; focused blink checks passed105.
+  These changes are committed, pushed and in the current normal web export.
+  See `ASSET_STATUS.md` for exact generated/code-only scope.
 - New owner report: chairs, desks and phone booths feel inconsistently scaled.
   A separate agent is measuring their painted bounds, anchors and proportions
   in native scenes; preserve pending map evidence but do not approve it yet.
@@ -63,12 +65,15 @@ Newly imported test `.gd.uid` files should be retained.
 
 ## Playable build
 
-The normal export was refreshed immediately after the owner's localhost report.
-`http://127.0.0.1:5177/` now serves build **598d1388963c00e7**, built at
-**2026-11-15T23:11:49.670Z**, including production through `bdc0b90`.
+`http://127.0.0.1:5177/` serves build **b5d7da90f647ea26**, built at
+**2026-11-15T23:19:52.930Z**, including production through `3cd6e71`.
 The release asset gate passed. HTTP200 responses and exact SHA256 comparisons
 confirmed the served HTML, WASM, PCK and browser worker match this build.
-The reopened standing-blink/timing fixes are not in this checkpoint yet.
+The standing-blink/timing fixes are included. The later compact dialogue,
+earned furniture grants and in-progress world/furniture work are not yet in it.
+QA origin `http://127.0.0.1:5181/` currently serves the same dist; the root agent
+has verified WebGL startup, movement and the Mina invitation in the in-app
+browser. Full release/reload browser acceptance remains pending.
 
 Refresh the browser page to load a newly exported build. Source commits alone
 do not change an already-running game. Rebuild and verify localhost promptly
@@ -148,8 +153,8 @@ npm run build:web
 npm run validate:web
 ```
 
-Remove `--headless` for required visual capture checks; inspect the resulting
-images, not only exit codes. Add targeted actual-scene/worker integration for
+Keep `--headless`; windowed runs are disallowed by the owner's latest request.
+Use the existing in-app browser for current rendered evidence. Add actual-scene/worker integration for
 new behavior. Do not run paid provider evaluations or read credentials for
 these offline checks. Tests use disposable saves.
 
@@ -165,19 +170,19 @@ could write this repository. Never persist its credentials in the repository.
 
 ## Next concrete work
 
-1. Finish the preliminary native input probe, save its test-only fixes, then
-   run three clean complete journeys against frozen committed source at the
+1. Finish and save modular terrain, furniture and projection work, then
+   run three clean complete headless journeys against frozen committed source at the
    planned sizes/modes. Include exact save/restart comparisons, courtyard edge
    position, Theo's brief, return and starting its real matching project.
 2. Finish focused small-screen/touch and actual New Company reset checks.
-   Review current native screenshots/animation evidence; fix confirmed defects.
+   Review current in-app browser screenshots/animation evidence; fix confirmed defects.
 3. Save `docs/web/demo-acceptance.md`, structured results, logs and a concise
-   selection of current native captures. Distinguish preliminary/final evidence.
+   selection of current browser captures. Distinguish preliminary/final evidence.
 4. Refresh the normal export if production changes. Package it with
    `npm run package:demo -- --screenshot ... --screenshot ... --screenshot ...`,
    retain its ZIP/hash/manifest and verify the served build matches.
 5. Complete the newly requested shared-world map framework: modular approved
-   props, consistent style/grid/camera, registered maps and hash-bound native
+   props, consistent style/grid/camera, registered maps and hash-bound engine/browser
    review evidence. Integrate its validated gate and document future generation.
 6. Commit and push each passing increment. Verify local/remote trees, update
    this handoff and mark the goal complete only after required acceptance passes.

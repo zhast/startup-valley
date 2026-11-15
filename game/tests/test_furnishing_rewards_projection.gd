@@ -10,6 +10,14 @@ func _initialize() -> void:
 	call_deferred("run")
 
 func run() -> void:
+	var local_actors := [{"id": "founder", "grid": [15, 19], "position": [496.0, 624.0]}, {"id": "arrival-mina", "grid": [17, 17], "position": [560.0, 560.0]}]
+	var wire_actors := WorkerClient.furnishing_actor_snapshot(local_actors)
+	check(wire_actors.size() == 2 and wire_actors[1].id == "mira", "Arrival Mina keeps her collision reservation under the canonical protocol ID")
+	check(wire_actors[1].grid == [17, 17] and wire_actors[1].position == [560.0, 560.0], "Arrival mapping preserves the exact protected cell and position")
+	check(local_actors[1].id == "arrival-mina", "The frozen local retry snapshot retains its navigation identity")
+	wire_actors[1].grid[0] = 99
+	check(local_actors[1].grid == [17, 17], "Transport copies cannot mutate retry coordinates")
+	check(WorkerClient.furnishing_actor_snapshot([{"id": "theo"}])[0].id == "theo", "Other canonical actor identities remain unchanged")
 	var client := WorkerClient.new()
 	root.add_child(client)
 	client.journey_received.connect(func(_journey: Dictionary) -> void: events.append("journey"))

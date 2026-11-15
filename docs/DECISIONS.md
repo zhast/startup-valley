@@ -216,3 +216,37 @@ separate localhost origin so the owner's 5177 save is untouched. Do not use
 OS-level computer control or other browser profiles. Public hosting remains
 deferred. Record the exact browser build and distinguish its coverage from
 native, physical-device and cross-browser acceptance.
+
+## 2026-11-15 — Content-sized character dialogue and concrete visual checks
+
+**Decision:** Center the invitation on the full canvas and let its portrait,
+short introduction and single action determine a compact card. Keep one shared
+safe rectangle and Container layout. The card is now680×256 instead of860×344;
+the portrait frame is144×160. Preserve direct reward feedback in the release
+summary, only for newly granted furnishings.
+
+**Evidence:** [Compact invitation](web/compact-invitation.md) retains actual
+before/after scenes and three viewport checks. Native250 and headless241 layout
+assertions pass. Worker projection checks guarantee inventory arrives before
+the summary is presented. [Visual QA](VISUAL_QA.md) records researched tooling,
+same-scale measurements, screenshot limits and the review loop.
+
+## 2026-11-15 — Keep background testing non-disruptive
+
+**Owner instruction:** Stop windowed Godot demos; this chat runs in the
+background while other chats are in use. All agents stopped native windows.
+Use headless Godot and the existing Codex in-app browser for current visual
+evidence, without activating other browser profiles or controlling the OS.
+Earlier native captures remain historical evidence, not proof of a later build.
+
+## 2026-11-15 — Preserve the arrival visitor in furniture validation
+
+**Finding:** Before Mina is hired, navigation reserves her position as
+`arrival-mina`, while the worker protocol accepts her canonical ID `mira`.
+Passing the local alias rejected otherwise valid renovation saves.
+
+**Decision:** Deep-copy and canonicalize that ID at the WorkerClient transport
+boundary, keeping exact grid/position protection and the original frozen local
+snapshot for retry/movement checks. Do not remove the visitor from collision
+validation. The headless actual-worker renovation test now passes the formerly
+rejected save operations; focused projection checks also cover immutability.

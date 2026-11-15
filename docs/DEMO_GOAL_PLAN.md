@@ -14,8 +14,10 @@ requirement. Use engine-driven Godot tests and automated worker/export checks.
 The owner subsequently authorized browser QA in Codex's in-app browser: test
 the actual export on a disposable localhost origin using supported browser
 APIs, without OS-level computer control or access to other browser profiles.
-Native renders and frame captures remain valid visual evidence. Record native
-and in-app-browser coverage separately.
+The owner subsequently stopped all windowed Godot demos and captures because
+this chat runs in the background. Use headless engine tests and the existing
+in-app browser for new visual evidence, without bringing this chat forward.
+Keep prior native captures as historical evidence and distinguish their scope.
 
 This is a bounded demo, not an instruction to build an entire life simulator.
 Do not claim completion from code or a screenshot alone. The integrated game
@@ -42,7 +44,7 @@ The current work already provides:
 Before starting, inspect `git status`, recent commits, `AGENTS.md`,
 `docs/DECISIONS.md`, the latest integrated test report and the durable handoff.
 Preserve completed fixes and unrelated work. Older browser reports may provide
-historical context; they do not require new browser testing. Verify whether
+historical context; verify the current export separately in the in-app browser. Verify whether
 recent local commits have reached `origin/main`; finish pending Git pushes
 rather than creating another branch or PR.
 
@@ -130,7 +132,7 @@ Keep the existing release-export pipeline reproducible. Run its automated
 resource, asset, worker-bundle and export checks, including WASM/PCK presence,
 resource paths and required loader/configuration settings. Refresh the playable
 local build after verified major changes and expose its build identifier.
-Retain an export ZIP, a short controls/demo summary, three current Godot-rendered
+Retain an export ZIP, a short controls/demo summary, three current in-app game
 screenshots and a known-limitations note. No new website or public deployment
 is needed, and an export check must not be described as a hosted-browser test.
 
@@ -183,7 +185,7 @@ question. Do not replace finished work merely to match a new plan.
    tests. Include the asset release gate, seating composition, portrait,
    navigation, tutorial and migration tests. Run the offline evaluation suite.
 2. Complete the entire demo three times from clean saves using engine-driven
-   input in the actual Godot scenes and production worker integration. Exercise
+   input in headless Godot scenes and production worker integration. Exercise
    the same UI actions as a player; do not seed completed milestones, grant
    rewards directly or bypass gameplay to claim a pass. Test helpers may launch,
    resize, send input, capture frames and observe state, without replacing the
@@ -202,8 +204,8 @@ question. Do not replace finished work merely to match a new plan.
    states and that every required action is visible and reachable. Record the
    engine version, renderer and actual input coverage; do not claim unavailable
    browser engines or physical devices were tested.
-6. Inspect native-size screenshots and short frame sequences produced by Godot
-   scripts for every changed visual state. Reject clipped text, wrong identities,
+6. Inspect current screenshots and timed animation observations from the actual
+   game in the existing Codex in-app browser for every changed visual state. Reject clipped text, wrong identities,
    missing chair parts, sliding legs, flashing face pixels and sidebar
    paint-through. Retain current captures with their tested commit/build.
 7. Export a release build with the normal asset gate enabled. Run automated
@@ -228,7 +230,7 @@ in a separately requested publishing phase; it is not this goal's finish line.
 ## Ready-to-paste goal
 
 ```text
-/goal Deliver the playable Startup Valley demo defined in docs/DEMO_GOAL_PLAN.md, verified through the integrated Godot game and packaged as a validated release export. Read the current repository state, AGENTS.md, docs/DECISIONS.md and docs/DEMO_HANDOFF.md if present; preserve completed fixes and resume from the latest verified checkpoint. Build a clear, visual opening tutorial through Mina, the first project and release, plus one meaningful next opportunity outside the office. Keep the original Stardew-inspired art direction and Game Dev Tycoon-style progression, with no mandatory APIs or accounts. Use parallel sub-agents with separate file ownership. I explicitly authorize implementation, matching asset generation, tests, frequent tested direct commits and pushes to main, and local release exports. I may not return during the work: do not wait for routine approvals; make reasonable reversible decisions and record assumptions. Use Codex’s in-app browser for actual web playtesting on a disposable localhost origin, without OS-level computer control or other browser profiles. Ignore website work and public hosting for this goal; no public URL is required. Thoroughly test the actual Godot scenes with engine-driven player input and the production worker, including the complete clean-save journey, animation/layering, save/restart/migration, supported viewport sizes and injected touch input. Run automated worker, offline evaluation, asset-gate and release-export checks; do not bypass gameplay or claim browser/hosted coverage from native tests. Refresh the playable build after tested major changes, push checkpoints promptly, and keep docs/DEMO_HANDOFF.md current with commit/push/build IDs, commands, evidence, remaining defects and the next concrete step. Finish only when the bounded demo journey and required integrity/visual/export checks pass, with an acceptance report, export ZIP, controls summary and current screenshots. Fix failures and continue independent work; if an external prerequisite genuinely blocks a required push or check, retain verified local commits/artifacts and document the exact failed action and recovery steps without claiming it passed. Do not submit the demo to an event or send messages on my behalf.
+/goal Deliver the playable Startup Valley demo defined in docs/DEMO_GOAL_PLAN.md, verified through the integrated Godot game and packaged as a validated release export. Read the current repository state, AGENTS.md, docs/DECISIONS.md and docs/DEMO_HANDOFF.md if present; preserve completed fixes and resume from the latest verified checkpoint. Build a clear, visual opening tutorial through Mina, the first project and release, plus one meaningful next opportunity outside the office. Keep the original Stardew-inspired art direction and Game Dev Tycoon-style progression, with no mandatory APIs or accounts. Use parallel sub-agents with separate file ownership. I explicitly authorize implementation, matching asset generation, tests, frequent tested direct commits and pushes to main, and local release exports. I may not return during the work: do not wait for routine approvals; make reasonable reversible decisions and record assumptions. Use headless Godot tests and the existing Codex in-app browser for actual web playtesting on a disposable localhost origin. Do not launch windowed Godot demos or captures, bring this chat to the foreground, use OS-level control, or access other browser profiles. Ignore website work and public hosting for this goal; no public URL is required. Thoroughly test the actual Godot scenes with engine-driven player input and the production worker, including the complete clean-save journey, animation/layering, save/restart/migration, supported viewport sizes and injected touch input. Run automated worker, offline evaluation, asset-gate and release-export checks; do not bypass gameplay or claim browser/hosted coverage from native tests. Refresh the playable build after tested major changes, push checkpoints promptly, and keep docs/DEMO_HANDOFF.md current with commit/push/build IDs, commands, evidence, remaining defects and the next concrete step. Finish only when the bounded demo journey and required integrity/visual/export checks pass, with an acceptance report, export ZIP, controls summary and current screenshots. Fix failures and continue independent work; if an external prerequisite genuinely blocks a required push or check, retain verified local commits/artifacts and document the exact failed action and recovery steps without claiming it passed. Do not submit the demo to an event or send messages on my behalf.
 ```
 
 The owner has activated this plan through the goal prompt. Editing this file
