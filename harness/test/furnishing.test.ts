@@ -78,14 +78,20 @@ test("starter inventory, four-facing placement, move, store and Undo survive res
   assert.equal(db.furnishing.geometry.employeeDecorKits.founder, "desk_lamp_kit");
   assert.equal(db.furnishing.geometry.decorKits.desk_lamp_kit?.host_kind, "desk");
   assert.equal(db.furnishing.geometry.decorKits.desk_lamp_kit?.owner_id, "founder");
-  assert.deepEqual(Object.keys(initial.placements), ["founder-workstation", "decor-phone_booth"]);
+  assert.deepEqual(Object.keys(initial.placements), ["founder-workstation", "decor-phone_booth", "decor-cafe_table", "decor-cafe_chair"]);
   assert.deepEqual(initial.placements["decor-phone_booth"], { grid: [3, 18], facing: "south" });
+  assert.deepEqual(initial.placements["decor-cafe_table"], { grid: [5, 8], facing: "south" });
+  assert.deepEqual(initial.placements["decor-cafe_chair"], { grid: [7, 8], facing: "south" });
   assert.notDeepEqual(initial.placements["decor-phone_booth"]?.grid, [24, 8]);
+  // Exercise each optional piece in clear floor space, just as a player can
+  // store the starter lounge before replacing it with larger furniture.
+  const requiredIds = new Set(initial.inventory.filter((item) => item.essential).map((item) => item.id));
+  const clearFloor = Object.fromEntries(Object.entries(initial.placements).filter(([id]) => requiredIds.has(id)));
   for (const item of initial.inventory.filter((entry) => !entry.essential)) {
     const facings = furnishingCatalog.furniture[item.kind]?.facings ?? ["south"];
     for (const facing of facings) {
       const grid = decorCell(item.kind, facing);
-      const placed = apply(db, `${item.kind}-${facing}`, { ...initial.placements, [item.id]: { grid, facing } }).furnishing;
+      const placed = apply(db, `${item.kind}-${facing}`, { ...clearFloor, [item.id]: { grid, facing } }).furnishing;
       assert.deepEqual(placed.placements[item.id], { grid, facing });
     }
   }
@@ -99,6 +105,24 @@ test("starter inventory, four-facing placement, move, store and Undo survive res
   const reopened = new GameDatabase(path, project);
   assert.deepEqual(reopened.bootstrap().furnishing, restored);
   for (let n = 0; n < 5; n++) assert.deepEqual(reopened.bootstrap().furnishing, restored);
+  reopened.close();
+});
+
+test("stored starter café stays stored across hiring and reopen", async () => {
+  const { db, path, project } = await setup();
+  const initial = db.furnishing.state();
+  const placements = { ...initial.placements };
+  delete placements["decor-cafe_table"];
+  delete placements["decor-cafe_chair"];
+  apply(db, "store-cafe", placements);
+  db.journey.hire("mira", 1);
+  const saved = db.furnishing.state();
+  assert.equal(saved.placements["decor-cafe_table"], undefined);
+  assert.equal(saved.placements["decor-cafe_chair"], undefined);
+  assert.ok(saved.placements["mira-workstation"]);
+  db.close();
+  const reopened = new GameDatabase(path, project);
+  assert.deepEqual(reopened.furnishing.state(), saved);
   reopened.close();
 });
 
