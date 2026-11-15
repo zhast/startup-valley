@@ -65,11 +65,17 @@ test('packaging requires current screenshot files and a complete worker bundle',
 test('release ZIP preserves the playable files, screenshots and matching manifest', async t => {
   const options = await fixture(t);
   const execute = promisify(execFile);
+  const jpegPath = resolve(options.root, 'browser.jpg');
+  // Signature-only fixture exercises packaging, not image decoding/visual QA.
+  const jpeg = Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0x00, 0x02, 0xff, 0xd9]);
+  await writeFile(jpegPath, jpeg);
+  options.screenshots[1] = jpegPath;
   const result = await packageDemo(options);
   const { stdout } = await execute(process.env.UNZIP_BIN || 'unzip', ['-p', result.path, 'manifest.json']);
   const manifest = JSON.parse(stdout);
   assert.equal(manifest.buildId, result.buildId);
   assert.equal(manifest.files.filter(file => file.path.startsWith('screenshots/')).length, 3);
+  assert.deepEqual((await execute(process.env.UNZIP_BIN || 'unzip', ['-p', result.path, 'screenshots/02-browser.jpg'], { encoding: 'buffer' })).stdout, jpeg);
   assert.equal((await execute(process.env.UNZIP_BIN || 'unzip', ['-p', result.path, 'game/web/worker.js'])).stdout, '// worker');
   assert.match(await readFile(`${result.path}.sha256`, 'utf8'), new RegExp(`^${result.sha256}  startup-valley-`));
 });

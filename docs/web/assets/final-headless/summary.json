@@ -1,0 +1,775 @@
+{
+  "ok": true,
+  "createdAt": "2026-11-15T23:41:54.010Z",
+  "scope": "Current-runtime headless clean journeys; separately labeled previous-runtime touch/compatibility evidence. No rendered visual approval.",
+  "runtimeFingerprint": "f06f9176745b08fd17ed36b2302f6251789249e8e23ad17e6c549a67092ac3f9",
+  "currentRuntimeChecks": 914,
+  "currentRuntimePhases": 26,
+  "priorRuntimeChecks": 109,
+  "priorRuntimePhases": 5,
+  "deltaFromPrior": {
+    "previousFingerprint": "4b0a5102524cad47cd1e809bfa79e614d5516b1b441919a0f1aa63b5b85bbc3e",
+    "currentFingerprint": "f06f9176745b08fd17ed36b2302f6251789249e8e23ad17e6c549a67092ac3f9",
+    "changes": [
+      {
+        "path": "game/ui/company_panel.gd",
+        "previous": "e44e330a1fea8e758f1a929be50deeef507014de8a733389f87f0665cae62aad",
+        "current": "75cfb749d0ef4d8a539e4d816977e5fe7b1e9f544950c623c91f8d4db6e15bd2"
+      }
+    ],
+    "description": "Later-hire welcome chooses next idea after a released product; first-hire welcome unchanged."
+  },
+  "reports": [
+    {
+      "name": "clean",
+      "status": "current-runtime",
+      "directory": "/private/tmp/startup-valley-final-headless-three-copyfix",
+      "ok": true,
+      "checks": 914,
+      "phaseCount": 26,
+      "source": {
+        "commit": "62f4be34ccb9c0bb75c48cceb4b5bf71a485eef0",
+        "dirty": "M game/tests/test_demo_journey.gd\n M game/tests/test_story_dialogue_layout.gd\n M game/ui/company_panel.gd\n M scripts/lib/demo-compatibility-fixture.mjs\n?? docs/web/assets/final-headless/",
+        "node": "v24.22.1",
+        "startedAt": "2026-11-15T23:39:19.854Z"
+      },
+      "sourceAfter": {
+        "commit": "75618b0553a9d998a42eccbd15944c2147c6bca7",
+        "dirty": "?? dev/tools/build_yard_fence.mjs\n?? docs/web/assets/final-headless/\n?? docs/web/assets/in-app-playtest/\n?? game/assets/source/yard-fence-v1/"
+      },
+      "sourceUnchanged": false,
+      "runtimeBefore": "f06f9176745b08fd17ed36b2302f6251789249e8e23ad17e6c549a67092ac3f9",
+      "runtimeAfter": "f06f9176745b08fd17ed36b2302f6251789249e8e23ad17e6c549a67092ac3f9",
+      "runtimeUnchanged": true,
+      "runtimeChanges": [],
+      "phases": [
+        {
+          "run": 1,
+          "phase": "arrival",
+          "checks": 21,
+          "width": 1280,
+          "height": 720,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 55951,
+          "actionInputs": {
+            "pointer": 2
+          },
+          "requestMethods": [],
+          "captureCount": 0
+        },
+        {
+          "run": 1,
+          "phase": "hire",
+          "checks": 28,
+          "width": 1280,
+          "height": 720,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 55960,
+          "actionInputs": {
+            "pointer": 3
+          },
+          "requestMethods": [
+            "hiring.complete"
+          ],
+          "captureCount": 0
+        },
+        {
+          "run": 1,
+          "phase": "start",
+          "checks": 47,
+          "width": 1280,
+          "height": 720,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 55962,
+          "actionInputs": {
+            "pointer": 5
+          },
+          "requestMethods": [
+            "tycoon.start"
+          ],
+          "captureCount": 0
+        },
+        {
+          "run": 1,
+          "phase": "mid",
+          "checks": 36,
+          "width": 1280,
+          "height": 720,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 55994,
+          "actionInputs": {
+            "pointer": 5
+          },
+          "requestMethods": [
+            "day.end"
+          ],
+          "captureCount": 0
+        },
+        {
+          "run": 1,
+          "phase": "release",
+          "checks": 59,
+          "width": 1280,
+          "height": 720,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 55996,
+          "actionInputs": {
+            "pointer": 9
+          },
+          "requestMethods": [
+            "day.end",
+            "day.end",
+            "tycoon.release"
+          ],
+          "captureCount": 0
+        },
+        {
+          "run": 1,
+          "phase": "visit",
+          "checks": 26,
+          "width": 1280,
+          "height": 720,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56002,
+          "actionInputs": {
+            "pointer": 2
+          },
+          "requestMethods": [],
+          "captureCount": 0
+        },
+        {
+          "run": 1,
+          "phase": "outdoor",
+          "checks": 33,
+          "width": 1280,
+          "height": 720,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56010,
+          "actionInputs": {
+            "pointer": 4
+          },
+          "requestMethods": [],
+          "captureCount": 0
+        },
+        {
+          "run": 1,
+          "phase": "restored",
+          "checks": 29,
+          "width": 1280,
+          "height": 720,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56019,
+          "actionInputs": {
+            "pointer": 3
+          },
+          "requestMethods": [
+            "tycoon.start"
+          ],
+          "captureCount": 0
+        },
+        {
+          "run": 2,
+          "phase": "arrival",
+          "checks": 22,
+          "width": 1440,
+          "height": 900,
+          "input": "keyboard",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56024,
+          "actionInputs": {
+            "keyboard": 1,
+            "keyboard_escape": 1
+          },
+          "requestMethods": [],
+          "captureCount": 0
+        },
+        {
+          "run": 2,
+          "phase": "hire",
+          "checks": 30,
+          "width": 1440,
+          "height": 900,
+          "input": "keyboard",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56029,
+          "actionInputs": {
+            "keyboard": 2,
+            "pointer_world": 1
+          },
+          "requestMethods": [
+            "hiring.complete"
+          ],
+          "captureCount": 0
+        },
+        {
+          "run": 2,
+          "phase": "start",
+          "checks": 50,
+          "width": 1440,
+          "height": 900,
+          "input": "keyboard",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56033,
+          "actionInputs": {
+            "keyboard": 3,
+            "pointer_world": 2
+          },
+          "requestMethods": [
+            "tycoon.start"
+          ],
+          "captureCount": 0
+        },
+        {
+          "run": 2,
+          "phase": "mid",
+          "checks": 39,
+          "width": 1440,
+          "height": 900,
+          "input": "keyboard",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56038,
+          "actionInputs": {
+            "keyboard": 3,
+            "pointer_world": 2
+          },
+          "requestMethods": [
+            "day.end"
+          ],
+          "captureCount": 0
+        },
+        {
+          "run": 2,
+          "phase": "release",
+          "checks": 65,
+          "width": 1440,
+          "height": 900,
+          "input": "keyboard",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56040,
+          "actionInputs": {
+            "keyboard": 6,
+            "pointer_world": 3
+          },
+          "requestMethods": [
+            "day.end",
+            "day.end",
+            "tycoon.release"
+          ],
+          "captureCount": 0
+        },
+        {
+          "run": 2,
+          "phase": "visit",
+          "checks": 27,
+          "width": 1440,
+          "height": 900,
+          "input": "keyboard",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56051,
+          "actionInputs": {
+            "keyboard": 1,
+            "pointer_world": 1
+          },
+          "requestMethods": [],
+          "captureCount": 0
+        },
+        {
+          "run": 2,
+          "phase": "outdoor",
+          "checks": 36,
+          "width": 1440,
+          "height": 900,
+          "input": "keyboard",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56055,
+          "actionInputs": {
+            "keyboard": 3,
+            "pointer_world": 1
+          },
+          "requestMethods": [],
+          "captureCount": 0
+        },
+        {
+          "run": 2,
+          "phase": "restored",
+          "checks": 31,
+          "width": 1440,
+          "height": 900,
+          "input": "keyboard",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56125,
+          "actionInputs": {
+            "keyboard": 2,
+            "pointer_world": 1
+          },
+          "requestMethods": [
+            "tycoon.start"
+          ],
+          "captureCount": 0
+        },
+        {
+          "run": 3,
+          "phase": "arrival",
+          "checks": 21,
+          "width": 1024,
+          "height": 576,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56130,
+          "actionInputs": {
+            "pointer": 2
+          },
+          "requestMethods": [],
+          "captureCount": 0
+        },
+        {
+          "run": 3,
+          "phase": "hire",
+          "checks": 28,
+          "width": 1024,
+          "height": 576,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56142,
+          "actionInputs": {
+            "pointer": 3
+          },
+          "requestMethods": [
+            "hiring.complete"
+          ],
+          "captureCount": 0
+        },
+        {
+          "run": 3,
+          "phase": "start",
+          "checks": 47,
+          "width": 1024,
+          "height": 576,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56144,
+          "actionInputs": {
+            "pointer": 5
+          },
+          "requestMethods": [
+            "tycoon.start"
+          ],
+          "captureCount": 0
+        },
+        {
+          "run": 3,
+          "phase": "mid",
+          "checks": 36,
+          "width": 1024,
+          "height": 576,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56159,
+          "actionInputs": {
+            "pointer": 5
+          },
+          "requestMethods": [
+            "day.end"
+          ],
+          "captureCount": 0
+        },
+        {
+          "run": 3,
+          "phase": "release",
+          "checks": 59,
+          "width": 1024,
+          "height": 576,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56163,
+          "actionInputs": {
+            "pointer": 9
+          },
+          "requestMethods": [
+            "day.end",
+            "day.end",
+            "tycoon.release"
+          ],
+          "captureCount": 0
+        },
+        {
+          "run": 3,
+          "phase": "visit",
+          "checks": 26,
+          "width": 1024,
+          "height": 576,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56173,
+          "actionInputs": {
+            "pointer": 2
+          },
+          "requestMethods": [],
+          "captureCount": 0
+        },
+        {
+          "run": 3,
+          "phase": "outdoor",
+          "checks": 33,
+          "width": 1024,
+          "height": 576,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56184,
+          "actionInputs": {
+            "pointer": 4
+          },
+          "requestMethods": [],
+          "captureCount": 0
+        },
+        {
+          "run": 3,
+          "phase": "restored",
+          "checks": 29,
+          "width": 1024,
+          "height": 576,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56328,
+          "actionInputs": {
+            "pointer": 3
+          },
+          "requestMethods": [
+            "tycoon.start"
+          ],
+          "captureCount": 0
+        },
+        {
+          "run": 3,
+          "phase": "reset",
+          "checks": 39,
+          "width": 1024,
+          "height": 576,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56338,
+          "actionInputs": {
+            "pointer": 5
+          },
+          "requestMethods": [
+            "game.new"
+          ],
+          "captureCount": 0
+        },
+        {
+          "run": 3,
+          "phase": "reset_restored",
+          "checks": 17,
+          "width": 1024,
+          "height": 576,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 56353,
+          "actionInputs": {
+            "pointer": 1
+          },
+          "requestMethods": [],
+          "captureCount": 0
+        }
+      ]
+    },
+    {
+      "name": "touch",
+      "directory": "/private/tmp/startup-valley-final-headless-touch",
+      "ok": true,
+      "checks": 16,
+      "phaseCount": 1,
+      "source": {
+        "commit": "8773dd1a3347ca0b7971bf3f1e4864d7488dd6cb",
+        "dirty": "M dev/map-catalogue/maps/courtyard.json\n M dev/map-catalogue/maps/starter-cottage-v1.json\n M dev/map-catalogue/maps/startup-office.json\n M dev/map-catalogue/reviews/courtyard.json\n M dev/map-catalogue/reviews/starter-cottage-v1.json\n M dev/map-catalogue/reviews/startup-office.json\n M docs/MAP_WORKFLOW.md\n M game/data/office_layout_starter.json\n M game/tests/test_map_review.gd\n M game/world/courtyard.gd\n M game/world/office_architecture.gd\n M scripts/validate-maps.mjs\n M tests/maps.test.mjs\n?? dev/art-catalogue/runtime-reviews/modular-yard-v1.json\n?? dev/tools/build_village_terrain.mjs\n?? docs/web/assets/modular-yard/\n?? game/assets/runtime/office/terrain-v1/\n?? game/assets/source/modular-yard/\n?? game/data/courtyard_layout.json\n?? game/data/village_terrain.json\n?? game/tests/test_village_terrain.gd\n?? game/tests/test_village_terrain.gd.uid\n?? game/tools/capture_task_chair_motion.gd.uid\n?? game/world/village_terrain.gd\n?? game/world/village_terrain.gd.uid",
+        "node": "v24.22.1",
+        "startedAt": "2026-11-15T23:34:16.698Z"
+      },
+      "sourceAfter": {
+        "commit": "8773dd1a3347ca0b7971bf3f1e4864d7488dd6cb",
+        "dirty": "M dev/map-catalogue/maps/courtyard.json\n M dev/map-catalogue/maps/starter-cottage-v1.json\n M dev/map-catalogue/maps/startup-office.json\n M dev/map-catalogue/reviews/courtyard.json\n M dev/map-catalogue/reviews/starter-cottage-v1.json\n M dev/map-catalogue/reviews/startup-office.json\n M docs/MAP_WORKFLOW.md\n M game/data/office_layout_starter.json\n M game/tests/test_map_review.gd\n M game/world/courtyard.gd\n M game/world/office_architecture.gd\n M scripts/validate-maps.mjs\n M tests/maps.test.mjs\n?? dev/art-catalogue/runtime-reviews/modular-yard-v1.json\n?? dev/tools/build_village_terrain.mjs\n?? docs/web/assets/modular-yard/\n?? game/assets/runtime/office/terrain-v1/\n?? game/assets/source/modular-yard/\n?? game/data/courtyard_layout.json\n?? game/data/village_terrain.json\n?? game/tests/test_village_terrain.gd\n?? game/tests/test_village_terrain.gd.uid\n?? game/tools/capture_task_chair_motion.gd.uid\n?? game/world/village_terrain.gd\n?? game/world/village_terrain.gd.uid"
+      },
+      "sourceUnchanged": true,
+      "runtimeBefore": "4b0a5102524cad47cd1e809bfa79e614d5516b1b441919a0f1aa63b5b85bbc3e",
+      "runtimeAfter": "4b0a5102524cad47cd1e809bfa79e614d5516b1b441919a0f1aa63b5b85bbc3e",
+      "runtimeUnchanged": true,
+      "runtimeChanges": [],
+      "phases": [
+        {
+          "run": 1,
+          "phase": "viewport",
+          "checks": 16,
+          "width": 844,
+          "height": 390,
+          "input": "touch",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 55063,
+          "actionInputs": {
+            "touch": 2
+          },
+          "requestMethods": [],
+          "captureCount": 0
+        }
+      ],
+      "status": "previous-runtime-before-copy-only-delta"
+    },
+    {
+      "name": "legacy",
+      "directory": "/private/tmp/startup-valley-final-headless-legacy-v4",
+      "ok": true,
+      "checks": 29,
+      "phaseCount": 2,
+      "source": {
+        "commit": "62f4be34ccb9c0bb75c48cceb4b5bf71a485eef0",
+        "dirty": "M game/tests/test_demo_journey.gd\n M scripts/lib/demo-compatibility-fixture.mjs",
+        "node": "v24.22.1",
+        "startedAt": "2026-11-15T23:35:35.686Z"
+      },
+      "sourceAfter": {
+        "commit": "62f4be34ccb9c0bb75c48cceb4b5bf71a485eef0",
+        "dirty": "M game/tests/test_demo_journey.gd\n M scripts/lib/demo-compatibility-fixture.mjs"
+      },
+      "sourceUnchanged": true,
+      "runtimeBefore": "4b0a5102524cad47cd1e809bfa79e614d5516b1b441919a0f1aa63b5b85bbc3e",
+      "runtimeAfter": "4b0a5102524cad47cd1e809bfa79e614d5516b1b441919a0f1aa63b5b85bbc3e",
+      "runtimeUnchanged": true,
+      "runtimeChanges": [],
+      "phases": [
+        {
+          "run": 1,
+          "phase": "compatibility",
+          "checks": 13,
+          "width": 1280,
+          "height": 720,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 55303,
+          "actionInputs": {
+            "pointer": 1
+          },
+          "requestMethods": [],
+          "captureCount": 0
+        },
+        {
+          "run": 1,
+          "phase": "compatibility_restored",
+          "checks": 16,
+          "width": 1280,
+          "height": 720,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 55325,
+          "actionInputs": {
+            "pointer": 1
+          },
+          "requestMethods": [],
+          "captureCount": 0
+        }
+      ],
+      "status": "previous-runtime-before-copy-only-delta"
+    },
+    {
+      "name": "expansion",
+      "directory": "/private/tmp/startup-valley-final-headless-expansion-v2",
+      "ok": true,
+      "checks": 64,
+      "phaseCount": 2,
+      "source": {
+        "commit": "62f4be34ccb9c0bb75c48cceb4b5bf71a485eef0",
+        "dirty": "M game/tests/test_demo_journey.gd\n M scripts/lib/demo-compatibility-fixture.mjs",
+        "node": "v24.22.1",
+        "startedAt": "2026-11-15T23:35:57.874Z"
+      },
+      "sourceAfter": {
+        "commit": "62f4be34ccb9c0bb75c48cceb4b5bf71a485eef0",
+        "dirty": "M game/tests/test_demo_journey.gd\n M scripts/lib/demo-compatibility-fixture.mjs"
+      },
+      "sourceUnchanged": true,
+      "runtimeBefore": "4b0a5102524cad47cd1e809bfa79e614d5516b1b441919a0f1aa63b5b85bbc3e",
+      "runtimeAfter": "4b0a5102524cad47cd1e809bfa79e614d5516b1b441919a0f1aa63b5b85bbc3e",
+      "runtimeUnchanged": true,
+      "runtimeChanges": [],
+      "phases": [
+        {
+          "run": 1,
+          "phase": "compatibility",
+          "checks": 48,
+          "width": 1280,
+          "height": 720,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 55360,
+          "actionInputs": {
+            "pointer": 5
+          },
+          "requestMethods": [
+            "hiring.complete"
+          ],
+          "captureCount": 0
+        },
+        {
+          "run": 1,
+          "phase": "compatibility_restored",
+          "checks": 16,
+          "width": 1280,
+          "height": 720,
+          "input": "pointer",
+          "display": "headless",
+          "logicalViewport": [
+            1280,
+            720
+          ],
+          "workerPid": 55366,
+          "actionInputs": {
+            "pointer": 1
+          },
+          "requestMethods": [],
+          "captureCount": 0
+        }
+      ],
+      "status": "previous-runtime-before-copy-only-delta"
+    }
+  ],
+  "testFiles": [
+    {
+      "path": "scripts/test-demo-godot.mjs",
+      "sha256": "8c54ccd4b02ab08c11b54421837a50ddd08a28a6ff07ba88db2c182d4e43daa2"
+    },
+    {
+      "path": "scripts/lib/demo-compatibility-fixture.mjs",
+      "sha256": "f9ec91a7e2bffa9343d2eda9c1bceb634de0dbe51cf7a3367293c80540328f8d"
+    },
+    {
+      "path": "game/tests/test_demo_journey.gd",
+      "sha256": "92b94d14e4a5ba4494d04a6a32f0416107684d7826bfeac6ee9b471290c55709"
+    }
+  ]
+}

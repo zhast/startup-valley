@@ -1,0 +1,527 @@
+{
+  "actions": [
+    {
+      "action": "Continue",
+      "input": "pointer",
+      "point": [
+        787.0,
+        394.0
+      ]
+    }
+  ],
+  "captureDetails": [],
+  "captures": [],
+  "checks": 16,
+  "display": "headless",
+  "engine": {
+    "build": "official",
+    "hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+    "hex": 263938,
+    "major": 4,
+    "minor": 7,
+    "patch": 2,
+    "status": "stable",
+    "string": "4.7.2-stable (official)",
+    "timestamp": 0
+  },
+  "failures": [],
+  "inputRouting": "Input.parse_input_event -> isolated root relay -> direct SubViewport; no OS cursor movement",
+  "logicalViewport": [
+    1280,
+    720
+  ],
+  "phase": "compatibility_restored",
+  "renderer": "gl_compatibility",
+  "requests": [],
+  "restoredSnapshot": {
+    "company": {
+      "cashCents": 70000.0,
+      "chapter": 1.0,
+      "earnedCents": 0.0,
+      "reputation": 10.0
+    },
+    "day": 1,
+    "furnishing": {
+      "inventory": [
+        {
+          "essential": true,
+          "grant": "office-stage:2",
+          "id": "approval-console",
+          "kind": "approval_console",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": true,
+          "grant": "office-stage:1",
+          "id": "artifact-archive",
+          "kind": "artifact_archive",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": true,
+          "grant": "office-stage:1",
+          "id": "coffee-station",
+          "kind": "coffee_station",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": true,
+          "grant": "office-stage:1",
+          "id": "collaboration-cluster",
+          "kind": "collaboration_cluster",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:growing_team:v1",
+          "id": "decor-break_table",
+          "kind": "break_table",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:starter:v1",
+          "id": "decor-broadleaf_planter",
+          "kind": "broadleaf_planter",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:starter:v1",
+          "id": "decor-cafe_chair",
+          "kind": "cafe_chair",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:starter:v1",
+          "id": "decor-cafe_table",
+          "kind": "cafe_table",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:growing_team:v1",
+          "id": "decor-compact_desk",
+          "kind": "compact_desk",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:growing_team:v1",
+          "id": "decor-recycling_sorter",
+          "kind": "recycling_sorter",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:growing_team:v1",
+          "id": "decor-resource_cart",
+          "kind": "resource_cart",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:growing_team:v1",
+          "id": "decor-rolling_storage_pedestal",
+          "kind": "rolling_storage_pedestal",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:growing_team:v1",
+          "id": "decor-task_floor_lamp",
+          "kind": "task_floor_lamp",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": true,
+          "grant": "office-stage:0",
+          "id": "founder-workstation",
+          "kind": "desk",
+          "ownerId": "founder",
+          "roleKit": "founder_strategy_kit"
+        },
+        {
+          "essential": true,
+          "grant": "hire:mira",
+          "id": "mira-workstation",
+          "kind": "desk",
+          "ownerId": "mira",
+          "roleKit": "mina_discovery_kit"
+        },
+        {
+          "essential": true,
+          "grant": "office-stage:2",
+          "id": "research-bench",
+          "kind": "research_table",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": true,
+          "grant": "hire:theo",
+          "id": "theo-workstation",
+          "kind": "desk",
+          "ownerId": "theo",
+          "roleKit": "theo_campaign_kit"
+        }
+      ],
+      "layoutId": "startup-office",
+      "placements": {
+        "approval-console": {
+          "facing": "south",
+          "grid": [
+            29.0,
+            13.0
+          ]
+        },
+        "artifact-archive": {
+          "facing": "south",
+          "grid": [
+            4.0,
+            13.0
+          ]
+        },
+        "coffee-station": {
+          "facing": "south",
+          "grid": [
+            4.0,
+            6.0
+          ]
+        },
+        "collaboration-cluster": {
+          "facing": "south",
+          "grid": [
+            12.0,
+            14.0
+          ]
+        },
+        "founder-workstation": {
+          "facing": "south",
+          "grid": [
+            8.0,
+            17.0
+          ]
+        },
+        "mira-workstation": {
+          "facing": "south",
+          "grid": [
+            10.0,
+            8.0
+          ]
+        },
+        "research-bench": {
+          "facing": "south",
+          "grid": [
+            29.0,
+            8.0
+          ]
+        },
+        "theo-workstation": {
+          "facing": "south",
+          "grid": [
+            20.0,
+            8.0
+          ]
+        }
+      },
+      "recovery": "Your team has moved into the larger studio. Required stations are ready; decorations that need a new spot are in storage.",
+      "revision": 2.0,
+      "version": 1.0
+    },
+    "hires": [
+      "mira",
+      "theo"
+    ],
+    "history": [],
+    "player": {
+      "movementSeen": true,
+      "x": 560.0,
+      "y": 624.0
+    },
+    "product": {
+      "id": null,
+      "progress": null,
+      "ready": null,
+      "staffIds": null
+    },
+    "story": {
+      "courtyardUnlocked": false,
+      "location": "office",
+      "metTheo": false,
+      "opportunity": {
+        "description": "Theo is helping the weekend makers market. Make a simple planning kit so neighbors can set up their first stall.",
+        "id": "market_day_kit",
+        "productId": "",
+        "status": "locked",
+        "title": "Market Day Kit",
+        "topicId": "reselling",
+        "typeId": "template_pack"
+      },
+      "revision": 0.0,
+      "visited": false
+    }
+  },
+  "snapshot": {
+    "company": {
+      "cashCents": 70000.0,
+      "chapter": 1.0,
+      "earnedCents": 0.0,
+      "reputation": 10.0
+    },
+    "day": 1,
+    "furnishing": {
+      "inventory": [
+        {
+          "essential": true,
+          "grant": "office-stage:2",
+          "id": "approval-console",
+          "kind": "approval_console",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": true,
+          "grant": "office-stage:1",
+          "id": "artifact-archive",
+          "kind": "artifact_archive",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": true,
+          "grant": "office-stage:1",
+          "id": "coffee-station",
+          "kind": "coffee_station",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": true,
+          "grant": "office-stage:1",
+          "id": "collaboration-cluster",
+          "kind": "collaboration_cluster",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:growing_team:v1",
+          "id": "decor-break_table",
+          "kind": "break_table",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:starter:v1",
+          "id": "decor-broadleaf_planter",
+          "kind": "broadleaf_planter",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:starter:v1",
+          "id": "decor-cafe_chair",
+          "kind": "cafe_chair",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:starter:v1",
+          "id": "decor-cafe_table",
+          "kind": "cafe_table",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:growing_team:v1",
+          "id": "decor-compact_desk",
+          "kind": "compact_desk",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:growing_team:v1",
+          "id": "decor-recycling_sorter",
+          "kind": "recycling_sorter",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:growing_team:v1",
+          "id": "decor-resource_cart",
+          "kind": "resource_cart",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:growing_team:v1",
+          "id": "decor-rolling_storage_pedestal",
+          "kind": "rolling_storage_pedestal",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:growing_team:v1",
+          "id": "decor-task_floor_lamp",
+          "kind": "task_floor_lamp",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": true,
+          "grant": "office-stage:0",
+          "id": "founder-workstation",
+          "kind": "desk",
+          "ownerId": "founder",
+          "roleKit": "founder_strategy_kit"
+        },
+        {
+          "essential": true,
+          "grant": "hire:mira",
+          "id": "mira-workstation",
+          "kind": "desk",
+          "ownerId": "mira",
+          "roleKit": "mina_discovery_kit"
+        },
+        {
+          "essential": true,
+          "grant": "office-stage:2",
+          "id": "research-bench",
+          "kind": "research_table",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": true,
+          "grant": "hire:theo",
+          "id": "theo-workstation",
+          "kind": "desk",
+          "ownerId": "theo",
+          "roleKit": "theo_campaign_kit"
+        }
+      ],
+      "layoutId": "startup-office",
+      "placements": {
+        "approval-console": {
+          "facing": "south",
+          "grid": [
+            29.0,
+            13.0
+          ]
+        },
+        "artifact-archive": {
+          "facing": "south",
+          "grid": [
+            4.0,
+            13.0
+          ]
+        },
+        "coffee-station": {
+          "facing": "south",
+          "grid": [
+            4.0,
+            6.0
+          ]
+        },
+        "collaboration-cluster": {
+          "facing": "south",
+          "grid": [
+            12.0,
+            14.0
+          ]
+        },
+        "founder-workstation": {
+          "facing": "south",
+          "grid": [
+            8.0,
+            17.0
+          ]
+        },
+        "mira-workstation": {
+          "facing": "south",
+          "grid": [
+            10.0,
+            8.0
+          ]
+        },
+        "research-bench": {
+          "facing": "south",
+          "grid": [
+            29.0,
+            8.0
+          ]
+        },
+        "theo-workstation": {
+          "facing": "south",
+          "grid": [
+            20.0,
+            8.0
+          ]
+        }
+      },
+      "recovery": "Your team has moved into the larger studio. Required stations are ready; decorations that need a new spot are in storage.",
+      "revision": 2.0,
+      "version": 1.0
+    },
+    "hires": [
+      "mira",
+      "theo"
+    ],
+    "history": [],
+    "player": {
+      "movementSeen": true,
+      "x": 560.0,
+      "y": 624.0
+    },
+    "product": {
+      "id": null,
+      "progress": null,
+      "ready": null,
+      "staffIds": null
+    },
+    "story": {
+      "courtyardUnlocked": false,
+      "location": "office",
+      "metTheo": false,
+      "opportunity": {
+        "description": "Theo is helping the weekend makers market. Make a simple planning kit so neighbors can set up their first stall.",
+        "id": "market_day_kit",
+        "productId": "",
+        "status": "locked",
+        "title": "Market Day Kit",
+        "topicId": "reselling",
+        "typeId": "template_pack"
+      },
+      "revision": 0.0,
+      "visited": false
+    }
+  },
+  "window": [
+    1280,
+    720
+  ],
+  "workerPid": 55366
+}

@@ -2,124 +2,141 @@
 
 ## Current scope and status
 
-The owner activated [DEMO_GOAL_PLAN.md](DEMO_GOAL_PLAN.md). Status: **active**;
-implementation is present, final frozen-source integrated acceptance and demo
-packaging remain. Continue without routine approvals. The owner authorizes
-parallel agents, fixes, art work, integrated Godot tests, local exports, and
-frequent tested commits/pushes directly to `main`. Website/public hosting is
-**deferred**. The owner now authorizes actual web playtesting inside Codex's
-in-app browser, without OS-level control or other browser profiles. QA should
-serve the same `dist` on a separate localhost origin (planned port 5181) to
-avoid modifying the owner's existing 5177 save. Native testing remains required.
+The owner activated [DEMO_GOAL_PLAN.md](DEMO_GOAL_PLAN.md). The goal remains
+**active**: the offline opening, first release and courtyard opportunity work,
+but current world visual approval, final evidence and demo packaging remain.
+Continue without routine approvals. The owner authorizes parallel agents,
+fixes, asset work, local exports and frequent tested commits/pushes directly to
+`main`. Website/public hosting is **deferred**, not a completion requirement.
 
-Latest confirmed remote checkpoint: `d881da406d76f68b1a6c32f4c70ebeb2f00e27d6`,
-the exact tree of local `0f32486`: compact centered Mina dialogue, reward
-projection and retained visual audit. Previous local `46c2e0b` (earned furnishing
-grants) is also pushed; local `3cd6e71` contains the completed blink repair.
-Verify
-Git state before resuming; connector-created remote commits can have different
-IDs with identical full Git trees. Do not overwrite someone else's new work.
+Latest confirmed published checkpoint: remote
+`e0407d4370510b773b082247add1f05d18592b58`, equivalent to local `75618b0`,
+with tree `d2e01544981d75514ac9b52fbf4204237eae0ab2`. This includes modest
+furniture, save-preserving registration migration, shared wooden chairs,
+initial modular terrain and the later-hire welcome-copy fix. Connector-created
+commits can have different IDs with identical full trees. Verify current Git
+state before resuming; this document is a checkpoint, not a live branch query.
 
-**Latest owner constraint:** No windowed Godot demos or captures. All agents
-stopped them; the process inventory confirmed only headless Godot remains.
-Use headless engine checks and the existing Codex in-app browser tab without
-bringing this chat to the foreground. Keep other browser profiles/OS control out.
+**Owner constraint:** Do not open windowed Godot demos or capture tests. Use
+`--headless` for engine checks and the existing Codex in-app browser, kept in
+the background, for current visual/play checks. Do not bring this chat forward,
+use OS-level control or switch to another browser profile. Historical native
+captures remain component evidence for their recorded source only.
 
-Current work owners: asset-quality handles the shared cute wooden workstation
-and collaboration chairs; story-progression handles standalone furniture scale,
-earned grants and save-preserving registration migration; shell-quality handles
-shared modular office/courtyard terrain. Root owns visual-QA documentation,
-WorkerClient integration, publication and in-app browser verification. Hold
-normal exports while these raster/map reviews are pending. Retain new `.gd.uid`
-files. See [VISUAL_QA.md](VISUAL_QA.md) for the current review loop and tool choice.
+Current pending work: shell-quality is replacing the candidate yard's loose
+hedge treatment with connected wooden fence modules on unchanged navigation.
+The yard is **not visually approved**. Root owns browser review, admission,
+publication and packaging. The three clean headless journeys have passed again
+with the later-hire copy fix, before the fence change. Keep candidate exports
+separate from the normal preview until admission passes.
+See [VISUAL_QA.md](VISUAL_QA.md).
 
 ## Implemented and saved
 
-- Compact starter studio, safe expansion and older-save layout preservation.
-- Visible Mina arrival, clear movement hint, short portrait-led introduction,
-  free invitation and a first project automatically staffed by Founder/Mina.
-- One direct objective, first-release progress and a separate three-step market
-  chapter. Actual releases unlock Theo after one and Creative after three.
-- A small navigable courtyard with Theo, a shared existing-art furniture cluster,
-  a Market Day Kit opportunity and a safe return. The worker owns the location,
-  accepted brief, product link and idempotent travel/acceptance transactions.
-- Matching worker/Godot bounds, delayed-save protection, older-save migration,
-  canceled-project replacement and interrupted-transaction recovery.
-- Repaired walk poses, Mina seated eye pixels, south coffee front, chair depth and Creative
-  portrait. Seven approved runtime image changes retain source/provenance and
-  hash-bound reviews. New courtyard work adds no runtime PNGs.
-- **Completed:** Mina and Founder standing eyelids are repaired; idle blinks
-  last 120ms every four seconds, staggered by actor. The final byte-stable native
-  timing run passed 196 checks, with 90 samples; focused blink checks passed105.
-  These changes are committed, pushed and in the current normal web export.
-  See `ASSET_STATUS.md` for exact generated/code-only scope.
-- New owner report: chairs, desks and phone booths feel inconsistently scaled.
-  A separate agent is measuring their painted bounds, anchors and proportions
-  in native scenes; preserve pending map evidence but do not approve it yet.
-- Precise interaction feedback, visitor/sign hover, native story Settings,
-  no AI setup in the default story, clean cursor teardown and safe arrival
-  placement even when furniture crowds preferred spots.
-- Deliberate minimum-window guidance (1024×576), with injected-touch checks.
-- A release packager that verifies payload identity and archive integrity,
-  includes controls/screenshots and writes an SHA256 sidecar.
+- A compact starter studio, safe expansion and older-save layout preservation.
+- Mina's visible arrival, movement hint, compact portrait invitation and a
+  first project automatically staffed by Founder/Mina. The current objective
+  provides one direct next action; deeper management is secondary.
+- An offline project loop: plan, work across days, release, earn cash, fans
+  and reputation. Releases unlock Theo after one and Creative after three;
+  optional provider/API work does not gate this loop.
+- A bounded courtyard with Theo's Market Day Kit opportunity and safe return.
+  The worker owns location, accepted brief, linked product and idempotent
+  travel/acceptance. Save/restart, stale requests, cancellation/replacement
+  and interrupted transactions have dedicated coverage.
+- Modest starter furnishing grants and additive earned improvements. Existing
+  owners retain inventory/IDs. New café furniture and call nook use measured
+  shared-scale contracts; the registration migration preserves valid layouts
+  and safely stores only newly conflicting placements.
+- Six shared wooden workstation/collaboration chair layers, preserving the
+  tested seated actor anchors and depth behavior. Standalone furniture and
+  chair component evidence is retained; current world approval is separate.
+- Repaired walk poses, standing/seated eye pixels, 120ms staggered blinks,
+  coffee front and Creative portrait. Exact repaired scope and still-open
+  issues are in [ASSET_STATUS.md](ASSET_STATUS.md).
+- Canonical arrival-Mina collision mapping at the worker boundary, with the
+  local retry snapshot unchanged. Earned inventory projects before action
+  completion; release summaries show newly granted furnishing names.
+- Shared style/scale/map admission gates, registered sources and hash-bound
+  reviews. The terrain implementation is committed as a candidate, not
+  artistic approval. Frozen legacy baselines were not refreshed to pass it.
+- A demo packager with payload/archive identity checks. A pending tooling
+  update accepts original in-app-browser JPEG captures as well as PNGs,
+  preserving their bytes; its focused build-identity suite passes 5/5.
 
-## Playable build
+## Build and browser evidence
 
-`http://127.0.0.1:5177/` serves build **b5d7da90f647ea26**, built at
-**2026-11-15T23:19:52.930Z**, including production through `3cd6e71`.
-The release asset gate passed. HTTP200 responses and exact SHA256 comparisons
-confirmed the served HTML, WASM, PCK and browser worker match this build.
-The standing-blink/timing fixes are included. The later compact dialogue,
-earned furniture grants and in-progress world/furniture work are not yet in it.
-QA origin `http://127.0.0.1:5181/` currently serves the same dist; the root agent
-has verified WebGL startup, movement and the Mina invitation in the in-app
-browser. Full release/reload browser acceptance remains pending.
+| Build | Recorded status |
+| --- | --- |
+| Normal `http://127.0.0.1:5177/` — `b5d7da90f647ea26` | Last admitted preview, built `2026-11-15T23:19:52.930Z`, including blink checkpoint `3cd6e71`. Compact dialogue, new grants/furniture and modular yard changes came later. |
+| Candidate `c44018e9a5d119bf` | Actual in-app-browser fresh company, Mina invitation, Fitness/Course project, three day advances, Day4 release, Theo opportunity and return. Candidate terrain was not approved. |
+| Candidate `01f5a4ee41e4e3a0` | Reload retained the Day4 company/Mina/story; Theo was hired for $300 and the office expanded; the prefilled Reselling/Template Pack was started and the courtyard revisited. Yard visual work remains open. |
 
-Refresh the browser page to load a newly exported build. Source commits alone
-do not change an already-running game. Rebuild and verify localhost promptly
-after each passing major source checkpoint; do not hold the preview until all
-final acceptance testing is complete. `dist/` is ignored generated output and
-can be reproduced; do not commit it.
+See [the in-app playtest record](web/in-app-playtest.md) and its nine retained
+original screenshots. The observed release scored **9/10**, gained **13 fans**
+and showed **$1,568** launch earnings plus three named furnishing rewards.
+These are observed playthrough results, not promises that every project yields
+the same outcome. One Mina panel open/Escape-close was also inspected; the
+closed frame showed no residual paint and the browser warning/error list was
+empty. This does not certify every transition or animation frame.
 
-## Verification and remaining limits
+Use a disposable candidate origin so QA does not reset the owner's normal
+5177 save. Refresh the page after an export; committing source does not replace
+an already-running browser game. Verify `build-info.json` and served payloads
+before reporting a normal-preview update. `dist/` is ignored generated output.
+The normal preview still needs an admitted update; candidate playtesting is
+not evidence that normal 5177 already contains these improvements.
 
-- Full authoritative worker suite: **157 passing, 2 existing opt-in skips**.
-  Logs: `/private/tmp/courtyard-harness-tests.log` and
-  `/private/tmp/courtyard-build.log`. The pre-bounds-only-change offline
-  evaluation passed **8/8**, log `/private/tmp/courtyard-offline-eval.log`.
-- Root tooling/asset/package/map suite: **65 passing**, including adapter,
-  stale-review and combined CLI initialization regressions. Web TypeScript/Vite build
-  passes. The built worker contains the new story routes and no provider
-  endpoints, Pi SDK, native filesystem or keychain imports.
-- Release asset gate: **804 PNGs, 7 approved changes, no errors/warnings**.
-- Focused Godot story, starter-room, workstation, walk, seating and explicit
-  legacy-mode `run_all` tests pass. Native cursor lifecycle: **9 checks**;
-  arrival placement in compact/full/crowded layouts: **54 checks**.
-- A real native worker bootstrap and graceful close now exit without leaked
-  textures, RenderingServer or RID errors. See
-  `/private/tmp/startup-valley-cursor-production.log`.
-- One preliminary rendered journey now passes **382 checks across 10 native
-  processes**, including the first release, courtyard edge save/restart, Theo,
-  return, real next-project start and New Company reset. The focused small-size
-  and injected-touch check passes **22 checks**. These probes repaired the test
-  runner; **three final frozen-source journeys have not yet been recorded**.
-  The Theo hover label overlap is fixed; its native regression passes **57
-  checks**. Final acceptance waits for the standing-blink/timing repair.
+## Retained functional verification
 
-The deterministic native runner uses a direct SubViewport displayed in the
-native window and forwards injected engine input into the real GameMain scene.
-This lets production hover logic read injected pointer positions without
-moving the operating-system cursor. The real offline worker remains unchanged.
-Wait for stable UI transitions and retain strict gameplay/error assertions.
+[Headless evidence](web/assets/final-headless/README.md) now separates two
+runtime inventories rather than combining them into one current-build claim:
 
-Earlier browser evidence is historical: [compact acceptance](web/compact-final-playtest.md)
-and [structured evidence](web/compact-final-evidence.json). No new physical-phone,
-cross-browser or public-host acceptance is claimed. Public hosting remains an
-[inactive example](web/public-demo.md), not an installed workflow.
+| Scope | Checks / phases | Runtime |
+| --- | --- | --- |
+| Three clean journeys, including the later-hire copy fix | **914 / 26** | `f06f9176745b08fd17ed36b2302f6251789249e8e23ad17e6c549a67092ac3f9` |
+| Earlier small-size/touch guard, seeded legacy migration and seeded UI expansion | **109 / 5** (16 + 29 + 64 checks) | `4b0a5102524cad47cd1e809bfa79e614d5516b1b441919a0f1aa63b5b85bbc3e` |
+
+Each group used production GameMain and the real offline worker, and its
+runtime stayed byte-identical during its accepted run. The inventories and
+one-file copy delta are retained with the summary. These are **pre-fence**
+results: the next yard change is outside both fingerprints. The directory
+name `final-headless` does not mean the complete demo goal or current visual
+review is finished. The prior 1,023-check combined total must not be described
+as 1,023 checks on the copy-fix runtime.
+
+The clean journeys cover arrival, hire, first project, development, release,
+courtyard edge save/reload, Theo's opportunity, return and a matching next
+project. The third also tests actual New Company/reset and restart. Dialog
+keyboard coverage is not keyboard-only world traversal. Injected touch is not
+physical-phone evidence. Logical rendering remains 1280×720 with tested size
+transforms and the intentional minimum-size guard. This headless evidence
+cannot approve rendered pixels.
+
+Additional focused evidence:
+
+- Later-hire wording: **248 headless dialogue checks**, zero failures. The
+  welcome uses saved release history, keeps its bounds and opens planning by
+  actual pointer input. Report: `/private/tmp/startup-valley-late-hire-dialogue/result.json`.
+- Real worker renovation/recovery: four headless phases, nine durable layout
+  mutations, stable source and worker shutdown. Retained report:
+  [headless worker UI](web/assets/furniture-scale-v1/headless-worker-ui.json).
+- Actual copied older databases retained valid placements, ownership and
+  player positions through registration migration:
+  [legacy save checks](web/assets/furniture-scale-v1/legacy-save-migration.json).
+- Furniture worker increment: 168 passing tests and two opt-in skips in
+  `/private/tmp/startup-valley-cozy-final-harness.log`; provider-free evaluation
+  8/8 in `/private/tmp/startup-valley-cozy-offline-eval.log`. These are named
+  checkpoint logs, not an assertion that every later edit was in that run.
+
+No public-host, cross-browser, physical-phone, complete accessibility or
+performance acceptance is claimed. Earlier [compact browser acceptance](web/compact-final-playtest.md)
+and native screenshots are historical. Public hosting remains an
+[inactive example](web/public-demo.md).
 
 ## Resume and verify
 
-Start at the repository root:
+Inspect the shared tree and remote before changing it:
 
 ```sh
 git status --short
@@ -129,60 +146,57 @@ git log --oneline origin/main..HEAD
 git diff --stat origin/main HEAD
 ```
 
-Do not overwrite a dirty tree or someone else's new commits. Resolve differing
-history only after inspecting it. Save completed work in small commits and push
-promptly; distinguish a local commit from a confirmed remote update. After
-publishing, verify the branch tip and source tree, then update this handoff at
-the next meaningful checkpoint.
+Do not overwrite a dirty tree or another agent's work. Save tested increments
+promptly and distinguish local commits from confirmed remote publication.
+After pushing, verify the remote tip/tree and update this checkpoint.
 
-Portable verification commands (Godot 4.7.2, Node 22.19+):
+Portable checks use Godot 4.7.2 and Node 22.19+:
 
 ```sh
 npm run assets:check
-npm run assets:test
+npm run maps:check
 npm run test:web
 npm --prefix harness run check
 npm --prefix harness test
 npm --prefix harness run eval:offline
 STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS=1 godot --headless --path game --import
-STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS=1 godot --headless --path game --script res://tests/test_story_progression.gd
+STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS=1 godot --headless --path game --script res://tests/test_story_dialogue_layout.gd
 STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS=1 godot --headless --path game --script res://tests/test_starter_office.gd
 STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS=1 godot --headless --path game --script res://tests/test_seated_chair_composition.gd
-STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS=1 godot --headless --path game --script res://tests/test_character_portraits.gd
 npm run build:web
 npm run validate:web
 ```
 
-Keep `--headless`; windowed runs are disallowed by the owner's latest request.
-Use the existing in-app browser for current rendered evidence. Add actual-scene/worker integration for
-new behavior. Do not run paid provider evaluations or read credentials for
-these offline checks. Tests use disposable saves.
+Current candidate map/art changes may intentionally fail release admission
+until reviewed. Do not bypass that gate or refresh frozen baselines. Use the
+exact headless journey commands in the retained evidence README, fresh output
+directories and disposable saves; **do not add `--render`**. Do not run paid
+provider evaluations or inspect credentials for offline tests.
 
-On the current Mac, the system Git/Python path invokes an unaccepted Xcode
-license. Use the installed fallback Git rather than accepting a license:
+On this Mac, system Git/Python may invoke an unaccepted Xcode license. The
+fallback Git is
 `/Users/openai/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/fallback/git`.
-Node is under the same runtime's `dependencies/node/bin/node`; the usable npm
-wrapper is `/private/tmp/startup-valley-tools-SHWkqO/bin/npm`. Godot is
+Node is in that runtime's `dependencies/node/bin/node`; the npm wrapper is
+`/private/tmp/startup-valley-tools-SHWkqO/bin/npm`. Godot is
 `/private/tmp/startup-valley-godot-4.7.2/Godot.app/Contents/MacOS/Godot`.
-These temporary paths may disappear; the portable commands remain authoritative.
-Normal Git push authentication was unavailable, but the connected GitHub app
-could write this repository. Never persist its credentials in the repository.
+These temporary paths can disappear. Normal Git push authentication was
+unavailable; the connected GitHub app can publish this repository. Never save
+its credentials in source.
 
 ## Next concrete work
 
-1. Finish and save modular terrain, furniture and projection work, then
-   run three clean complete headless journeys against frozen committed source at the
-   planned sizes/modes. Include exact save/restart comparisons, courtyard edge
-   position, Theo's brief, return and starting its real matching project.
-2. Finish focused small-screen/touch and actual New Company reset checks.
-   Review current in-app browser screenshots/animation evidence; fix confirmed defects.
-3. Save `docs/web/demo-acceptance.md`, structured results, logs and a concise
-   selection of current browser captures. Distinguish preliminary/final evidence.
-4. Refresh the normal export if production changes. Package it with
-   `npm run package:demo -- --screenshot ... --screenshot ... --screenshot ...`,
-   retain its ZIP/hash/manifest and verify the served build matches.
-5. Complete the newly requested shared-world map framework: modular approved
-   props, consistent style/grid/camera, registered maps and hash-bound engine/browser
-   review evidence. Integrate its validated gate and document future generation.
-6. Commit and push each passing increment. Verify local/remote trees, update
-   this handoff and mark the goal complete only after required acceptance passes.
+1. Finish the connected-fence yard candidate and inspect the actual browser
+   result: shared native scale, continuous threshold/path, restrained village
+   composition and no implied unsupported exits. Keep navigation unchanged
+   unless a tested defect requires a coordinated worker/engine update.
+2. Review the final runtime delta against the retained clean journeys. Recheck
+   behavior affected by the yard change and record exact source/build identity
+   rather than relabeling older evidence.
+3. Complete hash-bound map/art admission using current browser evidence and
+   passing geometry/interaction checks. Keep legacy snapshots explicit.
+4. Export and verify the normal preview promptly once admission passes. Check
+   its build ID/payloads and actual browser startup, then package that exact
+   build with original screenshots, archive manifest and SHA256 sidecar.
+5. Retain a concise final acceptance report, controls and remaining limits.
+   Commit/push each passing increment. Mark the active goal complete only when
+   required current-build checks, visual approval and handoff are done.

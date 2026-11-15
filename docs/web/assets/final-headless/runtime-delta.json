@@ -1,0 +1,12 @@
+{
+  "previousFingerprint": "4b0a5102524cad47cd1e809bfa79e614d5516b1b441919a0f1aa63b5b85bbc3e",
+  "currentFingerprint": "f06f9176745b08fd17ed36b2302f6251789249e8e23ad17e6c549a67092ac3f9",
+  "changes": [
+    {
+      "path": "game/ui/company_panel.gd",
+      "previous": "e44e330a1fea8e758f1a929be50deeef507014de8a733389f87f0665cae62aad",
+      "current": "75cfb749d0ef4d8a539e4d816977e5fe7b1e9f544950c623c91f8d4db6e15bd2"
+    }
+  ],
+  "description": "Later-hire welcome chooses next idea after a released product; first-hire welcome unchanged."
+}

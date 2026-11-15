@@ -27,7 +27,10 @@ export async function packageDemo({ root, screenshots, notes } = {}) {
   const images = [];
   for (const path of screenshots) {
     const bytes = await readFile(path);
-    if (!bytes.subarray(0, PNG.length).equals(PNG)) throw new Error(`Screenshot is not PNG: ${basename(path)}`);
+    // The in-app browser returns JPEG captures; preserve the original bytes.
+    const png = bytes.subarray(0, PNG.length).equals(PNG);
+    const jpeg = bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
+    if (!png && !jpeg) throw new Error(`Screenshot is not PNG or JPEG: ${basename(path)}`);
     images.push({ source: path, bytes });
   }
   const releases = resolve(config.root, '.build/releases');
@@ -80,7 +83,7 @@ if (isMain(import.meta.url)) {
     while (args.length) {
       const key = args.shift();
       const value = args.shift();
-      if (!value || value.startsWith('--')) throw new Error('Usage: npm run package:demo -- --screenshot path.png (at least 3) [--notes path.md]');
+      if (!value || value.startsWith('--')) throw new Error('Usage: npm run package:demo -- --screenshot path.png-or-jpg (at least 3) [--notes path.md]');
       if (key === '--screenshot') options.screenshots.push(resolve(value));
       else if (key === '--notes') options.notes = resolve(value);
       else throw new Error(`Unknown option: ${key}`);

@@ -1,0 +1,138 @@
+{
+  "ok": true,
+  "source": {
+    "commit": "8773dd1a3347ca0b7971bf3f1e4864d7488dd6cb",
+    "dirty": "M dev/map-catalogue/maps/courtyard.json\n M dev/map-catalogue/maps/starter-cottage-v1.json\n M dev/map-catalogue/maps/startup-office.json\n M dev/map-catalogue/reviews/courtyard.json\n M dev/map-catalogue/reviews/starter-cottage-v1.json\n M dev/map-catalogue/reviews/startup-office.json\n M docs/MAP_WORKFLOW.md\n M game/data/office_layout_starter.json\n M game/tests/test_map_review.gd\n M game/world/courtyard.gd\n M game/world/office_architecture.gd\n M scripts/validate-maps.mjs\n M tests/maps.test.mjs\n?? dev/art-catalogue/runtime-reviews/modular-yard-v1.json\n?? dev/tools/build_village_terrain.mjs\n?? docs/web/assets/modular-yard/\n?? game/assets/runtime/office/terrain-v1/\n?? game/assets/source/modular-yard/\n?? game/data/courtyard_layout.json\n?? game/data/village_terrain.json\n?? game/tests/test_village_terrain.gd\n?? game/tests/test_village_terrain.gd.uid\n?? game/tools/capture_task_chair_motion.gd.uid\n?? game/world/village_terrain.gd\n?? game/world/village_terrain.gd.uid",
+    "node": "v24.22.1",
+    "startedAt": "2026-11-15T23:34:16.698Z"
+  },
+  "sourceAfter": {
+    "commit": "8773dd1a3347ca0b7971bf3f1e4864d7488dd6cb",
+    "dirty": "M dev/map-catalogue/maps/courtyard.json\n M dev/map-catalogue/maps/starter-cottage-v1.json\n M dev/map-catalogue/maps/startup-office.json\n M dev/map-catalogue/reviews/courtyard.json\n M dev/map-catalogue/reviews/starter-cottage-v1.json\n M dev/map-catalogue/reviews/startup-office.json\n M docs/MAP_WORKFLOW.md\n M game/data/office_layout_starter.json\n M game/tests/test_map_review.gd\n M game/world/courtyard.gd\n M game/world/office_architecture.gd\n M scripts/validate-maps.mjs\n M tests/maps.test.mjs\n?? dev/art-catalogue/runtime-reviews/modular-yard-v1.json\n?? dev/tools/build_village_terrain.mjs\n?? docs/web/assets/modular-yard/\n?? game/assets/runtime/office/terrain-v1/\n?? game/assets/source/modular-yard/\n?? game/data/courtyard_layout.json\n?? game/data/village_terrain.json\n?? game/tests/test_village_terrain.gd\n?? game/tests/test_village_terrain.gd.uid\n?? game/tools/capture_task_chair_motion.gd.uid\n?? game/world/village_terrain.gd\n?? game/world/village_terrain.gd.uid"
+  },
+  "sourceUnchanged": true,
+  "runtimeBefore": "4b0a5102524cad47cd1e809bfa79e614d5516b1b441919a0f1aa63b5b85bbc3e",
+  "runtimeAfter": "4b0a5102524cad47cd1e809bfa79e614d5516b1b441919a0f1aa63b5b85bbc3e",
+  "runtimeUnchanged": true,
+  "runtimeChanges": [],
+  "summaries": [
+    {
+      "run": 1,
+      "phase": "viewport",
+      "width": 844,
+      "height": 390,
+      "input": "touch",
+      "compatibilityFixture": null,
+      "checks": 16,
+      "captures": [],
+      "snapshot": {
+        "company": {
+          "cashCents": 0,
+          "chapter": 1,
+          "earnedCents": 0,
+          "reputation": 0
+        },
+        "day": 1,
+        "furnishing": {
+          "inventory": [
+            {
+              "essential": false,
+              "grant": "decor:starter:v1",
+              "id": "decor-broadleaf_planter",
+              "kind": "broadleaf_planter",
+              "ownerId": "",
+              "roleKit": ""
+            },
+            {
+              "essential": false,
+              "grant": "decor:starter:v1",
+              "id": "decor-cafe_chair",
+              "kind": "cafe_chair",
+              "ownerId": "",
+              "roleKit": ""
+            },
+            {
+              "essential": false,
+              "grant": "decor:starter:v1",
+              "id": "decor-cafe_table",
+              "kind": "cafe_table",
+              "ownerId": "",
+              "roleKit": ""
+            },
+            {
+              "essential": true,
+              "grant": "office-stage:0",
+              "id": "founder-workstation",
+              "kind": "desk",
+              "ownerId": "founder",
+              "roleKit": "founder_strategy_kit"
+            }
+          ],
+          "layoutId": "starter-cottage-v1",
+          "placements": {
+            "decor-broadleaf_planter": {
+              "facing": "south",
+              "grid": [
+                25,
+                11
+              ]
+            },
+            "decor-cafe_chair": {
+              "facing": "south",
+              "grid": [
+                13,
+                16
+              ]
+            },
+            "decor-cafe_table": {
+              "facing": "south",
+              "grid": [
+                11,
+                16
+              ]
+            },
+            "founder-workstation": {
+              "facing": "south",
+              "grid": [
+                11,
+                11
+              ]
+            }
+          },
+          "recovery": "",
+          "revision": 0,
+          "version": 1
+        },
+        "hires": [],
+        "history": [],
+        "player": {
+          "movementSeen": true,
+          "x": 560,
+          "y": 592
+        },
+        "product": {
+          "id": null,
+          "progress": null,
+          "ready": null,
+          "staffIds": null
+        },
+        "story": {
+          "courtyardUnlocked": false,
+          "location": "office",
+          "metTheo": false,
+          "opportunity": {
+            "description": "Theo is helping the weekend makers market. Make a simple planning kit so neighbors can set up their first stall.",
+            "id": "market_day_kit",
+            "productId": "",
+            "status": "locked",
+            "title": "Market Day Kit",
+            "topicId": "reselling",
+            "typeId": "template_pack"
+          },
+          "revision": 0,
+          "visited": false
+        }
+      }
+    }
+  ]
+}

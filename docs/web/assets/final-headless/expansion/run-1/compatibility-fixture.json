@@ -1,0 +1,144 @@
+{
+  "kind": "expansion",
+  "company": {
+    "cashCents": 100000,
+    "earnedCents": 0,
+    "reputation": 10,
+    "chapter": 1
+  },
+  "furnishing": {
+    "version": 1,
+    "layoutId": "starter-cottage-v1",
+    "revision": 1,
+    "inventory": [
+      {
+        "id": "artifact-archive",
+        "kind": "artifact_archive",
+        "ownerId": "",
+        "essential": true,
+        "grant": "office-stage:1",
+        "roleKit": ""
+      },
+      {
+        "id": "coffee-station",
+        "kind": "coffee_station",
+        "ownerId": "",
+        "essential": true,
+        "grant": "office-stage:1",
+        "roleKit": ""
+      },
+      {
+        "id": "collaboration-cluster",
+        "kind": "collaboration_cluster",
+        "ownerId": "",
+        "essential": true,
+        "grant": "office-stage:1",
+        "roleKit": ""
+      },
+      {
+        "id": "decor-broadleaf_planter",
+        "kind": "broadleaf_planter",
+        "ownerId": "",
+        "essential": false,
+        "grant": "decor:starter:v1",
+        "roleKit": ""
+      },
+      {
+        "id": "decor-cafe_chair",
+        "kind": "cafe_chair",
+        "ownerId": "",
+        "essential": false,
+        "grant": "decor:starter:v1",
+        "roleKit": ""
+      },
+      {
+        "id": "decor-cafe_table",
+        "kind": "cafe_table",
+        "ownerId": "",
+        "essential": false,
+        "grant": "decor:starter:v1",
+        "roleKit": ""
+      },
+      {
+        "id": "founder-workstation",
+        "kind": "desk",
+        "ownerId": "founder",
+        "essential": true,
+        "grant": "office-stage:0",
+        "roleKit": "founder_strategy_kit"
+      },
+      {
+        "id": "mira-workstation",
+        "kind": "desk",
+        "ownerId": "mira",
+        "essential": true,
+        "grant": "hire:mira",
+        "roleKit": "mina_discovery_kit"
+      }
+    ],
+    "placements": {
+      "mira-workstation": {
+        "grid": [
+          20,
+          11
+        ],
+        "facing": "south"
+      },
+      "coffee-station": {
+        "grid": [
+          7,
+          16
+        ],
+        "facing": "south"
+      },
+      "collaboration-cluster": {
+        "grid": [
+          22,
+          16
+        ],
+        "facing": "south"
+      },
+      "artifact-archive": {
+        "grid": [
+          7,
+          10
+        ],
+        "facing": "south"
+      },
+      "founder-workstation": {
+        "grid": [
+          11,
+          11
+        ],
+        "facing": "south"
+      },
+      "decor-cafe_table": {
+        "grid": [
+          11,
+          16
+        ],
+        "facing": "south"
+      },
+      "decor-cafe_chair": {
+        "grid": [
+          13,
+          16
+        ],
+        "facing": "south"
+      },
+      "decor-broadleaf_planter": {
+        "grid": [
+          25,
+          11
+        ],
+        "facing": "south"
+      }
+    },
+    "recovery": ""
+  },
+  "player": {
+    "x": 496,
+    "y": 624
+  },
+  "migrationRevisionDelta": 0
+}

@@ -1,0 +1,467 @@
+{
+  "actions": [
+    {
+      "action": "Continue",
+      "input": "keyboard",
+      "point": [
+        787.0,
+        448.0
+      ]
+    },
+    {
+      "action": "Talk with Theo",
+      "input": "pointer_world",
+      "point": [
+        950.0,
+        96.0
+      ]
+    },
+    {
+      "action": "Let’s make the Market Day Kit",
+      "input": "keyboard",
+      "point": [
+        801.0,
+        654.0
+      ]
+    },
+    {
+      "action": "Back to our studio",
+      "input": "keyboard",
+      "point": [
+        801.0,
+        654.0
+      ]
+    }
+  ],
+  "captureDetails": [],
+  "captures": [],
+  "checks": 36,
+  "display": "headless",
+  "engine": {
+    "build": "official",
+    "hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+    "hex": 263938,
+    "major": 4,
+    "minor": 7,
+    "patch": 2,
+    "status": "stable",
+    "string": "4.7.2-stable (official)",
+    "timestamp": 0
+  },
+  "failures": [],
+  "inputRouting": "Input.parse_input_event -> isolated root relay -> direct SubViewport; no OS cursor movement",
+  "logicalViewport": [
+    1280,
+    720
+  ],
+  "phase": "outdoor",
+  "renderer": "gl_compatibility",
+  "requests": [],
+  "restoredSnapshot": {
+    "company": {
+      "cashCents": 156800.0,
+      "chapter": 1.0,
+      "earnedCents": 156800.0,
+      "reputation": 13.0
+    },
+    "day": 4,
+    "furnishing": {
+      "inventory": [
+        {
+          "essential": true,
+          "grant": "office-stage:1",
+          "id": "artifact-archive",
+          "kind": "artifact_archive",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": true,
+          "grant": "office-stage:1",
+          "id": "coffee-station",
+          "kind": "coffee_station",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": true,
+          "grant": "office-stage:1",
+          "id": "collaboration-cluster",
+          "kind": "collaboration_cluster",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:starter:v1",
+          "id": "decor-broadleaf_planter",
+          "kind": "broadleaf_planter",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:starter:v1",
+          "id": "decor-cafe_chair",
+          "kind": "cafe_chair",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:starter:v1",
+          "id": "decor-cafe_table",
+          "kind": "cafe_table",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:first_release:v1",
+          "id": "decor-coat_bag_stand",
+          "kind": "coat_bag_stand",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:first_release:v1",
+          "id": "decor-low_bookshelf",
+          "kind": "low_bookshelf",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:first_release:v1",
+          "id": "decor-visitor_chair",
+          "kind": "visitor_chair",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": true,
+          "grant": "office-stage:0",
+          "id": "founder-workstation",
+          "kind": "desk",
+          "ownerId": "founder",
+          "roleKit": "founder_strategy_kit"
+        },
+        {
+          "essential": true,
+          "grant": "hire:mira",
+          "id": "mira-workstation",
+          "kind": "desk",
+          "ownerId": "mira",
+          "roleKit": "mina_discovery_kit"
+        }
+      ],
+      "layoutId": "starter-cottage-v1",
+      "placements": {
+        "artifact-archive": {
+          "facing": "south",
+          "grid": [
+            7.0,
+            10.0
+          ]
+        },
+        "coffee-station": {
+          "facing": "south",
+          "grid": [
+            7.0,
+            16.0
+          ]
+        },
+        "collaboration-cluster": {
+          "facing": "south",
+          "grid": [
+            22.0,
+            16.0
+          ]
+        },
+        "decor-broadleaf_planter": {
+          "facing": "south",
+          "grid": [
+            25.0,
+            11.0
+          ]
+        },
+        "decor-cafe_chair": {
+          "facing": "south",
+          "grid": [
+            13.0,
+            16.0
+          ]
+        },
+        "decor-cafe_table": {
+          "facing": "south",
+          "grid": [
+            11.0,
+            16.0
+          ]
+        },
+        "founder-workstation": {
+          "facing": "south",
+          "grid": [
+            11.0,
+            11.0
+          ]
+        },
+        "mira-workstation": {
+          "facing": "south",
+          "grid": [
+            20.0,
+            11.0
+          ]
+        }
+      },
+      "recovery": "",
+      "revision": 2.0,
+      "version": 1.0
+    },
+    "hires": [
+      "mira"
+    ],
+    "history": [
+      {
+        "id": "p1",
+        "name": "Fitness Course",
+        "releasedDay": 4.0,
+        "salesCents": 156800.0
+      }
+    ],
+    "player": {
+      "movementSeen": true,
+      "x": 144.0,
+      "y": 114.0
+    },
+    "product": {
+      "id": null,
+      "progress": null,
+      "ready": null,
+      "staffIds": null
+    },
+    "story": {
+      "courtyardUnlocked": true,
+      "location": "courtyard",
+      "metTheo": false,
+      "opportunity": {
+        "description": "Theo is helping the weekend makers market. Make a simple planning kit so neighbors can set up their first stall.",
+        "id": "market_day_kit",
+        "productId": "",
+        "status": "available",
+        "title": "Market Day Kit",
+        "topicId": "reselling",
+        "typeId": "template_pack"
+      },
+      "revision": 1.0,
+      "visited": true
+    }
+  },
+  "snapshot": {
+    "company": {
+      "cashCents": 156800.0,
+      "chapter": 1.0,
+      "earnedCents": 156800.0,
+      "reputation": 13.0
+    },
+    "day": 4,
+    "furnishing": {
+      "inventory": [
+        {
+          "essential": true,
+          "grant": "office-stage:1",
+          "id": "artifact-archive",
+          "kind": "artifact_archive",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": true,
+          "grant": "office-stage:1",
+          "id": "coffee-station",
+          "kind": "coffee_station",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": true,
+          "grant": "office-stage:1",
+          "id": "collaboration-cluster",
+          "kind": "collaboration_cluster",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:starter:v1",
+          "id": "decor-broadleaf_planter",
+          "kind": "broadleaf_planter",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:starter:v1",
+          "id": "decor-cafe_chair",
+          "kind": "cafe_chair",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:starter:v1",
+          "id": "decor-cafe_table",
+          "kind": "cafe_table",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:first_release:v1",
+          "id": "decor-coat_bag_stand",
+          "kind": "coat_bag_stand",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:first_release:v1",
+          "id": "decor-low_bookshelf",
+          "kind": "low_bookshelf",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": false,
+          "grant": "decor:first_release:v1",
+          "id": "decor-visitor_chair",
+          "kind": "visitor_chair",
+          "ownerId": "",
+          "roleKit": ""
+        },
+        {
+          "essential": true,
+          "grant": "office-stage:0",
+          "id": "founder-workstation",
+          "kind": "desk",
+          "ownerId": "founder",
+          "roleKit": "founder_strategy_kit"
+        },
+        {
+          "essential": true,
+          "grant": "hire:mira",
+          "id": "mira-workstation",
+          "kind": "desk",
+          "ownerId": "mira",
+          "roleKit": "mina_discovery_kit"
+        }
+      ],
+      "layoutId": "starter-cottage-v1",
+      "placements": {
+        "artifact-archive": {
+          "facing": "south",
+          "grid": [
+            7.0,
+            10.0
+          ]
+        },
+        "coffee-station": {
+          "facing": "south",
+          "grid": [
+            7.0,
+            16.0
+          ]
+        },
+        "collaboration-cluster": {
+          "facing": "south",
+          "grid": [
+            22.0,
+            16.0
+          ]
+        },
+        "decor-broadleaf_planter": {
+          "facing": "south",
+          "grid": [
+            25.0,
+            11.0
+          ]
+        },
+        "decor-cafe_chair": {
+          "facing": "south",
+          "grid": [
+            13.0,
+            16.0
+          ]
+        },
+        "decor-cafe_table": {
+          "facing": "south",
+          "grid": [
+            11.0,
+            16.0
+          ]
+        },
+        "founder-workstation": {
+          "facing": "south",
+          "grid": [
+            11.0,
+            11.0
+          ]
+        },
+        "mira-workstation": {
+          "facing": "south",
+          "grid": [
+            20.0,
+            11.0
+          ]
+        }
+      },
+      "recovery": "",
+      "revision": 2.0,
+      "version": 1.0
+    },
+    "hires": [
+      "mira"
+    ],
+    "history": [
+      {
+        "id": "p1",
+        "name": "Fitness Course",
+        "releasedDay": 4.0,
+        "salesCents": 156800.0
+      }
+    ],
+    "player": {
+      "movementSeen": true,
+      "x": 496.0,
+      "y": 624.0
+    },
+    "product": {
+      "id": null,
+      "progress": null,
+      "ready": null,
+      "staffIds": null
+    },
+    "story": {
+      "courtyardUnlocked": true,
+      "location": "office",
+      "metTheo": true,
+      "opportunity": {
+        "description": "Theo is helping the weekend makers market. Make a simple planning kit so neighbors can set up their first stall.",
+        "id": "market_day_kit",
+        "productId": "",
+        "status": "accepted",
+        "title": "Market Day Kit",
+        "topicId": "reselling",
+        "typeId": "template_pack"
+      },
+      "revision": 3.0,
+      "visited": true
+    }
+  },
+  "window": [
+    1440,
+    900
+  ],
+  "workerPid": 56055
+}
