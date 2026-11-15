@@ -27,8 +27,15 @@ async function setup() {
   const path = join(root, "startup-valley.sqlite");
   return { root, project, path, db: new GameDatabase(path, project) };
 }
+// Open Floor desks reserve the old east-center pocket. [24,8] still clears story
+// props, aisles, and those desks for every starter facing except the three below.
+const decorCell = (kind: string, facing: Facing): [number, number] => {
+  if (kind === "shared_workbench" && (facing === "east" || facing === "west")) return [24, 6];
+  if (kind === "lounge_sofa" && facing === "south") return [4, 8];
+  return [24, 8];
+};
 const plant = (state: FurnishingState, facing: Facing = "south"): FurniturePlacements => ({
-  ...state.placements, "decor-broadleaf_planter": { grid: [22, 16], facing },
+  ...state.placements, "decor-broadleaf_planter": { grid: decorCell("broadleaf_planter", facing), facing },
 });
 const apply = (db: GameDatabase, operationId: string, placements: FurniturePlacements) => db.furnishing.update({ operationId, expectedRevision: db.furnishing.state().revision, placements });
 
@@ -67,25 +74,29 @@ test("starter inventory, four-facing placement, move, store and Undo survive res
   const initial = db.bootstrap().furnishing;
   assert.equal(initial.inventory.length, founderInventory); assert.equal(initial.revision, 0);
   assert.equal(initial.inventory.filter((item) => !item.essential).length, starterCount);
+  assert.equal(initial.inventory.find((item) => item.id === "founder-workstation")?.roleKit, "founder_strategy_kit");
+  assert.equal(db.furnishing.geometry.employeeDecorKits.founder, "desk_lamp_kit");
+  assert.equal(db.furnishing.geometry.decorKits.desk_lamp_kit?.host_kind, "desk");
+  assert.equal(db.furnishing.geometry.decorKits.desk_lamp_kit?.owner_id, "founder");
   assert.deepEqual(Object.keys(initial.placements), ["founder-workstation", "decor-phone_booth", "decor-cafe_table", "decor-cafe_chair"]);
   assert.deepEqual(initial.placements["decor-phone_booth"], { grid: [3, 18], facing: "south" });
-  assert.deepEqual(initial.placements["decor-cafe_table"], { grid: [15, 9], facing: "south" });
-  assert.deepEqual(initial.placements["decor-cafe_chair"], { grid: [24, 9], facing: "south" });
-  assert.equal(Object.values(initial.placements).some((placement) => placement.grid[0] === 22 && placement.grid[1] === 16), false);
-  assert.equal(initial.placements["decor-lounge_sofa"], undefined);
-  assert.equal(initial.inventory.some((item) => item.id === "decor-desk_lamp_kit" && item.kind === "desk_lamp_kit"), true);
-  assert.equal(initial.inventory.some((item) => item.id === "decor-creative_design_kit" && item.kind === "creative_design_kit"), true);
-  assert.equal(initial.placements["decor-desk_lamp_kit"], undefined);
-  assert.equal(initial.placements["decor-creative_design_kit"], undefined);
+  assert.deepEqual(initial.placements["decor-cafe_table"], { grid: [5, 8], facing: "south" });
+  assert.deepEqual(initial.placements["decor-cafe_chair"], { grid: [7, 8], facing: "south" });
+  assert.notDeepEqual(initial.placements["decor-phone_booth"]?.grid, [24, 8]);
+  // Exercise each optional piece in clear floor space, just as a player can
+  // store the starter lounge before replacing it with larger furniture.
+  const requiredIds = new Set(initial.inventory.filter((item) => item.essential).map((item) => item.id));
+  const clearFloor = Object.fromEntries(Object.entries(initial.placements).filter(([id]) => requiredIds.has(id)));
   for (const item of initial.inventory.filter((entry) => !entry.essential)) {
     const facings = furnishingCatalog.furniture[item.kind]?.facings ?? ["south"];
     for (const facing of facings) {
-      const placed = apply(db, `${item.kind}-${facing}`, { ...initial.placements, [item.id]: { grid: [22, 16], facing } }).furnishing;
-      assert.deepEqual(placed.placements[item.id], { grid: [22, 16], facing });
+      const grid = decorCell(item.kind, facing);
+      const placed = apply(db, `${item.kind}-${facing}`, { ...clearFloor, [item.id]: { grid, facing } }).furnishing;
+      assert.deepEqual(placed.placements[item.id], { grid, facing });
     }
   }
   const beforeMove = apply(db, "plant-final", plant(initial)).furnishing;
-  const moved = apply(db, "plant-move", { ...beforeMove.placements, "decor-broadleaf_planter": { grid: [22, 18], facing: "south" } }).furnishing;
+  const moved = apply(db, "plant-move", { ...beforeMove.placements, "decor-broadleaf_planter": { grid: [7, 14], facing: "south" } }).furnishing;
   assert.equal(moved.revision, beforeMove.revision + 1);
   const stored = apply(db, "store", initial.placements).furnishing;
   assert.equal(stored.placements["decor-broadleaf_planter"], undefined);
@@ -94,6 +105,24 @@ test("starter inventory, four-facing placement, move, store and Undo survive res
   const reopened = new GameDatabase(path, project);
   assert.deepEqual(reopened.bootstrap().furnishing, restored);
   for (let n = 0; n < 5; n++) assert.deepEqual(reopened.bootstrap().furnishing, restored);
+  reopened.close();
+});
+
+test("stored starter café stays stored across hiring and reopen", async () => {
+  const { db, path, project } = await setup();
+  const initial = db.furnishing.state();
+  const placements = { ...initial.placements };
+  delete placements["decor-cafe_table"];
+  delete placements["decor-cafe_chair"];
+  apply(db, "store-cafe", placements);
+  db.journey.hire("mira", 1);
+  const saved = db.furnishing.state();
+  assert.equal(saved.placements["decor-cafe_table"], undefined);
+  assert.equal(saved.placements["decor-cafe_chair"], undefined);
+  assert.ok(saved.placements["mira-workstation"]);
+  db.close();
+  const reopened = new GameDatabase(path, project);
+  assert.deepEqual(reopened.furnishing.state(), saved);
   reopened.close();
 });
 
@@ -118,7 +147,7 @@ test("placement validation protects walls, art bounds, service clearance, future
     assert.throws(() => apply(db, `invalid-${grid.join("-")}`, { ...initial.placements, "decor-broadleaf_planter": { grid: grid as [number, number], facing: "south" } }));
   }
   assert.throws(() => apply(db, "remove-essential", {}), /required station/u);
-  assert.throws(() => db.furnishing.update({ operationId: "hit-founder", expectedRevision: 0, placements: plant(initial), actorCells: [{ id: "founder", grid: [22, 16] }] }), /blocks or traps/u);
+  assert.throws(() => db.furnishing.update({ operationId: "hit-founder", expectedRevision: 0, placements: plant(initial), actorCells: [{ id: "founder", grid: [24, 8] }] }), /blocks or traps/u);
   assert.throws(() => db.furnishing.update({ operationId: "occupied-seat", expectedRevision: 0, placements: { "founder-workstation": { grid: [8, 17], facing: "north" } }, actorCells: [{ id: "founder", grid: [8, 16] }] }), /wait for the actor/u);
   assert.equal(db.furnishing.update({ operationId: "future-empty-floor", expectedRevision: 0, placements: initial.placements, actorCells: [{ id: "founder", grid: [10, 8] }] }).furnishing.revision, 1, "unbuilt future station is not invisible live collision");
   // A supplied live founder supersedes a stale autosave location.
@@ -211,7 +240,7 @@ test("version-six migration preserves existing company and grants the two role k
   assert.match(state.furnishing.recovery, /previous workstation locations/u);
   assert.equal(state.employees.find((employee) => employee.id === "mira")?.deskX, 8);
   assert.equal(state.employees.find((employee) => employee.id === "theo")?.deskX, 20);
-  assert.deepEqual(state.furnishing.inventory.filter((item) => item.roleKit).map((item) => item.roleKit).sort(), ["mina_discovery_kit", "theo_campaign_kit"]);
+  assert.deepEqual(state.furnishing.inventory.filter((item) => item.roleKit).map((item) => item.roleKit).sort(), ["founder_strategy_kit", "mina_discovery_kit", "theo_campaign_kit"]);
   assert.deepEqual(migrated.bootstrap().furnishing, state.furnishing);
   migrated.close();
 });

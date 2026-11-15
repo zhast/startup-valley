@@ -5,15 +5,11 @@ const CHARACTER_SHEET: Texture2D = preload("res://assets/concepts/office-town-ch
 const FOUNDER_LOCOMOTION: Texture2D = preload("res://assets/runtime/characters/founder-locomotion.png")
 const MIRA_LOCOMOTION: Texture2D = preload("res://assets/runtime/characters/mira-locomotion.png")
 const THEO_LOCOMOTION: Texture2D = preload("res://assets/runtime/characters/theo-locomotion.png")
+const CREATIVE_LOCOMOTION: Texture2D = preload("res://assets/runtime/characters/creative-locomotion.png")
 const MIRA_WORK: Texture2D = preload("res://assets/runtime/characters/mira-work.png")
 const THEO_WORK: Texture2D = preload("res://assets/runtime/characters/theo-work.png")
 const MIRA_SEATED: Texture2D = preload("res://assets/runtime/characters/mira-seated.png")
 const THEO_SEATED: Texture2D = preload("res://assets/runtime/characters/theo-seated.png")
-const FOUNDER_SEATED_PATH := "res://assets/runtime/characters/founder-seated.png"
-# PASS south-v9 (md5_8 9c1611b5). Load at init so a missing sidecar cannot take
-# down CharacterArt parse; drop the tracked PNG in place to activate the bind.
-# East/N/W founder workstation sheets stay unbound in this slice.
-static var FOUNDER_SEATED: Texture2D = load(FOUNDER_SEATED_PATH) as Texture2D if ResourceLoader.exists(FOUNDER_SEATED_PATH) else null
 const MIRA_WORKSTATIONS_V2_NORTH: Texture2D = preload("res://assets/runtime/characters/workstations-v2/mira-north.png")
 const THEO_WORKSTATIONS_V2_NORTH: Texture2D = preload("res://assets/runtime/characters/workstations-v2/theo-north.png")
 const MIRA_WORKSTATIONS_V2_EAST: Texture2D = preload("res://assets/runtime/characters/workstations-v2/mira-east.png")
@@ -45,11 +41,9 @@ const REVIEWED_CAPABILITY_FIELDS: Array[String] = [
 # directions does not grant those directions seated/typing/research support.
 # Future sets add explicit per-facing regions and character sheets; no raster
 # rotation, mirroring, or fallback to another person's poses is permitted.
-static var WORK_POSE_SETS: Dictionary = {
+const WORK_POSE_SETS: Dictionary = {
 	LEGACY_WORK_POSE_SET: {
 		"characters": {
-			# South seated/typing only. East/N/W founder workstation sheets stay unbound.
-			"founder": {"seated": FOUNDER_SEATED},
 			"mira": {"seated": MIRA_SEATED, "work": MIRA_WORK},
 			"theo": {"seated": THEO_SEATED, "work": THEO_WORK},
 		},
@@ -314,18 +308,18 @@ static func locomotion_sheet(character_id: String) -> Texture2D:
 			return MIRA_LOCOMOTION
 		"theo":
 			return THEO_LOCOMOTION
+		"creative":
+			return CREATIVE_LOCOMOTION
 	return FOUNDER_LOCOMOTION
 
 static func work_sheet(character_id: String) -> Texture2D:
 	return THEO_WORK if character_id == "theo" else MIRA_WORK
 
+static func has_work_sheet(character_id: String) -> bool:
+	return character_id == "mira" or character_id == "theo"
+
 static func seated_sheet(character_id: String) -> Texture2D:
-	match character_id:
-		"theo":
-			return THEO_SEATED
-		"founder":
-			return FOUNDER_SEATED
-	return MIRA_SEATED
+	return THEO_SEATED if character_id == "theo" else MIRA_SEATED
 
 static func supports_work_pose(character_id: String, pose_set: String, facing: String, pose: String = "seated") -> bool:
 	return not work_pose_frame(character_id, pose_set, facing, pose, 0).is_empty()

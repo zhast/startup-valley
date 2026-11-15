@@ -42,6 +42,10 @@ func _run() -> void:
 	await _collapsed_review_fit()
 	await _sparse_layouts()
 	await _disabled_hire()
+	await _chapter_complete()
+	await _chapter_two_end()
+	await _chapter_three_end()
+	await _tycoon_secondary_actions()
 	var file := FileAccess.open(OUTPUT + ("/manifest-headless.json" if DisplayServer.get_name() == "headless" else "/manifest.json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify({"checks": _checks, "failures": _failures, "captures": _captures, "layouts": _layouts,
 		"workerDisabled": true, "transactions": "Signal-only spy. No worker, database or real save.",
@@ -162,6 +166,7 @@ func _bounds() -> void:
 	_check(_panel._header.get_global_rect().end.y <= _panel._scroll.get_global_rect().position.y, "Header stays outside scrolled content")
 	_check(_panel._scroll.get_global_rect().end.y <= _panel._footer.get_global_rect().position.y, "Footer stays outside scrolled content")
 	for node: Node in _panel._content.find_children("*", "PanelContainer", true, false):
+		if _menu_chrome(node): continue
 		_material((node as PanelContainer).get_theme_stylebox("panel"), "card", "Company reading card")
 	var bar := _panel._scroll.get_v_scroll_bar()
 	_material(bar.get_theme_stylebox("scroll"), "track", "Company scroll well")
@@ -212,6 +217,14 @@ func _bounds() -> void:
 func _material(style: StyleBox, kind: String, context: String) -> void:
 	_check(style.get_meta("cozy_family", "") == CozyUI.MATERIAL_FAMILY, context + " belongs to the shared notebook material family")
 	_check(style.get_meta("cozy_material", "") == kind, context + " retains its semantic material role")
+
+func _menu_chrome(node: Node) -> bool:
+	# OptionButton / PopupMenu internals are popup and focus surfaces, not reading cards.
+	var current := node
+	while current != null and current != _panel._content:
+		if current is OptionButton or current is PopupMenu: return true
+		current = current.get_parent()
+	return false
 
 func _has_no_expansion(style: StyleBox) -> bool:
 	for property: Dictionary in style.get_property_list():
@@ -361,6 +374,13 @@ func _settings_input() -> void:
 	_check(_visible(slider), "Volume slider is visible before input")
 	_material(slider.get_theme_stylebox("slider"), "track-horizontal", "Volume track")
 	_material(slider.get_theme_stylebox("grabber_area"), "track-filled", "Volume fill")
+	var picker := _panel.find_child("ArchitectureTheme", true, false) as OptionButton
+	_check(picker != null and picker.item_count >= 2, "Settings office look lists the registered architecture kits")
+	if picker != null:
+		_material(picker.get_popup().get_theme_stylebox("panel"), "popup", "Office look menu")
+		for node: Node in picker.get_popup().find_children("*", "PanelContainer", true, false):
+			var kind := "focus" if str(node.name) == "_focus" else "popup"
+			_material((node as PanelContainer).get_theme_stylebox("panel"), kind, "Office look menu " + kind)
 	slider.grab_focus()
 	await _key(KEY_RIGHT)
 	_check(is_equal_approx(_panel.effects_volume, 0.55) and percent.text == "55%", "Keyboard volume change updates live percentage")
@@ -376,7 +396,7 @@ func _summary_layout() -> void:
 	await _frames(15)
 	_bounds()
 	_check(_text().contains("$9,876,543.21"), "Large in-game revenue is grouped and retains cents")
-	_check(_text().contains("Game revenue") and _text().contains("virtual company funds") and _text().contains("Real AI spend") and _text().contains("real money (USD)"), "Day results distinguish virtual company funds from real AI costs in USD")
+	_check(_text().contains("Game revenue") and _text().contains("virtual company funds") and _text().contains("Optional AI spend") and _text().contains("real money (USD)"), "Day results distinguish virtual company funds from optional real AI costs in USD")
 	var numeric_count := 0
 	for node: Node in _panel.find_children("*", "Label", true, false):
 		var label := node as Label
@@ -386,6 +406,10 @@ func _summary_layout() -> void:
 	_check(numeric_count == 3, "All three summary values have explicit numeric roles")
 	_check(_visible(_button("Begin next day")), "Next day action remains visible with large metrics and long work titles")
 	await _capture("day-summary-large-values")
+	_panel.show_summary({"day": 3, "earnedCents": 60000, "reputation": 10, "aiSpend": 0, "completedWork": ["Ship a product"], "entries": [], "nextMilestone": "Your next chapter"})
+	await _frames(15)
+	_check(not _text().contains("Optional AI spend") and not _text().contains("Real AI spend"), "A day with no AI work hides the optional spend metric")
+	_check(_text().contains("Game revenue") and _text().contains("virtual company funds"), "Virtual game revenue remains when optional AI spend is hidden")
 
 func _closing_layout() -> void:
 	var value := _fixture()
@@ -425,7 +449,7 @@ func _collapsed_review_fit() -> void:
 	_check(not _panel._scroll.get_v_scroll_bar().visible, "Collapsed revision needs no scrollbar")
 	var money_note := _panel.find_child("MoneyExplanation", true, false) as Label
 	_check(money_note != null and _visible(money_note), "The entire money and planning-files explanation is visible at rest")
-	_check(money_note != null and money_note.text.contains("Game cash is virtual") and money_note.text.contains("AI spend is real money (USD)") and money_note.text.contains("planning files only"), "Journey keeps both currencies and planning-only consequences explicit")
+	_check(money_note != null and money_note.text.contains("Game cash is virtual") and money_note.text.contains("Shipping products is fully offline") and money_note.text.contains("planning files only"), "Journey keeps virtual cash, offline shipping, and planning-only consequences explicit")
 	_check(not _panel._notice.visible, "An empty notice never reserves a footer line")
 	await _capture("collapsed-revision-fit")
 	_panel.show_error("Evaluation could not finish because the provider returned an incomplete response. Your files are saved. Retry when your connection is restored; no milestone reward has been claimed.")
@@ -460,3 +484,507 @@ func _disabled_hire() -> void:
 	await _click(hire)
 	_check(_actions.size() == before, "Disabled hiring cannot dispatch a transaction")
 	await _capture("disabled-hire")
+
+func _chapter_complete() -> void:
+	var value := _fixture()
+	value["company"]["chapter"] = 2
+	value["milestones"][0]["state"] = "completed"
+	value["milestones"][1]["state"] = "completed"
+	value["candidates"][0]["hired"] = true
+	value["candidates"][1].merge({"hired": true, "available": false}, true)
+	await _present("journey", value)
+	_check(_panel.screen == "complete", "Finished chapter presents the chapter-complete screen")
+	_check(_text().contains("Chapter complete") and _visible(_button("Back to office")), "Chapter-complete screen names the win state and keeps an office exit")
+	await _capture("chapter-complete")
+	await _click(_button("Back to office"))
+	_check(not _panel.visible, "Chapter-complete Back to office closes the notebook")
+
+func _chapter_two_end() -> void:
+	var value := _fixture()
+	value["company"]["chapter"] = 2
+	value["company"]["cashCents"] = 180000
+	value["milestones"][0]["state"] = "completed"
+	value["milestones"][1]["state"] = "completed"
+	value["milestones"].append({"id": "brand", "title": "Design the brand", "state": "completed", "employeeId": "creative"})
+	value["candidates"][0]["hired"] = true
+	value["candidates"][1].merge({"hired": true, "available": false}, true)
+	value["candidates"].append({"id": "creative", "name": "Creative", "role": "Design + brand", "hired": true, "available": false, "costCents": 0})
+	value["milestones"].append({"id": "apply", "title": "Apply the brand", "state": "locked", "employeeId": "creative"})
+	await _present("journey", value)
+	_check(_panel.screen == "complete", "Finished brand presents the Chapter 2 end screen")
+	_check(_text().contains("Chapter 2 complete") and _visible(_button("Begin Chapter 3")), "Chapter 2 end state names the chapter and offers Chapter 3")
+	_check(_button("Begin Chapter 2") == null, "Chapter 2 end state does not offer to begin Chapter 2 again")
+	_check(_visible(_button("Back to office")), "Chapter 2 end state can return to the office")
+	await _capture("chapter-two-complete")
+	await _click(_button("Back to office"))
+	_check(not _panel.visible, "Chapter 2 Back to office closes the notebook")
+
+func _chapter_three_end() -> void:
+	var value := _fixture()
+	value["company"]["chapter"] = 3
+	value["company"]["cashCents"] = 220000
+	value["milestones"][0]["state"] = "completed"
+	value["milestones"][1]["state"] = "completed"
+	value["milestones"].append({"id": "brand", "title": "Design the brand", "state": "completed", "employeeId": "creative"})
+	value["milestones"].append({"id": "apply", "title": "Apply the brand", "state": "completed", "employeeId": "creative"})
+	value["candidates"][0]["hired"] = true
+	value["candidates"][1].merge({"hired": true, "available": false}, true)
+	value["candidates"].append({"id": "creative", "name": "Creative", "role": "Design + brand", "hired": true, "available": false, "costCents": 0})
+	await _present("journey", value)
+	_check(_panel.screen == "complete", "Finished application presents the Chapter 3 end screen")
+	_check(_text().contains("Chapter 3 complete") and _text().to_lower().contains("more is coming"), "Chapter 3 end state names the chapter and says more is coming")
+	_check(_button("Begin Chapter 3") == null, "Chapter 3 end state does not offer to begin Chapter 3 again")
+	_check(_visible(_button("Back to office")), "Chapter 3 end state can return to the office")
+	await _capture("chapter-three-complete")
+	await _click(_button("Back to office"))
+	_check(not _panel.visible, "Chapter 3 Back to office closes the notebook")
+
+func _tycoon_secondary_actions() -> void:
+	var value := _fixture()
+	value["milestones"][0]["state"] = "locked"
+	value["milestones"][1]["state"] = "locked"
+	value["candidates"][0]["hired"] = false
+	value["candidates"][0]["available"] = true
+	value["company"]["cashCents"] = 0
+	value["tycoon"] = {
+		"researchPoints": 0,
+		"researchNotice": "",
+		"trainingNotice": "",
+		"upgradeNotice": "",
+		"upgrades": [
+			{"id": "standing_desk", "name": "Oak Standing Desk", "blurb": "Stand for the sketches.", "priceCents": 25000, "kind": "design", "effect": "+1 design per person per dev day", "owned": false, "affordable": false},
+			{"id": "ring_light", "name": "Ring Light", "blurb": "Warmer clips.", "priceCents": 40000, "kind": "hype", "effect": "+1 hype per person per dev day", "owned": true, "affordable": false},
+		],
+		"topics": [
+			{"id": "fitness", "name": "Fitness", "unlocked": true, "researchCost": 4},
+			{"id": "sneakers", "name": "Sneakers", "unlocked": false, "researchCost": 4},
+			{"id": "reselling", "name": "Reselling", "unlocked": false, "researchCost": 4},
+			{"id": "sports_betting", "name": "Sports Betting Picks", "unlocked": false, "researchCost": 4},
+			{"id": "dating", "name": "Dating Advice", "unlocked": false, "researchCost": 4},
+		],
+		"types": [
+			{"id": "newsletter", "name": "Newsletter", "unlocked": true, "researchCost": 6},
+			{"id": "coaching", "name": "Coaching", "unlocked": false, "researchCost": 6},
+			{"id": "software", "name": "Software Tool", "unlocked": false, "researchCost": 6},
+		],
+		"staff": [{
+			"id": "founder", "name": "Founder", "hired": true,
+			"design": 2, "tech": 2, "hype": 2, "trainedToday": false,
+			"training": {
+				"design": {"costCents": 30000, "enabled": false},
+				"tech": {"costCents": 30000, "enabled": false},
+				"hype": {"costCents": 30000, "enabled": false},
+			},
+		}],
+	}
+	await _present("journey", value)
+	var hire := _button("Hire Mina")
+	_check(hire != null and str(hire.get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the single primary action")
+	var new_product := _panel.find_child("NewProduct", true, false) as Button
+	var train_card := _panel.find_child("TrainStaff", true, false) as Control
+	var research_card := _panel.find_child("ResearchCard", true, false) as Control
+	var train_tech := _panel.find_child("Train_founder_tech", true, false) as Button
+	var research_sneakers := _panel.find_child("Research_sneakers", true, false) as Button
+	var research_coaching := _panel.find_child("Research_coaching", true, false) as Button
+	_check(new_product != null and str(new_product.get_meta("cozy_variant", "")) == "secondary", "New Product reads as secondary")
+	_check(train_tech != null and str(train_tech.get_meta("cozy_variant", "")) == "secondary", "Train Tech reads as secondary")
+	_check(research_sneakers != null and str(research_sneakers.get_meta("cozy_variant", "")) == "secondary", "Research Sneakers reads as secondary")
+	_check(research_coaching != null and research_coaching.disabled, "Research Coaching stays disabled without enough points")
+	var upgrades_card := _panel.find_child("UpgradesCard", true, false) as Control
+	var buy_desk := _panel.find_child("Buy_standing_desk", true, false) as Button
+	var owned_light := _panel.find_child("Owned_ring_light", true, false) as Label
+	_check(train_card != null and research_card != null and upgrades_card != null and new_product.get_global_rect().position.y < train_card.get_global_rect().position.y and train_card.get_global_rect().position.y < research_card.get_global_rect().position.y and research_card.get_global_rect().position.y < upgrades_card.get_global_rect().position.y, "Train staff, Research, and Upgrades sit below New Product")
+	_check(_text().contains("0 research points"), "Research card shows the point balance")
+	_check(buy_desk != null and buy_desk.disabled and str(buy_desk.get_meta("cozy_variant", "")) == "secondary" and buy_desk.text == "Buy Oak Standing Desk · $250", "Buy Oak Standing Desk is a disabled secondary action")
+	_check(owned_light != null and owned_light.text.contains("Ring Light"), "An owned upgrade shows one line")
+	_check(_panel.find_child("Buy_ring_light", true, false) == null, "An owned upgrade hides its buy button")
+	var tycoon: Dictionary = value["tycoon"]
+	tycoon["contract"] = {
+		"id": "nova",
+		"client": "Nova on Whop",
+		"topicId": "crypto",
+		"typeId": "newsletter",
+		"topicName": "Crypto Alpha",
+		"typeName": "Newsletter",
+		"bonusCents": 8000,
+		"status": "offered",
+		"enabled": true,
+		"reason": "",
+	}
+	await _present("journey", value)
+	var accept := _panel.find_child("AcceptContract", true, false) as Button
+	var contract_client := _panel.find_child("ContractClient", true, false) as Label
+	var contract_pair := _panel.find_child("ContractPair", true, false) as Label
+	var contract_bonus := _panel.find_child("ContractBonus", true, false) as Label
+	_check(accept != null and not accept.disabled and str(accept.get_meta("cozy_variant", "")) == "secondary" and accept.text == "Accept contract", "Accept contract reads as secondary")
+	_check(contract_client != null and contract_client.text == "Nova on Whop", "The contract card names the client")
+	_check(contract_pair != null and contract_pair.text == "Crypto Alpha × Newsletter", "The contract card names the pair")
+	_check(contract_bonus != null and contract_bonus.text == "Bonus $80 on release", "The contract card names the bonus")
+	_check(_button("Hire Mina") != null and str(_button("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside the contract")
+	tycoon["history"] = [{
+		"id": "p1",
+		"name": "Crypto Alpha Newsletter",
+		"status": "released",
+		"salesDays": 1,
+		"salesDaysTotal": 4,
+		"salesCents": 20700,
+		"fans": 5,
+		"review": {"score": 7, "reviewers": []},
+		"patch": {
+			"costCents": 10000,
+			"scoreBonus": 1,
+			"applied": false,
+			"enabled": false,
+			"reason": "Need $100",
+		},
+	}]
+	await _present("journey", value)
+	var patch := _panel.find_child("Patch_p1", true, false) as Button
+	var selling := _panel.find_child("Selling_p1", true, false) as Control
+	_check(selling != null, "Company Journey shows the selling-product card")
+	_check(patch != null and patch.disabled and str(patch.get_meta("cozy_variant", "")) == "secondary" and patch.text == "Patch · Need $100", "Patch reads Need $100 when cash is short")
+	_check(_panel.find_child("Sequel_p1", true, false) == null, "A selling card without a sequel offer draws no Sequel button")
+	_check(_panel.find_child("Award_p1", true, false) == null, "A selling card without an award offer draws no Enter award button")
+	_check(_panel.find_child("Port_p1", true, false) == null, "A selling card without a port offer draws no Port button")
+	_check(_button("Hire Mina") != null and str(_button("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Patch")
+	var shipped: Dictionary = (tycoon["history"] as Array)[0]
+	var offer: Dictionary = shipped["patch"]
+	offer["applied"] = true
+	offer["reason"] = "Already patched."
+	tycoon["patchNotice"] = "Patched Crypto Alpha Newsletter. −$100"
+	await _present("journey", value)
+	var patched := _panel.find_child("SellingPatched_p1", true, false) as Label
+	var notice := _panel.find_child("PatchNotice", true, false) as Label
+	patch = _panel.find_child("Patch_p1", true, false) as Button
+	_check(patched != null and patched.text == "Patched · +1 score", "The selling card names the patched state")
+	_check(notice != null and notice.text == "Patched Crypto Alpha Newsletter. −$100", "The selling card names the patch cost")
+	_check(patch != null and patch.disabled and patch.text == "Patch · Already patched.", "A second patch stays disabled")
+	var sequel_state := value.duplicate(true)
+	var sequel_tycoon: Dictionary = sequel_state["tycoon"]
+	sequel_tycoon["history"] = [{
+		"id": "p1",
+		"name": "Crypto Alpha Newsletter",
+		"status": "complete",
+		"salesDays": 4,
+		"salesDaysTotal": 4,
+		"salesCents": 20700,
+		"fans": 5,
+		"review": {"score": 6, "reviewers": []},
+		"sequel": {
+			"scoreBonus": 0,
+			"savedDays": 1,
+			"isSequel": false,
+			"started": false,
+			"enabled": true,
+			"reason": "",
+		},
+	}]
+	await _present("journey", sequel_state)
+	var finished := _panel.find_child("Finished_p1", true, false) as Control
+	var sequel := _panel.find_child("Sequel_p1", true, false) as Button
+	_check(finished != null, "Company Journey shows the finished-product card")
+	_check(sequel != null and not sequel.disabled and str(sequel.get_meta("cozy_variant", "")) == "secondary" and sequel.text == "Sequel", "Sequel reads as secondary")
+	_check(_button("Hire Mina") != null and str(_button("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Sequel")
+	var done: Dictionary = (sequel_tycoon["history"] as Array)[0]
+	var sequel_offer: Dictionary = done["sequel"]
+	sequel_offer["started"] = true
+	sequel_offer["enabled"] = false
+	sequel_offer["reason"] = "Already has a sequel."
+	await _present("journey", sequel_state)
+	sequel = _panel.find_child("Sequel_p1", true, false) as Button
+	_check(sequel != null and sequel.disabled and sequel.text == "Sequel · Already has a sequel.", "A second sequel stays disabled")
+	var award_state := {
+		"id": "p1",
+		"name": "Crypto Alpha Newsletter",
+		"status": "complete",
+		"salesDays": 4,
+		"salesDaysTotal": 4,
+		"salesCents": 46800,
+		"fans": 11,
+		"review": {"score": 6, "reviewers": []},
+		"award": {
+			"show": "Whop Creator Awards",
+			"costCents": 4000,
+			"outcome": "",
+			"fans": 0,
+			"entered": false,
+			"enabled": true,
+			"reason": "",
+		},
+	}
+	var award_journey := sequel_state.duplicate(true)
+	(award_journey["tycoon"] as Dictionary)["history"] = [award_state]
+	await _present("journey", award_journey)
+	var award := _panel.find_child("Award_p1", true, false) as Button
+	var award_show := _panel.find_child("AwardShow_p1", true, false) as Label
+	_check(award != null and not award.disabled and str(award.get_meta("cozy_variant", "")) == "secondary" and award.text == "Enter award", "Enter award reads as secondary")
+	_check(award_show != null and award_show.text == "Whop Creator Awards · $40", "The shipped card names the show and the fee")
+	_check(_panel.find_child("AwardResult_p1", true, false) == null, "The result line waits until the product enters")
+	_check(_button("Hire Mina") != null and str(_button("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Enter award")
+	var award_offer: Dictionary = award_state["award"]
+	award_offer["entered"] = true
+	award_offer["enabled"] = false
+	award_offer["outcome"] = "won"
+	award_offer["fans"] = 12
+	award_offer["reason"] = "Already entered."
+	await _present("journey", award_journey)
+	award = _panel.find_child("Award_p1", true, false) as Button
+	var award_result := _panel.find_child("AwardResult_p1", true, false) as Label
+	_check(award_result != null and award_result.text == "Award · Won · +12 fans", "A win names the fan bonus")
+	_check(award != null and award.disabled and award.text == "Enter award · Already entered.", "A second entry stays disabled")
+	award_offer["outcome"] = "nominated"
+	award_offer["fans"] = 4
+	await _present("journey", award_journey)
+	award_result = _panel.find_child("AwardResult_p1", true, false) as Label
+	_check(award_result != null and award_result.text == "Award · Nominated · +4 fans", "A nominee names the smaller bonus")
+	award_offer["outcome"] = "entered"
+	award_offer["fans"] = 0
+	await _present("journey", award_journey)
+	award_result = _panel.find_child("AwardResult_p1", true, false) as Label
+	_check(award_result != null and award_result.text == "Award · Entered", "A low score reads Entered")
+	award_offer["entered"] = false
+	award_offer["outcome"] = ""
+	award_offer["reason"] = "Need $40"
+	await _present("journey", award_journey)
+	award = _panel.find_child("Award_p1", true, false) as Button
+	_check(award != null and award.disabled and award.text == "Enter award · Need $40", "Short cash reads Need $40")
+	_check(_panel.find_child("AwardResult_p1", true, false) == null, "A refused entry draws no result line")
+	var port_state := {
+		"id": "p1",
+		"name": "Crypto Alpha Newsletter",
+		"status": "complete",
+		"salesDays": 4,
+		"salesDaysTotal": 4,
+		"salesCents": 46800,
+		"fans": 11,
+		"review": {"score": 6, "reviewers": []},
+		"sequel": {
+			"scoreBonus": 0,
+			"savedDays": 1,
+			"isSequel": false,
+			"started": false,
+			"enabled": true,
+			"reason": "",
+		},
+		"award": {
+			"show": "Whop Creator Awards",
+			"costCents": 4000,
+			"outcome": "",
+			"fans": 0,
+			"entered": false,
+			"enabled": true,
+			"reason": "",
+		},
+		"port": {
+			"shelf": "Whop Mobile",
+			"costCents": 8000,
+			"phase": "",
+			"cents": 0,
+			"fans": 0,
+			"enabled": true,
+			"reason": "",
+		},
+	}
+	var port_journey := sequel_state.duplicate(true)
+	(port_journey["tycoon"] as Dictionary)["history"] = [port_state]
+	await _present("journey", port_journey)
+	var port_button := _panel.find_child("Port_p1", true, false) as Button
+	var port_shelf := _panel.find_child("PortShelf_p1", true, false) as Label
+	var shelf_row := _panel.find_child("ShelfActions_p1", true, false) as Control
+	var sequel_row := _panel.find_child("Sequel_p1", true, false) as Button
+	var award_row := _panel.find_child("Award_p1", true, false) as Button
+	_check(port_button != null and not port_button.disabled and str(port_button.get_meta("cozy_variant", "")) == "secondary" and port_button.text == "Port", "Port reads as secondary")
+	_check(port_shelf != null and port_shelf.text == "Whop Mobile · $80", "The shipped card names the shelf and the fee")
+	_check(_panel.find_child("PortLine_p1", true, false) == null, "The port line waits until the port starts")
+	_check(shelf_row != null and sequel_row != null and award_row != null and sequel_row.get_parent() == shelf_row and award_row.get_parent() == shelf_row and port_button.get_parent() == shelf_row, "Sequel, Enter award, and Port share one row")
+	_check(_button("Hire Mina") != null and str(_button("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Port")
+	var port_offer: Dictionary = port_state["port"]
+	port_offer["phase"] = "selling"
+	port_offer["enabled"] = false
+	port_offer["reason"] = "Already ported."
+	await _present("journey", port_journey)
+	var port_line := _panel.find_child("PortLine_p1", true, false) as Label
+	port_button = _panel.find_child("Port_p1", true, false) as Button
+	_check(port_line != null and port_line.text == "Port · Whop Mobile · selling 1 day", "A started port reads selling 1 day")
+	_check(port_button != null and port_button.disabled and port_button.text == "Port · Already ported.", "A second port stays disabled")
+	_check(_panel.find_child("PortShelf_p1", true, false) == null, "The fee line hides once the port has started")
+	port_offer["phase"] = "sold"
+	port_offer["cents"] = 4500
+	port_offer["fans"] = 2
+	await _present("journey", port_journey)
+	port_line = _panel.find_child("PortLine_p1", true, false) as Label
+	_check(port_line != null and port_line.text == "Port · Whop Mobile · $45.00", "A finished port names the extra sales")
+	port_offer["phase"] = ""
+	port_offer["cents"] = 0
+	port_offer["fans"] = 0
+	port_offer["reason"] = "Need $80"
+	await _present("journey", port_journey)
+	port_button = _panel.find_child("Port_p1", true, false) as Button
+	_check(port_button != null and port_button.disabled and port_button.text == "Port · Need $80", "Short cash reads Need $80")
+	_check(_panel.find_child("PortLine_p1", true, false) == null, "A refused port draws no status line")
+	port_state["status"] = "released"
+	port_state["patch"] = {
+		"costCents": 10000,
+		"scoreBonus": 1,
+		"applied": false,
+		"enabled": false,
+		"reason": "Need $100",
+	}
+	port_offer["reason"] = "Still selling."
+	await _present("journey", port_journey)
+	port_button = _panel.find_child("Port_p1", true, false) as Button
+	_check(port_button != null and port_button.disabled and port_button.text == "Port · Still selling.", "Port stays disabled while the product is selling")
+	port_state["status"] = "complete"
+	port_offer["reason"] = "Another port is still selling."
+	await _present("journey", port_journey)
+	port_button = _panel.find_child("Port_p1", true, false) as Button
+	_check(port_button != null and port_button.disabled and port_button.text == "Port · Another port is still selling.", "Another selling port disables this one")
+	_check(_panel.find_child("Translate_p1", true, false) == null, "A payload without localization draws no Translate button")
+	_check(_panel.find_child("LocalizeOffer_p1", true, false) == null, "A payload without localization draws no translate line")
+	port_state["localization"] = {
+		"edition": "Spanish edition",
+		"costCents": 5000,
+		"phase": "",
+		"cents": 0,
+		"fans": 0,
+		"enabled": true,
+		"reason": "",
+	}
+	await _present("journey", port_journey)
+	var translate := _panel.find_child("Translate_p1", true, false) as Button
+	var localize_offer := _panel.find_child("LocalizeOffer_p1", true, false) as Label
+	shelf_row = _panel.find_child("ShelfActions_p1", true, false) as Control
+	_check(translate != null and not translate.disabled and str(translate.get_meta("cozy_variant", "")) == "secondary" and translate.text == "Translate", "Translate reads as secondary")
+	_check(localize_offer != null and localize_offer.text == "Translate · Spanish edition · $50, one extra sales day", "The shipped card names the edition and the fee")
+	_check(_panel.find_child("LocalizeLine_p1", true, false) == null, "The translate line waits until the translation starts")
+	_check(shelf_row != null and translate.get_parent() == shelf_row and (_panel.find_child("Port_p1", true, false) as Button).get_parent() == shelf_row, "Translate shares the shelf row with Port")
+	_check(_button("Hire Mina") != null and str(_button("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Translate")
+	var localize_state: Dictionary = port_state["localization"]
+	localize_state["phase"] = "selling"
+	localize_state["enabled"] = false
+	localize_state["reason"] = "Already translated."
+	await _present("journey", port_journey)
+	var localize_line := _panel.find_child("LocalizeLine_p1", true, false) as Label
+	_check(localize_line != null and localize_line.text == "Spanish edition · one extra sales day", "A started translation reads one extra sales day")
+	_check(_panel.find_child("Translate_p1", true, false) == null, "A started translation hides the button")
+	_check(_panel.find_child("LocalizeOffer_p1", true, false) == null, "The offer line hides once the translation has started")
+	localize_state["phase"] = "sold"
+	localize_state["cents"] = 2200
+	localize_state["fans"] = 1
+	await _present("journey", port_journey)
+	localize_line = _panel.find_child("LocalizeLine_p1", true, false) as Label
+	_check(localize_line != null and localize_line.text == "Spanish edition · $22.00", "A finished translation names the extra sales")
+	_check(_panel.find_child("Translate_p1", true, false) == null, "A finished translation hides the button")
+	localize_state["phase"] = ""
+	localize_state["cents"] = 0
+	localize_state["fans"] = 0
+	localize_state["enabled"] = false
+	localize_state["reason"] = "Need $50"
+	await _present("journey", port_journey)
+	translate = _panel.find_child("Translate_p1", true, false) as Button
+	_check(translate != null and translate.disabled and str(translate.get_meta("cozy_variant", "")) == "secondary" and translate.text == "Translate · Need $50", "Short cash reads Need $50")
+	_check(_panel.find_child("LocalizeLine_p1", true, false) == null, "A refused translation draws no status line")
+	port_state["status"] = "released"
+	await _present("journey", port_journey)
+	_check(_panel.find_child("Translate_p1", true, false) == null, "Translate stays off the Selling card")
+	_check(_panel.find_child("LocalizeOffer_p1", true, false) == null, "The translate offer stays off the Selling card")
+	port_state.erase("localization")
+	port_state["status"] = "complete"
+	tycoon.erase("contract")
+	tycoon.erase("history")
+	tycoon.erase("patchNotice")
+	for topic: Dictionary in tycoon["topics"]:
+		topic["unlocked"] = true
+	for kind: Dictionary in tycoon["types"]:
+		kind["unlocked"] = true
+	tycoon["researchPoints"] = 20
+	await _present("journey", value)
+	_check(_panel.find_child("ResearchCard", true, false) == null, "Research card hides once every topic and type is unlocked")
+	_check(_panel.find_child("UpgradesCard", true, false) != null, "Upgrades stay when research is finished")
+	tycoon["priceSteps"] = [
+		{"percent": 80, "unitPercent": 120, "label": "−20%"},
+		{"percent": 100, "unitPercent": 100, "label": "Catalog"},
+		{"percent": 120, "unitPercent": 80, "label": "+20%"},
+	]
+	tycoon["marketingOptions"] = [
+		{"id": "none", "label": "None", "costCents": 0, "unitPercent": 100, "enabled": true, "reason": ""},
+		{"id": "small", "label": "Small ad", "costCents": 5000, "unitPercent": 120, "enabled": false, "reason": "Need $50"},
+		{"id": "big", "label": "Big ad", "costCents": 15000, "unitPercent": 150, "enabled": false, "reason": "Need $150"},
+	]
+	await _present("product", value)
+	var price_low := _panel.find_child("Price_80", true, false) as Button
+	var price_catalog := _panel.find_child("Price_100", true, false) as Button
+	var price_high := _panel.find_child("Price_120", true, false) as Button
+	_check(price_low != null and str(price_low.get_meta("cozy_variant", "")) == "secondary", "−20% price reads as secondary")
+	_check(price_catalog != null and str(price_catalog.get_meta("cozy_variant", "")) == "secondary" and price_catalog.text == "Catalog", "Catalog price reads as secondary")
+	_check(price_high != null and str(price_high.get_meta("cozy_variant", "")) == "secondary", "+20% price reads as secondary")
+	_check(_panel.find_child("PriceEffect", true, false) != null, "The picker shows the price unit-effect line")
+	var no_ad := _panel.find_child("Marketing_none", true, false) as Button
+	var small_ad := _panel.find_child("Marketing_small", true, false) as Button
+	var big_ad := _panel.find_child("Marketing_big", true, false) as Button
+	_check(no_ad != null and not no_ad.disabled and str(no_ad.get_meta("cozy_variant", "")) == "secondary", "None reads as secondary")
+	_check(small_ad != null and small_ad.disabled and str(small_ad.get_meta("cozy_variant", "")) == "secondary" and small_ad.text == "Small ad · Need $50", "Small ad is a disabled secondary action")
+	_check(big_ad != null and big_ad.disabled and big_ad.text == "Big ad · Need $150", "Big ad shows Need $150")
+	var marketing_line := _panel.find_child("MarketingEffect", true, false) as Label
+	_check(marketing_line != null and marketing_line.text == "None · $0 · no extra units", "The picker shows the marketing cost line")
+	_check(_panel.find_child("Focus_balanced", true, false) == null, "A payload without focus options draws no focus control")
+	tycoon["focusOptions"] = [
+		{"id": "balanced", "label": "Balanced", "stat": "", "bonus": 0},
+		{"id": "design", "label": "Design", "stat": "design", "bonus": 1},
+		{"id": "tech", "label": "Tech", "stat": "tech", "bonus": 1},
+		{"id": "hype", "label": "Hype", "stat": "hype", "bonus": 1},
+	]
+	await _present("product", value)
+	var focus_balanced := _panel.find_child("Focus_balanced", true, false) as Button
+	var focus_design := _panel.find_child("Focus_design", true, false) as Button
+	var focus_tech := _panel.find_child("Focus_tech", true, false) as Button
+	var focus_hype := _panel.find_child("Focus_hype", true, false) as Button
+	_check(focus_balanced != null and not focus_balanced.disabled and str(focus_balanced.get_meta("cozy_variant", "")) == "secondary" and focus_balanced.text == "Balanced", "Balanced reads as secondary")
+	_check(focus_design != null and str(focus_design.get_meta("cozy_variant", "")) == "secondary" and focus_design.text == "Design", "Design reads as secondary")
+	_check(focus_tech != null and focus_tech.text == "Tech", "Tech is on the focus row")
+	_check(focus_hype != null and focus_hype.text == "Hype", "Hype is on the focus row")
+	var focus_line := _panel.find_child("FocusEffect", true, false) as Label
+	_check(focus_line != null and focus_line.text == "Balanced · no point bump", "The picker shows the focus line")
+	var build := _panel.find_child("OnTheBuild", true, false) as Label
+	_check(build != null and build.text == "On the build", "Balanced leaves the build line plain")
+	var start := _button("Start development")
+	_check(start != null and str(start.get_meta("cozy_variant", "")) == "primary", "Start development stays the primary action")
+	_check(_button("Hire Mina") == null, "Hire stays off the product picker")
+	_check(_panel.find_child("Audience_everyone", true, false) == null, "A payload without audience options draws no audience control")
+	tycoon["audienceOptions"] = [
+		{"id": "everyone", "label": "Everyone", "fans": 0, "unitPercent": 100},
+		{"id": "regulars", "label": "Regulars", "fans": 2, "unitPercent": 100},
+		{"id": "newcomers", "label": "Newcomers", "fans": 2, "unitPercent": 90},
+	]
+	await _present("product", value)
+	var audience_everyone := _panel.find_child("Audience_everyone", true, false) as Button
+	var audience_regulars := _panel.find_child("Audience_regulars", true, false) as Button
+	var audience_newcomers := _panel.find_child("Audience_newcomers", true, false) as Button
+	_check(audience_everyone != null and not audience_everyone.disabled and str(audience_everyone.get_meta("cozy_variant", "")) == "secondary" and audience_everyone.text == "Everyone", "Everyone reads as secondary")
+	_check(audience_regulars != null and str(audience_regulars.get_meta("cozy_variant", "")) == "secondary" and audience_regulars.text == "Regulars", "Regulars reads as secondary")
+	_check(audience_newcomers != null and audience_newcomers.text == "Newcomers", "Newcomers is on the audience row")
+	var audience_line := _panel.find_child("AudienceEffect", true, false) as Label
+	_check(audience_line != null and audience_line.text == "Everyone · no fan bump", "The picker shows the audience line")
+	build = _panel.find_child("OnTheBuild", true, false) as Label
+	_check(build != null and build.text == "On the build", "Everyone leaves the build line plain")
+	start = _button("Start development")
+	_check(start != null and str(start.get_meta("cozy_variant", "")) == "primary", "Start development stays primary beside the audience")
+	_check(_panel.find_child("Size_catalog", true, false) == null, "A payload without size options draws no size control")
+	tycoon["sizeOptions"] = [
+		{"id": "catalog", "label": "Catalog", "dayDelta": 0, "unitPercent": 100},
+		{"id": "short", "label": "Short", "dayDelta": -1, "unitPercent": 90},
+		{"id": "long", "label": "Long", "dayDelta": 1, "unitPercent": 110},
+	]
+	await _present("product", value)
+	var size_catalog := _panel.find_child("Size_catalog", true, false) as Button
+	var size_short := _panel.find_child("Size_short", true, false) as Button
+	var size_long := _panel.find_child("Size_long", true, false) as Button
+	_check(size_catalog != null and not size_catalog.disabled and str(size_catalog.get_meta("cozy_variant", "")) == "secondary" and size_catalog.text == "Catalog", "Catalog size reads as secondary")
+	_check(size_short != null and str(size_short.get_meta("cozy_variant", "")) == "secondary" and size_short.text == "Short", "Short reads as secondary")
+	_check(size_long != null and size_long.text == "Long", "Long is on the size row")
+	var size_line := _panel.find_child("SizeEffect", true, false) as Label
+	_check(size_line != null and size_line.text == "Catalog · same length", "The picker shows the size line")
+	build = _panel.find_child("OnTheBuild", true, false) as Label
+	_check(build != null and build.text == "On the build", "Catalog leaves the build line plain")
+	start = _button("Start development")
+	_check(start != null and str(start.get_meta("cozy_variant", "")) == "primary", "Start development stays primary beside the size")

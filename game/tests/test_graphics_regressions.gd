@@ -73,7 +73,28 @@ func run() -> void:
 	main.day_clock.set_speed(0)
 	main.day_clock.set_time(1, DayClock.WORK_START)
 	main.founder_hud.dismiss_movement_hint()
+	main.founder_hud.set_next_step("Hire Mina")
+	var plaque := main.founder_hud.get_node("NextStepPlaque") as Control
+	var movement := main.founder_hud.get_node("MovementPlaque") as Control
+	var plaque_rect := plaque.get_global_rect()
+	var movement_rect := movement.get_global_rect()
+	var floor := Rect2(0.0, 95.0, 1150.0, 577.0)
+	check(root.size == Vector2i(1280, 720), "Readability checks use the 1280x720 viewport")
+	check(plaque_rect == Rect2(800.0, 16.0, 320.0, 56.0), "Next-step plaque sits on the right side of the top wall strip")
+	check(movement_rect == Rect2(455.0, 672.0, 240.0, 48.0), "Movement hint sits in the bottom wall trim")
+	check(not plaque_rect.intersects(floor) and not movement_rect.intersects(floor), "Next-step plaque and movement hint stay off the room floor")
+	check(not plaque_rect.intersects(main.clock_panel.get_global_rect()), "Next-step plaque does not cover the day clock")
+	check(plaque_rect.end.x < FounderHud.PLAYFIELD_RIGHT, "Next-step plaque ends before the playfield edge")
+	main.founder_hud.hide_next_step()
 	main._spawn_employees(main.room.placeholder_records())
+	for placement: Dictionary in main.room.resolved_placements:
+		if str(placement.get("kind", "")) != "desk" or str(placement.get("facing", "")) != "south":
+			continue
+		var prop := main.room.prop_node(str(placement.id))
+		var chair := prop.get_node_or_null("ChairWhole") as Sprite2D
+		var desk_front := prop.get_node_or_null("DeskFront") as Sprite2D
+		var feet := main.room.grid_to_world_position(placement.work_cell)
+		check(chair != null and desk_front != null and chair.position == Vector2(0, -76) and chair.z_index < int(feet.y) and desk_front.z_index > chair.z_index, "%s chair draws below a standing worker and under DeskFront" % str(placement.id))
 	for employee_id: String in ["mira", "theo"]:
 		var employee := main.get_employee(employee_id)
 		employee.position = employee.desk_position

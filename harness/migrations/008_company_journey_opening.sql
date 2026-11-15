@@ -1,0 +1,1 @@
+ALTER TABLE company_state ADD COLUMN opened_chapter INTEGER NOT NULL DEFAULT 1;

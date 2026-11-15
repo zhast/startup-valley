@@ -26,10 +26,10 @@
       "properties": {
         "id": { "type": "string", "pattern": "^[a-z0-9_-]{1,100}$" },
         "kind": { "type": "string", "pattern": "^[a-z0-9_-]{1,100}$" },
-        "ownerId": { "enum": ["", "founder", "mira", "theo"] },
+        "ownerId": { "enum": ["", "founder", "mira", "theo", "creative"] },
         "essential": { "type": "boolean" },
         "grant": { "type": "string", "minLength": 1, "maxLength": 100 },
-        "roleKit": { "enum": ["", "mina_discovery_kit", "theo_campaign_kit"] }
+        "roleKit": { "enum": ["", "mina_discovery_kit", "theo_campaign_kit", "creative_design_kit", "founder_strategy_kit"] }
       }
     },
     "state": {
@@ -38,7 +38,7 @@
       "properties": {
         "version": { "const": 1 },
         "revision": { "type": "integer", "minimum": 0 },
-        "inventory": { "type": "array", "maxItems": 32, "items": { "$ref": "#/$defs/inventoryItem" } },
+        "inventory": { "type": "array", "maxItems": 39, "items": { "$ref": "#/$defs/inventoryItem" } },
         "placements": { "$ref": "#/$defs/placements" },
         "recovery": { "type": "string", "maxLength": 1000 }
       }
@@ -51,11 +51,11 @@
         "expectedRevision": { "type": "integer", "minimum": 0 },
         "placements": { "$ref": "#/$defs/placements" },
         "actorCells": {
-          "type": "array", "maxItems": 3,
+          "type": "array", "maxItems": 4,
           "items": {
             "type": "object", "additionalProperties": false, "required": ["id", "grid"],
             "properties": {
-              "id": { "enum": ["founder", "mira", "theo"] },
+              "id": { "enum": ["founder", "mira", "theo", "creative"] },
               "grid": { "$ref": "#/$defs/cell" },
               "position": {
                 "type": "array", "minItems": 2, "maxItems": 2,

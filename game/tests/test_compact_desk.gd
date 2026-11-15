@@ -17,6 +17,28 @@ func check(ok: bool, message: String) -> void:
 		failures.append(message)
 		push_error(message)
 
+func _spare_kind_waits(kind: String, expected: int) -> bool:
+	var layout := OfficeLayout.new()
+	if not layout.load_files("res://data/office_layout.json"): return false
+	var gated := 0
+	for prop: Variant in layout.data.get("props", []):
+		if not prop is Dictionary: continue
+		var row := prop as Dictionary
+		if str(row.get("kind", "")) != kind or not str(row.get("id", "")).begins_with("spare-"): continue
+		if int(row.get("required_office_level", 1)) < 2 or str(row.get("facing", "")) != "south": return false
+		gated += 1
+	if gated != expected: return false
+	layout.office_level = 1
+	for placement: Dictionary in layout.resolve_placements(4):
+		if str(placement.get("kind", "")) == kind and str(placement.get("id", "")).begins_with("spare-"):
+			return false
+	layout.office_level = 2
+	var seen := 0
+	for placement: Dictionary in layout.resolve_placements(0):
+		if str(placement.get("kind", "")) == kind and str(placement.get("id", "")).begins_with("spare-"):
+			seen += 1
+	return seen == expected
+
 static func expected_occupied(side: String) -> Array:
 	return {
 		"north": [[-1, 0], [0, 0]],
@@ -62,8 +84,14 @@ func run() -> void:
 	check(DESK.LAYERS == ["floor_shadow", "rear_structure", "front_structure"], "Base exports only the three planned base layers")
 	check(DESK.CANVAS == Vector2i(160, 192) and DESK.PIVOT == Vector2i(80, 128), "Planned native canvas and floor anchor are exact")
 	check(DESK.SPRITE_OFFSET + DESK.CANVAS / 2 == DESK.CANVAS - DESK.PIVOT, "Centered sprite offset preserves the unchanged floor pivot")
-	check(FileAccess.get_file_as_string("res://data/furniture_catalog.json").find("compact_desk") == -1, "Candidate has no production furniture registration")
-	check(FileAccess.get_file_as_string("res://data/office_layout.json").find("compact_desk") == -1, "Candidate has no default-layout binding")
+	var furnishing: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/furnishing_catalog.json"))
+	var compact_entry: Dictionary = furnishing["furniture"]["compact_desk"]
+	var compact_passive := str(compact_entry.get("interaction_kind", "")) == "none"
+	for side_name: String in DESK.SIDES:
+		var shipped: Dictionary = compact_entry["facing_profiles"][side_name]
+		compact_passive = compact_passive and str(shipped.get("profile_kind", "")) == "decorative" and str(shipped.get("status", "")) == "runtime_ready"
+	check(compact_passive, "compact_desk is passive décor in the furnishing catalogue")
+	check(_spare_kind_waits("compact_desk", 2), "compact_desk stays off the floor until the office expands")
 	var source := FileAccess.get_file_as_string("res://tools/compact_desk_geometry.gd")
 	for forbidden: String in ["rotate_", ".rotated(", "flip_x(", "flip_y(", "scale =", "transform ="]:
 		check(source.find(forbidden) == -1, "Geometry source contains no raster transform: " + forbidden)
@@ -156,6 +184,6 @@ func run() -> void:
 	var file := FileAccess.open(EVIDENCE.path_join("structural-results.json"), FileAccess.WRITE)
 	check(file != null, "Opened structural result")
 	if file != null:
-		file.store_string(JSON.stringify({"status": "native_review_candidate_not_runtime_registered", "checks": checks, "failures": failures, "canvas": [160, 192], "pivot": [80, 128], "base_layers": DESK.LAYERS, "overlay_owners": ["ergonomic_chair", "computer_kit", "role_tool_kits"], "runtime_registered": false, "dev_catalogue_registered": false, "production_catalogue_registered": false}, "\t") + "\n")
+		file.store_string(JSON.stringify({"status": "passive_starter_decor_registered", "checks": checks, "failures": failures, "canvas": [160, 192], "pivot": [80, 128], "base_layers": DESK.LAYERS, "overlay_owners": ["ergonomic_chair", "computer_kit", "role_tool_kits"], "runtime_registered": true, "dev_catalogue_registered": false, "production_catalogue_registered": true, "interaction_kind": "none"}, "\t") + "\n")
 	print("Compact desk structural: %d checks, %d failures" % [checks, failures.size()])
 	quit(0 if failures.is_empty() else 1)

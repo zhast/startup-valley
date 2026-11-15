@@ -19,6 +19,28 @@ func check(ok: bool, message: String) -> void:
 		failures.append(message)
 		push_error(message)
 
+func _spare_kind_waits(kind: String, expected: int) -> bool:
+	var layout := OfficeLayout.new()
+	if not layout.load_files("res://data/office_layout.json"): return false
+	var gated := 0
+	for prop: Variant in layout.data.get("props", []):
+		if not prop is Dictionary: continue
+		var row := prop as Dictionary
+		if str(row.get("kind", "")) != kind or not str(row.get("id", "")).begins_with("spare-"): continue
+		if int(row.get("required_office_level", 1)) < 2 or str(row.get("facing", "")) != "south": return false
+		gated += 1
+	if gated != expected: return false
+	layout.office_level = 1
+	for placement: Dictionary in layout.resolve_placements(4):
+		if str(placement.get("kind", "")) == kind and str(placement.get("id", "")).begins_with("spare-"):
+			return false
+	layout.office_level = 2
+	var seen := 0
+	for placement: Dictionary in layout.resolve_placements(0):
+		if str(placement.get("kind", "")) == kind and str(placement.get("id", "")).begins_with("spare-"):
+			seen += 1
+	return seen == expected
+
 static func expected_occupied(side: String) -> Array:
 	return {
 		"north": [[-2, 0], [-1, 0], [0, 0], [1, 0], [2, 0]],
@@ -78,8 +100,14 @@ func run() -> void:
 	check(BENCH.CANVAS == Vector2i(256, 304) and BENCH.PIVOT == Vector2i(128, 208), "Planned native canvas and floor anchor are exact")
 	check(BENCH.SPRITE_OFFSET + BENCH.CANVAS / 2 == BENCH.CANVAS - BENCH.PIVOT, "Centered sprite offset preserves the unchanged floor pivot")
 	check(BENCH.CANVAS != COMPACT.CANVAS and BENCH.CANVAS != PROTOTYPE.CANVAS, "Workbench owns a distinct native envelope from compact and prototype benches")
-	check(FileAccess.get_file_as_string("res://data/furniture_catalog.json").find("shared_workbench") == -1, "Candidate has no production furniture registration")
-	check(FileAccess.get_file_as_string("res://data/office_layout.json").find("shared_workbench") == -1, "Candidate has no default-layout binding")
+	var furnishing: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/furnishing_catalog.json"))
+	var bench_entry: Dictionary = furnishing["furniture"]["shared_workbench"]
+	var bench_passive := str(bench_entry.get("interaction_kind", "")) == "none"
+	for side_name: String in BENCH.SIDES:
+		var shipped: Dictionary = bench_entry["facing_profiles"][side_name]
+		bench_passive = bench_passive and str(shipped.get("profile_kind", "")) == "decorative" and str(shipped.get("status", "")) == "runtime_ready"
+	check(bench_passive, "shared_workbench is passive décor in the furnishing catalogue")
+	check(_spare_kind_waits("shared_workbench", 1), "shared_workbench stays off the floor until the office expands")
 	var source := FileAccess.get_file_as_string("res://tools/shared_workbench_geometry.gd")
 	for forbidden: String in ["rotate_", ".rotated(", "flip_x(", "flip_y(", "scale =", "transform ="]:
 		check(source.find(forbidden) == -1, "Geometry source contains no raster transform: " + forbidden)
@@ -175,6 +203,6 @@ func run() -> void:
 	var file := FileAccess.open(EVIDENCE.path_join("structural-results.json"), FileAccess.WRITE)
 	check(file != null, "Opened structural result")
 	if file != null:
-		file.store_string(JSON.stringify({"status": "native_review_candidate_not_runtime_registered", "checks": checks, "failures": failures, "canvas": [256, 304], "pivot": [128, 208], "base_layers": BENCH.LAYERS, "work_cells_per_facing": 2, "clearance_cells_per_facing": 3, "overlay_owners": ["ergonomic_chair", "computer_kit", "role_tool_kits"], "runtime_registered": false, "dev_catalogue_registered": false, "production_catalogue_registered": false}, "\t") + "\n")
+		file.store_string(JSON.stringify({"status": "passive_starter_decor_registered", "checks": checks, "failures": failures, "canvas": [256, 304], "pivot": [128, 208], "base_layers": BENCH.LAYERS, "work_cells_per_facing": 2, "clearance_cells_per_facing": 3, "overlay_owners": ["ergonomic_chair", "computer_kit", "role_tool_kits"], "runtime_registered": true, "dev_catalogue_registered": false, "production_catalogue_registered": true, "interaction_kind": "none"}, "\t") + "\n")
 	print("Shared workbench structural: %d checks, %d failures" % [checks, failures.size()])
 	quit(0 if failures.is_empty() else 1)

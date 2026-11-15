@@ -172,10 +172,10 @@ func _run() -> void:
 	main.job_panel._job_picker.select(0)
 	main.job_panel._on_job_selected(0)
 	main.job_panel.select_employee("mira")
-	if main.room.unlocked_hires != 2:
-		_fail("test_office_growth: the two-person roster did not restore its furniture stage")
-	if main.room.visible_prop_count() != 8:
-		_fail("test_modular_office: the two-person stage did not show the founder, collaboration, and research props")
+	if main.room.unlocked_hires != 3:
+		_fail("test_office_growth: the starting roster did not restore its furniture stage")
+	if main.room.visible_prop_count() != 9:
+		_fail("test_modular_office: the starting stage did not show the founder, collaboration, research, and Creative desk")
 	main.room.set_hire_count(0)
 	if main.room.find_child("LockedSections", true, false) != null:
 		_fail("test_office_growth: an empty office stage still created blocked expansion areas")
@@ -196,7 +196,7 @@ func _run() -> void:
 	elif staged_desk_rear.z_index >= staged_desk_front.z_index:
 		_fail("test_modular_office: the workstation occlusion layers were reversed")
 	main.room.set_hire_count(4)
-	if main.room.visible_prop_count() != 9:
+	if main.room.visible_prop_count() != 10:
 		_fail("test_modular_office: the mature office did not include every staged prop")
 	if main.room.prop_node("approval-console") == null or main.room.prop_node("artifact-archive") == null or main.room.prop_node("prototype-bench") == null:
 		_fail("test_modular_office: the mature office was missing its operations or artifact prop")
@@ -456,6 +456,35 @@ func _assert_modular_room(main: GameMain) -> void:
 	if room.layout_model == null or room.architecture == null or room.architecture.layout != room.layout_model:
 		_fail("test_modular_office: rendered architecture does not share the authoritative layout")
 		return
+	if room.architecture.theme_id != OfficeArchitecture.DEFAULT_THEME:
+		_fail("test_modular_office: a fresh office must spawn the oak architecture theme")
+	main.company_panel.present("settings")
+	var theme_picker := main.company_panel.find_child("ArchitectureTheme", true, false) as OptionButton
+	var look_order: PackedStringArray = ["office", "cafe", "loft", "studio", "evening"]
+	if theme_picker == null:
+		_fail("test_modular_office: Settings does not offer an office look")
+	elif theme_picker.item_count != look_order.size():
+		_fail("test_modular_office: Settings office look does not list oak, cafe, loft, studio, and evening")
+	else:
+		for index: int in range(look_order.size()):
+			var theme_id := look_order[index]
+			if str(theme_picker.get_item_metadata(index)) != theme_id:
+				_fail("test_modular_office: office look order is not oak, cafe, loft, studio, evening")
+				break
+			if theme_id == OfficeArchitecture.DEFAULT_THEME: continue
+			var theme_floor := load(OfficeArchitecture.theme_path(theme_id, "floor")) as Texture2D
+			theme_picker.item_selected.emit(index)
+			if room.architecture.theme_id != theme_id or room.architecture.floor_art != theme_floor:
+				_fail("test_modular_office: choosing %s did not spawn that architecture kit" % theme_id)
+		theme_picker.item_selected.emit(0)
+		if room.architecture.theme_id != OfficeArchitecture.DEFAULT_THEME or room.architecture.floor_art != load(OfficeArchitecture.theme_path("office", "floor")):
+			_fail("test_modular_office: choosing Oak office did not restore the base kit")
+	if room.architecture.apply_theme("warehouse"):
+		_fail("test_modular_office: unknown architecture themes must not replace the office")
+	if not room.architecture.apply_theme(OfficeArchitecture.DEFAULT_THEME):
+		_fail("test_modular_office: oak office theme did not restore")
+	main.company_panel.set_architecture_theme(room.architecture.theme_id)
+	main.company_panel.hide()
 	if room.global_position != Vector2.ZERO or not room.playable_bounds().encloses(Rect2(0, 0, 1280, 720)):
 		_fail("test_modular_office: architecture does not cover the logical viewport")
 	var validation := room.layout_model.validate_placements(room.resolved_placements)

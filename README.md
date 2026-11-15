@@ -1,11 +1,13 @@
 # Startup Valley
 
-Startup Valley is a Godot office-town where AI employees perform real, bounded work through a constrained local TypeScript worker. The game renders the town and work activity; the worker owns SQLite state, Pi sessions, OpenRouter access, usage, approvals, and artifacts.
+Startup Valley is a Godot office-town tycoon. You hire a small team, pick a Whop-flavored topic and product, develop it across office days, and ship it for game cash and reputation. That loop is a deterministic simulation inside the local worker. It does not call Whop or any model API, and it plays with no credential and no network.
+
+Optional chapter work orders can still run bounded AI jobs through the same worker. Those jobs are off the core loop. The worker owns SQLite state and, only when you opt in, Pi sessions, provider access, usage, approvals, and artifacts.
 
 The current chapter starts with the founder alone. Hire Mina, build and evaluate
 a website, hire Theo, prepare an advertising experiment, and plan incorporation
-across three office days. Company cash, reputation, milestone reviews, and
-one-time rewards live in SQLite. Existing companies keep their hired employees.
+across three office days. Company cash, reputation, milestone reviews, shipped
+products, and one-time rewards live in SQLite. Existing companies keep their hired employees.
 
 Click the floor to walk, click a person or desk to approach and interact, or use
 WASD/arrows. The founder desk (or **J**) opens Company Journey; **Escape** closes
@@ -26,7 +28,7 @@ game currency. Ads and incorporation are planning artifacts, not live actions.
 
 - Godot 4.7.2, standard build without C#
 - Node.js 22.19 or newer
-- One OpenRouter API key
+- No API key is required to play. A Grok / xAI login or an OpenRouter key is optional, and only for chapter work orders and chat.
 
 Dependency versions are deliberately pinned. See [upgrading dependencies](docs/UPGRADING.md) before changing Godot, Node, Pi, or the supporting npm packages.
 
@@ -40,9 +42,9 @@ cd ..
 godot --path game
 ```
 
-In the game, paste an OpenRouter API key and choose **Save securely**. The local worker stores it under the `dev.startup-valley.game` service in the OS keychain/Credential Manager. The key is never printed, written to SQLite or a job workspace, or saved in Pi session files.
+In the game, **Company Journey → New Product** ships a product with no sign-in. Choose **Sign in with Grok** only when you want a chapter work order to use a model. That work uses your Grok / xAI credits through Pi's `xai` provider and `grok-4.6`. A Grok CLI login already stored in `~/.grok/auth.json` is picked up automatically for those jobs. Disconnect stops that reuse without deleting the CLI login. Pasting an OpenRouter key is still available as a fallback. Tokens stay in the OS keychain (`dev.startup-valley.game`) or the CLI auth file. They are never printed, written to SQLite or a job workspace, or saved in Pi session files.
 
-The credential service is namespaced to Startup Valley, so the key must be saved once for this game.
+The credential service is namespaced to Startup Valley. Chapter 1's automated playtest sets `STARTUP_VALLEY_IGNORE_HOST_CREDENTIALS=1` so it still stops at Connect instead of calling a model.
 
 New assignments start during 08:00–12:30 and 13:30–17:30. Lunch and off-hours
 assignments remain visibly queued until the next work window. The HUD clock is

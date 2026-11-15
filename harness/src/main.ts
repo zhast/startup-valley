@@ -2,12 +2,18 @@ import { mkdir, mkdtemp, rename } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { createInterface } from "node:readline";
 
-import { KeychainCredentialStore } from "./credential-store.js";
+import { credentialStoreFromEnvironment } from "./credential-store.js";
 import { GameDatabase } from "./database.js";
 import type { FurnishingUpdate } from "./furnishing.js";
+import { offlineProviderEnabled } from "./offline-provider.js";
 import { PiWorkerAdapter } from "./pi-worker-adapter.js";
 import type { ApprovalDecision, ProtocolEvent, ProtocolRequest, ProtocolResponse } from "./types.js";
 import { parseJobSpec, parseRequest } from "./validation.js";
+
+function withOfflineCredentialStatus<T extends { configured: boolean }>(status: T): T & { offline?: boolean } {
+  if (!offlineProviderEnabled()) return status;
+  return { ...status, configured: true, offline: true };
+}
 
 const MAX_LINE_LENGTH = 1_000_000;
 
@@ -22,9 +28,30 @@ function stringParameter(request: ProtocolRequest, name: string, maxLength = 400
   return value;
 }
 
+function staffParameter(request: ProtocolRequest): string[] {
+  const value = request.params.staffIds;
+  if (value === undefined) return [];
+  if (!Array.isArray(value) || value.some((item) => typeof item !== "string")) throw new Error("Parameter staffIds must be an array of strings");
+  return value;
+}
+
 function numberParameter(request: ProtocolRequest, name: string): number {
   const value = request.params[name];
   if (typeof value !== "number" || !Number.isFinite(value)) throw new Error(`Parameter ${name} must be a finite number`);
+  return value;
+}
+
+function optionalIntegerParameter(request: ProtocolRequest, name: string): number | undefined {
+  const value = request.params[name];
+  if (value === undefined) return undefined;
+  if (typeof value !== "number" || !Number.isInteger(value)) throw new Error(`Parameter ${name} must be an integer`);
+  return value;
+}
+
+function optionalStringParameter(request: ProtocolRequest, name: string, maxLength = 64): string | undefined {
+  const value = request.params[name];
+  if (value === undefined) return undefined;
+  if (typeof value !== "string" || value.length === 0 || value.length > maxLength) throw new Error(`Parameter ${name} must be a non-empty string`);
   return value;
 }
 
@@ -45,7 +72,7 @@ const dataRoot = resolve(argument("--data-dir") ?? join(process.cwd(), ".startup
 const projectRoot = join(dataRoot, "company-project");
 await mkdir(projectRoot, { recursive: true });
 let database = new GameDatabase(join(dataRoot, "startup-valley.sqlite"), projectRoot);
-const credentials = new KeychainCredentialStore();
+const credentials = credentialStoreFromEnvironment();
 let adapter = new PiWorkerAdapter(database, credentials, dataRoot);
 let resetting = false;
 let shuttingDown = false;
@@ -81,6 +108,8 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
     case "milestone.complete":
     case "milestone.override":
       return { journey: database.journey.complete(stringParameter(request, "jobId", 64), request.method === "milestone.override", database.clockState().day), dailySpend: database.dailySpend() };
+    case "chapter.continue":
+      return { journey: database.journey.continueChapter(), dailySpend: database.dailySpend() };
     case "game.save":
       database.journey.savePlayer(request.params);
       return { saved: true };
@@ -91,6 +120,118 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
       if (startedJobId) ensureEventPump(startedJobId);
       return { ...result, journey: database.journey.state(), dailySpend: database.dailySpend() };
     }
+    case "tycoon.start":
+      return {
+        journey: database.tycoon.start(
+          stringParameter(request, "topicId", 64),
+          stringParameter(request, "typeId", 64),
+          staffParameter(request),
+          optionalIntegerParameter(request, "pricePercent"),
+          optionalStringParameter(request, "marketing"),
+          optionalStringParameter(request, "engine"),
+          optionalStringParameter(request, "focus"),
+          optionalStringParameter(request, "audience"),
+          optionalStringParameter(request, "size"),
+        ),
+        dailySpend: database.dailySpend(),
+      };
+    case "tycoon.release":
+      return { journey: database.tycoon.release(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
+    case "tycoon.acceptContract":
+      return { journey: database.tycoon.acceptContract(), dailySpend: database.dailySpend() };
+    case "tycoon.patch":
+      return { journey: database.tycoon.patch(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
+    case "tycoon.sequel":
+      return { journey: database.tycoon.sequel(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
+    case "tycoon.award":
+      return { journey: database.tycoon.award(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
+    case "tycoon.port":
+      return { journey: database.tycoon.port(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
+    case "tycoon.localize":
+      return { journey: database.tycoon.localize(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
+    case "tycoon.train":
+      return {
+        journey: database.tycoon.train(stringParameter(request, "staffId", 32), stringParameter(request, "stat", 16)),
+        dailySpend: database.dailySpend(),
+      };
+    case "tycoon.research":
+      return {
+        journey: database.tycoon.research(stringParameter(request, "kind", 16), stringParameter(request, "id", 64)),
+        dailySpend: database.dailySpend(),
+      };
+    case "tycoon.buyUpgrade":
+      return {
+        journey: database.tycoon.buyUpgrade(stringParameter(request, "id", 64)),
+        dailySpend: database.dailySpend(),
+      };
+    case "tycoon.buyEngine":
+      return {
+        journey: database.tycoon.buyEngine(stringParameter(request, "id", 64)),
+        dailySpend: database.dailySpend(),
+      };
+    case "tycoon.expandOffice": {
+      const journey = database.tycoon.expandOffice();
+      return { journey, furnishing: database.furnishing.state(), dailySpend: database.dailySpend() };
+    }
+    case "tycoon.takeLoan":
+      return { journey: database.tycoon.takeLoan(), dailySpend: database.dailySpend() };
+    case "tycoon.signPublisher":
+      return { journey: database.tycoon.signPublisher(), dailySpend: database.dailySpend() };
+    case "tycoon.bookBooth":
+      return { journey: database.tycoon.bookBooth(), dailySpend: database.dailySpend() };
+    case "tycoon.takeTownDay":
+      return { journey: database.tycoon.takeTownDay(), dailySpend: database.dailySpend() };
+    case "tycoon.showPressDemo":
+      return { journey: database.tycoon.showPressDemo(), dailySpend: database.dailySpend() };
+    case "tycoon.addFeature":
+      return { journey: database.tycoon.addFeature(), dailySpend: database.dailySpend() };
+    case "tycoon.setDayPlan":
+      return { journey: database.tycoon.setDayPlan(stringParameter(request, "stat", 16)), dailySpend: database.dailySpend() };
+    case "tycoon.fixBugs":
+      return { journey: database.tycoon.fixBugs(), dailySpend: database.dailySpend() };
+    case "tycoon.crunch":
+      return { journey: database.tycoon.crunch(), dailySpend: database.dailySpend() };
+    case "tycoon.earlyAccess":
+      return { journey: database.tycoon.earlyAccess(), dailySpend: database.dailySpend() };
+    case "tycoon.cancelBuild":
+      return { journey: database.tycoon.cancelBuild(), dailySpend: database.dailySpend() };
+    case "tycoon.slipDay":
+      return { journey: database.tycoon.slipDay(), dailySpend: database.dailySpend() };
+    case "tycoon.pivot":
+      return {
+        journey: database.tycoon.pivot(stringParameter(request, "topicId", 64), stringParameter(request, "typeId", 64)),
+        dailySpend: database.dailySpend(),
+      };
+    case "tycoon.playtest":
+      return { journey: database.tycoon.playtest(), dailySpend: database.dailySpend() };
+    case "tycoon.assignTeam":
+      return { journey: database.tycoon.assignTeam(staffParameter(request)), dailySpend: database.dailySpend() };
+    case "tycoon.researchSpike":
+      return { journey: database.tycoon.researchSpike(), dailySpend: database.dailySpend() };
+    case "tycoon.salePrice":
+      return {
+        journey: database.tycoon.salePrice(stringParameter(request, "productId", 32), numberParameter(request, "pricePercent")),
+        dailySpend: database.dailySpend(),
+      };
+    case "tycoon.letGo":
+      database.tycoon.letGo(stringParameter(request, "staffId", 32));
+      return database.bootstrap();
+    case "tycoon.setPace":
+      return {
+        journey: database.tycoon.setPace(stringParameter(request, "staffId", 32), stringParameter(request, "pace", 16)),
+        dailySpend: database.dailySpend(),
+      };
+    case "tycoon.listCatalog":
+      return {
+        journey: database.tycoon.listCatalog(stringParameter(request, "productId", 32)),
+        dailySpend: database.dailySpend(),
+      };
+    case "tycoon.delistCatalog":
+      return { journey: database.tycoon.delistCatalog(), dailySpend: database.dailySpend() };
+    case "tycoon.makeTrailer":
+      return { journey: database.tycoon.makeTrailer(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
+    case "tycoon.writeDiary":
+      return { journey: database.tycoon.writeDiary(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
     case "game.new": {
       if (request.params.confirmed !== true) throw new Error("Confirm New Company first");
       if (adapter.isBusy() || database.hasOpenWorkOrder()) throw new Error("Finish or cancel open work before starting a new company");
@@ -130,14 +271,27 @@ async function dispatch(request: ProtocolRequest): Promise<unknown> {
       } finally { resetting = false; }
     }
     case "health":
-      return { status: "ok", protocolVersion: 1, workerVersion: "0.0.1", provider: "openrouter", maxConcurrentJobs: 1 };
+      return { status: "ok", protocolVersion: 1, workerVersion: "0.0.1", provider: await credentials.peekProvider(), maxConcurrentJobs: 1, offline: offlineProviderEnabled() || undefined };
     case "bootstrap":
       return database.bootstrap();
     case "credential.status":
-      return { configured: await credentials.hasOpenRouterKey() };
+      return withOfflineCredentialStatus(await credentials.status());
     case "credential.set":
       await credentials.setOpenRouterKey(stringParameter(request, "key", 512));
-      return { configured: true };
+      return withOfflineCredentialStatus(await credentials.status());
+    case "credential.grok.login.start":
+      return credentials.startGrokLogin();
+    case "credential.grok.login.poll":
+      return credentials.pollGrokLogin();
+    case "credential.grok.login.cancel":
+      await credentials.cancelGrokLogin();
+      return withOfflineCredentialStatus(await credentials.status());
+    case "credential.grok.logout":
+      await credentials.logoutGrok();
+      return withOfflineCredentialStatus(await credentials.status());
+    case "credential.grok.use_local":
+      await credentials.useLocalGrok();
+      return withOfflineCredentialStatus(await credentials.status());
     case "chat.history":
       return adapter.chatHistory(stringParameter(request, "employeeId", 64));
     case "chat.send":

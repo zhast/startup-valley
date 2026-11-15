@@ -24,7 +24,7 @@ export interface FurnishingUpdate {
   operationId: string; expectedRevision: number; placements: FurniturePlacements;
   actorCells?: FurnitureActor[];
 }
-interface Prop { id: string; kind: string; grid: Cell; facing: Facing; required_hires: number; owner_id?: string }
+interface Prop { id: string; kind: string; grid: Cell; facing: Facing; required_hires: number; owner_id?: string; required_office_level?: number }
 type Rect = [number, number, number, number];
 interface Room {
   tile_size: number; width: number; height: number;
@@ -43,6 +43,7 @@ interface Resolved {
   id: string; occupied: Cell[]; clearance: Cell[]; targets: Cell[]; bounds: Rect; headroom: Rect[];
 }
 interface RoleKit { host_kind: string; owner_id: string; facing_profiles: Record<Facing, { visual_bounds: Rect }> }
+interface DecorKit { host_kind: string; owner_id: string; facing_profiles: Record<Facing, { visual_bounds: Rect }> }
 const FACINGS = ["north", "east", "south", "west"];
 const key = (cell: Cell): string => `${cell[0]},${cell[1]}`;
 const plus = (left: Cell, right: Cell): Cell => [left[0] + right[0], left[1] + right[1]];
@@ -66,6 +67,8 @@ export class FurnishingGeometry {
   readonly starterDecor: Array<{ id: string; kind: string }>;
   readonly employeeRoleKits: Record<string, string>;
   readonly roleKits: Record<string, RoleKit>;
+  readonly employeeDecorKits: Record<string, string>;
+  readonly decorKits: Record<string, DecorKit>;
   readonly floor = new Set<string>();
   readonly circulation = new Set<string>();
   readonly entrances = new Set<string>();
@@ -74,11 +77,13 @@ export class FurnishingGeometry {
     const data = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "game", "data");
     this.room = JSON.parse(readFileSync(join(data, "office_layout.json"), "utf8")) as Room;
     this.catalog = (JSON.parse(readFileSync(join(data, "furniture_catalog.json"), "utf8")) as { furniture: Record<string, Profile> }).furniture;
-    const additions = JSON.parse(readFileSync(join(data, "furnishing_catalog.json"), "utf8")) as { furniture: Record<string, Profile>; starter_decor: Array<{ id: string; kind: string }>; employee_role_kits: Record<string, string>; role_kits: Record<string, RoleKit> };
+    const additions = JSON.parse(readFileSync(join(data, "furnishing_catalog.json"), "utf8")) as { furniture: Record<string, Profile>; starter_decor: Array<{ id: string; kind: string }>; employee_role_kits: Record<string, string>; role_kits: Record<string, RoleKit>; employee_decor_kits?: Record<string, string>; decor_kits?: Record<string, DecorKit> };
     Object.assign(this.catalog, additions.furniture);
     this.starterDecor = additions.starter_decor;
     this.employeeRoleKits = additions.employee_role_kits;
     this.roleKits = additions.role_kits;
+    this.employeeDecorKits = additions.employee_decor_kits ?? {};
+    this.decorKits = additions.decor_kits ?? {};
     for (const rect of this.room.floor_rects) addRectangle(this.floor, rect);
     for (const rect of this.room.wall_rects) addRectangle(this.floor, rect, false);
     for (const rect of this.room.circulation_rects) addRectangle(this.circulation, rect);
@@ -92,7 +97,12 @@ export class FurnishingGeometry {
 
   #boundsAt(bounds: Rect, anchor: Cell): Rect { return [anchor[0] + bounds[0], anchor[1] + bounds[1], bounds[2], bounds[3]]; }
   #world(grid: Cell): Cell { return [grid[0] * 32 + 16, grid[1] * 32 + 16]; }
-  #resolve(id: string, kind: string, placement: FurniturePlacement, roleKit = ""): Resolved {
+  #unionBounds(left: Rect, right: Rect): Rect {
+    const x = Math.min(left[0], right[0]);
+    const y = Math.min(left[1], right[1]);
+    return [x, y, Math.max(left[0] + left[2], right[0] + right[2]) - x, Math.max(left[1] + left[3], right[1] + right[3]) - y];
+  }
+  #resolve(id: string, kind: string, placement: FurniturePlacement, roleKit = "", ownerId = ""): Resolved {
     const base = this.catalog[kind];
     const direction = base?.facing_profiles?.[placement.facing];
     if (!base || !direction || direction.status !== "runtime_ready") throw new Error(`${id}: facing has no approved runtime profile`);
@@ -104,8 +114,15 @@ export class FurnishingGeometry {
       const kit = this.roleKits[roleKit];
       const kitBounds = kit?.facing_profiles?.[placement.facing]?.visual_bounds;
       if (!kit || kit.host_kind !== kind || !kitBounds) throw new Error(`${id}: incompatible workstation role kit`);
-      const x = Math.min(nativeBounds[0], kitBounds[0]), y = Math.min(nativeBounds[1], kitBounds[1]);
-      nativeBounds = [x, y, Math.max(nativeBounds[0] + nativeBounds[2], kitBounds[0] + kitBounds[2]) - x, Math.max(nativeBounds[1] + nativeBounds[3], kitBounds[1] + kitBounds[3]) - y];
+      nativeBounds = this.#unionBounds(nativeBounds, kitBounds);
+    }
+    // Catalog decor kits share the host footprint. Union ink with the role kit; add no cells.
+    const decorId = this.employeeDecorKits[ownerId] ?? "";
+    if (decorId) {
+      const decor = this.decorKits[decorId];
+      const decorBounds = decor?.facing_profiles?.[placement.facing]?.visual_bounds;
+      if (!decor || decor.host_kind !== kind || decor.owner_id !== ownerId || !decorBounds) throw new Error(`${id}: incompatible workstation decor kit`);
+      nativeBounds = this.#unionBounds(nativeBounds, decorBounds);
     }
     const bounds = this.#boundsAt(nativeBounds, plus(this.#world(origin), profile.anchor_offset));
     const targets: Cell[] = [];
@@ -139,11 +156,11 @@ export class FurnishingGeometry {
       const item = items.get(id);
       if (!item) throw new Error(`Furniture is not owned: ${id}`);
       if (!placement || Object.keys(placement).some((field) => !["grid", "facing"].includes(field)) || !cell(placement.grid) || !FACINGS.includes(placement.facing)) throw new Error(`${id}: invalid integer grid or facing`);
-      resolved.push(this.#resolve(id, item.kind, placement, item.roleKit));
+      resolved.push(this.#resolve(id, item.kind, placement, item.roleKit, item.ownerId));
     }
     // Reserve every future station in its authored position. This is the same
     // all-stage gate used by the game, so a later hire never evicts player decor.
-    for (const prop of this.room.props) if (!items.has(prop.id)) resolved.push(this.#resolve(prop.id, prop.kind, prop, this.employeeRoleKits[prop.owner_id ?? ""] ?? ""));
+    for (const prop of this.room.props) if (!items.has(prop.id)) resolved.push(this.#resolve(prop.id, prop.kind, prop, this.employeeRoleKits[prop.owner_id ?? ""] ?? "", prop.owner_id ?? ""));
     const occupied = new Map<string, string>();
     for (const item of resolved) {
       for (const grid of item.occupied) {
@@ -188,7 +205,7 @@ export class FurnishingGeometry {
     const liveReached = actors.length ? flood(new Set(resolved.filter((item) => items.has(item.id)).flatMap((item) => item.occupied.map(key)))) : reached;
     const actorIds = new Set<string>();
     for (const actor of actors) {
-      if (!actor || !["founder", "mira", "theo"].includes(actor.id) || actorIds.has(actor.id) || !cell(actor.grid) || !this.floor.has(key(actor.grid))) throw new Error("Invalid live actor cells");
+      if (!actor || !["founder", "mira", "theo", "creative"].includes(actor.id) || actorIds.has(actor.id) || !cell(actor.grid) || !this.floor.has(key(actor.grid))) throw new Error("Invalid live actor cells");
       if (actor.position !== undefined && (!Array.isArray(actor.position) || actor.position.length !== 2 || !actor.position.every(Number.isFinite) || actor.position[0] < 0 || actor.position[0] > 1280 || actor.position[1] < 0 || actor.position[1] > 720 || Math.floor(actor.position[0] / 32) !== actor.grid[0] || Math.floor(actor.position[1] / 32) !== actor.grid[1])) throw new Error("Actor position must be finite world pixels matching its declared cell");
       actorIds.add(actor.id);
       if (!liveReached.has(key(actor.grid))) throw new Error(`${actor.id}: placement blocks or traps an actor`);
@@ -198,7 +215,7 @@ export class FurnishingGeometry {
       for (const item of inventory) {
         const previous = current[item.id];
         if (!previous || canonical(previous) === canonical(placements[item.id])) continue;
-        const old = this.#resolve(item.id, item.kind, previous, item.roleKit);
+        const old = this.#resolve(item.id, item.kind, previous, item.roleKit, item.ownerId);
         if ([...old.occupied, ...old.clearance].some((grid) => key(grid) === key(actor.grid))) throw new Error(`${item.id}: wait for the actor to leave before moving this furniture`);
       }
     }
@@ -224,54 +241,66 @@ export class FurnishingStore {
     const owned = new Set(inventory.map((item) => item.id));
     return Object.fromEntries(this.geometry.room.props.filter((prop) => owned.has(prop.id)).map((prop) => [prop.id, { grid: prop.grid, facing: prop.facing }]));
   }
-  /**
-   * First-run lounge only. Recovery still stores décor; never occupies the [22,16] planter test bay.
-   * Phone booth stays southwest. Café table/chair sit across the aisle because table artwork cannot
-   * legally sit beside the booth, and sofa/whiteboard/bookshelf art overlaps the reserved planter bay.
-   * desk_lamp_kit and creative_design_kit are starter-decor placeables (inventory-only here), not
-   * employee_role_kits — Mina/Theo keep mina_discovery_kit / theo_campaign_kit.
-   */
+  /** First-run lounge only. Existing saves and recovery keep their own arrangement. */
   private starterLounge(inventory: FurnitureItem[], base: FurniturePlacements): FurniturePlacements {
     const owned = new Set(inventory.map((item) => item.id));
-    const seeds: Array<{ id: string; grid: Cell; facing: Facing }> = [
-      { id: "decor-phone_booth", grid: [3, 18], facing: "south" },
-      { id: "decor-cafe_table", grid: [15, 9], facing: "south" },
-      { id: "decor-cafe_chair", grid: [24, 9], facing: "south" },
+    const groups: Array<Array<{ id: string; grid: Cell }>> = [
+      [{ id: "decor-phone_booth", grid: [3, 18] }],
+      [{ id: "decor-cafe_table", grid: [5, 8] }, { id: "decor-cafe_chair", grid: [7, 8] }],
     ];
     let placements = base;
-    for (const piece of seeds) {
-      if (!owned.has(piece.id) || Object.hasOwn(placements, piece.id)) continue;
-      if (piece.grid[0] === 22 && piece.grid[1] === 16) continue;
-      const candidate: FurniturePlacements = { ...placements, [piece.id]: { grid: piece.grid, facing: piece.facing } };
+    for (const group of groups) {
+      if (group.some((item) => !owned.has(item.id) || Object.hasOwn(placements, item.id))) continue;
+      const candidate: FurniturePlacements = { ...placements };
+      for (const item of group) candidate[item.id] = { grid: item.grid, facing: "south" };
       try {
+        // Keep the café together, without obstructing circulation or future hires.
         this.geometry.validate(candidate, inventory);
         placements = candidate;
       } catch {
-        // Keep already-accepted seeds if a later piece cannot land in this room.
+        // If an authored room changes, unplaceable décor stays safely in storage.
       }
     }
     return placements;
+  }
+  private officeLevel(): number {
+    try {
+      const row = this.db.prepare("SELECT office_level FROM tycoon_meta WHERE id = 1").get() as { office_level?: number } | undefined;
+      const level = Number(row?.office_level ?? 1);
+      return Number.isInteger(level) && level > 0 ? level : 1;
+    } catch {
+      return 1;
+    }
   }
   private syncEmployeeDesks(placements: FurniturePlacements, inventory: FurnitureItem[]): void {
     const save = this.db.prepare("UPDATE employees SET desk_x=?,desk_y=? WHERE id=?");
     for (const item of inventory) {
       const placed = placements[item.id];
-      if (placed && ["mira", "theo"].includes(item.ownerId)) save.run(...placed.grid, item.ownerId);
+      if (placed && item.ownerId && item.ownerId !== "founder") save.run(...placed.grid, item.ownerId);
     }
   }
   /** Caller may use this inside the hiring transaction. */
   sync(): void {
     const hired = this.db.prepare("SELECT id FROM employees WHERE employment_status='hired'").all().map((row) => String(row.id));
+    const officeLevel = this.officeLevel();
     const insert = this.db.prepare("INSERT OR IGNORE INTO furnishing_inventory(id,kind,owner_id,essential,grant_id,role_kit) VALUES (?,?,?,?,?,?)");
     let grants = 0;
     const addedStations: FurniturePlacements = {};
     for (const prop of this.geometry.room.props) {
+      const neededLevel = prop.required_office_level ?? 1;
+      if (neededLevel > officeLevel) continue;
       if (prop.required_hires > hired.length || (prop.owner_id && prop.owner_id !== "founder" && !hired.includes(prop.owner_id))) continue;
-      const added = Number(insert.run(prop.id, prop.kind, prop.owner_id ?? "", 1, prop.owner_id === "mira" || prop.owner_id === "theo" ? `hire:${prop.owner_id}` : `office-stage:${prop.required_hires}`, this.geometry.employeeRoleKits[prop.owner_id ?? ""] ?? "").changes);
+      const owner = prop.owner_id ?? "";
+      const grant = neededLevel > 1 ? `office-level:${neededLevel}` : owner !== "" && owner !== "founder" ? `hire:${owner}` : `office-stage:${prop.required_hires}`;
+      const added = Number(insert.run(prop.id, prop.kind, owner, 1, grant, this.geometry.employeeRoleKits[owner] ?? "").changes);
       grants += added;
       if (added) addedStations[prop.id] = { grid: prop.grid, facing: prop.facing };
     }
     for (const { id, kind } of this.geometry.starterDecor) grants += Number(insert.run(id, kind, "", 0, "starter-decor-v1", "").changes);
+    const founderKit = this.geometry.employeeRoleKits["founder"] ?? "";
+    if (founderKit) {
+      grants += Number(this.db.prepare("UPDATE furnishing_inventory SET role_kit=? WHERE id='founder-workstation' AND role_kit=''").run(founderKit).changes);
+    }
     const inventory = this.inventory();
     const row = this.db.prepare("SELECT * FROM furnishing_state WHERE id=1").get();
     if (!row) {

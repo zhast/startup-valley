@@ -17,7 +17,11 @@ signal bootstrap_received(
 	memories: Dictionary
 )
 signal credential_status_received(configured: bool)
+signal credential_detail_received(detail: Dictionary)
 signal credential_saved
+signal grok_login_challenge(user_code: String, verification_uri: String, interval_seconds: int)
+signal grok_login_poll_received(result: Dictionary)
+signal grok_login_failed(message: String)
 signal chat_history_received(employee_id: String, messages: Array)
 signal chat_reply_received(employee_id: String, message: Dictionary, daily_spend: float)
 signal chat_failed(employee_id: String, message: String)
@@ -61,7 +65,10 @@ func start() -> void:
 	var node_path := OS.get_environment("STARTUP_VALLEY_NODE")
 	if node_path.is_empty():
 		node_path = "node"
-	var arguments := PackedStringArray([worker_script, "--data-dir", OS.get_user_data_dir()])
+	var data_dir := OS.get_environment("STARTUP_VALLEY_DATA_DIR")
+	if data_dir.is_empty():
+		data_dir = OS.get_user_data_dir()
+	var arguments := PackedStringArray([worker_script, "--data-dir", data_dir])
 	var process: Dictionary = OS.execute_with_pipe(node_path, arguments, false)
 	if process.is_empty():
 		request_failed.emit("Could not start Node worker. Install Node 22.19+ or set STARTUP_VALLEY_NODE.")
@@ -148,8 +155,11 @@ func _handle_line(line: String) -> void:
 		if method == "furnishing.update":
 			furnishing_failed.emit(job_id, error)
 			return
-		if method.begins_with("milestone.") or method.begins_with("hiring.") or method.begins_with("game.") or method == "day.end":
+		if method.begins_with("milestone.") or method.begins_with("hiring.") or method.begins_with("game.") or method.begins_with("tycoon.") or method == "day.end":
 			company_action_failed.emit(method, error)
+			return
+		if method.begins_with("credential.grok."):
+			grok_login_failed.emit(error)
 			return
 		if method == "job.start":
 			job_submission_failed.emit(job_id, error)
@@ -179,10 +189,17 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 		if job_id == "journey": journey_received.emit(result.get("journey", {}))
 		return
 	match method:
-		"hiring.complete", "game.new":
+		"hiring.complete", "game.new", "tycoon.letGo":
 			_handle_response("bootstrap", "", result)
 			company_action_completed.emit(method, result)
-		"milestone.evaluate", "milestone.complete", "milestone.override", "day.end":
+		"tycoon.expandOffice":
+			journey_received.emit(result.get("journey", {}))
+			var office_furnishing: Variant = result.get("furnishing")
+			if office_furnishing is Dictionary and int((office_furnishing as Dictionary).get("version", 0)) == 1:
+				furnishing_state = (office_furnishing as Dictionary).duplicate(true)
+				furnishing_received.emit(furnishing_state.duplicate(true), "")
+			company_action_completed.emit(method, result)
+		"milestone.evaluate", "milestone.complete", "milestone.override", "chapter.continue", "day.end", "tycoon.start", "tycoon.release", "tycoon.train", "tycoon.research", "tycoon.buyUpgrade", "tycoon.buyEngine", "tycoon.acceptContract", "tycoon.patch", "tycoon.sequel", "tycoon.award", "tycoon.port", "tycoon.localize", "tycoon.takeLoan", "tycoon.signPublisher", "tycoon.bookBooth", "tycoon.takeTownDay", "tycoon.showPressDemo", "tycoon.makeTrailer", "tycoon.writeDiary", "tycoon.addFeature", "tycoon.setDayPlan", "tycoon.fixBugs", "tycoon.crunch", "tycoon.earlyAccess", "tycoon.cancelBuild", "tycoon.slipDay", "tycoon.pivot", "tycoon.playtest", "tycoon.assignTeam", "tycoon.researchSpike", "tycoon.salePrice", "tycoon.setPace", "tycoon.listCatalog", "tycoon.delistCatalog":
 			journey_received.emit(result.get("journey", {}))
 			company_action_completed.emit(method, result)
 		"game.save":
@@ -225,10 +242,18 @@ func _handle_response(method: String, job_id: String, result_value: Variant) -> 
 				recent_jobs,
 				memories
 			)
-		"credential.status":
+		"credential.status", "credential.set", "credential.grok.login.cancel", "credential.grok.logout", "credential.grok.use_local":
 			credential_status_received.emit(bool(result.get("configured", false)))
-		"credential.set":
-			credential_saved.emit()
+			credential_detail_received.emit(result)
+			if method == "credential.set":
+				credential_saved.emit()
+		"credential.grok.login.start":
+			grok_login_challenge.emit(str(result.get("userCode", "")), str(result.get("verificationUri", "")), int(result.get("intervalSeconds", 5)))
+		"credential.grok.login.poll":
+			grok_login_poll_received.emit(result)
+			if str(result.get("status", "")) == "complete":
+				credential_status_received.emit(bool(result.get("configured", false)))
+				credential_detail_received.emit(result)
 		"chat.history":
 			var messages: Array = result_value as Array if result_value is Array else []
 			chat_history_received.emit(job_id, messages)
@@ -281,6 +306,21 @@ func _send_request(method: String, parameters: Dictionary, job_id: String = "") 
 
 func save_openrouter_key(key: String) -> void:
 	_send_request("credential.set", {"key": key})
+
+func start_grok_login() -> void:
+	_send_request("credential.grok.login.start", {})
+
+func poll_grok_login() -> void:
+	_send_request("credential.grok.login.poll", {})
+
+func cancel_grok_login() -> void:
+	_send_request("credential.grok.login.cancel", {})
+
+func logout_grok() -> void:
+	_send_request("credential.grok.logout", {})
+
+func use_local_grok() -> void:
+	_send_request("credential.grok.use_local", {})
 
 func update_furnishing(operation_id: String, expected_revision: int, placements: Dictionary, actor_cells: Array) -> void:
 	if _stdio == null:

@@ -206,7 +206,7 @@ func test_growth_reservations() -> void:
 	theo.work_state = EmployeeAvatar.WorkState.WORKING
 	main.room.navigation.actors["theo"] = research
 	main.room.set_hire_count(4)
-	check(main.room.navigation.actors.size() == 3, "Growth registers founder and both employees before renewed routes")
+	check(main.room.navigation.actors.size() == 1 + main._employees.size(), "Growth registers the founder and every employee before renewed routes")
 	check(mina._has_target and not mina._route.is_empty(), "Research approach survives office growth")
 	check(mina._route[-1].distance_to(theo.position) >= 20, "Growth replan cannot claim a later employee's current position")
 	var reserved: Dictionary[Vector2i, String] = {}
@@ -226,7 +226,9 @@ func test_waiting_desk_move() -> void:
 	mina.has_live_job = true
 	mina.walk_to(mina.desk_position, EmployeeAvatar.WorkState.WALKING_TO_DESK, EmployeeAvatar.WorkState.TYPING)
 	check(mina._waiting_for_desk, "Desk-move fixture starts with a genuinely blocked seat")
-	var overrides := {"mira-workstation": {"grid": [12, 7], "facing": "south"}}
+	# [12, 7] sits in Creative's north clearance once that desk unlocks. [24, 8]
+	# stays a free south bay at every hire stage, including the Creative desk.
+	var overrides := {"mira-workstation": {"grid": [24, 8], "facing": "south"}}
 	var moved := main.room.layout_model.placement_by_id("mira-workstation", 2, overrides)
 	var new_seat := main.room.grid_to_world_position(moved.work_cell)
 	# Keep the new seat occupied too, without ticking the old waiting request.

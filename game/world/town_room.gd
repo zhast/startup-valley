@@ -22,6 +22,7 @@ var grid_width: int = 40
 var grid_height: int = 23
 var player_spawn := Vector2i(17, 19)
 var unlocked_hires: int = 0
+var unlocked_office_level: int = 1
 var navigation: OfficeNavigation
 var architecture: OfficeArchitecture
 var _employee_names: Dictionary[String, String] = {}
@@ -50,6 +51,7 @@ func load_layout(path: String = "res://data/office_layout.json") -> bool:
 	for stage: int in range(5):
 		if not bool(next_model.validate_placements(next_model.resolve_placements(stage)).valid): return false
 	layout_model = next_model
+	layout_model.office_level = maxi(1, unlocked_office_level)
 	placement_overrides.clear()
 	furnishing_revision = -1
 	migration_notes.clear()
@@ -196,6 +198,14 @@ func _station_facing(station_id: String, overrides: Dictionary) -> String:
 	# Old worker records own coordinates, not orientation. Preserve a validated
 	# local/exported facing instead of resetting every bootstrap to south.
 	return str(layout_model.placement_by_id(station_id, 4, overrides).get("facing", "south"))
+
+func set_office_level(level: int) -> void:
+	var next := maxi(1, level)
+	unlocked_office_level = next
+	if layout_model == null or layout_model.office_level == next:
+		return
+	layout_model.office_level = next
+	_rebuild_props()
 
 func set_hire_count(count: int) -> void:
 	var previous := unlocked_hires
@@ -347,7 +357,11 @@ func surface_at(point: Vector2) -> Dictionary:
 
 func placeholder_records() -> Array[EmployeeRecord]:
 	var records: Array[EmployeeRecord] = []
-	for employee_id: String in _employee_names:
+	if layout_model == null: return records
+	# Layout order keeps Mina first. Alphabetical order would select Creative.
+	for employee: Dictionary in layout_model.data.get("employees", []):
+		var employee_id := str(employee.get("id", ""))
+		if employee_id.is_empty() or not _employee_names.has(employee_id): continue
 		var record := EmployeeRecord.new()
 		record.id = employee_id
 		record.display_name = _employee_names[employee_id]
@@ -355,7 +369,6 @@ func placeholder_records() -> Array[EmployeeRecord]:
 		record.desk_grid = placement.get("grid", Vector2i.ZERO)
 		record.morale = 75
 		records.append(record)
-	records.sort_custom(func(a: EmployeeRecord, b: EmployeeRecord) -> bool: return a.id < b.id)
 	return records
 
 func grid_to_local_position(grid: Vector2i) -> Vector2:

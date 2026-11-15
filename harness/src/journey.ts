@@ -1,4 +1,5 @@
 import type { DatabaseSync } from "node:sqlite";
+import { calendarForDay, type TycoonSnapshot } from "./tycoon.js";
 import type { JobSpec } from "./types.js";
 
 export interface MilestoneDefinition {
@@ -26,6 +27,14 @@ export const MILESTONES: readonly MilestoneDefinition[] = [
     criteria: ["Readiness questions", "Clear checklist", "Assumptions and limitations", "Completeness"],
     assignment: "Create company/incorporation-readiness.md and company/incorporation-checklist.md as a planning exercise only. Identify jurisdiction, ownership, entity, tax, and professional-advice questions without inventing answers. Clearly say no legal filing, payment, or incorporation has occurred. This is not legal advice or a filing-ready legal document.",
     rewardCents: 0, feeCents: 50000, reputation: 20, availableFromDay: 3 },
+  { id: "brand", title: "Design the brand", employeeId: "creative", prerequisite: "incorporate", files: ["brand/identity.md", "brand/palette.md"],
+    criteria: ["Named identity", "Usable palette", "Application plan", "Completeness"],
+    assignment: "Create brand/identity.md and brand/palette.md for the company's look. Name the identity, give a usable palette with background, ink, and accent roles, and list where it applies on the website, the ad plan, and the office. This is an internal design plan, not a filed trademark or a launched rebrand. Do not claim legal protection or live customer research.",
+    rewardCents: 80000, feeCents: 0, reputation: 12, availableFromDay: 3 },
+  { id: "apply", title: "Apply the brand", employeeId: "creative", prerequisite: "brand", files: ["brand/homepage.md", "brand/application.md"],
+    criteria: ["Homepage use", "Palette application", "Honest limits", "Completeness"],
+    assignment: "Apply the saved DeskBloom identity and palette to the existing website. Create brand/homepage.md and brand/application.md. Name where the background, ink, and accent appear on the homepage, and say what stays a prototype. This is an internal application plan, not a launched redesign, a filed trademark, or live customer research.",
+    rewardCents: 40000, feeCents: 0, reputation: 8, availableFromDay: 3 },
 ];
 
 export function milestone(id: string): MilestoneDefinition {
@@ -52,9 +61,14 @@ export function parseEvaluation(text: string, definition: MilestoneDefinition): 
 }
 
 export class JourneyStore {
+  private tycoonView: (() => TycoonSnapshot) | null = null;
+
   constructor(readonly db: DatabaseSync, readonly onHire: () => void = () => {}) {
     for (const item of MILESTONES) db.prepare("INSERT OR IGNORE INTO milestone_progress(id) VALUES (?)").run(item.id);
     db.prepare("UPDATE milestone_evaluations SET status = 'failed', error = 'Evaluation interrupted. Retry when ready.' WHERE status = 'evaluating'").run();
+  }
+  bindTycoon(view: () => TycoonSnapshot): void {
+    this.tycoonView = view;
   }
   transaction<T>(action: () => T): T {
     this.db.exec("BEGIN IMMEDIATE");
@@ -74,18 +88,20 @@ export class JourneyStore {
       const jobId = String(progress.job_id ?? "");
       const job = jobId ? this.db.prepare("SELECT status FROM work_orders WHERE id = ?").get(jobId) : undefined;
       const evaluation = jobId ? this.db.prepare("SELECT * FROM milestone_evaluations WHERE job_id = ?").get(jobId) : undefined;
-      const available = this.day() >= definition.availableFromDay && this.hired(definition.employeeId) && (!definition.prerequisite || this.completed(definition.prerequisite));
+      const available = this.milestoneUnlocked(definition);
       const state = progress.completed ? "completed" : !available ? "locked" : evaluation?.status === "evaluating" ? "evaluating" : evaluation?.status === "done" && JSON.parse(String(evaluation.result_json)).verdict === "revise" ? "revision_required" : job && ["running", "queued", "completed"].includes(String(job.status)) ? "active" : "available";
       return { ...definition, state, jobId, jobStatus: job?.status ?? "", overridden: Boolean(progress.overridden), evaluation: evaluation?.result_json ? JSON.parse(String(evaluation.result_json)) as EvaluationResult : null, evaluationError: evaluation?.error ?? "" };
     });
-    return {
+    const body = {
       company: { cashCents: Number(company.cash_cents), earnedCents: Number(company.earned_cents), reputation: Number(company.reputation), chapter: Number(company.chapter) },
       player: JSON.parse(String(company.player_json)) as Record<string, unknown>, milestones,
       candidates: [
         { id: "mira", name: "Mina", costCents: 0, available: !this.hired("mira"), hired: this.hired("mira"), role: "Product + research" },
         { id: "theo", name: "Theo", costCents: 30000, available: !this.hired("theo") && this.completed("website"), hired: this.hired("theo"), role: "Growth + operations" },
+        { id: "creative", name: "Creative", costCents: 0, available: !this.hired("creative") && this.openedChapter() >= 2 && this.completed("incorporate"), hired: this.hired("creative"), role: "Design + brand" },
       ],
     };
+    return this.tycoonView ? { ...body, tycoon: this.tycoonView() } : body;
   }
   hire(id: string, day: number) {
     return this.transaction(() => {
@@ -102,7 +118,7 @@ export class JourneyStore {
     if (!this.hired(spec.employeeId)) throw new Error("Hire this employee before assigning work");
     if (!spec.milestoneId) { if (spec.revisionOfJobId) throw new Error("A revision must belong to a milestone"); return; }
     const definition = milestone(spec.milestoneId);
-    if (this.day() < definition.availableFromDay || definition.employeeId !== spec.employeeId || this.completed(definition.id) || (definition.prerequisite && !this.completed(definition.prerequisite))) throw new Error("Milestone is locked or already complete");
+    if (!this.milestoneUnlocked(definition) || definition.employeeId !== spec.employeeId || this.completed(definition.id)) throw new Error("Milestone is locked or already complete");
     const progress = this.db.prepare("SELECT job_id FROM milestone_progress WHERE id = ?").get(definition.id)!;
     if (progress.job_id) {
       const old = this.db.prepare("SELECT status FROM work_orders WHERE id = ?").get(String(progress.job_id));
@@ -118,6 +134,27 @@ export class JourneyStore {
   }
   attachJob(spec: JobSpec): void {
     if (spec.milestoneId) this.db.prepare("UPDATE milestone_progress SET job_id = ? WHERE id = ? AND completed = 0").run(spec.jobId, spec.milestoneId);
+  }
+  /** The next chapter's work stays locked on the complete screen until the player continues. */
+  continueChapter() {
+    return this.transaction(() => {
+      let chapter = Number(this.db.prepare("SELECT chapter FROM company_state WHERE id = 1").get()!.chapter);
+      if (chapter < 2) throw new Error("Finish the current chapter before continuing");
+      // Saves that finished the brand before Chapter 3 existed still have chapter 2.
+      if (chapter < 3 && this.completed("brand")) {
+        this.db.prepare("UPDATE company_state SET chapter = 3 WHERE id = 1").run();
+        chapter = 3;
+      }
+      this.db.prepare("UPDATE company_state SET opened_chapter = ? WHERE id = 1").run(chapter);
+      return this.state();
+    });
+  }
+  private openedChapter(): number {
+    return Number(this.db.prepare("SELECT opened_chapter FROM company_state WHERE id = 1").get()!.opened_chapter);
+  }
+  private milestoneUnlocked(definition: MilestoneDefinition): boolean {
+    const opened = definition.id === "apply" ? 3 : definition.id === "brand" ? 2 : 1;
+    return this.day() >= definition.availableFromDay && this.hired(definition.employeeId) && (!definition.prerequisite || this.completed(definition.prerequisite)) && this.openedChapter() >= opened;
   }
   private day(): number {
     const row = this.db.prepare("SELECT value_json FROM game_state WHERE key='clock'").get();
@@ -155,12 +192,17 @@ export class JourneyStore {
       this.charge(`milestone:${definition.id}`, day, reward - definition.feeCents, reward, override ? 0 : definition.reputation, definition.title);
       this.db.prepare("UPDATE milestone_progress SET completed=1,overridden=?,completed_day=? WHERE id=?").run(override ? 1 : 0, day, definition.id);
       if (definition.id === "incorporate") this.db.prepare("UPDATE company_state SET chapter=2 WHERE id=1").run();
+      if (definition.id === "brand") this.db.prepare("UPDATE company_state SET chapter=3 WHERE id=1").run();
       return this.state();
     });
   }
-  private charge(id: string, day: number, cash: number, earned: number, reputation: number, label: string): void {
+  recordCompanyChange(id: string, day: number, cash: number, earned: number, reputation: number, label: string, allowNegative = false): void {
+    this.charge(id, day, cash, earned, reputation, label, allowNegative);
+  }
+  private charge(id: string, day: number, cash: number, earned: number, reputation: number, label: string, allowNegative = false): void {
     if (this.db.prepare("SELECT id FROM company_transactions WHERE id=?").get(id)) return;
-    if (this.state().company.cashCents + cash < 0) throw new Error("Not enough company cash");
+    // Payroll may cross below zero. A sale or a $0 build row still posts while cash is already negative.
+    if (!allowNegative && cash < 0 && this.state().company.cashCents + cash < 0) throw new Error("Not enough company cash");
     this.db.prepare("INSERT INTO company_transactions VALUES (?,?,?,?,?,?)").run(id, day, cash, earned, reputation, label);
     this.db.prepare("UPDATE company_state SET cash_cents=cash_cents+?,earned_cents=earned_cents+?,reputation=reputation+? WHERE id=1").run(cash, earned, reputation);
   }
@@ -168,11 +210,14 @@ export class JourneyStore {
     const x = Number(value.x), y = Number(value.y);
     if (!Number.isFinite(x) || !Number.isFinite(y) || x < 0 || x > 1280 || y < 0 || y > 720) throw new Error("Invalid saved player position");
     const unit = (key: string, fallback: number) => typeof value[key] === "number" ? Math.max(0, Math.min(1, Number(value[key]))) : fallback;
-    this.db.prepare("UPDATE company_state SET player_json=? WHERE id=1").run(JSON.stringify({ x, y, movementSeen: value.movementSeen === true, effectsVolume: unit("effectsVolume", 0.5), ambienceVolume: unit("ambienceVolume", 0.2), attentionEmployeeId: ["mira", "theo"].includes(String(value.attentionEmployeeId)) ? value.attentionEmployeeId : "" }));
+    const architectureThemes = ["office", "cafe", "loft", "studio", "evening"];
+    const architectureTheme = architectureThemes.includes(String(value.architectureTheme)) ? String(value.architectureTheme) : "office";
+    const attentionIds = ["mira", "theo", "creative"];
+    this.db.prepare("UPDATE company_state SET player_json=? WHERE id=1").run(JSON.stringify({ x, y, movementSeen: value.movementSeen === true, effectsVolume: unit("effectsVolume", 0.5), ambienceVolume: unit("ambienceVolume", 0.2), attentionEmployeeId: attentionIds.includes(String(value.attentionEmployeeId)) ? value.attentionEmployeeId : "", architectureTheme }));
   }
   daySummary(day: number, spend: number) {
     const rows = this.db.prepare("SELECT label,cash_delta,earned_delta,reputation_delta FROM company_transactions WHERE day=?").all(day);
     const completedWork = this.db.prepare("SELECT title, revision_of_job_id FROM work_orders WHERE game_day=? AND status='completed'").all(day).map((row) => String(row.title) + (row.revision_of_job_id ? " (revision)" : ""));
-    return { day, entries: rows, completedWork, earnedCents: rows.reduce((n, row) => n + Number(row.earned_delta), 0), reputation: rows.reduce((n, row) => n + Number(row.reputation_delta), 0), aiSpend: spend, nextMilestone: this.state().milestones.find((item) => item.state !== "completed")?.title ?? "Your next chapter" };
+    return { day, dateLabel: calendarForDay(day).label, entries: rows, completedWork, earnedCents: rows.reduce((n, row) => n + Number(row.earned_delta), 0), reputation: rows.reduce((n, row) => n + Number(row.reputation_delta), 0), aiSpend: spend, nextMilestone: this.state().milestones.find((item) => item.state !== "completed")?.title ?? "Your next chapter" };
   }
 }

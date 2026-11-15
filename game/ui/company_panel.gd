@@ -6,11 +6,14 @@ signal milestone_requested(definition: Dictionary)
 signal connection_requested
 signal renovation_requested
 signal volume_changed(effects: float, ambience: float)
+signal architecture_theme_requested(theme_id: String)
+signal presented(mode: String)
 
 var state: Dictionary = {}
 var day := 1
 var effects_volume := 0.5
 var ambience_volume := 0.2
+var architecture_theme := OfficeArchitecture.DEFAULT_THEME
 var screen := "journey"
 var busy := false
 var _content: VBoxContainer
@@ -29,6 +32,20 @@ var _details_open := false
 var _future_open := false
 var _render_generation := 0
 var _maximum_panel_size := Vector2(744, 608)
+var _topic_id := "fitness"
+var _type_id := "software"
+var _staff_ids: Array[String] = []
+var _price_percent := 100
+var _marketing_id := "none"
+var _engine_id := "none"
+var _focus_id := "balanced"
+var _audience_id := "everyone"
+var _size_id := "catalog"
+var _release_focus_id := ""
+var _cancel_confirm := false
+var _pivot_open := false
+var _playtest_shown := false
+var _playtest_product_id := ""
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -65,6 +82,8 @@ func _ready() -> void:
 	hide()
 
 func present(mode: String = "journey") -> void:
+	if mode == "journey" and _is_chapter_complete():
+		mode = "complete"
 	screen = mode
 	_details_open = false
 	_future_open = false
@@ -75,11 +94,15 @@ func present(mode: String = "journey") -> void:
 	modulate.a = 0.0
 	_transition = create_tween()
 	_transition.tween_property(self, "modulate:a", 1.0, 0.14)
+	presented.emit(screen)
 
 func update_state(value: Dictionary) -> void:
 	state = value
 	busy = false
-	if visible and screen in ["journey", "title", "closing"]: _render()
+	if visible and screen == "journey" and _is_chapter_complete():
+		present("complete")
+		return
+	if visible and screen in ["journey", "title", "closing", "complete", "product", "release"]: _render()
 
 func show_error(message: String) -> void:
 	busy = false
@@ -135,7 +158,7 @@ func _card(parent: Control = null) -> VBoxContainer:
 	panel.add_child(contents)
 	return contents
 
-func _heading(title: String, subtitle: String = "", subtitle_role: String = "body") -> void:
+func _heading(title: String, subtitle: String = "", subtitle_role: String = "body", subtitle_name: String = "") -> void:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 12)
 	_header.add_child(row)
@@ -146,7 +169,9 @@ func _heading(title: String, subtitle: String = "", subtitle_role: String = "bod
 	close_button.pressed.connect(_back)
 	close_button.visible = screen != "title"
 	row.add_child(close_button)
-	if not subtitle.is_empty(): _label(subtitle, false, _header, subtitle_role)
+	if not subtitle.is_empty():
+		var subtitle_label := _label(subtitle, false, _header, subtitle_role)
+		if not subtitle_name.is_empty(): subtitle_label.name = subtitle_name
 
 func _actions(primary_text: String, callback: Callable, enabled: bool = true, secondary_text: String = "Back to office", secondary_callback: Callable = Callable(), danger: bool = false) -> void:
 	var row := HBoxContainer.new()
@@ -177,15 +202,27 @@ func _request(method: String, params: Dictionary) -> void:
 func _render() -> void:
 	_render_generation += 1
 	_clear()
+	if screen == "journey" and _is_chapter_complete():
+		screen = "complete"
 	var panel_size := Vector2(744, 608)
 	match screen:
 		"title": panel_size = Vector2(624, 408)
 		"confirm": panel_size = Vector2(616, 364)
 		"hired": panel_size = Vector2(648, 424)
+		"complete": panel_size = Vector2(664, 448)
 		"settings": panel_size = Vector2(704, 592)
 		"closing", "summary": panel_size = Vector2(744, 584)
+		"product": panel_size = Vector2(744, 640)
+		"release": panel_size = Vector2(704, 560)
 		"journey":
-			if _current_milestone().is_empty(): panel_size = Vector2(704, 564)
+			if _current_milestone().is_empty():
+				# A product on the bench adds a compact Team row under Playtest and a compact Research spike row under Team.
+				# 720 keeps Cancel through New Product inside the scrollport.
+				# The pivot picker is taller, so that path keeps the Round 62 envelope.
+				if _tycoon().get("developing") is Dictionary:
+					panel_size = Vector2(744, 660) if _pivot_open else Vector2(744, 720)
+				else:
+					panel_size = Vector2(704, 564)
 	_maximum_panel_size = panel_size
 	_frame.custom_minimum_size = Vector2.ZERO
 	_frame.size = panel_size
@@ -194,8 +231,11 @@ func _render() -> void:
 		"title": _title_screen()
 		"confirm": _confirm_screen()
 		"hired": _hired_screen()
+		"complete": _complete_screen()
 		"settings": _settings_screen()
 		"closing", "summary": _day_screen()
+		"product": _product_screen()
+		"release": _release_screen()
 		_: _journey_screen()
 	# Evaluation already has one durable status on its milestone card. An empty
 	# footer row must not reserve a line and force otherwise short pages to scroll.
@@ -221,9 +261,12 @@ func _fit_sparse_height(generation: int) -> void:
 	match screen:
 		"confirm": minimum_height = 340.0
 		"hired": minimum_height = 400.0
+		"complete": minimum_height = 400.0
 		"settings": minimum_height = 480.0
 		"journey": minimum_height = 456.0
 		"closing", "summary": minimum_height = 456.0
+		"product": minimum_height = 520.0
+		"release": minimum_height = 460.0
 	var column := _header.get_parent() as VBoxContainer
 	var required_height := _frame.get_theme_stylebox("panel").get_minimum_size().y
 	required_height += _header.get_combined_minimum_size().y + _content.get_combined_minimum_size().y + _footer.get_combined_minimum_size().y
@@ -243,7 +286,8 @@ func _title_screen() -> void:
 		var names := PackedStringArray()
 		for candidate: Dictionary in state.get("candidates", []):
 			if bool(candidate.get("hired", false)): names.append(str(candidate.get("name", "Teammate")))
-		_label("Day %d  ·  Chapter %d  ·  %s" % [day, int(company.get("chapter", 1)), ", ".join(names) if not names.is_empty() else "Founder"], false, card)
+		var date_line := _label("%s  ·  Chapter %d  ·  %s" % [_office_date(), int(company.get("chapter", 1)), ", ".join(names) if not names.is_empty() else "Founder"], false, card)
+		date_line.name = "OfficeDate"
 		_label(_next_step().trim_prefix("NEXT · "), false, card)
 		_label("Progress saves automatically.", false, card, "meta")
 	else:
@@ -270,6 +314,56 @@ func _hired_screen() -> void:
 	_label("Walk to %s or use the team rail. Their desk opens Assign with the current Journey goal ready." % person_name)
 	_actions("Meet " + person_name, hide, true, "Company Journey", func() -> void: present("journey"))
 
+func _complete_screen() -> void:
+	if chapter_three_finished(state):
+		_heading("Chapter 3 complete", "More is coming.")
+		var finished := _card()
+		_label("The brand is applied", true, finished)
+		_label("Homepage notes are saved. This build stops here. Further chapters are not in the office yet.", false, finished)
+		_label(_next_step().trim_prefix("NEXT · "))
+		_product_shortcut()
+		_train_staff()
+		_actions("Back to office", hide, true, "")
+		return
+	if chapter_two_finished(state):
+		_heading("Chapter 2 complete", "The brand is in the studio.")
+		var ready := _card()
+		_label("Identity and palette are saved", true, ready)
+		_label("Chapter 3 starts when Creative applies that look to the website.", false, ready)
+		_label(_next_step().trim_prefix("NEXT · "))
+		_product_shortcut()
+		_train_staff()
+		_actions("Begin Chapter 3", func() -> void: _request("chapter.continue", {}), true, "Back to office")
+		return
+	_heading("Chapter complete", "Your first company chapter is finished.")
+	var complete := _card()
+	_label("Your company is ready", true, complete)
+	_label("Website built. Ads planned. Incorporation prepared. Chapter 2 starts when you give the company a look.", false, complete)
+	_label(_next_step().trim_prefix("NEXT · "))
+	_product_shortcut()
+	_train_staff()
+	_actions("Begin Chapter 2", func() -> void: _request("chapter.continue", {}), true, "Back to office")
+
+func _is_chapter_complete() -> bool:
+	return chapter_is_complete(state)
+
+static func chapter_is_complete(state: Dictionary) -> bool:
+	if state.is_empty(): return false
+	if int((state.get("company", {}) as Dictionary).get("chapter", 1)) <= 1: return false
+	return open_milestone(state).is_empty() and available_candidate(state).is_empty()
+
+static func chapter_two_finished(state: Dictionary) -> bool:
+	for item: Dictionary in state.get("milestones", []):
+		if str(item.get("id", "")) == "brand" and str(item.get("state", "")) == "completed":
+			return true
+	return false
+
+static func chapter_three_finished(state: Dictionary) -> bool:
+	for item: Dictionary in state.get("milestones", []):
+		if str(item.get("id", "")) == "apply" and str(item.get("state", "")) == "completed":
+			return true
+	return false
+
 func _settings_screen() -> void:
 	_heading("Settings", "The office clock is paused. Real AI work can still finish.")
 	var shortcuts := HBoxContainer.new()
@@ -287,8 +381,43 @@ func _settings_screen() -> void:
 	_content.add_child(display)
 	_label("Display", true, display)
 	_button("Switch to window" if get_window().mode == Window.MODE_FULLSCREEN else "Switch to fullscreen", _toggle_fullscreen, false, true, display)
+	var look := HBoxContainer.new()
+	look.add_theme_constant_override("separation", 12)
+	_content.add_child(look)
+	var look_label := _label("Office look", true, look)
+	look_label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	look_label.custom_minimum_size.x = 148
+	var picker := OptionButton.new()
+	picker.name = "ArchitectureTheme"
+	picker.custom_minimum_size = Vector2(240, 44)
+	picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	picker.tooltip_text = "Oak office is the day-1 room. Cafe, Loft, Studio, and Evening swap the floor, walls, windows, trim, and doorway. They do not hire anyone or change the journey."
+	CozyUI.dropdown(picker)
+	var selected := -1
+	for theme_id: String in OfficeArchitecture.THEME_ORDER:
+		if not OfficeArchitecture.theme_available(theme_id): continue
+		picker.add_item(OfficeArchitecture.theme_label(theme_id))
+		picker.set_item_metadata(picker.item_count - 1, theme_id)
+		if theme_id == architecture_theme: selected = picker.item_count - 1
+	if picker.item_count == 0:
+		picker.queue_free()
+	else:
+		picker.select(maxi(selected, 0))
+		picker.item_selected.connect(func(index: int) -> void:
+			architecture_theme_requested.emit(str(picker.get_item_metadata(index)))
+		)
+		look.add_child(picker)
 	_label("Explore: WASD, arrows, or click the floor · E chat · J Journey.\nRenovate: M move · R rotate · U undo · Esc cancel or back.")
 	_actions("Resume", hide, true, "Title screen", func() -> void: present("title"))
+
+func set_architecture_theme(theme_id: String) -> void:
+	architecture_theme = theme_id
+	var picker := find_child("ArchitectureTheme", true, false) as OptionButton
+	if picker == null: return
+	for index: int in range(picker.item_count):
+		if str(picker.get_item_metadata(index)) == theme_id:
+			picker.select(index)
+			return
 
 func _slider(value: float, effects: bool, parent: Control = null) -> void:
 	var row := HBoxContainer.new()
@@ -322,13 +451,20 @@ func _slider(value: float, effects: bool, parent: Control = null) -> void:
 
 func _day_screen() -> void:
 	var summary: Dictionary = _summary if screen == "summary" else state.get("daySummary", {})
-	_heading("Day %d %s" % [int(summary.get("day", day)), "complete" if screen == "summary" else "wrap-up"], "Saved. Your team starts at 08:00." if screen == "summary" else "Take stock before the next office day.")
+	var ended := int(summary.get("day", day))
+	var phrase := str(summary.get("dateLabel", "")).strip_edges()
+	if phrase.is_empty() and screen != "summary":
+		phrase = str(_calendar().get("label", "")).strip_edges()
+	var when := phrase if not phrase.is_empty() else "Day %d" % ended
+	_heading("%s %s" % [when, "complete" if screen == "summary" else "wrap-up"], "Saved. Your team starts at 08:00." if screen == "summary" else "Take stock before the next office day.")
 	var metrics := HBoxContainer.new()
 	metrics.add_theme_constant_override("separation", 12)
 	_content.add_child(metrics)
 	_metric(metrics, "Game revenue", "$%s" % _money(int(summary.get("earnedCents", 0))), "virtual company funds")
 	_metric(metrics, "Reputation", "+%d" % int(summary.get("reputation", 0)), "company progress")
-	_metric(metrics, "Real AI spend", "$%.4f" % float(summary.get("aiSpend", 0)), "real money (USD)")
+	var ai_spend := float(summary.get("aiSpend", 0))
+	if ai_spend > 0.0:
+		_metric(metrics, "Optional AI spend", "$%.4f" % ai_spend, "real money (USD)")
 	var activity := _card()
 	_label("Today’s work", true, activity)
 	var seen := PackedStringArray()
@@ -340,6 +476,11 @@ func _day_screen() -> void:
 		if not seen.has(value): _label(value, false, activity)
 	if seen.is_empty() and (summary.get("entries", []) as Array).is_empty():
 		_label("A planning day. Your next step is ready for tomorrow.", false, activity)
+	var payroll: Dictionary = _tycoon().get("payroll", {}) if _tycoon().get("payroll") is Dictionary else {}
+	var payroll_notice := str(payroll.get("notice", "")).strip_edges()
+	if not payroll_notice.is_empty() and not seen.has(payroll_notice):
+		var notice_label := _label(payroll_notice, false, activity, "action")
+		notice_label.name = "PayrollNotice"
 	_label("Tomorrow · " + str(summary.get("nextMilestone", "Your next chapter")), true)
 	if screen == "summary":
 		_actions("Begin next day", hide, true, "")
@@ -362,9 +503,14 @@ func _money(cents: int) -> String:
 		grouped += integer[index]
 	return ("-" if cents < 0 else "") + grouped + ".%02d" % (absi(cents) % 100)
 
+func _cash_phrase(cents: int) -> String:
+	if cents < 0:
+		return "−$%s game cash · cash is negative" % _money(absi(cents))
+	return "$%s game cash" % _money(absi(cents))
+
 func _journey_screen() -> void:
 	var company: Dictionary = state.get("company", {})
-	_heading("Company Journey", "Day %d  ·  $%s game cash  ·  %d reputation" % [day, _money(int(company.get("cashCents", 0))), int(company.get("reputation", 0))], "meta")
+	_heading("Company Journey", "%s  ·  %s  ·  %d reputation" % [_office_date(), _cash_phrase(int(company.get("cashCents", 0))), int(company.get("reputation", 0))], "meta", "OfficeDate")
 	var next := _label(_next_step().trim_prefix("NEXT · "), false, null, "action")
 	next.name = "NextStep"
 	var definition := _current_milestone()
@@ -377,11 +523,6 @@ func _journey_screen() -> void:
 		var candidate_id := str(candidate.get("id", ""))
 		var affordable := int(company.get("cashCents", 0)) >= int(candidate.get("costCents", 0))
 		_actions("Hire %s · %s" % [candidate.get("name", "teammate"), "free" if int(candidate.get("costCents", 0)) == 0 else "$" + _money(int(candidate.get("costCents", 0)))], func() -> void: _request("hiring.complete", {"employeeId": candidate_id}), affordable)
-	elif int(company.get("chapter", 1)) > 1:
-		var complete := _card()
-		_label("Your company is ready", true, complete)
-		_label("Website built. Launch planned. Incorporation prepared. Keep creating with your team and shared Studio.", false, complete)
-		_actions("Back to office", hide, true, "")
 	else:
 		var ready := _card()
 		_label("A good place to pause", true, ready)
@@ -400,8 +541,2101 @@ func _journey_screen() -> void:
 		if _future_open: _roadmap(definition, candidate)
 	if not definition.is_empty() or not candidate.is_empty():
 		_button("End day + save", func() -> void: _request("day.end", {"day": day}), false, true, utilities, "secondary")
-	var money_note := _label("Game cash is virtual; AI spend is real money (USD). Ads and incorporation create planning files only.")
+	_product_shortcut()
+	_selling_cards()
+	_finished_cards()
+	_contract_card()
+	_train_staff()
+	_research_card()
+	_upgrades_card()
+	_engine_card()
+	_office_card()
+	_season_card()
+	var money_note := _label("Game cash is virtual. Shipping products is fully offline. Ads and incorporation create planning files only.")
 	money_note.name = "MoneyExplanation"
+
+func _tycoon() -> Dictionary:
+	var value: Variant = state.get("tycoon", {})
+	return value as Dictionary if value is Dictionary else {}
+
+func _calendar() -> Dictionary:
+	var value: Variant = _tycoon().get("calendar", {})
+	return value as Dictionary if value is Dictionary else {}
+
+func _office_date() -> String:
+	var label := str(_calendar().get("label", "")).strip_edges()
+	if not label.is_empty(): return label
+	return "Day %d" % day
+
+func _topic_in_season(topic_id: String) -> bool:
+	for item: Variant in _calendar().get("favoredTopics", []) as Array:
+		if item is Dictionary and str((item as Dictionary).get("id", "")) == topic_id:
+			return true
+	return false
+
+func _product_shortcut() -> void:
+	if _tycoon().is_empty(): return
+	_journey_research_line()
+	var developing: Dictionary = _tycoon().get("developing", {}) if _tycoon().get("developing") is Dictionary else {}
+	if developing.is_empty():
+		_cancel_confirm = false
+		_pivot_open = false
+		_playtest_shown = false
+		_playtest_product_id = ""
+	else:
+		_remember_playtest_product(developing)
+		_show_engine(developing, "EngineJourney")
+		_show_focus(developing, "FocusJourney")
+		_show_audience(developing, "AudienceJourney")
+		_show_size(developing, "SizeJourney")
+		_publisher_card(developing)
+	var button := _button("New Product", func() -> void: present("product"), false, true, null, "secondary")
+	button.name = "NewProduct"
+
+func _journey_research_line() -> void:
+	var tycoon := _tycoon()
+	var developing: Dictionary = tycoon.get("developing", {}) if tycoon.get("developing") is Dictionary else {}
+	if not developing.is_empty():
+		_show_journey_research_fit(developing)
+		return
+	var history: Array = tycoon.get("history", []) as Array
+	if not history.is_empty() and history[0] is Dictionary:
+		_show_journey_research_fit(history[0] as Dictionary)
+
+func _show_journey_research_fit(product: Dictionary) -> void:
+	var bonus := int(product.get("researchBonus", 0))
+	if bonus <= 0: return
+	var line := _label("%s · Research bonus +%d fit" % [str(product.get("name", "Product")), bonus], false, null, "action")
+	line.name = "ResearchFitJourney"
+
+func _show_research_fit(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var bonus := int(product.get("researchBonus", 0))
+	if bonus <= 0: return
+	var line := _label("Research bonus +%d fit" % bonus, false, parent, "action")
+	line.name = node_name
+
+func _selling_cards() -> void:
+	for item: Variant in _tycoon().get("history", []) as Array:
+		if not item is Dictionary: continue
+		var product := item as Dictionary
+		if str(product.get("status", "")) != "released": continue
+		var patch_value: Variant = product.get("patch", null)
+		if not patch_value is Dictionary: continue
+		var patch := patch_value as Dictionary
+		var card := _card()
+		var product_id := str(product.get("id", ""))
+		card.name = "Selling_%s" % product_id
+		_label("Selling", true, card)
+		var review: Dictionary = product.get("review", {}) if product.get("review") is Dictionary else {}
+		var title := _label("%s · %d/10 · $%s · +%d fans" % [product.get("name", "Product"), int(review.get("score", 0)), _money(int(product.get("salesCents", 0))), int(product.get("fans", 0))], false, card)
+		title.name = "SellingTitle_%s" % product_id
+		_show_early_access(product, "SellingEarly_%s" % product_id, card)
+		var days := _label("Sales day %d of %d" % [int(product.get("salesDays", 0)), int(product.get("salesDaysTotal", 4))], false, card, "meta")
+		days.name = "SellingDays_%s" % product_id
+		_trailer_offer(product, card)
+		_sale_price_offer(product, card)
+		if bool(patch.get("applied", false)):
+			var patched := _label("Patched · +%d score" % int(patch.get("scoreBonus", 1)), false, card, "action")
+			patched.name = "SellingPatched_%s" % product_id
+			var notice := str(_tycoon().get("patchNotice", "")).strip_edges()
+			if not notice.is_empty() and notice.contains(str(product.get("name", ""))):
+				var line := _label(notice, false, card, "action")
+				line.name = "PatchNotice"
+		var enabled := bool(patch.get("enabled", false))
+		var reason := str(patch.get("reason", "")).strip_edges()
+		var cost := int(patch.get("costCents", 0))
+		var text := "Patch · $%d" % int(cost / 100) if enabled or reason.is_empty() else "Patch · %s" % reason
+		var button := _button(text, _patch_product.bind(product_id), false, enabled, card, "secondary")
+		button.name = "Patch_%s" % product_id
+		_shelf_actions(product, card)
+
+func _finished_cards() -> void:
+	for item: Variant in _tycoon().get("history", []) as Array:
+		if not item is Dictionary: continue
+		var product := item as Dictionary
+		if str(product.get("status", "")) != "complete": continue
+		var card := _card()
+		var product_id := str(product.get("id", ""))
+		card.name = "Finished_%s" % product_id
+		_label("Shipped", true, card)
+		var review: Dictionary = product.get("review", {}) if product.get("review") is Dictionary else {}
+		var title := _label("%s · %d/10 · $%s · +%d fans" % [product.get("name", "Product"), int(review.get("score", 0)), _money(int(product.get("salesCents", 0))), int(product.get("fans", 0))], false, card)
+		title.name = "FinishedTitle_%s" % product_id
+		_show_early_access(product, "FinishedEarly_%s" % product_id, card)
+		var done := _label("Sales finished.", false, card, "meta")
+		done.name = "FinishedDays_%s" % product_id
+		_diary_offer(product, card)
+		_shelf_actions(product, card)
+
+func _shelf_actions(product: Dictionary, card: Control) -> void:
+	var row := HFlowContainer.new()
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("h_separation", 8)
+	row.add_theme_constant_override("v_separation", 8)
+	_sequel_action(product, card, row)
+	_award_action(product, card, row)
+	_port_action(product, card, row)
+	_localize_action(product, card, row)
+	if row.get_child_count() == 0:
+		row.free()
+		return
+	row.name = "ShelfActions_%s" % str(product.get("id", ""))
+	card.add_child(row)
+
+func _sequel_action(product: Dictionary, card: Control, row: Control) -> void:
+	var value: Variant = product.get("sequel", null)
+	if not value is Dictionary: return
+	var offer := value as Dictionary
+	var product_id := str(product.get("id", ""))
+	_show_sequel(product, "SequelBonus_%s" % product_id, card)
+	var enabled := bool(offer.get("enabled", false))
+	var reason := str(offer.get("reason", "")).strip_edges()
+	var text := "Sequel" if enabled or reason.is_empty() else "Sequel · %s" % reason
+	var button := _shelf_button(text, _start_sequel.bind(product_id), enabled, row)
+	button.name = "Sequel_%s" % product_id
+
+func _start_sequel(product_id: String) -> void:
+	_request("tycoon.sequel", {"productId": product_id})
+
+func _award_action(product: Dictionary, card: Control, row: Control) -> void:
+	var value: Variant = product.get("award", null)
+	if not value is Dictionary: return
+	var offer := value as Dictionary
+	var product_id := str(product.get("id", ""))
+	if str(product.get("status", "")) == "complete":
+		var show := str(offer.get("show", "")).strip_edges()
+		if not show.is_empty():
+			var show_line := _label("%s · $%d" % [show, int(int(offer.get("costCents", 0)) / 100)], false, card, "meta")
+			show_line.name = "AwardShow_%s" % product_id
+	var result := _award_result(offer)
+	if not result.is_empty():
+		var line := _label(result, false, card, "action")
+		line.name = "AwardResult_%s" % product_id
+	var enabled := bool(offer.get("enabled", false))
+	var reason := str(offer.get("reason", "")).strip_edges()
+	var text := "Enter award" if enabled or reason.is_empty() else "Enter award · %s" % reason
+	var button := _shelf_button(text, _enter_award.bind(product_id), enabled, row)
+	button.name = "Award_%s" % product_id
+
+func _enter_award(product_id: String) -> void:
+	_request("tycoon.award", {"productId": product_id})
+
+func _port_action(product: Dictionary, card: Control, row: Control) -> void:
+	var value: Variant = product.get("port", null)
+	if not value is Dictionary: return
+	var offer := value as Dictionary
+	var product_id := str(product.get("id", ""))
+	var shelf := str(offer.get("shelf", "")).strip_edges()
+	var phase := str(offer.get("phase", ""))
+	if str(product.get("status", "")) == "complete" and phase.is_empty() and not shelf.is_empty():
+		var fee := _label("%s · $%d" % [shelf, int(int(offer.get("costCents", 0)) / 100)], false, card, "meta")
+		fee.name = "PortShelf_%s" % product_id
+	var status_line := _port_line(offer)
+	if not status_line.is_empty():
+		var line := _label(status_line, false, card, "action")
+		line.name = "PortLine_%s" % product_id
+	var enabled := bool(offer.get("enabled", false))
+	var reason := str(offer.get("reason", "")).strip_edges()
+	var text := "Port" if enabled or reason.is_empty() else "Port · %s" % reason
+	var button := _shelf_button(text, _port_product.bind(product_id), enabled, row)
+	button.name = "Port_%s" % product_id
+
+func _port_product(product_id: String) -> void:
+	_request("tycoon.port", {"productId": product_id})
+
+func _localize_action(product: Dictionary, card: Control, row: Control) -> void:
+	if str(product.get("status", "")) != "complete": return
+	var value: Variant = product.get("localization", null)
+	if not value is Dictionary: return
+	var offer := value as Dictionary
+	var product_id := str(product.get("id", ""))
+	var edition := str(offer.get("edition", "")).strip_edges()
+	if edition.is_empty(): return
+	var phase := str(offer.get("phase", ""))
+	if phase.is_empty():
+		var fee := _label("Translate · %s · $%d, one extra sales day" % [edition, int(int(offer.get("costCents", 0)) / 100)], false, card, "meta")
+		fee.name = "LocalizeOffer_%s" % product_id
+		var enabled := bool(offer.get("enabled", false))
+		var reason := str(offer.get("reason", "")).strip_edges()
+		var text := "Translate" if enabled or reason.is_empty() else "Translate · %s" % reason
+		var button := _shelf_button(text, _localize_product.bind(product_id), enabled, row)
+		button.name = "Translate_%s" % product_id
+		return
+	var status_line := _localize_line(offer)
+	if status_line.is_empty(): return
+	var line := _label(status_line, false, card, "action")
+	line.name = "LocalizeLine_%s" % product_id
+
+func _localize_product(product_id: String) -> void:
+	_request("tycoon.localize", {"productId": product_id})
+
+func _localize_line(offer: Dictionary) -> String:
+	var edition := str(offer.get("edition", "")).strip_edges()
+	if edition.is_empty(): return ""
+	match str(offer.get("phase", "")):
+		"selling":
+			return "%s · one extra sales day" % edition
+		"sold":
+			return "%s · $%s" % [edition, _money(int(offer.get("cents", 0)))]
+		_:
+			return ""
+
+func _show_localize(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var value: Variant = product.get("localization", null)
+	if not value is Dictionary: return
+	var text := _localize_line(value as Dictionary)
+	if text.is_empty(): return
+	var line := _label(text, false, parent, "action")
+	line.name = node_name
+
+func _port_line(offer: Dictionary) -> String:
+	var shelf := str(offer.get("shelf", "")).strip_edges()
+	if shelf.is_empty(): return ""
+	match str(offer.get("phase", "")):
+		"selling":
+			return "Port · %s · selling 1 day" % shelf
+		"sold":
+			return "Port · %s · $%s" % [shelf, _money(int(offer.get("cents", 0)))]
+		_:
+			return ""
+
+func _shelf_button(value: String, callback: Callable, enabled: bool, row: Control) -> Button:
+	var button := _button(value, callback, false, enabled, row, "secondary")
+	button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	return button
+
+func _show_port(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var value: Variant = product.get("port", null)
+	if not value is Dictionary: return
+	var text := _port_line(value as Dictionary)
+	if text.is_empty(): return
+	var line := _label(text, false, parent, "action")
+	line.name = node_name
+
+func _award_result(offer: Dictionary) -> String:
+	if not bool(offer.get("entered", false)): return ""
+	var word := ""
+	match str(offer.get("outcome", "")):
+		"won": word = "Won"
+		"nominated": word = "Nominated"
+		"entered": word = "Entered"
+		_: return ""
+	var fans := int(offer.get("fans", 0))
+	if fans > 0: return "Award · %s · +%d fans" % [word, fans]
+	return "Award · %s" % word
+
+func _show_award(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var value: Variant = product.get("award", null)
+	if not value is Dictionary: return
+	var result := _award_result(value as Dictionary)
+	if result.is_empty(): return
+	var line := _label(result, false, parent, "action")
+	line.name = node_name
+
+func _show_sequel(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var value: Variant = product.get("sequel", null)
+	if not value is Dictionary: return
+	var offer := value as Dictionary
+	if not bool(offer.get("isSequel", false)) or int(offer.get("scoreBonus", 0)) <= 0: return
+	var line := _label("Sequel · +1 score", false, parent, "action")
+	line.name = node_name
+
+func _patch_product(product_id: String) -> void:
+	_request("tycoon.patch", {"productId": product_id})
+
+func _contract_card() -> void:
+	var value: Variant = _tycoon().get("contract", null)
+	if not value is Dictionary or (value as Dictionary).is_empty(): return
+	var offer := value as Dictionary
+	var client := str(offer.get("client", "")).strip_edges()
+	if client.is_empty(): return
+	var card := _card()
+	card.name = "ContractCard"
+	_label("Contract", true, card)
+	var client_label := _label(client, false, card)
+	client_label.name = "ContractClient"
+	var pair := _label("%s × %s" % [str(offer.get("topicName", "")), str(offer.get("typeName", ""))], false, card)
+	pair.name = "ContractPair"
+	var bonus := _label("Bonus %s on release" % _contract_money(int(offer.get("bonusCents", 0))), false, card)
+	bonus.name = "ContractBonus"
+	var reason := str(offer.get("reason", "")).strip_edges()
+	if not reason.is_empty():
+		var reason_label := _label(reason, false, card, "meta")
+		reason_label.name = "ContractReason"
+	if str(offer.get("status", "")) != "offered": return
+	var button := _button("Accept contract", _accept_contract, false, bool(offer.get("enabled", false)), card, "secondary")
+	button.name = "AcceptContract"
+
+func _accept_contract() -> void:
+	_request("tycoon.acceptContract", {})
+
+func _contract_money(cents: int) -> String:
+	return "$%d" % int(cents / 100)
+
+func _locked_contract() -> Dictionary:
+	var value: Variant = _tycoon().get("contract", null)
+	if not value is Dictionary: return {}
+	var offer := value as Dictionary
+	var status := str(offer.get("status", ""))
+	if status != "accepted" and status != "building": return {}
+	if str(offer.get("topicId", "")).is_empty() or str(offer.get("typeId", "")).is_empty(): return {}
+	return offer
+
+func _show_contract(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var value: Variant = product.get("contract", null)
+	if not value is Dictionary: return
+	var deal := value as Dictionary
+	var client := str(deal.get("client", "")).strip_edges()
+	var cents := int(deal.get("bonusCents", 0))
+	if client.is_empty() or cents <= 0: return
+	var line := _label("Contract: %s · +%s" % [client, _contract_money(cents)], false, parent, "action")
+	line.name = node_name
+
+func _show_patch(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var value: Variant = product.get("patch", null)
+	if not value is Dictionary: return
+	var patch := value as Dictionary
+	if not bool(patch.get("applied", false)): return
+	var line := _label("Patched · +%d score" % int(patch.get("scoreBonus", 1)), false, parent, "action")
+	line.name = node_name
+
+func _train_staff() -> void:
+	var tycoon := _tycoon()
+	if tycoon.is_empty(): return
+	var staff: Array = tycoon.get("staff", []) as Array
+	var hired := false
+	for item: Variant in staff:
+		if item is Dictionary and bool((item as Dictionary).get("hired", false)):
+			hired = true
+			break
+	if not hired: return
+	var card := _card()
+	card.name = "TrainStaff"
+	_label("Train staff", true, card)
+	var notice := str(tycoon.get("trainingNotice", ""))
+	if not notice.is_empty():
+		var line := _label(notice, false, card, "action")
+		line.name = "TrainingNotice"
+	var leaving := str(tycoon.get("letGoNotice", ""))
+	if not leaving.is_empty():
+		var gone := _label(leaving, false, card, "action")
+		gone.name = "LetGoNotice"
+	for item: Variant in staff:
+		if not item is Dictionary: continue
+		var person := item as Dictionary
+		if not bool(person.get("hired", false)): continue
+		var person_id := str(person.get("id", ""))
+		var pace_value: Variant = person.get("pace", null)
+		var pace_known := pace_value is Dictionary
+		var pace_id := "full"
+		var can_pace := false
+		if pace_known:
+			var pace := pace_value as Dictionary
+			pace_id = str(pace.get("value", "full"))
+			can_pace = bool(pace.get("enabled", false))
+		var stats := "%s · D %d · T %d · H %d" % [person.get("name", "Teammate"), int(person.get("design", 0)), int(person.get("tech", 0)), int(person.get("hype", 0))]
+		if pace_known and pace_id == "part":
+			stats += " · part-time"
+		var let_go: Variant = person.get("letGo", null)
+		var can_leave := let_go is Dictionary and bool((let_go as Dictionary).get("enabled", false))
+		if can_leave or can_pace:
+			var row := HBoxContainer.new()
+			row.name = ("LetGoRow_%s" % person_id) if can_leave else ("PaceRow_%s" % person_id)
+			row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			row.add_theme_constant_override("separation", 8)
+			card.add_child(row)
+			var stats_line := _label(stats, false, row)
+			stats_line.name = "StaffLine_%s" % person_id
+			stats_line.autowrap_mode = TextServer.AUTOWRAP_OFF
+			stats_line.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			stats_line.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+			if can_pace:
+				var pace_label := "Full time" if pace_id == "part" else "Part-time"
+				var next_pace := "full" if pace_id == "part" else "part"
+				var pace_button := _button(pace_label, _set_pace.bind(person_id, next_pace), false, true, row, "secondary")
+				pace_button.name = "Pace_%s" % person_id
+				pace_button.custom_minimum_size = Vector2(132, 32)
+				pace_button.size_flags_horizontal = Control.SIZE_SHRINK_END
+				pace_button.clip_text = false
+			if can_leave:
+				var leave := _button("Let go", _let_go.bind(person_id), false, true, row, "secondary")
+				leave.name = "LetGo_%s" % person_id
+				leave.custom_minimum_size = Vector2(88, 32)
+				leave.size_flags_horizontal = Control.SIZE_SHRINK_END
+				leave.clip_text = true
+		else:
+			_label(stats, false, card)
+		var offers: Dictionary = person.get("training", {}) if person.get("training") is Dictionary else {}
+		for stat: String in ["design", "tech", "hype"]:
+			var offer: Dictionary = offers.get(stat, {}) if offers.get(stat) is Dictionary else {}
+			var cost := int(offer.get("costCents", 0))
+			var enabled := bool(offer.get("enabled", false))
+			var label := "Train %s · $%s" % [_stat_word(stat), _money(cost)] if cost > 0 else "Train %s" % _stat_word(stat)
+			var button := _button(label, _train_person.bind(person_id, stat), false, enabled, card, "secondary")
+			button.name = "Train_%s_%s" % [person_id, stat]
+		if bool(person.get("trainedToday", false)):
+			_label("In training today.", false, card, "meta")
+
+func _train_person(staff_id: String, stat: String) -> void:
+	_request("tycoon.train", {"staffId": staff_id, "stat": stat})
+
+func _let_go(staff_id: String) -> void:
+	_request("tycoon.letGo", {"staffId": staff_id})
+
+func _set_pace(staff_id: String, pace: String) -> void:
+	_request("tycoon.setPace", {"staffId": staff_id, "pace": pace})
+
+func _research_card() -> void:
+	var tycoon := _tycoon()
+	if tycoon.is_empty(): return
+	var locked: Array[Dictionary] = []
+	for item: Variant in tycoon.get("topics", []) as Array:
+		if item is Dictionary and not bool((item as Dictionary).get("unlocked", true)):
+			var topic := (item as Dictionary).duplicate()
+			topic["kind"] = "topic"
+			locked.append(topic)
+	for item: Variant in tycoon.get("types", []) as Array:
+		if item is Dictionary and not bool((item as Dictionary).get("unlocked", true)):
+			var kind := (item as Dictionary).duplicate()
+			kind["kind"] = "type"
+			locked.append(kind)
+	if locked.is_empty(): return
+	var card := _card()
+	card.name = "ResearchCard"
+	_label("Research", true, card)
+	var points := int(tycoon.get("researchPoints", 0))
+	var points_label := _label("%d research points" % points, false, card)
+	points_label.name = "ResearchPoints"
+	var notice := str(tycoon.get("researchNotice", ""))
+	if not notice.is_empty():
+		var line := _label(notice, false, card, "action")
+		line.name = "ResearchNotice"
+	for item: Dictionary in locked:
+		var cost := int(item.get("researchCost", 0))
+		var enabled := cost > 0 and points >= cost
+		var button := _button("Research %s · %d RP" % [item.get("name", "Topic"), cost], _research_item.bind(str(item.get("kind", "")), str(item.get("id", ""))), false, enabled, card, "secondary")
+		button.name = "Research_%s" % str(item.get("id", ""))
+
+func _research_item(kind: String, id: String) -> void:
+	_request("tycoon.research", {"kind": kind, "id": id})
+
+func _upgrades_card() -> void:
+	var tycoon := _tycoon()
+	if tycoon.is_empty(): return
+	var items: Array = tycoon.get("upgrades", []) as Array
+	if items.is_empty(): return
+	var card := _card()
+	card.name = "UpgradesCard"
+	_label("Upgrades", true, card)
+	var notice := str(tycoon.get("upgradeNotice", ""))
+	if not notice.is_empty():
+		var line := _label(notice, false, card, "action")
+		line.name = "UpgradeNotice"
+	var owned_rows: Array[Dictionary] = []
+	var shop_rows: Array[Dictionary] = []
+	for item: Variant in items:
+		if not item is Dictionary: continue
+		var upgrade := item as Dictionary
+		if bool(upgrade.get("owned", false)): owned_rows.append(upgrade)
+		else: shop_rows.append(upgrade)
+	for upgrade: Dictionary in owned_rows:
+		var owned := _label("%s · %s" % [str(upgrade.get("name", "Upgrade")), str(upgrade.get("effect", ""))], false, card)
+		owned.name = "Owned_%s" % str(upgrade.get("id", ""))
+	for upgrade: Dictionary in shop_rows:
+		var effect := str(upgrade.get("effect", ""))
+		if not effect.is_empty(): _label(effect, false, card, "meta")
+		var cents := int(upgrade.get("priceCents", 0))
+		var button := _button("Buy %s · $%d" % [str(upgrade.get("name", "Upgrade")), int(cents / 100)], _buy_upgrade.bind(str(upgrade.get("id", ""))), false, bool(upgrade.get("affordable", false)), card, "secondary")
+		button.name = "Buy_%s" % str(upgrade.get("id", ""))
+
+func _buy_upgrade(upgrade_id: String) -> void:
+	_request("tycoon.buyUpgrade", {"id": upgrade_id})
+
+func _office_card() -> void:
+	var office: Variant = _tycoon().get("office", null)
+	if not office is Dictionary or (office as Dictionary).is_empty(): return
+	var current := office as Dictionary
+	var card := _card()
+	card.name = "OfficeCard"
+	_label("Office", true, card)
+	var name_label := _label(str(current.get("name", "Office")), false, card)
+	name_label.name = "OfficeName"
+	var blurb := str(current.get("blurb", "")).strip_edges()
+	if not blurb.is_empty():
+		var blurb_label := _label(blurb, false, card, "meta")
+		blurb_label.name = "OfficeBlurb"
+	var desks: Dictionary = current.get("desks", {}) if current.get("desks") is Dictionary else {}
+	var desks_label := _label("Desks: %d/%d" % [int(desks.get("used", 0)), int(desks.get("total", 0))], false, card)
+	desks_label.name = "OfficeDesks"
+	var next: Variant = current.get("next", null)
+	if not next is Dictionary: return
+	var expansion := next as Dictionary
+	var next_label := _label("%s · $%d" % [str(expansion.get("name", "Next office")), int(int(expansion.get("costCents", 0)) / 100)], false, card)
+	next_label.name = "OfficeNext"
+	var reason := str(expansion.get("reason", "")).strip_edges()
+	if not reason.is_empty():
+		var reason_label := _label(reason, false, card, "meta")
+		reason_label.name = "OfficeReason"
+	var button := _button("Expand office", _expand_office, false, bool(expansion.get("enabled", false)), card, "secondary")
+	button.name = "ExpandOffice"
+
+func _expand_office() -> void:
+	_request("tycoon.expandOffice", {})
+
+func _rival() -> Dictionary:
+	var value: Variant = _tycoon().get("rival", null)
+	return value as Dictionary if value is Dictionary else {}
+
+func _season_card() -> void:
+	var calendar := _calendar()
+	if calendar.is_empty(): return
+	var names := PackedStringArray()
+	for item: Variant in calendar.get("favoredTopics", []) as Array:
+		if not item is Dictionary: continue
+		var topic_name := str((item as Dictionary).get("name", "")).strip_edges()
+		if not topic_name.is_empty(): names.append(topic_name)
+	if names.is_empty(): return
+	var card := _card()
+	card.name = "SeasonCard"
+	_label("Season", true, card)
+	var topics := _label("In season: %s" % ", ".join(names), false, card)
+	topics.name = "SeasonTopics"
+	var rival := _rival()
+	var shop := str(rival.get("shop", "")).strip_edges()
+	var rival_topic := str(rival.get("topicName", "")).strip_edges()
+	if not shop.is_empty() and not rival_topic.is_empty():
+		var rival_line := _label("Rival: %s is pushing %s this season" % [shop, rival_topic], false, card)
+		rival_line.name = "SeasonRival"
+	var event_line := _label(_season_event_line(calendar), false, card)
+	event_line.name = "SeasonEvent"
+	var payroll: Dictionary = _tycoon().get("payroll", {}) if _tycoon().get("payroll") is Dictionary else {}
+	if not payroll.is_empty():
+		var cents := int(payroll.get("cents", 0))
+		var payday := str(payroll.get("payday", "")).strip_edges()
+		var line := "No payroll yet" if cents <= 0 else "Payroll · $%d on %s" % [int(cents / 100), payday]
+		var payroll_label := _label(line, false, card)
+		payroll_label.name = "SeasonPayroll"
+		var notice := str(payroll.get("notice", "")).strip_edges()
+		if not notice.is_empty():
+			var notice_label := _label(notice, false, card, "action")
+			notice_label.name = "PayrollNotice"
+	var catalog: Dictionary = _tycoon().get("catalog", {}) if _tycoon().get("catalog") is Dictionary else {}
+	var catalog_list: Dictionary = catalog.get("list", {}) if catalog.get("list") is Dictionary else {}
+	var catalog_delist: Dictionary = catalog.get("delist", {}) if catalog.get("delist") is Dictionary else {}
+	if bool(catalog_list.get("enabled", false)) or bool(catalog_delist.get("enabled", false)):
+		var catalog_name := str(catalog.get("name", "")).strip_edges()
+		var check_dollars := int(int(catalog.get("checkCents", 0)) / 100)
+		var catalog_payday := str(catalog.get("payday", "")).strip_edges()
+		var listed := bool(catalog_delist.get("enabled", false))
+		var catalog_text := "Listed · %s · next check $%d on %s" % [catalog_name, check_dollars, catalog_payday] if listed else "%s · next check $%d on %s" % [catalog_name, check_dollars, catalog_payday]
+		var catalog_label := _label(catalog_text, false, card)
+		catalog_label.name = "CatalogLine"
+		if listed:
+			var delist_button := _button("Delist", _delist_catalog, false, true, card, "secondary")
+			delist_button.name = "DelistCatalog"
+		else:
+			var list_button := _button("List in catalog", _list_catalog, false, true, card, "secondary")
+			list_button.name = "ListCatalog"
+	var loan: Dictionary = _tycoon().get("loan", {}) if _tycoon().get("loan") is Dictionary else {}
+	if not loan.is_empty():
+		var amount := int(loan.get("amountCents", 0))
+		var repay := int(loan.get("repayCents", 0))
+		var due := str(loan.get("due", "")).strip_edges()
+		var outstanding := bool(loan.get("outstanding", false))
+		var loan_line := "Loan due · $%d on %s" % [int(repay / 100), due] if outstanding else "Loan · $%d, repay $%d on %s" % [int(amount / 100), int(repay / 100), due]
+		var loan_label := _label(loan_line, false, card)
+		loan_label.name = "SeasonLoan"
+		if not outstanding:
+			var loan_button := _button("Take loan", _take_loan, false, true, card, "secondary")
+			loan_button.name = "TakeLoan"
+	var expo: Dictionary = _tycoon().get("expo", {}) if _tycoon().get("expo") is Dictionary else {}
+	if not expo.is_empty():
+		var expo_name := str(expo.get("name", "")).strip_edges()
+		var when := str(expo.get("when", "")).strip_edges()
+		if not expo_name.is_empty() and not when.is_empty():
+			var booked := bool(expo.get("booked", false))
+			var cost := int(expo.get("costCents", 0))
+			var fans := int(expo.get("fans", 0))
+			var expo_text := "Booth booked · %s on %s" % [expo_name, when] if booked else "Expo · %s on %s · $%d booth, about %d fans" % [expo_name, when, int(cost / 100), fans]
+			var expo_label := _label(expo_text, false, card)
+			expo_label.name = "SeasonExpo"
+			if not booked:
+				var expo_button := _button("Book booth", _book_booth, false, true, card, "secondary")
+				expo_button.name = "BookBooth"
+	var town: Dictionary = _tycoon().get("townDay", {}) if _tycoon().get("townDay") is Dictionary else {}
+	if not town.is_empty():
+		var town_name := str(town.get("name", "")).strip_edges()
+		var season_name := str(town.get("season", "")).strip_edges()
+		if not town_name.is_empty() and not season_name.is_empty():
+			var taken := bool(town.get("taken", false))
+			var cost := int(town.get("costCents", 0))
+			var town_fans := int(town.get("fans", 0))
+			var town_text := "Afternoon off · %s" % town_name if taken else "Town · %s this %s · $%d, about %d fans" % [town_name, season_name, int(cost / 100), town_fans]
+			var town_label := _label(town_text, false, card)
+			town_label.name = "SeasonTown"
+			if not taken:
+				var town_button := _button("Take the afternoon", _take_town_day, false, true, card, "secondary")
+				town_button.name = "TakeTownDay"
+	var company: Dictionary = state.get("company", {}) if state.get("company") is Dictionary else {}
+	if int(company.get("cashCents", 0)) < 0:
+		var negative := _label("Cash is negative", false, card)
+		negative.name = "CashNegative"
+
+func _list_catalog() -> void:
+	var catalog: Dictionary = _tycoon().get("catalog", {}) if _tycoon().get("catalog") is Dictionary else {}
+	var offer: Dictionary = catalog.get("list", {}) if catalog.get("list") is Dictionary else {}
+	var product_id := str(offer.get("productId", "")).strip_edges()
+	if product_id.is_empty(): return
+	_request("tycoon.listCatalog", {"productId": product_id})
+
+func _delist_catalog() -> void:
+	_request("tycoon.delistCatalog", {})
+
+func _take_loan() -> void:
+	_request("tycoon.takeLoan", {})
+
+func _book_booth() -> void:
+	_request("tycoon.bookBooth", {})
+
+func _take_town_day() -> void:
+	_request("tycoon.takeTownDay", {})
+
+func _publisher_card(product: Dictionary) -> void:
+	var value: Variant = product.get("publisher", null)
+	var press_value: Variant = product.get("pressDemo", null)
+	var feature_value: Variant = product.get("feature", null)
+	var offer := value as Dictionary if value is Dictionary else {}
+	var press := press_value as Dictionary if press_value is Dictionary else {}
+	var feature := feature_value as Dictionary if feature_value is Dictionary else {}
+	var publisher_name := str(offer.get("name", "")).strip_edges()
+	var press_name := str(press.get("name", "")).strip_edges()
+	var feature_name := str(feature.get("name", "")).strip_edges()
+	var plan_offered := _day_plan_offered(product)
+	var bugs_offered := _bugs_offered(product)
+	var crunch_offered := _crunch_offered(product)
+	var early_offered := _early_access_offered(product)
+	var cancel_offered := _cancel_offered(product)
+	var slip_offered := _slip_offered(product)
+	var pivot_offered := _pivot_offered(product)
+	var playtest_offered := _playtest_offered(product)
+	var team_offered := _team_offered(product)
+	var spike_offered := _research_spike_offered(product)
+	if publisher_name.is_empty() and press_name.is_empty() and feature_name.is_empty() and not plan_offered and not bugs_offered and not crunch_offered and not early_offered and not cancel_offered and not slip_offered and not pivot_offered and not playtest_offered and not team_offered and not spike_offered: return
+	var card := _card()
+	card.name = "PublisherCard"
+	# One compact spike row shares this card with Cancel through Team. 4px keeps New Product inside the scrollport.
+	card.add_theme_constant_override("separation", 4)
+	if not publisher_name.is_empty():
+		var cut := int(offer.get("cutPercent", 0))
+		var signed := bool(offer.get("signed", false))
+		var text := "Published by %s · %d%% cut" % [publisher_name, cut] if signed else "Publisher · %s pays $%d now, takes %d%% of sales" % [publisher_name, int(int(offer.get("advanceCents", 0)) / 100), cut]
+		var line := _label(text, false, card)
+		line.name = "PublisherOffer"
+		if not signed:
+			var button := _button("Sign publisher", _sign_publisher, false, true, card, "secondary")
+			button.name = "SignPublisher"
+	if not press_name.is_empty():
+		var shown := bool(press.get("shown", false))
+		var cost := int(press.get("costCents", 0))
+		var fans := int(press.get("fans", 0))
+		var press_text := "Preview shown · %s" % press_name if shown else "Press demo · %s · $%d, about %d fans" % [press_name, int(cost / 100), fans]
+		var press_line := _label(press_text, false, card)
+		press_line.name = "PressDemoOffer"
+		if not shown:
+			var press_button := _button("Show preview", _show_press_demo, false, true, card, "secondary")
+			press_button.name = "ShowPressDemo"
+	if not feature_name.is_empty():
+		var added := bool(feature.get("added", false))
+		var feature_text := "Feature added · %s · Building · day %d of %d" % [feature_name, int(product.get("devDays", 0)), int(product.get("devDaysRequired", 0))] if added else "Feature · %s · +%d office day, +%d%% opening demand" % [feature_name, int(feature.get("dayDelta", 0)), int(feature.get("unitPercent", 100)) - 100]
+		var feature_line := _label(feature_text, false, card)
+		feature_line.name = "FeatureOffer"
+		if not added:
+			var feature_button := _button("Add feature", _add_feature, false, true, card, "secondary")
+			feature_button.name = "AddFeature"
+	if plan_offered:
+		_day_plan_row(product, card)
+	if bugs_offered:
+		_bugs_row(product, card)
+	if crunch_offered:
+		_crunch_row(product, card)
+	if early_offered:
+		_early_access_row(product, card)
+	if cancel_offered:
+		_cancel_row(product, card)
+	if slip_offered:
+		_slip_row(product, card)
+	if pivot_offered:
+		_pivot_row(product, card)
+	if playtest_offered:
+		_playtest_row(product, card)
+	if team_offered:
+		_team_row(product, card)
+	if spike_offered:
+		_research_spike_row(product, card)
+
+func _sign_publisher() -> void:
+	_request("tycoon.signPublisher", {})
+
+func _show_press_demo() -> void:
+	_request("tycoon.showPressDemo", {})
+
+func _add_feature() -> void:
+	_request("tycoon.addFeature", {})
+
+func _day_plan_offered(product: Dictionary) -> bool:
+	if product.has("dayPlan"): return true
+	return not _day_plan_options().is_empty()
+
+func _day_plan_options() -> Array:
+	var value: Variant = _tycoon().get("dayPlanOptions", [])
+	return value as Array if value is Array else []
+
+func _day_plan_id(product: Dictionary) -> String:
+	var value: Variant = product.get("dayPlan", null)
+	if value is Dictionary:
+		var id := str((value as Dictionary).get("id", "")).strip_edges()
+		if id == "design" or id == "tech" or id == "hype": return id
+	return "even"
+
+func _day_plan_text(product: Dictionary) -> String:
+	var value: Variant = product.get("dayPlan", null)
+	if value is Dictionary:
+		var plan := value as Dictionary
+		var label := str(plan.get("label", "")).strip_edges()
+		var stat := str(plan.get("stat", "")).strip_edges().to_lower()
+		if label.is_empty(): label = _stat_word(stat)
+		if stat.is_empty(): stat = label.to_lower()
+		return "Day plan · %s · today's craft goes to %s" % [label, stat]
+	return "Day plan · Even · design, tech, and hype as usual"
+
+func _day_plan_row(product: Dictionary, card: Control) -> void:
+	var line := _label(_day_plan_text(product), false, card)
+	line.name = "DayPlanOffer"
+	var options := _day_plan_options()
+	if options.is_empty(): return
+	var row := GridContainer.new()
+	row.name = "DayPlanChoices"
+	row.columns = 4
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("h_separation", 8)
+	row.add_theme_constant_override("v_separation", 8)
+	card.add_child(row)
+	var active := _day_plan_id(product)
+	for item: Variant in options:
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		var id := str(option.get("id", ""))
+		if id.is_empty(): continue
+		var button := _button(str(option.get("label", id)), _set_day_plan.bind(id), false, true, row, "secondary")
+		button.name = "DayPlan_%s" % id
+		button.clip_text = true
+		if id == active:
+			for style_name: String in ["normal", "hover", "pressed", "hover_pressed"]:
+				button.add_theme_stylebox_override(style_name, CozyUI.control_style("secondary", "pressed"))
+
+func _set_day_plan(stat: String) -> void:
+	_request("tycoon.setDayPlan", {"stat": stat})
+
+func _bugs_offered(product: Dictionary) -> bool:
+	return product.get("bugs") is Dictionary
+
+func _bugs_text(product: Dictionary) -> String:
+	var value: Variant = product.get("bugs", null)
+	if not value is Dictionary:
+		return ""
+	var bugs := value as Dictionary
+	var count := int(bugs.get("count", 0))
+	var fixing := bool(bugs.get("fixing", false))
+	if fixing:
+		return "Fixing bugs · next office day clears craft into bugfix"
+	if count <= 0:
+		return "Bugs · 0 · build looks balanced"
+	return "Bugs · %d · Fix bugs spends tomorrow's craft" % count
+
+func _bugs_row(product: Dictionary, card: Control) -> void:
+	var line := _label(_bugs_text(product), false, card)
+	line.name = "BugsOffer"
+	var value: Variant = product.get("bugs", null)
+	if not value is Dictionary:
+		return
+	var bugs := value as Dictionary
+	var count := int(bugs.get("count", 0))
+	var fixing := bool(bugs.get("fixing", false))
+	if count <= 0 or fixing:
+		return
+	var button := _button("Fix bugs", _fix_bugs, false, true, card, "secondary")
+	button.name = "FixBugs"
+
+func _fix_bugs() -> void:
+	_request("tycoon.fixBugs", {})
+
+func _crunch_offered(product: Dictionary) -> bool:
+	var value: Variant = product.get("crunch", null)
+	if not value is Dictionary:
+		return false
+	var state := str((value as Dictionary).get("state", "")).strip_edges()
+	return state == "idle" or state == "armed" or state == "resting"
+
+func _crunch_text(product: Dictionary) -> String:
+	var value: Variant = product.get("crunch", null)
+	if not value is Dictionary:
+		return ""
+	var state := str((value as Dictionary).get("state", "")).strip_edges()
+	if state == "armed":
+		return "Crunching · tomorrow's craft counts double"
+	if state == "resting":
+		return "Resting · team recovers tomorrow"
+	return "Crunch · double craft tomorrow, then a rest day and +1 bug"
+
+func _crunch_row(product: Dictionary, card: Control) -> void:
+	var line := _label(_crunch_text(product), false, card)
+	line.name = "CrunchOffer"
+	var value: Variant = product.get("crunch", null)
+	if not value is Dictionary:
+		return
+	if str((value as Dictionary).get("state", "")).strip_edges() != "idle":
+		return
+	var button := _button("Crunch", _arm_crunch, false, true, card, "secondary")
+	button.name = "Crunch"
+
+func _arm_crunch() -> void:
+	_request("tycoon.crunch", {})
+
+func _early_access_offered(product: Dictionary) -> bool:
+	return product.get("earlyAccess") is Dictionary
+
+func _early_access_text(product: Dictionary) -> String:
+	var value: Variant = product.get("earlyAccess", null)
+	if not value is Dictionary:
+		return ""
+	var offer := value as Dictionary
+	if bool(offer.get("enabled", false)):
+		return "Early access · ship now, −%d score" % int(offer.get("penalty", 0))
+	var reason := str(offer.get("reason", "")).strip_edges()
+	if reason.is_empty():
+		return ""
+	return "Early access · %s" % reason
+
+func _early_access_row(product: Dictionary, card: Control) -> void:
+	var text := _early_access_text(product)
+	if text.is_empty():
+		return
+	var line := _label(text, false, card)
+	line.name = "EarlyAccessOffer"
+	var value: Variant = product.get("earlyAccess", null)
+	if not value is Dictionary or not bool((value as Dictionary).get("enabled", false)):
+		return
+	var button := _button("Ship early", _ship_early, false, true, card, "secondary")
+	button.name = "ShipEarly"
+
+func _ship_early() -> void:
+	var developing: Dictionary = _tycoon().get("developing", {}) if _tycoon().get("developing") is Dictionary else {}
+	_release_focus_id = str(developing.get("id", ""))
+	_request("tycoon.earlyAccess", {})
+
+func _cancel_offered(product: Dictionary) -> bool:
+	return product.get("cancel") is Dictionary
+
+func _cancel_text(product: Dictionary) -> String:
+	var value: Variant = product.get("cancel", null)
+	if not value is Dictionary:
+		return ""
+	var offer := value as Dictionary
+	if _cancel_confirm and bool(offer.get("enabled", false)):
+		return "Drop this build? Days worked are gone."
+	if not bool(offer.get("enabled", false)):
+		var reason := str(offer.get("reason", "")).strip_edges()
+		if reason.is_empty():
+			return ""
+		return "Cancel · %s" % reason
+	return "Cancel · drop this build. Days worked are gone."
+
+func _cancel_row(product: Dictionary, card: Control) -> void:
+	var text := _cancel_text(product)
+	if text.is_empty():
+		return
+	var line := _label(text, false, card)
+	line.name = "CancelOffer"
+	var value: Variant = product.get("cancel", null)
+	if not value is Dictionary or not bool((value as Dictionary).get("enabled", false)):
+		return
+	if _cancel_confirm:
+		var keep := _button("Keep building", _keep_build, false, true, card, "secondary")
+		keep.name = "KeepBuild"
+		var drop := _button("Drop the build", _drop_build, false, true, card, "secondary")
+		drop.name = "DropBuild"
+		_preferred_focus = keep
+		return
+	var button := _button("Cancel build", _ask_cancel, false, true, card, "secondary")
+	button.name = "CancelBuild"
+
+func _ask_cancel() -> void:
+	_cancel_confirm = true
+	call_deferred("_render")
+
+func _keep_build() -> void:
+	_cancel_confirm = false
+	call_deferred("_render")
+
+func _drop_build() -> void:
+	_cancel_confirm = false
+	_request("tycoon.cancelBuild", {})
+
+func _slip_offered(product: Dictionary) -> bool:
+	return product.get("slip") is Dictionary
+
+func _slip_text(product: Dictionary) -> String:
+	var value: Variant = product.get("slip", null)
+	if not value is Dictionary:
+		return ""
+	var offer := value as Dictionary
+	if bool(offer.get("pending", false)):
+		return "Holding tomorrow"
+	if not bool(offer.get("enabled", false)):
+		var reason := str(offer.get("reason", "")).strip_edges()
+		if reason.is_empty():
+			return ""
+		return "Slip a day · %s" % reason
+	return "Slip a day · hold tomorrow. The build does not."
+
+func _slip_row(product: Dictionary, card: Control) -> void:
+	var text := _slip_text(product)
+	if text.is_empty():
+		return
+	var line := _label(text, false, card)
+	line.name = "SlipOffer"
+	var value: Variant = product.get("slip", null)
+	if not value is Dictionary:
+		return
+	var offer := value as Dictionary
+	if bool(offer.get("pending", false)) or not bool(offer.get("enabled", false)):
+		return
+	var button := _button("Slip a day", _slip_day, false, true, card, "secondary")
+	button.name = "SlipDay"
+
+func _slip_day() -> void:
+	_request("tycoon.slipDay", {})
+
+func _pivot_offered(product: Dictionary) -> bool:
+	return product.get("pivot") is Dictionary
+
+func _pivot_text(product: Dictionary) -> String:
+	var value: Variant = product.get("pivot", null)
+	if not value is Dictionary:
+		return ""
+	var offer := value as Dictionary
+	if bool(offer.get("used", false)):
+		return "Pivoted · %s" % str(product.get("name", "Product"))
+	var reason := str(offer.get("reason", "")).strip_edges()
+	if not bool(offer.get("enabled", false)):
+		if reason.is_empty():
+			return ""
+		return "Pivot · %s" % reason
+	if _pivot_open:
+		return "Pivot · pick a new topic or type."
+	return "Pivot · change topic or type. Days and points stay."
+
+func _pivot_row(product: Dictionary, card: Control) -> void:
+	var text := _pivot_text(product)
+	if text.is_empty():
+		return
+	var line := _label(text, false, card)
+	line.name = "PivotOffer"
+	var value: Variant = product.get("pivot", null)
+	if not value is Dictionary:
+		return
+	var offer := value as Dictionary
+	if bool(offer.get("used", false)) or not bool(offer.get("enabled", false)):
+		_pivot_open = false
+		return
+	if not _pivot_open:
+		var button := _button("Pivot", _ask_pivot.bind(product), false, true, card, "secondary")
+		button.name = "Pivot"
+		return
+	_pivot_picker(product, offer, card)
+
+func _ask_pivot(product: Dictionary) -> void:
+	_topic_id = str(product.get("topicId", _topic_id))
+	_type_id = str(product.get("typeId", _type_id))
+	_pivot_open = true
+	_render()
+
+func _pivot_picker(product: Dictionary, offer: Dictionary, card: Control) -> void:
+	var options: Variant = offer.get("options", {})
+	var catalog: Dictionary = options as Dictionary if options is Dictionary else {}
+	var topics_value: Variant = catalog.get("topics", _tycoon().get("topics", []))
+	var types_value: Variant = catalog.get("types", _tycoon().get("types", []))
+	_label("Topic", true, card)
+	var topics := GridContainer.new()
+	topics.name = "PivotTopics"
+	topics.columns = 2
+	topics.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	topics.add_theme_constant_override("h_separation", 8)
+	topics.add_theme_constant_override("v_separation", 8)
+	card.add_child(topics)
+	for item: Variant in topics_value as Array:
+		if not item is Dictionary: continue
+		var topic := item as Dictionary
+		var topic_id := str(topic.get("id", ""))
+		var topic_open := bool(topic.get("unlocked", true))
+		var topic_name := str(topic.get("name", "Topic"))
+		var topic_label := topic_name if topic_open else "%s · locked" % topic_name
+		if topic_open and _topic_in_season(topic_id): topic_label = "%s · in season" % topic_label
+		var topic_button := _button(topic_label, _choose_pivot_topic.bind(topic_id), false, topic_open, topics, "secondary")
+		topic_button.name = "PivotTopic_%s" % topic_id
+		topic_button.clip_text = true
+		if topic_open and topic_id == _topic_id:
+			for style_name: String in ["normal", "hover", "pressed", "hover_pressed"]:
+				topic_button.add_theme_stylebox_override(style_name, CozyUI.control_style("secondary", "pressed"))
+	_label("Product type", true, card)
+	var types := GridContainer.new()
+	types.name = "PivotTypes"
+	types.columns = 2
+	types.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	types.add_theme_constant_override("h_separation", 8)
+	types.add_theme_constant_override("v_separation", 8)
+	card.add_child(types)
+	for item: Variant in types_value as Array:
+		if not item is Dictionary: continue
+		var kind := item as Dictionary
+		var type_id := str(kind.get("id", ""))
+		var type_open := bool(kind.get("unlocked", true))
+		var type_name := str(kind.get("name", "Type"))
+		var type_label := type_name if type_open else "%s · locked" % type_name
+		var type_button := _button(type_label, _choose_pivot_type.bind(type_id), false, type_open, types, "secondary")
+		type_button.name = "PivotType_%s" % type_id
+		type_button.clip_text = true
+		if type_open and type_id == _type_id:
+			for style_name: String in ["normal", "hover", "pressed", "hover_pressed"]:
+				type_button.add_theme_stylebox_override(style_name, CozyUI.control_style("secondary", "pressed"))
+	var fit := _pair_fit(_topic_id, _type_id)
+	var fit_line := _label("Fit · %s. %s" % [_fit_word(fit), _fit_hint(fit)], false, card, "action")
+	fit_line.name = "PivotFit"
+	var same_pair := _topic_id == str(product.get("topicId", "")) and _type_id == str(product.get("typeId", ""))
+	var pair_open := _pivot_entry_open(catalog, "topics", _topic_id) and _pivot_entry_open(catalog, "types", _type_id)
+	var confirm := _button("Change pair", _confirm_pivot, false, pair_open and not same_pair and not fit.is_empty(), card, "secondary")
+	confirm.name = "ChangePair"
+
+func _pivot_entry_open(catalog: Dictionary, list_name: String, id: String) -> bool:
+	var value: Variant = catalog.get(list_name, [])
+	for item: Variant in value as Array:
+		if item is Dictionary and str((item as Dictionary).get("id", "")) == id:
+			return bool((item as Dictionary).get("unlocked", true))
+	return _entry_unlocked(list_name, id)
+
+func _choose_pivot_topic(topic_id: String) -> void:
+	_topic_id = topic_id
+	_render()
+
+func _choose_pivot_type(type_id: String) -> void:
+	_type_id = type_id
+	_render()
+
+func _confirm_pivot() -> void:
+	_request("tycoon.pivot", {"topicId": _topic_id, "typeId": _type_id})
+
+func _remember_playtest_product(product: Dictionary) -> void:
+	var id := str(product.get("id", ""))
+	if id != _playtest_product_id:
+		_playtest_product_id = id
+		_playtest_shown = false
+
+func _playtest_offered(product: Dictionary) -> bool:
+	return product.get("playtest") is Dictionary
+
+func _playtest_text(product: Dictionary) -> String:
+	var value: Variant = product.get("playtest", null)
+	if not value is Dictionary:
+		return ""
+	var offer := value as Dictionary
+	var band := str(offer.get("band", "")).strip_edges()
+	if _playtest_shown and (band == "low" or band == "mid" or band == "high"):
+		return "Playtest: likely %s reviews" % band
+	var reason := str(offer.get("reason", "")).strip_edges()
+	if not reason.is_empty():
+		return "Playtest · %s" % reason
+	return "Playtest · see the likely review band."
+
+func _playtest_row(product: Dictionary, card: Control) -> void:
+	var text := _playtest_text(product)
+	if text.is_empty():
+		return
+	var line := _label(text, false, card)
+	line.name = "PlaytestOffer"
+	var value: Variant = product.get("playtest", null)
+	if not value is Dictionary:
+		return
+	if not bool((value as Dictionary).get("enabled", false)):
+		return
+	var button := _button("Playtest", _playtest, false, true, card, "secondary")
+	button.name = "Playtest"
+
+func _playtest() -> void:
+	_playtest_shown = true
+	_request("tycoon.playtest", {})
+
+func _team_offered(product: Dictionary) -> bool:
+	return product.get("team") is Dictionary
+
+func _team_members(product: Dictionary) -> Array:
+	var value: Variant = product.get("team", null)
+	if not value is Dictionary:
+		return []
+	var members: Variant = (value as Dictionary).get("members", [])
+	return members as Array if members is Array else []
+
+func _team_text(product: Dictionary) -> String:
+	var names: PackedStringArray = PackedStringArray()
+	for item: Variant in _team_members(product):
+		if not item is Dictionary:
+			continue
+		var member := item as Dictionary
+		if bool(member.get("onTeam", false)):
+			var person_name := str(member.get("name", "")).strip_edges()
+			if not person_name.is_empty():
+				names.append(person_name)
+	if names.is_empty():
+		return "Team"
+	return "Team: %s" % ", ".join(names)
+
+func _team_row(product: Dictionary, card: Control) -> void:
+	var members := _team_members(product)
+	var row := HBoxContainer.new()
+	row.name = "TeamChoices"
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("separation", 8)
+	card.add_child(row)
+	var line := _label(_team_text(product), false, row)
+	line.name = "TeamOffer"
+	line.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	line.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	for item: Variant in members:
+		if not item is Dictionary:
+			continue
+		var member := item as Dictionary
+		var id := str(member.get("id", ""))
+		if id.is_empty():
+			continue
+		var on_team := bool(member.get("onTeam", false))
+		var button := _button(str(member.get("name", id)), _toggle_team.bind(id), false, true, row, "secondary")
+		button.name = "Team_%s" % id
+		button.custom_minimum_size = Vector2(88, 32)
+		button.size_flags_horizontal = Control.SIZE_SHRINK_END
+		button.clip_text = true
+		if on_team:
+			for style_name: String in ["normal", "hover", "pressed", "hover_pressed"]:
+				button.add_theme_stylebox_override(style_name, CozyUI.control_style("secondary", "pressed"))
+
+func _toggle_team(person_id: String) -> void:
+	var developing: Dictionary = _tycoon().get("developing", {}) if _tycoon().get("developing") is Dictionary else {}
+	var ids: Array[String] = []
+	for item: Variant in _team_members(developing):
+		if not item is Dictionary:
+			continue
+		var member := item as Dictionary
+		var id := str(member.get("id", ""))
+		if id.is_empty():
+			continue
+		var on_team := bool(member.get("onTeam", false))
+		if id == person_id:
+			on_team = not on_team
+		if on_team:
+			ids.append(id)
+	if ids.is_empty():
+		return
+	_request("tycoon.assignTeam", {"staffIds": ids})
+
+func _research_spike_offered(product: Dictionary) -> bool:
+	return product.get("researchSpike") is Dictionary
+
+func _research_spike_text(product: Dictionary) -> String:
+	var value: Variant = product.get("researchSpike", null)
+	if not value is Dictionary:
+		return ""
+	var offer := value as Dictionary
+	if bool(offer.get("pending", false)):
+		return "Spike set · tomorrow's craft becomes research points"
+	if bool(offer.get("used", false)):
+		return "Spike done · +%d research points" % int(offer.get("points", 0))
+	return "Research spike · tomorrow's craft becomes research points"
+
+func _research_spike_row(product: Dictionary, card: Control) -> void:
+	var text := _research_spike_text(product)
+	if text.is_empty():
+		return
+	var value: Variant = product.get("researchSpike", null)
+	var enabled := value is Dictionary and bool((value as Dictionary).get("enabled", false))
+	if not enabled:
+		var line_only := _label(text, false, card)
+		line_only.name = "ResearchSpikeOffer"
+		return
+	var row := HBoxContainer.new()
+	row.name = "ResearchSpikeChoices"
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("separation", 8)
+	card.add_child(row)
+	var line := _label(text, false, row)
+	line.name = "ResearchSpikeOffer"
+	line.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	line.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	var button := _button("Research spike", _research_spike, false, true, row, "secondary")
+	button.name = "ResearchSpike"
+	button.custom_minimum_size = Vector2(168, 32)
+	button.size_flags_horizontal = Control.SIZE_SHRINK_END
+	button.clip_text = true
+
+func _research_spike() -> void:
+	_request("tycoon.researchSpike", {})
+
+func _early_shipped(product: Dictionary) -> bool:
+	var value: Variant = product.get("earlyAccess", null)
+	if not value is Dictionary:
+		return false
+	var offer := value as Dictionary
+	return not bool(offer.get("enabled", false)) and int(offer.get("penalty", 0)) > 0
+
+func _show_early_access(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	if not _early_shipped(product):
+		return
+	var line := _label("Early access", false, parent, "action")
+	line.name = node_name
+
+func _trailer_offer(product: Dictionary, card: Control) -> void:
+	var value: Variant = product.get("trailer", null)
+	if not value is Dictionary: return
+	var trailer := value as Dictionary
+	var trailer_name := str(trailer.get("name", "")).strip_edges()
+	if trailer_name.is_empty(): return
+	var product_id := str(product.get("id", ""))
+	var made := bool(trailer.get("made", false))
+	var text := "Trailer made · %s" % trailer_name if made else "Trailer · %s · $%d, about %d fans" % [trailer_name, int(int(trailer.get("costCents", 0)) / 100), int(trailer.get("fans", 0))]
+	var line := _label(text, false, card)
+	line.name = "TrailerOffer_%s" % product_id
+	if made: return
+	var button := _button("Make trailer", _make_trailer.bind(product_id), false, true, card, "secondary")
+	button.name = "MakeTrailer_%s" % product_id
+
+func _make_trailer(product_id: String) -> void:
+	_request("tycoon.makeTrailer", {"productId": product_id})
+
+func _sale_price_cents(product: Dictionary, percent: int) -> int:
+	return int(round(float(_catalog_price_cents(str(product.get("typeId", ""))) * percent) / 100.0))
+
+func _sale_price_option_label(offer: Dictionary, percent: int) -> String:
+	var options: Variant = offer.get("options", [])
+	if not options is Array:
+		return ""
+	for item: Variant in options as Array:
+		if item is Dictionary and int((item as Dictionary).get("percent", 0)) == percent:
+			return str((item as Dictionary).get("label", ""))
+	return ""
+
+func _sale_price_text(product: Dictionary, offer: Dictionary) -> String:
+	var percent := int(offer.get("currentPercent", 100))
+	var money := "$%s" % _money(_sale_price_cents(product, percent))
+	if bool(offer.get("used", false)):
+		return "Sale price · %s · %s" % [_sale_price_option_label(offer, percent), money]
+	return "Sale price · %s · remaining days" % money
+
+func _sale_price_offer(product: Dictionary, card: Control) -> void:
+	var value: Variant = product.get("salePrice", null)
+	if not value is Dictionary:
+		return
+	var offer := value as Dictionary
+	var product_id := str(product.get("id", ""))
+	var line := _label(_sale_price_text(product, offer), false, card)
+	line.name = "SalePriceOffer_%s" % product_id
+	if not bool(offer.get("enabled", false)):
+		return
+	var options: Variant = offer.get("options", [])
+	if not options is Array:
+		return
+	var row := HBoxContainer.new()
+	row.name = "SalePriceChoices_%s" % product_id
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("separation", 8)
+	card.add_child(row)
+	var current := int(offer.get("currentPercent", 0))
+	for item: Variant in options as Array:
+		if not item is Dictionary:
+			continue
+		var step := item as Dictionary
+		var percent := int(step.get("percent", 0))
+		if percent == current:
+			continue
+		var button := _button(str(step.get("label", "")), _choose_sale_price.bind(product_id, percent), false, true, row, "secondary")
+		button.name = "SalePrice_%s_%d" % [product_id, percent]
+		button.custom_minimum_size = Vector2(104, 32)
+		button.clip_text = true
+
+func _choose_sale_price(product_id: String, percent: int) -> void:
+	_request("tycoon.salePrice", {"productId": product_id, "pricePercent": percent})
+
+func _diary_offer(product: Dictionary, card: Control) -> void:
+	var value: Variant = product.get("diary", null)
+	if not value is Dictionary: return
+	var diary := value as Dictionary
+	var diary_name := str(diary.get("name", "")).strip_edges()
+	if diary_name.is_empty(): return
+	var product_id := str(product.get("id", ""))
+	var written := bool(diary.get("written", false))
+	var fans := int(diary.get("fans", 0))
+	var fans_words := "1 fan" if fans == 1 else "%d fans" % fans
+	var text := "Diary written · %s" % diary_name if written else "Diary · %s · $%d, about %s" % [diary_name, int(int(diary.get("costCents", 0)) / 100), fans_words]
+	var line := _label(text, false, card)
+	line.name = "DiaryOffer_%s" % product_id
+	if written: return
+	var button := _button("Write diary", _write_diary.bind(product_id), false, true, card, "secondary")
+	button.name = "WriteDiary_%s" % product_id
+
+func _write_diary(product_id: String) -> void:
+	_request("tycoon.writeDiary", {"productId": product_id})
+
+func _season_event_line(calendar: Dictionary) -> String:
+	var today: Variant = calendar.get("event")
+	if today is Dictionary and not str((today as Dictionary).get("name", "")).strip_edges().is_empty():
+		var event := today as Dictionary
+		var effect := str(event.get("effect", "")).strip_edges()
+		if effect.is_empty(): return "%s today" % str(event.get("name", "Event"))
+		return "%s today. %s" % [str(event.get("name", "Event")), effect]
+	var next: Dictionary = calendar.get("nextEvent", {}) if calendar.get("nextEvent") is Dictionary else {}
+	var event_name := str(next.get("name", "The next fair"))
+	var days := int(next.get("daysUntil", 0))
+	if days == 1: return "%s in 1 day" % event_name
+	return "%s in %d days" % [event_name, days]
+
+func _upgrade_effect(kind: String) -> String:
+	var parts: PackedStringArray = []
+	for item: Variant in _tycoon().get("upgrades", []) as Array:
+		if not item is Dictionary: continue
+		var upgrade := item as Dictionary
+		if bool(upgrade.get("owned", false)) and str(upgrade.get("kind", "")) == kind:
+			var effect := str(upgrade.get("effect", ""))
+			if not effect.is_empty(): parts.append(effect)
+	return ", ".join(parts)
+
+func _stat_word(stat: String) -> String:
+	match stat:
+		"design": return "Design"
+		"tech": return "Tech"
+		"hype": return "Hype"
+		_: return stat.capitalize()
+
+func _product_screen() -> void:
+	var tycoon := _tycoon()
+	var developing: Dictionary = tycoon.get("developing", {}) if tycoon.get("developing") is Dictionary else {}
+	if developing.is_empty():
+		_product_picker(tycoon)
+	else:
+		_product_progress(developing)
+	_product_history(tycoon)
+
+func _product_picker(tycoon: Dictionary) -> void:
+	var lock := _locked_contract()
+	if not lock.is_empty():
+		_topic_id = str(lock.get("topicId", _topic_id))
+		_type_id = str(lock.get("typeId", _type_id))
+	var contract_topic := str(lock.get("topicId", ""))
+	var contract_type := str(lock.get("typeId", ""))
+	var held := not lock.is_empty()
+	_heading("Ship a product", "Topic and format. The fit is the whole launch.")
+	_label("No API key and no network. The office simulates the launch.", false, null, "meta")
+	if held:
+		var lock_line := _label("Contract · %s · %s × %s" % [str(lock.get("client", "")), str(lock.get("topicName", "")), str(lock.get("typeName", ""))], false, null, "action")
+		lock_line.name = "ContractLock"
+	_label("Topic", true)
+	var topics := GridContainer.new()
+	topics.columns = 2
+	topics.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	topics.add_theme_constant_override("h_separation", 8)
+	topics.add_theme_constant_override("v_separation", 8)
+	_content.add_child(topics)
+	for item: Variant in tycoon.get("topics", []) as Array:
+		if not item is Dictionary: continue
+		var topic := item as Dictionary
+		var topic_id := str(topic.get("id", ""))
+		var topic_open := bool(topic.get("unlocked", true))
+		var topic_held := not held or topic_id == contract_topic
+		var topic_name := str(topic.get("name", "Topic"))
+		var topic_label := topic_name
+		if not topic_open: topic_label = "%s · locked" % topic_name
+		elif not topic_held: topic_label = "%s · contract" % topic_name
+		if _topic_in_season(topic_id): topic_label = "%s · in season" % topic_label
+		_choice_button(topic_label, topic_open and topic_held and topic_id == _topic_id, topics, _choose_topic.bind(topic_id), topic_open and topic_held)
+	var rival := _rival()
+	if str(rival.get("topicId", "")).strip_edges() == _topic_id and not str(rival.get("topicId", "")).strip_edges().is_empty():
+		var warning := _label("Rival · opening demand drops.", false, null, "action")
+		warning.name = "RivalWarning"
+	_label("Product type", true)
+	var types := GridContainer.new()
+	types.columns = 2
+	types.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	types.add_theme_constant_override("h_separation", 8)
+	types.add_theme_constant_override("v_separation", 8)
+	_content.add_child(types)
+	for item: Variant in tycoon.get("types", []) as Array:
+		if not item is Dictionary: continue
+		var kind := item as Dictionary
+		var type_id := str(kind.get("id", ""))
+		var type_open := bool(kind.get("unlocked", true))
+		var type_held := not held or type_id == contract_type
+		var type_name := str(kind.get("name", "Type"))
+		var type_label := type_name if type_open else "%s · locked" % type_name
+		if type_open and not type_held: type_label = "%s · contract" % type_name
+		_choice_button(type_label, type_open and type_held and type_id == _type_id, types, _choose_type.bind(type_id), type_open and type_held)
+	var fit := _pair_fit(_topic_id, _type_id)
+	var fit_label := _label("Fit · %s. %s" % [_fit_word(fit), _fit_hint(fit)], false, null, "action")
+	fit_label.name = "ProductFit"
+	var research_bonus := _pair_research_bonus(_topic_id, _type_id)
+	if research_bonus > 0:
+		var bonus_label := _label("Research bonus: +%d fit" % research_bonus, false, null, "action")
+		bonus_label.name = "ResearchFitBonus"
+	_price_picker(tycoon)
+	_marketing_picker(tycoon)
+	_engine_picker(tycoon)
+	_focus_picker(tycoon)
+	_audience_picker(tycoon)
+	_size_picker(tycoon)
+	var build_line := _label(_on_the_build_text(), true)
+	build_line.name = "OnTheBuild"
+	var staff: Array = tycoon.get("staff", []) as Array
+	for item: Variant in staff:
+		if not item is Dictionary: continue
+		var person := item as Dictionary
+		var person_id := str(person.get("id", ""))
+		var stats := "design %d · tech %d · hype %d" % [int(person.get("design", 0)), int(person.get("tech", 0)), int(person.get("hype", 0))]
+		if person_id == "founder":
+			_label("Founder · %s · always on the build" % stats, false, null, "meta")
+		elif bool(person.get("hired", false)):
+			var on_build := _staff_ids.has(person_id)
+			_button("%s · %s" % [person.get("name", "Teammate"), "on the build" if on_build else "sitting this one out"], _toggle_staff.bind(person_id), on_build)
+			_label(stats, false, null, "meta")
+		else:
+			_label("%s · not hired · %s" % [person.get("name", "Teammate"), stats], false, null, "meta")
+	var staff_ids: Array[String] = ["founder"]
+	for person_id: String in _staff_ids:
+		staff_ids.append(person_id)
+	var pair_open := _entry_unlocked("topics", _topic_id) and _entry_unlocked("types", _type_id)
+	_actions("Start development", func() -> void: _request("tycoon.start", {"topicId": _topic_id, "typeId": _type_id, "staffIds": staff_ids, "pricePercent": _price_percent, "marketing": _marketing_id, "engine": _engine_id, "focus": _focus_id, "audience": _audience_id, "size": _size_id}), not fit.is_empty() and pair_open, "Back to office", func() -> void: present("journey"))
+
+func _product_progress(product: Dictionary) -> void:
+	var required := int(product.get("devDaysRequired", 1))
+	var dev_days := int(product.get("devDays", 0))
+	var ready := bool(product.get("ready", false))
+	_heading(str(product.get("name", "Product")), "Fit · %s" % _fit_word(str(product.get("fit", ""))))
+	_show_research_fit(product, "ResearchFitJourney")
+	_show_launch_price(product, "LaunchPrice")
+	_show_marketing(product, "MarketingLine")
+	_show_engine(product, "EngineLine")
+	_show_focus(product, "FocusLine")
+	_show_audience(product, "AudienceLine")
+	_show_size(product, "SizeLine")
+	_show_contract(product, "ContractLine")
+	var progress := _label("Ready to ship" if ready else "Building · day %d of %d" % [dev_days, required], false, null, "action")
+	progress.name = "ProductProgress"
+	_show_sequel(product, "SequelBonus")
+	_label("Design %d · Tech %d · Hype %d" % [int(product.get("design", 0)), int(product.get("tech", 0)), int(product.get("hype", 0))], false, null, "meta")
+	var bonus_parts: PackedStringArray = []
+	for kind: String in ["design", "tech", "hype"]:
+		var effect := _upgrade_effect(kind)
+		if not effect.is_empty(): bonus_parts.append(effect)
+	if not bonus_parts.is_empty():
+		var bonus := _label("Office bonus · %s" % ", ".join(bonus_parts), false, null, "meta")
+		bonus.name = "OfficeBonus"
+	_label("Progress · %d%%" % int(product.get("progress", 0)))
+	if dev_days > required:
+		_label("Extra office days still add a little craft, then they stop.", false, null, "meta")
+	elif not ready:
+		_label("End the day to keep designing, building, and hyping.", false, null, "meta")
+	var product_id := str(product.get("id", ""))
+	if ready:
+		_actions("Release", func() -> void: _release_product(product_id), true, "End day + save", func() -> void: _request("day.end", {"day": day}))
+	else:
+		_actions("End day + save", func() -> void: _request("day.end", {"day": day}), true, "Back to office", func() -> void: present("journey"))
+
+func _release_screen() -> void:
+	var product := _released_focus()
+	if product.is_empty():
+		_heading("Release day", "The shelf is empty.")
+		_actions("Back to office", hide, true, "Ship a product", func() -> void: present("product"))
+		return
+	var review: Dictionary = product.get("review", {}) if product.get("review") is Dictionary else {}
+	var company: Dictionary = state.get("company", {})
+	_heading("Release day", str(product.get("name", "Product")))
+	var score := _label("Score %d / 10" % int(review.get("score", 0)), true)
+	score.name = "ReleaseScore"
+	_show_early_access(product, "ReleaseEarly")
+	_label("Fit · %s" % _fit_word(str(product.get("fit", ""))), false, null, "meta")
+	for item: Variant in review.get("reviewers", []) as Array:
+		if not item is Dictionary: continue
+		var reviewer := item as Dictionary
+		_label("%s · %d" % [reviewer.get("name", "Reviewer"), int(reviewer.get("score", 0))], false, null, "action")
+		_label(str(reviewer.get("blurb", "")), false, null, "meta")
+	_label("Launch sales · $%s · +%d fans" % [_money(int(product.get("salesCents", 0))), int(product.get("fans", 0))], false, null, "action")
+	_show_contract(product, "ReleaseContract")
+	_show_launch_price(product, "ReleasePrice")
+	_show_marketing(product, "ReleaseMarketing")
+	_show_engine(product, "ReleaseEngine")
+	_show_focus(product, "ReleaseFocus")
+	_show_audience(product, "ReleaseAudience")
+	_show_size(product, "ReleaseSize")
+	_show_sequel(product, "ReleaseSequel")
+	var research_line := _label("+%d research points" % int(product.get("researchPoints", 0)), false, null, "action")
+	research_line.name = "ReleaseResearch"
+	var price_boost := _upgrade_effect("price")
+	if not price_boost.is_empty():
+		var boost := _label(price_boost, false, null, "meta")
+		boost.name = "ReleasePriceBoost"
+	_label("Sales keep coming for a few office days.", false, null, "meta")
+	_label("Company · %s · %d reputation" % [_cash_phrase(int(company.get("cashCents", 0))), int(company.get("reputation", 0))])
+	_actions("Back to office", hide, true, "Ship another", func() -> void: present("product"))
+
+func _product_history(tycoon: Dictionary) -> void:
+	var card := _card()
+	_label("Shipped", true, card)
+	var history: Array = tycoon.get("history", []) as Array
+	if history.is_empty():
+		_label("No shipped products yet.", false, card)
+		return
+	for item: Variant in history:
+		if not item is Dictionary: continue
+		var product := item as Dictionary
+		var review: Dictionary = product.get("review", {}) if product.get("review") is Dictionary else {}
+		_label("%s · %d/10 · $%s · +%d fans" % [product.get("name", "Product"), int(review.get("score", 0)), _money(int(product.get("salesCents", 0))), int(product.get("fans", 0))], false, card)
+		_show_early_access(product, "EarlyAccessHistory_%s" % str(product.get("id", "")), card)
+		_show_research_fit(product, "ResearchFitJourney", card)
+		_show_launch_price(product, "LaunchPrice", card)
+		_show_marketing(product, "MarketingLine", card)
+		_show_engine(product, "EngineLine", card)
+		_show_focus(product, "FocusLine", card)
+		_show_audience(product, "AudienceLine", card)
+		_show_size(product, "SizeLine", card)
+		_show_contract(product, "ContractLine", card)
+		_show_patch(product, "PatchLine", card)
+		_show_sequel(product, "SequelLine", card)
+		_show_award(product, "AwardLine", card)
+		_show_port(product, "PortLine", card)
+		_show_localize(product, "LocalizeLine", card)
+
+func _released_focus() -> Dictionary:
+	var history: Array = _tycoon().get("history", []) as Array
+	for item: Variant in history:
+		if item is Dictionary and str((item as Dictionary).get("id", "")) == _release_focus_id:
+			return item as Dictionary
+	if not history.is_empty() and history[0] is Dictionary:
+		return history[0] as Dictionary
+	return {}
+
+func _choice_button(label_text: String, selected: bool, grid: GridContainer, choose: Callable, enabled: bool = true) -> void:
+	var button := _button(label_text, choose, selected, enabled, grid, "primary" if selected else "secondary")
+	button.clip_text = true
+	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+
+func _choose_topic(topic_id: String) -> void:
+	_topic_id = topic_id
+	_render()
+
+func _choose_type(type_id: String) -> void:
+	_type_id = type_id
+	_render()
+
+func _toggle_staff(person_id: String) -> void:
+	if _staff_ids.has(person_id): _staff_ids.erase(person_id)
+	else: _staff_ids.append(person_id)
+	_render()
+
+func _release_product(product_id: String) -> void:
+	_release_focus_id = product_id
+	_request("tycoon.release", {"productId": product_id})
+
+func _entry_unlocked(list_name: String, id: String) -> bool:
+	for item: Variant in _tycoon().get(list_name, []) as Array:
+		if item is Dictionary and str((item as Dictionary).get("id", "")) == id:
+			return bool((item as Dictionary).get("unlocked", true))
+	return true
+
+func _pair_fit(topic_id: String, type_id: String) -> String:
+	for item: Variant in _tycoon().get("fits", []) as Array:
+		if not item is Dictionary: continue
+		var row := item as Dictionary
+		if str(row.get("topicId", "")) == topic_id and str(row.get("typeId", "")) == type_id:
+			return str(row.get("fit", ""))
+	return ""
+
+func _pair_research_bonus(topic_id: String, type_id: String) -> int:
+	for item: Variant in _tycoon().get("fits", []) as Array:
+		if not item is Dictionary: continue
+		var row := item as Dictionary
+		if str(row.get("topicId", "")) == topic_id and str(row.get("typeId", "")) == type_id:
+			return int(row.get("researchBonus", 0))
+	return 0
+
+func _price_steps() -> Array:
+	return _tycoon().get("priceSteps", []) as Array
+
+func _catalog_price_cents(type_id: String) -> int:
+	for item: Variant in _tycoon().get("types", []) as Array:
+		if item is Dictionary and str((item as Dictionary).get("id", "")) == type_id:
+			return int((item as Dictionary).get("priceCents", 0))
+	return 0
+
+func _unit_percent_for(price_percent: int) -> int:
+	for item: Variant in _price_steps():
+		if item is Dictionary and int((item as Dictionary).get("percent", 0)) == price_percent:
+			return int((item as Dictionary).get("unitPercent", 100))
+	return 100
+
+func _launch_price_line(percent: int, cents: int) -> String:
+	var money := "$%s" % _money(cents)
+	var unit_percent := _unit_percent_for(percent)
+	if unit_percent == 100:
+		return "%s · catalog units" % money
+	if unit_percent > 100:
+		return "%s · +%d%% units" % [money, unit_percent - 100]
+	return "%s · −%d%% units" % [money, 100 - unit_percent]
+
+func _show_launch_price(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var percent := int(product.get("pricePercent", 100))
+	var cents := int(product.get("priceCents", 0))
+	if cents <= 0: return
+	var line := _label(_launch_price_line(percent, cents), false, parent, "action")
+	line.name = node_name
+
+func _price_picker(tycoon: Dictionary) -> void:
+	var steps: Array = tycoon.get("priceSteps", []) as Array
+	if steps.is_empty(): return
+	_label("Price", true)
+	var row := GridContainer.new()
+	row.columns = 3
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("h_separation", 8)
+	row.add_theme_constant_override("v_separation", 8)
+	_content.add_child(row)
+	var allowed: Array[int] = []
+	for item: Variant in steps:
+		if item is Dictionary: allowed.append(int((item as Dictionary).get("percent", 0)))
+	if not allowed.has(_price_percent): _price_percent = 100
+	for item: Variant in steps:
+		if not item is Dictionary: continue
+		var step := item as Dictionary
+		var percent := int(step.get("percent", 0))
+		var selected := percent == _price_percent
+		var button := _button(str(step.get("label", "")), _choose_price.bind(percent), false, true, row, "secondary")
+		button.name = "Price_%d" % percent
+		button.clip_text = true
+		if selected:
+			for state: String in ["normal", "hover", "pressed", "hover_pressed"]:
+				button.add_theme_stylebox_override(state, CozyUI.control_style("secondary", "pressed"))
+	var catalog := _catalog_price_cents(_type_id)
+	var cents := int(round(float(catalog * _price_percent) / 100.0))
+	var effect := _label(_launch_price_line(_price_percent, cents), false, null, "action")
+	effect.name = "PriceEffect"
+
+func _choose_price(percent: int) -> void:
+	_price_percent = percent
+	_render()
+
+func _marketing_options() -> Array:
+	return _tycoon().get("marketingOptions", []) as Array
+
+func _marketing_line(option: Dictionary) -> String:
+	var name := str(option.get("label", "None"))
+	var cost := "$%d" % int(int(option.get("costCents", 0)) / 100)
+	var unit_percent := int(option.get("unitPercent", 100))
+	if unit_percent <= 100:
+		return "%s · %s · no extra units" % [name, cost]
+	return "%s · %s · +%d%% units" % [name, cost, unit_percent - 100]
+
+func _show_marketing(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var id := str(product.get("marketing", "none"))
+	if id.is_empty() or id == "none": return
+	for item: Variant in _marketing_options():
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		if str(option.get("id", "")) != id: continue
+		var line := _label(_marketing_line(option), false, parent, "action")
+		line.name = node_name
+		return
+
+func _marketing_picker(tycoon: Dictionary) -> void:
+	var options: Array = tycoon.get("marketingOptions", []) as Array
+	if options.is_empty(): return
+	var enabled_ids: Array[String] = []
+	for item: Variant in options:
+		if item is Dictionary and bool((item as Dictionary).get("enabled", false)):
+			enabled_ids.append(str((item as Dictionary).get("id", "")))
+	if not enabled_ids.has(_marketing_id): _marketing_id = "none"
+	_label("Marketing", true)
+	var selected: Dictionary = {}
+	for item: Variant in options:
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		var id := str(option.get("id", ""))
+		var enabled := bool(option.get("enabled", false))
+		var text := str(option.get("label", ""))
+		var reason := str(option.get("reason", ""))
+		if not enabled and not reason.is_empty(): text = "%s · %s" % [text, reason]
+		var chosen := id == _marketing_id
+		if chosen: selected = option
+		var button := _button(text, _choose_marketing.bind(id), false, enabled, null, "secondary")
+		button.name = "Marketing_%s" % id
+		if chosen:
+			for state: String in ["normal", "hover", "pressed", "hover_pressed"]:
+				button.add_theme_stylebox_override(state, CozyUI.control_style("secondary", "pressed"))
+	var effect := _label(_marketing_line(selected), false, null, "action")
+	effect.name = "MarketingEffect"
+
+func _choose_marketing(id: String) -> void:
+	_marketing_id = id
+	_render()
+
+func _engine_card() -> void:
+	var offer: Variant = _tycoon().get("engine", null)
+	if not offer is Dictionary or (offer as Dictionary).is_empty(): return
+	var engine := offer as Dictionary
+	var card := _card()
+	card.name = "EngineCard"
+	_label("Engine", true, card)
+	var price := _label("%s · $%d" % [str(engine.get("name", "Engine")), int(int(engine.get("priceCents", 0)) / 100)], false, card)
+	price.name = "EnginePrice"
+	var blurb := str(engine.get("blurb", "")).strip_edges()
+	if not blurb.is_empty():
+		_label(blurb, false, card, "meta")
+	var bump := _label("+%d score" % int(engine.get("scoreBonus", 1)), false, card, "meta")
+	bump.name = "EngineBump"
+	var notice := str(_tycoon().get("engineNotice", "")).strip_edges()
+	if not notice.is_empty():
+		var line := _label(notice, false, card, "action")
+		line.name = "EngineNotice"
+	var enabled := bool(engine.get("enabled", false))
+	var reason := str(engine.get("reason", "")).strip_edges()
+	var text := "Buy %s · $%d" % [str(engine.get("name", "Engine")), int(int(engine.get("priceCents", 0)) / 100)]
+	if not enabled and not reason.is_empty():
+		text = "Buy %s · %s" % [str(engine.get("name", "Engine")), reason]
+	var button := _button(text, _buy_engine.bind(str(engine.get("id", ""))), false, enabled, card, "secondary")
+	button.name = "Buy_engine"
+
+func _buy_engine(engine_id: String) -> void:
+	_request("tycoon.buyEngine", {"id": engine_id})
+
+func _engine_line(product: Dictionary) -> String:
+	var value: Variant = product.get("engine", null)
+	if not value is Dictionary: return ""
+	var engine := value as Dictionary
+	var engine_name := str(engine.get("name", "")).strip_edges()
+	if engine_name.is_empty(): return ""
+	var bonus := int(engine.get("scoreBonus", 0))
+	if bonus > 0:
+		return "On the build · %s · +%d score" % [engine_name, bonus]
+	return "On the build · %s" % engine_name
+
+func _show_engine(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var text := _engine_line(product)
+	if text.is_empty(): return
+	var line := _label(text, false, parent, "action")
+	line.name = node_name
+
+func _on_the_build_text() -> String:
+	var parts: PackedStringArray = []
+	var engine_name := _chosen_engine_label()
+	if not engine_name.is_empty(): parts.append(engine_name)
+	var focus_name := _chosen_focus_label()
+	if not focus_name.is_empty(): parts.append(focus_name)
+	var audience_name := _chosen_audience_label()
+	if not audience_name.is_empty(): parts.append(audience_name)
+	var size_name := _chosen_size_label()
+	if not size_name.is_empty(): parts.append(size_name)
+	if parts.is_empty(): return "On the build"
+	return "On the build · %s" % " · ".join(parts)
+
+func _chosen_engine_label() -> String:
+	if _engine_id == "none": return ""
+	for item: Variant in _tycoon().get("engineOptions", []) as Array:
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		if str(option.get("id", "")) != _engine_id: continue
+		return str(option.get("label", "")).strip_edges()
+	return ""
+
+func _chosen_focus_label() -> String:
+	if _focus_id.is_empty() or _focus_id == "balanced": return ""
+	for item: Variant in _tycoon().get("focusOptions", []) as Array:
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		if str(option.get("id", "")) != _focus_id: continue
+		return str(option.get("label", "")).strip_edges()
+	return ""
+
+func _engine_effect_line(option: Dictionary) -> String:
+	var engine_name := str(option.get("label", "None"))
+	var bonus := int(option.get("scoreBonus", 0))
+	if bonus <= 0:
+		return "%s · no score bump" % engine_name
+	return "%s · +%d score" % [engine_name, bonus]
+
+func _engine_picker(tycoon: Dictionary) -> void:
+	var offer: Variant = tycoon.get("engine", null)
+	if not offer is Dictionary or not bool((offer as Dictionary).get("owned", false)):
+		_engine_id = "none"
+		return
+	var options: Array = tycoon.get("engineOptions", []) as Array
+	if options.is_empty():
+		_engine_id = "none"
+		return
+	var enabled_ids: Array[String] = []
+	for item: Variant in options:
+		if item is Dictionary and bool((item as Dictionary).get("enabled", false)):
+			enabled_ids.append(str((item as Dictionary).get("id", "")))
+	if not enabled_ids.has(_engine_id): _engine_id = "none"
+	var heading := _label("Engine", true)
+	heading.name = "EngineHeading"
+	var selected: Dictionary = {}
+	for item: Variant in options:
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		var id := str(option.get("id", ""))
+		var enabled := bool(option.get("enabled", false))
+		var text := str(option.get("label", ""))
+		var reason := str(option.get("reason", ""))
+		if not enabled and not reason.is_empty(): text = "%s · %s" % [text, reason]
+		var chosen := id == _engine_id
+		if chosen: selected = option
+		var button := _button(text, _choose_engine.bind(id), false, enabled, null, "secondary")
+		button.name = "Engine_%s" % id
+		if chosen:
+			for state: String in ["normal", "hover", "pressed", "hover_pressed"]:
+				button.add_theme_stylebox_override(state, CozyUI.control_style("secondary", "pressed"))
+	var effect := _label(_engine_effect_line(selected), false, null, "action")
+	effect.name = "EngineEffect"
+
+func _choose_engine(id: String) -> void:
+	_engine_id = id
+	_render()
+
+func _focus_line(product: Dictionary) -> String:
+	var value: Variant = product.get("focus", null)
+	if not value is Dictionary: return ""
+	var focus := value as Dictionary
+	var focus_name := str(focus.get("label", "")).strip_edges()
+	if focus_name.is_empty(): return ""
+	var bonus := int(focus.get("bonus", 0))
+	var stat := _stat_word(str(focus.get("stat", ""))).to_lower()
+	if bonus > 0 and not stat.is_empty():
+		return "On the build · %s · +%d %s" % [focus_name, bonus, stat]
+	return "On the build · %s" % focus_name
+
+func _show_focus(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var text := _focus_line(product)
+	if text.is_empty(): return
+	var line := _label(text, false, parent, "action")
+	line.name = node_name
+
+func _focus_effect_line(option: Dictionary) -> String:
+	var focus_name := str(option.get("label", "Balanced"))
+	var bonus := int(option.get("bonus", 0))
+	if bonus <= 0:
+		return "%s · no point bump" % focus_name
+	var stat := _stat_word(str(option.get("stat", ""))).to_lower()
+	return "%s · +%d %s" % [focus_name, bonus, stat]
+
+func _focus_picker(tycoon: Dictionary) -> void:
+	var options: Array = tycoon.get("focusOptions", []) as Array
+	if options.is_empty():
+		_focus_id = "balanced"
+		return
+	var known: Array[String] = []
+	for item: Variant in options:
+		if item is Dictionary:
+			known.append(str((item as Dictionary).get("id", "")))
+	if not known.has(_focus_id): _focus_id = "balanced"
+	var heading := _label("Focus", true)
+	heading.name = "FocusHeading"
+	var row := GridContainer.new()
+	row.columns = 4
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("h_separation", 8)
+	row.add_theme_constant_override("v_separation", 8)
+	_content.add_child(row)
+	var selected: Dictionary = {}
+	for item: Variant in options:
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		var id := str(option.get("id", ""))
+		var chosen := id == _focus_id
+		if chosen: selected = option
+		var button := _button(str(option.get("label", "")), _choose_focus.bind(id), false, true, row, "secondary")
+		button.name = "Focus_%s" % id
+		button.clip_text = true
+		if chosen:
+			for state: String in ["normal", "hover", "pressed", "hover_pressed"]:
+				button.add_theme_stylebox_override(state, CozyUI.control_style("secondary", "pressed"))
+	var effect := _label(_focus_effect_line(selected), false, null, "action")
+	effect.name = "FocusEffect"
+
+func _choose_focus(id: String) -> void:
+	_focus_id = id
+	_render()
+
+func _audience_line(product: Dictionary) -> String:
+	var value: Variant = product.get("audience", null)
+	if not value is Dictionary: return ""
+	var audience := value as Dictionary
+	var audience_name := str(audience.get("label", "")).strip_edges()
+	if audience_name.is_empty(): return ""
+	return "On the build · %s" % audience_name
+
+func _show_audience(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var text := _audience_line(product)
+	if text.is_empty(): return
+	var line := _label(text, false, parent, "action")
+	line.name = node_name
+
+func _audience_effect_line(option: Dictionary) -> String:
+	var audience_name := str(option.get("label", "Everyone"))
+	var fans := int(option.get("fans", 0))
+	var unit_percent := int(option.get("unitPercent", 100))
+	if fans <= 0:
+		return "%s · no fan bump" % audience_name
+	if unit_percent < 100:
+		return "%s · +%d fans · −%d%% units" % [audience_name, fans, 100 - unit_percent]
+	return "%s · +%d fans on a repeated topic" % [audience_name, fans]
+
+func _chosen_audience_label() -> String:
+	if _audience_id.is_empty() or _audience_id == "everyone": return ""
+	for item: Variant in _tycoon().get("audienceOptions", []) as Array:
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		if str(option.get("id", "")) != _audience_id: continue
+		return str(option.get("label", "")).strip_edges()
+	return ""
+
+func _audience_picker(tycoon: Dictionary) -> void:
+	var options: Array = tycoon.get("audienceOptions", []) as Array
+	if options.is_empty():
+		_audience_id = "everyone"
+		return
+	var known: Array[String] = []
+	for item: Variant in options:
+		if item is Dictionary:
+			known.append(str((item as Dictionary).get("id", "")))
+	if not known.has(_audience_id): _audience_id = "everyone"
+	var heading := _label("Audience", true)
+	heading.name = "AudienceHeading"
+	var row := GridContainer.new()
+	row.columns = 3
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("h_separation", 8)
+	row.add_theme_constant_override("v_separation", 8)
+	_content.add_child(row)
+	var selected: Dictionary = {}
+	for item: Variant in options:
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		var id := str(option.get("id", ""))
+		var chosen := id == _audience_id
+		if chosen: selected = option
+		var button := _button(str(option.get("label", "")), _choose_audience.bind(id), false, true, row, "secondary")
+		button.name = "Audience_%s" % id
+		button.clip_text = true
+		if chosen:
+			for state: String in ["normal", "hover", "pressed", "hover_pressed"]:
+				button.add_theme_stylebox_override(state, CozyUI.control_style("secondary", "pressed"))
+	var effect := _label(_audience_effect_line(selected), false, null, "action")
+	effect.name = "AudienceEffect"
+
+func _choose_audience(id: String) -> void:
+	_audience_id = id
+	_render()
+
+func _size_line(product: Dictionary) -> String:
+	var value: Variant = product.get("size", null)
+	if not value is Dictionary: return ""
+	var size := value as Dictionary
+	var size_name := str(size.get("label", "")).strip_edges()
+	if size_name.is_empty(): return ""
+	return "On the build · %s" % size_name
+
+func _show_size(product: Dictionary, node_name: String, parent: Control = null) -> void:
+	var text := _size_line(product)
+	if text.is_empty(): return
+	var line := _label(text, false, parent, "action")
+	line.name = node_name
+
+func _size_effect_line(option: Dictionary) -> String:
+	var size_name := str(option.get("label", "Catalog"))
+	var delta := int(option.get("dayDelta", 0))
+	var unit_percent := int(option.get("unitPercent", 100))
+	if delta == 0:
+		return "%s · same length" % size_name
+	var day_text := "+1 day" if delta > 0 else "−1 day"
+	if unit_percent > 100:
+		return "%s · %s · +%d%% units" % [size_name, day_text, unit_percent - 100]
+	if unit_percent < 100:
+		return "%s · %s · −%d%% units" % [size_name, day_text, 100 - unit_percent]
+	return "%s · %s" % [size_name, day_text]
+
+func _chosen_size_label() -> String:
+	if _size_id.is_empty() or _size_id == "catalog": return ""
+	for item: Variant in _tycoon().get("sizeOptions", []) as Array:
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		if str(option.get("id", "")) != _size_id: continue
+		return str(option.get("label", "")).strip_edges()
+	return ""
+
+func _size_picker(tycoon: Dictionary) -> void:
+	var options: Array = tycoon.get("sizeOptions", []) as Array
+	if options.is_empty():
+		_size_id = "catalog"
+		return
+	var known: Array[String] = []
+	for item: Variant in options:
+		if item is Dictionary:
+			known.append(str((item as Dictionary).get("id", "")))
+	if not known.has(_size_id): _size_id = "catalog"
+	var heading := _label("Size", true)
+	heading.name = "SizeHeading"
+	var row := GridContainer.new()
+	row.columns = 3
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("h_separation", 8)
+	row.add_theme_constant_override("v_separation", 8)
+	_content.add_child(row)
+	var selected: Dictionary = {}
+	for item: Variant in options:
+		if not item is Dictionary: continue
+		var option := item as Dictionary
+		var id := str(option.get("id", ""))
+		var chosen := id == _size_id
+		if chosen: selected = option
+		var button := _button(str(option.get("label", "")), _choose_size.bind(id), false, true, row, "secondary")
+		button.name = "Size_%s" % id
+		button.clip_text = true
+		if chosen:
+			for state: String in ["normal", "hover", "pressed", "hover_pressed"]:
+				button.add_theme_stylebox_override(state, CozyUI.control_style("secondary", "pressed"))
+	var effect := _label(_size_effect_line(selected), false, null, "action")
+	effect.name = "SizeEffect"
+
+func _choose_size(id: String) -> void:
+	_size_id = id
+	_render()
+
+func _fit_word(fit: String) -> String:
+	match fit:
+		"great": return "Great"
+		"good": return "Good"
+		"okay": return "Okay"
+		"bad": return "Bad"
+		_: return "Unknown"
+
+func _fit_hint(fit: String) -> String:
+	match fit:
+		"great": return "Whop regulars already want this."
+		"good": return "A fair pairing. It can sell."
+		"okay": return "People will squint, then maybe buy."
+		"bad": return "The group chat will notice."
+		_: return "Pick a topic and a format."
 
 func _person(candidate: Dictionary, hiring: bool) -> void:
 	var card := _card()
@@ -539,9 +2773,22 @@ static func next_step_line(state: Dictionary, busy: bool = false, pending_method
 		if definition.get("jobStatus") == "running": return "NEXT · Follow work, give direction, or answer an approval in your teammate’s Activity."
 		if str(definition.get("id", "")) == "website":
 			return "NEXT · Open Assign and choose Journey · Build a website, then send the work order."
+		if str(definition.get("id", "")) == "brand":
+			return "NEXT · Chapter 2 · Open Assign and choose Journey · Design the brand, then send the work order."
+		if str(definition.get("id", "")) == "apply":
+			return "NEXT · Chapter 3 · Open Assign and choose Journey · Apply the brand, then send the work order."
 		return "NEXT · %s. Prepare a work order for your teammate." % definition.get("title", "Build your company")
 	var candidate := available_candidate(state)
-	if not candidate.is_empty(): return "NEXT · Hire %s from Company Journey, then meet them at their new desk." % candidate.get("name", "your teammate")
+	if not candidate.is_empty():
+		if str(candidate.get("id", "")) == "creative":
+			return "NEXT · Chapter 2 · Give the company a look. Hire Creative, then prepare the brand identity work order."
+		return "NEXT · Hire %s from Company Journey, then meet them at their new desk." % candidate.get("name", "your teammate")
+	if chapter_three_finished(state):
+		return "NEXT · Chapter 3 is complete. More is coming. Keep building with ordinary work orders and the shared Studio."
+	if chapter_two_finished(state):
+		return "NEXT · Chapter 2 is complete. Begin Chapter 3 to apply the brand."
+	if chapter_is_complete(state):
+		return "NEXT · Your chapter is complete. Keep building with ordinary work orders and the shared Studio."
 	for item: Dictionary in state.get("milestones", []):
 		if item.get("state") == "locked": return "NEXT · Today’s goal is complete. Review your files, then end the day when ready."
 	return "NEXT · Your chapter is complete. Keep building with ordinary work orders and the shared Studio."
@@ -559,14 +2806,20 @@ static func available_candidate(state: Dictionary) -> Dictionary:
 static func station_caption(state: Dictionary, station_id: String, kind: String, owner_id: String, has_active_job: bool, has_approval: bool, has_delivery: bool) -> String:
 	match station_id:
 		"founder-workstation":
-			if not available_candidate(state).is_empty(): return "Hire Mina"
 			var milestone := open_milestone(state)
-			if milestone.is_empty(): return "Company Journey"
 			var evaluation: Dictionary = milestone.get("evaluation", {}) if milestone.get("evaluation") is Dictionary else {}
 			if evaluation.get("verdict") == "ready": return "Claim reward"
 			if not evaluation.is_empty() or str(milestone.get("state", "")) == "revision_required": return "Revise work"
 			if str(milestone.get("jobStatus", "")) == "completed": return "Evaluate result"
+			# The website work order is the day-1 goal. An optional later hire must not replace it.
 			if str(milestone.get("id", "")) == "website" and str(milestone.get("jobStatus", "")) not in ["running", "queued"]: return "Assign website"
+			if str(milestone.get("id", "")) == "brand" and str(milestone.get("jobStatus", "")) not in ["running", "queued", "completed"]: return "Assign brand"
+			if str(milestone.get("id", "")) == "apply" and str(milestone.get("jobStatus", "")) not in ["running", "queued", "completed"]: return "Apply brand"
+			var candidate := available_candidate(state)
+			if not candidate.is_empty():
+				var hire_name := str(candidate.get("name", "")).strip_edges()
+				return "Hire %s" % hire_name if not hire_name.is_empty() else "Company Journey"
+			if milestone.is_empty(): return "Company Journey"
 			return "Company Journey"
 		"artifact-archive":
 			return "Studio"
@@ -578,8 +2831,10 @@ static func station_caption(state: Dictionary, station_id: String, kind: String,
 			if has_delivery: return "Add to Studio"
 			if has_active_job: return "Activity"
 			var milestone := open_milestone(state)
-			if str(milestone.get("employeeId", "")) == owner_id and str(milestone.get("id", "")) == "website" and str(milestone.get("state", "")) in ["available", "revision_required"] and str(milestone.get("jobStatus", "")) not in ["running", "queued", "completed"]:
-				return "Assign website"
+			if str(milestone.get("employeeId", "")) == owner_id and str(milestone.get("state", "")) in ["available", "revision_required"] and str(milestone.get("jobStatus", "")) not in ["running", "queued", "completed"]:
+				if str(milestone.get("id", "")) == "website": return "Assign website"
+				if str(milestone.get("id", "")) == "brand": return "Assign brand"
+				if str(milestone.get("id", "")) == "apply": return "Apply brand"
 			return "Assign"
 
 func _configure_focus() -> void:

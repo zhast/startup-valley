@@ -63,7 +63,15 @@ func _ready() -> void:
 	company_panel.action_requested.connect(worker_client.company_request)
 	company_panel.milestone_requested.connect(job_panel.prepare_milestone)
 	company_panel.connection_requested.connect(job_panel._open_connection_settings)
+	job_panel.connect_allowed = func() -> bool:
+		return company_panel == null or not company_panel.visible or company_panel.screen not in ["product", "release"]
+	company_panel.presented.connect(func(mode: String) -> void:
+		if mode in ["product", "release"]:
+			job_panel.close_drawer(false)
+	)
 	company_panel.renovation_requested.connect(_open_office_renovation)
+	company_panel.architecture_theme = room.architecture.theme_id
+	company_panel.architecture_theme_requested.connect(_on_architecture_theme)
 	job_panel.settings_requested.connect(func() -> void: company_panel.present("settings"))
 	job_panel.journey_requested.connect(func() -> void:
 		job_panel.close_drawer()
@@ -214,7 +222,11 @@ func _connect_signals() -> void:
 	worker_client.connected.connect(_on_worker_connected)
 	worker_client.bootstrap_received.connect(_on_bootstrap)
 	worker_client.credential_status_received.connect(job_panel.set_credential_status)
+	worker_client.credential_detail_received.connect(job_panel.set_credential_detail)
 	worker_client.credential_saved.connect(job_panel.set_credential_saved)
+	worker_client.grok_login_challenge.connect(job_panel.show_grok_login_challenge)
+	worker_client.grok_login_poll_received.connect(job_panel.show_grok_login_poll)
+	worker_client.grok_login_failed.connect(job_panel.show_grok_login_failed)
 	worker_client.chat_history_received.connect(job_panel.show_chat_history)
 	worker_client.chat_reply_received.connect(job_panel.show_chat_reply)
 	worker_client.chat_failed.connect(job_panel.set_chat_failed)
@@ -230,6 +242,11 @@ func _connect_signals() -> void:
 	worker_client.worker_crashed.connect(_on_worker_crashed)
 	worker_client.request_failed.connect(_on_worker_request_failed)
 	job_panel.key_submitted.connect(worker_client.save_openrouter_key)
+	job_panel.grok_login_start_requested.connect(worker_client.start_grok_login)
+	job_panel.grok_login_poll_requested.connect(worker_client.poll_grok_login)
+	job_panel.grok_login_cancel_requested.connect(worker_client.cancel_grok_login)
+	job_panel.grok_logout_requested.connect(worker_client.logout_grok)
+	job_panel.grok_use_local_requested.connect(worker_client.use_local_grok)
 	job_panel.chat_history_requested.connect(worker_client.request_chat_history)
 	job_panel.chat_submitted.connect(worker_client.send_chat)
 	job_panel.assignment_submitted.connect(_on_assignment_submitted)
@@ -557,6 +574,11 @@ func _on_clock_changed(day: int, minute_of_day: int, phase: String, speed: float
 
 func _on_journey(value: Dictionary) -> void:
 	_journey = value
+	var tycoon: Variant = value.get("tycoon", {})
+	if room != null and tycoon is Dictionary:
+		var office: Variant = (tycoon as Dictionary).get("office", {})
+		if office is Dictionary and int((office as Dictionary).get("level", 0)) > 0:
+			room.set_office_level(int((office as Dictionary).get("level", 1)))
 	company_panel.update_state(value)
 	job_panel.set_journey_state(value)
 	var company: Dictionary = value.get("company", {})
@@ -598,6 +620,9 @@ func _restore_player() -> void:
 	company_panel.effects_volume = float(saved.get("effectsVolume", 0.5))
 	company_panel.ambience_volume = float(saved.get("ambienceVolume", 0.2))
 	game_audio.set_volumes(company_panel.effects_volume, company_panel.ambience_volume)
+	var saved_theme := str(saved.get("architectureTheme", "")).strip_edges()
+	if not saved_theme.is_empty() and room.architecture.apply_theme(saved_theme):
+		company_panel.set_architecture_theme(room.architecture.theme_id)
 	var attention := str(saved.get("attentionEmployeeId", ""))
 	if _employees.has(attention):
 		job_panel._attention_employee_id = attention
@@ -623,13 +648,24 @@ func _on_company_action(method: String, result: Dictionary) -> void:
 			if founder_hud._movement_hint_tween != null and founder_hud._movement_hint_tween.is_valid(): founder_hud._movement_hint_tween.kill()
 			founder_hud._movement_hint.modulate.a = 1.0
 			founder_hud._movement_hint.show()
+			room.architecture.apply_theme(OfficeArchitecture.DEFAULT_THEME)
+			company_panel.set_architecture_theme(OfficeArchitecture.DEFAULT_THEME)
 			company_panel.present("journey")
 			company_panel._notice.text = "Previous company backed up to: " + str(result.get("backupPath", ""))
 		"hiring.complete":
 			game_audio.play("reward")
 			company_panel.present("hired")
-		"milestone.complete", "milestone.override":
+		"milestone.complete", "milestone.override", "chapter.continue":
 			game_audio.play("reward")
+			company_panel.present("journey")
+		"tycoon.start", "tycoon.sequel":
+			company_panel.present("product")
+		"tycoon.release", "tycoon.earlyAccess":
+			game_audio.play("reward")
+			company_panel.present("release")
+		"tycoon.letGo":
+			company_panel.present("journey")
+		"tycoon.train", "tycoon.research", "tycoon.buyUpgrade", "tycoon.buyEngine", "tycoon.expandOffice", "tycoon.acceptContract", "tycoon.patch", "tycoon.award", "tycoon.port", "tycoon.localize", "tycoon.takeLoan", "tycoon.signPublisher", "tycoon.bookBooth", "tycoon.takeTownDay", "tycoon.showPressDemo", "tycoon.makeTrailer", "tycoon.writeDiary", "tycoon.addFeature", "tycoon.setDayPlan", "tycoon.fixBugs", "tycoon.crunch", "tycoon.cancelBuild", "tycoon.slipDay", "tycoon.pivot", "tycoon.playtest", "tycoon.assignTeam", "tycoon.researchSpike", "tycoon.salePrice", "tycoon.setPace", "tycoon.listCatalog", "tycoon.delistCatalog":
 			company_panel.present("journey")
 		"day.end":
 			job_panel.close_drawer(false)
@@ -651,7 +687,16 @@ func _save_game() -> void:
 		"movementSeen": founder_hud._movement_seen,
 		"effectsVolume": game_audio.effects_volume, "ambienceVolume": game_audio.ambience_volume,
 		"attentionEmployeeId": job_panel._attention_employee_id,
+		"architectureTheme": room.architecture.theme_id if room != null and room.architecture != null else OfficeArchitecture.DEFAULT_THEME,
 	})
+
+func _on_architecture_theme(theme_id: String) -> void:
+	if room == null or room.architecture == null: return
+	if not room.architecture.apply_theme(theme_id):
+		company_panel.set_architecture_theme(room.architecture.theme_id)
+		return
+	company_panel.set_architecture_theme(room.architecture.theme_id)
+	_save_game()
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Renovation owns its keys and its full-screen pointer surface. Do not let a

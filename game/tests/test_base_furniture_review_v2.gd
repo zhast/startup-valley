@@ -18,6 +18,28 @@ func check(ok: bool, message: String) -> void:
 		failures.append(message)
 		push_error(message)
 
+func _spare_kind_waits(kind: String, expected: int) -> bool:
+	var layout := OfficeLayout.new()
+	if not layout.load_files("res://data/office_layout.json"): return false
+	var gated := 0
+	for prop: Variant in layout.data.get("props", []):
+		if not prop is Dictionary: continue
+		var row := prop as Dictionary
+		if str(row.get("kind", "")) != kind or not str(row.get("id", "")).begins_with("spare-"): continue
+		if int(row.get("required_office_level", 1)) < 2 or str(row.get("facing", "")) != "south": return false
+		gated += 1
+	if gated != expected: return false
+	layout.office_level = 1
+	for placement: Dictionary in layout.resolve_placements(4):
+		if str(placement.get("kind", "")) == kind and str(placement.get("id", "")).begins_with("spare-"):
+			return false
+	layout.office_level = 2
+	var seen := 0
+	for placement: Dictionary in layout.resolve_placements(0):
+		if str(placement.get("kind", "")) == kind and str(placement.get("id", "")).begins_with("spare-"):
+			seen += 1
+	return seen == expected
+
 func count_alpha(image: Image) -> int:
 	var result := 0
 	for y: int in range(image.get_height()):
@@ -36,9 +58,20 @@ func occupied_rows(image: Image) -> Array[int]:
 	return result
 
 func run() -> void:
-	check(FileAccess.get_file_as_string(PRODUCTION_CATALOG).find("compact-desk-v2") == -1, "Compact review revision is absent from production catalogue")
-	check(FileAccess.get_file_as_string(PRODUCTION_CATALOG).find("shared-workbench-v2") == -1, "Workbench review revision is absent from production catalogue")
-	check(FileAccess.get_file_as_string(DEFAULT_LAYOUT).find("compact_desk") == -1 and FileAccess.get_file_as_string(DEFAULT_LAYOUT).find("shared_workbench") == -1, "Neither base review enters the default layout")
+	var furnishing: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/furnishing_catalog.json"))
+	var compact_entry: Dictionary = furnishing["furniture"]["compact_desk"]
+	var compact_passive := str(compact_entry.get("interaction_kind", "")) == "none"
+	for side_name: String in ["north", "east", "south", "west"]:
+		var shipped: Dictionary = compact_entry["facing_profiles"][side_name]
+		compact_passive = compact_passive and str(shipped.get("profile_kind", "")) == "decorative" and str(shipped.get("status", "")) == "runtime_ready" and bool(shipped["review"]["art"]) and bool(shipped["review"]["geometry"])
+	check(compact_passive, "compact_desk is passive décor in the furnishing catalogue")
+	var bench_entry: Dictionary = furnishing["furniture"]["shared_workbench"]
+	var bench_passive := str(bench_entry.get("interaction_kind", "")) == "none"
+	for side_name: String in ["north", "east", "south", "west"]:
+		var shipped_bench: Dictionary = bench_entry["facing_profiles"][side_name]
+		bench_passive = bench_passive and str(shipped_bench.get("profile_kind", "")) == "decorative" and str(shipped_bench.get("status", "")) == "runtime_ready" and bool(shipped_bench["review"]["art"]) and bool(shipped_bench["review"]["geometry"])
+	check(bench_passive, "shared_workbench is passive décor in the furnishing catalogue")
+	check(_spare_kind_waits("compact_desk", 2) and _spare_kind_waits("shared_workbench", 1), "Neither base review enters the floor until the office expands")
 	for family: String in REVIEW.FAMILIES:
 		var base: Variant = REVIEW.source(family)
 		var entry := REVIEW.catalog_entry(family)

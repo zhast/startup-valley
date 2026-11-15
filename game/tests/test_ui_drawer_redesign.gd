@@ -532,18 +532,35 @@ func _run() -> void:
 	_capture("connection-configured")
 	await _key(KEY_ESCAPE)
 	_check(panel._tab_buttons[3].has_focus() and _key_submissions == 0, "Leaving configured connection preserves key and invoking focus")
+	panel.set_credential_detail({
+		"configured": true,
+		"provider": "openrouter",
+		"openRouterSource": "environment",
+		"openRouterConfigured": true,
+		"grokSignedIn": true,
+		"grokCliAvailable": true,
+		"offline": false,
+	})
+	await _frames()
+	_check(panel._credential_configured and panel._key_status.text == "Connected with OpenRouter.", "Environment OpenRouter shows as connected")
+	_check(panel._settings_button.text == "Settings", "Connected OpenRouter keeps the Settings rail")
+	_check(panel._connection_description.text.contains("Connected with OpenRouter"), "Connect copy names the environment OpenRouter connection")
+	_check(not panel._connection_description.text.begins_with("Signed in with Grok"), "Environment OpenRouter is preferred over a saved Grok login")
+	panel.set_credential_detail({"configured": false, "provider": "none", "openRouterSource": "none", "grokSignedIn": false, "grokCliAvailable": false, "offline": false})
+	await _frames()
 	panel.set_credential_status(false)
 	await _frames()
-	_check(panel._connection_panel.visible and panel._key_input.has_focus(), "Missing-key modal starts at key input")
+	_check(panel._connection_panel.visible and panel._grok_login_button.has_focus(), "Missing-key modal starts at Sign in with Grok")
+	_check(panel._grok_login_button.text == "Sign in with Grok" and panel._connection_description.text.contains("Grok") and panel._connection_description.text.contains("xAI"), "Connect offers Grok / xAI credits before the OpenRouter fallback")
 	_check(panel._connection_title.text == "Connect AI" and panel._connection_save_button.text == "Save connection" and panel._connection_save_button.disabled, "Missing key retains onboarding copy and safe empty state")
-	await _verify_connection_loop(panel, 2)
+	await _verify_connection_loop(panel, 3)
 	panel.set_worker_connection_error("Worker became unavailable while connecting.")
 	await _frames()
-	_check(panel._connection_description.text == "Reconnect first, then add your OpenRouter key.", "Disconnected onboarding does not imply that a key is already saved")
+	_check(panel._connection_description.text == "Reconnect first, then sign in with Grok or add an OpenRouter key.", "Disconnected onboarding does not imply that a key is already saved")
 	await _verify_connection_loop(panel, 2)
 	panel.set_worker_ready()
 	await _frames()
-	await _verify_connection_loop(panel, 2)
+	await _verify_connection_loop(panel, 3)
 	await _key(KEY_ESCAPE)
 	_check(not panel._connection_panel.visible and panel._tab_buttons[3].has_focus(), "Escape restores the invoking drawer control (open=%s, focus=%s)" % [panel._connection_panel.visible, root.gui_get_focus_owner()])
 	panel.set_credential_status(true)

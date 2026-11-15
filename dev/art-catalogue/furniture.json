@@ -5126,10 +5126,10 @@
         "runtime_registered_facings": [
           "south"
         ],
-        "art_path": "res://assets/runtime/office/collaboration-cluster.png",
+        "art_path": "res://assets/runtime/office/collaboration-cluster-v2/south-table_front_structure.png",
         "measured_texture_size_px": [
-          138,
-          92
+          256,
+          272
         ],
         "atlas_cell_px": null,
         "atlas_row": null,
@@ -15868,16 +15868,13 @@
         "runtime_registered_facings": [
           "south"
         ],
-        "art_path": "res://assets/runtime/office/layered-furniture.png",
+        "art_path": "res://assets/runtime/office/research-bench-v1/south-front_structure.png",
         "measured_texture_size_px": [
-          256,
-          192
+          192,
+          320
         ],
-        "atlas_cell_px": [
-          128,
-          96
-        ],
-        "atlas_row": 1,
+        "atlas_cell_px": null,
+        "atlas_row": null,
         "runtime_occupied_cells": [
           [
             -1,
@@ -15978,7 +15975,7 @@
           "deliverable_availability": "runtime_integrated",
           "approved_art_path": "game/tests/fixtures/furniture-calibration/research-bench-v1/north-whole.png",
           "evidence_path": "game/tests/output/research-bench-production/four-facing-contact-sheet.png",
-          "source_reference_path": "res://assets/runtime/office/layered-furniture.png",
+          "source_reference_path": "res://assets/runtime/office/research-bench-v1/north-front_structure.png",
           "legacy_runtime_art_for_this_facing": false,
           "footprint_cells": [
             3,
@@ -16207,7 +16204,7 @@
           "deliverable_availability": "runtime_integrated",
           "approved_art_path": "game/tests/fixtures/furniture-calibration/research-bench-v1/east-whole.png",
           "evidence_path": "game/tests/output/research-bench-production/four-facing-contact-sheet.png",
-          "source_reference_path": "res://assets/runtime/office/layered-furniture.png",
+          "source_reference_path": "res://assets/runtime/office/research-bench-v1/east-front_structure.png",
           "legacy_runtime_art_for_this_facing": false,
           "footprint_cells": [
             2,
@@ -16436,7 +16433,7 @@
           "deliverable_availability": "runtime_integrated",
           "approved_art_path": "game/tests/fixtures/furniture-calibration/research-bench-v1/south-whole.png",
           "evidence_path": "game/tests/output/research-bench-production/four-facing-contact-sheet.png",
-          "source_reference_path": "res://assets/runtime/office/layered-furniture.png",
+          "source_reference_path": "res://assets/runtime/office/research-bench-v1/south-front_structure.png",
           "legacy_runtime_art_for_this_facing": true,
           "footprint_cells": [
             3,
@@ -16665,7 +16662,7 @@
           "deliverable_availability": "runtime_integrated",
           "approved_art_path": "game/tests/fixtures/furniture-calibration/research-bench-v1/west-whole.png",
           "evidence_path": "game/tests/output/research-bench-production/four-facing-contact-sheet.png",
-          "source_reference_path": "res://assets/runtime/office/layered-furniture.png",
+          "source_reference_path": "res://assets/runtime/office/research-bench-v1/west-front_structure.png",
           "legacy_runtime_art_for_this_facing": false,
           "footprint_cells": [
             2,

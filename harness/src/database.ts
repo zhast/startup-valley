@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import { normalizeClock, phaseForMinute } from "./day-clock.js";
 import { JourneyStore } from "./journey.js";
 import { FurnishingStore } from "./furnishing.js";
+import { legacyResearchJson, starterResearchJson, TycoonStore } from "./tycoon.js";
 import type {
   Artifact,
   BootstrapState,
@@ -106,6 +107,7 @@ function parseObject<T>(value: string): T {
 export class GameDatabase {
   readonly journey: JourneyStore;
   readonly furnishing: FurnishingStore;
+  readonly tycoon: TycoonStore;
   readonly #database: DatabaseSync;
   readonly #projectRoot: string;
 
@@ -116,6 +118,8 @@ export class GameDatabase {
     const migrationsDirectory = join(moduleDirectory, "..", "migrations");
     this.#database.exec(readFileSync(join(migrationsDirectory, "001_initial.sql"), "utf8"));
     this.#database.exec("CREATE TABLE IF NOT EXISTS schema_migrations (version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL)");
+    // A save that already recorded a schema version predates research and keeps the full catalog.
+    const researchPredates = this.#database.prepare("SELECT version FROM schema_migrations WHERE version < 11 LIMIT 1").get() !== undefined;
     for (const [version, name] of [
       [2, "002_product_layer.sql"],
       [3, "003_persistent_studio.sql"],
@@ -123,12 +127,26 @@ export class GameDatabase {
       [5, "005_employee_chat.sql"],
       [6, "006_company_journey.sql"],
       [7, "007_furnishing.sql"],
+      [8, "008_company_journey_opening.sql"],
+      [9, "009_tycoon_products.sql"],
+      [10, "010_tycoon_staff.sql"],
+      [11, "011_tycoon_research.sql"],
+      [12, "012_tycoon_upgrades.sql"],
+      [13, "013_tycoon_office.sql"],
+      [14, "014_tycoon_contracts.sql"],
+      [15, "015_tycoon_engines.sql"],
+      [16, "016_payroll_debt.sql"],
     ] as const) {
       const applied = this.#database.prepare("SELECT version FROM schema_migrations WHERE version = ?").get(version);
       if (applied) continue;
       this.#database.exec("BEGIN IMMEDIATE");
       try {
         this.#database.exec(readFileSync(join(migrationsDirectory, name), "utf8"));
+        if (version === 11) {
+          this.#database.prepare("UPDATE tycoon_meta SET research_points = 0, research_json = ? WHERE id = 1").run(
+            researchPredates ? legacyResearchJson() : starterResearchJson(),
+          );
+        }
         this.#database.prepare("INSERT INTO schema_migrations (version, applied_at) VALUES (?, ?)").run(version, now());
         this.#database.exec("COMMIT");
       } catch (error) {
@@ -139,6 +157,8 @@ export class GameDatabase {
     this.#seed();
     this.furnishing = new FurnishingStore(this.#database);
     this.journey = new JourneyStore(this.#database, () => this.furnishing.sync());
+    this.tycoon = new TycoonStore(this.#database, this.journey, () => this.furnishing.sync());
+    this.journey.bindTycoon(() => this.tycoon.view());
     this.recoverInterruptedJobs();
   }
 
@@ -178,6 +198,17 @@ export class GameDatabase {
       JSON.stringify({ weekday: "08:00-17:30", lunch: "12:30-13:30" }),
       JSON.stringify({ mira: 12 }),
       76,
+      timestamp,
+      timestamp,
+    );
+    insertEmployee.run(
+      "creative",
+      "Creative",
+      14,
+      8,
+      JSON.stringify({ weekday: "08:00-17:30", lunch: "12:30-13:30" }),
+      JSON.stringify({ mira: 8, theo: 8 }),
+      80,
       timestamp,
       timestamp,
     );
@@ -330,6 +361,7 @@ export class GameDatabase {
       if (current.day !== expectedDay) throw new Error("Day changed; refresh before ending it");
       const active = this.#database.prepare("SELECT id FROM work_orders WHERE status='running' OR id IN (SELECT work_order_id FROM approvals WHERE status='pending')").get();
       if (active) throw new Error("Finish or cancel active work and approvals before ending the day");
+      this.tycoon.tickDay(current.day);
       const summary = this.journey.daySummary(current.day, this.dailySpend());
       this.#database.prepare("INSERT INTO day_summaries VALUES (?,?)").run(current.day, JSON.stringify(summary));
       return { summary, clock: this.setClock(current.day + 1, 480, 1) };

@@ -20,7 +20,7 @@ for (const context of contexts) {
     for (const facing of ["north", "east", "south", "west"]) {
       // Native exact boundaries and a safely separated decor corner, then seeded
       // whole-room samples. This deliberately includes plenty of rejections.
-      const cells = [[22, 16], [22, 18], [2, 3], [3, 6], [34, 20], [17, 10], ...(context.placements[item.id] ? [context.placements[item.id].grid] : [])];
+      const cells = [[24, 8], [7, 14], [2, 3], [3, 6], [34, 20], [17, 10], ...(context.placements[item.id] ? [context.placements[item.id].grid] : [])];
       for (let sample = 0; sample < 5; sample++) cells.push([random(40), random(23)]);
       for (const grid of cells) {
         const candidate = { ...context.placements, [item.id]: { grid, facing } };

@@ -163,6 +163,11 @@ export type ProtocolMethod =
   | "furnishing.update"
   | "credential.status"
   | "credential.set"
+  | "credential.grok.login.start"
+  | "credential.grok.login.poll"
+  | "credential.grok.login.cancel"
+  | "credential.grok.logout"
+  | "credential.grok.use_local"
   | "chat.history"
   | "chat.send"
   | "job.start"
@@ -178,7 +183,9 @@ export type ProtocolMethod =
   | "studio.read"
   | "clock.set"
   | "hiring.complete" | "milestone.evaluate" | "milestone.complete" | "milestone.override"
-  | "day.end" | "game.save" | "game.new";
+  | "chapter.continue"
+  | "day.end" | "game.save" | "game.new"
+  | "tycoon.start" | "tycoon.release" | "tycoon.train" | "tycoon.research" | "tycoon.buyUpgrade" | "tycoon.expandOffice" | "tycoon.acceptContract" | "tycoon.patch" | "tycoon.sequel" | "tycoon.award" | "tycoon.port" | "tycoon.localize" | "tycoon.buyEngine" | "tycoon.takeLoan" | "tycoon.signPublisher" | "tycoon.bookBooth" | "tycoon.takeTownDay" | "tycoon.showPressDemo" | "tycoon.makeTrailer" | "tycoon.writeDiary" | "tycoon.addFeature" | "tycoon.setDayPlan" | "tycoon.fixBugs" | "tycoon.crunch" | "tycoon.earlyAccess" | "tycoon.cancelBuild" | "tycoon.slipDay" | "tycoon.pivot" | "tycoon.playtest" | "tycoon.assignTeam" | "tycoon.researchSpike" | "tycoon.salePrice" | "tycoon.letGo" | "tycoon.setPace" | "tycoon.listCatalog" | "tycoon.delistCatalog";
 
 export interface ProtocolRequest {
   kind: "request";

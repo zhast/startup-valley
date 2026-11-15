@@ -18,7 +18,8 @@
   "player_spawn": [17, 19],
   "employees": [
     {"id": "mira", "name": "Mina", "spawn": [11, 18]},
-    {"id": "theo", "name": "Theo", "spawn": [23, 18]}
+    {"id": "theo", "name": "Theo", "spawn": [23, 18]},
+    {"id": "creative", "name": "Creative", "spawn": [14, 18]}
   ],
   "props": [
     {"id": "founder-workstation", "kind": "desk", "grid": [8, 17], "facing": "south", "required_hires": 0, "owner_id": "founder"},
@@ -27,8 +28,12 @@
     {"id": "collaboration-cluster", "kind": "collaboration_cluster", "grid": [12, 14], "facing": "south", "required_hires": 1},
     {"id": "artifact-archive", "kind": "artifact_archive", "grid": [4, 13], "facing": "south", "required_hires": 1},
     {"id": "theo-workstation", "kind": "desk", "grid": [20, 8], "facing": "south", "required_hires": 2, "owner_id": "theo"},
+    {"id": "creative-workstation", "kind": "desk", "grid": [14, 8], "facing": "south", "required_hires": 3, "owner_id": "creative"},
     {"id": "research-bench", "kind": "research_table", "grid": [29, 8], "facing": "south", "required_hires": 2},
     {"id": "approval-console", "kind": "approval_console", "grid": [29, 13], "facing": "south", "required_hires": 2},
-    {"id": "prototype-bench", "kind": "prototype_bench", "grid": [29, 18], "facing": "south", "required_hires": 4}
+    {"id": "prototype-bench", "kind": "prototype_bench", "grid": [29, 18], "facing": "south", "required_hires": 4},
+    {"id": "spare-compact-a", "kind": "compact_desk", "grid": [20, 17], "facing": "south", "required_hires": 0, "required_office_level": 2},
+    {"id": "spare-compact-b", "kind": "compact_desk", "grid": [25, 17], "facing": "south", "required_hires": 0, "required_office_level": 2},
+    {"id": "spare-workbench", "kind": "shared_workbench", "grid": [23, 14], "facing": "south", "required_hires": 0, "required_office_level": 2}
   ]
 }

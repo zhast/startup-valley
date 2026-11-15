@@ -5,7 +5,7 @@ extends SceneTree
 
 const EDITOR: Script = preload("res://tools/office_layout_editor.gd")
 const TEST_POSES := "test-only-direction-geometry"
-const ART := "res://assets/runtime/office/layered-furniture.png"
+const ART := "res://assets/runtime/office/collaboration-cluster-v2/east-table_front_structure.png"
 const GRID := Vector2i(10, 8)
 var checks := 0
 var failures: Array[String] = []
@@ -63,7 +63,8 @@ func _variant(facing: String) -> Dictionary:
 		"occupied": occupied, "clearance": clearance,
 		"interaction": [gaze.x, gaze.y], "work_cell": [-gaze.x, -gaze.y],
 		"anchor_offset": [0, 0], "visual_bounds": [-64, -80, 128, 96],
-		"hit_bounds": [-48, -64, 96, 64], "work_facing": facing,
+		# Reused plate ink sits at cell (24, 64); center this rect there so picking hits paint.
+		"hit_bounds": [-48, -24, 16, 16], "work_facing": facing,
 		"seat_anchor": [2, -3], "seat_z_offset": -gaze.y * 32, "pose_set": TEST_POSES,
 		"render_layers": [
 			{"name": "FixtureRear", "art": ART, "region": [0, row * 96, 128, 96], "content_bounds": [0, 0, 128, 96], "offset": [0, -32], "z_offset": -64},
@@ -75,7 +76,7 @@ func _variant(facing: String) -> Dictionary:
 func _test_legacy(source: OfficeLayout) -> void:
 	for kind: String in source.catalog:
 		var expected: Array[String] = []
-		expected.assign(OfficeLayout.FACINGS if kind in ["artifact_archive", "approval_console", "coffee_station", "collaboration_cluster", "desk", "prototype_bench", "research_table", "broadleaf_planter", "task_floor_lamp", "rolling_storage_pedestal"] else ["south"])
+		expected.assign(OfficeLayout.FACINGS if kind in ["artifact_archive", "approval_console", "coffee_station", "collaboration_cluster", "desk", "prototype_bench", "research_table", "broadleaf_planter", "task_floor_lamp", "coat_bag_stand", "water_station", "resource_cart", "printer_scanner_station", "recycling_sorter", "tall_storage_cabinet", "server_cabinet", "low_coffee_table", "round_meeting_table", "low_bookshelf", "acoustic_divider", "mobile_whiteboard", "visitor_chair", "two_seat_sofa", "lounge_armchair", "break_table", "compact_desk", "shared_workbench", "rolling_storage_pedestal"] else ["south"])
 		check(source.available_facings(kind) == expected, "%s exposes only its genuinely reviewed shipped art" % kind)
 	for stage: int in range(5):
 		var placements := source.resolve_placements(stage)

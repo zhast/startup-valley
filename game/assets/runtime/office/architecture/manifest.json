@@ -13,6 +13,43 @@
     {"file": "trim.png", "source": "trim-master.png", "size": [128, 64], "cell": [32, 32], "grid": [4, 2], "cells": ["west", "east", "south", "mass", "northwest", "northeast", "southwest", "southeast"], "alpha": "opaque"},
     {"file": "door.png", "source": "door-master.png", "size": [64, 32], "grid": [1, 1], "source_crop": [488, 554, 800, 282], "alpha": "opaque"}
   ],
+  "themes": [
+    {
+      "id": "office",
+      "label": "Oak office",
+      "prefix": "",
+      "default": true,
+      "parts": ["floor", "wall", "trim", "window", "door"]
+    },
+    {
+      "id": "cafe",
+      "label": "Cafe",
+      "prefix": "cafe-",
+      "default": false,
+      "parts": ["floor", "wall", "trim", "window", "door"]
+    },
+    {
+      "id": "loft",
+      "label": "Loft",
+      "prefix": "loft-",
+      "default": false,
+      "parts": ["floor", "wall", "trim", "window", "door"]
+    },
+    {
+      "id": "studio",
+      "label": "Studio",
+      "prefix": "studio-",
+      "default": false,
+      "parts": ["floor", "wall", "trim", "window", "door"]
+    },
+    {
+      "id": "evening",
+      "label": "Evening",
+      "prefix": "evening-",
+      "default": false,
+      "parts": ["floor", "wall", "trim", "window", "door"]
+    }
+  ],
   "verified": {
     "opposite_repeat_edges": "exact pixel equality",
     "window_padding": "fully transparent",

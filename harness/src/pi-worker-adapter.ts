@@ -18,11 +18,13 @@ import {
 } from "@earendil-works/pi-coding-agent";
 
 import { ApprovalBroker } from "./approval-broker.js";
-import type { CredentialStore } from "./credential-store.js";
+import { resolveStoredModelCredential, type CredentialStore } from "./credential-store.js";
+import { redactSecret, type ModelCredential } from "./grok-auth.js";
 import type { GameDatabase } from "./database.js";
 import { EventStream } from "./event-stream.js";
 import { JobPathGuard } from "./path-guard.js";
 import { LiveSessionRegistry } from "./live-session-registry.js";
+import { offlineEvaluationRunner, offlineProviderEnabled, runOfflineJob } from "./offline-provider.js";
 import { createJobTools } from "./tools.js";
 import type {
   ApprovalDecision,
@@ -38,7 +40,6 @@ import type {
   WorkerEvent,
 } from "./types.js";
 
-const DEFAULT_MODEL_ID = "~openai/gpt-mini-latest";
 const MAX_ATTACHED_CONTEXT_CHARACTERS = 16_000;
 const CHAT_RESPONSE_TOKEN_CAP = 700;
 export type EvaluationRunner = (definition: MilestoneDefinition, artifacts: readonly string[], input: EvaluationInput) => Promise<{ text: string; inputTokens: number; outputTokens: number; cost: number }>;
@@ -73,6 +74,25 @@ function bounded(value: string, limit: number): string {
   return value.length <= limit ? value : `${value.slice(0, limit - 1)}…`;
 }
 
+const MISSING_CHAT_CREDENTIAL = "Sign in with Grok or add an OpenRouter key before chatting with an employee";
+const MISSING_WORK_CREDENTIAL = "Sign in with Grok or add an OpenRouter key before assigning work";
+const MISSING_EVALUATION_CREDENTIAL = "Sign in with Grok or add an OpenRouter key before evaluating this result";
+
+function credentialFailure(error: unknown, fallback: string): Error {
+  if (error instanceof Error && error.message.startsWith("Grok login expired")) return new Error(error.message);
+  return new Error(fallback);
+}
+
+async function requireModelCredential(credentials: CredentialStore, fallback: string): Promise<ModelCredential> {
+  try {
+    const resolved = await resolveStoredModelCredential(credentials);
+    if (!resolved) throw new Error(fallback);
+    return resolved;
+  } catch (error) {
+    throw credentialFailure(error, fallback);
+  }
+}
+
 export class PiWorkerAdapter implements WorkerAdapter {
   readonly #database: GameDatabase;
   readonly #credentials: CredentialStore;
@@ -80,10 +100,15 @@ export class PiWorkerAdapter implements WorkerAdapter {
   readonly #studioRoot: string;
   readonly #runtimeRoot: string;
   readonly #evaluationRunner: EvaluationRunner | undefined;
+  readonly #offline: boolean;
   readonly #streams = new Map<string, EventStream<WorkerEvent>>();
   readonly #sessions = new LiveSessionRegistry<AgentSession>();
   readonly #approvals = new ApprovalBroker();
   readonly #cancelledJobs = new Set<string>();
+  // Cancel with no live session finishes the stream immediately, before a
+  // credential read can settle. Remember that so the late read does not write
+  // a second outcome into a database the caller may already have closed.
+  readonly #finishedJobs = new Set<string>();
   #activeJobId: string | undefined;
   #acceptingJob = false;
   #chatting = false;
@@ -96,13 +121,14 @@ export class PiWorkerAdapter implements WorkerAdapter {
 
   isBusy(): boolean { return this.#chatting || this.#evaluating || this.#acceptingJob || Boolean(this.#activeJobId); }
 
-  constructor(database: GameDatabase, credentials: CredentialStore, dataRoot: string, evaluationRunner?: EvaluationRunner) {
+  constructor(database: GameDatabase, credentials: CredentialStore, dataRoot: string, evaluationRunner?: EvaluationRunner, offline = offlineProviderEnabled()) {
     this.#database = database;
     this.#credentials = credentials;
     this.#jobsRoot = join(dataRoot, "company-project", "jobs");
     this.#studioRoot = join(dataRoot, "company-project", "studio");
     this.#runtimeRoot = join(dataRoot, "runtime");
     this.#evaluationRunner = evaluationRunner;
+    this.#offline = offline;
   }
 
   async startJob(spec: JobSpec): Promise<void> {
@@ -248,10 +274,23 @@ export class PiWorkerAdapter implements WorkerAdapter {
     this.#chatting = true;
     this.#auxiliaryIdle = new Promise((resolve) => { this.#resolveAuxiliaryIdle = resolve; });
     let session: AgentSession | undefined;
+    let chatSecret = "";
     try {
-      const apiKey = await this.#credentials.getOpenRouterKey();
+      if (this.#offline) {
+        this.#database.createChatMessage(employeeId, "player", cleanMessage);
+        const reply = bounded("Let's turn that into a work order when you're ready. I can talk it through, but files only change after you start a work order.", 4000);
+        const saved = this.#database.createChatMessage(employeeId, "employee", reply, { inputTokens: 0, outputTokens: 0, cost: 0 });
+        return { message: saved, dailySpend: this.#database.dailySpend() };
+      }
+      let credential: ModelCredential;
+      try {
+        credential = await requireModelCredential(this.#credentials, MISSING_CHAT_CREDENTIAL);
+      } catch (error) {
+        if (this.#shuttingDown) throw new Error("Worker is shutting down");
+        throw error;
+      }
+      chatSecret = credential.apiKey;
       if (this.#shuttingDown) throw new Error("Worker is shutting down");
-      if (!apiKey) throw new Error("Add an OpenRouter key before chatting with an employee");
       const previousMessages = this.#database.chatMessages(employeeId, 10);
       this.#database.createChatMessage(employeeId, "player", cleanMessage);
 
@@ -263,9 +302,11 @@ export class PiWorkerAdapter implements WorkerAdapter {
         modelsPath: null,
         refreshOnCreate: false,
       });
-      await modelRuntime.setRuntimeApiKey("openrouter", apiKey);
-      const model = modelRuntime.getModel("openrouter", DEFAULT_MODEL_ID);
-      if (!model) throw new Error(`Pi does not provide the configured OpenRouter model: ${DEFAULT_MODEL_ID}`);
+      await modelRuntime.setRuntimeApiKey(credential.provider, credential.apiKey);
+      const model = modelRuntime.getModel(credential.provider, credential.modelId);
+      if (!model) throw new Error(credential.provider === "xai"
+        ? "Pi does not provide the configured xAI model grok-4.6"
+        : `Pi does not provide the configured OpenRouter model: ${credential.modelId}`);
       const cappedModel: Model<any> = { ...model, maxTokens: Math.min(model.maxTokens, CHAT_RESPONSE_TOKEN_CAP) };
       const transcript = previousMessages.length > 0
         ? previousMessages.map((entry) => `${entry.sender === "player" ? "Founder" : employee.name}: ${bounded(entry.content, 700)}`).join("\n")
@@ -276,7 +317,9 @@ export class PiWorkerAdapter implements WorkerAdapter {
         : "- No completed assignments yet.";
       const specialty = employeeId === "mira"
         ? "You are a warm, practical product designer and researcher. You make fuzzy ideas concrete."
-        : "You are a direct, energetic growth and operations specialist. You look for the fastest useful experiment.";
+        : employeeId === "creative"
+          ? "You are a thoughtful designer. You give the company a clear name, palette, and look without pretending a trademark or launch has happened."
+          : "You are a direct, energetic growth and operations specialist. You look for the fastest useful experiment.";
       const systemPrompt = `You are ${employee.name}, an AI employee in Startup Valley Studio. ${specialty}
 
 This is a short workplace conversation with the founder, not a work session. You have no tools and must not claim to have created files, contacted services, spent money, or completed work. Help clarify ideas, ask at most one useful question at a time, and keep replies concise. When the request is actionable, suggest that the founder turn it into a work order. Never pretend a work order has started.
@@ -318,7 +361,7 @@ ${transcript}`;
       await session.prompt(cleanMessage);
       const lastMessage = session.state.messages.at(-1);
       if (lastMessage?.role === "assistant" && lastMessage.stopReason === "error") {
-        throw new Error(lastMessage.errorMessage ?? "OpenRouter chat request failed");
+        throw new Error(redactSecret(lastMessage.errorMessage ?? "The model request failed", credential.apiKey));
       }
       const reply = bounded(session.getLastAssistantText()?.trim() ?? "", 4000);
       if (!reply) throw new Error("The employee did not return a chat reply");
@@ -329,6 +372,8 @@ ${transcript}`;
         cost: Math.max(0, stats.cost),
       });
       return { message: saved, dailySpend: this.#database.dailySpend() };
+    } catch (error) {
+      throw new Error(redactSecret(error instanceof Error ? error.message : String(error), chatSecret));
     } finally {
       session?.dispose();
       this.#chatting = false;
@@ -374,6 +419,7 @@ ${transcript}`;
     this.#evaluating = true;
     this.#auxiliaryIdle = new Promise((resolve) => { this.#resolveAuxiliaryIdle = resolve; });
     let session: AgentSession | undefined;
+    let evaluationSecret = "";
     let usageRecorded = false;
     const attemptId = randomUUID();
     const recordUsage = () => {
@@ -387,22 +433,25 @@ ${transcript}`;
       const evidence = await new ArtifactMilestoneAdapter().collect(definition, (path) => this.readArtifact(jobId, path));
       const contents = evidence.documents.map((document) => `${document.path}\n${document.content}`);
       const input = prepareEvaluationInput(definition, evidence);
-      if (this.#evaluationRunner) {
-        const result = await this.#evaluationRunner(definition, contents, input);
+      const evaluationRunner = this.#evaluationRunner ?? (this.#offline ? offlineEvaluationRunner : undefined);
+      if (evaluationRunner) {
+        const result = await evaluationRunner(definition, contents, input);
         this.#database.journey.db.prepare("INSERT INTO evaluation_usage VALUES (?,?,?,?,?,?,?)").run(attemptId, jobId, result.inputTokens, result.outputTokens, result.cost, new Date().toISOString(), this.#database.clockState().day);
         usageRecorded = true;
         if (result.inputTokens + result.outputTokens > 3000) throw new Error("Evaluation exceeded its 3,000-token budget");
         this.#database.journey.finishEvaluation(jobId, parseEvaluation(result.text, definition));
         return { journey: this.#database.journey.state(), dailySpend: this.#database.dailySpend() };
       }
-      const key = await this.#credentials.getOpenRouterKey();
-      if (!key) throw new Error("Connect AI before evaluating this result");
+      const credential = await requireModelCredential(this.#credentials, MISSING_EVALUATION_CREDENTIAL);
+      evaluationSecret = credential.apiKey;
       const root = join(this.#runtimeRoot, "evaluation");
       await mkdir(root, { recursive: true });
       const runtime = await ModelRuntime.create({ credentials: new EmptyPiCredentialStore(), modelsPath: null, refreshOnCreate: false });
-      await runtime.setRuntimeApiKey("openrouter", key);
-      const model = runtime.getModel("openrouter", DEFAULT_MODEL_ID);
-      if (!model) throw new Error("Configured evaluation model is unavailable");
+      await runtime.setRuntimeApiKey(credential.provider, credential.apiKey);
+      const model = runtime.getModel(credential.provider, credential.modelId);
+      if (!model) throw new Error(credential.provider === "xai"
+        ? "Pi does not provide the configured xAI model grok-4.6"
+        : "Configured evaluation model is unavailable");
       const systemPrompt = input.systemPrompt;
       const settings = SettingsManager.inMemory();
       const loader = new DefaultResourceLoader({ cwd: root, agentDir: root, settingsManager: settings, noExtensions: true, noSkills: true, noPromptTemplates: true, noThemes: true, noContextFiles: true, systemPrompt });
@@ -415,13 +464,14 @@ ${transcript}`;
       const stats = session.getSessionStats();
       if (stats.tokens.input + stats.tokens.output > 3000) throw new Error("Evaluation exceeded its 3,000-token budget");
       const last = session.state.messages.at(-1);
-      if (last?.role === "assistant" && last.stopReason === "error") throw new Error(last.errorMessage ?? "Evaluation provider failed");
+      if (last?.role === "assistant" && last.stopReason === "error") throw new Error(redactSecret(last.errorMessage ?? "Evaluation provider failed", credential.apiKey));
       this.#database.journey.finishEvaluation(jobId, parseEvaluation(session.getLastAssistantText() ?? "", definition));
       return { journey: this.#database.journey.state(), dailySpend: this.#database.dailySpend() };
     } catch (error) {
       recordUsage();
-      this.#database.journey.failEvaluation(jobId, error instanceof Error ? error.message : String(error));
-      throw error;
+      const message = redactSecret(error instanceof Error ? error.message : String(error), evaluationSecret);
+      this.#database.journey.failEvaluation(jobId, message);
+      throw new Error(message);
     } finally {
       session?.dispose();
       this.#evaluationSession = undefined;
@@ -469,10 +519,15 @@ ${transcript}`;
   }
 
   #finish(jobId: string): void {
+    this.#finishedJobs.add(jobId);
     this.#sessions.delete(jobId);
     this.#cancelledJobs.delete(jobId);
     this.#streams.get(jobId)?.close();
     if (this.#activeJobId === jobId) this.#activeJobId = undefined;
+  }
+
+  #jobFinished(jobId: string): boolean {
+    return this.#finishedJobs.has(jobId) || this.#cancelledJobs.has(jobId);
   }
 
   systemPromptFor(spec: JobSpec, attachedStudioContent?: string): string {
@@ -531,14 +586,29 @@ When the requested work is complete, give a concise delivery summary. The game r
     let session: AgentSession | undefined;
     let unsubscribe: (() => void) | undefined;
     let exceededBudget = false;
+    let jobSecret = "";
     try {
-      const apiKey = await this.#credentials.getOpenRouterKey();
-      if (this.#cancelledJobs.has(spec.jobId)) return;
-      if (!apiKey) {
-        this.#database.setWorkOrderStatus(spec.jobId, "blocked");
-        this.#emit(spec.jobId, { type: "job.blocked", reason: "Add an OpenRouter key before assigning work" });
+      if (this.#offline) {
+        await runOfflineJob(spec, {
+          database: this.#database,
+          jobsRoot: this.#jobsRoot,
+          studioRoot: this.#studioRoot,
+          emit: (event) => this.#emit(spec.jobId, event),
+          finished: () => this.#jobFinished(spec.jobId),
+        });
         return;
       }
+      let credential: ModelCredential;
+      try {
+        credential = await requireModelCredential(this.#credentials, MISSING_WORK_CREDENTIAL);
+      } catch (error) {
+        if (this.#jobFinished(spec.jobId)) return;
+        this.#database.setWorkOrderStatus(spec.jobId, "blocked");
+        this.#emit(spec.jobId, { type: "job.blocked", reason: error instanceof Error ? error.message : MISSING_WORK_CREDENTIAL });
+        return;
+      }
+      jobSecret = credential.apiKey;
+      if (this.#jobFinished(spec.jobId)) return;
 
       const attachedStudioContent = spec.attachedStudioPath
         ? (await this.readStudioFile(spec.attachedStudioPath)).content
@@ -560,9 +630,11 @@ When the requested work is complete, give a concise delivery summary. The game r
         modelsPath: null,
         refreshOnCreate: false,
       });
-      await modelRuntime.setRuntimeApiKey("openrouter", apiKey);
-      const model = modelRuntime.getModel("openrouter", DEFAULT_MODEL_ID);
-      if (!model) throw new Error(`Pi does not provide the configured OpenRouter model: ${DEFAULT_MODEL_ID}`);
+      await modelRuntime.setRuntimeApiKey(credential.provider, credential.apiKey);
+      const model = modelRuntime.getModel(credential.provider, credential.modelId);
+      if (!model) throw new Error(credential.provider === "xai"
+        ? "Pi does not provide the configured xAI model grok-4.6"
+        : `Pi does not provide the configured OpenRouter model: ${credential.modelId}`);
       const cappedModel: Model<any> = { ...model, maxTokens: Math.min(model.maxTokens, spec.tokenBudget) };
 
       const tools = await createJobTools({
@@ -623,7 +695,7 @@ When the requested work is complete, give a concise delivery summary. The game r
       }
       const lastMessage = session.state.messages.at(-1);
       if (lastMessage?.role === "assistant" && lastMessage.stopReason === "error") {
-        throw new Error(lastMessage.errorMessage ?? "OpenRouter request failed");
+        throw new Error(redactSecret(lastMessage.errorMessage ?? "The model request failed", credential.apiKey));
       }
       if (this.#database.artifacts(spec.jobId).length === 0) {
         throw new Error("The agent finished without creating a deliverable artifact");
@@ -633,7 +705,7 @@ When the requested work is complete, give a concise delivery summary. The game r
       this.#emit(spec.jobId, { type: "job.completed", summary });
     } catch (error) {
       if (this.#cancelledJobs.has(spec.jobId)) return;
-      const message = bounded(error instanceof Error ? error.message : String(error), 4000);
+      const message = bounded(redactSecret(error instanceof Error ? error.message : String(error), jobSecret), 4000);
       this.#database.setWorkOrderStatus(spec.jobId, "failed");
       this.#emit(spec.jobId, { type: "job.failed", error: message });
     } finally {

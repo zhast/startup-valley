@@ -19,6 +19,7 @@ func run() -> void:
 	check_pose_registry()
 	for character_id: String in ["mira", "theo"]:
 		check_actor(character_id)
+	check_delivery_sprites()
 	await check_main_integration()
 	var output := "res://tests/output/workstation-facing"
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
@@ -41,14 +42,7 @@ func check_pose_registry() -> void:
 			check(typing.texture == CharacterArt.seated_sheet(character_id) and typing.region == Rect2(Vector2((2 + frame % 4) * 48, 0), CharacterArt.FRAME_SIZE), "Legacy typing pixels/cadence unchanged")
 		check(CharacterArt.supported_work_facings(character_id, "missing-set").is_empty(), "An absent set cannot inherit legacy poses")
 		check(not CharacterArt.supports_work_pose(character_id, CharacterArt.LEGACY_WORK_POSE_SET, "south", "missing-pose"), "An absent action cannot inherit seated art")
-	check(CharacterArt.seated_sheet("founder") == CharacterArt.FOUNDER_SEATED, "Founder seated sheet is not Mina's fallback")
-	check(CharacterArt.seated_sheet("founder") != CharacterArt.MIRA_SEATED, "Founder does not reuse Mina seated art")
-	if CharacterArt.FOUNDER_SEATED != null:
-		check(CharacterArt.supported_work_facings("founder") == ["south"], "Founder south seated/typing uses the PASS sheet")
-	else:
-		check(CharacterArt.supported_work_facings("founder").is_empty(), "Founder south bind waits for the tracked PASS sheet")
-	check(not CharacterArt.supports_work_pose("founder", CharacterArt.LEGACY_WORK_POSE_SET, "east", "seated"), "Founder east seated remains unbound")
-	check(CharacterArt.supported_work_facings("founder", CharacterArt.REVIEWED_WORKSTATION_POSE_SET).is_empty(), "Founder is not in the reviewed workstation pose set")
+	check(CharacterArt.supported_work_facings("founder").is_empty(), "Founder has no employee work sheet implicitly assigned")
 	check(CharacterArt.supported_work_facings("future-lawyer").is_empty(), "Future roles cannot silently borrow Mina's poses")
 	check(CharacterArt.supported_work_facings("mira", CharacterArt.LEGACY_WORK_POSE_SET, []).is_empty(), "Empty requirements are not proof of supported directions")
 
@@ -146,6 +140,41 @@ func check_actor(character_id: String) -> void:
 	check(employee._character_sprite.texture == CharacterArt.locomotion_sheet(character_id) and employee._character_sprite.region_rect == CharacterArt.locomotion_region(&"left", 0), "Unsupported work art has a truthful standing fallback, never fake seated art")
 	employee.free()
 	navigation.free()
+
+func check_delivery_sprites() -> void:
+	for character_id: String in ["creative", "founder", "mira", "theo"]:
+		var employee := EmployeeAvatar.new()
+		var record := EmployeeRecord.new()
+		record.id = character_id
+		record.display_name = character_id.capitalize()
+		var feet := Vector2(336, 240)
+		employee.configure(record, feet, feet, Vector2(656, 240))
+		root.add_child(employee)
+		employee.set_physics_process(false)
+		employee.world_paused = true
+		var owns_work := character_id == "mira" or character_id == "theo"
+		check(CharacterArt.has_work_sheet(character_id) == owns_work, character_id + " has a delivery work sheet only for Mira and Theo")
+		for facing_name: String in ["front", "back", "left", "right"]:
+			employee._facing = StringName(facing_name)
+			for frame: int in range(4):
+				employee.work_state = EmployeeAvatar.WorkState.DELIVERING
+				employee._animation_elapsed = float(frame) / 8.0
+				employee._update_character_frame()
+				var sprite := employee._character_sprite
+				if owns_work:
+					var row := 2
+					var column := frame
+					if facing_name == "back":
+						column += 4
+					elif facing_name == "left":
+						row = 3
+					elif facing_name == "right":
+						row = 3
+						column += 4
+					check(sprite.texture == CharacterArt.work_sheet(character_id) and sprite.region_rect == CharacterArt.work_region(row, column), "%s delivering %s frame %d keeps that employee's work sheet" % [character_id, facing_name, frame])
+				else:
+					check(sprite.texture == CharacterArt.locomotion_sheet(character_id) and sprite.texture != CharacterArt.MIRA_WORK and sprite.region_rect == CharacterArt.locomotion_region(StringName(facing_name), 2 + frame), "%s delivering %s frame %d uses that employee's walk cycle" % [character_id, facing_name, frame])
+		employee.free()
 
 func check_main_integration() -> void:
 	var main := load("res://world/main.tscn").instantiate() as GameMain
