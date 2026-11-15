@@ -13,6 +13,19 @@ the accepted `/goal` prompt. The owner activated this goal on 2026-11-15.
 Current status: active; worker progression, Godot world/UI, and integrated QA
 are assigned to separate agents. Root coordinates integration and Git pushes.
 
+### Active goal checkpoints
+
+- Confirmed remote `main`: `6966203176a7adabccd49d3d929a924ed477629c`
+  (initial polish, compact-room QA, active plan, offline unlocks and packaging).
+  Local history was aligned after verifying identical complete Git trees.
+- Local `4c0b134` + `982e43a`: durable courtyard/location/market brief,
+  offline release unlocks, save revision checks and interrupted-travel recovery.
+  The complete worker suite passes 156 tests with 2 opt-in skips; offline
+  evaluation passes 8/8. The contract follow-up fixes an omission discovered
+  by the full suite; publish the coherent pair together.
+- Godot world/UI integration and actual-input journey tests are in progress.
+  Do not confuse the saved worker slice with a completed visual demonstration.
+
 ## Saved implementation
 
 - Compact starter studio for new companies, with garden scenery, two desks,
@@ -41,7 +54,9 @@ historical IDs identify the branch tip.
 The latest normal release export was built at
 `2026-11-15T22:54:04.023Z`, with the release asset review gate enabled. It includes
 the compact office, new opening/goal, art fixes, chair back and portrait repair.
-The subsequent work is documentation, evidence and resource identity metadata.
+New source checkpoints after that export include offline teammate unlocks
+(`e8a34fe`) and verified ZIP packaging with full-payload identities (`9ee6e0b`).
+These newer changes are committed but await the next normal release export.
 `dist/` is generated and ignored; rebuild it rather than committing it.
 
 The final pre-deferral browser session completed invite → first project →
@@ -56,6 +71,10 @@ Integrated verification performed during these increments includes:
 
 - Offline harness: 145 passing, 2 existing opt-in skips.
 - Web tooling: 48 passing; asset tests: 16 passing.
+- Packaging checkpoint: all 53 root tooling/asset tests pass, including five
+  new identity/packaging checks and ZIP round-trip verification. The first
+  sandboxed run could not bind the loopback fixture server; the authorized
+  rerun with loopback access passed. No browser UI was used.
 - Asset release gate: 804 runtime PNGs, 7 reviewed changes, no errors/warnings.
 - Story progression: 57 headless / 64 rendered checks; starter office: 32.
 - Seated-chair composition: 234 headless / 282 rendered checks across 48 poses;
@@ -128,8 +147,8 @@ could write this repository. Never persist its credentials in the repository.
 
 ## Next concrete work
 
-1. Audit the offline post-release unlock path in the shared worker. Ensure the
-   next teammate/project does not depend on a legacy optional API work order.
+1. Confirm the coherent worker pair has reached remote `main`; the offline
+   unlock audit and durable courtyard simulation are implemented and tested.
 2. Complete contextual movement/interaction hints and the post-release next
    objective, deriving progress from saved state and preventing duplicate rewards.
 3. Implement one small courtyard story opportunity with a safe return, bounded

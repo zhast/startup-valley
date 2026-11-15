@@ -101,3 +101,37 @@ deployment workflow is retained only as an inactive example. Use integrated
 Godot tests, rendered engine captures and automated worker/export validation;
 no computer-use session is required. Prior browser evidence remains useful,
 but does not claim future browser coverage.
+
+## 2026-11-15 — Bind demo packages to the complete exported payload
+
+**Decision:** A normal export records an identity and SHA256 for every payload
+file, including the worker and its SQLite WASM. Packaging refuses a preview
+build, missing runtime, changed payload or symbolic link; it includes controls,
+three current captures, a manifest and an integrity-tested ZIP with a checksum.
+
+**Reason:** A stale loader or worker can be as damaging as a stale game pack.
+File integrity does not establish gameplay quality, so manifests point to the
+separate acceptance report instead of claiming a playtest passed.
+
+**Evidence:** `tests/build-identity.test.mjs` covers payload drift, metadata
+stability, rejected inputs and a ZIP round trip. All 53 root tooling tests pass.
+
+## 2026-11-15 — Grow through offline releases and one neighboring story
+
+**Decision:** Actual releases unlock Theo after one shipped project and Creative
+after three, while preserving earlier optional chapter unlocks for old saves.
+The first release opens a bounded courtyard visit where Theo offers a Market
+Day Kit. Accepting the brief unlocks its existing research topic; development
+and earnings use the ordinary product simulation. No conversation invents cash.
+
+**Persistence:** The worker owns location, saved return point, accepted brief
+and linked product. Travel and acceptance use revision checks and durable
+operation receipts in one transaction. Delayed saves cannot overwrite a newer
+location. Cancellation permits a replacement project; New Company clears the
+old story and its receipts. The renderer must share the worker's geometry
+contract so every legal movement can be saved.
+
+**Evidence:** `offline-progression.test.ts`, `courtyard-story.test.ts`, and the
+real process-interruption fixture. The complete worker suite passes 156 tests
+with 2 pre-existing opt-in skips; offline evaluation passes 8/8. Integrated
+Godot journey acceptance remains in progress at this checkpoint.
