@@ -97,3 +97,7 @@ the latest live validation and remaining product-research questions.
 New Company requires confirmation and moves
 the previous database and project into a timestamped `backups/` directory inside
 the game's user-data folder; it never deletes the old company.
+
+## Browser port groundwork
+
+The [web port guide](docs/web/README.md) contains the repository audit, browser-worker/SQLite architecture plan, asset review, and verification results. Delivery tooling is under `scripts/`, with an optional Godot shell at `game/web/shell.html`. Run `node --test tests/*.test.mjs` for its isolated checks. The browser runtime adaptation is not yet implemented; the native run instructions above still apply.

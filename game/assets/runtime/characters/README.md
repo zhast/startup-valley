@@ -3,8 +3,8 @@
 All runtime characters render at scale 1 with 48 × 80 pixel cells and a shared
 bottom-center foot anchor at `(24, 72)`.
 
-- `founder-locomotion.png`, `mira-locomotion.png`, and
-  `theo-locomotion.png`: 6 columns × 4 rows. Rows are front, back, left, right;
+- `founder-locomotion.png`, `mira-locomotion.png`, `theo-locomotion.png`, and
+  `creative-locomotion.png`: 6 columns × 4 rows. Rows are front, back, left, right;
   columns 0–1 are idle and columns 2–5 are walking.
 - `mira-seated.png` and `theo-seated.png`: 6 columns × 1 row. Columns 0–1
   are chair-seated idle/blink; 2–5 are typing. No baked furniture or laptop.

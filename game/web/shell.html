@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#102d27">
+  <meta name="description" content="A little studio. A world of possibility.">
+  <title>$GODOT_PROJECT_NAME</title>
+  <style>
+    :root { color-scheme: dark; font-family: ui-sans-serif, system-ui, sans-serif; color: #eee9d9; background: #102d27; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100svh; }
+    button { font: inherit; }
+    button:focus-visible, a:focus-visible { outline: 3px solid #f2d389; outline-offset: 5px; }
+    [hidden] { display: none !important; }
+    #canvas { display: block; width: 100%; height: 100dvh; outline: none; image-rendering: pixelated; touch-action: none; }
+    body.playing { overflow: hidden; }
+    #cover { position: fixed; inset: 0; overflow: auto; display: flex; flex-direction: column; min-height: 100svh; background: #102d27; background-image: radial-gradient(ellipse at 50% 75%, #23443a, transparent 65%); }
+    .masthead { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 32px 40px; }
+    .brand { display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 600; letter-spacing: -.02em; }
+    .mark { width: 24px; height: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; transform: rotate(-6deg); }
+    .mark i { background: #e6c57b; }
+    .mark i:nth-child(2), .mark i:nth-child(4) { opacity: .35; }
+    .edition { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #a1b4a9; }
+    main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 35px 24px 60px; text-align: center; }
+    .intro { width: min(100%, 610px); }
+    .eyebrow { color: #d8bf84; text-transform: uppercase; font-size: 10px; letter-spacing: .26em; margin: 0 0 26px; }
+    h1 { font: 400 clamp(52px, 9vw, 86px)/.98 Georgia, 'Times New Roman', serif; letter-spacing: -.055em; margin: 0; text-wrap: balance; overflow-wrap: anywhere; }
+    .subtitle { color: #b7c6ba; line-height: 1.6; margin: 25px 0 32px; font-size: 15px; }
+    .landscape { display: block; width: 240px; height: 92px; margin: 0 auto 30px; shape-rendering: crispEdges; }
+    #start, #reload { border: 1px solid #e4c780; border-radius: 4px; padding: 16px 28px; background: #e4c780; color: #18392e; font-weight: 650; cursor: pointer; min-width: 224px; }
+    #start:hover:enabled, #reload:hover { background: #f2dba0; }
+    #start:disabled { opacity: .6; cursor: default; }
+    #status { min-height: 3em; margin: 20px auto 0; color: #bac7bb; font-size: 12px; line-height: 1.6; max-width: 420px; white-space: pre-line; overflow-wrap: anywhere; }
+    progress { display: block; width: 224px; height: 5px; margin: 24px auto 0; accent-color: #e4c780; }
+    .foot { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px 40px; border-top: 1px solid #ffffff12; font-size: 11px; color: #91a89a; }
+    #preview-note { border: 1px solid #ffffff28; border-radius: 4px; padding: 7px 10px; }
+    #fullscreen { position: fixed; right: max(14px, env(safe-area-inset-right)); top: max(14px, env(safe-area-inset-top)); padding: 10px 14px; color: #eee9d9; border: 1px solid #ffffff55; background: #102d27dd; border-radius: 4px; cursor: pointer; }
+    #game-notice { position: fixed; bottom: 12px; left: 12px; font-size: 12px; background: #102d27e8; padding: 10px; max-width: calc(100% - 24px); }
+    @media (max-width: 560px) { .masthead { padding: 24px; } .edition { display: none; } .foot { padding: 20px 24px; flex-wrap: wrap; } main { padding-top: 20px; } h1 { font-size: clamp(42px, 13vw, 61px); } }
+    @media (max-height: 500px) and (min-width: 561px) { .masthead { padding: 16px 24px; } main { padding: 10px 24px 16px; } .eyebrow { margin-bottom: 12px; } h1 { font-size: 48px; } .subtitle { margin: 12px 0 18px; } .landscape { display: none; } #status { margin-top: 10px; } .foot { padding: 12px 24px; } }
+  </style>
+  $GODOT_HEAD_INCLUDE
+</head>
+<body>
+  <canvas id="canvas" tabindex="-1" aria-label="Game canvas" hidden>Your browser needs WebGL 2 to play this game.</canvas>
+  <div id="cover">
+    <header class="masthead">
+      <div class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span>$GODOT_PROJECT_NAME</span></div>
+      <span class="edition">A world in the making</span>
+    </header>
+    <main><div class="intro">
+      <p class="eyebrow">Make something that matters</p>
+      <h1>$GODOT_PROJECT_NAME</h1>
+      <p class="subtitle">A little studio. A world of possibility.</p>
+      <svg class="landscape" viewBox="0 0 240 92" aria-hidden="true">
+        <path fill="#314f3d" d="M0 68h16V54h16V40h16v14h16v14h16v-8h16V46h16v14h16v8h24V54h16V40h16v14h16v14h40v24H0z"/>
+        <path fill="#496447" d="M0 80h32V68h24v12h56V68h24v12h56V68h24v12h24v12H0z"/>
+        <path fill="#ba9060" d="M87 42h66v38H87z"/><path fill="#d4b076" d="M91 46h58v34H91z"/>
+        <path fill="#a8704c" d="M79 38h8v-8h8v-8h50v8h8v8h8v8H79z"/>
+        <path fill="#17372e" d="M112 56h16v24h-16zM95 53h11v13H95zM134 53h11v13h-11z"/>
+        <path fill="#edcd79" d="M97 55h7v9h-7zM136 55h7v9h-7z"/><path fill="#d0b678" d="M117 80h8v12h-8z"/>
+        <path fill="#7b9561" d="M44 70h4v10h-4zM42 66h8v6h-8zM186 76h4v10h-4zM184 72h8v6h-8z"/>
+        <path fill="#d6b46b" d="M41 86h3v3h-3zM167 83h3v3h-3zM69 79h3v3h-3z"/>
+      </svg>
+      <button id="start" disabled>Preparing…</button>
+      <button id="reload" hidden>Reload game</button>
+      <progress id="progress" hidden aria-label="Loading game"></progress>
+      <p id="status" role="status" aria-live="polite">Checking your browser…</p>
+      <noscript><p>Enable JavaScript in your browser to load and play the game.</p></noscript>
+    </div></main>
+    <footer class="foot"><span>Your next chapter starts here.</span><span id="preview-note" hidden>Shell preview · game not connected</span></footer>
+  </div>
+  <button id="fullscreen" hidden>Full screen</button>
+  <p id="game-notice" role="status" hidden></p>
+  <script src="$GODOT_URL"></script>
+  <script>
+    'use strict';
+    const config = $GODOT_CONFIG;
+    const canvas = document.getElementById('canvas');
+    const cover = document.getElementById('cover');
+    const start = document.getElementById('start');
+    const reload = document.getElementById('reload');
+    const status = document.getElementById('status');
+    const progress = document.getElementById('progress');
+    const fullscreen = document.getElementById('fullscreen');
+    const notice = document.getElementById('game-notice');
+    let engine;
+    let phase = 'ready';
+    function fail(message) {
+      phase = 'stopped';
+      cover.hidden = false; canvas.hidden = true; fullscreen.hidden = true;
+      progress.hidden = true; start.hidden = true; reload.hidden = false;
+      canvas.tabIndex = -1;
+      document.body.classList.remove('playing');
+      status.setAttribute('role', 'alert');
+      status.setAttribute('aria-live', 'assertive');
+      status.textContent = message;
+      reload.focus();
+    }
+    reload.addEventListener('click', () => location.reload());
+    fullscreen.addEventListener('click', async () => {
+      try {
+        if (document.fullscreenElement) await document.exitFullscreen();
+        else await document.documentElement.requestFullscreen();
+        notice.hidden = true;
+      } catch { notice.hidden = false; notice.textContent = 'Full screen is unavailable in this browser. You can keep playing in this window.'; }
+      if (phase === 'running') canvas.focus();
+    });
+    document.addEventListener('fullscreenchange', () => { fullscreen.textContent = document.fullscreenElement ? 'Exit full screen' : 'Full screen'; });
+    if (config.__preview) {
+      start.textContent = 'Awaiting Godot project';
+      status.textContent = 'Your game will appear here after its first web export.\nThis is a preview of the loading screen only.';
+      document.getElementById('preview-note').hidden = false;
+    } else if (typeof Engine === 'undefined') {
+      fail('The game loader could not be downloaded. Check your connection, then reload.');
+    } else if (typeof WebAssembly !== 'object' || !Engine.isWebGLAvailable(2)) {
+      fail('This game needs WebAssembly and WebGL 2. Try an updated browser with hardware acceleration enabled.');
+    } else {
+      start.disabled = false; start.textContent = 'Enter the valley';
+      status.textContent = 'Click to load the game. Audio may require an in-game click.';
+      start.addEventListener('click', async () => {
+        if (phase !== 'ready') return;
+        phase = 'loading';
+        start.disabled = true; start.textContent = 'Loading your world…';
+        progress.hidden = false; canvas.hidden = false;
+        canvas.inert = true;
+        try {
+          engine = new Engine(config);
+          await engine.startGame({
+            canvas,
+            onProgress: (loaded, total) => {
+              if (phase !== 'loading') return;
+              if (Number.isFinite(total) && total > 0 && Number.isFinite(loaded) && loaded >= 0) {
+                const current = Math.min(loaded, total);
+                progress.max = total; progress.value = current;
+                status.textContent = `Loading ${Math.round(current / total * 100)}%`;
+              } else {
+                progress.removeAttribute('value'); progress.removeAttribute('max');
+                status.textContent = 'Loading game files…';
+              }
+            },
+            onExit: () => fail('The game has closed. Reload whenever you are ready to return.'),
+          });
+          // A project may quit during initialization. A resolved start promise
+          // must not hide the exit message or focus a stopped game.
+          if (phase !== 'loading') return;
+          phase = 'running';
+          cover.hidden = true;
+          canvas.inert = false; canvas.tabIndex = 0;
+          document.body.classList.add('playing');
+          fullscreen.hidden = !document.fullscreenEnabled;
+          canvas.focus();
+        } catch (error) {
+          console.error('Godot startup failed:', error);
+          fail('The game could not start. Check your connection and reload. If it continues, try another browser.');
+        }
+      }, { once: true });
+    }
+  </script>
+</body>
+</html>
