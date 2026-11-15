@@ -1,4 +1,7 @@
 import assert from "node:assert/strict";
+import { spawn } from "node:child_process";
+import { once } from "node:events";
+import { readFileSync } from "node:fs";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -20,8 +23,14 @@ async function fixture(t: TestContext) {
     for (const db of connections) try { db.close(); } catch { /* explicit restart already closed it */ }
     await rm(root, { recursive: true, force: true });
   });
-  return { db: open(), open };
+  return { db: open(), open, root };
 }
+
+test("standalone journey contract includes the canonical bounded story projection", () => {
+  const journey = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const story = JSON.parse(readFileSync(new URL("../../contracts/story.schema.json", import.meta.url), "utf8"));
+  assert.deepEqual(journey.properties.story, story.$defs.state);
+});
 
 async function request(db: GameDatabase, method: ProtocolMethod, params: Record<string, unknown> = {}) {
   return await dispatchOffline(parseRequest({ kind: "request", id: `${method}-fixture`, method, params }), db) as any;
@@ -209,4 +218,29 @@ test("New Company clears durable story and operation receipts in the shared offl
   assert.equal(connection.prepare("SELECT COUNT(*) n FROM story_operations").get()!.n, 0);
   const rejected = await runtime.handleRequest({ kind: "request", id: "old-receipt-after-reset", method: "story.travel", params: { operationId: "reset-visit", expectedRevision: 0, destination: "courtyard" } });
   assert.equal(rejected.ok, false, "a previous company's receipt cannot unlock a new company's courtyard");
+});
+
+test("process death before a travel receipt commits rolls back location and saved position together", async (t) => {
+  const { db, open, root } = await fixture(t);
+  await firstRelease(db);
+  const before = db.bootstrap();
+  db.close();
+  const child = spawn(process.execPath, ["test/fixtures/story-interrupted.mjs", root], { cwd: new URL("..", import.meta.url), stdio: ["pipe", "pipe", "pipe"] });
+  t.after(() => { if (child.exitCode === null && child.signalCode === null) child.kill("SIGKILL"); });
+  let errors = "";
+  child.stderr.on("data", (data) => { errors += String(data); });
+  await new Promise<void>((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error(`Travel crash probe did not reach transaction: ${errors}`)), 5000);
+    child.stdout.on("data", (data) => { if (String(data).includes("STORY_UNCOMMITTED")) { clearTimeout(timer); resolve(); } });
+    child.once("exit", () => { clearTimeout(timer); reject(new Error(`Travel crash probe exited early: ${errors}`)); });
+  });
+  const exit = once(child, "exit");
+  child.kill("SIGKILL");
+  await exit;
+  const reopened = open();
+  assert.deepEqual(reopened.bootstrap().journey, before.journey);
+  assert.equal(reopened.journey.db.prepare("SELECT COUNT(*) n FROM story_operations").get()!.n, 0);
+  reopened.journey.db.exec("DROP TRIGGER story_crash_probe");
+  await travel(reopened, "courtyard", "interrupted-travel");
+  assert.equal(reopened.story.view().location, "courtyard");
 });

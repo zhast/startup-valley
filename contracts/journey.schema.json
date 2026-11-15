@@ -11,6 +11,84 @@
   ],
   "additionalProperties": false,
   "properties": {
+    "story": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "revision",
+        "location",
+        "courtyardUnlocked",
+        "visited",
+        "metTheo",
+        "opportunity"
+      ],
+      "properties": {
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "location": {
+          "enum": [
+            "office",
+            "courtyard"
+          ]
+        },
+        "courtyardUnlocked": {
+          "type": "boolean"
+        },
+        "visited": {
+          "type": "boolean"
+        },
+        "metTheo": {
+          "type": "boolean"
+        },
+        "opportunity": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "title",
+            "description",
+            "topicId",
+            "typeId",
+            "status",
+            "productId"
+          ],
+          "properties": {
+            "id": {
+              "const": "market_day_kit"
+            },
+            "title": {
+              "type": "string",
+              "maxLength": 80
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 400
+            },
+            "topicId": {
+              "const": "reselling"
+            },
+            "typeId": {
+              "const": "template_pack"
+            },
+            "status": {
+              "enum": [
+                "locked",
+                "available",
+                "accepted",
+                "developing",
+                "completed"
+              ]
+            },
+            "productId": {
+              "type": "string",
+              "pattern": "^(|p[1-9][0-9]*)$"
+            }
+          }
+        }
+      }
+    },
     "company": {
       "type": "object",
       "additionalProperties": false,
