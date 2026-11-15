@@ -245,17 +245,27 @@ export class FurnishingStore {
     const owned = new Set(inventory.map((item) => item.id));
     return Object.fromEntries(this.geometry.room.props.filter((prop) => owned.has(prop.id)).map((prop) => [prop.id, { grid: prop.grid, facing: prop.facing }]));
   }
-  /** First-run lounge only. Recovery still stores décor; never occupies the [24,8] decor pocket. */
+  /** First-run lounge only. Existing saves and recovery keep their own arrangement. */
   private starterLounge(inventory: FurnitureItem[], base: FurniturePlacements): FurniturePlacements {
     const owned = new Set(inventory.map((item) => item.id));
-    if (!owned.has("decor-phone_booth") || Object.hasOwn(base, "decor-phone_booth")) return base;
-    const candidate: FurniturePlacements = { ...base, "decor-phone_booth": { grid: [3, 18], facing: "south" } };
-    try {
-      this.geometry.validate(candidate, inventory);
-      return candidate;
-    } catch {
-      return base;
+    const groups: Array<Array<{ id: string; grid: Cell }>> = [
+      [{ id: "decor-phone_booth", grid: [3, 18] }],
+      [{ id: "decor-cafe_table", grid: [5, 8] }, { id: "decor-cafe_chair", grid: [7, 8] }],
+    ];
+    let placements = base;
+    for (const group of groups) {
+      if (group.some((item) => !owned.has(item.id) || Object.hasOwn(placements, item.id))) continue;
+      const candidate: FurniturePlacements = { ...placements };
+      for (const item of group) candidate[item.id] = { grid: item.grid, facing: "south" };
+      try {
+        // Keep the café together, without obstructing circulation or future hires.
+        this.geometry.validate(candidate, inventory);
+        placements = candidate;
+      } catch {
+        // If an authored room changes, unplaceable décor stays safely in storage.
+      }
     }
+    return placements;
   }
   private officeLevel(): number {
     try {

@@ -47,8 +47,15 @@ func run() -> void:
 		var library: Dictionary = OfficeLayout._read_json(OfficeLayout.FURNISHING_CATALOG_PATH)
 		var starter_count: int = (library.get("starter_decor", []) as Array).size()
 		check(game.worker_client.furnishing_state.inventory.size() == 1 + starter_count, "Founder station and owned starter decorations are bootstrapped")
-		check(game.room.visible_prop_count() == 2, "First-run lounge places the phone booth; other starter décor stays in storage")
+		check(game.room.visible_prop_count() == 4, "Fresh companies place the phone booth and adjacent café pair")
 		check(game.room.prop_node("decor-phone_booth") != null, "Phone booth occupies the southwest lounge bay on a fresh company")
+		check(game.room.prop_node("decor-cafe_table") != null and game.room.prop_node("decor-cafe_chair") != null, "Café table and chair render on first bootstrap")
+		check(OfficeLayout.vector(game.worker_client.furnishing_state.placements["decor-cafe_table"].grid) == Vector2i(5, 8) and OfficeLayout.vector(game.worker_client.furnishing_state.placements["decor-cafe_chair"].grid) == Vector2i(7, 8), "Starter café is arranged together by the future coffee station")
+		for cafe_id: String in ["decor-cafe_table", "decor-cafe_chair"]:
+			var bounds: Rect2 = game.room.placement_by_id(cafe_id).world_visual_bounds
+			for employee_id: String in ["mira", "theo", "creative"]:
+				var arrival := Rect2(game.room.employee_spawn_position(employee_id) - Vector2(24, 72), CharacterArt.FRAME_SIZE)
+				check(not bounds.intersects(arrival), "Starter café art clears employee arrival: " + employee_id)
 		check(OfficeLayout.vector(game.worker_client.furnishing_state.placements["decor-phone_booth"].grid) != CELL, "First-run lounge never occupies the planter test bay")
 	await button_named("Continue" if game.company_panel._company_started() else "Start company", game.company_panel)
 	await key(KEY_ESCAPE)
