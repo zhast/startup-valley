@@ -78,6 +78,26 @@ func run() -> void:
 		root.push_input(event, true)
 		await process_frame
 	check(requests == ["hiring.complete"], "Compact invitation submits exactly one real UI request")
+	# Welcome copy follows saved release history, including a later teammate.
+	for released: bool in [false, true]:
+		var candidate := {"id": "theo" if released else "mira", "name": "Theo" if released else "Mina", "hired": true}
+		panel._pending_employee_id = candidate.id
+		panel.update_state({"company": {"cashCents": 5000}, "candidates": [candidate], "tycoon": {"history": [{"id": "p1", "name": "First kit"}] if released else []}})
+		panel.present("hired")
+		await settled()
+		button = panel._preferred_focus
+		check(button.text == ("Let’s make our next idea" if released else "Let’s find our first idea"), "Welcome action reflects saved release history")
+		check(panel._frame.get_global_rect().encloses(button.get_global_rect()), "Welcome action remains inside the compact card")
+		check(not panel._scroll.get_v_scroll_bar().visible, "Later-hire welcome needs no internal scrolling")
+	for down: bool in [true, false]:
+		var event := InputEventMouseButton.new()
+		event.position = button.get_global_rect().get_center()
+		event.button_index = MOUSE_BUTTON_LEFT
+		event.pressed = down
+		root.push_input(event, true)
+		await process_frame
+	check(panel.screen == "product", "Later-hire welcome still opens product planning through its real action")
+	panel._pending_employee_id = ""
 	panel.update_state({"company": {"cashCents": 5000}, "candidates": [], "tycoon": {"history": [{"id": "p1", "name": "First kit", "review": {"score": 7}, "salesCents": 5000}]}})
 	panel.show_release({"furnishingRewards": ["Café table", "Visitor chair"]})
 	await settled()

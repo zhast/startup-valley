@@ -240,7 +240,11 @@ func compatibility() -> void:
 	if not check(not fixture_path.is_empty(), "Compatibility phase requires an explicit labeled fixture"): return
 	var expected: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(fixture_path))
 	check(game._journey.company == expected.company, "Fixture company values survive actual worker migration")
-	check(game.worker_client.furnishing_state == expected.furnishing, "Fixture furniture and inventory survive actual worker migration exactly")
+	var migrated_furnishing: Dictionary = expected.furnishing.duplicate(true)
+	# Both fixtures and protocol objects come from JSON, whose numbers are
+	# floats in Godot. Preserve that type for the deep Dictionary comparison.
+	migrated_furnishing.revision = float(migrated_furnishing.revision) + float(expected.get("migrationRevisionDelta", 0))
+	check(game.worker_client.furnishing_state == migrated_furnishing, "Fixture furniture and inventory survive migration with exactly the declared stale-edit revision bump")
 	var saved_position := Vector2(float(expected.player.x), float(expected.player.y))
 	check(game.player.position.distance_to(saved_position) < 0.01, "Fixture position survives actual worker migration")
 	await enter()

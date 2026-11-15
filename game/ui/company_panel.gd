@@ -406,7 +406,8 @@ func _hired_screen() -> void:
 	var person_name := str(hired.get("name", "Your teammate"))
 	if story_mode:
 		_story_person(hired, "A desk for me? This already feels like home.")
-		_actions("Let’s find our first idea", func() -> void: present("product"), true, "")
+		var has_released := not (_tycoon().get("history", []) as Array).is_empty()
+		_actions("Let’s make our next idea" if has_released else "Let’s find our first idea", func() -> void: present("product"), true, "")
 		return
 	_heading("Welcome, " + person_name, "A new desk is ready in your office.")
 	_person(hired, false)

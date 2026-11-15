@@ -29,10 +29,16 @@ export async function createCompatibilityFixture(kind, data, output) {
     db.journey.savePlayer({ x: 550.25, y: 590.5, movementSeen: true });
   }
   const state = db.bootstrap();
-  const expected = { kind, company: state.journey.company, furnishing: state.furnishing, player: state.journey.player };
+  const expected = { kind, company: state.journey.company, furnishing: state.furnishing, player: state.journey.player,
+    // A pre-19 geometry upgrade increments the edit revision once, even if
+    // these particular furniture positions still fit the corrected profiles.
+    migrationRevisionDelta: kind === 'legacy' ? 1 : 0 };
   if (kind === 'legacy') {
     // Leave a genuine pre-17 schema at the actual worker startup boundary.
-    db.journey.db.exec('DROP TABLE office_layout_state; DROP TABLE story_state; DROP TABLE story_operations; DELETE FROM schema_migrations WHERE version >= 17');
+    // Remove every post-16 table as well as its migration receipt. In
+    // particular, leaving migration19's table would create an impossible
+    // historical database and make the real migration fail on CREATE TABLE.
+    db.journey.db.exec('DROP TABLE office_layout_state; DROP TABLE story_state; DROP TABLE story_operations; DROP TABLE furnishing_geometry_state; DELETE FROM schema_migrations WHERE version >= 17');
   }
   db.close();
   const evidence = join(output, 'compatibility-fixture.json');
