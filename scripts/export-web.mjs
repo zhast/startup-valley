@@ -5,6 +5,7 @@ import { loadConfig, isMain } from './lib/config.mjs';
 import { diagnose, printDiagnosis } from './doctor.mjs';
 import { validateExport } from './validate-web.mjs';
 import { validateAssets } from './validate-assets.mjs';
+import { identifyBuild } from './lib/build-identity.mjs';
 
 export function run(bin, args, cwd, label = 'Godot') {
   return new Promise((accept, reject) => {
@@ -58,7 +59,8 @@ export async function exportWeb({ assetPreview = false } = {}) {
     // Godot uses stable file names. Revalidate all of them so releases cannot mix
     // an old loader with a new WASM/PCK. Deploy the entire directory atomically.
     await writeFile(resolve(staging, '_headers'), '/*\n  Cache-Control: no-cache\n  X-Content-Type-Options: nosniff\n\n/*.wasm\n  Content-Type: application/wasm\n');
-    await writeFile(resolve(staging, 'build-info.json'), JSON.stringify({ engine: diagnosis.engine.output, preset: config.preset, builtAt: new Date().toISOString(), assetReview: assets.mode, ...report }, null, 2) + '\n');
+    const identity = await identifyBuild(staging);
+    await writeFile(resolve(staging, 'build-info.json'), JSON.stringify({ engine: diagnosis.engine.output, preset: config.preset, builtAt: new Date().toISOString(), assetReview: assets.mode, ...identity, ...report }, null, 2) + '\n');
     await publishDirectory(staging, config.dist, resolve(temporary, 'previous'));
     console.log(`Web export ready at ${config.dist}. Serve it with node scripts/serve.mjs${assetPreview ? ' --asset-preview' : ''}.`);
   } finally {

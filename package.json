@@ -11,6 +11,7 @@
     "assets:test": "node --test tests/assets.test.mjs",
     "setup:web": "node scripts/setup-web-templates.mjs",
     "build:web": "node scripts/export-web.mjs",
+    "package:demo": "node scripts/package-demo.mjs",
     "validate:web": "node scripts/validate-web.mjs",
     "dev:web": "node scripts/serve.mjs",
     "doctor:web": "node scripts/doctor.mjs",
