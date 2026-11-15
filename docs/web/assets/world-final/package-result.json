@@ -1,0 +1,13 @@
+{
+  "path": ".build/releases/startup-valley-d23a483542544696.zip",
+  "bytes": 39510491,
+  "sha256": "cb604fcb3530796d05bffac932ca3a216115f2a26df915de217f6d889071cd1a",
+  "buildId": "d23a483542544696",
+  "screenshots": [
+    "screenshots/01-mina-invitation-d23a4835.jpg",
+    "screenshots/02-starter-seated-d23a4835.jpg",
+    "screenshots/03-release-d23a4835.jpg",
+    "screenshots/04-courtyard-front-d23a4835.jpg"
+  ],
+  "integrity": "packageDemo unzip -tq passed; independent SHA256 and manifest check passed"
+}

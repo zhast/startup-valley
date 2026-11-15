@@ -2,18 +2,22 @@
 
 ## Current scope and status
 
-The owner activated [DEMO_GOAL_PLAN.md](DEMO_GOAL_PLAN.md). The goal remains
-**active**: the offline opening, first release and courtyard opportunity work,
-but current world visual approval, final evidence and demo packaging remain.
+The owner activated [DEMO_GOAL_PLAN.md](DEMO_GOAL_PLAN.md). The bounded demo's
+required implementation and acceptance checks are complete:
+the offline opening, first release, courtyard opportunity, reload, current
+world visual approval, release gates, normal-build startup and package
+integrity have passed. The admitted build is served locally and its runtime
+source is published. See [demo acceptance](web/demo-acceptance.md) for exact
+evidence and limitations. No owner action or routine approval is required.
 Continue without routine approvals. The owner authorizes parallel agents,
 fixes, asset work, local exports and frequent tested commits/pushes directly to
 `main`. Website/public hosting is **deferred**, not a completion requirement.
 
-Latest confirmed published checkpoint: remote
-`e0407d4370510b773b082247add1f05d18592b58`, equivalent to local `75618b0`,
-with tree `d2e01544981d75514ac9b52fbf4204237eae0ab2`. This includes modest
-furniture, save-preserving registration migration, shared wooden chairs,
-initial modular terrain and the later-hire welcome-copy fix. Connector-created
+Published source checkpoint: local `87e6bf8` corresponds to remote
+`a581b9c0bc3022b2ecd268e3e95dfb7a45fa7d87`, with verified tree
+`ae045213571618a52828841ba59415f800422fff`. This includes modest furniture,
+save-preserving registration migration, shared wooden chairs, approved modular
+terrain/connected fence and the later-hire welcome-copy fix. Connector-created
 commits can have different IDs with identical full trees. Verify current Git
 state before resuming; this document is a checkpoint, not a live branch query.
 
@@ -23,13 +27,12 @@ the background, for current visual/play checks. Do not bring this chat forward,
 use OS-level control or switch to another browser profile. Historical native
 captures remain component evidence for their recorded source only.
 
-Current pending work: shell-quality is replacing the candidate yard's loose
-hedge treatment with connected wooden fence modules on unchanged navigation.
-The yard is **not visually approved**. Root owns browser review, admission,
-publication and packaging. The three clean headless journeys have passed again
-with the later-hire copy fix, before the fence change. Keep candidate exports
-separate from the normal preview until admission passes.
-See [VISUAL_QA.md](VISUAL_QA.md).
+This report and the retained acceptance evidence form the final checkpoint.
+The connected-fence yard and all three map reviews are approved. The three
+clean headless journeys passed with the later-hire copy fix before the fence
+change; an independent seven-file delta audit and current browser play cover
+that visual addition. No further runtime changes are planned for this
+acceptance. See [VISUAL_QA.md](VISUAL_QA.md).
 
 ## Implemented and saved
 
@@ -58,22 +61,25 @@ See [VISUAL_QA.md](VISUAL_QA.md).
   local retry snapshot unchanged. Earned inventory projects before action
   completion; release summaries show newly granted furnishing names.
 - Shared style/scale/map admission gates, registered sources and hash-bound
-  reviews. The terrain implementation is committed as a candidate, not
-  artistic approval. Frozen legacy baselines were not refreshed to pass it.
-- A demo packager with payload/archive identity checks. A pending tooling
-  update accepts original in-app-browser JPEG captures as well as PNGs,
+  reviews. All three current map compositions and two new atlases are approved;
+  this is not blanket approval of legacy art or future maps. Frozen legacy
+  baselines were not refreshed to pass them.
+- A demo packager with payload/archive identity checks. It accepts original
+  in-app-browser JPEG captures as well as PNGs,
   preserving their bytes; its focused build-identity suite passes 5/5.
 
 ## Build and browser evidence
 
 | Build | Recorded status |
 | --- | --- |
-| Normal `http://127.0.0.1:5177/` — `b5d7da90f647ea26` | Last admitted preview, built `2026-11-15T23:19:52.930Z`, including blink checkpoint `3cd6e71`. Compact dialogue, new grants/furniture and modular yard changes came later. |
-| Candidate `c44018e9a5d119bf` | Actual in-app-browser fresh company, Mina invitation, Fitness/Course project, three day advances, Day4 release, Theo opportunity and return. Candidate terrain was not approved. |
-| Candidate `01f5a4ee41e4e3a0` | Reload retained the Day4 company/Mina/story; Theo was hired for $300 and the office expanded; the prefilled Reselling/Template Pack was started and the courtyard revisited. Yard visual work remains open. |
+| Normal `http://127.0.0.1:5177/` — `d23a483542544696` | Admitted release, built `2026-11-15T23:47:31.703Z` with Godot `4.7.2.stable.official.ed1daf0bf`. Same gameplay payload as the visually approved candidate. All 16 HTTP payloads match SHA256, totaling 71,041,780 bytes. |
+| Final-build browser loop — `d23a483542544696` | Fresh reset, Mina compact invitation, Fitness/Course project, three days at 33/67/100%, Day4 release, courtyard Theo acceptance and return. Reload restored Day4, displayed $1.6k earned, Mina and accepted Market Day Kit in the starter office. |
+| Earlier candidates `c44018e9a5d119bf`, `01f5a4ee41e4e3a0` | Historical release/reload/Theo hire/expansion/next-project evidence. Their yard was not approved; current final-world evidence supersedes that composition. |
 
-See [the in-app playtest record](web/in-app-playtest.md) and its nine retained
-original screenshots. The observed release scored **9/10**, gained **13 fans**
+See [current acceptance](web/demo-acceptance.md), the
+[served-release hashes](web/assets/world-final/served-release.json) and the
+[earlier playtest record](web/in-app-playtest.md). The observed final release
+scored **9/10**, gained **13 fans**
 and showed **$1,568** launch earnings plus three named furnishing rewards.
 These are observed playthrough results, not promises that every project yields
 the same outcome. One Mina panel open/Escape-close was also inspected; the
@@ -84,8 +90,20 @@ Use a disposable candidate origin so QA does not reset the owner's normal
 5177 save. Refresh the page after an export; committing source does not replace
 an already-running browser game. Verify `build-info.json` and served payloads
 before reporting a normal-preview update. `dist/` is ignored generated output.
-The normal preview still needs an admitted update; candidate playtesting is
-not evidence that normal 5177 already contains these improvements.
+The normal preview now contains these improvements. Startup on the actual
+normal release served at disposable origin 5181 passed: Continue → Meet Mina
+opened the compact portrait invitation. The browser warning/error record is
+empty. The owner’s existing 5177 save was not reset for QA. See the
+[normal-release frame](web/assets/world-final/normal-release-invitation-d23a4835.jpg)
+and [browser record](web/assets/world-final/browser-errors.json).
+
+The completed local package is
+[startup-valley-d23a483542544696.zip](../.build/releases/startup-valley-d23a483542544696.zip)
+(39,510,491 bytes, four screenshots). `packageDemo` and `unzip -tq` passed.
+SHA256: `cb604fcb3530796d05bffac932ca3a216115f2a26df915de217f6d889071cd1a`.
+The [packager log](web/assets/world-final/package.log) and
+[checksum sidecar](../.build/releases/startup-valley-d23a483542544696.zip.sha256)
+are retained. Generated `.build/` artifacts are local outputs, not public hosting.
 
 ## Retained functional verification
 
@@ -100,10 +118,23 @@ runtime inventories rather than combining them into one current-build claim:
 Each group used production GameMain and the real offline worker, and its
 runtime stayed byte-identical during its accepted run. The inventories and
 one-file copy delta are retained with the summary. These are **pre-fence**
-results: the next yard change is outside both fingerprints. The directory
-name `final-headless` does not mean the complete demo goal or current visual
-review is finished. The prior 1,023-check combined total must not be described
-as 1,023 checks on the copy-fix runtime.
+results. The [independent fence review](web/assets/yard-fence-v1/independent-review/README.md)
+records the exact seven-file change to final runtime
+`5e8afa18aa826a0883d0af6506aa47c96e9d405c7766fe86befe7d474c882ebd`:
+170 selected worker/web/protocol/navigation/actor files are unchanged, as are
+the existing courtyard floor, paving, props and interactions. Final fence
+coverage is 752 checks, 17 map tests and 9 actual component routes. This is a
+scoped delta audit, not three additional full journeys on the final runtime.
+The prior 1,023-check combined total must not be described as 1,023 checks on
+the copy-fix or final fence runtime.
+
+The final full asset gate passes: **809 runtime PNGs validated, 18 reviewed
+artifacts**, three reviewed maps, and **7,259 engine checks** with zero test
+failures. The legacy snapshot is not 809 artistic approvals. All **75 root
+web/tooling tests** pass; normal export validation and served-payload identity
+also pass. Logs are retained in [world-final](web/assets/world-final/assets-headless.log)
+and [tooling.log](web/assets/world-final/tooling.log). The asset log includes
+the known macOS certificate diagnostic; it is not claimed to be empty.
 
 The clean journeys cover arrival, hire, first project, development, release,
 courtyard edge save/reload, Theo's opportunity, return and a matching next
@@ -125,8 +156,8 @@ Additional focused evidence:
   player positions through registration migration:
   [legacy save checks](web/assets/furniture-scale-v1/legacy-save-migration.json).
 - Furniture worker increment: 168 passing tests and two opt-in skips in
-  `/private/tmp/startup-valley-cozy-final-harness.log`; provider-free evaluation
-  8/8 in `/private/tmp/startup-valley-cozy-offline-eval.log`. These are named
+  [the retained harness log](web/assets/world-final/prior-harness.log); provider-free evaluation
+  8/8 in [the retained offline log](web/assets/world-final/prior-offline-eval.log). These are named
   checkpoint logs, not an assertion that every later edit was in that run.
 
 No public-host, cross-browser, physical-phone, complete accessibility or
@@ -167,8 +198,8 @@ npm run build:web
 npm run validate:web
 ```
 
-Current candidate map/art changes may intentionally fail release admission
-until reviewed. Do not bypass that gate or refresh frozen baselines. Use the
+The current release passes admission. Future map/art changes require a new
+review; do not bypass the gate or refresh frozen baselines. Use the
 exact headless journey commands in the retained evidence README, fresh output
 directories and disposable saves; **do not add `--render`**. Do not run paid
 provider evaluations or inspect credentials for offline tests.
@@ -183,20 +214,11 @@ These temporary paths can disappear. Normal Git push authentication was
 unavailable; the connected GitHub app can publish this repository. Never save
 its credentials in source.
 
-## Next concrete work
+## Final checkpoint
 
-1. Finish the connected-fence yard candidate and inspect the actual browser
-   result: shared native scale, continuous threshold/path, restrained village
-   composition and no implied unsupported exits. Keep navigation unchanged
-   unless a tested defect requires a coordinated worker/engine update.
-2. Review the final runtime delta against the retained clean journeys. Recheck
-   behavior affected by the yard change and record exact source/build identity
-   rather than relabeling older evidence.
-3. Complete hash-bound map/art admission using current browser evidence and
-   passing geometry/interaction checks. Keep legacy snapshots explicit.
-4. Export and verify the normal preview promptly once admission passes. Check
-   its build ID/payloads and actual browser startup, then package that exact
-   build with original screenshots, archive manifest and SHA256 sidecar.
-5. Retain a concise final acceptance report, controls and remaining limits.
-   Commit/push each passing increment. Mark the active goal complete only when
-   required current-build checks, visual approval and handoff are done.
+The final evidence is committed with this handoff; use the current Git log
+for its commit ID and compare full trees when publishing through the connector.
+No further demo implementation, repeated passing checks or owner setup is
+required. Public hosting and website polish remain deferred; no mandatory
+owner follow-up is left. The ZIP can be rebuilt with the commands and current
+screenshots in the acceptance report if the local generated artifact is lost.
