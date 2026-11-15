@@ -18,6 +18,8 @@ function deferred() {
 function harness({ config = {}, missingEngine = false, missingWorker = false, workerStart = async () => {}, wasm = true, webgl = true, startGame } = {}) {
   const elements = new Map();
   let focused = null, reloads = 0;
+  const timers = new Map();
+  let nextTimer = 0;
   const instances = [], errors = [];
   class Element {
     constructor(id = '') {
@@ -37,11 +39,14 @@ function harness({ config = {}, missingEngine = false, missingWorker = false, wo
       list.push({ callback, once: options.once });
       this.events.set(type, list);
     }
-    async emit(type) {
+    removeEventListener(type, callback) {
+      this.events.set(type, (this.events.get(type) ?? []).filter(event => event.callback !== callback));
+    }
+    async emit(type, payload) {
       if (type === 'click' && this.disabled) return;
       for (const event of [...(this.events.get(type) ?? [])]) {
         if (event.once) this.events.set(type, this.events.get(type).filter(item => item !== event));
-        await event.callback();
+        await event.callback(payload);
       }
     }
     setAttribute(name, value) { this.attributes.set(name, String(value)); }
@@ -65,6 +70,9 @@ function harness({ config = {}, missingEngine = false, missingWorker = false, wo
   }
   const globals = {
     document,
+    window: new Element('window'),
+    setTimeout: callback => { timers.set(++nextTimer, callback); return nextTimer; },
+    clearTimeout: id => timers.delete(id),
     location: { reload: () => { reloads++; } },
     console: { error: (...args) => errors.push(args) },
     WebAssembly: wasm ? {} : undefined,
@@ -72,7 +80,7 @@ function harness({ config = {}, missingEngine = false, missingWorker = false, wo
   if (!missingWorker) globals.StartupValleyWorker = { start: workerStart, stop: async () => {}, onError: () => {} };
   if (!missingEngine) globals.Engine = Engine;
   vm.runInNewContext(source.replace('$GODOT_CONFIG', JSON.stringify(config)), globals, { filename: 'godot-shell.js' });
-  return { document, instances, errors, get: id => document.getElementById(id), get focused() { return focused; }, get reloads() { return reloads; } };
+  return { document, window: globals.window, timers, instances, errors, get: id => document.getElementById(id), get focused() { return focused; }, get reloads() { return reloads; } };
 }
 
 test('preview remains non-playable even without a downloaded engine', async () => {
@@ -171,6 +179,47 @@ test('an exit during initialization cannot be overwritten by the resolved startu
   assert.match(shell.get('status').textContent, /game has closed/);
   shell.instances[0].options.onProgress(10, 100);
   assert.match(shell.get('status').textContent, /game has closed/);
+});
+
+test('an internal loader rejection recovers even if startGame never rejects', async () => {
+  const completion = deferred();
+  const shell = harness({ startGame: () => completion.promise });
+  const clicked = shell.get('start').emit('click');
+  await new Promise(resolve => setImmediate(resolve));
+  await shell.window.emit('unhandledrejection', { reason: new Error('Failed to fetch'), preventDefault() {} });
+  assert.equal(shell.get('reload').hidden, false);
+  assert.equal(shell.get('canvas').hidden, true);
+  assert.equal(shell.focused, 'reload');
+  assert.match(shell.get('status').textContent, /could not finish loading/);
+  assert.equal(shell.timers.size, 0);
+  completion.resolve();
+  await clicked;
+  assert.equal(shell.get('cover').hidden, false, 'late success cannot dismiss the failure');
+});
+
+test('startup watchdog advances only with download progress and is removed once playing', async () => {
+  const completion = deferred();
+  const shell = harness({ startGame: () => completion.promise });
+  const clicked = shell.get('start').emit('click');
+  await new Promise(resolve => setImmediate(resolve));
+  shell.instances[0].options.onProgress(20, 100);
+  const timer = [...shell.timers.keys()][0];
+  shell.instances[0].options.onProgress(20, 100);
+  assert.equal([...shell.timers.keys()][0], timer, 'repeated progress does not extend a stalled load');
+  shell.instances[0].options.onProgress(30, 100);
+  assert.notEqual([...shell.timers.keys()][0], timer);
+  completion.resolve();
+  await clicked;
+  assert.equal(shell.timers.size, 0);
+  await shell.window.emit('error', { error: new Error('unrelated later error') });
+  assert.equal(shell.get('cover').hidden, true, 'startup listeners do not affect a running game');
+
+  const stalled = harness({ startGame: () => new Promise(() => {}) });
+  void stalled.get('start').emit('click');
+  await new Promise(resolve => setImmediate(resolve));
+  [...stalled.timers.values()][0]();
+  assert.equal(stalled.get('reload').hidden, false);
+  assert.match(stalled.get('status').textContent, /could not finish loading/);
 });
 
 test('fullscreen rejection preserves play and returns keyboard focus to the game', async () => {

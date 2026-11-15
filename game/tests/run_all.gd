@@ -53,8 +53,11 @@ func _run() -> void:
 		_fail("test_ui_contrast: an essential text and surface pair is below 4.5:1")
 	main.job_panel.set_credential_status(false)
 	await process_frame
+	if main.job_panel._connection_panel.visible or main.job_panel.drawer_is_open():
+		_fail("test_connection_ui: missing optional credentials opened a modal during offline play")
+	main.job_panel._open_connection_settings()
 	if not main.job_panel._connection_panel.visible or not main.job_panel._assign_button.disabled:
-		_fail("test_connection_ui: first run did not separate Connect AI from employee Assign")
+		_fail("test_connection_ui: explicit Connect AI did not separate connection setup from employee Assign")
 	main.job_panel.set_credential_status(true)
 	main.job_panel._close_connection_settings()
 	main.job_panel.close_drawer(false)
@@ -71,6 +74,8 @@ func _run() -> void:
 		_fail("test_character_art: the founder did not use the character sheet in the office")
 	if main.clock_panel.get_global_rect().end.x >= main.job_panel.rail_global_rect().position.x:
 		_fail("test_ui_layout: the clock overlaps the compact team rail")
+	if not is_equal_approx(main.job_panel.rail_global_rect().end.x, main.get_viewport().get_visible_rect().size.x):
+		_fail("test_ui_layout: the team rail must stay at the right edge of the viewport")
 	if not main.clock_panel.find_children("*", "Button", true, false).is_empty():
 		_fail("test_ui_layout: the clock still exposes speed controls")
 	var ledger_texture := main.clock_panel.get_node_or_null("LedgerTexture") as TextureRect

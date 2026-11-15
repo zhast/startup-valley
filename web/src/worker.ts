@@ -37,7 +37,12 @@ async function start(): Promise<void> {
   if (started) throw new Error("The game worker has already started.");
   started = true;
   await ownSave();
-  const sqlite = await sqlite3InitModule();
+  let sqlite: Awaited<ReturnType<typeof sqlite3InitModule>>;
+  try { sqlite = await sqlite3InitModule(); }
+  catch (cause) {
+    console.error("SQLite runtime initialization failed", cause);
+    throw new Error("The game simulation files could not be loaded. Check your connection, then reload. If this continues, try an updated browser.");
+  }
   pool = await sqlite.installOpfsSAHPoolVfs({
     name: "startup-valley-opfs",
     directory: ".startup-valley",

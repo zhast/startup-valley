@@ -89,7 +89,26 @@
     let engine;
     const worker = globalThis.StartupValleyWorker;
     let phase = 'ready';
+    let startupTimer;
+    let lastLoaded = -1;
+    function clearStartupWatch() {
+      clearTimeout(startupTimer);
+      window.removeEventListener('unhandledrejection', startupFailure);
+      window.removeEventListener('error', startupFailure);
+    }
+    function startupFailure(event) {
+      if (phase !== 'loading') return;
+      console.error('Game loading failed:', event?.reason ?? event?.error ?? 'No download progress');
+      event?.preventDefault?.();
+      fail('The game files could not finish loading. Check your connection, then reload. Your committed save is preserved.');
+      stopWorker();
+    }
+    function watchStartupProgress() {
+      clearTimeout(startupTimer);
+      startupTimer = setTimeout(startupFailure, 90000);
+    }
     function fail(message) {
+      clearStartupWatch();
       phase = 'stopped';
       cover.hidden = false; canvas.hidden = true; fullscreen.hidden = true;
       progress.hidden = true; start.hidden = true; reload.hidden = false;
@@ -129,6 +148,11 @@
       start.addEventListener('click', async () => {
         if (phase !== 'ready') return;
         phase = 'loading';
+        // Godot's loader can reject an internal fetch without rejecting the
+        // startGame promise. Recover those failures and stalled downloads too.
+        window.addEventListener('unhandledrejection', startupFailure);
+        window.addEventListener('error', startupFailure);
+        watchStartupProgress();
         start.disabled = true; start.textContent = 'Loading your world…';
         progress.hidden = false; canvas.hidden = false;
         canvas.inert = true;
@@ -149,6 +173,10 @@
             canvas,
             onProgress: (loaded, total) => {
               if (phase !== 'loading') return;
+              if (Number.isFinite(loaded) && loaded > lastLoaded) {
+                lastLoaded = loaded;
+                watchStartupProgress();
+              }
               if (Number.isFinite(total) && total > 0 && Number.isFinite(loaded) && loaded >= 0) {
                 const current = Math.min(loaded, total);
                 progress.max = total; progress.value = current;
@@ -163,6 +191,7 @@
           // A project may quit during initialization. A resolved start promise
           // must not hide the exit message or focus a stopped game.
           if (phase !== 'loading') return;
+          clearStartupWatch();
           phase = 'running';
           cover.hidden = true;
           canvas.inert = false; canvas.tabIndex = 0;

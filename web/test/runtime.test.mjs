@@ -36,7 +36,7 @@ async function ready(page, url) {
   assert.equal(diagnostics.storage, "opfs-sahpool");
 }
 
-test("real WASM/OPFS matches native SQLite, rejects a second owner, and persists across browser restart", { timeout: 120_000 }, async (t) => {
+test("real WASM/OPFS preserves gameplay, rejects a second owner, and reports failed downloads", { timeout: 120_000 }, async (t) => {
   const root = await mkdtemp(join(tmpdir(), "startup-valley-web-test-"));
   const server = createServer(async (req, res) => {
     const path = decodeURIComponent(new URL(req.url, "http://localhost").pathname);
@@ -130,5 +130,13 @@ test("real WASM/OPFS matches native SQLite, rejects a second owner, and persists
     await window.StartupValleyWorker.start();
   });
   assert.deepEqual((await request(page, "recovered-interrupted-reset", "bootstrap")).result, reopened);
+  await context.close();
+  page = await openBrowser();
+  await context.route("**/sqlite3-*.wasm", (route) => route.abort("failed"));
+  await page.goto(url);
+  await page.waitForFunction(() => window.StartupValleyWorker?.diagnostics().state === "failed");
+  const failedDownload = await page.locator("#status").innerText();
+  assert.match(failedDownload, /game simulation files could not be loaded.*Check your connection/);
+  assert.doesNotMatch(failedDownload, /ASSERTIONS|XMLHttpRequest|http:\/\//);
   assert.deepEqual(consoleErrors, []);
 });
