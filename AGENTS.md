@@ -18,7 +18,7 @@ The worker is authoritative for the tycoon (products, reviews, sales), employees
 - The owner works alone and authorizes tested commits directly to `main`. Save significant completed increments promptly; do not require a pull request unless isolation materially helps the work.
 - Push tested checkpoints promptly so progress survives loss of this machine. Keep `docs/DEMO_HANDOFF.md` current with source/build state, checks, remaining work and any unpushed commits. Do not wait for the owner to return for routine authorized work.
 - Website/public-hosting work is deferred. Use integrated Godot tests and automated worker/export validation; no computer-use or manual browser session is required.
-- Refresh the playable web export after significant verified changes, and distinguish the current build from source-only progress.
+- Refresh the playable web export promptly after each significant passing source checkpoint; do not hold localhost updates until final acceptance is complete. Verify the served build identifier/files and distinguish preview readiness from final gameplay acceptance.
 - Treat the opening as a playable tutorial: one clear goal, one relevant action, visual character identity, and progressively revealed complexity. Keep the current goal readable without clipping or requiring a tooltip.
 
 ## Exact commands

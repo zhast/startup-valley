@@ -135,3 +135,14 @@ contract so every legal movement can be saved.
 real process-interruption fixture. The complete worker suite passes 156 tests
 with 2 pre-existing opt-in skips; offline evaluation passes 8/8. Integrated
 Godot journey acceptance remains in progress at this checkpoint.
+
+## 2026-11-15 — Keep the playable preview alongside source checkpoints
+
+**Decision:** A major passing source checkpoint also triggers a normal release
+export and verification of the files served on localhost. Do not wait for all
+final acceptance to finish before refreshing the preview. Report the build ID
+and distinguish available-to-try from fully accepted.
+
+**Reason:** The owner correctly observed that committing source did not update
+the running localhost game. Build `ae82cfc908ec417a` was exported and its served
+HTML, WASM, PCK and worker were verified byte-for-byte to resolve the stale view.
