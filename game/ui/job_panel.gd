@@ -238,6 +238,10 @@ var _promotion_actions: Array[Button] = []
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	theme = GameFonts.interface_theme()
+	# Pin the drawer and team rail to the viewport, including exported scenes
+	# and canvas resizes. A fixed editor position can strand the rail mid-room.
+	set_anchors_and_offsets_preset(Control.PRESET_RIGHT_WIDE)
+	offset_left = -(DRAWER_WIDTH + DRAWER_GAP + RAIL_WIDTH)
 	_build_interface()
 	_set_drawer_open(false, false)
 
@@ -338,7 +342,7 @@ func _build_team_rail() -> Control:
 	_settings_button.size = Vector2(100.0, 42.0)
 	_settings_button.tooltip_text = "Open settings or connect AI"
 	_settings_button.pressed.connect(func() -> void:
-		if _credential_configured and _worker_connected:
+		if OS.has_feature("web") or (_credential_configured and _worker_connected):
 			close_drawer(false)
 			settings_requested.emit()
 		else:
@@ -476,6 +480,10 @@ func _build_connection_panel() -> void:
 	content.add_child(close_button)
 
 func _open_connection_settings() -> void:
+	if OS.has_feature("web"):
+		close_drawer(false)
+		settings_requested.emit()
+		return
 	if connect_allowed.is_valid() and not connect_allowed.call():
 		return
 	if not _connection_panel.visible:
@@ -578,8 +586,8 @@ func _refresh_rail_connection_action() -> void:
 		_settings_button.disabled = false
 		CozyUI.button(_settings_button, "primary")
 	else:
-		_settings_button.text = "Settings" if _credential_configured else "Connect"
-		_settings_button.tooltip_text = "Open settings or connect AI"
+		_settings_button.text = "Settings" if OS.has_feature("web") or _credential_configured else "Connect"
+		_settings_button.tooltip_text = "Open settings" if OS.has_feature("web") else "Open settings or connect AI"
 		_settings_button.disabled = false
 		CozyUI.button(_settings_button, "secondary")
 
@@ -1713,6 +1721,9 @@ func _show_empty_chat() -> void:
 	if employee == null:
 		_show_chat_hint("Hire your first teammate from Company Journey.")
 		return
+	if OS.has_feature("web"):
+		_show_chat_hint("Your team develops products through Company Journey → New Product. AI chat and file work orders are available in the desktop edition.")
+		return
 	var greeting := "What are we building? We can shape the idea before creating a work order." if employee.id == "mira" else "What should we test or grow? We can sharpen it before creating a work order."
 	var milestone := _available_milestone_for(employee.id)
 	if str(milestone.get("id", "")) == "website":
@@ -1885,6 +1896,14 @@ func _submit_chat() -> void:
 
 func _refresh_chat_mode() -> void:
 	if _chat_input == null:
+		return
+	if OS.has_feature("web"):
+		_chat_input.editable = false
+		_chat_input.placeholder_text = "AI chat is available on desktop"
+		_chat_send_button.text = "Desktop only"
+		_chat_send_button.disabled = true
+		_chat_helper.text = "Develop products with your team in Company Journey → New Product."
+		_make_job_button.visible = false
 		return
 	var selected_employee := _selected_employee()
 	var has_employee := selected_employee != null
@@ -2396,6 +2415,9 @@ func set_clock_phase(phase: String) -> void:
 		_set_status("Lunch — new work queues until 13:30." if phase == "lunch" else "Off hours — new work queues until 08:00.", ALERT_INK if phase == "lunch" else MUTED_INK)
 
 func _update_assign_copy() -> void:
+	if OS.has_feature("web"):
+		_assign_button.text = "AI work orders · desktop only"
+		return
 	if not _active_job_id.is_empty():
 		return
 	if _clock_phase == "work":
@@ -2418,8 +2440,9 @@ func set_credential_status(configured: bool) -> void:
 	_refresh_connection_surface()
 	if configured and _offline_provider and _connection_panel != null and _connection_panel.visible:
 		_close_connection_settings()
-	elif not configured:
-		call_deferred("_open_connection_settings")
+	# Credential hydration is passive: the offline company must remain playable
+	# without opening a modal behind the title or Journey. Chat, Assign, and the
+	# explicit Connect action open this surface when the player actually opts in.
 
 func set_credential_detail(detail: Dictionary) -> void:
 	_offline_provider = bool(detail.get("offline", false))
@@ -2530,8 +2553,10 @@ func _refresh_operation_availability() -> void:
 		# stays pressable and _submit_assignment opens Connect instead of sending work.
 		# While Connect is open, Start stays disabled so the two actions stay separate.
 		var connect_prompt_open := _connection_panel != null and _connection_panel.visible and not _credential_configured
-		_assign_button.disabled = _employees.is_empty() or not _active_job_id.is_empty() or not _worker_connected or connect_prompt_open
-		if _active_job_id.is_empty() and not _credential_configured:
+		_assign_button.disabled = OS.has_feature("web") or _employees.is_empty() or not _active_job_id.is_empty() or not _worker_connected or connect_prompt_open
+		if OS.has_feature("web"):
+			_assign_button.tooltip_text = "Develop products through Company Journey → New Product. AI file work orders are available on desktop."
+		elif _active_job_id.is_empty() and not _credential_configured:
 			_assign_button.tooltip_text = "Connect AI before this work order can start."
 		elif _active_job_id.is_empty() and not _worker_connected:
 			_assign_button.tooltip_text = "Reconnect before this work order can start."

@@ -15,3 +15,11 @@ game/tests/output/polish-audit/*
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal
+
+# Web delivery tooling
+/node_modules/
+/dist/
+/.build/
+/web/node_modules/
+/web/dist/
+/game/web/templates/

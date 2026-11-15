@@ -41,5 +41,8 @@ Every runtime office prop must follow this contract before it is added to
 - Reads correctly in front of and behind a live character in the running game.
 - Placement and hire threshold live in `res://data/office_layout.json`; never
   bake placement into architecture art. Validate stages 0–4 and reachability.
-- Only authored south facings currently ship. Add a new authored atlas/profile
-  before enabling another facing; never rotate or mirror a workstation.
+- Ship only facings explicitly registered by the reviewed asset and pose
+  profiles. The current `workstations-v2` set supports north, east, south, and
+  west; other families have their own reviewed capabilities. Add the authored
+  atlas/profile and matching poses before enabling a new facing. Never infer
+  support by rotating or mirroring a workstation.

@@ -1,0 +1,60 @@
+{
+  "revision": "web-eye-polish-v1",
+  "method": "Built-in imagegen; only registered blink-eye pixels retained and remapped to original skin/ink palette.",
+  "actors": {
+    "founder": {
+      "changedPixels": 49,
+      "rectangles": [
+        [
+          64,
+          24,
+          7,
+          6
+        ],
+        [
+          74,
+          24,
+          7,
+          6
+        ]
+      ],
+      "canvas": [
+        288,
+        320
+      ],
+      "frame": [
+        1,
+        0
+      ],
+      "otherPixelsUnchanged": true,
+      "alphaUnchanged": true
+    },
+    "theo": {
+      "changedPixels": 69,
+      "rectangles": [
+        [
+          64,
+          21,
+          7,
+          7
+        ],
+        [
+          74,
+          21,
+          7,
+          7
+        ]
+      ],
+      "canvas": [
+        288,
+        320
+      ],
+      "frame": [
+        1,
+        0
+      ],
+      "otherPixelsUnchanged": true,
+      "alphaUnchanged": true
+    }
+  }
+}

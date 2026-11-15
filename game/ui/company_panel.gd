@@ -291,15 +291,15 @@ func _title_screen() -> void:
 		_label(_next_step().trim_prefix("NEXT · "), false, card)
 		_label("Progress saves automatically.", false, card, "meta")
 	else:
-		_label("Hire Mina, build a website, then grow your team. Your work becomes real files as your office comes to life.", false, card)
+		_label("Hire Mina, develop a product, then release it and grow your studio. Your company saves in this browser." if OS.has_feature("web") else "Hire Mina, build a website, then grow your team. Your work becomes real files as your office comes to life.", false, card)
 		_label("Mina is your free first hire.", false, card)
 	_actions("Continue" if started else "Start company", _continue_game, not state.is_empty(), "New company" if started else "", _confirm_start)
 
 func _confirm_screen() -> void:
 	_heading("Start a new company?", "Your current company will leave this office.")
-	_label("Your company database and project files will move into a recoverable, timestamped backup. Your AI connection stays saved.")
+	_label("This replaces the company saved in this browser. Your current progress will be lost." if OS.has_feature("web") else "Your company database and project files will move into a recoverable, timestamped backup. Your AI connection stays saved.")
 	_label("This starts a new journey with no hires or earned progress. Go back without changing anything.")
-	_actions("Back up + start new", func() -> void: _request("game.new", {"confirmed": true}), true, "Go back", func() -> void: present("title"), true)
+	_actions("Start new company" if OS.has_feature("web") else "Back up + start new", func() -> void: _request("game.new", {"confirmed": true}), true, "Go back", func() -> void: present("title"), true)
 
 func _hired_screen() -> void:
 	var hired: Dictionary = {}
@@ -311,7 +311,7 @@ func _hired_screen() -> void:
 	_heading("Welcome, " + person_name, "A new desk is ready in your office.")
 	_person(hired, false)
 	_label(_next_step().trim_prefix("NEXT · "))
-	_label("Walk to %s or use the team rail. Their desk opens Assign with the current Journey goal ready." % person_name)
+	_label("Open Company Journey and choose New Product to put your team on its first release." if OS.has_feature("web") else "Walk to %s or use the team rail. Their desk opens Assign with the current Journey goal ready." % person_name)
 	_actions("Meet " + person_name, hide, true, "Company Journey", func() -> void: present("journey"))
 
 func _complete_screen() -> void:
@@ -365,12 +365,13 @@ static func chapter_three_finished(state: Dictionary) -> bool:
 	return false
 
 func _settings_screen() -> void:
-	_heading("Settings", "The office clock is paused. Real AI work can still finish.")
+	_heading("Settings", "The office clock is paused. Your company saves in this browser." if OS.has_feature("web") else "The office clock is paused. Real AI work can still finish.")
 	var shortcuts := HBoxContainer.new()
 	shortcuts.add_theme_constant_override("separation", 12)
 	_content.add_child(shortcuts)
 	_button("Company Journey", func() -> void: present("journey"), false, true, shortcuts)
-	_button("Connect AI", func() -> void: hide(); connection_requested.emit(), false, true, shortcuts)
+	if not OS.has_feature("web"):
+		_button("Connect AI", func() -> void: hide(); connection_requested.emit(), false, true, shortcuts)
 	_button("Renovate office", func() -> void: hide(); renovation_requested.emit(), false, true, shortcuts)
 	var audio := _card()
 	_label("Sound", true, audio)
@@ -407,7 +408,9 @@ func _settings_screen() -> void:
 			architecture_theme_requested.emit(str(picker.get_item_metadata(index)))
 		)
 		look.add_child(picker)
-	_label("Explore: WASD, arrows, or click the floor · E chat · J Journey.\nRenovate: M move · R rotate · U undo · Esc cancel or back.")
+	_label("Explore: WASD, arrows, or click the floor · J Journey.\nRenovate: M move · R rotate · U undo · Esc cancel or back." if OS.has_feature("web") else "Explore: WASD, arrows, or click the floor · E chat · J Journey.\nRenovate: M move · R rotate · U undo · Esc cancel or back.")
+	if OS.has_feature("web"):
+		_label("Products, staff, sales and decorating work offline. AI chat and file work orders are available in the desktop edition.", false, null, "meta")
 	_actions("Resume", hide, true, "Title screen", func() -> void: present("title"))
 
 func set_architecture_theme(theme_id: String) -> void:
@@ -481,11 +484,12 @@ func _day_screen() -> void:
 	if not payroll_notice.is_empty() and not seen.has(payroll_notice):
 		var notice_label := _label(payroll_notice, false, activity, "action")
 		notice_label.name = "PayrollNotice"
-	_label("Tomorrow · " + str(summary.get("nextMilestone", "Your next chapter")), true)
+	_label("Tomorrow · " + (_next_step().trim_prefix("NEXT · ") if OS.has_feature("web") else str(summary.get("nextMilestone", "Your next chapter"))), true)
 	if screen == "summary":
 		_actions("Begin next day", hide, true, "")
 	else:
-		_label("Active AI work can finish after closing. Finish or cancel it before ending the day; queued work carries over.", false, _footer)
+		if not OS.has_feature("web"):
+			_label("Active AI work can finish after closing. Finish or cancel it before ending the day; queued work carries over.", false, _footer)
 		_actions("End day + save", func() -> void: _request("day.end", {"day": day}), true, "Review office")
 
 func _metric(parent: Control, title: String, value: String, detail: String) -> void:
@@ -525,9 +529,14 @@ func _journey_screen() -> void:
 		_actions("Hire %s · %s" % [candidate.get("name", "teammate"), "free" if int(candidate.get("costCents", 0)) == 0 else "$" + _money(int(candidate.get("costCents", 0)))], func() -> void: _request("hiring.complete", {"employeeId": candidate_id}), affordable)
 	else:
 		var ready := _card()
-		_label("A good place to pause", true, ready)
-		_label("Today’s goal is complete. Review your files or begin the next office day when you are ready.", false, ready)
-		_actions("End day + save", func() -> void: _request("day.end", {"day": day}))
+		if OS.has_feature("web"):
+			_label("Build your studio", true, ready)
+			_label("Choose a topic and product type, develop it with your team, then release it to earn game cash.", false, ready)
+			_actions("Continue development" if _tycoon().get("developing") is Dictionary else "New Product", func() -> void: present("product"))
+		else:
+			_label("A good place to pause", true, ready)
+			_label("Today’s goal is complete. Review your files or begin the next office day when you are ready.", false, ready)
+			_actions("End day + save", func() -> void: _request("day.end", {"day": day}))
 	var future_count := 0
 	for item: Dictionary in state.get("milestones", []):
 		if str(item.get("id", "")) != str(definition.get("id", "")): future_count += 1
@@ -536,7 +545,7 @@ func _journey_screen() -> void:
 	var utilities := HBoxContainer.new()
 	utilities.add_theme_constant_override("separation", 12)
 	_content.add_child(utilities)
-	if future_count > 0:
+	if future_count > 0 and not OS.has_feature("web"):
 		_disclosure(("Hide" if _future_open else "Show") + " chapter roadmap", _toggle_future, _future_open, utilities)
 		if _future_open: _roadmap(definition, candidate)
 	if not definition.is_empty() or not candidate.is_empty():
@@ -551,7 +560,7 @@ func _journey_screen() -> void:
 	_engine_card()
 	_office_card()
 	_season_card()
-	var money_note := _label("Game cash is virtual. Shipping products is fully offline. Ads and incorporation create planning files only.")
+	var money_note := _label("Game cash is virtual. Shipping products is fully offline." if OS.has_feature("web") else "Game cash is virtual. Shipping products is fully offline. Ads and incorporation create planning files only.")
 	money_note.name = "MoneyExplanation"
 
 func _tycoon() -> Dictionary:
@@ -2750,6 +2759,7 @@ func _milestone_status(definition: Dictionary) -> String:
 	return status.replace("_", " ").capitalize()
 
 func _current_milestone() -> Dictionary:
+	if OS.has_feature("web"): return {}
 	return open_milestone(state)
 
 func _available_candidate() -> Dictionary:
@@ -2759,6 +2769,13 @@ func _next_step() -> String:
 	return next_step_line(state, busy, _pending_method, _pending_job_id)
 
 static func next_step_line(state: Dictionary, busy: bool = false, pending_method: String = "", pending_job_id: String = "") -> String:
+	if OS.has_feature("web") and not state.is_empty():
+		var candidate := available_candidate(state)
+		if not candidate.is_empty(): return "NEXT · Hire %s from Company Journey." % candidate.get("name", "your teammate")
+		var tycoon: Dictionary = state.get("tycoon", {})
+		if tycoon.get("developing") is Dictionary:
+			return "NEXT · Open New Product in Company Journey to develop and release your product."
+		return "NEXT · Open Company Journey and choose New Product to build your next release."
 	if state.is_empty() or ((state.get("milestones", []) as Array).is_empty() and (state.get("candidates", []) as Array).is_empty()):
 		return ""
 	var definition := open_milestone(state)

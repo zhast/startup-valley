@@ -1,4 +1,4 @@
-import type { DatabaseSync } from "node:sqlite";
+import type { SqlDatabase } from "./sql-database.js";
 
 import { JourneyStore } from "./journey.js";
 
@@ -2301,7 +2301,7 @@ export class TycoonStore {
   private payrollNoticeDay = 0;
 
   constructor(
-    private readonly db: DatabaseSync,
+    private readonly db: SqlDatabase,
     private readonly journey: JourneyStore,
     private readonly onOfficeChanged: () => void = () => {},
   ) {}

@@ -54,8 +54,18 @@ var _next_request_id: int = 1
 var _pending_methods: Dictionary[String, String] = {}
 var _pending_jobs: Dictionary[String, String] = {}
 var _restart_count: int = 0
+var _web_bridge: JavaScriptObject
+var _web_message_callback: JavaScriptObject
+var _web_error_callback: JavaScriptObject
+var _web_ready_callback: JavaScriptObject
+var _web_start_error_callback: JavaScriptObject
+var _web_connected: bool = false
+var _web_starting: bool = false
 
 func start() -> void:
+	if OS.has_feature("web"):
+		_start_web()
+		return
 	if _stdio != null:
 		return
 	var worker_script := ProjectSettings.globalize_path("res://../harness/dist/main.js")
@@ -81,6 +91,53 @@ func start() -> void:
 		return
 	_send_request("health", {})
 	set_process(true)
+
+func _transport_connected() -> bool:
+	return _stdio != null or (_web_bridge != null and _web_connected)
+
+func _start_web() -> void:
+	if _web_connected or _web_starting:
+		return
+	if _web_bridge == null:
+		_web_bridge = JavaScriptBridge.get_interface("StartupValleyWorker")
+		if _web_bridge == null:
+			request_failed.emit("The browser worker could not load. Reload the game to reconnect.")
+			return
+		_web_message_callback = JavaScriptBridge.create_callback(_on_web_message)
+		_web_error_callback = JavaScriptBridge.create_callback(_on_web_error)
+		_web_ready_callback = JavaScriptBridge.create_callback(_on_web_ready)
+		_web_start_error_callback = JavaScriptBridge.create_callback(_on_web_start_error)
+		_web_bridge.onMessage(_web_message_callback)
+		_web_bridge.onError(_web_error_callback)
+	_web_starting = true
+	set_process(false)
+	var startup: JavaScriptObject = _web_bridge.start()
+	startup.then(_web_ready_callback).catch(_web_start_error_callback)
+
+func _on_web_ready(_arguments: Array) -> void:
+	if not is_inside_tree():
+		return
+	_web_starting = false
+	_web_connected = true
+	_send_request("health", {})
+
+func _on_web_message(arguments: Array) -> void:
+	if is_inside_tree() and not arguments.is_empty():
+		_handle_line(str(arguments[0]))
+
+func _on_web_start_error(_arguments: Array) -> void:
+	_on_web_error(["The browser save could not open. Check that this game is not already open in another tab, then reconnect."])
+
+func _on_web_error(arguments: Array) -> void:
+	if not is_inside_tree():
+		return
+	_web_connected = false
+	_web_starting = false
+	_pending_methods.clear()
+	_pending_jobs.clear()
+	var message := str(arguments[0]) if not arguments.is_empty() else "The browser worker stopped. Reconnect to reopen your saved company."
+	worker_crashed.emit(message)
+	request_failed.emit(message)
 
 func _process(_delta: float) -> void:
 	_read_stdout()
@@ -292,7 +349,7 @@ func _studio_files_from_value(value: Variant) -> Array[StudioFileRecord]:
 	return files
 
 func _send_request(method: String, parameters: Dictionary, job_id: String = "") -> void:
-	if _stdio == null:
+	if not _transport_connected():
 		request_failed.emit("Worker is not connected")
 		return
 	var request_id := str(_next_request_id)
@@ -301,6 +358,9 @@ func _send_request(method: String, parameters: Dictionary, job_id: String = "") 
 	if not job_id.is_empty():
 		_pending_jobs[request_id] = job_id
 	var envelope := {"kind": "request", "id": request_id, "method": method, "params": parameters}
+	if _web_connected:
+		_web_bridge.request(JSON.stringify(envelope))
+		return
 	_stdio.store_string(JSON.stringify(envelope) + "\n")
 	_stdio.flush()
 
@@ -323,13 +383,13 @@ func use_local_grok() -> void:
 	_send_request("credential.grok.use_local", {})
 
 func update_furnishing(operation_id: String, expected_revision: int, placements: Dictionary, actor_cells: Array) -> void:
-	if _stdio == null:
+	if not _transport_connected():
 		furnishing_failed.emit(operation_id, "The worker is disconnected. Reconnect before saving the office.")
 		return
 	_send_request("furnishing.update", {"operationId": operation_id, "expectedRevision": expected_revision, "placements": placements, "actorCells": actor_cells}, operation_id)
 
 func refresh_furnishing() -> void:
-	if _stdio != null: _send_request("bootstrap", {}, "furnishing")
+	if _transport_connected(): _send_request("bootstrap", {}, "furnishing")
 
 func request_chat_history(employee_id: String) -> void:
 	_send_request("chat.history", {"employeeId": employee_id}, employee_id)
@@ -410,6 +470,12 @@ func approve(job_id: String, approval_id: String, approved: bool, reason: String
 	}, job_id)
 
 func _exit_tree() -> void:
+	if _web_bridge != null:
+		_web_bridge.offMessage(_web_message_callback)
+		_web_bridge.offError(_web_error_callback)
+		_web_connected = false
+		_web_starting = false
+		_web_bridge = null
 	if _stdio != null:
 		_stdio.close()
 	_process_id = -1

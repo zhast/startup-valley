@@ -1,0 +1,19 @@
+{
+  "name": "startup-valley-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "scripts": {
+    "setup:web": "node scripts/setup-web-templates.mjs",
+    "build:web": "node scripts/export-web.mjs",
+    "validate:web": "node scripts/validate-web.mjs",
+    "dev:web": "node scripts/serve.mjs",
+    "doctor:web": "node scripts/doctor.mjs",
+    "test:web:loading": "node tests/browser/loading.mjs",
+    "test:web:play": "node tests/browser/playtest.mjs",
+    "test:web": "node --test tests/*.test.mjs"
+  }
+}

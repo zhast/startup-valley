@@ -1,4 +1,4 @@
-import type { DatabaseSync } from "node:sqlite";
+import type { SqlDatabase } from "./sql-database.js";
 import { calendarForDay, type TycoonSnapshot } from "./tycoon.js";
 import type { JobSpec } from "./types.js";
 
@@ -63,7 +63,7 @@ export function parseEvaluation(text: string, definition: MilestoneDefinition): 
 export class JourneyStore {
   private tycoonView: (() => TycoonSnapshot) | null = null;
 
-  constructor(readonly db: DatabaseSync, readonly onHire: () => void = () => {}) {
+  constructor(readonly db: SqlDatabase, readonly onHire: () => void = () => {}) {
     for (const item of MILESTONES) db.prepare("INSERT OR IGNORE INTO milestone_progress(id) VALUES (?)").run(item.id);
     db.prepare("UPDATE milestone_evaluations SET status = 'failed', error = 'Evaluation interrupted. Retry when ready.' WHERE status = 'evaluating'").run();
   }

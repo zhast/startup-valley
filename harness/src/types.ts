@@ -209,7 +209,7 @@ export interface ProtocolEvent {
 }
 
 export interface BootstrapState {
-  furnishing: import("./furnishing.js").FurnishingState;
+  furnishing: import("./furnishing-core.js").FurnishingState;
   journey: ReturnType<JourneyStore["state"]> & { daySummary?: ReturnType<JourneyStore["daySummary"]> };
   employees: Employee[];
   project: { id: string; name: string; rootPath: string };

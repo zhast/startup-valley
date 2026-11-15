@@ -86,6 +86,7 @@ func run() -> void:
 func edit_room() -> void:
 	var renovate := game.office_renovation
 	var initial_revision := int(renovate._committed_state.revision)
+	var initial_inventory: Array = renovate._committed_state.inventory.duplicate(true)
 	var initial_position := game.player.position
 	await select_item(PLANT)
 	check(renovate._ownership.text.contains("1 in storage") and renovate._move_button.text.begins_with("Place"), "Stored item has explicit ownership and Place action")
@@ -117,7 +118,7 @@ func edit_room() -> void:
 	await click(renovate._store_button.get_global_rect().get_center())
 	await saved(revision + 1)
 	check(not renovate._committed_state.placements.has(PLANT) and game.room.prop_node(PLANT) == null, "Store removes placement and world art, not ownership")
-	check(renovate._committed_state.inventory.size() == 4 and renovate._ownership.text.contains("1 in storage"), "Storage retains exactly one owned decoration")
+	check(renovate._committed_state.inventory == initial_inventory and renovate._ownership.text.contains("1 in storage"), "Storage preserves the owned inventory and returns exactly one decoration")
 	await capture("stored-again")
 	await key(KEY_U)
 	await saved(revision + 2)
@@ -125,12 +126,14 @@ func edit_room() -> void:
 	await select_item("founder-workstation")
 	check(renovate._store_button.disabled, "Required founder station cannot be stored")
 	await key(KEY_M)
-	await key(KEY_UP)
-	check(renovate.preview_grid == Vector2i(8, 16) and bool(renovate.preview_result.get("valid", false)), "Keyboard movement produces a valid non-default desk position")
+	# Moving north overlaps the taller planter art in the current catalog.
+	# Move south into clear floor, leaving room for the later lost-ack move.
+	await key(KEY_DOWN)
+	check(renovate.preview_grid == Vector2i(8, 18) and bool(renovate.preview_result.get("valid", false)), "Keyboard movement produces a valid non-default desk position: %s / %s" % [renovate.preview_grid, renovate.preview_result.get("errors", [])])
 	revision = int(renovate._committed_state.revision)
 	await key(KEY_ENTER)
 	await saved(revision + 1)
-	check(game.room.placement_by_id("founder-workstation").grid == Vector2i(8, 16), "Enter commits moved founder desk through the worker")
+	check(game.room.placement_by_id("founder-workstation").grid == Vector2i(8, 18), "Enter commits moved founder desk through the worker")
 	var before_invalid := renovate._committed_state.duplicate(true)
 	await key(KEY_M)
 	await click(game.room.layout_model.world(Vector2i(0, 4)))
@@ -195,25 +198,17 @@ func select_item(id: String) -> void:
 	# as genuine focused keyboard input, never emit item_selected directly.
 	if not picker.get_popup().visible and DisplayServer.get_name() == "headless": await key(KEY_SPACE)
 	check(picker.get_popup().visible, "Pointer/focused keyboard input opens the actual dropdown")
-	if id == PLANT:
-		var popup := picker.get_popup()
-		var style := popup.get_theme_stylebox("panel")
-		var top := style.get_content_margin(SIDE_TOP)
-		var bottom := style.get_content_margin(SIDE_BOTTOM)
-		# This owned-item menu has uniform single-line rows with no separators.
-		# Hit-test the visible target row; never emit PopupMenu.id_pressed.
-		var height := (float(popup.size.y) - top - bottom) / float(picker.item_count)
-		var point := Vector2(popup.position) + Vector2(popup.size.x * 0.5, top + (index + 0.5) * height)
-		await capture("dropdown-open")
-		await click(point)
-		check(game.office_renovation.selected_id == id, "Actual pointer selection chooses " + id)
-	else:
-		for _step: int in range(picker.item_count + 1):
-			if picker.get_popup().get_focused_item() == index: break
-			await key(KEY_DOWN)
-		check(picker.get_popup().get_focused_item() == index, "Real arrows focus the requested furnishing")
-		await key(KEY_ENTER)
-		check(game.office_renovation.selected_id == id, "Keyboard dropdown selection chooses " + id)
+	# The catalog can exceed the popup's visible height. Dividing that clipped
+	# height by the total item count targets the wrong row once scrolling starts.
+	# Use real focused input so this still covers the production popup, including
+	# its automatic scrolling, without dispatching selection signals directly.
+	await capture("dropdown-open")
+	for _step: int in range(picker.item_count + 1):
+		if picker.get_popup().get_focused_item() == index: break
+		await key(KEY_DOWN)
+	check(picker.get_popup().get_focused_item() == index, "Real arrows focus the requested furnishing")
+	await key(KEY_ENTER)
+	check(game.office_renovation.selected_id == id, "Keyboard dropdown selection chooses " + id)
 	check(not picker.get_popup().visible, "Selection closes popup and restores game focus")
 
 func button_named(text: String, parent: Node) -> void:
