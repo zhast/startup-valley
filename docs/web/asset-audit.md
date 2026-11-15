@@ -4,9 +4,9 @@ Reviewed November 15, 2026 at source commit `c4d1829df5ce2924ef68964bf16b7c1c369
 
 ## Decision
 
-**Keep the current runtime artwork for the first web port.** The inspected art is usable, the frame and layer contracts are deliberate, and no blocking raster defect was established. Regenerating the sheets now would introduce identity, alignment, and occlusion risk without a demonstrated improvement.
+**Keep the existing art direction and registered frame/layer contracts.** The initial review found usable assets. A subsequent focused review of the user’s eye concern identified two specific blink defects; the bounded corrections below now replace those pixels. Whole-sheet regeneration was rejected because it changed unrelated pixels.
 
-No PNGs, import settings, scene bindings, or gameplay files were changed. Two stale asset-guide statements were corrected: the character list now includes Creative, and the office contract now acknowledges the reviewed four-direction workstation set rather than claiming that only south facings ship.
+The initial audit changed only two stale asset-guide statements. The follow-up changes two locomotion PNGs, adds two source overlays and a reproducible overlay step; import settings, scene bindings and gameplay rules remain unchanged.
 
 ## Evidence and checks
 
@@ -43,4 +43,58 @@ The images below are **existing committed art evidence**, not new captures of th
 2. **Legacy Theo thinking-frame edge.** `characters/theo-work.png`, zero-based column 7 / row 1, paints through local X=47. That warrants a close view if the legacy pose is used. The reviewed workstation registry reuses seated poses for thinking; no active clipping was demonstrated. Do not re-render the whole sheet merely to add a gutter.
 3. **Second-room architecture is the useful new-art task.** The latest source design notes explicitly identify it as missing. Define its logical footprint, entrances, wall/corner/window modules, and collision/navigation requirements first. Reuse the existing 32px material language and export separable modules instead of generating a furnished screenshot. [Current design backlog](../../docs/TYCOON_DESIGN.md)
 
-New art should be reviewed as a candidate at native scale before being bound. Existing PNGs and their import/UID metadata remain untouched by this audit.
+New art should be reviewed as a candidate at native scale before being bound. The initial metadata audit did not change PNGs; the later eye correction is documented below.
+
+## Focused eye correction follow-up — November 15, 2026
+
+The Founder’s front-idle blink closed one eye while leaving the other open.
+Theo’s equivalent frame left a pale gray patch over one eye. Both defects are
+visible in the enlarged original-frame comparison and were confirmed in the
+native-scale rendering. Mina and Creative were not changed.
+
+The built-in imagegen tool produced candidate eye treatments using the original
+atlases as edit targets. Full candidates also changed unrelated body/pose pixels,
+so they were not installed. Only two small eye rectangles in each affected
+frame were retained, normalized to the native grid and mapped back to the
+original character’s skin/ink palette. The reviewed overlays are the source of
+truth for these final pixel edits:
+
+| Asset | Changed pixels | Preserved contract |
+| --- | ---: | --- |
+| Founder locomotion | 49 | 288×320 atlas; only column 1 / row 0 |
+| Theo locomotion | 69 | 288×320 atlas; only column 1 / row 0 |
+
+Decoded comparisons confirm unchanged alpha at every pixel, unchanged pixels
+outside the eye rectangles, identical remaining 23 frames, unchanged visible
+palette, and unchanged silhouettes/foot anchors. The existing source-export
+script applies the overlays after normalization so a rebuild retains the fix.
+[Overlay manifest](../../game/assets/source/web-eye-polish/manifest.json) ·
+[Founder prompt](assets/asset-audit/prompts/founder-eyes-v1.md) ·
+[Theo prompt](assets/asset-audit/prompts/theo-eyes-v1.md)
+
+The following captures come from a **live Godot 4.7.2 OpenGL animation fixture**,
+with the worker disabled. Left is original; right is corrected. Each shows
+native 1× and enlarged 3× sprites. The fixture alternated the actual idle atlas
+frames; it did not alter animation timings in the game.
+
+![Native Godot open-eye frame, before and after](assets/asset-audit/eyes-engine-open.png)
+
+![Native Godot blink frame, before and after](assets/asset-audit/eyes-engine-blink.png)
+
+The standalone `test_locomotion_export.gd` suite reports four pre-existing
+failures on the original source images: the Founder and Mina palette counts,
+and the Founder back-row frame-1 top anchor and corresponding row jitter
+check. A baseline run against retained original images reproduces those four;
+they are separate from these blink edits. Import checks, alpha, the corrected
+frame’s registration and the other measured silhouette checks pass.
+
+## Furniture perspective follow-up
+
+Fresh browser captures show that the bookshelf and desk use straight horizontal
+front edges, while the phone booth displays a slight left-side/roof oblique
+angle. The misplaced team rail also covered much of the office during the first
+capture; that is a UI layout defect, not a furniture-layer placement error.
+The phone booth is the bounded perspective candidate. Its 192×224 canvas,
+111×175 painted envelope and bottom/scene anchor must survive any replacement.
+No furniture PNG has been replaced by this follow-up yet; a candidate must be
+reviewed beside the current desk/bookcase at native scale before binding.

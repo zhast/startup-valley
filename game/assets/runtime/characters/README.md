@@ -18,3 +18,7 @@ Rebuild these files from `assets/source/` with
 The seated correction can also be rebuilt independently with
 `dev/tools/build_workstation_assets.sh`. It shares one palette, baseline, and
 head center across each employee's frames to prevent pose jitter/color flicker.
+
+The measured locomotion export also applies the reviewed eye-only overlays in
+`assets/source/web-eye-polish/` to the Founder and Theo front-idle blink.
+They preserve the original palette, alpha, frame positions and all other poses.

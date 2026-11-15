@@ -143,6 +143,21 @@ for actor in founder mira theo; do
     "$actor_dir/$actor-locomotion.png"
 done
 
+# Reviewed eye-only source overlays retain every original alpha, pose and anchor.
+# Kept after normalization so the corrected blinks survive a source rebuild.
+for actor in founder theo; do
+  overlay="$project_root/game/assets/source/web-eye-polish/$actor-blink-overlay.png"
+  if [[ -f "$overlay" ]]; then
+    dimensions="$(magick identify -format '%wx%h' "$overlay")"
+    if [[ "$dimensions" != '288x320' ]]; then
+      printf 'Invalid reviewed blink overlay dimensions: %s\n' "$actor" >&2
+      exit 1
+    fi
+    magick "$scratch_dir/$actor/$actor-locomotion.png" "$overlay" -compose Over -composite \
+      -strip -define png:color-type=6 "$scratch_dir/$actor/$actor-locomotion.png"
+  fi
+done
+
 # Only replace outputs after all three sources have passed measured-grid checks.
 if [[ "$check_only" == true ]]; then
   for actor in founder mira theo; do
