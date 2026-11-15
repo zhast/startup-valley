@@ -954,8 +954,10 @@ func _sync_story_visitors() -> void:
 	var hired := false
 	for candidate: Dictionary in _journey.get("candidates", []):
 		if str(candidate.get("id", "")) == "mira" and bool(candidate.get("hired", false)): hired = true
-	arrival_guest.position = _arrival_guest_position()
-	arrival_guest.set_active(_location == "office" and not _journey.is_empty() and not hired)
+	var show_arrival := _location == "office" and not _journey.is_empty() and not hired
+	var arrival := _arrival_guest_position() if show_arrival else Vector2(INF, INF)
+	if arrival.is_finite(): arrival_guest.position = arrival
+	arrival_guest.set_active(show_arrival and arrival.is_finite())
 	if arrival_guest.visible: room.navigation.actors["arrival-mina"] = arrival_guest.position
 	else: room.navigation.actors.erase("arrival-mina")
 	courtyard_sign.position = room.grid_to_world_position(room.player_spawn) + Vector2(0, 26)
@@ -967,17 +969,33 @@ func _arrival_guest_position() -> Vector2:
 	# player movement or a routine bootstrap cannot make Mina jump positions.
 	for offset: Vector2i in [Vector2i(2, -2), Vector2i(-2, -2), Vector2i(3, -3), Vector2i(-3, -3), Vector2i(1, -3)]:
 		var point := room.grid_to_world_position(room.player_spawn + offset)
-		if not room.navigation.walkable(room.navigation.cell_at(point)) or not room.navigation.walkable(room.navigation.cell_at(point + Vector2(0, 32))): continue
-		var painted := Rect2(point + Vector2(-24, -72), Vector2(48, 80))
-		var clear := true
-		for placement: Dictionary in room.resolved_placements:
-			var bounds: Rect2 = placement.world_visual_bounds
-			bounds.position += room.global_position
-			if bounds.intersects(painted):
-				clear = false
-				break
-		if clear: return point
-	return room.grid_to_world_position(room.player_spawn + Vector2i(0, -1))
+		if _arrival_candidate_clear(point): return point
+	var candidates := room.layout_model.floor_cells()
+	candidates.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+		var first_distance := a.distance_squared_to(room.player_spawn)
+		var second_distance := b.distance_squared_to(room.player_spawn)
+		if first_distance != second_distance: return first_distance < second_distance
+		return a.y < b.y if a.y != b.y else a.x < b.x
+	)
+	for cell: Vector2i in candidates:
+		if cell.distance_squared_to(room.player_spawn) < 4: continue
+		var point := room.grid_to_world_position(cell)
+		if _arrival_candidate_clear(point): return point
+	# A crowded custom layout must never paint Mina inside a prop. The current
+	# objective still opens her introduction directly when no world spot fits.
+	return Vector2(INF, INF)
+
+func _arrival_candidate_clear(point: Vector2) -> bool:
+	var cell := room.navigation.cell_at(point)
+	var approach := room.navigation.cell_at(point + Vector2(0, 32))
+	if not room.navigation.walkable(cell) or not room.navigation.walkable(approach): return false
+	var painted := Rect2(point + Vector2(-24, -72), Vector2(48, 80))
+	for placement: Dictionary in room.resolved_placements:
+		var bounds: Rect2 = placement.world_visual_bounds
+		bounds.position += room.global_position
+		if bounds.intersects(painted): return false
+	# Static geometry only; a passing actor cannot move the visitor elsewhere.
+	return not room.navigation.grid.get_id_path(room.player_spawn, approach).is_empty()
 
 func _apply_story_location(force: bool = false) -> void:
 	if courtyard == null: return
@@ -1042,7 +1060,9 @@ func _follow_story_goal(mode: String) -> void:
 	job_panel.close_drawer(false)
 	company_panel.hide()
 	match mode:
-		"meet_mina": _walk_to_story("arrival-mina", arrival_guest.position + Vector2(0, 32))
+		"meet_mina":
+			if arrival_guest.visible: _walk_to_story("arrival-mina", arrival_guest.position + Vector2(0, 32))
+			else: company_panel.present("journey")
 		"courtyard": _walk_to_story("courtyard-exit", room.grid_to_world_position(room.player_spawn))
 		"meet_theo": _walk_to_story("courtyard-theo", Courtyard.THEO_APPROACH)
 		"return_office": _walk_to_story("office-return", Courtyard.SPAWN)

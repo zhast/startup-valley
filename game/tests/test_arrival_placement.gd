@@ -50,7 +50,8 @@ func run() -> void:
 	root.add_child(main)
 	main.set_process(false)
 	main._spawn_employees([])
-	main._journey = {"candidates": [{"id": "mira", "hired": false}]}
+	main._journey = {"company": {"cashCents": 0}, "candidates": [{"id": "mira", "name": "Mina", "hired": false, "available": true, "costCents": 0}], "tycoon": {}}
+	main.company_panel.update_state(main._journey)
 	for compact: bool in [true, false]:
 		var path := "res://data/office_layout_starter.json" if compact else "res://data/office_layout.json"
 		var state := projection(path, compact)
@@ -65,6 +66,22 @@ func run() -> void:
 		check(main.room.apply_furnishing_state(state), label + " furniture edit can overlap preferred arrival silhouette")
 		check(main.arrival_guest.position != original, label + " placement callback recomputes arrival point")
 		validate_arrival(label + " after edit")
+		# Crowd every preferred approach in the actual AStar navigation surface.
+		# The earlier case uses a real moved chair; this isolates fallback safety.
+		var preferred: Array[Vector2i] = []
+		for offset: Vector2i in [Vector2i(2, -2), Vector2i(-2, -2), Vector2i(3, -3), Vector2i(-3, -3), Vector2i(1, -3)]:
+			var cell := main.room.player_spawn + offset
+			preferred.append(cell)
+			main.room.navigation.grid.set_point_solid(cell, true)
+		main._sync_story_visitors()
+		check(not preferred.has(main.room.navigation.cell_at(main.arrival_guest.position)), label + " crowded preferences use another clear floor cell")
+		validate_arrival(label + " crowded")
+		for cell: Vector2i in main.room.layout_model.floor_cells(): main.room.navigation.grid.set_point_solid(cell, true)
+		main._sync_story_visitors()
+		check(not main.arrival_guest.visible and not main.room.navigation.actors.has("arrival-mina"), label + " impossible placement hides visitor and removes reservation")
+		main._follow_story_goal("meet_mina")
+		check(main.company_panel.visible and main.company_panel.screen == "journey", label + " no-clear-floor goal still opens introduction")
+		main.company_panel.hide()
 	main.game_audio.shutdown()
 	main.free()
 	await process_frame
