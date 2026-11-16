@@ -200,6 +200,46 @@ test("canceling the offered project keeps its brief available for a real replace
   assert.equal(db.story.view().opportunity.productId, again.journey.tycoon.developing.id);
 });
 
+test("pivots reconcile the market brief atomically without stealing completed work", async (t) => {
+  const fixtureValue = await fixture(t);
+  let db = fixtureValue.db;
+  await firstRelease(db);
+  await travel(db, "courtyard", "visit");
+  await accept(db, "brief");
+  await travel(db, "office", "return");
+  await request(db, "tycoon.start", { topicId: "reselling", typeId: "template_pack", staffIds: ["founder", "mira"] });
+  const revision = db.story.view().revision;
+  // Pivot away releases the brief and invalidates old story commands.
+  await request(db, "tycoon.pivot", { topicId: "fitness", typeId: "course" });
+  assert.equal(db.story.view().revision, revision + 1);
+  assert.equal(db.story.view().opportunity.status, "accepted");
+  assert.equal(db.story.view().opportunity.productId, "");
+  assert.equal(db.journey.db.prepare("SELECT opportunity_product_id FROM story_state WHERE id=1").get()!.opportunity_product_id, "");
+  await assert.rejects(request(db, "story.travel", { operationId: "stale-pivot", destination: "courtyard", expectedRevision: revision }), /story changed/u);
+  await request(db, "tycoon.cancelBuild");
+  const started = await request(db, "tycoon.start", { topicId: "fitness", typeId: "course", staffIds: ["founder", "mira"] });
+  const productId = started.journey.tycoon.developing.id;
+  // A failure writing story state must roll back the product type and pivot flag too.
+  const before = db.bootstrap();
+  db.journey.db.exec("CREATE TRIGGER fail_story BEFORE UPDATE ON story_state BEGIN SELECT RAISE(ABORT,'Story write failed'); END");
+  await assert.rejects(request(db, "tycoon.pivot", { topicId: "reselling", typeId: "template_pack" }), /Story write failed/u);
+  assert.deepEqual(db.bootstrap(), before);
+  db.journey.db.exec("DROP TRIGGER fail_story");
+  await request(db, "tycoon.pivot", { topicId: "reselling", typeId: "template_pack" });
+  assert.equal(db.story.view().revision, before.journey.story.revision + 1);
+  assert.equal(db.story.view().opportunity.productId, productId);
+  assert.equal(db.story.view().opportunity.status, "developing");
+  for (let day = 0; day < 3; day++) await request(db, "day.end", { day: db.clockState().day });
+  await request(db, "tycoon.release", { productId });
+  db.close(); db = fixtureValue.open();
+  assert.equal(db.story.view().opportunity.status, "completed");
+  assert.equal(db.story.view().opportunity.productId, productId);
+  await request(db, "tycoon.start", { topicId: "fitness", typeId: "course", staffIds: ["founder", "mira"] });
+  await request(db, "tycoon.pivot", { topicId: "reselling", typeId: "template_pack" });
+  assert.equal(db.story.view().opportunity.productId, productId);
+  assert.equal(db.story.view().opportunity.status, "completed");
+});
+
 test("New Company clears durable story and operation receipts in the shared offline runtime", async (t) => {
   // This exercises the production portable worker with native SQLite; no browser
   // or computer-use surface is involved or claimed as test coverage.

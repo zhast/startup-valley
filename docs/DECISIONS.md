@@ -289,3 +289,12 @@ visual review only; the owner prohibited further native windows. See the
 [shared-yard decision](decisions/2026-11-15-shared-yard-and-connected-fence.md)
 for exact source/runtime identities, gate geometry and scope limits. Final
 export/package acceptance remains a separate handoff step.
+
+## 2026-11-16: Preserve saves on failed reset and reconcile story pivots
+
+A failed browser reset may leave a rollback marker even before replacing the
+current save. Remove it before allowing continued play; if cleanup cannot be
+guaranteed, fail closed until reopen rather than permit silent loss of later
+progress. Reconcile story product linkage transactionally on both start and
+pivot. Preserve completed brief associations and do not infer historical player
+intent. See [validation and scope](decisions/2026-11-16-review-reliability.md).

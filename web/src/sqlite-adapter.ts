@@ -12,10 +12,19 @@ const RESET_MARKER = ".startup-valley-reset-pending";
 
 /** Every prepared statement is finalized within the synchronous call. */
 export class WasmDatabase implements SqlDatabase {
+  private failure: Error | undefined;
   constructor(private handle: Database) {}
-  exec(sql: string): unknown { return this.handle.exec(sql); }
+  private assertUsable(): void { if (this.failure) throw this.failure; }
+  /** Prevent further writes when durable reset recovery cannot be guaranteed. */
+  invalidate(error: Error): void {
+    this.failure = error;
+    try { this.handle.close(); } catch { /* Already closed or unusable; remain blocked. */ }
+  }
+  exec(sql: string): unknown { this.assertUsable(); return this.handle.exec(sql); }
   prepare(sql: string): SqlStatement {
+    this.assertUsable();
     const invoke = <T>(values: SqlValue[], use: (statement: ReturnType<Database["prepare"]>) => T): T => {
+      this.assertUsable();
       const statement = this.handle.prepare(sql);
       try { if (values.length) statement.bind(values); return use(statement); }
       finally { statement.finalize(); }
@@ -34,7 +43,7 @@ export class WasmDatabase implements SqlDatabase {
     };
   }
   close(): void { this.handle.close(); }
-  replace(handle: Database): void { this.handle = handle; }
+  replace(handle: Database): void { this.assertUsable(); this.handle = handle; }
 }
 
 function openHandle(pool: Pool, path: string): Database {
@@ -95,12 +104,29 @@ export async function resetDatabase(pool: Pool, current: WasmDatabase, initializ
   // save is still open and unchanged, including when storage is full.
   pool.importDb(BACKUP_PATH, previous);
   const root = await navigator.storage.getDirectory();
-  const marker = await root.getFileHandle(RESET_MARKER, { create: true });
-  const writer = await marker.createWritable();
-  await writer.write("reset-pending-v1");
-  await writer.close();
-  current.close();
+  let writer: FileSystemWritableFileStream | undefined;
   try {
+    const marker = await root.getFileHandle(RESET_MARKER, { create: true });
+    writer = await marker.createWritable();
+    await writer.write("reset-pending-v1");
+    await writer.close();
+    writer = undefined;
+  } catch (cause) {
+    // Creating an empty marker is enough to trigger startup rollback. Never
+    // allow gameplay to continue with that marker after a recoverable error.
+    try {
+      if (writer) await writer.abort();
+      try { await root.removeEntry(RESET_MARKER); }
+      catch (error) { if (!(error instanceof DOMException && error.name === "NotFoundError")) throw error; }
+    } catch (cleanupError) {
+      const error = new Error(`Reset recovery requires reopening the game. The save and its backup have been preserved. ${String(cleanupError)}`, { cause });
+      current.invalidate(error);
+      throw error;
+    }
+    throw cause;
+  }
+  try {
+    current.close();
     pool.importDb(SAVE_PATH, replacement);
     current.replace(openHandle(pool, SAVE_PATH));
     await root.removeEntry(RESET_MARKER);
@@ -111,7 +137,11 @@ export async function resetDatabase(pool: Pool, current: WasmDatabase, initializ
       current.replace(openHandle(pool, SAVE_PATH));
       await root.removeEntry(RESET_MARKER);
     }
-    catch (restoreError) { throw new Error(`Could not reopen the save. A backup remains at ${BACKUP_PATH}. ${String(restoreError)}`, { cause }); }
+    catch (restoreError) {
+      const error = new Error(`Could not reopen the save. A backup remains at ${BACKUP_PATH}. Reopen the game to recover. ${String(restoreError)}`, { cause });
+      current.invalidate(error);
+      throw error;
+    }
     throw cause;
   }
   return current;

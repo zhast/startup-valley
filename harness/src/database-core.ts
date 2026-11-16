@@ -172,7 +172,7 @@ export class GameDatabase {
     this.#seed();
     this.furnishing = new FurnishingStore(this.#database, new FurnishingGeometry(resources.geometryData), resources.parseFurnishingState, resources.hash);
     this.journey = new JourneyStore(this.#database, () => this.furnishing.sync());
-    this.tycoon = new TycoonStore(this.#database, this.journey, () => this.furnishing.sync(), (id, topic, type) => this.story.productStarted(id, topic, type));
+    this.tycoon = new TycoonStore(this.#database, this.journey, () => this.furnishing.sync(), (id, topic, type) => this.story.productChanged(id, topic, type));
     this.story = new StoryStore(this.#database, this.journey, this.furnishing, () => this.tycoon.unlockStoryResearch("reselling", "template_pack"));
     this.journey.bindStory(() => this.story.view());
     this.journey.bindTycoon(() => this.tycoon.view());

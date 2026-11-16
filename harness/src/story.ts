@@ -116,10 +116,20 @@ export class StoryStore {
     });
   }
 
-  /** Called inside the real product-start transaction; never starts work itself. */
-  productStarted(id: string, topic: string, type: string): void {
+  /** Called inside product start/pivot transactions; never starts work itself. */
+  productChanged(id: string, topic: string, type: string): void {
     const row = this.row();
-    if (!Boolean(row.opportunity_accepted) || topic !== "reselling" || type !== "template_pack" || this.linkedProduct(String(row.opportunity_product_id))) return;
+    if (!Boolean(row.opportunity_accepted)) return;
+    if (topic !== "reselling" || type !== "template_pack") {
+      // A pivot away relinquishes the brief, including its revision, so stale
+      // story commands cannot act on the previously linked project.
+      if (row.opportunity_product_id === id) {
+        this.db.prepare("UPDATE story_state SET opportunity_product_id='',revision=revision+1 WHERE id=1").run();
+      }
+      return;
+    }
+    // Keep a completed brief (or an already matching project) attached.
+    if (this.linkedProduct(String(row.opportunity_product_id))) return;
     this.db.prepare("UPDATE story_state SET opportunity_product_id=?,revision=revision+1 WHERE id=1").run(id);
   }
 }

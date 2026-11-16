@@ -1,5 +1,20 @@
 # Development handoff — 2026-11-15
 
+## Post-review reliability fixes — 2026-11-16
+
+The owner approved two independently reproduced correctness fixes after review
+of the November 15 demo. The browser reset adapter now cleans up a partially
+created recovery marker before gameplay can continue; failed cleanup blocks
+further database access until recovery on reopen. This prevents later progress
+from being silently replaced by the pre-reset backup. Market Day Kit linkage
+now reconciles inside the product start/pivot transaction, including pivot-away
+revision updates and preserving an already completed brief. Historical orphaned
+released products are not retroactively associated because intent is ambiguous.
+
+See [post-review validation](decisions/2026-11-16-review-reliability.md) for actual
+checks and limitations. Earlier acceptance records below remain historical,
+not certification of this new source checkpoint.
+
 ## Current scope and status
 
 The owner activated [DEMO_GOAL_PLAN.md](DEMO_GOAL_PLAN.md). The bounded demo's

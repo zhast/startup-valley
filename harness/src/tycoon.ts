@@ -2305,7 +2305,7 @@ export class TycoonStore {
     private readonly db: SqlDatabase,
     private readonly journey: JourneyStore,
     private readonly onOfficeChanged: () => void = () => {},
-    private readonly onProductStarted: (id: string, topic: string, type: string) => void = () => {},
+    private readonly onProductChanged: (id: string, topic: string, type: string) => void = () => {},
   ) {}
 
   view(): TycoonSnapshot {
@@ -2476,7 +2476,7 @@ export class TycoonStore {
           released_day, review_json, sales_applied, last_sales_day, sales_cents, fans
         ) VALUES (?, ?, ?, ?, ?, 'developing', ?, 0, 0, 0, 0, ?, NULL, NULL, NULL, 0, NULL, 0, 0)
       `).run(id, topicId, typeId, productTitle(topicId, typeId), fitFor(topicId, typeId), this.day(), JSON.stringify(snapshot));
-      this.onProductStarted(id, topicId, typeId);
+      this.onProductChanged(id, topicId, typeId);
       return this.journey.state();
     });
   }
@@ -2811,6 +2811,7 @@ export class TycoonStore {
       const name = stored.sequelOf ? `${title} 2` : title;
       this.db.prepare("UPDATE tycoon_products SET topic_id = ?, type_id = ?, name = ?, fit = ?, staff_json = ? WHERE id = ?")
         .run(topicId, typeId, name, fitFor(topicId, typeId), serializeProductSnapshot(stored), row.id);
+      this.onProductChanged(String(row.id), topicId, typeId);
       return this.journey.state();
     });
   }
