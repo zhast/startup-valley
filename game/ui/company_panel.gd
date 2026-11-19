@@ -1140,6 +1140,31 @@ func _train_staff() -> void:
 				leave.clip_text = true
 		else:
 			_label(stats, false, card)
+		var raise_value: Variant = person.get("raise", null)
+		if raise_value is Dictionary:
+			var raise_offer := raise_value as Dictionary
+			var raised := bool(raise_offer.get("raised", false))
+			var can_raise := bool(raise_offer.get("enabled", false))
+			if raised or can_raise:
+				var raise_row := HBoxContainer.new()
+				raise_row.name = "RaiseRow_%s" % person_id
+				raise_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				raise_row.add_theme_constant_override("separation", 8)
+				card.add_child(raise_row)
+				var dollars := "$%d" % int(int(raise_offer.get("salaryCents", 0)) / 100)
+				var stat_name := str(raise_offer.get("stat", "design"))
+				var hint := ("Raised · %s · +1 %s" % [dollars, stat_name]) if raised else ("Raise · %s · +1 %s" % [dollars, stat_name])
+				var raise_line := _label(hint, false, raise_row)
+				raise_line.name = "RaiseLine_%s" % person_id
+				raise_line.autowrap_mode = TextServer.AUTOWRAP_OFF
+				raise_line.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				raise_line.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+				if can_raise:
+					var raise_button := _button("Give raise", _give_raise.bind(person_id), false, true, raise_row, "secondary")
+					raise_button.name = "Raise_%s" % person_id
+					raise_button.custom_minimum_size = Vector2(128, 32)
+					raise_button.size_flags_horizontal = Control.SIZE_SHRINK_END
+					raise_button.clip_text = false
 		var offers: Dictionary = person.get("training", {}) if person.get("training") is Dictionary else {}
 		for stat: String in ["design", "tech", "hype"]:
 			var offer: Dictionary = offers.get(stat, {}) if offers.get(stat) is Dictionary else {}
@@ -1159,6 +1184,9 @@ func _let_go(staff_id: String) -> void:
 
 func _set_pace(staff_id: String, pace: String) -> void:
 	_request("tycoon.setPace", {"staffId": staff_id, "pace": pace})
+
+func _give_raise(staff_id: String) -> void:
+	_request("tycoon.giveRaise", {"staffId": staff_id})
 
 func _research_card() -> void:
 	var tycoon := _tycoon()
