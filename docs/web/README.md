@@ -19,7 +19,7 @@ Godot owns presentation. The harness owns the simulation and saves. Preserve thi
 
 ## Where the original project left off
 
-The original [README](../../README.md) covers setup and controls, [AGENTS.md](../../AGENTS.md) defines development boundaries, and [AUTONOMY_LOG.md](../../AUTONOMY_LOG.md) is the latest progress trail. Its last entry is Round 68, November 12, 2026: the offline tycoon and back-catalog royalty feature are playable; staff raises are the next planned gameplay slice, and a second room needs architecture art. Earlier [PLAYTEST-NOTES.md](../../PLAYTEST-NOTES.md) focuses on Chapter 1 and is less current.
+The original [README](../../README.md) covers setup and controls, [AGENTS.md](../../AGENTS.md) defines development boundaries, and [AUTONOMY_LOG.md](../../AUTONOMY_LOG.md) is the latest progress trail. Its last entry is Round 69, November 19, 2026: the offline tycoon and staff raises are playable; profit share is the next planned gameplay slice, and a second room needs architecture art. Earlier [PLAYTEST-NOTES.md](../../PLAYTEST-NOTES.md) focuses on Chapter 1 and is less current.
 
 The original log reports 134 passing harness tests, 2 skipped, and 8/8 offline fixtures at that checkpoint. Those are historical results, separate from verification performed in this workspace.
 

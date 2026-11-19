@@ -3198,3 +3198,30 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Proof capture — PROOF PASS. Eighty-nine PNGs in `/workspace/sv-proof/round-68/` (local, not committed). Invocation: `STARTUP_VALLEY_NODE=/home/box/.local/node22/bin/node SV_PROOF_DIR=/workspace/sv-proof/round-68 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --script /workspace/startup-valley/.cursor/skills/verify-startup-valley/capture_journey.gd`
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey, on the Season card. Back catalog is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_back_catalog.gd`.
+
+### Round 69 — 2026-11-19
+
+**What changed**
+- `tycoon.giveRaise` takes `{ staffId }`. An unknown id fails with "Unknown teammate". The founder fails with "The founder cannot take a raise." A dismissed teammate fails with "Mina already left." Someone not hired fails with "Mina is not on the team yet." A second raise fails with "Mina already has a raise." A bad or extra field fails earlier with "Invalid protocol request". No fee, no clock move, no fans. The command does not draw a new seed and does not recompute a day that already posted.
+- One raise per hired teammate, once. Pace halves the table salary first. The raise then adds half of that paced salary, rounded down. Mina's $80 becomes $120. Part-time Mina's $40 becomes $60. `payroll.cents` updates immediately. A raise before payday is in that season's row. A raise after payday waits for the next season and does not rewrite the posted row. Switching pace does not clear the raise.
+- Later office days add 1 to the lowest craft stat already stored on the build. A tie prefers design, then tech, then hype. The +1 uses the pre-pace snapshot, then is applied after the half, so pace does not move the stat and the point is not halved. It is personal craft before the day plan, crunch, a research spike, and Fix bugs. It is not an extra research point. Training after the product started does not change the snapshot. Let go clears the flag, so a later hire starts without it. The founder is never stored as raised.
+- The journey block is `raise` on each staff row: `raised`, `salaryCents`, `stat`, `enabled`, and `reason`. `salaryCents` is the new salary at the current pace. `stat` is the snapshot's lowest stat when that person is on the developing product. It is optional, so an older payload still validates. A payload without it draws no control.
+- The row sits on the Train staff card, under Let go and Part-time and above Train. The line is "Raise · $120 · +1 hype" before and "Raised · $120 · +1 hype" after. The button is a secondary "Give raise". Hire stays the one primary action. Nothing on this row is orange.
+- The production scene still opens in story mode. Tycoon playtests and the verify helper set `demo_story_mode` false before the scene enters the tree, matching `run_all.gd`, so they still see the classic Company Journey. Studio plans stays the player path in the demo.
+
+**Proof**
+- The verify skill writes `90-raise-offer.png` and `91-raise-given.png` into `/workspace/sv-proof/round-69/`. The PNG check and the gate counts are recorded after `gate.sh` and the capture run.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. Profit share is the next slice. One optional deal per hired teammate, once. Season salary drops by half the table salary, rounded down. Mina's $80 becomes $40. Later sales of a product that stored them pay that person 10% of the company's cash from that sale, rounded down, on that sale's day, and add no fans. The founder cannot take one. A raise and a profit share do not stack. Let go clears it. No upfront fee, no clock move, and no new art. This is not part-time and not the publisher. Skip it and the first Crypto Alpha Newsletter still lands at 20700 cents and 5 fans, and the next office day at 33300 cents. A second room still waits on architecture art.
+2. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+3. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+4. The Train staff card now adds one raise line and one secondary button for each hired teammate who can take a raise, or who already has one. The row is hidden when the payload has no `raise` block.
+
+**Test results**
+- Recorded from `bash /workspace/sv-proof/round-69/gate.sh` and the verify capture in the follow-up. Before that gate, `game/tests/test_tycoon_raise.gd` printed TYCOON RAISE PASS and `game/tests/test_tycoon_part_time.gd` printed TYCOON PART TIME PASS. Both left the earned day at design 5, tech 4, hype 3. Connect stayed closed.
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey, on the Train staff card. A raise is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_raise.gd`.
