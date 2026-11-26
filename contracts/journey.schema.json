@@ -653,7 +653,20 @@
         "trainedToday": { "type": "boolean" },
         "training": { "$ref": "#/$defs/tycoonTraining" },
         "letGo": { "$ref": "#/$defs/tycoonLetGo" },
-        "pace": { "$ref": "#/$defs/tycoonPace" }
+        "pace": { "$ref": "#/$defs/tycoonPace" },
+        "raise": { "$ref": "#/$defs/tycoonRaise" }
+      }
+    },
+    "tycoonRaise": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["raised", "salaryCents", "stat", "enabled", "reason"],
+      "properties": {
+        "raised": { "type": "boolean" },
+        "salaryCents": { "type": "integer", "minimum": 0 },
+        "stat": { "enum": ["design", "tech", "hype"] },
+        "enabled": { "type": "boolean" },
+        "reason": { "type": "string" }
       }
     },
     "tycoonTraining": {

@@ -160,6 +160,7 @@ func start_newsletter() -> void:
 
 func boot() -> bool:
 	main = MAIN.instantiate()
+	main.demo_story_mode = false
 	viewport.add_child(main)
 	var ready := await wait_until(func() -> bool:
 		return main._state_loaded and main._worker_ready and main.company_panel != null and main.company_panel.visible and not main.company_panel.state.is_empty()

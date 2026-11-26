@@ -449,6 +449,14 @@ export interface PaceOffer {
   reason: string;
 }
 
+export interface RaiseOffer {
+  raised: boolean;
+  salaryCents: number;
+  stat: StatId;
+  enabled: boolean;
+  reason: string;
+}
+
 export interface TycoonStaffView {
   id: StaffId;
   name: string;
@@ -460,11 +468,13 @@ export interface TycoonStaffView {
   training: { design: TrainOffer; tech: TrainOffer; hype: TrainOffer };
   letGo: LetGoOffer;
   pace: PaceOffer;
+  raise: RaiseOffer;
 }
 
 interface StaffState extends CraftPoints {
   trainedDay: number | null;
   pace: StaffPace;
+  raised: boolean;
 }
 
 interface StaffSnapshot extends CraftPoints {
@@ -1092,18 +1102,33 @@ export function catalogPaydayDay(today: number, listedDay: number | null): numbe
 }
 
 /**
+ * One person's season salary. Pace halves the table amount first.
+ * A raise then adds half of that paced amount, rounded down.
+ * The founder and unknown ids pay nothing.
+ */
+export function seasonSalaryCents(id: string, pace: string | undefined, raised: boolean): number {
+  const cents = SALARY_CENTS[id as keyof typeof SALARY_CENTS];
+  if (typeof cents !== "number") return 0;
+  const paced = pace === "part" ? Math.floor(cents / 2) : cents;
+  return raised ? paced + Math.floor(paced / 2) : paced;
+}
+
+/**
  * Season salary for these hired ids. The founder and unknown ids add nothing.
  * Duplicates count once. A part-time id pays half, rounded down. Omitted pace is full time.
+ * A raised id adds half of that paced amount, rounded down.
  */
-export function payrollCents(staffIds: readonly string[], pace: Readonly<Record<string, string | undefined>> = {}): number {
+export function payrollCents(
+  staffIds: readonly string[],
+  pace: Readonly<Record<string, string | undefined>> = {},
+  raised: Readonly<Record<string, boolean | undefined>> = {},
+): number {
   const seen = new Set<string>();
   let total = 0;
   for (const id of staffIds) {
     if (seen.has(id)) continue;
     seen.add(id);
-    const cents = SALARY_CENTS[id as keyof typeof SALARY_CENTS];
-    if (typeof cents !== "number") continue;
-    total += pace[id] === "part" ? Math.floor(cents / 2) : cents;
+    total += seasonSalaryCents(id, pace[id], raised[id] === true);
   }
   return total;
 }
@@ -1515,6 +1540,28 @@ export function pacedCraft(points: CraftPoints, pace: StaffPace): CraftPoints {
     tech: Math.floor(points.tech / 2),
     hype: Math.floor(points.hype / 2),
   };
+}
+
+/** Lowest stored craft stat. A tie prefers design, then tech, then hype. */
+export function lowestCraftStat(points: CraftPoints): StatId {
+  let stat: StatId = "design";
+  if (points.tech < points[stat]) stat = "tech";
+  if (points.hype < points[stat]) stat = "hype";
+  return stat;
+}
+
+/**
+ * Part-time halves each stored stat. A raise then adds 1 to the lowest stat
+ * of that stored snapshot, so the half does not move which stat gains the point
+ * and the point is not halved.
+ */
+export function raisedDayCraft(points: CraftPoints, pace: StaffPace, raised: boolean): CraftPoints {
+  const paced = pacedCraft(points, pace);
+  if (!raised) return paced;
+  const stat = lowestCraftStat(points);
+  const next = { design: paced.design, tech: paced.tech, hype: paced.hype };
+  next[stat] += 1;
+  return next;
 }
 
 function asStat(value: string): StatId {
@@ -2358,6 +2405,7 @@ export class TycoonStore {
           },
           letGo: this.letGoOffer(person.id, person.name, isHired, dismissed.has(person.id)),
           pace: this.paceOffer(person.id, person.name, isHired, dismissed.has(person.id), current.pace),
+          raise: this.raiseOffer(person.id, person.name, isHired, dismissed.has(person.id), current.pace, current.raised, this.raiseStat(person.id, current, developing)),
         };
       }),
       trainingNotice: this.trainingNoticeDay === day ? this.trainingNotice : "",
@@ -2897,10 +2945,33 @@ export class TycoonStore {
   }
 
   /**
+   * Give one hired teammate a raise, once. Season salary rises by half of
+   * their current season salary, rounded down. Later office days add 1 to
+   * their lowest stored craft stat. The founder cannot take one.
+   * Let go clears it. No fee, no ledger row, no clock move.
+   */
+  giveRaise(staffId: string): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const person = STAFF.find((member) => member.id === staffId);
+      if (!person) throw new Error("Unknown teammate");
+      if (person.id === "founder") throw new Error("The founder cannot take a raise.");
+      const status = this.employmentStatus(person.id);
+      if (status === "dismissed") throw new Error(`${person.name} already left.`);
+      if (status !== "hired") throw new Error(`${person.name} is not on the team yet.`);
+      const state = this.loadStaffState();
+      if (state[person.id].raised) throw new Error(`${person.name} already has a raise.`);
+      state[person.id].raised = true;
+      this.saveStaffState(state);
+      return this.journey.state();
+    });
+  }
+
+  /**
    * Dismiss one hired teammate. The founder stays. They leave the company.
    * A build in development that listed them drops them. Days, points, and
    * sales already earned stay. Later days use whoever remains. Payroll no
-   * longer includes them. Part-time clears, so a later hire starts full time.
+   * longer includes them. Part-time and a raise clear, so a later hire starts
+   * full time and without a raise.
    * No fee, no ledger row, no clock move. Hiring them again is the usual hire.
    */
   letGo(staffId: string): ReturnType<JourneyStore["state"]> {
@@ -2913,8 +2984,9 @@ export class TycoonStore {
       if (status !== "hired") throw new Error(`${person.name} is not on the team yet.`);
       this.db.prepare("UPDATE employees SET employment_status = 'dismissed' WHERE id = ?").run(person.id);
       const stats = this.loadStaffState();
-      if (stats[person.id].pace === "part") {
+      if (stats[person.id].pace === "part" || stats[person.id].raised) {
         stats[person.id].pace = "full";
+        stats[person.id].raised = false;
         this.saveStaffState(stats);
       }
       const row = this.developingRow();
@@ -3569,8 +3641,9 @@ export class TycoonStore {
     const working = snapshot.staff.filter((person) => !trainedToday.has(person.id));
     const accrue = pointsStillAccrue(Number(row.dev_days), requiredDevDays(type.devDays, snapshot.sequelOf !== null, snapshot.size, snapshot.feature));
     // Part-time halves that person's stored craft before the day plan, crunch, a spike, or fix bugs.
-    const pace = this.loadStaffState();
-    const paced = working.map((person) => pacedCraft(person, pace[person.id]?.pace ?? "full"));
+    // A raise then adds 1 to the lowest stored stat. The half does not move that stat.
+    const staffState = this.loadStaffState();
+    const paced = working.map((person) => raisedDayCraft(person, staffState[person.id]?.pace ?? "full", staffState[person.id]?.raised === true));
     const rawPersonal = accrue ? snapshotPoints(paced) : { design: 0, tech: 0, hype: 0 };
     // Day plan folds personal first. An armed crunch doubles that fold. A rest day zeroes it.
     // Tools and the office stay on their own stats either way.
@@ -3819,11 +3892,33 @@ export class TycoonStore {
     return { value: pace === "part" ? "part" : "full", enabled: true, reason: "" };
   }
 
+  private raiseStat(id: StaffId, live: CraftPoints, developing: ProductRow | undefined): StatId {
+    if (id === "founder") return "design";
+    if (developing) {
+      const member = parseProductSnapshot(developing.staff_json).staff.find((person) => person.id === id);
+      if (member) return lowestCraftStat(member);
+    }
+    return lowestCraftStat(live);
+  }
+
+  private raiseOffer(id: StaffId, name: string, hired: boolean, dismissed: boolean, pace: StaffPace, raised: boolean, stat: StatId): RaiseOffer {
+    if (id === "founder") return { raised: false, salaryCents: 0, stat: "design", enabled: false, reason: "The founder cannot take a raise." };
+    const salaryCents = seasonSalaryCents(id, pace, true);
+    if (dismissed) return { raised: false, salaryCents, stat, enabled: false, reason: `${name} already left.` };
+    if (!hired) return { raised: false, salaryCents, stat, enabled: false, reason: `${name} is not on the team yet.` };
+    if (raised) return { raised: true, salaryCents, stat, enabled: false, reason: `${name} already has a raise.` };
+    return { raised: false, salaryCents, stat, enabled: true, reason: "" };
+  }
+
   private payrollDue(hired: ReadonlySet<string>): number {
     const state = this.loadStaffState();
     const pace: Record<string, StaffPace> = {};
-    for (const person of STAFF) pace[person.id] = state[person.id].pace;
-    return payrollCents([...hired], pace);
+    const raised: Record<string, boolean> = {};
+    for (const person of STAFF) {
+      pace[person.id] = state[person.id].pace;
+      raised[person.id] = state[person.id].raised;
+    }
+    return payrollCents([...hired], pace, raised);
   }
 
   private letGoNotice(dismissed: ReadonlySet<string>): string {
@@ -4048,7 +4143,7 @@ export class TycoonStore {
 
   private loadStaffState(): Record<StaffId, StaffState> {
     const defaults = Object.fromEntries(STAFF.map((person) => [person.id, {
-      design: person.design, tech: person.tech, hype: person.hype, trainedDay: null as number | null, pace: "full" as StaffPace,
+      design: person.design, tech: person.tech, hype: person.hype, trainedDay: null as number | null, pace: "full" as StaffPace, raised: false,
     }])) as Record<StaffId, StaffState>;
     const row = this.db.prepare("SELECT staff_json FROM tycoon_meta WHERE id = 1").get() as { staff_json?: string } | undefined;
     const raw = row?.staff_json?.trim();
@@ -4056,7 +4151,7 @@ export class TycoonStore {
     let parsed: unknown;
     try { parsed = JSON.parse(raw); } catch { return defaults; }
     if (!parsed || typeof parsed !== "object") return defaults;
-    const stored = parsed as Record<string, { design?: unknown; tech?: unknown; hype?: unknown; trainedDay?: unknown; pace?: unknown }>;
+    const stored = parsed as Record<string, { design?: unknown; tech?: unknown; hype?: unknown; trainedDay?: unknown; pace?: unknown; raised?: unknown }>;
     for (const person of STAFF) {
       const item = stored[person.id];
       if (!item || typeof item !== "object") continue;
@@ -4067,22 +4162,24 @@ export class TycoonStore {
         hype: clampStat(item.hype, person.hype),
         trainedDay: Number.isInteger(trainedDay) && trainedDay > 0 ? trainedDay : null,
         pace: person.id !== "founder" && item.pace === "part" ? "part" : "full",
+        raised: person.id !== "founder" && item.raised === true,
       };
     }
     return defaults;
   }
 
   private saveStaffState(state: Record<StaffId, StaffState>): void {
-    const stored: Record<string, { design: number; tech: number; hype: number; trainedDay: number | null; pace?: "part" }> = {};
+    const stored: Record<string, { design: number; tech: number; hype: number; trainedDay: number | null; pace?: "part"; raised?: true }> = {};
     for (const person of STAFF) {
       const item = state[person.id];
-      const body: { design: number; tech: number; hype: number; trainedDay: number | null; pace?: "part" } = {
+      const body: { design: number; tech: number; hype: number; trainedDay: number | null; pace?: "part"; raised?: true } = {
         design: item.design,
         tech: item.tech,
         hype: item.hype,
         trainedDay: item.trainedDay,
       };
       if (person.id !== "founder" && item.pace === "part") body.pace = "part";
+      if (person.id !== "founder" && item.raised) body.raised = true;
       stored[person.id] = body;
     }
     this.db.prepare("UPDATE tycoon_meta SET staff_json = ? WHERE id = 1").run(JSON.stringify(stored));

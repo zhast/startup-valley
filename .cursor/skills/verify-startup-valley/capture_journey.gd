@@ -206,6 +206,7 @@ func _run() -> void:
 	root.add_child(viewport)
 	viewport.notify_mouse_entered()
 	main = MAIN.instantiate()
+	main.demo_story_mode = false
 	viewport.add_child(main)
 	var ready := await wait_until(func() -> bool:
 		return main._state_loaded and main._worker_ready and main.company_panel != null and main.company_panel.visible and not main.company_panel.state.is_empty()
@@ -317,13 +318,13 @@ func _run() -> void:
 	await snap("26-sequel-offer", finished)
 	var award_offer := main.company_panel.find_child("Award_p1", true, false) as Button
 	check(award_offer != null and not award_offer.disabled and str(award_offer.get_meta("cozy_variant", "")) == "secondary" and award_offer.text == "Enter award", "Enter award is a secondary action on the finished product")
-	check(label_named("AwardShow_p1") != null and label_named("AwardShow_p1").text == "Whop Creator Awards · $40", "The shipped card names the show and the fee")
+	check(label_named("AwardShow_p1") != null and label_named("AwardShow_p1").text == "TownSquare Creator Awards · $40", "The shipped card names the show and the fee")
 	check(label_named("AwardResult_p1") == null, "The result line is hidden until the product enters")
 	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Enter award")
 	await snap("28-award-offer", finished)
 	var port_offer := main.company_panel.find_child("Port_p1", true, false) as Button
 	check(port_offer != null and not port_offer.disabled and str(port_offer.get_meta("cozy_variant", "")) == "secondary" and port_offer.text == "Port", "Port is a secondary action on the finished product")
-	check(label_named("PortShelf_p1") != null and label_named("PortShelf_p1").text == "Whop Mobile · $80", "The shipped card names the shelf and the fee")
+	check(label_named("PortShelf_p1") != null and label_named("PortShelf_p1").text == "TownSquare Mobile · $80", "The shipped card names the shelf and the fee")
 	check(label_named("PortLine_p1") == null, "The port line is hidden until the port starts")
 	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary beside Port")
 	await snap("30-port-offer", finished)
@@ -416,6 +417,7 @@ func _run() -> void:
 	await _let_go_proof()
 	await _part_time_proof()
 	await _catalog_proof()
+	await _raise_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -448,6 +450,7 @@ func dismiss_onboarding() -> void:
 
 func boot_company() -> bool:
 	main = MAIN.instantiate()
+	main.demo_story_mode = false
 	viewport.add_child(main)
 	var ready := await wait_until(func() -> bool:
 		return main._state_loaded and main._worker_ready and main.company_panel != null and main.company_panel.visible and not main.company_panel.state.is_empty()
@@ -579,7 +582,7 @@ func _contract_release_proof() -> void:
 	var cash_before_port := company_cash()
 	var fans_before_port := company_reputation()
 	await click(port_button)
-	await wait_until(func() -> bool: return not main.company_panel.busy and label_named("PortLine_p1") != null and label_named("PortLine_p1").text == "Port · Whop Mobile · selling 1 day", "The port line says it is selling for one day")
+	await wait_until(func() -> bool: return not main.company_panel.busy and label_named("PortLine_p1") != null and label_named("PortLine_p1").text == "Port · TownSquare Mobile · selling 1 day", "The port line says it is selling for one day")
 	var port_again := main.company_panel.find_child("Port_p1", true, false) as Button
 	check(port_again != null and port_again.disabled and port_again.text == "Port · Already ported.", "A second port stays disabled")
 	check(company_cash() == cash_before_port - 8000, "The port charges $80")
@@ -587,7 +590,7 @@ func _contract_release_proof() -> void:
 	await end_office_day()
 	await open_journey()
 	var port_line := label_named("PortLine_p1")
-	check(port_line != null and port_line.text.begins_with("Port · Whop Mobile · $"), "The extra sales day names its cash")
+	check(port_line != null and port_line.text.begins_with("Port · TownSquare Mobile · $"), "The extra sales day names its cash")
 	check(company_reputation() > fans_before_port, "The extra sales day adds fans once")
 	var port_card: Control = port_line
 	while port_card != null and not str(port_card.name).begins_with("Finished_"):
@@ -599,17 +602,17 @@ func _contract_release_proof() -> void:
 func _engine_proof() -> void:
 	await open_journey()
 	var price := label_named("EnginePrice")
-	check(price != null and price.text == "Whop Kit Engine · $120", "The engine card names Whop Kit Engine and $120")
+	check(price != null and price.text == "TownSquare Kit Engine · $120", "The engine card names TownSquare Kit Engine and $120")
 	var buy := main.company_panel.find_child("Buy_engine", true, false) as Button
-	check(buy != null and not buy.disabled and str(buy.get_meta("cozy_variant", "")) == "secondary" and buy.text == "Buy Whop Kit Engine · $120", "Buy Whop Kit Engine is an enabled secondary action")
+	check(buy != null and not buy.disabled and str(buy.get_meta("cozy_variant", "")) == "secondary" and buy.text == "Buy TownSquare Kit Engine · $120", "Buy TownSquare Kit Engine is an enabled secondary action")
 	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the engine")
 	await snap("32-engine-offer", main.company_panel.find_child("EngineCard", true, false) as Control)
 	var cash_before := company_cash()
 	await click(buy)
-	await wait_until(func() -> bool: return not main.company_panel.busy and label_named("EngineNotice") != null and label_named("EngineNotice").text == "Bought Whop Kit Engine. −$120", "Purchase notice names the engine")
+	await wait_until(func() -> bool: return not main.company_panel.busy and label_named("EngineNotice") != null and label_named("EngineNotice").text == "Bought TownSquare Kit Engine. −$120", "Purchase notice names the engine")
 	check(company_cash() == cash_before - 12000, "The engine charges $120 once")
 	var again := main.company_panel.find_child("Buy_engine", true, false) as Button
-	check(again != null and again.disabled and again.text == "Buy Whop Kit Engine · Already owned.", "A second buy stays disabled")
+	check(again != null and again.disabled and again.text == "Buy TownSquare Kit Engine · Already owned.", "A second buy stays disabled")
 	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays primary after the engine is owned")
 	var guard := 0
 	while not developing().is_empty() and not bool(developing().get("ready", false)) and guard < 4:
@@ -624,12 +627,12 @@ func _engine_proof() -> void:
 	var none := main.company_panel.find_child("Engine_none", true, false) as Button
 	var kit := main.company_panel.find_child("Engine_whop_kit", true, false) as Button
 	check(none != null and not none.disabled and str(none.get_meta("cozy_variant", "")) == "secondary" and none.text == "None", "None is the default engine")
-	check(kit != null and not kit.disabled and str(kit.get_meta("cozy_variant", "")) == "secondary" and kit.text == "Whop Kit Engine", "Whop Kit Engine is a secondary choice")
+	check(kit != null and not kit.disabled and str(kit.get_meta("cozy_variant", "")) == "secondary" and kit.text == "TownSquare Kit Engine", "TownSquare Kit Engine is a secondary choice")
 	check(button_named("Start development") != null and str(button_named("Start development").get_meta("cozy_variant", "")) == "primary", "Start development stays the primary action")
 	await click(kit)
 	await frames(4)
-	check(label_named("EngineEffect") != null and label_named("EngineEffect").text == "Whop Kit Engine · +1 score", "The engine shows +1 score")
-	check(label_named("OnTheBuild") != null and label_named("OnTheBuild").text == "On the build · Whop Kit Engine", "The build line names the engine")
+	check(label_named("EngineEffect") != null and label_named("EngineEffect").text == "TownSquare Kit Engine · +1 score", "The engine shows +1 score")
+	check(label_named("OnTheBuild") != null and label_named("OnTheBuild").text == "On the build · TownSquare Kit Engine", "The build line names the engine")
 	await snap("33-engine-picker", label_named("EngineHeading"))
 
 func _focus_proof() -> void:
@@ -926,7 +929,7 @@ func seed_expo_offer(data_dir: String) -> bool:
 	if node.is_empty():
 		node = "/home/box/.local/node22/bin/node"
 	var script_path := data_dir.path_join("seed-expo.mjs")
-	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst file = root + '/startup-valley.sqlite';\nconst db = new GameDatabase(file, root + '/company-project');\ndb.journey.recordCompanyChange('seed:expo-cash', 1, 20700, 0, 0, 'Seed cash');\nconst expo = db.tycoon.view().expo;\nconst company = db.journey.state().company;\ndb.close();\nif (company.cashCents !== 20700 || company.earnedCents !== 0 || company.reputation !== 0 || expo.booked || expo.name !== 'Whop Creator Fair' || expo.when !== 'Spring 14' || expo.costCents !== 6000 || expo.fans !== 3) { console.error(JSON.stringify({ company: company, expo: expo })); process.exit(2); }\n" % JSON.stringify(database)
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst file = root + '/startup-valley.sqlite';\nconst db = new GameDatabase(file, root + '/company-project');\ndb.journey.recordCompanyChange('seed:expo-cash', 1, 20700, 0, 0, 'Seed cash');\nconst expo = db.tycoon.view().expo;\nconst company = db.journey.state().company;\ndb.close();\nif (company.cashCents !== 20700 || company.earnedCents !== 0 || company.reputation !== 0 || expo.booked || expo.name !== 'TownSquare Creator Fair' || expo.when !== 'Spring 14' || expo.costCents !== 6000 || expo.fans !== 3) { console.error(JSON.stringify({ company: company, expo: expo })); process.exit(2); }\n" % JSON.stringify(database)
 	var file := FileAccess.open(script_path, FileAccess.WRITE)
 	if file == null:
 		check(false, "Could not write the expo seed script")
@@ -955,7 +958,7 @@ func _expo_proof() -> void:
 	await dismiss_onboarding()
 	await open_journey()
 	var line := label_named("SeasonExpo")
-	check(line != null and line.text == "Expo · Whop Creator Fair on Spring 14 · $60 booth, about 3 fans", "The Season card names the expo offer")
+	check(line != null and line.text == "Expo · TownSquare Creator Fair on Spring 14 · $60 booth, about 3 fans", "The Season card names the expo offer")
 	var book := button_named("Book booth")
 	check(book != null and not book.disabled and str(book.get_meta("cozy_variant", "")) == "secondary", "Book booth is a secondary action")
 	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the booth")
@@ -964,7 +967,7 @@ func _expo_proof() -> void:
 	await snap("46-expo-offer", main.company_panel.find_child("SeasonCard", true, false) as Control)
 	await click(book)
 	await wait_until(func() -> bool: return company_cash() == 14700 and not main.company_panel.busy, "Booking the booth charges $60")
-	check(label_named("SeasonExpo") != null and label_named("SeasonExpo").text == "Booth booked · Whop Creator Fair on Spring 14", "The Season card names the booked booth")
+	check(label_named("SeasonExpo") != null and label_named("SeasonExpo").text == "Booth booked · TownSquare Creator Fair on Spring 14", "The Season card names the booked booth")
 	check(button_named("Book booth") == null, "The book button hides once the booth is booked")
 	header = label_named("OfficeDate")
 	check(header != null and header.text.contains("$147.00"), "The header shows the cash after the fee")
@@ -1040,7 +1043,7 @@ func seed_town_day_offer(data_dir: String) -> bool:
 	if node.is_empty():
 		node = "/home/box/.local/node22/bin/node"
 	var script_path := data_dir.path_join("seed-town.mjs")
-	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst file = root + '/startup-valley.sqlite';\nconst db = new GameDatabase(file, root + '/company-project');\ndb.journey.recordCompanyChange('seed:town-cash', 1, 20700, 0, 0, 'Seed cash');\nconst town = db.tycoon.view().townDay;\nconst company = db.journey.state().company;\ndb.close();\nif (company.cashCents !== 20700 || company.earnedCents !== 0 || company.reputation !== 0 || town.taken || town.name !== 'Whop Block Picnic' || town.season !== 'Spring' || town.costCents !== 2000 || town.fans !== 2) { console.error(JSON.stringify({ company: company, town: town })); process.exit(2); }\n" % JSON.stringify(database)
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst file = root + '/startup-valley.sqlite';\nconst db = new GameDatabase(file, root + '/company-project');\ndb.journey.recordCompanyChange('seed:town-cash', 1, 20700, 0, 0, 'Seed cash');\nconst town = db.tycoon.view().townDay;\nconst company = db.journey.state().company;\ndb.close();\nif (company.cashCents !== 20700 || company.earnedCents !== 0 || company.reputation !== 0 || town.taken || town.name !== 'TownSquare Block Picnic' || town.season !== 'Spring' || town.costCents !== 2000 || town.fans !== 2) { console.error(JSON.stringify({ company: company, town: town })); process.exit(2); }\n" % JSON.stringify(database)
 	var file := FileAccess.open(script_path, FileAccess.WRITE)
 	if file == null:
 		check(false, "Could not write the town day seed script")
@@ -1069,7 +1072,7 @@ func _town_day_proof() -> void:
 	await dismiss_onboarding()
 	await open_journey()
 	var line := label_named("SeasonTown")
-	check(line != null and line.text == "Town · Whop Block Picnic this Spring · $20, about 2 fans", "The Season card names the town day offer")
+	check(line != null and line.text == "Town · TownSquare Block Picnic this Spring · $20, about 2 fans", "The Season card names the town day offer")
 	var take := button_named("Take the afternoon")
 	check(take != null and not take.disabled and str(take.get_meta("cozy_variant", "")) == "secondary", "Take the afternoon is a secondary action")
 	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the picnic")
@@ -1078,7 +1081,7 @@ func _town_day_proof() -> void:
 	await snap("50-townday-offer", line)
 	await click(take)
 	await wait_until(func() -> bool: return company_cash() == 18700 and company_reputation() == 2 and not main.company_panel.busy, "The picnic charges $20 and grants 2 fans")
-	check(label_named("SeasonTown") != null and label_named("SeasonTown").text == "Afternoon off · Whop Block Picnic", "The Season card names the afternoon off")
+	check(label_named("SeasonTown") != null and label_named("SeasonTown").text == "Afternoon off · TownSquare Block Picnic", "The Season card names the afternoon off")
 	check(button_named("Take the afternoon") == null, "The afternoon button hides once the picnic is taken")
 	header = label_named("OfficeDate")
 	check(header != null and header.text.contains("$187.00") and header.text.contains("2 reputation"), "The header shows the cash and fans after the picnic")
@@ -1096,7 +1099,7 @@ func seed_press_demo_offer(data_dir: String) -> bool:
 	if node.is_empty():
 		node = "/home/box/.local/node22/bin/node"
 	var script_path := data_dir.path_join("seed-press.mjs")
-	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst file = root + '/startup-valley.sqlite';\nconst db = new GameDatabase(file, root + '/company-project');\ndb.journey.recordCompanyChange('seed:press-cash', 1, 20700, 0, 0, 'Seed cash');\ndb.tycoon.start('crypto', 'newsletter', []);\nconst view = db.tycoon.view().developing;\nconst company = db.journey.state().company;\ndb.close();\nconst offer = view && view.pressDemo;\nif (company.cashCents !== 20700 || company.earnedCents !== 0 || company.reputation !== 0 || !offer || offer.shown || offer.name !== 'Whop Weekly Preview' || offer.costCents !== 3000 || offer.fans !== 4) { console.error(JSON.stringify({ company: company, view: view })); process.exit(2); }\n" % JSON.stringify(database)
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst file = root + '/startup-valley.sqlite';\nconst db = new GameDatabase(file, root + '/company-project');\ndb.journey.recordCompanyChange('seed:press-cash', 1, 20700, 0, 0, 'Seed cash');\ndb.tycoon.start('crypto', 'newsletter', []);\nconst view = db.tycoon.view().developing;\nconst company = db.journey.state().company;\ndb.close();\nconst offer = view && view.pressDemo;\nif (company.cashCents !== 20700 || company.earnedCents !== 0 || company.reputation !== 0 || !offer || offer.shown || offer.name !== 'TownSquare Weekly Preview' || offer.costCents !== 3000 || offer.fans !== 4) { console.error(JSON.stringify({ company: company, view: view })); process.exit(2); }\n" % JSON.stringify(database)
 	var file := FileAccess.open(script_path, FileAccess.WRITE)
 	if file == null:
 		check(false, "Could not write the press demo seed script")
@@ -1125,7 +1128,7 @@ func _press_demo_proof() -> void:
 	await dismiss_onboarding()
 	await open_journey()
 	var line := label_named("PressDemoOffer")
-	check(line != null and line.text == "Press demo · Whop Weekly Preview · $30, about 4 fans", "The journey card names the press demo offer")
+	check(line != null and line.text == "Press demo · TownSquare Weekly Preview · $30, about 4 fans", "The journey card names the press demo offer")
 	var show := button_named("Show preview")
 	check(show != null and not show.disabled and str(show.get_meta("cozy_variant", "")) == "secondary", "Show preview is a secondary action")
 	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the preview")
@@ -1134,7 +1137,7 @@ func _press_demo_proof() -> void:
 	await snap("52-pressdemo-offer", line)
 	await click(show)
 	await wait_until(func() -> bool: return company_cash() == 17700 and company_reputation() == 4 and not main.company_panel.busy, "The preview charges $30 and grants 4 fans")
-	check(label_named("PressDemoOffer") != null and label_named("PressDemoOffer").text == "Preview shown · Whop Weekly Preview", "The card names the shown preview")
+	check(label_named("PressDemoOffer") != null and label_named("PressDemoOffer").text == "Preview shown · TownSquare Weekly Preview", "The card names the shown preview")
 	check(button_named("Show preview") == null, "The preview button hides once it is shown")
 	header = label_named("OfficeDate")
 	check(header != null and header.text.contains("$177.00") and header.text.contains("4 reputation"), "The header shows the cash and fans after the preview")
@@ -1152,7 +1155,7 @@ func seed_trailer_offer(data_dir: String) -> bool:
 	if node.is_empty():
 		node = "/home/box/.local/node22/bin/node"
 	var script_path := data_dir.path_join("seed-trailer.mjs")
-	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst file = root + '/startup-valley.sqlite';\nconst db = new GameDatabase(file, root + '/company-project');\ndb.tycoon.start('crypto', 'newsletter', []);\ndb.endDay(1);\ndb.endDay(2);\ndb.tycoon.release('p1');\nconst product = db.tycoon.view().history[0];\nconst company = db.journey.state().company;\ndb.close();\nconst offer = product && product.trailer;\nif (company.cashCents !== 20700 || company.reputation !== 5 || !product || product.status !== 'released' || product.salesCents !== 20700 || product.fans !== 5 || !offer || offer.made || offer.name !== 'Whop Creator Cut' || offer.costCents !== 2500 || offer.fans !== 6) { console.error(JSON.stringify({ company: company, product: product })); process.exit(2); }\n" % JSON.stringify(database)
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst file = root + '/startup-valley.sqlite';\nconst db = new GameDatabase(file, root + '/company-project');\ndb.tycoon.start('crypto', 'newsletter', []);\ndb.endDay(1);\ndb.endDay(2);\ndb.tycoon.release('p1');\nconst product = db.tycoon.view().history[0];\nconst company = db.journey.state().company;\ndb.close();\nconst offer = product && product.trailer;\nif (company.cashCents !== 20700 || company.reputation !== 5 || !product || product.status !== 'released' || product.salesCents !== 20700 || product.fans !== 5 || !offer || offer.made || offer.name !== 'TownSquare Creator Cut' || offer.costCents !== 2500 || offer.fans !== 6) { console.error(JSON.stringify({ company: company, product: product })); process.exit(2); }\n" % JSON.stringify(database)
 	var file := FileAccess.open(script_path, FileAccess.WRITE)
 	if file == null:
 		check(false, "Could not write the trailer seed script")
@@ -1181,7 +1184,7 @@ func _trailer_proof() -> void:
 	await dismiss_onboarding()
 	await open_journey()
 	var line := label_named("TrailerOffer_p1")
-	check(line != null and line.text == "Trailer · Whop Creator Cut · $25, about 6 fans", "The Selling card names the trailer offer")
+	check(line != null and line.text == "Trailer · TownSquare Creator Cut · $25, about 6 fans", "The Selling card names the trailer offer")
 	var make := button_named("Make trailer")
 	check(make != null and not make.disabled and str(make.get_meta("cozy_variant", "")) == "secondary", "Make trailer is a secondary action")
 	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the trailer")
@@ -1190,7 +1193,7 @@ func _trailer_proof() -> void:
 	await snap("54-trailer-offer", line)
 	await click(make)
 	await wait_until(func() -> bool: return company_cash() == 18200 and company_reputation() == 11 and not main.company_panel.busy, "The trailer charges $25 and grants 6 fans")
-	check(label_named("TrailerOffer_p1") != null and label_named("TrailerOffer_p1").text == "Trailer made · Whop Creator Cut", "The Selling card names the made trailer")
+	check(label_named("TrailerOffer_p1") != null and label_named("TrailerOffer_p1").text == "Trailer made · TownSquare Creator Cut", "The Selling card names the made trailer")
 	check(button_named("Make trailer") == null, "The trailer button hides once it is made")
 	header = label_named("OfficeDate")
 	check(header != null and header.text.contains("Spring 3") and header.text.contains("$182.00") and header.text.contains("11 reputation"), "The header shows the cash and fans after the trailer")
@@ -1208,7 +1211,7 @@ func seed_diary_offer(data_dir: String) -> bool:
 	if node.is_empty():
 		node = "/home/box/.local/node22/bin/node"
 	var script_path := data_dir.path_join("seed-diary.mjs")
-	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst file = root + '/startup-valley.sqlite';\nconst db = new GameDatabase(file, root + '/company-project');\ndb.tycoon.start('crypto', 'newsletter', []);\ndb.endDay(1);\ndb.endDay(2);\ndb.tycoon.release('p1');\ndb.endDay(3);\ndb.endDay(4);\ndb.endDay(5);\ndb.endDay(6);\ndb.setClock(7, 480, 0);\nconst product = db.tycoon.view().history[0];\nconst company = db.journey.state().company;\ndb.close();\nconst offer = product && product.diary;\nif (company.cashCents !== 46800 || company.reputation !== 11 || !product || product.status !== 'complete' || product.salesCents !== 46800 || product.fans !== 11 || !offer || offer.written || offer.name !== 'Whop Post-Mortem' || offer.costCents !== 1500 || offer.fans !== 1) { console.error(JSON.stringify({ company: company, product: product })); process.exit(2); }\n" % JSON.stringify(database)
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst file = root + '/startup-valley.sqlite';\nconst db = new GameDatabase(file, root + '/company-project');\ndb.tycoon.start('crypto', 'newsletter', []);\ndb.endDay(1);\ndb.endDay(2);\ndb.tycoon.release('p1');\ndb.endDay(3);\ndb.endDay(4);\ndb.endDay(5);\ndb.endDay(6);\ndb.setClock(7, 480, 0);\nconst product = db.tycoon.view().history[0];\nconst company = db.journey.state().company;\ndb.close();\nconst offer = product && product.diary;\nif (company.cashCents !== 46800 || company.reputation !== 11 || !product || product.status !== 'complete' || product.salesCents !== 46800 || product.fans !== 11 || !offer || offer.written || offer.name !== 'TownSquare Post-Mortem' || offer.costCents !== 1500 || offer.fans !== 1) { console.error(JSON.stringify({ company: company, product: product })); process.exit(2); }\n" % JSON.stringify(database)
 	var file := FileAccess.open(script_path, FileAccess.WRITE)
 	if file == null:
 		check(false, "Could not write the diary seed script")
@@ -1238,7 +1241,7 @@ func _diary_proof() -> void:
 	await open_journey()
 	var finished := main.company_panel.find_child("Finished_p1", true, false) as Control
 	var line := label_named("DiaryOffer_p1")
-	check(finished != null and line != null and finished.is_ancestor_of(line) and line.text == "Diary · Whop Post-Mortem · $15, about 1 fan", "The Shipped card names the diary offer")
+	check(finished != null and line != null and finished.is_ancestor_of(line) and line.text == "Diary · TownSquare Post-Mortem · $15, about 1 fan", "The Shipped card names the diary offer")
 	var write := button_named("Write diary")
 	check(write != null and not write.disabled and str(write.get_meta("cozy_variant", "")) == "secondary", "Write diary is a secondary action")
 	var shelf := main.company_panel.find_child("ShelfActions_p1", true, false)
@@ -1249,7 +1252,7 @@ func _diary_proof() -> void:
 	await snap("56-diary-offer", finished)
 	await click(write)
 	await wait_until(func() -> bool: return company_cash() == 45300 and company_reputation() == 12 and not main.company_panel.busy, "The diary charges $15 and grants 1 fan")
-	check(label_named("DiaryOffer_p1") != null and label_named("DiaryOffer_p1").text == "Diary written · Whop Post-Mortem", "The Shipped card names the written diary")
+	check(label_named("DiaryOffer_p1") != null and label_named("DiaryOffer_p1").text == "Diary written · TownSquare Post-Mortem", "The Shipped card names the written diary")
 	check(button_named("Write diary") == null, "The diary button hides once it is written")
 	header = label_named("OfficeDate")
 	check(header != null and header.text.contains("Spring 7") and header.text.contains("$453.00") and header.text.contains("12 reputation"), "The header shows the cash and fans after the diary")
@@ -1289,7 +1292,7 @@ func seed_feature_offer(data_dir: String) -> bool:
 	if node.is_empty():
 		node = "/home/box/.local/node22/bin/node"
 	var script_path := data_dir.path_join("seed-feature.mjs")
-	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst db = new GameDatabase(root + '/startup-valley.sqlite', root + '/company-project');\ndb.tycoon.start('crypto', 'newsletter', []);\nconst view = db.tycoon.view().developing;\nconst company = db.journey.state().company;\ndb.close();\nconst offer = view && view.feature;\nif (company.cashCents !== 0 || company.reputation !== 0 || !offer || offer.added || offer.name !== 'Whop Bonus Drop' || offer.dayDelta !== 1 || offer.unitPercent !== 110 || view.devDaysRequired !== 2 || view.devDays !== 0) { console.error(JSON.stringify({ company: company, view: view })); process.exit(2); }\n" % JSON.stringify(database)
+	var script := "import { mkdirSync } from 'node:fs';\nimport { GameDatabase } from %s;\nconst root = process.argv[process.argv.length - 1];\nmkdirSync(root + '/company-project', { recursive: true });\nconst db = new GameDatabase(root + '/startup-valley.sqlite', root + '/company-project');\ndb.tycoon.start('crypto', 'newsletter', []);\nconst view = db.tycoon.view().developing;\nconst company = db.journey.state().company;\ndb.close();\nconst offer = view && view.feature;\nif (company.cashCents !== 0 || company.reputation !== 0 || !offer || offer.added || offer.name !== 'TownSquare Bonus Drop' || offer.dayDelta !== 1 || offer.unitPercent !== 110 || view.devDaysRequired !== 2 || view.devDays !== 0) { console.error(JSON.stringify({ company: company, view: view })); process.exit(2); }\n" % JSON.stringify(database)
 	var file := FileAccess.open(script_path, FileAccess.WRITE)
 	if file == null:
 		check(false, "Could not write the feature seed script")
@@ -1319,7 +1322,7 @@ func _feature_proof() -> void:
 	await open_journey()
 	var line := label_named("FeatureOffer")
 	var card := main.company_panel.find_child("PublisherCard", true, false) as Control
-	check(card != null and line != null and card.is_ancestor_of(line) and line.text == "Feature · Whop Bonus Drop · +1 office day, +10% opening demand", "The journey card names the feature offer")
+	check(card != null and line != null and card.is_ancestor_of(line) and line.text == "Feature · TownSquare Bonus Drop · +1 office day, +10% opening demand", "The journey card names the feature offer")
 	var add := button_named("Add feature")
 	check(add != null and not add.disabled and str(add.get_meta("cozy_variant", "")) == "secondary", "Add feature is a secondary action")
 	check(button_named("Hire Mina") != null and str(button_named("Hire Mina").get_meta("cozy_variant", "")) == "primary", "Hire Mina stays the one primary action beside the feature")
@@ -1332,7 +1335,7 @@ func _feature_proof() -> void:
 	await snap("60-feature-offer", line)
 	await click(add)
 	await wait_until(func() -> bool:
-		return not main.company_panel.busy and label_named("FeatureOffer") != null and label_named("FeatureOffer").text == "Feature added · Whop Bonus Drop · Building · day 0 of 3" and int(developing().get("devDaysRequired", 0)) == 3 and company_cash() == 0
+		return not main.company_panel.busy and label_named("FeatureOffer") != null and label_named("FeatureOffer").text == "Feature added · TownSquare Bonus Drop · Building · day 0 of 3" and int(developing().get("devDaysRequired", 0)) == 3 and company_cash() == 0
 	, "Adding the feature keeps the cash and needs 3 office days")
 	check(button_named("Add feature") == null, "The feature button hides once it is added")
 	check(int(developing().get("devDays", -1)) == 0, "Adding the feature does not spend a dev day")
@@ -2446,6 +2449,68 @@ func _catalog_proof() -> void:
 	view = main.company_panel._scroll.get_global_rect().grow(2.0)
 	check(view.encloses(line.get_global_rect()) and view.encloses(button.get_global_rect()), "The listed row stays inside the journey")
 	await snap("89-catalog-listed", line)
+
+func _raise_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-raise-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_let_go_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var card := main.company_panel.find_child("TrainStaff", true, false) as Control
+	var give := main.company_panel.find_child("Raise_mira", true, false) as Button
+	var line := label_named("RaiseLine_mira")
+	var leave := main.company_panel.find_child("LetGo_mira", true, false) as Button
+	var founder := main.company_panel.find_child("Raise_founder", true, false) as Button
+	check(card != null and give != null and line != null and card.is_ancestor_of(give) and give.text == "Give raise", "The Train staff card offers Give raise")
+	if give == null or line == null or leave == null:
+		return
+	check(founder == null and not give.disabled and str(give.get_meta("cozy_variant", "")) == "secondary", "Give raise is a secondary button and the founder has none")
+	check(line.text == "Raise · $120 · +1 hype" and line.get_line_count() == 1, "The offer names the new salary and the stat")
+	check(leave.text == "Let go" and leave.get_global_rect().end.y <= give.get_global_rect().position.y + 1.0, "Give raise sits under Let go")
+	var hire := button_named("Hire Theo")
+	check(hire != null and str(hire.get_meta("cozy_variant", "")) == "primary", "Hire Theo stays the one primary action beside Give raise")
+	await reveal(card)
+	var footer := main.company_panel._footer
+	var train := main.company_panel.find_child("Train_mira_design", true, false) as Button
+	check(train != null and give.get_global_rect().end.y <= train.get_global_rect().position.y + 1.0, "Give raise sits above Train")
+	check(footer != null and not give.get_global_rect().intersects(footer.get_global_rect()) and not line.get_global_rect().intersects(footer.get_global_rect()), "Give raise does not overlap Hire")
+	check(company_cash() == 0 and company_reputation() == 0 and int(developing().get("devDays", -1)) == 1 and int(developing().get("design", -1)) == 5, "The offer has not spent the earned day")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("Spring 2") and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at Spring 2, $0, and 0 reputation")
+	var view := main.company_panel._scroll.get_global_rect().grow(2.0)
+	check(view.encloses(give.get_global_rect()) and view.encloses(line.get_global_rect()), "Give raise stays inside the journey")
+	check(not main.job_panel._connection_panel.visible, "Give raise never opens Connect")
+	await snap("90-raise-offer", card)
+	await click(give)
+	var shown := await wait_until(func() -> bool:
+		var raised := label_named("RaiseLine_mira")
+		var payroll: Dictionary = tycoon_state().get("payroll", {}) if tycoon_state().get("payroll") is Dictionary else {}
+		return not main.company_panel.busy and raised != null and raised.text == "Raised · $120 · +1 hype" and main.company_panel.find_child("Raise_mira", true, false) == null and int(payroll.get("cents", -1)) == 12000
+	, "Mina has a raise")
+	if not shown:
+		return
+	line = label_named("RaiseLine_mira")
+	card = main.company_panel.find_child("TrainStaff", true, false) as Control
+	await reveal(line)
+	footer = main.company_panel._footer
+	check(card != null and line != null and card.is_ancestor_of(line) and line.get_line_count() == 1 and line.text == "Raised · $120 · +1 hype", "The raised line names the new salary")
+	check(footer != null and not line.get_global_rect().intersects(footer.get_global_rect()), "The raised line does not overlap Hire")
+	check(int(developing().get("devDays", -1)) == 1 and int(developing().get("design", -1)) == 5 and int(developing().get("tech", -1)) == 4 and int(developing().get("hype", -1)) == 3, "Earned days and points stay")
+	check(company_cash() == 0 and company_reputation() == 0, "A raise leaves cash and fans")
+	check(not main.job_panel._connection_panel.visible, "Giving a raise never opens Connect")
+	view = main.company_panel._scroll.get_global_rect().grow(2.0)
+	check(view.encloses(line.get_global_rect()), "The raised line stays inside the journey")
+	await snap("91-raise-given", line)
 
 func _proof_money(cents: int) -> String:
 	var integer := str(absi(cents) / 100)

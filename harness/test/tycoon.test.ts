@@ -70,6 +70,8 @@ import {
   patchedScore,
   pacedCraft,
   payrollCents,
+  lowestCraftStat,
+  raisedDayCraft,
   LOAN_AMOUNT_CENTS,
   LOAN_FEE_CENTS,
   LOAN_LENDER,
@@ -8248,6 +8250,361 @@ test("listCatalog pays score * 200 on later paydays and leaves posted sales alon
   assert.equal(skip.db.journey.state().company.cashCents, 33_300);
   assert.equal(skip.db.tycoon.view().history[0]?.salesCents, 33_300);
   assert.equal(skip.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:catalog%'").all().length, 0);
+  skip.db.close();
+});
+
+test("giveRaise lifts the next payday and the lowest stored stat", async () => {
+  assert.equal(
+    parseRequest({ kind: "request", id: "raise", method: "tycoon.giveRaise", params: { staffId: "mira" } }).method,
+    "tycoon.giveRaise",
+  );
+  assert.equal(
+    parseRequest({ kind: "request", id: "raise", method: "tycoon.giveRaise", params: { staffId: "founder" } }).method,
+    "tycoon.giveRaise",
+  );
+  assert.throws(
+    () => parseRequest({ kind: "request", id: "raise", method: "tycoon.giveRaise", params: { staffId: "nope" } }),
+    /Invalid protocol request/u,
+  );
+  assert.throws(
+    () => parseRequest({ kind: "request", id: "raise", method: "tycoon.giveRaise", params: {} }),
+    /Invalid protocol request/u,
+  );
+  assert.throws(
+    () => parseRequest({ kind: "request", id: "raise", method: "tycoon.giveRaise", params: { staffId: "mira", extra: true } }),
+    /Invalid protocol request/u,
+  );
+  assert.equal(lowestCraftStat({ design: 3, tech: 2, hype: 1 }), "hype");
+  assert.equal(lowestCraftStat({ design: 1, tech: 2, hype: 3 }), "design");
+  assert.equal(lowestCraftStat({ design: 4, tech: 1, hype: 2 }), "tech");
+  assert.equal(lowestCraftStat({ design: 2, tech: 2, hype: 2 }), "design");
+  assert.equal(lowestCraftStat({ design: 3, tech: 1, hype: 1 }), "tech");
+  assert.equal(lowestCraftStat({ design: 1, tech: 2, hype: 1 }), "design");
+  assert.equal(lowestCraftStat({ design: 2, tech: 1, hype: 1 }), "tech");
+  assert.deepEqual(raisedDayCraft({ design: 3, tech: 2, hype: 1 }, "full", true), { design: 3, tech: 2, hype: 2 });
+  assert.deepEqual(raisedDayCraft({ design: 3, tech: 2, hype: 1 }, "part", true), { design: 1, tech: 1, hype: 1 });
+  assert.deepEqual(raisedDayCraft({ design: 3, tech: 2, hype: 1 }, "part", false), { design: 1, tech: 1, hype: 0 });
+  assert.deepEqual(raisedDayCraft({ design: 3, tech: 2, hype: 2 }, "full", true), { design: 3, tech: 3, hype: 2 });
+  assert.deepEqual(raisedDayCraft({ design: 3, tech: 3, hype: 3 }, "full", true), { design: 4, tech: 3, hype: 3 });
+  assert.equal(payrollCents(["mira"], {}, { mira: true }), 12_000);
+  assert.equal(payrollCents(["mira"], { mira: "part" }, { mira: true }), 6_000);
+  assert.equal(payrollCents(["theo"], {}, { theo: true }), 15_000);
+  assert.equal(payrollCents(["theo"], { theo: "part" }, { theo: true }), 7_500);
+  assert.equal(payrollCents(["creative"], {}, { creative: true }), 18_000);
+  assert.equal(payrollCents(["creative"], { creative: "part" }, { creative: true }), 9_000);
+  assert.equal(payrollCents(["mira", "theo"], {}, { mira: true }), 22_000);
+  assert.equal(payrollCents(["mira", "mira"], {}, { mira: true }), 12_000);
+  assert.equal(payrollCents(["founder"], {}, { founder: true }), 0);
+  assert.equal(payrollCents(["mira"]), 8_000);
+  const source = readFileSync(new URL("../src/tycoon.ts", import.meta.url), "utf8");
+  const bodyStart = source.indexOf("giveRaise(staffId: string");
+  const body = source.slice(bodyStart, source.indexOf("letGo(staffId: string", bodyStart));
+  assert.equal(/fetch|https?:|Connect|credential|openrouter/iu.test(body), false);
+  assert.ok(body.includes("The founder cannot take a raise."), "giveRaise lives in the harness");
+  assert.ok(body.includes("already has a raise."), "a second raise fails clearly");
+  assert.ok(body.includes("is not on the team yet."), "an unhired teammate fails clearly");
+
+  const schema = JSON.parse(readFileSync(new URL("../../contracts/journey.schema.json", import.meta.url), "utf8"));
+  const validate = new Ajv2020({ strict: true, allErrors: true }).compile(schema);
+  const offer = { raised: false, salaryCents: 12_000, stat: "hype", enabled: true, reason: "" };
+  const given = { raised: true, salaryCents: 12_000, stat: "hype", enabled: false, reason: "Mina already has a raise." };
+
+  const fresh = await setup();
+  const freshStaff = fresh.db.tycoon.view().staff;
+  assert.deepEqual(freshStaff.find((person) => person.id === "founder")?.raise, {
+    raised: false, salaryCents: 0, stat: "design", enabled: false, reason: "The founder cannot take a raise.",
+  });
+  assert.deepEqual(freshStaff.find((person) => person.id === "mira")?.raise, {
+    raised: false, salaryCents: 12_000, stat: "hype", enabled: false, reason: "Mina is not on the team yet.",
+  });
+  assert.throws(() => fresh.db.tycoon.giveRaise("founder"), /The founder cannot take a raise\./u);
+  assert.throws(() => fresh.db.tycoon.giveRaise("nope"), /Unknown teammate/u);
+  assert.throws(() => fresh.db.tycoon.giveRaise("mira"), /Mina is not on the team yet\./u);
+  assert.throws(() => fresh.db.tycoon.giveRaise("theo"), /Theo is not on the team yet\./u);
+  assert.equal(fresh.db.tycoon.view().payroll.cents, 0);
+  assert.equal(validate(fresh.db.journey.state()), true, JSON.stringify(validate.errors));
+  fresh.db.close();
+
+  const bench = await setup();
+  bench.db.journey.hire("mira", 1);
+  bench.db.tycoon.start("crypto", "newsletter", ["mira"]);
+  bench.db.endDay(1);
+  const worked = bench.db.tycoon.view().developing;
+  assert.equal(worked?.devDays, 1);
+  assert.equal(worked?.design, 5);
+  assert.equal(worked?.tech, 4);
+  assert.equal(worked?.hype, 3);
+  assert.equal(bench.db.tycoon.view().researchPoints, 2);
+  assert.equal(bench.db.tycoon.view().payroll.cents, 8_000);
+  assert.deepEqual(bench.db.tycoon.view().staff.find((person) => person.id === "mira")?.raise, offer);
+  const before = {
+    txs: txIds(bench.db),
+    day: bench.db.clockState().day,
+    cash: bench.db.journey.state().company.cashCents,
+    fans: bench.db.journey.state().company.reputation,
+    points: pointsOf(bench.db, "p1"),
+    seed: Number((bench.db.journey.db.prepare("SELECT seed FROM tycoon_meta WHERE id = 1").get() as { seed: number }).seed),
+  };
+  assert.equal(before.seed, 26021);
+  const untouched = staffJson(bench.db, "p1");
+  bench.db.tycoon.giveRaise("mira");
+  assert.throws(() => bench.db.tycoon.giveRaise("mira"), /Mina already has a raise\./u);
+  assert.deepEqual(bench.db.tycoon.view().staff.find((person) => person.id === "mira")?.raise, given);
+  assert.equal(bench.db.tycoon.view().payroll.cents, 12_000);
+  assert.deepEqual(pointsOf(bench.db, "p1"), before.points);
+  assert.equal(bench.db.tycoon.view().developing?.design, 5);
+  assert.equal(bench.db.tycoon.view().developing?.tech, 4);
+  assert.equal(bench.db.tycoon.view().developing?.hype, 3);
+  assert.equal(staffJson(bench.db, "p1"), untouched);
+  assert.equal(bench.db.clockState().day, before.day);
+  assert.equal(bench.db.journey.state().company.cashCents, before.cash);
+  assert.equal(bench.db.journey.state().company.reputation, before.fans);
+  assert.equal(Number((bench.db.journey.db.prepare("SELECT seed FROM tycoon_meta WHERE id = 1").get() as { seed: number }).seed), before.seed);
+  assert.deepEqual(txIds(bench.db), before.txs);
+  assert.equal(bench.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:raise%' OR id LIKE 'tycoon:giveRaise%' OR id LIKE 'tycoon:giveraise%'").all().length, 0);
+  const meta = JSON.parse(String((bench.db.journey.db.prepare("SELECT staff_json FROM tycoon_meta WHERE id = 1").get() as { staff_json: string }).staff_json)) as { mira: { raised?: boolean }; founder: { raised?: boolean } };
+  assert.equal(meta.mira.raised, true);
+  assert.equal(meta.founder.raised, undefined);
+  bench.db.endDay(bench.db.clockState().day);
+  const bumped = bench.db.tycoon.view().developing;
+  assert.equal(bumped?.devDays, 2);
+  assert.equal(bumped?.design, 10);
+  assert.equal(bumped?.tech, 8);
+  assert.equal(bumped?.hype, 7);
+  assert.equal(bench.db.tycoon.view().researchPoints, 4);
+  assert.equal(validate(bench.db.journey.state()), true, JSON.stringify(validate.errors));
+  bench.db.close();
+
+  const halved = await setup();
+  halved.db.journey.hire("mira", 1);
+  halved.db.tycoon.start("crypto", "newsletter", ["mira"]);
+  halved.db.endDay(1);
+  halved.db.tycoon.setPace("mira", "part");
+  halved.db.tycoon.giveRaise("mira");
+  assert.equal(halved.db.tycoon.view().payroll.cents, 6_000);
+  assert.deepEqual(halved.db.tycoon.view().staff.find((person) => person.id === "mira")?.raise, {
+    raised: true, salaryCents: 6_000, stat: "hype", enabled: false, reason: "Mina already has a raise.",
+  });
+  halved.db.tycoon.setPace("mira", "full");
+  assert.equal(halved.db.tycoon.view().payroll.cents, 12_000);
+  assert.equal(halved.db.tycoon.view().staff.find((person) => person.id === "mira")?.raise.raised, true);
+  halved.db.tycoon.setPace("mira", "part");
+  halved.db.endDay(halved.db.clockState().day);
+  const mixed = halved.db.tycoon.view().developing;
+  assert.equal(mixed?.design, 8);
+  assert.equal(mixed?.tech, 7);
+  assert.equal(mixed?.hype, 6);
+  assert.equal(halved.db.tycoon.view().researchPoints, 4);
+  halved.db.close();
+
+  const aside = await setup();
+  aside.db.journey.hire("mira", 1);
+  aside.db.tycoon.start("crypto", "newsletter", []);
+  aside.db.endDay(1);
+  assert.equal(aside.db.tycoon.view().developing?.design, 2);
+  assert.equal(aside.db.tycoon.view().developing?.tech, 2);
+  assert.equal(aside.db.tycoon.view().developing?.hype, 2);
+  aside.db.tycoon.giveRaise("mira");
+  assert.equal(aside.db.tycoon.view().staff.find((person) => person.id === "mira")?.raise.stat, "hype");
+  assert.equal(aside.db.tycoon.view().payroll.cents, 12_000);
+  aside.db.endDay(aside.db.clockState().day);
+  assert.equal(aside.db.tycoon.view().developing?.design, 4);
+  assert.equal(aside.db.tycoon.view().developing?.tech, 4);
+  assert.equal(aside.db.tycoon.view().developing?.hype, 4);
+  aside.db.close();
+
+  const tied = await setup();
+  tied.db.journey.hire("mira", 1);
+  tied.db.journey.recordCompanyChange("gift-train", 1, trainCostCents(1), 0, 0, "Gift");
+  tied.db.tycoon.train("mira", "hype");
+  tied.db.endDay(1);
+  tied.db.tycoon.start("crypto", "newsletter", ["mira"]);
+  tied.db.endDay(tied.db.clockState().day);
+  assert.equal(tied.db.tycoon.view().developing?.design, 5);
+  assert.equal(tied.db.tycoon.view().developing?.tech, 4);
+  assert.equal(tied.db.tycoon.view().developing?.hype, 4);
+  assert.equal(tied.db.tycoon.view().staff.find((person) => person.id === "mira")?.raise.stat, "tech");
+  tied.db.tycoon.giveRaise("mira");
+  tied.db.endDay(tied.db.clockState().day);
+  assert.equal(tied.db.tycoon.view().developing?.design, 10);
+  assert.equal(tied.db.tycoon.view().developing?.tech, 9);
+  assert.equal(tied.db.tycoon.view().developing?.hype, 8);
+  tied.db.close();
+
+  const three = await setup();
+  three.db.journey.hire("mira", 1);
+  three.db.journey.recordCompanyChange("gift-train", 1, trainCostCents(1) + trainCostCents(2) + trainCostCents(2), 0, 0, "Gift");
+  three.db.tycoon.train("mira", "hype");
+  three.db.endDay(1);
+  three.db.tycoon.train("mira", "hype");
+  three.db.endDay(2);
+  three.db.tycoon.train("mira", "tech");
+  three.db.endDay(3);
+  three.db.tycoon.start("crypto", "newsletter", ["mira"]);
+  three.db.endDay(three.db.clockState().day);
+  assert.equal(three.db.tycoon.view().developing?.design, 5);
+  assert.equal(three.db.tycoon.view().developing?.tech, 5);
+  assert.equal(three.db.tycoon.view().developing?.hype, 5);
+  assert.equal(three.db.tycoon.view().staff.find((person) => person.id === "mira")?.raise.stat, "design");
+  three.db.tycoon.giveRaise("mira");
+  three.db.endDay(three.db.clockState().day);
+  assert.equal(three.db.tycoon.view().developing?.design, 11);
+  assert.equal(three.db.tycoon.view().developing?.tech, 10);
+  assert.equal(three.db.tycoon.view().developing?.hype, 10);
+  three.db.close();
+
+  const laterTrain = await setup();
+  laterTrain.db.journey.hire("mira", 1);
+  laterTrain.db.tycoon.start("crypto", "newsletter", ["mira"]);
+  laterTrain.db.endDay(1);
+  laterTrain.db.journey.recordCompanyChange("gift-train", laterTrain.db.clockState().day, trainCostCents(1), 0, 0, "Gift");
+  laterTrain.db.tycoon.train("mira", "hype");
+  assert.equal(laterTrain.db.tycoon.view().staff.find((person) => person.id === "mira")?.hype, 2);
+  assert.equal(laterTrain.db.tycoon.view().staff.find((person) => person.id === "mira")?.raise.stat, "hype");
+  laterTrain.db.tycoon.giveRaise("mira");
+  assert.equal(laterTrain.db.tycoon.view().staff.find((person) => person.id === "mira")?.raise.stat, "hype");
+  laterTrain.db.close();
+
+  const theo = await setup();
+  theo.db.close();
+  const theoFile = join(theo.root, "game.sqlite");
+  const theoSql = new DatabaseSync(theoFile);
+  theoSql.prepare("UPDATE milestone_progress SET completed = 1 WHERE id = 'website'").run();
+  theoSql.close();
+  const theoDb = new GameDatabase(theoFile, join(theo.root, "company-project"));
+  theoDb.journey.recordCompanyChange("gift-theo", 1, 30_000, 0, 0, "Gift");
+  theoDb.journey.hire("theo", 1);
+  assert.equal(theoDb.journey.state().company.cashCents, 0);
+  theoDb.tycoon.start("crypto", "newsletter", ["theo"]);
+  theoDb.endDay(1);
+  assert.equal(theoDb.tycoon.view().developing?.design, 3);
+  assert.equal(theoDb.tycoon.view().developing?.tech, 4);
+  assert.equal(theoDb.tycoon.view().developing?.hype, 5);
+  assert.equal(theoDb.tycoon.view().staff.find((person) => person.id === "theo")?.raise.stat, "design");
+  theoDb.tycoon.giveRaise("theo");
+  assert.equal(theoDb.tycoon.view().payroll.cents, 15_000);
+  theoDb.endDay(theoDb.clockState().day);
+  assert.equal(theoDb.tycoon.view().developing?.design, 7);
+  assert.equal(theoDb.tycoon.view().developing?.tech, 8);
+  assert.equal(theoDb.tycoon.view().developing?.hype, 10);
+  theoDb.close();
+
+  const payday = await setup();
+  payday.db.journey.hire("mira", 1);
+  payday.db.tycoon.giveRaise("mira");
+  payday.db.setClock(27, 480, 0);
+  payday.db.endDay(27);
+  assert.equal(payday.db.journey.state().company.cashCents, 0);
+  assert.equal(payday.db.journey.state().company.reputation, 0);
+  payday.db.tycoon.tickDay(28);
+  assert.equal(payday.db.journey.state().company.cashCents, -12_000);
+  const spring = payday.db.journey.db.prepare("SELECT cash_delta, reputation_delta FROM company_transactions WHERE id = 'tycoon:payroll:1-spring'").get() as { cash_delta: number; reputation_delta: number };
+  assert.equal(spring.cash_delta, -12_000);
+  assert.equal(spring.reputation_delta, 0);
+  payday.db.tycoon.tickDay(28);
+  assert.equal(payday.db.journey.state().company.cashCents, -12_000);
+  payday.db.close();
+
+  const afterPay = await setup();
+  afterPay.db.journey.hire("mira", 1);
+  afterPay.db.setClock(27, 480, 0);
+  afterPay.db.endDay(27);
+  afterPay.db.tycoon.tickDay(28);
+  assert.equal(afterPay.db.journey.state().company.cashCents, -8_000);
+  afterPay.db.tycoon.giveRaise("mira");
+  afterPay.db.tycoon.tickDay(28);
+  assert.equal(afterPay.db.journey.state().company.cashCents, -8_000);
+  assert.equal((afterPay.db.journey.db.prepare("SELECT cash_delta FROM company_transactions WHERE id = 'tycoon:payroll:1-spring'").get() as { cash_delta: number }).cash_delta, -8_000);
+  afterPay.db.tycoon.tickDay(56);
+  assert.equal((afterPay.db.journey.db.prepare("SELECT cash_delta FROM company_transactions WHERE id = 'tycoon:payroll:1-summer'").get() as { cash_delta: number }).cash_delta, -12_000);
+  assert.equal((afterPay.db.journey.db.prepare("SELECT cash_delta FROM company_transactions WHERE id = 'tycoon:payroll:1-spring'").get() as { cash_delta: number }).cash_delta, -8_000);
+  assert.equal(afterPay.db.journey.state().company.cashCents, -20_000);
+  assert.equal(afterPay.db.journey.state().company.reputation, 0);
+  afterPay.db.close();
+
+  const partPay = await setup();
+  partPay.db.journey.hire("mira", 1);
+  partPay.db.tycoon.setPace("mira", "part");
+  partPay.db.tycoon.giveRaise("mira");
+  partPay.db.setClock(27, 480, 0);
+  partPay.db.endDay(27);
+  partPay.db.tycoon.tickDay(28);
+  assert.equal(partPay.db.journey.state().company.cashCents, -6_000);
+  assert.equal(partPay.db.journey.state().company.reputation, 0);
+  partPay.db.close();
+
+  const cleared = await setup();
+  cleared.db.journey.hire("mira", 1);
+  cleared.db.tycoon.setPace("mira", "part");
+  cleared.db.tycoon.giveRaise("mira");
+  cleared.db.tycoon.letGo("mira");
+  assert.throws(() => cleared.db.tycoon.giveRaise("mira"), /Mina already left\./u);
+  const clearedMeta = JSON.parse(String((cleared.db.journey.db.prepare("SELECT staff_json FROM tycoon_meta WHERE id = 1").get() as { staff_json: string }).staff_json)) as { mira: { raised?: boolean; pace?: string } };
+  assert.equal(clearedMeta.mira.raised, undefined);
+  assert.equal(clearedMeta.mira.pace, undefined);
+  assert.equal(cleared.db.tycoon.view().payroll.cents, 0);
+  cleared.db.journey.hire("mira", cleared.db.clockState().day);
+  assert.equal(cleared.db.tycoon.view().payroll.cents, 8_000);
+  assert.equal(cleared.db.tycoon.view().staff.find((person) => person.id === "mira")?.raise.raised, false);
+  assert.equal(cleared.db.tycoon.view().staff.find((person) => person.id === "mira")?.raise.enabled, true);
+  cleared.db.tycoon.giveRaise("mira");
+  assert.equal(cleared.db.tycoon.view().payroll.cents, 12_000);
+  cleared.db.close();
+
+  const reopen = await setup();
+  reopen.db.journey.hire("mira", 1);
+  reopen.db.tycoon.giveRaise("mira");
+  const pending = reopen.db.tycoon.view().staff.find((person) => person.id === "mira")?.raise;
+  assert.deepEqual(pending, given);
+  assert.equal(reopen.db.tycoon.view().payroll.cents, 12_000);
+  const file = join(reopen.root, "game.sqlite");
+  const project = join(reopen.root, "company-project");
+  reopen.db.close();
+  const reopened = new GameDatabase(file, project);
+  assert.deepEqual(reopened.tycoon.view().staff.find((person) => person.id === "mira")?.raise, pending);
+  assert.equal(reopened.tycoon.view().payroll.cents, 12_000);
+  assert.throws(() => reopened.tycoon.giveRaise("mira"), /Mina already has a raise\./u);
+  assert.equal(validate(reopened.journey.state()), true, JSON.stringify(validate.errors));
+  reopened.close();
+
+  const shipped = await setup();
+  const stayed = await setup();
+  for (const ctx of [shipped, stayed]) {
+    ctx.db.journey.hire("mira", 1);
+    ctx.db.tycoon.start("crypto", "newsletter", ["mira"]);
+    ctx.db.endDay(1);
+    ctx.db.endDay(2);
+    ctx.db.tycoon.release("p1");
+  }
+  const postedSales = shipped.db.tycoon.view().history[0]?.salesCents;
+  const postedFans = shipped.db.tycoon.view().history[0]?.fans;
+  const postedStaff = staffJson(shipped.db, "p1");
+  const postedSeed = Number((shipped.db.journey.db.prepare("SELECT seed FROM tycoon_meta WHERE id = 1").get() as { seed: number }).seed);
+  shipped.db.tycoon.giveRaise("mira");
+  assert.equal(shipped.db.tycoon.view().history[0]?.salesCents, postedSales);
+  assert.equal(shipped.db.tycoon.view().history[0]?.fans, postedFans);
+  assert.equal(staffJson(shipped.db, "p1"), postedStaff);
+  shipped.db.endDay(3);
+  stayed.db.endDay(3);
+  assert.equal(shipped.db.tycoon.view().history[0]?.salesCents, stayed.db.tycoon.view().history[0]?.salesCents);
+  assert.equal(shipped.db.tycoon.view().history[0]?.fans, stayed.db.tycoon.view().history[0]?.fans);
+  assert.equal(Number((shipped.db.journey.db.prepare("SELECT seed FROM tycoon_meta WHERE id = 1").get() as { seed: number }).seed), postedSeed);
+  shipped.db.close();
+  stayed.db.close();
+
+  const skip = await setup();
+  skip.db.tycoon.start("crypto", "newsletter", []);
+  skip.db.endDay(1);
+  skip.db.endDay(2);
+  skip.db.tycoon.release("p1");
+  assert.equal(skip.db.journey.state().company.cashCents, 20_700);
+  assert.equal(skip.db.tycoon.view().history[0]?.fans, 5);
+  assert.equal(skip.db.tycoon.view().history[0]?.salesCents, 20_700);
+  skip.db.endDay(3);
+  skip.db.endDay(4);
+  assert.equal(skip.db.journey.state().company.cashCents, 33_300);
+  assert.equal(skip.db.tycoon.view().history[0]?.salesCents, 33_300);
+  assert.equal(skip.db.journey.db.prepare("SELECT id FROM company_transactions WHERE id LIKE 'tycoon:raise%' OR id LIKE 'tycoon:giveRaise%' OR id LIKE 'tycoon:giveraise%'").all().length, 0);
   skip.db.close();
 });
 

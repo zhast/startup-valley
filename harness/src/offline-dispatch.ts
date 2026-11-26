@@ -165,6 +165,11 @@ export async function dispatchOffline(request: ProtocolRequest, database: GameDa
       };
     case "tycoon.delistCatalog":
       return { journey: database.tycoon.delistCatalog(), dailySpend: database.dailySpend() };
+    case "tycoon.giveRaise":
+      return {
+        journey: database.tycoon.giveRaise(stringParameter(request, "staffId", 32)),
+        dailySpend: database.dailySpend(),
+      };
     case "tycoon.makeTrailer":
       return { journey: database.tycoon.makeTrailer(stringParameter(request, "productId", 32)), dailySpend: database.dailySpend() };
     case "tycoon.writeDiary":
