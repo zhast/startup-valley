@@ -3252,9 +3252,18 @@ func _toggle_fullscreen() -> void:
 	_render()
 
 func _continue_game() -> void:
-	# Start in the world. The persistent goal and the nearby visitor teach the
-	# first interaction; reopening a save never forces an already-seen meeting.
-	hide()
+	# The story demo starts in the world. The persistent goal and the nearby
+	# visitor teach the first interaction; reopening a save never forces an
+	# already-seen meeting. Classic Company Journey (story_mode off) still
+	# opens the hire notebook when nobody has joined.
+	if story_mode:
+		hide()
+		return
+	for candidate: Dictionary in state.get("candidates", []):
+		if bool(candidate.get("hired", false)):
+			hide()
+			return
+	present("journey")
 
 func _company_started() -> bool:
 	for candidate: Dictionary in state.get("candidates", []):
