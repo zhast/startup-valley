@@ -418,6 +418,7 @@ func _run() -> void:
 	await _part_time_proof()
 	await _catalog_proof()
 	await _raise_proof()
+	await _share_proof()
 	await _office_expansion_proof()
 	_finish()
 
@@ -2511,6 +2512,68 @@ func _raise_proof() -> void:
 	view = main.company_panel._scroll.get_global_rect().grow(2.0)
 	check(view.encloses(line.get_global_rect()), "The raised line stays inside the journey")
 	await snap("91-raise-given", line)
+
+func _share_proof() -> void:
+	var seeded := OS.get_temp_dir().path_join("startup-valley-proof-share-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()])
+	DirAccess.make_dir_recursive_absolute(seeded)
+	if not seed_let_go_offer(seeded):
+		return
+	await release_company()
+	OS.set_environment("STARTUP_VALLEY_DATA_DIR", seeded)
+	if not await boot_company():
+		return
+	var enter := button_named("Continue")
+	if enter == null:
+		enter = button_named("Start company")
+	if enter != null:
+		await click(enter)
+	await dismiss_onboarding()
+	await open_journey()
+	var card := main.company_panel.find_child("TrainStaff", true, false) as Control
+	var share := main.company_panel.find_child("ProfitShare_mira", true, false) as Button
+	var line := label_named("ProfitShareLine_mira")
+	var give := main.company_panel.find_child("Raise_mira", true, false) as Button
+	var founder := main.company_panel.find_child("ProfitShare_founder", true, false) as Button
+	check(card != null and share != null and line != null and card.is_ancestor_of(share) and share.text == "Profit share", "The Train staff card offers Profit share")
+	if share == null or line == null or give == null:
+		return
+	check(founder == null and not share.disabled and str(share.get_meta("cozy_variant", "")) == "secondary", "Profit share is a secondary button and the founder has none")
+	check(line.text == "Profit share · $40 · 10%" and line.get_line_count() == 1, "The offer names the lower salary and the cut")
+	check(give.text == "Give raise" and give.get_global_rect().end.y <= share.get_global_rect().position.y + 1.0, "Profit share sits under Give raise")
+	var hire := button_named("Hire Theo")
+	check(hire != null and str(hire.get_meta("cozy_variant", "")) == "primary", "Hire Theo stays the one primary action beside Profit share")
+	await reveal(card)
+	var footer := main.company_panel._footer
+	var train := main.company_panel.find_child("Train_mira_design", true, false) as Button
+	check(train != null and share.get_global_rect().end.y <= train.get_global_rect().position.y + 1.0, "Profit share sits above Train")
+	check(footer != null and not share.get_global_rect().intersects(footer.get_global_rect()) and not line.get_global_rect().intersects(footer.get_global_rect()), "Profit share does not overlap Hire")
+	check(company_cash() == 0 and company_reputation() == 0 and int(developing().get("devDays", -1)) == 1 and int(developing().get("design", -1)) == 5, "The offer has not spent the earned day")
+	var header := label_named("OfficeDate")
+	check(header != null and header.text.contains("Spring 2") and header.text.contains("$0.00") and header.text.contains("0 reputation"), "The header stays at Spring 2, $0, and 0 reputation")
+	var view := main.company_panel._scroll.get_global_rect().grow(2.0)
+	check(view.encloses(share.get_global_rect()) and view.encloses(line.get_global_rect()), "Profit share stays inside the journey")
+	check(not main.job_panel._connection_panel.visible, "Profit share never opens Connect")
+	await snap("92-share-offer", card)
+	await click(share)
+	var shown := await wait_until(func() -> bool:
+		var shared := label_named("ProfitShareLine_mira")
+		var payroll: Dictionary = tycoon_state().get("payroll", {}) if tycoon_state().get("payroll") is Dictionary else {}
+		return not main.company_panel.busy and shared != null and shared.text == "Sharing · $40 · 10%" and main.company_panel.find_child("ProfitShare_mira", true, false) == null and int(payroll.get("cents", -1)) == 4000
+	, "Mina has a profit share")
+	if not shown:
+		return
+	line = label_named("ProfitShareLine_mira")
+	card = main.company_panel.find_child("TrainStaff", true, false) as Control
+	await reveal(line)
+	footer = main.company_panel._footer
+	check(card != null and line != null and card.is_ancestor_of(line) and line.get_line_count() == 1 and line.text == "Sharing · $40 · 10%", "The sharing line names the lower salary")
+	check(footer != null and not line.get_global_rect().intersects(footer.get_global_rect()), "The sharing line does not overlap Hire")
+	check(int(developing().get("devDays", -1)) == 1 and int(developing().get("design", -1)) == 5 and int(developing().get("tech", -1)) == 4 and int(developing().get("hype", -1)) == 3, "Earned days and points stay")
+	check(company_cash() == 0 and company_reputation() == 0, "A profit share leaves cash and fans")
+	check(not main.job_panel._connection_panel.visible, "Offering a profit share never opens Connect")
+	view = main.company_panel._scroll.get_global_rect().grow(2.0)
+	check(view.encloses(line.get_global_rect()), "The sharing line stays inside the journey")
+	await snap("93-share-set", line)
 
 func _proof_money(cents: int) -> String:
 	var integer := str(absi(cents) / 100)
