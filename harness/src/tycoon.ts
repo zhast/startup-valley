@@ -167,6 +167,8 @@ export const SALARY_CENTS = {
   theo: 10_000,
   creative: 12_000,
 } as const;
+/** One optional profit share pays this percent of the company's cash from a later sale, rounded down. */
+export const PROFIT_SHARE_PERCENT = 10;
 
 /**
  * One optional loan from TownSquare Treasury. $500 now, $550 back on a later payday.
@@ -457,6 +459,14 @@ export interface RaiseOffer {
   reason: string;
 }
 
+export interface ProfitShareOffer {
+  shared: boolean;
+  salaryCents: number;
+  percent: number;
+  enabled: boolean;
+  reason: string;
+}
+
 export interface TycoonStaffView {
   id: StaffId;
   name: string;
@@ -469,12 +479,14 @@ export interface TycoonStaffView {
   letGo: LetGoOffer;
   pace: PaceOffer;
   raise: RaiseOffer;
+  profitShare: ProfitShareOffer;
 }
 
 interface StaffState extends CraftPoints {
   trainedDay: number | null;
   pace: StaffPace;
   raised: boolean;
+  shared: boolean;
 }
 
 interface StaffSnapshot extends CraftPoints {
@@ -1104,12 +1116,15 @@ export function catalogPaydayDay(today: number, listedDay: number | null): numbe
 /**
  * One person's season salary. Pace halves the table amount first.
  * A raise then adds half of that paced amount, rounded down.
+ * A profit share then subtracts half of the table salary, rounded down, and never below zero.
+ * A raise and a profit share do not stack; callers pass at most one of those flags.
  * The founder and unknown ids pay nothing.
  */
-export function seasonSalaryCents(id: string, pace: string | undefined, raised: boolean): number {
+export function seasonSalaryCents(id: string, pace: string | undefined, raised: boolean, shared = false): number {
   const cents = SALARY_CENTS[id as keyof typeof SALARY_CENTS];
   if (typeof cents !== "number") return 0;
   const paced = pace === "part" ? Math.floor(cents / 2) : cents;
+  if (shared) return Math.max(0, paced - Math.floor(cents / 2));
   return raised ? paced + Math.floor(paced / 2) : paced;
 }
 
@@ -1117,18 +1132,20 @@ export function seasonSalaryCents(id: string, pace: string | undefined, raised: 
  * Season salary for these hired ids. The founder and unknown ids add nothing.
  * Duplicates count once. A part-time id pays half, rounded down. Omitted pace is full time.
  * A raised id adds half of that paced amount, rounded down.
+ * A shared id subtracts half of the table salary from that paced amount, rounded down, never below zero.
  */
 export function payrollCents(
   staffIds: readonly string[],
   pace: Readonly<Record<string, string | undefined>> = {},
   raised: Readonly<Record<string, boolean | undefined>> = {},
+  shared: Readonly<Record<string, boolean | undefined>> = {},
 ): number {
   const seen = new Set<string>();
   let total = 0;
   for (const id of staffIds) {
     if (seen.has(id)) continue;
     seen.add(id);
-    total += seasonSalaryCents(id, pace[id], raised[id] === true);
+    total += seasonSalaryCents(id, pace[id], raised[id] === true, shared[id] === true);
   }
   return total;
 }
@@ -1185,6 +1202,15 @@ export function publisherCutCents(cents: number): number {
 /** Sales cents posted for a signed product. Fans stay on the gross sale. */
 export function publisherNetCents(cents: number): number {
   return Math.max(0, cents - publisherCutCents(cents));
+}
+
+/**
+ * One teammate's cut of the company's cash from a sale. Rounded down.
+ * 10% of 20700 is 2070. A 9-cent sale pays 0. Fans stay on the sale.
+ */
+export function profitShareCents(cents: number): number {
+  if (!Number.isInteger(cents) || cents <= 0) return 0;
+  return Math.floor((cents * PROFIT_SHARE_PERCENT) / 100);
 }
 
 /** Player-facing payday, for example "Spring 28". */
@@ -2405,7 +2431,8 @@ export class TycoonStore {
           },
           letGo: this.letGoOffer(person.id, person.name, isHired, dismissed.has(person.id)),
           pace: this.paceOffer(person.id, person.name, isHired, dismissed.has(person.id), current.pace),
-          raise: this.raiseOffer(person.id, person.name, isHired, dismissed.has(person.id), current.pace, current.raised, this.raiseStat(person.id, current, developing)),
+          raise: this.raiseOffer(person.id, person.name, isHired, dismissed.has(person.id), current.pace, current.raised, current.shared, this.raiseStat(person.id, current, developing)),
+          profitShare: this.profitShareOffer(person.id, person.name, isHired, dismissed.has(person.id), current.pace, current.raised, current.shared),
         };
       }),
       trainingNotice: this.trainingNoticeDay === day ? this.trainingNotice : "",
@@ -2959,8 +2986,33 @@ export class TycoonStore {
       if (status === "dismissed") throw new Error(`${person.name} already left.`);
       if (status !== "hired") throw new Error(`${person.name} is not on the team yet.`);
       const state = this.loadStaffState();
+      if (state[person.id].shared) throw new Error(`${person.name} already has a profit share.`);
       if (state[person.id].raised) throw new Error(`${person.name} already has a raise.`);
       state[person.id].raised = true;
+      this.saveStaffState(state);
+      return this.journey.state();
+    });
+  }
+
+  /**
+   * Give one hired teammate a profit share, once. Season salary drops by half
+   * of the table salary, rounded down. Later sales of a product that stored
+   * them pay 10% of the company's cash from that sale, rounded down, and add
+   * no fans. The founder cannot take one. A raise and a profit share do not
+   * stack. Let go clears it. No fee, no clock move.
+   */
+  offerProfitShare(staffId: string): ReturnType<JourneyStore["state"]> {
+    return this.journey.transaction(() => {
+      const person = STAFF.find((member) => member.id === staffId);
+      if (!person) throw new Error("Unknown teammate");
+      if (person.id === "founder") throw new Error("The founder cannot take a profit share.");
+      const status = this.employmentStatus(person.id);
+      if (status === "dismissed") throw new Error(`${person.name} already left.`);
+      if (status !== "hired") throw new Error(`${person.name} is not on the team yet.`);
+      const state = this.loadStaffState();
+      if (state[person.id].raised) throw new Error(`${person.name} already has a raise.`);
+      if (state[person.id].shared) throw new Error(`${person.name} already has a profit share.`);
+      state[person.id].shared = true;
       this.saveStaffState(state);
       return this.journey.state();
     });
@@ -2970,8 +3022,8 @@ export class TycoonStore {
    * Dismiss one hired teammate. The founder stays. They leave the company.
    * A build in development that listed them drops them. Days, points, and
    * sales already earned stay. Later days use whoever remains. Payroll no
-   * longer includes them. Part-time and a raise clear, so a later hire starts
-   * full time and without a raise.
+   * longer includes them. Part-time, a raise, and a profit share clear, so a
+   * later hire starts full time and without a raise or a share.
    * No fee, no ledger row, no clock move. Hiring them again is the usual hire.
    */
   letGo(staffId: string): ReturnType<JourneyStore["state"]> {
@@ -2984,9 +3036,10 @@ export class TycoonStore {
       if (status !== "hired") throw new Error(`${person.name} is not on the team yet.`);
       this.db.prepare("UPDATE employees SET employment_status = 'dismissed' WHERE id = ?").run(person.id);
       const stats = this.loadStaffState();
-      if (stats[person.id].pace === "part" || stats[person.id].raised) {
+      if (stats[person.id].pace === "part" || stats[person.id].raised || stats[person.id].shared) {
         stats[person.id].pace = "full";
         stats[person.id].raised = false;
+        stats[person.id].shared = false;
         this.saveStaffState(stats);
       }
       const row = this.developingRow();
@@ -3736,6 +3789,7 @@ export class TycoonStore {
     });
     const posted = stored.publisher ? publisherNetCents(payout.cents) : payout.cents;
     this.journey.recordCompanyChange(`tycoon:${row.id}:${applied}`, day, posted, posted, payout.fans, `Sales · ${row.name}`);
+    this.payProfitShares(row, stored, posted, String(applied), day);
     const salesDays = applied + 1;
     this.db.prepare(`
       UPDATE tycoon_products
@@ -3782,6 +3836,7 @@ export class TycoonStore {
       });
       const posted = stored.publisher ? publisherNetCents(payout.cents) : payout.cents;
       this.journey.recordCompanyChange(`tycoon:${row.id}:${SALES_WINDOW_DAYS}`, day, posted, posted, payout.fans, `Sales · ${row.name}`);
+      this.payProfitShares(row, stored, posted, String(SALES_WINDOW_DAYS), day);
       stored.port = { ...stored.port, cents: posted, fans: payout.fans };
       this.db.prepare("UPDATE tycoon_products SET staff_json = ?, sales_cents = ?, fans = ? WHERE id = ?").run(
         serializeProductSnapshot(stored),
@@ -3826,6 +3881,7 @@ export class TycoonStore {
       });
       const posted = stored.publisher ? publisherNetCents(payout.cents) : payout.cents;
       this.journey.recordCompanyChange(salesId, day, posted, posted, payout.fans, `Sales · ${LOCALIZE_EDITION}`);
+      this.payProfitShares(row, stored, posted, "localize", day);
       stored.localization = { ...stored.localization, cents: posted, fans: payout.fans };
       this.db.prepare("UPDATE tycoon_products SET staff_json = ?, sales_cents = ?, fans = ? WHERE id = ?").run(
         serializeProductSnapshot(stored),
@@ -3901,24 +3957,62 @@ export class TycoonStore {
     return lowestCraftStat(live);
   }
 
-  private raiseOffer(id: StaffId, name: string, hired: boolean, dismissed: boolean, pace: StaffPace, raised: boolean, stat: StatId): RaiseOffer {
+  private raiseOffer(id: StaffId, name: string, hired: boolean, dismissed: boolean, pace: StaffPace, raised: boolean, shared: boolean, stat: StatId): RaiseOffer {
     if (id === "founder") return { raised: false, salaryCents: 0, stat: "design", enabled: false, reason: "The founder cannot take a raise." };
     const salaryCents = seasonSalaryCents(id, pace, true);
     if (dismissed) return { raised: false, salaryCents, stat, enabled: false, reason: `${name} already left.` };
     if (!hired) return { raised: false, salaryCents, stat, enabled: false, reason: `${name} is not on the team yet.` };
     if (raised) return { raised: true, salaryCents, stat, enabled: false, reason: `${name} already has a raise.` };
+    if (shared) return { raised: false, salaryCents, stat, enabled: false, reason: `${name} already has a profit share.` };
     return { raised: false, salaryCents, stat, enabled: true, reason: "" };
+  }
+
+  private profitShareOffer(id: StaffId, name: string, hired: boolean, dismissed: boolean, pace: StaffPace, raised: boolean, shared: boolean): ProfitShareOffer {
+    if (id === "founder") return { shared: false, salaryCents: 0, percent: PROFIT_SHARE_PERCENT, enabled: false, reason: "The founder cannot take a profit share." };
+    const salaryCents = seasonSalaryCents(id, pace, false, true);
+    if (dismissed) return { shared: false, salaryCents, percent: PROFIT_SHARE_PERCENT, enabled: false, reason: `${name} already left.` };
+    if (!hired) return { shared: false, salaryCents, percent: PROFIT_SHARE_PERCENT, enabled: false, reason: `${name} is not on the team yet.` };
+    if (raised) return { shared: false, salaryCents, percent: PROFIT_SHARE_PERCENT, enabled: false, reason: `${name} already has a raise.` };
+    if (shared) return { shared: true, salaryCents, percent: PROFIT_SHARE_PERCENT, enabled: false, reason: `${name} already has a profit share.` };
+    return { shared: false, salaryCents, percent: PROFIT_SHARE_PERCENT, enabled: true, reason: "" };
+  }
+
+  /**
+   * Pay each stored teammate who currently has a profit share 10% of this
+   * sale's company cash. Posted sales and fans stay. A 0-cent cut writes no row.
+   */
+  private payProfitShares(row: ProductRow, stored: ProductSnapshot, posted: number, saleKey: string, day: number): void {
+    const share = profitShareCents(posted);
+    if (share <= 0) return;
+    const state = this.loadStaffState();
+    const hired = this.hiredIds();
+    for (const person of STAFF) {
+      if (!state[person.id].shared) continue;
+      if (!hired.has(person.id)) continue;
+      if (!stored.staff.some((member) => member.id === person.id)) continue;
+      this.journey.recordCompanyChange(
+        `tycoon:share:${row.id}:${person.id}:${saleKey}`,
+        day,
+        -share,
+        0,
+        0,
+        `Share: ${person.name}`,
+        true,
+      );
+    }
   }
 
   private payrollDue(hired: ReadonlySet<string>): number {
     const state = this.loadStaffState();
     const pace: Record<string, StaffPace> = {};
     const raised: Record<string, boolean> = {};
+    const shared: Record<string, boolean> = {};
     for (const person of STAFF) {
       pace[person.id] = state[person.id].pace;
       raised[person.id] = state[person.id].raised;
+      shared[person.id] = state[person.id].shared;
     }
-    return payrollCents([...hired], pace, raised);
+    return payrollCents([...hired], pace, raised, shared);
   }
 
   private letGoNotice(dismissed: ReadonlySet<string>): string {
@@ -4143,7 +4237,7 @@ export class TycoonStore {
 
   private loadStaffState(): Record<StaffId, StaffState> {
     const defaults = Object.fromEntries(STAFF.map((person) => [person.id, {
-      design: person.design, tech: person.tech, hype: person.hype, trainedDay: null as number | null, pace: "full" as StaffPace, raised: false,
+      design: person.design, tech: person.tech, hype: person.hype, trainedDay: null as number | null, pace: "full" as StaffPace, raised: false, shared: false,
     }])) as Record<StaffId, StaffState>;
     const row = this.db.prepare("SELECT staff_json FROM tycoon_meta WHERE id = 1").get() as { staff_json?: string } | undefined;
     const raw = row?.staff_json?.trim();
@@ -4151,7 +4245,7 @@ export class TycoonStore {
     let parsed: unknown;
     try { parsed = JSON.parse(raw); } catch { return defaults; }
     if (!parsed || typeof parsed !== "object") return defaults;
-    const stored = parsed as Record<string, { design?: unknown; tech?: unknown; hype?: unknown; trainedDay?: unknown; pace?: unknown; raised?: unknown }>;
+    const stored = parsed as Record<string, { design?: unknown; tech?: unknown; hype?: unknown; trainedDay?: unknown; pace?: unknown; raised?: unknown; shared?: unknown }>;
     for (const person of STAFF) {
       const item = stored[person.id];
       if (!item || typeof item !== "object") continue;
@@ -4163,16 +4257,17 @@ export class TycoonStore {
         trainedDay: Number.isInteger(trainedDay) && trainedDay > 0 ? trainedDay : null,
         pace: person.id !== "founder" && item.pace === "part" ? "part" : "full",
         raised: person.id !== "founder" && item.raised === true,
+        shared: person.id !== "founder" && item.shared === true,
       };
     }
     return defaults;
   }
 
   private saveStaffState(state: Record<StaffId, StaffState>): void {
-    const stored: Record<string, { design: number; tech: number; hype: number; trainedDay: number | null; pace?: "part"; raised?: true }> = {};
+    const stored: Record<string, { design: number; tech: number; hype: number; trainedDay: number | null; pace?: "part"; raised?: true; shared?: true }> = {};
     for (const person of STAFF) {
       const item = state[person.id];
-      const body: { design: number; tech: number; hype: number; trainedDay: number | null; pace?: "part"; raised?: true } = {
+      const body: { design: number; tech: number; hype: number; trainedDay: number | null; pace?: "part"; raised?: true; shared?: true } = {
         design: item.design,
         tech: item.tech,
         hype: item.hype,
@@ -4180,6 +4275,7 @@ export class TycoonStore {
       };
       if (person.id !== "founder" && item.pace === "part") body.pace = "part";
       if (person.id !== "founder" && item.raised) body.raised = true;
+      if (person.id !== "founder" && item.shared) body.shared = true;
       stored[person.id] = body;
     }
     this.db.prepare("UPDATE tycoon_meta SET staff_json = ? WHERE id = 1").run(JSON.stringify(stored));
