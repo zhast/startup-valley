@@ -654,7 +654,8 @@
         "training": { "$ref": "#/$defs/tycoonTraining" },
         "letGo": { "$ref": "#/$defs/tycoonLetGo" },
         "pace": { "$ref": "#/$defs/tycoonPace" },
-        "raise": { "$ref": "#/$defs/tycoonRaise" }
+        "raise": { "$ref": "#/$defs/tycoonRaise" },
+        "profitShare": { "$ref": "#/$defs/tycoonProfitShare" }
       }
     },
     "tycoonRaise": {
@@ -665,6 +666,18 @@
         "raised": { "type": "boolean" },
         "salaryCents": { "type": "integer", "minimum": 0 },
         "stat": { "enum": ["design", "tech", "hype"] },
+        "enabled": { "type": "boolean" },
+        "reason": { "type": "string" }
+      }
+    },
+    "tycoonProfitShare": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["shared", "salaryCents", "percent", "enabled", "reason"],
+      "properties": {
+        "shared": { "type": "boolean" },
+        "salaryCents": { "type": "integer", "minimum": 0 },
+        "percent": { "type": "integer", "minimum": 0, "maximum": 100 },
         "enabled": { "type": "boolean" },
         "reason": { "type": "string" }
       }

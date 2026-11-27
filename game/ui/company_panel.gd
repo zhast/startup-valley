@@ -1165,6 +1165,31 @@ func _train_staff() -> void:
 					raise_button.custom_minimum_size = Vector2(128, 32)
 					raise_button.size_flags_horizontal = Control.SIZE_SHRINK_END
 					raise_button.clip_text = false
+		var share_value: Variant = person.get("profitShare", null)
+		if share_value is Dictionary:
+			var share_offer := share_value as Dictionary
+			var shared := bool(share_offer.get("shared", false))
+			var can_share := bool(share_offer.get("enabled", false))
+			if shared or can_share:
+				var share_row := HBoxContainer.new()
+				share_row.name = "ProfitShareRow_%s" % person_id
+				share_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				share_row.add_theme_constant_override("separation", 8)
+				card.add_child(share_row)
+				var share_dollars := "$%d" % int(int(share_offer.get("salaryCents", 0)) / 100)
+				var percent := int(share_offer.get("percent", 10))
+				var share_hint := ("Sharing · %s · %d%%" % [share_dollars, percent]) if shared else ("Profit share · %s · %d%%" % [share_dollars, percent])
+				var share_line := _label(share_hint, false, share_row)
+				share_line.name = "ProfitShareLine_%s" % person_id
+				share_line.autowrap_mode = TextServer.AUTOWRAP_OFF
+				share_line.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				share_line.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+				if can_share:
+					var share_button := _button("Profit share", _offer_profit_share.bind(person_id), false, true, share_row, "secondary")
+					share_button.name = "ProfitShare_%s" % person_id
+					share_button.custom_minimum_size = Vector2(132, 32)
+					share_button.size_flags_horizontal = Control.SIZE_SHRINK_END
+					share_button.clip_text = false
 		var offers: Dictionary = person.get("training", {}) if person.get("training") is Dictionary else {}
 		for stat: String in ["design", "tech", "hype"]:
 			var offer: Dictionary = offers.get(stat, {}) if offers.get(stat) is Dictionary else {}
@@ -1187,6 +1212,9 @@ func _set_pace(staff_id: String, pace: String) -> void:
 
 func _give_raise(staff_id: String) -> void:
 	_request("tycoon.giveRaise", {"staffId": staff_id})
+
+func _offer_profit_share(staff_id: String) -> void:
+	_request("tycoon.offerProfitShare", {"staffId": staff_id})
 
 func _research_card() -> void:
 	var tycoon := _tycoon()

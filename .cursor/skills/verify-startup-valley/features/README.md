@@ -43,5 +43,6 @@ Player-facing flows for the offline tycoon. The harness owns the rules (`docs/TY
 - [Part-time](part-time.md)
 - [Back catalog](back-catalog.md)
 - [Raise](raise.md)
+- [Profit share](profit-share.md)
 
 Launch, display, and proof-file rules live in the verify-startup-valley skill. Do not copy them here.

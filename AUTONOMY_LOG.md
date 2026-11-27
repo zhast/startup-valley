@@ -3230,3 +3230,33 @@ A new player can: (1) start a company from the title screen, (2) understand the 
 - Recorded from `bash /workspace/sv-proof/round-69/gate.sh` and the verify capture in the follow-up. Before that gate, `game/tests/test_tycoon_raise.gd` printed TYCOON RAISE PASS and `game/tests/test_tycoon_part_time.gd` printed TYCOON PART TIME PASS. Both left the earned day at design 5, tech 4, hype 3. Connect stayed closed.
 
 **TYCOON SLICE PLAYABLE: yes** — Company Journey, on the Train staff card. A raise is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_raise.gd`.
+
+### Round 70 — 2026-11-26
+
+**What changed**
+- `tycoon.offerProfitShare` takes `{ staffId }`. An unknown id fails with "Unknown teammate". The founder fails with "The founder cannot take a profit share." A dismissed teammate fails with "Mina already left." Someone not hired fails with "Mina is not on the team yet." A raised teammate fails with "Mina already has a raise." A second share fails with "Mina already has a profit share." A bad or extra field fails earlier with "Invalid protocol request". No fee, no clock move, no fans. The command does not draw a new seed and does not recompute a day that already posted.
+- One deal per hired teammate, once. Pace halves the table salary first. The share then subtracts half of the table salary from that paced amount, rounded down, never below zero. Mina's $80 becomes $40. Part-time Mina's $40 becomes $0. Craft is unchanged. `payroll.cents` updates immediately. A share before payday is in that season's row. A share after payday waits for the next season and does not rewrite the posted row. Switching pace does not clear the share. A raise and a profit share do not stack.
+- Later sales of a product that stored them pay 10% of the company's cash from that sale, rounded down, on that sale's day, as its own cash line, earned 0, reputation 0. Product `sales_cents` stay the posted sale. A publisher cut runs first. A sale that already posted stays. Let go clears the flag, so a later hire starts without it. The founder is never stored as shared.
+- The journey block is `profitShare` on each staff row: `shared`, `salaryCents`, `percent`, `enabled`, and `reason`. `salaryCents` is the new salary at the current pace. `percent` is 10. It is optional, so an older payload still validates. A payload without it draws no control.
+- The row sits on the Train staff card, under Raise and above Train. The line is "Profit share · $40 · 10%" before and "Sharing · $40 · 10%" after. The button is a secondary "Profit share". Hire stays the one primary action. Nothing on this row is orange.
+- The production scene still opens in story mode. Tycoon playtests and the verify helper set `demo_story_mode` false before the scene enters the tree, matching `run_all.gd`, so they still see the classic Company Journey. Studio plans stays the player path in the demo.
+
+**Proof**
+- The verify skill writes `92-share-offer.png` and `93-share-set.png` into `/workspace/sv-proof/round-70/`. The PNG check and the gate counts are recorded after `gate.sh` and the capture run.
+
+**Gate**
+- Recorded from `bash /workspace/sv-proof/round-70/gate.sh` after the docs commit. Existing numeric tests stay on the skip path: the first Crypto Alpha Newsletter is 20700 cents and 5 fans, then 33300 cents on the next office day.
+
+**Art HOLD**
+- No new art was generated, edited, or bound. Untracked runtime art stays untracked. Sprite bindings, `furnishing_catalog.json`, and `.import` files were not touched.
+
+**Remaining gaps (ranked)**
+1. A second room needs architecture art. Office growth already placed the spare desks on the current floor.
+2. Chapter work orders still ask for a key unless `STARTUP_VALLEY_FAKE_PROVIDER=1`. That path stays off the tycoon.
+3. The Train staff card now adds one profit-share line and one secondary button for each hired teammate who can take a share, or who already has one. The row is hidden when the payload has no `profitShare` block.
+
+**Test results**
+- Recorded from `bash /workspace/sv-proof/round-70/gate.sh` and the verify capture in the follow-up. Before that gate, `game/tests/test_tycoon_profit_share.gd` printed TYCOON PROFIT SHARE PASS. Harness `npm test` was 171 pass, 0 fail, 2 skipped. Connect stayed closed.
+
+**TYCOON SLICE PLAYABLE: yes** — Company Journey, on the Train staff card. A profit share is optional and secondary. Skipping it leaves the first newsletter at $207 and 5 fans. No API key and no network. Headless: `godot --headless --path game --script res://tests/test_tycoon_profit_share.gd`.
+
